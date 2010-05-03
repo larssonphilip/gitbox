@@ -1,0 +1,14 @@
+- prompt for a name when checking out a new branch
+- check out a branch from the remote one
+- check out a branch from the commit item
+- change "sync" button title to "push" when remote is not ahead of local branch
+- change "sync" button title to "pull" when remote is ahead of local branch
+- change "sync" button title to "merge" when remote is local
+- change "remote branch" label to "other branch" when remote is local
+- fetch current remote branch every minute
+- open a window per repo
+- remember tracking in .git/config when switching a remote branch
+- left pane: log for current local branch
+- add "stage" cell in the top of the log - shows stage and working directory status
+- add "load more" cell in the bottom of the log
+- right pane: changes (files)
