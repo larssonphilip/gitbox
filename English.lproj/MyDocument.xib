@@ -12,7 +12,7 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="5"/>
+			<integer value="100099"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -519,7 +519,7 @@
 														<object class="NSTableView" id="584195925">
 															<reference key="NSNextResponder" ref="301120612"/>
 															<int key="NSvFlags">4352</int>
-															<string key="NSFrameSize">{274, 396}</string>
+															<string key="NSFrameSize">{274, 397}</string>
 															<reference key="NSSuperview" ref="301120612"/>
 															<bool key="NSEnabled">YES</bool>
 															<object class="NSTableHeaderView" key="NSHeaderView" id="364244579">
@@ -675,7 +675,7 @@
 															<int key="NSTableViewDraggingDestinationStyle">0</int>
 														</object>
 													</object>
-													<string key="NSFrame">{{0, 17}, {274, 396}}</string>
+													<string key="NSFrame">{{0, 17}, {274, 397}}</string>
 													<reference key="NSSuperview" ref="88015662"/>
 													<reference key="NSNextKeyView" ref="584195925"/>
 													<reference key="NSDocView" ref="584195925"/>
@@ -717,7 +717,7 @@
 												</object>
 												<reference ref="357763618"/>
 											</object>
-											<string key="NSFrameSize">{274, 413}</string>
+											<string key="NSFrameSize">{274, 414}</string>
 											<reference key="NSSuperview" ref="910591720"/>
 											<reference key="NSNextKeyView" ref="301120612"/>
 											<int key="NSsFlags">560</int>
@@ -751,7 +751,7 @@
 														<object class="NSTableView" id="1026253246">
 															<reference key="NSNextResponder" ref="671812570"/>
 															<int key="NSvFlags">4352</int>
-															<string key="NSFrameSize">{340, 396}</string>
+															<string key="NSFrameSize">{340, 397}</string>
 															<reference key="NSSuperview" ref="671812570"/>
 															<bool key="NSEnabled">YES</bool>
 															<object class="NSTableHeaderView" key="NSHeaderView" id="18055556">
@@ -877,7 +877,7 @@
 															<int key="NSTableViewDraggingDestinationStyle">0</int>
 														</object>
 													</object>
-													<string key="NSFrame">{{0, 17}, {340, 396}}</string>
+													<string key="NSFrame">{{0, 17}, {340, 397}}</string>
 													<reference key="NSSuperview" ref="323592380"/>
 													<reference key="NSNextKeyView" ref="1026253246"/>
 													<reference key="NSDocView" ref="1026253246"/>
@@ -920,7 +920,7 @@
 												</object>
 												<reference ref="674718606"/>
 											</object>
-											<string key="NSFrameSize">{340, 413}</string>
+											<string key="NSFrameSize">{340, 414}</string>
 											<reference key="NSSuperview" ref="720248462"/>
 											<reference key="NSNextKeyView" ref="671812570"/>
 											<int key="NSsFlags">560</int>
@@ -1501,6 +1501,7 @@
 					<string>100144.IBPluginDependency</string>
 					<string>100150.IBPluginDependency</string>
 					<string>100151.IBPluginDependency</string>
+					<string>100152.IBPluginDependency</string>
 					<string>5.IBEditorWindowLastContentRect</string>
 					<string>5.IBPluginDependency</string>
 					<string>5.IBWindowTemplateEditedContentRect</string>
@@ -1569,9 +1570,10 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{11, 925}, {615, 413}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{11, 925}, {615, 413}}</string>
+					<string>{{615, 765}, {615, 413}}</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>{{615, 765}, {615, 413}}</string>
 					<integer value="1"/>
 					<string>{{201, 387}, {507, 413}}</string>
 					<integer value="1"/>
