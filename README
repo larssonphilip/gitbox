@@ -12,3 +12,4 @@
 - add "stage" cell in the top of the log - shows stage and working directory status
 - add "load more" cell in the bottom of the log
 - right pane: changes (files)
+- handle new repo: push to a new master branch
