@@ -12,7 +12,7 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="5"/>
+			<integer value="100099"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -326,26 +326,26 @@
 								<bool key="NSToolbarIsUserRemovable">YES</bool>
 								<int key="NSToolbarItemVisibilityPriority">0</int>
 							</object>
-							<object class="NSToolbarItem" id="514195381">
+							<object class="NSToolbarItem" id="190889856">
 								<object class="NSMutableString" key="NSToolbarItemIdentifier">
 									<characters key="NS.bytes">90F3B6A8-64B1-49ED-BCE3-C98A5D233900</characters>
 								</object>
 								<string key="NSToolbarItemLabel"/>
 								<string key="NSToolbarItemPaletteLabel"/>
 								<nil key="NSToolbarItemToolTip"/>
-								<object class="NSButton" key="NSToolbarItemView" id="451097608">
+								<object class="NSButton" key="NSToolbarItemView" id="545939104">
 									<reference key="NSNextResponder"/>
 									<int key="NSvFlags">268</int>
 									<string key="NSFrame">{{0, 14}, {77, 25}}</string>
 									<reference key="NSSuperview"/>
 									<reference key="NSWindow"/>
 									<bool key="NSEnabled">YES</bool>
-									<object class="NSButtonCell" key="NSCell" id="946806187">
+									<object class="NSButtonCell" key="NSCell" id="143741291">
 										<int key="NSCellFlags">-2080244224</int>
 										<int key="NSCellFlags2">134217728</int>
 										<string key="NSContents">Commit</string>
 										<reference key="NSSupport" ref="308166207"/>
-										<reference key="NSControlView" ref="451097608"/>
+										<reference key="NSControlView" ref="545939104"/>
 										<int key="NSButtonFlags">-2038152961</int>
 										<int key="NSButtonFlags2">163</int>
 										<string key="NSAlternateContents"/>
@@ -492,7 +492,7 @@
 						<reference ref="732156857"/>
 						<reference ref="794321415"/>
 						<reference ref="831439247"/>
-						<reference ref="514195381"/>
+						<reference ref="190889856"/>
 						<reference ref="702633214"/>
 						<reference ref="596227226"/>
 						<reference ref="761573774"/>
@@ -504,7 +504,7 @@
 						<reference ref="831439247"/>
 						<reference ref="794321415"/>
 						<reference ref="596227226"/>
-						<reference ref="514195381"/>
+						<reference ref="190889856"/>
 					</object>
 					<object class="NSMutableArray" key="NSToolbarIBSelectableItems">
 						<bool key="EncodedWithXMLCoder">YES</bool>
@@ -1054,7 +1054,7 @@
 							<reference ref="794321415"/>
 							<reference ref="831439247"/>
 							<reference ref="702633214"/>
-							<reference ref="514195381"/>
+							<reference ref="190889856"/>
 						</object>
 						<reference key="parent" ref="275939982"/>
 					</object>
@@ -1445,26 +1445,26 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">100152</int>
-						<reference key="object" ref="514195381"/>
+						<reference key="object" ref="190889856"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="451097608"/>
+							<reference ref="545939104"/>
 						</object>
 						<reference key="parent" ref="959528133"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">100150</int>
-						<reference key="object" ref="451097608"/>
+						<reference key="object" ref="545939104"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="946806187"/>
+							<reference ref="143741291"/>
 						</object>
-						<reference key="parent" ref="514195381"/>
+						<reference key="parent" ref="190889856"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">100151</int>
-						<reference key="object" ref="946806187"/>
-						<reference key="parent" ref="451097608"/>
+						<reference key="object" ref="143741291"/>
+						<reference key="parent" ref="545939104"/>
 					</object>
 				</object>
 			</object>
@@ -1598,9 +1598,9 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{676, 654}, {615, 413}}</string>
+					<string>{{407, 770}, {615, 413}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{676, 654}, {615, 413}}</string>
+					<string>{{407, 770}, {615, 413}}</string>
 					<integer value="1"/>
 					<string>{{201, 387}, {507, 413}}</string>
 					<integer value="1"/>
