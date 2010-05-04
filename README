@@ -15,3 +15,6 @@
 - handle new repo: push to a new master branch
 - handle pushing to a new branch: allow branch creation in "remote branch" dropdown
 - switch off 1min sync with a toolbar button: useful on battery
+- clone a repo from the gui
+- create a new repo from the gui (by dropping a non-git folder)
+- stash/apply stash from the menu, context menu or optional toolbar item
