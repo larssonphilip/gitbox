@@ -1,3 +1,6 @@
+
+To do:
+
 - prompt for a name when checking out a new branch
 - check out a branch from the remote one
 - check out a branch from the commit item
@@ -15,6 +18,16 @@
 - handle new repo: push to a new master branch
 - handle pushing to a new branch: allow branch creation in "remote branch" dropdown
 - switch off 1min sync with a toolbar button: useful on battery
-- clone a repo from the gui
+- clone a repo from the gui (menu item)
 - create a new repo from the gui (by dropping a non-git folder)
-- stash/apply stash from the menu, context menu or optional toolbar item
+
+- stash/apply stash from the menu, context menu
+
+- maybe: easy/hidden rebase to keep history clean?
+
+
+Not to do:
+
+- toolbar item for stash/unstash: rare function;
+- git blame: rare function, needs specific file listing UI; make another app;
+
