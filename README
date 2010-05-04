@@ -14,3 +14,4 @@
 - right pane: changes (files)
 - handle new repo: push to a new master branch
 - handle pushing to a new branch: allow branch creation in "remote branch" dropdown
+- switch off 1min sync with a toolbar button: useful on battery
