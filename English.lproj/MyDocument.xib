@@ -12,7 +12,7 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="100099"/>
+			<integer value="5"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -61,7 +61,6 @@
 							<string>6DB3F050-8CB0-4D65-9964-78C292D6CB08</string>
 							<string>733CCBE0-DF11-4BC9-9226-639D2180577B</string>
 							<string>90F3B6A8-64B1-49ED-BCE3-C98A5D233900</string>
-							<string>C58193DD-02C3-4077-96CC-3E86AE2CF7A9</string>
 							<string>NSToolbarFlexibleSpaceItem</string>
 							<string>NSToolbarSeparatorItem</string>
 							<string>NSToolbarSpaceItem</string>
@@ -179,20 +178,20 @@
 								<object class="NSMutableString" key="NSToolbarItemIdentifier">
 									<characters key="NS.bytes">6DB3F050-8CB0-4D65-9964-78C292D6CB08</characters>
 								</object>
-								<string key="NSToolbarItemLabel">Pull/Push</string>
-								<string key="NSToolbarItemPaletteLabel">Pull/Push</string>
+								<string key="NSToolbarItemLabel"/>
+								<string key="NSToolbarItemPaletteLabel"/>
 								<nil key="NSToolbarItemToolTip"/>
 								<object class="NSButton" key="NSToolbarItemView" id="958007359">
 									<reference key="NSNextResponder"/>
 									<int key="NSvFlags">268</int>
-									<string key="NSFrame">{{0, 14}, {60, 25}}</string>
+									<string key="NSFrame">{{0, 14}, {72, 25}}</string>
 									<reference key="NSSuperview"/>
 									<reference key="NSWindow"/>
 									<bool key="NSEnabled">YES</bool>
 									<object class="NSButtonCell" key="NSCell" id="645936382">
 										<int key="NSCellFlags">-2080244224</int>
 										<int key="NSCellFlags2">134217728</int>
-										<string key="NSContents">←/→</string>
+										<string key="NSContents">← pull</string>
 										<reference key="NSSupport" ref="308166207"/>
 										<reference key="NSControlView" ref="958007359"/>
 										<int key="NSButtonFlags">-2038152961</int>
@@ -207,7 +206,7 @@
 								<nil key="NSToolbarItemTarget"/>
 								<nil key="NSToolbarItemAction"/>
 								<string key="NSToolbarItemMinSize">{50, 25}</string>
-								<string key="NSToolbarItemMaxSize">{70, 25}</string>
+								<string key="NSToolbarItemMaxSize">{72, 25}</string>
 								<bool key="NSToolbarItemEnabled">YES</bool>
 								<bool key="NSToolbarItemAutovalidates">YES</bool>
 								<int key="NSToolbarItemTag">0</int>
@@ -354,45 +353,6 @@
 								<bool key="NSToolbarIsUserRemovable">YES</bool>
 								<int key="NSToolbarItemVisibilityPriority">0</int>
 							</object>
-							<object class="NSToolbarItem" id="702633214">
-								<object class="NSMutableString" key="NSToolbarItemIdentifier">
-									<characters key="NS.bytes">C58193DD-02C3-4077-96CC-3E86AE2CF7A9</characters>
-								</object>
-								<string key="NSToolbarItemLabel">Automatic Fetch</string>
-								<string key="NSToolbarItemPaletteLabel">Automatic Fetch</string>
-								<nil key="NSToolbarItemToolTip"/>
-								<object class="NSButton" key="NSToolbarItemView" id="71303731">
-									<reference key="NSNextResponder"/>
-									<int key="NSvFlags">268</int>
-									<string key="NSFrame">{{0, 14}, {118, 25}}</string>
-									<reference key="NSSuperview"/>
-									<reference key="NSWindow"/>
-									<bool key="NSEnabled">YES</bool>
-									<object class="NSButtonCell" key="NSCell" id="326060701">
-										<int key="NSCellFlags">-2080244224</int>
-										<int key="NSCellFlags2">134217728</int>
-										<string key="NSContents">Every minute </string>
-										<reference key="NSSupport" ref="308166207"/>
-										<reference key="NSControlView" ref="71303731"/>
-										<int key="NSButtonFlags">-1232846593</int>
-										<int key="NSButtonFlags2">163</int>
-										<string key="NSAlternateContents"/>
-										<string key="NSKeyEquivalent"/>
-										<int key="NSPeriodicDelay">400</int>
-										<int key="NSPeriodicInterval">75</int>
-									</object>
-								</object>
-								<nil key="NSToolbarItemImage"/>
-								<nil key="NSToolbarItemTarget"/>
-								<nil key="NSToolbarItemAction"/>
-								<string key="NSToolbarItemMinSize">{118, 25}</string>
-								<string key="NSToolbarItemMaxSize">{118, 25}</string>
-								<bool key="NSToolbarItemEnabled">YES</bool>
-								<bool key="NSToolbarItemAutovalidates">YES</bool>
-								<int key="NSToolbarItemTag">0</int>
-								<bool key="NSToolbarIsUserRemovable">YES</bool>
-								<int key="NSToolbarItemVisibilityPriority">0</int>
-							</object>
 							<object class="NSToolbarFlexibleSpaceItem" id="596227226">
 								<string key="NSToolbarItemIdentifier">NSToolbarFlexibleSpaceItem</string>
 								<string key="NSToolbarItemLabel"/>
@@ -482,7 +442,6 @@
 						<reference ref="794321415"/>
 						<reference ref="831439247"/>
 						<reference ref="2963004"/>
-						<reference ref="702633214"/>
 						<reference ref="596227226"/>
 						<reference ref="761573774"/>
 						<reference ref="702661866"/>
@@ -1042,7 +1001,6 @@
 							<reference ref="732156857"/>
 							<reference ref="794321415"/>
 							<reference ref="831439247"/>
-							<reference ref="702633214"/>
 							<reference ref="2963004"/>
 						</object>
 						<reference key="parent" ref="275939982"/>
@@ -1404,29 +1362,6 @@
 						<reference key="parent" ref="49959898"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">100144</int>
-						<reference key="object" ref="702633214"/>
-						<object class="NSMutableArray" key="children">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="71303731"/>
-						</object>
-						<reference key="parent" ref="959528133"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">100142</int>
-						<reference key="object" ref="71303731"/>
-						<object class="NSMutableArray" key="children">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="326060701"/>
-						</object>
-						<reference key="parent" ref="702633214"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">100143</int>
-						<reference key="object" ref="326060701"/>
-						<reference key="parent" ref="71303731"/>
-					</object>
-					<object class="IBObjectRecord">
 						<int key="objectID">100152</int>
 						<reference key="object" ref="2963004"/>
 						<object class="NSMutableArray" key="children">
@@ -1506,9 +1441,6 @@
 					<string>100136.IBPluginDependency</string>
 					<string>100138.IBPluginDependency</string>
 					<string>100141.IBPluginDependency</string>
-					<string>100142.IBPluginDependency</string>
-					<string>100143.IBPluginDependency</string>
-					<string>100144.IBPluginDependency</string>
 					<string>100150.IBPluginDependency</string>
 					<string>100151.IBPluginDependency</string>
 					<string>100152.IBPluginDependency</string>
@@ -1525,7 +1457,7 @@
 				<object class="NSMutableArray" key="dict.values">
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{648, 909}, {617, 0}}</string>
+					<string>{{40, 685}, {617, 0}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -1578,12 +1510,9 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>{{41, 272}, {615, 413}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{649, 496}, {615, 413}}</string>
-					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{649, 496}, {615, 413}}</string>
+					<string>{{41, 272}, {615, 413}}</string>
 					<integer value="1"/>
 					<string>{{201, 387}, {507, 413}}</string>
 					<integer value="1"/>
