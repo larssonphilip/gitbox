@@ -1,32 +1,22 @@
-//
-//  MyDocument.m
-//  gitbox
-//
-//  Created by Oleg Andreev on 5/3/10.
-//  Copyright 2010 __MyCompanyName__. All rights reserved.
-//
-
 #import "MyDocument.h"
 
 @implementation MyDocument
 
 - (id)init
 {
-    self = [super init];
-    if (self) {
-    
-        // Add your subclass-specific initialization here.
-        // If an error occurs here, send a [self release] message and return nil.
-    
-    }
-    return self;
+  if (self = [super init])
+  {
+    // Add your subclass-specific initialization here.
+    // If an error occurs here, send a [self release] message and return nil.
+  }
+  return self;
 }
 
 - (NSString *)windowNibName
 {
-    // Override returning the nib file name of the document
-    // If you need to use a subclass of NSWindowController or if your document supports multiple NSWindowControllers, you should remove this method and override -makeWindowControllers instead.
-    return @"MyDocument";
+  // Override returning the nib file name of the document
+  // If you need to use a subclass of NSWindowController or if your document supports multiple NSWindowControllers, you should remove this method and override -makeWindowControllers instead.
+  return @"MyDocument";
 }
 
 - (void)windowControllerDidLoadNib:(NSWindowController *) aController
