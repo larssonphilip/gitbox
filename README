@@ -1,3 +1,11 @@
+Code to do:
+
++ custom window controller to handle little UI events (see Napoleon.app)
+- open a folder when dragged onto Dock icon
+- add an NSTask wrapper to run git commands (like in Moriarity sample code)
+- reset toolbar buttons to default/empty/disabled state
+- load local branches
+- 
 
 To do:
 

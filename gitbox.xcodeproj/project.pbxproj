@@ -11,7 +11,7 @@
 		2038F1B3119366660087CE37 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C1660FE840EACC02AAC07 /* InfoPlist.strings */; };
 		2038F1B7119366960087CE37 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD582B0DA1D0D100B32029 /* MainMenu.xib */; };
 		2038F1DF11936B060087CE37 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2038F1DE11936B060087CE37 /* AppDelegate.m */; };
-		204468FF118F66DA00C6437C /* LogView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 204468FE118F66D900C6437C /* LogView.xib */; };
+		2038F21B11936FDE0087CE37 /* MyWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2038F21A11936FDE0087CE37 /* MyWindowController.m */; };
 		8D15AC2C0486D014006FF6A4 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 2A37F4B9FDCFA73011CA2CEA /* Credits.rtf */; };
 		8D15AC310486D014006FF6A4 /* MyDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A37F4ACFDCFA73011CA2CEA /* MyDocument.m */; settings = {ATTRIBUTES = (); }; };
 		8D15AC320486D014006FF6A4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A37F4B0FDCFA73011CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
@@ -26,16 +26,18 @@
 		1DDD582B0DA1D0D100B32029 /* MainMenu.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
 		2038F1DD11936B060087CE37 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		2038F1DE11936B060087CE37 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		204468FE118F66D900C6437C /* LogView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LogView.xib; sourceTree = "<group>"; };
-		2564AD2C0F5327BB00F57823 /* gitbox_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gitbox_Prefix.pch; sourceTree = "<group>"; };
+		2038F1EA11936CA50087CE37 /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
+		2038F21911936FDE0087CE37 /* MyWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyWindowController.h; sourceTree = "<group>"; };
+		2038F21A11936FDE0087CE37 /* MyWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyWindowController.m; sourceTree = "<group>"; };
+		2564AD2C0F5327BB00F57823 /* prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = prefix.pch; sourceTree = "<group>"; };
 		2A37F4ACFDCFA73011CA2CEA /* MyDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyDocument.m; sourceTree = "<group>"; };
 		2A37F4AEFDCFA73011CA2CEA /* MyDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyDocument.h; sourceTree = "<group>"; };
 		2A37F4B0FDCFA73011CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		2A37F4BAFDCFA73011CA2CEA /* English */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = English; path = English.lproj/Credits.rtf; sourceTree = "<group>"; };
 		2A37F4C4FDCFA73011CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		2A37F4C5FDCFA73011CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
-		8D15AC360486D014006FF6A4 /* gitbox-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "gitbox-Info.plist"; sourceTree = "<group>"; };
-		8D15AC370486D014006FF6A4 /* gitbox.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = gitbox.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8D15AC360486D014006FF6A4 /* info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = info.plist; sourceTree = "<group>"; };
+		8D15AC370486D014006FF6A4 /* Gitbox.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Gitbox.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,7 +73,7 @@
 		19C28FB0FE9D524F11CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				8D15AC370486D014006FF6A4 /* gitbox.app */,
+				8D15AC370486D014006FF6A4 /* Gitbox.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -91,10 +93,12 @@
 		2A37F4ABFDCFA73011CA2CEA /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				2A37F4AEFDCFA73011CA2CEA /* MyDocument.h */,
-				2A37F4ACFDCFA73011CA2CEA /* MyDocument.m */,
 				2038F1DD11936B060087CE37 /* AppDelegate.h */,
 				2038F1DE11936B060087CE37 /* AppDelegate.m */,
+				2A37F4AEFDCFA73011CA2CEA /* MyDocument.h */,
+				2A37F4ACFDCFA73011CA2CEA /* MyDocument.m */,
+				2038F21911936FDE0087CE37 /* MyWindowController.h */,
+				2038F21A11936FDE0087CE37 /* MyWindowController.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -102,7 +106,7 @@
 		2A37F4AFFDCFA73011CA2CEA /* Other Sources */ = {
 			isa = PBXGroup;
 			children = (
-				2564AD2C0F5327BB00F57823 /* gitbox_Prefix.pch */,
+				2564AD2C0F5327BB00F57823 /* prefix.pch */,
 				2A37F4B0FDCFA73011CA2CEA /* main.m */,
 			);
 			name = "Other Sources";
@@ -111,12 +115,12 @@
 		2A37F4B8FDCFA73011CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				2038F1EA11936CA50087CE37 /* README */,
 				2A37F4B9FDCFA73011CA2CEA /* Credits.rtf */,
-				8D15AC360486D014006FF6A4 /* gitbox-Info.plist */,
+				8D15AC360486D014006FF6A4 /* info.plist */,
 				089C1660FE840EACC02AAC07 /* InfoPlist.strings */,
 				1DDD58290DA1D0D100B32029 /* MyDocument.xib */,
 				1DDD582B0DA1D0D100B32029 /* MainMenu.xib */,
-				204468FE118F66D900C6437C /* LogView.xib */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -148,7 +152,7 @@
 			name = gitbox;
 			productInstallPath = "$(HOME)/Applications";
 			productName = gitbox;
-			productReference = 8D15AC370486D014006FF6A4 /* gitbox.app */;
+			productReference = 8D15AC370486D014006FF6A4 /* Gitbox.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -177,7 +181,6 @@
 				2038F1B3119366660087CE37 /* InfoPlist.strings in Resources */,
 				2038F1B11193664D0087CE37 /* MyDocument.xib in Resources */,
 				2038F1B7119366960087CE37 /* MainMenu.xib in Resources */,
-				204468FF118F66DA00C6437C /* LogView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -191,6 +194,7 @@
 				8D15AC310486D014006FF6A4 /* MyDocument.m in Sources */,
 				8D15AC320486D014006FF6A4 /* main.m in Sources */,
 				2038F1DF11936B060087CE37 /* AppDelegate.m in Sources */,
+				2038F21B11936FDE0087CE37 /* MyWindowController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -218,10 +222,10 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = gitbox_Prefix.pch;
-				INFOPLIST_FILE = "gitbox-Info.plist";
+				GCC_PREFIX_HEADER = prefix.pch;
+				INFOPLIST_FILE = info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
-				PRODUCT_NAME = gitbox;
+				PRODUCT_NAME = Gitbox;
 			};
 			name = Debug;
 		};
@@ -232,10 +236,10 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = gitbox_Prefix.pch;
-				INFOPLIST_FILE = "gitbox-Info.plist";
+				GCC_PREFIX_HEADER = prefix.pch;
+				INFOPLIST_FILE = info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
-				PRODUCT_NAME = gitbox;
+				PRODUCT_NAME = Gitbox;
 			};
 			name = Release;
 		};
