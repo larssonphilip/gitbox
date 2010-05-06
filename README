@@ -28,6 +28,9 @@ To do:
 - switch off 1min sync with a toolbar button: useful on battery
 - clone a repo from the gui (menu item)
 - create a new repo from the gui (by dropping a non-git folder)
+- checkout tags as well
+- create a new tag
+- assign colors
 
 - stash/apply stash from the menu, context menu
 
