@@ -5,7 +5,7 @@ Code to do:
 - add an NSTask wrapper to run git commands (like in Moriarity sample code)
 - reset toolbar buttons to default/empty/disabled state
 - load local branches
-- 
+
 
 To do:
 
