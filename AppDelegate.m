@@ -1,7 +1,11 @@
 #import "AppDelegate.h"
-#import "MyDocument.h"
+#import "NSFileManager+OAFileManagerHelpers.h"
 
 @implementation AppDelegate
+
+
+
+#pragma mark NSApplicationDelegate
 
 - (BOOL) applicationShouldOpenUntitledFile:(NSApplication*) app
 {
@@ -12,22 +16,83 @@
 {
 }
 
-- (BOOL)application:(NSApplication *)theApplication openFile:(NSString *)filename
+- (BOOL) application:(NSApplication*)theApplication openFile:(NSString*)path
 {
-  NSURL* url = [[[NSURL alloc] initFileURLWithPath:filename isDirectory:YES] autorelease];
-  NSLog(@"opening %@", url);
-  NSError* outError;
-  MyDocument* document = [[[MyDocument alloc] initWithContentsOfURL:url 
-                                                            ofType:@"fold" 
-                                                             error:&outError] autorelease];
-  
-  if (!document)
+  if ([NSFileManager isWritableDirectoryAtPath:path])
   {
-    NSLog(@"application:openFile:%@ ERROR: %@", filename, [outError localizedDescription]);
-    return NO;
+    if ([NSFileManager isWritableDirectoryAtPath:[path stringByAppendingPathComponent:@".git"]])
+    {
+      // TODO: create a window controller and display window
+      return YES;
+    }
+    else 
+    {
+      NSAlert* alert = [NSAlert alertWithMessageText:NSLocalizedString(@"Folder does not appear to be a git repository. Make it a repository?", @"") 
+                                       defaultButton:NSLocalizedString(@"Cancel", @"")
+                                     alternateButton:NSLocalizedString(@"OK", @"")
+                                         otherButton:nil
+                           informativeTextWithFormat:path];
+      int result = [alert runModal];
+      if (result == NSAlertAlternateReturn)
+      {
+        // TODO: init git repo
+        // TODO: create a window controller and display window
+        return YES;
+      }
+      else 
+      {
+        return NO;
+      }
+    }
   }
-  [self addDocument:document];
-  return YES;
+  else 
+  {
+    NSAlert* alert = [NSAlert alertWithMessageText:NSLocalizedString(@"File is not a writable folder.", @"")
+                                     defaultButton:NSLocalizedString(@"OK", @"")
+                                   alternateButton:nil
+                                       otherButton:nil
+                         informativeTextWithFormat:path];
+    [alert runModal];    
+  }
+  return NO;
+}
+
+
+
+
+#pragma mark Actions
+
+
+- (IBAction) openDocument:(id)sender
+{
+  NSOpenPanel* openPanel = [NSOpenPanel openPanel];
+  openPanel.delegate = self;
+  openPanel.allowsMultipleSelection = NO;
+  openPanel.canChooseFiles = NO;
+  openPanel.canChooseDirectories = YES;
+  if ([openPanel runModal] == NSFileHandlingPanelOKButton)
+  {
+    [self application:NSApp openFile:[[[openPanel URLs] objectAtIndex:0] path]];
+  }
+}
+
+
+
+
+#pragma mark NSOpenSavePanelDelegate
+
+
+- (BOOL) panel:(id)sender validateURL:(NSURL*)url error:(NSError **)outError
+{
+  if ([url isFileURL] && [NSFileManager isWritableDirectoryAtPath:[url path]])
+  {
+    return YES;
+  }
+  if (outError != NULL)
+  {
+    *outError = [NSError errorWithDomain:NSOSStatusErrorDomain code:unimpErr userInfo:NULL];
+  }
+  return NO;  
 }
 
 @end

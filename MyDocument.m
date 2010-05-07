@@ -53,13 +53,17 @@
 //	return nil;
 //}
 
-- (BOOL) readFromFileWrapper:(NSFileWrapper*) fileWrapper 
-                      ofType:(NSString*) typeName 
-                       error:(NSError**)outError
+//- (BOOL) readFromFileWrapper:(NSFileWrapper*) fileWrapper 
+//                      ofType:(NSString*) typeName 
+//                       error:(NSError**)outError
+// NSLog(@"readFromFileWrapper:%@ ofType:%@", fileWrapper, typeName);
+- (BOOL)readFromURL:(NSURL *)absoluteURL 
+             ofType:(NSString *)typeName 
+              error:(NSError **)outError
 {
   // Insert code here to read your document from the given data of the specified type.  If the given outError != NULL, ensure that you set *outError when returning NO.
   
-  NSLog(@"readFromFileWrapper:%@ ofType:%@", fileWrapper, typeName);
+  NSLog(@"readFromURL:%@ ofType:%@", absoluteURL, typeName);
   if ([typeName isEqualToString:@"fold"])
   {
     // TODO: check for .git folder in place
@@ -69,6 +73,7 @@
     if (outError != NULL)
     {
       *outError = [NSError errorWithDomain:NSOSStatusErrorDomain code:unimpErr userInfo:NULL];
+      return NO;
     }    
   }
 
