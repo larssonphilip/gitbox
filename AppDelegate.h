@@ -1,4 +1,4 @@
-@interface AppDelegate : NSObject <NSApplicationDelegate>
+@interface AppDelegate : NSDocumentController <NSApplicationDelegate>
 {
 }
 
