@@ -6,7 +6,7 @@
 @synthesize repository;
 @synthesize delegate;
 
-@synthesize currentBranchToolbarItem;
+@synthesize currentBranchPopUpButton;
 @synthesize currentBranchMenu;
 @synthesize currentBranchCheckoutRemoteBranchMenuItem;
 @synthesize currentBranchCheckoutRemoteBranchMenu;
@@ -15,7 +15,7 @@
 
 - (void) dealloc
 {
-  self.currentBranchToolbarItem = nil;
+  self.currentBranchPopUpButton = nil;
   self.currentBranchMenu = nil;
   self.currentBranchCheckoutRemoteBranchMenuItem = nil;
   self.currentBranchCheckoutRemoteBranchMenu = nil;

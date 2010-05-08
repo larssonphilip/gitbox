@@ -93,7 +93,10 @@
 {
   if (!currentRef)
   {
-    [NSString stringWithContentsOfURL:[self gitURLWithSuffix:@"HEAD"] encoding:NSUTF8StringEncoding error:NULL];
+    NSString* HEAD = [NSString stringWithContentsOfURL:[self gitURLWithSuffix:@"HEAD"] 
+                                              encoding:NSUTF8StringEncoding 
+                                                 error:NULL];
+    
   }
   return [[currentRef retain] autorelease];
 }
