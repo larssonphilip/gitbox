@@ -1,5 +1,0 @@
-@interface MyWindowController : NSWindowController
-{
-}
-
-@end
