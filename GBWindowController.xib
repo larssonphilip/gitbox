@@ -960,35 +960,11 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
-						<string key="label">currentBranchMenu</string>
-						<reference key="source" ref="512844837"/>
-						<reference key="destination" ref="362485844"/>
-					</object>
-					<int key="connectionID">100158</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">currentBranchCheckoutTagMenu</string>
-						<reference key="source" ref="512844837"/>
-						<reference key="destination" ref="933335029"/>
-					</object>
-					<int key="connectionID">100161</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
 						<string key="label">currentBranchCheckoutTagMenuItem</string>
 						<reference key="source" ref="512844837"/>
 						<reference key="destination" ref="657322643"/>
 					</object>
 					<int key="connectionID">100163</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">currentBranchCheckoutRemoteBranchMenu</string>
-						<reference key="source" ref="512844837"/>
-						<reference key="destination" ref="677087740"/>
-					</object>
-					<int key="connectionID">100164</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
@@ -1613,9 +1589,9 @@
 					<string>{{324, 565}, {82, 23}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{73, 263}, {615, 413}}</string>
+					<string>{{148, 293}, {615, 413}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{73, 263}, {615, 413}}</string>
+					<string>{{148, 293}, {615, 413}}</string>
 					<integer value="1"/>
 					<string>{{201, 387}, {507, 413}}</string>
 					<integer value="1"/>
@@ -1671,7 +1647,6 @@
 							<string>currentBranchCheckoutRemoteBranchMenuItem</string>
 							<string>currentBranchCheckoutTagMenu</string>
 							<string>currentBranchCheckoutTagMenuItem</string>
-							<string>currentBranchMenu</string>
 							<string>currentBranchPopUpButton</string>
 							<string>delegate</string>
 						</object>
@@ -1681,7 +1656,6 @@
 							<string>NSMenuItem</string>
 							<string>NSMenu</string>
 							<string>NSMenuItem</string>
-							<string>NSMenu</string>
 							<string>NSPopUpButton</string>
 							<string>id</string>
 						</object>

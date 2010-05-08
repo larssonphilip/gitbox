@@ -31,7 +31,7 @@
 
 - (NSURL*) gitURLWithSuffix:(NSString*)suffix
 {
-  return [dotGitURL URLByAppendingPathComponent:suffix];
+  return [self.dotGitURL URLByAppendingPathComponent:suffix];
 }
 
 
@@ -40,9 +40,11 @@
 {
   if (!localBranches)
   {
-    NSError* outError;
+    NSError* outError = nil;
+    NSURL* aurl = [self gitURLWithSuffix:@"refs/heads"];
+    NSAssert(aurl, @"url must be .git/refs/heads");
     NSArray* URLs = [[NSFileManager defaultManager] 
-                     contentsOfDirectoryAtURL:[self gitURLWithSuffix:@"refs/heads"]
+                     contentsOfDirectoryAtURL:aurl
                       includingPropertiesForKeys:[NSArray array] 
                       options:0 
                       error:&outError];
@@ -93,10 +95,28 @@
 {
   if (!currentRef)
   {
-    NSString* HEAD = [NSString stringWithContentsOfURL:[self gitURLWithSuffix:@"HEAD"] 
+    NSError* outError = nil;
+    NSString* HEAD = [NSString stringWithContentsOfURL:[self gitURLWithSuffix:@"HEAD"]
                                               encoding:NSUTF8StringEncoding 
-                                                 error:NULL];
-    
+                                                 error:&outError];
+    if (!HEAD)
+    {
+      [NSAlert error:outError];
+      return nil;
+    }
+    HEAD = [HEAD stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    NSString* refprefix = @"ref: refs/heads/";
+    GBRef* ref = [[GBRef new] autorelease];
+    if ([HEAD hasPrefix:refprefix])
+    {
+      ref.name = [HEAD substringFromIndex:[refprefix length]];
+    }
+    else // assuming SHA1 ref
+    {
+      [self TODO:@"Test for tag"];
+      ref.commitId = HEAD;
+    }
+    self.currentRef = ref;
   }
   return [[currentRef retain] autorelease];
 }

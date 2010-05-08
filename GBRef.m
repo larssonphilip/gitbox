@@ -2,14 +2,36 @@
 
 @implementation GBRef
 @synthesize name;
+@synthesize commitId;
 @synthesize remoteAlias;
 @synthesize isTag;
 
 - (void) dealloc
 {
   self.name = nil;
+  self.commitId = nil;
   self.remoteAlias = nil;
   [super dealloc];
+}
+
+- (BOOL) isEqual:(id)object
+{
+  if (self == object) return YES;
+  if (![object isKindOfClass:[self class]]) return NO;
+  GBRef* other = (GBRef*)object;
+  if (self.commitId) return ([self.commitId isEqualToString:other.commitId]);
+  if (self.name && [self.name isEqualToString:other.name])
+  {
+    if ([self isTag])
+    {
+      return YES;
+    }
+    if ([self remoteAlias] && [self.remoteAlias isEqualToString:other.remoteAlias])
+    {
+      return YES;
+    }
+  }
+  return NO;
 }
 
 - (NSString*) nameWithRemoteAlias
@@ -27,6 +49,13 @@
 - (BOOL) isRemoteBranch
 {
   return !isTag && self.remoteAlias;
+}
+
+- (NSString*) abbreviatedName
+{
+  if (self.name) return [self nameWithRemoteAlias];
+  if (self.commitId) return [self.commitId substringToIndex:6];
+  return nil;
 }
 
 @end

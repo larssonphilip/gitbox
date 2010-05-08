@@ -1,5 +1,6 @@
 #import "GBWindowController.h"
 #import "GBRepository.h"
+#import "GBRef.h"
 
 @implementation GBWindowController
 
@@ -7,20 +8,14 @@
 @synthesize delegate;
 
 @synthesize currentBranchPopUpButton;
-@synthesize currentBranchMenu;
 @synthesize currentBranchCheckoutRemoteBranchMenuItem;
-@synthesize currentBranchCheckoutRemoteBranchMenu;
 @synthesize currentBranchCheckoutTagMenuItem;
-@synthesize currentBranchCheckoutTagMenu;
 
 - (void) dealloc
 {
   self.currentBranchPopUpButton = nil;
-  self.currentBranchMenu = nil;
   self.currentBranchCheckoutRemoteBranchMenuItem = nil;
-  self.currentBranchCheckoutRemoteBranchMenu = nil;
   self.currentBranchCheckoutTagMenuItem = nil;
-  self.currentBranchCheckoutTagMenu = nil;
   
   [super dealloc];
 }
@@ -28,8 +23,26 @@
 
 - (void) updateCurrentBranchMenus
 {
-  [self.currentBranchMenu removeAllItems];
-  
+  GBRef* currentBranch = self.repository.currentRef;
+  NSPopUpButton* button = self.currentBranchPopUpButton;
+  [button removeAllItems];
+  BOOL selected = NO;
+  for (GBRef* localBranch in self.repository.localBranches)
+  {
+    [button addItemWithTitle:[localBranch name]];
+    if ([localBranch isEqual:currentBranch])
+    {
+      selected = YES;
+      [button selectItemWithTitle:[localBranch name]];
+    }
+  }
+  if (!selected)
+  {
+    [button setTitle:[currentBranch abbreviatedName]];
+  }
+  [button.menu addItem:[NSMenuItem separatorItem]];
+  [button.menu addItem:self.currentBranchCheckoutTagMenuItem];
+  [button.menu addItem:self.currentBranchCheckoutRemoteBranchMenuItem];
 }
 
 - (void) updateCurrentBranchLabel
