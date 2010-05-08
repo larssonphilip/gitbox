@@ -1,7 +1,9 @@
 #import "GBAppDelegate.h"
-#import "NSFileManager+OAFileManagerHelpers.h"
 #import "GBWindowController.h"
 #import "GBRepository.h"
+
+#import "NSFileManager+OAFileManagerHelpers.h"
+#import "NSAlert+OAAlertHelpers.h"
 
 @implementation GBAppDelegate
 
@@ -99,14 +101,10 @@
     }
     else 
     {
-      NSAlert* alert = [NSAlert alertWithMessageText:NSLocalizedString(@"Folder does not appear to be a git repository. Make it a repository?", @"") 
-                                       defaultButton:NSLocalizedString(@"Cancel", @"")
-                                     alternateButton:NSLocalizedString(@"OK", @"")
-                                         otherButton:nil
-                           informativeTextWithFormat:path];
-      int result = [alert runModal];
-      if (result == NSAlertAlternateReturn)
+      if ([NSAlert unsafePrompt:NSLocalizedString(@"Folder does not appear to be a git repository. Make it a repository?", @"")
+                    description:path] == NSAlertAlternateReturn)
       {
+        
         // TODO: init git repo
         
         GBWindowController* windowController = [self windowControllerForRepositoryPath:path];
@@ -123,12 +121,7 @@
   }
   else 
   {
-    NSAlert* alert = [NSAlert alertWithMessageText:NSLocalizedString(@"File is not a writable folder.", @"")
-                                     defaultButton:NSLocalizedString(@"OK", @"")
-                                   alternateButton:nil
-                                       otherButton:nil
-                         informativeTextWithFormat:path];
-    [alert runModal];
+    [NSAlert message:NSLocalizedString(@"File is not a writable folder.", @"") description:path];
   }
   return NO;
 }

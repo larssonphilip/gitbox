@@ -2,6 +2,7 @@
 #import "GBRef.h"
 #import "NSFileManager+OAFileManagerHelpers.h"
 #import "NSObject+OALogging.h"
+#import "NSAlert+OAAlertHelpers.h"
 
 @implementation GBRepository
 
@@ -46,12 +47,19 @@
                       options:0 
                       error:&outError];
     NSMutableArray* branches = [NSMutableArray array];
-    for (NSURL* aURL in URLs)
+    if (URLs)
     {
-      NSString* name = [[aURL pathComponents] lastObject];
-      GBRef* ref = [[GBRef new] autorelease];
-      ref.name = name;
-      [branches addObject:ref];
+      for (NSURL* aURL in URLs)
+      {
+        NSString* name = [[aURL pathComponents] lastObject];
+        GBRef* ref = [[GBRef new] autorelease];
+        ref.name = name;
+        [branches addObject:ref];
+      }
+    }
+    else
+    {
+      [NSAlert error:outError];
     }
     self.localBranches = branches;
   }
@@ -85,7 +93,7 @@
 {
   if (!currentRef)
   {
-    
+    [NSString stringWithContentsOfURL:[self gitURLWithSuffix:@"HEAD"] encoding:NSUTF8StringEncoding error:NULL];
   }
   return [[currentRef retain] autorelease];
 }
