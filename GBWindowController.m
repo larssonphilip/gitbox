@@ -6,17 +6,19 @@
 @synthesize repository;
 @synthesize delegate;
 
+@synthesize currentBranchToolbarItem;
 @synthesize currentBranchMenu;
-@synthesize currentBranchCheckoutBranchMenuItem;
-@synthesize currentBranchCheckoutBranchMenu;
+@synthesize currentBranchCheckoutRemoteBranchMenuItem;
+@synthesize currentBranchCheckoutRemoteBranchMenu;
 @synthesize currentBranchCheckoutTagMenuItem;
 @synthesize currentBranchCheckoutTagMenu;
 
 - (void) dealloc
 {
+  self.currentBranchToolbarItem = nil;
   self.currentBranchMenu = nil;
-  self.currentBranchCheckoutBranchMenuItem = nil;
-  self.currentBranchCheckoutBranchMenu = nil;
+  self.currentBranchCheckoutRemoteBranchMenuItem = nil;
+  self.currentBranchCheckoutRemoteBranchMenu = nil;
   self.currentBranchCheckoutTagMenuItem = nil;
   self.currentBranchCheckoutTagMenu = nil;
   
@@ -24,11 +26,52 @@
 }
 
 
+- (void) updateCurrentBranchMenus
+{
+  [self.currentBranchMenu removeAllItems];
+  
+}
+
+- (void) updateCurrentBranchLabel
+{
+  // if [self.repository isTagCheckout]
+  // if [self.repository isBranchCheckout]
+  // if [self.repository isCommitCheckout]
+}
+
+
+
+
+#pragma mark Actions
+
+
+- (IBAction) checkoutBranch:(id)sender
+{
+  
+  [self updateCurrentBranchLabel];
+}
+
+- (IBAction) checkoutTag:(id)sender
+{
+  
+  [self updateCurrentBranchLabel];
+}
+
+- (IBAction) checkoutRemoteBranch:(id)sender
+{
+  
+  [self updateCurrentBranchLabel];
+}
+
+
+
+
 #pragma mark NSWindowController
 
 - (void)windowDidLoad
 {
   [self.window setTitleWithRepresentedFilename:self.repository.path];
+  [self updateCurrentBranchMenus];
 }
 
 

@@ -10,9 +10,10 @@
   GBRepository* repository;
   id<GBWindowControllerDelegate> delegate;
   
+  NSToolbarItem* currentBranchToolbarItem;
   NSMenu*     currentBranchMenu;
-  NSMenuItem* currentBranchCheckoutBranchMenuItem;
-  NSMenu*     currentBranchCheckoutBranchMenu;
+  NSMenuItem* currentBranchCheckoutRemoteBranchMenuItem;
+  NSMenu*     currentBranchCheckoutRemoteBranchMenu;
   NSMenuItem* currentBranchCheckoutTagMenuItem;
   NSMenu*     currentBranchCheckoutTagMenu;
 }
@@ -20,11 +21,17 @@
 @property(nonatomic, retain) GBRepository* repository;
 @property(nonatomic, assign) id<GBWindowControllerDelegate> delegate;
 
+@property(nonatomic, retain) IBOutlet NSToolbarItem* currentBranchToolbarItem;
 @property(nonatomic, retain) IBOutlet NSMenu*     currentBranchMenu;
-@property(nonatomic, retain) IBOutlet NSMenuItem* currentBranchCheckoutBranchMenuItem;
-@property(nonatomic, retain) IBOutlet NSMenu*     currentBranchCheckoutBranchMenu;
+@property(nonatomic, retain) IBOutlet NSMenuItem* currentBranchCheckoutRemoteBranchMenuItem;
+@property(nonatomic, retain) IBOutlet NSMenu*     currentBranchCheckoutRemoteBranchMenu;
 @property(nonatomic, retain) IBOutlet NSMenuItem* currentBranchCheckoutTagMenuItem;
 @property(nonatomic, retain) IBOutlet NSMenu*     currentBranchCheckoutTagMenu;
+
+
+- (IBAction) checkoutBranch:(id)sender;
+- (IBAction) checkoutTag:(id)sender;
+- (IBAction) checkoutRemoteBranch:(id)sender;
 
 
 @end

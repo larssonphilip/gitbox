@@ -31,7 +31,7 @@
   
   windowController.delegate = self;
   GBRepository* repository = [[GBRepository new] autorelease];
-  repository.path = path;
+  repository.url = [NSURL URLWithString:path];
   windowController.repository = repository;
   
   return windowController;
