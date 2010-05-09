@@ -30,6 +30,9 @@
   for (GBRef* localBranch in self.repository.localBranches)
   {
     [button addItemWithTitle:[localBranch name]];
+    NSMenuItem* item = [button lastItem];
+    [item setAction:@selector(checkoutBranch:)];
+    [item setTarget:self];
     if ([localBranch isEqual:currentBranch])
     {
       selected = YES;
