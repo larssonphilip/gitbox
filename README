@@ -5,6 +5,9 @@ Code to do:
 + use window controller instead of MyDocument
 + make AppDelegate a delegate for NSOpenPanel to validate folder
 + open a folder when dragged onto Dock icon
+- GBOp and GBAsynchoronousOp as a wrapper around git commands
+- GBLogOp to read log back in time
+- GBShowOp to read commit data for the given commitid
 - add an NSTask wrapper to run git commands (like in Moriarity sample code)
 - reset toolbar buttons to default/empty/disabled state
 - load local branches
