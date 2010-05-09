@@ -43,6 +43,7 @@
   
   [button.menu addItem:[NSMenuItem separatorItem]];
   
+  
   // Tags
 
   NSMenu* tagsMenu = [self.currentBranchCheckoutTagMenuItem menu];
@@ -119,6 +120,7 @@
   [self.window setTitleWithRepresentedFilename:self.repository.path];
   [self updateCurrentBranchMenus];
 }
+
 
 
 #pragma mark NSWindowDelegate

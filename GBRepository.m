@@ -1,8 +1,10 @@
 #import "GBRepository.h"
 #import "GBRef.h"
+
 #import "NSFileManager+OAFileManagerHelpers.h"
 #import "NSObject+OALogging.h"
 #import "NSAlert+OAAlertHelpers.h"
+#import "NSData+OADataHelpers.h"
 
 @implementation GBRepository
 
@@ -152,7 +154,38 @@
 
 - (void) checkoutRef:(GBRef*)ref
 {
+  NSTask* task = [[NSTask alloc] init];
+  [task setCurrentDirectoryPath:self.path];
+  [task setLaunchPath: @"/usr/bin/env"];
+  NSString* rev = (ref.name ? ref.name : ref.commitId);
+  [task setArguments: [NSArray arrayWithObjects:@"git", @"checkout", rev, nil]];
+  [task setStandardOutput:[NSPipe pipe]];
+  [task setStandardError:[task standardOutput]]; // stderr > stdout
   
+  //  This code with notifications is for async operations (networking or simply slow)
+  //  To keep code simple we just block on certain usually fast operations like git-checkout
+  
+  //  // Here we register as an observer of the NSFileHandleReadCompletionNotification, which lets
+  //  // us know when there is data waiting for us to grab it in the task's file handle (the pipe
+  //  // to which we connected stdout and stderr above).  -getData: will be called when there
+  //  // is data waiting.  The reason we need to do this is because if the file handle gets
+  //  // filled up, the task will block waiting to send data and we'll never get anywhere.
+  //  // So we have to keep reading data from the file handle as we go.
+  //  [[NSNotificationCenter defaultCenter] addObserver:self 
+  //                                           selector:@selector(getData:) 
+  //                                               name: NSFileHandleReadCompletionNotification 
+  //                                             object: [[task standardOutput] fileHandleForReading]];
+  //  // We tell the file handle to go ahead and read in the background asynchronously, and notify
+  //  // us via the callback registered above when we signed up as an observer.  The file handle will
+  //  // send a NSFileHandleReadCompletionNotification when it has data that is available.
+  //  [[[task standardOutput] fileHandleForReading] readInBackgroundAndNotify];
+  
+  [task launch];
+  [task waitUntilExit];
+  int status = [task terminationStatus];
+  NSLog(@"git-checkout finished with status: %d", status);
+  NSData* data = [[[task standardOutput] fileHandleForReading] readDataToEndOfFile];
+  NSLog(@"git-checkout: %@", [data UTF8String]);
 }
 
 
