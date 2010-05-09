@@ -23,29 +23,65 @@
 
 - (void) updateCurrentBranchMenus
 {
+  // Local branches
+  
   GBRef* currentBranch = self.repository.currentRef;
   NSPopUpButton* button = self.currentBranchPopUpButton;
   [button removeAllItems];
-  BOOL selected = NO;
   for (GBRef* localBranch in self.repository.localBranches)
   {
     [button addItemWithTitle:[localBranch name]];
     NSMenuItem* item = [button lastItem];
     [item setAction:@selector(checkoutBranch:)];
     [item setTarget:self];
+    [item setRepresentedObject:localBranch];
     if ([localBranch isEqual:currentBranch])
     {
-      selected = YES;
-      [button selectItemWithTitle:[localBranch name]];
+      [button selectItem:item];
     }
   }
-  if (!selected)
-  {
-    [button setTitle:[currentBranch abbreviatedName]];
-  }
+  
   [button.menu addItem:[NSMenuItem separatorItem]];
-  [button.menu addItem:self.currentBranchCheckoutTagMenuItem];
-  [button.menu addItem:self.currentBranchCheckoutRemoteBranchMenuItem];
+  
+  // Tags
+
+  NSMenu* tagsMenu = [self.currentBranchCheckoutTagMenuItem menu];
+  [tagsMenu removeAllItems];
+  for (GBRef* tag in self.repository.tags)
+  {
+    NSMenuItem* item = [[NSMenuItem new] autorelease];
+    [item setAction:@selector(checkoutBranch:)];
+    [item setTarget:self];
+    [item setRepresentedObject:tag];    
+    [tagsMenu addItem:item];
+  }
+  if ([[tagsMenu itemArray] count] > 0)
+  {
+    [button.menu addItem:self.currentBranchCheckoutTagMenuItem];
+  }
+  
+  
+  // Remote branches
+  
+  NSMenu* remoteBranchesMenu = [self.currentBranchCheckoutRemoteBranchMenuItem menu];
+  [remoteBranchesMenu removeAllItems];
+  for (GBRef* remoteBranch in self.repository.remoteBranches)
+  {
+    NSMenuItem* item = [[NSMenuItem new] autorelease];
+    [item setAction:@selector(checkoutRemoteBranch:)];
+    [item setTarget:self];
+    [item setRepresentedObject:remoteBranch];
+    [remoteBranchesMenu addItem:item];
+  }
+  if ([[remoteBranchesMenu itemArray] count] > 0)
+  {
+    [button.menu addItem:self.currentBranchCheckoutRemoteBranchMenuItem];
+  }
+  
+  
+  // If no branch is found the name could be empty.
+  // I make sure that the name is set nevertheless.
+  [button setTitle:[currentBranch displayName]];  
 }
 
 - (void) updateCurrentBranchLabel
@@ -61,21 +97,15 @@
 #pragma mark Actions
 
 
-- (IBAction) checkoutBranch:(id)sender
+- (IBAction) checkoutBranch:(NSMenuItem*)sender
 {
-  
-  [self updateCurrentBranchLabel];
-}
-
-- (IBAction) checkoutTag:(id)sender
-{
-  
+  [self.repository checkoutRef:[sender representedObject]];
   [self updateCurrentBranchLabel];
 }
 
 - (IBAction) checkoutRemoteBranch:(id)sender
 {
-  
+  NSLog(@"TODO: create a default name taking in account exiting branch names; show modal prompt and confirm");
   [self updateCurrentBranchLabel];
 }
 

@@ -48,7 +48,7 @@
                       includingPropertiesForKeys:[NSArray array] 
                       options:0 
                       error:&outError];
-    NSMutableArray* branches = [NSMutableArray array];
+    NSMutableArray* refs = [NSMutableArray array];
     if (URLs)
     {
       for (NSURL* aURL in URLs)
@@ -56,14 +56,14 @@
         NSString* name = [[aURL pathComponents] lastObject];
         GBRef* ref = [[GBRef new] autorelease];
         ref.name = name;
-        [branches addObject:ref];
+        [refs addObject:ref];
       }
     }
     else
     {
       [NSAlert error:outError];
     }
-    self.localBranches = branches;
+    self.localBranches = refs;
   }
   return [[localBranches retain] autorelease];
 }
@@ -84,8 +84,31 @@
 {
   if (!tags)
   {
-    [self TODO:@"Find real tags"];
-    self.tags = [NSArray array];
+    NSError* outError = nil;
+    NSURL* aurl = [self gitURLWithSuffix:@"refs/tags"];
+    NSAssert(aurl, @"url must be .git/refs/tags");
+    NSArray* URLs = [[NSFileManager defaultManager] 
+                     contentsOfDirectoryAtURL:aurl
+                     includingPropertiesForKeys:[NSArray array] 
+                     options:0 
+                     error:&outError];
+    NSMutableArray* refs = [NSMutableArray array];
+    if (URLs)
+    {
+      for (NSURL* aURL in URLs)
+      {
+        NSString* name = [[aURL pathComponents] lastObject];
+        GBRef* ref = [[GBRef new] autorelease];
+        ref.name = name;
+        ref.isTag = YES;
+        [refs addObject:ref];
+      }
+    }
+    else
+    {
+      [NSAlert error:outError];
+    }
+    self.tags = refs;
   }
   return [[tags retain] autorelease];
 }
@@ -120,6 +143,18 @@
   }
   return [[currentRef retain] autorelease];
 }
+
+
+
+
+#pragma mark Mutation methods
+
+
+- (void) checkoutRef:(GBRef*)ref
+{
+  
+}
+
 
 
 

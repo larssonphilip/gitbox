@@ -51,10 +51,10 @@
   return !isTag && self.remoteAlias;
 }
 
-- (NSString*) abbreviatedName
+- (NSString*) displayName
 {
   if (self.name) return [self nameWithRemoteAlias];
-  if (self.commitId) return [self.commitId substringToIndex:6];
+  if (self.commitId) return self.commitId;
   return nil;
 }
 

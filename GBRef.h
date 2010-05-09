@@ -15,6 +15,6 @@
 - (BOOL) isLocalBranch;
 - (BOOL) isRemoteBranch;
 
-- (NSString*) abbreviatedName;
+- (NSString*) displayName;
 
 @end

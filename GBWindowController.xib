@@ -298,21 +298,21 @@
 								<bool key="NSToolbarIsUserRemovable">YES</bool>
 								<int key="NSToolbarItemVisibilityPriority">0</int>
 							</object>
-							<object class="NSToolbarItem" id="379986459">
+							<object class="NSToolbarItem" id="456844793">
 								<object class="NSMutableString" key="NSToolbarItemIdentifier">
 									<characters key="NS.bytes">8D5051DB-32C2-4FD8-891F-70E1342B87F9</characters>
 								</object>
 								<string key="NSToolbarItemLabel"/>
 								<string key="NSToolbarItemPaletteLabel"/>
 								<nil key="NSToolbarItemToolTip"/>
-								<object class="NSSegmentedControl" key="NSToolbarItemView" id="218250380">
+								<object class="NSSegmentedControl" key="NSToolbarItemView" id="723410101">
 									<reference key="NSNextResponder"/>
 									<int key="NSvFlags">268</int>
 									<string key="NSFrame">{{0, 14}, {119, 25}}</string>
 									<reference key="NSSuperview"/>
 									<reference key="NSWindow"/>
 									<bool key="NSEnabled">YES</bool>
-									<object class="NSSegmentedCell" key="NSCell" id="511224766">
+									<object class="NSSegmentedCell" key="NSCell" id="909504413">
 										<int key="NSCellFlags">-2080244224</int>
 										<int key="NSCellFlags2">0</int>
 										<object class="NSFont" key="NSSupport">
@@ -320,7 +320,7 @@
 											<double key="NSSize">13</double>
 											<int key="NSfFlags">16</int>
 										</object>
-										<reference key="NSControlView" ref="218250380"/>
+										<reference key="NSControlView" ref="723410101"/>
 										<object class="NSMutableArray" key="NSSegmentImages">
 											<bool key="EncodedWithXMLCoder">YES</bool>
 											<object class="NSSegmentItem">
@@ -473,7 +473,7 @@
 					<object class="NSArray" key="NSToolbarIBAllowedItems">
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<reference ref="732156857"/>
-						<reference ref="379986459"/>
+						<reference ref="456844793"/>
 						<reference ref="794321415"/>
 						<reference ref="2963004"/>
 						<reference ref="596227226"/>
@@ -483,7 +483,7 @@
 					<object class="NSMutableArray" key="NSToolbarIBDefaultItems">
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<reference ref="732156857"/>
-						<reference ref="379986459"/>
+						<reference ref="456844793"/>
 						<reference ref="794321415"/>
 						<reference ref="596227226"/>
 						<reference ref="2963004"/>
@@ -1060,7 +1060,7 @@
 							<reference ref="732156857"/>
 							<reference ref="794321415"/>
 							<reference ref="2963004"/>
-							<reference ref="379986459"/>
+							<reference ref="456844793"/>
 						</object>
 						<reference key="parent" ref="275939982"/>
 					</object>
@@ -1452,26 +1452,26 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">100169</int>
-						<reference key="object" ref="379986459"/>
+						<reference key="object" ref="456844793"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="218250380"/>
+							<reference ref="723410101"/>
 						</object>
 						<reference key="parent" ref="959528133"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">100167</int>
-						<reference key="object" ref="218250380"/>
+						<reference key="object" ref="723410101"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="511224766"/>
+							<reference ref="909504413"/>
 						</object>
-						<reference key="parent" ref="379986459"/>
+						<reference key="parent" ref="456844793"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">100168</int>
-						<reference key="object" ref="511224766"/>
-						<reference key="parent" ref="218250380"/>
+						<reference key="object" ref="909504413"/>
+						<reference key="parent" ref="723410101"/>
 					</object>
 				</object>
 			</object>
@@ -1648,11 +1648,9 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>checkoutBranch:</string>
 							<string>checkoutRemoteBranch:</string>
-							<string>checkoutTag:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 						</object>

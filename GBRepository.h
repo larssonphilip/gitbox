@@ -22,4 +22,6 @@
 
 - (NSURL*) gitURLWithSuffix:(NSString*)suffix;
 
+- (void) checkoutRef:(GBRef*)ref;
+
 @end

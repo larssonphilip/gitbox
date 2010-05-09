@@ -24,7 +24,6 @@
 
 
 - (IBAction) checkoutBranch:(id)sender;
-- (IBAction) checkoutTag:(id)sender;
 - (IBAction) checkoutRemoteBranch:(id)sender;
 
 
