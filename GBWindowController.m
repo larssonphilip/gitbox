@@ -101,6 +101,7 @@
 - (IBAction) checkoutBranch:(NSMenuItem*)sender
 {
   [self.repository checkoutRef:[sender representedObject]];
+  [self updateCurrentBranchMenus];
   [self updateCurrentBranchLabel];
 }
 

@@ -183,9 +183,14 @@
   [task launch];
   [task waitUntilExit];
   int status = [task terminationStatus];
-  NSLog(@"git-checkout finished with status: %d", status);
-  NSData* data = [[[task standardOutput] fileHandleForReading] readDataToEndOfFile];
-  NSLog(@"git-checkout: %@", [data UTF8String]);
+  if (status != 0)
+  {
+    NSData* output = [[[task standardOutput] fileHandleForReading] readDataToEndOfFile];
+    [NSAlert message:[NSString stringWithFormat:@"Failed to checkout %@ [%d]", rev, status]
+         description:[output UTF8String]];
+  }
+  // invalidate current ref
+  self.currentRef = nil;
 }
 
 
