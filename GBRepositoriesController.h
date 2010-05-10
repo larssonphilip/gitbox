@@ -1,0 +1,5 @@
+@interface GBRepositoriesController : NSWindowController
+{
+}
+
+@end

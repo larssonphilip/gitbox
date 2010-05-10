@@ -9,5 +9,6 @@
 @property(nonatomic,retain) NSMutableSet* windowControllers;
 
 - (IBAction) openDocument:(id)sender;
+- (IBAction) editRepositories:(id)sender;
 
 @end
