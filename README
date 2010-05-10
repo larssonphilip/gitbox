@@ -48,3 +48,12 @@ Not to do:
 - toolbar item for stash/unstash: rare function;
 - git blame: rare function, needs specific file listing UI; make another app;
 
+Useful commands:
+
+- list of SHA1 commit ids: git rev-list HEAD
+- changes within a commit: git diff-tree df586737bc78d556b1ee5cfc567bbdee74b627b8 --no-commit-id
+- changes on the stage: git diff-index --name-status --ignore-submodules HEAD
+- changes on the working directory: git diff-files --name-status --ignore-submodules
+- untracked files: git ls-files --other --exclude-standard
+
+- paths for staged changes: git diff -M -C --find-copies-harder -l64 --stat --cached | tail -r | tail -n +2 | tail -r | awk '{ print $1 }'
