@@ -7,12 +7,16 @@
 @synthesize repository;
 @synthesize delegate;
 
+@synthesize splitView;
+
 @synthesize currentBranchPopUpButton;
 @synthesize currentBranchCheckoutRemoteBranchMenuItem;
 @synthesize currentBranchCheckoutTagMenuItem;
 
 - (void) dealloc
 {
+  self.splitView = nil;
+  
   self.currentBranchPopUpButton = nil;
   self.currentBranchCheckoutRemoteBranchMenuItem = nil;
   self.currentBranchCheckoutTagMenuItem = nil;
@@ -95,7 +99,7 @@
 
 
 
-#pragma mark Actions
+#pragma mark Git Actions
 
 
 - (IBAction) checkoutBranch:(NSMenuItem*)sender
@@ -111,6 +115,26 @@
   [self updateCurrentBranchLabel];
 }
 
+
+
+
+#pragma mark View Actions
+
+
+- (IBAction) toggleSplitViewOrientation:(NSMenuItem*)sender
+{
+  [self.splitView setVertical:![self.splitView isVertical]];
+  [self.splitView adjustSubviews];
+  if ([self.splitView isVertical])
+  {
+    [sender setTitle:NSLocalizedString(@"Horizontal Views",@"")];
+  }
+  else
+  {
+    [sender setTitle:NSLocalizedString(@"Vertical Views",@"")];
+  }
+
+}
 
 
 
