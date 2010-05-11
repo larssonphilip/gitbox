@@ -32,9 +32,12 @@
 - (IBAction) checkoutBranch:(id)sender;
 - (IBAction) checkoutRemoteBranch:(id)sender;
 
+
 #pragma mark View Actions
 
 - (IBAction) toggleSplitViewOrientation:(id)sender;
+- (IBAction) editRepositories:(id)sender;
+
 
 @end
 

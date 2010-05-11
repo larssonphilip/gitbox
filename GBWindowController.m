@@ -136,6 +136,20 @@
 
 }
 
+- (IBAction) editRepositories:(id)sender
+{
+  GBRepositoriesController* controller = [[[GBRepositoriesController alloc] initWithWindowNibName:@"GBRepositoriesController"] autorelease];
+  
+//  [NSApp beginSheet:controller
+//     modalForWindow:[self window]
+//      modalDelegate:<#(id)modalDelegate#>
+//     didEndSelector:@selector()
+//        contextInfo:nil];
+  
+  // TODO: open a sheet with GBRepositoriesController.window
+}
+
+
 
 
 #pragma mark NSWindowController

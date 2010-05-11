@@ -65,12 +65,6 @@
 }
 
 
-- (IBAction) editRepositories:(id)sender
-{
-  // TODO: open a sheet with GBRepositoriesController.window
-}
-
-
 
 
 #pragma mark GBWindowControllerDelegate

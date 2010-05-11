@@ -180,8 +180,8 @@
 				2A37F4B9FDCFA73011CA2CEA /* Credits.rtf */,
 				8D15AC360486D014006FF6A4 /* info.plist */,
 				089C1660FE840EACC02AAC07 /* InfoPlist.strings */,
-				1DDD58290DA1D0D100B32029 /* GBWindowController.xib */,
 				1DDD582B0DA1D0D100B32029 /* MainMenu.xib */,
+				1DDD58290DA1D0D100B32029 /* GBWindowController.xib */,
 				2058FA4711982F5100FB018D /* GBRepositoriesController.xib */,
 			);
 			name = Resources;
