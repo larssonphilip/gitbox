@@ -5,6 +5,7 @@
 @end
 
 @class GBRepository;
+@class GBRepositoriesController;
 @interface GBWindowController : NSWindowController
 {
   GBRepository* repository;
@@ -17,6 +18,9 @@
   NSPopUpButton* currentBranchPopUpButton;
   NSMenuItem* currentBranchCheckoutRemoteBranchMenuItem;
   NSMenuItem* currentBranchCheckoutTagMenuItem;
+  
+  GBRepositoriesController* repositoriesController;
+  
 }
 
 @property(nonatomic, retain) GBRepository* repository;
@@ -30,6 +34,9 @@
 @property(nonatomic, retain) IBOutlet NSMenuItem* currentBranchCheckoutRemoteBranchMenuItem;
 @property(nonatomic, retain) IBOutlet NSMenuItem* currentBranchCheckoutTagMenuItem;
 
+@property(nonatomic, retain) GBRepositoriesController* repositoriesController;
+
+
 
 #pragma mark Git Actions
 
@@ -41,7 +48,7 @@
 
 - (IBAction) toggleSplitViewOrientation:(id)sender;
 - (IBAction) editRepositories:(id)sender;
-- (IBAction) doneEditRepositories:(NSControl*)sender;
+- (IBAction) doneEditRepositories:(id)sender;
 
 @end
 

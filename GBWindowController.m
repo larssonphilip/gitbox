@@ -17,6 +17,8 @@
 @synthesize currentBranchCheckoutRemoteBranchMenuItem;
 @synthesize currentBranchCheckoutTagMenuItem;
 
+@synthesize repositoriesController;
+
 - (void) dealloc
 {
   self.splitView = nil;
@@ -27,6 +29,8 @@
   self.currentBranchPopUpButton = nil;
   self.currentBranchCheckoutRemoteBranchMenuItem = nil;
   self.currentBranchCheckoutTagMenuItem = nil;
+  
+  self.repositoriesController = nil;
   
   [super dealloc];
 }
@@ -147,9 +151,12 @@
 
 - (IBAction) editRepositories:(id)sender
 {
-  GBRepositoriesController* controller = [[[GBRepositoriesController alloc] initWithWindowNibName:@"GBRepositoriesController"] autorelease];
+  self.repositoriesController = [[[GBRepositoriesController alloc] initWithWindowNibName:@"GBRepositoriesController"] autorelease];
   
-  [NSApp beginSheet:[controller window]
+  self.repositoriesController.target = self;
+  self.repositoriesController.action = @selector(doneEditRepositories:);
+  
+  [NSApp beginSheet:[repositoriesController window]
      modalForWindow:[self window]
       modalDelegate:self
      didEndSelector:@selector(editRepositoriesSheetDidEnd:returnCode:contextInfo:)
@@ -158,14 +165,15 @@
   // TODO: open a sheet with GBRepositoriesController.window
 }
 
-- (IBAction) doneEditRepositories:(NSControl*)sender
+- (IBAction) doneEditRepositories:(GBRepositoriesController*)sender
 {
   [NSApp endSheet:[sender window]];
 }
 
 - (void)editRepositoriesSheetDidEnd:(NSWindow*)sheet returnCode:(NSInteger)returnCode contextInfo:(void*)contextInfo
 {
-  [sheet orderOut:self];
+  [NSApp endSheet:sheet];
+  //[sheet orderOut:self];
 }
 
 
