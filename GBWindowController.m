@@ -2,12 +2,16 @@
 #import "GBRepository.h"
 #import "GBRef.h"
 
+#import "GBRepositoriesController.h"
+
 @implementation GBWindowController
 
 @synthesize repository;
 @synthesize delegate;
 
 @synthesize splitView;
+@synthesize logTableView;
+@synthesize statusTableView;
 
 @synthesize currentBranchPopUpButton;
 @synthesize currentBranchCheckoutRemoteBranchMenuItem;
@@ -16,6 +20,9 @@
 - (void) dealloc
 {
   self.splitView = nil;
+  
+  self.logTableView = nil;
+  self.statusTableView = nil;
   
   self.currentBranchPopUpButton = nil;
   self.currentBranchCheckoutRemoteBranchMenuItem = nil;
@@ -127,10 +134,12 @@
   [self.splitView adjustSubviews];
   if ([self.splitView isVertical])
   {
+    self.logTableView.rowHeight = 32.0;
     [sender setTitle:NSLocalizedString(@"Horizontal Views",@"")];
   }
   else
   {
+    self.logTableView.rowHeight = 16.0;
     [sender setTitle:NSLocalizedString(@"Vertical Views",@"")];
   }
 
@@ -140,16 +149,24 @@
 {
   GBRepositoriesController* controller = [[[GBRepositoriesController alloc] initWithWindowNibName:@"GBRepositoriesController"] autorelease];
   
-//  [NSApp beginSheet:controller
-//     modalForWindow:[self window]
-//      modalDelegate:<#(id)modalDelegate#>
-//     didEndSelector:@selector()
-//        contextInfo:nil];
+  [NSApp beginSheet:[controller window]
+     modalForWindow:[self window]
+      modalDelegate:self
+     didEndSelector:@selector(editRepositoriesSheetDidEnd:returnCode:contextInfo:)
+        contextInfo:nil];
   
   // TODO: open a sheet with GBRepositoriesController.window
 }
 
+- (IBAction) doneEditRepositories:(NSControl*)sender
+{
+  [NSApp endSheet:[sender window]];
+}
 
+- (void)editRepositoriesSheetDidEnd:(NSWindow*)sheet returnCode:(NSInteger)returnCode contextInfo:(void*)contextInfo
+{
+  [sheet orderOut:self];
+}
 
 
 #pragma mark NSWindowController

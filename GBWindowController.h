@@ -11,6 +11,8 @@
   id<GBWindowControllerDelegate> delegate;
   
   NSSplitView* splitView;
+  NSTableView* logTableView;
+  NSTableView* statusTableView;
   
   NSPopUpButton* currentBranchPopUpButton;
   NSMenuItem* currentBranchCheckoutRemoteBranchMenuItem;
@@ -21,6 +23,8 @@
 @property(nonatomic, assign) id<GBWindowControllerDelegate> delegate;
 
 @property(nonatomic, retain) IBOutlet NSSplitView* splitView;
+@property(nonatomic, retain) IBOutlet NSTableView* logTableView;
+@property(nonatomic, retain) IBOutlet NSTableView* statusTableView;
 
 @property(nonatomic, retain) IBOutlet NSPopUpButton* currentBranchPopUpButton;
 @property(nonatomic, retain) IBOutlet NSMenuItem* currentBranchCheckoutRemoteBranchMenuItem;
@@ -37,7 +41,7 @@
 
 - (IBAction) toggleSplitViewOrientation:(id)sender;
 - (IBAction) editRepositories:(id)sender;
-
+- (IBAction) doneEditRepositories:(NSControl*)sender;
 
 @end
 
