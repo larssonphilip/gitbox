@@ -1,3 +1,16 @@
+To do now:
+
+- list working directory changes
+- stage/unstage with a checkbox
+- commit with a message
+- push
+- pull
+- switch remote branch
+- edit repositories
+- checkout remote branch
+- show log (last 5000 commits)
+
+
 Code to do:
 
 + custom window controller to handle little UI events (see Napoleon.app)
