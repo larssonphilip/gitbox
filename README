@@ -1,6 +1,10 @@
 To do now:
 
 - list working directory changes
+  - changes on the stage: git diff-index --cached --ignore-submodules -z HEAD
+  - changes on the working directory (not including staged): git diff-files --ignore-submodules -z
+  - untracked files: git ls-files --other --exclude-standard -z
+
 - stage/unstage with a checkbox
 - commit with a message
 - push
