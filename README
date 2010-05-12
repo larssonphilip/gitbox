@@ -52,8 +52,26 @@ Useful commands:
 
 - list of SHA1 commit ids: git rev-list HEAD
 - changes within a commit: git diff-tree df586737bc78d556b1ee5cfc567bbdee74b627b8 --no-commit-id
-- changes on the stage: git diff-index --name-status --ignore-submodules HEAD
-- changes on the working directory: git diff-files --name-status --ignore-submodules
-- untracked files: git ls-files --other --exclude-standard
+- changes on the stage: git diff-index --cached --ignore-submodules -z HEAD
+- changes on the working directory (not including staged): git diff-files --ignore-submodules -z
+- untracked files: git ls-files --other --exclude-standard -z
+
+$ man git-diff-tree:
+
+       git-diff-index <tree-ish>
+           compares the <tree-ish> and the files on the filesystem.
+
+       git-diff-index --cached <tree-ish>
+           compares the <tree-ish> and the index.
+
+       git-diff-tree [-r] <tree-ish-1> <tree-ish-2> [<pattern>...]
+           compares the trees named by the two arguments.
+
+       git-diff-files [<pattern>...]
+           compares the index and the files on the filesystem.
+
 
 - paths for staged changes: git diff -M -C --find-copies-harder -l64 --stat --cached | tail -r | tail -n +2 | tail -r | awk '{ print $1 }'
+
+
+- test
