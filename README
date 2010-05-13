@@ -13,6 +13,7 @@ To do now:
 - edit repositories
 - checkout remote branch
 - show log (last 5000 commits)
+- "what's new": diff with other branch is shown as grey commit rows in the same log
 
 
 Code to do:
