@@ -883,7 +883,7 @@
 															<reference key="NSBackgroundColor" ref="987104074"/>
 															<reference key="NSGridColor" ref="77484895"/>
 															<double key="NSRowHeight">14</double>
-															<int key="NSTvFlags">1581252608</int>
+															<int key="NSTvFlags">1514143744</int>
 															<reference key="NSDelegate"/>
 															<reference key="NSDataSource"/>
 															<int key="NSColumnAutoresizingStyle">4</int>
@@ -1666,6 +1666,7 @@
 					<string>100170.IBPluginDependency</string>
 					<string>100171.IBPluginDependency</string>
 					<string>100176.IBPluginDependency</string>
+					<string>100180.IBPluginDependency</string>
 					<string>5.IBEditorWindowLastContentRect</string>
 					<string>5.IBPluginDependency</string>
 					<string>5.IBWindowTemplateEditedContentRect</string>
@@ -1735,6 +1736,7 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="1"/>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
