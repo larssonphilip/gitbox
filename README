@@ -52,9 +52,12 @@ To do:
 - switch off 1min sync with a toolbar button: useful on battery
 - clone a repo from the gui (menu item)
 - create a new repo from the gui (by dropping a non-git folder)
+- create a default .gitignore when creating a repo
 - checkout tags as well
 - create a new tag
-- assign colors
+- edit .gitignore
+- edit .git/config
+- assign colors to repos to distinguish them
 
 - stash/apply stash from the menu, context menu
 
