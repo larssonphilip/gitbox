@@ -1,4 +1,10 @@
 @class GBRef;
+@class GBRepository;
+@protocol GBRepositoryDelegate
+- (void) repositoryDidUpdateStatus:(GBRepository*)repo;
+@end
+
+
 @interface GBRepository : NSObject
 {
   NSURL* url;
@@ -7,6 +13,10 @@
   NSArray* remoteBranches;
   NSArray* tags;
   GBRef* currentRef;
+  
+  NSArray* statusChanges;
+  
+  id<GBRepositoryDelegate> delegate;
 }
 
 + (BOOL) isValidRepositoryAtPath:(NSString*)path;
@@ -20,8 +30,14 @@
 @property(nonatomic,retain) NSArray* tags;
 @property(nonatomic,retain) GBRef* currentRef;
 
+@property(nonatomic,assign) id<GBRepositoryDelegate> delegate;
+
 - (NSURL*) gitURLWithSuffix:(NSString*)suffix;
 
 - (void) checkoutRef:(GBRef*)ref;
 
+- (void) updateStatus;
+
 @end
+
+

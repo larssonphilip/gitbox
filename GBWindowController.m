@@ -199,4 +199,9 @@
   [self.delegate windowControllerWillClose:self];
 }
 
+- (void)windowDidBecomeKey:(NSNotification *)notification
+{
+  
+}
+
 @end

@@ -13,7 +13,7 @@
   return aPath && [NSFileManager isWritableDirectoryAtPath:[aPath stringByAppendingPathComponent:@".git"]];
 }
 
-
+@synthesize delegate;
 @synthesize url;
 @dynamic path;
 - (NSString*) path
@@ -193,6 +193,10 @@
   self.currentRef = nil;
 }
 
+- (void) updateStatus
+{
+  
+}
 
 
 
