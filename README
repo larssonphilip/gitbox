@@ -6,7 +6,7 @@ To do now:
   + untracked files: git ls-files --other --exclude-standard -z
 
 + stage/unstage with a checkbox
-- commit with a message
++ commit with a message
 - push
 - pull
 - switch remote branch
