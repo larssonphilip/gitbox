@@ -140,7 +140,7 @@
 
 - (IBAction) commit:(id)sender
 {
-  
+  // TODO: display sheet for message and commit if ok
   //[self.repository commit];
 }
 
