@@ -138,6 +138,11 @@
   [self updateCurrentBranchLabel];
 }
 
+- (IBAction) commit:(id)sender
+{
+  
+  //[self.repository commit];
+}
 
 
 

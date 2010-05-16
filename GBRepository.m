@@ -76,7 +76,7 @@
 {
   if (!remoteBranches)
   {
-    [self TODO:@"Find real remote branches"];
+    NSLog(@"Find real remote branches");
     self.remoteBranches = [NSArray array];
   }
   return [[remoteBranches retain] autorelease];  
@@ -139,7 +139,7 @@
     }
     else // assuming SHA1 ref
     {
-      [self TODO:@"Test for tag"];
+      NSLog(@"TODO: Test for tag");
       ref.commitId = HEAD;
     }
     self.currentRef = ref;

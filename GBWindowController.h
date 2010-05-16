@@ -20,6 +20,7 @@
   NSMenuItem* currentBranchCheckoutRemoteBranchMenuItem;
   NSMenuItem* currentBranchCheckoutTagMenuItem;
   
+  
   GBRemotesController* remotesController;
   
   NSArrayController* logArrayController;
@@ -49,6 +50,7 @@
 
 - (IBAction) checkoutBranch:(id)sender;
 - (IBAction) checkoutRemoteBranch:(id)sender;
+- (IBAction) commit:(id)sender;
 
 
 #pragma mark View Actions
