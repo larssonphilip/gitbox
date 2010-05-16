@@ -1,5 +1,10 @@
 #import "GBRepository.h"
+#import "GBCommit.h"
+#import "GBStage.h"
+#import "GBChange.h"
 #import "GBRef.h"
+
+#import "GBTask.h"
 
 #import "NSFileManager+OAFileManagerHelpers.h"
 #import "NSObject+OALogging.h"
@@ -15,27 +20,23 @@
 
 @synthesize delegate;
 @synthesize url;
+
 @dynamic path;
 - (NSString*) path
 {
   return [url path];
 }
 
-@synthesize dotGitURL;
-- (NSURL*) dotGitURL
+@synthesize stage;
+- (GBCommit*) stage
 {
-  if (!dotGitURL)
+  if (!stage)
   {
-    self.dotGitURL = [self.url URLByAppendingPathComponent:@".git"];
+    self.stage = [[GBStage new] autorelease];
+    stage.repository = self;
   }
-  return [[dotGitURL retain]  autorelease];
+  return [[stage retain] autorelease];
 }
-
-- (NSURL*) gitURLWithSuffix:(NSString*)suffix
-{
-  return [self.dotGitURL URLByAppendingPathComponent:suffix];
-}
-
 
 @synthesize localBranches;
 - (NSArray*) localBranches
@@ -146,7 +147,23 @@
   return [[currentRef retain] autorelease];
 }
 
+@synthesize commits;
+- (NSArray*) commits
+{
+  if (!commits)
+  {
+    self.commits = [NSArray arrayWithObject:self.stage];
+  }
+  return [[commits retain] autorelease];
+}
 
+
+- (GBTask*) task
+{
+  GBTask* task = [[GBTask new] autorelease];
+  task.path = self.path;
+  return task;
+}
 
 
 #pragma mark Mutation methods
@@ -154,50 +171,41 @@
 
 - (void) checkoutRef:(GBRef*)ref
 {
-  NSTask* task = [[NSTask alloc] init];
-  [task setCurrentDirectoryPath:self.path];
-  [task setLaunchPath: @"/usr/bin/env"];
   NSString* rev = (ref.name ? ref.name : ref.commitId);
-  [task setArguments: [NSArray arrayWithObjects:@"git", @"checkout", rev, nil]];
-  [task setStandardOutput:[NSPipe pipe]];
-  [task setStandardError:[task standardOutput]]; // stderr > stdout
   
-  //  This code with notifications is for async operations (networking or simply slow)
-  //  To keep code simple we just block on certain usually fast operations like git-checkout
+  [[self task] launchWithArguments:[NSArray arrayWithObjects:@"git", @"checkout", rev, nil]];
   
-  //  // Here we register as an observer of the NSFileHandleReadCompletionNotification, which lets
-  //  // us know when there is data waiting for us to grab it in the task's file handle (the pipe
-  //  // to which we connected stdout and stderr above).  -getData: will be called when there
-  //  // is data waiting.  The reason we need to do this is because if the file handle gets
-  //  // filled up, the task will block waiting to send data and we'll never get anywhere.
-  //  // So we have to keep reading data from the file handle as we go.
-  //  [[NSNotificationCenter defaultCenter] addObserver:self 
-  //                                           selector:@selector(getData:) 
-  //                                               name: NSFileHandleReadCompletionNotification 
-  //                                             object: [[task standardOutput] fileHandleForReading]];
-  //  // We tell the file handle to go ahead and read in the background asynchronously, and notify
-  //  // us via the callback registered above when we signed up as an observer.  The file handle will
-  //  // send a NSFileHandleReadCompletionNotification when it has data that is available.
-  //  [[[task standardOutput] fileHandleForReading] readInBackgroundAndNotify];
-  
-  [task launch];
-  [task waitUntilExit];
-  int status = [task terminationStatus];
-  if (status != 0)
-  {
-    NSData* output = [[[task standardOutput] fileHandleForReading] readDataToEndOfFile];
-    [NSAlert message:[NSString stringWithFormat:@"Failed to checkout %@ [%d]", rev, status]
-         description:[output UTF8String]];
-  }
   // invalidate current ref
   self.currentRef = nil;
 }
 
-- (void) updateStatus
+
+- (void) stageChange:(GBChange*)change
 {
-  
+  NSData* output; // used to ignore error
+  if ([change isDeletion])
+  {
+    [[self task] launchWithArguments:[NSArray arrayWithObjects:@"git", @"update-index", @"--remove", change.srcURL.path, nil] outputRef:&output];
+  }
+  else
+  {
+    [[self task] launchWithArguments:[NSArray arrayWithObjects:@"git", @"add", change.fileURL.path, nil] outputRef:&output];
+  }
+
+  [self updateStatus];
 }
 
+- (void) unstageChange:(GBChange*)change
+{
+  NSData* output; // used to ignore error
+  [[self task] launchWithArguments:[NSArray arrayWithObjects:@"git", @"reset", @"--", change.fileURL.path, nil] outputRef:&output];
+  [self updateStatus];
+}
+
+- (void) updateStatus
+{
+  [self.stage invalidateChanges];
+}
 
 
 - (void) dealloc
@@ -209,5 +217,30 @@
   self.currentRef = nil;
   [super dealloc];
 }
+
+
+
+
+#pragma mark Utility methods
+
+
+
+@synthesize dotGitURL;
+- (NSURL*) dotGitURL
+{
+  if (!dotGitURL)
+  {
+    self.dotGitURL = [self.url URLByAppendingPathComponent:@".git"];
+  }
+  return [[dotGitURL retain]  autorelease];
+}
+
+
+- (NSURL*) gitURLWithSuffix:(NSString*)suffix
+{
+  return [self.dotGitURL URLByAppendingPathComponent:suffix];
+}
+
+
 
 @end

@@ -1,8 +1,9 @@
 #import "GBWindowController.h"
 #import "GBRepository.h"
+#import "GBCommit.h"
 #import "GBRef.h"
 
-#import "GBRepositoriesController.h"
+#import "GBRemotesController.h"
 
 @implementation GBWindowController
 
@@ -17,7 +18,10 @@
 @synthesize currentBranchCheckoutRemoteBranchMenuItem;
 @synthesize currentBranchCheckoutTagMenuItem;
 
-@synthesize repositoriesController;
+@synthesize remotesController;
+
+@synthesize logArrayController; 
+@synthesize statusArrayController;
 
 - (void) dealloc
 {
@@ -30,7 +34,10 @@
   self.currentBranchCheckoutRemoteBranchMenuItem = nil;
   self.currentBranchCheckoutTagMenuItem = nil;
   
-  self.repositoriesController = nil;
+  self.remotesController = nil;
+  
+  self.logArrayController = nil;
+  self.statusArrayController = nil;
   
   [super dealloc];
 }
@@ -108,6 +115,11 @@
 }
 
 
+- (GBCommit*) selectedCommit
+{
+  // return logController.selectedObject
+  return self.repository.stage;
+}
 
 
 #pragma mark Git Actions
@@ -151,12 +163,12 @@
 
 - (IBAction) editRepositories:(id)sender
 {
-  self.repositoriesController = [[[GBRepositoriesController alloc] initWithWindowNibName:@"GBRepositoriesController"] autorelease];
+  self.remotesController = [[[GBRemotesController alloc] initWithWindowNibName:@"GBRepositoriesController"] autorelease];
   
-  self.repositoriesController.target = self;
-  self.repositoriesController.action = @selector(doneEditRepositories:);
+  self.remotesController.target = self;
+  self.remotesController.action = @selector(doneEditRepositories:);
   
-  [NSApp beginSheet:[repositoriesController window]
+  [NSApp beginSheet:[remotesController window]
      modalForWindow:[self window]
       modalDelegate:self
      didEndSelector:@selector(editRepositoriesSheetDidEnd:returnCode:contextInfo:)
@@ -165,7 +177,7 @@
   // TODO: open a sheet with GBRepositoriesController.window
 }
 
-- (IBAction) doneEditRepositories:(GBRepositoriesController*)sender
+- (IBAction) doneEditRepositories:(GBRemotesController*)sender
 {
   [NSApp endSheet:[sender window]];
 }
@@ -201,7 +213,9 @@
 
 - (void)windowDidBecomeKey:(NSNotification *)notification
 {
-  
+  [self.repository updateStatus];
+//  NSLog(@"TODO: replace this with a binding statusArrayController.content <- logArrayController.selection");
+//  [self.statusArrayController setContent:[self selectedCommit].changes];
 }
 
 @end

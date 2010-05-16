@@ -1,4 +1,4 @@
-@interface GBRepositoriesController : NSWindowController
+@interface GBRemotesController : NSWindowController
 {
   id target;
   SEL action;

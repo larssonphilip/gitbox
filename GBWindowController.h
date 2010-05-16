@@ -5,7 +5,8 @@
 @end
 
 @class GBRepository;
-@class GBRepositoriesController;
+@class GBCommit;
+@class GBRemotesController;
 @interface GBWindowController : NSWindowController
 {
   GBRepository* repository;
@@ -19,8 +20,10 @@
   NSMenuItem* currentBranchCheckoutRemoteBranchMenuItem;
   NSMenuItem* currentBranchCheckoutTagMenuItem;
   
-  GBRepositoriesController* repositoriesController;
+  GBRemotesController* remotesController;
   
+  NSArrayController* logArrayController;
+  NSArrayController* statusArrayController;
 }
 
 @property(nonatomic, retain) GBRepository* repository;
@@ -34,8 +37,12 @@
 @property(nonatomic, retain) IBOutlet NSMenuItem* currentBranchCheckoutRemoteBranchMenuItem;
 @property(nonatomic, retain) IBOutlet NSMenuItem* currentBranchCheckoutTagMenuItem;
 
-@property(nonatomic, retain) GBRepositoriesController* repositoriesController;
+@property(nonatomic, retain) GBRemotesController* remotesController;
 
+@property(nonatomic, retain) IBOutlet NSArrayController* logArrayController;
+@property(nonatomic, retain) IBOutlet NSArrayController* statusArrayController;
+
+- (GBCommit*) selectedCommit;
 
 
 #pragma mark Git Actions

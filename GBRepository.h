@@ -1,10 +1,12 @@
-@class GBRef;
 @class GBRepository;
 @protocol GBRepositoryDelegate
 - (void) repositoryDidUpdateStatus:(GBRepository*)repo;
 @end
 
-
+@class GBRef;
+@class GBCommit;
+@class GBChange;
+@class GBTask;
 @interface GBRepository : NSObject
 {
   NSURL* url;
@@ -12,31 +14,45 @@
   NSArray* localBranches;
   NSArray* remoteBranches;
   NSArray* tags;
-  GBRef* currentRef;
   
-  NSArray* statusChanges;
+  GBCommit* stage;
+  
+  GBRef* currentRef;
+  NSArray* commits;
   
   id<GBRepositoryDelegate> delegate;
 }
 
 + (BOOL) isValidRepositoryAtPath:(NSString*)path;
 
-@property(nonatomic,retain) NSURL* url;
-@property(nonatomic,retain) NSURL* dotGitURL;
-@property(nonatomic,readonly) NSString* path;
+@property(retain) NSURL* url;
+@property(readonly) NSString* path;
 
-@property(nonatomic,retain) NSArray* localBranches;
-@property(nonatomic,retain) NSArray* remoteBranches;
-@property(nonatomic,retain) NSArray* tags;
-@property(nonatomic,retain) GBRef* currentRef;
+@property(retain) NSArray* localBranches;
+@property(retain) NSArray* remoteBranches;
+@property(retain) NSArray* tags;
 
-@property(nonatomic,assign) id<GBRepositoryDelegate> delegate;
+@property(retain) GBCommit* stage;
 
-- (NSURL*) gitURLWithSuffix:(NSString*)suffix;
+@property(retain) GBRef* currentRef;
+@property(retain) NSArray* commits;
+
+@property(assign) id<GBRepositoryDelegate> delegate;
+
+- (GBTask*) task;
 
 - (void) checkoutRef:(GBRef*)ref;
 
 - (void) updateStatus;
+
+- (void) stageChange:(GBChange*)change;
+- (void) unstageChange:(GBChange*)change;
+
+#pragma mark Utility methods
+
+@property(retain) NSURL* dotGitURL;
+- (NSURL*) gitURLWithSuffix:(NSString*)suffix;
+
 
 @end
 

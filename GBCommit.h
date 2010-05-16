@@ -1,24 +1,31 @@
+@class GBRepository;
 @interface GBCommit : NSObject
 {
   NSString* revision;
   NSArray* changes;
 
-  NSString* comment;
+  NSString* message;
   NSString* authorName;
   NSString* authorEmail;
   NSDate* date;
   
-  BOOL isWorkingDirectory;
+  GBRepository* repository;
 }
 
 @property(retain) NSString* revision;
 @property(retain) NSArray* changes;
 
-@property(retain) NSString* comment;
+@property(retain) NSString* message;
 @property(retain) NSString* authorName;
 @property(retain) NSString* authorEmail;
 @property(retain) NSDate* date;
 
-@property(assign) BOOL isWorkingDirectory;
+@property(assign) GBRepository* repository;
+
+- (BOOL) isStage;
+- (void) invalidateChanges;
+- (NSArray*) loadChanges;
+
+- (NSArray*) changesFromDiffOutput:(NSData*) data;
 
 @end

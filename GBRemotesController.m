@@ -1,6 +1,6 @@
-#import "GBRepositoriesController.h"
+#import "GBRemotesController.h"
 
-@implementation GBRepositoriesController
+@implementation GBRemotesController
 @synthesize target;
 @synthesize action;
 
