@@ -214,8 +214,6 @@
 - (void)windowDidBecomeKey:(NSNotification *)notification
 {
   [self.repository updateStatus];
-//  NSLog(@"TODO: replace this with a binding statusArrayController.content <- logArrayController.selection");
-//  [self.statusArrayController setContent:[self selectedCommit].changes];
 }
 
 @end
