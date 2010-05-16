@@ -1,14 +1,45 @@
 @interface GBTask : NSObject
 {
   NSString* path;
+  NSTask* task;
+  NSData* output;
+  NSArray* arguments;
+  NSTimeInterval pollingPeriod;
+  
+  id target;
+  SEL action;
+  
+  BOOL isReadingInBackground;
 }
 
 @property(retain) NSString* path;
+@property(retain) NSTask* task;
+@property(retain) NSData* output;
+@property(retain) NSArray* arguments;
+@property(assign) NSTimeInterval pollingPeriod;
 
-- (int) launchWithArguments:(NSArray*)args outputRef:(NSData**)outputRef;
-- (int) launchWithArguments:(NSArray*)args;
+@property(assign) id target;
+@property(assign) SEL action;
 
-- (int) launchCommand:(NSString*)command outputRef:(NSData**)outputRef;
-- (int) launchCommand:(NSString*)command;
+- (int) status;
+- (BOOL) isError;
+
+- (void) periodicStatusUpdate;
+
+
+#pragma mark Mutation methods
+
+- (id) prepareTask;
+- (GBTask*) launch;
+- (GBTask*) waitUntilExit;
+- (id) launchAndWait;
+- (id) showError;
+- (id) showErrorIfNeeded;
+
+- (id) launchWithArguments:(NSArray*)args;
+- (id) launchCommand:(NSString*)command;
+
+- (id) readInBackground;
+- (NSFileHandle*) fileHandleForReading;
 
 @end

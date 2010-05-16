@@ -27,16 +27,14 @@
 - (NSArray*) stagedChanges
 {
   GBTask* task = [self.repository task];
-  NSData* output = nil;
-  int status = [task launchCommand:@"git diff-index --cached --ignore-submodules HEAD"
-                         outputRef:&output];
-  if (status != 0)
+  [[task launchCommand:@"git diff-index --cached --ignore-submodules HEAD"] showErrorIfNeeded];
+  
+  if ([task isError])
   {
-    [NSAlert message:[NSString stringWithFormat:@"Failed to load staged changes [%d]", status]
-         description:[output UTF8String]];
     return [NSArray array];
   }
-  NSArray* stagedChanges = [self changesFromDiffOutput:output];
+  
+  NSArray* stagedChanges = [self changesFromDiffOutput:task.output];
   for (GBChange* change in stagedChanges)
   {
     change.repository = nil; // disable staging notification
@@ -51,16 +49,12 @@
 - (NSArray*) unstagedChanges
 {
   GBTask* task = [self.repository task];
-  NSData* output = nil;
-  int status = [task launchCommand:@"git diff-files --ignore-submodules"
-                         outputRef:&output];
-  if (status != 0)
+  [[task launchCommand:@"git diff-files --ignore-submodules"] showErrorIfNeeded];
+  if ([task isError])
   {
-    [NSAlert message:[NSString stringWithFormat:@"Failed to load unstaged changes [%d]", status]
-         description:[output UTF8String]];
     return [NSArray array];
   }
-  return [self changesFromDiffOutput:output];
+  return [self changesFromDiffOutput:task.output];
 }
 
 
@@ -68,18 +62,14 @@
 - (NSArray*) untrackedChanges
 {
   GBTask* task = [self.repository task];
-  NSData* output = nil;
-  int status = [task launchCommand:@"git ls-files --other --exclude-standard"
-                         outputRef:&output];
-  if (status != 0)
+  [[task launchCommand:@"git ls-files --other --exclude-standard"] showErrorIfNeeded];
+  if ([task isError])
   {
-    [NSAlert message:[NSString stringWithFormat:@"Failed to load untracked files [%d]", status]
-         description:[output UTF8String]];
     return [NSArray array];
   }
   
   NSMutableArray* untrackedChanges = [NSMutableArray array];
-  for (NSString* path in [[output UTF8String] componentsSeparatedByString:@"\n"])
+  for (NSString* path in [[task.output UTF8String] componentsSeparatedByString:@"\n"])
   {
     if (path && [path length] > 0)
     {

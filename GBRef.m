@@ -1,10 +1,14 @@
 #import "GBRef.h"
+#import "GBRepository.h"
+#import "GBTask.h"
 
 @implementation GBRef
 @synthesize name;
 @synthesize commitId;
 @synthesize remoteAlias;
 @synthesize isTag;
+
+@synthesize repository;
 
 - (void) dealloc
 {
@@ -58,12 +62,24 @@
   return nil;
 }
 
+- (NSString*) commitish
+{
+  if (self.commitId) return self.commitId;
+  if (self.name) return [self nameWithRemoteAlias];
+  return nil;
+}
+
 - (NSArray*) loadCommits
 {
   NSMutableArray* aCommits = [NSMutableArray array];
   
-  
-  
+  GBTask* task = [self.repository task];
+  task.arguments = [NSArray arrayWithObjects:@"git", @"rev-list", self.commitish, nil];
+  [[task launchAndWait] showErrorIfNeeded];
+  if (!task.isError)
+  {
+    NSLog(@"TODO: read and create commit objects");
+  }
   return aCommits;
 }
 

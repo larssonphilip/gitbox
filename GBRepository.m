@@ -58,6 +58,7 @@
       {
         NSString* name = [[aURL pathComponents] lastObject];
         GBRef* ref = [[GBRef new] autorelease];
+        ref.repository = self;
         ref.name = name;
         [refs addObject:ref];
       }
@@ -102,6 +103,7 @@
       {
         NSString* name = [[aURL pathComponents] lastObject];
         GBRef* ref = [[GBRef new] autorelease];
+        ref.repository = self;
         ref.name = name;
         ref.isTag = YES;
         [refs addObject:ref];
@@ -133,6 +135,7 @@
     HEAD = [HEAD stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     NSString* refprefix = @"ref: refs/heads/";
     GBRef* ref = [[GBRef new] autorelease];
+    ref.repository = self;
     if ([HEAD hasPrefix:refprefix])
     {
       ref.name = [HEAD substringFromIndex:[refprefix length]];
@@ -189,7 +192,7 @@
 {
   NSString* rev = (ref.name ? ref.name : ref.commitId);
   
-  [[self task] launchWithArguments:[NSArray arrayWithObjects:@"git", @"checkout", rev, nil]];
+  [[[self task] launchWithArguments:[NSArray arrayWithObjects:@"git", @"checkout", rev, nil]] showErrorIfNeeded];
   
   // invalidate current ref
   self.currentRef = nil;
@@ -198,23 +201,24 @@
 
 - (void) stageChange:(GBChange*)change
 {
-  NSData* output; // used to ignore error
+  GBTask* task = [self task];
+  
   if ([change isDeletion])
   {
-    [[self task] launchWithArguments:[NSArray arrayWithObjects:@"git", @"update-index", @"--remove", change.srcURL.path, nil] outputRef:&output];
+    task.arguments = [NSArray arrayWithObjects:@"git", @"update-index", @"--remove", change.srcURL.path, nil];
   }
   else
   {
-    [[self task] launchWithArguments:[NSArray arrayWithObjects:@"git", @"add", change.fileURL.path, nil] outputRef:&output];
+    task.arguments = [NSArray arrayWithObjects:@"git", @"add", change.fileURL.path, nil];
   }
+  [[task launchAndWait] showErrorIfNeeded];
 
   [self updateStatus];
 }
 
 - (void) unstageChange:(GBChange*)change
 {
-  NSData* output; // used to ignore error
-  [[self task] launchWithArguments:[NSArray arrayWithObjects:@"git", @"reset", @"--", change.fileURL.path, nil] outputRef:&output];
+  [[self task] launchWithArguments:[NSArray arrayWithObjects:@"git", @"reset", @"--", change.fileURL.path, nil]];
   [self updateStatus];
 }
 
@@ -222,7 +226,7 @@
 {
   if (message && [message length] > 0)
   {
-    [[self task] launchWithArguments:[NSArray arrayWithObjects:@"git", @"commit", @"-m", message, nil]];
+    [[[self task] launchWithArguments:[NSArray arrayWithObjects:@"git", @"commit", @"-m", message, nil]] showErrorIfNeeded];
     [self updateStatus];
     [self updateCommits];    
   }
