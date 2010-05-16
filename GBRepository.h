@@ -45,7 +45,7 @@
 
 - (void) updateStatus;
 - (void) updateCommits;
-
+- (NSArray*) loadCommits;
 
 #pragma mark Mutation methods
 

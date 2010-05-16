@@ -152,7 +152,7 @@
 {
   if (!commits)
   {
-    self.commits = [NSArray arrayWithObject:self.stage];
+    self.commits = [self loadCommits];
   }
   return [[commits retain] autorelease];
 }
@@ -172,10 +172,13 @@
 
 - (void) updateCommits
 {
-  NSLog(@"TODO: update commits list");
+  self.commits = [self loadCommits];
 }
 
-
+- (NSArray*) loadCommits
+{
+  return [[NSArray arrayWithObject:self.stage] arrayByAddingObjectsFromArray:[self.currentRef loadCommits]];
+}
 
 
 

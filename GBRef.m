@@ -58,4 +58,13 @@
   return nil;
 }
 
+- (NSArray*) loadCommits
+{
+  NSMutableArray* aCommits = [NSMutableArray array];
+  
+  
+  
+  return aCommits;
+}
+
 @end

@@ -17,4 +17,6 @@
 
 - (NSString*) displayName;
 
+- (NSArray*) loadCommits;
+
 @end
