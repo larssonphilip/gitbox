@@ -78,9 +78,18 @@
     return [NSArray array];
   }
   
-  NSLog(@"TODO: scan LF-separated filenames and return array of GBChange objects");
-  
-  return [NSArray array];
+  NSMutableArray* untrackedChanges = [NSMutableArray array];
+  for (NSString* path in [[output UTF8String] componentsSeparatedByString:@"\n"])
+  {
+    if (path && [path length] > 0)
+    {
+      GBChange* change = [[GBChange new] autorelease];
+      change.srcURL = [NSURL URLWithString:path relativeToURL:self.repository.url];
+      change.repository = self.repository;
+      [untrackedChanges addObject:change];
+    }
+  }
+  return untrackedChanges;
 }
 
 
@@ -92,9 +101,9 @@
   return YES;
 }
 
-- (NSString*) message
+- (NSString*) revision
 {
-  return NSLocalizedString(@"Stage", @"");
+  return NSLocalizedString(@"stage", @"");
 }
 
 
