@@ -176,22 +176,16 @@
   [NSApp beginSheet:[remotesController window]
      modalForWindow:[self window]
       modalDelegate:self
-     didEndSelector:@selector(editRepositoriesSheetDidEnd:returnCode:contextInfo:)
+     didEndSelector:nil //@selector(editRepositoriesSheetDidEnd:returnCode:contextInfo:)
         contextInfo:nil];
-  
-  // TODO: open a sheet with GBRepositoriesController.window
 }
 
 - (IBAction) doneEditRepositories:(GBRemotesController*)sender
 {
   [NSApp endSheet:[sender window]];
+  [[sender window] orderOut:self];
 }
 
-- (void)editRepositoriesSheetDidEnd:(NSWindow*)sheet returnCode:(NSInteger)returnCode contextInfo:(void*)contextInfo
-{
-  [NSApp endSheet:sheet];
-  //[sheet orderOut:self];
-}
 
 
 #pragma mark NSWindowController
