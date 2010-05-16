@@ -1,5 +1,5 @@
 #import "GBAppDelegate.h"
-#import "GBWindowController.h"
+#import "GBRepositoryController.h"
 #import "GBRepository.h"
 
 #import "NSFileManager+OAFileManagerHelpers.h"
@@ -27,9 +27,9 @@
   [self.windowControllers removeObject:aController];
 }
 
-- (GBWindowController*) windowControllerForRepositoryPath:(NSString*)path
+- (GBRepositoryController*) windowControllerForRepositoryPath:(NSString*)path
 {
-  GBWindowController* windowController = [[[GBWindowController alloc] initWithWindowNibName:@"GBWindowController"] autorelease];
+  GBRepositoryController* windowController = [[[GBRepositoryController alloc] initWithWindowNibName:@"GBRepositoryController"] autorelease];
   
   windowController.delegate = self;
   GBRepository* repository = [[GBRepository new] autorelease];
@@ -67,9 +67,9 @@
 
 
 
-#pragma mark GBWindowControllerDelegate
+#pragma mark GBRepositoryControllerDelegate
 
-- (void) windowControllerWillClose:(GBWindowController*)aController
+- (void) windowControllerWillClose:(GBRepositoryController*)aController
 {
   [self removeWindowController:aController];
 }
@@ -94,7 +94,7 @@
   {
     if ([GBRepository isValidRepositoryAtPath:path])
     {
-      GBWindowController* windowController = [self windowControllerForRepositoryPath:path];
+      GBRepositoryController* windowController = [self windowControllerForRepositoryPath:path];
       [self addWindowController:windowController];
       [windowController showWindow:self];
       
@@ -108,7 +108,7 @@
         
         // TODO: init git repo
         
-        GBWindowController* windowController = [self windowControllerForRepositoryPath:path];
+        GBRepositoryController* windowController = [self windowControllerForRepositoryPath:path];
         [self addWindowController:windowController];
         [windowController showWindow:self];
         

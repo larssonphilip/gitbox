@@ -1,7 +1,7 @@
-#import "GBWindowController.h"
+#import "GBRepositoryController.h"
 @interface GBAppDelegate : NSObject <NSApplicationDelegate, 
                                    NSOpenSavePanelDelegate,
-                                   GBWindowControllerDelegate>
+                                   GBRepositoryControllerDelegate>
 {
   NSMutableSet* windowControllers; 
 }

@@ -1,11 +1,12 @@
-#import "GBWindowController.h"
+#import "GBRepositoryController.h"
 #import "GBRepository.h"
 #import "GBCommit.h"
 #import "GBRef.h"
 
 #import "GBRemotesController.h"
+#import "GBCommitController.h"
 
-@implementation GBWindowController
+@implementation GBRepositoryController
 
 @synthesize repository;
 @synthesize delegate;
@@ -17,8 +18,6 @@
 @synthesize currentBranchPopUpButton;
 @synthesize currentBranchCheckoutRemoteBranchMenuItem;
 @synthesize currentBranchCheckoutTagMenuItem;
-
-@synthesize remotesController;
 
 @synthesize logArrayController; 
 @synthesize statusArrayController;
@@ -33,8 +32,6 @@
   self.currentBranchPopUpButton = nil;
   self.currentBranchCheckoutRemoteBranchMenuItem = nil;
   self.currentBranchCheckoutTagMenuItem = nil;
-  
-  self.remotesController = nil;
   
   self.logArrayController = nil;
   self.statusArrayController = nil;
@@ -140,9 +137,37 @@
 
 - (IBAction) commit:(id)sender
 {
-  // TODO: display sheet for message and commit if ok
-  //[self.repository commit];
+  GBCommitController* commitController = [[[GBCommitController alloc] initWithWindowNibName:@"GBCommitController"] autorelease];
+  
+  commitController.target = self;
+  commitController.finishSelector = @selector(doneCommit:);
+  commitController.cancelSelector = @selector(cancelCommit:);
+  
+  [commitController retain];
+  
+  [NSApp beginSheet:[commitController window]
+     modalForWindow:[self window]
+      modalDelegate:nil
+     didEndSelector:nil
+        contextInfo:nil];
 }
+
+- (void) doneCommit:(GBCommitController*)commitController
+{
+  [self.repository commitWithMessage:commitController.message];
+  
+  [commitController autorelease];
+  [NSApp endSheet:[commitController window]];
+  [[commitController window] orderOut:self];
+}
+
+- (void) cancelCommit:(GBCommitController*)commitController
+{
+  [commitController autorelease];
+  [NSApp endSheet:[commitController window]];
+  [[commitController window] orderOut:self];
+}
+
 
 
 
@@ -163,25 +188,27 @@
     self.logTableView.rowHeight = 16.0;
     [sender setTitle:NSLocalizedString(@"Vertical Views",@"")];
   }
-
 }
 
 - (IBAction) editRepositories:(id)sender
 {
-  self.remotesController = [[[GBRemotesController alloc] initWithWindowNibName:@"GBRepositoriesController"] autorelease];
+  GBRemotesController* remotesController = [[[GBRemotesController alloc] initWithWindowNibName:@"GBRemotesController"] autorelease];
   
-  self.remotesController.target = self;
-  self.remotesController.action = @selector(doneEditRepositories:);
+  remotesController.target = self;
+  remotesController.action = @selector(doneEditRepositories:);
+  
+  [remotesController retain]; // retain for a lifetime of the window
   
   [NSApp beginSheet:[remotesController window]
      modalForWindow:[self window]
-      modalDelegate:self
-     didEndSelector:nil //@selector(editRepositoriesSheetDidEnd:returnCode:contextInfo:)
+      modalDelegate:nil
+     didEndSelector:nil
         contextInfo:nil];
 }
 
-- (IBAction) doneEditRepositories:(GBRemotesController*)sender
+- (void) doneEditRepositories:(GBRemotesController*)sender
 {
+  [sender autorelease]; // balance with a retain above
   [NSApp endSheet:[sender window]];
   [[sender window] orderOut:self];
 }

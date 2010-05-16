@@ -4,8 +4,8 @@
   SEL action;
 }
 
-@property(nonatomic,assign) id target;
-@property(nonatomic,assign) SEL action;
+@property(assign) id target;
+@property(assign) SEL action;
 
 - (IBAction) onOK:(id)sender;
 

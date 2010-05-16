@@ -158,12 +158,25 @@
 }
 
 
-- (GBTask*) task
+
+
+
+
+#pragma mark Update methods
+
+
+- (void) updateStatus
 {
-  GBTask* task = [[GBTask new] autorelease];
-  task.path = self.path;
-  return task;
+  [self.stage invalidateChanges];
 }
+
+- (void) updateCommits
+{
+  NSLog(@"TODO: update commits list");
+}
+
+
+
 
 
 #pragma mark Mutation methods
@@ -202,9 +215,14 @@
   [self updateStatus];
 }
 
-- (void) updateStatus
+- (void) commitWithMessage:(NSString*) message
 {
-  [self.stage invalidateChanges];
+  if (message && [message length] > 0)
+  {
+    [[self task] launchWithArguments:[NSArray arrayWithObjects:@"git", @"commit", @"-m", message, nil]];
+    [self updateStatus];
+    [self updateCommits];    
+  }
 }
 
 
@@ -223,6 +241,14 @@
 
 #pragma mark Utility methods
 
+
+
+- (GBTask*) task
+{
+  GBTask* task = [[GBTask new] autorelease];
+  task.path = self.path;
+  return task;
+}
 
 
 @synthesize dotGitURL;

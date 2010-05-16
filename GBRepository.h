@@ -39,17 +39,25 @@
 
 @property(assign) id<GBRepositoryDelegate> delegate;
 
-- (GBTask*) task;
 
-- (void) checkoutRef:(GBRef*)ref;
+
+#pragma mark Update methods
 
 - (void) updateStatus;
+- (void) updateCommits;
 
+
+#pragma mark Mutation methods
+
+- (void) checkoutRef:(GBRef*)ref;
 - (void) stageChange:(GBChange*)change;
 - (void) unstageChange:(GBChange*)change;
+- (void) commitWithMessage:(NSString*) message;
+
 
 #pragma mark Utility methods
 
+- (GBTask*) task;
 @property(retain) NSURL* dotGitURL;
 - (NSURL*) gitURLWithSuffix:(NSString*)suffix;
 

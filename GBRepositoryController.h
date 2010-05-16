@@ -1,16 +1,15 @@
-@class GBWindowController;
+@class GBRepositoryController;
 
-@protocol GBWindowControllerDelegate
-- (void) windowControllerWillClose:(GBWindowController*)aController;
+@protocol GBRepositoryControllerDelegate
+- (void) windowControllerWillClose:(GBRepositoryController*)aController;
 @end
 
 @class GBRepository;
 @class GBCommit;
-@class GBRemotesController;
-@interface GBWindowController : NSWindowController
+@interface GBRepositoryController : NSWindowController
 {
   GBRepository* repository;
-  id<GBWindowControllerDelegate> delegate;
+  id<GBRepositoryControllerDelegate> delegate;
   
   NSSplitView* splitView;
   NSTableView* logTableView;
@@ -20,15 +19,12 @@
   NSMenuItem* currentBranchCheckoutRemoteBranchMenuItem;
   NSMenuItem* currentBranchCheckoutTagMenuItem;
   
-  
-  GBRemotesController* remotesController;
-  
   NSArrayController* logArrayController;
   NSArrayController* statusArrayController;
 }
 
 @property(nonatomic, retain) GBRepository* repository;
-@property(nonatomic, assign) id<GBWindowControllerDelegate> delegate;
+@property(nonatomic, assign) id<GBRepositoryControllerDelegate> delegate;
 
 @property(nonatomic, retain) IBOutlet NSSplitView* splitView;
 @property(nonatomic, retain) IBOutlet NSTableView* logTableView;
@@ -37,8 +33,6 @@
 @property(nonatomic, retain) IBOutlet NSPopUpButton* currentBranchPopUpButton;
 @property(nonatomic, retain) IBOutlet NSMenuItem* currentBranchCheckoutRemoteBranchMenuItem;
 @property(nonatomic, retain) IBOutlet NSMenuItem* currentBranchCheckoutTagMenuItem;
-
-@property(nonatomic, retain) GBRemotesController* remotesController;
 
 @property(nonatomic, retain) IBOutlet NSArrayController* logArrayController;
 @property(nonatomic, retain) IBOutlet NSArrayController* statusArrayController;
