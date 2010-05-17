@@ -7,9 +7,9 @@ To do now:
 
 + stage/unstage with a checkbox
 + commit with a message
+- switch remote branch
 - push
 - pull
-- switch remote branch
 - edit repositories
 - checkout remote branch
 - show log (last 5000 commits)

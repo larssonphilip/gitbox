@@ -72,6 +72,17 @@
   return [[localBranches retain] autorelease];
 }
 
+@synthesize remotes;
+- (NSArray*) remotes
+{
+  if (!remotes)
+  {
+    self.remotes = [NSArray array];
+    
+  }
+  return [[remotes retain] autorelease];
+}
+
 @synthesize remoteBranches;
 - (NSArray*) remoteBranches
 {
@@ -237,6 +248,7 @@
 {
   self.url = nil;
   self.localBranches = nil;
+  self.remotes = nil;
   self.remoteBranches = nil;
   self.tags = nil;
   self.currentRef = nil;
