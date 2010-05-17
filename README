@@ -14,6 +14,7 @@ To do now:
 - checkout remote branch
 - show log (last 5000 commits)
 - "what's new": diff with other branch is shown as grey commit rows in the same log
+- errors in NSAlert switch window focus which leads to repeated request: when repo is just initialized git-rev-log fails
 
 
 Code to do:
