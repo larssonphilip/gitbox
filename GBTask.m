@@ -23,7 +23,6 @@
 
 + (NSString*) absoluteGitPath
 {
-  NSLog(@"TODO: [GBTask absoluteGitPath] check other paths and ask user if needed");
   NSFileManager* fm = [NSFileManager defaultManager];
   if ([fm isExecutableFileAtPath:@"~/bin/git"]) return @"~/bin/git";
   if ([fm isExecutableFileAtPath:@"/usr/local/bin/git"]) return @"/usr/local/bin/git";

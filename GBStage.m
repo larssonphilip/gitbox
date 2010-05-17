@@ -91,9 +91,9 @@
   return YES;
 }
 
-- (NSString*) revision
+- (NSString*) message
 {
-  return NSLocalizedString(@"stage", @"");
+  return NSLocalizedString(@"Working directory", @"");
 }
 
 
