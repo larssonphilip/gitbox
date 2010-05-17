@@ -192,7 +192,7 @@
 {
   NSString* rev = (ref.name ? ref.name : ref.commitId);
   
-  [[[self task] launchWithArguments:[NSArray arrayWithObjects:@"git", @"checkout", rev, nil]] showErrorIfNeeded];
+  [[[self task] launchWithArguments:[NSArray arrayWithObjects:@"checkout", rev, nil]] showErrorIfNeeded];
   
   // invalidate current ref
   self.currentRef = nil;
@@ -205,11 +205,11 @@
   
   if ([change isDeletion])
   {
-    task.arguments = [NSArray arrayWithObjects:@"git", @"update-index", @"--remove", change.srcURL.path, nil];
+    task.arguments = [NSArray arrayWithObjects:@"update-index", @"--remove", change.srcURL.path, nil];
   }
   else
   {
-    task.arguments = [NSArray arrayWithObjects:@"git", @"add", change.fileURL.path, nil];
+    task.arguments = [NSArray arrayWithObjects:@"add", change.fileURL.path, nil];
   }
   [[task launchAndWait] showErrorIfNeeded];
 
@@ -218,7 +218,7 @@
 
 - (void) unstageChange:(GBChange*)change
 {
-  [[self task] launchWithArguments:[NSArray arrayWithObjects:@"git", @"reset", @"--", change.fileURL.path, nil]];
+  [[self task] launchWithArguments:[NSArray arrayWithObjects:@"reset", @"--", change.fileURL.path, nil]];
   [self updateStatus];
 }
 
@@ -226,7 +226,7 @@
 {
   if (message && [message length] > 0)
   {
-    [[[self task] launchWithArguments:[NSArray arrayWithObjects:@"git", @"commit", @"-m", message, nil]] showErrorIfNeeded];
+    [[[self task] launchWithArguments:[NSArray arrayWithObjects:@"commit", @"-m", message, nil]] showErrorIfNeeded];
     [self updateStatus];
     [self updateCommits];    
   }

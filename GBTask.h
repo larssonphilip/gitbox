@@ -1,5 +1,6 @@
 @interface GBTask : NSObject
 {
+  NSString* absoluteGitPath;
   NSString* path;
   NSTask* task;
   NSData* output;
@@ -12,6 +13,7 @@
   BOOL isReadingInBackground;
 }
 
+@property(retain) NSString* absoluteGitPath;
 @property(retain) NSString* path;
 @property(retain) NSTask* task;
 @property(retain) NSData* output;

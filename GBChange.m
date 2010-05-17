@@ -110,4 +110,10 @@
   return [self.srcURL.relativePath compare:other.srcURL.relativePath];
 }
 
+- (void) launchComparisonTool:(id)sender
+{
+  NSLog(@"TODO: git cat-file for existing blobs");
+  NSLog(@"TODO: launch opendiff with filepaths");
+}
+
 @end

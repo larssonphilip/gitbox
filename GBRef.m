@@ -74,7 +74,7 @@
   NSMutableArray* aCommits = [NSMutableArray array];
   
   GBTask* task = [self.repository task];
-  task.arguments = [NSArray arrayWithObjects:@"git", @"rev-list", self.commitish, nil];
+  task.arguments = [NSArray arrayWithObjects:@"rev-list", self.commitish, nil];
   [[task launchAndWait] showErrorIfNeeded];
   if (!task.isError)
   {

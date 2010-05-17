@@ -27,7 +27,7 @@
 - (NSArray*) stagedChanges
 {
   GBTask* task = [self.repository task];
-  [[task launchCommand:@"git diff-index --cached --ignore-submodules HEAD"] showErrorIfNeeded];
+  [[task launchCommand:@"diff-index --cached --ignore-submodules HEAD"] showErrorIfNeeded];
   
   if ([task isError])
   {
@@ -49,7 +49,7 @@
 - (NSArray*) unstagedChanges
 {
   GBTask* task = [self.repository task];
-  [[task launchCommand:@"git diff-files --ignore-submodules"] showErrorIfNeeded];
+  [[task launchCommand:@"diff-files --ignore-submodules"] showErrorIfNeeded];
   if ([task isError])
   {
     return [NSArray array];
@@ -62,7 +62,7 @@
 - (NSArray*) untrackedChanges
 {
   GBTask* task = [self.repository task];
-  [[task launchCommand:@"git ls-files --other --exclude-standard"] showErrorIfNeeded];
+  [[task launchCommand:@"ls-files --other --exclude-standard"] showErrorIfNeeded];
   if ([task isError])
   {
     return [NSArray array];

@@ -3,6 +3,7 @@
 #import "NSData+OADataHelpers.h"
 
 @implementation GBTask
+@synthesize absoluteGitPath;
 @synthesize path;
 @synthesize arguments;
 @synthesize pollingPeriod;
@@ -18,6 +19,31 @@
     isReadingInBackground = NO;
   }
   return self;
+}
+
++ (NSString*) absoluteGitPath
+{
+  NSLog(@"TODO: [GBTask absoluteGitPath] check other paths and ask user if needed");
+  NSFileManager* fm = [NSFileManager defaultManager];
+  if ([fm isExecutableFileAtPath:@"~/bin/git"]) return @"~/bin/git";
+  if ([fm isExecutableFileAtPath:@"/usr/local/bin/git"]) return @"/usr/local/bin/git";
+  if ([fm isExecutableFileAtPath:@"/usr/bin/git"]) return @"/usr/bin/git";
+  if ([fm isExecutableFileAtPath:@"/opt/local/bin/git"]) return @"/opt/local/bin/git";
+  if ([fm isExecutableFileAtPath:@"/opt/bin/git"]) return @"/opt/bin/git";
+  if ([fm isExecutableFileAtPath:@"/bin/git"]) return @"/bin/git";
+
+  [NSAlert message:@"Couldn't find git executable on your system. Please install it in a well-known location (such as /usr/local/bin)."];
+  [NSApp terminate:self];
+  return nil;
+}
+
+- (NSString*) absoluteGitPath
+{
+  if (!absoluteGitPath)
+  {
+    self.absoluteGitPath = [[self class] absoluteGitPath];
+  }
+  return [[absoluteGitPath retain] autorelease];
 }
 
 @synthesize task;
@@ -83,7 +109,7 @@
 - (id) prepareTask
 {
   [self.task setCurrentDirectoryPath:self.path];
-  [self.task setLaunchPath: @"/usr/bin/env"];
+  [self.task setLaunchPath: self.absoluteGitPath];
   [self.task setArguments: self.arguments];
   [self.task setStandardOutput:[NSPipe pipe]];
   [self.task setStandardError:[task standardOutput]]; // stderr > stdout

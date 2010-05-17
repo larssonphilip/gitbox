@@ -15,7 +15,8 @@ To do now:
 - show log (last 5000 commits)
 - "what's new": diff with other branch is shown as grey commit rows in the same log
 - errors in NSAlert switch window focus which leads to repeated request: when repo is just initialized git-rev-log fails
-
+  (maybe put errors in a floating panel)
+- 
 
 Code to do:
 
@@ -49,6 +50,7 @@ To do:
 - add "stage" cell in the top of the log - shows stage and working directory status
 - add "load more" cell in the bottom of the log
 - right pane: changes (files)
+- open FileMerge.app with opendiff command
 - handle new repo: push to a new master branch
 - handle pushing to a new branch: allow branch creation in "remote branch" dropdown
 - switch off 1min sync with a toolbar button: useful on battery

@@ -30,4 +30,6 @@
 
 - (NSComparisonResult) compareByPath:(id) other;
 
+- (void) launchComparisonTool:(id)sender;
+
 @end
