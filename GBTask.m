@@ -105,7 +105,7 @@
 #pragma mark Mutation methods
 
 
-- (id) prepareTask
+- (GBTask*) prepareTask
 {
   [self.task setCurrentDirectoryPath:self.path];
   [self.task setLaunchPath: self.absoluteGitPath];
@@ -132,12 +132,12 @@
   return self;
 }
 
-- (id) launchAndWait
+- (GBTask*) launchAndWait
 {
   return [[self launch] waitUntilExit];
 }
 
-- (id) showError
+- (GBTask*) showError
 {
   [NSAlert message: [NSString stringWithFormat:@"Failed %@ [%d]", 
                               [self.arguments componentsJoinedByString:@" "], self.status]
@@ -145,7 +145,7 @@
   return self;
 }
 
-- (id) showErrorIfNeeded
+- (GBTask*) showErrorIfNeeded
 {
   if ([self isError])
   {
@@ -154,16 +154,37 @@
   return self;
 }
 
-- (id) launchWithArguments:(NSArray*)args
+
+
+
+#pragma mark Launching shortcuts
+
+
+- (GBTask*) launchWithArguments:(NSArray*)args
 {
   self.arguments = args;
-  return [self launchAndWait];
+  return [self launch];
 }
 
-- (id) launchCommand:(NSString*)command
+- (GBTask*) launchCommand:(NSString*)command
 {
   return [self launchWithArguments:[command componentsSeparatedByString:@" "]];
 }
+
+- (GBTask*) launchWithArgumentsAndWait:(NSArray*)args
+{
+  return [[self launchWithArguments:args] waitUntilExit];
+}
+
+- (GBTask*) launchCommandAndWait:(NSString*)command
+{
+  return [[self launchCommand:command] waitUntilExit];
+}
+
+
+
+
+#pragma mark Reading the output
 
 
 - (NSFileHandle*) fileHandleForReading
@@ -171,7 +192,7 @@
   return [[self.task standardOutput] fileHandleForReading];
 }
 
-- (id) readInBackground
+- (GBTask*) readInBackground
 {
   if (!isReadingInBackground)
   {
@@ -206,6 +227,9 @@
   // we need to schedule the file handle go read more data in the background again.
   [[aNotification object] readInBackgroundAndNotify];  
 }
+
+
+
 
 
 - (void) dealloc

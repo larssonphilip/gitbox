@@ -187,7 +187,7 @@
 {
   NSString* rev = (ref.name ? ref.name : ref.commitId);
   
-  [[[self task] launchWithArguments:[NSArray arrayWithObjects:@"checkout", rev, nil]] showErrorIfNeeded];
+  [[[self task] launchWithArgumentsAndWait:[NSArray arrayWithObjects:@"checkout", rev, nil]] showErrorIfNeeded];
   
   // invalidate current ref
   self.currentRef = nil;
@@ -213,7 +213,7 @@
 
 - (void) unstageChange:(GBChange*)change
 {
-  [[self task] launchWithArguments:[NSArray arrayWithObjects:@"reset", @"--", change.fileURL.path, nil]];
+  [[self task] launchWithArgumentsAndWait:[NSArray arrayWithObjects:@"reset", @"--", change.fileURL.path, nil]];
   [self updateStatus];
 }
 
@@ -221,7 +221,7 @@
 {
   if (message && [message length] > 0)
   {
-    [[[self task] launchWithArguments:[NSArray arrayWithObjects:@"commit", @"-m", message, nil]] showErrorIfNeeded];
+    [[[self task] launchWithArgumentsAndWait:[NSArray arrayWithObjects:@"commit", @"-m", message, nil]] showErrorIfNeeded];
     [self updateStatus];
     [self updateCommits];    
   }

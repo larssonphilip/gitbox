@@ -31,17 +31,20 @@
 
 #pragma mark Mutation methods
 
-- (id) prepareTask;
+- (GBTask*) prepareTask;
 - (GBTask*) launch;
 - (GBTask*) waitUntilExit;
-- (id) launchAndWait;
-- (id) showError;
-- (id) showErrorIfNeeded;
+- (GBTask*) launchAndWait;
+- (GBTask*) showError;
+- (GBTask*) showErrorIfNeeded;
 
-- (id) launchWithArguments:(NSArray*)args;
-- (id) launchCommand:(NSString*)command;
+- (GBTask*) launchWithArguments:(NSArray*)args;
+- (GBTask*) launchCommand:(NSString*)command;
 
-- (id) readInBackground;
+- (GBTask*) launchWithArgumentsAndWait:(NSArray*)args;
+- (GBTask*) launchCommandAndWait:(NSString*)command;
+
+- (GBTask*) readInBackground;
 - (NSFileHandle*) fileHandleForReading;
 
 @end
