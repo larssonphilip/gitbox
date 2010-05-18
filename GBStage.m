@@ -27,7 +27,7 @@
 - (NSArray*) stagedChanges
 {
   GBTask* task = [self.repository task];
-  [[task launchCommandAndWait:@"diff-index --cached --ignore-submodules HEAD"] showErrorIfNeeded];
+  [[task launchCommandAndWait:@"diff-index --cached -C -M --ignore-submodules HEAD"] showErrorIfNeeded];
   
   if ([task isError])
   {
@@ -49,7 +49,7 @@
 - (NSArray*) unstagedChanges
 {
   GBTask* task = [self.repository task];
-  [[task launchCommandAndWait:@"diff-files --ignore-submodules"] showErrorIfNeeded];
+  [[task launchCommandAndWait:@"diff-files -C -M --ignore-submodules"] showErrorIfNeeded];
   if ([task isError])
   {
     return [NSArray array];
