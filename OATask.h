@@ -1,3 +1,4 @@
+extern NSString* OATaskNotification;
 @interface OATask : NSObject
 {
   NSString* launchPath;
@@ -6,9 +7,6 @@
   NSData* output;
   NSArray* arguments;
   NSTimeInterval pollingPeriod;
-  
-  id target;
-  SEL action;
   
   BOOL isReadingInBackground;
 }
@@ -19,9 +17,6 @@
 @property(retain) NSData* output;
 @property(retain) NSArray* arguments;
 @property(assign) NSTimeInterval pollingPeriod;
-
-@property(assign) id target;
-@property(assign) SEL action;
 
 - (int) status;
 - (BOOL) isError;

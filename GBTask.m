@@ -5,8 +5,6 @@
 
 @implementation GBTask
 
-@synthesize repository; 
-
 + (NSString*) absoluteGitPath
 {
   NSFileManager* fm = [NSFileManager defaultManager];

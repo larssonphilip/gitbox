@@ -248,7 +248,6 @@
 - (GBTask*) task
 {
   GBTask* task = [[GBTask new] autorelease];
-  task.repository = self;
   task.currentDirectoryPath = self.path;
   return task;
 }

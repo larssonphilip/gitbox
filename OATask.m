@@ -2,6 +2,8 @@
 #import "NSAlert+OAAlertHelpers.h"
 #import "NSData+OADataHelpers.h"
 
+NSString* OATaskNotification = @"OATaskNotification";
+
 @implementation OATask
 
 @synthesize launchPath;
@@ -10,9 +12,6 @@
 @synthesize pollingPeriod;
 @synthesize task;
 @synthesize output;
-
-@synthesize target;
-@synthesize action;
 
 - (id) init
 {
@@ -73,7 +72,13 @@
         [(NSMutableData*)self.output appendData:data];
       }
     }
-    [self.target performSelector:self.action withObject:self];
+    NSLog(@"OATask finished: %@ %@", self.launchPath, [self.arguments componentsJoinedByString:@" "]);
+    
+    NSNotification* notification = 
+      [NSNotification notificationWithName:OATaskNotification 
+                                    object:self];
+    [[NSNotificationQueue defaultQueue] enqueueNotification:notification 
+                                               postingStyle:NSPostASAP];
   }
 }
 
@@ -95,6 +100,7 @@
 - (OATask*) launch
 {
   [self prepareTask];
+  NSLog(@"OATask launch: %@ %@", self.launchPath, [self.arguments componentsJoinedByString:@" "]);
   [self.task launch];
   [self performSelector:@selector(periodicStatusUpdate) withObject:nil afterDelay:pollingPeriod];
   return self;
@@ -184,11 +190,11 @@
     [[NSNotificationCenter defaultCenter] addObserver:self 
                                              selector:@selector(didReceiveDataNotification:) 
                                                  name: NSFileHandleReadCompletionNotification 
-                                               object: self.fileHandleForReading];
+                                               object: [self fileHandleForReading]];
     // We tell the file handle to go ahead and read in the background asynchronously, and notify
     // us via the callback registered above when we signed up as an observer.  The file handle will
     // send a NSFileHandleReadCompletionNotification when it has data that is available.
-    [self.fileHandleForReading readInBackgroundAndNotify];  
+    [[self fileHandleForReading] readInBackgroundAndNotify];  
   }
   return self;
 }
@@ -215,6 +221,7 @@
   self.task = nil;
   self.output = nil;
   self.arguments = nil;
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
   [super dealloc];
 }
 

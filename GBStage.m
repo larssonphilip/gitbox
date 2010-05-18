@@ -8,18 +8,38 @@
 
 @implementation GBStage
 
+@synthesize stagedChanges;
+@synthesize unstagedChanges;
+@synthesize untrackedChanges;
 
-- (NSArray*) loadChanges
+@synthesize stagedChangesTask;
+@synthesize unstagedChangesTask;
+@synthesize untrackedChangesTask;
+
+- (NSArray*) allChanges
 {
   NSMutableArray* allChanges = [NSMutableArray array];
   
-  [allChanges addObjectsFromArray:[self stagedChanges]];
-  [allChanges addObjectsFromArray:[self unstagedChanges]];
-  [allChanges addObjectsFromArray:[self untrackedChanges]];
+  [allChanges addObjectsFromArray:self.stagedChanges];
+  [allChanges addObjectsFromArray:self.unstagedChanges];
+  [allChanges addObjectsFromArray:self.untrackedChanges];
   
   [allChanges sortUsingSelector:@selector(compareByPath:)];
   
   return allChanges;
+}
+
+- (NSArray*) loadChanges
+{
+  
+//  [[NSNotificationCenter defaultCenter] addObserver:self 
+//                                           selector:@selector(didFinish:) 
+//                                               name:OATaskNotification
+//                                             object:];
+  
+//  if (!self.stagedChangesTask) 
+//    self.stagedChangesTask = [[self.repository task] launchCommand:@""];
+  return [self allChanges];
 }
 
 
@@ -34,7 +54,7 @@
     return [NSArray array];
   }
   
-  NSArray* stagedChanges = [self changesFromDiffOutput:task.output];
+  self.stagedChanges = [self changesFromDiffOutput:task.output];
   for (GBChange* change in stagedChanges)
   {
     change.repository = nil; // disable staging notification
@@ -68,7 +88,7 @@
     return [NSArray array];
   }
   
-  NSMutableArray* untrackedChanges = [NSMutableArray array];
+  self.untrackedChanges = [NSMutableArray array];
   for (NSString* path in [[task.output UTF8String] componentsSeparatedByString:@"\n"])
   {
     if (path && [path length] > 0)
@@ -96,5 +116,17 @@
   return NSLocalizedString(@"Working directory", @"");
 }
 
-
+- (void) dealloc
+{
+  self.stagedChanges = nil;
+  self.unstagedChanges = nil;
+  self.untrackedChanges = nil;
+  
+  self.stagedChangesTask = nil;
+  self.unstagedChangesTask = nil;
+  self.untrackedChangesTask = nil;
+  
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
+  [super dealloc];
+}
 @end
