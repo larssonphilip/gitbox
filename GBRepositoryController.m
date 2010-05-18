@@ -170,6 +170,8 @@
 - (IBAction) checkoutRemoteBranch:(id)sender
 {
   NSLog(@"TODO: create a default name taking in account exiting branch names; show modal prompt and confirm");
+  
+  [self updateCurrentBranchMenus];
   [self updateCurrentBranchLabel];
 }
 
