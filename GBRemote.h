@@ -1,12 +1,17 @@
+@class GBRepository;
 @interface GBRemote : NSObject
 {
   NSString* alias;
   NSString* URLString;
   NSArray* branches;
+  
+  GBRepository* repository;
 }
 
-@property(nonatomic,retain) NSString* alias;
-@property(nonatomic,retain) NSString* URLString;
-@property(nonatomic,retain) NSArray* branches;
+@property(retain) NSString* alias;
+@property(retain) NSString* URLString;
+@property(retain) NSArray* branches;
+
+@property(assign) GBRepository* repository;
 
 @end

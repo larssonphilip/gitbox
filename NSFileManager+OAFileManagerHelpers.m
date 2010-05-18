@@ -32,4 +32,30 @@
   return NO;
 }
 
++ (NSArray*) contentsOfDirectoryAtURL:(NSURL*)url
+{
+  return [[self defaultManager] contentsOfDirectoryAtURL:url];
+}
+
+- (NSArray*) contentsOfDirectoryAtURL:(NSURL*)url
+{
+  if (!url)
+  {
+    NSLog(@"WARNING: NSFileManager: url is nil; returning empty array");
+    return [NSArray array];
+  }
+  NSError* outError = nil; 
+  NSArray* URLs = [[NSFileManager defaultManager] 
+                   contentsOfDirectoryAtURL:url
+                   includingPropertiesForKeys:[NSArray array] 
+                   options:0 
+                   error:&outError];
+  if (!URLs)
+  {
+    NSLog(@"ERROR: NSFileManager: %@", [outError localizedDescription]);
+    return [NSArray array];
+  }
+  return URLs;
+}
+
 @end

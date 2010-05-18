@@ -2,6 +2,7 @@
 #import "GBCommit.h"
 #import "GBStage.h"
 #import "GBChange.h"
+#import "GBRemote.h"
 #import "GBRef.h"
 
 #import "GBTask.h"
@@ -43,31 +44,17 @@
 {
   if (!localBranches)
   {
-    NSError* outError = nil;
+    NSMutableArray* list = [NSMutableArray array];
     NSURL* aurl = [self gitURLWithSuffix:@"refs/heads"];
-    NSAssert(aurl, @"url must be .git/refs/heads");
-    NSArray* URLs = [[NSFileManager defaultManager] 
-                     contentsOfDirectoryAtURL:aurl
-                      includingPropertiesForKeys:[NSArray array] 
-                      options:0 
-                      error:&outError];
-    NSMutableArray* refs = [NSMutableArray array];
-    if (URLs)
+    for (NSURL* aURL in [NSFileManager contentsOfDirectoryAtURL:aurl])
     {
-      for (NSURL* aURL in URLs)
-      {
-        NSString* name = [[aURL pathComponents] lastObject];
-        GBRef* ref = [[GBRef new] autorelease];
-        ref.repository = self;
-        ref.name = name;
-        [refs addObject:ref];
-      }
+      NSString* name = [[aURL pathComponents] lastObject];
+      GBRef* ref = [[GBRef new] autorelease];
+      ref.repository = self;
+      ref.name = name;
+      [list addObject:ref];
     }
-    else
-    {
-      [NSAlert error:outError];
-    }
-    self.localBranches = refs;
+    self.localBranches = list;
   }
   return [[localBranches retain] autorelease];
 }
@@ -77,21 +64,32 @@
 {
   if (!remotes)
   {
-    self.remotes = [NSArray array];
-    
+    NSMutableArray* list = [NSMutableArray array];
+    NSURL* aurl = [self gitURLWithSuffix:@"refs/remotes"];
+    for (NSURL* aURL in [NSFileManager contentsOfDirectoryAtURL:aurl])
+    {
+      if ([NSFileManager isReadableDirectoryAtPath:aURL.path])
+      {
+        NSString* alias = [[aURL pathComponents] lastObject];
+        GBRemote* remote = [[GBRemote new] autorelease];
+        remote.repository = self;
+        remote.alias = alias;
+        [list addObject:remote];        
+      }
+    }
+    self.remotes = list;
   }
   return [[remotes retain] autorelease];
 }
 
-@synthesize remoteBranches;
 - (NSArray*) remoteBranches
 {
-  if (!remoteBranches)
+  NSMutableArray* list = [NSMutableArray array];
+  for (GBRemote* remote in self.remotes)
   {
-    NSLog(@"Find real remote branches");
-    self.remoteBranches = [NSArray array];
+    [list addObjectsFromArray:remote.branches];
   }
-  return [[remoteBranches retain] autorelease];  
+  return list;
 }
 
 @synthesize tags;
@@ -99,32 +97,18 @@
 {
   if (!tags)
   {
-    NSError* outError = nil;
+    NSMutableArray* list = [NSMutableArray array];
     NSURL* aurl = [self gitURLWithSuffix:@"refs/tags"];
-    NSAssert(aurl, @"url must be .git/refs/tags");
-    NSArray* URLs = [[NSFileManager defaultManager] 
-                     contentsOfDirectoryAtURL:aurl
-                     includingPropertiesForKeys:[NSArray array] 
-                     options:0 
-                     error:&outError];
-    NSMutableArray* refs = [NSMutableArray array];
-    if (URLs)
+    for (NSURL* aURL in [NSFileManager contentsOfDirectoryAtURL:aurl])
     {
-      for (NSURL* aURL in URLs)
-      {
-        NSString* name = [[aURL pathComponents] lastObject];
-        GBRef* ref = [[GBRef new] autorelease];
-        ref.repository = self;
-        ref.name = name;
-        ref.isTag = YES;
-        [refs addObject:ref];
-      }
+      NSString* name = [[aURL pathComponents] lastObject];
+      GBRef* ref = [[GBRef new] autorelease];
+      ref.repository = self;
+      ref.name = name;
+      ref.isTag = YES;
+      [list addObject:ref];
     }
-    else
-    {
-      [NSAlert error:outError];
-    }
-    self.tags = refs;
+    self.tags = list;
   }
   return [[tags retain] autorelease];
 }
@@ -249,7 +233,6 @@
   self.url = nil;
   self.localBranches = nil;
   self.remotes = nil;
-  self.remoteBranches = nil;
   self.tags = nil;
   self.currentRef = nil;
   [super dealloc];

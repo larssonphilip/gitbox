@@ -2,9 +2,13 @@
 #import "GBRepository.h"
 #import "GBCommit.h"
 #import "GBRef.h"
+#import "GBRemote.h"
 
 #import "GBRemotesController.h"
 #import "GBCommitController.h"
+
+
+#import "NSArray+OAArrayHelpers.h"
 
 @implementation GBRepositoryController
 
@@ -43,33 +47,32 @@
 - (void) updateCurrentBranchMenus
 {
   // Local branches
-  
-  GBRef* currentBranch = self.repository.currentRef;
+  NSMenu* newMenu = [[NSMenu new] autorelease];
   NSPopUpButton* button = self.currentBranchPopUpButton;
-  [button removeAllItems];
+
   for (GBRef* localBranch in self.repository.localBranches)
   {
-    [button addItemWithTitle:[localBranch name]];
-    NSMenuItem* item = [button lastItem];
+    NSMenuItem* item = [[NSMenuItem new] autorelease];
+    [item setTitle:localBranch.name];
     [item setAction:@selector(checkoutBranch:)];
     [item setTarget:self];
     [item setRepresentedObject:localBranch];
-    if ([localBranch isEqual:currentBranch])
-    {
-      [button selectItem:item];
-    }
+    [newMenu addItem:item];
   }
   
-  [button.menu addItem:[NSMenuItem separatorItem]];
+  [newMenu addItem:[NSMenuItem separatorItem]];
   
-  
-  // Tags
-
+  // Tags and remotes: we collect them here because [tagsMenu removeAllItems] clears other item's menu
   NSMenu* tagsMenu = [self.currentBranchCheckoutTagMenuItem menu];
+  NSMenu* remoteBranchesMenu = [self.currentBranchCheckoutRemoteBranchMenuItem menu];
+
+  // Tags
+  
   [tagsMenu removeAllItems];
   for (GBRef* tag in self.repository.tags)
   {
     NSMenuItem* item = [[NSMenuItem new] autorelease];
+    [item setTitle:tag.name];
     [item setAction:@selector(checkoutBranch:)];
     [item setTarget:self];
     [item setRepresentedObject:tag];    
@@ -77,31 +80,66 @@
   }
   if ([[tagsMenu itemArray] count] > 0)
   {
-    [button.menu addItem:self.currentBranchCheckoutTagMenuItem];
+    [newMenu addItem:self.currentBranchCheckoutTagMenuItem];
   }
   
   
   // Remote branches
   
-  NSMenu* remoteBranchesMenu = [self.currentBranchCheckoutRemoteBranchMenuItem menu];
+  
   [remoteBranchesMenu removeAllItems];
-  for (GBRef* remoteBranch in self.repository.remoteBranches)
+  
+  if ([self.repository.remotes count] > 1) // display submenus for each remote
   {
-    NSMenuItem* item = [[NSMenuItem new] autorelease];
-    [item setAction:@selector(checkoutRemoteBranch:)];
-    [item setTarget:self];
-    [item setRepresentedObject:remoteBranch];
-    [remoteBranchesMenu addItem:item];
+    for (GBRemote* remote in self.repository.remotes)
+    {
+      if ([remote.branches count] > 0)
+      {
+        NSMenuItem* remoteItem = [[NSMenuItem new] autorelease];
+        NSMenu* remoteMenu = [[NSMenu new] autorelease];
+        for (GBRef* branch in remote.branches)
+        {
+          NSMenuItem* item = [[NSMenuItem new] autorelease];
+          [item setTitle:branch.name];
+          [item setAction:@selector(checkoutRemoteBranch:)];
+          [item setTarget:self];
+          [item setRepresentedObject:branch];
+          [remoteMenu addItem:item];          
+        }
+        [remoteItem setMenu:remoteMenu];
+      }
+    }
   }
-  if ([[remoteBranchesMenu itemArray] count] > 0)
+  else if ([self.repository.remotes count] == 1) // display a flat list of "origin/master"-like titles
   {
-    [button.menu addItem:self.currentBranchCheckoutRemoteBranchMenuItem];
+    for (GBRef* branch in [[self.repository.remotes firstObject] branches])
+    {
+      NSMenuItem* item = [[NSMenuItem new] autorelease];
+      [item setTitle:[branch nameWithRemoteAlias]];
+      [item setAction:@selector(checkoutRemoteBranch:)];
+      [item setTarget:self];
+      [item setRepresentedObject:branch];    
+      [remoteBranchesMenu addItem:item];
+    }
   }
   
+  if ([[remoteBranchesMenu itemArray] count] > 0)
+  {
+    [newMenu addItem:self.currentBranchCheckoutRemoteBranchMenuItem];
+  }
+  
+  [button setMenu:newMenu];
+  for (NSMenuItem* item in [newMenu itemArray])
+  {
+    if ([[item representedObject] isEqual:self.repository.currentRef])
+    {
+      [button selectItem:item];
+    }
+  }
   
   // If no branch is found the name could be empty.
   // I make sure that the name is set nevertheless.
-  [button setTitle:[currentBranch displayName]];  
+  [button setTitle:[self.repository.currentRef displayName]];  
 }
 
 - (void) updateCurrentBranchLabel

@@ -13,7 +13,6 @@
   NSURL* dotGitURL;
   NSArray* localBranches;
   NSArray* remotes;
-  NSArray* remoteBranches;
   NSArray* tags;
   
   GBCommit* stage;
@@ -31,7 +30,6 @@
 
 @property(retain) NSArray* localBranches;
 @property(retain) NSArray* remotes;
-@property(retain) NSArray* remoteBranches;
 @property(retain) NSArray* tags;
 
 @property(retain) GBCommit* stage;
