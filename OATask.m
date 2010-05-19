@@ -13,14 +13,13 @@ NSString* OATaskNotification = @"OATaskNotification";
 @synthesize task;
 @synthesize output;
 
-- (id) init
+- (NSTimeInterval) pollingPeriod
 {
-  if (self = [super init])
+  if (pollingPeriod <= 0.0)
   {
-    pollingPeriod = 0.1;
-    isReadingInBackground = NO;
+    pollingPeriod = 0.05;
   }
-  return self;
+  return pollingPeriod;
 }
 
 - (NSTask*) task
@@ -56,8 +55,8 @@ NSString* OATaskNotification = @"OATaskNotification";
 {
   if ([self.task isRunning])
   {
-    [self performSelector:@selector(periodicStatusUpdate) withObject:nil afterDelay:pollingPeriod];
-    pollingPeriod *= 1.2;
+    [self performSelector:@selector(periodicStatusUpdate) withObject:nil afterDelay:self.pollingPeriod];
+    self.pollingPeriod *= 1.5;
   }
   else
   {
