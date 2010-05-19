@@ -35,6 +35,7 @@
 		20B8B70F11A48BF1006D6442 /* GBStagedChangesTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B8B70E11A48BF1006D6442 /* GBStagedChangesTask.m */; };
 		20B8B71211A48E3E006D6442 /* GBUnstagedChangesTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B8B71111A48E3E006D6442 /* GBUnstagedChangesTask.m */; };
 		20B8B72011A48F60006D6442 /* GBUntrackedChangesTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B8B71F11A48F60006D6442 /* GBUntrackedChangesTask.m */; };
+		20B8B7C211A49975006D6442 /* NSMenu+OAMenuHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B8B7C111A49975006D6442 /* NSMenu+OAMenuHelpers.m */; };
 		8D15AC2C0486D014006FF6A4 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 2A37F4B9FDCFA73011CA2CEA /* Credits.rtf */; };
 		8D15AC320486D014006FF6A4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A37F4B0FDCFA73011CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D15AC340486D014006FF6A4 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */; };
@@ -95,6 +96,8 @@
 		20B8B71111A48E3E006D6442 /* GBUnstagedChangesTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBUnstagedChangesTask.m; sourceTree = "<group>"; };
 		20B8B71E11A48F60006D6442 /* GBUntrackedChangesTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBUntrackedChangesTask.h; sourceTree = "<group>"; };
 		20B8B71F11A48F60006D6442 /* GBUntrackedChangesTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBUntrackedChangesTask.m; sourceTree = "<group>"; };
+		20B8B7C011A49975006D6442 /* NSMenu+OAMenuHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMenu+OAMenuHelpers.h"; sourceTree = "<group>"; };
+		20B8B7C111A49975006D6442 /* NSMenu+OAMenuHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMenu+OAMenuHelpers.m"; sourceTree = "<group>"; };
 		2564AD2C0F5327BB00F57823 /* prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = prefix.pch; sourceTree = "<group>"; };
 		2A37F4B0FDCFA73011CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		2A37F4BAFDCFA73011CA2CEA /* English */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = English; path = English.lproj/Credits.rtf; sourceTree = "<group>"; };
@@ -212,6 +215,8 @@
 				2038F557119751150087CE37 /* NSData+OADataHelpers.m */,
 				2038F76B11A04A290087CE37 /* NSString+OAGitHelpers.h */,
 				2038F76C11A04A290087CE37 /* NSString+OAGitHelpers.m */,
+				20B8B7C011A49975006D6442 /* NSMenu+OAMenuHelpers.h */,
+				20B8B7C111A49975006D6442 /* NSMenu+OAMenuHelpers.m */,
 			);
 			name = Libs;
 			sourceTree = "<group>";
@@ -355,6 +360,7 @@
 				20B8B70F11A48BF1006D6442 /* GBStagedChangesTask.m in Sources */,
 				20B8B71211A48E3E006D6442 /* GBUnstagedChangesTask.m in Sources */,
 				20B8B72011A48F60006D6442 /* GBUntrackedChangesTask.m in Sources */,
+				20B8B7C211A49975006D6442 /* NSMenu+OAMenuHelpers.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

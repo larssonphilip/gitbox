@@ -12,6 +12,7 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
+			<integer value="5"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -195,48 +196,24 @@
 										<string key="NSKeyEquivalent"/>
 										<int key="NSPeriodicDelay">400</int>
 										<int key="NSPeriodicInterval">75</int>
-										<object class="NSMenuItem" key="NSMenuItem" id="1007083917">
+										<object class="NSMenuItem" key="NSMenuItem" id="545092655">
 											<reference key="NSMenu" ref="362485844"/>
-											<string key="NSTitle">Checkout Remote Branch</string>
+											<string key="NSTitle"/>
 											<string key="NSKeyEquiv"/>
+											<int key="NSKeyEquivModMask">1048576</int>
 											<int key="NSMnemonicLoc">2147483647</int>
 											<int key="NSState">1</int>
 											<reference key="NSOnImage" ref="1054028841"/>
 											<reference key="NSMixedImage" ref="692401102"/>
-											<string key="NSAction">submenuAction:</string>
-											<object class="NSMenu" key="NSSubmenu" id="677087740">
-												<string key="NSTitle">Checkout Remote Branch</string>
-												<object class="NSMutableArray" key="NSMenuItems">
-													<bool key="EncodedWithXMLCoder">YES</bool>
-													<object class="NSMenuItem" id="724346421">
-														<reference key="NSMenu" ref="677087740"/>
-														<string key="NSTitle">origin/master</string>
-														<string key="NSKeyEquiv"/>
-														<int key="NSMnemonicLoc">2147483647</int>
-														<reference key="NSOnImage" ref="1054028841"/>
-														<reference key="NSMixedImage" ref="692401102"/>
-														<string key="NSAction">_popUpItemAction:</string>
-														<reference key="NSTarget" ref="603841213"/>
-													</object>
-												</object>
-											</object>
+											<string key="NSAction">_popUpItemAction:</string>
+											<reference key="NSTarget" ref="603841213"/>
 										</object>
 										<bool key="NSMenuItemRespectAlignment">YES</bool>
 										<object class="NSMenu" key="NSMenu" id="362485844">
 											<string key="NSTitle">Current branch</string>
 											<object class="NSMutableArray" key="NSMenuItems">
 												<bool key="EncodedWithXMLCoder">YES</bool>
-												<object class="NSMenuItem" id="545092655">
-													<reference key="NSMenu" ref="362485844"/>
-													<string key="NSTitle"/>
-													<string key="NSKeyEquiv"/>
-													<int key="NSKeyEquivModMask">1048576</int>
-													<int key="NSMnemonicLoc">2147483647</int>
-													<reference key="NSOnImage" ref="1054028841"/>
-													<reference key="NSMixedImage" ref="692401102"/>
-													<string key="NSAction">_popUpItemAction:</string>
-													<reference key="NSTarget" ref="603841213"/>
-												</object>
+												<reference ref="545092655"/>
 												<object class="NSMenuItem" id="557535668">
 													<reference key="NSMenu" ref="362485844"/>
 													<bool key="NSIsDisabled">YES</bool>
@@ -262,7 +239,7 @@
 															<bool key="EncodedWithXMLCoder">YES</bool>
 															<object class="NSMenuItem" id="1024919460">
 																<reference key="NSMenu" ref="933335029"/>
-																<string key="NSTitle">v1.0</string>
+																<string key="NSTitle">some tag</string>
 																<string key="NSKeyEquiv"/>
 																<int key="NSMnemonicLoc">2147483647</int>
 																<reference key="NSOnImage" ref="1054028841"/>
@@ -273,11 +250,34 @@
 														</object>
 													</object>
 												</object>
-												<reference ref="1007083917"/>
+												<object class="NSMenuItem" id="1007083917">
+													<reference key="NSMenu" ref="362485844"/>
+													<string key="NSTitle">Checkout Remote Branch</string>
+													<string key="NSKeyEquiv"/>
+													<int key="NSMnemonicLoc">2147483647</int>
+													<reference key="NSOnImage" ref="1054028841"/>
+													<reference key="NSMixedImage" ref="692401102"/>
+													<string key="NSAction">submenuAction:</string>
+													<object class="NSMenu" key="NSSubmenu" id="677087740">
+														<string key="NSTitle">Checkout Remote Branch</string>
+														<object class="NSMutableArray" key="NSMenuItems">
+															<bool key="EncodedWithXMLCoder">YES</bool>
+															<object class="NSMenuItem" id="724346421">
+																<reference key="NSMenu" ref="677087740"/>
+																<string key="NSTitle">origin/master</string>
+																<string key="NSKeyEquiv"/>
+																<int key="NSMnemonicLoc">2147483647</int>
+																<reference key="NSOnImage" ref="1054028841"/>
+																<reference key="NSMixedImage" ref="692401102"/>
+																<string key="NSAction">_popUpItemAction:</string>
+																<reference key="NSTarget" ref="603841213"/>
+															</object>
+														</object>
+													</object>
+												</object>
 											</object>
 											<reference key="NSMenuFont" ref="308166207"/>
 										</object>
-										<int key="NSSelectedIndex">3</int>
 										<int key="NSPreferredEdge">1</int>
 										<bool key="NSUsesItemFromMenu">YES</bool>
 										<bool key="NSAltersState">YES</bool>
@@ -489,7 +489,7 @@
 				<string key="NSWindowContentMaxSize">{1.79769e+308, 1.79769e+308}</string>
 				<string key="NSWindowContentMinSize">{400, 200}</string>
 				<object class="NSView" key="NSWindowView" id="568628114">
-					<nil key="NSNextResponder"/>
+					<reference key="NSNextResponder"/>
 					<int key="NSvFlags">256</int>
 					<object class="NSMutableArray" key="NSSubviews">
 						<bool key="EncodedWithXMLCoder">YES</bool>
@@ -707,6 +707,7 @@
 													</object>
 													<string key="NSFrame">{{0, 17}, {307, 361}}</string>
 													<reference key="NSSuperview" ref="88015662"/>
+													<reference key="NSNextKeyView" ref="584195925"/>
 													<reference key="NSDocView" ref="584195925"/>
 													<reference key="NSBGColor" ref="987104074"/>
 													<int key="NScvFlags">4</int>
@@ -739,6 +740,7 @@
 													</object>
 													<string key="NSFrameSize">{307, 17}</string>
 													<reference key="NSSuperview" ref="88015662"/>
+													<reference key="NSNextKeyView" ref="364244579"/>
 													<reference key="NSDocView" ref="364244579"/>
 													<reference key="NSBGColor" ref="987104074"/>
 													<int key="NScvFlags">4</int>
@@ -747,6 +749,7 @@
 											</object>
 											<string key="NSFrameSize">{307, 378}</string>
 											<reference key="NSSuperview" ref="910591720"/>
+											<reference key="NSNextKeyView" ref="301120612"/>
 											<int key="NSsFlags">560</int>
 											<reference key="NSVScroller" ref="541163699"/>
 											<reference key="NSHScroller" ref="815265222"/>
@@ -903,6 +906,7 @@
 													</object>
 													<string key="NSFrame">{{0, 17}, {357, 361}}</string>
 													<reference key="NSSuperview" ref="323592380"/>
+													<reference key="NSNextKeyView" ref="1026253246"/>
 													<reference key="NSDocView" ref="1026253246"/>
 													<reference key="NSBGColor" ref="987104074"/>
 													<int key="NScvFlags">4</int>
@@ -936,6 +940,7 @@
 													</object>
 													<string key="NSFrameSize">{357, 17}</string>
 													<reference key="NSSuperview" ref="323592380"/>
+													<reference key="NSNextKeyView" ref="996708932"/>
 													<reference key="NSDocView" ref="996708932"/>
 													<reference key="NSBGColor" ref="987104074"/>
 													<int key="NScvFlags">4</int>
@@ -944,6 +949,7 @@
 											</object>
 											<string key="NSFrameSize">{357, 378}</string>
 											<reference key="NSSuperview" ref="720248462"/>
+											<reference key="NSNextKeyView" ref="671812570"/>
 											<int key="NSsFlags">560</int>
 											<reference key="NSVScroller" ref="908923142"/>
 											<reference key="NSHScroller" ref="720687770"/>
@@ -966,6 +972,7 @@
 						</object>
 					</object>
 					<string key="NSFrameSize">{665, 377}</string>
+					<reference key="NSSuperview"/>
 				</object>
 				<string key="NSScreenRect">{{0, 0}, {1280, 778}}</string>
 				<string key="NSMinSize">{400, 267}</string>
@@ -1139,22 +1146,6 @@
 						<reference key="destination" ref="275939982"/>
 					</object>
 					<int key="connectionID">18</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">currentBranchCheckoutTagMenuItem</string>
-						<reference key="source" ref="512844837"/>
-						<reference key="destination" ref="657322643"/>
-					</object>
-					<int key="connectionID">100163</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">currentBranchCheckoutRemoteBranchMenuItem</string>
-						<reference key="source" ref="512844837"/>
-						<reference key="destination" ref="1007083917"/>
-					</object>
-					<int key="connectionID">100165</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
@@ -2165,7 +2156,7 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{310, 509}, {82, 23}}</string>
+					<string>{{310, 509}, {115, 23}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>

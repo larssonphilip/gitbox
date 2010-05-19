@@ -10,6 +10,7 @@
 
 
 #import "NSArray+OAArrayHelpers.h"
+#import "NSMenu+OAMenuHelpers.h"
 
 @implementation GBRepositoryController
 
@@ -21,8 +22,6 @@
 @synthesize statusTableView;
 
 @synthesize currentBranchPopUpButton;
-@synthesize currentBranchCheckoutRemoteBranchMenuItem;
-@synthesize currentBranchCheckoutTagMenuItem;
 
 @synthesize logArrayController; 
 @synthesize statusArrayController;
@@ -35,8 +34,6 @@
   self.statusTableView = nil;
   
   self.currentBranchPopUpButton = nil;
-  self.currentBranchCheckoutRemoteBranchMenuItem = nil;
-  self.currentBranchCheckoutTagMenuItem = nil;
   
   self.logArrayController = nil;
   self.statusArrayController = nil;
@@ -62,14 +59,10 @@
   }
   
   [newMenu addItem:[NSMenuItem separatorItem]];
-  
-  // Tags and remotes: we collect them here because [tagsMenu removeAllItems] clears other item's menu
-  NSMenu* tagsMenu = [self.currentBranchCheckoutTagMenuItem menu];
-  NSMenu* remoteBranchesMenu = [self.currentBranchCheckoutRemoteBranchMenuItem menu];
 
   // Tags
   
-  [tagsMenu removeAllItems];
+  NSMenu* tagsMenu = [NSMenu menu];
   for (GBRef* tag in self.repository.tags)
   {
     NSMenuItem* item = [[NSMenuItem new] autorelease];
@@ -81,15 +74,13 @@
   }
   if ([[tagsMenu itemArray] count] > 0)
   {
-    [newMenu addItem:self.currentBranchCheckoutTagMenuItem];
+    [newMenu addItem:[NSMenuItem menuItemWithTitle:NSLocalizedString(@"Checkout Tag", @"") submenu:tagsMenu]];
   }
   
   
   // Remote branches
   
-  
-  [remoteBranchesMenu removeAllItems];
-  
+  NSMenu* remoteBranchesMenu = [NSMenu menu];
   if ([self.repository.remotes count] > 1) // display submenus for each remote
   {
     for (GBRemote* remote in self.repository.remotes)
@@ -126,7 +117,7 @@
   
   if ([[remoteBranchesMenu itemArray] count] > 0)
   {
-    [newMenu addItem:self.currentBranchCheckoutRemoteBranchMenuItem];
+    [newMenu addItem:[NSMenuItem menuItemWithTitle:NSLocalizedString(@"Checkout Remote Branch", @"") submenu:remoteBranchesMenu]];
   }
   
   [button setMenu:newMenu];

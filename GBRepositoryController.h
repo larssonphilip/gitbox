@@ -16,8 +16,6 @@
   NSTableView* statusTableView;
   
   NSPopUpButton* currentBranchPopUpButton;
-  NSMenuItem* currentBranchCheckoutRemoteBranchMenuItem;
-  NSMenuItem* currentBranchCheckoutTagMenuItem;
   
   NSArrayController* logArrayController;
   NSArrayController* statusArrayController;
@@ -31,8 +29,6 @@
 @property(nonatomic, retain) IBOutlet NSTableView* statusTableView;
 
 @property(nonatomic, retain) IBOutlet NSPopUpButton* currentBranchPopUpButton;
-@property(nonatomic, retain) IBOutlet NSMenuItem* currentBranchCheckoutRemoteBranchMenuItem;
-@property(nonatomic, retain) IBOutlet NSMenuItem* currentBranchCheckoutTagMenuItem;
 
 @property(nonatomic, retain) IBOutlet NSArrayController* logArrayController;
 @property(nonatomic, retain) IBOutlet NSArrayController* statusArrayController;
