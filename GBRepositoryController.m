@@ -11,6 +11,7 @@
 
 #import "NSArray+OAArrayHelpers.h"
 #import "NSMenu+OAMenuHelpers.h"
+#import "NSWindowController+OAWindowControllerHelpers.h"
 
 @implementation GBRepositoryController
 
@@ -130,16 +131,8 @@
   
   // If no branch is found the name could be empty.
   // I make sure that the name is set nevertheless.
-  [button setTitle:[self.repository.currentRef displayName]];  
+  [button setTitle:[self.repository.currentRef displayName]];
 }
-
-- (void) updateCurrentBranchLabel
-{
-  // if [self.repository isTagCheckout]
-  // if [self.repository isBranchCheckout]
-  // if [self.repository isCommitCheckout]
-}
-
 
 - (GBCommit*) selectedCommit
 {
@@ -155,7 +148,6 @@
 {
   [self.repository checkoutRef:[sender representedObject]];
   [self updateCurrentBranchMenus];
-  [self updateCurrentBranchLabel];
 }
 
 - (IBAction) checkoutRemoteBranch:(id)sender
@@ -163,7 +155,6 @@
   NSLog(@"TODO: create a default name taking in account exiting branch names; show modal prompt and confirm");
   
   [self updateCurrentBranchMenus];
-  [self updateCurrentBranchLabel];
 }
 
 - (IBAction) commit:(id)sender
@@ -174,29 +165,18 @@
   commitController.finishSelector = @selector(doneCommit:);
   commitController.cancelSelector = @selector(cancelCommit:);
   
-  [commitController retain];
-  
-  [NSApp beginSheet:[commitController window]
-     modalForWindow:[self window]
-      modalDelegate:nil
-     didEndSelector:nil
-        contextInfo:nil];
+  [self beginSheetForController:commitController];
 }
 
 - (void) doneCommit:(GBCommitController*)commitController
 {
   [self.repository commitWithMessage:commitController.message];
-  
-  [commitController autorelease];
-  [NSApp endSheet:[commitController window]];
-  [[commitController window] orderOut:self];
+  [self endSheetForController:commitController];
 }
 
 - (void) cancelCommit:(GBCommitController*)commitController
 {
-  [commitController autorelease];
-  [NSApp endSheet:[commitController window]];
-  [[commitController window] orderOut:self];
+  [self endSheetForController:commitController];
 }
 
 
@@ -228,20 +208,12 @@
   remotesController.target = self;
   remotesController.action = @selector(doneEditRepositories:);
   
-  [remotesController retain]; // retain for a lifetime of the window
-  
-  [NSApp beginSheet:[remotesController window]
-     modalForWindow:[self window]
-      modalDelegate:nil
-     didEndSelector:nil
-        contextInfo:nil];
+  [self beginSheetForController:remotesController];
 }
 
-- (void) doneEditRepositories:(GBRemotesController*)sender
+- (void) doneEditRepositories:(GBRemotesController*)remotesController
 {
-  [sender autorelease]; // balance with a retain above
-  [NSApp endSheet:[sender window]];
-  [[sender window] orderOut:self];
+  [self endSheetForController:remotesController];
 }
 
 

@@ -160,7 +160,6 @@
     }
     else // assuming SHA1 ref
     {
-      NSLog(@"TODO: Test for tag");
       ref.commitId = HEAD;
     }
     self.currentRef = ref;
