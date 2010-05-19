@@ -114,7 +114,6 @@
       [remoteBranchesMenu addItem:item];
     }
   }
-  
   if ([[remoteBranchesMenu itemArray] count] > 0)
   {
     [newMenu addItem:[NSMenuItem menuItemWithTitle:NSLocalizedString(@"Checkout Remote Branch", @"") submenu:remoteBranchesMenu]];

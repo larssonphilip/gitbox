@@ -21,10 +21,13 @@
       if ([[NSFileManager defaultManager] isReadableFileAtPath:aURL.path])
       {
         NSString* name = [[aURL pathComponents] lastObject];
-        GBRef* ref = [[GBRef new] autorelease];
-        ref.repository = self.repository;
-        ref.name = name;
-        [list addObject:ref];
+        if (![name isEqualToString:@"HEAD"])
+        {
+          GBRef* ref = [[GBRef new] autorelease];
+          ref.repository = self.repository;
+          ref.name = name;
+          [list addObject:ref];
+        }
       }
     }
     self.branches = list;
