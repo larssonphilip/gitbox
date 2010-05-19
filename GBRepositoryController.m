@@ -1,6 +1,7 @@
 #import "GBRepositoryController.h"
 #import "GBRepository.h"
 #import "GBCommit.h"
+#import "GBStage.h"
 #import "GBRef.h"
 #import "GBRemote.h"
 

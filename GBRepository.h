@@ -5,8 +5,10 @@
 
 @class GBRef;
 @class GBCommit;
+@class GBStage;
 @class GBChange;
 @class GBTask;
+@class OATaskManager;
 @interface GBRepository : NSObject
 {
   NSURL* url;
@@ -14,51 +16,48 @@
   NSArray* localBranches;
   NSArray* remotes;
   NSArray* tags;
-  
-  GBCommit* stage;
-  
+  GBStage* stage;
   GBRef* currentRef;
   NSArray* commits;
+  OATaskManager* taskManager;
   
   id<GBRepositoryDelegate> delegate;
 }
 
-+ (BOOL) isValidRepositoryAtPath:(NSString*)path;
-
 @property(retain) NSURL* url;
-@property(readonly) NSString* path;
-
+@property(retain) NSURL* dotGitURL;
 @property(retain) NSArray* localBranches;
 @property(retain) NSArray* remotes;
 @property(retain) NSArray* tags;
-
-@property(retain) GBCommit* stage;
-
+@property(retain) GBStage* stage;
 @property(retain) GBRef* currentRef;
 @property(retain) NSArray* commits;
+@property(retain) OATaskManager* taskManager;
 
 @property(assign) id<GBRepositoryDelegate> delegate;
 
 
+#pragma mark Info
 
-#pragma mark Update methods
++ (BOOL) isValidRepositoryAtPath:(NSString*)path;
+- (NSString*) path;
+
+#pragma mark Update
 
 - (void) updateStatus;
 - (void) updateCommits;
 - (NSArray*) loadCommits;
 
-#pragma mark Mutation methods
+#pragma mark Mutation
 
 - (void) checkoutRef:(GBRef*)ref;
-- (void) stageChange:(GBChange*)change;
-- (void) unstageChange:(GBChange*)change;
 - (void) commitWithMessage:(NSString*) message;
 
-
-#pragma mark Utility methods
+#pragma mark Util
 
 - (GBTask*) task;
-@property(retain) NSURL* dotGitURL;
+- (GBTask*) launchTask:(GBTask*)aTask;
+- (GBTask*) launchTaskAndWait:(GBTask*)aTask;
 - (NSURL*) gitURLWithSuffix:(NSString*)suffix;
 
 

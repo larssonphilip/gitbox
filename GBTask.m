@@ -1,9 +1,12 @@
 #import "GBRepository.h"
 #import "GBTask.h"
+
 #import "NSAlert+OAAlertHelpers.h"
 #import "NSData+OADataHelpers.h"
 
 @implementation GBTask
+
+@synthesize repository;
 
 + (NSString*) absoluteGitPath
 {
@@ -24,7 +27,8 @@
     }
   }
   
-  [NSAlert message:@"Couldn't find git executable on your system. Please install it in a well-known location (such as /usr/local/bin)."];
+  [NSAlert message:@"Couldn't find git executable" 
+       description:@"Please install git in a well-known location (such as /usr/local/bin)."];
   [NSApp terminate:self];
   return nil;
 }
@@ -38,6 +42,14 @@
   return [[launchPath retain] autorelease];
 }
 
+- (NSString*) currentDirectoryPath
+{
+  if (!currentDirectoryPath)
+  {
+    return self.repository.path;
+  }
+  return [[currentDirectoryPath retain] autorelease];
+}
 
 - (void) dealloc
 {

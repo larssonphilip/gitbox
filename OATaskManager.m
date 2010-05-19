@@ -1,0 +1,100 @@
+#import "OATaskManager.h"
+#import "OATask.h"
+
+@implementation OATaskManager
+
+@synthesize concurrentTasks;
+@synthesize queuedTasks;
+@synthesize currentTask;
+
+
+
+#pragma mark Init
+
+- (NSMutableSet*) concurrentTasks
+{
+  if (!concurrentTasks)
+  {
+    self.concurrentTasks = [NSMutableSet set];
+  }
+  return [[concurrentTasks retain] autorelease];
+}
+
+- (NSMutableArray*) queuedTasks
+{
+  if (!queuedTasks)
+  {
+    self.queuedTasks = [NSMutableArray array];
+  }
+  return [[queuedTasks retain] autorelease];
+}
+
+- (void) dealloc
+{
+  self.concurrentTasks = nil;
+  self.queuedTasks = nil;
+  self.currentTask = nil;
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
+  [super dealloc];
+}
+
+
+
+
+#pragma mark Actions
+
+
+- (OATask*) launchTask:(OATask*)task
+{
+  [self.concurrentTasks addObject:task];
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(taskDidFinish:) name:OATaskNotification object:task];
+  [task launch];
+  return task;
+}
+
+- (OATask*) enqueueTask:(OATask*)task
+{
+  [self.queuedTasks addObject:task];
+  [self launchNextEnqueuedTask];
+  return task;
+}
+
+
+
+#pragma mark Notifications
+
+
+- (void) taskDidFinish:(NSNotification*)notification
+{
+  OATask* task = notification.object;
+  [[task retain] autorelease]; // let other observers enjoy the task in this runloop cycle
+  [[NSNotificationCenter defaultCenter] removeObserver:self name:OATaskNotification object:task];
+  [self.concurrentTasks removeObject:task];
+  
+  if (self.currentTask == task) // this was an enqueued task, should launch next task
+  {
+    self.currentTask = nil;
+    [self launchNextEnqueuedTask];
+  }
+}
+
+
+#pragma mark Private
+
+
+- (void) launchNextEnqueuedTask
+{
+  if (self.currentTask == nil)
+  {
+    if ([self.queuedTasks count] > 0)
+    {
+      OATask* task = [self.queuedTasks objectAtIndex:1];
+      [self.queuedTasks removeObjectAtIndex:1];
+      self.currentTask = task;
+      [self launchTask:task];
+    }
+  }
+}
+
+
+@end

@@ -2,6 +2,9 @@
 #import "GBTask.h"
 #import "GBRepository.h"
 #import "GBChange.h"
+#import "GBStagedChangesTask.h"
+#import "GBUnstagedChangesTask.h"
+#import "GBUntrackedChangesTask.h"
 
 #import "NSData+OADataHelpers.h"
 #import "NSAlert+OAAlertHelpers.h"
@@ -12,9 +15,21 @@
 @synthesize unstagedChanges;
 @synthesize untrackedChanges;
 
-@synthesize stagedChangesTask;
-@synthesize unstagedChangesTask;
-@synthesize untrackedChangesTask;
+#pragma mark Init
+
+- (void) dealloc
+{
+  self.stagedChanges = nil;
+  self.unstagedChanges = nil;
+  self.untrackedChanges = nil;
+  
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
+  [super dealloc];
+}
+
+
+#pragma mark Actions
+
 
 - (NSArray*) allChanges
 {
@@ -31,80 +46,40 @@
 
 - (NSArray*) loadChanges
 {
+  [self.repository launchTask:[[GBStagedChangesTask new] autorelease]];
+  [self.repository launchTask:[[GBUnstagedChangesTask new] autorelease]];
+  [self.repository launchTask:[[GBUntrackedChangesTask new] autorelease]];
   
-//  [[NSNotificationCenter defaultCenter] addObserver:self 
-//                                           selector:@selector(didFinish:) 
-//                                               name:OATaskNotification
-//                                             object:];
-  
-//  if (!self.stagedChangesTask) 
-//    self.stagedChangesTask = [[self.repository task] launchCommand:@""];
   return [self allChanges];
 }
 
-
-// git diff-index --cached --ignore-submodules HEAD
-- (NSArray*) stagedChanges
+- (void) stageChange:(GBChange*)change
 {
   GBTask* task = [self.repository task];
-  [[task launchCommandAndWait:@"diff-index --cached -C -M --ignore-submodules HEAD"] showErrorIfNeeded];
   
-  if ([task isError])
+  if ([change isDeletion])
   {
-    return [NSArray array];
+    task.arguments = [NSArray arrayWithObjects:@"update-index", @"--remove", change.srcURL.path, nil];
   }
+  else
+  {
+    task.arguments = [NSArray arrayWithObjects:@"add", change.fileURL.path, nil];
+  }
+  [[task launchAndWait] showErrorIfNeeded];
   
-  self.stagedChanges = [self changesFromDiffOutput:task.output];
-  for (GBChange* change in stagedChanges)
-  {
-    change.repository = nil; // disable staging notification
-    change.staged = YES;
-    change.repository = self.repository; // enable staging notification
-  }
-  return stagedChanges;
+  [self reloadChanges];
 }
 
-
-// git diff-files --ignore-submodules
-- (NSArray*) unstagedChanges
+- (void) unstageChange:(GBChange*)change
 {
-  GBTask* task = [self.repository task];
-  [[task launchCommandAndWait:@"diff-files -C -M --ignore-submodules"] showErrorIfNeeded];
-  if ([task isError])
-  {
-    return [NSArray array];
-  }
-  return [self changesFromDiffOutput:task.output];
-}
-
-
-// git ls-files --other --exclude-standard
-- (NSArray*) untrackedChanges
-{
-  GBTask* task = [self.repository task];
-  [[task launchCommandAndWait:@"ls-files --other --exclude-standard"] showErrorIfNeeded];
-  if ([task isError])
-  {
-    return [NSArray array];
-  }
-  
-  self.untrackedChanges = [NSMutableArray array];
-  for (NSString* path in [[task.output UTF8String] componentsSeparatedByString:@"\n"])
-  {
-    if (path && [path length] > 0)
-    {
-      GBChange* change = [[GBChange new] autorelease];
-      change.srcURL = [NSURL URLWithString:path relativeToURL:self.repository.url];
-      change.repository = self.repository;
-      [untrackedChanges addObject:change];
-    }
-  }
-  return untrackedChanges;
+  [[self.repository task] launchWithArgumentsAndWait:[NSArray arrayWithObjects:@"reset", @"--", change.fileURL.path, nil]];
+  [self reloadChanges];
 }
 
 
 
-#pragma mark GBCommit
+
+#pragma mark GBCommit overrides
 
 - (BOOL) isStage
 {
@@ -116,17 +91,4 @@
   return NSLocalizedString(@"Working directory", @"");
 }
 
-- (void) dealloc
-{
-  self.stagedChanges = nil;
-  self.unstagedChanges = nil;
-  self.untrackedChanges = nil;
-  
-  self.stagedChangesTask = nil;
-  self.unstagedChangesTask = nil;
-  self.untrackedChangesTask = nil;
-  
-  [[NSNotificationCenter defaultCenter] removeObserver:self];
-  [super dealloc];
-}
 @end

@@ -7,6 +7,8 @@
 
 #import "GBTask.h"
 
+#import "OATaskManager.h"
+
 #import "NSFileManager+OAFileManagerHelpers.h"
 #import "NSObject+OALogging.h"
 #import "NSAlert+OAAlertHelpers.h"
@@ -14,22 +16,47 @@
 
 @implementation GBRepository
 
-+ (BOOL) isValidRepositoryAtPath:(NSString*) aPath
-{
-  return aPath && [NSFileManager isWritableDirectoryAtPath:[aPath stringByAppendingPathComponent:@".git"]];
-}
+@synthesize url;
+@synthesize dotGitURL;
+@synthesize localBranches;
+@synthesize remotes;
+@synthesize tags;
+@synthesize stage;
+@synthesize currentRef;
+@synthesize commits;
+@synthesize taskManager;
 
 @synthesize delegate;
-@synthesize url;
 
-@dynamic path;
-- (NSString*) path
+
+
+#pragma mark Init
+
+
+- (void) dealloc
 {
-  return [url path];
+  self.url = nil;
+  self.dotGitURL = nil;
+  self.localBranches = nil;
+  self.remotes = nil;
+  self.tags = nil;
+  self.stage = nil;
+  self.currentRef = nil;
+  self.commits = nil;
+  self.taskManager = nil;
+  [super dealloc];
 }
 
-@synthesize stage;
-- (GBCommit*) stage
+- (NSURL*) dotGitURL
+{
+  if (!dotGitURL)
+  {
+    self.dotGitURL = [self.url URLByAppendingPathComponent:@".git"];
+  }
+  return [[dotGitURL retain]  autorelease];
+}
+
+- (GBStage*) stage
 {
   if (!stage)
   {
@@ -39,7 +66,6 @@
   return [[stage retain] autorelease];
 }
 
-@synthesize localBranches;
 - (NSArray*) localBranches
 {
   if (!localBranches)
@@ -59,7 +85,6 @@
   return [[localBranches retain] autorelease];
 }
 
-@synthesize remotes;
 - (NSArray*) remotes
 {
   if (!remotes)
@@ -92,7 +117,6 @@
   return list;
 }
 
-@synthesize tags;
 - (NSArray*) tags
 {
   if (!tags)
@@ -113,7 +137,6 @@
   return [[tags retain] autorelease];
 }
 
-@synthesize currentRef;
 - (GBRef*) currentRef
 {
   if (!currentRef)
@@ -145,7 +168,6 @@
   return [[currentRef retain] autorelease];
 }
 
-@synthesize commits;
 - (NSArray*) commits
 {
   if (!commits)
@@ -155,6 +177,31 @@
   return [[commits retain] autorelease];
 }
 
+- (OATaskManager*) taskManager
+{
+  if (!taskManager)
+  {
+    self.taskManager = [[OATaskManager new] autorelease];
+  }
+  return [[taskManager retain] autorelease];
+}
+
+
+
+
+
+#pragma mark Info
+
+
++ (BOOL) isValidRepositoryAtPath:(NSString*) aPath
+{
+  return aPath && [NSFileManager isWritableDirectoryAtPath:[aPath stringByAppendingPathComponent:@".git"]];
+}
+
+- (NSString*) path
+{
+  return [url path];
+}
 
 
 
@@ -165,7 +212,7 @@
 
 - (void) updateStatus
 {
-  [self.stage invalidateChanges];
+  [self.stage reloadChanges];
 }
 
 - (void) updateCommits
@@ -177,6 +224,8 @@
 {
   return [[NSArray arrayWithObject:self.stage] arrayByAddingObjectsFromArray:[self.currentRef loadCommits]];
 }
+
+
 
 
 
@@ -193,30 +242,6 @@
   self.currentRef = nil;
 }
 
-
-- (void) stageChange:(GBChange*)change
-{
-  GBTask* task = [self task];
-  
-  if ([change isDeletion])
-  {
-    task.arguments = [NSArray arrayWithObjects:@"update-index", @"--remove", change.srcURL.path, nil];
-  }
-  else
-  {
-    task.arguments = [NSArray arrayWithObjects:@"add", change.fileURL.path, nil];
-  }
-  [[task launchAndWait] showErrorIfNeeded];
-
-  [self updateStatus];
-}
-
-- (void) unstageChange:(GBChange*)change
-{
-  [[self task] launchWithArgumentsAndWait:[NSArray arrayWithObjects:@"reset", @"--", change.fileURL.path, nil]];
-  [self updateStatus];
-}
-
 - (void) commitWithMessage:(NSString*) message
 {
   if (message && [message length] > 0)
@@ -228,41 +253,31 @@
 }
 
 
-- (void) dealloc
-{
-  self.url = nil;
-  self.localBranches = nil;
-  self.remotes = nil;
-  self.tags = nil;
-  self.currentRef = nil;
-  [super dealloc];
-}
-
-
 
 
 #pragma mark Utility methods
 
 
-
 - (GBTask*) task
 {
   GBTask* task = [[GBTask new] autorelease];
-  task.currentDirectoryPath = self.path;
+  task.repository = self;
   return task;
 }
 
-
-@synthesize dotGitURL;
-- (NSURL*) dotGitURL
+- (GBTask*) launchTask:(GBTask*)aTask
 {
-  if (!dotGitURL)
-  {
-    self.dotGitURL = [self.url URLByAppendingPathComponent:@".git"];
-  }
-  return [[dotGitURL retain]  autorelease];
+  aTask.repository = self;
+  [self.taskManager launchTask:aTask];
+  return aTask;
 }
 
+- (GBTask*) launchTaskAndWait:(GBTask*)aTask
+{
+  aTask.repository = self;
+  [aTask launchAndWait];
+  return aTask;
+}
 
 - (NSURL*) gitURLWithSuffix:(NSString*)suffix
 {

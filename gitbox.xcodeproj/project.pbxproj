@@ -30,6 +30,11 @@
 		2058FA4811982F5100FB018D /* GBRemotesController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2058FA4711982F5100FB018D /* GBRemotesController.xib */; };
 		206A07BE11A33519003BB9E3 /* OATask.m in Sources */ = {isa = PBXBuildFile; fileRef = 206A07BD11A33519003BB9E3 /* OATask.m */; };
 		20B1621211944C0F00A709CF /* NSFileManager+OAFileManagerHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B1621111944C0F00A709CF /* NSFileManager+OAFileManagerHelpers.m */; };
+		20B8B64E11A444B6006D6442 /* OATaskManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B8B64D11A444B6006D6442 /* OATaskManager.m */; };
+		20B8B70C11A489F1006D6442 /* GBChangesTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B8B70B11A489F1006D6442 /* GBChangesTask.m */; };
+		20B8B70F11A48BF1006D6442 /* GBStagedChangesTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B8B70E11A48BF1006D6442 /* GBStagedChangesTask.m */; };
+		20B8B71211A48E3E006D6442 /* GBUnstagedChangesTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B8B71111A48E3E006D6442 /* GBUnstagedChangesTask.m */; };
+		20B8B72011A48F60006D6442 /* GBUntrackedChangesTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B8B71F11A48F60006D6442 /* GBUntrackedChangesTask.m */; };
 		8D15AC2C0486D014006FF6A4 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 2A37F4B9FDCFA73011CA2CEA /* Credits.rtf */; };
 		8D15AC320486D014006FF6A4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A37F4B0FDCFA73011CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D15AC340486D014006FF6A4 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */; };
@@ -80,6 +85,16 @@
 		206A07BD11A33519003BB9E3 /* OATask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OATask.m; sourceTree = "<group>"; };
 		20B1621011944C0F00A709CF /* NSFileManager+OAFileManagerHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSFileManager+OAFileManagerHelpers.h"; sourceTree = "<group>"; };
 		20B1621111944C0F00A709CF /* NSFileManager+OAFileManagerHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSFileManager+OAFileManagerHelpers.m"; sourceTree = "<group>"; };
+		20B8B64C11A444B6006D6442 /* OATaskManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OATaskManager.h; sourceTree = "<group>"; };
+		20B8B64D11A444B6006D6442 /* OATaskManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OATaskManager.m; sourceTree = "<group>"; };
+		20B8B70A11A489F1006D6442 /* GBChangesTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBChangesTask.h; sourceTree = "<group>"; };
+		20B8B70B11A489F1006D6442 /* GBChangesTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBChangesTask.m; sourceTree = "<group>"; };
+		20B8B70D11A48BF1006D6442 /* GBStagedChangesTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBStagedChangesTask.h; sourceTree = "<group>"; };
+		20B8B70E11A48BF1006D6442 /* GBStagedChangesTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBStagedChangesTask.m; sourceTree = "<group>"; };
+		20B8B71011A48E3E006D6442 /* GBUnstagedChangesTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBUnstagedChangesTask.h; sourceTree = "<group>"; };
+		20B8B71111A48E3E006D6442 /* GBUnstagedChangesTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBUnstagedChangesTask.m; sourceTree = "<group>"; };
+		20B8B71E11A48F60006D6442 /* GBUntrackedChangesTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBUntrackedChangesTask.h; sourceTree = "<group>"; };
+		20B8B71F11A48F60006D6442 /* GBUntrackedChangesTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBUntrackedChangesTask.m; sourceTree = "<group>"; };
 		2564AD2C0F5327BB00F57823 /* prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = prefix.pch; sourceTree = "<group>"; };
 		2A37F4B0FDCFA73011CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		2A37F4BAFDCFA73011CA2CEA /* English */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = English; path = English.lproj/Credits.rtf; sourceTree = "<group>"; };
@@ -166,8 +181,18 @@
 			children = (
 				206A07BC11A33519003BB9E3 /* OATask.h */,
 				206A07BD11A33519003BB9E3 /* OATask.m */,
+				20B8B64C11A444B6006D6442 /* OATaskManager.h */,
+				20B8B64D11A444B6006D6442 /* OATaskManager.m */,
 				2038F6C311A030F70087CE37 /* GBTask.h */,
 				2038F6C411A030F70087CE37 /* GBTask.m */,
+				20B8B70A11A489F1006D6442 /* GBChangesTask.h */,
+				20B8B70B11A489F1006D6442 /* GBChangesTask.m */,
+				20B8B70D11A48BF1006D6442 /* GBStagedChangesTask.h */,
+				20B8B70E11A48BF1006D6442 /* GBStagedChangesTask.m */,
+				20B8B71011A48E3E006D6442 /* GBUnstagedChangesTask.h */,
+				20B8B71111A48E3E006D6442 /* GBUnstagedChangesTask.m */,
+				20B8B71E11A48F60006D6442 /* GBUntrackedChangesTask.h */,
+				20B8B71F11A48F60006D6442 /* GBUntrackedChangesTask.m */,
 			);
 			name = Tasks;
 			sourceTree = "<group>";
@@ -325,6 +350,11 @@
 				2038F76D11A04A290087CE37 /* NSString+OAGitHelpers.m in Sources */,
 				2014F9B811A0890B00462BBC /* GBCommitController.m in Sources */,
 				206A07BE11A33519003BB9E3 /* OATask.m in Sources */,
+				20B8B64E11A444B6006D6442 /* OATaskManager.m in Sources */,
+				20B8B70C11A489F1006D6442 /* GBChangesTask.m in Sources */,
+				20B8B70F11A48BF1006D6442 /* GBStagedChangesTask.m in Sources */,
+				20B8B71211A48E3E006D6442 /* GBUnstagedChangesTask.m in Sources */,
+				20B8B72011A48F60006D6442 /* GBUntrackedChangesTask.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

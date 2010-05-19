@@ -1,5 +1,6 @@
 #import "GBChange.h"
 #import "GBRepository.h"
+#import "GBStage.h"
 
 @implementation GBChange
 
@@ -29,11 +30,11 @@
     staged = flag;
     if (flag)
     {
-      [self.repository stageChange:self];
+      [self.repository.stage stageChange:self];
     }
     else
     {
-      [self.repository unstageChange:self];
+      [self.repository.stage unstageChange:self];
     }
   }
 }

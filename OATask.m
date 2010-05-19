@@ -13,6 +13,9 @@ NSString* OATaskNotification = @"OATaskNotification";
 @synthesize task;
 @synthesize output;
 
+
+#pragma mark Init
+
 - (NSTimeInterval) pollingPeriod
 {
   if (pollingPeriod <= 0.0)
@@ -40,15 +43,33 @@ NSString* OATaskNotification = @"OATaskNotification";
   return [[output retain] autorelease];
 }
 
-- (int) status
+- (void) dealloc
+{
+  self.currentDirectoryPath = nil;
+  self.task = nil;
+  self.output = nil;
+  self.arguments = nil;
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
+  [super dealloc];
+}
+
+
+#pragma mark Info
+
+
+- (int) terminationStatus
 {
   return [self.task terminationStatus];
 }
 
 - (BOOL) isError
 {
-  return self.status != 0;
+  return self.terminationStatus != 0;
 }
+
+
+
+#pragma mark Helpers
 
 
 - (void) periodicStatusUpdate
@@ -71,8 +92,7 @@ NSString* OATaskNotification = @"OATaskNotification";
         [(NSMutableData*)self.output appendData:data];
       }
     }
-    NSLog(@"OATask finished: %@ %@", self.launchPath, [self.arguments componentsJoinedByString:@" "]);
-    
+    [self didFinish];
     NSNotification* notification = 
       [NSNotification notificationWithName:OATaskNotification 
                                     object:self];
@@ -92,14 +112,14 @@ NSString* OATaskNotification = @"OATaskNotification";
   [self.task setLaunchPath: self.launchPath];
   [self.task setArguments: self.arguments];
   [self.task setStandardOutput:[NSPipe pipe]];
-  [self.task setStandardError:[task standardOutput]]; // stderr > stdout
+  [self.task setStandardError:[self.task standardOutput]]; // stderr > stdout
   return self;
 }
 
 - (OATask*) launch
 {
   [self prepareTask];
-  NSLog(@"OATask launch: %@ %@", self.launchPath, [self.arguments componentsJoinedByString:@" "]);
+  NSLog(@"OATask launch:   %@ %@", self.launchPath, [self.arguments componentsJoinedByString:@" "]);
   [self.task launch];
   [self performSelector:@selector(periodicStatusUpdate) withObject:nil afterDelay:pollingPeriod];
   return self;
@@ -111,6 +131,7 @@ NSString* OATaskNotification = @"OATaskNotification";
                                            selector:@selector(periodicStatusUpdate) 
                                              object:nil];
   [self.task waitUntilExit];
+  [self didFinish];
   return self;
 }
 
@@ -122,7 +143,7 @@ NSString* OATaskNotification = @"OATaskNotification";
 - (OATask*) showError
 {
   [NSAlert message: [NSString stringWithFormat:@"Failed %@ [%d]", 
-                     [self.arguments componentsJoinedByString:@" "], self.status]
+                     [self.arguments componentsJoinedByString:@" "], self.terminationStatus]
        description:[self.output UTF8String]];
   return self;
 }
@@ -136,7 +157,11 @@ NSString* OATaskNotification = @"OATaskNotification";
   return self;
 }
 
-
+- (void) didFinish
+{
+  // Subclasses may override it to do some data processing.
+  NSLog(@"OATask finished: %@ %@ [%d]", self.launchPath, [self.arguments componentsJoinedByString:@" "], [self terminationStatus]);
+}
 
 
 #pragma mark Launching shortcuts
@@ -148,19 +173,9 @@ NSString* OATaskNotification = @"OATaskNotification";
   return [self launch];
 }
 
-- (OATask*) launchCommand:(NSString*)command
-{
-  return [self launchWithArguments:[command componentsSeparatedByString:@" "]];
-}
-
 - (OATask*) launchWithArgumentsAndWait:(NSArray*)args
 {
   return [[self launchWithArguments:args] waitUntilExit];
-}
-
-- (OATask*) launchCommandAndWait:(NSString*)command
-{
-  return [[self launchCommand:command] waitUntilExit];
 }
 
 
@@ -213,15 +228,23 @@ NSString* OATaskNotification = @"OATaskNotification";
 
 
 
+#pragma mark Subscription
 
-- (void) dealloc
+- (OATask*) subscribe:(id)observer selector:(SEL) selector
 {
-  self.currentDirectoryPath = nil;
-  self.task = nil;
-  self.output = nil;
-  self.arguments = nil;
-  [[NSNotificationCenter defaultCenter] removeObserver:self];
-  [super dealloc];
+  [[NSNotificationCenter defaultCenter] addObserver:observer 
+                                           selector:selector
+                                               name:OATaskNotification
+                                             object:self];
+  return self;
+}
+
+- (OATask*) unsubscribe:(id)observer
+{
+  [[NSNotificationCenter defaultCenter] removeObserver:observer 
+                                                  name:OATaskNotification 
+                                                object:self];
+  return self;
 }
 
 

@@ -18,7 +18,7 @@ extern NSString* OATaskNotification;
 @property(retain) NSArray* arguments;
 @property(assign) NSTimeInterval pollingPeriod;
 
-- (int) status;
+- (int) terminationStatus;
 - (BOOL) isError;
 
 - (void) periodicStatusUpdate;
@@ -34,12 +34,19 @@ extern NSString* OATaskNotification;
 - (OATask*) showErrorIfNeeded;
 
 - (OATask*) launchWithArguments:(NSArray*)args;
-- (OATask*) launchCommand:(NSString*)command;
-
 - (OATask*) launchWithArgumentsAndWait:(NSArray*)args;
-- (OATask*) launchCommandAndWait:(NSString*)command;
 
 - (OATask*) readInBackground;
 - (NSFileHandle*) fileHandleForReading;
+
+
+#pragma mark Subscription
+
+- (OATask*) subscribe:(id)observer selector:(SEL) selector;
+- (OATask*) unsubscribe:(id)observer;
+
+
+// internal method for subclasses
+- (void) didFinish;
 
 @end

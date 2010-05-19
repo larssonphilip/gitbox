@@ -1,3 +1,4 @@
+@class GBChange;
 @class GBRepository;
 @interface GBCommit : NSObject
 {
@@ -23,7 +24,11 @@
 @property(assign) GBRepository* repository;
 
 - (BOOL) isStage;
-- (void) invalidateChanges;
+
+- (void) updateChanges;
+- (void) reloadChanges;
+
+- (NSArray*) allChanges;
 - (NSArray*) loadChanges;
 
 - (NSArray*) changesFromDiffOutput:(NSData*) data;
