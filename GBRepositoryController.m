@@ -186,24 +186,28 @@
 
 - (IBAction) commit:(id)sender
 {
-  GBCommitController* commitController = [[[GBCommitController alloc] initWithWindowNibName:@"GBCommitController"] autorelease];
+  GBPromptController* ctrl = [GBPromptController controller];
+
+  ctrl.title = NSLocalizedString(@"Commit", @"");
+  ctrl.promptText = NSLocalizedString(@"Message:", @"");
+  ctrl.buttonText = NSLocalizedString(@"Commit", @"");
   
-  commitController.target = self;
-  commitController.finishSelector = @selector(doneCommit:);
-  commitController.cancelSelector = @selector(cancelCommit:);
+  ctrl.target = self;
+  ctrl.finishSelector = @selector(doneCommit:);
+  ctrl.cancelSelector = @selector(cancelCommit:);
   
-  [self beginSheetForController:commitController];
+  [self beginSheetForController:ctrl];
 }
 
-  - (void) doneCommit:(GBCommitController*)commitController
+  - (void) doneCommit:(GBCommitController*)ctrl
   {
-    [self.repository commitWithMessage:commitController.message];
-    [self endSheetForController:commitController];
+    [self.repository commitWithMessage:ctrl.value];
+    [self endSheetForController:ctrl];
   }
 
-  - (void) cancelCommit:(GBCommitController*)commitController
+  - (void) cancelCommit:(GBCommitController*)ctrl
   {
-    [self endSheetForController:commitController];
+    [self endSheetForController:ctrl];
   }
 
 
