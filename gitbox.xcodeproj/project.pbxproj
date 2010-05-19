@@ -37,6 +37,9 @@
 		20B8B72011A48F60006D6442 /* GBUntrackedChangesTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B8B71F11A48F60006D6442 /* GBUntrackedChangesTask.m */; };
 		20B8B7C211A49975006D6442 /* NSMenu+OAMenuHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B8B7C111A49975006D6442 /* NSMenu+OAMenuHelpers.m */; };
 		20B8B81311A49E8D006D6442 /* NSWindowController+OAWindowControllerHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B8B81211A49E8D006D6442 /* NSWindowController+OAWindowControllerHelpers.m */; };
+		20B8B83911A4A72A006D6442 /* GBPromptController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 20B8B83811A4A72A006D6442 /* GBPromptController.xib */; };
+		20B8B83D11A4A776006D6442 /* GBPromptController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B8B83C11A4A776006D6442 /* GBPromptController.m */; };
+		20B8B84811A4AAF2006D6442 /* NSString+OAStringHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B8B84711A4AAF2006D6442 /* NSString+OAStringHelpers.m */; };
 		8D15AC2C0486D014006FF6A4 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 2A37F4B9FDCFA73011CA2CEA /* Credits.rtf */; };
 		8D15AC320486D014006FF6A4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A37F4B0FDCFA73011CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D15AC340486D014006FF6A4 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */; };
@@ -101,6 +104,11 @@
 		20B8B7C111A49975006D6442 /* NSMenu+OAMenuHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMenu+OAMenuHelpers.m"; sourceTree = "<group>"; };
 		20B8B81111A49E8D006D6442 /* NSWindowController+OAWindowControllerHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSWindowController+OAWindowControllerHelpers.h"; sourceTree = "<group>"; };
 		20B8B81211A49E8D006D6442 /* NSWindowController+OAWindowControllerHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSWindowController+OAWindowControllerHelpers.m"; sourceTree = "<group>"; };
+		20B8B83811A4A72A006D6442 /* GBPromptController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBPromptController.xib; sourceTree = "<group>"; };
+		20B8B83B11A4A776006D6442 /* GBPromptController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBPromptController.h; sourceTree = "<group>"; };
+		20B8B83C11A4A776006D6442 /* GBPromptController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBPromptController.m; sourceTree = "<group>"; };
+		20B8B84611A4AAF2006D6442 /* NSString+OAStringHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+OAStringHelpers.h"; sourceTree = "<group>"; };
+		20B8B84711A4AAF2006D6442 /* NSString+OAStringHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+OAStringHelpers.m"; sourceTree = "<group>"; };
 		2564AD2C0F5327BB00F57823 /* prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = prefix.pch; sourceTree = "<group>"; };
 		2A37F4B0FDCFA73011CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		2A37F4BAFDCFA73011CA2CEA /* English */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = English; path = English.lproj/Credits.rtf; sourceTree = "<group>"; };
@@ -178,6 +186,8 @@
 				2038F5B9119879FA0087CE37 /* GBRemotesController.m */,
 				2014F9B611A0890B00462BBC /* GBCommitController.h */,
 				2014F9B711A0890B00462BBC /* GBCommitController.m */,
+				20B8B83B11A4A776006D6442 /* GBPromptController.h */,
+				20B8B83C11A4A776006D6442 /* GBPromptController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -216,6 +226,8 @@
 				2038F41C11954E000087CE37 /* NSAlert+OAAlertHelpers.m */,
 				2038F556119751150087CE37 /* NSData+OADataHelpers.h */,
 				2038F557119751150087CE37 /* NSData+OADataHelpers.m */,
+				20B8B84611A4AAF2006D6442 /* NSString+OAStringHelpers.h */,
+				20B8B84711A4AAF2006D6442 /* NSString+OAStringHelpers.m */,
 				2038F76B11A04A290087CE37 /* NSString+OAGitHelpers.h */,
 				2038F76C11A04A290087CE37 /* NSString+OAGitHelpers.m */,
 				20B8B7C011A49975006D6442 /* NSMenu+OAMenuHelpers.h */,
@@ -269,6 +281,7 @@
 				1DDD58290DA1D0D100B32029 /* GBRepositoryController.xib */,
 				2014F9B311A088EE00462BBC /* GBCommitController.xib */,
 				2058FA4711982F5100FB018D /* GBRemotesController.xib */,
+				20B8B83811A4A72A006D6442 /* GBPromptController.xib */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -331,6 +344,7 @@
 				2038F1B7119366960087CE37 /* MainMenu.xib in Resources */,
 				2058FA4811982F5100FB018D /* GBRemotesController.xib in Resources */,
 				2014F9B411A088EE00462BBC /* GBCommitController.xib in Resources */,
+				20B8B83911A4A72A006D6442 /* GBPromptController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -367,6 +381,8 @@
 				20B8B72011A48F60006D6442 /* GBUntrackedChangesTask.m in Sources */,
 				20B8B7C211A49975006D6442 /* NSMenu+OAMenuHelpers.m in Sources */,
 				20B8B81311A49E8D006D6442 /* NSWindowController+OAWindowControllerHelpers.m in Sources */,
+				20B8B83D11A4A776006D6442 /* GBPromptController.m in Sources */,
+				20B8B84811A4AAF2006D6442 /* NSString+OAStringHelpers.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

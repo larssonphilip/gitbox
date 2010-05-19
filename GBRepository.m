@@ -70,17 +70,7 @@
 {
   if (!localBranches)
   {
-    NSMutableArray* list = [NSMutableArray array];
-    NSURL* aurl = [self gitURLWithSuffix:@"refs/heads"];
-    for (NSURL* aURL in [NSFileManager contentsOfDirectoryAtURL:aurl])
-    {
-      NSString* name = [[aURL pathComponents] lastObject];
-      GBRef* ref = [[GBRef new] autorelease];
-      ref.repository = self;
-      ref.name = name;
-      [list addObject:ref];
-    }
-    self.localBranches = list;
+    self.localBranches = [self loadLocalBranches];
   }
   return [[localBranches retain] autorelease];
 }
@@ -89,20 +79,7 @@
 {
   if (!remotes)
   {
-    NSMutableArray* list = [NSMutableArray array];
-    NSURL* aurl = [self gitURLWithSuffix:@"refs/remotes"];
-    for (NSURL* aURL in [NSFileManager contentsOfDirectoryAtURL:aurl])
-    {
-      if ([NSFileManager isReadableDirectoryAtPath:aURL.path])
-      {
-        NSString* alias = [[aURL pathComponents] lastObject];
-        GBRemote* remote = [[GBRemote new] autorelease];
-        remote.repository = self;
-        remote.alias = alias;
-        [list addObject:remote];        
-      }
-    }
-    self.remotes = list;
+    self.remotes = [self loadRemotes];
   }
   return [[remotes retain] autorelease];
 }
@@ -121,18 +98,7 @@
 {
   if (!tags)
   {
-    NSMutableArray* list = [NSMutableArray array];
-    NSURL* aurl = [self gitURLWithSuffix:@"refs/tags"];
-    for (NSURL* aURL in [NSFileManager contentsOfDirectoryAtURL:aurl])
-    {
-      NSString* name = [[aURL pathComponents] lastObject];
-      GBRef* ref = [[GBRef new] autorelease];
-      ref.repository = self;
-      ref.name = name;
-      ref.isTag = YES;
-      [list addObject:ref];
-    }
-    self.tags = list;
+    self.tags = [self loadTags];
   }
   return [[tags retain] autorelease];
 }
@@ -224,6 +190,54 @@
   return [[NSArray arrayWithObject:self.stage] arrayByAddingObjectsFromArray:[self.currentRef loadCommits]];
 }
 
+- (NSArray*) loadLocalBranches
+{
+  NSMutableArray* list = [NSMutableArray array];
+  NSURL* aurl = [self gitURLWithSuffix:@"refs/heads"];
+  for (NSURL* aURL in [NSFileManager contentsOfDirectoryAtURL:aurl])
+  {
+    NSString* name = [[aURL pathComponents] lastObject];
+    GBRef* ref = [[GBRef new] autorelease];
+    ref.repository = self;
+    ref.name = name;
+    [list addObject:ref];
+  }
+  return list;
+}
+
+- (NSArray*) loadTags
+{
+  NSMutableArray* list = [NSMutableArray array];
+  NSURL* aurl = [self gitURLWithSuffix:@"refs/tags"];
+  for (NSURL* aURL in [NSFileManager contentsOfDirectoryAtURL:aurl])
+  {
+    NSString* name = [[aURL pathComponents] lastObject];
+    GBRef* ref = [[GBRef new] autorelease];
+    ref.repository = self;
+    ref.name = name;
+    ref.isTag = YES;
+    [list addObject:ref];
+  }
+  return list;
+}
+
+- (NSArray*) loadRemotes
+{
+  NSMutableArray* list = [NSMutableArray array];
+  NSURL* aurl = [self gitURLWithSuffix:@"refs/remotes"];
+  for (NSURL* aURL in [NSFileManager contentsOfDirectoryAtURL:aurl])
+  {
+    if ([NSFileManager isReadableDirectoryAtPath:aURL.path])
+    {
+      NSString* alias = [[aURL pathComponents] lastObject];
+      GBRemote* remote = [[GBRemote new] autorelease];
+      remote.repository = self;
+      remote.alias = alias;
+      [list addObject:remote];        
+    }
+  }
+  return list;
+}
 
 
 
@@ -233,12 +247,18 @@
 
 - (void) checkoutRef:(GBRef*)ref
 {
-  NSString* rev = (ref.name ? ref.name : ref.commitId);
-  
-  [[[self task] launchWithArgumentsAndWait:[NSArray arrayWithObjects:@"checkout", rev, nil]] showErrorIfNeeded];
+  [[[self task] launchWithArgumentsAndWait:[NSArray arrayWithObjects:@"checkout", [ref commitish], nil]] showErrorIfNeeded];
   
   // invalidate current ref
   self.currentRef = nil;
+}
+
+- (void) checkoutRef:(GBRef*)ref withNewBranchName:(NSString*)name
+{
+  [[[self task] launchWithArgumentsAndWait:[NSArray arrayWithObjects:@"checkout", @"-b", name, [ref commitish], nil]] showErrorIfNeeded];
+  
+  // invalidate current ref
+  self.currentRef = nil;  
 }
 
 - (void) commitWithMessage:(NSString*) message

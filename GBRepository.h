@@ -47,10 +47,14 @@
 - (void) updateStatus;
 - (void) updateCommits;
 - (NSArray*) loadCommits;
+- (NSArray*) loadLocalBranches;
+- (NSArray*) loadTags;
+- (NSArray*) loadRemotes;
 
 #pragma mark Mutation
 
 - (void) checkoutRef:(GBRef*)ref;
+- (void) checkoutRef:(GBRef*)ref withNewBranchName:(NSString*)name;
 - (void) commitWithMessage:(NSString*) message;
 
 #pragma mark Util

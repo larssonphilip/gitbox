@@ -26,6 +26,7 @@
           GBRef* ref = [[GBRef new] autorelease];
           ref.repository = self.repository;
           ref.name = name;
+          ref.remoteAlias = self.alias;
           [list addObject:ref];
         }
       }

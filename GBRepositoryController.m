@@ -7,9 +7,10 @@
 
 #import "GBRemotesController.h"
 #import "GBCommitController.h"
-
+#import "GBPromptController.h"
 
 #import "NSArray+OAArrayHelpers.h"
+#import "NSString+OAStringHelpers.h"
 #import "NSMenu+OAMenuHelpers.h"
 #import "NSWindowController+OAWindowControllerHelpers.h"
 
@@ -88,7 +89,6 @@
     {
       if ([remote.branches count] > 0)
       {
-        NSMenuItem* remoteItem = [[NSMenuItem new] autorelease];
         NSMenu* remoteMenu = [[NSMenu new] autorelease];
         for (GBRef* branch in remote.branches)
         {
@@ -99,7 +99,7 @@
           [item setRepresentedObject:branch];
           [remoteMenu addItem:item];          
         }
-        [remoteItem setMenu:remoteMenu];
+        [remoteBranchesMenu addItem:[NSMenuItem menuItemWithTitle:remote.alias submenu:remoteMenu]];
       }
     }
   }
@@ -153,9 +153,36 @@
 - (IBAction) checkoutRemoteBranch:(id)sender
 {
   NSLog(@"TODO: create a default name taking in account exiting branch names; show modal prompt and confirm");
+  GBRef* remoteBranch = [sender representedObject];
+  NSString* defaultName = [remoteBranch.name uniqueStringForStrings:[self.repository.localBranches valueForKey:@"name"]];
   
-  [self updateCurrentBranchMenus];
+  GBPromptController* ctrl = [GBPromptController controller];
+  
+  ctrl.title = NSLocalizedString(@"Remote Branch Checkout", @"");
+  ctrl.promptText = NSLocalizedString(@"Branch Name:", @"");
+  ctrl.buttonText = NSLocalizedString(@"Checkout", @"");
+  ctrl.value = defaultName;
+  
+  ctrl.target = self;
+  ctrl.finishSelector = @selector(doneChoosingNameForRemoteBranchCheckout:);
+  ctrl.cancelSelector = @selector(cancelChoosingNameForRemoteBranchCheckout:);
+  
+  ctrl.payload = remoteBranch;
+  
+  [self beginSheetForController:ctrl];
 }
+  - (void) doneChoosingNameForRemoteBranchCheckout:(GBPromptController*)ctrl
+  {
+    [self.repository checkoutRef:ctrl.payload withNewBranchName:ctrl.value];
+    self.repository.localBranches = [self.repository loadLocalBranches];
+    [self updateCurrentBranchMenus];
+    [self endSheetForController:ctrl];
+  }
+
+  - (void) cancelChoosingNameForRemoteBranchCheckout:(GBPromptController*)ctrl
+  {
+    [self endSheetForController:ctrl];
+  }
 
 - (IBAction) commit:(id)sender
 {
@@ -168,16 +195,16 @@
   [self beginSheetForController:commitController];
 }
 
-- (void) doneCommit:(GBCommitController*)commitController
-{
-  [self.repository commitWithMessage:commitController.message];
-  [self endSheetForController:commitController];
-}
+  - (void) doneCommit:(GBCommitController*)commitController
+  {
+    [self.repository commitWithMessage:commitController.message];
+    [self endSheetForController:commitController];
+  }
 
-- (void) cancelCommit:(GBCommitController*)commitController
-{
-  [self endSheetForController:commitController];
-}
+  - (void) cancelCommit:(GBCommitController*)commitController
+  {
+    [self endSheetForController:commitController];
+  }
 
 
 
