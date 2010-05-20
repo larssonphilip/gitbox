@@ -16,6 +16,11 @@ NSString* OATaskNotification = @"OATaskNotification";
 
 #pragma mark Init
 
++ (id) task
+{
+  return [[self new] autorelease];
+}
+
 - (NSTimeInterval) pollingPeriod
 {
   if (pollingPeriod <= 0.0)
@@ -229,6 +234,7 @@ NSString* OATaskNotification = @"OATaskNotification";
 
 
 #pragma mark Subscription
+
 
 - (OATask*) subscribe:(id)observer selector:(SEL) selector
 {

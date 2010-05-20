@@ -21,6 +21,10 @@
 @synthesize commits;
 @synthesize taskManager;
 
+@synthesize checkoutDisabled;
+@synthesize pushDisabled;
+@synthesize pullDisabled;  
+
 @synthesize delegate;
 
 
@@ -277,8 +281,58 @@
   {
     [[[self task] launchWithArgumentsAndWait:[NSArray arrayWithObjects:@"commit", @"-m", message, nil]] showErrorIfNeeded];
     [self updateStatus];
-    [self updateCommits];    
+    [self updateCommits];
   }
+}
+
+- (void) pull
+{
+  GBRef* remoteBranch = self.currentRef.remoteBranch;
+  if (remoteBranch)
+  {
+    [self pullBranch:remoteBranch];
+  }
+}
+
+- (void) pullBranch:(GBRef*)aRemoteBranch
+{
+  NSLog(@"TODO: check for already fetched commits and merge them with a blocking task instead of pulling again");
+  self.pullDisabled = YES;
+  self.pushDisabled = YES;
+  
+  GBTask* pullTask = [GBTask task];
+  pullTask.arguments = [NSArray arrayWithObjects:@"pull", aRemoteBranch.remoteAlias, aRemoteBranch.name, nil];
+  [pullTask subscribe:self selector:@selector(pullTaskDidFinish:)];
+  [self launchTask:pullTask];
+}
+
+- (void) push
+{
+  GBRef* remoteBranch = self.currentRef.remoteBranch;
+  if (remoteBranch && self.currentRef)
+  {
+    [self pushBranch:self.currentRef to:remoteBranch];
+  }  
+}
+
+- (void) pushBranch:(GBRef*)aLocalBranch to:(GBRef*)aRemoteBranch
+{
+  NSLog(@"TODO: if push fails, try fetch immediately (without errors) and show error");
+  
+}
+
+
+
+#pragma mark Git Task Callbacks
+
+
+- (void) pullTaskDidFinish:(NSNotification*)notification
+{
+  GBTask* task = [notification object];
+  [task unsubscribe:self];
+  self.pullDisabled = NO;
+  self.pushDisabled = NO;
+  NSLog(@"TODO: update branch log and status");
 }
 
 
@@ -292,6 +346,13 @@
   GBTask* task = [[GBTask new] autorelease];
   task.repository = self;
   return task;
+}
+
+- (GBTask*) enqueueTask:(GBTask*)aTask
+{
+  aTask.repository = self;
+  [self.taskManager enqueueTask:aTask];
+  return aTask;
 }
 
 - (GBTask*) launchTask:(GBTask*)aTask

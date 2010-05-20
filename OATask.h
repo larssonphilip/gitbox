@@ -18,6 +18,8 @@ extern NSString* OATaskNotification;
 @property(retain) NSArray* arguments;
 @property(assign) NSTimeInterval pollingPeriod;
 
++ (id) task;
+
 - (int) terminationStatus;
 - (BOOL) isError;
 

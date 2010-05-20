@@ -19,6 +19,7 @@
 @synthesize statusTableView;
 
 @synthesize currentBranchPopUpButton;
+@synthesize pullPushControl;
 @synthesize remoteBranchPopUpButton;
 
 @synthesize logArrayController; 
@@ -32,6 +33,7 @@
   self.statusTableView = nil;
   
   self.currentBranchPopUpButton = nil;
+  self.pullPushControl = nil;
   self.remoteBranchPopUpButton = nil;
   
   self.logArrayController = nil;
@@ -39,6 +41,27 @@
   
   [super dealloc];
 }
+
+
+/*
+
+  segmented push/pull control disabled:
+  - while pushing
+  - while pulling
+  - while fetching
+ 
+  push segment disabled:
+  - while non-merged changes on current branch
+  
+  current branch control disabled:
+  - while pulling
+  - while merging
+  
+  remote branch control disabled:
+  - while pushing
+
+*/
+
 
 
 #pragma mark Git Actions
@@ -166,6 +189,33 @@
     [self.repository commitWithMessage:ctrl.value];
   }
 
+- (IBAction) pullOrPush:(NSSegmentedControl*)segmentedControl
+{
+  NSInteger segment = [segmentedControl selectedSegment];
+  if (segment == 0)
+  {
+    [self pull:segmentedControl];
+  }
+  else if (segment == 1)
+  {
+    [self push:segmentedControl];
+  }
+  else
+  {
+    NSLog(@"ERROR: Unrecognized push/pull segment %d", segment);
+  }
+}
+
+- (IBAction) pull:(id)sender
+{
+  [self.repository pull];
+}
+
+- (IBAction) push:(id)sender
+{
+  [self.repository push];
+}
+
 
 
 
@@ -198,10 +248,14 @@
   [self beginSheetForController:remotesController];
 }
 
-- (void) doneEditRepositories:(GBRemotesController*)remotesController
-{
-  [self endSheetForController:remotesController];
-}
+  - (void) doneEditRepositories:(GBRemotesController*)remotesController
+  {
+    [self endSheetForController:remotesController];
+  }
+
+
+
+
 
 
 

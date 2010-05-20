@@ -16,6 +16,7 @@
   NSTableView* statusTableView;
   
   NSPopUpButton* currentBranchPopUpButton;
+  NSSegmentedControl* pullPushControl;
   NSPopUpButton* remoteBranchPopUpButton;
   
   NSArrayController* logArrayController;
@@ -30,6 +31,7 @@
 @property(retain) IBOutlet NSTableView* statusTableView;
 
 @property(retain) IBOutlet NSPopUpButton* currentBranchPopUpButton;
+@property(retain) IBOutlet NSSegmentedControl* pullPushControl;
 @property(retain) IBOutlet NSPopUpButton* remoteBranchPopUpButton;
 
 @property(retain) IBOutlet NSArrayController* logArrayController;
@@ -44,13 +46,15 @@
 - (IBAction) selectRemoteBranch:(id)sender;
 - (IBAction) createNewRemoteBranch:(id)sender;
 - (IBAction) commit:(id)sender;
+- (IBAction) pullOrPush:(NSSegmentedControl*)segmentedControl;
+- (IBAction) pull:(id)sender;
+- (IBAction) push:(id)sender;
 
 
 #pragma mark View Actions
 
 - (IBAction) toggleSplitViewOrientation:(id)sender;
 - (IBAction) editRepositories:(id)sender;
-- (IBAction) doneEditRepositories:(id)sender;
 
 
 #pragma mark Private Helpers

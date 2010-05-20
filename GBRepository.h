@@ -22,6 +22,10 @@
   NSArray* commits;
   OATaskManager* taskManager;
   
+  BOOL checkoutDisabled;
+  BOOL pushDisabled;
+  BOOL pullDisabled;  
+  
   id<GBRepositoryDelegate> delegate;
 }
 
@@ -34,6 +38,10 @@
 @property(retain) GBRef* currentRef;
 @property(retain) NSArray* commits;
 @property(retain) OATaskManager* taskManager;
+
+@property(assign) BOOL checkoutDisabled;
+@property(assign) BOOL pushDisabled;
+@property(assign) BOOL pullDisabled;
 
 @property(assign) id<GBRepositoryDelegate> delegate;
 
@@ -62,10 +70,16 @@
 - (void) checkoutNewBranchName:(NSString*)name;
 - (void) commitWithMessage:(NSString*) message;
 
+- (void) pull;
+- (void) pullBranch:(GBRef*)aRemoteBranch;
+- (void) push;
+- (void) pushBranch:(GBRef*)aLocalBranch to:(GBRef*)aRemoteBranch;
+
 
 #pragma mark Util
 
 - (GBTask*) task;
+- (GBTask*) enqueueTask:(GBTask*)aTask;
 - (GBTask*) launchTask:(GBTask*)aTask;
 - (GBTask*) launchTaskAndWait:(GBTask*)aTask;
 - (NSURL*) gitURLWithSuffix:(NSString*)suffix;

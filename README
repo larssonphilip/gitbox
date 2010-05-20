@@ -1,3 +1,13 @@
+Note on remote branches:
+- branches sometimes could be found in .git/refs/remotes/<alias>/<branch-name>
+- branches sometimes could be found in .git/info/refs 
+- git rev-parse can always tell the commit id for any commitish (but we usually do not need it)
+- when remote branch is missing, user can add it.
+- we should remember remote branches somewhere for gitbox to avoid messing with .git mess.
+- we should also be able to add/remove repos
+- for non-existing remote branch we should disable pull button
+
+
 To do now:
 
 + list working directory changes
