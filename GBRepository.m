@@ -261,6 +261,14 @@
   self.currentRef = nil;  
 }
 
+- (void) checkoutNewBranchName:(NSString*)name
+{
+  [[[self task] launchWithArgumentsAndWait:[NSArray arrayWithObjects:@"checkout", @"-b", name, nil]] showErrorIfNeeded];
+  
+  // invalidate current ref
+  self.currentRef = nil;    
+}
+
 - (void) commitWithMessage:(NSString*) message
 {
   if (message && [message length] > 0)

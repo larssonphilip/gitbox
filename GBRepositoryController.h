@@ -40,6 +40,7 @@
 
 - (IBAction) checkoutBranch:(id)sender;
 - (IBAction) checkoutRemoteBranch:(id)sender;
+- (IBAction) checkoutNewBranch:(id)sender;
 - (IBAction) selectRemoteBranch:(id)sender;
 - (IBAction) commit:(id)sender;
 

@@ -56,7 +56,6 @@
 
 - (IBAction) checkoutRemoteBranch:(id)sender
 {
-  NSLog(@"TODO: create a default name taking in account exiting branch names; show modal prompt and confirm");
   GBRef* remoteBranch = [sender representedObject];
   NSString* defaultName = [remoteBranch.name uniqueStringForStrings:[self.repository.localBranches valueForKey:@"name"]];
   
@@ -78,6 +77,28 @@
 - (void) doneChoosingNameForRemoteBranchCheckout:(GBPromptController*)ctrl
 {
   [self.repository checkoutRef:ctrl.payload withNewBranchName:ctrl.value];
+  self.repository.localBranches = [self.repository loadLocalBranches];
+  [self updateCurrentBranchMenus];
+}
+
+- (IBAction) checkoutNewBranch:(id)sender
+{
+  GBPromptController* ctrl = [GBPromptController controller];
+  
+  ctrl.title = NSLocalizedString(@"New Branch", @"");
+  ctrl.promptText = NSLocalizedString(@"Branch Name:", @"");
+  ctrl.buttonText = NSLocalizedString(@"Create", @"");
+  
+  ctrl.target = self;
+  ctrl.finishSelector = @selector(doneChoosingNameForNewBranchCheckout:);
+  
+  [ctrl runSheetInWindow:[self window]];
+  [self updateCurrentBranchMenus];
+}
+
+- (void) doneChoosingNameForNewBranchCheckout:(GBPromptController*)ctrl
+{
+  [self.repository checkoutNewBranchName:ctrl.value];
   self.repository.localBranches = [self.repository loadLocalBranches];
   [self updateCurrentBranchMenus];
 }
@@ -197,7 +218,7 @@
   
   [newMenu addItem:[NSMenuItem separatorItem]];
   
-  // Tags
+  // Checkout Tag
   
   NSMenu* tagsMenu = [NSMenu menu];
   for (GBRef* tag in self.repository.tags)
@@ -215,7 +236,7 @@
   }
   
   
-  // Remote branches
+  // Checkout Remote Branch
   
   NSMenu* remoteBranchesMenu = [NSMenu menu];
   if ([self.repository.remotes count] > 1) // display submenus for each remote
@@ -254,6 +275,16 @@
   {
     [newMenu addItem:[NSMenuItem menuItemWithTitle:NSLocalizedString(@"Checkout Remote Branch", @"") submenu:remoteBranchesMenu]];
   }
+  
+  // Checkout New Branch
+  
+  NSMenuItem* checkoutNewBranchItem = [[NSMenuItem new] autorelease];
+  [checkoutNewBranchItem setTitle:NSLocalizedString(@"New Branch...",@"")];
+  [checkoutNewBranchItem setTarget:self];
+  [checkoutNewBranchItem setAction:@selector(checkoutNewBranch:)];
+  [newMenu addItem:checkoutNewBranchItem];
+  
+  // Select current branch
   
   [button setMenu:newMenu];
   for (NSMenuItem* item in [newMenu itemArray])

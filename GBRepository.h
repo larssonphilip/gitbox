@@ -55,6 +55,7 @@
 
 - (void) checkoutRef:(GBRef*)ref;
 - (void) checkoutRef:(GBRef*)ref withNewBranchName:(NSString*)name;
+- (void) checkoutNewBranchName:(NSString*)name;
 - (void) commitWithMessage:(NSString*) message;
 
 #pragma mark Util
