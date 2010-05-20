@@ -61,6 +61,7 @@
   ctrl.promptText = NSLocalizedString(@"Branch Name:", @"");
   ctrl.buttonText = NSLocalizedString(@"Checkout", @"");
   ctrl.value = defaultName;
+  ctrl.requireStripWhitespace = YES;
   
   ctrl.target = self;
   ctrl.finishSelector = @selector(doneChoosingNameForRemoteBranchCheckout:);
@@ -70,12 +71,13 @@
   [ctrl runSheetInWindow:[self window]];
 }
 
-- (void) doneChoosingNameForRemoteBranchCheckout:(GBPromptController*)ctrl
-{
-  [self.repository checkoutRef:ctrl.payload withNewBranchName:ctrl.value];
-  self.repository.localBranches = [self.repository loadLocalBranches];
-  [self updateCurrentBranchMenus];
-}
+  - (void) doneChoosingNameForRemoteBranchCheckout:(GBPromptController*)ctrl
+  {
+    [self.repository checkoutRef:ctrl.payload withNewBranchName:ctrl.value];
+    self.repository.localBranches = [self.repository loadLocalBranches];
+    [self updateCurrentBranchMenus];
+  }
+
 
 - (IBAction) checkoutNewBranch:(id)sender
 {
@@ -84,6 +86,7 @@
   ctrl.title = NSLocalizedString(@"New Branch", @"");
   ctrl.promptText = NSLocalizedString(@"Branch Name:", @"");
   ctrl.buttonText = NSLocalizedString(@"Create", @"");
+  ctrl.requireStripWhitespace = YES;
   
   ctrl.target = self;
   ctrl.finishSelector = @selector(doneChoosingNameForNewBranchCheckout:);
@@ -92,12 +95,14 @@
   [self updateCurrentBranchMenus];
 }
 
-- (void) doneChoosingNameForNewBranchCheckout:(GBPromptController*)ctrl
-{
-  [self.repository checkoutNewBranchName:ctrl.value];
-  self.repository.localBranches = [self.repository loadLocalBranches];
-  [self updateCurrentBranchMenus];
-}
+  - (void) doneChoosingNameForNewBranchCheckout:(GBPromptController*)ctrl
+  {
+    [self.repository checkoutNewBranchName:ctrl.value];
+    self.repository.localBranches = [self.repository loadLocalBranches];
+    [self updateCurrentBranchMenus];
+  }
+
+
 
 - (IBAction) selectRemoteBranch:(id)sender
 {
@@ -106,6 +111,41 @@
   [self.repository.currentRef saveRemoteBranch];
   [self.remoteBranchPopUpButton setTitle:[remoteBranch nameWithRemoteAlias]];
 }
+
+- (IBAction) createNewRemoteBranch:(id)sender
+{
+  GBPromptController* ctrl = [GBPromptController controller];
+  
+  ctrl.title = NSLocalizedString(@"New Remote Branch", @"");
+  ctrl.promptText = NSLocalizedString(@"Branch Name:", @"");
+  ctrl.buttonText = NSLocalizedString(@"OK", @"");
+  ctrl.requireStripWhitespace = YES;
+  
+  ctrl.target = self;
+  ctrl.finishSelector = @selector(doneChoosingNameForNewRemoteBranch:);
+  
+  ctrl.payload = [sender representedObject]; // GBRemote passed from menu item
+  [ctrl runSheetInWindow:[self window]];
+  [self updateRemoteBranchMenus];  
+}
+
+  - (void) doneChoosingNameForNewRemoteBranch:(GBPromptController*)ctrl
+  {
+    GBRemote* remote = ctrl.payload;
+    
+    GBRef* remoteBranch = [[GBRef new] autorelease];
+    remoteBranch.repository = self.repository;
+    remoteBranch.name = ctrl.value;
+    remoteBranch.remoteAlias = remote.alias;
+    
+    [remote addBranch:remoteBranch];
+    
+    self.repository.currentRef.remoteBranch = remoteBranch;
+    [self.repository.currentRef saveRemoteBranch];
+    [self updateRemoteBranchMenus];
+  }
+
+
 
 - (IBAction) commit:(id)sender
 {
@@ -121,10 +161,12 @@
   [ctrl runSheetInWindow:[self window]];
 }
 
-- (void) doneCommit:(GBPromptController*)ctrl
-{
-  [self.repository commitWithMessage:ctrl.value];
-}
+  - (void) doneCommit:(GBPromptController*)ctrl
+  {
+    [self.repository commitWithMessage:ctrl.value];
+  }
+
+
 
 
 #pragma mark View Actions
@@ -319,13 +361,22 @@
           [item setRepresentedObject:branch];
           [remoteMenu addItem:item];          
         }
+        [remoteMenu addItem:[NSMenuItem separatorItem]];
+        
+        NSMenuItem* newBranchItem = [NSMenuItem menuItemWithTitle:NSLocalizedString(@"New Remote Branch...", @"") submenu:nil];
+        [newBranchItem setAction:@selector(createNewRemoteBranch:)];
+        [newBranchItem setTarget:self];
+        [newBranchItem setRepresentedObject:remote];
+        [remoteMenu addItem:newBranchItem];
+        
         [remoteBranchesMenu addItem:[NSMenuItem menuItemWithTitle:remote.alias submenu:remoteMenu]];
       }
     }
   }
   else if ([self.repository.remotes count] == 1) // display a flat list of "origin/master"-like titles
   {
-    for (GBRef* branch in [[self.repository.remotes firstObject] branches])
+    GBRemote* remote = [self.repository.remotes firstObject];
+    for (GBRef* branch in remote.branches)
     {
       NSMenuItem* item = [[NSMenuItem new] autorelease];
       [item setTitle:[branch nameWithRemoteAlias]];
@@ -334,7 +385,16 @@
       [item setRepresentedObject:branch];    
       [remoteBranchesMenu addItem:item];
     }
-  }  
+    
+    [remoteBranchesMenu addItem:[NSMenuItem separatorItem]];
+    
+    NSMenuItem* newBranchItem = [NSMenuItem menuItemWithTitle:NSLocalizedString(@"New Remote Branch...", @"") submenu:nil];
+    [newBranchItem setAction:@selector(createNewRemoteBranch:)];
+    [newBranchItem setTarget:self];
+    [newBranchItem setRepresentedObject:remote];
+    [remoteBranchesMenu addItem:newBranchItem];
+  }
+  
   [button setMenu:remoteBranchesMenu];
   
   GBRef* remoteBranch = self.repository.currentRef.remoteBranch;
@@ -346,7 +406,6 @@
   {
     [button setTitle:NSLocalizedString(@"No Branch", @"")];
   }
-
   
 }
 

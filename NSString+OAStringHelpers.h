@@ -4,4 +4,6 @@
 - (NSString*) uniqueStringForStrings:(id)list appendingFormat:(NSString*)format;
 - (NSString*) uniqueStringForStrings:(id)list;
 
+- (BOOL) isEmptyString;
+
 @end

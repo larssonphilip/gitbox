@@ -119,7 +119,7 @@ NSString* OATaskNotification = @"OATaskNotification";
 - (OATask*) launch
 {
   [self prepareTask];
-  NSLog(@"OATask launch:   %@ %@", self.launchPath, [self.arguments componentsJoinedByString:@" "]);
+  //NSLog(@"OATask launch:   %@ %@", self.launchPath, [self.arguments componentsJoinedByString:@" "]);
   [self.task launch];
   [self performSelector:@selector(periodicStatusUpdate) withObject:nil afterDelay:pollingPeriod];
   return self;

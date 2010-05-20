@@ -14,6 +14,14 @@
 
 @property(assign) GBRepository* repository;
 
+
+#pragma mark Info
+
 - (GBRef*) defaultBranch;
+
+
+#pragma mark Actions
+
+- (void) addBranch:(GBRef*)branch;
 
 @end

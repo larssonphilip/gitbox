@@ -1,4 +1,5 @@
 #import "GBPromptController.h"
+#import "NSString+OAStringHelpers.h"
 #import "NSWindowController+OAWindowControllerHelpers.h"
 
 @implementation GBPromptController
@@ -7,6 +8,10 @@
 @synthesize promptText;
 @synthesize buttonText;
 @synthesize value;
+@synthesize requireNonNilValue;
+@synthesize requireNonEmptyString;
+@synthesize requireSingleLine;
+@synthesize requireStripWhitespace;
 
 @synthesize target;
 @synthesize finishSelector;
@@ -27,6 +32,8 @@
     self.title = NSLocalizedString(@"Prompt",@"");
     self.promptText = NSLocalizedString(@"Prompt:",@"");
     self.buttonText = NSLocalizedString(@"OK",@"");
+    self.requireNonNilValue = YES;
+    self.requireNonEmptyString = YES;
   }
   return self;
 }
@@ -42,6 +49,18 @@
 
 - (IBAction) onOK:(id)sender
 {
+  if (requireSingleLine || requireStripWhitespace)
+  {
+    self.value = [self.value stringByReplacingOccurrencesOfString:@"\n" withString:@""];
+  }
+  if (requireStripWhitespace)
+  {
+    self.value = [self.value stringByReplacingOccurrencesOfString:@"\t" withString:@""];
+    self.value = [self.value stringByReplacingOccurrencesOfString:@" " withString:@""];
+  }
+  if (requireNonNilValue && !self.value) self.value = @"";
+  if (requireNonEmptyString && (!self.value || [self.value isEmptyString])) return;
+      
   if (finishSelector) [self.target performSelector:finishSelector withObject:self];
   [self.windowHoldingSheet endSheetForController:self];
   self.windowHoldingSheet = nil;

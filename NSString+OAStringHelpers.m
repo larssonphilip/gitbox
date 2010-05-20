@@ -19,4 +19,9 @@
   return [self uniqueStringForStrings:list appendingFormat:@"%d"];
 }
 
+- (BOOL) isEmptyString
+{
+  return [self length] <= 0;
+}
+
 @end

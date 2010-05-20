@@ -65,4 +65,13 @@
 
 
 
+#pragma mark Actions
+
+
+- (void) addBranch:(GBRef*)branch
+{
+  self.branches = [self.branches arrayByAddingObject:branch];
+}
+
+
 @end
