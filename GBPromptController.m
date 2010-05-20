@@ -1,4 +1,5 @@
 #import "GBPromptController.h"
+#import "NSWindowController+OAWindowControllerHelpers.h"
 
 @implementation GBPromptController
 
@@ -12,6 +13,7 @@
 @synthesize cancelSelector;
 
 @synthesize payload;
+@synthesize windowHoldingSheet;
 
 + (GBPromptController*) controller
 {
@@ -41,11 +43,21 @@
 - (IBAction) onOK:(id)sender
 {
   if (finishSelector) [self.target performSelector:finishSelector withObject:self];
+  [self.windowHoldingSheet endSheetForController:self];
+  self.windowHoldingSheet = nil;
 }
 
 - (IBAction) onCancel:(id)sender
 {
   if (cancelSelector) [self.target performSelector:cancelSelector withObject:self];
+  [self.windowHoldingSheet endSheetForController:self];
+  self.windowHoldingSheet = nil;
+}
+
+- (void) runSheetInWindow:(NSWindow*)window
+{
+  self.windowHoldingSheet = window;
+  [window beginSheetForController:self];
 }
 
 @end

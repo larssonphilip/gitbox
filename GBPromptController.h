@@ -10,6 +10,7 @@
   SEL cancelSelector;
   
   id payload;
+  NSWindow* windowHoldingSheet;
 }
 
 @property(retain) NSString* title;
@@ -23,9 +24,13 @@
 
 @property(assign) id payload;
 
+@property(assign) NSWindow* windowHoldingSheet;
+
 + (GBPromptController*) controller;
 
 - (IBAction) onOK:(id)sender;
 - (IBAction) onCancel:(id)sender;
+
+- (void) runSheetInWindow:(NSWindow*)window;
 
 @end

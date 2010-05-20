@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2014F9B411A088EE00462BBC /* GBCommitController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2014F9B311A088EE00462BBC /* GBCommitController.xib */; };
-		2014F9B811A0890B00462BBC /* GBCommitController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2014F9B711A0890B00462BBC /* GBCommitController.m */; };
 		2038F1B11193664D0087CE37 /* GBRepositoryController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58290DA1D0D100B32029 /* GBRepositoryController.xib */; };
 		2038F1B3119366660087CE37 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C1660FE840EACC02AAC07 /* InfoPlist.strings */; };
 		2038F1B7119366960087CE37 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD582B0DA1D0D100B32029 /* MainMenu.xib */; };
@@ -51,9 +49,6 @@
 		13E42FBA07B3F13500E4EEF1 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
 		1DDD58290DA1D0D100B32029 /* GBRepositoryController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBRepositoryController.xib; sourceTree = "<group>"; };
 		1DDD582B0DA1D0D100B32029 /* MainMenu.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
-		2014F9B311A088EE00462BBC /* GBCommitController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBCommitController.xib; sourceTree = "<group>"; };
-		2014F9B611A0890B00462BBC /* GBCommitController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBCommitController.h; sourceTree = "<group>"; };
-		2014F9B711A0890B00462BBC /* GBCommitController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBCommitController.m; sourceTree = "<group>"; };
 		2038F1DD11936B060087CE37 /* GBAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBAppDelegate.h; sourceTree = "<group>"; };
 		2038F1DE11936B060087CE37 /* GBAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBAppDelegate.m; sourceTree = "<group>"; };
 		2038F1EA11936CA50087CE37 /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
@@ -184,8 +179,6 @@
 				2038F21A11936FDE0087CE37 /* GBRepositoryController.m */,
 				2038F5B8119879FA0087CE37 /* GBRemotesController.h */,
 				2038F5B9119879FA0087CE37 /* GBRemotesController.m */,
-				2014F9B611A0890B00462BBC /* GBCommitController.h */,
-				2014F9B711A0890B00462BBC /* GBCommitController.m */,
 				20B8B83B11A4A776006D6442 /* GBPromptController.h */,
 				20B8B83C11A4A776006D6442 /* GBPromptController.m */,
 			);
@@ -279,7 +272,6 @@
 				089C1660FE840EACC02AAC07 /* InfoPlist.strings */,
 				1DDD582B0DA1D0D100B32029 /* MainMenu.xib */,
 				1DDD58290DA1D0D100B32029 /* GBRepositoryController.xib */,
-				2014F9B311A088EE00462BBC /* GBCommitController.xib */,
 				2058FA4711982F5100FB018D /* GBRemotesController.xib */,
 				20B8B83811A4A72A006D6442 /* GBPromptController.xib */,
 			);
@@ -343,7 +335,6 @@
 				2038F1B11193664D0087CE37 /* GBRepositoryController.xib in Resources */,
 				2038F1B7119366960087CE37 /* MainMenu.xib in Resources */,
 				2058FA4811982F5100FB018D /* GBRemotesController.xib in Resources */,
-				2014F9B411A088EE00462BBC /* GBCommitController.xib in Resources */,
 				20B8B83911A4A72A006D6442 /* GBPromptController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -372,7 +363,6 @@
 				2038F6B711A02D550087CE37 /* GBStage.m in Sources */,
 				2038F6C511A030F70087CE37 /* GBTask.m in Sources */,
 				2038F76D11A04A290087CE37 /* NSString+OAGitHelpers.m in Sources */,
-				2014F9B811A0890B00462BBC /* GBCommitController.m in Sources */,
 				206A07BE11A33519003BB9E3 /* OATask.m in Sources */,
 				20B8B64E11A444B6006D6442 /* OATaskManager.m in Sources */,
 				20B8B70C11A489F1006D6442 /* GBChangesTask.m in Sources */,

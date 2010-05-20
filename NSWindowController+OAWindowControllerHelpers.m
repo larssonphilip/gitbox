@@ -4,10 +4,24 @@
 
 - (void) beginSheetForController:(NSWindowController*)ctrl
 {
+  [[self window] beginSheetForController:ctrl];
+}
+
+- (void) endSheetForController:(NSWindowController*)ctrl
+{
+  [[self window] endSheetForController:ctrl];
+}
+
+@end
+
+@implementation NSWindow (OAWindowControllerHelpers)
+
+- (void) beginSheetForController:(NSWindowController*)ctrl
+{
   [ctrl retain]; // retain for a lifetime of the window
   
   [NSApp beginSheet:[ctrl window]
-     modalForWindow:[self window]
+     modalForWindow:self
       modalDelegate:nil
      didEndSelector:nil
         contextInfo:nil];  
@@ -20,5 +34,5 @@
   [[ctrl window] orderOut:self];
 }
 
-
 @end
+

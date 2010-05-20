@@ -6,7 +6,6 @@
 #import "GBRemote.h"
 
 #import "GBRemotesController.h"
-#import "GBCommitController.h"
 #import "GBPromptController.h"
 
 #import "NSArray+OAArrayHelpers.h"
@@ -165,24 +164,17 @@
   
   ctrl.target = self;
   ctrl.finishSelector = @selector(doneChoosingNameForRemoteBranchCheckout:);
-  ctrl.cancelSelector = @selector(cancelChoosingNameForRemoteBranchCheckout:);
   
   ctrl.payload = remoteBranch;
   
-  [self beginSheetForController:ctrl];
+  [ctrl runSheetInWindow:[self window]];
 }
-  - (void) doneChoosingNameForRemoteBranchCheckout:(GBPromptController*)ctrl
-  {
-    [self.repository checkoutRef:ctrl.payload withNewBranchName:ctrl.value];
-    self.repository.localBranches = [self.repository loadLocalBranches];
-    [self updateCurrentBranchMenus];
-    [self endSheetForController:ctrl];
-  }
-
-  - (void) cancelChoosingNameForRemoteBranchCheckout:(GBPromptController*)ctrl
-  {
-    [self endSheetForController:ctrl];
-  }
+- (void) doneChoosingNameForRemoteBranchCheckout:(GBPromptController*)ctrl
+{
+  [self.repository checkoutRef:ctrl.payload withNewBranchName:ctrl.value];
+  self.repository.localBranches = [self.repository loadLocalBranches];
+  [self updateCurrentBranchMenus];
+}
 
 - (IBAction) commit:(id)sender
 {
@@ -194,23 +186,14 @@
   
   ctrl.target = self;
   ctrl.finishSelector = @selector(doneCommit:);
-  ctrl.cancelSelector = @selector(cancelCommit:);
   
-  [self beginSheetForController:ctrl];
+  [ctrl runSheetInWindow:[self window]];
 }
 
-  - (void) doneCommit:(GBCommitController*)ctrl
-  {
-    [self.repository commitWithMessage:ctrl.value];
-    [self endSheetForController:ctrl];
-  }
-
-  - (void) cancelCommit:(GBCommitController*)ctrl
-  {
-    [self endSheetForController:ctrl];
-  }
-
-
+- (void) doneCommit:(GBPromptController*)ctrl
+{
+  [self.repository commitWithMessage:ctrl.value];
+}
 
 
 #pragma mark View Actions
