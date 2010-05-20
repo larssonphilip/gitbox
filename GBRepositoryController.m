@@ -1,10 +1,6 @@
-#import "GBRepositoryController.h"
-#import "GBRepository.h"
-#import "GBCommit.h"
-#import "GBStage.h"
-#import "GBRef.h"
-#import "GBRemote.h"
+#import "GBModels.h"
 
+#import "GBRepositoryController.h"
 #import "GBRemotesController.h"
 #import "GBPromptController.h"
 
@@ -107,6 +103,7 @@
 {
   GBRef* remoteBranch = [sender representedObject];
   self.repository.currentRef.remoteBranch = remoteBranch;
+  [self.repository.currentRef saveRemoteBranch];
   [self.remoteBranchPopUpButton setTitle:[remoteBranch nameWithRemoteAlias]];
 }
 
@@ -345,6 +342,11 @@
   {
     [button setTitle:[remoteBranch nameWithRemoteAlias]];
   }
+  else 
+  {
+    [button setTitle:NSLocalizedString(@"No Branch", @"")];
+  }
+
   
 }
 

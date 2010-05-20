@@ -1,18 +1,13 @@
-#import "GBRepository.h"
-#import "GBCommit.h"
-#import "GBStage.h"
-#import "GBChange.h"
-#import "GBRemote.h"
-#import "GBRef.h"
+#import "GBModels.h"
 
 #import "GBTask.h"
 
 #import "OATaskManager.h"
 
 #import "NSFileManager+OAFileManagerHelpers.h"
-#import "NSObject+OALogging.h"
 #import "NSAlert+OAAlertHelpers.h"
 #import "NSData+OADataHelpers.h"
+#import "NSArray+OAArrayHelpers.h"
 
 @implementation GBRepository
 
@@ -168,7 +163,14 @@
   return [url path];
 }
 
-
+- (GBRemote*) defaultRemote
+{
+  for (GBRemote* remote in self.remotes)
+  {
+    if ([remote.alias isEqualToString:@"origin"]) return remote;
+  }
+  return [self.remotes firstObject];
+}
 
 
 

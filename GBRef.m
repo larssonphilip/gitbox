@@ -1,5 +1,4 @@
-#import "GBRef.h"
-#import "GBRepository.h"
+#import "GBModels.h"
 #import "GBTask.h"
 
 @implementation GBRef
@@ -24,11 +23,16 @@
 {
   if (!remoteBranch)
   {
-    NSLog(@"TODO: try to find the branch from the git config branch.<name>.remote and .merge");
+    NSLog(@"TODO: find the branch name in user defaults");
+    self.remoteBranch = [[self.repository defaultRemote] defaultBranch];
   }
   return [[remoteBranch retain] autorelease];
 }
 
+- (void) saveRemoteBranch
+{
+  NSLog(@"TODO: Save association of this ref with the remote branch in user prefs");
+}
 
 
 - (BOOL) isEqual:(id)object

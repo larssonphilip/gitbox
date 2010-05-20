@@ -22,6 +22,8 @@
 - (BOOL) isLocalBranch;
 - (BOOL) isRemoteBranch;
 
+- (void) saveRemoteBranch;
+
 - (NSString*) displayName;
 - (NSString*) commitish;
 

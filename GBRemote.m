@@ -1,15 +1,21 @@
-#import "GBRepository.h"
-#import "GBRemote.h"
-#import "GBRef.h"
+#import "GBModels.h"
 
 #import "NSFileManager+OAFileManagerHelpers.h"
+#import "NSArray+OAArrayHelpers.h"
 
 @implementation GBRemote
+
 @synthesize alias;
 @synthesize URLString;
+@synthesize branches;
+
 @synthesize repository;
 
-@synthesize branches;
+
+
+#pragma mark Init
+
+
 - (NSArray*) branches
 {
   if (!branches)
@@ -43,4 +49,20 @@
   self.branches = nil;
   [super dealloc];
 }
+
+
+#pragma mark Info
+
+
+- (GBRef*) defaultBranch
+{
+  for (GBRef* ref in self.branches)
+  {
+    if ([ref.name isEqualToString:@"master"]) return ref;
+  }
+  return [self.branches firstObject];
+}
+
+
+
 @end

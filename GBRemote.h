@@ -14,4 +14,6 @@
 
 @property(assign) GBRepository* repository;
 
+- (GBRef*) defaultBranch;
+
 @end

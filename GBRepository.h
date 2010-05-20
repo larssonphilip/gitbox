@@ -4,6 +4,7 @@
 @end
 
 @class GBRef;
+@class GBRemote;
 @class GBCommit;
 @class GBStage;
 @class GBChange;
@@ -41,6 +42,8 @@
 
 + (BOOL) isValidRepositoryAtPath:(NSString*)path;
 - (NSString*) path;
+- (GBRemote*) defaultRemote;
+
 
 #pragma mark Update
 
@@ -51,12 +54,14 @@
 - (NSArray*) loadTags;
 - (NSArray*) loadRemotes;
 
+
 #pragma mark Mutation
 
 - (void) checkoutRef:(GBRef*)ref;
 - (void) checkoutRef:(GBRef*)ref withNewBranchName:(NSString*)name;
 - (void) checkoutNewBranchName:(NSString*)name;
 - (void) commitWithMessage:(NSString*) message;
+
 
 #pragma mark Util
 

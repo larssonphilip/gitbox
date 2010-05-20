@@ -1,7 +1,5 @@
+#import "GBModels.h"
 #import "GBStagedChangesTask.h"
-#import "GBRepository.h"
-#import "GBStage.h"
-#import "GBChange.h"
 
 @implementation GBStagedChangesTask
 
