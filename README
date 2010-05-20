@@ -68,6 +68,10 @@ To do:
 - maybe: easy/hidden rebase to keep history clean?
 
 
+Strange things:
+
+- if a lazy accessor is bound, there can be infinite loop on setter call; perhaps should not use setter within a getter
+
 Not to do:
 
 - toolbar item for stash/unstash: rare function;
