@@ -297,7 +297,7 @@
   
   // If no branch is found the name could be empty.
   // I make sure that the name is set nevertheless.
-  [button setTitle:[self.repository.currentRef displayName]];
+  // See bindings: [button setTitle:[self.repository.currentRef displayName]];
 }
 
 

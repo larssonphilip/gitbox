@@ -2115,7 +2115,7 @@
 				<object class="NSMutableArray" key="dict.values">
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{58, 620}, {617, 0}}</string>
+					<string>{{98, 776}, {617, 0}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -2193,9 +2193,9 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{321, 291}, {665, 377}}</string>
+					<string>{{74, 399}, {665, 377}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{321, 291}, {665, 377}}</string>
+					<string>{{74, 399}, {665, 377}}</string>
 					<integer value="1"/>
 					<string>{{201, 387}, {507, 413}}</string>
 					<integer value="1"/>
@@ -2220,7 +2220,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">100244</int>
+			<int key="maxID">100247</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
