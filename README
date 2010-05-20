@@ -11,12 +11,12 @@ To do now:
 - push
 - pull
 - edit repositories
-- checkout remote branch
++ checkout remote branch
 - show log (last 5000 commits)
 - "what's new": diff with other branch is shown as grey commit rows in the same log
 - errors in NSAlert switch window focus which leads to repeated request: when repo is just initialized git-rev-log fails
   (maybe put errors in a floating panel)
-- 
+- see NSUserInterfaceValidations to disable menu items (especially for context menus)
 
 Code to do:
 
@@ -25,39 +25,37 @@ Code to do:
 + use window controller instead of MyDocument
 + make AppDelegate a delegate for NSOpenPanel to validate folder
 + open a folder when dragged onto Dock icon
-+ GBOp
-- GBAsynchoronousOp as a wrapper around git commands
++ add an NSTask wrapper to run git commands (like in Moriarity sample code)
 - GBLogOp to read log back in time
 - GBShowOp to read commit data for the given commitid
-+ add an NSTask wrapper to run git commands (like in Moriarity sample code)
 - reset toolbar buttons to default/empty/disabled state
-- load local branches
++ load local branches
 
 
 To do:
 
-- prompt for a name when checking out a new branch
-- check out a branch from the remote one
++ prompt for a name when checking out a new branch
++ check out a branch from the remote one
 - check out a branch from the commit item
 - change "sync" button title to "push" when remote is not ahead of local branch
 - change "sync" button title to "pull" when remote is ahead of local branch
 - change "sync" button title to "merge" when remote is local
 - change "remote branch" label to "other branch" when remote is local
 - fetch current remote branch every minute
-- open a window per repo
++ open a window per repo
 - remember tracking in .git/config when switching a remote branch
 - left pane: log for current local branch
-- add "stage" cell in the top of the log - shows stage and working directory status
++ add "stage" cell in the top of the log - shows stage and working directory status
 - add "load more" cell in the bottom of the log
-- right pane: changes (files)
++ right pane: changes (files)
 - open FileMerge.app with opendiff command
 - handle new repo: push to a new master branch
 - handle pushing to a new branch: allow branch creation in "remote branch" dropdown
-- switch off 1min sync with a toolbar button: useful on battery
+- switch off 1min sync with a menu item: useful on battery
 - clone a repo from the gui (menu item)
 - create a new repo from the gui (by dropping a non-git folder)
 - create a default .gitignore when creating a repo
-- checkout tags as well
++ checkout tags as well
 - create a new tag
 - edit .gitignore
 - edit .git/config
