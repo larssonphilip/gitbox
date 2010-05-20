@@ -23,6 +23,7 @@
 @synthesize statusTableView;
 
 @synthesize currentBranchPopUpButton;
+@synthesize remoteBranchPopUpButton;
 
 @synthesize logArrayController; 
 @synthesize statusArrayController;
@@ -35,6 +36,7 @@
   self.statusTableView = nil;
   
   self.currentBranchPopUpButton = nil;
+  self.remoteBranchPopUpButton = nil;
   
   self.logArrayController = nil;
   self.statusArrayController = nil;
@@ -43,12 +45,146 @@
 }
 
 
+#pragma mark Git Actions
+
+
+- (IBAction) checkoutBranch:(NSMenuItem*)sender
+{
+  [self.repository checkoutRef:[sender representedObject]];
+  [self updateCurrentBranchMenus];
+}
+
+- (IBAction) checkoutRemoteBranch:(id)sender
+{
+  NSLog(@"TODO: create a default name taking in account exiting branch names; show modal prompt and confirm");
+  GBRef* remoteBranch = [sender representedObject];
+  NSString* defaultName = [remoteBranch.name uniqueStringForStrings:[self.repository.localBranches valueForKey:@"name"]];
+  
+  GBPromptController* ctrl = [GBPromptController controller];
+  
+  ctrl.title = NSLocalizedString(@"Remote Branch Checkout", @"");
+  ctrl.promptText = NSLocalizedString(@"Branch Name:", @"");
+  ctrl.buttonText = NSLocalizedString(@"Checkout", @"");
+  ctrl.value = defaultName;
+  
+  ctrl.target = self;
+  ctrl.finishSelector = @selector(doneChoosingNameForRemoteBranchCheckout:);
+  
+  ctrl.payload = remoteBranch;
+  
+  [ctrl runSheetInWindow:[self window]];
+}
+
+- (void) doneChoosingNameForRemoteBranchCheckout:(GBPromptController*)ctrl
+{
+  [self.repository checkoutRef:ctrl.payload withNewBranchName:ctrl.value];
+  self.repository.localBranches = [self.repository loadLocalBranches];
+  [self updateCurrentBranchMenus];
+}
+
+- (IBAction) selectRemoteBranch:(id)sender
+{
+  GBRef* remoteBranch = [sender representedObject];
+  self.repository.currentRef.remoteBranch = remoteBranch;
+  [self.remoteBranchPopUpButton setTitle:[remoteBranch nameWithRemoteAlias]];
+}
+
+- (IBAction) commit:(id)sender
+{
+  GBPromptController* ctrl = [GBPromptController controller];
+
+  ctrl.title = NSLocalizedString(@"Commit", @"");
+  ctrl.promptText = NSLocalizedString(@"Message:", @"");
+  ctrl.buttonText = NSLocalizedString(@"Commit", @"");
+  
+  ctrl.target = self;
+  ctrl.finishSelector = @selector(doneCommit:);
+  
+  [ctrl runSheetInWindow:[self window]];
+}
+
+- (void) doneCommit:(GBPromptController*)ctrl
+{
+  [self.repository commitWithMessage:ctrl.value];
+}
+
+
+#pragma mark View Actions
+
+
+- (IBAction) toggleSplitViewOrientation:(NSMenuItem*)sender
+{
+  [self.splitView setVertical:![self.splitView isVertical]];
+  [self.splitView adjustSubviews];
+  if ([self.splitView isVertical])
+  {
+    self.logTableView.rowHeight = 32.0;
+    [sender setTitle:NSLocalizedString(@"Horizontal Views",@"")];
+  }
+  else
+  {
+    self.logTableView.rowHeight = 16.0;
+    [sender setTitle:NSLocalizedString(@"Vertical Views",@"")];
+  }
+}
+
+- (IBAction) editRepositories:(id)sender
+{
+  GBRemotesController* remotesController = [[[GBRemotesController alloc] initWithWindowNibName:@"GBRemotesController"] autorelease];
+  
+  remotesController.target = self;
+  remotesController.action = @selector(doneEditRepositories:);
+  
+  [self beginSheetForController:remotesController];
+}
+
+- (void) doneEditRepositories:(GBRemotesController*)remotesController
+{
+  [self endSheetForController:remotesController];
+}
+
+
+
+#pragma mark NSWindowController
+
+- (void)windowDidLoad
+{
+  [self.window setTitleWithRepresentedFilename:self.repository.path];
+  [self updateCurrentBranchMenus];
+  [self updateRemoteBranchMenus];
+}
+
+
+
+#pragma mark NSWindowDelegate
+
+
+- (void)windowWillClose:(NSNotification *)notification
+{
+  if ([[NSWindowController class] instancesRespondToSelector:@selector(windowWillClose:)]) 
+  {
+    [(id<NSWindowDelegate>)super windowWillClose:notification];
+  }
+  [self.delegate windowControllerWillClose:self];
+}
+
+- (void)windowDidBecomeKey:(NSNotification *)notification
+{
+  [self.repository updateStatus];
+}
+
+
+
+
+#pragma mark Private Helpers
+
+
 - (void) updateCurrentBranchMenus
 {
   // Local branches
   NSMenu* newMenu = [[NSMenu new] autorelease];
   NSPopUpButton* button = self.currentBranchPopUpButton;
-
+  
   for (GBRef* localBranch in self.repository.localBranches)
   {
     NSMenuItem* item = [[NSMenuItem new] autorelease];
@@ -60,7 +196,7 @@
   }
   
   [newMenu addItem:[NSMenuItem separatorItem]];
-
+  
   // Tags
   
   NSMenu* tagsMenu = [NSMenu menu];
@@ -133,130 +269,52 @@
   [button setTitle:[self.repository.currentRef displayName]];
 }
 
-- (GBCommit*) selectedCommit
+
+
+- (void) updateRemoteBranchMenus
 {
-  // return logController.selectedObject
-  return self.repository.stage;
-}
-
-
-#pragma mark Git Actions
-
-
-- (IBAction) checkoutBranch:(NSMenuItem*)sender
-{
-  [self.repository checkoutRef:[sender representedObject]];
-  [self updateCurrentBranchMenus];
-}
-
-- (IBAction) checkoutRemoteBranch:(id)sender
-{
-  NSLog(@"TODO: create a default name taking in account exiting branch names; show modal prompt and confirm");
-  GBRef* remoteBranch = [sender representedObject];
-  NSString* defaultName = [remoteBranch.name uniqueStringForStrings:[self.repository.localBranches valueForKey:@"name"]];
-  
-  GBPromptController* ctrl = [GBPromptController controller];
-  
-  ctrl.title = NSLocalizedString(@"Remote Branch Checkout", @"");
-  ctrl.promptText = NSLocalizedString(@"Branch Name:", @"");
-  ctrl.buttonText = NSLocalizedString(@"Checkout", @"");
-  ctrl.value = defaultName;
-  
-  ctrl.target = self;
-  ctrl.finishSelector = @selector(doneChoosingNameForRemoteBranchCheckout:);
-  
-  ctrl.payload = remoteBranch;
-  
-  [ctrl runSheetInWindow:[self window]];
-}
-- (void) doneChoosingNameForRemoteBranchCheckout:(GBPromptController*)ctrl
-{
-  [self.repository checkoutRef:ctrl.payload withNewBranchName:ctrl.value];
-  self.repository.localBranches = [self.repository loadLocalBranches];
-  [self updateCurrentBranchMenus];
-}
-
-- (IBAction) commit:(id)sender
-{
-  GBPromptController* ctrl = [GBPromptController controller];
-
-  ctrl.title = NSLocalizedString(@"Commit", @"");
-  ctrl.promptText = NSLocalizedString(@"Message:", @"");
-  ctrl.buttonText = NSLocalizedString(@"Commit", @"");
-  
-  ctrl.target = self;
-  ctrl.finishSelector = @selector(doneCommit:);
-  
-  [ctrl runSheetInWindow:[self window]];
-}
-
-- (void) doneCommit:(GBPromptController*)ctrl
-{
-  [self.repository commitWithMessage:ctrl.value];
-}
-
-
-#pragma mark View Actions
-
-
-- (IBAction) toggleSplitViewOrientation:(NSMenuItem*)sender
-{
-  [self.splitView setVertical:![self.splitView isVertical]];
-  [self.splitView adjustSubviews];
-  if ([self.splitView isVertical])
+  NSPopUpButton* button = self.remoteBranchPopUpButton;
+  NSMenu* remoteBranchesMenu = [NSMenu menu];
+  if ([self.repository.remotes count] > 1) // display submenus for each remote
   {
-    self.logTableView.rowHeight = 32.0;
-    [sender setTitle:NSLocalizedString(@"Horizontal Views",@"")];
+    for (GBRemote* remote in self.repository.remotes)
+    {
+      if ([remote.branches count] > 0)
+      {
+        NSMenu* remoteMenu = [[NSMenu new] autorelease];
+        for (GBRef* branch in remote.branches)
+        {
+          NSMenuItem* item = [[NSMenuItem new] autorelease];
+          [item setTitle:branch.name];
+          [item setAction:@selector(selectRemoteBranch:)];
+          [item setTarget:self];
+          [item setRepresentedObject:branch];
+          [remoteMenu addItem:item];          
+        }
+        [remoteBranchesMenu addItem:[NSMenuItem menuItemWithTitle:remote.alias submenu:remoteMenu]];
+      }
+    }
   }
-  else
+  else if ([self.repository.remotes count] == 1) // display a flat list of "origin/master"-like titles
   {
-    self.logTableView.rowHeight = 16.0;
-    [sender setTitle:NSLocalizedString(@"Vertical Views",@"")];
-  }
-}
-
-- (IBAction) editRepositories:(id)sender
-{
-  GBRemotesController* remotesController = [[[GBRemotesController alloc] initWithWindowNibName:@"GBRemotesController"] autorelease];
+    for (GBRef* branch in [[self.repository.remotes firstObject] branches])
+    {
+      NSMenuItem* item = [[NSMenuItem new] autorelease];
+      [item setTitle:[branch nameWithRemoteAlias]];
+      [item setAction:@selector(selectRemoteBranch:)];
+      [item setTarget:self];
+      [item setRepresentedObject:branch];    
+      [remoteBranchesMenu addItem:item];
+    }
+  }  
+  [button setMenu:remoteBranchesMenu];
   
-  remotesController.target = self;
-  remotesController.action = @selector(doneEditRepositories:);
-  
-  [self beginSheetForController:remotesController];
-}
-
-- (void) doneEditRepositories:(GBRemotesController*)remotesController
-{
-  [self endSheetForController:remotesController];
-}
-
-
-
-#pragma mark NSWindowController
-
-- (void)windowDidLoad
-{
-  [self.window setTitleWithRepresentedFilename:self.repository.path];
-  [self updateCurrentBranchMenus];
-}
-
-
-
-#pragma mark NSWindowDelegate
-
-
-- (void)windowWillClose:(NSNotification *)notification
-{
-  if ([[NSWindowController class] instancesRespondToSelector:@selector(windowWillClose:)]) 
+  GBRef* remoteBranch = self.repository.currentRef.remoteBranch;
+  if (remoteBranch)
   {
-    [(id<NSWindowDelegate>)super windowWillClose:notification];
+    [button setTitle:[remoteBranch nameWithRemoteAlias]];
   }
-  [self.delegate windowControllerWillClose:self];
-}
-
-- (void)windowDidBecomeKey:(NSNotification *)notification
-{
-  [self.repository updateStatus];
+  
 }
 
 @end

@@ -7,6 +7,7 @@
 @synthesize commitId;
 @synthesize remoteAlias;
 @synthesize isTag;
+@synthesize remoteBranch;
 
 @synthesize repository;
 
@@ -15,8 +16,20 @@
   self.name = nil;
   self.commitId = nil;
   self.remoteAlias = nil;
+  self.remoteBranch = nil;
   [super dealloc];
 }
+
+- (GBRef*) remoteBranch
+{
+  if (!remoteBranch)
+  {
+    NSLog(@"TODO: try to find the branch from the git config branch.<name>.remote and .merge");
+  }
+  return [[remoteBranch retain] autorelease];
+}
+
+
 
 - (BOOL) isEqual:(id)object
 {

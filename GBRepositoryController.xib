@@ -1147,14 +1147,6 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
-						<string key="label">currentBranchPopUpButton</string>
-						<reference key="source" ref="512844837"/>
-						<reference key="destination" ref="451021642"/>
-					</object>
-					<int key="connectionID">100166</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
 						<string key="label">splitView</string>
 						<reference key="source" ref="512844837"/>
 						<reference key="destination" ref="50605990"/>
@@ -1416,6 +1408,38 @@
 						<reference key="destination" ref="192478086"/>
 					</object>
 					<int key="connectionID">100237</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">remoteBranchPopUpButton</string>
+						<reference key="source" ref="512844837"/>
+						<reference key="destination" ref="496183261"/>
+					</object>
+					<int key="connectionID">100238</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">currentBranchPopUpButton</string>
+						<reference key="source" ref="512844837"/>
+						<reference key="destination" ref="451021642"/>
+					</object>
+					<int key="connectionID">100239</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">enabled: repository.currentRef.isLocalBranch</string>
+						<reference key="source" ref="456844793"/>
+						<reference key="destination" ref="512844837"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="456844793"/>
+							<reference key="NSDestination" ref="512844837"/>
+							<string key="NSLabel">enabled: repository.currentRef.isLocalBranch</string>
+							<string key="NSBinding">enabled</string>
+							<string key="NSKeyPath">repository.currentRef.isLocalBranch</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">100241</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -2210,7 +2234,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">100237</int>
+			<int key="maxID">100241</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -2235,10 +2259,12 @@
 							<string>commit:</string>
 							<string>doneEditRepositories:</string>
 							<string>editRepositories:</string>
+							<string>selectRemoteBranch:</string>
 							<string>toggleSplitViewOrientation:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>
@@ -2255,6 +2281,7 @@
 							<string>delegate</string>
 							<string>logArrayController</string>
 							<string>logTableView</string>
+							<string>remoteBranchPopUpButton</string>
 							<string>splitView</string>
 							<string>statusArrayController</string>
 							<string>statusTableView</string>
@@ -2265,6 +2292,7 @@
 							<string>id</string>
 							<string>NSArrayController</string>
 							<string>NSTableView</string>
+							<string>NSPopUpButton</string>
 							<string>NSSplitView</string>
 							<string>NSArrayController</string>
 							<string>NSTableView</string>
@@ -2302,11 +2330,15 @@
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
-					<string key="className">NSWindowController</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+					<string key="className">NSWindow</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier" id="866863076">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">NSWindowController+OAWindowControllerHelpers.h</string>
 					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">NSWindowController</string>
+					<reference key="sourceIdentifier" ref="866863076"/>
 				</object>
 			</object>
 			<object class="NSMutableArray" key="referencedPartialClassDescriptionsV3.2+">

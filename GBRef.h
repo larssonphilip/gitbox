@@ -5,6 +5,7 @@
   NSString* commitId;
   NSString* remoteAlias;
   BOOL isTag;
+  GBRef* remoteBranch;
   
   GBRepository* repository;
 }
@@ -13,6 +14,7 @@
 @property(retain) NSString* commitId;
 @property(retain) NSString* remoteAlias;
 @property(assign) BOOL isTag;
+@property(retain) GBRef* remoteBranch;
 
 @property(assign) GBRepository* repository;
 
