@@ -6,6 +6,8 @@ Note on remote branches:
 - we should remember remote branches somewhere for gitbox to avoid messing with .git mess.
 - we should also be able to add/remove repos
 - for non-existing remote branch we should disable pull button
+- use 'git ls-remote --tags --heads' to update remote branches
+- how do we list remote repositories? looking into refs/remotes is not sufficient, we should consult .git/config: 'git config --list'
 
 
 To do now:
