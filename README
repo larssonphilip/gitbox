@@ -8,7 +8,7 @@ Note on remote branches:
 - for non-existing remote branch we should disable pull button
 - use 'git ls-remote --tags --heads' to update remote branches
 - how do we list remote repositories? looking into refs/remotes is not sufficient, we should consult .git/config: 'git config --list'
-
+- how to make an activity indicator? port an object from the iphone and bind enabled property to it's current state
 
 To do now:
 
