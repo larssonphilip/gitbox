@@ -1,12 +1,13 @@
 #import "OATaskManager.h"
 #import "OATask.h"
+#import "OAActivityIndicator.h"
 
 @implementation OATaskManager
 
 @synthesize concurrentTasks;
 @synthesize queuedTasks;
 @synthesize currentTask;
-
+@synthesize activityIndicator;
 
 
 #pragma mark Init
@@ -29,11 +30,21 @@
   return [[queuedTasks retain] autorelease];
 }
 
+- (OAActivityIndicator*) activityIndicator
+{
+  if (!activityIndicator)
+  {
+    self.activityIndicator = [[OAActivityIndicator new] autorelease];
+  }
+  return [[activityIndicator retain] autorelease];
+}
+
 - (void) dealloc
 {
   self.concurrentTasks = nil;
   self.queuedTasks = nil;
   self.currentTask = nil;
+  self.activityIndicator = nil;
   [[NSNotificationCenter defaultCenter] removeObserver:self];
   [super dealloc];
 }
@@ -47,6 +58,7 @@
 - (OATask*) launchTask:(OATask*)task
 {
   [self.concurrentTasks addObject:task];
+  [self.activityIndicator push];
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(taskDidFinish:) name:OATaskNotification object:task];
   [task launch];
   return task;
@@ -68,10 +80,11 @@
 {
   OATask* task = notification.object;
   [[task retain] autorelease]; // let other observers enjoy the task in this runloop cycle
+  [self.activityIndicator pop];
   [[NSNotificationCenter defaultCenter] removeObserver:self name:OATaskNotification object:task];
   [self.concurrentTasks removeObject:task];
   
-  if (self.currentTask == task) // this was an enqueued task, should launch next task
+  if (self.currentTask == task) // if this was an enqueued task, should launch next task
   {
     self.currentTask = nil;
     [self launchNextEnqueuedTask];

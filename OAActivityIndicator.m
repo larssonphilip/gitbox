@@ -1,25 +1,20 @@
-#import "OANetworkActivityIndicator.h"
+#import "OAActivityIndicator.h"
 
-OANetworkActivityIndicator* sharedOANetworkActivityIndicator;
-@implementation OANetworkActivityIndicator
+OAActivityIndicator* sharedOAActivityIndicator;
+@implementation OAActivityIndicator
 
 @synthesize value;
 
-+ (OANetworkActivityIndicator*)sharedIndicator
++ (OAActivityIndicator*)sharedIndicator
 {
   @synchronized(self)
   {
-    if (sharedOANetworkActivityIndicator == nil)
+    if (sharedOAActivityIndicator == nil)
     {
-      sharedOANetworkActivityIndicator = [self new];
+      sharedOAActivityIndicator = [self new];
     }
   }
-	return sharedOANetworkActivityIndicator;
-}
-
-+ (OANetworkActivityIndicator*)instance // keeping for compatibility with OAHTTPDownload
-{
-  return [self sharedIndicator];
+	return sharedOAActivityIndicator;
 }
 
 - (void) updateValueOnUnknownThread:(BOOL)v

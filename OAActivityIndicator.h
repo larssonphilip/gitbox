@@ -6,7 +6,7 @@
 // - cde/iphone (21.05.2010)
 // - facilescan/iphone (21.05.2010)
 
-@interface OANetworkActivityIndicator : NSObject
+@interface OAActivityIndicator : NSObject
 {
   NSInteger count;
   BOOL value;
@@ -17,7 +17,7 @@
 
 
 // Methods for shared instance (useful for a single-window applications such as iPhone app)
-+ (OANetworkActivityIndicator*)sharedIndicator;
++ (OAActivityIndicator*)sharedIndicator;
 + (void) push;
 + (void) pop;
 + (BOOL) isActive;
