@@ -12,6 +12,8 @@
 @synthesize stagedChanges;
 @synthesize unstagedChanges;
 @synthesize untrackedChanges;
+@synthesize hasStagedChanges;
+
 
 #pragma mark Init
 
@@ -44,6 +46,7 @@
 
 - (NSArray*) loadChanges
 {
+  self.hasStagedChanges = NO;
   [self.repository launchTask:[GBStagedChangesTask task]];
   [self.repository launchTask:[GBUnstagedChangesTask task]];
   [self.repository launchTask:[GBUntrackedChangesTask task]];
