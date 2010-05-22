@@ -12,7 +12,7 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="4"/>
+			<integer value="3"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -177,70 +177,6 @@
 			<object class="NSMutableArray" key="connectionRecords">
 				<bool key="EncodedWithXMLCoder">YES</bool>
 				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">title: title</string>
-						<reference key="source" ref="1008258538"/>
-						<reference key="destination" ref="1001"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="1008258538"/>
-							<reference key="NSDestination" ref="1001"/>
-							<string key="NSLabel">title: title</string>
-							<string key="NSBinding">title</string>
-							<string key="NSKeyPath">title</string>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">16</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: promptText</string>
-						<reference key="source" ref="255622120"/>
-						<reference key="destination" ref="1001"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="255622120"/>
-							<reference key="NSDestination" ref="1001"/>
-							<string key="NSLabel">value: promptText</string>
-							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">promptText</string>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">18</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">title: buttonText</string>
-						<reference key="source" ref="407116416"/>
-						<reference key="destination" ref="1001"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="407116416"/>
-							<reference key="NSDestination" ref="1001"/>
-							<string key="NSLabel">title: buttonText</string>
-							<string key="NSBinding">title</string>
-							<string key="NSKeyPath">buttonText</string>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">20</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: value</string>
-						<reference key="source" ref="344102752"/>
-						<reference key="destination" ref="1001"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="344102752"/>
-							<reference key="NSDestination" ref="1001"/>
-							<string key="NSLabel">value: value</string>
-							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">value</string>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">22</int>
-				</object>
-				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
 						<string key="label">delegate</string>
 						<reference key="source" ref="1008258538"/>
@@ -271,6 +207,70 @@
 						<reference key="destination" ref="159053089"/>
 					</object>
 					<int key="connectionID">27</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: self.value</string>
+						<reference key="source" ref="344102752"/>
+						<reference key="destination" ref="1001"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="344102752"/>
+							<reference key="NSDestination" ref="1001"/>
+							<string key="NSLabel">value: self.value</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">self.value</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">28</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">title: self.buttonText</string>
+						<reference key="source" ref="407116416"/>
+						<reference key="destination" ref="1001"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="407116416"/>
+							<reference key="NSDestination" ref="1001"/>
+							<string key="NSLabel">title: self.buttonText</string>
+							<string key="NSBinding">title</string>
+							<string key="NSKeyPath">self.buttonText</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">29</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: self.promptText</string>
+						<reference key="source" ref="255622120"/>
+						<reference key="destination" ref="1001"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="255622120"/>
+							<reference key="NSDestination" ref="1001"/>
+							<string key="NSLabel">value: self.promptText</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">self.promptText</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">30</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">title: self.title</string>
+						<reference key="source" ref="1008258538"/>
+						<reference key="destination" ref="1001"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="1008258538"/>
+							<reference key="NSDestination" ref="1001"/>
+							<string key="NSLabel">title: self.title</string>
+							<string key="NSBinding">title</string>
+							<string key="NSKeyPath">self.title</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">31</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -438,7 +438,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">27</int>
+			<int key="maxID">31</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -482,13 +482,6 @@
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">NSMenu+OAMenuHelpers.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">NSObject</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">NSObject+OALogging.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
