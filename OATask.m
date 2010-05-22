@@ -9,11 +9,15 @@ NSString* OATaskNotification = @"OATaskNotification";
 @synthesize executableName;
 @synthesize launchPath;
 @synthesize currentDirectoryPath;
-@synthesize arguments;
-@synthesize pollingPeriod;
 @synthesize nstask;
 @synthesize output;
+@synthesize arguments;
 
+@synthesize pollingPeriod;
+@synthesize terminateTimeout;
+
+@synthesize standardOutput;
+@synthesize standardError;
 
 
 #pragma mark Init
@@ -80,6 +84,8 @@ NSString* OATaskNotification = @"OATaskNotification";
   self.arguments = nil;
   self.nstask = nil;
   self.output = nil;
+  self.standardOutput = nil;
+  self.standardError = nil;
   [[NSNotificationCenter defaultCenter] removeObserver:self];
   [super dealloc];
 }
@@ -131,11 +137,23 @@ NSString* OATaskNotification = @"OATaskNotification";
 
 - (OATask*) prepareTask
 {
+  NSPipe* defaultPipe = nil;
   [self.nstask setCurrentDirectoryPath:self.currentDirectoryPath];
-  [self.nstask setLaunchPath: self.launchPath];
-  [self.nstask setArguments: self.arguments];
-  [self.nstask setStandardOutput:[NSPipe pipe]];
-  [self.nstask setStandardError:[self.nstask standardOutput]]; // stderr > stdout
+  [self.nstask setLaunchPath:    self.launchPath];
+  [self.nstask setArguments:     self.arguments];
+  if (!self.standardOutput)
+  {
+    defaultPipe = (defaultPipe ? defaultPipe : [NSPipe pipe]);
+    self.standardOutput = defaultPipe;
+  }
+  if (!self.standardError)
+  {
+    defaultPipe = (defaultPipe ? defaultPipe : [NSPipe pipe]);
+    self.standardError = defaultPipe;
+  }
+  
+  [self.nstask setStandardOutput:self.standardOutput];
+  [self.nstask setStandardError: self.standardError];
   return self;
 }
 
@@ -291,6 +309,15 @@ NSString* OATaskNotification = @"OATaskNotification";
 {
   if ([self.nstask isRunning])
   {
+    if (terminateTimeout > 0.0) // timeout was set
+    {
+      self.terminateTimeout -= self.pollingPeriod;
+      if (self.terminateTimeout <= 0.0) // timeout passed
+      {
+        [self terminate];
+        [self periodicStatusUpdate]; // finish with task
+      }
+    }
     [self performSelector:@selector(periodicStatusUpdate) withObject:nil afterDelay:self.pollingPeriod];
     self.pollingPeriod *= 1.5;
   }

@@ -7,7 +7,12 @@ extern NSString* OATaskNotification;
   NSTask* nstask;
   NSData* output;
   NSArray* arguments;
+  
   NSTimeInterval pollingPeriod;
+  NSTimeInterval terminateTimeout;
+  
+  id standardOutput;
+  id standardError;
   
   BOOL isReadingInBackground;
 }
@@ -18,7 +23,12 @@ extern NSString* OATaskNotification;
 @property(retain) NSTask* nstask;
 @property(retain) NSData* output;
 @property(retain) NSArray* arguments;
+
 @property(assign) NSTimeInterval pollingPeriod;
+@property(assign) NSTimeInterval terminateTimeout;
+
+@property(retain) id standardOutput;
+@property(retain) id standardError;
 
 + (id) task;
 
