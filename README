@@ -19,6 +19,22 @@ Strategy for the first shippable version:
   - add
   - delete
 
+-----------------------------------
+To do now:
+
+- read remotes from git/config
+- load ls-remote info for each remote
+- pull
+- reread remotes on focus: if the names and urls are the same, do not ls-remote
+- do ls-remote in background starting on unfocus
+- disable pull/push and current branch while pulling
+- push
+- fetch if push failed
+- disable pull/push and remote branch while pushing
+- fetch in background when unfocused
+
+
+-----------------------------------
 
 Note on remote branches:
 - branches sometimes could be found in .git/refs/remotes/<alias>/<branch-name>
@@ -32,25 +48,6 @@ Note on remote branches:
 - how do we list remote repositories? looking into refs/remotes is not sufficient, we should consult .git/config: 'git config --list'
 - how to make an activity indicator? port an object from the iphone and bind enabled property to it's current state
 
-To do now:
-
-+ list working directory changes
-  + changes on the stage: git diff-index --cached --ignore-submodules -z HEAD
-  + changes on the working directory (not including staged): git diff-files --ignore-submodules -z
-  + untracked files: git ls-files --other --exclude-standard -z
- 
-+ stage/unstage with a checkbox
-+ commit with a message
-- switch remote branch
-- push
-- pull
-- edit repositories
-+ checkout remote branch
-- show log (last 5000 commits)
-- "what's new": diff with other branch is shown as grey commit rows in the same log
-- errors in NSAlert switch window focus which leads to repeated request: when repo is just initialized git-rev-log fails
-  (maybe put errors in a floating panel)
-- see NSUserInterfaceValidations to disable menu items (especially for context menus)
 
 Code to do:
 
@@ -67,6 +64,13 @@ Code to do:
 
 
 To do:
+
+- edit repositories
+- show log (last 5000 commits)
+- "what's new": diff with other branch is shown as grey commit rows in the same log
+- errors in NSAlert switch window focus which leads to repeated request: when repo is just initialized git-rev-log fails
+  (maybe put errors in a floating panel)
+- see NSUserInterfaceValidations to disable menu items (especially for context menus)
 
 + prompt for a name when checking out a new branch
 + check out a branch from the remote one
