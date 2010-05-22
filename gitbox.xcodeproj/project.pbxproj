@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2010732F11A7E9C300EFDE56 /* app.icns in Resources */ = {isa = PBXBuildFile; fileRef = 2010732E11A7E9C300EFDE56 /* app.icns */; };
 		2038F1B11193664D0087CE37 /* GBRepositoryController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58290DA1D0D100B32029 /* GBRepositoryController.xib */; };
 		2038F1B3119366660087CE37 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C1660FE840EACC02AAC07 /* InfoPlist.strings */; };
 		2038F1B7119366960087CE37 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD582B0DA1D0D100B32029 /* MainMenu.xib */; };
@@ -26,7 +27,7 @@
 		2038F76D11A04A290087CE37 /* NSString+OAGitHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 2038F76C11A04A290087CE37 /* NSString+OAGitHelpers.m */; };
 		2058FA4811982F5100FB018D /* GBRemotesController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2058FA4711982F5100FB018D /* GBRemotesController.xib */; };
 		206A07BE11A33519003BB9E3 /* OATask.m in Sources */ = {isa = PBXBuildFile; fileRef = 206A07BD11A33519003BB9E3 /* OATask.m */; };
-		206A088711A7AB36003BB9E3 /* OANetworkActivityIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 206A088611A7AB36003BB9E3 /* OANetworkActivityIndicator.m */; };
+		206A088711A7AB36003BB9E3 /* OAActivityIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 206A088611A7AB36003BB9E3 /* OAActivityIndicator.m */; };
 		20B1621211944C0F00A709CF /* NSFileManager+OAFileManagerHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B1621111944C0F00A709CF /* NSFileManager+OAFileManagerHelpers.m */; };
 		20B8B64E11A444B6006D6442 /* OATaskManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B8B64D11A444B6006D6442 /* OATaskManager.m */; };
 		20B8B70C11A489F1006D6442 /* GBChangesTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B8B70B11A489F1006D6442 /* GBChangesTask.m */; };
@@ -49,6 +50,7 @@
 		13E42FBA07B3F13500E4EEF1 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
 		1DDD58290DA1D0D100B32029 /* GBRepositoryController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBRepositoryController.xib; sourceTree = "<group>"; };
 		1DDD582B0DA1D0D100B32029 /* MainMenu.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
+		2010732E11A7E9C300EFDE56 /* app.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = app.icns; sourceTree = "<group>"; };
 		2038F1DD11936B060087CE37 /* GBAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBAppDelegate.h; sourceTree = "<group>"; };
 		2038F1DE11936B060087CE37 /* GBAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBAppDelegate.m; sourceTree = "<group>"; };
 		2038F1EA11936CA50087CE37 /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
@@ -81,8 +83,8 @@
 		2058FA4711982F5100FB018D /* GBRemotesController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBRemotesController.xib; sourceTree = "<group>"; };
 		206A07BC11A33519003BB9E3 /* OATask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OATask.h; sourceTree = "<group>"; };
 		206A07BD11A33519003BB9E3 /* OATask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OATask.m; sourceTree = "<group>"; };
-		206A088511A7AB36003BB9E3 /* OANetworkActivityIndicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OANetworkActivityIndicator.h; sourceTree = "<group>"; };
-		206A088611A7AB36003BB9E3 /* OANetworkActivityIndicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OANetworkActivityIndicator.m; sourceTree = "<group>"; };
+		206A088511A7AB36003BB9E3 /* OAActivityIndicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAActivityIndicator.h; sourceTree = "<group>"; };
+		206A088611A7AB36003BB9E3 /* OAActivityIndicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAActivityIndicator.m; sourceTree = "<group>"; };
 		20B1621011944C0F00A709CF /* NSFileManager+OAFileManagerHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSFileManager+OAFileManagerHelpers.h"; sourceTree = "<group>"; };
 		20B1621111944C0F00A709CF /* NSFileManager+OAFileManagerHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSFileManager+OAFileManagerHelpers.m"; sourceTree = "<group>"; };
 		20B8B64C11A444B6006D6442 /* OATaskManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OATaskManager.h; sourceTree = "<group>"; };
@@ -227,8 +229,8 @@
 				20B8B7C111A49975006D6442 /* NSMenu+OAMenuHelpers.m */,
 				20B8B81111A49E8D006D6442 /* NSWindowController+OAWindowControllerHelpers.h */,
 				20B8B81211A49E8D006D6442 /* NSWindowController+OAWindowControllerHelpers.m */,
-				206A088511A7AB36003BB9E3 /* OANetworkActivityIndicator.h */,
-				206A088611A7AB36003BB9E3 /* OANetworkActivityIndicator.m */,
+				206A088511A7AB36003BB9E3 /* OAActivityIndicator.h */,
+				206A088611A7AB36003BB9E3 /* OAActivityIndicator.m */,
 			);
 			name = Libs;
 			sourceTree = "<group>";
@@ -268,6 +270,7 @@
 		2A37F4B8FDCFA73011CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				2010732E11A7E9C300EFDE56 /* app.icns */,
 				2038F1EA11936CA50087CE37 /* README */,
 				2A37F4B9FDCFA73011CA2CEA /* Credits.rtf */,
 				8D15AC360486D014006FF6A4 /* info.plist */,
@@ -338,6 +341,7 @@
 				2038F1B7119366960087CE37 /* MainMenu.xib in Resources */,
 				2058FA4811982F5100FB018D /* GBRemotesController.xib in Resources */,
 				20B8B83911A4A72A006D6442 /* GBPromptController.xib in Resources */,
+				2010732F11A7E9C300EFDE56 /* app.icns in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -374,7 +378,7 @@
 				20B8B81311A49E8D006D6442 /* NSWindowController+OAWindowControllerHelpers.m in Sources */,
 				20B8B83D11A4A776006D6442 /* GBPromptController.m in Sources */,
 				20B8B84811A4AAF2006D6442 /* NSString+OAStringHelpers.m in Sources */,
-				206A088711A7AB36003BB9E3 /* OANetworkActivityIndicator.m in Sources */,
+				206A088711A7AB36003BB9E3 /* OAActivityIndicator.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
