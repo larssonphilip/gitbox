@@ -102,7 +102,7 @@ NSString* OATaskNotification = @"OATaskNotification";
       [NSNotification notificationWithName:OATaskNotification 
                                     object:self];
     [[NSNotificationQueue defaultQueue] enqueueNotification:notification 
-                                               postingStyle:NSPostASAP];
+                                               postingStyle:NSPostNow];
   }
 }
 
