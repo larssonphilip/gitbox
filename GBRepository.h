@@ -22,9 +22,10 @@
   NSArray* commits;
   OATaskManager* taskManager;
   
-  BOOL checkoutDisabled;
-  BOOL pushDisabled;
-  BOOL pullDisabled;  
+  BOOL pulling;
+  BOOL merging;
+  BOOL fetching;
+  BOOL pushing;
   
   id<GBRepositoryDelegate> delegate;
 }
@@ -39,9 +40,10 @@
 @property(retain) NSArray* commits;
 @property(retain) OATaskManager* taskManager;
 
-@property(assign) BOOL checkoutDisabled;
-@property(assign) BOOL pushDisabled;
-@property(assign) BOOL pullDisabled;
+@property(assign) BOOL pulling;
+@property(assign) BOOL merging;
+@property(assign) BOOL fetching;
+@property(assign) BOOL pushing;
 
 @property(assign) id<GBRepositoryDelegate> delegate;
 

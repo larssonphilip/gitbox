@@ -21,9 +21,10 @@
 @synthesize commits;
 @synthesize taskManager;
 
-@synthesize checkoutDisabled;
-@synthesize pushDisabled;
-@synthesize pullDisabled;  
+@synthesize pulling;
+@synthesize merging;
+@synthesize fetching;
+@synthesize pushing;
 
 @synthesize delegate;
 
@@ -297,8 +298,7 @@
 - (void) pullBranch:(GBRef*)aRemoteBranch
 {
   NSLog(@"TODO: check for already fetched commits and merge them with a blocking task instead of pulling again");
-  self.pullDisabled = YES;
-  self.pushDisabled = YES;
+  self.pulling = YES;
   
   GBTask* pullTask = [GBTask task];
   pullTask.arguments = [NSArray arrayWithObjects:@"pull", aRemoteBranch.remoteAlias, aRemoteBranch.name, nil];
@@ -330,8 +330,8 @@
 {
   GBTask* task = [notification object];
   [task unsubscribe:self];
-  self.pullDisabled = NO;
-  self.pushDisabled = NO;
+  self.pulling = NO;
+  
   NSLog(@"TODO: update branch log and status");
 }
 
