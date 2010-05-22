@@ -16,6 +16,8 @@
 @property(retain) NSString* statusCode;
 @property(retain) NSString* oldRevision;
 @property(retain) NSString* newRevision;
+
+// Important: this property is only for checkbox binding in UI, do not use it programmatically.
 @property(assign) BOOL staged;
 
 @property(assign) GBRepository* repository;
