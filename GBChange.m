@@ -1,5 +1,8 @@
 #import "GBModels.h"
+#import "GBExtractFileTask.h"
 #import "OATask.h"
+#import "OATaskManager.h"
+
 #import "NSString+OAGitHelpers.h"
 
 @implementation GBChange
@@ -124,6 +127,15 @@
 #pragma mark Actions
 
 
+- (NSURL*) temporaryURLForObjectId:(NSString*)objectId optionalURL:(NSURL*)url
+{
+  GBExtractFileTask* task = [GBExtractFileTask task];
+  task.repository = self.repository;
+  task.objectId = objectId;
+  task.originalURL = url;
+  [task launchAndWait];
+  return task.temporaryURL;
+}
 
 - (void) launchComparisonTool:(id)sender
 {
@@ -137,8 +149,10 @@
     return;
   }
   
-  NSURL* leftURL  = (leftCommitId ? [self checkoutAndReturnTemporaryURLForCommitId:leftCommitId] : self.srcURL);
-  NSURL* rightURL = (rightCommitId ? [self checkoutAndReturnTemporaryURLForCommitId:rightCommitId] : self.dstURL);
+  // Note: using fileURL instead of dstURL so that it defaults to srcURL if no dst defined.
+  
+  NSURL* leftURL  = (leftCommitId ? [self temporaryURLForObjectId:leftCommitId optionalURL:self.srcURL] : self.srcURL);
+  NSURL* rightURL = (rightCommitId ? [self temporaryURLForObjectId:rightCommitId optionalURL:self.fileURL] : self.fileURL);
   
   if (!leftURL)
   {
@@ -152,18 +166,16 @@
     return;
   }
   
+  NSLog(@"opendiff %@ %@", [leftURL path], [rightURL path]);
+  
   OATask* task = [OATask task];
   task.executableName = @"opendiff";
-  task.arguments = [NSArray arrayWithObjects:[leftURL absoluteString], [rightURL absoluteString], nil];
-  [task launch];
+  task.currentDirectoryPath = self.repository.path;
+  task.arguments = [NSArray arrayWithObjects:[leftURL path], [rightURL path], nil];
   // opendiff waits for FileMerge.app to exit, so we should kill it
-  [task performSelector:@selector(terminate) withObject:nil afterDelay:1.0]; 
-}
-
-- (NSURL*) checkoutAndReturnTemporaryURLForCommitId:(NSString*) commitId
-{
-  NSLog(@"TODO: git cat-file for blobs %@", commitId);
-  return nil;
+  task.terminateTimeout = 0.2;
+  [self.repository.taskManager launchTask:task];
+  
 }
 
 

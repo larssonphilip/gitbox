@@ -33,6 +33,5 @@
 #pragma mark Actions
 
 - (void) launchComparisonTool:(id)sender;
-- (NSURL*) checkoutAndReturnTemporaryURLForCommitId:(NSString*) commitId;
 
 @end
