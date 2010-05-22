@@ -7,12 +7,9 @@ OAActivityIndicator* sharedOAActivityIndicator;
 
 + (OAActivityIndicator*)sharedIndicator
 {
-  @synchronized(self)
+  if (sharedOAActivityIndicator == nil)
   {
-    if (sharedOAActivityIndicator == nil)
-    {
-      sharedOAActivityIndicator = [self new];
-    }
+    sharedOAActivityIndicator = [self new];
   }
 	return sharedOAActivityIndicator;
 }
@@ -24,9 +21,10 @@ OAActivityIndicator* sharedOAActivityIndicator;
    [NSNumber numberWithBool:v] waitUntilDone:NO];
 }
 
-- (void) updateValueOnMainThread:(NSNumber*)v
+- (void) updateValueOnMainThread:(BOOL)v
 {
-  self.value = [v boolValue];
+  //NSLog(@"active: %d", (NSInteger)v);
+  self.value = v;
   #if TARGET_OS_IPHONE
     [UIApplication sharedApplication].networkActivityIndicatorVisible = value;
   #endif
@@ -34,20 +32,16 @@ OAActivityIndicator* sharedOAActivityIndicator;
 
 - (void) push
 {
-  @synchronized(self)
-  {
-    count++;
-    if (count == 1) [self updateValueOnUnknownThread:YES];
-  }
+  count++;
+  //NSLog(@"push: %d", count);
+  if (count == 1) [self updateValueOnMainThread:YES];
 }
 
 - (void) pop
 {
-  @synchronized(self)
-	{
-    count--;
-    if (count == 0) [self updateValueOnUnknownThread:NO];
-  }
+  //NSLog(@"pop: %d", count);
+  count--;
+  if (count == 0) [self updateValueOnMainThread:NO];
 }
 
 - (BOOL) isActive
