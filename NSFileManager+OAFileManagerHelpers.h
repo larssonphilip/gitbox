@@ -3,6 +3,8 @@
 
 @interface NSFileManager (OAFileManagerHelpers)
 
+#pragma mark Interrogation
+
 + (BOOL) isReadableDirectoryAtPath:(NSString*)path;
 - (BOOL) isReadableDirectoryAtPath:(NSString*)path;
 
@@ -11,5 +13,12 @@
 
 + (NSArray*) contentsOfDirectoryAtURL:(NSURL*)url;
 - (NSArray*) contentsOfDirectoryAtURL:(NSURL*)url;
+
+
+#pragma mark Mutation
+
+- (void) createFolderForPath:(NSString*)path;
+- (void) createFolderForFilePath:(NSString*)path;
+- (void) writeData:(NSData*)data toPath:(NSString*)path;
 
 @end

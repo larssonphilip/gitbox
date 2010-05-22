@@ -2,6 +2,12 @@
 
 @implementation NSFileManager (OAFileManagerHelpers)
 
+
+
+
+#pragma mark Interrogation
+
+
 + (BOOL) isReadableDirectoryAtPath:(NSString*)path
 {
   return [[self defaultManager] isReadableDirectoryAtPath:path];
@@ -57,5 +63,46 @@
   }
   return URLs;
 }
+
+
+
+#pragma mark Mutation
+
+
+- (void) createFolderForPath:(NSString*)path
+{
+  NSError* error = nil;
+  if ([self createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:&error])
+  {
+    // ok.
+  }
+  else
+  {
+    NSLog(@"NSFileManager+OAFileManagerHelpers: createFolderForPath could not create directory %@", path);
+  }
+}
+
+- (void) createFolderForFilePath:(NSString*)path
+{
+  [self createFolderForPath:[path stringByDeletingLastPathComponent]];
+}
+
+- (void) writeData:(NSData*)data toPath:(NSString*)path
+{
+  if (data)
+	{
+    [self createFolderForFilePath:path];
+		NSError* error = nil;
+    if ( ! [data writeToFile:path options:NSDataWritingAtomic error:&error])
+    {
+      NSLog(@"NSFileManager+OAFileManagerHelpers: could not write data to %@", path);
+    }
+	} 
+  else 
+  {
+    NSLog(@"NSFileManager+OAFileManagerHelpers: writeData:toPath: data is nil!");
+  }
+}
+
 
 @end
