@@ -80,7 +80,6 @@
 {
   OATask* task = notification.object;
   [[task retain] autorelease]; // let other observers enjoy the task in this runloop cycle
-  [self.activityIndicator pop];
   [[NSNotificationCenter defaultCenter] removeObserver:self name:OATaskNotification object:task];
   [self.concurrentTasks removeObject:task];
   
@@ -89,6 +88,7 @@
     self.currentTask = nil;
     [self launchNextEnqueuedTask];
   }
+  [self.activityIndicator pop]; // cancels current task, overlaps with launchNextEnqueuedTask to avoid flickering
 }
 
 
