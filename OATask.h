@@ -1,9 +1,10 @@
 extern NSString* OATaskNotification;
 @interface OATask : NSObject
 {
+  NSString* executableName;
   NSString* launchPath;
   NSString* currentDirectoryPath;
-  NSTask* task;
+  NSTask* nstask;
   NSData* output;
   NSArray* arguments;
   NSTimeInterval pollingPeriod;
@@ -11,19 +12,22 @@ extern NSString* OATaskNotification;
   BOOL isReadingInBackground;
 }
 
+@property(retain) NSString* executableName;
 @property(retain) NSString* launchPath;
 @property(retain) NSString* currentDirectoryPath;
-@property(retain) NSTask* task;
+@property(retain) NSTask* nstask;
 @property(retain) NSData* output;
 @property(retain) NSArray* arguments;
 @property(assign) NSTimeInterval pollingPeriod;
 
 + (id) task;
 
+
+#pragma mark Interrogation
+
+- (NSString*) systemPathForExecutable:(NSString*)executable;
 - (int) terminationStatus;
 - (BOOL) isError;
-
-- (void) periodicStatusUpdate;
 
 
 #pragma mark Mutation methods
@@ -41,14 +45,15 @@ extern NSString* OATaskNotification;
 - (OATask*) readInBackground;
 - (NSFileHandle*) fileHandleForReading;
 
-
-#pragma mark Subscription
+- (void) terminate;
 
 - (OATask*) subscribe:(id)observer selector:(SEL) selector;
 - (OATask*) unsubscribe:(id)observer;
 
 
-// internal method for subclasses
+#pragma mark Private
+
+- (void) periodicStatusUpdate;
 - (void) didFinish;
 
 @end

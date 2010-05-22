@@ -6,19 +6,43 @@ NSString* OATaskNotification = @"OATaskNotification";
 
 @implementation OATask
 
+@synthesize executableName;
 @synthesize launchPath;
 @synthesize currentDirectoryPath;
 @synthesize arguments;
 @synthesize pollingPeriod;
-@synthesize task;
+@synthesize nstask;
 @synthesize output;
+
 
 
 #pragma mark Init
 
+
 + (id) task
 {
   return [[self new] autorelease];
+}
+
+- (NSString*) launchPath
+{
+  if (!launchPath && self.executableName)
+  {
+    NSString* exec = self.executableName;
+    NSString* aPath = [self systemPathForExecutable:exec];
+    
+    if (aPath)
+    {
+      self.launchPath = aPath;
+    }
+    else
+    {
+      [NSAlert message:[NSString stringWithFormat:@"Couldn't find %@ executable", exec] 
+           description:[NSString stringWithFormat:@"Please install %@ in a well-known location (such as /usr/local/bin).", exec]];
+      [NSApp terminate:self];
+    }
+  }
+  return [[launchPath retain] autorelease];
 }
 
 - (NSTimeInterval) pollingPeriod
@@ -30,41 +54,46 @@ NSString* OATaskNotification = @"OATaskNotification";
   return pollingPeriod;
 }
 
-- (NSTask*) task
+- (NSTask*) nstask
 {
-  if (!task)
+  if (!nstask)
   {
-    self.task = [[NSTask new] autorelease];
+    self.nstask = [[NSTask new] autorelease];
   }
-  return [[task retain] autorelease];
+  return [[nstask retain] autorelease];
 }
 
 - (NSData*) output
 {
-  if (!output && task)
+  if (!output && nstask)
   {
-    self.output = [[[task standardOutput] fileHandleForReading] readDataToEndOfFile];
+    self.output = [[[nstask standardOutput] fileHandleForReading] readDataToEndOfFile];
   }
   return [[output retain] autorelease];
 }
 
 - (void) dealloc
 {
+  self.executableName = nil;
+  self.launchPath = nil;
   self.currentDirectoryPath = nil;
-  self.task = nil;
-  self.output = nil;
   self.arguments = nil;
+  self.nstask = nil;
+  self.output = nil;
   [[NSNotificationCenter defaultCenter] removeObserver:self];
   [super dealloc];
 }
 
 
-#pragma mark Info
+
+
+
+#pragma mark Interrogation
 
 
 - (int) terminationStatus
 {
-  return [self.task terminationStatus];
+  return [self.nstask terminationStatus];
 }
 
 - (BOOL) isError
@@ -72,41 +101,28 @@ NSString* OATaskNotification = @"OATaskNotification";
   return self.terminationStatus != 0;
 }
 
-
-
-#pragma mark Helpers
-
-
-- (void) periodicStatusUpdate
+- (NSString*) systemPathForExecutable:(NSString*)executable
 {
-  if ([self.task isRunning])
+  NSFileManager* fm = [NSFileManager defaultManager];
+  NSArray* binPaths = [NSArray arrayWithObjects:
+                       @"~/bin",
+                       @"/usr/local/bin",
+                       @"/usr/bin",
+                       @"/opt/local/bin",
+                       @"/opt/bin",
+                       @"/bin",
+                       nil];
+  for (NSString* folder in binPaths)
   {
-    [self performSelector:@selector(periodicStatusUpdate) withObject:nil afterDelay:self.pollingPeriod];
-    self.pollingPeriod *= 1.5;
-  }
-  else
-  {
-    if (isReadingInBackground)
+    NSString* execPath = [folder stringByAppendingPathComponent:executable];
+    if ([fm isExecutableFileAtPath:execPath])
     {
-      [[NSNotificationCenter defaultCenter] removeObserver:self 
-                                                      name:NSFileHandleReadCompletionNotification
-                                                    object:self.fileHandleForReading];
-      NSData *data;
-      while ((data = [self.fileHandleForReading availableData]) && [data length] > 0)
-      {
-        [(NSMutableData*)self.output appendData:data];
-      }
+      return execPath;
     }
-    [self didFinish];
-    NSNotification* notification = 
-      [NSNotification notificationWithName:OATaskNotification 
-                                    object:self];
-    // NSPostNow because NSPostASAP causes properties to be updated with a delay and bindings are updated in a strange fashion
-    // See commit 1c2d52b99c1ccf82e3540be10a3e1f0e3e054065 which fixes strange things with activity indicator.
-    [[NSNotificationQueue defaultQueue] enqueueNotification:notification 
-                                               postingStyle:NSPostNow];
   }
+  return nil;
 }
+
 
 
 
@@ -115,11 +131,11 @@ NSString* OATaskNotification = @"OATaskNotification";
 
 - (OATask*) prepareTask
 {
-  [self.task setCurrentDirectoryPath:self.currentDirectoryPath];
-  [self.task setLaunchPath: self.launchPath];
-  [self.task setArguments: self.arguments];
-  [self.task setStandardOutput:[NSPipe pipe]];
-  [self.task setStandardError:[self.task standardOutput]]; // stderr > stdout
+  [self.nstask setCurrentDirectoryPath:self.currentDirectoryPath];
+  [self.nstask setLaunchPath: self.launchPath];
+  [self.nstask setArguments: self.arguments];
+  [self.nstask setStandardOutput:[NSPipe pipe]];
+  [self.nstask setStandardError:[self.nstask standardOutput]]; // stderr > stdout
   return self;
 }
 
@@ -127,7 +143,7 @@ NSString* OATaskNotification = @"OATaskNotification";
 {
   [self prepareTask];
   //NSLog(@"OATask launch:   %@ %@", self.launchPath, [self.arguments componentsJoinedByString:@" "]);
-  [self.task launch];
+  [self.nstask launch];
   [self performSelector:@selector(periodicStatusUpdate) withObject:nil afterDelay:pollingPeriod];
   return self;
 }
@@ -137,7 +153,7 @@ NSString* OATaskNotification = @"OATaskNotification";
   [NSObject cancelPreviousPerformRequestsWithTarget:self
                                            selector:@selector(periodicStatusUpdate) 
                                              object:nil];
-  [self.task waitUntilExit];
+  [self.nstask waitUntilExit];
   [self didFinish];
   return self;
 }
@@ -170,6 +186,13 @@ NSString* OATaskNotification = @"OATaskNotification";
   NSLog(@"OATask finished: %@ %@ [%d]", self.launchPath, [self.arguments componentsJoinedByString:@" "], [self terminationStatus]);
 }
 
+- (void) terminate
+{
+  [self.nstask terminate];
+}
+
+
+
 
 #pragma mark Launching shortcuts
 
@@ -193,7 +216,7 @@ NSString* OATaskNotification = @"OATaskNotification";
 
 - (NSFileHandle*) fileHandleForReading
 {
-  return [[self.task standardOutput] fileHandleForReading];
+  return [[self.nstask standardOutput] fileHandleForReading];
 }
 
 - (OATask*) readInBackground
@@ -253,6 +276,46 @@ NSString* OATaskNotification = @"OATaskNotification";
                                                   name:OATaskNotification 
                                                 object:self];
   return self;
+}
+
+
+
+
+
+
+
+#pragma mark Helpers
+
+
+- (void) periodicStatusUpdate
+{
+  if ([self.nstask isRunning])
+  {
+    [self performSelector:@selector(periodicStatusUpdate) withObject:nil afterDelay:self.pollingPeriod];
+    self.pollingPeriod *= 1.5;
+  }
+  else
+  {
+    if (isReadingInBackground)
+    {
+      [[NSNotificationCenter defaultCenter] removeObserver:self 
+                                                      name:NSFileHandleReadCompletionNotification
+                                                    object:self.fileHandleForReading];
+      NSData *data;
+      while ((data = [self.fileHandleForReading availableData]) && [data length] > 0)
+      {
+        [(NSMutableData*)self.output appendData:data];
+      }
+    }
+    [self didFinish];
+    NSNotification* notification = 
+    [NSNotification notificationWithName:OATaskNotification 
+                                  object:self];
+    // NSPostNow because NSPostASAP causes properties to be updated with a delay and bindings are updated in a strange fashion
+    // See commit 1c2d52b99c1ccf82e3540be10a3e1f0e3e054065 which fixes strange things with activity indicator.
+    [[NSNotificationQueue defaultQueue] enqueueNotification:notification 
+                                               postingStyle:NSPostNow];
+  }
 }
 
 

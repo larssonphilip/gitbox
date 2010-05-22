@@ -20,16 +20,19 @@
 
 @property(assign) GBRepository* repository;
 
+
+#pragma mark Interrogation
+
 - (NSURL*) fileURL;
-
 - (NSString*) status;
-
 - (NSString*) pathStatus;
-
 - (BOOL) isDeletion;
-
 - (NSComparisonResult) compareByPath:(id) other;
 
+
+#pragma mark Actions
+
 - (void) launchComparisonTool:(id)sender;
+- (NSURL*) checkoutAndReturnTemporaryURLForCommitId:(NSString*) commitId;
 
 @end

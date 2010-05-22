@@ -1,4 +1,5 @@
 #import "GBModels.h"
+#import "OATask.h"
 #import "NSString+OAGitHelpers.h"
 
 @implementation GBChange
@@ -37,6 +38,12 @@
     }
   }
 }
+
+
+
+#pragma mark Interrogation
+
+
 
 - (NSURL*) fileURL
 {
@@ -110,6 +117,14 @@
   return [self.srcURL.relativePath compare:other.srcURL.relativePath];
 }
 
+
+
+
+
+#pragma mark Actions
+
+
+
 - (void) launchComparisonTool:(id)sender
 {
   NSString* leftCommitId = [self.oldRevision nonZeroCommitId];
@@ -118,14 +133,39 @@
   // Both commits are nulls, this is untracked file: just open the app
   if (!leftCommitId && !rightCommitId)
   {
-    [NSApp openURL:self.fileURL];
+    [[NSWorkspace sharedWorkspace] openURL:self.fileURL];
     return;
   }
   
+  NSURL* leftURL  = (leftCommitId ? [self checkoutAndReturnTemporaryURLForCommitId:leftCommitId] : self.srcURL);
+  NSURL* rightURL = (rightCommitId ? [self checkoutAndReturnTemporaryURLForCommitId:rightCommitId] : self.dstURL);
   
+  if (!leftURL)
+  {
+    NSLog(@"ERROR: No leftURL for blob %@", leftCommitId);
+    return;
+  }
   
-  NSLog(@"TODO: git cat-file for existing blobs: %@:%@", leftCommitId, rightCommitId);
-  NSLog(@"TODO: launch opendiff with filepaths");
+  if (!rightURL)
+  {
+    NSLog(@"ERROR: No rightURL for blob %@", rightCommitId);
+    return;
+  }
+  
+  OATask* task = [OATask task];
+  task.executableName = @"opendiff";
+  task.arguments = [NSArray arrayWithObjects:[leftURL absoluteString], [rightURL absoluteString], nil];
+  [task launch];
+  // opendiff waits for FileMerge.app to exit, so we should kill it
+  [task performSelector:@selector(terminate) withObject:nil afterDelay:1.0]; 
 }
+
+- (NSURL*) checkoutAndReturnTemporaryURLForCommitId:(NSString*) commitId
+{
+  NSLog(@"TODO: git cat-file for blobs %@", commitId);
+  return nil;
+}
+
+
 
 @end
