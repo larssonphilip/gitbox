@@ -30,4 +30,14 @@
   }
   return self;
 }
+
+- (NSString*) nonZeroCommitId
+{
+  if ([self isEqualToString:@"0000000000000000000000000000000000000000"])
+  {
+    return nil;
+  }
+  return self;
+}
+
 @end

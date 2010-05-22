@@ -1,4 +1,5 @@
 #import "GBModels.h"
+#import "NSString+OAGitHelpers.h"
 
 @implementation GBChange
 
@@ -111,7 +112,19 @@
 
 - (void) launchComparisonTool:(id)sender
 {
-  NSLog(@"TODO: git cat-file for existing blobs");
+  NSString* leftCommitId = [self.oldRevision nonZeroCommitId];
+  NSString* rightCommitId = [self.newRevision nonZeroCommitId];
+  
+  // Both commits are nulls, this is untracked file: just open the app
+  if (!leftCommitId && !rightCommitId)
+  {
+    [NSApp openURL:self.fileURL];
+    return;
+  }
+  
+  
+  
+  NSLog(@"TODO: git cat-file for existing blobs: %@:%@", leftCommitId, rightCommitId);
   NSLog(@"TODO: launch opendiff with filepaths");
 }
 
