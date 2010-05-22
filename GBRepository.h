@@ -48,21 +48,21 @@
 @property(assign) id<GBRepositoryDelegate> delegate;
 
 
-#pragma mark Info
+#pragma mark Interrogation
 
 + (BOOL) isValidRepositoryAtPath:(NSString*)path;
 - (NSString*) path;
 - (GBRemote*) defaultRemote;
+- (NSArray*) loadCommits;
+- (NSArray*) loadLocalBranches;
+- (NSArray*) loadTags;
+- (NSArray*) loadRemotes;
 
 
 #pragma mark Update
 
 - (void) updateStatus;
 - (void) updateCommits;
-- (NSArray*) loadCommits;
-- (NSArray*) loadLocalBranches;
-- (NSArray*) loadTags;
-- (NSArray*) loadRemotes;
 
 
 #pragma mark Mutation
@@ -80,10 +80,10 @@
 
 #pragma mark Util
 
-- (GBTask*) task;
-- (GBTask*) enqueueTask:(GBTask*)aTask;
-- (GBTask*) launchTask:(GBTask*)aTask;
-- (GBTask*) launchTaskAndWait:(GBTask*)aTask;
+- (id) task;
+- (id) enqueueTask:(GBTask*)aTask;
+- (id) launchTask:(GBTask*)aTask;
+- (id) launchTaskAndWait:(GBTask*)aTask;
 - (NSURL*) gitURLWithSuffix:(NSString*)suffix;
 
 

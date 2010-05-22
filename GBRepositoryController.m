@@ -298,6 +298,11 @@
   // Local branches
   NSMenu* newMenu = [[NSMenu new] autorelease];
   NSPopUpButton* button = self.currentBranchPopUpButton;
+  if ([button pullsDown])
+  {
+    // Note: this is needed according to documentation for pull-down menus. The item will be ignored.
+    [newMenu addItem:[NSMenuItem menuItemWithTitle:@"dummy" submenu:nil]];
+  }
   
   for (GBRef* localBranch in self.repository.localBranches)
   {
@@ -399,6 +404,11 @@
 {
   NSPopUpButton* button = self.remoteBranchPopUpButton;
   NSMenu* remoteBranchesMenu = [NSMenu menu];
+  if ([button pullsDown])
+  {
+    // Note: this is needed according to documentation for pull-down menus. The item will be ignored.
+    [remoteBranchesMenu addItem:[NSMenuItem menuItemWithTitle:@"dummy" submenu:nil]];
+  }
   if ([self.repository.remotes count] > 1) // display submenus for each remote
   {
     for (GBRemote* remote in self.repository.remotes)
@@ -456,11 +466,10 @@
   {
     [button setTitle:[remoteBranch nameWithRemoteAlias]];
   }
-  else 
+  else
   {
     [button setTitle:NSLocalizedString(@"No Branch", @"")];
   }
-  
 }
 
 @end

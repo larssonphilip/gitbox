@@ -44,9 +44,9 @@
 
 - (NSArray*) loadChanges
 {
-  [self.repository launchTask:[[GBStagedChangesTask new] autorelease]];
-  [self.repository launchTask:[[GBUnstagedChangesTask new] autorelease]];
-  [self.repository launchTask:[[GBUntrackedChangesTask new] autorelease]];
+  [self.repository launchTask:[GBStagedChangesTask task]];
+  [self.repository launchTask:[GBUnstagedChangesTask task]];
+  [self.repository launchTask:[GBUntrackedChangesTask task]];
   
   return [self allChanges];
 }

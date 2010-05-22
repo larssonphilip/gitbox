@@ -1,3 +1,4 @@
+@class GBRef;
 @class GBRepository;
 @interface GBRemote : NSObject
 {

@@ -1,8 +1,9 @@
 #import "GBModels.h"
 
-#import "GBTask.h"
-
 #import "OATaskManager.h"
+
+#import "GBTask.h"
+#import "GBRemotesTask.h"
 
 #import "NSFileManager+OAFileManagerHelpers.h"
 #import "NSAlert+OAAlertHelpers.h"
@@ -155,7 +156,7 @@
 
 
 
-#pragma mark Info
+#pragma mark Interrogation
 
 
 + (BOOL) isValidRepositoryAtPath:(NSString*) aPath
@@ -175,26 +176,6 @@
     if ([remote.alias isEqualToString:@"origin"]) return remote;
   }
   return [self.remotes firstObject];
-}
-
-
-
-#pragma mark Update methods
-
-
-- (void) updateStatus
-{
-  [self.stage reloadChanges];
-}
-
-- (void) updateCommits
-{
-  self.commits = [self loadCommits];
-}
-
-- (NSArray*) loadCommits
-{
-  return [[NSArray arrayWithObject:self.stage] arrayByAddingObjectsFromArray:[self.currentRef loadCommits]];
 }
 
 - (NSArray*) loadLocalBranches
@@ -230,20 +211,44 @@
 
 - (NSArray*) loadRemotes
 {
-  NSMutableArray* list = [NSMutableArray array];
-  NSURL* aurl = [self gitURLWithSuffix:@"refs/remotes"];
-  for (NSURL* aURL in [NSFileManager contentsOfDirectoryAtURL:aurl])
-  {
-    if ([NSFileManager isReadableDirectoryAtPath:aURL.path])
-    {
-      NSString* alias = [[aURL pathComponents] lastObject];
-      GBRemote* remote = [[GBRemote new] autorelease];
-      remote.repository = self;
-      remote.alias = alias;
-      [list addObject:remote];        
-    }
-  }
-  return list;
+  return [[self launchTaskAndWait:[GBRemotesTask task]] remotes];
+  //
+//  NSMutableArray* list = [NSMutableArray array];
+//  NSURL* aurl = [self gitURLWithSuffix:@"refs/remotes"];
+//  for (NSURL* aURL in [NSFileManager contentsOfDirectoryAtURL:aurl])
+//  {
+//    if ([NSFileManager isReadableDirectoryAtPath:aURL.path])
+//    {
+//      NSString* alias = [[aURL pathComponents] lastObject];
+//      GBRemote* remote = [[GBRemote new] autorelease];
+//      remote.repository = self;
+//      remote.alias = alias;
+//      [list addObject:remote];        
+//    }
+//  }
+//  return list;
+}
+
+
+
+
+
+#pragma mark Update methods
+
+
+- (void) updateStatus
+{
+  [self.stage reloadChanges];
+}
+
+- (void) updateCommits
+{
+  self.commits = [self loadCommits];
+}
+
+- (NSArray*) loadCommits
+{
+  return [[NSArray arrayWithObject:self.stage] arrayByAddingObjectsFromArray:[self.currentRef loadCommits]];
 }
 
 
@@ -341,28 +346,28 @@
 #pragma mark Utility methods
 
 
-- (GBTask*) task
+- (id) task
 {
   GBTask* task = [[GBTask new] autorelease];
   task.repository = self;
   return task;
 }
 
-- (GBTask*) enqueueTask:(GBTask*)aTask
+- (id) enqueueTask:(GBTask*)aTask
 {
   aTask.repository = self;
   [self.taskManager enqueueTask:aTask];
   return aTask;
 }
 
-- (GBTask*) launchTask:(GBTask*)aTask
+- (id) launchTask:(GBTask*)aTask
 {
   aTask.repository = self;
   [self.taskManager launchTask:aTask];
   return aTask;
 }
 
-- (GBTask*) launchTaskAndWait:(GBTask*)aTask
+- (id) launchTaskAndWait:(GBTask*)aTask
 {
   aTask.repository = self;
   [aTask launchAndWait];

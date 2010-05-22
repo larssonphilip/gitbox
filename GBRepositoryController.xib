@@ -70,14 +70,14 @@
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<object class="NSToolbarItem" id="173562414">
+							<object class="NSToolbarItem" id="724577513">
 								<object class="NSMutableString" key="NSToolbarItemIdentifier">
 									<characters key="NS.bytes">089794D6-0F64-49AA-B939-9E195AAC6446</characters>
 								</object>
 								<string key="NSToolbarItemLabel"/>
 								<string key="NSToolbarItemPaletteLabel">Activity Indicator</string>
 								<nil key="NSToolbarItemToolTip"/>
-								<object class="NSProgressIndicator" key="NSToolbarItemView" id="304322767">
+								<object class="NSProgressIndicator" key="NSToolbarItemView" id="593855254">
 									<reference key="NSNextResponder"/>
 									<int key="NSvFlags">1292</int>
 									<object class="NSPSMatrix" key="NSDrawMatrix"/>
@@ -132,7 +132,8 @@
 										<int key="NSPeriodicInterval">75</int>
 										<object class="NSMenuItem" key="NSMenuItem" id="705161557">
 											<reference key="NSMenu" ref="705697446"/>
-											<string key="NSTitle">origin/master</string>
+											<bool key="NSIsHidden">YES</bool>
+											<string key="NSTitle"/>
 											<string key="NSKeyEquiv"/>
 											<int key="NSKeyEquivModMask">1048576</int>
 											<int key="NSMnemonicLoc">2147483647</int>
@@ -192,6 +193,7 @@
 											</object>
 											<reference key="NSMenuFont" ref="308166207"/>
 										</object>
+										<bool key="NSPullDown">YES</bool>
 										<int key="NSPreferredEdge">1</int>
 										<bool key="NSUsesItemFromMenu">YES</bool>
 										<bool key="NSAltersState">YES</bool>
@@ -236,6 +238,7 @@
 										<int key="NSPeriodicInterval">75</int>
 										<object class="NSMenuItem" key="NSMenuItem" id="545092655">
 											<reference key="NSMenu" ref="362485844"/>
+											<bool key="NSIsHidden">YES</bool>
 											<string key="NSTitle"/>
 											<string key="NSKeyEquiv"/>
 											<int key="NSKeyEquivModMask">1048576</int>
@@ -316,6 +319,7 @@
 											</object>
 											<reference key="NSMenuFont" ref="308166207"/>
 										</object>
+										<bool key="NSPullDown">YES</bool>
 										<int key="NSPreferredEdge">1</int>
 										<bool key="NSUsesItemFromMenu">YES</bool>
 										<bool key="NSAltersState">YES</bool>
@@ -516,14 +520,14 @@
 						<reference ref="596227226"/>
 						<reference ref="761573774"/>
 						<reference ref="702661866"/>
-						<reference ref="173562414"/>
+						<reference ref="724577513"/>
 					</object>
 					<object class="NSMutableArray" key="NSToolbarIBDefaultItems">
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<reference ref="732156857"/>
 						<reference ref="456844793"/>
 						<reference ref="794321415"/>
-						<reference ref="173562414"/>
+						<reference ref="724577513"/>
 						<reference ref="596227226"/>
 						<reference ref="2963004"/>
 					</object>
@@ -1509,10 +1513,10 @@
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
 						<string key="label">animate: self.repository.taskManager.activityIndicator.value</string>
-						<reference key="source" ref="304322767"/>
+						<reference key="source" ref="593855254"/>
 						<reference key="destination" ref="512844837"/>
 						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="304322767"/>
+							<reference key="NSSource" ref="593855254"/>
 							<reference key="NSDestination" ref="512844837"/>
 							<string key="NSLabel">animate: self.repository.taskManager.activityIndicator.value</string>
 							<string key="NSBinding">animate</string>
@@ -1527,7 +1531,7 @@
 						<string key="label">enabled: self.repository.pulling</string>
 						<reference key="source" ref="456844793"/>
 						<reference key="destination" ref="512844837"/>
-						<object class="NSNibBindingConnector" key="connector" id="262612976">
+						<object class="NSNibBindingConnector" key="connector" id="567171343">
 							<reference key="NSSource" ref="456844793"/>
 							<reference key="NSDestination" ref="512844837"/>
 							<string key="NSLabel">enabled: self.repository.pulling</string>
@@ -1547,7 +1551,7 @@
 						<string key="label">enabled2: self.repository.pushing</string>
 						<reference key="source" ref="456844793"/>
 						<reference key="destination" ref="512844837"/>
-						<object class="NSNibBindingConnector" key="connector" id="852631129">
+						<object class="NSNibBindingConnector" key="connector" id="809088027">
 							<reference key="NSSource" ref="456844793"/>
 							<reference key="NSDestination" ref="512844837"/>
 							<string key="NSLabel">enabled2: self.repository.pushing</string>
@@ -1572,7 +1576,7 @@
 									<string>NSNegateBoolean</string>
 								</object>
 							</object>
-							<reference key="NSPreviousConnector" ref="262612976"/>
+							<reference key="NSPreviousConnector" ref="567171343"/>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
@@ -1608,7 +1612,7 @@
 									<string>NSNegateBoolean</string>
 								</object>
 							</object>
-							<reference key="NSPreviousConnector" ref="852631129"/>
+							<reference key="NSPreviousConnector" ref="809088027"/>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
@@ -1619,7 +1623,7 @@
 						<string key="label">enabled: self.repository.pulling</string>
 						<reference key="source" ref="732156857"/>
 						<reference key="destination" ref="512844837"/>
-						<object class="NSNibBindingConnector" key="connector" id="763355251">
+						<object class="NSNibBindingConnector" key="connector" id="623707644">
 							<reference key="NSSource" ref="732156857"/>
 							<reference key="NSDestination" ref="512844837"/>
 							<string key="NSLabel">enabled: self.repository.pulling</string>
@@ -1664,7 +1668,7 @@
 									<string>NSNegateBoolean</string>
 								</object>
 							</object>
-							<reference key="NSPreviousConnector" ref="763355251"/>
+							<reference key="NSPreviousConnector" ref="623707644"/>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
@@ -1675,7 +1679,7 @@
 						<string key="label">enabled: self.repository.pulling</string>
 						<reference key="source" ref="2963004"/>
 						<reference key="destination" ref="512844837"/>
-						<object class="NSNibBindingConnector" key="connector" id="544402808">
+						<object class="NSNibBindingConnector" key="connector" id="596001942">
 							<reference key="NSSource" ref="2963004"/>
 							<reference key="NSDestination" ref="512844837"/>
 							<string key="NSLabel">enabled: self.repository.pulling</string>
@@ -1720,7 +1724,7 @@
 									<string>NSNegateBoolean</string>
 								</object>
 							</object>
-							<reference key="NSPreviousConnector" ref="544402808"/>
+							<reference key="NSPreviousConnector" ref="596001942"/>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
@@ -1786,7 +1790,7 @@
 							<reference ref="794321415"/>
 							<reference ref="2963004"/>
 							<reference ref="456844793"/>
-							<reference ref="173562414"/>
+							<reference ref="724577513"/>
 						</object>
 						<reference key="parent" ref="275939982"/>
 						<string key="objectName">toolbar</string>
@@ -2320,17 +2324,17 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">100278</int>
-						<reference key="object" ref="173562414"/>
+						<reference key="object" ref="724577513"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="304322767"/>
+							<reference ref="593855254"/>
 						</object>
 						<reference key="parent" ref="959528133"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">100271</int>
-						<reference key="object" ref="304322767"/>
-						<reference key="parent" ref="173562414"/>
+						<reference key="object" ref="593855254"/>
+						<reference key="parent" ref="724577513"/>
 					</object>
 				</object>
 			</object>
