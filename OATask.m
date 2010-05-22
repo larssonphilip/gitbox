@@ -101,6 +101,8 @@ NSString* OATaskNotification = @"OATaskNotification";
     NSNotification* notification = 
       [NSNotification notificationWithName:OATaskNotification 
                                     object:self];
+    // NSPostNow because NSPostASAP causes properties to be updated with a delay and bindings are updated in a strange fashion
+    // See commit 1c2d52b99c1ccf82e3540be10a3e1f0e3e054065 which fixes strange things with activity indicator.
     [[NSNotificationQueue defaultQueue] enqueueNotification:notification 
                                                postingStyle:NSPostNow];
   }
