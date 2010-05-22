@@ -20,6 +20,7 @@
   {
     stage.stagedChanges = [self changesFromDiffOutput:self.output];
   }
+  stage.hasStagedChanges = ([stage.stagedChanges count] > 0);
   [self updateChangesForCommit:stage];
 }
 
