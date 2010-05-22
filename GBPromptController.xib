@@ -12,7 +12,6 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="3"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -58,6 +57,7 @@
 							<int key="NSvFlags">266</int>
 							<string key="NSFrame">{{17, 80}, {378, 17}}</string>
 							<reference key="NSSuperview" ref="29751446"/>
+							<reference key="NSWindow"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSTextFieldCell" key="NSCell" id="568541065">
 								<int key="NSCellFlags">68288064</int>
@@ -94,9 +94,10 @@
 							<int key="NSvFlags">274</int>
 							<string key="NSFrame">{{20, 48}, {372, 24}}</string>
 							<reference key="NSSuperview" ref="29751446"/>
+							<reference key="NSWindow"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSTextFieldCell" key="NSCell" id="791747284">
-								<int key="NSCellFlags">-1805517311</int>
+								<int key="NSCellFlags">-1804993023</int>
 								<int key="NSCellFlags2">272662528</int>
 								<string key="NSContents">Some default text</string>
 								<reference key="NSSupport" ref="500241282"/>
@@ -124,6 +125,7 @@
 							<int key="NSvFlags">289</int>
 							<string key="NSFrame">{{302, 12}, {96, 32}}</string>
 							<reference key="NSSuperview" ref="29751446"/>
+							<reference key="NSWindow"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSButtonCell" key="NSCell" id="1013545496">
 								<int key="NSCellFlags">67239424</int>
@@ -149,6 +151,7 @@
 							<int key="NSvFlags">289</int>
 							<string key="NSFrame">{{206, 12}, {96, 32}}</string>
 							<reference key="NSSuperview" ref="29751446"/>
+							<reference key="NSWindow"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSButtonCell" key="NSCell" id="6271216">
 								<int key="NSCellFlags">67239424</int>
@@ -167,6 +170,7 @@
 					</object>
 					<string key="NSFrameSize">{412, 117}</string>
 					<reference key="NSSuperview"/>
+					<reference key="NSWindow"/>
 				</object>
 				<string key="NSScreenRect">{{0, 0}, {2560, 1418}}</string>
 				<string key="NSMinSize">{220, 139}</string>
