@@ -8,16 +8,21 @@ Strategy for the first shippable version:
   - push
   + pull
 - show log
+  - list of commits
+  - list of unmerged commits from remote branch
+  - highlight new commits (missing on remote branch) 
   - checkout a commit
 - show changes
   + changes for the stage
   - changes for the commit
-  - show FileMerge
+  + show FileMerge
   - delete an untracked file
   + commit
 - repos
   - add
   - delete
+- disable status table view while status is updating (double click on a stale row crashes the app)
+  (or better: reuse matching changes to avoid that issue and avoid flickering and UI blocking)
 
 -----------------------------------
 To do now:
