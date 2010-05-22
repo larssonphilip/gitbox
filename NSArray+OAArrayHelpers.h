@@ -1,3 +1,6 @@
+// Used in projects (time revisited):
+// - oleganza/gitbox (22.05.2010)
+
 @interface NSArray (OAArrayHelpers)
 
 - (id) firstObject;
