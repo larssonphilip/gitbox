@@ -70,14 +70,14 @@
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<object class="NSToolbarItem" id="305461282">
+							<object class="NSToolbarItem" id="288897612">
 								<object class="NSMutableString" key="NSToolbarItemIdentifier">
 									<characters key="NS.bytes">089794D6-0F64-49AA-B939-9E195AAC6446</characters>
 								</object>
 								<string key="NSToolbarItemLabel"/>
 								<string key="NSToolbarItemPaletteLabel">Activity Indicator</string>
 								<nil key="NSToolbarItemToolTip"/>
-								<object class="NSProgressIndicator" key="NSToolbarItemView" id="364557775">
+								<object class="NSProgressIndicator" key="NSToolbarItemView" id="459035481">
 									<reference key="NSNextResponder"/>
 									<int key="NSvFlags">1292</int>
 									<object class="NSPSMatrix" key="NSDrawMatrix"/>
@@ -516,14 +516,14 @@
 						<reference ref="596227226"/>
 						<reference ref="761573774"/>
 						<reference ref="702661866"/>
-						<reference ref="305461282"/>
+						<reference ref="288897612"/>
 					</object>
 					<object class="NSMutableArray" key="NSToolbarIBDefaultItems">
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<reference ref="732156857"/>
 						<reference ref="456844793"/>
 						<reference ref="794321415"/>
-						<reference ref="305461282"/>
+						<reference ref="288897612"/>
 						<reference ref="596227226"/>
 						<reference ref="2963004"/>
 					</object>
@@ -1508,31 +1508,11 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
-						<string key="label">enabled: self.repository.pullDisabled</string>
-						<reference key="source" ref="723410101"/>
-						<reference key="destination" ref="512844837"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="723410101"/>
-							<reference key="NSDestination" ref="512844837"/>
-							<string key="NSLabel">enabled: self.repository.pullDisabled</string>
-							<string key="NSBinding">enabled</string>
-							<string key="NSKeyPath">self.repository.pullDisabled</string>
-							<object class="NSDictionary" key="NSOptions">
-								<string key="NS.key.0">NSValueTransformerName</string>
-								<string key="NS.object.0">NSNegateBoolean</string>
-							</object>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">100264</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
 						<string key="label">animate: self.repository.taskManager.activityIndicator.value</string>
-						<reference key="source" ref="364557775"/>
+						<reference key="source" ref="459035481"/>
 						<reference key="destination" ref="512844837"/>
 						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="364557775"/>
+							<reference key="NSSource" ref="459035481"/>
 							<reference key="NSDestination" ref="512844837"/>
 							<string key="NSLabel">animate: self.repository.taskManager.activityIndicator.value</string>
 							<string key="NSBinding">animate</string>
@@ -1541,6 +1521,210 @@
 						</object>
 					</object>
 					<int key="connectionID">100280</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">enabled: self.repository.pulling</string>
+						<reference key="source" ref="456844793"/>
+						<reference key="destination" ref="512844837"/>
+						<object class="NSNibBindingConnector" key="connector" id="281790831">
+							<reference key="NSSource" ref="456844793"/>
+							<reference key="NSDestination" ref="512844837"/>
+							<string key="NSLabel">enabled: self.repository.pulling</string>
+							<string key="NSBinding">enabled</string>
+							<string key="NSKeyPath">self.repository.pulling</string>
+							<object class="NSDictionary" key="NSOptions">
+								<string key="NS.key.0">NSValueTransformerName</string>
+								<string key="NS.object.0">NSNegateBoolean</string>
+							</object>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">100284</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">enabled2: self.repository.pushing</string>
+						<reference key="source" ref="456844793"/>
+						<reference key="destination" ref="512844837"/>
+						<object class="NSNibBindingConnector" key="connector" id="46304846">
+							<reference key="NSSource" ref="456844793"/>
+							<reference key="NSDestination" ref="512844837"/>
+							<string key="NSLabel">enabled2: self.repository.pushing</string>
+							<string key="NSBinding">enabled2</string>
+							<string key="NSKeyPath">self.repository.pushing</string>
+							<object class="NSDictionary" key="NSOptions">
+								<bool key="EncodedWithXMLCoder">YES</bool>
+								<object class="NSArray" key="dict.sortedKeys">
+									<bool key="EncodedWithXMLCoder">YES</bool>
+									<string>NSMultipleValuesPlaceholder</string>
+									<string>NSNoSelectionPlaceholder</string>
+									<string>NSNotApplicablePlaceholder</string>
+									<string>NSNullPlaceholder</string>
+									<string>NSValueTransformerName</string>
+								</object>
+								<object class="NSMutableArray" key="dict.values">
+									<bool key="EncodedWithXMLCoder">YES</bool>
+									<integer value="-1"/>
+									<integer value="-1"/>
+									<integer value="-1"/>
+									<integer value="-1"/>
+									<string>NSNegateBoolean</string>
+								</object>
+							</object>
+							<reference key="NSPreviousConnector" ref="281790831"/>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">100290</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">enabled3: self.repository.merging</string>
+						<reference key="source" ref="456844793"/>
+						<reference key="destination" ref="512844837"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="456844793"/>
+							<reference key="NSDestination" ref="512844837"/>
+							<string key="NSLabel">enabled3: self.repository.merging</string>
+							<string key="NSBinding">enabled3</string>
+							<string key="NSKeyPath">self.repository.merging</string>
+							<object class="NSDictionary" key="NSOptions">
+								<bool key="EncodedWithXMLCoder">YES</bool>
+								<object class="NSArray" key="dict.sortedKeys">
+									<bool key="EncodedWithXMLCoder">YES</bool>
+									<string>NSMultipleValuesPlaceholder</string>
+									<string>NSNoSelectionPlaceholder</string>
+									<string>NSNotApplicablePlaceholder</string>
+									<string>NSNullPlaceholder</string>
+									<string>NSValueTransformerName</string>
+								</object>
+								<object class="NSMutableArray" key="dict.values">
+									<bool key="EncodedWithXMLCoder">YES</bool>
+									<integer value="-1"/>
+									<integer value="-1"/>
+									<integer value="-1"/>
+									<integer value="-1"/>
+									<string>NSNegateBoolean</string>
+								</object>
+							</object>
+							<reference key="NSPreviousConnector" ref="46304846"/>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">100293</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">enabled: self.repository.pulling</string>
+						<reference key="source" ref="732156857"/>
+						<reference key="destination" ref="512844837"/>
+						<object class="NSNibBindingConnector" key="connector" id="959759668">
+							<reference key="NSSource" ref="732156857"/>
+							<reference key="NSDestination" ref="512844837"/>
+							<string key="NSLabel">enabled: self.repository.pulling</string>
+							<string key="NSBinding">enabled</string>
+							<string key="NSKeyPath">self.repository.pulling</string>
+							<object class="NSDictionary" key="NSOptions">
+								<string key="NS.key.0">NSValueTransformerName</string>
+								<string key="NS.object.0">NSNegateBoolean</string>
+							</object>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">100296</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">enabled2: self.repository.merging</string>
+						<reference key="source" ref="732156857"/>
+						<reference key="destination" ref="512844837"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="732156857"/>
+							<reference key="NSDestination" ref="512844837"/>
+							<string key="NSLabel">enabled2: self.repository.merging</string>
+							<string key="NSBinding">enabled2</string>
+							<string key="NSKeyPath">self.repository.merging</string>
+							<object class="NSDictionary" key="NSOptions">
+								<bool key="EncodedWithXMLCoder">YES</bool>
+								<object class="NSArray" key="dict.sortedKeys">
+									<bool key="EncodedWithXMLCoder">YES</bool>
+									<string>NSMultipleValuesPlaceholder</string>
+									<string>NSNoSelectionPlaceholder</string>
+									<string>NSNotApplicablePlaceholder</string>
+									<string>NSNullPlaceholder</string>
+									<string>NSValueTransformerName</string>
+								</object>
+								<object class="NSMutableArray" key="dict.values">
+									<bool key="EncodedWithXMLCoder">YES</bool>
+									<integer value="-1"/>
+									<integer value="-1"/>
+									<integer value="-1"/>
+									<integer value="-1"/>
+									<string>NSNegateBoolean</string>
+								</object>
+							</object>
+							<reference key="NSPreviousConnector" ref="959759668"/>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">100299</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">enabled: self.repository.pulling</string>
+						<reference key="source" ref="2963004"/>
+						<reference key="destination" ref="512844837"/>
+						<object class="NSNibBindingConnector" key="connector" id="202601545">
+							<reference key="NSSource" ref="2963004"/>
+							<reference key="NSDestination" ref="512844837"/>
+							<string key="NSLabel">enabled: self.repository.pulling</string>
+							<string key="NSBinding">enabled</string>
+							<string key="NSKeyPath">self.repository.pulling</string>
+							<object class="NSDictionary" key="NSOptions">
+								<string key="NS.key.0">NSValueTransformerName</string>
+								<string key="NS.object.0">NSNegateBoolean</string>
+							</object>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">100305</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">enabled2: self.repository.merging</string>
+						<reference key="source" ref="2963004"/>
+						<reference key="destination" ref="512844837"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="2963004"/>
+							<reference key="NSDestination" ref="512844837"/>
+							<string key="NSLabel">enabled2: self.repository.merging</string>
+							<string key="NSBinding">enabled2</string>
+							<string key="NSKeyPath">self.repository.merging</string>
+							<object class="NSDictionary" key="NSOptions">
+								<bool key="EncodedWithXMLCoder">YES</bool>
+								<object class="NSArray" key="dict.sortedKeys">
+									<bool key="EncodedWithXMLCoder">YES</bool>
+									<string>NSMultipleValuesPlaceholder</string>
+									<string>NSNoSelectionPlaceholder</string>
+									<string>NSNotApplicablePlaceholder</string>
+									<string>NSNullPlaceholder</string>
+									<string>NSValueTransformerName</string>
+								</object>
+								<object class="NSMutableArray" key="dict.values">
+									<bool key="EncodedWithXMLCoder">YES</bool>
+									<integer value="-1"/>
+									<integer value="-1"/>
+									<integer value="-1"/>
+									<integer value="-1"/>
+									<string>NSNegateBoolean</string>
+								</object>
+							</object>
+							<reference key="NSPreviousConnector" ref="202601545"/>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">100308</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -1602,7 +1786,7 @@
 							<reference ref="794321415"/>
 							<reference ref="2963004"/>
 							<reference ref="456844793"/>
-							<reference ref="305461282"/>
+							<reference ref="288897612"/>
 						</object>
 						<reference key="parent" ref="275939982"/>
 						<string key="objectName">toolbar</string>
@@ -2136,17 +2320,17 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">100278</int>
-						<reference key="object" ref="305461282"/>
+						<reference key="object" ref="288897612"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="364557775"/>
+							<reference ref="459035481"/>
 						</object>
 						<reference key="parent" ref="959528133"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">100271</int>
-						<reference key="object" ref="364557775"/>
-						<reference key="parent" ref="305461282"/>
+						<reference key="object" ref="459035481"/>
+						<reference key="parent" ref="288897612"/>
 					</object>
 				</object>
 			</object>
@@ -2361,7 +2545,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">100280</int>
+			<int key="maxID">100308</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
