@@ -70,14 +70,14 @@
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<object class="NSToolbarItem" id="288897612">
+							<object class="NSToolbarItem" id="173562414">
 								<object class="NSMutableString" key="NSToolbarItemIdentifier">
 									<characters key="NS.bytes">089794D6-0F64-49AA-B939-9E195AAC6446</characters>
 								</object>
 								<string key="NSToolbarItemLabel"/>
 								<string key="NSToolbarItemPaletteLabel">Activity Indicator</string>
 								<nil key="NSToolbarItemToolTip"/>
-								<object class="NSProgressIndicator" key="NSToolbarItemView" id="459035481">
+								<object class="NSProgressIndicator" key="NSToolbarItemView" id="304322767">
 									<reference key="NSNextResponder"/>
 									<int key="NSvFlags">1292</int>
 									<object class="NSPSMatrix" key="NSDrawMatrix"/>
@@ -516,14 +516,14 @@
 						<reference ref="596227226"/>
 						<reference ref="761573774"/>
 						<reference ref="702661866"/>
-						<reference ref="288897612"/>
+						<reference ref="173562414"/>
 					</object>
 					<object class="NSMutableArray" key="NSToolbarIBDefaultItems">
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<reference ref="732156857"/>
 						<reference ref="456844793"/>
 						<reference ref="794321415"/>
-						<reference ref="288897612"/>
+						<reference ref="173562414"/>
 						<reference ref="596227226"/>
 						<reference ref="2963004"/>
 					</object>
@@ -1509,10 +1509,10 @@
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
 						<string key="label">animate: self.repository.taskManager.activityIndicator.value</string>
-						<reference key="source" ref="459035481"/>
+						<reference key="source" ref="304322767"/>
 						<reference key="destination" ref="512844837"/>
 						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="459035481"/>
+							<reference key="NSSource" ref="304322767"/>
 							<reference key="NSDestination" ref="512844837"/>
 							<string key="NSLabel">animate: self.repository.taskManager.activityIndicator.value</string>
 							<string key="NSBinding">animate</string>
@@ -1527,7 +1527,7 @@
 						<string key="label">enabled: self.repository.pulling</string>
 						<reference key="source" ref="456844793"/>
 						<reference key="destination" ref="512844837"/>
-						<object class="NSNibBindingConnector" key="connector" id="281790831">
+						<object class="NSNibBindingConnector" key="connector" id="262612976">
 							<reference key="NSSource" ref="456844793"/>
 							<reference key="NSDestination" ref="512844837"/>
 							<string key="NSLabel">enabled: self.repository.pulling</string>
@@ -1547,7 +1547,7 @@
 						<string key="label">enabled2: self.repository.pushing</string>
 						<reference key="source" ref="456844793"/>
 						<reference key="destination" ref="512844837"/>
-						<object class="NSNibBindingConnector" key="connector" id="46304846">
+						<object class="NSNibBindingConnector" key="connector" id="852631129">
 							<reference key="NSSource" ref="456844793"/>
 							<reference key="NSDestination" ref="512844837"/>
 							<string key="NSLabel">enabled2: self.repository.pushing</string>
@@ -1572,7 +1572,7 @@
 									<string>NSNegateBoolean</string>
 								</object>
 							</object>
-							<reference key="NSPreviousConnector" ref="281790831"/>
+							<reference key="NSPreviousConnector" ref="262612976"/>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
@@ -1608,7 +1608,7 @@
 									<string>NSNegateBoolean</string>
 								</object>
 							</object>
-							<reference key="NSPreviousConnector" ref="46304846"/>
+							<reference key="NSPreviousConnector" ref="852631129"/>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
@@ -1619,7 +1619,7 @@
 						<string key="label">enabled: self.repository.pulling</string>
 						<reference key="source" ref="732156857"/>
 						<reference key="destination" ref="512844837"/>
-						<object class="NSNibBindingConnector" key="connector" id="959759668">
+						<object class="NSNibBindingConnector" key="connector" id="763355251">
 							<reference key="NSSource" ref="732156857"/>
 							<reference key="NSDestination" ref="512844837"/>
 							<string key="NSLabel">enabled: self.repository.pulling</string>
@@ -1664,7 +1664,7 @@
 									<string>NSNegateBoolean</string>
 								</object>
 							</object>
-							<reference key="NSPreviousConnector" ref="959759668"/>
+							<reference key="NSPreviousConnector" ref="763355251"/>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
@@ -1675,7 +1675,7 @@
 						<string key="label">enabled: self.repository.pulling</string>
 						<reference key="source" ref="2963004"/>
 						<reference key="destination" ref="512844837"/>
-						<object class="NSNibBindingConnector" key="connector" id="202601545">
+						<object class="NSNibBindingConnector" key="connector" id="544402808">
 							<reference key="NSSource" ref="2963004"/>
 							<reference key="NSDestination" ref="512844837"/>
 							<string key="NSLabel">enabled: self.repository.pulling</string>
@@ -1720,7 +1720,7 @@
 									<string>NSNegateBoolean</string>
 								</object>
 							</object>
-							<reference key="NSPreviousConnector" ref="202601545"/>
+							<reference key="NSPreviousConnector" ref="544402808"/>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
@@ -1786,7 +1786,7 @@
 							<reference ref="794321415"/>
 							<reference ref="2963004"/>
 							<reference ref="456844793"/>
-							<reference ref="288897612"/>
+							<reference ref="173562414"/>
 						</object>
 						<reference key="parent" ref="275939982"/>
 						<string key="objectName">toolbar</string>
@@ -2320,17 +2320,17 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">100278</int>
-						<reference key="object" ref="288897612"/>
+						<reference key="object" ref="173562414"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="459035481"/>
+							<reference ref="304322767"/>
 						</object>
 						<reference key="parent" ref="959528133"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">100271</int>
-						<reference key="object" ref="459035481"/>
-						<reference key="parent" ref="288897612"/>
+						<reference key="object" ref="304322767"/>
+						<reference key="parent" ref="173562414"/>
 					</object>
 				</object>
 			</object>
