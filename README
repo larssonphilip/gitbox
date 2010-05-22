@@ -1,3 +1,23 @@
+Strategy for the first shippable version:
+- local branches:
+  - checkout a branch
+  - checkout new branch
+  - checkout tag
+  - checkout remote branch
+- remote branches:
+  - push
+  - pull
+- show log
+  - checkout a commit
+- show changes
+  - show FileMerge 
+  - delete an untracked file
+  - commit
+- repos
+  - add
+  - delete
+
+
 Note on remote branches:
 - branches sometimes could be found in .git/refs/remotes/<alias>/<branch-name>
 - branches sometimes could be found in .git/info/refs 
