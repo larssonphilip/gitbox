@@ -17,6 +17,7 @@ Strategy for the first shippable version:
   - changes for the commit
   + show FileMerge
   - delete an untracked file
+  - revert file to committed state
   + commit
 - repos
   - add
