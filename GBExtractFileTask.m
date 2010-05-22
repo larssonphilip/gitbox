@@ -32,9 +32,10 @@
   {
     NSString* fileName = [[self.originalURL path] lastPathComponent];
     NSString* ext = [fileName pathExtension];
-    return [[[fileName stringByDeletingPathExtension] 
-                       stringByAppendingFormat:@"-%@", [self.objectId substringToIndex:8]] 
-                      stringByAppendingPathExtension:ext];
+    fileName = [[fileName stringByDeletingPathExtension] 
+                stringByAppendingFormat:@"-%@", [self.objectId substringToIndex:8]];
+    if (ext && [ext length] > 0) fileName = [fileName stringByAppendingPathExtension:ext];
+    return fileName;
   }
   
   return self.objectId;
