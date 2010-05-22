@@ -166,7 +166,14 @@
     return;
   }
   
-  NSLog(@"opendiff %@ %@", [leftURL path], [rightURL path]);
+  if ([self isDeletion])
+  {
+    return;
+  }
+  
+//  NSLog(@"blobs %@ %@", leftCommitId, rightCommitId);
+//  NSLog(@"original paths %@ %@", [leftURL path], [rightURL path]);
+//  NSLog(@"opendiff %@ %@", [leftURL path], [rightURL path]);
   
   OATask* task = [OATask task];
   task.executableName = @"opendiff";
