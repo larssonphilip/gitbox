@@ -139,6 +139,11 @@
 
 - (void) launchComparisonTool:(id)sender
 {
+  if ([self isDeletion])
+  {
+    return;
+  }
+    
   NSString* leftCommitId = [self.oldRevision nonZeroCommitId];
   NSString* rightCommitId = [self.newRevision nonZeroCommitId];
   
@@ -165,12 +170,7 @@
     NSLog(@"ERROR: No rightURL for blob %@", rightCommitId);
     return;
   }
-  
-  if ([self isDeletion])
-  {
-    return;
-  }
-  
+    
 //  NSLog(@"blobs %@ %@", leftCommitId, rightCommitId);
 //  NSLog(@"original paths %@ %@", [leftURL path], [rightURL path]);
 //  NSLog(@"opendiff %@ %@", [leftURL path], [rightURL path]);
