@@ -35,5 +35,7 @@
 #pragma mark Actions
 
 - (void) launchComparisonTool:(id)sender;
+- (void) revealInFinder:(id)sender;
+- (BOOL) validateRevealInFinder:(id)sender;
 
 @end

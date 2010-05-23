@@ -26,6 +26,24 @@
   return r;
 }
 
+- (BOOL) anyIsTrue:(SEL)selector
+{
+  for (id item in self)
+  {
+    if (!![item performSelector:selector]) return YES;
+  }
+  return NO;
+}
+
+- (BOOL) allAreTrue:(SEL)selector;
+{
+  for (id item in self)
+  {
+    if (![item performSelector:selector]) return NO;
+  }
+  return YES;
+}
+
 @end
 
 

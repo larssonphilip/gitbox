@@ -9,6 +9,8 @@
 #import "NSMenu+OAMenuHelpers.h"
 #import "NSWindowController+OAWindowControllerHelpers.h"
 
+#import <objc/runtime.h>
+
 @implementation GBRepositoryController
 
 @synthesize repository;
@@ -169,7 +171,6 @@
   }
 
 
-
 - (IBAction) commit:(id)sender
 {
   GBPromptController* ctrl = [GBPromptController controller];
@@ -219,7 +220,83 @@
 
 
 
+
+#pragma mark Stage Context Menu
+
+
+
+- (IBAction) stageShowDifference:(id)sender
+{
+  [[[self.statusArrayController selectedObjects] firstObject] launchComparisonTool:sender];
+}
+  - (BOOL) validateStageShowDifference:(id)sender
+  {
+    return ([[self.statusArrayController selectedObjects] count] == 1);
+  }
+
+- (IBAction) stageRevealInFinder:(id)sender
+{
+  [[[self.statusArrayController selectedObjects] firstObject] revealInFinder:sender];
+}
+
+  - (BOOL) validateStageRevealInFinder:(id)sender
+  {
+    if ([[self.statusArrayController selectedObjects] count] != 1) return NO;
+    GBChange* change = [[self.statusArrayController selectedObjects] firstObject];
+    return [change validateRevealInFinder:sender];
+  }
+
+- (IBAction) stageDoStage:(id)sender
+{
+  [self.repository.stage stageChanges:[self.statusArrayController selectedObjects]];
+}
+
+  - (BOOL) validateStageDoStage:(id)sender
+  {
+    NSArray* changes = [self.statusArrayController selectedObjects];
+    if ([changes count] < 1) return NO;
+    return ![changes allAreTrue:@selector(staged)];
+  }
+
+- (IBAction) stageDoUnstage:(id)sender
+{
+  [self.repository.stage unstageChanges:[self.statusArrayController selectedObjects]];
+}
+  - (BOOL) validateStageDoUnstage:(id)sender
+  {
+    NSArray* changes = [self.statusArrayController selectedObjects];
+    if ([changes count] < 1) return NO;
+    return [changes anyIsTrue:@selector(staged)];
+  }
+
+- (IBAction) stageRevertFile:(id)sender
+{
+  
+}
+  - (BOOL) validateStageRevertFile:(id)sender
+  {
+    NSLog(@"TODO: determine when can revert files");
+    return NO;
+  }
+
+- (IBAction) stageDeleteFile:(id)sender
+{
+  
+}
+
+  - (BOOL) validateStageDeleteFile:(id)sender
+  {
+    NSLog(@"TODO: determine when can delete files");
+    return NO;
+  }
+
+
+
+
+
+
 #pragma mark View Actions
+
 
 
 - (IBAction) toggleSplitViewOrientation:(NSMenuItem*)sender
@@ -256,6 +333,28 @@
 
 
 
+#pragma mark Actions Validation
+
+
+// For each action selector "doSomething:" redirects call to "validateDoSomething:"
+// If the selector is not implemented, returns YES.
+- (BOOL) validateUserInterfaceItem:(id<NSValidatedUserInterfaceItem>)anItem
+{
+  SEL anAction = anItem.action;
+  NSString* validationActionName = [NSString stringWithFormat:@"validate%@", 
+                                    [[NSString stringWithCString:sel_getName(anAction) 
+                                                        encoding:NSASCIIStringEncoding] stringWithFirstLetterCapitalized]];
+  
+  SEL validationAction = sel_getUid([validationActionName cStringUsingEncoding:NSASCIIStringEncoding]);
+  
+  if ([self respondsToSelector:validationAction])
+  {
+    return !![self performSelector:validationAction withObject:anItem];
+  }
+  return YES;
+}
+
+
 
 
 
@@ -267,6 +366,8 @@
   [self updateCurrentBranchMenus];
   [self updateRemoteBranchMenus];
 }
+
+
 
 
 
@@ -290,7 +391,11 @@
 
 
 
+
+
 #pragma mark Private Helpers
+
+
 
 
 - (void) updateCurrentBranchMenus

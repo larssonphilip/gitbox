@@ -186,5 +186,18 @@
 }
 
 
+- (void) revealInFinder:(id)sender
+{
+  NSString* path = [self.fileURL path];
+  if (path && ![self isDeletion])
+  {
+    [[NSWorkspace sharedWorkspace] selectFile:path inFileViewerRootedAtPath:nil];
+  }
+}
+
+- (BOOL) validateRevealInFinder:(id)sender
+{
+  return (self.fileURL && ![self isDeletion]);
+}
 
 @end

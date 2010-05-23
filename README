@@ -27,6 +27,7 @@ Bugs:
 - disable status table view while status is updating (double click on a stale row crashes the app)
   (or better: reuse matching changes to avoid that issue and avoid flickering and UI blocking)
 - OK button does not work in prompt because textfield value is updated through binding yet.
+- table row selection is ignored if was no selection for ArrayController. Should check NSTableView selectedRowIndexes?
 
 -----------------------------------
 To do now:

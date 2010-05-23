@@ -12,7 +12,6 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="5"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -555,12 +554,14 @@
 															<int key="NSvFlags">4352</int>
 															<string key="NSFrameSize">{307, 361}</string>
 															<reference key="NSSuperview" ref="301120612"/>
+															<reference key="NSWindow"/>
 															<bool key="NSEnabled">YES</bool>
 															<object class="NSTableHeaderView" key="NSHeaderView" id="364244579">
 																<reference key="NSNextResponder" ref="307302735"/>
 																<int key="NSvFlags">4352</int>
 																<string key="NSFrameSize">{307, 17}</string>
 																<reference key="NSSuperview" ref="307302735"/>
+																<reference key="NSWindow"/>
 																<reference key="NSTableView" ref="584195925"/>
 															</object>
 															<object class="_NSCornerView" key="NSCornerView" id="357763618">
@@ -568,6 +569,7 @@
 																<int key="NSvFlags">-2147483392</int>
 																<string key="NSFrame">{{259, 0}, {16, 17}}</string>
 																<reference key="NSSuperview" ref="88015662"/>
+																<reference key="NSWindow"/>
 															</object>
 															<object class="NSMutableArray" key="NSTableColumns">
 																<bool key="EncodedWithXMLCoder">YES</bool>
@@ -744,6 +746,7 @@
 													</object>
 													<string key="NSFrame">{{0, 17}, {307, 361}}</string>
 													<reference key="NSSuperview" ref="88015662"/>
+													<reference key="NSWindow"/>
 													<reference key="NSNextKeyView" ref="584195925"/>
 													<reference key="NSDocView" ref="584195925"/>
 													<reference key="NSBGColor" ref="987104074"/>
@@ -754,6 +757,7 @@
 													<int key="NSvFlags">-2147483392</int>
 													<string key="NSFrame">{{259, 17}, {15, 381}}</string>
 													<reference key="NSSuperview" ref="88015662"/>
+													<reference key="NSWindow"/>
 													<reference key="NSTarget" ref="88015662"/>
 													<string key="NSAction">_doScroller:</string>
 													<double key="NSPercent">0.96221662468513858</double>
@@ -763,6 +767,7 @@
 													<int key="NSvFlags">-2147483392</int>
 													<string key="NSFrame">{{0, 398}, {189, 15}}</string>
 													<reference key="NSSuperview" ref="88015662"/>
+													<reference key="NSWindow"/>
 													<int key="NSsFlags">1</int>
 													<reference key="NSTarget" ref="88015662"/>
 													<string key="NSAction">_doScroller:</string>
@@ -778,6 +783,7 @@
 													</object>
 													<string key="NSFrameSize">{307, 17}</string>
 													<reference key="NSSuperview" ref="88015662"/>
+													<reference key="NSWindow"/>
 													<reference key="NSNextKeyView" ref="364244579"/>
 													<reference key="NSDocView" ref="364244579"/>
 													<reference key="NSBGColor" ref="987104074"/>
@@ -787,6 +793,7 @@
 											</object>
 											<string key="NSFrameSize">{307, 378}</string>
 											<reference key="NSSuperview" ref="910591720"/>
+											<reference key="NSWindow"/>
 											<reference key="NSNextKeyView" ref="301120612"/>
 											<int key="NSsFlags">560</int>
 											<reference key="NSVScroller" ref="541163699"/>
@@ -799,6 +806,7 @@
 									</object>
 									<string key="NSFrameSize">{307, 377}</string>
 									<reference key="NSSuperview" ref="50605990"/>
+									<reference key="NSWindow"/>
 									<string key="NSClassName">NSView</string>
 								</object>
 								<object class="NSCustomView" id="720248462">
@@ -821,12 +829,14 @@
 															<int key="NSvFlags">4352</int>
 															<string key="NSFrameSize">{357, 361}</string>
 															<reference key="NSSuperview" ref="671812570"/>
+															<reference key="NSWindow"/>
 															<bool key="NSEnabled">YES</bool>
 															<object class="NSTableHeaderView" key="NSHeaderView" id="996708932">
 																<reference key="NSNextResponder" ref="117707378"/>
 																<int key="NSvFlags">256</int>
 																<string key="NSFrameSize">{357, 17}</string>
 																<reference key="NSSuperview" ref="117707378"/>
+																<reference key="NSWindow"/>
 																<reference key="NSTableView" ref="1026253246"/>
 															</object>
 															<object class="_NSCornerView" key="NSCornerView" id="674718606">
@@ -834,6 +844,7 @@
 																<int key="NSvFlags">-2147483392</int>
 																<string key="NSFrame">{{259, 0}, {16, 17}}</string>
 																<reference key="NSSuperview" ref="323592380"/>
+																<reference key="NSWindow"/>
 															</object>
 															<object class="NSMutableArray" key="NSTableColumns">
 																<bool key="EncodedWithXMLCoder">YES</bool>
@@ -944,6 +955,7 @@
 													</object>
 													<string key="NSFrame">{{0, 17}, {357, 361}}</string>
 													<reference key="NSSuperview" ref="323592380"/>
+													<reference key="NSWindow"/>
 													<reference key="NSNextKeyView" ref="1026253246"/>
 													<reference key="NSDocView" ref="1026253246"/>
 													<reference key="NSBGColor" ref="987104074"/>
@@ -954,6 +966,7 @@
 													<int key="NSvFlags">-2147483392</int>
 													<string key="NSFrame">{{259, 17}, {15, 381}}</string>
 													<reference key="NSSuperview" ref="323592380"/>
+													<reference key="NSWindow"/>
 													<reference key="NSTarget" ref="323592380"/>
 													<string key="NSAction">_doScroller:</string>
 													<double key="NSPercent">0.95893719806763289</double>
@@ -963,6 +976,7 @@
 													<int key="NSvFlags">-2147483392</int>
 													<string key="NSFrame">{{0, 398}, {274, 15}}</string>
 													<reference key="NSSuperview" ref="323592380"/>
+													<reference key="NSWindow"/>
 													<int key="NSsFlags">1</int>
 													<reference key="NSTarget" ref="323592380"/>
 													<string key="NSAction">_doScroller:</string>
@@ -978,6 +992,7 @@
 													</object>
 													<string key="NSFrameSize">{357, 17}</string>
 													<reference key="NSSuperview" ref="323592380"/>
+													<reference key="NSWindow"/>
 													<reference key="NSNextKeyView" ref="996708932"/>
 													<reference key="NSDocView" ref="996708932"/>
 													<reference key="NSBGColor" ref="987104074"/>
@@ -987,6 +1002,7 @@
 											</object>
 											<string key="NSFrameSize">{357, 378}</string>
 											<reference key="NSSuperview" ref="720248462"/>
+											<reference key="NSWindow"/>
 											<reference key="NSNextKeyView" ref="671812570"/>
 											<int key="NSsFlags">560</int>
 											<reference key="NSVScroller" ref="908923142"/>
@@ -999,11 +1015,13 @@
 									</object>
 									<string key="NSFrame">{{308, 0}, {357, 377}}</string>
 									<reference key="NSSuperview" ref="50605990"/>
+									<reference key="NSWindow"/>
 									<string key="NSClassName">NSView</string>
 								</object>
 							</object>
 							<string key="NSFrameSize">{665, 377}</string>
 							<reference key="NSSuperview" ref="568628114"/>
+							<reference key="NSWindow"/>
 							<bool key="NSIsVertical">YES</bool>
 							<int key="NSDividerStyle">2</int>
 							<string key="NSAutosaveName">SplitViewDividerPosition</string>
@@ -1011,6 +1029,7 @@
 					</object>
 					<string key="NSFrameSize">{665, 377}</string>
 					<reference key="NSSuperview"/>
+					<reference key="NSWindow"/>
 				</object>
 				<string key="NSScreenRect">{{0, 0}, {1280, 778}}</string>
 				<string key="NSMinSize">{400, 267}</string>
@@ -1284,7 +1303,7 @@
 						<string key="label">enabled: selection.isStage</string>
 						<reference key="source" ref="1048878109"/>
 						<reference key="destination" ref="396948586"/>
-						<object class="NSNibBindingConnector" key="connector" id="617480471">
+						<object class="NSNibBindingConnector" key="connector" id="615009190">
 							<reference key="NSSource" ref="1048878109"/>
 							<reference key="NSDestination" ref="396948586"/>
 							<string key="NSLabel">enabled: selection.isStage</string>
@@ -1731,11 +1750,59 @@
 									<integer value="-1"/>
 								</object>
 							</object>
-							<reference key="NSPreviousConnector" ref="617480471"/>
+							<reference key="NSPreviousConnector" ref="615009190"/>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
 					<int key="connectionID">100320</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">stageShowDifference:</string>
+						<reference key="source" ref="512844837"/>
+						<reference key="destination" ref="227924632"/>
+					</object>
+					<int key="connectionID">100321</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">stageRevealInFinder:</string>
+						<reference key="source" ref="512844837"/>
+						<reference key="destination" ref="477144126"/>
+					</object>
+					<int key="connectionID">100322</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">stageDoStage:</string>
+						<reference key="source" ref="512844837"/>
+						<reference key="destination" ref="469547020"/>
+					</object>
+					<int key="connectionID">100323</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">stageDoUnstage:</string>
+						<reference key="source" ref="512844837"/>
+						<reference key="destination" ref="317325165"/>
+					</object>
+					<int key="connectionID">100324</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">stageRevertFile:</string>
+						<reference key="source" ref="512844837"/>
+						<reference key="destination" ref="318777977"/>
+					</object>
+					<int key="connectionID">100325</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">stageDeleteFile:</string>
+						<reference key="source" ref="512844837"/>
+						<reference key="destination" ref="913746912"/>
+					</object>
+					<int key="connectionID">100326</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -2505,7 +2572,7 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{719, 730}, {162, 143}}</string>
+					<string>{{965, 653}, {162, 143}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -2523,9 +2590,9 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{624, 591}, {665, 377}}</string>
+					<string>{{706, 594}, {665, 377}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{624, 591}, {665, 377}}</string>
+					<string>{{706, 594}, {665, 377}}</string>
 					<integer value="1"/>
 					<string>{{201, 387}, {507, 413}}</string>
 					<integer value="1"/>
@@ -2550,7 +2617,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">100320</int>
+			<int key="maxID">100326</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -2580,6 +2647,12 @@
 							<string>pullOrPush:</string>
 							<string>push:</string>
 							<string>selectRemoteBranch:</string>
+							<string>stageDeleteFile:</string>
+							<string>stageDoStage:</string>
+							<string>stageDoUnstage:</string>
+							<string>stageRevealInFinder:</string>
+							<string>stageRevertFile:</string>
+							<string>stageShowDifference:</string>
 							<string>toggleSplitViewOrientation:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
@@ -2592,6 +2665,12 @@
 							<string>id</string>
 							<string>id</string>
 							<string>NSSegmentedControl</string>
+							<string>id</string>
+							<string>id</string>
+							<string>id</string>
+							<string>id</string>
+							<string>id</string>
+							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>

@@ -6,6 +6,8 @@
 - (id) firstObject;
 - (NSArray*) reversedArray;
 - (id) objectAtIndex:(NSUInteger)index or:(id)defaultObject;
+- (BOOL) anyIsTrue:(SEL)selector;
+- (BOOL) allAreTrue:(SEL)selector;
 
 @end
 

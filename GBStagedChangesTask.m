@@ -26,7 +26,7 @@
 
 - (void) initializeChange:(GBChange*)change
 {
-  change.staged = YES;
+  change.staged = YES; // set this before fully initialized and cannot trigger update
   [super initializeChange:change];
 }
 
