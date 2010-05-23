@@ -64,7 +64,7 @@
   for (GBChange* aChange in theChanges)
   {
     GBTask* task = [self.repository task];
-    if ([aChange isDeletion])
+    if ([aChange isDeletedFile])
     {
       task.arguments = [NSArray arrayWithObjects:@"update-index", @"--remove", aChange.srcURL.path, nil];
     }
@@ -91,9 +91,27 @@
   [self reloadChanges];
 }
 
+- (void) revertChanges:(NSArray*)theChanges
+{
+  NSLog(@"TODO: revert changes");
+  
+  [self reloadChanges];
+}
+
+- (void) deleteFiles:(NSArray*)theChanges
+{
+  NSLog(@"TODO: delete files from the changes");
+  
+  [self reloadChanges];
+}
+
+
+
+
 
 
 #pragma mark GBCommit overrides
+
 
 - (BOOL) isStage
 {

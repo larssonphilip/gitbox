@@ -38,6 +38,11 @@
 @property(retain) IBOutlet NSArrayController* statusArrayController;
 
 
+#pragma mark Interrogation
+
+- (NSArray*) selectedChanges;
+
+
 #pragma mark Git Actions
 
 - (IBAction) checkoutBranch:(id)sender;

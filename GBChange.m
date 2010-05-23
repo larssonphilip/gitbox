@@ -110,9 +110,15 @@
   return self.srcURL.relativePath;
 }
 
-- (BOOL) isDeletion
+- (BOOL) isDeletedFile
 {
   return [self.statusCode isEqualToString:@"D"];
+}
+
+- (BOOL) isUntrackedFile
+{
+  // Both commits are nulls, this is untracked file
+  return (![self.oldRevision nonZeroCommitId] && ![self.newRevision nonZeroCommitId]);
 }
 
 - (NSComparisonResult) compareByPath:(GBChange*) other
@@ -139,21 +145,22 @@
 
 - (void) launchComparisonTool:(id)sender
 {
-  if ([self isDeletion])
+  // Do nothing for deleted file
+  if ([self isDeletedFile])
   {
     return;
   }
-    
-  NSString* leftCommitId = [self.oldRevision nonZeroCommitId];
-  NSString* rightCommitId = [self.newRevision nonZeroCommitId];
-  
-  // Both commits are nulls, this is untracked file: just open the app
-  if (!leftCommitId && !rightCommitId)
+
+  // This is untracked file: just open the app
+  if ([self isUntrackedFile])
   {
     [[NSWorkspace sharedWorkspace] openURL:self.fileURL];
     return;
   }
   
+  NSString* leftCommitId = [self.oldRevision nonZeroCommitId];
+  NSString* rightCommitId = [self.newRevision nonZeroCommitId];
+    
   // Note: using fileURL instead of dstURL so that it defaults to srcURL if no dst defined.
   
   NSURL* leftURL  = (leftCommitId ? [self temporaryURLForObjectId:leftCommitId optionalURL:self.srcURL] : self.srcURL);
@@ -189,7 +196,7 @@
 - (void) revealInFinder:(id)sender
 {
   NSString* path = [self.fileURL path];
-  if (path && ![self isDeletion])
+  if (path && ![self isDeletedFile])
   {
     [[NSWorkspace sharedWorkspace] selectFile:path inFileViewerRootedAtPath:nil];
   }
@@ -197,7 +204,7 @@
 
 - (BOOL) validateRevealInFinder:(id)sender
 {
-  return (self.fileURL && ![self isDeletion]);
+  return (self.fileURL && ![self isDeletedFile]);
 }
 
 @end

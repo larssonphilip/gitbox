@@ -28,7 +28,8 @@
 - (NSURL*) fileURL;
 - (NSString*) status;
 - (NSString*) pathStatus;
-- (BOOL) isDeletion;
+- (BOOL) isDeletedFile;
+- (BOOL) isUntrackedFile;
 - (NSComparisonResult) compareByPath:(id) other;
 
 

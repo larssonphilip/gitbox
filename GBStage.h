@@ -18,6 +18,7 @@
 - (void) stageChanges:(NSArray*)theChanges;
 - (void) unstageChange:(GBChange*)aChange;
 - (void) unstageChanges:(NSArray*)theChanges;
-
+- (void) revertChanges:(NSArray*)theChanges;
+- (void) deleteFiles:(NSArray*)theChanges;
 
 @end

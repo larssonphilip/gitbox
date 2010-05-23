@@ -45,24 +45,19 @@
 }
 
 
-/*
 
-  segmented push/pull control disabled:
-  - while pushing
-  - while pulling
-  - while fetching
- 
-  push segment disabled:
-  - while non-merged changes on current branch
-  
-  current branch control disabled:
-  - while pulling
-  - while merging
-  
-  remote branch control disabled:
-  - while pushing
 
-*/
+
+#pragma mark Interrogation
+
+
+- (NSArray*) selectedChanges
+{
+  // TODO: return objects based on currently selected indexes
+  return [self.statusArrayController selectedObjects];
+}
+
+
 
 
 
@@ -227,70 +222,108 @@
 
 - (IBAction) stageShowDifference:(id)sender
 {
-  [[[self.statusArrayController selectedObjects] firstObject] launchComparisonTool:sender];
+  [[[self selectedChanges] firstObject] launchComparisonTool:sender];
 }
   - (BOOL) validateStageShowDifference:(id)sender
   {
-    return ([[self.statusArrayController selectedObjects] count] == 1);
+    return ([[self selectedChanges] count] == 1);
   }
 
 - (IBAction) stageRevealInFinder:(id)sender
 {
-  [[[self.statusArrayController selectedObjects] firstObject] revealInFinder:sender];
+  [[[self selectedChanges] firstObject] revealInFinder:sender];
 }
 
   - (BOOL) validateStageRevealInFinder:(id)sender
   {
-    if ([[self.statusArrayController selectedObjects] count] != 1) return NO;
-    GBChange* change = [[self.statusArrayController selectedObjects] firstObject];
+    if ([[self selectedChanges] count] != 1) return NO;
+    GBChange* change = [[self selectedChanges] firstObject];
     return [change validateRevealInFinder:sender];
   }
 
 - (IBAction) stageDoStage:(id)sender
 {
-  [self.repository.stage stageChanges:[self.statusArrayController selectedObjects]];
+  [self.repository.stage stageChanges:[self selectedChanges]];
 }
 
   - (BOOL) validateStageDoStage:(id)sender
   {
-    NSArray* changes = [self.statusArrayController selectedObjects];
+    NSArray* changes = [self selectedChanges];
     if ([changes count] < 1) return NO;
     return ![changes allAreTrue:@selector(staged)];
   }
 
 - (IBAction) stageDoUnstage:(id)sender
 {
-  [self.repository.stage unstageChanges:[self.statusArrayController selectedObjects]];
+  [self.repository.stage unstageChanges:[self selectedChanges]];
 }
   - (BOOL) validateStageDoUnstage:(id)sender
   {
-    NSArray* changes = [self.statusArrayController selectedObjects];
+    NSArray* changes = [self selectedChanges];
     if ([changes count] < 1) return NO;
     return [changes anyIsTrue:@selector(staged)];
   }
 
 - (IBAction) stageRevertFile:(id)sender
 {
-  
+  NSAlert *alert = [[[NSAlert alloc] init] autorelease];
+  [alert addButtonWithTitle:@"OK"];
+  [alert addButtonWithTitle:@"Cancel"];
+  [alert setMessageText:@"Revert selected files to last committed state?"];
+  [alert setInformativeText:@"All non-committed changes will be lost."];
+  [alert setAlertStyle:NSWarningAlertStyle];
+  [alert retain];
+  [alert beginSheetModalForWindow:[self window]
+                    modalDelegate:self
+                   didEndSelector:@selector(stageRevertFileAlertDidEnd:returnCode:contextInfo:)
+                      contextInfo:nil];
 }
   - (BOOL) validateStageRevertFile:(id)sender
   {
-    NSLog(@"TODO: determine when can revert files");
-    return NO;
+    // returns YES when non-empty and array has something to revert
+    return ![[self selectedChanges] allAreTrue:@selector(isUntrackedFile)]; 
+  }
+
+  - (void) stageRevertFileAlertDidEnd:(NSAlert*)alert returnCode:(NSInteger)returnCode contextInfo:(void*)contextInfo
+  {
+    if (returnCode == NSAlertFirstButtonReturn)
+    {
+      [self.repository.stage revertChanges:[self selectedChanges]];
+    }
+    [[alert window] orderOut:self];
+    [alert autorelease];
   }
 
 - (IBAction) stageDeleteFile:(id)sender
 {
-  
+  NSAlert *alert = [[[NSAlert alloc] init] autorelease];
+  [alert addButtonWithTitle:@"OK"];
+  [alert addButtonWithTitle:@"Cancel"];
+  [alert setMessageText:@"Delete selected files?"];
+  [alert setInformativeText:@"All non-committed changes will be lost."];
+  [alert setAlertStyle:NSWarningAlertStyle];
+  [alert retain];
+  [alert beginSheetModalForWindow:[self window]
+                    modalDelegate:self
+                   didEndSelector:@selector(stageDeleteFileAlertDidEnd:returnCode:contextInfo:)
+                      contextInfo:nil];  
 }
 
   - (BOOL) validateStageDeleteFile:(id)sender
   {
-    NSLog(@"TODO: determine when can delete files");
-    return NO;
+    // returns YES when non-empty and array has something to delete
+    return ![[self selectedChanges] allAreTrue:@selector(isDeletedFile)]; 
   }
 
-
+  - (void) stageDeleteFileAlertDidEnd:(NSAlert*)alert returnCode:(NSInteger)returnCode contextInfo:(void*)contextInfo
+  {
+    if (returnCode == NSAlertFirstButtonReturn)
+    {
+      [self.repository.stage deleteFiles:[self selectedChanges]];
+    }
+    [[alert window] orderOut:self];
+    [alert autorelease];
+  }
 
 
 
