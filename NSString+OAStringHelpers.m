@@ -24,4 +24,12 @@
   return [self length] <= 0;
 }
 
+- (NSString*) stringWithFirstLetterCapitalized
+{
+  if ([self length] <= 1) return [self capitalizedString];
+  NSString* firstLetter = [[self substringToIndex:1] capitalizedString];
+  NSString* nextLetters = [self substringFromIndex:1];
+  return [firstLetter stringByAppendingString:nextLetters];
+}
+
 @end

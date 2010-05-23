@@ -8,4 +8,6 @@
 
 - (BOOL) isEmptyString;
 
+- (NSString*) stringWithFirstLetterCapitalized;
+
 @end
