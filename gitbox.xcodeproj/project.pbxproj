@@ -215,10 +215,10 @@
 				20B8B71111A48E3E006D6442 /* GBUnstagedChangesTask.m */,
 				20B8B71E11A48F60006D6442 /* GBUntrackedChangesTask.h */,
 				20B8B71F11A48F60006D6442 /* GBUntrackedChangesTask.m */,
-				201073B411A80A4600EFDE56 /* GBRemotesTask.h */,
-				201073B511A80A4600EFDE56 /* GBRemotesTask.m */,
 				2059792011A877A500E11A56 /* GBExtractFileTask.h */,
 				2059792111A877A500E11A56 /* GBExtractFileTask.m */,
+				201073B411A80A4600EFDE56 /* GBRemotesTask.h */,
+				201073B511A80A4600EFDE56 /* GBRemotesTask.m */,
 				2057EF0C11A9B00F009EDF2F /* GBRemoteBranchesTask.h */,
 				2057EF0D11A9B00F009EDF2F /* GBRemoteBranchesTask.m */,
 			);
