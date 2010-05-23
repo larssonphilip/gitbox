@@ -16,13 +16,15 @@
 @property(assign) GBRepository* repository;
 
 
-#pragma mark Info
+#pragma mark Interrogation
 
 - (GBRef*) defaultBranch;
+- (NSArray*) guessedBranches;
 
 
 #pragma mark Actions
 
 - (void) addBranch:(GBRef*)branch;
+- (NSArray*) loadBranches;
 
 @end

@@ -26,6 +26,7 @@
 		2038F6B711A02D550087CE37 /* GBStage.m in Sources */ = {isa = PBXBuildFile; fileRef = 2038F6B611A02D550087CE37 /* GBStage.m */; };
 		2038F6C511A030F70087CE37 /* GBTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 2038F6C411A030F70087CE37 /* GBTask.m */; };
 		2038F76D11A04A290087CE37 /* NSString+OAGitHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 2038F76C11A04A290087CE37 /* NSString+OAGitHelpers.m */; };
+		2057EF0E11A9B00F009EDF2F /* GBRemoteBranchesTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 2057EF0D11A9B00F009EDF2F /* GBRemoteBranchesTask.m */; };
 		2058FA4811982F5100FB018D /* GBRemotesController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2058FA4711982F5100FB018D /* GBRemotesController.xib */; };
 		2059792211A877A500E11A56 /* GBExtractFileTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 2059792111A877A500E11A56 /* GBExtractFileTask.m */; };
 		206A07BE11A33519003BB9E3 /* OATask.m in Sources */ = {isa = PBXBuildFile; fileRef = 206A07BD11A33519003BB9E3 /* OATask.m */; };
@@ -84,6 +85,8 @@
 		2038F6C411A030F70087CE37 /* GBTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBTask.m; sourceTree = "<group>"; };
 		2038F76B11A04A290087CE37 /* NSString+OAGitHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+OAGitHelpers.h"; sourceTree = "<group>"; };
 		2038F76C11A04A290087CE37 /* NSString+OAGitHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+OAGitHelpers.m"; sourceTree = "<group>"; };
+		2057EF0C11A9B00F009EDF2F /* GBRemoteBranchesTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBRemoteBranchesTask.h; sourceTree = "<group>"; };
+		2057EF0D11A9B00F009EDF2F /* GBRemoteBranchesTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBRemoteBranchesTask.m; sourceTree = "<group>"; };
 		2058FA4711982F5100FB018D /* GBRemotesController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBRemotesController.xib; sourceTree = "<group>"; };
 		2059792011A877A500E11A56 /* GBExtractFileTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBExtractFileTask.h; sourceTree = "<group>"; };
 		2059792111A877A500E11A56 /* GBExtractFileTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBExtractFileTask.m; sourceTree = "<group>"; };
@@ -216,6 +219,8 @@
 				201073B511A80A4600EFDE56 /* GBRemotesTask.m */,
 				2059792011A877A500E11A56 /* GBExtractFileTask.h */,
 				2059792111A877A500E11A56 /* GBExtractFileTask.m */,
+				2057EF0C11A9B00F009EDF2F /* GBRemoteBranchesTask.h */,
+				2057EF0D11A9B00F009EDF2F /* GBRemoteBranchesTask.m */,
 			);
 			name = Tasks;
 			sourceTree = "<group>";
@@ -391,6 +396,7 @@
 				206A088711A7AB36003BB9E3 /* OAActivityIndicator.m in Sources */,
 				201073B611A80A4600EFDE56 /* GBRemotesTask.m in Sources */,
 				2059792211A877A500E11A56 /* GBExtractFileTask.m in Sources */,
+				2057EF0E11A9B00F009EDF2F /* GBRemoteBranchesTask.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

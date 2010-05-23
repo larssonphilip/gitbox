@@ -32,12 +32,12 @@ Bugs:
 -----------------------------------
 To do now:
 
-- read remotes from git/config
++ read remotes from git/config
 - load ls-remote info for each remote
 - pull
 - reread remotes on focus: if the names and urls are the same, do not ls-remote
 - do ls-remote in background starting on unfocus
-- disable pull/push and current branch while pulling
++ disable pull/push and current branch while pulling
 - push
 - fetch if push failed
 - disable pull/push and remote branch while pushing
@@ -55,9 +55,9 @@ Note on remote branches:
 - we should also be able to add/remove repos
 - for non-existing remote branch we should disable pull button
 - use 'git ls-remote --tags --heads' to update remote branches
-- how do we list remote repositories? looking into refs/remotes is not sufficient, we should consult .git/config: 'git config --list'
-- how to make an activity indicator? port an object from the iphone and bind enabled property to it's current state
-
++ how do we list remote repositories? looking into refs/remotes is not sufficient, we should consult .git/config: 'git config --list'
++ how to make an activity indicator? port an object from the iphone and bind enabled property to it's current state
+- bind menu to remote.branches to update when it is changed
 
 
 To do:
