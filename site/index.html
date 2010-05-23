@@ -9,12 +9,14 @@
       }
       * {
         font-family:Lucida Grande, Lucida Sans Unicode, sans-serif;
+        color:#333;
       }
       #centered-page-container {
         position:relative;
-        width: 700px;
+        width: 668px; /* matches the width of the screenshot */
         left:50%;
-        margin-left:-350px;
+        margin-left:-334px;
+        xbackground-color:#555;
       }
       
       h1 {
@@ -27,7 +29,73 @@
         color:#777;
         text-align:center;
         font-size:20px;
-        margin:10px 0 0 0;
+        margin:10px 0 20px 0;
+      }
+      h3 {
+        color:black;
+        margin:35px 0 15px 0;
+      }
+      
+      .screenshot-wrapper {
+        width:100%;
+        text-align:center;
+        margin:0;
+      }
+      .screenshot-wrapper img {
+        margin:0 -42px -10px -42px;
+      }
+      
+      p {
+        font-size:14px;
+        line-height:150%;
+        margin:5px 0 15px 0;
+        max-width:500px;
+      }
+      
+      strong {
+        color:black;
+      }
+      
+      a {
+        color:#2e73da;
+      }
+      a:visited {
+        color:#5d6cd5;
+      }
+      a:hover {
+        color:#3381ff;
+      }
+      
+      a[target="_blank"] {
+        text-decoration:none;
+        border-bottom-width:1px;
+        border-bottom-style:dashed;
+        border-bottom-color:#2e73da;
+      }
+      a[target="_blank"]:visited {
+        border-bottom-color:#5d6cd5;
+      }
+      a[target="_blank"]:hover {
+        border-bottom-color:#3381ff;
+      }
+      
+      .userpic {
+        -webkit-border-radius: 10px;
+        -moz-border-radius: 10px;
+        border-radius: 10px;
+        float:left;
+        margin-right:15px;
+        margin-bottom:200px; /* offsets rest of the text */
+      }
+      
+      .green {
+        color:green;
+        font-weight:bold;
+      }
+      
+      .grey {
+        color:#666;
+        font-weight:bold;
       }
       
     </style>
@@ -39,6 +107,47 @@
       
       <h2>Elegant everyday tool for human beings.</h2>
       
+      <div class="screenshot-wrapper">
+        <img src="gitbox-screenshot.png" alt="Gitbox: git GUI for Mac OS X" />
+      </div>
+      
+      <p>
+        Gitbox is a graphical interface to <a href="http://git-scm.com">Git</a> version control system.
+        In a single window you see the branch history and file status.
+      </p>
+      <p>
+        Everyday operations are easy: stage and unstage changes with a checkbox. Pull, merge and push with a single click.
+        Double-click the change to show the <a href="filemerge-screenshot.png" target="_blank" class="in-page">diff with FileMerge.app</a>
+      </p>
+      
+      
+      
+      <h3>Other features</h3>
+      
+      <p>
+        <strong>Automatic.</strong> Gitbox updates status each time you focus its window. When window is out of focus, it periodically fetches data from the selected remote branch and displays unmerged commits in the history.
+      </p>
+      
+      <p>
+        <strong>Convenient.</strong> History shows all commits on both local and remote branch. Non-pushed commits are <span class="green">green</span>. Non-pulled commits are <span class="grey">grey</span>.
+      </p>
+      
+      
+      <h3>Author</h3>
+      
+      <img src="oleg-andreev.png" class="userpic" alt="Oleg Andreev" />
+      
+      <p>Oleg Andreev is a softwared developer from St.&nbsp;Petersburg, Russia. Currently lives in Paris, France and works with <a href="http://pierlis.com">Pierlis</a>.</p>
+      <p>Oleg has 10 years of software development experience in desktop and web development.</p>
+      <p>E-mail: <a href="mailto:oleganza@gmail.com?subject=gitbox">oleganza@gmail.com</a></p>
+      <p>
+        On the Web: <a href="http://oleganza.tumblr.com/">blog</a>, <a href="http://twitter.com/oleganza">twitter</a>, <a href="http://github.com/oleganza">github</a>.
+      </p>
+      
+      <br/>
+      <br/>
+      <br/>
+      <br/>
     </div>
     
   </body>
