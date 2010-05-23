@@ -59,19 +59,6 @@ Note on remote branches:
 - how to make an activity indicator? port an object from the iphone and bind enabled property to it's current state
 
 
-Code to do:
-
-+ custom window controller to handle little UI events (see Napoleon.app)
-+ instead of NSDocumentController use AppDelegate to keep track of window controllers
-+ use window controller instead of MyDocument
-+ make AppDelegate a delegate for NSOpenPanel to validate folder
-+ open a folder when dragged onto Dock icon
-+ add an NSTask wrapper to run git commands (like in Moriarity sample code)
-- GBLogOp to read log back in time
-- GBShowOp to read commit data for the given commitid
-- reset toolbar buttons to default/empty/disabled state
-+ load local branches
-
 
 To do:
 
@@ -96,7 +83,7 @@ To do:
 + add "stage" cell in the top of the log - shows stage and working directory status
 - add "load more" cell in the bottom of the log
 + right pane: changes (files)
-- open FileMerge.app with opendiff command
++ open FileMerge.app with opendiff command
 - handle new repo: push to a new master branch
 - handle pushing to a new branch: allow branch creation in "remote branch" dropdown
 - switch off 1min sync with a menu item: useful on battery
@@ -145,8 +132,3 @@ $ man git-diff-tree:
        git-diff-files [<pattern>...]
            compares the index and the files on the filesystem.
 
-
-- paths for staged changes: git diff -M -C --find-copies-harder -l64 --stat --cached | tail -r | tail -n +2 | tail -r | awk '{ print $1 }'
-
-
-- test
