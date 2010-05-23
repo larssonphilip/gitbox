@@ -54,29 +54,42 @@
   return [self allChanges];
 }
 
-- (void) stageChange:(GBChange*)change
+- (void) stageChange:(GBChange*)aChange
 {
-  GBTask* task = [self.repository task];
-  
-  if ([change isDeletion])
+  [self stageChanges:[NSArray arrayWithObject:aChange]];
+}
+
+- (void) stageChanges:(NSArray*)theChanges
+{
+  for (GBChange* aChange in theChanges)
   {
-    task.arguments = [NSArray arrayWithObjects:@"update-index", @"--remove", change.srcURL.path, nil];
+    GBTask* task = [self.repository task];
+    if ([aChange isDeletion])
+    {
+      task.arguments = [NSArray arrayWithObjects:@"update-index", @"--remove", aChange.srcURL.path, nil];
+    }
+    else
+    {
+      task.arguments = [NSArray arrayWithObjects:@"add", aChange.fileURL.path, nil];
+    }
+    [[task launchAndWait] showErrorIfNeeded];
   }
-  else
-  {
-    task.arguments = [NSArray arrayWithObjects:@"add", change.fileURL.path, nil];
-  }
-  [[task launchAndWait] showErrorIfNeeded];
-  
   [self reloadChanges];
 }
 
-- (void) unstageChange:(GBChange*)change
+- (void) unstageChange:(GBChange*)aChange
 {
-  [[self.repository task] launchWithArgumentsAndWait:[NSArray arrayWithObjects:@"reset", @"--", change.fileURL.path, nil]];
-  [self reloadChanges];
+  [self unstageChanges:[NSArray arrayWithObject:aChange]];
 }
 
+- (void) unstageChanges:(NSArray*)theChanges
+{
+  for (GBChange* aChange in theChanges)
+  {
+    [[self.repository task] launchWithArgumentsAndWait:[NSArray arrayWithObjects:@"reset", @"--", aChange.fileURL.path, nil]];
+  }
+  [self reloadChanges];
+}
 
 
 

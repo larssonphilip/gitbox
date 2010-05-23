@@ -14,7 +14,10 @@
 @property(retain) NSArray* untrackedChanges;
 @property(assign) BOOL hasStagedChanges;
 
-- (void) stageChange:(GBChange*)change;
-- (void) unstageChange:(GBChange*)change;
+- (void) stageChange:(GBChange*)aChange;
+- (void) stageChanges:(NSArray*)theChanges;
+- (void) unstageChange:(GBChange*)aChange;
+- (void) unstageChanges:(NSArray*)theChanges;
+
 
 @end
