@@ -198,7 +198,6 @@
   
 }
 
-
 - (void) revealInFinder:(id)sender
 {
   NSString* path = [self.fileURL path];
@@ -212,5 +211,18 @@
 {
   return (self.fileURL && ![self isDeletedFile]);
 }
+
+- (void) unstage
+{
+  [[self.repository task] 
+   launchWithArgumentsAndWait:[NSArray arrayWithObjects:@"reset", @"--", self.fileURL.path, nil]];
+}
+
+- (void) revert
+{
+  [[self.repository task] 
+   launchWithArgumentsAndWait:[NSArray arrayWithObjects:@"checkout", @"HEAD", @"--", self.fileURL.path, nil]];
+}
+
 
 @end

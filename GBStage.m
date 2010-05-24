@@ -86,15 +86,18 @@
 {
   for (GBChange* aChange in theChanges)
   {
-    [[self.repository task] launchWithArgumentsAndWait:[NSArray arrayWithObjects:@"reset", @"--", aChange.fileURL.path, nil]];
+    [aChange unstage];
   }
   [self reloadChanges];
 }
 
 - (void) revertChanges:(NSArray*)theChanges
 {
-  NSLog(@"TODO: revert changes");
-  
+  for (GBChange* aChange in theChanges)
+  {
+    if (aChange.staged) [aChange unstage];
+    [aChange revert];
+  }
   [self reloadChanges];
 }
 

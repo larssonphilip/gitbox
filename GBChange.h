@@ -38,5 +38,7 @@
 - (void) launchComparisonTool:(id)sender;
 - (void) revealInFinder:(id)sender;
 - (BOOL) validateRevealInFinder:(id)sender;
+- (void) unstage;
+- (void) revert;
 
 @end
