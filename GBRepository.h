@@ -21,7 +21,10 @@
   NSArray* tags;
   GBStage* stage;
   GBRef* currentRef;
+  
   NSArray* commits;
+  NSArray* localBranchCommits;
+  
   OATaskManager* taskManager;
   
   BOOL pulling;
@@ -41,7 +44,10 @@
 @property(retain) NSArray* tags;
 @property(retain) GBStage* stage;
 @property(retain) GBRef* currentRef;
+
 @property(retain) NSArray* commits;
+@property(retain) NSArray* localBranchCommits;
+
 @property(retain) OATaskManager* taskManager;
 
 @property(assign) BOOL pulling;
@@ -58,7 +64,7 @@
 - (NSString*) path;
 - (GBRemote*) defaultRemote;
 - (GBRef*) currentRemoteBranch;
-- (NSArray*) loadCommits;
+- (NSArray*) composedCommits;
 - (NSArray*) loadLocalBranches;
 - (NSArray*) loadTags;
 - (NSArray*) loadRemotes;
@@ -68,7 +74,9 @@
 
 - (void) updateStatus;
 - (void) updateCommits;
+- (void) reloadCommits;
 - (void) remoteDidUpdate:(GBRemote*)aRemote;
+- (void) branch:(GBRef*)aBranch didLoadCommits:(NSArray*)theCommits;
 
 
 #pragma mark Background Update

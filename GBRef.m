@@ -1,5 +1,6 @@
 #import "GBModels.h"
 #import "GBTask.h"
+#import "GBHistoryTask.h"
 
 @implementation GBRef
 @synthesize name;
@@ -86,11 +87,16 @@
   return nil;
 }
 
-- (NSArray*) loadCommits
+- (void) updateCommits
 {
-  NSMutableArray* aCommits = [NSMutableArray array];
-  
-  return aCommits;
+  GBHistoryTask* task = [GBHistoryTask task];
+  task.branch = self;
+  [[self.repository launchTask:task] readInBackground];
+}
+
+- (void) asyncTaskGotCommits:(NSArray*)theCommits
+{
+  [self.repository branch:self didLoadCommits:theCommits];
 }
 
 @end

@@ -19,7 +19,10 @@
 @synthesize tags;
 @synthesize stage;
 @synthesize currentRef;
+
 @synthesize commits;
+@synthesize localBranchCommits;
+
 @synthesize taskManager;
 
 @synthesize pulling;
@@ -43,7 +46,10 @@
   self.tags = nil;
   self.stage = nil;
   self.currentRef = nil;
+  
   self.commits = nil;
+  self.localBranchCommits = nil;
+  
   self.taskManager = nil;
   [super dealloc];
 }
@@ -138,7 +144,7 @@
 {
   if (!commits)
   {
-    self.commits = [self loadCommits];
+    self.commits = [self composedCommits];
   }
   return [[commits retain] autorelease];
 }
@@ -233,12 +239,19 @@
 
 - (void) updateCommits
 {
-  self.commits = [self loadCommits];
+  self.commits = [self composedCommits];
 }
 
-- (NSArray*) loadCommits
+- (void) reloadCommits
 {
-  return [[NSArray arrayWithObject:self.stage] arrayByAddingObjectsFromArray:[self.currentRef loadCommits]];
+  [self.currentRef updateCommits];
+  [self updateCommits];
+}
+
+- (NSArray*) composedCommits
+{
+  if (!self.localBranchCommits) self.localBranchCommits = [NSArray array];
+  return [[NSArray arrayWithObject:self.stage] arrayByAddingObjectsFromArray:self.localBranchCommits];
 }
 
 - (void) remoteDidUpdate:(GBRemote*)aRemote
@@ -246,6 +259,14 @@
   [self.delegate repository:self didUpdateRemote:aRemote];
 }
 
+- (void) branch:(GBRef*)aBranch didLoadCommits:(NSArray*)theCommits;
+{
+  if (aBranch == self.currentRef)
+  {
+    self.localBranchCommits = theCommits;
+    [self updateCommits];
+  }
+}
 
 
 
@@ -317,7 +338,7 @@
   {
     [[[self task] launchWithArgumentsAndWait:[NSArray arrayWithObjects:@"commit", @"-m", message, nil]] showErrorIfNeeded];
     [self updateStatus];
-    [self updateCommits];
+    [self reloadCommits];
   }
 }
 
@@ -331,13 +352,16 @@
 
 - (void) pullBranch:(GBRef*)aRemoteBranch
 {
-  NSLog(@"TODO: check for already fetched commits and merge them with a blocking task instead of pulling again");
-  self.pulling = YES;
-  
-  GBTask* pullTask = [GBTask task];
-  pullTask.arguments = [NSArray arrayWithObjects:@"pull", aRemoteBranch.remoteAlias, aRemoteBranch.name, nil];
-  [pullTask subscribe:self selector:@selector(pullTaskDidFinish:)];
-  [self launchTask:pullTask];
+  if (!self.pulling)
+  {
+    NSLog(@"TODO: check for already fetched commits and merge them with a blocking task instead of pulling again");
+    self.pulling = YES;
+    
+    GBTask* pullTask = [GBTask task];
+    pullTask.arguments = [NSArray arrayWithObjects:@"pull", aRemoteBranch.remoteAlias, aRemoteBranch.name, nil];
+    [pullTask subscribe:self selector:@selector(pullTaskDidFinish:)];
+    [self launchTask:pullTask];
+  }
 }
 
 - (void) push
@@ -350,19 +374,22 @@
 
 - (void) pushBranch:(GBRef*)aLocalBranch to:(GBRef*)aRemoteBranch
 {
-  self.pushing = YES;
-  
-  GBTask* pushTask = [GBTask task];
-  NSString* refspec = [NSString stringWithFormat:@"%@:%@", aLocalBranch.name, aRemoteBranch.name];
-  pushTask.arguments = [NSArray arrayWithObjects:@"push", @"--tags", aRemoteBranch.remoteAlias, refspec, nil];
-  [pushTask subscribe:self selector:@selector(pushTaskDidFinish:)];
-  [self launchTask:pushTask];
+  if (!self.pushing)
+  {
+    self.pushing = YES;
+    
+    GBTask* pushTask = [GBTask task];
+    NSString* refspec = [NSString stringWithFormat:@"%@:%@", aLocalBranch.name, aRemoteBranch.name];
+    pushTask.arguments = [NSArray arrayWithObjects:@"push", @"--tags", aRemoteBranch.remoteAlias, refspec, nil];
+    [pushTask subscribe:self selector:@selector(pushTaskDidFinish:)];
+    [self launchTask:pushTask];    
+  }
 }
 
 - (void) fetchSilently
 {
   GBRef* aRemoteBranch = [self currentRemoteBranch];
-  if (aRemoteBranch)
+  if (!self.fetching && aRemoteBranch)
   {
     self.fetching = YES;
     
@@ -386,7 +413,7 @@
   [task unsubscribe:self];
   self.pulling = NO;
   
-  NSLog(@"TODO: update branch log");
+  [self reloadCommits];
   [self updateStatus];
 }
 
@@ -403,7 +430,7 @@
          description: @"Try to pull first."];
   }
   
-  NSLog(@"TODO: update branch log");
+  [self reloadCommits];
 }
 
 - (void) fetchSilentlyTaskDidFinish:(NSNotification*)notification
@@ -412,7 +439,7 @@
   [task unsubscribe:self];
   self.fetching = NO;
   
-  NSLog(@"TODO: update branch log");
+  [self reloadCommits];
 }
 
 

@@ -27,6 +27,8 @@
 - (NSString*) displayName;
 - (NSString*) commitish;
 
-- (NSArray*) loadCommits;
+- (void) updateCommits;
+
+- (void) asyncTaskGotCommits:(NSArray*)theCommits;
 
 @end

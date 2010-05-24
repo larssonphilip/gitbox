@@ -1,9 +1,11 @@
+#import "GBModels.h"
 #import "GBHistoryTask.h"
 #import "NSData+OADataHelpers.h"
 
 @implementation GBHistoryTask
 
 @synthesize commits;
+@synthesize branch;
 @synthesize limit;
 @synthesize skip;
 
@@ -16,6 +18,7 @@
 - (void) dealloc
 {
   self.commits = nil;
+  self.branch = nil;
   [super dealloc];
 }
 
@@ -25,7 +28,7 @@
           @"--format=raw",
           [NSString stringWithFormat:@"--max-count=%d", self.limit],
           [NSString stringWithFormat:@"--skip=%d", self.skip],
-          @"HEAD",
+          [self.branch commitish],
           nil];
 }
 
@@ -33,6 +36,7 @@
 {
   [super didFinish];
   self.commits = [self commitsFromRawFormatData:self.output];
+  [self.branch asyncTaskGotCommits:self.commits];
 }
 
 

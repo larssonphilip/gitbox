@@ -444,6 +444,7 @@
   [self.window setTitleWithRepresentedFilename:self.repository.path];
   [self updateCurrentBranchMenus];
   [self updateRemoteBranchMenus];
+  [self.repository reloadCommits];
 }
 
 
