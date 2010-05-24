@@ -203,7 +203,10 @@ NSString* OATaskNotification = @"OATaskNotification";
 - (void) didFinish
 {
   // Subclasses may override it to do some data processing.
-  NSLog(@"OATask finished: %@ %@ [%d]", self.launchPath, [self.arguments componentsJoinedByString:@" "], [self terminationStatus]);
+  if (self.terminationStatus != 0)
+  {
+    NSLog(@"OATask failed: %@ %@ [%d]", self.launchPath, [self.arguments componentsJoinedByString:@" "], self.terminationStatus);
+  }
 }
 
 - (void) terminate
