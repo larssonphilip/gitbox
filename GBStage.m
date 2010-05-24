@@ -103,8 +103,10 @@
 
 - (void) deleteFiles:(NSArray*)theChanges
 {
-  NSLog(@"TODO: delete files from the changes");
-  
+  for (GBChange* aChange in theChanges)
+  {
+    [aChange deleteFile];
+  }
   [self reloadChanges];
 }
 
