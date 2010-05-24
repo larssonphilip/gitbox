@@ -91,6 +91,15 @@
   return [self guessedBranches];
 }
 
+- (void) asyncTaskGotBranches:(NSArray*)list
+{
+  if (list)
+  {
+    self.branches = list;
+    [self.repository remoteDidUpdate:self];
+  }
+}
+
 
 
 @end

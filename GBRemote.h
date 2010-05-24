@@ -26,5 +26,6 @@
 
 - (void) addBranch:(GBRef*)branch;
 - (NSArray*) loadBranches;
+- (void) asyncTaskGotBranches:(NSArray*)list;
 
 @end

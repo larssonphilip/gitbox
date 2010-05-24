@@ -19,7 +19,8 @@
 - (void) didFinish
 {
   [super didFinish];
-  
+  NSLog(@"TODO: parse branches, create a list");
+  [self.remote asyncTaskGotBranches:[NSArray array]];
 }
 
 @end
