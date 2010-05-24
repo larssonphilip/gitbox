@@ -12,6 +12,7 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
+			<integer value="100100"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -525,7 +526,7 @@
 				<string key="NSWindowContentMaxSize">{1.79769e+308, 1.79769e+308}</string>
 				<string key="NSWindowContentMinSize">{400, 200}</string>
 				<object class="NSView" key="NSWindowView" id="568628114">
-					<nil key="NSNextResponder"/>
+					<reference key="NSNextResponder"/>
 					<int key="NSvFlags">256</int>
 					<object class="NSMutableArray" key="NSSubviews">
 						<bool key="EncodedWithXMLCoder">YES</bool>
@@ -604,7 +605,7 @@
 																	</object>
 																	<object class="NSTextFieldCell" key="NSDataCell" id="910095805">
 																		<int key="NSCellFlags">67239488</int>
-																		<int key="NSCellFlags2">133184</int>
+																		<int key="NSCellFlags2">137280</int>
 																		<string key="NSContents">Text Cell</string>
 																		<reference key="NSSupport" ref="26"/>
 																		<reference key="NSControlView" ref="584195925"/>
@@ -643,7 +644,7 @@
 																	</object>
 																	<object class="NSTextFieldCell" key="NSDataCell" id="397583987">
 																		<int key="NSCellFlags">67239424</int>
-																		<int key="NSCellFlags2">131328</int>
+																		<int key="NSCellFlags2">135424</int>
 																		<string key="NSContents">Text Cell</string>
 																		<reference key="NSSupport" ref="26"/>
 																		<reference key="NSControlView" ref="584195925"/>
@@ -673,7 +674,7 @@
 																	</object>
 																	<object class="NSTextFieldCell" key="NSDataCell" id="183185720">
 																		<int key="NSCellFlags">67239424</int>
-																		<int key="NSCellFlags2">131328</int>
+																		<int key="NSCellFlags2">135424</int>
 																		<string key="NSContents">Text Cell</string>
 																		<reference key="NSSupport" ref="26"/>
 																		<reference key="NSControlView" ref="584195925"/>
@@ -698,7 +699,7 @@
 																	</object>
 																	<object class="NSTextFieldCell" key="NSDataCell" id="403455259">
 																		<int key="NSCellFlags">67239424</int>
-																		<int key="NSCellFlags2">131328</int>
+																		<int key="NSCellFlags2">135424</int>
 																		<string key="NSContents">Text Cell</string>
 																		<reference key="NSSupport" ref="26"/>
 																		<reference key="NSControlView" ref="584195925"/>
@@ -721,14 +722,9 @@
 															<double key="NSIntercellSpacingWidth">3</double>
 															<double key="NSIntercellSpacingHeight">2</double>
 															<reference key="NSBackgroundColor" ref="987104074"/>
-															<object class="NSColor" key="NSGridColor" id="77484895">
-																<int key="NSColorSpace">6</int>
-																<string key="NSCatalogName">System</string>
-																<string key="NSColorName">gridColor</string>
-																<object class="NSColor" key="NSColor">
-																	<int key="NSColorSpace">3</int>
-																	<bytes key="NSWhite">MC41AA</bytes>
-																</object>
+															<object class="NSColor" key="NSGridColor">
+																<int key="NSColorSpace">1</int>
+																<bytes key="NSRGB">MC44OTc4NDMyMjgyIDAuOTA4MTYzMjY1MyAwLjkwODE2MzI2NTMAA</bytes>
 															</object>
 															<double key="NSRowHeight">32</double>
 															<int key="NSTvFlags">1388347392</int>
@@ -737,7 +733,7 @@
 															<int key="NSColumnAutoresizingStyle">1</int>
 															<int key="NSDraggingSourceMaskForLocal">15</int>
 															<int key="NSDraggingSourceMaskForNonLocal">0</int>
-															<bool key="NSAllowsTypeSelect">YES</bool>
+															<bool key="NSAllowsTypeSelect">NO</bool>
 															<int key="NSTableViewDraggingDestinationStyle">0</int>
 														</object>
 													</object>
@@ -929,7 +925,15 @@
 															<double key="NSIntercellSpacingWidth">3</double>
 															<double key="NSIntercellSpacingHeight">2</double>
 															<reference key="NSBackgroundColor" ref="987104074"/>
-															<reference key="NSGridColor" ref="77484895"/>
+															<object class="NSColor" key="NSGridColor">
+																<int key="NSColorSpace">6</int>
+																<string key="NSCatalogName">System</string>
+																<string key="NSColorName">gridColor</string>
+																<object class="NSColor" key="NSColor">
+																	<int key="NSColorSpace">3</int>
+																	<bytes key="NSWhite">MC41AA</bytes>
+																</object>
+															</object>
 															<double key="NSRowHeight">14</double>
 															<int key="NSTvFlags">1514143744</int>
 															<reference key="NSDelegate"/>
@@ -1009,6 +1013,7 @@
 						</object>
 					</object>
 					<string key="NSFrameSize">{665, 377}</string>
+					<reference key="NSSuperview"/>
 				</object>
 				<string key="NSScreenRect">{{0, 0}, {1280, 778}}</string>
 				<string key="NSMinSize">{400, 267}</string>
@@ -2647,9 +2652,9 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{-37, 180}, {665, 377}}</string>
+					<string>{{35, 210}, {665, 377}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{-37, 180}, {665, 377}}</string>
+					<string>{{35, 210}, {665, 377}}</string>
 					<integer value="1"/>
 					<string>{{201, 387}, {507, 413}}</string>
 					<integer value="1"/>
@@ -2700,6 +2705,7 @@
 							<string>commit:</string>
 							<string>createNewRemoteBranch:</string>
 							<string>editRepositories:</string>
+							<string>openInTerminal:</string>
 							<string>pull:</string>
 							<string>pullOrPush:</string>
 							<string>push:</string>
@@ -2714,6 +2720,7 @@
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>
