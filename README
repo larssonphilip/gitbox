@@ -5,7 +5,7 @@ Strategy for the first shippable version:
   + checkout tag
   + checkout remote branch
 - remote branches:
-  - push
+  + push
   + pull
 - show log
   - list of commits
@@ -40,7 +40,7 @@ To do now:
 + disable pull/push and current branch while pulling
 - push
 - fetch if push failed
-- disable pull/push and remote branch while pushing
++ disable pull/push while pushing
 - fetch in background when unfocused
 
 
