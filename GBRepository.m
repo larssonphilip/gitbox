@@ -212,21 +212,6 @@
 - (NSArray*) loadRemotes
 {
   return [[self launchTaskAndWait:[GBRemotesTask task]] remotes];
-  //
-//  NSMutableArray* list = [NSMutableArray array];
-//  NSURL* aurl = [self gitURLWithSuffix:@"refs/remotes"];
-//  for (NSURL* aURL in [NSFileManager contentsOfDirectoryAtURL:aurl])
-//  {
-//    if ([NSFileManager isReadableDirectoryAtPath:aURL.path])
-//    {
-//      NSString* alias = [[aURL pathComponents] lastObject];
-//      GBRemote* remote = [[GBRemote new] autorelease];
-//      remote.repository = self;
-//      remote.alias = alias;
-//      [list addObject:remote];        
-//    }
-//  }
-//  return list;
 }
 
 
