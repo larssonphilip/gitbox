@@ -1,6 +1,8 @@
 @class GBRepository;
+@class GBRemote;
 @protocol GBRepositoryDelegate
 - (void) repositoryDidUpdateStatus:(GBRepository*)repo;
+- (void) repository:(GBRepository*)repo didUpdateRemote:(GBRemote*)remote;
 @end
 
 @class GBRef;
@@ -63,6 +65,7 @@
 
 - (void) updateStatus;
 - (void) updateCommits;
+- (void) remoteDidUpdate:(GBRemote*)aRemote;
 
 
 #pragma mark Mutation

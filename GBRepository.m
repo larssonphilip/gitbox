@@ -251,6 +251,11 @@
   return [[NSArray arrayWithObject:self.stage] arrayByAddingObjectsFromArray:[self.currentRef loadCommits]];
 }
 
+- (void) remoteDidUpdate:(GBRemote*)aRemote
+{
+  [self.delegate repository:self didUpdateRemote:aRemote];
+}
+
 
 
 
