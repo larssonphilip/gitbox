@@ -85,7 +85,7 @@ authorDate 2010-05-01 20:23:10 -0700
 - (NSArray*) commitsFromRawFormatData:(NSData*)data
 {
 
-#define HistoryScanError(msg) {NSLog(@"ERROR: GBHistoryTask parse error: %@", msg); return list;}
+#define HistoryScanError(msg) {[pool drain]; NSLog(@"ERROR: GBHistoryTask parse error: %@", msg); return list;}
   
   NSMutableArray* list = [NSMutableArray arrayWithCapacity:self.limit];
   
@@ -200,35 +200,6 @@ authorDate 2010-05-01 20:23:10 -0700
     
     [pool drain];
   }
-  
-//  while ([scanner isAtEnd] == NO)
-//  {
-//    // 1. "commit"
-//    // 2. space
-//    // 3. sha1
-//    // 4. line break
-//    
-//    // 5. "tree"
-//    // 6. space
-//    // 7. sha1
-//    // 8. line break
-//    
-//    // 9. "tree"
-//    // 10. space
-//    // 11. sha1
-//    // 12. line break
-//    
-//    tree 715659d7f232f1ecbe19674a16c9b03067f6c9e1
-//    parent 8a65ff7666db1299449a397bab3d39d74b82aa54
-//    author Linus Torvalds <torvalds@g5.osdl.org> 1120409924 -0700
-//    committer Linus Torvalds <torvalds@g5.osdl.org> 1120409924 -0700
-//    
-//    Avoid gcc warnings in sha1_file.c
-//    
-//    A couple of bogus "might be used undefined" warnings are avoided
-//    by moving the initializations unnecessarily early.
-//    
-//  } 
   
   return list;
 }
