@@ -184,17 +184,22 @@ authorDate 2010-05-01 20:23:10 -0700
     
     GBHistoryNextLine;
     
-    NSMutableString* rawBody = [NSMutableString string];
+    // Skip initial empty lines
+    while (line && [line length] <= 0)
+    {
+      GBHistoryNextLine;
+    }
+    NSMutableArray* rawBodyLines = [NSMutableArray array];
     while (line && [line length] <= 0 || [line hasPrefix:@"    "])
     {
       if ([line length] > 0)
       {
-        [rawBody appendString:[line stringByTrimmingCharactersInSet:whitespaceCharacterSet]];
+        [rawBodyLines addObject:[line stringByTrimmingCharactersInSet:whitespaceCharacterSet]];
       }
       GBHistoryNextLine;
     }
     
-    commit.message = rawBody;
+    commit.message = [rawBodyLines componentsJoinedByString:@"\n"];
     
     [list addObject:commit];
     
