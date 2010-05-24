@@ -1,7 +1,6 @@
 
 Strategy for the first shippable version:
 
-- log: list of commits (last 500 commits)
 - log: list of unmerged commits from remote branch
 - log: highlight new commits (missing on remote branch) 
 - log: checkout a commit
@@ -16,6 +15,7 @@ Bugs:
   (or better: reuse matching changes to avoid that issue and avoid flickering and UI blocking)
 - OK button does not work in prompt because textfield value is updated through binding yet.
 - table row selection is ignored if was no selection for ArrayController. Should check NSTableView selectedRowIndexes?
+- when opened git.git repo spinner spins forever
 
 
 UI glitches:
@@ -61,6 +61,7 @@ Later:
 
 Done:
 
++ log: list of commits (last 500 commits)
 + prompt for a name when checking out a new branch
 + check out a branch from the remote one
 + fetch current remote branch every minute
