@@ -30,11 +30,13 @@
   // Do no smart tricks if there are too many changes
   if (!existingChanges || [existingChanges count] <= 0 || [existingChanges count] > 100 || [newChanges count] > 100)
   {
+    //NSLog(@"GBCommit updateChanges: list of changes is too big, just replacing existing ones.");
     self.changes = newChanges;
   }
   else if ([newChanges isEqualToArray:existingChanges])
   {
     // do nothing
+    //NSLog(@"GBCommit updateChanges: new changes are equal to old changes!");
   }
   else 
   {
@@ -49,6 +51,7 @@
       
       if (indexOfExistingObject != NSNotFound)
       {
+        //NSLog(@"GBCommit updateChanges: change exists, keeping");
         [newChangesPreservingExistingObjects 
                             replaceObjectAtIndex:index 
                                       withObject:[existingChanges objectAtIndex:indexOfExistingObject]];
