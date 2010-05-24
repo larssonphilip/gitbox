@@ -3,10 +3,11 @@ Strategy for the first shippable version:
 
 - log: list of unmerged commits from remote branch
 - log: highlight new commits (missing on remote branch) 
-- log: checkout a commit
 - changes for the commit
+- test merge conflict situation
 - repos: add
 - repos: edit
+- log: checkout a commit
 
 
 Bugs:
@@ -34,6 +35,7 @@ UI goodies:
 - switch off 1min sync with a menu item: useful on battery
 - remember chosen remote branch for the local branch in prefs
 - recently opened files
+- log: mark as read/unread + automatic mark as read
 
 
 To do next:
