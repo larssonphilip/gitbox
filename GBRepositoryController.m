@@ -8,12 +8,15 @@
 #import "NSString+OAStringHelpers.h"
 #import "NSMenu+OAMenuHelpers.h"
 #import "NSWindowController+OAWindowControllerHelpers.h"
+#import "NSObject+OAKeyValueObserving.h"
 
 #import <objc/runtime.h>
 
 @implementation GBRepositoryController
 
+@synthesize repositoryURL;
 @synthesize repository;
+
 @synthesize delegate;
 
 @synthesize splitView;
@@ -29,8 +32,11 @@
 
 - (void) dealloc
 {
-  self.splitView = nil;
+  self.repositoryURL = nil;
+  if ((id)repository.delegate == self) repository.delegate = nil;
+  self.repository = nil;
   
+  self.splitView = nil;
   self.logTableView = nil;
   self.statusTableView = nil;
   
@@ -44,7 +50,17 @@
   [super dealloc];
 }
 
-
+- (GBRepository*) repository
+{
+  if (!repository)
+  {
+    GBRepository* repo = [[GBRepository new] autorelease];
+    repo.url = repositoryURL;
+    repo.delegate = self;
+    self.repository = repo;
+  }
+  return [[repository retain] autorelease];
+}
 
 
 
@@ -390,8 +406,27 @@
 
 
 
+#pragma mark GBRepositoryDelegate
+
+
+
+- (void) repositoryDidUpdateStatus:(GBRepository*)repo
+{
+  
+}
+
+- (void) repository:(GBRepository*)repo didUpdateRemote:(GBRemote*)remote
+{
+  [self updateRemoteBranchMenus];
+}
+
+
+
+
+
 
 #pragma mark NSWindowController
+
 
 - (void)windowDidLoad
 {

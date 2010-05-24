@@ -4,11 +4,13 @@
 - (void) windowControllerWillClose:(GBRepositoryController*)aController;
 @end
 
-@class GBRepository;
+#import "GBRepository.h"
 @class GBCommit;
-@interface GBRepositoryController : NSWindowController
+@interface GBRepositoryController : NSWindowController<GBRepositoryDelegate>
 {
+  NSURL* repositoryURL;
   GBRepository* repository;
+  
   id<GBRepositoryControllerDelegate> delegate;
   
   NSSplitView* splitView;
@@ -23,7 +25,9 @@
   NSArrayController* statusArrayController;
 }
 
+@property(retain) NSURL* repositoryURL;
 @property(retain) GBRepository* repository;
+
 @property(assign) id<GBRepositoryControllerDelegate> delegate;
 
 @property(retain) IBOutlet NSSplitView* splitView;

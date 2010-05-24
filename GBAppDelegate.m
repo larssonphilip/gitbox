@@ -32,10 +32,7 @@
   GBRepositoryController* windowController = [[[GBRepositoryController alloc] initWithWindowNibName:@"GBRepositoryController"] autorelease];
   
   windowController.delegate = self;
-  GBRepository* repository = [[GBRepository new] autorelease];
-  repository.url = [NSURL fileURLWithPath:path];
-  windowController.repository = repository;
-  
+  windowController.repositoryURL = [NSURL fileURLWithPath:path];  
   return windowController;
 }
 
