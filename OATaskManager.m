@@ -58,7 +58,7 @@
 - (OATask*) launchTask:(OATask*)task
 {
   [self.concurrentTasks addObject:task];
-  [self.activityIndicator push];
+  if (!task.avoidIndicator) [self.activityIndicator push];
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(taskDidFinish:) name:OATaskNotification object:task];
   [task launch];
   return task;
@@ -88,7 +88,8 @@
     self.currentTask = nil;
     [self launchNextEnqueuedTask];
   }
-  [self.activityIndicator pop]; // cancels current task, overlaps with launchNextEnqueuedTask to avoid flickering
+  // cancels current task, overlaps with launchNextEnqueuedTask to avoid flickering
+  if (!task.avoidIndicator) [self.activityIndicator pop]; 
 }
 
 

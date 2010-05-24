@@ -13,6 +13,8 @@ NSString* OATaskNotification = @"OATaskNotification";
 @synthesize output;
 @synthesize arguments;
 
+@synthesize avoidIndicator;
+
 @synthesize pollingPeriod;
 @synthesize terminateTimeout;
 
