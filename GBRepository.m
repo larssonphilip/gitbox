@@ -178,6 +178,11 @@
   return [self.remotes firstObject];
 }
 
+- (GBRef*) currentRemoteBranch
+{
+  return self.currentRef.remoteBranch;
+}
+
 - (NSArray*) loadLocalBranches
 {
   NSMutableArray* list = [NSMutableArray array];
@@ -244,7 +249,42 @@
 
 
 
+#pragma mark Background Update
+
+
+- (void) beginBackgroundUpdate
+{
+  [self endBackgroundUpdate];
+  backgroundUpdateEnabled = YES;
+  [self performSelector:@selector(fetchSilentlyDuringBackgroundUpdate) 
+             withObject:nil 
+             afterDelay:2.0];
+}
+
+- (void) endBackgroundUpdate
+{
+  backgroundUpdateEnabled = NO;
+  [NSObject cancelPreviousPerformRequestsWithTarget:self 
+                                           selector:@selector(fetchSilentlyDuringBackgroundUpdate) 
+                                             object:nil];
+}
+
+- (void) fetchSilentlyDuringBackgroundUpdate
+{
+  if (!backgroundUpdateEnabled) return;
+  [self performSelector:@selector(fetchSilentlyDuringBackgroundUpdate) 
+             withObject:nil 
+             afterDelay:10.0];
+  [self fetchSilently];
+}
+
+
+
+
+
+
 #pragma mark Mutation methods
+
 
 
 - (void) checkoutRef:(GBRef*)ref
@@ -283,10 +323,9 @@
 
 - (void) pull
 {
-  GBRef* remoteBranch = self.currentRef.remoteBranch;
-  if (remoteBranch)
+  if ([self currentRemoteBranch])
   {
-    [self pullBranch:remoteBranch];
+    [self pullBranch:[self currentRemoteBranch]];
   }
 }
 
@@ -303,10 +342,9 @@
 
 - (void) push
 {
-  GBRef* remoteBranch = self.currentRef.remoteBranch;
-  if (remoteBranch && self.currentRef)
+  if ([self currentRemoteBranch])
   {
-    [self pushBranch:self.currentRef to:remoteBranch];
+    [self pushBranch:self.currentRef to:[self currentRemoteBranch]];
   }  
 }
 
@@ -320,6 +358,22 @@
   [pushTask subscribe:self selector:@selector(pushTaskDidFinish:)];
   [self launchTask:pushTask];
 }
+
+- (void) fetchSilently
+{
+  GBRef* aRemoteBranch = [self currentRemoteBranch];
+  if (aRemoteBranch)
+  {
+    self.fetching = YES;
+    
+    GBTask* fetchTask = [GBTask task];
+    fetchTask.arguments = [NSArray arrayWithObjects:@"fetch", @"--tags", aRemoteBranch.remoteAlias, aRemoteBranch.name, nil];
+    [fetchTask subscribe:self selector:@selector(fetchSilentlyTaskDidFinish:)];
+    [self launchTask:fetchTask];
+  }
+}
+
+
 
 
 
@@ -352,10 +406,15 @@
   NSLog(@"TODO: update branch log");
 }
 
-- (void) fetchSilently
+- (void) fetchSilentlyTaskDidFinish:(NSNotification*)notification
 {
-  NSLog(@"TODO: git fetch");
+  GBTask* task = [notification object];
+  [task unsubscribe:self];
+  self.fetching = NO;
+  
+  NSLog(@"TODO: update branch log");
 }
+
 
 
 

@@ -445,8 +445,9 @@
 #pragma mark NSWindowDelegate
 
 
-- (void)windowWillClose:(NSNotification *)notification
+- (void) windowWillClose:(NSNotification *)notification
 {
+  [self.repository endBackgroundUpdate];
   if ([[NSWindowController class] instancesRespondToSelector:@selector(windowWillClose:)]) 
   {
     [(id<NSWindowDelegate>)super windowWillClose:notification];
@@ -454,9 +455,15 @@
   [self.delegate windowControllerWillClose:self];
 }
 
-- (void)windowDidBecomeKey:(NSNotification *)notification
+- (void) windowDidBecomeKey:(NSNotification *)notification
 {
+  [self.repository endBackgroundUpdate];
   [self.repository updateStatus];
+}
+
+- (void) windowDidResignKey:(NSNotification *)notification
+{
+  [self.repository beginBackgroundUpdate];
 }
 
 

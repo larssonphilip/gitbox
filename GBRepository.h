@@ -30,6 +30,8 @@
   BOOL pushing;
   
   id<GBRepositoryDelegate> delegate;
+  
+  BOOL backgroundUpdateEnabled;
 }
 
 @property(retain) NSURL* url;
@@ -55,6 +57,7 @@
 + (BOOL) isValidRepositoryAtPath:(NSString*)path;
 - (NSString*) path;
 - (GBRemote*) defaultRemote;
+- (GBRef*) currentRemoteBranch;
 - (NSArray*) loadCommits;
 - (NSArray*) loadLocalBranches;
 - (NSArray*) loadTags;
@@ -66,6 +69,12 @@
 - (void) updateStatus;
 - (void) updateCommits;
 - (void) remoteDidUpdate:(GBRemote*)aRemote;
+
+
+#pragma mark Background Update
+
+- (void) beginBackgroundUpdate;
+- (void) endBackgroundUpdate;
 
 
 #pragma mark Mutation
