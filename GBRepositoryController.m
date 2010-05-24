@@ -27,8 +27,10 @@
 @synthesize pullPushControl;
 @synthesize remoteBranchPopUpButton;
 
-@synthesize logArrayController; 
+@synthesize logArrayController;
 @synthesize statusArrayController;
+
+@synthesize stagingTableColumn;
 
 - (void) dealloc
 {
@@ -46,6 +48,8 @@
   
   self.logArrayController = nil;
   self.statusArrayController = nil;
+  
+  self.stagingTableColumn = nil;
   
   [super dealloc];
 }
@@ -508,6 +512,12 @@
     return !(columnIndex == 0);
   }
   return YES;
+}
+
+- (void)tableViewSelectionDidChange:(NSNotification *)aNotification
+{
+  BOOL flag = [[[self.logArrayController selectedObjects] firstObject] isStage];
+  [self.stagingTableColumn setHidden:!flag];
 }
 
 

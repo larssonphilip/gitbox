@@ -25,6 +25,8 @@
   
   NSArrayController* logArrayController;
   NSArrayController* statusArrayController;
+  
+  NSTableColumn* stagingTableColumn;
 }
 
 @property(retain) NSURL* repositoryURL;
@@ -43,6 +45,7 @@
 @property(retain) IBOutlet NSArrayController* logArrayController;
 @property(retain) IBOutlet NSArrayController* statusArrayController;
 
+@property(retain) IBOutlet NSTableColumn* stagingTableColumn;
 
 #pragma mark Interrogation
 
