@@ -417,6 +417,7 @@
 
 - (void) repository:(GBRepository*)repo didUpdateRemote:(GBRemote*)remote
 {
+  [self updateCurrentBranchMenus];
   [self updateRemoteBranchMenus];
 }
 
