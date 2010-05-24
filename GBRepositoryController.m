@@ -461,12 +461,13 @@
 #pragma mark NSTableViewDelegate
 
 
+// The problem: http://www.cocoadev.com/index.pl?CheckboxInTableWithoutSelectingRow
 - (BOOL)tableView:(NSTableView*)aTableView 
   shouldTrackCell:(NSCell*)aCell
    forTableColumn:(NSTableColumn*)aTableColumn
               row:(NSInteger)aRow
 {
-  // Note: this code disallows to check the checkbox. Will see later.
+  // Note: this code disallows to check the checkbox.
   return YES;
   
   if (aTableView == self.statusTableView)
@@ -474,6 +475,21 @@
     return NO; // avoid changing selection when checkbox is clicked
   }
   
+  return YES;
+}
+
+// This avoid changing selection when checkbox is clicked.
+- (BOOL)tableView:(NSTableView *)aTableView shouldSelectRow:(NSInteger)rowIndex
+{
+  if (aTableView == self.statusTableView)
+  {
+    NSEvent *currentEvent = [[aTableView window] currentEvent];
+    if([currentEvent type] != NSLeftMouseDown) return YES;
+    // you may also check for the NSLeftMouseDragged event
+    // (changing the selection by holding down the mouse button and moving the mouse over another row)
+    int columnIndex = [aTableView columnAtPoint:[aTableView convertPoint:[currentEvent locationInWindow] fromView:nil]];
+    return !(columnIndex == 0);
+  }
   return YES;
 }
 
