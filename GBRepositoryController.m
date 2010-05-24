@@ -356,12 +356,10 @@
   [self.splitView adjustSubviews];
   if ([self.splitView isVertical])
   {
-    self.logTableView.rowHeight = 32.0;
     [sender setTitle:NSLocalizedString(@"Horizontal Views",@"")];
   }
   else
   {
-    self.logTableView.rowHeight = 16.0;
     [sender setTitle:NSLocalizedString(@"Vertical Views",@"")];
   }
 }
