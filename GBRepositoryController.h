@@ -6,7 +6,9 @@
 
 #import "GBRepository.h"
 @class GBCommit;
-@interface GBRepositoryController : NSWindowController<GBRepositoryDelegate>
+@interface GBRepositoryController : NSWindowController<
+                                                      GBRepositoryDelegate, 
+                                                      NSTableViewDelegate>
 {
   NSURL* repositoryURL;
   GBRepository* repository;

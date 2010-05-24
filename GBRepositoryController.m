@@ -458,6 +458,25 @@
 
 
 
+#pragma mark NSTableViewDelegate
+
+
+- (BOOL)tableView:(NSTableView*)aTableView 
+  shouldTrackCell:(NSCell*)aCell
+   forTableColumn:(NSTableColumn*)aTableColumn
+              row:(NSInteger)aRow
+{
+  // Note: this code disallows to check the checkbox. Will see later.
+  return YES;
+  
+  if (aTableView == self.statusTableView)
+  {
+    return NO; // avoid changing selection when checkbox is clicked
+  }
+  
+  return YES;
+}
+
 
 
 
