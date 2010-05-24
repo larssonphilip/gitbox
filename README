@@ -3,7 +3,7 @@ Strategy for the first shippable version:
 
 - log: list of unmerged commits from remote branch
 - log: highlight new commits (missing on remote branch) 
-- changes for the commit
++ changes for the commit
 - test merge conflict situation
 - repos: add
 - repos: edit
@@ -17,6 +17,8 @@ Bugs:
 - OK button does not work in prompt because textfield value is updated through binding yet.
 - table row selection is ignored if was no selection for ArrayController. Should check NSTableView selectedRowIndexes?
 - when opened git.git repo spinner spins forever
+- git diff-tree returns top-level folders instead of full paths
+- historical diff for Added file shows diff beween current state (left) and initial state (right)
 
 
 UI glitches:
