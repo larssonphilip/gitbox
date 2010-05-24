@@ -79,6 +79,7 @@
 - (void) pullBranch:(GBRef*)aRemoteBranch;
 - (void) push;
 - (void) pushBranch:(GBRef*)aLocalBranch to:(GBRef*)aRemoteBranch;
+- (void) fetchSilently;
 
 
 #pragma mark Util

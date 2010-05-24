@@ -332,7 +332,8 @@
   [task unsubscribe:self];
   self.pulling = NO;
   
-  NSLog(@"TODO: update branch log and status");
+  NSLog(@"TODO: update branch log");
+  [self updateStatus];
 }
 
 - (void) pushTaskDidFinish:(NSNotification*)notification
@@ -341,12 +342,20 @@
   [task unsubscribe:self];
   self.pushing = NO;
   
-  NSLog(@"TODO: if push fails, try fetch immediately (without errors) and show error");
+  if ([task isError])
+  {
+    [self fetchSilently];
+    [NSAlert message: @"Push failed"
+         description: @"Try to pull first."];
+  }
   
-  NSLog(@"TODO: update branch log and status");
+  NSLog(@"TODO: update branch log");
 }
 
-
+- (void) fetchSilently
+{
+  NSLog(@"TODO: git fetch");
+}
 
 
 
