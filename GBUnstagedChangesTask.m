@@ -8,6 +8,12 @@
   return [@"diff-files -C -M --ignore-submodules" componentsSeparatedByString:@" "];
 }
 
+- (BOOL) avoidIndicator
+{
+  return YES;
+}
+
+
 - (void) didFinish
 {
   [super didFinish];

@@ -8,6 +8,11 @@
   return [@"diff-index --cached -C -M --ignore-submodules HEAD" componentsSeparatedByString:@" "];
 }
 
+- (BOOL) avoidIndicator
+{
+  return YES;
+}
+
 - (void) didFinish
 {
   [super didFinish];

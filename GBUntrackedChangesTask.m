@@ -10,6 +10,11 @@
   return [@"ls-files --other --exclude-standard" componentsSeparatedByString:@" "];
 }
 
+- (BOOL) avoidIndicator
+{
+  return YES;
+}
+
 - (void) didFinish
 {
   [super didFinish];
