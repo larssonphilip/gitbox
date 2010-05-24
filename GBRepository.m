@@ -258,7 +258,7 @@
   backgroundUpdateEnabled = YES;
   [self performSelector:@selector(fetchSilentlyDuringBackgroundUpdate) 
              withObject:nil 
-             afterDelay:2.0];
+             afterDelay:60.0];
 }
 
 - (void) endBackgroundUpdate
@@ -274,7 +274,7 @@
   if (!backgroundUpdateEnabled) return;
   [self performSelector:@selector(fetchSilentlyDuringBackgroundUpdate) 
              withObject:nil 
-             afterDelay:10.0];
+             afterDelay:60.0];
   [self fetchSilently];
 }
 
