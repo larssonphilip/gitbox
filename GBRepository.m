@@ -312,8 +312,13 @@
 
 - (void) pushBranch:(GBRef*)aLocalBranch to:(GBRef*)aRemoteBranch
 {
-  NSLog(@"TODO: if push fails, try fetch immediately (without errors) and show error");
+  self.pushing = YES;
   
+  GBTask* pushTask = [GBTask task];
+  NSString* refspec = [NSString stringWithFormat:@"%@:%@", aLocalBranch.name, aRemoteBranch.name];
+  pushTask.arguments = [NSArray arrayWithObjects:@"push", @"--tags", aRemoteBranch.remoteAlias, refspec, nil];
+  [pushTask subscribe:self selector:@selector(pushTaskDidFinish:)];
+  [self launchTask:pushTask];
 }
 
 
@@ -329,6 +334,19 @@
   
   NSLog(@"TODO: update branch log and status");
 }
+
+- (void) pushTaskDidFinish:(NSNotification*)notification
+{
+  GBTask* task = [notification object];
+  [task unsubscribe:self];
+  self.pushing = NO;
+  
+  NSLog(@"TODO: if push fails, try fetch immediately (without errors) and show error");
+  
+  NSLog(@"TODO: update branch log and status");
+}
+
+
 
 
 
