@@ -374,7 +374,7 @@
 
 - (void) pushBranch:(GBRef*)aLocalBranch to:(GBRef*)aRemoteBranch
 {
-  if (!self.pushing)
+  if (!self.pushing && !self.pulling)
   {
     self.pushing = YES;
     
