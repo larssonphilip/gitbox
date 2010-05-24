@@ -5,14 +5,33 @@
 
 @implementation GBCommit
 
-@synthesize revision;
-@synthesize message;
+@synthesize commitId;
+@synthesize treeId;
+@synthesize parentIds;
 @synthesize authorName;
 @synthesize authorEmail;
 @synthesize date;
-@synthesize repository;
+@synthesize message;
 
 @synthesize changes;
+
+@synthesize repository;
+
+
+
+
+#pragma mark Init
+
+
+- (NSArray*) parentIds
+{
+  if (!parentIds)
+  {
+    self.parentIds = [NSArray array];
+  }
+  return [[parentIds retain] autorelease];
+}
+
 - (NSArray*) changes
 {
   if (!changes)
@@ -21,6 +40,37 @@
   }
   return [[changes retain] autorelease];
 }
+
+- (void) dealloc
+{
+  self.commitId = nil;
+  self.treeId = nil;
+  self.parentIds = nil;
+  self.message = nil;
+  self.authorName = nil;
+  self.authorEmail = nil;
+  self.date = nil;
+  self.changes = nil;
+  
+  [super dealloc];
+}
+
+
+
+
+#pragma mark Interrogation
+
+
+- (BOOL) isStage
+{
+  return NO;
+}
+
+
+
+
+#pragma mark Mutation
+
 
 - (void) updateChanges
 {
@@ -59,8 +109,6 @@
     }
     self.changes = newChangesPreservingExistingObjects;
   }
-
-  
 }
 
 - (void) reloadChanges
@@ -75,25 +123,13 @@
 
 - (NSArray*) loadChanges
 {
+  NSLog(@"TODO: load changes asynchronously like in GBStage");
   return [self allChanges];
 }
 
-- (BOOL) isStage
+- (void) resetChanges
 {
-  return NO;
-}
-
-- (void) dealloc
-{
-  self.revision = nil;
   self.changes = nil;
-  
-  self.message = nil;
-  self.authorName = nil;
-  self.authorEmail = nil;
-  self.date = nil;
-  
-  [super dealloc];
 }
 
 @end
