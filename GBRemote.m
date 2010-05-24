@@ -9,6 +9,7 @@
 @synthesize alias;
 @synthesize URLString;
 @synthesize branches;
+@synthesize tags;
 
 @synthesize repository;
 
@@ -26,11 +27,22 @@
   return [[branches retain] autorelease];
 }
 
+- (NSArray*) tags
+{
+  if (!tags)
+  {
+    self.branches; // if branches are nil will trigger branches and tags update
+    self.tags = [NSArray array];
+  }
+  return [[tags retain] autorelease];
+}
+
 - (void) dealloc
 {
   self.alias = nil;
   self.URLString = nil;
   self.branches = nil;
+  self.tags = nil;
   [super dealloc];
 }
 
@@ -91,13 +103,18 @@
   return [self guessedBranches];
 }
 
-- (void) asyncTaskGotBranches:(NSArray*)list
+- (void) asyncTaskGotBranches:(NSArray*)branchesList tags:(NSArray*)tagsList
 {
-  if (list)
+  if (branchesList)
   {
-    self.branches = list;
-    [self.repository remoteDidUpdate:self];
+    self.branches = branchesList;
   }
+  if (tagsList)
+  {
+    self.tags = tagsList;
+  }
+  
+  [self.repository remoteDidUpdate:self];
 }
 
 

@@ -5,6 +5,7 @@
   NSString* alias;
   NSString* URLString;
   NSArray* branches;
+  NSArray* tags;
   
   GBRepository* repository;
 }
@@ -12,6 +13,7 @@
 @property(retain) NSString* alias;
 @property(retain) NSString* URLString;
 @property(retain) NSArray* branches;
+@property(retain) NSArray* tags;
 
 @property(assign) GBRepository* repository;
 
@@ -26,6 +28,6 @@
 
 - (void) addBranch:(GBRef*)branch;
 - (NSArray*) loadBranches;
-- (void) asyncTaskGotBranches:(NSArray*)list;
+- (void) asyncTaskGotBranches:(NSArray*)branchesList tags:(NSArray*)tagsList;
 
 @end

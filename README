@@ -33,7 +33,7 @@ Bugs:
 To do now:
 
 + read remotes from git/config
-- load ls-remote info for each remote
++ load ls-remote info for each remote
 - pull
 - reread remotes on focus: if the names and urls are the same, do not ls-remote
 - do ls-remote in background starting on unfocus
