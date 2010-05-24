@@ -12,7 +12,7 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="100100"/>
+			<integer value="100110"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -699,9 +699,30 @@
 																	</object>
 																	<object class="NSTextFieldCell" key="NSDataCell" id="403455259">
 																		<int key="NSCellFlags">67239424</int>
-																		<int key="NSCellFlags2">135424</int>
+																		<int key="NSCellFlags2">-2147348224</int>
 																		<string key="NSContents">Text Cell</string>
 																		<reference key="NSSupport" ref="26"/>
+																		<object class="NSDateFormatter" key="NSFormatter" id="168239281">
+																			<object class="NSMutableDictionary" key="NS.attributes">
+																				<bool key="EncodedWithXMLCoder">YES</bool>
+																				<object class="NSArray" key="dict.sortedKeys">
+																					<bool key="EncodedWithXMLCoder">YES</bool>
+																					<string>dateFormat_10_0</string>
+																					<string>dateStyle</string>
+																					<string>formatterBehavior</string>
+																					<string>timeStyle</string>
+																				</object>
+																				<object class="NSMutableArray" key="dict.values">
+																					<bool key="EncodedWithXMLCoder">YES</bool>
+																					<string>%1H:%M %b %d, %Y</string>
+																					<integer value="2"/>
+																					<integer value="1000"/>
+																					<integer value="2"/>
+																				</object>
+																			</object>
+																			<string key="NS.format">%1H:%M %b %d, %Y</string>
+																			<bool key="NS.natural">YES</bool>
+																		</object>
 																		<reference key="NSControlView" ref="584195925"/>
 																		<reference key="NSBackgroundColor" ref="987104074"/>
 																		<object class="NSColor" key="NSTextColor">
@@ -2156,6 +2177,10 @@
 					<object class="IBObjectRecord">
 						<int key="objectID">100110</int>
 						<reference key="object" ref="403455259"/>
+						<object class="NSMutableArray" key="children">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<reference ref="168239281"/>
+						</object>
 						<reference key="parent" ref="45692641"/>
 					</object>
 					<object class="IBObjectRecord">
@@ -2472,6 +2497,11 @@
 						<reference key="object" ref="614430428"/>
 						<reference key="parent" ref="259929708"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">100335</int>
+						<reference key="object" ref="168239281"/>
+						<reference key="parent" ref="403455259"/>
+					</object>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="flattenedProperties">
@@ -2559,6 +2589,8 @@
 					<string>100235.IBPluginDependency</string>
 					<string>100311.IBPluginDependency</string>
 					<string>100312.IBPluginDependency</string>
+					<string>100335.IBDateFormatterBehaviorMetadataKey</string>
+					<string>100335.IBPluginDependency</string>
 					<string>5.IBEditorWindowLastContentRect</string>
 					<string>5.IBPluginDependency</string>
 					<string>5.IBWindowTemplateEditedContentRect</string>
@@ -2652,6 +2684,8 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<integer value="0"/>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>{{35, 210}, {665, 377}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>{{35, 210}, {665, 377}}</string>
@@ -2679,7 +2713,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">100334</int>
+			<int key="maxID">100335</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -2909,6 +2943,14 @@
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBFrameworkSource</string>
 						<string key="minorKey">AppKit.framework/Headers/NSController.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">NSDateFormatter</string>
+					<string key="superclassName">NSFormatter</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBFrameworkSource</string>
+						<string key="minorKey">Foundation.framework/Headers/NSDateFormatter.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
