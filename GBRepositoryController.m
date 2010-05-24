@@ -282,7 +282,7 @@
 
 - (IBAction) stageRevertFile:(id)sender
 {
-  NSAlert *alert = [[[NSAlert alloc] init] autorelease];
+  NSAlert* alert = [[[NSAlert alloc] init] autorelease];
   [alert addButtonWithTitle:@"OK"];
   [alert addButtonWithTitle:@"Cancel"];
   [alert setMessageText:@"Revert selected files to last committed state?"];
@@ -312,7 +312,7 @@
 
 - (IBAction) stageDeleteFile:(id)sender
 {
-  NSAlert *alert = [[[NSAlert alloc] init] autorelease];
+  NSAlert* alert = [[[NSAlert alloc] init] autorelease];
   [alert addButtonWithTitle:@"OK"];
   [alert addButtonWithTitle:@"Cancel"];
   [alert setMessageText:@"Delete selected files?"];
