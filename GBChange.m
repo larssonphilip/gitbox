@@ -187,7 +187,8 @@
   task.currentDirectoryPath = self.repository.path;
   task.arguments = [NSArray arrayWithObjects:[leftURL path], [rightURL path], nil];
   // opendiff waits for FileMerge.app to exit, so we should kill it
-  task.terminateTimeout = 0.2;
+  task.terminateTimeout = 2.0;
+  task.avoidIndicator = YES;
   [self.repository.taskManager launchTask:task];
   
 }
