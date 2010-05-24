@@ -1,7 +1,7 @@
 
 Strategy for the first shippable version:
 
-- log: list of commits (last 5000 commits)
+- log: list of commits (last 500 commits)
 - log: list of unmerged commits from remote branch
 - log: highlight new commits (missing on remote branch) 
 - log: checkout a commit
