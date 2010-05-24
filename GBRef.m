@@ -89,14 +89,7 @@
 - (NSArray*) loadCommits
 {
   NSMutableArray* aCommits = [NSMutableArray array];
-//  
-//  GBTask* task = [[GBTask new] autorelease];
-//  task.arguments = [NSArray arrayWithObjects:@"rev-list", self.commitish, nil];
-//  [[self.repository launchTaskAndWait:task] showErrorIfNeeded];
-//  if (!task.isError)
-//  {
-//    NSLog(@"TODO: read and create commit objects");
-//  }
+  
   return aCommits;
 }
 
