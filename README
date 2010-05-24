@@ -29,6 +29,11 @@ Bugs:
 - OK button does not work in prompt because textfield value is updated through binding yet.
 - table row selection is ignored if was no selection for ArrayController. Should check NSTableView selectedRowIndexes?
 
+UI glitches:
+- disable menu item "commit" if commit button is disabled
+- disable push button and push menu item if remote branch has unmerged commits
+
+
 -----------------------------------
 To do now:
 
