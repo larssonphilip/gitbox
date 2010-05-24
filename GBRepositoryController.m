@@ -328,7 +328,9 @@
   - (BOOL) validateStageDeleteFile:(id)sender
   {
     // returns YES when non-empty and array has something to delete
-    return ![[self selectedChanges] allAreTrue:@selector(isDeletedFile)]; 
+    if ([[self selectedChanges] allAreTrue:@selector(isDeletedFile)]) return NO;
+    if ([[self selectedChanges] allAreTrue:@selector(staged)]) return NO;
+    return YES;
   }
 
   - (void) stageDeleteFileAlertDidEnd:(NSAlert*)alert returnCode:(NSInteger)returnCode contextInfo:(void*)contextInfo
