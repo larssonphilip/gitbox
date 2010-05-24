@@ -1059,7 +1059,7 @@
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<object class="NSMenuItem" id="227924632">
 						<reference key="NSMenu" ref="192478086"/>
-						<string key="NSTitle">Show Difference</string>
+						<string key="NSTitle">Show Changes</string>
 						<string key="NSKeyEquiv"/>
 						<int key="NSMnemonicLoc">2147483647</int>
 						<reference key="NSOnImage" ref="1054028841"/>
@@ -1067,7 +1067,7 @@
 					</object>
 					<object class="NSMenuItem" id="477144126">
 						<reference key="NSMenu" ref="192478086"/>
-						<string key="NSTitle">Reveal In Finder</string>
+						<string key="NSTitle">Show In Finder</string>
 						<string key="NSKeyEquiv"/>
 						<int key="NSMnemonicLoc">2147483647</int>
 						<reference key="NSOnImage" ref="1054028841"/>
@@ -1111,7 +1111,7 @@
 					</object>
 					<object class="NSMenuItem" id="318777977">
 						<reference key="NSMenu" ref="192478086"/>
-						<string key="NSTitle">Revert File...</string>
+						<string key="NSTitle">Revert...</string>
 						<string key="NSKeyEquiv"/>
 						<int key="NSMnemonicLoc">2147483647</int>
 						<reference key="NSOnImage" ref="1054028841"/>
@@ -1119,7 +1119,7 @@
 					</object>
 					<object class="NSMenuItem" id="913746912">
 						<reference key="NSMenu" ref="192478086"/>
-						<string key="NSTitle">Delete File...</string>
+						<string key="NSTitle">Delete...</string>
 						<string key="NSKeyEquiv"/>
 						<int key="NSMnemonicLoc">2147483647</int>
 						<reference key="NSOnImage" ref="1054028841"/>
@@ -2561,7 +2561,7 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{965, 653}, {162, 143}}</string>
+					<string>{{965, 0}, {152, 143}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
