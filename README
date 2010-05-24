@@ -17,7 +17,7 @@ Bugs:
 - OK button does not work in prompt because textfield value is updated through binding yet.
 - table row selection is ignored if was no selection for ArrayController. Should check NSTableView selectedRowIndexes?
 - when opened git.git repo spinner spins forever
-- git diff-tree returns top-level folders instead of full paths
++ git diff-tree returns top-level folders instead of full paths (use -r)
 - historical diff for Added file shows diff beween current state (left) and initial state (right)
 
 

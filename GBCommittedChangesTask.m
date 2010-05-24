@@ -12,7 +12,7 @@
 
 - (NSArray*) arguments
 {
-  return [NSArray arrayWithObjects:@"diff-tree", self.commit.commitId, @"--no-commit-id", nil];
+  return [NSArray arrayWithObjects:@"diff-tree", self.commit.commitId, @"--no-commit-id", @"-r", nil];
 }
 
 - (BOOL) avoidIndicator
