@@ -185,9 +185,9 @@ NSString* OATaskNotification = @"OATaskNotification";
 
 - (OATask*) showError
 {
-  [NSAlert message: [NSString stringWithFormat:@"Failed %@ [%d]", 
-                     [self.arguments componentsJoinedByString:@" "], self.terminationStatus]
-       description:[self.output UTF8String]];
+  [NSAlert message: [NSString stringWithFormat:@"Command failed: %@", 
+                     [self.arguments componentsJoinedByString:@" "]]
+       description:[[self.output UTF8String] stringByAppendingFormat:@"\nCode: %d", self.terminationStatus]];
   return self;
 }
 
