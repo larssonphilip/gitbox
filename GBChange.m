@@ -57,7 +57,12 @@
 - (BOOL) isEqual:(GBChange*)other
 {
   if (!other) return NO;
-  return ([self.oldRevision isEqual:other.oldRevision] && [self.newRevision isEqual:other.newRevision]);
+  return ([self.oldRevision isEqualToString:other.oldRevision] && 
+          [self.newRevision isEqualToString:other.newRevision] &&
+          [self.statusCode isEqualToString:other.statusCode] &&
+          ([self.srcURL isEqual:other.srcURL] || (!srcURL && other.srcURL)) &&
+          ([self.dstURL isEqual:other.dstURL] || (!dstURL && other.dstURL)) &&
+          staged == other.staged);
 }
 
 - (NSString*) status

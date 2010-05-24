@@ -31,6 +31,4 @@
 - (NSArray*) allChanges;
 - (NSArray*) loadChanges;
 
-- (NSArray*) changesFromDiffOutput:(NSData*) data;
-
 @end

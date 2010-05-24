@@ -9,6 +9,7 @@
 
 - (void) updateChangesForCommit:(GBCommit*)commit
 {
+  // this little delay helps to group several status tasks in a single UI update to avoid flickering
   [NSObject cancelPreviousPerformRequestsWithTarget:commit selector:@selector(updateChanges) object:nil];
   [commit performSelector:@selector(updateChanges) withObject:nil afterDelay:0.1];
 }
