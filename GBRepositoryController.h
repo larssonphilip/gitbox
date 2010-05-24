@@ -69,11 +69,11 @@
 - (IBAction) stageDeleteFile:(id)sender;
 
 
-
 #pragma mark View Actions
 
 - (IBAction) toggleSplitViewOrientation:(id)sender;
 - (IBAction) editRepositories:(id)sender;
+- (IBAction) openInTerminal:(id)sender;
 
 
 #pragma mark Private Helpers

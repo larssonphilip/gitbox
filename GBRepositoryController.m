@@ -381,6 +381,14 @@
     [self endSheetForController:remotesController];
   }
 
+- (IBAction) openInTerminal:(id)sender
+{ 
+  NSString* s = [NSString stringWithFormat:
+                 @"tell application \"Terminal\" to do script \"cd %@\"", self.repository.path];
+  
+  NSAppleScript* as = [[[NSAppleScript alloc] initWithSource: s] autorelease];
+  [as executeAndReturnError:nil];
+}
 
 
 
