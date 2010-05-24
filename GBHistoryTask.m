@@ -200,7 +200,7 @@ authorDate 2010-05-01 20:23:10 -0700
     }
     
     commit.message = [rawBodyLines componentsJoinedByString:@"\n"];
-    
+    commit.repository = self.repository;
     [list addObject:commit];
     
     [pool drain];

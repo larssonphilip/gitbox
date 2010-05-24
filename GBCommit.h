@@ -42,4 +42,6 @@
 - (NSArray*) allChanges;
 - (NSArray*) loadChanges;
 
+- (void) asyncTaskGotChanges:(NSArray*)theChanges;
+
 @end

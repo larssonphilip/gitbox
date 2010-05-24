@@ -1,4 +1,5 @@
 #import "GBModels.h"
+#import "GBCommittedChangesTask.h"
 
 #import "NSData+OADataHelpers.h"
 #import "NSString+OAGitHelpers.h"
@@ -123,13 +124,20 @@
 
 - (NSArray*) loadChanges
 {
-  NSLog(@"TODO: load changes asynchronously like in GBStage");
+  GBCommittedChangesTask* task = [GBCommittedChangesTask task];
+  task.commit = self;
+  [self.repository launchTask:task];
   return [self allChanges];
 }
 
 - (void) resetChanges
 {
   self.changes = nil;
+}
+
+- (void) asyncTaskGotChanges:(NSArray*)theChanges
+{
+  self.changes = theChanges;
 }
 
 @end
