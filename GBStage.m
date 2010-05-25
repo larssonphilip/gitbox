@@ -1,5 +1,6 @@
 #import "GBModels.h"
 #import "GBTask.h"
+#import "GBRefreshIndexTask.h"
 #import "GBStagedChangesTask.h"
 #import "GBUnstagedChangesTask.h"
 #import "GBUntrackedChangesTask.h"
@@ -47,6 +48,7 @@
 - (NSArray*) loadChanges
 {
   self.hasStagedChanges = NO;
+  [self.repository launchTaskAndWait:[GBRefreshIndexTask task]];
   [self.repository launchTask:[GBStagedChangesTask task]];
   [self.repository launchTask:[GBUnstagedChangesTask task]];
   [self.repository launchTask:[GBUntrackedChangesTask task]];
