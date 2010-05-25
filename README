@@ -47,6 +47,9 @@ UI goodies:
 - log: mark as read/unread + automatic mark as read
 - stash list: as a local branch menu item?
 - individual chunks commit
+- remember prompt window size
+- compare image files in an double-pane image viewer
+- compare office files using some office app
 
 
 To do next:
