@@ -29,6 +29,8 @@
 		2038F76D11A04A290087CE37 /* NSString+OAGitHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 2038F76C11A04A290087CE37 /* NSString+OAGitHelpers.m */; };
 		2057EF0E11A9B00F009EDF2F /* GBRemoteBranchesTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 2057EF0D11A9B00F009EDF2F /* GBRemoteBranchesTask.m */; };
 		2057EF6411ABDCCE009EDF2F /* GBRefreshIndexTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 2057EF6311ABDCCE009EDF2F /* GBRefreshIndexTask.m */; };
+		2057EF7611ABE5B5009EDF2F /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2057EF7511ABE5B5009EDF2F /* Sparkle.framework */; };
+		2057EF8E11ABE656009EDF2F /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 2057EF7511ABE5B5009EDF2F /* Sparkle.framework */; };
 		2058FA4811982F5100FB018D /* GBRemotesController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2058FA4711982F5100FB018D /* GBRemotesController.xib */; };
 		2059792211A877A500E11A56 /* GBExtractFileTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 2059792111A877A500E11A56 /* GBExtractFileTask.m */; };
 		2059E6D111AACB5C00E4CF0B /* GBHistoryTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 2059E6D011AACB5C00E4CF0B /* GBHistoryTask.m */; };
@@ -50,6 +52,19 @@
 		8D15AC320486D014006FF6A4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A37F4B0FDCFA73011CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D15AC340486D014006FF6A4 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		2057EF8D11ABE63F009EDF2F /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				2057EF8E11ABE656009EDF2F /* Sparkle.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		089C1660FE840EACC02AAC07 /* InfoPlist.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = InfoPlist.strings; sourceTree = "<group>"; };
@@ -95,6 +110,7 @@
 		2057EF0D11A9B00F009EDF2F /* GBRemoteBranchesTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBRemoteBranchesTask.m; sourceTree = "<group>"; };
 		2057EF6211ABDCCE009EDF2F /* GBRefreshIndexTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBRefreshIndexTask.h; sourceTree = "<group>"; };
 		2057EF6311ABDCCE009EDF2F /* GBRefreshIndexTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBRefreshIndexTask.m; sourceTree = "<group>"; };
+		2057EF7511ABE5B5009EDF2F /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Sparkle.framework; sourceTree = "<group>"; };
 		2058FA4711982F5100FB018D /* GBRemotesController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBRemotesController.xib; sourceTree = "<group>"; };
 		2059792011A877A500E11A56 /* GBExtractFileTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBExtractFileTask.h; sourceTree = "<group>"; };
 		2059792111A877A500E11A56 /* GBExtractFileTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBExtractFileTask.m; sourceTree = "<group>"; };
@@ -143,6 +159,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8D15AC340486D014006FF6A4 /* Cocoa.framework in Frameworks */,
+				2057EF7611ABE5B5009EDF2F /* Sparkle.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -152,6 +169,7 @@
 		1058C7A6FEA54F5311CA2CBB /* Linked Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2057EF7511ABE5B5009EDF2F /* Sparkle.framework */,
 				1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */,
 			);
 			name = "Linked Frameworks";
@@ -337,6 +355,7 @@
 				8D15AC2B0486D014006FF6A4 /* Resources */,
 				8D15AC300486D014006FF6A4 /* Sources */,
 				8D15AC330486D014006FF6A4 /* Frameworks */,
+				2057EF8D11ABE63F009EDF2F /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -443,6 +462,10 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_MODEL_TUNING = G5;
@@ -460,6 +483,10 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = prefix.pch;
