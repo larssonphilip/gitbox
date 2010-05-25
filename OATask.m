@@ -248,6 +248,10 @@ NSString* OATaskNotification = @"OATaskNotification";
   if (!isReadingInBackground)
   {
     isReadingInBackground = YES;
+    [NSObject cancelPreviousPerformRequestsWithTarget:self
+                                             selector:@selector(periodicStatusUpdate)
+                                               object:nil];
+    
     self.output = [NSMutableData data];
     // Here we register as an observer of the NSFileHandleReadCompletionNotification, which lets
     // us know when there is data waiting for us to grab it in the task's file handle (the pipe
@@ -274,6 +278,10 @@ NSString* OATaskNotification = @"OATaskNotification";
   {
     [(NSMutableData*)self.output appendData:data];
   }
+  else
+  {
+    [self didFinishReceivingData];
+  }
   
   // we need to schedule the file handle go read more data in the background again.
   [[aNotification object] readInBackgroundAndNotify];  
@@ -287,7 +295,7 @@ NSString* OATaskNotification = @"OATaskNotification";
 
 - (OATask*) subscribe:(id)observer selector:(SEL) selector
 {
-  [[NSNotificationCenter defaultCenter] addObserver:observer 
+  [[NSNotificationCenter defaultCenter] addObserver:observer
                                            selector:selector
                                                name:OATaskNotification
                                              object:self];
@@ -296,7 +304,7 @@ NSString* OATaskNotification = @"OATaskNotification";
 
 - (OATask*) unsubscribe:(id)observer
 {
-  [[NSNotificationCenter defaultCenter] removeObserver:observer 
+  [[NSNotificationCenter defaultCenter] removeObserver:observer
                                                   name:OATaskNotification 
                                                 object:self];
   return self;
@@ -313,6 +321,11 @@ NSString* OATaskNotification = @"OATaskNotification";
 
 - (void) periodicStatusUpdate
 {
+  if (isReadingInBackground)
+  {
+    NSLog(@"ERROR: periodicStatusUpdate should have not been called when isReadingInBackground");
+  }
+  
   if ([self.nstask isRunning])
   {
     if (terminateTimeout > 0.0) // timeout was set
@@ -349,6 +362,30 @@ NSString* OATaskNotification = @"OATaskNotification";
     [[NSNotificationQueue defaultQueue] enqueueNotification:notification 
                                                postingStyle:NSPostNow];
   }
+}
+
+- (void) didFinishReceivingData
+{
+  if (isReadingInBackground)
+  {
+    [[NSNotificationCenter defaultCenter] removeObserver:self 
+                                                    name:NSFileHandleReadCompletionNotification
+                                                  object:self.fileHandleForReading];
+    [self.nstask terminate];
+    NSData *data;
+    while ((data = [self.fileHandleForReading availableData]) && [data length] > 0)
+    {
+      [(NSMutableData*)self.output appendData:data];
+    }
+  }
+  [self didFinish];
+  NSNotification* notification = 
+  [NSNotification notificationWithName:OATaskNotification 
+                                object:self];
+  // NSPostNow because NSPostASAP causes properties to be updated with a delay and bindings are updated in a strange fashion
+  // See commit 1c2d52b99c1ccf82e3540be10a3e1f0e3e054065 which fixes strange things with activity indicator.
+  [[NSNotificationQueue defaultQueue] enqueueNotification:notification 
+                                             postingStyle:NSPostNow];  
 }
 
 

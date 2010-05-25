@@ -85,11 +85,17 @@ authorDate 2010-05-01 20:23:10 -0700
 - (NSArray*) commitsFromRawFormatData:(NSData*)data
 {
 
-#define HistoryScanError(msg) {[pool drain]; NSLog(@"ERROR: GBHistoryTask parse error: %@", msg); return list;}
+#define HistoryScanError(msg) { \
+  [pool drain]; \
+  NSLog(@"ERROR: GBHistoryTask parse error: %@", msg); \
+  NSLog(@"INPUT: %@", stringData); \
+  return list; \
+}
   
   NSMutableArray* list = [NSMutableArray arrayWithCapacity:self.limit];
   
-  NSArray* lines = [[data UTF8String] componentsSeparatedByString:@"\n"];
+  NSString* stringData = [data UTF8String];
+  NSArray* lines = [stringData componentsSeparatedByString:@"\n"];
   
   NSUInteger lineIndex = 0;
   NSString* line = nil;

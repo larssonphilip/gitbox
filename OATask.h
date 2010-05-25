@@ -68,6 +68,7 @@ extern NSString* OATaskNotification;
 #pragma mark Private
 
 - (void) periodicStatusUpdate;
+- (void) didFinishReceivingData;
 - (void) didFinish;
 
 @end
