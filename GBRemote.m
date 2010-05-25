@@ -99,7 +99,7 @@
   GBRemoteBranchesTask* task = [GBRemoteBranchesTask task];
   task.remote = self;
   // task will set later correct branches, but we can return our estimate
-  [self.repository launchTask:task]; 
+  [[self.repository launchTask:task] readInBackground]; 
   return [self guessedBranches];
 }
 
