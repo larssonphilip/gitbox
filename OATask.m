@@ -348,6 +348,12 @@ NSString* OATaskNotification = @"OATaskNotification";
     }
     [self performSelector:@selector(periodicStatusUpdate) withObject:nil afterDelay:self.pollingPeriod];
     self.pollingPeriod *= 1.5;
+    
+    if (self.pollingPeriod > 6.0)
+    {
+      self.pollingPeriod = 0.2;
+      NSLog(@"SLOW: OATask: %@ %@", self.launchPath, [self.arguments componentsJoinedByString:@" "]);
+    }
   }
   else
   {
