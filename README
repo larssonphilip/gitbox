@@ -111,7 +111,7 @@ Not to do:
 Useful commands:
 
 - list of SHA1 commit ids: git rev-list --format=raw --max-count=500 --skip=0 HEAD
-- changes within a commit: git diff-tree df586737bc78d556b1ee5cfc567bbdee74b627b8 --no-commit-id
+- changes within a commit: git diff-tree df586737bc78d556b1ee5cfc567bbdee74b627b8 -r -m --no-commit-id
 - changes on the stage: git diff-index --cached --ignore-submodules -z HEAD
 - changes on the working directory (not including staged): git diff-files --ignore-submodules -z
 - untracked files: git ls-files --other --exclude-standard -z

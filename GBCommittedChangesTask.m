@@ -12,7 +12,12 @@
 
 - (NSArray*) arguments
 {
-  return [NSArray arrayWithObjects:@"diff-tree", self.commit.commitId, @"--no-commit-id", @"-r", nil];
+  return [NSArray arrayWithObjects:@"diff-tree", self.commit.commitId, @"--no-commit-id", @"-r", @"-m", nil];
+}
+
+- (BOOL) shouldReadInBackground
+{
+  return YES;
 }
 
 - (BOOL) avoidIndicator
