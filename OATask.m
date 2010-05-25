@@ -14,6 +14,7 @@ NSString* OATaskNotification = @"OATaskNotification";
 @synthesize arguments;
 
 @synthesize avoidIndicator;
+@synthesize ignoreFailure;
 
 @synthesize pollingPeriod;
 @synthesize terminateTimeout;
@@ -206,7 +207,15 @@ NSString* OATaskNotification = @"OATaskNotification";
   // Subclasses may override it to do some data processing.
   if (self.terminationStatus != 0)
   {
-    NSLog(@"OATask failed: %@ %@ [%d]", self.launchPath, [self.arguments componentsJoinedByString:@" "], self.terminationStatus);
+    if (!self.ignoreFailure)
+    {
+      NSLog(@"OATask failed: %@ %@ [%d]", self.launchPath, [self.arguments componentsJoinedByString:@" "], self.terminationStatus);
+      NSString* stringOutput = [self.output UTF8String];
+      if (stringOutput)
+      {
+        NSLog(@"OUTPUT: %@", stringOutput);
+      }
+    }
   }
 }
 

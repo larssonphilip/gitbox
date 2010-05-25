@@ -9,6 +9,7 @@ extern NSString* OATaskNotification;
   NSArray* arguments;
   
   BOOL avoidIndicator;
+  BOOL ignoreFailure;
   
   NSTimeInterval pollingPeriod;
   NSTimeInterval terminateTimeout;
@@ -27,6 +28,7 @@ extern NSString* OATaskNotification;
 @property(retain) NSArray* arguments;
 
 @property(assign) BOOL avoidIndicator;
+@property(assign) BOOL ignoreFailure;
 
 @property(assign) NSTimeInterval pollingPeriod;
 @property(assign) NSTimeInterval terminateTimeout;
