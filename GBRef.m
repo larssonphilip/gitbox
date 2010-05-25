@@ -91,7 +91,7 @@
 {
   GBHistoryTask* task = [GBHistoryTask task];
   task.branch = self;
-  [[self.repository launchTask:task] readInBackground];
+  [self.repository launchTask:task];
 }
 
 - (void) asyncTaskGotCommits:(NSArray*)theCommits

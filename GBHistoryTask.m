@@ -33,6 +33,11 @@
           nil];
 }
 
+- (BOOL) shouldReadInBackground
+{
+  return YES;
+}
+
 - (void) didFinish
 {
   [super didFinish];

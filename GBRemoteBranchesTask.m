@@ -17,9 +17,19 @@
   return [NSArray arrayWithObjects:@"ls-remote", @"--tags", @"--heads", self.remote.alias, nil];
 }
 
+- (BOOL) shouldReadInBackground
+{
+  return YES;
+}
+
 - (void) didFinish
 {
   [super didFinish];
+  
+  if (self.terminationStatus != 0)
+  {
+    return;
+  }
   
   NSMutableArray* branches = [NSMutableArray array];
   NSMutableArray* tags     = [NSMutableArray array];

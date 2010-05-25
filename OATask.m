@@ -15,6 +15,7 @@ NSString* OATaskNotification = @"OATaskNotification";
 
 @synthesize avoidIndicator;
 @synthesize ignoreFailure;
+@synthesize shouldReadInBackground;
 
 @synthesize pollingPeriod;
 @synthesize terminateTimeout;
@@ -164,9 +165,18 @@ NSString* OATaskNotification = @"OATaskNotification";
 - (OATask*) launch
 {
   [self prepareTask];
+  
+  if (self.shouldReadInBackground)
+  {
+    [self readInBackground];
+  }
+  
   //NSLog(@"OATask launch:   %@ %@", self.launchPath, [self.arguments componentsJoinedByString:@" "]);
   [self.nstask launch];
-  [self performSelector:@selector(periodicStatusUpdate) withObject:nil afterDelay:pollingPeriod];
+  if (!isReadingInBackground)
+  {
+    [self performSelector:@selector(periodicStatusUpdate) withObject:nil afterDelay:pollingPeriod];
+  }
   return self;
 }
 

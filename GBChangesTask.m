@@ -6,6 +6,10 @@
 
 @implementation GBChangesTask
 
+- (BOOL) shouldReadInBackground
+{
+  return YES;
+}
 
 - (void) updateChangesForCommit:(GBCommit*)commit
 {
