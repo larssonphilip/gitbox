@@ -8,7 +8,7 @@ Strategy for the first shippable version:
 - repos: add
 - repos: edit
 - log: checkout a commit
-
+- include Sparkle for autoupdates
 
 Bugs:
 
@@ -22,12 +22,16 @@ Bugs:
 - historical diff for Added file shows diff beween current state (left) and initial state (right)
 - when fetching in background log shrinks (have no idea what happens)
 - "OATask failed: opendiff" - it is twice, is it because of terminating it?
+- local branch change does not refresh log
+- remote branch checkout does not update remote branch menu
+- switch context menu for historical commits
 
 
 UI glitches:
 
 - disable menu item "commit" if commit button is disabled
 - disable push button and push menu item if remote branch has unmerged commits
+- rename "current branch" into "local branch" menu
 
 
 UI goodies:
@@ -41,6 +45,8 @@ UI goodies:
 - remember chosen remote branch for the local branch in prefs
 - recently opened files
 - log: mark as read/unread + automatic mark as read
+- stash list: as a local branch menu item?
+- individual chunks commit
 
 
 To do next:
