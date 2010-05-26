@@ -46,7 +46,7 @@
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
 	<key>SUFeedURL</key>
-	<string>http://gitbox.github.com/updates.xml</string>
+	<string>http://gitbox.pierlis.com/updates.xml</string>
 	<key>SUPublicDSAKeyFile</key>
 	<string>sparkle_dsa_pub.pem</string>
 </dict>
