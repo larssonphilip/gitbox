@@ -94,6 +94,7 @@
 
 - (BOOL) application:(NSApplication*)theApplication openFile:(NSString*)path
 {
+  [[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:[NSURL fileURLWithPath:path]];
   if ([NSFileManager isWritableDirectoryAtPath:path])
   {
     if ([GBRepository isValidRepositoryAtPath:path])
