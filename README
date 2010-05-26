@@ -1,4 +1,11 @@
 
+0.2:
+
+- fixed: open recent
+- fixed: quitting if opendiff not found
+- fixed: 
+
+
 Strategy for the first shippable version:
 
 - log: list of unmerged commits from remote branch
@@ -8,9 +15,9 @@ Strategy for the first shippable version:
 - repos: add
 - repos: edit
 - log: checkout a commit
-- sparkle: create the keys http://www.entropy.ch/blog/Developer/2008/09/22/Sparkle-Appcast-Automation-in-Xcode.html
-- sparkle: create a binary with signature
-- sparkle: deploy the binary and the appcast to a pierlis server
++ sparkle: create the keys http://www.entropy.ch/blog/Developer/2008/09/22/Sparkle-Appcast-Automation-in-Xcode.html
++ sparkle: create a binary with signature
++ sparkle: deploy the binary and the appcast to a pierlis server
 
 
 Bugs:
