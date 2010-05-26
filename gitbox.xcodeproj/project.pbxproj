@@ -47,6 +47,9 @@
 		2057EF7611ABE5B5009EDF2F /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2057EF7511ABE5B5009EDF2F /* Sparkle.framework */; };
 		2057EF8E11ABE656009EDF2F /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 2057EF7511ABE5B5009EDF2F /* Sparkle.framework */; };
 		2057F0D711ACF075009EDF2F /* sparkle_dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = 2057F0D611ACF075009EDF2F /* sparkle_dsa_pub.pem */; };
+		2057F10511ACF4C0009EDF2F /* GBActivityController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2057F10411ACF4C0009EDF2F /* GBActivityController.xib */; };
+		2057F11011ACF751009EDF2F /* GBActivityController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2057F10F11ACF751009EDF2F /* GBActivityController.m */; };
+		2057F11611ACFA60009EDF2F /* OAActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 2057F11511ACFA60009EDF2F /* OAActivity.m */; };
 		2058FA4811982F5100FB018D /* GBRemotesController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2058FA4711982F5100FB018D /* GBRemotesController.xib */; };
 		2059792211A877A500E11A56 /* GBExtractFileTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 2059792111A877A500E11A56 /* GBExtractFileTask.m */; };
 		2059E6D111AACB5C00E4CF0B /* GBHistoryTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 2059E6D011AACB5C00E4CF0B /* GBHistoryTask.m */; };
@@ -138,6 +141,11 @@
 		2057EF6311ABDCCE009EDF2F /* GBRefreshIndexTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBRefreshIndexTask.m; sourceTree = "<group>"; };
 		2057EF7511ABE5B5009EDF2F /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Sparkle.framework; sourceTree = "<group>"; };
 		2057F0D611ACF075009EDF2F /* sparkle_dsa_pub.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = sparkle_dsa_pub.pem; sourceTree = "<group>"; };
+		2057F10411ACF4C0009EDF2F /* GBActivityController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBActivityController.xib; sourceTree = "<group>"; };
+		2057F10E11ACF751009EDF2F /* GBActivityController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBActivityController.h; sourceTree = "<group>"; };
+		2057F10F11ACF751009EDF2F /* GBActivityController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBActivityController.m; sourceTree = "<group>"; };
+		2057F11411ACFA60009EDF2F /* OAActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAActivity.h; sourceTree = "<group>"; };
+		2057F11511ACFA60009EDF2F /* OAActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAActivity.m; sourceTree = "<group>"; };
 		2058FA4711982F5100FB018D /* GBRemotesController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBRemotesController.xib; sourceTree = "<group>"; };
 		2059792011A877A500E11A56 /* GBExtractFileTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBExtractFileTask.h; sourceTree = "<group>"; };
 		2059792111A877A500E11A56 /* GBExtractFileTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBExtractFileTask.m; sourceTree = "<group>"; };
@@ -251,6 +259,8 @@
 				2038F5B9119879FA0087CE37 /* GBRemotesController.m */,
 				20B8B83B11A4A776006D6442 /* GBPromptController.h */,
 				20B8B83C11A4A776006D6442 /* GBPromptController.m */,
+				2057F10E11ACF751009EDF2F /* GBActivityController.h */,
+				2057F10F11ACF751009EDF2F /* GBActivityController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -262,6 +272,8 @@
 				206A07BD11A33519003BB9E3 /* OATask.m */,
 				20B8B64C11A444B6006D6442 /* OATaskManager.h */,
 				20B8B64D11A444B6006D6442 /* OATaskManager.m */,
+				2057F11411ACFA60009EDF2F /* OAActivity.h */,
+				2057F11511ACFA60009EDF2F /* OAActivity.m */,
 				2038F6C311A030F70087CE37 /* GBTask.h */,
 				2038F6C411A030F70087CE37 /* GBTask.m */,
 				20B8B70A11A489F1006D6442 /* GBChangesTask.h */,
@@ -359,6 +371,7 @@
 				1DDD58290DA1D0D100B32029 /* GBRepositoryController.xib */,
 				2058FA4711982F5100FB018D /* GBRemotesController.xib */,
 				20B8B83811A4A72A006D6442 /* GBPromptController.xib */,
+				2057F10411ACF4C0009EDF2F /* GBActivityController.xib */,
 				2057F0D611ACF075009EDF2F /* sparkle_dsa_pub.pem */,
 			);
 			name = Resources;
@@ -426,6 +439,7 @@
 				20B8B83911A4A72A006D6442 /* GBPromptController.xib in Resources */,
 				2010732F11A7E9C300EFDE56 /* app.icns in Resources */,
 				2057F0D711ACF075009EDF2F /* sparkle_dsa_pub.pem in Resources */,
+				2057F10511ACF4C0009EDF2F /* GBActivityController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -486,6 +500,8 @@
 				2059E6D111AACB5C00E4CF0B /* GBHistoryTask.m in Sources */,
 				2059E82811AB3C2C00E4CF0B /* GBCommittedChangesTask.m in Sources */,
 				2057EF6411ABDCCE009EDF2F /* GBRefreshIndexTask.m in Sources */,
+				2057F11011ACF751009EDF2F /* GBActivityController.m in Sources */,
+				2057F11611ACFA60009EDF2F /* OAActivity.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

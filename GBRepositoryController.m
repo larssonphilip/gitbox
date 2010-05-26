@@ -441,9 +441,11 @@
 #pragma mark NSWindowController
 
 
-- (void)windowDidLoad
+- (void) windowDidLoad
 {
+  [super windowDidLoad];
   [self.window setTitleWithRepresentedFilename:self.repository.path];
+  [self.window setFrameAutosaveName:[NSString stringWithFormat:@"%@[path=%@].window.frame", [self class], self.repository.path]];
   [self updateCurrentBranchMenus];
   [self updateRemoteBranchMenus];
   [self.repository reloadCommits];

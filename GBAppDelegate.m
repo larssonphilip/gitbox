@@ -1,5 +1,7 @@
 #import "GBAppDelegate.h"
 #import "GBRepositoryController.h"
+#import "GBActivityController.h"
+
 #import "GBRepository.h"
 
 #import "NSFileManager+OAFileManagerHelpers.h"
@@ -59,6 +61,11 @@
   {
     [self application:NSApp openFile:[[[openPanel URLs] objectAtIndex:0] path]];
   }
+}
+
+- (IBAction) showActivityWindow:(id)sender
+{
+  [[GBActivityController sharedActivityController] showWindow:sender];
 }
 
 

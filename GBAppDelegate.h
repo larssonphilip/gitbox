@@ -3,11 +3,11 @@
                                    NSOpenSavePanelDelegate,
                                    GBRepositoryControllerDelegate>
 {
-  NSMutableSet* windowControllers; 
 }
 
 @property(nonatomic,retain) NSMutableSet* windowControllers;
 
 - (IBAction) openDocument:(id)sender;
+- (IBAction) showActivityWindow:(id)sender;
 
 @end
