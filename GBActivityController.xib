@@ -12,7 +12,7 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="13"/>
+			<integer value="1"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -54,8 +54,8 @@
 					<bool key="NSToolbarShowsBaselineSeparator">YES</bool>
 					<bool key="NSToolbarAllowsUserCustomization">YES</bool>
 					<bool key="NSToolbarAutosavesConfiguration">YES</bool>
-					<int key="NSToolbarDisplayMode">1</int>
-					<int key="NSToolbarSizeMode">1</int>
+					<int key="NSToolbarDisplayMode">2</int>
+					<int key="NSToolbarSizeMode">2</int>
 					<object class="NSMutableDictionary" key="NSToolbarIBIdentifiedItems">
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
@@ -300,7 +300,7 @@
 														<object class="NSTableView" id="201396831">
 															<reference key="NSNextResponder" ref="859112195"/>
 															<int key="NSvFlags">274</int>
-															<string key="NSFrameSize">{709, 374}</string>
+															<string key="NSFrameSize">{709, 535}</string>
 															<reference key="NSSuperview" ref="859112195"/>
 															<bool key="NSEnabled">YES</bool>
 															<object class="NSTableHeaderView" key="NSHeaderView" id="903865084">
@@ -441,7 +441,7 @@
 															<int key="NSTableViewDraggingDestinationStyle">0</int>
 														</object>
 													</object>
-													<string key="NSFrame">{{0, 17}, {709, 374}}</string>
+													<string key="NSFrame">{{0, 17}, {709, 535}}</string>
 													<reference key="NSSuperview" ref="512457967"/>
 													<reference key="NSNextKeyView" ref="201396831"/>
 													<reference key="NSDocView" ref="201396831"/>
@@ -484,7 +484,7 @@
 												</object>
 												<reference ref="1028930352"/>
 											</object>
-											<string key="NSFrameSize">{709, 391}</string>
+											<string key="NSFrameSize">{709, 552}</string>
 											<reference key="NSSuperview" ref="742906741"/>
 											<reference key="NSNextKeyView" ref="859112195"/>
 											<int key="NSsFlags">560</int>
@@ -496,7 +496,7 @@
 											<bytes key="NSScrollAmts">QSAAAEEgAABBkAAAQZAAAA</bytes>
 										</object>
 									</object>
-									<string key="NSFrameSize">{709, 391}</string>
+									<string key="NSFrameSize">{709, 552}</string>
 									<reference key="NSSuperview" ref="636917744"/>
 									<string key="NSClassName">NSView</string>
 								</object>
@@ -518,7 +518,7 @@
 														<object class="NSTextView" id="471799610">
 															<reference key="NSNextResponder" ref="335595773"/>
 															<int key="NSvFlags">2322</int>
-															<string key="NSFrameSize">{694, 14}</string>
+															<string key="NSFrameSize">{694, 0}</string>
 															<reference key="NSSuperview" ref="335595773"/>
 															<object class="NSTextContainer" key="NSTextContainer" id="714321234">
 																<object class="NSLayoutManager" key="NSLayoutManager">
@@ -593,11 +593,11 @@
 															</object>
 															<int key="NSTVFlags">6</int>
 															<string key="NSMaxSize">{694, 1e+07}</string>
-															<string key="NSMinize">{223, 10}</string>
+															<string key="NSMinize">{223, 0}</string>
 															<nil key="NSDelegate"/>
 														</object>
 													</object>
-													<string key="NSFrameSize">{694, 161}</string>
+													<string key="NSFrameSize">{694, 0}</string>
 													<reference key="NSSuperview" ref="882026355"/>
 													<reference key="NSNextKeyView" ref="471799610"/>
 													<reference key="NSDocView" ref="471799610"/>
@@ -611,7 +611,7 @@
 												<object class="NSScroller" id="219145114">
 													<reference key="NSNextResponder" ref="882026355"/>
 													<int key="NSvFlags">256</int>
-													<string key="NSFrame">{{694, 0}, {15, 146}}</string>
+													<string key="NSFrame">{{694, 0}, {15, 0}}</string>
 													<reference key="NSSuperview" ref="882026355"/>
 													<reference key="NSTarget" ref="882026355"/>
 													<string key="NSAction">_doScroller:</string>
@@ -629,7 +629,7 @@
 													<double key="NSPercent">0.94565218687057495</double>
 												</object>
 											</object>
-											<string key="NSFrameSize">{709, 161}</string>
+											<string key="NSFrameSize">{709, 0}</string>
 											<reference key="NSSuperview" ref="280056472"/>
 											<reference key="NSNextKeyView" ref="335595773"/>
 											<int key="NSsFlags">16</int>
@@ -638,7 +638,7 @@
 											<reference key="NSContentView" ref="335595773"/>
 										</object>
 									</object>
-									<string key="NSFrame">{{0, 401}, {709, 161}}</string>
+									<string key="NSFrame">{{0, 562}, {709, 0}}</string>
 									<reference key="NSSuperview" ref="636917744"/>
 									<string key="NSClassName">NSView</string>
 								</object>
@@ -646,13 +646,14 @@
 							<string key="NSFrameSize">{709, 562}</string>
 							<reference key="NSSuperview" ref="1006"/>
 							<int key="NSDividerStyle">3</int>
+							<string key="NSAutosaveName">activitySplitter</string>
 						</object>
 					</object>
 					<string key="NSFrameSize">{709, 562}</string>
 					<reference key="NSSuperview"/>
 				</object>
 				<string key="NSScreenRect">{{0, 0}, {2560, 1418}}</string>
-				<string key="NSMinSize">{100, 170}</string>
+				<string key="NSMinSize">{100, 151}</string>
 				<string key="NSMaxSize">{1.79769e+308, 1.79769e+308}</string>
 				<string key="NSFrameAutosaveName">GBActivityController.window.frame</string>
 			</object>
@@ -1062,9 +1063,9 @@
 				</object>
 				<object class="NSMutableArray" key="dict.values">
 					<bool key="EncodedWithXMLCoder">YES</bool>
-					<string>{{1336, 686}, {709, 562}}</string>
+					<string>{{69, 64}, {709, 562}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{1336, 686}, {709, 562}}</string>
+					<string>{{69, 64}, {709, 562}}</string>
 					<boolean value="YES"/>
 					<string>{196, 240}</string>
 					<string>{{202, 428}, {480, 270}}</string>
