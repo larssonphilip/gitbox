@@ -50,7 +50,6 @@ NSString* OATaskNotification = @"OATaskNotification";
     {
       [NSAlert message:[NSString stringWithFormat:@"Couldn't find %@ executable", exec] 
            description:[NSString stringWithFormat:@"Please install %@ in a well-known location (such as /usr/local/bin).", exec]];
-      [NSApp terminate:self];
     }
   }
   return [[launchPath retain] autorelease];
