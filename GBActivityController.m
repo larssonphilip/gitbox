@@ -8,6 +8,7 @@ static GBActivityController* sharedGBActivityController;
 
 @synthesize activities;
 @synthesize outputTextView;
+@synthesize outputTextField;
 @synthesize arrayController;
 
 
@@ -28,6 +29,7 @@ static GBActivityController* sharedGBActivityController;
   [NSObject cancelPreviousPerformRequestsWithTarget:self];
   self.activities = nil;
   self.outputTextView = nil;
+  self.outputTextField = nil;
   self.arrayController = nil;
   [super dealloc];
 }
@@ -46,17 +48,22 @@ static GBActivityController* sharedGBActivityController;
 #pragma mark Update
 
 
-- (void) periodicOutputSync
+- (void) syncActivityOutput
 {
-  [self performSelector:@selector(periodicOutputSync) withObject:nil afterDelay:0.5];
+  //[self performSelector:@selector(periodicOutputSync) withObject:nil afterDelay:0.5];
   OAActivity* activity = nil;
   if ([[self.arrayController selectedObjects] count] == 1)
   {
     activity = [[self.arrayController selectedObjects] objectAtIndex:0];
   }
-  NSString* text = activity.textOutput;
-  [self.outputTextView insertText:text];
+  if (activity)
+  {
+    NSString* text = activity.textOutput;
+    NSLog(@"OAActivityController: syncing %d bytes of text", [text length]);
+    [self.outputTextField setStringValue:text];    
+  }
 }
+
 
 - (void) periodicCleanUp
 {
@@ -94,13 +101,21 @@ static GBActivityController* sharedGBActivityController;
 
 - (void)windowDidBecomeKey:(NSNotification *)notification
 {
-  [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(periodicOutputSync) object:nil];
-  [self periodicOutputSync];
+  [self syncActivityOutput];
 }
 
 - (void)windowDidResignKey:(NSNotification *)notification
 {
-  [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(periodicOutputSync) object:nil];
 }
+
+
+#pragma mark NSTableViewDelegate
+
+
+- (void)tableViewSelectionDidChange:(NSNotification *)aNotification
+{
+  [self syncActivityOutput];
+}
+
 
 @end

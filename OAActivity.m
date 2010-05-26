@@ -6,6 +6,7 @@
 @implementation OAActivity
 
 @synthesize task;
+@synthesize isRunning;
 
 @synthesize path;
 @synthesize command;

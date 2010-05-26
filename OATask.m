@@ -367,6 +367,8 @@ NSString* OATaskNotification = @"OATaskNotification";
     }
   }
   
+  self.activity.isRunning = NO;
+  
   if ([self terminationStatus] == 0)
   {
     self.activity.status = @"Finished";
@@ -426,7 +428,8 @@ NSString* OATaskNotification = @"OATaskNotification";
     [environment setObject:@"YES" forKey:@"NSUnbufferedIO"];
     [self.nstask setEnvironment:environment];    
   }
-    
+  
+  self.activity.isRunning = YES;
   self.activity.status = @"Running";
   self.activity.task = self;
   self.activity.path = self.currentDirectoryPath;

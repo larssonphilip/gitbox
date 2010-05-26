@@ -6,6 +6,7 @@
 }
 
 @property(assign) OATask* task;
+@property(assign) BOOL isRunning;
 
 @property(retain) NSString* path;
 @property(retain) NSString* command;
