@@ -42,6 +42,7 @@
 		2038F6B711A02D550087CE37 /* GBStage.m in Sources */ = {isa = PBXBuildFile; fileRef = 2038F6B611A02D550087CE37 /* GBStage.m */; };
 		2038F6C511A030F70087CE37 /* GBTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 2038F6C411A030F70087CE37 /* GBTask.m */; };
 		2038F76D11A04A290087CE37 /* NSString+OAGitHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 2038F76C11A04A290087CE37 /* NSString+OAGitHelpers.m */; };
+		2057964211ADD3AA004715FE /* GBCommitCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2057964111ADD3AA004715FE /* GBCommitCell.m */; };
 		2057EF0E11A9B00F009EDF2F /* GBRemoteBranchesTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 2057EF0D11A9B00F009EDF2F /* GBRemoteBranchesTask.m */; };
 		2057EF6411ABDCCE009EDF2F /* GBRefreshIndexTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 2057EF6311ABDCCE009EDF2F /* GBRefreshIndexTask.m */; };
 		2057EF7611ABE5B5009EDF2F /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2057EF7511ABE5B5009EDF2F /* Sparkle.framework */; };
@@ -135,6 +136,8 @@
 		2038F6C411A030F70087CE37 /* GBTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBTask.m; sourceTree = "<group>"; };
 		2038F76B11A04A290087CE37 /* NSString+OAGitHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+OAGitHelpers.h"; sourceTree = "<group>"; };
 		2038F76C11A04A290087CE37 /* NSString+OAGitHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+OAGitHelpers.m"; sourceTree = "<group>"; };
+		2057964011ADD3AA004715FE /* GBCommitCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBCommitCell.h; sourceTree = "<group>"; };
+		2057964111ADD3AA004715FE /* GBCommitCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBCommitCell.m; sourceTree = "<group>"; };
 		2057EF0C11A9B00F009EDF2F /* GBRemoteBranchesTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBRemoteBranchesTask.h; sourceTree = "<group>"; };
 		2057EF0D11A9B00F009EDF2F /* GBRemoteBranchesTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBRemoteBranchesTask.m; sourceTree = "<group>"; };
 		2057EF6211ABDCCE009EDF2F /* GBRefreshIndexTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBRefreshIndexTask.h; sourceTree = "<group>"; };
@@ -300,6 +303,15 @@
 			name = Tasks;
 			sourceTree = "<group>";
 		};
+		2057963E11ADD37F004715FE /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2057964011ADD3AA004715FE /* GBCommitCell.h */,
+				2057964111ADD3AA004715FE /* GBCommitCell.m */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
 		20B1620D11944B6900A709CF /* Libs */ = {
 			isa = PBXGroup;
 			children = (
@@ -342,9 +354,10 @@
 		2A37F4ABFDCFA73011CA2CEA /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				2038F30911952FB80087CE37 /* Controllers */,
 				2038F30811952FAE0087CE37 /* Models */,
 				2038F6C611A030FF0087CE37 /* Tasks */,
+				2038F30911952FB80087CE37 /* Controllers */,
+				2057963E11ADD37F004715FE /* Views */,
 				20B1620D11944B6900A709CF /* Libs */,
 			);
 			name = Classes;
@@ -502,6 +515,7 @@
 				2057EF6411ABDCCE009EDF2F /* GBRefreshIndexTask.m in Sources */,
 				2057F11011ACF751009EDF2F /* GBActivityController.m in Sources */,
 				2057F11611ACFA60009EDF2F /* OAActivity.m in Sources */,
+				2057964211ADD3AA004715FE /* GBCommitCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

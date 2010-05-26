@@ -4,6 +4,8 @@
 #import "GBRemotesController.h"
 #import "GBPromptController.h"
 
+#import "GBCommitCell.h"
+
 #import "NSArray+OAArrayHelpers.h"
 #import "NSString+OAStringHelpers.h"
 #import "NSMenu+OAMenuHelpers.h"
@@ -457,6 +459,9 @@
   [super windowDidLoad];
   [self.window setTitleWithRepresentedFilename:self.repository.path];
   [self.window setFrameAutosaveName:[NSString stringWithFormat:@"%@[path=%@].window.frame", [self class], self.repository.path]];
+  
+  //[[self.logTableView tableColumnWithIdentifier:@"main"] setDataCell:[[GBCommitCell new] autorelease]];
+  
   [self updateCurrentBranchMenus];
   [self updateRemoteBranchMenus];
   [self.repository reloadCommits];
@@ -529,6 +534,19 @@
   [self.stagingTableColumn setHidden:!flag];
 }
 
+- (NSCell*) tableView:(NSTableView*)aTableView 
+            dataCellForTableColumn:(NSTableColumn*)aTableColumn
+                  row:(NSInteger)row
+{
+  if (aTableView == self.logTableView)
+  {
+    GBCommit* commit = [self.repository.commits objectAtIndex:row];
+    GBCommitCell* cell = [[GBCommitCell new] autorelease];
+    cell.representedObject = commit;
+    return cell;
+  }
+  return nil;
+}
 
 
 
