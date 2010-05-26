@@ -2,8 +2,6 @@
 #import "OATask.h"
 #import "OAActivityIndicator.h"
 
-#import "OAActivity.h"
-#import "GBActivityController.h"
 #import "NSData+OADataHelpers.h"
 
 @implementation OATaskManager
@@ -61,8 +59,6 @@
 
 - (OATask*) launchTask:(OATask*)task
 {
-  task.activity = [[OAActivity new] autorelease];
-  [[GBActivityController sharedActivityController] addActivity:task.activity];
   [self.concurrentTasks addObject:task];
   if (!task.avoidIndicator) [self.activityIndicator push];
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(taskDidFinish:) name:OATaskNotification object:task];

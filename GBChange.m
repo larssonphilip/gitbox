@@ -194,7 +194,7 @@
   // opendiff waits for FileMerge.app to exit, so we should kill it
   task.terminateTimeout = 2.0;
   task.avoidIndicator = YES;
-  [self.repository.taskManager launchTask:task];
+  [task launch];
   
 }
 

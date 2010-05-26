@@ -8,7 +8,7 @@ static GBActivityController* sharedGBActivityController;
 
 @synthesize activities;
 @synthesize outputTextView;
-@synthesize outputTextField;
+@synthesize tableView;
 @synthesize arrayController;
 
 
@@ -29,7 +29,7 @@ static GBActivityController* sharedGBActivityController;
   [NSObject cancelPreviousPerformRequestsWithTarget:self];
   self.activities = nil;
   self.outputTextView = nil;
-  self.outputTextField = nil;
+  self.tableView = nil;
   self.arrayController = nil;
   [super dealloc];
 }
@@ -61,21 +61,20 @@ static GBActivityController* sharedGBActivityController;
     if (activity)
     {
       NSString* text = activity.textOutput;
-      NSLog(@"OAActivityController: syncing %d bytes of text", [text length]);
-      if ([text length] > 0)
+      //NSLog(@"OAActivityController: syncing %d bytes of text", [text length]);
+      if (text)
       {
         [self.outputTextView setString:text];
       }
       else
       {
-        [self.outputTextView setString:@""];
+        [self.outputTextView setString:@""]; // setting nil corrupts entire text system in a window
       }
       
-//      if (activity.isRunning)
-//      {
-//        [self performSelector:@selector(syncActivityOutput) 
-//                   withObject:nil afterDelay:0.5];
-//      }
+      if (activity.isRunning)
+      {
+        [self performSelector:@selector(syncActivityOutput) withObject:nil afterDelay:0.5];
+      }
     }    
   }
 }
@@ -92,12 +91,22 @@ static GBActivityController* sharedGBActivityController;
   if (self.arrayController)
   {
     [self.arrayController addObject:activity];
+    [self.arrayController setSelectionIndex:[[self.arrayController content] count] - 1];
+    [self syncActivityOutput];  
   }
   else // nib is not loaded yet
   {
     [self.activities addObject:activity];
   }
-
+  
+  if (self.tableView)
+  {
+    NSInteger numberOfRows = [self.tableView numberOfRows];
+    if (numberOfRows > 0)
+    {
+      [self.tableView scrollRowToVisible:numberOfRows - 1];
+    }
+  }
 }
 
 

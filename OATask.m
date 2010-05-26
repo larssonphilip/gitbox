@@ -2,6 +2,7 @@
 #import "OAActivity.h"
 #import "NSAlert+OAAlertHelpers.h"
 #import "NSData+OADataHelpers.h"
+#import "GBActivityController.h"
 
 NSString* OATaskNotification = @"OATaskNotification";
 
@@ -94,6 +95,15 @@ NSString* OATaskNotification = @"OATaskNotification";
   return [[output retain] autorelease];
 }
 
+- (OAActivity*) activity
+{
+  if (!activity)
+  {
+    self.activity = [[OAActivity new] autorelease];
+  }
+  return [[activity retain] autorelease];
+}
+
 - (void) dealloc
 {
   self.executableName = nil;
@@ -106,6 +116,7 @@ NSString* OATaskNotification = @"OATaskNotification";
   self.standardError = nil;
   self.activity.task = nil;
   self.activity = nil;
+  [NSObject cancelPreviousPerformRequestsWithTarget:self];
   [[NSNotificationCenter defaultCenter] removeObserver:self];
   [super dealloc];
 }
@@ -348,7 +359,11 @@ NSString* OATaskNotification = @"OATaskNotification";
     [self.nstask waitUntilExit];
   }
   
-  [self.output appendData:[[self fileHandleForReading] readDataToEndOfFile]];
+  NSFileHandle* pipeFileHandle = [self fileHandleForReading];
+  if (pipeFileHandle)
+  {
+    [self.output appendData:[pipeFileHandle readDataToEndOfFile]];
+  }
   
   //NSLog(@"OATask doFinish: %@ (got %d bytes)", [self command], [self.output length]);
   
@@ -440,6 +455,7 @@ NSString* OATaskNotification = @"OATaskNotification";
 
 - (id) launchAsynchronously
 {
+  [[GBActivityController sharedActivityController] addActivity:self.activity];
   [self beginAllCallbacks];
   //NSLog(@"ASYNC: %@", [self command]);
   [self.nstask launch];
@@ -453,13 +469,21 @@ NSString* OATaskNotification = @"OATaskNotification";
   [self.nstask launch];
   [self.nstask waitUntilExit];
   [self doFinish];
+  [[GBActivityController sharedActivityController] addActivity:self.activity];
   return self;
 }
 
 
 - (NSFileHandle*) fileHandleForReading
 {
-  return [[self.nstask standardOutput] fileHandleForReading];
+  if ([[self.nstask standardOutput] isKindOfClass:[NSPipe class]])
+  {
+    return [[self.nstask standardOutput] fileHandleForReading];
+  }
+  else
+  {
+    return nil;
+  }
 }
 
 
