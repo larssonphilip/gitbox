@@ -36,7 +36,8 @@ Bugs:
 - remote branch checkout does not update remote branch menu
 - switch context menu for historical commits
 - do not open another window for the same repo if already opened, just make it key window
-
+- sometimes hangs when FileMerge is opened (for a couple of seconds): http://www.cocoadev.com/index.pl?WrappingUnixApps 
+  should listen to task termination notification
 
 UI glitches:
 
