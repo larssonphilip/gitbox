@@ -31,7 +31,7 @@
 {
   if (!tags)
   {
-    self.branches; // if branches are nil will trigger branches and tags update
+    [self branches]; // if branches are nil will trigger branches and tags update
     self.tags = [NSArray array];
   }
   return [[tags retain] autorelease];

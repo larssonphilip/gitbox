@@ -461,10 +461,6 @@
 - (void) windowWillClose:(NSNotification *)notification
 {
   [self.repository endBackgroundUpdate];
-  if ([[NSWindowController class] instancesRespondToSelector:@selector(windowWillClose:)]) 
-  {
-    [(id<NSWindowDelegate>)super windowWillClose:notification];
-  }
   [self.delegate windowControllerWillClose:self];
 }
 
