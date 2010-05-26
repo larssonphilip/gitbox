@@ -29,12 +29,17 @@
   [self.windowControllers removeObject:aController];
 }
 
+- (GBRepositoryController*) windowController
+{
+  GBRepositoryController* windowController = [GBRepositoryController controller];
+  windowController.delegate = self;
+  return windowController;
+}
+
 - (GBRepositoryController*) windowControllerForRepositoryPath:(NSString*)path
 {
-  GBRepositoryController* windowController = [[[GBRepositoryController alloc] initWithWindowNibName:@"GBRepositoryController"] autorelease];
-  
-  windowController.delegate = self;
-  windowController.repositoryURL = [NSURL fileURLWithPath:path];  
+  GBRepositoryController* windowController = [self windowController];
+  windowController.repositoryURL = [NSURL fileURLWithPath:path];
   return windowController;
 }
 
@@ -94,14 +99,17 @@
 
 - (BOOL) application:(NSApplication*)theApplication openFile:(NSString*)path
 {
-  [[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:[NSURL fileURLWithPath:path]];
+  NSURL* url = [NSURL fileURLWithPath:path];
   if ([NSFileManager isWritableDirectoryAtPath:path])
   {
     if ([GBRepository isValidRepositoryAtPath:path])
     {
-      GBRepositoryController* windowController = [self windowControllerForRepositoryPath:path];
+      GBRepositoryController* windowController = [self windowController];
+      windowController.repositoryURL = url;
       [self addWindowController:windowController];
       [windowController showWindow:self];
+      
+      [[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:url];
       
       return YES;
     }
@@ -110,14 +118,18 @@
       if ([NSAlert unsafePrompt:NSLocalizedString(@"Folder does not appear to be a git repository. Make it a repository?", @"")
                     description:path] == NSAlertAlternateReturn)
       {
+        NSLog(@"TODO: init git repo");
+        if (NO)
+        {
+          GBRepositoryController* windowController = [self windowController];
+          windowController.repository = [GBRepository freshRepositoryForURL:url];
+          [self addWindowController:windowController];
+          
+          [[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:url];
+          return YES;
+        }
         
-        // TODO: init git repo
-        
-        GBRepositoryController* windowController = [self windowControllerForRepositoryPath:path];
-        [self addWindowController:windowController];
-        [windowController showWindow:self];
-        
-        return YES;
+        return NO;
       }
       else 
       {

@@ -47,6 +47,9 @@
 
 @property(retain) IBOutlet NSTableColumn* stagingTableColumn;
 
++ (id) controller;
+
+
 #pragma mark Interrogation
 
 - (NSArray*) selectedChanges;

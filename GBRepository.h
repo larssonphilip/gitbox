@@ -58,6 +58,8 @@
 @property(assign) id<GBRepositoryDelegate> delegate;
 
 
++ (id) freshRepositoryForURL:(NSURL*)url;
+
 #pragma mark Interrogation
 
 + (BOOL) isValidRepositoryAtPath:(NSString*)path;

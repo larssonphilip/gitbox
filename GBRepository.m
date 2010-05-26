@@ -37,6 +37,12 @@
 #pragma mark Init
 
 
++ (id) freshRepositoryForURL:(NSURL*)url
+{
+  NSLog(@"TODO: freshRepositoryForURL:%@", url);
+  return nil;
+}
+
 - (void) dealloc
 {
   self.url = nil;
@@ -167,6 +173,7 @@
 
 + (BOOL) isValidRepositoryAtPath:(NSString*) aPath
 {
+  NSLog(@"TODO: check parent folders for containing .git");
   return aPath && [NSFileManager isWritableDirectoryAtPath:[aPath stringByAppendingPathComponent:@".git"]];
 }
 

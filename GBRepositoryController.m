@@ -32,6 +32,17 @@
 
 @synthesize stagingTableColumn;
 
+
+
+#pragma mark Init
+
+
++ (id) controller
+{
+  GBRepositoryController* windowController = [[[GBRepositoryController alloc] initWithWindowNibName:@"GBRepositoryController"] autorelease];
+  return windowController;
+}
+
 - (void) dealloc
 {
   self.repositoryURL = nil;
