@@ -5,3 +5,7 @@
 #ifdef __OBJC__
   #import <Cocoa/Cocoa.h>
 #endif
+
+// TODO: if the date > June 20, show the alert and quit.
+#define CHECK_PREVIEW_DATE { }
+
