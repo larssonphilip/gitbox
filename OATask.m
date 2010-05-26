@@ -218,6 +218,7 @@ NSString* OATaskNotification = @"OATaskNotification";
 {
   [self endAllCallbacks];
   [self.nstask terminate];
+  [self.nstask waitUntilExit];
   [self doFinish];
 }
 
@@ -341,7 +342,6 @@ NSString* OATaskNotification = @"OATaskNotification";
 - (void) terminateAfterTimeout
 {
   [self terminate];
-  [self doFinish];
 }
 
 
@@ -355,7 +355,7 @@ NSString* OATaskNotification = @"OATaskNotification";
   
   while ([self.nstask isRunning])
   {
-    NSLog(@"PROGRAM ERROR: doFinish callback is fired when task is still running! Calling waitUntilExit.");
+    NSLog(@"PROGRAM ERROR: doFinish callback is fired when task is still running! Calling waitUntilExit. [%@]", [self command]);
     [self.nstask waitUntilExit];
   }
   
@@ -373,11 +373,11 @@ NSString* OATaskNotification = @"OATaskNotification";
   {
     if (!self.ignoreFailure)
     {
-      NSLog(@"OATask failed: %@ [%d]", [self command], self.terminationStatus);
+      //NSLog(@"OATask failed: %@ [%d]", [self command], self.terminationStatus);
       NSString* stringOutput = [self.output UTF8String];
       if (stringOutput)
       {
-        NSLog(@"OUTPUT: %@", stringOutput);
+        //NSLog(@"OUTPUT: %@", stringOutput);
       }
     }
   }
