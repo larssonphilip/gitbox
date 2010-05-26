@@ -1,23 +1,10 @@
 extern NSString* OATaskNotification;
+@class OAActivity;
 @interface OATask : NSObject
 {
-  NSString* executableName;
-  NSString* launchPath;
-  NSString* currentDirectoryPath;
-  NSTask* nstask;
-  NSData* output;
-  NSArray* arguments;
-  
-  BOOL avoidIndicator;
-  BOOL ignoreFailure;
-  BOOL shouldReadInBackground;
-  
-  NSTimeInterval pollingPeriod;
-  NSTimeInterval terminateTimeout;
-  
   id standardOutput;
   id standardError;
-  
+
   BOOL isReadingInBackground;
 }
 
@@ -38,6 +25,8 @@ extern NSString* OATaskNotification;
 @property(retain) id standardOutput;
 @property(retain) id standardError;
 
+@property(retain) OAActivity* activity;
+
 + (id) task;
 
 
@@ -46,6 +35,7 @@ extern NSString* OATaskNotification;
 - (NSString*) systemPathForExecutable:(NSString*)executable;
 - (int) terminationStatus;
 - (BOOL) isError;
+- (NSString*) command;
 
 
 #pragma mark Mutation methods

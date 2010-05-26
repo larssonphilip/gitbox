@@ -15,11 +15,7 @@
 
 - (NSString*) currentDirectoryPath
 {
-  if (!currentDirectoryPath)
-  {
-    return self.repository.path;
-  }
-  return [[currentDirectoryPath retain] autorelease];
+  return self.repository.path;
 }
 
 - (void) dealloc

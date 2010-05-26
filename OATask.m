@@ -1,4 +1,5 @@
 #import "OATask.h"
+#import "OAActivity.h"
 #import "NSAlert+OAAlertHelpers.h"
 #import "NSData+OADataHelpers.h"
 
@@ -22,6 +23,8 @@ NSString* OATaskNotification = @"OATaskNotification";
 
 @synthesize standardOutput;
 @synthesize standardError;
+
+@synthesize activity;
 
 
 #pragma mark Init
@@ -90,6 +93,8 @@ NSString* OATaskNotification = @"OATaskNotification";
   self.output = nil;
   self.standardOutput = nil;
   self.standardError = nil;
+  self.activity.task = nil;
+  self.activity = nil;
   [[NSNotificationCenter defaultCenter] removeObserver:self];
   [super dealloc];
 }
@@ -134,6 +139,12 @@ NSString* OATaskNotification = @"OATaskNotification";
   return nil;
 }
 
+- (NSString*) command
+{
+  return [[self.launchPath lastPathComponent] stringByAppendingFormat:@" %@", [self.arguments componentsJoinedByString:@" "]];
+}
+
+
 
 
 
@@ -171,7 +182,6 @@ NSString* OATaskNotification = @"OATaskNotification";
     [self readInBackground];
   }
   
-  //NSLog(@"OATask launch:   %@ %@", self.launchPath, [self.arguments componentsJoinedByString:@" "]);
   [self.nstask launch];
   if (!isReadingInBackground)
   {
@@ -197,8 +207,7 @@ NSString* OATaskNotification = @"OATaskNotification";
 
 - (OATask*) showError
 {
-  [NSAlert message: [NSString stringWithFormat:@"Command failed: %@", 
-                     [self.arguments componentsJoinedByString:@" "]]
+  [NSAlert message: [NSString stringWithFormat:@"Command failed: %@", [self command]]
        description:[[self.output UTF8String] stringByAppendingFormat:@"\nCode: %d", self.terminationStatus]];
   return self;
 }
@@ -219,7 +228,7 @@ NSString* OATaskNotification = @"OATaskNotification";
   {
     if (!self.ignoreFailure)
     {
-      NSLog(@"OATask failed: %@ %@ [%d]", self.launchPath, [self.arguments componentsJoinedByString:@" "], self.terminationStatus);
+      NSLog(@"OATask failed: %@ [%d]", [self command], self.terminationStatus);
       NSString* stringOutput = [self.output UTF8String];
       if (stringOutput)
       {
@@ -362,7 +371,7 @@ NSString* OATaskNotification = @"OATaskNotification";
     if (self.pollingPeriod > 6.0)
     {
       self.pollingPeriod = 0.2;
-      NSLog(@"SLOW: OATask: %@ %@", self.launchPath, [self.arguments componentsJoinedByString:@" "]);
+      NSLog(@"SLOW: OATask: %@", [self command]);
     }
   }
   else

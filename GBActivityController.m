@@ -8,7 +8,7 @@ static GBActivityController* sharedGBActivityController;
 
 @synthesize activities;
 @synthesize outputTextView;
-
+@synthesize arrayController;
 
 
 #pragma mark Init
@@ -25,8 +25,10 @@ static GBActivityController* sharedGBActivityController;
 
 - (void) dealloc
 {
+  [NSObject cancelPreviousPerformRequestsWithTarget:self];
   self.activities = nil;
   self.outputTextView = nil;
+  self.arrayController = nil;
   [super dealloc];
 }
 
@@ -48,11 +50,32 @@ static GBActivityController* sharedGBActivityController;
 {
   [self performSelector:@selector(periodicOutputSync) withObject:nil afterDelay:0.5];
   OAActivity* activity = nil;
-  NSString* text = [activity textOutput];
+  if ([[self.arrayController selectedObjects] count] == 1)
+  {
+    activity = [[self.arrayController selectedObjects] objectAtIndex:0];
+  }
+  NSString* text = [activity recentTextOutput];
   [self.outputTextView insertText:text];
 }
 
+- (void) periodicCleanUp
+{
+  [self performSelector:@selector(periodicCleanUp) withObject:nil afterDelay:60*60.0];
+  // TODO: remove old items
+}
 
+- (void) addActivity:(OAActivity*)activity
+{
+  if (self.arrayController)
+  {
+    [self.arrayController addObject:activity];
+  }
+  else // nib is not loaded yet
+  {
+    [self.activities addObject:activity];
+  }
+
+}
 
 
 
