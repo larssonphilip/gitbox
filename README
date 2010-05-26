@@ -1,3 +1,6 @@
+0.3:
+
+
 
 0.2:
 
@@ -48,6 +51,7 @@ UI glitches:
 
 UI goodies:
 
+- remember all opened windows on startup (for existing paths only)
 - change "sync" button title to "push" when remote is not ahead of local branch
 - change "sync" button title to "pull" when remote is ahead of local branch
 - change "sync" button title to "merge" when remote is local

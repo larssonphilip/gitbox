@@ -5,6 +5,19 @@
 
 NSString* OATaskNotification = @"OATaskNotification";
 
+
+@interface OATask ()
+- (void) beginAllCallbacks;
+- (void) endAllCallbacks;
+- (void) doFinish;
+- (NSFileHandle*) fileHandleForReading;
+
+- (id) prepareTask;
+- (id) launchAsynchronously;
+- (id) launchBlocking;
+
+@end
+
 @implementation OATask
 
 @synthesize executableName;
@@ -16,7 +29,6 @@ NSString* OATaskNotification = @"OATaskNotification";
 
 @synthesize avoidIndicator;
 @synthesize ignoreFailure;
-@synthesize shouldReadInBackground;
 
 @synthesize pollingPeriod;
 @synthesize terminateTimeout;
@@ -73,11 +85,11 @@ NSString* OATaskNotification = @"OATaskNotification";
   return [[nstask retain] autorelease];
 }
 
-- (NSData*) output
+- (NSMutableData*) output
 {
-  if (!output && nstask)
+  if (!output)
   {
-    self.output = [[[nstask standardOutput] fileHandleForReading] readDataToEndOfFile];
+    self.output = [NSMutableData data];
   }
   return [[output retain] autorelease];
 }
@@ -148,10 +160,246 @@ NSString* OATaskNotification = @"OATaskNotification";
 
 
 
+
+
 #pragma mark Mutation methods
 
 
-- (OATask*) prepareTask
+- (id) launch
+{
+  return [[self prepareTask] launchAsynchronously];
+}
+
+- (id) launchAndWait
+{
+  return [[self prepareTask] launchBlocking];
+}
+
+- (id) launchWithArguments:(NSArray*)args
+{
+  self.arguments = args;
+  return [self launch];
+}
+
+- (id) launchWithArgumentsAndWait:(NSArray*)args
+{
+  self.arguments = args;
+  return [self launchAndWait];
+}
+
+- (id) showError
+{
+  [NSAlert message: [NSString stringWithFormat:@"Command failed: %@", [self command]]
+       description:[[self.output UTF8String] stringByAppendingFormat:@"\nCode: %d", self.terminationStatus]];
+  return self;
+}
+
+- (id) showErrorIfNeeded
+{
+  if ([self isError])
+  {
+    [self showError];
+  }
+  return self;
+}
+
+- (void) terminate
+{
+  [self endAllCallbacks];
+  [self.nstask terminate];
+  [self doFinish];
+}
+
+
+
+
+
+#pragma mark Subscription
+
+
+- (id) subscribe:(id)observer selector:(SEL) selector
+{
+  [[NSNotificationCenter defaultCenter] addObserver:observer
+                                           selector:selector
+                                               name:OATaskNotification
+                                             object:self];
+  return self;
+}
+
+- (id) unsubscribe:(id)observer
+{
+  [[NSNotificationCenter defaultCenter] removeObserver:observer
+                                                  name:OATaskNotification 
+                                                object:self];
+  return self;
+}
+
+
+
+
+
+#pragma mark Callbacks Setup
+
+
+- (void) beginReadingInBackground
+{
+  [[NSNotificationCenter defaultCenter] addObserver:self 
+                                           selector:@selector(taskDidReceiveReadCompletionNotification:) 
+                                               name:NSFileHandleReadCompletionNotification 
+                                             object:[self fileHandleForReading]];  
+}
+
+- (void) endReadingInBackground
+{
+  [[NSNotificationCenter defaultCenter] removeObserver:self 
+                                                  name:NSFileHandleReadCompletionNotification
+                                                object:[self fileHandleForReading]];  
+}
+
+
+- (void) beginWaitingForTermination
+{
+  [[NSNotificationCenter defaultCenter] addObserver:self 
+                                           selector:@selector(taskDidTerminateNotification:) 
+                                               name:NSTaskDidTerminateNotification 
+                                             object:self.nstask];
+}
+
+- (void) endWaitingForTermination
+{
+  [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                  name:NSTaskDidTerminateNotification
+                                                object:self.nstask];  
+}
+
+- (void) beginTimeoutCallback
+{
+  if (self.terminateTimeout > 0.0)
+  {
+    [self performSelector:@selector(terminateAfterTimeout) withObject:nil afterDelay:self.terminateTimeout];
+  }
+}
+
+- (void) endTimeoutCallback
+{
+  [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(terminateAfterTimeout) object:nil];
+}
+
+- (void) beginAllCallbacks
+{
+  [self beginWaitingForTermination];
+  [self beginReadingInBackground];
+  [self beginTimeoutCallback];
+}
+
+- (void) endAllCallbacks
+{
+  [self endTimeoutCallback];
+  [self endReadingInBackground];
+  [self endWaitingForTermination];
+}
+
+
+
+
+
+#pragma mark Callbacks
+
+
+- (void) taskDidTerminateNotification:(NSNotification*) notification
+{
+  //NSLog(@"TERM NOTIF: %@ (collected %d bytes)", [self command], [self.output length]);
+  // Do not do this unless all data is read: [self doFinish];
+}
+
+- (void) taskDidReceiveReadCompletionNotification:(NSNotification*) notification
+{
+  NSData* incomingData = [[notification userInfo] objectForKey:NSFileHandleNotificationDataItem];
+  if (![self.nstask isRunning] && (!incomingData || [incomingData length] <= 0))
+  {
+    [self doFinish];
+    return;
+  }
+  if (incomingData && [incomingData length] > 0)
+  {
+    [self.output appendData:incomingData];
+  }
+  [[self fileHandleForReading] readInBackgroundAndNotify];
+}
+
+- (void) terminateAfterTimeout
+{
+  [self terminate];
+  [self doFinish];
+}
+
+
+
+#pragma mark Finishing
+
+
+- (void) doFinish
+{
+  [self endAllCallbacks];
+  
+  while ([self.nstask isRunning])
+  {
+    NSLog(@"PROGRAM ERROR: doFinish callback is fired when task is still running! Calling waitUntilExit.");
+    [self.nstask waitUntilExit];
+  }
+  
+  [self.output appendData:[[self fileHandleForReading] readDataToEndOfFile]];
+  
+  //NSLog(@"OATask doFinish: %@ (got %d bytes)", [self command], [self.output length]);
+  
+  // TODO: wrap into DEBUG macro
+  // Subclasses may override it to do some data processing.
+  if (self.terminationStatus != 0)
+  {
+    if (!self.ignoreFailure)
+    {
+      NSLog(@"OATask failed: %@ [%d]", [self command], self.terminationStatus);
+      NSString* stringOutput = [self.output UTF8String];
+      if (stringOutput)
+      {
+        NSLog(@"OUTPUT: %@", stringOutput);
+      }
+    }
+  }
+  
+  if ([self terminationStatus] == 0)
+  {
+    self.activity.status = @"Finished";
+  }
+  else
+  {
+    self.activity.status = [NSString stringWithFormat:@"Finished [%d]", [self terminationStatus]];
+  }
+  self.activity.textOutput = [self.output UTF8String];
+  
+  [self didFinish];
+  
+  NSNotification* notification = [NSNotification notificationWithName:OATaskNotification object:self];
+  // NSPostNow because NSPostASAP causes properties to be updated with a delay and bindings are updated in a strange fashion
+  // See commit 1c2d52b99c1ccf82e3540be10a3e1f0e3e054065 which fixes strange things with activity indicator.
+  [[NSNotificationQueue defaultQueue] enqueueNotification:notification 
+                                                       postingStyle:NSPostNow];
+}
+
+
+- (void) didFinish
+{
+  // for subclasses
+}
+
+
+
+
+
+#pragma mark Helpers
+
+
+- (id) prepareTask
 {
   NSPipe* defaultPipe = nil;
   [self.nstask setCurrentDirectoryPath:self.currentDirectoryPath];
@@ -170,256 +418,45 @@ NSString* OATaskNotification = @"OATaskNotification";
   
   [self.nstask setStandardOutput:self.standardOutput];
   [self.nstask setStandardError: self.standardError];
+  
+  if ([self.standardOutput isKindOfClass:[NSPipe class]])
+  {
+    NSDictionary* defaultEnvironment = [[NSProcessInfo processInfo] environment];
+    NSMutableDictionary* environment = [[[NSMutableDictionary alloc] initWithDictionary:defaultEnvironment] autorelease];
+    [environment setObject:@"YES" forKey:@"NSUnbufferedIO"];
+    [self.nstask setEnvironment:environment];    
+  }
+    
+  self.activity.status = @"Running";
+  self.activity.task = self;
+  self.activity.path = self.currentDirectoryPath;
+  self.activity.command = [self command];
+  
   return self;
 }
 
-- (OATask*) launch
+- (id) launchAsynchronously
 {
-  [self prepareTask];
-  
-  if (self.shouldReadInBackground)
-  {
-    [self readInBackground];
-  }
-  
+  [self beginAllCallbacks];
+  //NSLog(@"ASYNC: %@", [self command]);
   [self.nstask launch];
-  if (!isReadingInBackground)
-  {
-    [self performSelector:@selector(periodicStatusUpdate) withObject:nil afterDelay:pollingPeriod];
-  }
+  [[self fileHandleForReading] readInBackgroundAndNotify];
   return self;
 }
 
-- (OATask*) waitUntilExit
+- (id) launchBlocking
 {
-  [NSObject cancelPreviousPerformRequestsWithTarget:self
-                                           selector:@selector(periodicStatusUpdate) 
-                                             object:nil];
+  //NSLog(@"BLOCKING: %@", [self command]);
+  [self.nstask launch];
   [self.nstask waitUntilExit];
-  [self didFinish];
+  [self doFinish];
   return self;
 }
-
-- (OATask*) launchAndWait
-{
-  return [[self launch] waitUntilExit];
-}
-
-- (OATask*) showError
-{
-  [NSAlert message: [NSString stringWithFormat:@"Command failed: %@", [self command]]
-       description:[[self.output UTF8String] stringByAppendingFormat:@"\nCode: %d", self.terminationStatus]];
-  return self;
-}
-
-- (OATask*) showErrorIfNeeded
-{
-  if ([self isError])
-  {
-    [self showError];
-  }
-  return self;
-}
-
-- (void) didFinish
-{
-  // Subclasses may override it to do some data processing.
-  if (self.terminationStatus != 0)
-  {
-    if (!self.ignoreFailure)
-    {
-      NSLog(@"OATask failed: %@ [%d]", [self command], self.terminationStatus);
-      NSString* stringOutput = [self.output UTF8String];
-      if (stringOutput)
-      {
-        NSLog(@"OUTPUT: %@", stringOutput);
-      }
-    }
-  }
-}
-
-- (void) terminate
-{
-  [self.nstask terminate];
-}
-
-
-
-
-#pragma mark Launching shortcuts
-
-
-- (OATask*) launchWithArguments:(NSArray*)args
-{
-  self.arguments = args;
-  return [self launch];
-}
-
-- (OATask*) launchWithArgumentsAndWait:(NSArray*)args
-{
-  return [[self launchWithArguments:args] waitUntilExit];
-}
-
-
-
-
-#pragma mark Reading the output
 
 
 - (NSFileHandle*) fileHandleForReading
 {
   return [[self.nstask standardOutput] fileHandleForReading];
-}
-
-- (OATask*) readInBackground
-{
-  if (!isReadingInBackground)
-  {
-    isReadingInBackground = YES;
-    [NSObject cancelPreviousPerformRequestsWithTarget:self
-                                             selector:@selector(periodicStatusUpdate)
-                                               object:nil];
-    
-    self.output = [NSMutableData data];
-    // Here we register as an observer of the NSFileHandleReadCompletionNotification, which lets
-    // us know when there is data waiting for us to grab it in the task's file handle (the pipe
-    // to which we connected stdout and stderr above).  -getData: will be called when there
-    // is data waiting.  The reason we need to do this is because if the file handle gets
-    // filled up, the task will block waiting to send data and we'll never get anywhere.
-    // So we have to keep reading data from the file handle as we go.
-    [[NSNotificationCenter defaultCenter] addObserver:self 
-                                             selector:@selector(didReceiveDataNotification:) 
-                                                 name: NSFileHandleReadCompletionNotification 
-                                               object: [self fileHandleForReading]];
-    // We tell the file handle to go ahead and read in the background asynchronously, and notify
-    // us via the callback registered above when we signed up as an observer.  The file handle will
-    // send a NSFileHandleReadCompletionNotification when it has data that is available.
-    [[self fileHandleForReading] readInBackgroundAndNotify];  
-  }
-  return self;
-}
-
-- (void) didReceiveDataNotification:(NSNotification*) aNotification
-{
-  NSData *data = [[aNotification userInfo] objectForKey:NSFileHandleNotificationDataItem];
-  if ([data length] > 0)
-  {
-    [(NSMutableData*)self.output appendData:data];
-  }
-  else
-  {
-    [self didFinishReceivingData];
-  }
-  
-  // we need to schedule the file handle go read more data in the background again.
-  [[aNotification object] readInBackgroundAndNotify];  
-}
-
-
-
-
-#pragma mark Subscription
-
-
-- (OATask*) subscribe:(id)observer selector:(SEL) selector
-{
-  [[NSNotificationCenter defaultCenter] addObserver:observer
-                                           selector:selector
-                                               name:OATaskNotification
-                                             object:self];
-  return self;
-}
-
-- (OATask*) unsubscribe:(id)observer
-{
-  [[NSNotificationCenter defaultCenter] removeObserver:observer
-                                                  name:OATaskNotification 
-                                                object:self];
-  return self;
-}
-
-
-
-
-
-
-
-#pragma mark Helpers
-
-
-- (void) periodicStatusUpdate
-{
-  if (isReadingInBackground)
-  {
-    NSLog(@"ERROR: periodicStatusUpdate should have not been called when isReadingInBackground");
-  }
-  
-  if ([self.nstask isRunning])
-  {
-    if (terminateTimeout > 0.0) // timeout was set
-    {
-      self.terminateTimeout -= self.pollingPeriod;
-      if (self.terminateTimeout <= 0.0) // timeout passed
-      {
-        [self terminate];
-        [self periodicStatusUpdate]; // finish with task
-      }
-    }
-    [self performSelector:@selector(periodicStatusUpdate) withObject:nil afterDelay:self.pollingPeriod];
-    self.pollingPeriod *= 1.5;
-    
-    if (self.pollingPeriod > 6.0)
-    {
-      self.pollingPeriod = 0.2;
-      NSLog(@"SLOW: OATask: %@", [self command]);
-    }
-  }
-  else
-  {
-    if (isReadingInBackground)
-    {
-      [[NSNotificationCenter defaultCenter] removeObserver:self 
-                                                      name:NSFileHandleReadCompletionNotification
-                                                    object:self.fileHandleForReading];
-      NSData *data;
-      while ((data = [self.fileHandleForReading availableData]) && [data length] > 0)
-      {
-        [(NSMutableData*)self.output appendData:data];
-      }
-    }
-    [self didFinish];
-    NSNotification* notification = 
-    [NSNotification notificationWithName:OATaskNotification 
-                                  object:self];
-    // NSPostNow because NSPostASAP causes properties to be updated with a delay and bindings are updated in a strange fashion
-    // See commit 1c2d52b99c1ccf82e3540be10a3e1f0e3e054065 which fixes strange things with activity indicator.
-    [[NSNotificationQueue defaultQueue] enqueueNotification:notification 
-                                               postingStyle:NSPostNow];
-  }
-}
-
-- (void) didFinishReceivingData
-{
-  if (isReadingInBackground)
-  {
-    [[NSNotificationCenter defaultCenter] removeObserver:self 
-                                                    name:NSFileHandleReadCompletionNotification
-                                                  object:self.fileHandleForReading];
-    [self.nstask terminate];
-    NSData *data;
-    while ((data = [self.fileHandleForReading availableData]) && [data length] > 0)
-    {
-      [(NSMutableData*)self.output appendData:data];
-    }
-  }
-  [self didFinish];
-  NSNotification* notification = 
-  [NSNotification notificationWithName:OATaskNotification 
-                                object:self];
-  // NSPostNow because NSPostASAP causes properties to be updated with a delay and bindings are updated in a strange fashion
-  // See commit 1c2d52b99c1ccf82e3540be10a3e1f0e3e054065 which fixes strange things with activity indicator.
-  [[NSNotificationQueue defaultQueue] enqueueNotification:notification 
-                                             postingStyle:NSPostNow];  
 }
 
 

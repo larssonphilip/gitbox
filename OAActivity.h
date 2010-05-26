@@ -12,6 +12,4 @@
 @property(retain) NSString* status;
 @property(retain) NSString* textOutput;
 
-- (NSString*) recentTextOutput;
-
 @end

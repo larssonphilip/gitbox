@@ -61,13 +61,8 @@
 
 - (OATask*) launchTask:(OATask*)task
 {
-  OAActivity* activity = [[OAActivity new] autorelease];
-  activity.task = task;
-  activity.path = task.currentDirectoryPath;
-  activity.command = [task command];
-  activity.status = @"Running";
-  task.activity = activity;
-  [[GBActivityController sharedActivityController] addActivity:activity];
+  task.activity = [[OAActivity new] autorelease];
+  [[GBActivityController sharedActivityController] addActivity:task.activity];
   [self.concurrentTasks addObject:task];
   if (!task.avoidIndicator) [self.activityIndicator push];
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(taskDidFinish:) name:OATaskNotification object:task];
@@ -101,16 +96,6 @@
   }
   // cancels current task, overlaps with launchNextEnqueuedTask to avoid flickering
   if (!task.avoidIndicator) [self.activityIndicator pop]; 
-  
-  if ([task terminationStatus] == 0)
-  {
-    task.activity.status = @"Finished";
-  }
-  else
-  {
-    task.activity.status = [NSString stringWithFormat:@"Finished [%d]", [task terminationStatus]];
-  }
-  task.activity.textOutput = [task.output UTF8String];
 }
 
 

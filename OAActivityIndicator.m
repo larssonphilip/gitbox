@@ -14,13 +14,6 @@ OAActivityIndicator* sharedOAActivityIndicator;
 	return sharedOAActivityIndicator;
 }
 
-- (void) updateValueOnUnknownThread:(BOOL)v
-{
-  [self performSelectorOnMainThread:
-   @selector(updateValueOnMainThread:) withObject:
-   [NSNumber numberWithBool:v] waitUntilDone:NO];
-}
-
 - (void) updateValueOnMainThread:(BOOL)v
 {
   //NSLog(@"active: %d", (NSInteger)v);

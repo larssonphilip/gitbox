@@ -27,14 +27,13 @@
 
 #pragma mark Interrogation
 
-- (NSString*) recentTextOutput
+- (NSString*) textOutput
 {
-  NSString* recentString = [self.task.output UTF8String];
-  if (recentString)
+  if (!textOutput)
   {
-    self.textOutput = recentString;
+    return [self.task.output UTF8String];
   }
-  return self.textOutput;
+  return [[textOutput retain] autorelease];
 }
 
 @end

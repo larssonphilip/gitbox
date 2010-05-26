@@ -54,7 +54,7 @@ static GBActivityController* sharedGBActivityController;
   {
     activity = [[self.arrayController selectedObjects] objectAtIndex:0];
   }
-  NSString* text = [activity recentTextOutput];
+  NSString* text = activity.textOutput;
   [self.outputTextView insertText:text];
 }
 

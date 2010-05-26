@@ -4,20 +4,17 @@ extern NSString* OATaskNotification;
 {
   id standardOutput;
   id standardError;
-
-  BOOL isReadingInBackground;
 }
 
 @property(retain) NSString* executableName;
 @property(retain) NSString* launchPath;
 @property(retain) NSString* currentDirectoryPath;
 @property(retain) NSTask* nstask;
-@property(retain) NSData* output;
+@property(retain) NSMutableData* output;
 @property(retain) NSArray* arguments;
 
 @property(assign) BOOL avoidIndicator;
 @property(assign) BOOL ignoreFailure;
-@property(assign) BOOL shouldReadInBackground;
 
 @property(assign) NSTimeInterval pollingPeriod;
 @property(assign) NSTimeInterval terminateTimeout;
@@ -40,29 +37,22 @@ extern NSString* OATaskNotification;
 
 #pragma mark Mutation methods
 
-- (OATask*) prepareTask;
-- (OATask*) launch;
-- (OATask*) waitUntilExit;
-- (OATask*) launchAndWait;
-- (OATask*) showError;
-- (OATask*) showErrorIfNeeded;
-
-- (OATask*) launchWithArguments:(NSArray*)args;
-- (OATask*) launchWithArgumentsAndWait:(NSArray*)args;
-
-- (OATask*) readInBackground;
-- (NSFileHandle*) fileHandleForReading;
+- (id) launch;
+- (id) launchAndWait;
+- (id) launchWithArguments:(NSArray*)args;
+- (id) launchWithArgumentsAndWait:(NSArray*)args;
 
 - (void) terminate;
 
-- (OATask*) subscribe:(id)observer selector:(SEL) selector;
-- (OATask*) unsubscribe:(id)observer;
+- (id) showError;
+- (id) showErrorIfNeeded;
+
+- (id) subscribe:(id)observer selector:(SEL) selector;
+- (id) unsubscribe:(id)observer;
 
 
-#pragma mark Private
+#pragma mark API for subclasses
 
-- (void) periodicStatusUpdate;
-- (void) didFinishReceivingData;
 - (void) didFinish;
 
 @end
