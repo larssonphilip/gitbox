@@ -50,17 +50,33 @@ static GBActivityController* sharedGBActivityController;
 
 - (void) syncActivityOutput
 {
-  //[self performSelector:@selector(periodicOutputSync) withObject:nil afterDelay:0.5];
+  [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(syncActivityOutput) object:nil];
+  
+  if (![[self window] isVisible]) return;
+  
   OAActivity* activity = nil;
   if ([[self.arrayController selectedObjects] count] == 1)
   {
     activity = [[self.arrayController selectedObjects] objectAtIndex:0];
-  }
-  if (activity)
-  {
-    NSString* text = activity.textOutput;
-    NSLog(@"OAActivityController: syncing %d bytes of text", [text length]);
-    [self.outputTextField setStringValue:text];    
+    if (activity)
+    {
+      NSString* text = activity.textOutput;
+      NSLog(@"OAActivityController: syncing %d bytes of text", [text length]);
+      if ([text length] > 0)
+      {
+        [self.outputTextView setString:text];
+      }
+      else
+      {
+        [self.outputTextView setString:@""];
+      }
+      
+//      if (activity.isRunning)
+//      {
+//        [self performSelector:@selector(syncActivityOutput) 
+//                   withObject:nil afterDelay:0.5];
+//      }
+    }    
   }
 }
 
@@ -96,15 +112,16 @@ static GBActivityController* sharedGBActivityController;
 
 
 
+
 #pragma mark NSWindowDelegate
 
 
-- (void)windowDidBecomeKey:(NSNotification *)notification
+- (void)windowDidBecomeKey:(NSNotification*)notification
 {
   [self syncActivityOutput];
 }
 
-- (void)windowDidResignKey:(NSNotification *)notification
+- (void)windowDidResignKey:(NSNotification*)notification
 {
 }
 
@@ -112,7 +129,7 @@ static GBActivityController* sharedGBActivityController;
 #pragma mark NSTableViewDelegate
 
 
-- (void)tableViewSelectionDidChange:(NSNotification *)aNotification
+- (void)tableViewSelectionDidChange:(NSNotification*)aNotification
 {
   [self syncActivityOutput];
 }
