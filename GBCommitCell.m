@@ -9,17 +9,21 @@
 }
 
 - (void)drawInteriorWithFrame:(NSRect)cellFrame inView:(NSView*)theControlView
-{
-	// blue highlight: [NSColor alternateSelectedControlColor];
-  // white text in highlight: [NSColor alternateSelectedControlTextColor];
-  
-  NSRect innerRect = NSInsetRect(cellFrame, 10.0, 10.0);
+{  
+  NSRect innerRect = NSInsetRect(cellFrame, 5.0, 3.0);
   
   GBCommit* object = [self commit];
   
-  NSString* title = @"object.authorName";
-  NSString* date = @"12:34 Fake Date";
-  NSString* message = @"object.message";
+  NSString* title = object.authorName;
+  NSString* date = @"";
+  NSString* message = object.message;
+  
+  if (object.date)
+  {
+    NSDateFormatter* dateFormatter = [[NSDateFormatter new] autorelease];
+    [dateFormatter setDateFormat:@"H:mm MMMM d, y"];
+    date = [dateFormatter stringFromDate:object.date];
+  }
   
   // Prepare colors and styles
   
@@ -71,41 +75,51 @@
      +------------------------------+
      | message                      |
      +------------------------------+
-   (0;0)
+   (origin.x;origin.y)
   */
   
   // Layout constants
   
   CGFloat dateWidthRatio = 0.4; // 40% of the width
-  CGFloat titleDatePadding = 5.0;
-  CGFloat titleMessagePadding = 3.0;
+  CGFloat titleDatePadding = 3.0;
+  CGFloat titleMessagePadding = 2.0;
+  
+  CGFloat x0 = innerRect.origin.x;
+  CGFloat y0 = innerRect.origin.y;
   
   // Calculate layout
   
   CGFloat maxDateWidth = innerRect.size.width*dateWidthRatio;
   dateSize.width = (dateSize.width > maxDateWidth ? maxDateWidth : dateSize.width);
   
-  NSRect dateRect = NSMakeRect(innerRect.size.width - dateSize.width,
-                               0.0,
+  NSRect dateRect = NSMakeRect(x0 + innerRect.size.width - dateSize.width,
+                               y0,
                                dateSize.width,
                                dateSize.height);
   
-  NSRect titleRect = NSMakeRect(0.0,
-                                innerRect.size.height - titleSize.height,
+  NSRect titleRect = NSMakeRect(x0,
+                                y0,
                                 innerRect.size.width - dateSize.width - titleDatePadding, 
                                 titleSize.height);
 
-  NSRect messageRect = NSMakeRect(0.0, 
-                                  0.0, 
+  NSRect messageRect = NSMakeRect(x0, 
+                                  y0 + titleSize.height + titleMessagePadding, 
                                   innerRect.size.width,
                                   innerRect.size.height - titleSize.height - titleMessagePadding);
   
   // draw
   
+  [backgroundColor set];
+  NSRectFill(cellFrame);
+  
   [date drawInRect:dateRect withAttributes:dateAttributes];
-//  [title drawInRect:titleRect withAttributes:titleAttributes];
-//  [message drawInRect:messageRect withAttributes:messageAttributes];
+  [title drawInRect:titleRect withAttributes:titleAttributes];
+  [message drawInRect:messageRect withAttributes:messageAttributes];
   
 }
+
+
+
+
 
 @end

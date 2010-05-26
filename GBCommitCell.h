@@ -1,5 +1,5 @@
 @class GBCommit;
-@interface GBCommitCell : NSTextFieldCell
+@interface GBCommitCell : NSCell
 {
 
 }
