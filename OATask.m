@@ -120,6 +120,7 @@ NSString* OATaskNotification = @"OATaskNotification";
   NSFileManager* fm = [NSFileManager defaultManager];
   NSArray* binPaths = [NSArray arrayWithObjects:
                        @"~/bin",
+                       @"/usr/local/git/bin",
                        @"/opt/homebrew/bin",
                        @"/usr/local/bin",
                        @"/usr/bin",
