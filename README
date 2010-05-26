@@ -12,6 +12,7 @@ Strategy for the first shippable version:
 - sparkle: create a binary with signature
 - sparkle: deploy the binary and the appcast to a pierlis server
 
+
 Bugs:
 
 - disable status table view while status is updating (double click on a stale row crashes the app)
@@ -27,6 +28,7 @@ Bugs:
 - local branch change does not refresh log
 - remote branch checkout does not update remote branch menu
 - switch context menu for historical commits
+- do not open another window for the same repo if already opened, just make it key window
 
 
 UI glitches:
