@@ -8,9 +8,9 @@ Strategy for the first shippable version:
 - repos: add
 - repos: edit
 - log: checkout a commit
-- sparkle: create keys http://www.entropy.ch/blog/Developer/2008/09/22/Sparkle-Appcast-Automation-in-Xcode.html
-- sparkle: create binary with signature
-- sparkle: deploy binary and appcast to a pierlis server
+- sparkle: create the keys http://www.entropy.ch/blog/Developer/2008/09/22/Sparkle-Appcast-Automation-in-Xcode.html
+- sparkle: create a binary with signature
+- sparkle: deploy the binary and the appcast to a pierlis server
 
 Bugs:
 
