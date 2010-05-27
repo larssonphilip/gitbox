@@ -12,7 +12,7 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="13"/>
+			<integer value="22"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -448,6 +448,7 @@
 					<string>path</string>
 					<string>command</string>
 					<string>status</string>
+					<string>isRunning</string>
 				</object>
 				<bool key="NSEditable">YES</bool>
 				<object class="_NSManagedProxy" key="_NSManagedProxy"/>
@@ -584,6 +585,54 @@
 						<reference key="destination" ref="201396831"/>
 					</object>
 					<int key="connectionID">67</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">fontBold: arrangedObjects.isRunning</string>
+						<reference key="source" ref="182859382"/>
+						<reference key="destination" ref="8232064"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="182859382"/>
+							<reference key="NSDestination" ref="8232064"/>
+							<string key="NSLabel">fontBold: arrangedObjects.isRunning</string>
+							<string key="NSBinding">fontBold</string>
+							<string key="NSKeyPath">arrangedObjects.isRunning</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">69</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">fontBold: arrangedObjects.isRunning</string>
+						<reference key="source" ref="352198074"/>
+						<reference key="destination" ref="8232064"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="352198074"/>
+							<reference key="NSDestination" ref="8232064"/>
+							<string key="NSLabel">fontBold: arrangedObjects.isRunning</string>
+							<string key="NSBinding">fontBold</string>
+							<string key="NSKeyPath">arrangedObjects.isRunning</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">71</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">fontBold: arrangedObjects.isRunning</string>
+						<reference key="source" ref="399134434"/>
+						<reference key="destination" ref="8232064"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="399134434"/>
+							<reference key="NSDestination" ref="8232064"/>
+							<string key="NSLabel">fontBold: arrangedObjects.isRunning</string>
+							<string key="NSBinding">fontBold</string>
+							<string key="NSKeyPath">arrangedObjects.isRunning</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">73</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -805,9 +854,9 @@
 				</object>
 				<object class="NSMutableArray" key="dict.values">
 					<bool key="EncodedWithXMLCoder">YES</bool>
-					<string>{{201, 393}, {534, 307}}</string>
+					<string>{{99, 393}, {534, 307}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{201, 393}, {534, 307}}</string>
+					<string>{{99, 393}, {534, 307}}</string>
 					<boolean value="YES"/>
 					<string>{196, 240}</string>
 					<string>{{202, 428}, {480, 270}}</string>
@@ -849,7 +898,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">67</int>
+			<int key="maxID">73</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
