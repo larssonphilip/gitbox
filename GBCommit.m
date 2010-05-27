@@ -67,6 +67,10 @@
   return NO;
 }
 
+- (id) myself
+{
+  return self;
+}
 
 
 

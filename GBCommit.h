@@ -31,6 +31,7 @@
 #pragma mark Interrogation
 
 - (BOOL) isStage;
+- (id) myself;
 
 
 #pragma mark Mutation

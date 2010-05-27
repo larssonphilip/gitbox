@@ -12,7 +12,7 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="100100"/>
+			<integer value="100103"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -937,6 +937,7 @@
 					<string>hasStagedChanges</string>
 					<string>self</string>
 					<string>revision</string>
+					<string>myself</string>
 				</object>
 				<string key="NSObjectClassName">GBCommit</string>
 				<object class="_NSManagedProxy" key="_NSManagedProxy"/>
@@ -1712,15 +1713,15 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: arrangedObjects.message</string>
+						<string key="label">value: arrangedObjects.myself</string>
 						<reference key="source" ref="33340407"/>
 						<reference key="destination" ref="396948586"/>
 						<object class="NSNibBindingConnector" key="connector">
 							<reference key="NSSource" ref="33340407"/>
 							<reference key="NSDestination" ref="396948586"/>
-							<string key="NSLabel">value: arrangedObjects.message</string>
+							<string key="NSLabel">value: arrangedObjects.myself</string>
 							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">arrangedObjects.message</string>
+							<string key="NSKeyPath">arrangedObjects.myself</string>
 							<object class="NSDictionary" key="NSOptions">
 								<string key="NS.key.0">NSCreatesSortDescriptor</string>
 								<boolean value="NO" key="NS.object.0"/>
@@ -1728,7 +1729,7 @@
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
-					<int key="connectionID">100348</int>
+					<int key="connectionID">100349</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -2478,7 +2479,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">100348</int>
+			<int key="maxID">100349</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
