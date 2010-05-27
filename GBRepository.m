@@ -251,6 +251,7 @@
 
 - (void) reloadCommits
 {
+  self.localBranchCommits = nil;
   [self.currentRef updateCommits];
   [self updateCommits];
 }

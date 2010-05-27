@@ -101,6 +101,7 @@
 {
   [self.repository checkoutRef:[sender representedObject]];
   [self updateCurrentBranchMenus];
+  [self.repository reloadCommits];
 }
 
 - (IBAction) checkoutRemoteBranch:(id)sender
@@ -129,6 +130,7 @@
     [self.repository checkoutRef:ctrl.payload withNewBranchName:ctrl.value];
     self.repository.localBranches = [self.repository loadLocalBranches];
     [self updateCurrentBranchMenus];
+    [self.repository reloadCommits];
   }
 
 
