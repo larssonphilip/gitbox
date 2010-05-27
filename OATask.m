@@ -218,7 +218,6 @@ NSString* OATaskNotification = @"OATaskNotification";
 {
   [self endAllCallbacks];
   [self.nstask terminate];
-  [self.nstask waitUntilExit];
   [self doFinish];
 }
 
@@ -341,7 +340,11 @@ NSString* OATaskNotification = @"OATaskNotification";
 
 - (void) terminateAfterTimeout
 {
-  [self terminate];
+  [self endAllCallbacks];
+  [self.nstask terminate];
+  kill([self.nstask processIdentifier], 9);
+  [self.nstask waitUntilExit];
+  [self doFinish];
 }
 
 
