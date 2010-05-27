@@ -1,17 +1,3 @@
-0.3:
-
-- pretty history table
-- improved stability of git and diff operations
-- improved activity window
-- windows and positions are remembered between launches
-
-0.2:
-
-- fixed: open recent
-- fixed: quitting if opendiff not found
-- fixed: 
-
-
 Strategy for the first shippable version:
 
 - log: list of unmerged commits from remote branch
