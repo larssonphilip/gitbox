@@ -277,6 +277,12 @@
 				20B8B83C11A4A776006D6442 /* GBPromptController.m */,
 				2057F10E11ACF751009EDF2F /* GBActivityController.h */,
 				2057F10F11ACF751009EDF2F /* GBActivityController.m */,
+				1DDD582B0DA1D0D100B32029 /* MainMenu.xib */,
+				1DDD58290DA1D0D100B32029 /* GBRepositoryController.xib */,
+				2058E98311AEE30E00F2853F /* GBHistoryController.xib */,
+				2058FA4711982F5100FB018D /* GBRemotesController.xib */,
+				20B8B83811A4A72A006D6442 /* GBPromptController.xib */,
+				2057F10411ACF4C0009EDF2F /* GBActivityController.xib */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -397,12 +403,6 @@
 				2A37F4B9FDCFA73011CA2CEA /* Credits.rtf */,
 				8D15AC360486D014006FF6A4 /* info.plist */,
 				089C1660FE840EACC02AAC07 /* InfoPlist.strings */,
-				1DDD582B0DA1D0D100B32029 /* MainMenu.xib */,
-				1DDD58290DA1D0D100B32029 /* GBRepositoryController.xib */,
-				2058E98311AEE30E00F2853F /* GBHistoryController.xib */,
-				2058FA4711982F5100FB018D /* GBRemotesController.xib */,
-				20B8B83811A4A72A006D6442 /* GBPromptController.xib */,
-				2057F10411ACF4C0009EDF2F /* GBActivityController.xib */,
 				2057F0D611ACF075009EDF2F /* sparkle_dsa_pub.pem */,
 			);
 			name = Resources;
