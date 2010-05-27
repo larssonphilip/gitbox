@@ -10,7 +10,7 @@
 
 - (void)drawInteriorWithFrame:(NSRect)cellFrame inView:(NSView*)theControlView
 {  
-  NSRect innerRect = NSInsetRect(cellFrame, 5.0, 3.0);
+  NSRect innerRect = NSInsetRect(cellFrame, 5.0, 1.0);
   
   GBCommit* object = [self commit];
   
@@ -44,7 +44,7 @@
   
 	NSMutableDictionary* titleAttributes = [[[NSMutableDictionary alloc] initWithObjectsAndKeys:
                                              textColor, NSForegroundColorAttributeName,
-                                             [NSFont boldSystemFontOfSize:11.0], NSFontAttributeName,
+                                             [NSFont boldSystemFontOfSize:12.0], NSFontAttributeName,
                                              paragraphStyle, NSParagraphStyleAttributeName,
                                              nil] autorelease];
   
@@ -56,7 +56,7 @@
 
   NSMutableDictionary* messageAttributes = [[[NSMutableDictionary alloc] initWithObjectsAndKeys:
                                           textColor, NSForegroundColorAttributeName,
-                                          [NSFont systemFontOfSize:11.0], NSFontAttributeName,
+                                          [NSFont systemFontOfSize:12.0], NSFontAttributeName,
                                           paragraphStyle, NSParagraphStyleAttributeName,
                                           nil] autorelease];
   
@@ -80,9 +80,9 @@
   
   // Layout constants
   
-  CGFloat dateWidthRatio = 0.4; // 40% of the width
+  CGFloat dateWidthRatio = 0.5; // 50% of the width
   CGFloat titleDatePadding = 3.0;
-  CGFloat titleMessagePadding = 2.0;
+  CGFloat titleMessagePadding = 1.0;
   
   CGFloat x0 = innerRect.origin.x;
   CGFloat y0 = innerRect.origin.y;
