@@ -136,7 +136,15 @@
 
 - (NSString*) message
 {
-  return NSLocalizedString(@"Working directory", @"");
+  if ([self isDirty])
+  {
+    return [NSLocalizedString(@"Working directory", @"") stringByAppendingFormat:@" (%d)", [self.allChanges count]];
+  }
+  else
+  {
+    return NSLocalizedString(@"Working directory", @"");
+  }
+
 }
 
 @end
