@@ -8,8 +8,9 @@
   return [self representedObject];
 }
 
-- (void)drawInteriorWithFrame:(NSRect)cellFrame inView:(NSView*)theControlView
-{  
+- (void) drawContentInFrame:(NSRect)cellFrame
+{
+  
   NSRect innerRect = NSInsetRect(cellFrame, 5.0, 1.0);
   
   GBCommit* object = [self commit];
@@ -29,13 +30,11 @@
   
   NSColor* textColor = [NSColor textColor];
   NSColor* dateColor = [NSColor blueColor];
-  NSColor* backgroundColor = [NSColor controlBackgroundColor];
   
   if ([self isHighlighted])
   {
     textColor = [NSColor alternateSelectedControlTextColor];
     dateColor = textColor;
-    backgroundColor = [NSColor alternateSelectedControlColor];
   }
   
   NSMutableParagraphStyle* paragraphStyle = [[NSMutableParagraphStyle new] autorelease];
@@ -43,22 +42,22 @@
   
   
 	NSMutableDictionary* titleAttributes = [[[NSMutableDictionary alloc] initWithObjectsAndKeys:
-                                             textColor, NSForegroundColorAttributeName,
-                                             [NSFont boldSystemFontOfSize:12.0], NSFontAttributeName,
-                                             paragraphStyle, NSParagraphStyleAttributeName,
-                                             nil] autorelease];
+                                           textColor, NSForegroundColorAttributeName,
+                                           [NSFont boldSystemFontOfSize:12.0], NSFontAttributeName,
+                                           paragraphStyle, NSParagraphStyleAttributeName,
+                                           nil] autorelease];
   
   NSMutableDictionary* dateAttributes = [[[NSMutableDictionary alloc] initWithObjectsAndKeys:
-                                            dateColor, NSForegroundColorAttributeName,
-                                            [NSFont systemFontOfSize:11.0], NSFontAttributeName,
-                                            paragraphStyle, NSParagraphStyleAttributeName,
-                                            nil] autorelease];
-
-  NSMutableDictionary* messageAttributes = [[[NSMutableDictionary alloc] initWithObjectsAndKeys:
-                                          textColor, NSForegroundColorAttributeName,
-                                          [NSFont systemFontOfSize:12.0], NSFontAttributeName,
+                                          dateColor, NSForegroundColorAttributeName,
+                                          [NSFont systemFontOfSize:11.0], NSFontAttributeName,
                                           paragraphStyle, NSParagraphStyleAttributeName,
                                           nil] autorelease];
+  
+  NSMutableDictionary* messageAttributes = [[[NSMutableDictionary alloc] initWithObjectsAndKeys:
+                                             textColor, NSForegroundColorAttributeName,
+                                             [NSFont systemFontOfSize:12.0], NSFontAttributeName,
+                                             paragraphStyle, NSParagraphStyleAttributeName,
+                                             nil] autorelease];
   
   // Calculate heights
   
@@ -69,14 +68,14 @@
   
   
   /*
-     +-----------------+ +----------+
-     | title           | | date     |
-     +-----------------+ +----------+
-     +------------------------------+
-     | message                      |
-     +------------------------------+
+   +-----------------+ +----------+
+   | title           | | date     |
+   +-----------------+ +----------+
+   +------------------------------+
+   | message                      |
+   +------------------------------+
    (origin.x;origin.y)
-  */
+   */
   
   // Layout constants
   
@@ -101,7 +100,7 @@
                                 y0,
                                 innerRect.size.width - dateSize.width - titleDatePadding, 
                                 titleSize.height);
-
+  
   NSRect messageRect = NSMakeRect(x0, 
                                   y0 + titleSize.height + titleMessagePadding, 
                                   innerRect.size.width,
@@ -109,13 +108,25 @@
   
   // draw
   
-  [backgroundColor set];
-  NSRectFill(cellFrame);
-  
   [date drawInRect:dateRect withAttributes:dateAttributes];
   [title drawInRect:titleRect withAttributes:titleAttributes];
   [message drawInRect:messageRect withAttributes:messageAttributes];
   
+}
+
+- (void) drawInteriorWithFrame:(NSRect)cellFrame inView:(NSView*)theControlView
+{  
+  NSColor* backgroundColor = [NSColor controlBackgroundColor];
+  
+  if ([self isHighlighted])
+  {
+    backgroundColor = [NSColor alternateSelectedControlColor];
+  }
+  
+  [backgroundColor set];
+  NSRectFill(cellFrame);
+
+  [self drawContentInFrame:cellFrame];
 }
 
 

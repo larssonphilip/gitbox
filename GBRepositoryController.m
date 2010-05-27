@@ -5,6 +5,7 @@
 #import "GBPromptController.h"
 
 #import "GBCommitCell.h"
+#import "GBStageCell.h"
 
 #import "NSArray+OAArrayHelpers.h"
 #import "NSString+OAStringHelpers.h"
@@ -461,9 +462,7 @@
   [super windowDidLoad];
   [self.window setTitleWithRepresentedFilename:self.repository.path];
   [self.window setFrameAutosaveName:[NSString stringWithFormat:@"%@[path=%@].window.frame", [self class], self.repository.path]];
-  
-  //[[self.logTableView tableColumnWithIdentifier:@"main"] setDataCell:[[GBCommitCell new] autorelease]];
-  
+
   [self updateCurrentBranchMenus];
   [self updateRemoteBranchMenus];
   [self.repository reloadCommits];
@@ -543,7 +542,15 @@
   if (aTableView == self.logTableView)
   {
     GBCommit* commit = [self.repository.commits objectAtIndex:row];
-    GBCommitCell* cell = [[GBCommitCell new] autorelease];
+    GBCommitCell* cell = nil;
+    if ([commit isStage])
+    {
+      cell = [[GBStageCell new] autorelease];
+    }
+    else
+    {
+      cell = [[GBCommitCell new] autorelease]; 
+    }
     cell.representedObject = commit;
     return cell;
   }

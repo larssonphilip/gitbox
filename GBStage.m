@@ -29,7 +29,7 @@
 }
 
 
-#pragma mark Actions
+#pragma mark Interrogation
 
 
 - (NSArray*) allChanges
@@ -44,6 +44,15 @@
   
   return allChanges;
 }
+
+- (BOOL) isDirty
+{
+  return [self.allChanges count] > 0;
+}
+
+
+#pragma mark Actions
+
 
 - (NSArray*) loadChanges
 {
