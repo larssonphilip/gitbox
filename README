@@ -1,15 +1,16 @@
 Strategy for the first shippable version:
 
-- log: list of unmerged commits from remote branch
-- log: highlight new commits (missing on remote branch) 
-+ changes for the commit
+- NSViewController for GBRepositoryWindow
+- remembering remote-local association
+- unmerged/unpushed commits
+- local branch merge
+- ask for binary
+- multiline commit window
+
 - test merge conflict situation
 - repos: add
 - repos: edit
 - log: checkout a commit
-+ sparkle: create the keys http://www.entropy.ch/blog/Developer/2008/09/22/Sparkle-Appcast-Automation-in-Xcode.html
-+ sparkle: create a binary with signature
-+ sparkle: deploy the binary and the appcast to a pierlis server
 
 
 Bugs:
