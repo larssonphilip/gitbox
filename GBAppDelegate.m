@@ -33,13 +33,13 @@
 {
   GBRepositoryController* windowController = [GBRepositoryController controller];
   windowController.delegate = self;
+  [windowController setShouldCascadeWindows:NO];
   return windowController;
 }
 
 - (GBRepositoryController*) windowControllerForRepositoryPath:(NSString*)path
 {
   GBRepositoryController* windowController = [self windowController];
-  [windowController setShouldCascadeWindows:NO];
   windowController.repositoryURL = [NSURL fileURLWithPath:path];
   return windowController;
 }
