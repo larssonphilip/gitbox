@@ -80,14 +80,14 @@ static GBActivityController* sharedGBActivityController;
 }
 
 
-- (void) periodicCleanUp
-{
-  [self performSelector:@selector(periodicCleanUp) withObject:nil afterDelay:60*60.0];
-  // TODO: remove old items
-}
-
 - (void) addActivity:(OAActivity*)activity
 {
+  NSUInteger maxNumberOfActivities = 500;
+  if ([self.activities count] > maxNumberOfActivities + 20) // 20 is a little overlap to avoid refreshing the array too often
+  {
+    self.activities = [[[self.activities subarrayWithRange:NSMakeRange([self.activities count] - maxNumberOfActivities, maxNumberOfActivities)] mutableCopy] autorelease];
+  }
+  
   if (self.arrayController)
   {
     [self.arrayController addObject:activity];
