@@ -31,7 +31,7 @@
       if (path && [path length] > 0)
       {
         GBChange* change = [[GBChange new] autorelease];
-        change.srcURL = [NSURL URLWithString:path relativeToURL:self.repository.url];
+        change.srcURL = [NSURL URLWithString:[path stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding] relativeToURL:self.repository.url];
         change.repository = self.repository;
         [untrackedChanges addObject:change];
       }
