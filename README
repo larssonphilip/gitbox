@@ -15,6 +15,7 @@ Strategy for the first shippable version:
 
 Bugs:
 
+- empty filenames for untracked folder
 - disable status table view while status is updating (double click on a stale row crashes the app)
   (or better: reuse matching changes to avoid that issue and avoid flickering and UI blocking)
 - OK button does not work in prompt because textfield value is updated through binding yet.
