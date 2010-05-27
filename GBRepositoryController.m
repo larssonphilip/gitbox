@@ -2,6 +2,8 @@
 
 #import "GBRepositoryController.h"
 #import "GBHistoryController.h"
+#import "GBStageController.h"
+#import "GBCommitController.h"
 
 #import "GBRemotesController.h"
 #import "GBPromptController.h"
@@ -10,8 +12,9 @@
 #import "NSString+OAStringHelpers.h"
 #import "NSMenu+OAMenuHelpers.h"
 #import "NSWindowController+OAWindowControllerHelpers.h"
-#import "NSView+OAViewControllerHelpers.h"
+#import "NSView+OAViewHelpers.h"
 #import "NSObject+OAKeyValueObserving.h"
+#import "NSObject+OADispatchItemValidation.h"
 
 #import <objc/runtime.h>
 
@@ -23,17 +26,14 @@
 @synthesize delegate;
 
 @synthesize historyController;
+@synthesize stageController;
+@synthesize commitController;
 
 @synthesize splitView;
-@synthesize statusTableView;
 
 @synthesize currentBranchPopUpButton;
 @synthesize pullPushControl;
 @synthesize remoteBranchPopUpButton;
-
-@synthesize statusArrayController;
-
-@synthesize stagingTableColumn;
 
 
 
@@ -48,22 +48,21 @@
 
 - (void) dealloc
 {
+  [self.repository removeObserver:self keyPath:@"selectedCommit" selector:@selector(selectedCommitDidChange:)];
+  
   self.repositoryURL = nil;
   if ((id)repository.delegate == self) repository.delegate = nil;
   self.repository = nil;
   
   self.historyController = nil;
+  self.stageController = nil;
+  self.commitController = nil;
   
   self.splitView = nil;
-  self.statusTableView = nil;
   
   self.currentBranchPopUpButton = nil;
   self.pullPushControl = nil;
   self.remoteBranchPopUpButton = nil;
-  
-  self.statusArrayController = nil;
-  
-  self.stagingTableColumn = nil;
   
   [super dealloc];
 }
@@ -90,17 +89,30 @@
   return [[historyController retain] autorelease];
 }
 
+- (GBStageController*) stageController
+{
+  if (!stageController)
+  {
+    self.stageController = [[[GBStageController alloc] initWithNibName:@"GBStageController" bundle:nil] autorelease];
+    stageController.repository = self.repository;
+  }
+  return [[stageController retain] autorelease];
+}
+
+- (GBCommitController*) commitController
+{
+  if (!commitController)
+  {
+    self.commitController = [[[GBCommitController alloc] initWithNibName:@"GBCommitController" bundle:nil] autorelease];
+    commitController.repository = self.repository;
+  }
+  return [[commitController retain] autorelease];
+}
 
 
 
 #pragma mark Interrogation
 
-
-- (NSArray*) selectedChanges
-{
-  // TODO: return objects based on currently selected indexes
-  return [self.statusArrayController selectedObjects];
-}
 
 
 
@@ -263,120 +275,6 @@
 
 
 
-#pragma mark Stage Context Menu
-
-
-
-- (IBAction) stageShowDifference:(id)sender
-{
-  [[[self selectedChanges] firstObject] launchComparisonTool:sender];
-}
-  - (BOOL) validateStageShowDifference:(id)sender
-  {
-    return ([[self selectedChanges] count] == 1);
-  }
-
-- (IBAction) stageRevealInFinder:(id)sender
-{
-  [[[self selectedChanges] firstObject] revealInFinder:sender];
-}
-
-  - (BOOL) validateStageRevealInFinder:(id)sender
-  {
-    if ([[self selectedChanges] count] != 1) return NO;
-    GBChange* change = [[self selectedChanges] firstObject];
-    return [change validateRevealInFinder:sender];
-  }
-
-- (IBAction) stageDoStage:(id)sender
-{
-  [self.repository.stage stageChanges:[self selectedChanges]];
-}
-
-  - (BOOL) validateStageDoStage:(id)sender
-  {
-    NSArray* changes = [self selectedChanges];
-    if ([changes count] < 1) return NO;
-    return ![changes allAreTrue:@selector(staged)];
-  }
-
-- (IBAction) stageDoUnstage:(id)sender
-{
-  [self.repository.stage unstageChanges:[self selectedChanges]];
-}
-  - (BOOL) validateStageDoUnstage:(id)sender
-  {
-    NSArray* changes = [self selectedChanges];
-    if ([changes count] < 1) return NO;
-    return [changes anyIsTrue:@selector(staged)];
-  }
-
-- (IBAction) stageRevertFile:(id)sender
-{
-  NSAlert* alert = [[[NSAlert alloc] init] autorelease];
-  [alert addButtonWithTitle:@"OK"];
-  [alert addButtonWithTitle:@"Cancel"];
-  [alert setMessageText:@"Revert selected files to last committed state?"];
-  [alert setInformativeText:@"All non-committed changes will be lost."];
-  [alert setAlertStyle:NSWarningAlertStyle];
-  [alert retain];
-  [alert beginSheetModalForWindow:[self window]
-                    modalDelegate:self
-                   didEndSelector:@selector(stageRevertFileAlertDidEnd:returnCode:contextInfo:)
-                      contextInfo:nil];
-}
-  - (BOOL) validateStageRevertFile:(id)sender
-  {
-    // returns YES when non-empty and array has something to revert
-    return ![[self selectedChanges] allAreTrue:@selector(isUntrackedFile)]; 
-  }
-
-  - (void) stageRevertFileAlertDidEnd:(NSAlert*)alert returnCode:(NSInteger)returnCode contextInfo:(void*)contextInfo
-  {
-    if (returnCode == NSAlertFirstButtonReturn)
-    {
-      [self.repository.stage revertChanges:[self selectedChanges]];
-    }
-    [[alert window] orderOut:self];
-    [alert autorelease];
-  }
-
-- (IBAction) stageDeleteFile:(id)sender
-{
-  NSAlert* alert = [[[NSAlert alloc] init] autorelease];
-  [alert addButtonWithTitle:@"OK"];
-  [alert addButtonWithTitle:@"Cancel"];
-  [alert setMessageText:@"Delete selected files?"];
-  [alert setInformativeText:@"All non-committed changes will be lost."];
-  [alert setAlertStyle:NSWarningAlertStyle];
-  [alert retain];
-  [alert beginSheetModalForWindow:[self window]
-                    modalDelegate:self
-                   didEndSelector:@selector(stageDeleteFileAlertDidEnd:returnCode:contextInfo:)
-                      contextInfo:nil];  
-}
-
-  - (BOOL) validateStageDeleteFile:(id)sender
-  {
-    // returns YES when non-empty and array has something to delete
-    if ([[self selectedChanges] allAreTrue:@selector(isDeletedFile)]) return NO;
-    if ([[self selectedChanges] allAreTrue:@selector(staged)]) return NO;
-    return YES;
-  }
-
-  - (void) stageDeleteFileAlertDidEnd:(NSAlert*)alert returnCode:(NSInteger)returnCode contextInfo:(void*)contextInfo
-  {
-    if (returnCode == NSAlertFirstButtonReturn)
-    {
-      [self.repository.stage deleteFiles:[self selectedChanges]];
-    }
-    [[alert window] orderOut:self];
-    [alert autorelease];
-  }
-
-
-
-
 #pragma mark View Actions
 
 
@@ -421,6 +319,7 @@
 
 
 
+
 #pragma mark Actions Validation
 
 
@@ -428,18 +327,7 @@
 // If the selector is not implemented, returns YES.
 - (BOOL) validateUserInterfaceItem:(id<NSValidatedUserInterfaceItem>)anItem
 {
-  SEL anAction = anItem.action;
-  NSString* validationActionName = [NSString stringWithFormat:@"validate%@", 
-                                    [[NSString stringWithCString:sel_getName(anAction) 
-                                                        encoding:NSASCIIStringEncoding] stringWithFirstLetterCapitalized]];
-  
-  SEL validationAction = sel_getUid([validationActionName cStringUsingEncoding:NSASCIIStringEncoding]);
-  
-  if ([self respondsToSelector:validationAction])
-  {
-    return !![self performSelector:validationAction withObject:anItem];
-  }
-  return YES;
+  return [self dispatchUserInterfaceItemValidation:anItem];
 }
 
 
@@ -460,7 +348,18 @@
   [self updateRemoteBranchMenus];
 }
 
-
+- (void) selectedCommitDidChange:(GBCommit*) aCommit
+{
+  NSView* changesPlaceholderView = [[self.splitView subviews] objectAtIndex:1];
+  if ([aCommit isStage])
+  {
+    [changesPlaceholderView setViewController:self.stageController];
+  }
+  else
+  {
+    [changesPlaceholderView setViewController:self.commitController];
+  }
+}
 
 
 
@@ -475,12 +374,17 @@
   // Repository init
   
   self.repository.selectedCommit = self.repository.stage;
+  [self.repository addObserver:self forKeyPath:@"selectedCommit" selectorWithNewValue:@selector(selectedCommitDidChange:)];
   [self.repository reloadCommits];
 
   // View controllers init
   NSView* historyPlaceholderView = [[self.splitView subviews] objectAtIndex:0];
-  [historyPlaceholderView addViewController:self.historyController];
+  [historyPlaceholderView setViewController:self.historyController];
 
+  NSView* changesPlaceholderView = [[self.splitView subviews] objectAtIndex:1];
+  [changesPlaceholderView setViewController:self.stageController];
+  
+  
   // Window init
   [self.window setTitleWithRepresentedFilename:self.repository.path];
   [self.window setFrameAutosaveName:[NSString stringWithFormat:@"%@[path=%@].window.frame", [self class], self.repository.path]];
@@ -512,44 +416,6 @@
 {
   [self.repository beginBackgroundUpdate];
 }
-
-
-
-#pragma mark NSTableViewDelegate
-
-
-// The problem: http://www.cocoadev.com/index.pl?CheckboxInTableWithoutSelectingRow
-- (BOOL)tableView:(NSTableView*)aTableView 
-  shouldTrackCell:(NSCell*)aCell
-   forTableColumn:(NSTableColumn*)aTableColumn
-              row:(NSInteger)aRow
-{
-  // Note: this code disallows to check the checkbox.
-  return YES;
-  
-  if (aTableView == self.statusTableView)
-  {
-    return NO; // avoid changing selection when checkbox is clicked
-  }
-  
-  return YES;
-}
-
-// This avoid changing selection when checkbox is clicked.
-- (BOOL)tableView:(NSTableView *)aTableView shouldSelectRow:(NSInteger)rowIndex
-{
-  if (aTableView == self.statusTableView)
-  {
-    NSEvent *currentEvent = [[aTableView window] currentEvent];
-    if([currentEvent type] != NSLeftMouseDown) return YES;
-    // you may also check for the NSLeftMouseDragged event
-    // (changing the selection by holding down the mouse button and moving the mouse over another row)
-    int columnIndex = [aTableView columnAtPoint:[aTableView convertPoint:[currentEvent locationInWindow] fromView:nil]];
-    return !(columnIndex == 0);
-  }
-  return YES;
-}
-
 
 
 
