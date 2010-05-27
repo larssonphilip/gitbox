@@ -29,7 +29,7 @@
   // Prepare colors and styles
   
   NSColor* textColor = [NSColor textColor];
-  NSColor* dateColor = [NSColor blueColor];
+  NSColor* dateColor = [NSColor colorWithCalibratedRed:51/255.0 green:102/255.0 blue:204/255.0 alpha:1.0];
   
   if ([self isHighlighted])
   {
