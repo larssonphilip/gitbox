@@ -22,7 +22,15 @@
   if (object.date)
   {
     NSDateFormatter* dateFormatter = [[NSDateFormatter new] autorelease];
-    [dateFormatter setDateFormat:@"H:mm MMMM d, y"];
+    if ([object.date timeIntervalSinceNow] > -12*3600)
+    {
+      [dateFormatter setDateStyle:NSDateFormatterNoStyle];
+    }
+    else
+    {
+      [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+    }
+    [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
     date = [dateFormatter stringFromDate:object.date];
   }
   
