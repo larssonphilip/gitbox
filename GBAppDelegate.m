@@ -39,6 +39,7 @@
 - (GBRepositoryController*) windowControllerForRepositoryPath:(NSString*)path
 {
   GBRepositoryController* windowController = [self windowController];
+  [windowController setShouldCascadeWindows:NO];
   windowController.repositoryURL = [NSURL fileURLWithPath:path];
   return windowController;
 }
@@ -74,9 +75,45 @@
 }
 
 
+#pragma mark Window states
+
+
+- (void) storeRepositories
+{
+  NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+  NSMutableArray* paths = [NSMutableArray array];
+  for (GBRepositoryController* ctrl in self.windowControllers)
+  {
+    [paths addObject:ctrl.repository.path];
+  }
+  [defaults setObject:paths forKey:@"openedRepositories"];
+}
+
+- (void) loadRepositories
+{
+  NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+  NSArray* paths = [defaults objectForKey:@"openedRepositories"];
+  if (paths && [paths isKindOfClass:[NSArray class]])
+  {
+    for (NSString* path in paths)
+    {
+      if ([NSFileManager isWritableDirectoryAtPath:path] &&
+          [GBRepository isValidRepositoryAtPath:path])
+      {
+        GBRepositoryController* windowController = [self windowController];
+        windowController.repositoryURL = [NSURL fileURLWithPath:path];
+        [self addWindowController:windowController];
+        [windowController showWindow:self];        
+      } // if path is valid repo
+    } // for
+  } // if paths
+}
+
+
 
 
 #pragma mark GBRepositoryControllerDelegate
+
 
 - (void) windowControllerWillClose:(GBRepositoryController*)aController
 {
@@ -88,13 +125,19 @@
 #pragma mark NSApplicationDelegate
 
 
+- (void) applicationDidFinishLaunching:(NSNotification*) aNotification
+{
+  [self loadRepositories];
+}
+
+- (void) applicationWillTerminate:(NSNotification*)aNotification
+{
+  [self storeRepositories];
+}
+
 - (BOOL) applicationShouldOpenUntitledFile:(NSApplication*) app
 {
   return NO;
-}
-
-- (void) applicationDidFinishLaunching:(NSNotification*) aNotification
-{
 }
 
 - (BOOL) application:(NSApplication*)theApplication openFile:(NSString*)path
