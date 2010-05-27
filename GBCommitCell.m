@@ -130,6 +130,12 @@
 }
 
 
+- (id) copyWithZone:(NSZone *)zone
+{
+  GBCommitCell* c = [super copyWithZone:zone];
+  c.representedObject = self.representedObject;
+  return c;
+}
 
 
 
