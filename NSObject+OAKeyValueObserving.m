@@ -203,8 +203,8 @@ static char OAKeyValueObservingListenerMagicContext;
 {
 	id key = [self listenerKeyForObserver:observer target:target keyPath:keyPath selector:selector];
 	OAKeyValueObservingListener* listener = [self.listeners objectForKey:key];
+  [listener unsubscribe];
   [self.listeners removeObjectForKey:key];
-	[listener unsubscribe];
 }
 
 @end

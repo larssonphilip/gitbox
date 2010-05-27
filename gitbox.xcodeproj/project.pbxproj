@@ -67,6 +67,7 @@
 		2093A7D011AF0F2700239185 /* GBStageController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2093A7CF11AF0F2700239185 /* GBStageController.xib */; };
 		2093A7D211AF0F3200239185 /* GBCommitController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2093A7D111AF0F3200239185 /* GBCommitController.xib */; };
 		2093A80711AF20D100239185 /* NSObject+OADispatchItemValidation.m in Sources */ = {isa = PBXBuildFile; fileRef = 2093A80611AF20D100239185 /* NSObject+OADispatchItemValidation.m */; };
+		2093A85E11AF33B500239185 /* WhiteNSView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2093A85D11AF33B500239185 /* WhiteNSView.m */; };
 		20B1621211944C0F00A709CF /* NSFileManager+OAFileManagerHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B1621111944C0F00A709CF /* NSFileManager+OAFileManagerHelpers.m */; };
 		20B8B64E11A444B6006D6442 /* OATaskManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B8B64D11A444B6006D6442 /* OATaskManager.m */; };
 		20B8B70C11A489F1006D6442 /* GBChangesTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B8B70B11A489F1006D6442 /* GBChangesTask.m */; };
@@ -187,6 +188,8 @@
 		2093A7D111AF0F3200239185 /* GBCommitController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBCommitController.xib; sourceTree = "<group>"; };
 		2093A80511AF20D100239185 /* NSObject+OADispatchItemValidation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+OADispatchItemValidation.h"; sourceTree = "<group>"; };
 		2093A80611AF20D100239185 /* NSObject+OADispatchItemValidation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+OADispatchItemValidation.m"; sourceTree = "<group>"; };
+		2093A85C11AF33B500239185 /* WhiteNSView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WhiteNSView.h; sourceTree = "<group>"; };
+		2093A85D11AF33B500239185 /* WhiteNSView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WhiteNSView.m; sourceTree = "<group>"; };
 		20B1621011944C0F00A709CF /* NSFileManager+OAFileManagerHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSFileManager+OAFileManagerHelpers.h"; sourceTree = "<group>"; };
 		20B1621111944C0F00A709CF /* NSFileManager+OAFileManagerHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSFileManager+OAFileManagerHelpers.m"; sourceTree = "<group>"; };
 		20B8B64C11A444B6006D6442 /* OATaskManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OATaskManager.h; sourceTree = "<group>"; };
@@ -384,6 +387,8 @@
 				201E5F6711AA71E00061EFD6 /* NSObject+OAKeyValueObserving.m */,
 				2093A80511AF20D100239185 /* NSObject+OADispatchItemValidation.h */,
 				2093A80611AF20D100239185 /* NSObject+OADispatchItemValidation.m */,
+				2093A85C11AF33B500239185 /* WhiteNSView.h */,
+				2093A85D11AF33B500239185 /* WhiteNSView.m */,
 			);
 			name = Libs;
 			sourceTree = "<group>";
@@ -570,6 +575,7 @@
 				2093A7CB11AF0EA300239185 /* GBStageController.m in Sources */,
 				2093A7CE11AF0EC800239185 /* GBCommitController.m in Sources */,
 				2093A80711AF20D100239185 /* NSObject+OADispatchItemValidation.m in Sources */,
+				2093A85E11AF33B500239185 /* WhiteNSView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -12,7 +12,7 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="100099"/>
+			<integer value="6"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -563,46 +563,6 @@
 				<string key="NSScreenRect">{{0, 0}, {1280, 778}}</string>
 				<string key="NSMinSize">{400, 267}</string>
 				<string key="NSMaxSize">{1.79769e+308, 1.79769e+308}</string>
-			</object>
-			<object class="NSMenu" id="648754551">
-				<string key="NSTitle"/>
-				<object class="NSMutableArray" key="NSMenuItems">
-					<bool key="EncodedWithXMLCoder">YES</bool>
-					<object class="NSMenuItem" id="166088758">
-						<reference key="NSMenu" ref="648754551"/>
-						<string key="NSTitle">Compare</string>
-						<string key="NSKeyEquiv"/>
-						<int key="NSMnemonicLoc">2147483647</int>
-						<reference key="NSOnImage" ref="1054028841"/>
-						<reference key="NSMixedImage" ref="692401102"/>
-					</object>
-					<object class="NSMenuItem" id="381187162">
-						<reference key="NSMenu" ref="648754551"/>
-						<bool key="NSIsDisabled">YES</bool>
-						<bool key="NSIsSeparator">YES</bool>
-						<string key="NSTitle"/>
-						<string key="NSKeyEquiv"/>
-						<int key="NSMnemonicLoc">2147483647</int>
-						<reference key="NSOnImage" ref="1054028841"/>
-						<reference key="NSMixedImage" ref="692401102"/>
-					</object>
-					<object class="NSMenuItem" id="473377534">
-						<reference key="NSMenu" ref="648754551"/>
-						<string key="NSTitle">Save Old Version...</string>
-						<string key="NSKeyEquiv"/>
-						<int key="NSMnemonicLoc">2147483647</int>
-						<reference key="NSOnImage" ref="1054028841"/>
-						<reference key="NSMixedImage" ref="692401102"/>
-					</object>
-					<object class="NSMenuItem" id="900529038">
-						<reference key="NSMenu" ref="648754551"/>
-						<string key="NSTitle">Save New Version...</string>
-						<string key="NSKeyEquiv"/>
-						<int key="NSMnemonicLoc">2147483647</int>
-						<reference key="NSOnImage" ref="1054028841"/>
-						<reference key="NSMixedImage" ref="692401102"/>
-					</object>
-				</object>
 			</object>
 		</object>
 		<object class="IBObjectContainer" key="IBDocument.Objects">
@@ -1278,39 +1238,6 @@
 						<reference key="parent" ref="705697446"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">100228</int>
-						<reference key="object" ref="648754551"/>
-						<object class="NSMutableArray" key="children">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="900529038"/>
-							<reference ref="473377534"/>
-							<reference ref="381187162"/>
-							<reference ref="166088758"/>
-						</object>
-						<reference key="parent" ref="0"/>
-						<string key="objectName">commitMenu</string>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">100230</int>
-						<reference key="object" ref="900529038"/>
-						<reference key="parent" ref="648754551"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">100231</int>
-						<reference key="object" ref="473377534"/>
-						<reference key="parent" ref="648754551"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">100233</int>
-						<reference key="object" ref="381187162"/>
-						<reference key="parent" ref="648754551"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">100235</int>
-						<reference key="object" ref="166088758"/>
-						<reference key="parent" ref="648754551"/>
-					</object>
-					<object class="IBObjectRecord">
 						<int key="objectID">100312</int>
 						<reference key="object" ref="259929708"/>
 						<object class="NSMutableArray" key="children">
@@ -1367,12 +1294,6 @@
 					<string>100168.IBSegmentedControlInspectorSelectedSegmentMetadataKey</string>
 					<string>100169.IBPluginDependency</string>
 					<string>100170.IBPluginDependency</string>
-					<string>100228.IBEditorWindowLastContentRect</string>
-					<string>100228.IBPluginDependency</string>
-					<string>100230.IBPluginDependency</string>
-					<string>100231.IBPluginDependency</string>
-					<string>100233.IBPluginDependency</string>
-					<string>100235.IBPluginDependency</string>
 					<string>100311.IBPluginDependency</string>
 					<string>100312.IBPluginDependency</string>
 					<string>5.IBEditorWindowLastContentRect</string>
@@ -1422,12 +1343,6 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="1"/>
-					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{1118, 852}, {185, 73}}</string>
-					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>

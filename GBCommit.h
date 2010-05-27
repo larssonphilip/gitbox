@@ -32,6 +32,7 @@
 
 - (BOOL) isStage;
 - (id) myself;
+- (NSString*) longAuthorLine;
 
 
 #pragma mark Mutation

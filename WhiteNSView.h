@@ -1,0 +1,2 @@
+@interface WhiteNSView : NSView
+@end

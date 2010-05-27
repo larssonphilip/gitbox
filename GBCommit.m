@@ -72,6 +72,12 @@
   return self;
 }
 
+- (NSString*) longAuthorLine
+{
+  // TODO: display committer in parentheses if != author
+  return [NSString stringWithFormat:@"%@ <%@>", self.authorName, self.authorEmail];
+}
+
 
 
 #pragma mark Mutation
