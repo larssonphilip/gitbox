@@ -1,16 +1,16 @@
 #import "GBModels.h"
 
 #import "GBRepositoryController.h"
+#import "GBHistoryController.h"
+
 #import "GBRemotesController.h"
 #import "GBPromptController.h"
-
-#import "GBCommitCell.h"
-#import "GBStageCell.h"
 
 #import "NSArray+OAArrayHelpers.h"
 #import "NSString+OAStringHelpers.h"
 #import "NSMenu+OAMenuHelpers.h"
 #import "NSWindowController+OAWindowControllerHelpers.h"
+#import "NSView+OAViewControllerHelpers.h"
 #import "NSObject+OAKeyValueObserving.h"
 
 #import <objc/runtime.h>
@@ -22,15 +22,15 @@
 
 @synthesize delegate;
 
+@synthesize historyController;
+
 @synthesize splitView;
-@synthesize logTableView;
 @synthesize statusTableView;
 
 @synthesize currentBranchPopUpButton;
 @synthesize pullPushControl;
 @synthesize remoteBranchPopUpButton;
 
-@synthesize logArrayController;
 @synthesize statusArrayController;
 
 @synthesize stagingTableColumn;
@@ -52,15 +52,15 @@
   if ((id)repository.delegate == self) repository.delegate = nil;
   self.repository = nil;
   
+  self.historyController = nil;
+  
   self.splitView = nil;
-  self.logTableView = nil;
   self.statusTableView = nil;
   
   self.currentBranchPopUpButton = nil;
   self.pullPushControl = nil;
   self.remoteBranchPopUpButton = nil;
   
-  self.logArrayController = nil;
   self.statusArrayController = nil;
   
   self.stagingTableColumn = nil;
@@ -79,6 +79,17 @@
   }
   return [[repository retain] autorelease];
 }
+
+- (GBHistoryController*) historyController
+{
+  if (!historyController)
+  {
+    self.historyController = [[[GBHistoryController alloc] initWithNibName:@"GBHistoryController" bundle:nil] autorelease];
+    historyController.repository = self.repository;
+  }
+  return [[historyController retain] autorelease];
+}
+
 
 
 
@@ -460,12 +471,22 @@
 - (void) windowDidLoad
 {
   [super windowDidLoad];
+  
+  // Repository init
+  
+  self.repository.selectedCommit = self.repository.stage;
+  [self.repository reloadCommits];
+
+  // View controllers init
+  NSView* historyPlaceholderView = [[self.splitView subviews] objectAtIndex:0];
+  [historyPlaceholderView addViewController:self.historyController];
+
+  // Window init
   [self.window setTitleWithRepresentedFilename:self.repository.path];
   [self.window setFrameAutosaveName:[NSString stringWithFormat:@"%@[path=%@].window.frame", [self class], self.repository.path]];
-
+  
   [self updateCurrentBranchMenus];
   [self updateRemoteBranchMenus];
-  [self.repository reloadCommits];
 }
 
 
@@ -529,33 +550,8 @@
   return YES;
 }
 
-- (void)tableViewSelectionDidChange:(NSNotification *)aNotification
-{
-  BOOL flag = [[[self.logArrayController selectedObjects] firstObject] isStage];
-  [self.stagingTableColumn setHidden:!flag];
-}
 
-- (NSCell*) tableView:(NSTableView*)aTableView 
-            dataCellForTableColumn:(NSTableColumn*)aTableColumn
-                  row:(NSInteger)row
-{
-  if (aTableView == self.logTableView)
-  {
-    GBCommit* commit = [self.repository.commits objectAtIndex:row];
-    GBCommitCell* cell = nil;
-    if ([commit isStage])
-    {
-      cell = [[GBStageCell new] autorelease];
-    }
-    else
-    {
-      cell = [[GBCommitCell new] autorelease]; 
-    }
-    cell.representedObject = commit;
-    return cell;
-  }
-  return nil;
-}
+
 
 
 

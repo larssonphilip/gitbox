@@ -32,7 +32,7 @@
 
 @synthesize delegate;
 
-
+@synthesize selectedCommit;
 
 #pragma mark Init
 
@@ -45,6 +45,8 @@
 
 - (void) dealloc
 {
+  [NSObject cancelPreviousPerformRequestsWithTarget:self];
+  
   self.url = nil;
   self.dotGitURL = nil;
   self.localBranches = nil;
@@ -57,6 +59,9 @@
   self.localBranchCommits = nil;
   
   self.taskManager = nil;
+  
+  self.selectedCommit = nil;
+  
   [super dealloc];
 }
 

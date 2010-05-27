@@ -106,6 +106,11 @@ NSString* OATaskNotification = @"OATaskNotification";
 
 - (void) dealloc
 {
+  [NSObject cancelPreviousPerformRequestsWithTarget:self];
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
+
+  [self.nstask terminate];
+  
   self.executableName = nil;
   self.launchPath = nil;
   self.currentDirectoryPath = nil;
@@ -116,8 +121,6 @@ NSString* OATaskNotification = @"OATaskNotification";
   self.standardError = nil;
   self.activity.task = nil;
   self.activity = nil;
-  [NSObject cancelPreviousPerformRequestsWithTarget:self];
-  [[NSNotificationCenter defaultCenter] removeObserver:self];
   [super dealloc];
 }
 

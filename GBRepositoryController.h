@@ -6,6 +6,7 @@
 
 #import "GBRepository.h"
 @class GBCommit;
+@class GBHistoryController;
 @interface GBRepositoryController : NSWindowController<
                                                       GBRepositoryDelegate, 
                                                       NSTableViewDelegate>
@@ -16,14 +17,12 @@
   id<GBRepositoryControllerDelegate> delegate;
   
   NSSplitView* splitView;
-  NSTableView* logTableView;
   NSTableView* statusTableView;
   
   NSPopUpButton* currentBranchPopUpButton;
   NSSegmentedControl* pullPushControl;
   NSPopUpButton* remoteBranchPopUpButton;
   
-  NSArrayController* logArrayController;
   NSArrayController* statusArrayController;
   
   NSTableColumn* stagingTableColumn;
@@ -34,15 +33,15 @@
 
 @property(assign) id<GBRepositoryControllerDelegate> delegate;
 
+@property(retain) GBHistoryController* historyController;
+
 @property(retain) IBOutlet NSSplitView* splitView;
-@property(retain) IBOutlet NSTableView* logTableView;
 @property(retain) IBOutlet NSTableView* statusTableView;
 
 @property(retain) IBOutlet NSPopUpButton* currentBranchPopUpButton;
 @property(retain) IBOutlet NSSegmentedControl* pullPushControl;
 @property(retain) IBOutlet NSPopUpButton* remoteBranchPopUpButton;
 
-@property(retain) IBOutlet NSArrayController* logArrayController;
 @property(retain) IBOutlet NSArrayController* statusArrayController;
 
 @property(retain) IBOutlet NSTableColumn* stagingTableColumn;
