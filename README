@@ -1,6 +1,9 @@
 0.3:
 
-
+- pretty history table
+- improved stability of git and diff operations
+- improved activity window
+- windows and positions are remembered between launches
 
 0.2:
 
@@ -30,16 +33,16 @@ Bugs:
 - OK button does not work in prompt because textfield value is updated through binding yet.
 - table row selection is ignored if was no selection for ArrayController. Should check NSTableView selectedRowIndexes? 
   See http://forums.macrumors.com/showthread.php?t=166469
-- when opened git.git repo spinner spins forever
-+ git diff-tree returns top-level folders instead of full paths (use -r)
 - historical diff for Added file shows diff between current state (left) and initial state (right)
-- when fetching in background log shrinks (have no idea what happens)
-- "OATask failed: opendiff" - it is twice, is it because of terminating it?
-- local branch change does not refresh log
-- remote branch checkout does not update remote branch menu
 - switch context menu for historical commits
 - do not open another window for the same repo if already opened, just make it key window
-- sometimes hangs when FileMerge is opened (for a couple of seconds): http://www.cocoadev.com/index.pl?WrappingUnixApps 
++ when opened git.git repo spinner spins forever
++ git diff-tree returns top-level folders instead of full paths (use -r)
++ when fetching in background log shrinks (have no idea what happens)
++ "OATask failed: opendiff" - it is twice, is it because of terminating it?
++ local branch change does not refresh log
++ remote branch checkout does not update remote branch menu
++ sometimes hangs when FileMerge is opened (for a couple of seconds): http://www.cocoadev.com/index.pl?WrappingUnixApps 
   should listen to task termination notification
 
 UI glitches:
@@ -51,7 +54,7 @@ UI glitches:
 
 UI goodies:
 
-- remember all opened windows on startup (for existing paths only)
++ remember all opened windows on startup (for existing paths only)
 - change "sync" button title to "push" when remote is not ahead of local branch
 - change "sync" button title to "pull" when remote is ahead of local branch
 - change "sync" button title to "merge" when remote is local
@@ -59,7 +62,7 @@ UI goodies:
 - do ls-remote in background starting on unfocus
 - switch off 1min sync with a menu item: useful on battery
 - remember chosen remote branch for the local branch in prefs
-- recently opened files
++ recently opened files
 - log: mark as read/unread + automatic mark as read
 - stash list: as a local branch menu item?
 - individual chunks commit
