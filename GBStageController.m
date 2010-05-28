@@ -157,6 +157,17 @@
 #pragma mark NSTableViewDelegate
 
 
+
+// The problem: http://www.cocoadev.com/index.pl?CheckboxInTableWithoutSelectingRow
+- (BOOL)tableView:(NSTableView*)aTableView 
+  shouldTrackCell:(NSCell*)aCell
+   forTableColumn:(NSTableColumn*)aTableColumn
+              row:(NSInteger)aRow
+{
+  // This allows clicking the checkbox without selecting the row
+  return YES;
+}
+
 // This avoid changing selection when checkbox is clicked.
 - (BOOL)tableView:(NSTableView *)aTableView shouldSelectRow:(NSInteger)rowIndex
 {
