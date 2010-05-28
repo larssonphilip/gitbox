@@ -52,6 +52,9 @@
 - (NSArray*) loadTags;
 - (NSArray*) loadRemotes;
 
+- (void) saveObject:(id)obj forKey:(NSString*)key;
+- (id) loadObjectForKey:(NSString*)key;
+
 
 #pragma mark Update
 

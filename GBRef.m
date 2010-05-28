@@ -24,15 +24,36 @@
 {
   if (!remoteBranch)
   {
-    NSLog(@"TODO: find the branch name in user defaults");
-    self.remoteBranch = [[self.repository defaultRemote] defaultBranch];
+    NSDictionary* remoteBranchDict = [self loadObjectForKey:@"remoteBranch"];
+    if (remoteBranchDict && [remoteBranchDict objectForKey:@"remoteAlias"] && [remoteBranchDict objectForKey:@"name"])
+    {
+      GBRef* ref = [[GBRef new] autorelease];
+      ref.repository = self.repository;
+      ref.remoteAlias = [remoteBranchDict objectForKey:@"remoteAlias"];
+      ref.name = [remoteBranchDict objectForKey:@"name"];
+      self.remoteBranch = ref;
+    }
+    else
+    {
+      NSLog(@"TODO: try .git/config, merge section");
+      self.remoteBranch = [[self.repository defaultRemote] defaultBranch];
+    }
+
+    
   }
   return [[remoteBranch retain] autorelease];
 }
 
 - (void) saveRemoteBranch
 {
-  NSLog(@"TODO: Save association of this ref with the remote branch in user prefs");
+  if ([self isLocalBranch])
+  {
+    id dict = [NSDictionary dictionaryWithObjectsAndKeys:
+               self.remoteBranch.remoteAlias, @"remoteAlias", 
+               self.remoteBranch.name, @"name", 
+               nil];
+    [self saveObject:dict forKey:@"remoteBranch"];
+  }
 }
 
 
@@ -41,18 +62,22 @@
   if (self == object) return YES;
   if (![object isKindOfClass:[self class]]) return NO;
   GBRef* other = (GBRef*)object;
-  if (self.commitId) return ([self.commitId isEqualToString:other.commitId]);
   if (self.name && [self.name isEqualToString:other.name])
   {
     if ([self isTag])
     {
       return YES;
     }
-    if ([self remoteAlias] && [self.remoteAlias isEqualToString:other.remoteAlias])
+    if ([self remoteAlias] ? [self.remoteAlias isEqualToString:other.remoteAlias] : !other.remoteAlias)
     {
       return YES;
     }
   }
+  else
+  {
+    if (self.commitId) return ([self.commitId isEqualToString:other.commitId]);
+  }
+
   return NO;
 }
 
@@ -86,6 +111,27 @@
   if (self.name) return [self nameWithRemoteAlias];
   return nil;
 }
+
+
+
+#pragma mark Save/load
+
+- (void) saveObject:(id)obj forKey:(NSString*)key
+{
+  [self.repository saveObject:obj forKey:[NSString stringWithFormat:@"ref:%@:%@", self.displayName, key]];
+}
+
+- (id) loadObjectForKey:(NSString*)key
+{
+  return [self.repository loadObjectForKey:[NSString stringWithFormat:@"ref:%@:%@", self.displayName, key]];
+}
+
+
+
+
+
+#pragma mark Actions
+
 
 - (void) updateCommits
 {

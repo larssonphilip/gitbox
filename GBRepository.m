@@ -170,6 +170,24 @@
 }
 
 
+- (void) saveObject:(id)obj forKey:(NSString*)key
+{
+  NSString* repokey = [NSString stringWithFormat:@"optionsFor:%@", self.path];
+  NSDictionary* dict = [[NSUserDefaults standardUserDefaults] dictionaryForKey:repokey];
+  NSMutableDictionary* mdict = nil;
+  if (dict) mdict = [[dict mutableCopy] autorelease];
+  if (!dict) mdict = [NSMutableDictionary dictionary];
+  [mdict setObject:obj forKey:key];
+  [[NSUserDefaults standardUserDefaults] setObject:mdict forKey:repokey];
+}
+
+- (id) loadObjectForKey:(NSString*)key
+{
+  NSString* repokey = [NSString stringWithFormat:@"optionsFor:%@", self.path];
+  NSDictionary* dict = [[NSUserDefaults standardUserDefaults] dictionaryForKey:repokey];
+  if (!dict) dict = [NSDictionary dictionary];
+  return [dict objectForKey:key];
+}
 
 
 
