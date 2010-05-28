@@ -1,4 +1,5 @@
 #import "NSObject+OADispatchItemValidation.h"
+#import "NSString+OAStringHelpers.h"
 
 @implementation NSObject (OADispatchItemValidation)
 
@@ -12,7 +13,7 @@
                                     [[NSString stringWithCString:sel_getName(anAction) 
                                                         encoding:NSASCIIStringEncoding] stringWithFirstLetterCapitalized]];
   
-  SEL validationAction = sel_getUid([validationActionName cStringUsingEncoding:NSASCIIStringEncoding]);
+  SEL validationAction = (SEL)sel_getUid([validationActionName cStringUsingEncoding:NSASCIIStringEncoding]);
   
   if ([self respondsToSelector:validationAction])
   {
