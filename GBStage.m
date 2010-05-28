@@ -47,7 +47,7 @@
 
 - (BOOL) isDirty
 {
-  return [self.allChanges count] > 0;
+  return ([self.stagedChanges count] + [self.unstagedChanges count]) > 0;
 }
 
 
@@ -136,15 +136,41 @@
 
 - (NSString*) message
 {
-  if ([self isDirty])
+  NSUInteger modifications = [self.stagedChanges count] + [self.unstagedChanges count];
+  NSUInteger newFiles = [self.untrackedChanges count];
+  
+  if (modifications + newFiles <= 0)
   {
-    return [NSLocalizedString(@"Working directory", @"") stringByAppendingFormat:@" (%d)", [self.allChanges count]];
+    return NSLocalizedString(@"Working directory clean", @"");
   }
-  else
+  
+  NSMutableArray* titles = [NSMutableArray array];
+  
+  if (modifications > 0)
   {
-    return NSLocalizedString(@"Working directory", @"");
-  }
+    if (modifications == 1)
+    {
+      [titles addObject:[NSString stringWithFormat:NSLocalizedString(@"%d modified file",@""), modifications]];
+    }
+    else
+    {
+      [titles addObject:[NSString stringWithFormat:NSLocalizedString(@"%d modified files",@""), modifications]];
+    }
 
+  }
+  if (newFiles > 0)
+  {
+    if (newFiles == 1)
+    {
+      [titles addObject:[NSString stringWithFormat:NSLocalizedString(@"%d new file",@""), newFiles]];
+    }
+    else
+    {
+      [titles addObject:[NSString stringWithFormat:NSLocalizedString(@"%d new files",@""), newFiles]];
+    }
+  }  
+  
+  return [titles componentsJoinedByString:@", "];
 }
 
 @end
