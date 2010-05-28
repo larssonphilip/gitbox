@@ -16,7 +16,7 @@
 - (void) drawContentInFrame:(NSRect)cellFrame
 {
   
-  NSRect innerRect = NSInsetRect(cellFrame, 5.0, 1.0);
+  NSRect innerRect = NSInsetRect(cellFrame, 6.0, 2.0);
   
   GBCommit* object = [self commit];
   
