@@ -102,6 +102,11 @@
   return cell;
 }
 
+- (id) valueForUndefinedKey:(NSString*)key
+{
+  NSLog(@"ERROR: valueForUndefinedKey: %@", key);
+  return nil;
+}
 
 
 #pragma mark Mutation

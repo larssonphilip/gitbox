@@ -345,8 +345,9 @@ NSString* OATaskNotification = @"OATaskNotification";
 {
   [self endAllCallbacks];
   [self.nstask terminate];
-  kill([self.nstask processIdentifier], 9);
-  [self.nstask waitUntilExit];
+  [self.nstask interrupt];
+  //  kill([self.nstask processIdentifier], 9);
+  //[self.nstask waitUntilExit];
   [self doFinish];
 }
 
@@ -359,11 +360,11 @@ NSString* OATaskNotification = @"OATaskNotification";
 {
   [self endAllCallbacks];
   
-  while ([self.nstask isRunning])
-  {
-    NSLog(@"PROGRAM ERROR: doFinish callback is fired when task is still running! Calling waitUntilExit. [%@]", [self command]);
-    [self.nstask waitUntilExit];
-  }
+//  while ([self.nstask isRunning])
+//  {
+//    NSLog(@"PROGRAM ERROR: doFinish callback is fired when task is still running! Calling waitUntilExit. [%@]", [self command]);
+//    [self.nstask waitUntilExit];
+//  }
   
   NSFileHandle* pipeFileHandle = [self fileHandleForReading];
   if (pipeFileHandle)
