@@ -6,7 +6,7 @@
 }
 
 @property(retain) GBRepository* repository;
-@property(retain) IBOutlet NSTableView* logTableView;
+@property(retain) IBOutlet NSTableView* tableView;
 @property(retain) IBOutlet NSArrayController* logArrayController;
 
 - (GBCommit*) selectedCommit;

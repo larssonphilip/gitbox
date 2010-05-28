@@ -3,14 +3,11 @@
 #import "GBStageController.h"
 
 #import "NSObject+OADispatchItemValidation.h"
+#import "NSObject+OAKeyValueObserving.h"
 #import "NSArray+OAArrayHelpers.h"
 
 
 @implementation GBStageController
-
-@synthesize stagingTableColumn;
-
-
 
 
 
@@ -18,16 +15,13 @@
 
 - (void) dealloc
 {
-  self.stagingTableColumn = nil;
   [super dealloc];
 }
 
 
 
-
-
-
 #pragma mark Interrogation
+
 
 
 
@@ -144,6 +138,7 @@
   [[alert window] orderOut:self];
   [alert autorelease];
 }
+
 
 
 #pragma mark Actions Validation

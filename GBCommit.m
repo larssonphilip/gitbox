@@ -4,6 +4,10 @@
 #import "NSData+OADataHelpers.h"
 #import "NSString+OAGitHelpers.h"
 
+#import "GBCommitCell.h"
+#import "GBMergeCommitCell.h"
+#import "GBStageCell.h"
+
 @implementation GBCommit
 
 @synthesize commitId;
@@ -67,15 +71,35 @@
   return NO;
 }
 
-- (id) myself
+- (BOOL) isMerge
 {
-  return self;
+  return self.parentIds && [self.parentIds count] > 1;
 }
 
 - (NSString*) longAuthorLine
 {
   // TODO: display committer in parentheses if != author
   return [NSString stringWithFormat:@"%@ <%@>", self.authorName, self.authorEmail];
+}
+
+- (Class) cellClass
+{
+  if ([self isStage])
+  {
+    return [GBStageCell class];
+  }
+  if ([self isMerge])
+  {
+    return [GBMergeCommitCell class];
+  }
+  return [GBCommitCell class];
+}
+
+- (GBCommitCell*) cell
+{
+  GBCommitCell* cell = [[[self cellClass] new] autorelease];
+  [cell setRepresentedObject:self];
+  return cell;
 }
 
 

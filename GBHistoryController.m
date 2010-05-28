@@ -1,16 +1,15 @@
 #import "GBModels.h"
 
 #import "GBHistoryController.h"
-
 #import "GBCommitCell.h"
-#import "GBStageCell.h"
 
 #import "NSArray+OAArrayHelpers.h"
+#import "NSObject+OAKeyValueObserving.h"
 
 @implementation GBHistoryController
 
 @synthesize repository;
-@synthesize logTableView;
+@synthesize tableView;
 @synthesize logArrayController;
 
 
@@ -19,12 +18,19 @@
 
 - (void) dealloc
 {
+  [self.repository removeObserver:self keyPath:@"stage.changes" selector:@selector(stageDidUpdate)];
+  
   self.repository = nil;
-  self.logTableView = nil;
+  self.tableView = nil;
   self.logArrayController = nil;
   [super dealloc];
 }
 
+- (void) loadView
+{
+  [super loadView];
+  [self.repository addObserver:self forKeyPath:@"stage.changes" selectorWithoutArguments:@selector(stageDidUpdate)];
+}
 
 
 
@@ -34,6 +40,16 @@
 - (GBCommit*) selectedCommit
 {
   return (GBCommit*)[[self.logArrayController selectedObjects] firstObject];
+}
+
+
+
+#pragma mark GBStage
+
+
+- (void) stageDidUpdate
+{
+  [self.tableView reloadDataForRowIndexes:[NSIndexSet indexSetWithIndex:0] columnIndexes:[NSIndexSet indexSetWithIndex:0]];
 }
 
 
@@ -50,24 +66,15 @@
 dataCellForTableColumn:(NSTableColumn*)aTableColumn
                   row:(NSInteger)row
 {
-  if (aTableView == self.logTableView)
-  {
-    GBCommit* commit = [self.repository.commits objectAtIndex:row];
-    GBCommitCell* cell = nil;
-    if ([commit isStage])
-    {
-      cell = [[GBStageCell new] autorelease];
-    }
-    else
-    {
-      cell = [[GBCommitCell new] autorelease]; 
-    }
-    cell.representedObject = commit;
-    return cell;
-  }
-  return nil;
+  GBCommit* commit = [self.repository.commits objectAtIndex:row];
+  return [commit cell];
 }
 
+- (CGFloat)tableView:(NSTableView *)tableView heightOfRow:(NSInteger)row
+{
+  GBCommit* commit = [self.repository.commits objectAtIndex:row];
+  return [[commit cellClass] cellHeight];
+}
 
 
 @end

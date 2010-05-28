@@ -1,16 +1,12 @@
 #import "GBCommit.h"
-#import "GBCommitCell.h"
+#import "GBMergeCommitCell.h"
 
-@implementation GBCommitCell
+@implementation GBMergeCommitCell
 
-- (GBCommit*) commit
-{
-  return [self representedObject];
-}
 
 + (CGFloat) cellHeight
 {
-  return 38.0;
+  return 18.0;
 }
 
 - (void) drawContentInFrame:(NSRect)cellFrame
@@ -68,7 +64,7 @@
   
   NSMutableDictionary* messageAttributes = [[[NSMutableDictionary alloc] initWithObjectsAndKeys:
                                              textColor, NSForegroundColorAttributeName,
-                                             [NSFont systemFontOfSize:12.0], NSFontAttributeName,
+                                             [NSFont systemFontOfSize:11.0], NSFontAttributeName,
                                              paragraphStyle, NSParagraphStyleAttributeName,
                                              nil] autorelease];
   
@@ -92,32 +88,36 @@
   
   // Layout constants
   
-  CGFloat dateWidthRatio = 0.5; // 50% of the width
-  CGFloat titleDatePadding = 3.0;
+  CGFloat titleWidthRatio = 0.34;
+  CGFloat dateWidthRatio = 0.50; // of the rest
+  CGFloat padding = 5.0;
   CGFloat titleMessagePadding = 1.0;
-  CGFloat verticalShiftForDate = 2.0;
+  CGFloat verticalShiftForSmallText = 2.0;
   CGFloat x0 = innerRect.origin.x;
   CGFloat y0 = innerRect.origin.y;
   
   // Calculate layout
   
-  CGFloat maxDateWidth = innerRect.size.width*dateWidthRatio;
+  CGFloat maxTitleWidth = innerRect.size.width*titleWidthRatio;
+  titleSize.width = (titleSize.width > maxTitleWidth ? maxTitleWidth : titleSize.width);
+
+  CGFloat maxDateWidth = (innerRect.size.width - titleSize.width)*dateWidthRatio;
   dateSize.width = (dateSize.width > maxDateWidth ? maxDateWidth : dateSize.width);
   
   NSRect dateRect = NSMakeRect(x0 + innerRect.size.width - dateSize.width,
-                               y0 + verticalShiftForDate,
+                               y0 + verticalShiftForSmallText,
                                dateSize.width,
                                dateSize.height);
   
   NSRect titleRect = NSMakeRect(x0,
                                 y0,
-                                innerRect.size.width - dateSize.width - titleDatePadding, 
+                                titleSize.width,
                                 titleSize.height);
   
-  NSRect messageRect = NSMakeRect(x0, 
-                                  y0 + titleSize.height + titleMessagePadding, 
-                                  innerRect.size.width,
-                                  innerRect.size.height - titleSize.height - titleMessagePadding);
+  NSRect messageRect = NSMakeRect(x0 + titleSize.width + padding,
+                                  y0 + verticalShiftForSmallText,
+                                  innerRect.size.width - (titleSize.width + padding) - (dateSize.width + padding),
+                                  innerRect.size.height);
   
   // draw
   
@@ -126,30 +126,5 @@
   [message drawInRect:messageRect withAttributes:messageAttributes];
   
 }
-
-- (void) drawInteriorWithFrame:(NSRect)cellFrame inView:(NSView*)theControlView
-{  
-  NSColor* backgroundColor = [NSColor controlBackgroundColor];
-  
-  if ([self isHighlighted])
-  {
-    backgroundColor = [NSColor alternateSelectedControlColor];
-  }
-  
-  [backgroundColor set];
-  NSRectFill(cellFrame);
-
-  [self drawContentInFrame:cellFrame];
-}
-
-
-- (id) copyWithZone:(NSZone *)zone
-{
-  GBCommitCell* c = [super copyWithZone:zone];
-  c.representedObject = self.representedObject;
-  return c;
-}
-
-
 
 @end

@@ -1,18 +1,8 @@
 @class GBChange;
 @class GBRepository;
+@class GBCommitCell;
 @interface GBCommit : NSObject
 {
-  NSString* commitId;
-  NSString* treeId;
-  NSArray*  parentIds;
-  NSString* authorName;
-  NSString* authorEmail;
-  NSDate* date;
-  NSString* message;
-  
-  NSArray* changes;
-  
-  GBRepository* repository;
 }
 
 @property(retain) NSString* commitId;
@@ -31,8 +21,10 @@
 #pragma mark Interrogation
 
 - (BOOL) isStage;
-- (id) myself;
+- (BOOL) isMerge;
 - (NSString*) longAuthorLine;
+- (Class) cellClass;
+- (GBCommitCell*) cell;
 
 
 #pragma mark Mutation
