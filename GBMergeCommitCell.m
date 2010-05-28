@@ -6,7 +6,7 @@
 
 + (CGFloat) cellHeight
 {
-  return 18.0;
+  return 19.0;
 }
 
 - (void) drawContentInFrame:(NSRect)cellFrame
