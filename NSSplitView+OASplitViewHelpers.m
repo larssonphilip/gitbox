@@ -51,8 +51,9 @@
       secondFrame.size.width += delta;
     } else {
       firstFrame.size.width += delta * ratio;
-      secondFrame.size.width += delta * (1 - ratio);
     }
+    
+    firstFrame.size.width = round(firstFrame.size.width);
     
     secondFrame.size.width = newFrame.size.width - firstFrame.size.width - dividerThickness;
     secondFrame.size.height = newFrame.size.height;
@@ -72,8 +73,9 @@
       secondFrame.size.height += delta;
     } else {
       firstFrame.size.height += delta * ratio;
-      secondFrame.size.height += delta * (1 - ratio);
     }
+    
+    firstFrame.size.height = round(firstFrame.size.height);
     
     secondFrame.size.height = newFrame.size.height - firstFrame.size.height - dividerThickness;
     secondFrame.size.width = newFrame.size.width;
