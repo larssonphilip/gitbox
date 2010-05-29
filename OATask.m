@@ -322,12 +322,13 @@ NSString* OATaskNotification = @"OATaskNotification";
 
 - (void) taskDidTerminateNotification:(NSNotification*) notification
 {
-  //NSLog(@"TERM NOTIF: %@ (collected %d bytes)", [self command], [self.output length]);
+//  NSLog(@"TERM NOTIF: %@ (collected %d bytes)", [self command], [self.output length]);
   // Do not do this unless all data is read: [self doFinish];
 }
 
 - (void) taskDidReceiveReadCompletionNotification:(NSNotification*) notification
 {
+//  NSLog(@"DATA NOTIF: %@ (collected %d bytes)", [self command], [self.output length]);
   NSData* incomingData = [[notification userInfo] objectForKey:NSFileHandleNotificationDataItem];
   if (![self.nstask isRunning] && (!incomingData || [incomingData length] <= 0))
   {
@@ -343,12 +344,17 @@ NSString* OATaskNotification = @"OATaskNotification";
 
 - (void) terminateAfterTimeout
 {
-  [self endAllCallbacks];
-  [self.nstask terminate];
-  [self.nstask interrupt];
-  //  kill([self.nstask processIdentifier], 9);
-  //[self.nstask waitUntilExit];
-  [self doFinish];
+  NSLog(@"TIMEOUT: %@", [self command]);
+//  [[self fileHandleForReading] closeFile];
+//  [self.nstask terminate];
+//  NSLog(@"TIMEOUT: %@ (running: %d)", [self command], (int)[self.nstask isRunning]);
+  
+//  [self endAllCallbacks];
+//  [self.nstask terminate];
+//  [self.nstask interrupt];
+//  //  kill([self.nstask processIdentifier], 9);
+//  //[self.nstask waitUntilExit];
+//  [self doFinish];
 }
 
 

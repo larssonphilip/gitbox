@@ -191,11 +191,10 @@
   task.executableName = @"opendiff";
   task.currentDirectoryPath = self.repository.path;
   task.arguments = [NSArray arrayWithObjects:[leftURL path], [rightURL path], nil];
-  // opendiff waits for FileMerge.app to exit, so we should kill it
-  task.terminateTimeout = 2.0;
+  // opendiff will quit in 5 secs
+  // It also messes with xcode's PTY so after first launch xcode does not show log (but Console.app does).
   task.avoidIndicator = YES;
-  [task launch];
-  
+  [self.repository.taskManager launchTask:task];
 }
 
 - (void) revealInFinder:(id)sender
