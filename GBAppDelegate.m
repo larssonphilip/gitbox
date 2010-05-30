@@ -69,6 +69,15 @@
 
 - (void) openWindowForRepositoryAtURL:(NSURL*)url
 {
+  for (GBRepositoryController* ctrl in self.windowControllers)
+  {
+    if ([ctrl.repository.url isEqual:url])
+    {
+      [ctrl showWindow:self];
+      return;
+    }
+  }
+  
   GBRepositoryController* windowController = [self windowController];
   windowController.repositoryURL = url;
   [self addWindowController:windowController];
