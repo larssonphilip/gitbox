@@ -37,13 +37,6 @@
   return windowController;
 }
 
-- (GBRepositoryController*) windowControllerForRepositoryPath:(NSString*)path
-{
-  GBRepositoryController* windowController = [self windowController];
-  windowController.repositoryURL = [NSURL fileURLWithPath:path];
-  return windowController;
-}
-
 - (void) dealloc
 {
   self.windowControllers = nil;
@@ -74,6 +67,15 @@
   [[GBActivityController sharedActivityController] showWindow:sender];
 }
 
+- (void) openWindowForRepositoryAtURL:(NSURL*)url
+{
+  GBRepositoryController* windowController = [self windowController];
+  windowController.repositoryURL = url;
+  [self addWindowController:windowController];
+  [windowController showWindow:self];
+}
+
+
 
 #pragma mark Window states
 
@@ -100,10 +102,7 @@
       if ([NSFileManager isWritableDirectoryAtPath:path] &&
           [GBRepository isValidRepositoryAtPath:path])
       {
-        GBRepositoryController* windowController = [self windowController];
-        windowController.repositoryURL = [NSURL fileURLWithPath:path];
-        [self addWindowController:windowController];
-        [windowController showWindow:self];        
+        [self openWindowForRepositoryAtURL:[NSURL fileURLWithPath:path]];
       } // if path is valid repo
     } // for
   } // if paths
@@ -118,7 +117,10 @@
 - (void) windowControllerWillClose:(GBRepositoryController*)aController
 {
   [self removeWindowController:aController];
+  [self storeRepositories];
 }
+
+
 
 
 
@@ -147,13 +149,9 @@
   {
     if ([GBRepository isValidRepositoryAtPath:path])
     {
-      GBRepositoryController* windowController = [self windowController];
-      windowController.repositoryURL = url;
-      [self addWindowController:windowController];
-      [windowController showWindow:self];
-      
+      [self openWindowForRepositoryAtURL:url];
+      [self storeRepositories];
       [[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:url];
-      
       return YES;
     }
     else 
