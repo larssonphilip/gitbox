@@ -1,9 +1,9 @@
 #import "GBModels.h"
 
 #import "GBRepositoryController.h"
-#import "GBHistoryController.h"
-#import "GBStageController.h"
-#import "GBCommitController.h"
+#import "GBHistoryViewController.h"
+#import "GBStageViewController.h"
+#import "GBCommitViewController.h"
 
 #import "GBRemotesController.h"
 #import "GBPromptController.h"
@@ -79,31 +79,31 @@
   return [[repository retain] autorelease];
 }
 
-- (GBHistoryController*) historyController
+- (GBHistoryViewController*) historyController
 {
   if (!historyController)
   {
-    self.historyController = [[[GBHistoryController alloc] initWithNibName:@"GBHistoryController" bundle:nil] autorelease];
+    self.historyController = [[[GBHistoryViewController alloc] initWithNibName:@"GBHistoryController" bundle:nil] autorelease];
     historyController.repository = self.repository;
   }
   return [[historyController retain] autorelease];
 }
 
-- (GBStageController*) stageController
+- (GBStageViewController*) stageController
 {
   if (!stageController)
   {
-    self.stageController = [[[GBStageController alloc] initWithNibName:@"GBStageController" bundle:nil] autorelease];
+    self.stageController = [[[GBStageViewController alloc] initWithNibName:@"GBStageController" bundle:nil] autorelease];
     stageController.repository = self.repository;
   }
   return [[stageController retain] autorelease];
 }
 
-- (GBCommitController*) commitController
+- (GBCommitViewController*) commitController
 {
   if (!commitController)
   {
-    self.commitController = [[[GBCommitController alloc] initWithNibName:@"GBCommitController" bundle:nil] autorelease];
+    self.commitController = [[[GBCommitViewController alloc] initWithNibName:@"GBCommitController" bundle:nil] autorelease];
     commitController.repository = self.repository;
   }
   return [[commitController retain] autorelease];

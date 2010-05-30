@@ -1,12 +1,12 @@
 #import "GBModels.h"
 
-#import "GBHistoryController.h"
+#import "GBHistoryViewController.h"
 #import "GBCommitCell.h"
 
 #import "NSArray+OAArrayHelpers.h"
 #import "NSObject+OAKeyValueObserving.h"
 
-@implementation GBHistoryController
+@implementation GBHistoryViewController
 
 @synthesize repository;
 @synthesize tableView;

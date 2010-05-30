@@ -1,5 +1,5 @@
 #import "GBBaseChangesController.h"
-@interface GBStageController : GBBaseChangesController
+@interface GBStageViewController : GBBaseChangesController
 {
 }
 

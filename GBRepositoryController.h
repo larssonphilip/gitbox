@@ -6,9 +6,9 @@
 
 #import "GBRepository.h"
 @class GBCommit;
-@class GBHistoryController;
-@class GBStageController;
-@class GBCommitController;
+@class GBHistoryViewController;
+@class GBStageViewController;
+@class GBCommitViewController;
 @interface GBRepositoryController : NSWindowController<
                                                       GBRepositoryDelegate, 
                                                       NSTableViewDelegate>
@@ -20,9 +20,9 @@
 
 @property(assign) id<GBRepositoryControllerDelegate> delegate;
 
-@property(retain) GBHistoryController* historyController;
-@property(retain) GBStageController* stageController;
-@property(retain) GBCommitController* commitController;
+@property(retain) GBHistoryViewController* historyController;
+@property(retain) GBStageViewController* stageController;
+@property(retain) GBCommitViewController* commitController;
 
 @property(retain) IBOutlet NSSplitView* splitView;
 

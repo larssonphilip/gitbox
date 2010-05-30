@@ -52,7 +52,7 @@
 		2057F10511ACF4C0009EDF2F /* GBActivityController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2057F10411ACF4C0009EDF2F /* GBActivityController.xib */; };
 		2057F11011ACF751009EDF2F /* GBActivityController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2057F10F11ACF751009EDF2F /* GBActivityController.m */; };
 		2057F11611ACFA60009EDF2F /* OAActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 2057F11511ACFA60009EDF2F /* OAActivity.m */; };
-		2058E98011AEE26F00F2853F /* GBHistoryController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2058E97F11AEE26F00F2853F /* GBHistoryController.m */; };
+		2058E98011AEE26F00F2853F /* GBHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2058E97F11AEE26F00F2853F /* GBHistoryViewController.m */; };
 		2058E98411AEE30E00F2853F /* GBHistoryController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2058E98311AEE30E00F2853F /* GBHistoryController.xib */; };
 		2058EA0811AEEE3200F2853F /* NSView+OAViewHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 2058EA0711AEEE3200F2853F /* NSView+OAViewHelpers.m */; };
 		2058FA4811982F5100FB018D /* GBRemotesController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2058FA4711982F5100FB018D /* GBRemotesController.xib */; };
@@ -62,8 +62,8 @@
 		206A07BE11A33519003BB9E3 /* OATask.m in Sources */ = {isa = PBXBuildFile; fileRef = 206A07BD11A33519003BB9E3 /* OATask.m */; };
 		206A088711A7AB36003BB9E3 /* OAActivityIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 206A088611A7AB36003BB9E3 /* OAActivityIndicator.m */; };
 		2093A7C811AF0E8300239185 /* GBBaseChangesController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2093A7C711AF0E8300239185 /* GBBaseChangesController.m */; };
-		2093A7CB11AF0EA300239185 /* GBStageController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2093A7CA11AF0EA300239185 /* GBStageController.m */; };
-		2093A7CE11AF0EC800239185 /* GBCommitController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2093A7CD11AF0EC800239185 /* GBCommitController.m */; };
+		2093A7CB11AF0EA300239185 /* GBStageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2093A7CA11AF0EA300239185 /* GBStageViewController.m */; };
+		2093A7CE11AF0EC800239185 /* GBCommitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2093A7CD11AF0EC800239185 /* GBCommitViewController.m */; };
 		2093A7D011AF0F2700239185 /* GBStageController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2093A7CF11AF0F2700239185 /* GBStageController.xib */; };
 		2093A7D211AF0F3200239185 /* GBCommitController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2093A7D111AF0F3200239185 /* GBCommitController.xib */; };
 		2093A80711AF20D100239185 /* NSObject+OADispatchItemValidation.m in Sources */ = {isa = PBXBuildFile; fileRef = 2093A80611AF20D100239185 /* NSObject+OADispatchItemValidation.m */; };
@@ -164,8 +164,8 @@
 		2057F10F11ACF751009EDF2F /* GBActivityController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBActivityController.m; sourceTree = "<group>"; };
 		2057F11411ACFA60009EDF2F /* OAActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAActivity.h; sourceTree = "<group>"; };
 		2057F11511ACFA60009EDF2F /* OAActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAActivity.m; sourceTree = "<group>"; };
-		2058E97E11AEE26F00F2853F /* GBHistoryController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBHistoryController.h; sourceTree = "<group>"; };
-		2058E97F11AEE26F00F2853F /* GBHistoryController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBHistoryController.m; sourceTree = "<group>"; };
+		2058E97E11AEE26F00F2853F /* GBHistoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBHistoryViewController.h; sourceTree = "<group>"; };
+		2058E97F11AEE26F00F2853F /* GBHistoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBHistoryViewController.m; sourceTree = "<group>"; };
 		2058E98311AEE30E00F2853F /* GBHistoryController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBHistoryController.xib; sourceTree = "<group>"; };
 		2058EA0611AEEE3200F2853F /* NSView+OAViewHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSView+OAViewHelpers.h"; sourceTree = "<group>"; };
 		2058EA0711AEEE3200F2853F /* NSView+OAViewHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSView+OAViewHelpers.m"; sourceTree = "<group>"; };
@@ -182,10 +182,10 @@
 		206A088611A7AB36003BB9E3 /* OAActivityIndicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAActivityIndicator.m; sourceTree = "<group>"; };
 		2093A7C611AF0E8300239185 /* GBBaseChangesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBBaseChangesController.h; sourceTree = "<group>"; };
 		2093A7C711AF0E8300239185 /* GBBaseChangesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBBaseChangesController.m; sourceTree = "<group>"; };
-		2093A7C911AF0EA300239185 /* GBStageController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBStageController.h; sourceTree = "<group>"; };
-		2093A7CA11AF0EA300239185 /* GBStageController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBStageController.m; sourceTree = "<group>"; };
-		2093A7CC11AF0EC800239185 /* GBCommitController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBCommitController.h; sourceTree = "<group>"; };
-		2093A7CD11AF0EC800239185 /* GBCommitController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBCommitController.m; sourceTree = "<group>"; };
+		2093A7C911AF0EA300239185 /* GBStageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBStageViewController.h; sourceTree = "<group>"; };
+		2093A7CA11AF0EA300239185 /* GBStageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBStageViewController.m; sourceTree = "<group>"; };
+		2093A7CC11AF0EC800239185 /* GBCommitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBCommitViewController.h; sourceTree = "<group>"; };
+		2093A7CD11AF0EC800239185 /* GBCommitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBCommitViewController.m; sourceTree = "<group>"; };
 		2093A7CF11AF0F2700239185 /* GBStageController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBStageController.xib; sourceTree = "<group>"; };
 		2093A7D111AF0F3200239185 /* GBCommitController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBCommitController.xib; sourceTree = "<group>"; };
 		2093A80511AF20D100239185 /* NSObject+OADispatchItemValidation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+OADispatchItemValidation.h"; sourceTree = "<group>"; };
@@ -294,14 +294,14 @@
 				2038F1DE11936B060087CE37 /* GBAppDelegate.m */,
 				2038F21911936FDE0087CE37 /* GBRepositoryController.h */,
 				2038F21A11936FDE0087CE37 /* GBRepositoryController.m */,
-				2058E97E11AEE26F00F2853F /* GBHistoryController.h */,
-				2058E97F11AEE26F00F2853F /* GBHistoryController.m */,
+				2058E97E11AEE26F00F2853F /* GBHistoryViewController.h */,
+				2058E97F11AEE26F00F2853F /* GBHistoryViewController.m */,
 				2093A7C611AF0E8300239185 /* GBBaseChangesController.h */,
 				2093A7C711AF0E8300239185 /* GBBaseChangesController.m */,
-				2093A7C911AF0EA300239185 /* GBStageController.h */,
-				2093A7CA11AF0EA300239185 /* GBStageController.m */,
-				2093A7CC11AF0EC800239185 /* GBCommitController.h */,
-				2093A7CD11AF0EC800239185 /* GBCommitController.m */,
+				2093A7C911AF0EA300239185 /* GBStageViewController.h */,
+				2093A7CA11AF0EA300239185 /* GBStageViewController.m */,
+				2093A7CC11AF0EC800239185 /* GBCommitViewController.h */,
+				2093A7CD11AF0EC800239185 /* GBCommitViewController.m */,
 				2038F5B8119879FA0087CE37 /* GBRemotesController.h */,
 				2038F5B9119879FA0087CE37 /* GBRemotesController.m */,
 				20B8B83B11A4A776006D6442 /* GBPromptController.h */,
@@ -579,11 +579,11 @@
 				2057F11611ACFA60009EDF2F /* OAActivity.m in Sources */,
 				2057964211ADD3AA004715FE /* GBCommitCell.m in Sources */,
 				2057979B11ADEEEE004715FE /* GBStageCell.m in Sources */,
-				2058E98011AEE26F00F2853F /* GBHistoryController.m in Sources */,
+				2058E98011AEE26F00F2853F /* GBHistoryViewController.m in Sources */,
 				2058EA0811AEEE3200F2853F /* NSView+OAViewHelpers.m in Sources */,
 				2093A7C811AF0E8300239185 /* GBBaseChangesController.m in Sources */,
-				2093A7CB11AF0EA300239185 /* GBStageController.m in Sources */,
-				2093A7CE11AF0EC800239185 /* GBCommitController.m in Sources */,
+				2093A7CB11AF0EA300239185 /* GBStageViewController.m in Sources */,
+				2093A7CE11AF0EC800239185 /* GBCommitViewController.m in Sources */,
 				2093A80711AF20D100239185 /* NSObject+OADispatchItemValidation.m in Sources */,
 				2093A85E11AF33B500239185 /* WhiteNSView.m in Sources */,
 				2093A93211AF436600239185 /* GBMergeCommitCell.m in Sources */,

@@ -1,5 +1,5 @@
 #import "GBBaseChangesController.h"
-@interface GBCommitController : GBBaseChangesController<NSSplitViewDelegate>
+@interface GBCommitViewController : GBBaseChangesController<NSSplitViewDelegate>
 {
 }
 

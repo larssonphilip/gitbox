@@ -1,10 +1,10 @@
 #import "GBModels.h"
-#import "GBCommitController.h"
+#import "GBCommitViewController.h"
 
 #import "NSArray+OAArrayHelpers.h"
 #import "NSSplitView+OASplitViewHelpers.h"
 
-@implementation GBCommitController
+@implementation GBCommitViewController
 
 
 - (IBAction) stageShowDifference:(id)sender

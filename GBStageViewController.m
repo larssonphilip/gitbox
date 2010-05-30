@@ -1,13 +1,13 @@
 #import "GBModels.h"
 
-#import "GBStageController.h"
+#import "GBStageViewController.h"
 
 #import "NSObject+OADispatchItemValidation.h"
 #import "NSObject+OAKeyValueObserving.h"
 #import "NSArray+OAArrayHelpers.h"
 
 
-@implementation GBStageController
+@implementation GBStageViewController
 
 
 
