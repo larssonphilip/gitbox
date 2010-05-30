@@ -7,6 +7,7 @@
 
 #import "GBRemotesController.h"
 #import "GBPromptController.h"
+#import "GBCommitPromptController.h"
 
 #import "NSArray+OAArrayHelpers.h"
 #import "NSString+OAStringHelpers.h"
@@ -93,7 +94,7 @@
 {
   if (!stageController)
   {
-    self.stageController = [[[GBStageViewController alloc] initWithNibName:@"GBStageController" bundle:nil] autorelease];
+    self.stageController = [[[GBStageViewController alloc] initWithNibName:@"GBStageViewController" bundle:nil] autorelease];
     stageController.repository = self.repository;
   }
   return [[stageController retain] autorelease];
@@ -103,7 +104,7 @@
 {
   if (!commitController)
   {
-    self.commitController = [[[GBCommitViewController alloc] initWithNibName:@"GBCommitController" bundle:nil] autorelease];
+    self.commitController = [[[GBCommitViewController alloc] initWithNibName:@"GBCommitViewController" bundle:nil] autorelease];
     commitController.repository = self.repository;
   }
   return [[commitController retain] autorelease];
@@ -227,15 +228,10 @@
 
 - (IBAction) commit:(id)sender
 {
-  GBPromptController* ctrl = [GBPromptController controller];
-
-  ctrl.title = NSLocalizedString(@"Commit", @"");
-  ctrl.promptText = NSLocalizedString(@"Message:", @"");
-  ctrl.buttonText = NSLocalizedString(@"Commit", @"");
+  GBCommitPromptController* ctrl = [GBCommitPromptController controller];
   
   ctrl.target = self;
   ctrl.finishSelector = @selector(doneCommit:);
-  
   [ctrl runSheetInWindow:[self window]];
 }
 

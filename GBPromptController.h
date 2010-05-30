@@ -1,20 +1,5 @@
 @interface GBPromptController : NSWindowController
 {
-  NSString* title;
-  NSString* promptText;
-  NSString* buttonText;
-  NSString* value;
-  BOOL requireNonNilValue;
-  BOOL requireNonEmptyString;
-  BOOL requireSingleLine;
-  BOOL requireStripWhitespace;
-  
-  id target;
-  SEL finishSelector;
-  SEL cancelSelector;
-  
-  id payload;
-  NSWindow* windowHoldingSheet;
 }
 
 @property(retain) NSString* title;
