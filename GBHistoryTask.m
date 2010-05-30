@@ -203,14 +203,23 @@ authorDate 2010-05-01 20:23:10 -0700
     NSMutableArray* rawBodyLines = [NSMutableArray array];
     while (line && [line length] <= 0 || [line hasPrefix:@"    "])
     {
-      if ([line length] > 0)
-      {
-        [rawBodyLines addObject:[line stringByTrimmingCharactersInSet:whitespaceCharacterSet]];
-      }
+      [rawBodyLines addObject:[line stringByTrimmingCharactersInSet:whitespaceCharacterSet]];
+//      if ([line length] > 0)
+//      {
+//        [rawBodyLines addObject:[line stringByTrimmingCharactersInSet:whitespaceCharacterSet]];
+//      }
       GBHistoryNextLine;
     }
     
     commit.message = [rawBodyLines componentsJoinedByString:@"\n"];
+    
+    // Stupid git removes LFs between "Signed-off-by" signatures. We fix this by this hack
+    // (which is not that awful, actually):
+    commit.message = [commit.message stringByReplacingOccurrencesOfString:@"> Signed-off-by:"
+                                                               withString:@">\nSigned-off-by:"];
+    
+    
+    commit.message = [commit.message stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     commit.repository = self.repository;
     [list addObject:commit];
     

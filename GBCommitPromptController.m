@@ -30,7 +30,7 @@
   
   if (!self.value || [self.value isEmptyString]) return;
   
-  self.value = [self.value stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@" \n\t"]];
+  self.value = [self.value stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
   
   if (finishSelector) [self.target performSelector:finishSelector withObject:self];
   [self.windowHoldingSheet endSheetForController:self];
