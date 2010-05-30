@@ -29,6 +29,17 @@
   return [alert runModal];
 }
 
++ (NSInteger) safePrompt:(NSString*)message description:(NSString*)description
+{
+  if (!message) return 0;
+  NSAlert* alert = [NSAlert alertWithMessageText:message
+                                   defaultButton:NSLocalizedString(@"OK", @"")
+                                 alternateButton:NSLocalizedString(@"Cancel", @"")
+                                     otherButton:nil
+                       informativeTextWithFormat:description ? description : @""];
+  return [alert runModal];
+}
+
 + (NSInteger) unsafePrompt:(NSString*)message description:(NSString*)description
 {
   if (!message) return 0;
