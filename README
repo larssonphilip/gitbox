@@ -4,8 +4,8 @@ Strategy for the first shippable version:
 - remembering remote-local association
 - unmerged/unpushed commits
 - local branch merge
-- ask for binary
-- multiline commit window
++ ask for binary
++ multiline commit window
 
 - test merge conflict situation
 - repos: add
