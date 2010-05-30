@@ -127,6 +127,7 @@
   
 }
 
+//- (void)drawWithFrame:(NSRect)cellFrame inView:(NSView *)theControlView
 - (void) drawInteriorWithFrame:(NSRect)cellFrame inView:(NSView*)theControlView
 {  
   NSColor* backgroundColor = [NSColor controlBackgroundColor];
