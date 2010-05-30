@@ -1,5 +1,7 @@
 #import "OATask.h"
 #import "OAActivity.h"
+
+#import "NSArray+OAArrayHelpers.h"
 #import "NSAlert+OAAlertHelpers.h"
 #import "NSData+OADataHelpers.h"
 #import "GBActivityController.h"
@@ -48,6 +50,56 @@ NSString* OATaskNotification = @"OATaskNotification";
   return [[self new] autorelease];
 }
 
+- (NSString*) rememberedPathForExecutable:(NSString*)exec
+{
+  return [[NSUserDefaults standardUserDefaults] stringForKey:[NSString stringWithFormat:@"OATask.pathForExecutable:%@", exec]];
+}
+
+- (void) rememberPath:(NSString*)aPath forExecutable:(NSString*)exec
+{
+  [[NSUserDefaults standardUserDefaults] setObject:aPath forKey:[NSString stringWithFormat:@"OATask.pathForExecutable:%@", exec]];
+}
+
+- (NSString*) launchPathByAskingUserToLocateExecutable:(NSString*)executable
+{
+  NSString* cannotFindPathString = [NSString stringWithFormat:NSLocalizedString(@"Cannot find path to %@.", @""), executable];
+  NSString* doYouWantToLocateString = NSLocalizedString(@"Do you want to locate it on disk?\n(Use ⌘⇧G to enter the path.)",@"");
+  
+  if ([NSAlert safePrompt:cannotFindPathString
+               description:doYouWantToLocateString] == NSAlertDefaultReturn)
+  {
+    while (1)
+    {
+      NSOpenPanel* openPanel = [NSOpenPanel openPanel];
+      openPanel.delegate = nil;
+      openPanel.allowsMultipleSelection = NO;
+      openPanel.canChooseFiles = YES;
+      openPanel.canChooseDirectories = NO;
+      if ([openPanel runModal] == NSFileHandlingPanelOKButton)
+      {
+        NSString* aPath = [[[openPanel URLs] firstObject] path];
+        if ([[NSFileManager defaultManager] isExecutableFileAtPath:aPath])
+        {
+          return aPath;
+        }
+        else if (aPath)
+        {
+          [NSAlert message:NSLocalizedString(@"Selected file is not an executable. Please try again.", @"") description:aPath];
+        }
+        else
+        {
+          return nil;
+        }
+      }
+      else
+      {
+        return nil;
+      } // if OK clicked
+    } // while(1)
+  } // if locating on disk
+  return nil;
+}
+
 - (NSString*) launchPath
 {
   if (!launchPath && self.executableName)
@@ -61,8 +113,20 @@ NSString* OATaskNotification = @"OATaskNotification";
     }
     else
     {
-      [NSAlert message:[NSString stringWithFormat:@"Couldn't find %@ executable", exec] 
-           description:[NSString stringWithFormat:@"Please install %@ in a well-known location (such as /usr/local/bin).", exec]];
+      aPath = [self rememberedPathForExecutable:exec];
+      if (aPath && [[NSFileManager defaultManager] isExecutableFileAtPath:aPath])
+      {
+        self.launchPath = aPath;
+      }
+      else
+      {
+        aPath = [self launchPathByAskingUserToLocateExecutable:exec];
+        if (aPath)
+        {
+          self.launchPath = aPath;
+          [self rememberPath:aPath forExecutable:exec];
+        }
+      }    
     }
   }
   return [[launchPath retain] autorelease];
@@ -147,7 +211,6 @@ NSString* OATaskNotification = @"OATaskNotification";
   NSArray* binPaths = [NSArray arrayWithObjects:
                        @"~/bin",
                        @"/usr/local/git/bin",
-                       @"/opt/homebrew/bin",
                        @"/usr/local/bin",
                        @"/usr/bin",
                        @"/opt/local/bin",
