@@ -13,4 +13,6 @@
 @property(retain) NSString* status;
 @property(retain) NSString* textOutput;
 
+- (NSString*) line;
+
 @end

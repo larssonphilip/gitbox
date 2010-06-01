@@ -37,4 +37,9 @@
   return [[textOutput retain] autorelease];
 }
 
+- (NSString*) line
+{
+  return [NSString stringWithFormat:@"%@\t%@\t%@", self.path, self.command, self.status];
+}
+
 @end
