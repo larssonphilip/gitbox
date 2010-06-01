@@ -173,7 +173,10 @@ NSString* OATaskNotification = @"OATaskNotification";
   [NSObject cancelPreviousPerformRequestsWithTarget:self];
   [[NSNotificationCenter defaultCenter] removeObserver:self];
 
-  [self.nstask terminate];
+  if (nstask && [nstask isRunning])
+  {
+    [nstask terminate];
+  }
   
   self.executableName = nil;
   self.launchPath = nil;
