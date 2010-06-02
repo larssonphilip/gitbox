@@ -317,9 +317,10 @@
 {
   [self endBackgroundUpdate];
   backgroundUpdateEnabled = YES;
+  backgroundUpdateInterval = 30.0;
   [self performSelector:@selector(fetchSilentlyDuringBackgroundUpdate) 
              withObject:nil 
-             afterDelay:60.0];
+             afterDelay:backgroundUpdateInterval];
 }
 
 - (void) endBackgroundUpdate
@@ -333,9 +334,10 @@
 - (void) fetchSilentlyDuringBackgroundUpdate
 {
   if (!backgroundUpdateEnabled) return;
+  backgroundUpdateInterval *= 1.2;
   [self performSelector:@selector(fetchSilentlyDuringBackgroundUpdate) 
              withObject:nil 
-             afterDelay:60.0];
+             afterDelay:backgroundUpdateInterval];
   [self fetchSilently];
 }
 

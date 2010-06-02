@@ -15,6 +15,7 @@
 @interface GBRepository : NSObject
 {
   BOOL backgroundUpdateEnabled;
+  NSTimeInterval backgroundUpdateInterval;
 }
 
 @property(retain) NSURL* url;

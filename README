@@ -15,7 +15,7 @@ Strategy for the first shippable version:
 
 Bugs:
 
-- should increase fetch interval in background to alleviate NSTask leaks
++ should increase fetch interval in background to alleviate NSTask leaks
 - should try running NSTasks blocking in a background NSOperation to work around the leaks
 - should refresh status on FSEvent directory change (in background)
 - disable status table view while status is updating (double click on a stale row crashes the app)
@@ -46,23 +46,24 @@ UI glitches:
 
 UI goodies:
 
-- draw checkmark in branch menus for the selected branch
+
 - prefill suggested remote branch name when creating a new remote branch (take a local branch name as a guess)
-+ remember all opened windows on startup (for existing paths only)
 - change "sync" button title to "push" when remote is not ahead of local branch
 - change "sync" button title to "pull" when remote is ahead of local branch
 - change "sync" button title to "merge" when remote is local
 - reread remotes on focus: if the names and urls are the same, do not ls-remote
 - do ls-remote in background starting on unfocus
 - switch off 1min sync with a menu item: useful on battery
-- remember chosen remote branch for the local branch in prefs
-+ recently opened files
 - log: mark as read/unread + automatic mark as read
 - stash list: as a local branch menu item?
 - individual chunks commit
 - remember prompt window size
 - compare image files in an double-pane image viewer
 - compare office files using some office app
++ draw checkmark in branch menus for the selected branch
++ remember all opened windows on startup (for existing paths only)
++ recently opened files
+
 
 
 To do next:
