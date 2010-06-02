@@ -148,9 +148,6 @@
     {
       ref.commitId = HEAD;
     }
-    
-    self.currentRemoteBranch = [ref rememberedOrGuessedRemoteBranch];
-    [self.currentLocalRef rememberRemoteBranch:self.currentRemoteBranch];
     self.currentLocalRef = ref;
   }
   return [[currentLocalRef retain] autorelease];
@@ -351,28 +348,32 @@
 
 
 
+- (void) resetCurrentLocalRef
+{
+  self.currentLocalRef = nil; // invalidate
+  self.currentRemoteBranch = [self.currentLocalRef rememberedOrGuessedRemoteBranch];
+  [self.currentLocalRef rememberRemoteBranch:self.currentRemoteBranch];
+}
+
 - (void) checkoutRef:(GBRef*)ref
 {
   [[[self task] launchWithArgumentsAndWait:[NSArray arrayWithObjects:@"checkout", [ref commitish], nil]] showErrorIfNeeded];
   
-  // invalidate current ref
-  self.currentLocalRef = nil;
+  [self resetCurrentLocalRef];
 }
 
 - (void) checkoutRef:(GBRef*)ref withNewBranchName:(NSString*)name
 {
   [[[self task] launchWithArgumentsAndWait:[NSArray arrayWithObjects:@"checkout", @"-b", name, [ref commitish], nil]] showErrorIfNeeded];
   
-  // invalidate current ref
-  self.currentLocalRef = nil;  
+  [self resetCurrentLocalRef];
 }
 
 - (void) checkoutNewBranchName:(NSString*)name
 {
   [[[self task] launchWithArgumentsAndWait:[NSArray arrayWithObjects:@"checkout", @"-b", name, nil]] showErrorIfNeeded];
   
-  // invalidate current ref
-  self.currentLocalRef = nil;    
+  [self resetCurrentLocalRef];
 }
 
 - (void) commitWithMessage:(NSString*) message
