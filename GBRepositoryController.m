@@ -319,6 +319,11 @@
   [as executeAndReturnError:nil];
 }
 
+- (IBAction) openInFinder:(id)sender
+{
+  [[NSWorkspace sharedWorkspace] openFile:self.repository.path];
+}
+
 
 
 

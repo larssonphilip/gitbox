@@ -54,6 +54,7 @@
 - (IBAction) toggleSplitViewOrientation:(id)sender;
 - (IBAction) editRepositories:(id)sender;
 - (IBAction) openInTerminal:(id)sender;
+- (IBAction) openInFinder:(id)sender;
 
 
 #pragma mark Private Helpers
