@@ -15,6 +15,9 @@ Strategy for the first shippable version:
 
 Bugs:
 
+- should increase fetch interval in background
+- should refresh status on FSEvent directory change (in background)
+- commit changes do not display renames properly
 - disable status table view while status is updating (double click on a stale row crashes the app)
   (or better: reuse matching changes to avoid that issue and avoid flickering and UI blocking)
 - OK button does not work in prompt because textfield value is updated through binding yet.
