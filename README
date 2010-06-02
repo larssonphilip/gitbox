@@ -15,7 +15,8 @@ Strategy for the first shippable version:
 
 Bugs:
 
-- should increase fetch interval in background
+- should increase fetch interval in background to alleviate NSTask leaks
+- should try running NSTasks blocking in a background NSOperation to work around the leaks
 - should refresh status on FSEvent directory change (in background)
 - disable status table view while status is updating (double click on a stale row crashes the app)
   (or better: reuse matching changes to avoid that issue and avoid flickering and UI blocking)
@@ -40,7 +41,7 @@ UI glitches:
 
 - disable menu item "commit" if commit button is disabled
 - disable push button and push menu item if remote branch has unmerged commits
-- rename "current branch" into "local branch" menu
++ rename "current branch" into "local branch" menu
 
 
 UI goodies:
