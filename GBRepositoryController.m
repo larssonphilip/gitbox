@@ -219,8 +219,7 @@
     
     [remote addBranch:remoteBranch];
     
-    self.repository.currentLocalRef.remoteBranch = remoteBranch;
-    [self.repository.currentLocalRef saveRemoteBranch];
+    [self.repository selectRemoteBranch:remoteBranch];
     [self updateRemoteBranchMenus];
   }
 

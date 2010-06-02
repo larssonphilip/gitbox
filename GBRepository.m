@@ -125,7 +125,7 @@
 
 - (GBRef*) currentLocalRef
 {
-  if (!currentRef)
+  if (!currentLocalRef)
   {
     NSError* outError = nil;
     NSString* HEAD = [NSString stringWithContentsOfURL:[self gitURLWithSuffix:@"HEAD"]
@@ -148,10 +148,26 @@
     {
       ref.commitId = HEAD;
     }
+    
+    // TODO: update current remote branch
+    
     self.currentLocalRef = ref;
   }
-  return [[currentRef retain] autorelease];
+  return [[currentLocalRef retain] autorelease];
 }
+
+
+
+- (GBRef*) currentRemoteBranch
+{
+  if (!currentRemoteBranch)
+  {
+    //self.currentRemoteBranch = 
+    
+  }
+  return [[currentRemoteBranch retain] autorelease];
+}
+
 
 - (NSArray*) commits
 {
@@ -372,8 +388,15 @@
 - (void) selectRemoteBranch:(GBRef*)aBranch
 {
   self.currentRemoteBranch = aBranch;
-  // TODO: store local-remote assoc.
   
+  if (self.currentLocalRef && [self.currentLocalRef isLocalBranch])
+  {
+    id dict = [NSDictionary dictionaryWithObjectsAndKeys:
+               self.currentRemoteBranch.remoteAlias, @"remoteAlias", 
+               self.currentRemoteBranch.name, @"name", 
+               nil];
+    [self saveObject:dict forKey:[NSString stringWithFormat:@"remoteBranchFor:%@", self.currentLocalRef.name]];
+  }
 }
 
 - (void) pull
