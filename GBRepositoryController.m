@@ -446,6 +446,10 @@
     [item setAction:@selector(checkoutBranch:)];
     [item setTarget:self];
     [item setRepresentedObject:localBranch];
+    if ([localBranch isEqual:self.repository.currentLocalRef])
+    {
+      [item setState:NSOnState];
+    }
     [newMenu addItem:item];
   }
   
@@ -460,7 +464,11 @@
     [item setTitle:tag.name];
     [item setAction:@selector(checkoutBranch:)];
     [item setTarget:self];
-    [item setRepresentedObject:tag];    
+    [item setRepresentedObject:tag];
+    if ([tag isEqual:self.repository.currentLocalRef])
+    {
+      [item setState:NSOnState];
+    }
     [tagsMenu addItem:item];
   }
   if ([[tagsMenu itemArray] count] > 0)
@@ -558,6 +566,10 @@
           [item setAction:@selector(selectRemoteBranch:)];
           [item setTarget:self];
           [item setRepresentedObject:branch];
+          if ([branch isEqual:self.repository.currentRemoteBranch])
+          {
+            [item setState:NSOnState];
+          }
           [remoteMenu addItem:item];          
         }
         [remoteMenu addItem:[NSMenuItem separatorItem]];
@@ -581,7 +593,11 @@
       [item setTitle:[branch nameWithRemoteAlias]];
       [item setAction:@selector(selectRemoteBranch:)];
       [item setTarget:self];
-      [item setRepresentedObject:branch];    
+      [item setRepresentedObject:branch];
+      if ([branch isEqual:self.repository.currentRemoteBranch])
+      {
+        [item setState:NSOnState];
+      }
       [remoteBranchesMenu addItem:item];
     }
     
