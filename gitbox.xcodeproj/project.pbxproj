@@ -22,6 +22,7 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		200B08B511B6E359004C09A8 /* GBLocalRemoteAssociationTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 200B08B411B6E359004C09A8 /* GBLocalRemoteAssociationTask.m */; };
 		2010732F11A7E9C300EFDE56 /* app.icns in Resources */ = {isa = PBXBuildFile; fileRef = 2010732E11A7E9C300EFDE56 /* app.icns */; };
 		201073B611A80A4600EFDE56 /* GBRemotesTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 201073B511A80A4600EFDE56 /* GBRemotesTask.m */; };
 		201E5F6811AA71E00061EFD6 /* NSObject+OAKeyValueObserving.m in Sources */ = {isa = PBXBuildFile; fileRef = 201E5F6711AA71E00061EFD6 /* NSObject+OAKeyValueObserving.m */; };
@@ -119,6 +120,8 @@
 		13E42FBA07B3F13500E4EEF1 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
 		1DDD58290DA1D0D100B32029 /* GBRepositoryController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBRepositoryController.xib; sourceTree = "<group>"; };
 		1DDD582B0DA1D0D100B32029 /* MainMenu.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
+		200B08B311B6E359004C09A8 /* GBLocalRemoteAssociationTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBLocalRemoteAssociationTask.h; sourceTree = "<group>"; };
+		200B08B411B6E359004C09A8 /* GBLocalRemoteAssociationTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBLocalRemoteAssociationTask.m; sourceTree = "<group>"; };
 		2010732E11A7E9C300EFDE56 /* app.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = app.icns; sourceTree = "<group>"; };
 		201073B411A80A4600EFDE56 /* GBRemotesTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBRemotesTask.h; sourceTree = "<group>"; };
 		201073B511A80A4600EFDE56 /* GBRemotesTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBRemotesTask.m; sourceTree = "<group>"; };
@@ -363,6 +366,8 @@
 				2059E6D011AACB5C00E4CF0B /* GBHistoryTask.m */,
 				2057EF6211ABDCCE009EDF2F /* GBRefreshIndexTask.h */,
 				2057EF6311ABDCCE009EDF2F /* GBRefreshIndexTask.m */,
+				200B08B311B6E359004C09A8 /* GBLocalRemoteAssociationTask.h */,
+				200B08B411B6E359004C09A8 /* GBLocalRemoteAssociationTask.m */,
 			);
 			name = Tasks;
 			sourceTree = "<group>";
@@ -606,6 +611,7 @@
 				2093A93211AF436600239185 /* GBMergeCommitCell.m in Sources */,
 				2093AAAA11B15E1500239185 /* NSSplitView+OASplitViewHelpers.m in Sources */,
 				2093AC8711B2EB9100239185 /* GBCommitPromptController.m in Sources */,
+				200B08B511B6E359004C09A8 /* GBLocalRemoteAssociationTask.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

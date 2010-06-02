@@ -1,13 +1,14 @@
 #import "GBModels.h"
 #import "GBTask.h"
 #import "GBHistoryTask.h"
+#import "GBLocalRemoteAssociationTask.h"
+
 
 @implementation GBRef
 @synthesize name;
 @synthesize commitId;
 @synthesize remoteAlias;
 @synthesize isTag;
-@synthesize remoteBranch;
 
 @synthesize repository;
 
@@ -16,44 +17,7 @@
   self.name = nil;
   self.commitId = nil;
   self.remoteAlias = nil;
-  self.remoteBranch = nil;
   [super dealloc];
-}
-
-- (GBRef*) remoteBranch
-{
-  if (!remoteBranch)
-  {
-    NSDictionary* remoteBranchDict = [self loadObjectForKey:@"remoteBranch"];
-    if (remoteBranchDict && [remoteBranchDict objectForKey:@"remoteAlias"] && [remoteBranchDict objectForKey:@"name"])
-    {
-      GBRef* ref = [[GBRef new] autorelease];
-      ref.repository = self.repository;
-      ref.remoteAlias = [remoteBranchDict objectForKey:@"remoteAlias"];
-      ref.name = [remoteBranchDict objectForKey:@"name"];
-      self.remoteBranch = ref;
-    }
-    else
-    {
-      NSLog(@"TODO: try .git/config, merge section");
-      self.remoteBranch = [[self.repository defaultRemote] defaultBranch];
-    }
-
-    
-  }
-  return [[remoteBranch retain] autorelease];
-}
-
-- (void) saveRemoteBranch
-{
-  if ([self isLocalBranch])
-  {
-    id dict = [NSDictionary dictionaryWithObjectsAndKeys:
-               self.remoteBranch.remoteAlias, @"remoteAlias", 
-               self.remoteBranch.name, @"name", 
-               nil];
-    [self saveObject:dict forKey:@"remoteBranch"];
-  }
 }
 
 
@@ -114,7 +78,56 @@
 
 
 
-#pragma mark Save/load
+
+
+
+
+#pragma mark Save/load remote branch
+
+
+- (GBRef*) rememberedOrGuessedRemoteBranch
+{
+  GBRef* branch = [self rememberedRemoteBranch];
+  if (!branch) branch = [self guessedRemoteBranch];
+  return branch;
+}
+
+- (GBRef*) guessedRemoteBranch
+{
+  GBLocalRemoteAssociationTask* task = [GBLocalRemoteAssociationTask task];
+  task.localBranchName = self.name;
+  [self.repository launchTaskAndWait:task];
+  return task.remoteBranch;
+}
+
+- (GBRef*) rememberedRemoteBranch
+{
+  NSDictionary* remoteBranchDict = [self loadObjectForKey:@"remoteBranch"];
+  if (remoteBranchDict && [remoteBranchDict objectForKey:@"remoteAlias"] && [remoteBranchDict objectForKey:@"name"])
+  {
+    GBRef* ref = [[GBRef new] autorelease];
+    ref.repository = self.repository;
+    ref.remoteAlias = [remoteBranchDict objectForKey:@"remoteAlias"];
+    ref.name = [remoteBranchDict objectForKey:@"name"];
+    return ref;
+  }
+  return nil;
+}
+
+
+
+- (void) rememberRemoteBranch:(GBRef*)aRemoteBranch
+{
+  if ([self isLocalBranch])
+  {
+    id dict = [NSDictionary dictionaryWithObjectsAndKeys:
+               aRemoteBranch.remoteAlias, @"remoteAlias", 
+               aRemoteBranch.name, @"name", 
+               nil];
+    [self saveObject:dict forKey:@"remoteBranch"];
+  }  
+}
+
 
 - (void) saveObject:(id)obj forKey:(NSString*)key
 {

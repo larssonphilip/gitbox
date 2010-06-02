@@ -162,8 +162,7 @@
 {
   if (!currentRemoteBranch)
   {
-    //self.currentRemoteBranch = 
-    
+    self.currentRemoteBranch = [self.currentLocalRef rememberedOrGuessedRemoteBranch];
   }
   return [[currentRemoteBranch retain] autorelease];
 }
@@ -391,11 +390,7 @@
   
   if (self.currentLocalRef && [self.currentLocalRef isLocalBranch])
   {
-    id dict = [NSDictionary dictionaryWithObjectsAndKeys:
-               self.currentRemoteBranch.remoteAlias, @"remoteAlias", 
-               self.currentRemoteBranch.name, @"name", 
-               nil];
-    [self saveObject:dict forKey:[NSString stringWithFormat:@"remoteBranchFor:%@", self.currentLocalRef.name]];
+    [self.currentLocalRef rememberRemoteBranch:aBranch];
   }
 }
 
