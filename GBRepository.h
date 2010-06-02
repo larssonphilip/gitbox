@@ -23,7 +23,8 @@
 @property(retain) NSArray* remotes;
 @property(retain) NSArray* tags;
 @property(retain) GBStage* stage;
-@property(retain) GBRef* currentRef;
+@property(retain) GBRef* currentLocalRef;
+@property(retain) GBRef* currentRemoteBranch;
 
 @property(retain) NSArray* commits;
 @property(retain) NSArray* localBranchCommits;
@@ -46,7 +47,6 @@
 + (BOOL) isValidRepositoryAtPath:(NSString*)path;
 - (NSString*) path;
 - (GBRemote*) defaultRemote;
-- (GBRef*) currentRemoteBranch;
 - (NSArray*) composedCommits;
 - (NSArray*) loadLocalBranches;
 - (NSArray*) loadTags;
@@ -77,6 +77,8 @@
 - (void) checkoutRef:(GBRef*)ref withNewBranchName:(NSString*)name;
 - (void) checkoutNewBranchName:(NSString*)name;
 - (void) commitWithMessage:(NSString*) message;
+
+- (void) selectRemoteBranch:(GBRef*)aBranch;
 
 - (void) pull;
 - (void) pullBranch:(GBRef*)aRemoteBranch;

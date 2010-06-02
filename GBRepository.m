@@ -18,7 +18,8 @@
 @synthesize remotes;
 @synthesize tags;
 @synthesize stage;
-@synthesize currentRef;
+@synthesize currentLocalRef;
+@synthesize currentRemoteBranch;
 
 @synthesize commits;
 @synthesize localBranchCommits;
@@ -53,7 +54,8 @@
   self.remotes = nil;
   self.tags = nil;
   self.stage = nil;
-  self.currentRef = nil;
+  self.currentLocalRef = nil;
+  self.currentRemoteBranch = nil;
   
   self.commits = nil;
   self.localBranchCommits = nil;
@@ -121,7 +123,7 @@
   return [[tags retain] autorelease];
 }
 
-- (GBRef*) currentRef
+- (GBRef*) currentLocalRef
 {
   if (!currentRef)
   {
@@ -146,7 +148,7 @@
     {
       ref.commitId = HEAD;
     }
-    self.currentRef = ref;
+    self.currentLocalRef = ref;
   }
   return [[currentRef retain] autorelease];
 }
@@ -214,11 +216,6 @@
   return [self.remotes firstObject];
 }
 
-- (GBRef*) currentRemoteBranch
-{
-  return self.currentRef.remoteBranch;
-}
-
 - (NSArray*) loadLocalBranches
 {
   NSMutableArray* list = [NSMutableArray array];
@@ -274,7 +271,7 @@
 
 - (void) reloadCommits
 {
-  [self.currentRef updateCommits];
+  [self.currentLocalRef updateCommits];
   [self updateCommits];
 }
 
@@ -291,7 +288,7 @@
 
 - (void) branch:(GBRef*)aBranch didLoadCommits:(NSArray*)theCommits;
 {
-  if (aBranch == self.currentRef)
+  if (aBranch == self.currentLocalRef)
   {
     self.localBranchCommits = theCommits;
     [self updateCommits];
@@ -343,7 +340,7 @@
   [[[self task] launchWithArgumentsAndWait:[NSArray arrayWithObjects:@"checkout", [ref commitish], nil]] showErrorIfNeeded];
   
   // invalidate current ref
-  self.currentRef = nil;
+  self.currentLocalRef = nil;
 }
 
 - (void) checkoutRef:(GBRef*)ref withNewBranchName:(NSString*)name
@@ -351,7 +348,7 @@
   [[[self task] launchWithArgumentsAndWait:[NSArray arrayWithObjects:@"checkout", @"-b", name, [ref commitish], nil]] showErrorIfNeeded];
   
   // invalidate current ref
-  self.currentRef = nil;  
+  self.currentLocalRef = nil;  
 }
 
 - (void) checkoutNewBranchName:(NSString*)name
@@ -359,7 +356,7 @@
   [[[self task] launchWithArgumentsAndWait:[NSArray arrayWithObjects:@"checkout", @"-b", name, nil]] showErrorIfNeeded];
   
   // invalidate current ref
-  self.currentRef = nil;    
+  self.currentLocalRef = nil;    
 }
 
 - (void) commitWithMessage:(NSString*) message
@@ -372,11 +369,18 @@
   }
 }
 
+- (void) selectRemoteBranch:(GBRef*)aBranch
+{
+  self.currentRemoteBranch = aBranch;
+  // TODO: store local-remote assoc.
+  
+}
+
 - (void) pull
 {
-  if ([self currentRemoteBranch])
+  if (self.currentRemoteBranch)
   {
-    [self pullBranch:[self currentRemoteBranch]];
+    [self pullBranch:self.currentRemoteBranch];
   }
 }
 
@@ -396,9 +400,9 @@
 
 - (void) push
 {
-  if ([self currentRemoteBranch])
+  if (self.currentRemoteBranch)
   {
-    [self pushBranch:self.currentRef to:[self currentRemoteBranch]];
+    [self pushBranch:self.currentLocalRef to:self.currentRemoteBranch];
   }  
 }
 
@@ -418,7 +422,7 @@
 
 - (void) fetchSilently
 {
-  GBRef* aRemoteBranch = [self currentRemoteBranch];
+  GBRef* aRemoteBranch = self.currentRemoteBranch;
   if (!self.fetching && aRemoteBranch)
   {
     self.fetching = YES;

@@ -187,8 +187,7 @@
 - (IBAction) selectRemoteBranch:(id)sender
 {
   GBRef* remoteBranch = [sender representedObject];
-  self.repository.currentRef.remoteBranch = remoteBranch;
-  [self.repository.currentRef saveRemoteBranch];
+  [self.repository selectRemoteBranch:remoteBranch];
   [self.remoteBranchPopUpButton setTitle:[remoteBranch nameWithRemoteAlias]];
 }
 
@@ -220,8 +219,8 @@
     
     [remote addBranch:remoteBranch];
     
-    self.repository.currentRef.remoteBranch = remoteBranch;
-    [self.repository.currentRef saveRemoteBranch];
+    self.repository.currentLocalRef.remoteBranch = remoteBranch;
+    [self.repository.currentLocalRef saveRemoteBranch];
     [self updateRemoteBranchMenus];
   }
 
@@ -516,7 +515,7 @@
   [button setMenu:newMenu];
   for (NSMenuItem* item in [newMenu itemArray])
   {
-    if ([[item representedObject] isEqual:self.repository.currentRef])
+    if ([[item representedObject] isEqual:self.repository.currentLocalRef])
     {
       [button selectItem:item];
     }
@@ -524,7 +523,7 @@
   
   // If no branch is found the name could be empty.
   // I make sure that the name is set nevertheless.
-  [button setTitle:[self.repository.currentRef displayName]];
+  [button setTitle:[self.repository.currentLocalRef displayName]];
 }
 
 
@@ -590,14 +589,14 @@
   
   [button setMenu:remoteBranchesMenu];
   
-  GBRef* remoteBranch = self.repository.currentRef.remoteBranch;
+  GBRef* remoteBranch = self.repository.currentRemoteBranch;
   if (remoteBranch)
   {
     [button setTitle:[remoteBranch nameWithRemoteAlias]];
   }
   else
   {
-    [button setTitle:NSLocalizedString(@"No Branch", @"")];
+    [button setTitle:NSLocalizedString(@"—", @"")];
   }
 }
 
