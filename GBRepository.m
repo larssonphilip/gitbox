@@ -163,6 +163,7 @@
   if (!currentRemoteBranch)
   {
     self.currentRemoteBranch = [self.currentLocalRef rememberedOrGuessedRemoteBranch];
+    [self.currentLocalRef rememberRemoteBranch:currentRemoteBranch];
   }
   return [[currentRemoteBranch retain] autorelease];
 }
