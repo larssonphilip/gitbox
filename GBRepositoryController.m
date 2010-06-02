@@ -49,7 +49,8 @@
 
 - (void) dealloc
 {
-  [self.repository removeObserver:self keyPath:@"selectedCommit" selector:@selector(selectedCommitDidChange:)];
+  [repository removeObserver:self keyPath:@"selectedCommit" selector:@selector(selectedCommitDidChange:)];
+  [repository removeObserver:self keyPath:@"currentRemoteBranch" selector:@selector(repositoryCurrentRemoteBranchDidChange:)];
   
   self.repositoryURL = nil;
   if ((id)repository.delegate == self) repository.delegate = nil;
@@ -355,7 +356,10 @@
   }
 }
 
-
+- (void) repositoryCurrentRemoteBranchDidChange
+{
+  [self updateRemoteBranchMenus];
+}
 
 
 #pragma mark NSWindowController
@@ -368,7 +372,11 @@
   // Repository init
   
   self.repository.selectedCommit = self.repository.stage;
-  [self.repository addObserver:self forKeyPath:@"selectedCommit" selectorWithNewValue:@selector(selectedCommitDidChange:)];
+  [self.repository addObserver:self forKeyPath:@"selectedCommit" 
+          selectorWithNewValue:@selector(selectedCommitDidChange:)];
+  [self.repository addObserver:self forKeyPath:@"currentRemoteBranch" 
+          selectorWithoutArguments:@selector(repositoryCurrentRemoteBranchDidChange)];
+
   [self.repository reloadCommits];
 
   // View controllers init

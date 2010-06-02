@@ -351,7 +351,8 @@
 - (void) resetCurrentLocalRef
 {
   self.currentLocalRef = nil; // invalidate
-  self.currentRemoteBranch = [self.currentLocalRef rememberedOrGuessedRemoteBranch];
+  GBRef* ref = [self.currentLocalRef rememberedOrGuessedRemoteBranch];
+  if (ref) self.currentRemoteBranch = ref;
   [self.currentLocalRef rememberRemoteBranch:self.currentRemoteBranch];
 }
 
