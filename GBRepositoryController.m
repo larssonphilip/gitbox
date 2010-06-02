@@ -234,6 +234,8 @@
 
 - (IBAction) commit:(id)sender
 {
+  [self.stageController stageDoStage:sender];
+  
   GBCommitPromptController* ctrl = [GBCommitPromptController controller];
   
   ctrl.target = self;
