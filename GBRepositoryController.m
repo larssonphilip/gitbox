@@ -194,12 +194,19 @@
 
 - (IBAction) createNewRemoteBranch:(id)sender
 {
+  // Usually, new remote branch is created for the new local branch,
+  // so we should use local branch name as a default value.
+  GBRemote* remote = [sender representedObject];
+  NSString* defaultName = [self.repository.currentLocalRef.name 
+                           uniqueStringForStrings:[remote.branches valueForKey:@"name"]];
+
   GBPromptController* ctrl = [GBPromptController controller];
   
   ctrl.title = NSLocalizedString(@"New Remote Branch", @"");
   ctrl.promptText = NSLocalizedString(@"Branch Name:", @"");
   ctrl.buttonText = NSLocalizedString(@"OK", @"");
   ctrl.requireStripWhitespace = YES;
+  ctrl.value = defaultName;
   
   ctrl.target = self;
   ctrl.finishSelector = @selector(doneChoosingNameForNewRemoteBranch:);

@@ -47,7 +47,6 @@ UI glitches:
 UI goodies:
 
 
-- prefill suggested remote branch name when creating a new remote branch (take a local branch name as a guess)
 - change "sync" button title to "push" when remote is not ahead of local branch
 - change "sync" button title to "pull" when remote is ahead of local branch
 - change "sync" button title to "merge" when remote is local
@@ -63,7 +62,7 @@ UI goodies:
 + draw checkmark in branch menus for the selected branch
 + remember all opened windows on startup (for existing paths only)
 + recently opened files
-
++ prefill suggested remote branch name when creating a new remote branch (take a local branch name as a guess)
 
 
 To do next:
