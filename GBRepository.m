@@ -370,6 +370,10 @@
   [[[self task] launchWithArgumentsAndWait:[NSArray arrayWithObjects:@"checkout", @"-b", name, [ref commitish], nil]] showErrorIfNeeded];
   
   [self resetCurrentLocalRef];
+  if ([ref isRemoteBranch])
+  {
+    self.currentRemoteBranch = ref;
+  }
 }
 
 - (void) checkoutNewBranchName:(NSString*)name
