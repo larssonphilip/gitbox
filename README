@@ -1,7 +1,7 @@
 Strategy for the first shippable version:
 
 + NSViewController for GBRepositoryWindow
-- remembering remote-local association
++ remembering remote-local association
 - unmerged/unpushed commits
 - local branch merge
 + ask for binary
@@ -17,13 +17,13 @@ Bugs:
 
 - should increase fetch interval in background
 - should refresh status on FSEvent directory change (in background)
-- commit changes do not display renames properly
 - disable status table view while status is updating (double click on a stale row crashes the app)
   (or better: reuse matching changes to avoid that issue and avoid flickering and UI blocking)
 - OK button does not work in prompt because textfield value is updated through binding yet.
 - table row selection is ignored if was no selection for ArrayController. Should check NSTableView selectedRowIndexes? 
   See http://forums.macrumors.com/showthread.php?t=166469
 - historical diff for Added file shows diff between current state (left) and initial state (right)
++ commit changes do not display renames properly
 + switch context menu for historical commits
 + empty filenames for untracked folder
 + do not open another window for the same repo if already opened, just make it a key window
