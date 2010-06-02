@@ -12,7 +12,7 @@
 
 - (NSUInteger) limit
 {
-  if (limit <= 0) limit = 500;
+  if (limit <= 0) limit = 1000;
   return limit;
 }
 
