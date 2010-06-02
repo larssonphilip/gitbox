@@ -118,7 +118,7 @@
 
 - (void) rememberRemoteBranch:(GBRef*)aRemoteBranch
 {
-  if ([self isLocalBranch] && aRemoteBranch)
+  if ([self isLocalBranch] && aRemoteBranch && [aRemoteBranch isRemoteBranch])
   {
     id dict = [NSDictionary dictionaryWithObjectsAndKeys:
                aRemoteBranch.remoteAlias, @"remoteAlias", 

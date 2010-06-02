@@ -149,8 +149,8 @@
       ref.commitId = HEAD;
     }
     
-    // TODO: update current remote branch
-    
+    self.currentRemoteBranch = [ref rememberedOrGuessedRemoteBranch];
+    [self.currentLocalRef rememberRemoteBranch:self.currentRemoteBranch];
     self.currentLocalRef = ref;
   }
   return [[currentLocalRef retain] autorelease];
