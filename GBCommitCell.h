@@ -4,8 +4,12 @@
 {
 }
 
+@property(readonly) GBCommit* commit;
+
 + (CGFloat) cellHeight;
-- (GBCommit*) commit;
+- (CGFloat) offsetForStatus;
+- (CGRect) innerRectForFrame:(CGRect)cellFrame;
+
 - (void) drawContentInFrame:(NSRect)cellFrame; // override in sublcass
 
 @end

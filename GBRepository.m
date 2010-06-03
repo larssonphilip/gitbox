@@ -288,14 +288,14 @@
     unmergedCommitsTask.substructedBranch = self.currentLocalRef;
     unmergedCommitsTask.target = self;
     unmergedCommitsTask.action = @selector(didReceiveUnmergedRemoteCommits:);
-    [self launchTask:unmergedCommitsTask];
+    [self launchTaskAndWait:unmergedCommitsTask];
 
     GBHistoryTask* unpushedCommitsTask = [GBHistoryTask task];
     unpushedCommitsTask.branch = self.currentLocalRef;
     unpushedCommitsTask.substructedBranch = self.currentRemoteBranch;
     unpushedCommitsTask.target = self;
     unpushedCommitsTask.action = @selector(didReceiveUnpushedLocalCommits:);
-    [self launchTask:unpushedCommitsTask];
+    [self launchTaskAndWait:unpushedCommitsTask];
     
     [self updateCommits];
   }

@@ -3,6 +3,7 @@
 
 @implementation GBCommitCell
 
+@dynamic commit;
 - (GBCommit*) commit
 {
   return [self representedObject];
@@ -13,12 +14,31 @@
   return 38.0;
 }
 
-- (void) drawContentInFrame:(NSRect)cellFrame
+- (CGFloat) offsetForStatus
 {
-  
+  if (self.commit.syncStatus != GBCommitSyncStatusNormal)
+  {
+    return 22.0;
+  }
+  return 0.0;
+}
+
+- (CGRect) innerRectForFrame:(CGRect)cellFrame
+{
   NSRect innerRect = NSInsetRect(cellFrame, 6.0, 2.0);
   
-  GBCommit* object = [self commit];
+  CGFloat offset = [self offsetForStatus];
+  innerRect.origin.x += offset;
+  innerRect.size.width -= offset;
+  
+  return innerRect;
+}
+
+- (void) drawContentInFrame:(NSRect)cellFrame
+{  
+  NSRect innerRect = [self innerRectForFrame:cellFrame];
+    
+  GBCommit* object = self.commit;
   
   NSString* title = object.authorName;
   NSString* date = @"";
