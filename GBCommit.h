@@ -1,3 +1,13 @@
+
+
+typedef enum {
+  GBCommitSyncStatusNormal = 0,
+  GBCommitSyncStatusUnmerged,
+  GBCommitSyncStatusUnpushed
+} GBCommitSyncStatus;
+
+
+
 @class GBChange;
 @class GBRepository;
 @class GBCommitCell;
@@ -14,6 +24,8 @@
 @property(retain) NSString* message;
 
 @property(retain) NSArray* changes;
+
+@property(assign) GBCommitSyncStatus syncStatus;
 
 @property(assign) GBRepository* repository;
 

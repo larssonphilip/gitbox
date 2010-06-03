@@ -133,111 +133,120 @@ authorDate 2010-05-01 20:23:10 -0700
     NSAutoreleasePool* pool = [NSAutoreleasePool new];
     
     line = [lines objectAtIndex:lineIndex];
-    GBCommit* commit = [[GBCommit new] autorelease];
     
-    // commit 4d235c8044a638108b67e22f94b2876657130fc8
-    if ([line hasPrefix:@"commit "])
+    if ([line length] > 0)
     {
-      commit.commitId = [line substringFromIndex:7]; // 'commit ' skipped
-    }
-    else HistoryScanError(@"Expected 'commit <sha1>' line");
+      GBCommit* commit = [[GBCommit new] autorelease];
+      
+      // commit 4d235c8044a638108b67e22f94b2876657130fc8
+      if ([line hasPrefix:@"commit "])
+      {
+        commit.commitId = [line substringFromIndex:7]; // 'commit ' skipped
+      }
+      else HistoryScanError(@"Expected 'commit <sha1>' line");
 
-    GBHistoryNextLine;
-    
-    if ([line hasPrefix:@"commit "]) // skip additional commit line
+      GBHistoryNextLine;
+      
+      if ([line hasPrefix:@"commit "]) // skip additional commit line
+      {
+        GBHistoryNextLine;
+      }
+      
+      // tree 715659d7f232f1ecbe19674a16c9b03067f6c9e1
+      if ([line hasPrefix:@"tree "])
+      {
+        commit.treeId = [line substringFromIndex:5]; // 'tree ' skipped
+      }
+      else HistoryScanError(@"Expected 'tree <sha1>' line");
+      
+      GBHistoryNextLine;
+      
+      // parents 8d0ea3117597933610e02907d14b443f8996ca3b[<space> <sha1>[<space> <sha1>[...]]] 
+      if ([line hasPrefix:@"parents "])
+      {
+        commit.parentIds = [[line substringFromIndex:8] componentsSeparatedByString:@" "]; // 'parents ' skipped
+      }
+      else HistoryScanError(@"Expected 'parents <sha1>[ <sha1>[...]]' line");
+      
+      GBHistoryNextLine;
+      
+      // authorName Junio C Hamano
+      if ([line hasPrefix:@"authorName "])
+      {
+        commit.authorName = [line substringFromIndex:11]; // 'authorName ' skipped
+      }
+      else HistoryScanError(@"Expected 'authorName ...' line");
+      
+      GBHistoryNextLine;
+      
+      // authorEmail gitster@pobox.com
+      if ([line hasPrefix:@"authorEmail "])
+      {
+        commit.authorEmail = [line substringFromIndex:12]; // 'authorEmail ' skipped
+      }
+      else HistoryScanError(@"Expected 'authorEmail ...' line");
+      
+      GBHistoryNextLine;
+      
+      // committerName Junio C Hamano
+      if ([line hasPrefix:@"committerName "])
+      {
+      }
+      else HistoryScanError(@"Expected 'committerName ...' line");
+      
+      GBHistoryNextLine;
+      
+      // committerEmail gitster@pobox.com
+      if ([line hasPrefix:@"committerEmail "])
+      {
+      }
+      else HistoryScanError(@"Expected 'committerEmail ...' line");
+      
+      GBHistoryNextLine;
+      
+      // authorDate 2010-05-01 20:23:10 -0700
+      if ([line hasPrefix:@"authorDate "])
+      {
+        commit.date = [NSDate dateWithString:[line substringFromIndex:11]]; // 'authorDate ' skipped
+      }
+      else HistoryScanError(@"Expected 'authorDate ...' line");
+      
+      GBHistoryNextLine;
+      
+      // Skip initial empty lines
+      while (line && [line length] <= 0)
+      {
+        GBHistoryNextLine;
+      }
+      NSMutableArray* rawBodyLines = [NSMutableArray array];
+      while (line && [line length] <= 0 || [line hasPrefix:@"    "])
+      {
+        [rawBodyLines addObject:[line stringByTrimmingCharactersInSet:whitespaceCharacterSet]];
+  //      if ([line length] > 0)
+  //      {
+  //        [rawBodyLines addObject:[line stringByTrimmingCharactersInSet:whitespaceCharacterSet]];
+  //      }
+        GBHistoryNextLine;
+      }
+      
+      commit.message = [rawBodyLines componentsJoinedByString:@"\n"];
+      
+      // Stupid git removes LFs between "Signed-off-by" signatures. We fix this by this hack
+      // (which is not that awful, actually):
+      commit.message = [commit.message stringByReplacingOccurrencesOfString:@"> Signed-off-by:"
+                                                                 withString:@">\nSigned-off-by:"];
+      
+      
+      commit.message = [commit.message stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+      commit.repository = self.repository;
+      [list addObject:commit];
+      
+    }// if ! empty line
+    else
     {
       GBHistoryNextLine;
     }
-    
-    // tree 715659d7f232f1ecbe19674a16c9b03067f6c9e1
-    if ([line hasPrefix:@"tree "])
-    {
-      commit.treeId = [line substringFromIndex:5]; // 'tree ' skipped
-    }
-    else HistoryScanError(@"Expected 'tree <sha1>' line");
-    
-    GBHistoryNextLine;
-    
-    // parents 8d0ea3117597933610e02907d14b443f8996ca3b[<space> <sha1>[<space> <sha1>[...]]] 
-    if ([line hasPrefix:@"parents "])
-    {
-      commit.parentIds = [[line substringFromIndex:8] componentsSeparatedByString:@" "]; // 'parents ' skipped
-    }
-    else HistoryScanError(@"Expected 'parents <sha1>[ <sha1>[...]]' line");
-    
-    GBHistoryNextLine;
-    
-    // authorName Junio C Hamano
-    if ([line hasPrefix:@"authorName "])
-    {
-      commit.authorName = [line substringFromIndex:11]; // 'authorName ' skipped
-    }
-    else HistoryScanError(@"Expected 'authorName ...' line");
-    
-    GBHistoryNextLine;
-    
-    // authorEmail gitster@pobox.com
-    if ([line hasPrefix:@"authorEmail "])
-    {
-      commit.authorEmail = [line substringFromIndex:12]; // 'authorEmail ' skipped
-    }
-    else HistoryScanError(@"Expected 'authorEmail ...' line");
-    
-    GBHistoryNextLine;
-    
-    // committerName Junio C Hamano
-    if ([line hasPrefix:@"committerName "])
-    {
-    }
-    else HistoryScanError(@"Expected 'committerName ...' line");
-    
-    GBHistoryNextLine;
-    
-    // committerEmail gitster@pobox.com
-    if ([line hasPrefix:@"committerEmail "])
-    {
-    }
-    else HistoryScanError(@"Expected 'committerEmail ...' line");
-    
-    GBHistoryNextLine;
-    
-    // authorDate 2010-05-01 20:23:10 -0700
-    if ([line hasPrefix:@"authorDate "])
-    {
-      commit.date = [NSDate dateWithString:[line substringFromIndex:11]]; // 'authorDate ' skipped
-    }
-    else HistoryScanError(@"Expected 'authorDate ...' line");
-    
-    GBHistoryNextLine;
-    
-    // Skip initial empty lines
-    while (line && [line length] <= 0)
-    {
-      GBHistoryNextLine;
-    }
-    NSMutableArray* rawBodyLines = [NSMutableArray array];
-    while (line && [line length] <= 0 || [line hasPrefix:@"    "])
-    {
-      [rawBodyLines addObject:[line stringByTrimmingCharactersInSet:whitespaceCharacterSet]];
-//      if ([line length] > 0)
-//      {
-//        [rawBodyLines addObject:[line stringByTrimmingCharactersInSet:whitespaceCharacterSet]];
-//      }
-      GBHistoryNextLine;
-    }
-    
-    commit.message = [rawBodyLines componentsJoinedByString:@"\n"];
-    
-    // Stupid git removes LFs between "Signed-off-by" signatures. We fix this by this hack
-    // (which is not that awful, actually):
-    commit.message = [commit.message stringByReplacingOccurrencesOfString:@"> Signed-off-by:"
-                                                               withString:@">\nSigned-off-by:"];
-    
-    
-    commit.message = [commit.message stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    commit.repository = self.repository;
-    [list addObject:commit];
-    
+
     [pool drain];
   }
   

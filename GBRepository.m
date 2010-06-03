@@ -283,10 +283,46 @@
   {
     self.localBranchCommits = theCommits;
     
-    
+    GBHistoryTask* unmergedCommitsTask = [GBHistoryTask task];
+    unmergedCommitsTask.branch = self.currentRemoteBranch;
+    unmergedCommitsTask.substructedBranch = self.currentLocalRef;
+    unmergedCommitsTask.target = self;
+    unmergedCommitsTask.action = @selector(didReceiveUnmergedRemoteCommits:);
+    [self launchTask:unmergedCommitsTask];
+
+    GBHistoryTask* unpushedCommitsTask = [GBHistoryTask task];
+    unpushedCommitsTask.branch = self.currentLocalRef;
+    unpushedCommitsTask.substructedBranch = self.currentRemoteBranch;
+    unpushedCommitsTask.target = self;
+    unpushedCommitsTask.action = @selector(didReceiveUnpushedLocalCommits:);
+    [self launchTask:unpushedCommitsTask];
     
     [self updateCommits];
   }
+
+    - (void) didReceiveUnmergedRemoteCommits:(NSArray*)unmergedCommits
+    {
+      NSArray* allCommits = self.localBranchCommits;
+      for (GBCommit* commit in unmergedCommits)
+      {
+        NSUInteger index = [allCommits indexOfObject:commit];
+        commit = [allCommits objectAtIndex:index];
+        commit.syncStatus = GBCommitSyncStatusUnmerged;
+      }
+    }
+
+    - (void) didReceiveUnpushedLocalCommits:(NSArray*)unpushedCommits
+    {
+      NSArray* allCommits = self.localBranchCommits;
+      for (GBCommit* commit in unpushedCommits)
+      {
+        NSUInteger index = [allCommits indexOfObject:commit];
+        commit = [allCommits objectAtIndex:index];
+        commit.syncStatus = GBCommitSyncStatusUnpushed;
+      }
+    }
+
+
 
 
 - (NSArray*) composedCommits

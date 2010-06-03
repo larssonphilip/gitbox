@@ -20,6 +20,8 @@
 
 @synthesize changes;
 
+@synthesize syncStatus;
+
 @synthesize repository;
 
 
