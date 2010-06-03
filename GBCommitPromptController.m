@@ -97,7 +97,7 @@
       {
         // Possibly unintended newline. Should display shortcut tip if no text is entered.
         addedNewLine = YES;
-        [self performSelector:@selector(showShortcutTip) withObject:nil afterDelay:0.7];
+        [self performSelector:@selector(showShortcutTip) withObject:nil afterDelay:0.6];
       }
     }
     else
