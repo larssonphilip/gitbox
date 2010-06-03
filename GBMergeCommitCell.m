@@ -13,6 +13,9 @@
 - (void) drawContentInFrame:(NSRect)cellFrame
 {
   NSRect innerRect = [self innerRectForFrame:cellFrame];
+  
+  [self drawSyncStatusIconInRect:innerRect];
+  
   GBCommit* object = self.commit;
   
   NSString* title = object.authorName;

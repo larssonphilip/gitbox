@@ -8,7 +8,8 @@
 
 + (CGFloat) cellHeight;
 - (CGFloat) offsetForStatus;
-- (CGRect) innerRectForFrame:(CGRect)cellFrame;
+- (NSRect) innerRectForFrame:(NSRect)cellFrame;
+- (void) drawSyncStatusIconInRect:(NSRect)cellFrame;
 
 - (void) drawContentInFrame:(NSRect)cellFrame; // override in sublcass
 

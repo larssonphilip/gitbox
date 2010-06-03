@@ -23,7 +23,7 @@
   return 0.0;
 }
 
-- (CGRect) innerRectForFrame:(CGRect)cellFrame
+- (NSRect) innerRectForFrame:(NSRect)cellFrame
 {
   NSRect innerRect = NSInsetRect(cellFrame, 6.0, 2.0);
   
@@ -34,10 +34,36 @@
   return innerRect;
 }
 
+- (void) drawSyncStatusIconInRect:(NSRect)rect
+{
+  GBCommitSyncStatus st = self.commit.syncStatus;
+  if (st != GBCommitSyncStatusNormal)
+  {
+    NSImage* icon = nil;
+    if (st == GBCommitSyncStatusUnmerged)
+    {
+      icon = [NSImage imageNamed:@"commit-marker-unmerged.png"];
+    }
+    else
+    {
+      icon = [NSImage imageNamed:@"commit-marker-unpushed.png"];
+    }
+    NSPoint point = rect.origin;
+    point.x -= 22.0;
+    point.y += 4.0;
+    [icon drawAtPoint:point
+             fromRect:NSZeroRect 
+            operation:NSCompositeSourceOver 
+             fraction:1.0];
+  }
+}
+
 - (void) drawContentInFrame:(NSRect)cellFrame
 {  
   NSRect innerRect = [self innerRectForFrame:cellFrame];
-    
+  
+  [self drawSyncStatusIconInRect:innerRect];
+  
   GBCommit* object = self.commit;
   
   NSString* title = object.authorName;
