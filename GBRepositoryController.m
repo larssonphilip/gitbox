@@ -29,6 +29,7 @@
 @synthesize historyController;
 @synthesize stageController;
 @synthesize commitController;
+@synthesize commitPromptController;
 
 @synthesize splitView;
 
@@ -59,6 +60,7 @@
   self.historyController = nil;
   self.stageController = nil;
   self.commitController = nil;
+  self.commitPromptController = nil;
   
   self.splitView = nil;
   
@@ -109,6 +111,17 @@
     commitController.repository = self.repository;
   }
   return [[commitController retain] autorelease];
+}
+
+- (GBCommitPromptController*) commitPromptController
+{
+  if (!commitPromptController)
+  {
+    self.commitPromptController = [GBCommitPromptController controller];
+    commitPromptController.target = self;
+    commitPromptController.finishSelector = @selector(doneCommit:);
+  }
+  return [[commitPromptController retain] autorelease];
 }
 
 
@@ -235,12 +248,7 @@
 - (IBAction) commit:(id)sender
 {
   [self.stageController stageDoStage:sender];
-  
-  GBCommitPromptController* ctrl = [GBCommitPromptController controller];
-  
-  ctrl.target = self;
-  ctrl.finishSelector = @selector(doneCommit:);
-  [ctrl runSheetInWindow:[self window]];
+  [self.commitPromptController runSheetInWindow:[self window]];
 }
 
   - (void) doneCommit:(GBPromptController*)ctrl

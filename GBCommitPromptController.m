@@ -35,6 +35,7 @@
   if (finishSelector) [self.target performSelector:finishSelector withObject:self];
   [self.windowHoldingSheet endSheetForController:self];
   self.windowHoldingSheet = nil;
+  self.value = nil;
 }
 
 - (IBAction) onCancel:(id)sender

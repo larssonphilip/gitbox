@@ -9,6 +9,7 @@
 @class GBHistoryViewController;
 @class GBStageViewController;
 @class GBCommitViewController;
+@class GBCommitPromptController;
 @interface GBRepositoryController : NSWindowController<
                                                       GBRepositoryDelegate, 
                                                       NSTableViewDelegate>
@@ -23,6 +24,7 @@
 @property(retain) GBHistoryViewController* historyController;
 @property(retain) GBStageViewController* stageController;
 @property(retain) GBCommitViewController* commitController;
+@property(retain) GBCommitPromptController* commitPromptController;
 
 @property(retain) IBOutlet NSSplitView* splitView;
 
