@@ -42,11 +42,25 @@
     NSImage* icon = nil;
     if (st == GBCommitSyncStatusUnmerged)
     {
-      icon = [NSImage imageNamed:@"commit-marker-unmerged.png"];
+      if ([self isHighlighted])
+      {
+        icon = [NSImage imageNamed:@"commit-marker-unmerged-highlighted.png"];
+      }
+      else
+      {
+        icon = [NSImage imageNamed:@"commit-marker-unmerged.png"];
+      }
     }
     else
     {
-      icon = [NSImage imageNamed:@"commit-marker-unpushed.png"];
+      if ([self isHighlighted])
+      {
+        icon = [NSImage imageNamed:@"commit-marker-unpushed-highlighted.png"];
+      }
+      else
+      {
+        icon = [NSImage imageNamed:@"commit-marker-unpushed.png"];
+      }
     }
     NSPoint point = rect.origin;
     point.x -= 22.0;
