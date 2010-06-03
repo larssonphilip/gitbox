@@ -273,6 +273,7 @@
 {
   GBHistoryTask* localAndRemoteCommitsTask = [GBHistoryTask task];
   localAndRemoteCommitsTask.branch = self.currentLocalRef;
+  localAndRemoteCommitsTask.joinedBranch = self.currentRemoteBranch;
   localAndRemoteCommitsTask.target = self;
   localAndRemoteCommitsTask.action = @selector(didReceiveLocalAndRemoteCommits:);
   [self launchTask:localAndRemoteCommitsTask];
