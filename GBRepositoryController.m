@@ -394,11 +394,7 @@
   // Repository init
   
   self.repository.selectedCommit = self.repository.stage;
-  [self.repository addObserver:self forKeyPath:@"selectedCommit" 
-          selectorWithNewValue:@selector(selectedCommitDidChange:)];
-  [self.repository addObserver:self forKeyPath:@"currentRemoteBranch" 
-          selectorWithoutArguments:@selector(repositoryCurrentRemoteBranchDidChange)];
-
+  
   [self.repository reloadCommits];
 
   // View controllers init
@@ -415,6 +411,14 @@
   
   [self updateCurrentBranchMenus];
   [self updateRemoteBranchMenus];
+    
+  
+  // Set observers
+  
+  [self.repository addObserver:self forKeyPath:@"selectedCommit" 
+          selectorWithNewValue:@selector(selectedCommitDidChange:)];
+  [self.repository addObserver:self forKeyPath:@"currentRemoteBranch" 
+      selectorWithoutArguments:@selector(repositoryCurrentRemoteBranchDidChange)];
 }
 
 

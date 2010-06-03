@@ -287,6 +287,11 @@ NSString* OATaskNotification = @"OATaskNotification";
 {
   [self endAllCallbacks];
   [self.nstask terminate];
+  NSFileHandle* pipeFileHandle = [self fileHandleForReading];
+  if (pipeFileHandle)
+  {
+    [self.output appendData:[pipeFileHandle readDataToEndOfFile]];
+  }
   [self doFinish];
 }
 
@@ -388,13 +393,13 @@ NSString* OATaskNotification = @"OATaskNotification";
 
 - (void) taskDidTerminateNotification:(NSNotification*) notification
 {
-//  NSLog(@"TERM NOTIF: %@ (collected %d bytes)", [self command], [self.output length]);
+  //NSLog(@"TERM NOTIF: %@ (collected %d bytes)", [self command], [self.output length]);
   // Do not do this unless all data is read: [self doFinish];
 }
 
 - (void) taskDidReceiveReadCompletionNotification:(NSNotification*) notification
 {
-//  NSLog(@"DATA NOTIF: %@ (collected %d bytes)", [self command], [self.output length]);
+  //NSLog(@"DATA NOTIF: %@ (collected %d bytes)", [self command], [self.output length]);
   NSData* incomingData = [[notification userInfo] objectForKey:NSFileHandleNotificationDataItem];
   if (![self.nstask isRunning] && (!incomingData || [incomingData length] <= 0))
   {
@@ -408,21 +413,6 @@ NSString* OATaskNotification = @"OATaskNotification";
   [[self fileHandleForReading] readInBackgroundAndNotify];
 }
 
-- (void) terminateAfterTimeout
-{
-  NSLog(@"TIMEOUT: %@", [self command]);
-//  [[self fileHandleForReading] closeFile];
-//  [self.nstask terminate];
-//  NSLog(@"TIMEOUT: %@ (running: %d)", [self command], (int)[self.nstask isRunning]);
-  
-//  [self endAllCallbacks];
-//  [self.nstask terminate];
-//  [self.nstask interrupt];
-//  //  kill([self.nstask processIdentifier], 9);
-//  //[self.nstask waitUntilExit];
-//  [self doFinish];
-}
-
 
 
 #pragma mark Finishing
@@ -431,20 +421,6 @@ NSString* OATaskNotification = @"OATaskNotification";
 - (void) doFinish
 {
   [self endAllCallbacks];
-  
-//  while ([self.nstask isRunning])
-//  {
-//    NSLog(@"PROGRAM ERROR: doFinish callback is fired when task is still running! Calling waitUntilExit. [%@]", [self command]);
-//    [self.nstask waitUntilExit];
-//  }
-  
-  NSFileHandle* pipeFileHandle = [self fileHandleForReading];
-  if (pipeFileHandle)
-  {
-    [self.output appendData:[pipeFileHandle readDataToEndOfFile]];
-  }
-  
-  //NSLog(@"OATask doFinish: %@ (got %d bytes)", [self command], [self.output length]);
   
   // TODO: wrap into DEBUG macro
   // Subclasses may override it to do some data processing.
@@ -546,6 +522,11 @@ NSString* OATaskNotification = @"OATaskNotification";
 {
   //NSLog(@"BLOCKING: %@", [self command]);
   [self.nstask launch];
+  NSFileHandle* pipeFileHandle = [self fileHandleForReading];
+  if (pipeFileHandle)
+  {
+    [self.output appendData:[pipeFileHandle readDataToEndOfFile]];
+  }
   [self.nstask waitUntilExit];
   [self doFinish];
   [[GBActivityController sharedActivityController] addActivity:self.activity];
