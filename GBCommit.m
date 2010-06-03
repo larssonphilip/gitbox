@@ -108,6 +108,18 @@
   return nil;
 }
 
+- (BOOL) isEqual:(id)object
+{
+  if ([[object class] isEqual:[self class]])
+  {
+    return [[object commitId] isEqualToString:self.commitId];
+  }
+  return NO;
+}
+
+
+
+
 
 #pragma mark Mutation
 
