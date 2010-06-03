@@ -4,6 +4,7 @@
 
 #import "GBTask.h"
 #import "GBRemotesTask.h"
+#import "GBHistoryTask.h"
 
 #import "NSFileManager+OAFileManagerHelpers.h"
 #import "NSAlert+OAAlertHelpers.h"
@@ -286,6 +287,7 @@
 {
   GBHistoryTask* localAndRemoteCommitsTask = [GBHistoryTask task];
   localAndRemoteCommitsTask.branch = self.currentLocalRef;
+  localAndRemoteCommitsTask.target = self;
   localAndRemoteCommitsTask.action = @selector(didReceiveLocalAndRemoteCommits:);
   [self launchTask:localAndRemoteCommitsTask];
   [self updateCommits];

@@ -6,6 +6,9 @@
 @implementation GBHistoryTask
 
 @synthesize branch;
+@synthesize joinedBranch;
+@synthesize substructedBranch;
+
 @synthesize limit;
 @synthesize skip;
 
@@ -24,6 +27,8 @@
 - (void) dealloc
 {
   self.branch = nil;
+  self.joinedBranch = nil;
+  self.substructedBranch = nil;
   self.commits = nil;
   [super dealloc];
 }
