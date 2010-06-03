@@ -33,9 +33,9 @@
   self.value = [self.value stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
   
   if (finishSelector) [self.target performSelector:finishSelector withObject:self];
+  self.value = nil;
   [self.windowHoldingSheet endSheetForController:self];
   self.windowHoldingSheet = nil;
-  self.value = nil;
 }
 
 - (IBAction) onCancel:(id)sender
