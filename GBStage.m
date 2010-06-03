@@ -83,7 +83,7 @@
     {
       task.arguments = [NSArray arrayWithObjects:@"add", aChange.fileURL.path, nil];
     }
-    [[task launchAndWait] showErrorIfNeeded];
+    [[self.repository launchTaskAndWait:task] showErrorIfNeeded];
   }
   [self reloadChanges];
 }

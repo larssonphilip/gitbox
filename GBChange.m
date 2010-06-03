@@ -144,7 +144,7 @@
   task.repository = self.repository;
   task.objectId = objectId;
   task.originalURL = url;
-  [task launchAndWait];
+  [self.repository launchTaskAndWait:task];
   return task.temporaryURL;
 }
 
