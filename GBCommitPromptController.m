@@ -34,7 +34,7 @@
   
   if (finishSelector) [self.target performSelector:finishSelector withObject:self];
   
-  NSLog(@"TODO: discard bindings and just read/write the textfield property directly");
+  [self.textView setString:@""];
   
   [self.windowHoldingSheet endSheetForController:self];
   self.windowHoldingSheet = nil;
