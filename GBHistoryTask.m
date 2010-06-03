@@ -5,10 +5,14 @@
 
 @implementation GBHistoryTask
 
-@synthesize commits;
-@synthesize branch;
 @synthesize limit;
 @synthesize skip;
+
+@synthesize branch;
+@synthesize action;
+
+@synthesize commits;
+
 
 - (NSUInteger) limit
 {
@@ -18,8 +22,8 @@
 
 - (void) dealloc
 {
-  self.commits = nil;
   self.branch = nil;
+  self.commits = nil;
   [super dealloc];
 }
 
@@ -42,7 +46,7 @@
 {
   [super didFinish];
   self.commits = [self commitsFromRawFormatData:self.output];
-  [self.branch asyncTaskGotCommits:self.commits];
+  [self.branch performSelector:self.action withObject:self.commits];
 }
 
 

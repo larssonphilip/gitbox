@@ -150,6 +150,7 @@
 {
   GBHistoryTask* task = [GBHistoryTask task];
   task.branch = self;
+  task.action = @selector(asyncTaskGotCommits:);
   [self.repository launchTask:task];
 }
 
