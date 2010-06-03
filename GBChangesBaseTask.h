@@ -1,7 +1,7 @@
 #import "GBTask.h"
 @class GBChange;
 @class GBCommit;
-@interface GBChangesTask : GBTask
+@interface GBChangesBaseTask : GBTask
 {
 }
 

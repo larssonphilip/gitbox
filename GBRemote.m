@@ -98,20 +98,22 @@
 {
   GBRemoteBranchesTask* task = [GBRemoteBranchesTask task];
   task.remote = self;
+  task.target = self;
+  task.action = @selector(remoteBranchesTaskDidFinish:);
   // task will set later correct branches, but we can return our estimate
   [self.repository launchTask:task]; 
   return [self guessedBranches];
 }
 
-- (void) asyncTaskGotBranches:(NSArray*)branchesList tags:(NSArray*)tagsList
+- (void) remoteBranchesTaskDidFinish:(GBRemoteBranchesTask*)task
 {
-  if (branchesList)
+  if (task.branches)
   {
-    self.branches = branchesList;
+    self.branches = task.branches;
   }
-  if (tagsList)
+  if (task.tags)
   {
-    self.tags = tagsList;
+    self.tags = task.tags;
   }
   
   [self.repository remoteDidUpdate:self];

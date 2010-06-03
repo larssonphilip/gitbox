@@ -1,11 +1,10 @@
-#import "GBTask.h"
+#import "GBBranchesBaseTask.h"
 
 @class GBRemote;
-@interface GBRemoteBranchesTask : GBTask
+@interface GBRemoteBranchesTask : GBBranchesBaseTask
 {
 }
 
 @property(retain) GBRemote* remote;
-
 
 @end

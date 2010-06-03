@@ -1,5 +1,5 @@
-#import "GBChangesTask.h"
-@interface GBUntrackedChangesTask : GBChangesTask
+#import "GBChangesBaseTask.h"
+@interface GBUntrackedChangesTask : GBChangesBaseTask
 {
 }
 

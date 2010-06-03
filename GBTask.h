@@ -8,4 +8,7 @@
 
 @property(assign) GBRepository* repository;
 
+@property(assign) id target;
+@property(assign) SEL action;
+
 @end

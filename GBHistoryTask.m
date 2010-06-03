@@ -12,9 +12,6 @@
 @synthesize limit;
 @synthesize skip;
 
-@synthesize target;
-@synthesize action;
-
 @synthesize commits;
 
 

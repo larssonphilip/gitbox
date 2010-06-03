@@ -5,6 +5,7 @@
 #import "GBTask.h"
 #import "GBRemotesTask.h"
 #import "GBHistoryTask.h"
+#import "GBLocalBranchesTask.h"
 
 #import "NSFileManager+OAFileManagerHelpers.h"
 #import "NSAlert+OAAlertHelpers.h"
@@ -232,33 +233,18 @@
 
 - (NSArray*) loadLocalBranches
 {
-  NSMutableArray* list = [NSMutableArray array];
-  NSURL* aurl = [self gitURLWithSuffix:@"refs/heads"];
-  for (NSURL* aURL in [NSFileManager contentsOfDirectoryAtURL:aurl])
-  {
-    NSString* name = [[aURL pathComponents] lastObject];
-    GBRef* ref = [[GBRef new] autorelease];
-    ref.repository = self;
-    ref.name = name;
-    [list addObject:ref];
-  }
-  return list;
+  GBLocalBranchesTask* task = [GBLocalBranchesTask task];
+  [self launchTaskAndWait:task];
+  self.tags = task.tags;
+  return task.branches;
 }
 
 - (NSArray*) loadTags
 {
-  NSMutableArray* list = [NSMutableArray array];
-  NSURL* aurl = [self gitURLWithSuffix:@"refs/tags"];
-  for (NSURL* aURL in [NSFileManager contentsOfDirectoryAtURL:aurl])
-  {
-    NSString* name = [[aURL pathComponents] lastObject];
-    GBRef* ref = [[GBRef new] autorelease];
-    ref.repository = self;
-    ref.name = name;
-    ref.isTag = YES;
-    [list addObject:ref];
-  }
-  return list;
+  GBLocalBranchesTask* task = [GBLocalBranchesTask task];
+  [self launchTaskAndWait:task];
+  self.localBranches = task.branches;
+  return task.tags;
 }
 
 - (NSArray*) loadRemotes
@@ -323,7 +309,7 @@
 {
   [self endBackgroundUpdate];
   backgroundUpdateEnabled = YES;
-  backgroundUpdateInterval = 30.0;
+  backgroundUpdateInterval = 30.0 + 20*(0.5-drand48()); // randomness is added to make all opened windows fetch at different points of time
   [self performSelector:@selector(fetchSilentlyDuringBackgroundUpdate) 
              withObject:nil 
              afterDelay:backgroundUpdateInterval];

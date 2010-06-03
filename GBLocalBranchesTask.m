@@ -1,20 +1,13 @@
-#import "GBRemoteBranchesTask.h"
+#import "GBLocalBranchesTask.h"
 #import "GBModels.h"
+
 #import "NSData+OADataHelpers.h"
 
-@implementation GBRemoteBranchesTask
-
-@synthesize remote;
-
-- (void) dealloc
-{
-  self.remote = nil;
-  [super dealloc];
-}
+@implementation GBLocalBranchesTask
 
 - (NSArray*) arguments
 {
-  return [NSArray arrayWithObjects:@"ls-remote", @"--tags", @"--heads", self.remote.alias, nil];
+  return [NSArray arrayWithObjects:@"show-ref", @"--tags", @"--heads", nil];
 }
 
 - (BOOL) shouldReadInBackground
@@ -39,7 +32,7 @@
     if (line && [line length] > 0)
     {
       // ["32c5bb7b9a75638ef53c757efd9a0f54576c7c61", "refs/heads/master"]
-      NSArray* commitAndRef = [line componentsSeparatedByString:@"\t"]; 
+      NSArray* commitAndRef = [line componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]; 
       if (commitAndRef && [commitAndRef count] >= 2)
       {
         NSString* commitId = [commitAndRef objectAtIndex:0];
@@ -51,7 +44,6 @@
           ref.repository = self.repository;
           ref.commitId = commitId;
           ref.name = [refName substringFromIndex:[@"refs/heads/" length]];
-          ref.remoteAlias = self.remote.alias;
           [theBranches addObject:ref];
         }
         else if ([refName hasPrefix:@"refs/tags/"])
@@ -60,7 +52,6 @@
           ref.repository = self.repository;
           ref.commitId = commitId;
           ref.name = [refName substringFromIndex:[@"refs/tags/" length]];
-          ref.remoteAlias = self.remote.alias;
           ref.isTag = YES;
           [theTags addObject:ref];
         }
@@ -80,6 +71,8 @@
   self.tags = theTags;
   
   [self.target performSelector:self.action withObject:self];
+  
 }
+
 
 @end

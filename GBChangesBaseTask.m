@@ -1,10 +1,10 @@
 #import "GBModels.h"
-#import "GBChangesTask.h"
+#import "GBChangesBaseTask.h"
 
 #import "NSData+OADataHelpers.h"
 #import "NSString+OAGitHelpers.h"
 
-@implementation GBChangesTask
+@implementation GBChangesBaseTask
 
 - (BOOL) shouldReadInBackground
 {
