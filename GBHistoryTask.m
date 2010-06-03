@@ -32,12 +32,20 @@
 
 - (NSArray*) arguments
 {
-  return [NSArray arrayWithObjects:@"rev-list", 
+  NSMutableArray* args = [NSMutableArray arrayWithObjects:@"rev-list", 
           @"--format=commit %H%ntree %T%nparents %P%nauthorName %an%nauthorEmail %ae%ncommitterName %cn%ncommitterEmail %ce%nauthorDate %ai%n%n%w(10000,4,4)%s%n%n%b",
           [NSString stringWithFormat:@"--max-count=%d", self.limit],
           [NSString stringWithFormat:@"--skip=%d", self.skip],
           [self.branch commitish],
           nil];
+  
+  if (self.joinedBranch) [args addObject:[self.joinedBranch commitish]];
+  if (self.substructedBranch)
+  {
+    [args addObject:@"--not"];
+    [args addObject:[self.substructedBranch commitish]];
+  }
+  return args;
 }
 
 - (BOOL) shouldReadInBackground
