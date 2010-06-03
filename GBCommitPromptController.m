@@ -33,7 +33,9 @@
   self.value = [self.value stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
   
   if (finishSelector) [self.target performSelector:finishSelector withObject:self];
-  self.value = @"";
+  
+  NSLog(@"TODO: discard bindings and just read/write the textfield property directly");
+  
   [self.windowHoldingSheet endSheetForController:self];
   self.windowHoldingSheet = nil;
 }
