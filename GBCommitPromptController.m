@@ -33,7 +33,7 @@
   self.value = [self.value stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
   
   if (finishSelector) [self.target performSelector:finishSelector withObject:self];
-  self.value = nil;
+  self.value = @"";
   [self.windowHoldingSheet endSheetForController:self];
   self.windowHoldingSheet = nil;
 }
