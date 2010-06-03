@@ -54,4 +54,15 @@
 }
 
 
+
+#pragma mark NSWindowDelegate
+
+
+- (void) windowDidBecomeKey:(NSNotification *)notification
+{
+  [self.textView selectAll:self];
+}
+
+
+
 @end

@@ -1,4 +1,4 @@
-@interface GBCommitPromptController : NSWindowController
+@interface GBCommitPromptController : NSWindowController<NSWindowDelegate>
 {
 }
 @property(retain) NSString* value;
