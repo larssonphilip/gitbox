@@ -5,10 +5,11 @@
 
 @implementation GBHistoryTask
 
+@synthesize branch;
 @synthesize limit;
 @synthesize skip;
 
-@synthesize branch;
+@synthesize target;
 @synthesize action;
 
 @synthesize commits;
@@ -46,7 +47,7 @@
 {
   [super didFinish];
   self.commits = [self commitsFromRawFormatData:self.output];
-  [self.branch performSelector:self.action withObject:self.commits];
+  [self.target performSelector:self.action withObject:self.commits];
 }
 
 

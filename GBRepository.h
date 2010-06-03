@@ -63,7 +63,6 @@
 - (void) updateCommits;
 - (void) reloadCommits;
 - (void) remoteDidUpdate:(GBRemote*)aRemote;
-- (void) branch:(GBRef*)aBranch didLoadCommits:(NSArray*)theCommits;
 
 
 #pragma mark Background Update

@@ -284,9 +284,21 @@
 
 - (void) reloadCommits
 {
-  [self.currentLocalRef updateCommits];
+  GBHistoryTask* localAndRemoteCommitsTask = [GBHistoryTask task];
+  localAndRemoteCommitsTask.branch = self.currentLocalRef;
+  localAndRemoteCommitsTask.action = @selector(didReceiveLocalAndRemoteCommits:);
+  [self launchTask:localAndRemoteCommitsTask];
   [self updateCommits];
 }
+  - (void) didReceiveLocalAndRemoteCommits:(NSArray*)theCommits
+  {
+    self.localBranchCommits = theCommits;
+    
+    
+    
+    [self updateCommits];
+  }
+
 
 - (NSArray*) composedCommits
 {
@@ -299,14 +311,6 @@
   [self.delegate repository:self didUpdateRemote:aRemote];
 }
 
-- (void) branch:(GBRef*)aBranch didLoadCommits:(NSArray*)theCommits;
-{
-  if (aBranch == self.currentLocalRef)
-  {
-    self.localBranchCommits = theCommits;
-    [self updateCommits];
-  }
-}
 
 
 

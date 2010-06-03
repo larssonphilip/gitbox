@@ -141,22 +141,4 @@
 
 
 
-
-
-#pragma mark Actions
-
-
-- (void) updateCommits
-{
-  GBHistoryTask* task = [GBHistoryTask task];
-  task.branch = self;
-  task.action = @selector(asyncTaskGotCommits:);
-  [self.repository launchTask:task];
-}
-
-- (void) asyncTaskGotCommits:(NSArray*)theCommits
-{
-  [self.repository branch:self didLoadCommits:theCommits];
-}
-
 @end
