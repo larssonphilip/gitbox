@@ -90,6 +90,12 @@
   NSColor* textColor = [NSColor textColor];
   NSColor* dateColor = [NSColor colorWithCalibratedRed:51/255.0 green:102/255.0 blue:204/255.0 alpha:1.0];
   
+  if (object.syncStatus == GBCommitSyncStatusUnmerged)
+  {
+    textColor = [textColor blendedColorWithFraction:0.7 ofColor:[NSColor whiteColor]];
+    dateColor = [dateColor blendedColorWithFraction:0.7 ofColor:[NSColor whiteColor]];
+  }
+  
   if ([self isHighlighted])
   {
     textColor = [NSColor alternateSelectedControlTextColor];
