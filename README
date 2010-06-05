@@ -1,7 +1,5 @@
 0.9:
 
-- bug: pull does not show alerts
-- test pull/merge when local modifications are present
 - test merge conflict situation
 - bug: cell heights are completely fucked up when commits list changes
 - handle new repo: push to a new master branch
@@ -60,6 +58,8 @@ Other items:
 
 Done:
 
++ bug: pull does not show alerts
++ test pull/merge when local modifications are present
 + edit .gitignore
 + edit .git/config
 + fetch in background should start when the window is always in background

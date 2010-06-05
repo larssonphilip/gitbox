@@ -574,6 +574,11 @@
   [task unsubscribe:self];
   self.pulling = NO;
   
+  if ([task isError])
+  {
+    [self alertWithMessage: @"Pull failed" description:[task.output UTF8String]];
+  }
+  
   [self reloadCommits];
   [self updateStatus];
 }
