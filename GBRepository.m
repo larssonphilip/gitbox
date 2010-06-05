@@ -202,7 +202,7 @@
                                                error:&outError];
   if (!HEAD)
   {
-    [NSAlert error:outError];
+    [self alertWithError:outError];
     return nil;
   }
   HEAD = [HEAD stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
@@ -388,6 +388,36 @@
 
 
 
+#pragma mark Alerts
+
+
+- (void) alertWithError:(NSError*)error
+{
+  if ([delegate respondsToSelector:@selector(repository:alertWithError:)])
+  {
+    [delegate repository:self alertWithError:error];
+  }
+  else
+  {
+    [NSAlert error:error];
+  }
+}
+
+- (void) alertWithMessage:(NSString*)msg description:(NSString*)description
+{
+  if ([delegate respondsToSelector:@selector(repository:alertWithMessage:description:)])
+  {
+    [delegate repository:self alertWithMessage:msg description:description];
+  }
+  else
+  {
+    [NSAlert message:msg description:description];
+  }
+}
+
+
+
+
 
 #pragma mark Mutation methods
 
@@ -543,10 +573,8 @@
   if ([task isError])
   {
     [self fetchSilently];
-    [NSAlert message: @"Push failed"
-         description: @"Try to pull first."];
+    [self alertWithMessage: @"Push failed" description: @"Try to pull first."];
   }
-  
   [self reloadCommits];
 }
 

@@ -375,7 +375,40 @@
   }
 }
 
+- (void) repository:(GBRepository*)repo alertWithError:(NSError*)error
+{
+  [self repository:repo alertWithMessage:[error localizedDescription] description:@""];
+}
 
+- (void) repository:(GBRepository*)repo alertWithMessage:(NSString*)message description:(NSString*)description
+{
+  NSAlert* alert = [[[NSAlert alloc] init] autorelease];
+  [alert addButtonWithTitle:@"OK"];
+  [alert setMessageText:message];
+  [alert setInformativeText:description];
+  [alert setAlertStyle:NSWarningAlertStyle];
+  
+  [alert runModal];
+  
+  //[alert retain];
+  // This cycle delay helps to avoid toolbar deadlock
+  //[self performSelector:@selector(slideAlert:) withObject:alert afterDelay:0.1];
+}
+
+  - (void) slideAlert:(NSAlert*)alert
+  {
+    [alert beginSheetModalForWindow:[self window]
+                      modalDelegate:self
+                     didEndSelector:@selector(repositoryErrorAlertDidEnd:returnCode:contextInfo:)
+                        contextInfo:nil];
+  }
+
+  - (void) repositoryErrorAlertDidEnd:(NSAlert*)alert returnCode:(NSInteger)returnCode contextInfo:(void*)contextInfo
+  {
+    [NSApp endSheet:[self window]];
+    [[alert window] orderOut:self];
+    [alert autorelease];
+  }
 
 
 

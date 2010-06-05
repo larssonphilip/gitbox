@@ -3,6 +3,9 @@
 @protocol GBRepositoryDelegate
 - (void) repositoryDidUpdateStatus:(GBRepository*)repo;
 - (void) repository:(GBRepository*)repo didUpdateRemote:(GBRemote*)remote;
+@optional
+- (void) repository:(GBRepository*)repo alertWithError:(NSError*)error;
+- (void) repository:(GBRepository*)repo alertWithMessage:(NSString*)message description:(NSString*)description;
 @end
 
 @class GBRef;
@@ -37,7 +40,7 @@
 @property(assign) BOOL fetching;
 @property(assign) BOOL pushing;
 
-@property(assign) id<GBRepositoryDelegate> delegate;
+@property(assign) NSObject<GBRepositoryDelegate>* delegate;
 
 @property(retain) GBCommit* selectedCommit;
 
@@ -74,6 +77,12 @@
 
 - (void) beginBackgroundUpdate;
 - (void) endBackgroundUpdate;
+
+
+#pragma mark Alerts
+
+- (void) alertWithError:(NSError*)error;
+- (void) alertWithMessage:(NSString*)msg description:(NSString*)description;
 
 
 #pragma mark Mutation

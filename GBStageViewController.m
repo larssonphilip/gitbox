@@ -102,6 +102,7 @@
   {
     [self.repository.stage revertChanges:[self selectedChanges]];
   }
+  [NSApp endSheet:[self window]];
   [[alert window] orderOut:self];
   [alert autorelease];
 }
@@ -135,6 +136,7 @@
   {
     [self.repository.stage deleteFiles:[self selectedChanges]];
   }
+  [NSApp endSheet:[self window]];
   [[alert window] orderOut:self];
   [alert autorelease];
 }
