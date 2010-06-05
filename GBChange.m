@@ -57,6 +57,14 @@
 - (BOOL) isEqual:(GBChange*)other
 {
   if (!other) return NO;
+  
+//  if (staged == other.staged)
+//  {
+//    // Special case: when both changes are staged, one of them may be a "just staged", without a new revision yet.
+//    return (([self.srcURL isEqual:other.srcURL] || (!srcURL && !other.srcURL)) &&
+//            ([self.dstURL isEqual:other.dstURL] || (!dstURL && !other.dstURL)));  
+//  }
+  
   return ([self.oldRevision isEqualToString:other.oldRevision] && 
           [self.newRevision isEqualToString:other.newRevision] &&
           [self.statusCode isEqualToString:other.statusCode] &&
