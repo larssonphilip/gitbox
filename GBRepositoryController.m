@@ -445,6 +445,8 @@
   
   [self.repository addObserver:self forKeyPath:@"selectedCommit" 
           selectorWithNewValue:@selector(selectedCommitDidChange:)];
+  
+  [self.repository fetchSilently];
 }
 
 
