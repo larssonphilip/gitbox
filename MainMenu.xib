@@ -12,7 +12,7 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="296"/>
+			<integer value="533"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -594,14 +594,6 @@
 									<reference key="NSOnImage" ref="1033313550"/>
 									<reference key="NSMixedImage" ref="310636482"/>
 								</object>
-								<object class="NSMenuItem" id="268529488">
-									<reference key="NSMenu" ref="697599868"/>
-									<string key="NSTitle">Cherry Pick...</string>
-									<string key="NSKeyEquiv"/>
-									<int key="NSMnemonicLoc">2147483647</int>
-									<reference key="NSOnImage" ref="1033313550"/>
-									<reference key="NSMixedImage" ref="310636482"/>
-								</object>
 								<object class="NSMenuItem" id="1004065423">
 									<reference key="NSMenu" ref="697599868"/>
 									<bool key="NSIsDisabled">YES</bool>
@@ -1164,6 +1156,22 @@
 					</object>
 					<int key="connectionID">726</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">editGitIgnore:</string>
+						<reference key="source" ref="1014"/>
+						<reference key="destination" ref="389492461"/>
+					</object>
+					<int key="connectionID">727</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">editGitConfig:</string>
+						<reference key="source" ref="1014"/>
+						<reference key="destination" ref="403502248"/>
+					</object>
+					<int key="connectionID">728</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -1483,7 +1491,6 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="1046993943"/>
 							<reference ref="877572326"/>
-							<reference ref="268529488"/>
 							<reference ref="403502248"/>
 							<reference ref="389492461"/>
 							<reference ref="501907270"/>
@@ -1508,11 +1515,6 @@
 					<object class="IBObjectRecord">
 						<int key="objectID">535</int>
 						<reference key="object" ref="877572326"/>
-						<reference key="parent" ref="697599868"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">536</int>
-						<reference key="object" ref="268529488"/>
 						<reference key="parent" ref="697599868"/>
 					</object>
 					<object class="IBObjectRecord">
@@ -1871,7 +1873,6 @@
 					<string>533.IBPluginDependency</string>
 					<string>534.IBPluginDependency</string>
 					<string>535.IBPluginDependency</string>
-					<string>536.IBPluginDependency</string>
 					<string>537.IBPluginDependency</string>
 					<string>542.IBPluginDependency</string>
 					<string>543.IBPluginDependency</string>
@@ -1990,7 +1991,7 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="1"/>
 					<string>{{525, 802}, {197, 73}}</string>
-					<string>{{10, 538}, {384, 20}}</string>
+					<string>{{343, 483}, {384, 20}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="1"/>
 					<string>{74, 862}</string>
@@ -2008,8 +2009,7 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="1"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{167, 382}, {209, 283}}</string>
-					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>{{507, 220}, {209, 263}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -2110,7 +2110,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">726</int>
+			<int key="maxID">728</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -2221,6 +2221,8 @@
 							<string>checkoutRemoteBranch:</string>
 							<string>commit:</string>
 							<string>createNewRemoteBranch:</string>
+							<string>editGitConfig:</string>
+							<string>editGitIgnore:</string>
 							<string>editRepositories:</string>
 							<string>openInFinder:</string>
 							<string>openInTerminal:</string>
@@ -2232,6 +2234,8 @@
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>id</string>
+							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>

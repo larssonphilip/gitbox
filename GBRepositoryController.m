@@ -8,6 +8,7 @@
 #import "GBRemotesController.h"
 #import "GBPromptController.h"
 #import "GBCommitPromptController.h"
+#import "GBFileEditingController.h"
 
 #import "NSArray+OAArrayHelpers.h"
 #import "NSString+OAStringHelpers.h"
@@ -317,6 +318,22 @@
   {
     [self endSheetForController:remotesController];
   }
+
+- (IBAction) editGitIgnore:(id)sender
+{
+  GBFileEditingController* fileEditor = [GBFileEditingController controller];
+  fileEditor.title = @".gitignore";
+  fileEditor.URL = [self.repository.url URLByAppendingPathComponent:@".gitignore"];
+  [fileEditor runSheetInWindow:[self window]];
+}
+
+- (IBAction) editGitConfig:(id)sender
+{
+  GBFileEditingController* fileEditor = [GBFileEditingController controller];
+  fileEditor.title = @".git/config";
+  fileEditor.URL = [self.repository.url URLByAppendingPathComponent:@".git/config"];
+  [fileEditor runSheetInWindow:[self window]];
+}
 
 - (IBAction) openInTerminal:(id)sender
 { 

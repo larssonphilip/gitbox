@@ -77,6 +77,8 @@
 		2093AAAA11B15E1500239185 /* NSSplitView+OASplitViewHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 2093AAA911B15E1500239185 /* NSSplitView+OASplitViewHelpers.m */; };
 		2093AC8711B2EB9100239185 /* GBCommitPromptController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2093AC8611B2EB9100239185 /* GBCommitPromptController.m */; };
 		2093AC9111B2EBFF00239185 /* GBCommitPromptController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2093AC9011B2EBFF00239185 /* GBCommitPromptController.xib */; };
+		209A935A11BA92B6006B0B5C /* GBFileEditingController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 209A935911BA92B6006B0B5C /* GBFileEditingController.xib */; };
+		209A935F11BA934C006B0B5C /* GBFileEditingController.m in Sources */ = {isa = PBXBuildFile; fileRef = 209A935E11BA934C006B0B5C /* GBFileEditingController.m */; };
 		20B1621211944C0F00A709CF /* NSFileManager+OAFileManagerHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B1621111944C0F00A709CF /* NSFileManager+OAFileManagerHelpers.m */; };
 		20B399F511B7F28900D6A3C4 /* GBBranchesBaseTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B399F411B7F28900D6A3C4 /* GBBranchesBaseTask.m */; };
 		20B399FA11B7F30600D6A3C4 /* GBLocalBranchesTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B399F911B7F30600D6A3C4 /* GBLocalBranchesTask.m */; };
@@ -214,6 +216,9 @@
 		2093AC8511B2EB9100239185 /* GBCommitPromptController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBCommitPromptController.h; sourceTree = "<group>"; };
 		2093AC8611B2EB9100239185 /* GBCommitPromptController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBCommitPromptController.m; sourceTree = "<group>"; };
 		2093AC9011B2EBFF00239185 /* GBCommitPromptController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBCommitPromptController.xib; sourceTree = "<group>"; };
+		209A935911BA92B6006B0B5C /* GBFileEditingController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBFileEditingController.xib; sourceTree = "<group>"; };
+		209A935D11BA934C006B0B5C /* GBFileEditingController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBFileEditingController.h; sourceTree = "<group>"; };
+		209A935E11BA934C006B0B5C /* GBFileEditingController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBFileEditingController.m; sourceTree = "<group>"; };
 		20B1621011944C0F00A709CF /* NSFileManager+OAFileManagerHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSFileManager+OAFileManagerHelpers.h"; sourceTree = "<group>"; };
 		20B1621111944C0F00A709CF /* NSFileManager+OAFileManagerHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSFileManager+OAFileManagerHelpers.m"; sourceTree = "<group>"; };
 		20B399F311B7F28900D6A3C4 /* GBBranchesBaseTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBBranchesBaseTask.h; sourceTree = "<group>"; };
@@ -326,6 +331,8 @@
 				2093A7CD11AF0EC800239185 /* GBCommitViewController.m */,
 				2093AC8511B2EB9100239185 /* GBCommitPromptController.h */,
 				2093AC8611B2EB9100239185 /* GBCommitPromptController.m */,
+				209A935D11BA934C006B0B5C /* GBFileEditingController.h */,
+				209A935E11BA934C006B0B5C /* GBFileEditingController.m */,
 				2038F5B8119879FA0087CE37 /* GBRemotesController.h */,
 				2038F5B9119879FA0087CE37 /* GBRemotesController.m */,
 				20B8B83B11A4A776006D6442 /* GBPromptController.h */,
@@ -341,6 +348,7 @@
 				2058FA4711982F5100FB018D /* GBRemotesController.xib */,
 				20B8B83811A4A72A006D6442 /* GBPromptController.xib */,
 				2057F10411ACF4C0009EDF2F /* GBActivityController.xib */,
+				209A935911BA92B6006B0B5C /* GBFileEditingController.xib */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -555,6 +563,7 @@
 				203A572911B6C28900497636 /* commit-marker-unpushed.png in Resources */,
 				2030F19511B82BED00C260E0 /* commit-marker-unmerged-highlighted.png in Resources */,
 				2030F19611B82BED00C260E0 /* commit-marker-unpushed-highlighted.png in Resources */,
+				209A935A11BA92B6006B0B5C /* GBFileEditingController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -632,6 +641,7 @@
 				200B08B511B6E359004C09A8 /* GBLocalRemoteAssociationTask.m in Sources */,
 				20B399F511B7F28900D6A3C4 /* GBBranchesBaseTask.m in Sources */,
 				20B399FA11B7F30600D6A3C4 /* GBLocalBranchesTask.m in Sources */,
+				209A935F11BA934C006B0B5C /* GBFileEditingController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
