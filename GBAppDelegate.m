@@ -109,7 +109,7 @@
     for (NSString* path in paths)
     {
       if ([NSFileManager isWritableDirectoryAtPath:path] &&
-          [GBRepository isValidRepositoryAtPath:path])
+          [GBRepository validRepositoryPathForPath:path])
       {
         [self openWindowForRepositoryAtURL:[NSURL fileURLWithPath:path]];
       } // if path is valid repo
@@ -153,11 +153,12 @@
 
 - (BOOL) application:(NSApplication*)theApplication openFile:(NSString*)path
 {
-  NSURL* url = [NSURL fileURLWithPath:path];
   if ([NSFileManager isWritableDirectoryAtPath:path])
   {
-    if ([GBRepository isValidRepositoryAtPath:path])
+    NSString* repoPath = [GBRepository validRepositoryPathForPath:path];
+    if (repoPath)
     {
+      NSURL* url = [NSURL fileURLWithPath:repoPath];
       [self openWindowForRepositoryAtURL:url];
       [self storeRepositories];
       [[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:url];
@@ -165,15 +166,16 @@
     }
     else 
     {
-      if ([NSAlert unsafePrompt:NSLocalizedString(@"Folder does not appear to be a git repository. Make it a repository?", @"")
+      NSURL* url = [NSURL fileURLWithPath:path];
+      if ([NSAlert unsafePrompt:NSLocalizedString(@"Folder is not a git repository. Make it a repository?", @"")
                     description:path] == NSAlertAlternateReturn)
       {
-        NSLog(@"TODO: init git repo");
+        NSLog(@"TODO: init git repo using custom NSSavePanel");
         if (NO)
         {
-          GBRepositoryController* windowController = [self windowController];
-          windowController.repository = [GBRepository freshRepositoryForURL:url];
-          [self addWindowController:windowController];
+//          GBRepositoryController* windowController = [self windowController];
+//          windowController.repository = [GBRepository freshRepositoryForURL:url];
+//          [self addWindowController:windowController];
           
           [[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:url];
           return YES;

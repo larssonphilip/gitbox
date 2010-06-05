@@ -44,14 +44,12 @@
 
 @property(retain) GBCommit* selectedCommit;
 
-+ (id) freshRepositoryForURL:(NSURL*)url;
-
 
 
 #pragma mark Interrogation
 
 - (GBRef*) loadCurrentLocalRef;
-+ (BOOL) isValidRepositoryAtPath:(NSString*)path;
++ (NSString*) validRepositoryPathForPath:(NSString*)aPath;
 - (NSString*) path;
 - (GBRemote*) defaultRemote;
 - (NSArray*) composedCommits;

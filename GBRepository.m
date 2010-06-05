@@ -40,12 +40,6 @@
 #pragma mark Init
 
 
-+ (id) freshRepositoryForURL:(NSURL*)url
-{
-  NSLog(@"TODO: freshRepositoryForURL:%@", url);
-  return nil;
-}
-
 - (void) dealloc
 {
   [NSObject cancelPreviousPerformRequestsWithTarget:self];
@@ -188,10 +182,16 @@
 #pragma mark Interrogation
 
 
-+ (BOOL) isValidRepositoryAtPath:(NSString*) aPath
++ (NSString*) validRepositoryPathForPath:(NSString*)aPath
 {
-  NSLog(@"TODO: check parent folders for containing .git");
-  return aPath && [NSFileManager isWritableDirectoryAtPath:[aPath stringByAppendingPathComponent:@".git"]];
+  if (!aPath) return nil;
+  while (![NSFileManager isWritableDirectoryAtPath:[aPath stringByAppendingPathComponent:@".git"]])
+  {
+    if ([aPath isEqualToString:@"/"] || [aPath isEqualToString:@""]) return nil;
+    aPath = [aPath stringByDeletingLastPathComponent];
+    if (!aPath) return nil;
+  }
+  return aPath;
 }
 
 - (GBRef*) loadCurrentLocalRef

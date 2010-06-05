@@ -1,5 +1,7 @@
-0.9:
 
+To do:
+
+0.9:
 - test merge conflict situation
 - bug: cell heights are completely fucked up when commits list changes
 - handle new repo: push to a new master branch
@@ -10,23 +12,16 @@
 - repos: add
 - repos: edit
 
-
-Other items:
-
+Other:
 - local branch merge
 - push should be disabled when there's something to merge
 - push should be disabled when remote branch is local
 - pull should be "merge" when remote branch is local
 - remote branch control title should "Other Local Branch" if the remote is local
 - create a new tag
-
-- ignore: ignore context menu item in the stage
-- ignore: drop the file into .gitignore editor
-
-- detect repository when inner folder is dropped
-
+- gitignore: ignore context menu item in the stage
+- gitignore: drop the file into .gitignore editor
 - performance: group common changes for a single commit command 
-
 - bug: should try running NSTasks blocking in a background NSOperation to work around the leaks
 - performance: should refresh status on FSEvent directory change (in background)
 - bug: disable status table view while status is updating (double click on a stale row crashes the app)
@@ -34,51 +29,49 @@ Other items:
 - bug: table row selection is ignored if was no selection for ArrayController. Should check NSTableView selectedRowIndexes? 
   See http://forums.macrumors.com/showthread.php?t=166469
 - bug: historical diff for Added file shows diff between current state (left) and initial state (right)
-
 - history: checkout a commit
 - history: check out a branch from the commit item
 - history: add "load more" cell in the bottom of the log
-
 - fetch in background should reset fetch interval when new commits are fetched
-
 - reread remotes on focus: if the names and urls are the same, do not ls-remote
 - do ls-remote in background starting on unfocus
 - stash list: as a local branch menu item?
 - individual chunks commit
 - compare image files in an double-pane image viewer
 - compare office files using some office app: cooperate with Caleidoscope
-
 - maybe put errors in a floating panel
 - stash/apply stash from the menu, context menu
 - maybe: easy/hidden rebase to keep history clean?
-
 - log: mark as read/unread + automatic mark as read
 - commit prompt: cmd+up/down to scroll through the recent messages
-
 - sidebar to group repositories
 
 
 Done:
 
+0.9:
++ detect repository when inner folder is dropped
 + bug: pull does not show alerts
 + test pull/merge when local modifications are present
 + edit .gitignore
 + edit .git/config
-+ fetch in background should start when the window is always in background
-+ git fetch does not update SHA1 of the remote branch when explicit branch name is given
-+ fetch in background does not reload commits
-+ prompt value binding problem
-+ OK button does not work in prompt because textfield value is updated through binding yet.
++ bug: fetch in background should start when the window is always in background
++ bug: git fetch does not update SHA1 of the remote branch when explicit branch name is given
++ bug: fetch in background does not reload commits
++ bug: prompt value binding problem
++ bug: OK button does not work in prompt because textfield value is updated through binding yet.
++ bug: when checking out a new remote branch, master assoc becomes broken
++ bug: when switching remote branch history is not updated
++ bug: when refocusing the window, branches are not updated
++ bug: title of a checked out branch is just fucked up
++ bug: multiple checkmarks in a branch
+
+0.8:
 + unmerged/unpushed commits
 + ask for binary
 + multiline commit window
 + NSViewController for GBRepositoryWindow
 + remembering remote-local association
-+ when checking out a new remote branch, master assoc becomes broken
-+ when switching remote branch history is not updated
-+ when refocusing the window, branches are not updated
-+ title of a checked out branch is just fucked up
-+ multiple checkmarks in a branch
 + should increase fetch interval in background to alleviate NSTask leaks
 + commit changes do not display renames properly
 + switch context menu for historical commits
