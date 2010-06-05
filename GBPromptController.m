@@ -4,6 +4,8 @@
 
 @implementation GBPromptController
 
+@synthesize textField;
+
 @synthesize title;
 @synthesize promptText;
 @synthesize buttonText;
@@ -29,6 +31,7 @@
 {
   if (self = [super initWithWindow:window])
   {
+    self.value = @"";
     self.title = NSLocalizedString(@"Prompt",@"");
     self.promptText = NSLocalizedString(@"Prompt:",@"");
     self.buttonText = NSLocalizedString(@"OK",@"");
@@ -40,6 +43,7 @@
 
 - (void) dealloc
 {
+  self.textField = nil;
   self.title = nil;
   self.promptText = nil;
   self.buttonText = nil;
@@ -49,6 +53,7 @@
 
 - (IBAction) onOK:(id)sender
 {
+  self.value = [self.textField stringValue];
   if (requireSingleLine || requireStripWhitespace)
   {
     self.value = [self.value stringByReplacingOccurrencesOfString:@"\n" withString:@""];
@@ -62,6 +67,7 @@
   if (requireNonEmptyString && (!self.value || [self.value isEmptyString])) return;
       
   if (finishSelector) [self.target performSelector:finishSelector withObject:self];
+  self.value = @"";
   [self.windowHoldingSheet endSheetForController:self];
   self.windowHoldingSheet = nil;
 }
@@ -76,6 +82,7 @@
 - (void) runSheetInWindow:(NSWindow*)window
 {
   self.windowHoldingSheet = window;
+  [self.textField setStringValue:self.value];
   [window beginSheetForController:self];
 }
 

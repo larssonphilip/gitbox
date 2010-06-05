@@ -2,6 +2,8 @@
 {
 }
 
+@property(retain) IBOutlet NSTextField* textField;
+
 @property(retain) NSString* title;
 @property(retain) NSString* promptText;
 @property(retain) NSString* buttonText;
