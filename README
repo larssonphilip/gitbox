@@ -3,12 +3,12 @@
 
 Other items:
 
+- fetch in background should reset fetch interval when new commits are fetched
 - cell heights are completely fucked up when commits list changes
 - push should be disabled when there's something to merge
 - push should be disabled when remote branch is local
 - pull should be "merge" when remote branch is local
 - remote branch control title should "Other Local Branch" if the remote is local
-- git fetch does not update SHA1 of the remote branch when explicit branch name is given
 - should try running NSTasks blocking in a background NSOperation to work around the leaks
 - should refresh status on FSEvent directory change (in background)
 - disable status table view while status is updating (double click on a stale row crashes the app)
@@ -51,6 +51,9 @@ Other items:
 
 Done:
 
++ fetch in background should start when the window is always in background
++ git fetch does not update SHA1 of the remote branch when explicit branch name is given
++ fetch in background does not reload commits
 + prompt value binding problem
 + OK button does not work in prompt because textfield value is updated through binding yet.
 + unmerged/unpushed commits

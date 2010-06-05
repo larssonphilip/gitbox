@@ -360,7 +360,8 @@
 {
   [self endBackgroundUpdate];
   backgroundUpdateEnabled = YES;
-  backgroundUpdateInterval = 30.0 + 20*(0.5-drand48()); // randomness is added to make all opened windows fetch at different points of time
+  // randomness is added to make all opened windows fetch at different points of time
+  backgroundUpdateInterval = 5.0 + 2*2*(0.5-drand48()); 
   [self performSelector:@selector(fetchSilentlyDuringBackgroundUpdate) 
              withObject:nil 
              afterDelay:backgroundUpdateInterval];
@@ -505,7 +506,14 @@
     self.pulling = YES;
     
     GBTask* pullTask = [GBTask task];
-    pullTask.arguments = [NSArray arrayWithObjects:@"pull", aRemoteBranch.remoteAlias, aRemoteBranch.name, nil];
+    pullTask.arguments = [NSArray arrayWithObjects:@"pull", 
+                           @"--tags", 
+                           @"--force", 
+                           aRemoteBranch.remoteAlias, 
+                           [NSString stringWithFormat:@"%@:refs/remotes/%@", 
+                            aRemoteBranch.name, [aRemoteBranch nameWithRemoteAlias]],
+                           nil];
+    
     [pullTask subscribe:self selector:@selector(pullTaskDidFinish:)];
     [self launchTask:pullTask];
   }
@@ -541,7 +549,13 @@
     self.fetching = YES;
     
     GBTask* fetchTask = [GBTask task];
-    fetchTask.arguments = [NSArray arrayWithObjects:@"fetch", @"--tags", aRemoteBranch.remoteAlias, aRemoteBranch.name, nil];
+    fetchTask.arguments = [NSArray arrayWithObjects:@"fetch", 
+                           @"--tags", 
+                           @"--force", 
+                           aRemoteBranch.remoteAlias, 
+                           [NSString stringWithFormat:@"%@:refs/remotes/%@", 
+                            aRemoteBranch.name, [aRemoteBranch nameWithRemoteAlias]],
+                           nil];
     [fetchTask subscribe:self selector:@selector(fetchSilentlyTaskDidFinish:)];
     [self launchTask:fetchTask];
   }
