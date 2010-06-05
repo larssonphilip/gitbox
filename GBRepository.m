@@ -592,7 +592,7 @@
   if ([task isError])
   {
     [self fetchSilently];
-    [self alertWithMessage: @"Push failed" description: @"Try to pull first."];
+    [self alertWithMessage: @"Push failed" description:[task.output UTF8String]];
   }
   [self reloadCommits];
 }
