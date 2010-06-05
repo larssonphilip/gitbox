@@ -43,8 +43,11 @@
 
 + (id) freshRepositoryForURL:(NSURL*)url;
 
+
+
 #pragma mark Interrogation
 
+- (GBRef*) loadCurrentLocalRef;
 + (BOOL) isValidRepositoryAtPath:(NSString*)path;
 - (NSString*) path;
 - (GBRemote*) defaultRemote;
@@ -60,8 +63,10 @@
 #pragma mark Update
 
 - (void) updateStatus;
+- (void) updateBranchStatus;
 - (void) updateCommits;
 - (void) reloadCommits;
+- (void) resetCurrentLocalRef;
 - (void) remoteDidUpdate:(GBRemote*)aRemote;
 
 

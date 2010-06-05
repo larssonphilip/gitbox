@@ -1,21 +1,15 @@
-Strategy for the first shippable version:
-
-+ NSViewController for GBRepositoryWindow
-+ remembering remote-local association
-- unmerged/unpushed commits
-- local branch merge
-+ ask for binary
-+ multiline commit window
-
-- test merge conflict situation
-- repos: add
-- repos: edit
-- log: checkout a commit
+0.9:
 
 
-Bugs:
+Other items:
 
-+ should increase fetch interval in background to alleviate NSTask leaks
+- cell heights are completely fucked up when commits list changes
+- push should be disabled when there's something to merge
+- push should be disabled when remote branch is local
+- pull should be "merge" when remote branch is local
+- remote branch control title should "Other Local Branch" if the remote is local
+- prompt value binding problem
+- git fetch does not update SHA1 of the remote branch when explicit branch name is given
 - should try running NSTasks blocking in a background NSOperation to work around the leaks
 - should refresh status on FSEvent directory change (in background)
 - disable status table view while status is updating (double click on a stale row crashes the app)
@@ -24,6 +18,52 @@ Bugs:
 - table row selection is ignored if was no selection for ArrayController. Should check NSTableView selectedRowIndexes? 
   See http://forums.macrumors.com/showthread.php?t=166469
 - historical diff for Added file shows diff between current state (left) and initial state (right)
+
+- local branch merge
+
+- test merge conflict situation
+- repos: add
+- repos: edit
+- log: checkout a commit
+
+- check out a branch from the commit item
+- add "load more" cell in the bottom of the log
+- handle new repo: push to a new master branch
+- handle pushing to a new branch: allow branch creation in "remote branch" dropdown
+- clone a repo from the gui (menu item)
+- create a new repo from the gui (by dropping a non-git folder)
+- create a default .gitignore when creating a repo
+- edit .gitignore
+- edit .git/config
+- create a new tag
+
+- reread remotes on focus: if the names and urls are the same, do not ls-remote
+- do ls-remote in background starting on unfocus
+- log: mark as read/unread + automatic mark as read
+- stash list: as a local branch menu item?
+- individual chunks commit
+- compare image files in an double-pane image viewer
+- compare office files using some office app: cooperate with Caleidoscope
+
+- maybe put errors in a floating panel
+- stash/apply stash from the menu, context menu
+- maybe: easy/hidden rebase to keep history clean?
+- assign colors to repos to distinguish them
+
+
+Done:
+
++ unmerged/unpushed commits
++ ask for binary
++ multiline commit window
++ NSViewController for GBRepositoryWindow
++ remembering remote-local association
++ when checking out a new remote branch, master assoc becomes broken
++ when switching remote branch history is not updated
++ when refocusing the window, branches are not updated
++ title of a checked out branch is just fucked up
++ multiple checkmarks in a branch
++ should increase fetch interval in background to alleviate NSTask leaks
 + commit changes do not display renames properly
 + switch context menu for historical commits
 + empty filenames for untracked folder
@@ -36,61 +76,13 @@ Bugs:
 + remote branch checkout does not update remote branch menu
 + sometimes hangs when FileMerge is opened (for a couple of seconds): http://www.cocoadev.com/index.pl?WrappingUnixApps 
   should listen to task termination notification
-
-UI glitches:
-
-- disable menu item "commit" if commit button is disabled
-- disable push button and push menu item if remote branch has unmerged commits
 + rename "current branch" into "local branch" menu
-
-
-UI goodies:
-
-
-- change "sync" button title to "push" when remote is not ahead of local branch
-- change "sync" button title to "pull" when remote is ahead of local branch
-- change "sync" button title to "merge" when remote is local
-- reread remotes on focus: if the names and urls are the same, do not ls-remote
-- do ls-remote in background starting on unfocus
-- switch off 1min sync with a menu item: useful on battery
-- log: mark as read/unread + automatic mark as read
-- stash list: as a local branch menu item?
-- individual chunks commit
-- remember prompt window size
-- compare image files in an double-pane image viewer
-- compare office files using some office app
++ remember prompt window size
 + draw checkmark in branch menus for the selected branch
 + remember all opened windows on startup (for existing paths only)
 + recently opened files
 + prefill suggested remote branch name when creating a new remote branch (take a local branch name as a guess)
-
-
-To do next:
-
-- check out a branch from the commit item
-- change "remote branch" label to "other branch" when remote is local
-- add "load more" cell in the bottom of the log
-- handle new repo: push to a new master branch
-- handle pushing to a new branch: allow branch creation in "remote branch" dropdown
-- clone a repo from the gui (menu item)
-- create a new repo from the gui (by dropping a non-git folder)
-- create a default .gitignore when creating a repo
-- edit .gitignore
-- edit .git/config
-- create a new tag
-
 + check AM/PM format in US locale
-
-Later:
-
-- maybe put errors in a floating panel
-- stash/apply stash from the menu, context menu
-- maybe: easy/hidden rebase to keep history clean?
-- assign colors to repos to distinguish them
-
-
-Done:
-
 + log: list of commits (last 500 commits)
 + prompt for a name when checking out a new branch
 + check out a branch from the remote one
@@ -111,6 +103,7 @@ Done:
 + revert file to committed state
 + commit
 
+-------------------------------------------------------------------------------
 
 Strange things:
 

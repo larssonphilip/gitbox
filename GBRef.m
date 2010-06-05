@@ -71,8 +71,8 @@
 
 - (NSString*) commitish
 {
-  if (self.commitId) return self.commitId;
   if (self.name) return [self nameWithRemoteAlias];
+  if (self.commitId) return self.commitId;
   return nil;
 }
 

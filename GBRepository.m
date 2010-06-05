@@ -129,33 +129,10 @@
 {
   if (!currentLocalRef)
   {
-    NSError* outError = nil;
-    NSString* HEAD = [NSString stringWithContentsOfURL:[self gitURLWithSuffix:@"HEAD"]
-                                              encoding:NSUTF8StringEncoding 
-                                                 error:&outError];
-    if (!HEAD)
-    {
-      [NSAlert error:outError];
-      return nil;
-    }
-    HEAD = [HEAD stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    NSString* refprefix = @"ref: refs/heads/";
-    GBRef* ref = [[GBRef new] autorelease];
-    ref.repository = self;
-    if ([HEAD hasPrefix:refprefix])
-    {
-      ref.name = [HEAD substringFromIndex:[refprefix length]];
-    }
-    else // assuming SHA1 ref
-    {
-      ref.commitId = HEAD;
-    }
-    self.currentLocalRef = ref;
+    self.currentLocalRef = [self loadCurrentLocalRef];
   }
   return [[currentLocalRef retain] autorelease];
 }
-
-
 
 - (GBRef*) currentRemoteBranch
 {
@@ -217,6 +194,32 @@
   return aPath && [NSFileManager isWritableDirectoryAtPath:[aPath stringByAppendingPathComponent:@".git"]];
 }
 
+- (GBRef*) loadCurrentLocalRef
+{
+  NSError* outError = nil;
+  NSString* HEAD = [NSString stringWithContentsOfURL:[self gitURLWithSuffix:@"HEAD"]
+                                            encoding:NSUTF8StringEncoding 
+                                               error:&outError];
+  if (!HEAD)
+  {
+    [NSAlert error:outError];
+    return nil;
+  }
+  HEAD = [HEAD stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+  NSString* refprefix = @"ref: refs/heads/";
+  GBRef* ref = [[GBRef new] autorelease];
+  ref.repository = self;
+  if ([HEAD hasPrefix:refprefix])
+  {
+    ref.name = [HEAD substringFromIndex:[refprefix length]];
+  }
+  else // assuming SHA1 ref
+  {
+    ref.commitId = HEAD;
+  }
+  return ref;
+}
+
 - (NSString*) path
 {
   return [url path];
@@ -262,6 +265,17 @@
 - (void) updateStatus
 {
   [self.stage reloadChanges];
+}
+
+- (void) updateBranchStatus
+{
+  GBRef* ref = [self loadCurrentLocalRef];
+  if (![ref isEqual:self.currentLocalRef])
+  {
+    [self resetCurrentLocalRef];
+    [self reloadCommits];
+  }
+  self.localBranches = [self loadLocalBranches];
 }
 
 - (void) updateCommits
@@ -381,7 +395,7 @@
 
 - (void) resetCurrentLocalRef
 {
-  self.currentLocalRef = nil; // invalidate
+  self.currentLocalRef = [self loadCurrentLocalRef];
   GBRef* ref = [self.currentLocalRef rememberedOrGuessedRemoteBranch];
   if (ref) self.currentRemoteBranch = ref;
   [self.currentLocalRef rememberRemoteBranch:self.currentRemoteBranch];
@@ -397,6 +411,22 @@
 - (void) checkoutRef:(GBRef*)ref withNewBranchName:(NSString*)name
 {
   [[[self task] launchWithArgumentsAndWait:[NSArray arrayWithObjects:@"checkout", @"-b", name, [ref commitish], nil]] showErrorIfNeeded];
+  
+  if ([ref isRemoteBranch])
+  {
+    GBTask* task = [GBTask task];
+    task.arguments = [NSArray arrayWithObjects:@"config", 
+                      [NSString stringWithFormat:@"branch.%@.remote", name], 
+                      ref.remoteAlias, 
+                      nil];
+    [self launchTaskAndWait:task];
+    task = [GBTask task];
+    task.arguments = [NSArray arrayWithObjects:@"config", 
+                      [NSString stringWithFormat:@"branch.%@.merge", name],
+                      [NSString stringWithFormat:@"refs/heads/%@", ref.name],
+                      nil];
+    [self launchTaskAndWait:task];
+  }
   
   [self resetCurrentLocalRef];
   if ([ref isRemoteBranch])
@@ -425,11 +455,8 @@
 - (void) selectRemoteBranch:(GBRef*)aBranch
 {
   self.currentRemoteBranch = aBranch;
-  
-  if (self.currentLocalRef && [self.currentLocalRef isLocalBranch])
-  {
-    [self.currentLocalRef rememberRemoteBranch:aBranch];
-  }
+  [self.currentLocalRef rememberRemoteBranch:aBranch];
+  [self reloadCommits];
 }
 
 - (void) pull
