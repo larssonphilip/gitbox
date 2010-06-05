@@ -18,9 +18,12 @@ Other items:
 - push should be disabled when remote branch is local
 - pull should be "merge" when remote branch is local
 - remote branch control title should "Other Local Branch" if the remote is local
+- create a new tag
 
 - ignore: ignore context menu item in the stage
 - ignore: drop the file into .gitignore editor
+
+- detect repository when inner folder is dropped
 
 - performance: group common changes for a single commit command 
 
@@ -33,9 +36,8 @@ Other items:
 - bug: historical diff for Added file shows diff between current state (left) and initial state (right)
 
 - history: checkout a commit
-- check out a branch from the commit item
-- add "load more" cell in the bottom of the log
-- create a new tag
+- history: check out a branch from the commit item
+- history: add "load more" cell in the bottom of the log
 
 - fetch in background should reset fetch interval when new commits are fetched
 
