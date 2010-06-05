@@ -82,7 +82,7 @@ static GBActivityController* sharedGBActivityController;
 
 - (void) addActivity:(OAActivity*)activity
 {
-  NSUInteger maxNumberOfActivities = 500;
+  NSUInteger maxNumberOfActivities = 1000;
   if ([self.activities count] > maxNumberOfActivities + 20) // 20 is a little overlap to avoid refreshing the array too often
   {
     self.activities = [[[self.activities subarrayWithRange:NSMakeRange([self.activities count] - maxNumberOfActivities, maxNumberOfActivities)] mutableCopy] autorelease];
