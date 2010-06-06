@@ -7,6 +7,11 @@
 #import "NSFileManager+OAFileManagerHelpers.h"
 #import "NSAlert+OAAlertHelpers.h"
 
+@interface GBAppDelegate ()
+- (void) storeRepositories;
+@end
+
+
 @implementation GBAppDelegate
 
 @synthesize windowControllers;
@@ -84,6 +89,14 @@
   [windowController showWindow:self];
 }
 
+- (void) openRepositoryAtURL:(NSURL*)url
+{
+  [self openWindowForRepositoryAtURL:url];
+  [self storeRepositories];
+  [[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:url];  
+}
+
+
 
 
 #pragma mark Window states
@@ -159,29 +172,18 @@
     if (repoPath)
     {
       NSURL* url = [NSURL fileURLWithPath:repoPath];
-      [self openWindowForRepositoryAtURL:url];
-      [self storeRepositories];
-      [[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:url];
+      [self openRepositoryAtURL:url];
       return YES;
     }
     else 
     {
       NSURL* url = [NSURL fileURLWithPath:path];
-      if ([NSAlert unsafePrompt:NSLocalizedString(@"Folder is not a git repository. Make it a repository?", @"")
+      if ([NSAlert unsafePrompt:NSLocalizedString(@"Folder is not a git repository.\nMake it a repository?", @"")
                     description:path] == NSAlertAlternateReturn)
       {
-        NSLog(@"TODO: init git repo using custom NSSavePanel");
-        if (NO)
-        {
-//          GBRepositoryController* windowController = [self windowController];
-//          windowController.repository = [GBRepository freshRepositoryForURL:url];
-//          [self addWindowController:windowController];
-          
-          [[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:url];
-          return YES;
-        }
-        
-        return NO;
+        [GBRepository initRepositoryAtURL:url];
+        [self openRepositoryAtURL:url];
+        return YES;
       }
       else 
       {

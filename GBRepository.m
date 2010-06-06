@@ -423,6 +423,17 @@
 #pragma mark Mutation methods
 
 
++ (void) initRepositoryAtURL:(NSURL*)url
+{
+  OATask* task = [OATask task];
+  task.currentDirectoryPath = url.path;
+  task.executableName = @"git";
+  task.arguments = [NSArray arrayWithObjects:@"init", nil];
+  [task launchAndWait];
+  [[NSFileManager defaultManager] copyItemAtPath:[[NSBundle mainBundle] pathForResource:@"default_gitignore" ofType:nil]
+                                          toPath:[url.path stringByAppendingPathComponent:@".gitignore"] 
+                                           error:NULL];
+}
 
 - (void) resetCurrentLocalRef
 {

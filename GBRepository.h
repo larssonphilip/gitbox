@@ -85,6 +85,7 @@
 
 #pragma mark Mutation
 
++ (void) initRepositoryAtURL:(NSURL*)url;
 - (void) checkoutRef:(GBRef*)ref;
 - (void) checkoutRef:(GBRef*)ref withNewBranchName:(NSString*)name;
 - (void) checkoutNewBranchName:(NSString*)name;
