@@ -4,6 +4,7 @@ To do:
 0.9:
 - test merge conflict situation
 - bug: cell heights are completely fucked up when commits list changes
+- bug: crash on window close: unbind on window closing
 - handle new repo: push to a new master branch
 - handle pushing to a new branch: allow branch creation in "remote branch" dropdown
 - clone a repo from the gui (menu item)
@@ -11,6 +12,7 @@ To do:
 - create a default .gitignore when creating a repo
 - repos: add
 - repos: edit
+- screenshots
 
 Other:
 - local branch merge
@@ -29,6 +31,8 @@ Other:
 - bug: table row selection is ignored if was no selection for ArrayController. Should check NSTableView selectedRowIndexes? 
   See http://forums.macrumors.com/showthread.php?t=166469
 - bug: historical diff for Added file shows diff between current state (left) and initial state (right)
+
+- github integration: handling other repos/branches, pull requests and initial setup commands
 
 - History: navigate to the sha1
 - History: navigate back and forward (History main menu)
