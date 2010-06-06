@@ -51,8 +51,6 @@
 
 - (void) dealloc
 {
-  [repository removeObserver:self keyPath:@"selectedCommit" selector:@selector(selectedCommitDidChange:)];
-  
   self.repositoryURL = nil;
   if ((id)repository.delegate == self) repository.delegate = nil;
   self.repository = nil;
@@ -475,6 +473,8 @@
 
 - (void) windowWillClose:(NSNotification *)notification
 {
+  // we remove observer in the window will close to break the retain cycle (dealloc is never called otherwise)
+  [self.repository removeObserver:self keyPath:@"selectedCommit" selector:@selector(selectedCommitDidChange:)];
   [self.repository endBackgroundUpdate];
   [self.delegate windowControllerWillClose:self];
 }
