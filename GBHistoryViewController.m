@@ -5,6 +5,7 @@
 
 #import "NSArray+OAArrayHelpers.h"
 #import "NSObject+OAKeyValueObserving.h"
+#import "NSView+OAViewHelpers.h"
 
 @implementation GBHistoryViewController
 
@@ -17,9 +18,7 @@
 
 
 - (void) dealloc
-{
-  [self.repository removeObserver:self keyPath:@"stage.changes" selector:@selector(stageDidUpdate)];
-  
+{  
   self.repository = nil;
   self.tableView = nil;
   self.logArrayController = nil;
@@ -30,6 +29,14 @@
 {
   [super loadView];
   [self.repository addObserver:self forKeyPath:@"stage.changes" selectorWithoutArguments:@selector(stageDidUpdate)];
+  [self.repository addObserver:self forKeyPath:@"commits" selectorWithoutArguments:@selector(commitsDidUpdate)];
+}
+
+- (void) viewDidUnload
+{
+  [super viewDidUnload];
+  [self.repository removeObserver:self keyPath:@"stage.changes" selector:@selector(stageDidUpdate)];
+  [self.repository removeObserver:self keyPath:@"commits" selector:@selector(commitsDidUpdate)];
 }
 
 
@@ -44,12 +51,17 @@
 
 
 
-#pragma mark GBStage
+#pragma mark GBRepository observing
 
 
 - (void) stageDidUpdate
 {
   [self.tableView reloadDataForRowIndexes:[NSIndexSet indexSetWithIndex:0] columnIndexes:[NSIndexSet indexSetWithIndex:0]];
+}
+
+- (void) commitsDidUpdate
+{
+  [self.tableView reloadData];
 }
 
 

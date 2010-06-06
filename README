@@ -2,9 +2,8 @@
 To do:
 
 0.9:
-- test merge conflict situation
-- bug: cell heights are completely fucked up when commits list changes
-- bug: crash on window close: unbind on window closing
+? bug: crash on window close: unbind on window closing
+- bug: after the window is closed, the repository is still updating in background
 - handle new repo: push to a new master branch
 - handle pushing to a new branch: allow branch creation in "remote branch" dropdown
 - clone a repo from the gui (menu item)
@@ -55,11 +54,13 @@ Other:
 - log: mark as read/unread + automatic mark as read
 - commit prompt: cmd+up/down to scroll through the recent messages
 - sidebar to group repositories
+- merge conflict situation: ugly duplication of a single entry, but nothing breaks
 
 
 Done:
 
 0.9:
++ bug: cell heights are completely fucked up when commits list changes
 + detect repository when inner folder is dropped
 + bug: pull does not show alerts
 + test pull/merge when local modifications are present

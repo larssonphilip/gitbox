@@ -27,3 +27,19 @@
 }
 
 @end
+
+
+@implementation NSViewController (OAViewHelpers)
+
+- (void) viewDidUnload
+{
+  // to be overriden by subclasses
+}
+
+- (void) unloadView
+{
+  [[self view] removeFromSuperview];
+  [self viewDidUnload];
+}
+
+@end

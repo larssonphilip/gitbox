@@ -361,10 +361,10 @@
   [self endBackgroundUpdate];
   backgroundUpdateEnabled = YES;
   // randomness is added to make all opened windows fetch at different points of time
-  backgroundUpdateInterval = 5.0 + 2*2*(0.5-drand48()); 
+  backgroundUpdateInterval = 10.0 + 2*2*(0.5-drand48()); 
   [self performSelector:@selector(fetchSilentlyDuringBackgroundUpdate) 
              withObject:nil 
-             afterDelay:backgroundUpdateInterval];
+             afterDelay:15.0];
 }
 
 - (void) endBackgroundUpdate
@@ -378,7 +378,7 @@
 - (void) fetchSilentlyDuringBackgroundUpdate
 {
   if (!backgroundUpdateEnabled) return;
-  backgroundUpdateInterval *= 1.2;
+  backgroundUpdateInterval *= 1.3;
   [self performSelector:@selector(fetchSilentlyDuringBackgroundUpdate) 
              withObject:nil 
              afterDelay:backgroundUpdateInterval];

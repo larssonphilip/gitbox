@@ -473,6 +473,10 @@
 
 - (void) windowWillClose:(NSNotification *)notification
 {
+  // Unload views in view controllers
+  [self.historyController unloadView];
+  [self.stageController unloadView];
+  
   // we remove observer in the window will close to break the retain cycle (dealloc is never called otherwise)
   [self.repository removeObserver:self keyPath:@"selectedCommit" selector:@selector(selectedCommitDidChange:)];
   [self.repository endBackgroundUpdate];
