@@ -87,6 +87,14 @@
   [self reloadChanges];
 }
 
+- (void) stageAll
+{
+  GBTask* task = [self.repository task];
+  task.arguments = [NSArray arrayWithObjects:@"add", @".", nil];
+  [[self.repository launchTaskAndWait:task] showErrorIfNeeded];
+  [self reloadChanges];
+}
+
 - (void) unstageChange:(GBChange*)aChange
 {
   [self unstageChanges:[NSArray arrayWithObject:aChange]];

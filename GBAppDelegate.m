@@ -3,6 +3,7 @@
 #import "GBActivityController.h"
 
 #import "GBRepository.h"
+#import "GBStage.h"
 
 #import "NSFileManager+OAFileManagerHelpers.h"
 #import "NSAlert+OAAlertHelpers.h"
@@ -72,14 +73,14 @@
   [[GBActivityController sharedActivityController] showWindow:sender];
 }
 
-- (void) openWindowForRepositoryAtURL:(NSURL*)url
+- (GBRepositoryController*) openWindowForRepositoryAtURL:(NSURL*)url
 {
   for (GBRepositoryController* ctrl in self.windowControllers)
   {
     if ([ctrl.repository.url isEqual:url])
     {
       [ctrl showWindow:self];
-      return;
+      return ctrl;
     }
   }
   
@@ -87,13 +88,15 @@
   windowController.repositoryURL = url;
   [self addWindowController:windowController];
   [windowController showWindow:self];
+  return windowController;
 }
 
-- (void) openRepositoryAtURL:(NSURL*)url
+- (GBRepositoryController*) openRepositoryAtURL:(NSURL*)url
 {
-  [self openWindowForRepositoryAtURL:url];
+  id ctrl = [self openWindowForRepositoryAtURL:url];
   [self storeRepositories];
-  [[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:url];  
+  [[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:url];
+  return ctrl;
 }
 
 
@@ -182,7 +185,9 @@
                     description:path] == NSAlertAlternateReturn)
       {
         [GBRepository initRepositoryAtURL:url];
-        [self openRepositoryAtURL:url];
+        GBRepositoryController* ctrl = [self openRepositoryAtURL:url];
+        [ctrl.repository.stage stageAll];
+        [ctrl.repository commitWithMessage:@"Initial commit"];
         return YES;
       }
       else 

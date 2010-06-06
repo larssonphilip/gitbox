@@ -14,6 +14,7 @@
 
 - (void) stageChange:(GBChange*)aChange;
 - (void) stageChanges:(NSArray*)theChanges;
+- (void) stageAll;
 - (void) unstageChange:(GBChange*)aChange;
 - (void) unstageChanges:(NSArray*)theChanges;
 - (void) revertChanges:(NSArray*)theChanges;
