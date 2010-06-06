@@ -5,18 +5,17 @@ To do:
 ? bug: crash on window close: unbind on window closing
 ? bug: after the window is closed, the repository is still updating in background
 ? bug: in some cases after pull or stage command repository cannot be deallocated and its controller as well
-- bug: repository stage/branch updating tasks are stuck in activity window with running status
-- glitch: sometimes fake modification of xcodeproj appears in the stage due to async git-status call (it is a case for quick switching from xcode to gitbox right after it synced)
+- bug: a new repo remote branch menu is just empty: need a "add repo" item
 - handle new repo: push to a new master branch
 - handle pushing to a new branch: allow branch creation in "remote branch" dropdown
 - clone a repo from the gui (menu item)
-- create a new repo from the gui (by dropping a non-git folder)
-- create a default .gitignore when creating a repo
 - repos: add
 - repos: edit
 - screenshots
 
 Other:
+- bug: repository stage/branch updating tasks are stuck in activity window with running status
+- glitch: sometimes fake modification of xcodeproj appears in the stage due to async git-status call (it is a case for quick switching from xcode to gitbox right after it synced)
 - local branch merge
 - push should be disabled when there's something to merge
 - push should be disabled when remote branch is local
@@ -63,6 +62,8 @@ Other:
 Done:
 
 0.9:
++ create a new repo from the gui (by dropping a non-git folder)
++ create a default .gitignore when creating a repo
 + bug: cell heights are completely fucked up when commits list changes
 + detect repository when inner folder is dropped
 + bug: pull does not show alerts
