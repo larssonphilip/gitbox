@@ -65,20 +65,23 @@
 {
   NSMutableArray* list = [NSMutableArray array];
   NSURL* aurl = [self.repository gitURLWithSuffix:[@"refs/remotes" stringByAppendingPathComponent:self.alias]];
-  for (NSURL* aURL in [NSFileManager contentsOfDirectoryAtURL:aurl])
+  if ([[NSFileManager defaultManager] isReadableDirectoryAtPath:aurl.path])
   {
-    if ([[NSFileManager defaultManager] isReadableFileAtPath:aURL.path])
+    for (NSURL* aURL in [NSFileManager contentsOfDirectoryAtURL:aurl])
     {
-      NSString* name = [[aURL pathComponents] lastObject];
-      if (![name isEqualToString:@"HEAD"])
+      if ([[NSFileManager defaultManager] isReadableFileAtPath:aURL.path])
       {
-        GBRef* ref = [[GBRef new] autorelease];
-        ref.repository = self.repository;
-        ref.name = name;
-        ref.remoteAlias = self.alias;
-        [list addObject:ref];
+        NSString* name = [[aURL pathComponents] lastObject];
+        if (![name isEqualToString:@"HEAD"])
+        {
+          GBRef* ref = [[GBRef new] autorelease];
+          ref.repository = self.repository;
+          ref.name = name;
+          ref.remoteAlias = self.alias;
+          [list addObject:ref];
+        }
       }
-    }
+    }    
   }
   return list;  
 }
