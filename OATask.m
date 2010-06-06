@@ -12,6 +12,7 @@ NSString* OATaskNotification = @"OATaskNotification";
 @interface OATask ()
 - (void) beginAllCallbacks;
 - (void) endAllCallbacks;
+- (void) finishActivity;
 - (void) doFinish;
 - (NSFileHandle*) fileHandleForReading;
 
@@ -175,6 +176,11 @@ NSString* OATaskNotification = @"OATaskNotification";
 
   if (nstask && [nstask isRunning])
   {
+    self.activity.isRunning = NO;
+    self.activity.status = @"Disconnected";
+    self.activity.textOutput = @"Task was released: it sent a TERM signal to subprocess, but stopped listening to its status.";
+    //self.activity.task = nil;
+    self.activity = nil;
     [nstask terminate];
   }
   
@@ -418,6 +424,22 @@ NSString* OATaskNotification = @"OATaskNotification";
 #pragma mark Finishing
 
 
+- (void) finishActivity
+{
+  self.activity.isRunning = NO;
+  
+  if ([self terminationStatus] == 0)
+  {
+    self.activity.status = @"Finished";
+  }
+  else
+  {
+    self.activity.status = [NSString stringWithFormat:@"Finished [%d]", [self terminationStatus]];
+  }
+  self.activity.textOutput = [self.output UTF8String];  
+}
+
+
 - (void) doFinish
 {
   [self endAllCallbacks];
@@ -437,18 +459,7 @@ NSString* OATaskNotification = @"OATaskNotification";
     }
   }
   
-  self.activity.isRunning = NO;
-  
-  if ([self terminationStatus] == 0)
-  {
-    self.activity.status = @"Finished";
-  }
-  else
-  {
-    self.activity.status = [NSString stringWithFormat:@"Finished [%d]", [self terminationStatus]];
-  }
-  self.activity.textOutput = [self.output UTF8String];
-  
+  [self finishActivity];
   [self didFinish];
   
   NSNotification* notification = [NSNotification notificationWithName:OATaskNotification object:self];
