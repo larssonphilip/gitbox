@@ -51,6 +51,7 @@
 
 - (void) dealloc
 {
+  NSLog(@"GBRepositoryController dealloc");
   self.repositoryURL = nil;
   if ((id)repository.delegate == self) repository.delegate = nil;
   self.repository = nil;
@@ -441,7 +442,7 @@
   
   [self.repository reloadCommits];
 
-  // View controllers init
+  // View controllers init  
   NSView* historyPlaceholderView = [[self.splitView subviews] objectAtIndex:0];
   [historyPlaceholderView setViewController:self.historyController];
 
@@ -473,11 +474,13 @@
 
 - (void) windowWillClose:(NSNotification *)notification
 {
+  //NSLog(@"windowWillClose");
+  [[self window] setDelegate:nil]; // so we don't receive windowDidResignKey
   // Unload views in view controllers
   [self.historyController unloadView];
   [self.stageController unloadView];
   
-  // we remove observer in the window will close to break the retain cycle (dealloc is never called otherwise)
+  // we remove observer in the windowWillClose to break the retain cycle (dealloc is never called otherwise)
   [self.repository removeObserver:self keyPath:@"selectedCommit" selector:@selector(selectedCommitDidChange:)];
   [self.repository endBackgroundUpdate];
   [self.delegate windowControllerWillClose:self];
@@ -485,6 +488,7 @@
 
 - (void) windowDidBecomeKey:(NSNotification *)notification
 {
+  //NSLog(@"windowDidBecomeKey");
   [self.repository endBackgroundUpdate];
   [self.repository updateStatus];
   [self.repository updateBranchStatus];
@@ -493,6 +497,7 @@
 
 - (void) windowDidResignKey:(NSNotification *)notification
 {
+  //NSLog(@"windowDidResignKey");
   [self.repository beginBackgroundUpdate];
 }
 
