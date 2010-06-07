@@ -45,6 +45,7 @@
 - (IBAction) checkoutNewBranch:(id)sender;
 - (IBAction) selectRemoteBranch:(id)sender;
 - (IBAction) createNewRemoteBranch:(id)sender;
+- (IBAction) createNewRemote:(id)sender;
 - (IBAction) commit:(id)sender;
 - (IBAction) pullOrPush:(NSSegmentedControl*)segmentedControl;
 - (IBAction) pull:(id)sender;

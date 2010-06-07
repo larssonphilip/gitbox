@@ -242,6 +242,11 @@
     [self updateBranchMenus];
   }
 
+- (IBAction) createNewRemote:(id)sender
+{
+  
+}
+
 
 - (IBAction) commit:(id)sender
 {
@@ -656,7 +661,7 @@
           {
             [item setState:NSOnState];
           }
-          [remoteMenu addItem:item];          
+          [remoteMenu addItem:item];
         }
         [remoteMenu addItem:[NSMenuItem separatorItem]];
         
@@ -695,6 +700,17 @@
     [newBranchItem setRepresentedObject:remote];
     [remoteBranchesMenu addItem:newBranchItem];
   }
+  
+  if ([[remoteBranchesMenu itemArray] count] > 1) // ignore dummy item
+  {
+    [remoteBranchesMenu addItem:[NSMenuItem separatorItem]];
+  }
+  
+  NSMenuItem* newRemoteItem = [NSMenuItem menuItemWithTitle:NSLocalizedString(@"Add URL...", @"") submenu:nil];
+  [newRemoteItem setAction:@selector(createNewRemote:)];
+  [newRemoteItem setTarget:self];
+  [newRemoteItem setRepresentedObject:nil];
+  [remoteBranchesMenu addItem:newRemoteItem];
   
   [button setMenu:remoteBranchesMenu];
   

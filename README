@@ -1,7 +1,7 @@
 
 To do:
 
-0.9:
+0.9.*:
 ? bug: crash on window close: unbind on window closing
 ? bug: after the window is closed, the repository is still updating in background
 ? bug: in some cases after pull or stage command repository cannot be deallocated and its controller as well
@@ -61,6 +61,11 @@ Other:
 
 
 Done:
+
+
+0.9.1:
++ bug: "Some Default Text" in the prompt
++ alert if git version is lower than 1.7.1
 
 0.9:
 + create a new repo from the gui (by dropping a non-git folder)

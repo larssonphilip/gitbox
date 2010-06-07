@@ -82,8 +82,8 @@
 - (void) runSheetInWindow:(NSWindow*)window
 {
   self.windowHoldingSheet = window;
-  [self.textField setStringValue:self.value];
   [window beginSheetForController:self];
+  [self.textField setStringValue:self.value];
 }
 
 @end
