@@ -48,6 +48,9 @@
 
 #pragma mark Interrogation
 
++ (NSString*) gitVersion;
++ (NSString*) supportedGitVersion;
++ (BOOL) isSupportedGitVersion:(NSString*)version;
 - (GBRef*) loadCurrentLocalRef;
 + (NSString*) validRepositoryPathForPath:(NSString*)aPath;
 - (NSString*) path;

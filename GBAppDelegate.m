@@ -99,6 +99,19 @@
   return ctrl;
 }
 
+- (void) checkGitVersion
+{
+  NSString* gitVersion = [GBRepository gitVersion];
+  if (![GBRepository isSupportedGitVersion:gitVersion])
+  {
+    [NSAlert message:@"Please update git" 
+         description:[NSString stringWithFormat:NSLocalizedString(@"The Gitbox works with the version %@ or later. Your git version is %@.", @""), 
+                      [GBRepository supportedGitVersion], 
+                      gitVersion]
+         buttonTitle:NSLocalizedString(@"Quit",@"")];
+    [NSApp terminate:self];
+  }
+}
 
 
 
@@ -154,6 +167,7 @@
 
 - (void) applicationDidFinishLaunching:(NSNotification*) aNotification
 {
+  [self checkGitVersion];
   [self loadRepositories];
 }
 

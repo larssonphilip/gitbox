@@ -182,6 +182,26 @@
 #pragma mark Interrogation
 
 
++ (NSString*) gitVersion
+{
+  OATask* task = [OATask task];
+  task.currentDirectoryPath = NSHomeDirectory();
+  task.executableName = @"git";
+  task.arguments = [NSArray arrayWithObject:@"--version"];
+  [task launchAndWait];
+  return [[[task.output UTF8String] stringByReplacingOccurrencesOfString:@"git version" withString:@""] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+}
+
++ (NSString*) supportedGitVersion
+{
+  return @"1.7.1";
+}
+
++ (BOOL) isSupportedGitVersion:(NSString*)version
+{
+  return [version compare:[self supportedGitVersion]] != NSOrderedAscending;
+}
+
 + (NSString*) validRepositoryPathForPath:(NSString*)aPath
 {
   if (!aPath) return nil;

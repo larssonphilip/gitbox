@@ -20,13 +20,18 @@
 
 + (NSInteger) message:(NSString*)message description:(NSString*)description
 {
+  return [self message:message description:description buttonTitle:NSLocalizedString(@"OK", @"")];
+}
+
++ (NSInteger) message:(NSString*)message description:(NSString*)description buttonTitle:(NSString*)buttonTitle
+{
   if (!message) return 0;
   NSAlert* alert = [self alertWithMessageText:message
-                                defaultButton:NSLocalizedString(@"OK", @"")
+                                defaultButton:buttonTitle
                               alternateButton:nil
                                   otherButton:nil
                     informativeTextWithFormat:description ? description : @""];
-  return [alert runModal];
+  return [alert runModal];  
 }
 
 + (NSInteger) safePrompt:(NSString*)message description:(NSString*)description
