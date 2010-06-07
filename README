@@ -6,7 +6,7 @@ To do:
 ? bug: after the window is closed, the repository is still updating in background
 ? bug: in some cases after pull or stage command repository cannot be deallocated and its controller as well
 - bug: a new repo remote branch menu is just empty: need a "add repo" item
-- bug: for non-existant HEAD gitbox does not show staged new file
+- bug: for non-existant HEAD gitbox does not show a staged new file
 - handle new repo: push to a new master branch
 - handle pushing to a new branch: allow branch creation in "remote branch" dropdown
 - clone a repo from the gui (menu item)
@@ -33,6 +33,8 @@ Other:
 - bug: table row selection is ignored if was no selection for ArrayController. Should check NSTableView selectedRowIndexes? 
   See http://forums.macrumors.com/showthread.php?t=166469
 - bug: historical diff for Added file shows diff between current state (left) and initial state (right)
+
+- history: probably get rid of dates, and design it in a more cheesy fashion
 
 - github integration: handling other repos/branches, pull requests and initial setup commands
 
