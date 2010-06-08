@@ -45,16 +45,16 @@
   textColor = [textColor blendedColorWithFraction:0.4 ofColor:[NSColor whiteColor]];
   dateColor = [dateColor blendedColorWithFraction:0.4 ofColor:[NSColor whiteColor]];
   
-  if (object.syncStatus == GBCommitSyncStatusUnmerged)
-  {
-    textColor = [textColor blendedColorWithFraction:0.7 ofColor:[NSColor whiteColor]];
-    dateColor = [dateColor blendedColorWithFraction:0.7 ofColor:[NSColor whiteColor]];
-  }
-  
   if ([self isHighlighted])
   {
     textColor = [NSColor alternateSelectedControlTextColor];
     dateColor = textColor;
+  }
+  
+  if (object.syncStatus == GBCommitSyncStatusUnmerged)
+  {
+    textColor = [textColor blendedColorWithFraction:0.7 ofColor:[NSColor whiteColor]];
+    dateColor = [dateColor blendedColorWithFraction:0.7 ofColor:[NSColor whiteColor]];
   }
   
   NSMutableParagraphStyle* paragraphStyle = [[NSMutableParagraphStyle new] autorelease];
@@ -63,7 +63,7 @@
   
 	NSMutableDictionary* titleAttributes = [[[NSMutableDictionary alloc] initWithObjectsAndKeys:
                                            textColor, NSForegroundColorAttributeName,
-                                           [NSFont boldSystemFontOfSize:12.0], NSFontAttributeName,
+                                           [NSFont boldSystemFontOfSize:11.0], NSFontAttributeName,
                                            paragraphStyle, NSParagraphStyleAttributeName,
                                            nil] autorelease];
   
@@ -103,7 +103,7 @@
   CGFloat dateWidthRatio = 0.50; // of the rest
   CGFloat padding = 5.0;
   CGFloat titleMessagePadding = 1.0;
-  CGFloat verticalShiftForSmallText = 2.0;
+  CGFloat verticalShiftForSmallText = 1.0;
   CGFloat x0 = innerRect.origin.x;
   CGFloat y0 = innerRect.origin.y;
   
@@ -121,7 +121,7 @@
                                dateSize.height);
   
   NSRect titleRect = NSMakeRect(x0,
-                                y0,
+                                y0 + verticalShiftForSmallText,
                                 titleSize.width,
                                 titleSize.height);
   

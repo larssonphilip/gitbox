@@ -28,6 +28,7 @@
   NSRect innerRect = NSInsetRect(cellFrame, 6.0, 2.0);
   
   CGFloat offset = [self offsetForStatus];
+  offset = 9.0;
   innerRect.origin.x += offset;
   innerRect.size.width -= offset;
   
@@ -37,38 +38,41 @@
 - (void) drawSyncStatusIconInRect:(NSRect)rect
 {
   GBCommitSyncStatus st = self.commit.syncStatus;
+  CGContextRef contextRef = (CGContextRef)[[NSGraphicsContext currentContext] graphicsPort];
+  
   if (st != GBCommitSyncStatusNormal)
   {
-    NSImage* icon = nil;
     if (st == GBCommitSyncStatusUnmerged)
     {
       if ([self isHighlighted])
       {
-        icon = [NSImage imageNamed:@"commit-marker-unmerged-highlighted.png"];
+        CGContextSetRGBFillColor(contextRef, 1.0, 1.0, 1.0, 0.6);
       }
       else
       {
-        icon = [NSImage imageNamed:@"commit-marker-unmerged.png"];
+        //CGContextSetRGBFillColor(contextRef, 104.0/255.0, 162.0/255.0, 252.0/255.0, 1.0);
+        CGContextSetRGBFillColor(contextRef, 100.0/255.0, 150.0/255.0, 252.0/255.0, 1.0);
       }
     }
     else
     {
       if ([self isHighlighted])
       {
-        icon = [NSImage imageNamed:@"commit-marker-unpushed-highlighted.png"];
+        CGContextSetRGBFillColor(contextRef, 1.0, 1.0, 1.0, 0.99);
       }
       else
       {
-        icon = [NSImage imageNamed:@"commit-marker-unpushed.png"];
+        //CGContextSetRGBFillColor(contextRef, 255.0/255.0, 125.0/255.0, 0.0/255.0, 1.0);
+        CGContextSetRGBFillColor(contextRef, 94.0/255.0, 220.0/255.0, 50.0/255.0, 1.0);
       }
     }
     NSPoint point = rect.origin;
-    point.x -= 22.0;
+    point.x -= 12.0;
     point.y += 4.0;
-    [icon drawAtPoint:point
-             fromRect:NSZeroRect 
-            operation:NSCompositeSourceOver 
-             fraction:1.0];
+    
+    CGRect circleRect = CGRectMake(point.x, point.y, 8.0, 8.0);
+    
+    CGContextFillEllipseInRect(contextRef, circleRect);
   }
 }
 
@@ -102,27 +106,31 @@
   // Prepare colors and styles
   
   NSColor* textColor = [NSColor textColor];
-  NSColor* dateColor = [NSColor colorWithCalibratedRed:51/255.0 green:102/255.0 blue:204/255.0 alpha:1.0];
-  
-  if (object.syncStatus == GBCommitSyncStatusUnmerged)
-  {
-    textColor = [textColor blendedColorWithFraction:0.7 ofColor:[NSColor whiteColor]];
-    dateColor = [dateColor blendedColorWithFraction:0.7 ofColor:[NSColor whiteColor]];
-  }
-  
+  NSColor* titleColor = textColor;
+  NSColor* dateColor = [NSColor colorWithCalibratedRed:107.0/255.0 green:133.0/255.0 blue:200.0/255.0 alpha:1.0];
+    
   if ([self isHighlighted])
   {
     textColor = [NSColor alternateSelectedControlTextColor];
     dateColor = textColor;
+    titleColor = textColor;
   }
+  
+  if (object.syncStatus == GBCommitSyncStatusUnmerged)
+  {
+    titleColor = [titleColor blendedColorWithFraction:0.7 ofColor:[NSColor whiteColor]];
+    textColor = [textColor blendedColorWithFraction:0.7 ofColor:[NSColor whiteColor]];
+    dateColor = [dateColor blendedColorWithFraction:0.7 ofColor:[NSColor whiteColor]];
+  }
+  
   
   NSMutableParagraphStyle* paragraphStyle = [[NSMutableParagraphStyle new] autorelease];
   [paragraphStyle setLineBreakMode:NSLineBreakByTruncatingTail];
   
   
 	NSMutableDictionary* titleAttributes = [[[NSMutableDictionary alloc] initWithObjectsAndKeys:
-                                           textColor, NSForegroundColorAttributeName,
-                                           [NSFont boldSystemFontOfSize:12.0], NSFontAttributeName,
+                                           titleColor, NSForegroundColorAttributeName,
+                                           [NSFont boldSystemFontOfSize:11.0], NSFontAttributeName,
                                            paragraphStyle, NSParagraphStyleAttributeName,
                                            nil] autorelease];
   
@@ -142,7 +150,6 @@
   
   NSSize titleSize   = [title sizeWithAttributes:titleAttributes];
   NSSize dateSize    = [date sizeWithAttributes:dateAttributes];
-  NSSize messageSize = [message sizeWithAttributes:messageAttributes];
   
   
   
@@ -161,7 +168,7 @@
   CGFloat dateWidthRatio = 0.5; // 50% of the width
   CGFloat titleDatePadding = 3.0;
   CGFloat titleMessagePadding = 1.0;
-  CGFloat verticalShiftForDate = 2.0;
+  CGFloat verticalShiftForSmallText = 1.0;
   CGFloat x0 = innerRect.origin.x;
   CGFloat y0 = innerRect.origin.y;
   
@@ -171,12 +178,12 @@
   dateSize.width = (dateSize.width > maxDateWidth ? maxDateWidth : dateSize.width);
   
   NSRect dateRect = NSMakeRect(x0 + innerRect.size.width - dateSize.width,
-                               y0 + verticalShiftForDate,
+                               y0 + verticalShiftForSmallText,
                                dateSize.width,
                                dateSize.height);
   
   NSRect titleRect = NSMakeRect(x0,
-                                y0,
+                                y0 + verticalShiftForSmallText,
                                 innerRect.size.width - dateSize.width - titleDatePadding, 
                                 titleSize.height);
   

@@ -38,7 +38,7 @@
   
   
   // Calculate heights
-  NSRect innerRect = NSInsetRect(cellFrame, 5.0, 1.0);
+  NSRect innerRect = NSInsetRect(cellFrame, 16.0, 1.0);
   NSSize titleSize   = [title sizeWithAttributes:titleAttributes];
       
   // Calculate layout
@@ -47,7 +47,7 @@
   CGFloat y0 = innerRect.origin.y;
 
   NSRect titleRect = NSMakeRect(x0,
-                                y0 + cellFrame.size.height*0.5 - titleSize.height*0.5,
+                                y0 + cellFrame.size.height*0.5 - titleSize.height*0.5 - 1.0,
                                 innerRect.size.width, 
                                 titleSize.height);
     
