@@ -2,12 +2,6 @@
 To do:
 
 0.9.*:
-+ bug: crash on window close: unbind on window closing
-+ bug: after the window is closed, the repository is still updating in background
-+ bug: in some cases after pull or stage command repository cannot be deallocated and its controller as well
-+ bug: a new repo remote branch menu is just empty: need a "add repo" item
-+ handle new repo: push to a new master branch
-+ handle pushing to a new branch: allow branch creation in "remote branch" dropdown
 - bug: for non-existent HEAD gitbox does not show a staged new file
 - bug: OK button in remotes controller does not sync highlighted textfield due to bindings issue
 - bug: show disabled "No branches" item for inaccessible remote
@@ -67,7 +61,12 @@ Other:
 Done:
 
 0.9.2:
-
++ bug: crash on window close: unbind on window closing
++ bug: after the window is closed, the repository is still updating in background
++ bug: in some cases after pull or stage command repository cannot be deallocated and its controller as well
++ bug: a new repo remote branch menu is just empty: need a "add repo" item
++ handle new repo: push to a new master branch
++ handle pushing to a new branch: allow branch creation in "remote branch" dropdown
 
 0.9.1:
 + bug: "Some Default Text" in the prompt
