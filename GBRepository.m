@@ -332,7 +332,6 @@
     [self launchTaskAndWait:unpushedCommitsTask];
     
     [self updateCommits];
-    //[self reloadRemotes];
   }
 
     - (void) didReceiveUnmergedRemoteCommits:(NSArray*)unmergedCommits
