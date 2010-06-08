@@ -235,7 +235,7 @@
     remoteBranch.repository = self.repository;
     remoteBranch.name = ctrl.value;
     remoteBranch.remoteAlias = remote.alias;
-    
+    remoteBranch.isNewRemoteBranch = YES;
     [remote addBranch:remoteBranch];
     
     [self.repository selectRemoteBranch:remoteBranch];

@@ -9,6 +9,7 @@
 @synthesize commitId;
 @synthesize remoteAlias;
 @synthesize isTag;
+@synthesize isNewRemoteBranch;
 
 @synthesize repository;
 

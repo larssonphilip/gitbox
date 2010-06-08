@@ -566,7 +566,7 @@
   if (!self.pushing && !self.pulling)
   {
     self.pushing = YES;
-    
+    aRemoteBranch.isNewRemoteBranch = NO;
     GBTask* pushTask = [GBTask task];
     NSString* refspec = [NSString stringWithFormat:@"%@:%@", aLocalBranch.name, aRemoteBranch.name];
     pushTask.arguments = [NSArray arrayWithObjects:@"push", @"--tags", aRemoteBranch.remoteAlias, refspec, nil];

@@ -39,8 +39,8 @@
           [self.branch commitish],
           nil];
   
-  if (self.joinedBranch) [args addObject:[self.joinedBranch commitish]];
-  if (self.substructedBranch)
+  if (self.joinedBranch && !self.joinedBranch.isNewRemoteBranch) [args addObject:[self.joinedBranch commitish]];
+  if (self.substructedBranch && !self.substructedBranch.isNewRemoteBranch)
   {
     [args addObject:@"--not"];
     [args addObject:[self.substructedBranch commitish]];
