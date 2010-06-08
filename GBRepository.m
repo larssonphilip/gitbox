@@ -357,7 +357,10 @@
     }
 
 
-
+- (void) reloadRemotes
+{
+  self.remotes = [self loadRemotes];
+}
 
 - (NSArray*) composedCommits
 {

@@ -70,6 +70,7 @@
 - (void) updateBranchStatus;
 - (void) updateCommits;
 - (void) reloadCommits;
+- (void) reloadRemotes;
 - (void) resetCurrentLocalRef;
 - (void) remoteDidUpdate:(GBRemote*)aRemote;
 

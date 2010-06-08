@@ -272,7 +272,7 @@
   }
   else
   {
-    NSLog(@"ERROR: Unrecognized push/pull segment %d", segment);
+    NSLog(@"ERROR: Unrecognized push/pull segment %d", (int)segment);
   }
 }
 
@@ -322,7 +322,8 @@
 
   - (void) doneEditRepositories:(GBRemotesController*)remotesController
   {
-    NSLog(@"TODO: reload remotes branch menu and history");
+    [self updateBranchMenus];
+    [self.repository reloadCommits];
     [self endSheetForController:remotesController];
   }
 
@@ -536,7 +537,7 @@
   if ([button pullsDown])
   {
     // Note: this is needed according to documentation for pull-down menus. The item will be ignored.
-    [newMenu addItem:[NSMenuItem menuItemWithTitle:@"dummy" submenu:nil]];
+    [newMenu addItem:[NSMenuItem menuItemWithTitle:@"" submenu:nil]];
   }
   
   for (GBRef* localBranch in self.repository.localBranches)
@@ -650,38 +651,37 @@
   if ([button pullsDown])
   {
     // Note: this is needed according to documentation for pull-down menus. The item will be ignored.
-    [remoteBranchesMenu addItem:[NSMenuItem menuItemWithTitle:@"dummy" submenu:nil]];
+    [remoteBranchesMenu addItem:[NSMenuItem menuItemWithTitle:@"" submenu:nil]];
   }
   if ([self.repository.remotes count] > 1) // display submenus for each remote
   {
     for (GBRemote* remote in self.repository.remotes)
     {
-      if ([remote.branches count] > 0)
+      NSMenu* remoteMenu = [[NSMenu new] autorelease];
+      BOOL addedBranch = NO;
+      for (GBRef* branch in remote.branches)
       {
-        NSMenu* remoteMenu = [[NSMenu new] autorelease];
-        for (GBRef* branch in remote.branches)
+        NSMenuItem* item = [[NSMenuItem new] autorelease];
+        [item setTitle:branch.name];
+        [item setAction:@selector(selectRemoteBranch:)];
+        [item setTarget:self];
+        [item setRepresentedObject:branch];
+        if ([branch isEqual:self.repository.currentRemoteBranch])
         {
-          NSMenuItem* item = [[NSMenuItem new] autorelease];
-          [item setTitle:branch.name];
-          [item setAction:@selector(selectRemoteBranch:)];
-          [item setTarget:self];
-          [item setRepresentedObject:branch];
-          if ([branch isEqual:self.repository.currentRemoteBranch])
-          {
-            [item setState:NSOnState];
-          }
-          [remoteMenu addItem:item];
+          [item setState:NSOnState];
         }
-        [remoteMenu addItem:[NSMenuItem separatorItem]];
-        
-        NSMenuItem* newBranchItem = [NSMenuItem menuItemWithTitle:NSLocalizedString(@"New Remote Branch...", @"") submenu:nil];
-        [newBranchItem setAction:@selector(createNewRemoteBranch:)];
-        [newBranchItem setTarget:self];
-        [newBranchItem setRepresentedObject:remote];
-        [remoteMenu addItem:newBranchItem];
-        
-        [remoteBranchesMenu addItem:[NSMenuItem menuItemWithTitle:remote.alias submenu:remoteMenu]];
+        [remoteMenu addItem:item];
+        addedBranch = YES;
       }
+      if (addedBranch) [remoteMenu addItem:[NSMenuItem separatorItem]];
+      
+      NSMenuItem* newBranchItem = [NSMenuItem menuItemWithTitle:NSLocalizedString(@"New Remote Branch...", @"") submenu:nil];
+      [newBranchItem setAction:@selector(createNewRemoteBranch:)];
+      [newBranchItem setTarget:self];
+      [newBranchItem setRepresentedObject:remote];
+      [remoteMenu addItem:newBranchItem];
+      
+      [remoteBranchesMenu addItem:[NSMenuItem menuItemWithTitle:remote.alias submenu:remoteMenu]];
     }
   }
   else if ([self.repository.remotes count] == 1) // display a flat list of "origin/master"-like titles
@@ -710,12 +710,17 @@
     [remoteBranchesMenu addItem:newBranchItem];
   }
   
+  NSMenuItem* newRemoteItem = nil;
   if ([[remoteBranchesMenu itemArray] count] > 1) // ignore dummy item
   {
     [remoteBranchesMenu addItem:[NSMenuItem separatorItem]];
+    newRemoteItem = [NSMenuItem menuItemWithTitle:NSLocalizedString(@"Edit Remotes...", @"") submenu:nil];
+  }
+  else
+  {
+    newRemoteItem = [NSMenuItem menuItemWithTitle:NSLocalizedString(@"Add Remote...", @"") submenu:nil];
   }
   
-  NSMenuItem* newRemoteItem = [NSMenuItem menuItemWithTitle:NSLocalizedString(@"Add URL...", @"") submenu:nil];
   [newRemoteItem setAction:@selector(createNewRemote:)];
   [newRemoteItem setTarget:self];
   [newRemoteItem setRepresentedObject:nil];

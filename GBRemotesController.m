@@ -1,8 +1,11 @@
 #import "GBRemotesController.h"
 #import "GBModels.h"
+#import "GBTask.h"
+
 
 @interface GBRemotesController ()
 - (NSMutableArray*) remotesDictionariesForRepository:(GBRepository*)repo;
+- (void) syncRemotesDictionariesWithRepository;
 @end
 
 @implementation GBRemotesController
@@ -30,7 +33,8 @@
 
 - (IBAction) onOK:(id)sender
 {
-  NSLog(@"TODO: Sync the dictionary with the current remotes and perform updates");
+  NSLog(@"TODO: sync stupid bindings for current text field");
+  [self syncRemotesDictionariesWithRepository];
   if (self.finishSelector) [self.target performSelector:self.finishSelector withObject:self];
 }
 
@@ -56,7 +60,107 @@
                      remote.URLString, @"URLString",
                      nil]];
   }
+  
+  if ([list count] == 0) // new repo, add a default "origin" entry
+  {
+    [list addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:
+                     @"origin", @"alias",
+                     @"", @"URLString",
+                     nil]];    
+  }
+  
   return list;
+}
+
+
+- (void) syncRemotesDictionariesWithRepository
+{
+  NSLog(@"TODO: delete missing remotes");
+  NSLog(@"TODO: add new remotes");
+  NSLog(@"TODO: update exisiting if the difference exists");
+  
+  NSArray* oldAliases = [self.repository.remotes valueForKey:@"alias"];
+  NSArray* newAliases = [self.remotesDictionaries valueForKey:@"alias"];
+  
+  NSMutableArray* removedAliases = [[oldAliases mutableCopy] autorelease];
+  [removedAliases removeObjectsInArray:newAliases];
+
+  NSMutableArray* addedAliases = [[newAliases mutableCopy] autorelease];
+  [addedAliases removeObjectsInArray:oldAliases];
+  
+  BOOL dirtyFlag = NO;
+  
+  for (NSString* alias in removedAliases)
+  {
+    dirtyFlag = YES;
+    GBTask* task = [self.repository task];
+    task.arguments = [NSArray arrayWithObjects:@"config", 
+                      @"--remove-section", 
+                      [NSString stringWithFormat:@"remote.%@", alias], 
+                      nil];
+    [self.repository launchTaskAndWait:task];
+  }
+
+  for (NSString* alias in addedAliases)
+  {
+    NSString* URLString = nil;
+    for (NSDictionary* dict in self.remotesDictionaries)
+    {
+      if ([[dict objectForKey:@"alias"] isEqualToString:alias])
+      {
+        URLString = [dict objectForKey:@"URLString"];
+      }
+    }
+    
+    if (URLString && [URLString length] > 0)
+    {
+      dirtyFlag = YES;
+      GBTask* task = [self.repository task];
+      task.arguments = [NSArray arrayWithObjects:@"config", 
+                        [NSString stringWithFormat:@"remote.%@.fetch", alias], 
+                        [NSString stringWithFormat:@"+refs/heads/*:refs/remotes/%@/*", alias],
+                        nil];
+      
+      [self.repository launchTaskAndWait:task];
+      
+      task = [self.repository task];
+      task.arguments = [NSArray arrayWithObjects:@"config", 
+                        [NSString stringWithFormat:@"remote.%@.url", alias], 
+                        URLString,
+                        nil];
+      
+      [self.repository launchTaskAndWait:task];
+    }
+  }
+  
+  if (dirtyFlag) [self.repository reloadRemotes];
+  dirtyFlag = NO;
+  
+  for (GBRemote* remote in self.repository.remotes)
+  {
+    NSDictionary* updatedDict = nil;
+    for (NSDictionary* dict in self.remotesDictionaries)
+    {
+      if ([[dict objectForKey:@"alias"] isEqualToString:remote.alias])
+      {
+        updatedDict = dict;
+      }
+    }
+    
+    NSString* newURLString = [updatedDict objectForKey:@"URLString"];
+    if (newURLString && [newURLString length] > 0 && ![newURLString isEqualToString:remote.URLString])
+    {
+      dirtyFlag = YES;
+      GBTask* task = [self.repository task];
+      task.arguments = [NSArray arrayWithObjects:@"config", 
+                        [NSString stringWithFormat:@"remote.%@.url", remote.alias], 
+                        newURLString,
+                        nil];
+      [self.repository launchTaskAndWait:task];
+    }
+  }
+  
+  if (dirtyFlag) [self.repository reloadRemotes];
 }
 
 @end

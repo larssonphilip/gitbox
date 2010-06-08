@@ -91,7 +91,7 @@ static GBActivityController* sharedGBActivityController;
   if (self.arrayController)
   {
     [self.arrayController addObject:activity];
-    [self.arrayController setSelectionIndex:[[self.arrayController content] count] - 1];
+    //[self.arrayController setSelectionIndex:[[self.arrayController content] count] - 1];
     [self syncActivityOutput];  
   }
   else // nib is not loaded yet
