@@ -14,21 +14,11 @@
   return 38.0;
 }
 
-- (CGFloat) offsetForStatus
-{
-  if (self.commit.syncStatus != GBCommitSyncStatusNormal)
-  {
-    return 22.0;
-  }
-  return 0.0;
-}
-
 - (NSRect) innerRectForFrame:(NSRect)cellFrame
 {
   NSRect innerRect = NSInsetRect(cellFrame, 6.0, 2.0);
   
-  CGFloat offset = [self offsetForStatus];
-  offset = 9.0;
+  CGFloat offset = 11.0;
   innerRect.origin.x += offset;
   innerRect.size.width -= offset;
   
@@ -67,7 +57,7 @@
       }
     }
     NSPoint point = rect.origin;
-    point.x -= 12.0;
+    point.x -= 13.0;
     point.y += 4.0;
     
     CGRect circleRect = CGRectMake(point.x, point.y, 8.0, 8.0);
@@ -118,9 +108,10 @@
   
   if (object.syncStatus == GBCommitSyncStatusUnmerged)
   {
-    titleColor = [titleColor blendedColorWithFraction:0.7 ofColor:[NSColor whiteColor]];
-    textColor = [textColor blendedColorWithFraction:0.7 ofColor:[NSColor whiteColor]];
-    dateColor = [dateColor blendedColorWithFraction:0.7 ofColor:[NSColor whiteColor]];
+    CGFloat fadeRatio = 0.4;
+    titleColor = [titleColor colorWithAlphaComponent:fadeRatio];
+    textColor = [textColor colorWithAlphaComponent:fadeRatio];
+    dateColor = [dateColor colorWithAlphaComponent:fadeRatio];
   }
   
   

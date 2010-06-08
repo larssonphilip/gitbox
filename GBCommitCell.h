@@ -7,7 +7,6 @@
 @property(readonly) GBCommit* commit;
 
 + (CGFloat) cellHeight;
-- (CGFloat) offsetForStatus;
 - (NSRect) innerRectForFrame:(NSRect)cellFrame;
 - (void) drawSyncStatusIconInRect:(NSRect)cellFrame;
 
