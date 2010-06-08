@@ -42,8 +42,8 @@
   NSColor* textColor = [NSColor textColor];
   NSColor* dateColor = [NSColor colorWithCalibratedRed:51/255.0 green:102/255.0 blue:204/255.0 alpha:1.0];
   
-  textColor = [textColor blendedColorWithFraction:0.4 ofColor:[NSColor whiteColor]];
-  dateColor = [dateColor blendedColorWithFraction:0.4 ofColor:[NSColor whiteColor]];
+  textColor = [textColor blendedColorWithFraction:0.3 ofColor:[NSColor whiteColor]];
+  dateColor = [dateColor blendedColorWithFraction:0.3 ofColor:[NSColor whiteColor]];
   
   if ([self isHighlighted])
   {
@@ -53,8 +53,9 @@
   
   if (object.syncStatus == GBCommitSyncStatusUnmerged)
   {
-    textColor = [textColor blendedColorWithFraction:0.7 ofColor:[NSColor whiteColor]];
-    dateColor = [dateColor blendedColorWithFraction:0.7 ofColor:[NSColor whiteColor]];
+    CGFloat fadeRatio = 0.35;
+    textColor = [textColor colorWithAlphaComponent:fadeRatio];
+    dateColor = [dateColor colorWithAlphaComponent:fadeRatio];
   }
   
   NSMutableParagraphStyle* paragraphStyle = [[NSMutableParagraphStyle new] autorelease];

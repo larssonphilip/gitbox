@@ -38,7 +38,7 @@
   
   
   // Calculate heights
-  NSRect innerRect = NSInsetRect(cellFrame, 16.0, 1.0);
+  NSRect innerRect = NSInsetRect(cellFrame, 19.0, 1.0);
   NSSize titleSize   = [title sizeWithAttributes:titleAttributes];
       
   // Calculate layout

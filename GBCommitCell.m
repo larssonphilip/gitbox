@@ -18,7 +18,7 @@
 {
   NSRect innerRect = NSInsetRect(cellFrame, 6.0, 2.0);
   
-  CGFloat offset = 11.0;
+  CGFloat offset = 13.0;
   innerRect.origin.x += offset;
   innerRect.size.width -= offset;
   
@@ -57,7 +57,7 @@
       }
     }
     NSPoint point = rect.origin;
-    point.x -= 13.0;
+    point.x -= 14.0;
     point.y += 4.0;
     
     CGRect circleRect = CGRectMake(point.x, point.y, 8.0, 8.0);
@@ -108,7 +108,7 @@
   
   if (object.syncStatus == GBCommitSyncStatusUnmerged)
   {
-    CGFloat fadeRatio = 0.4;
+    CGFloat fadeRatio = 0.35;
     titleColor = [titleColor colorWithAlphaComponent:fadeRatio];
     textColor = [textColor colorWithAlphaComponent:fadeRatio];
     dateColor = [dateColor colorWithAlphaComponent:fadeRatio];
