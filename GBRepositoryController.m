@@ -68,7 +68,7 @@
   self.remoteBranchPopUpButton = nil;
   
   [super dealloc];
-}
+}   
 
 - (GBRepository*) repository
 {
