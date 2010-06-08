@@ -393,6 +393,11 @@
   [self updateBranchMenus];
 }
 
+- (void) remotesDidChange
+{
+  [self updateBranchMenus];
+}
+
 - (void) selectedCommitDidChange:(GBCommit*) aCommit
 {
   NSView* changesPlaceholderView = [[self.splitView subviews] objectAtIndex:1];
@@ -477,6 +482,9 @@
   [self.repository addObserver:self forKeyPath:@"selectedCommit" 
           selectorWithNewValue:@selector(selectedCommitDidChange:)];
   
+  [self.repository addObserver:self forKeyPath:@"remotes" 
+          selectorWithoutArguments:@selector(remotesDidChange:)];
+  
   [self.repository fetchSilently];
 }
 
@@ -497,6 +505,7 @@
   
   // we remove observer in the windowWillClose to break the retain cycle (dealloc is never called otherwise)
   [self.repository removeObserver:self keyPath:@"selectedCommit" selector:@selector(selectedCommitDidChange:)];
+  [self.repository removeObserver:self keyPath:@"remotes" selector:@selector(remotesDidChange:)];
   [self.repository endBackgroundUpdate];
   [self.delegate windowControllerWillClose:self];
 }
@@ -590,12 +599,15 @@
         NSMenu* remoteMenu = [[NSMenu new] autorelease];
         for (GBRef* branch in remote.branches)
         {
-          NSMenuItem* item = [[NSMenuItem new] autorelease];
-          [item setTitle:branch.name];
-          [item setAction:@selector(checkoutRemoteBranch:)];
-          [item setTarget:self];
-          [item setRepresentedObject:branch];
-          [remoteMenu addItem:item];          
+          if (!branch.isNewRemoteBranch)
+          {
+            NSMenuItem* item = [[NSMenuItem new] autorelease];
+            [item setTitle:branch.name];
+            [item setAction:@selector(checkoutRemoteBranch:)];
+            [item setTarget:self];
+            [item setRepresentedObject:branch];
+            [remoteMenu addItem:item];
+          }
         }
         [remoteBranchesMenu addItem:[NSMenuItem menuItemWithTitle:remote.alias submenu:remoteMenu]];
       }
@@ -605,12 +617,15 @@
   {
     for (GBRef* branch in [[self.repository.remotes firstObject] branches])
     {
-      NSMenuItem* item = [[NSMenuItem new] autorelease];
-      [item setTitle:[branch nameWithRemoteAlias]];
-      [item setAction:@selector(checkoutRemoteBranch:)];
-      [item setTarget:self];
-      [item setRepresentedObject:branch];    
-      [remoteBranchesMenu addItem:item];
+      if (!branch.isNewRemoteBranch)
+      {
+        NSMenuItem* item = [[NSMenuItem new] autorelease];
+        [item setTitle:[branch nameWithRemoteAlias]];
+        [item setAction:@selector(checkoutRemoteBranch:)];
+        [item setTarget:self];
+        [item setRepresentedObject:branch];    
+        [remoteBranchesMenu addItem:item];
+      }
     }
   }
   if ([[remoteBranchesMenu itemArray] count] > 0)

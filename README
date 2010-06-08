@@ -10,6 +10,7 @@ To do:
 - screenshots
 
 Other:
+- force push a branch
 - bug: repository stage/branch updating tasks are stuck in activity window with running status
 - glitch: sometimes fake modification of xcodeproj appears in the stage due to async git-status call (it is a case for quick switching from xcode to gitbox right after it synced)
 - local branch merge
