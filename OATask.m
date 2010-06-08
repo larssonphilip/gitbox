@@ -178,7 +178,7 @@ NSString* OATaskNotification = @"OATaskNotification";
   {
     self.activity.isRunning = NO;
     self.activity.status = @"Disconnected";
-    self.activity.textOutput = @"Task was released: it sent a TERM signal to subprocess, but stopped listening to its status.";
+    self.activity.textOutput = @"Task was released: it was sent a TERM signal to subprocess, but stopped listening to its status.";
     //self.activity.task = nil;
     self.activity = nil;
     [nstask terminate];
