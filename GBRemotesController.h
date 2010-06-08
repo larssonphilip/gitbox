@@ -1,12 +1,15 @@
+@class GBRepository;
 @interface GBRemotesController : NSWindowController
 {
-  id target;
-  SEL action;
 }
 
+@property(retain) GBRepository* repository;
+@property(retain) NSMutableArray* remotesDictionaries;
 @property(assign) id target;
-@property(assign) SEL action;
+@property(assign) SEL finishSelector;
+@property(assign) SEL cancelSelector;
 
+- (IBAction) onCancel:(id)sender;
 - (IBAction) onOK:(id)sender;
 
 @end

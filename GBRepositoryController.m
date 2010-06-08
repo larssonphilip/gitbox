@@ -244,7 +244,7 @@
 
 - (IBAction) createNewRemote:(id)sender
 {
-  
+  [self editRepositories:sender];
 }
 
 
@@ -312,16 +312,25 @@
 {
   GBRemotesController* remotesController = [[[GBRemotesController alloc] initWithWindowNibName:@"GBRemotesController"] autorelease];
   
+  remotesController.repository = self.repository;
   remotesController.target = self;
-  remotesController.action = @selector(doneEditRepositories:);
+  remotesController.finishSelector = @selector(doneEditRepositories:);
+  remotesController.cancelSelector = @selector(cancelledEditRepositories:);
   
   [self beginSheetForController:remotesController];
 }
 
   - (void) doneEditRepositories:(GBRemotesController*)remotesController
   {
+    NSLog(@"TODO: reload remotes branch menu and history");
     [self endSheetForController:remotesController];
   }
+
+  - (void) cancelledEditRepositories:(GBRemotesController*)remotesController
+  {
+    [self endSheetForController:remotesController];
+  }
+
 
 - (IBAction) editGitIgnore:(id)sender
 {
