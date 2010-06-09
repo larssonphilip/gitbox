@@ -26,6 +26,7 @@
 		2010732F11A7E9C300EFDE56 /* app.icns in Resources */ = {isa = PBXBuildFile; fileRef = 2010732E11A7E9C300EFDE56 /* app.icns */; };
 		201073B611A80A4600EFDE56 /* GBRemotesTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 201073B511A80A4600EFDE56 /* GBRemotesTask.m */; };
 		201E5F6811AA71E00061EFD6 /* NSObject+OAKeyValueObserving.m in Sources */ = {isa = PBXBuildFile; fileRef = 201E5F6711AA71E00061EFD6 /* NSObject+OAKeyValueObserving.m */; };
+		2025D3BA11BF1F2D004715FA /* NSAttributedString+OAAttributedStringHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 2025D3B911BF1F2D004715FA /* NSAttributedString+OAAttributedStringHelpers.m */; };
 		2030F19511B82BED00C260E0 /* commit-marker-unmerged-highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 2030F19311B82BED00C260E0 /* commit-marker-unmerged-highlighted.png */; };
 		2030F19611B82BED00C260E0 /* commit-marker-unpushed-highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 2030F19411B82BED00C260E0 /* commit-marker-unpushed-highlighted.png */; };
 		2038F1B11193664D0087CE37 /* GBRepositoryController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58290DA1D0D100B32029 /* GBRepositoryController.xib */; };
@@ -134,6 +135,8 @@
 		201073B511A80A4600EFDE56 /* GBRemotesTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBRemotesTask.m; sourceTree = "<group>"; };
 		201E5F6611AA71E00061EFD6 /* NSObject+OAKeyValueObserving.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+OAKeyValueObserving.h"; sourceTree = "<group>"; };
 		201E5F6711AA71E00061EFD6 /* NSObject+OAKeyValueObserving.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+OAKeyValueObserving.m"; sourceTree = "<group>"; };
+		2025D3B811BF1F2D004715FA /* NSAttributedString+OAAttributedStringHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSAttributedString+OAAttributedStringHelpers.h"; sourceTree = "<group>"; };
+		2025D3B911BF1F2D004715FA /* NSAttributedString+OAAttributedStringHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSAttributedString+OAAttributedStringHelpers.m"; sourceTree = "<group>"; };
 		2030F19311B82BED00C260E0 /* commit-marker-unmerged-highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "commit-marker-unmerged-highlighted.png"; sourceTree = "<group>"; };
 		2030F19411B82BED00C260E0 /* commit-marker-unpushed-highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "commit-marker-unpushed-highlighted.png"; sourceTree = "<group>"; };
 		2038F1DD11936B060087CE37 /* GBAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBAppDelegate.h; sourceTree = "<group>"; };
@@ -440,6 +443,8 @@
 				2093A85D11AF33B500239185 /* WhiteNSView.m */,
 				2093AAA811B15E1500239185 /* NSSplitView+OASplitViewHelpers.h */,
 				2093AAA911B15E1500239185 /* NSSplitView+OASplitViewHelpers.m */,
+				2025D3B811BF1F2D004715FA /* NSAttributedString+OAAttributedStringHelpers.h */,
+				2025D3B911BF1F2D004715FA /* NSAttributedString+OAAttributedStringHelpers.m */,
 			);
 			name = Libs;
 			sourceTree = "<group>";
@@ -646,6 +651,7 @@
 				20B399F511B7F28900D6A3C4 /* GBBranchesBaseTask.m in Sources */,
 				20B399FA11B7F30600D6A3C4 /* GBLocalBranchesTask.m in Sources */,
 				209A935F11BA934C006B0B5C /* GBFileEditingController.m in Sources */,
+				2025D3BA11BF1F2D004715FA /* NSAttributedString+OAAttributedStringHelpers.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

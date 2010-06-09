@@ -37,7 +37,7 @@ typedef enum {
 - (NSString*) longAuthorLine;
 - (Class) cellClass;
 - (GBCommitCell*) cell;
-
+- (NSAttributedString*) attributedHeader;
 
 #pragma mark Mutation
 
