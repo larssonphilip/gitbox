@@ -123,9 +123,13 @@
 
 - (NSAttributedString*) attributedHeader
 {
+  return [self attributedHeaderForAttributedString:[[[NSMutableAttributedString alloc] initWithString:@""] autorelease]];
+}
+
+- (NSAttributedString*) attributedHeaderForAttributedString:(NSMutableAttributedString*)attributedString
+{
   if ([self isStage]) return nil;
-  NSMutableAttributedString* attributedString = [[[NSMutableAttributedString alloc] initWithString:@""] autorelease];
-  
+    
   /* Layout:
       commit -> parent1, parent2
       date

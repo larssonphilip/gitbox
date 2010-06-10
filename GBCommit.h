@@ -38,6 +38,7 @@ typedef enum {
 - (Class) cellClass;
 - (GBCommitCell*) cell;
 - (NSAttributedString*) attributedHeader;
+- (NSAttributedString*) attributedHeaderForAttributedString:(NSMutableAttributedString*)attributedString;
 
 #pragma mark Mutation
 
