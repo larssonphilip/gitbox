@@ -17,7 +17,7 @@
   [self removeAllSubviews];
   if (aViewController)
   {
-    NSView* otherView = [aViewController view];
+    //NSView* otherView = [aViewController view];
     [[aViewController view] setFrame:[self bounds]];
     [self addSubview:[aViewController view]];
     [[aViewController view] setNextResponder:aViewController];

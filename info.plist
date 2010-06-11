@@ -36,11 +36,11 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>0.9.3</string>
+	<string>0.9.4</string>
 	<key>CFBundleShortVersionString</key>
 	<string></string>
 	<key>NSHumanReadableCopyright</key>
-	<string>Gitbox 0.9.3 © 2010, Oleg Andreev</string>
+	<string>Gitbox 0.9.4 © 2010, Oleg Andreev</string>
 	<key>LSMinimumSystemVersion</key>
 	<string>${MACOSX_DEPLOYMENT_TARGET}</string>
 	<key>NSMainNibFile</key>
