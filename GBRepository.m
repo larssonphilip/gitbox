@@ -578,7 +578,7 @@
 - (void) fetchSilently
 {
   GBRef* aRemoteBranch = self.currentRemoteBranch;
-  if (!self.fetching && aRemoteBranch)
+  if (!self.fetching && aRemoteBranch && [aRemoteBranch isRemoteBranch])
   {
     self.fetching = YES;
     

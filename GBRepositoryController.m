@@ -540,6 +540,8 @@
 
 - (void) updateCurrentBranchMenus
 {
+  GBRepository* repo = self.repository;
+  
   // Local branches
   NSMenu* newMenu = [[NSMenu new] autorelease];
   NSPopUpButton* button = self.currentBranchPopUpButton;
@@ -549,14 +551,14 @@
     [newMenu addItem:[NSMenuItem menuItemWithTitle:@"" submenu:nil]];
   }
   
-  for (GBRef* localBranch in self.repository.localBranches)
+  for (GBRef* localBranch in repo.localBranches)
   {
     NSMenuItem* item = [[NSMenuItem new] autorelease];
     [item setTitle:localBranch.name];
     [item setAction:@selector(checkoutBranch:)];
     [item setTarget:self];
     [item setRepresentedObject:localBranch];
-    if ([localBranch isEqual:self.repository.currentLocalRef])
+    if ([localBranch isEqual:repo.currentLocalRef])
     {
       [item setState:NSOnState];
     }
@@ -568,14 +570,14 @@
   // Checkout Tag
   
   NSMenu* tagsMenu = [NSMenu menu];
-  for (GBRef* tag in self.repository.tags)
+  for (GBRef* tag in repo.tags)
   {
     NSMenuItem* item = [[NSMenuItem new] autorelease];
     [item setTitle:tag.name];
     [item setAction:@selector(checkoutBranch:)];
     [item setTarget:self];
     [item setRepresentedObject:tag];
-    if ([tag isEqual:self.repository.currentLocalRef])
+    if ([tag isEqual:repo.currentLocalRef])
     {
       [item setState:NSOnState];
     }
@@ -590,7 +592,7 @@
   // Checkout Remote Branch
   
   NSMenu* remoteBranchesMenu = [NSMenu menu];
-  if ([self.repository.remotes count] > 1) // display submenus for each remote
+  if ([repo.remotes count] > 1) // display submenus for each remote
   {
     for (GBRemote* remote in self.repository.remotes)
     {
@@ -613,9 +615,9 @@
       }
     }
   }
-  else if ([self.repository.remotes count] == 1) // display a flat list of "origin/master"-like titles
+  else if ([repo.remotes count] == 1) // display a flat list of "origin/master"-like titles
   {
-    for (GBRef* branch in [[self.repository.remotes firstObject] branches])
+    for (GBRef* branch in [[repo.remotes firstObject] branches])
     {
       if (!branch.isNewRemoteBranch)
       {
@@ -646,7 +648,7 @@
   [button setMenu:newMenu];
   for (NSMenuItem* item in [newMenu itemArray])
   {
-    if ([[item representedObject] isEqual:self.repository.currentLocalRef])
+    if ([[item representedObject] isEqual:repo.currentLocalRef])
     {
       [button selectItem:item];
     }
@@ -659,8 +661,18 @@
 
 
 
+
+
+
+
+
+
+
 - (void) updateRemoteBranchMenus
 {
+  GBRepository* repo = self.repository;
+  NSArray* remotes = repo.remotes;
+  
   NSPopUpButton* button = self.remoteBranchPopUpButton;
   NSMenu* remoteBranchesMenu = [NSMenu menu];
   if ([button pullsDown])
@@ -668,9 +680,9 @@
     // Note: this is needed according to documentation for pull-down menus. The item will be ignored.
     [remoteBranchesMenu addItem:[NSMenuItem menuItemWithTitle:@"" submenu:nil]];
   }
-  if ([self.repository.remotes count] > 1) // display submenus for each remote
+  if ([remotes count] > 1) // display submenus for each remote
   {
-    for (GBRemote* remote in self.repository.remotes)
+    for (GBRemote* remote in remotes)
     {
       NSMenu* remoteMenu = [[NSMenu new] autorelease];
       BOOL addedBranch = NO;
@@ -681,7 +693,7 @@
         [item setAction:@selector(selectRemoteBranch:)];
         [item setTarget:self];
         [item setRepresentedObject:branch];
-        if ([branch isEqual:self.repository.currentRemoteBranch])
+        if ([branch isEqual:repo.currentRemoteBranch])
         {
           [item setState:NSOnState];
         }
@@ -699,9 +711,9 @@
       [remoteBranchesMenu addItem:[NSMenuItem menuItemWithTitle:remote.alias submenu:remoteMenu]];
     }
   }
-  else if ([self.repository.remotes count] == 1) // display a flat list of "origin/master"-like titles
+  else if ([remotes count] == 1) // display a flat list of "origin/master"-like titles
   {
-    GBRemote* remote = [self.repository.remotes firstObject];
+    GBRemote* remote = [remotes firstObject];
     for (GBRef* branch in remote.branches)
     {
       NSMenuItem* item = [[NSMenuItem new] autorelease];
@@ -709,7 +721,7 @@
       [item setAction:@selector(selectRemoteBranch:)];
       [item setTarget:self];
       [item setRepresentedObject:branch];
-      if ([branch isEqual:self.repository.currentRemoteBranch])
+      if ([branch isEqual:repo.currentRemoteBranch])
       {
         [item setState:NSOnState];
       }
@@ -724,6 +736,36 @@
     [newBranchItem setRepresentedObject:remote];
     [remoteBranchesMenu addItem:newBranchItem];
   }
+  
+  // Local branch for merging
+  
+  if ([repo.localBranches count] > 1)
+  {
+    if ([[remoteBranchesMenu itemArray] count] > 1) // ignore dummy item
+    {
+      [remoteBranchesMenu addItem:[NSMenuItem separatorItem]];
+    }
+    
+    NSMenu* localBranchesMenu = [NSMenu menu];
+    for (GBRef* localBranch in repo.localBranches)
+    {
+      if (![localBranch isEqual:repo.currentLocalRef])
+      {
+        NSMenuItem* item = [[NSMenuItem new] autorelease];
+        [item setTitle:localBranch.name];
+        [item setAction:@selector(selectRemoteBranch:)];
+        [item setTarget:self];
+        [item setRepresentedObject:localBranch];
+        [localBranchesMenu addItem:item];
+      }
+    }
+    
+    NSMenuItem* localBranchItem = [NSMenuItem menuItemWithTitle:NSLocalizedString(@"Local branch for merging", @"") submenu:localBranchesMenu];
+    [remoteBranchesMenu addItem:localBranchItem];
+  }
+  
+  
+  // Add new remote
   
   NSMenuItem* newRemoteItem = nil;
   if ([[remoteBranchesMenu itemArray] count] > 1) // ignore dummy item
@@ -743,7 +785,7 @@
   
   [button setMenu:remoteBranchesMenu];
   
-  GBRef* remoteBranch = self.repository.currentRemoteBranch;
+  GBRef* remoteBranch = repo.currentRemoteBranch;
   if (remoteBranch)
   {
     [button setTitle:[remoteBranch nameWithRemoteAlias]];
