@@ -94,6 +94,7 @@
 		20B8B83911A4A72A006D6442 /* GBPromptController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 20B8B83811A4A72A006D6442 /* GBPromptController.xib */; };
 		20B8B83D11A4A776006D6442 /* GBPromptController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B8B83C11A4A776006D6442 /* GBPromptController.m */; };
 		20B8B84811A4AAF2006D6442 /* NSString+OAStringHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B8B84711A4AAF2006D6442 /* NSString+OAStringHelpers.m */; };
+		20F8058811C1B35A00ADDADA /* commit-header-template.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 20F8058711C1B35A00ADDADA /* commit-header-template.rtf */; };
 		8D15AC2C0486D014006FF6A4 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 2A37F4B9FDCFA73011CA2CEA /* Credits.rtf */; };
 		8D15AC320486D014006FF6A4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A37F4B0FDCFA73011CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D15AC340486D014006FF6A4 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */; };
@@ -250,6 +251,7 @@
 		20B8B84611A4AAF2006D6442 /* NSString+OAStringHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+OAStringHelpers.h"; sourceTree = "<group>"; };
 		20B8B84711A4AAF2006D6442 /* NSString+OAStringHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+OAStringHelpers.m"; sourceTree = "<group>"; };
 		20E59CE711A5C9EA00E7FB72 /* GBModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBModels.h; sourceTree = "<group>"; };
+		20F8058711C1B35A00ADDADA /* commit-header-template.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = "commit-header-template.rtf"; sourceTree = "<group>"; };
 		2564AD2C0F5327BB00F57823 /* prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = prefix.pch; sourceTree = "<group>"; };
 		2A37F4B0FDCFA73011CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		2A37F4BAFDCFA73011CA2CEA /* English */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = English; path = English.lproj/Credits.rtf; sourceTree = "<group>"; };
@@ -485,6 +487,7 @@
 		2A37F4B8FDCFA73011CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				20F8058711C1B35A00ADDADA /* commit-header-template.rtf */,
 				2030F19311B82BED00C260E0 /* commit-marker-unmerged-highlighted.png */,
 				2030F19411B82BED00C260E0 /* commit-marker-unpushed-highlighted.png */,
 				203A572611B6C28900497636 /* commit-marker-unmerged.png */,
@@ -573,6 +576,7 @@
 				2030F19511B82BED00C260E0 /* commit-marker-unmerged-highlighted.png in Resources */,
 				2030F19611B82BED00C260E0 /* commit-marker-unpushed-highlighted.png in Resources */,
 				209A935A11BA92B6006B0B5C /* GBFileEditingController.xib in Resources */,
+				20F8058811C1B35A00ADDADA /* commit-header-template.rtf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

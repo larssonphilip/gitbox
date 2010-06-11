@@ -6,23 +6,23 @@ extern NSString* OATaskNotification;
   id standardError;
 }
 
-@property(retain) NSString* executableName;
-@property(retain) NSString* launchPath;
-@property(retain) NSString* currentDirectoryPath;
-@property(retain) NSTask* nstask;
-@property(retain) NSMutableData* output;
-@property(retain) NSArray* arguments;
+@property(nonatomic,retain) NSString* executableName;
+@property(nonatomic,retain) NSString* launchPath;
+@property(nonatomic,retain) NSString* currentDirectoryPath;
+@property(nonatomic,retain) NSTask* nstask;
+@property(nonatomic,retain) NSMutableData* output;
+@property(nonatomic,retain) NSArray* arguments;
 
-@property(assign) BOOL avoidIndicator;
-@property(assign) BOOL ignoreFailure;
+@property(nonatomic,assign) BOOL avoidIndicator;
+@property(nonatomic,assign) BOOL ignoreFailure;
 
-@property(assign) NSTimeInterval pollingPeriod;
-@property(assign) NSTimeInterval terminateTimeout;
+@property(nonatomic,assign) NSTimeInterval pollingPeriod;
+@property(nonatomic,assign) NSTimeInterval terminateTimeout;
 
-@property(retain) id standardOutput;
-@property(retain) id standardError;
+@property(nonatomic,retain) id standardOutput;
+@property(nonatomic,retain) id standardError;
 
-@property(retain) OAActivity* activity;
+@property(nonatomic,retain) OAActivity* activity;
 
 + (id) task;
 

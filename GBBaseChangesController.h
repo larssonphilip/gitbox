@@ -5,9 +5,9 @@
   NSArrayController* statusArrayController;
 }
 
-@property(retain) GBRepository* repository;
-@property(retain) IBOutlet NSTableView* tableView;
-@property(retain) IBOutlet NSArrayController* statusArrayController; 
+@property(nonatomic,retain) GBRepository* repository;
+@property(nonatomic,retain) IBOutlet NSTableView* tableView;
+@property(nonatomic,retain) IBOutlet NSArrayController* statusArrayController; 
 
 
 #pragma mark Interrogation

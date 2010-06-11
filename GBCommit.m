@@ -17,6 +17,9 @@
 @synthesize parentIds;
 @synthesize authorName;
 @synthesize authorEmail;
+@synthesize committerName;
+@synthesize committerEmail;
+
 @synthesize date;
 @synthesize message;
 
@@ -58,6 +61,9 @@
   self.message = nil;
   self.authorName = nil;
   self.authorEmail = nil;
+  self.committerName = nil;
+  self.committerEmail = nil;
+
   self.date = nil;
   self.changes = nil;
   
@@ -119,6 +125,18 @@
     return [[object commitId] isEqualToString:self.commitId];
   }
   return NO;
+}
+
+- (NSString*) fullDateString
+{
+  static NSDateFormatter* fullDateFormatter = nil;
+  if (!fullDateFormatter)
+  {
+    fullDateFormatter = [[NSDateFormatter alloc] init];
+    [fullDateFormatter setDateStyle:NSDateFormatterLongStyle];
+    [fullDateFormatter setTimeStyle:NSDateFormatterLongStyle];
+  }
+  return [fullDateFormatter stringFromDate:self.date];
 }
 
 - (NSAttributedString*) attributedHeader

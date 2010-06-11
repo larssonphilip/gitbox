@@ -5,14 +5,14 @@
 {
 }
 
-@property(retain) GBRef* branch;
-@property(retain) GBRef* joinedBranch;
-@property(retain) GBRef* substructedBranch;
+@property(nonatomic,retain) GBRef* branch;
+@property(nonatomic,retain) GBRef* joinedBranch;
+@property(nonatomic,retain) GBRef* substructedBranch;
 
-@property(assign) NSUInteger limit;
-@property(assign) NSUInteger skip;
+@property(nonatomic,assign) NSUInteger limit;
+@property(nonatomic,assign) NSUInteger skip;
 
-@property(retain) NSArray* commits;
+@property(nonatomic,retain) NSArray* commits;
 
 - (NSArray*) commitsFromRawFormatData:(NSData*)data;
 

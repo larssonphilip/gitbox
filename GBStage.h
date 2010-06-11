@@ -5,10 +5,10 @@
 {
 }
 
-@property(retain) NSArray* stagedChanges;
-@property(retain) NSArray* unstagedChanges;
-@property(retain) NSArray* untrackedChanges;
-@property(assign) BOOL hasStagedChanges;
+@property(nonatomic,retain) NSArray* stagedChanges;
+@property(nonatomic,retain) NSArray* unstagedChanges;
+@property(nonatomic,retain) NSArray* untrackedChanges;
+@property(nonatomic,assign) BOOL hasStagedChanges;
 
 - (BOOL) isDirty;
 

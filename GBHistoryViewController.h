@@ -5,9 +5,9 @@
 {
 }
 
-@property(retain) GBRepository* repository;
-@property(retain) IBOutlet NSTableView* tableView;
-@property(retain) IBOutlet NSArrayController* logArrayController;
+@property(nonatomic,retain) GBRepository* repository;
+@property(nonatomic,retain) IBOutlet NSTableView* tableView;
+@property(nonatomic,retain) IBOutlet NSArrayController* logArrayController;
 
 - (GBCommit*) selectedCommit;
 

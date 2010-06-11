@@ -12,10 +12,10 @@
   OAActivityIndicator* activityIndicator;
 }
 
-@property(retain) NSMutableSet* concurrentTasks;
-@property(retain) NSMutableArray* queuedTasks;
-@property(retain) OATask* currentTask;
-@property(retain) OAActivityIndicator* activityIndicator;
+@property(nonatomic,retain) NSMutableSet* concurrentTasks;
+@property(nonatomic,retain) NSMutableArray* queuedTasks;
+@property(nonatomic,retain) OATask* currentTask;
+@property(nonatomic,retain) OAActivityIndicator* activityIndicator;
 
 - (OATask*) launchTask:(OATask*)task;
 - (OATask*) enqueueTask:(OATask*)task;

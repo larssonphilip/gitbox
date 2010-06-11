@@ -4,6 +4,6 @@
 {
 }
 
-@property(retain) NSArray* remotes;
+@property(nonatomic,retain) NSArray* remotes;
 
 @end

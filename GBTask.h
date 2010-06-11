@@ -6,9 +6,9 @@
   GBRepository* repository;
 }
 
-@property(assign) GBRepository* repository;
+@property(nonatomic,assign) GBRepository* repository;
 
-@property(assign) id target;
-@property(assign) SEL action;
+@property(nonatomic,assign) id target;
+@property(nonatomic,assign) SEL action;
 
 @end

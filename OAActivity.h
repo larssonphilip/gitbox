@@ -5,13 +5,13 @@
 {
 }
 
-@property(assign) OATask* task;
-@property(assign) BOOL isRunning;
+@property(nonatomic,assign) OATask* task;
+@property(nonatomic,assign) BOOL isRunning;
 
-@property(retain) NSString* path;
-@property(retain) NSString* command;
-@property(retain) NSString* status;
-@property(retain) NSString* textOutput;
+@property(nonatomic,retain) NSString* path;
+@property(nonatomic,retain) NSString* command;
+@property(nonatomic,retain) NSString* status;
+@property(nonatomic,retain) NSString* textOutput;
 
 - (NSString*) line;
 

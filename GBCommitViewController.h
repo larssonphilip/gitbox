@@ -2,9 +2,10 @@
 @interface GBCommitViewController : GBBaseChangesController<NSSplitViewDelegate>
 {
 }
+@property(nonatomic,retain) NSData* headerRTFTemplate;
 
-@property(retain) IBOutlet NSScrollView* headerScrollView;
-@property(retain) IBOutlet NSTextView* headerTextView;
+@property(nonatomic,retain) IBOutlet NSScrollView* headerScrollView;
+@property(nonatomic,retain) IBOutlet NSTextView* headerTextView;
 
 - (IBAction) stageShowDifference:(id)sender;
 - (IBAction) stageRevealInFinder:(id)sender;

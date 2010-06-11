@@ -4,15 +4,15 @@
   BOOL removedNewLine;
   BOOL finishedPlayingWithTooltip;
 }
-@property(retain) NSString* value;
+@property(nonatomic,retain) NSString* value;
 
-@property(retain) IBOutlet NSTextView* textView;
-@property(retain) IBOutlet NSTextField* shortcutTipLabel;
+@property(nonatomic,retain) IBOutlet NSTextView* textView;
+@property(nonatomic,retain) IBOutlet NSTextField* shortcutTipLabel;
 
-@property(assign) id target;
-@property(assign) SEL finishSelector;
-@property(assign) SEL cancelSelector;
-@property(assign) NSWindow* windowHoldingSheet;
+@property(nonatomic,assign) id target;
+@property(nonatomic,assign) SEL finishSelector;
+@property(nonatomic,assign) SEL cancelSelector;
+@property(nonatomic,assign) NSWindow* windowHoldingSheet;
 
 + (GBCommitPromptController*) controller;
 

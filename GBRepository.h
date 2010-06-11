@@ -21,28 +21,28 @@
   NSTimeInterval backgroundUpdateInterval;
 }
 
-@property(retain) NSURL* url;
-@property(retain) NSURL* dotGitURL;
-@property(retain) NSArray* localBranches;
-@property(retain) NSArray* remotes;
-@property(retain) NSArray* tags;
-@property(retain) GBStage* stage;
-@property(retain) GBRef* currentLocalRef;
-@property(retain) GBRef* currentRemoteBranch;
+@property(nonatomic,retain) NSURL* url;
+@property(nonatomic,retain) NSURL* dotGitURL;
+@property(nonatomic,retain) NSArray* localBranches;
+@property(nonatomic,retain) NSArray* remotes;
+@property(nonatomic,retain) NSArray* tags;
+@property(nonatomic,retain) GBStage* stage;
+@property(nonatomic,retain) GBRef* currentLocalRef;
+@property(nonatomic,retain) GBRef* currentRemoteBranch;
 
-@property(retain) NSArray* commits;
-@property(retain) NSArray* localBranchCommits;
+@property(nonatomic,retain) NSArray* commits;
+@property(nonatomic,retain) NSArray* localBranchCommits;
 
-@property(retain) OATaskManager* taskManager;
+@property(nonatomic,retain) OATaskManager* taskManager;
 
-@property(assign) BOOL pulling;
-@property(assign) BOOL merging;
-@property(assign) BOOL fetching;
-@property(assign) BOOL pushing;
+@property(nonatomic,assign) BOOL pulling;
+@property(nonatomic,assign) BOOL merging;
+@property(nonatomic,assign) BOOL fetching;
+@property(nonatomic,assign) BOOL pushing;
 
-@property(assign) NSObject<GBRepositoryDelegate>* delegate;
+@property(nonatomic,assign) NSObject<GBRepositoryDelegate>* delegate;
 
-@property(retain) GBCommit* selectedCommit;
+@property(nonatomic,retain) GBCommit* selectedCommit;
 
 
 

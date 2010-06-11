@@ -3,10 +3,10 @@
 {
 }
 
-@property(retain) NSMutableArray* activities;
-@property(retain) IBOutlet NSTextView* outputTextView;
-@property(retain) IBOutlet NSTableView* tableView;
-@property(retain) IBOutlet NSArrayController* arrayController;
+@property(nonatomic,retain) NSMutableArray* activities;
+@property(nonatomic,retain) IBOutlet NSTextView* outputTextView;
+@property(nonatomic,retain) IBOutlet NSTableView* tableView;
+@property(nonatomic,retain) IBOutlet NSArrayController* arrayController;
 
 + (id) sharedActivityController;
 

@@ -4,8 +4,8 @@
 {
 }
 
-@property(retain) NSString* objectId;
-@property(retain) NSURL* originalURL;
-@property(retain) NSURL* temporaryURL;
+@property(nonatomic,retain) NSString* objectId;
+@property(nonatomic,retain) NSURL* originalURL;
+@property(nonatomic,retain) NSURL* temporaryURL;
 
 @end

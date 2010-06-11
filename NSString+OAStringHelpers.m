@@ -33,3 +33,15 @@
 }
 
 @end
+
+@implementation NSMutableString (OAStringHelpers)
+
+- (void) replaceOccurrencesOfString:(NSString*)string1 withString:(NSString*)string2
+{
+  [self replaceOccurrencesOfString:string1 
+                          withString:string2
+                             options:0
+                             range:NSMakeRange(0, [self length])];
+}
+
+@end

@@ -5,9 +5,9 @@
 {
 }
 
-@property(retain) GBRef* remoteBranch;
-@property(retain) NSString* localBranchName;
-@property(retain) NSString* remoteAlias;
-@property(retain) NSString* remoteBranchName;
+@property(nonatomic,retain) GBRef* remoteBranch;
+@property(nonatomic,retain) NSString* localBranchName;
+@property(nonatomic,retain) NSString* remoteAlias;
+@property(nonatomic,retain) NSString* remoteBranchName;
 
 @end

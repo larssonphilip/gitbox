@@ -3,7 +3,7 @@
 @interface GBBranchesBaseTask : GBTask
 {
 }
-@property(retain) NSArray* branches;
-@property(retain) NSArray* tags;
+@property(nonatomic,retain) NSArray* branches;
+@property(nonatomic,retain) NSArray* tags;
 
 @end

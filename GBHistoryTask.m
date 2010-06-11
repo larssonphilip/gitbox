@@ -191,6 +191,7 @@ authorDate 2010-05-01 20:23:10 -0700
       // committerName Junio C Hamano
       if ([line hasPrefix:@"committerName "])
       {
+        commit.committerName = [line substringFromIndex:14]; // 'committerName ' skipped
       }
       else HistoryScanError(@"Expected 'committerName ...' line");
       
@@ -199,6 +200,7 @@ authorDate 2010-05-01 20:23:10 -0700
       // committerEmail gitster@pobox.com
       if ([line hasPrefix:@"committerEmail "])
       {
+        commit.committerEmail = [line substringFromIndex:15]; // 'committerEmail ' skipped
       }
       else HistoryScanError(@"Expected 'committerEmail ...' line");
       

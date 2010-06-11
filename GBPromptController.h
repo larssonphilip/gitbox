@@ -2,24 +2,24 @@
 {
 }
 
-@property(retain) IBOutlet NSTextField* textField;
+@property(nonatomic,retain) IBOutlet NSTextField* textField;
 
-@property(retain) NSString* title;
-@property(retain) NSString* promptText;
-@property(retain) NSString* buttonText;
-@property(retain) NSString* value;
-@property(assign) BOOL requireNonNilValue;
-@property(assign) BOOL requireNonEmptyString;
-@property(assign) BOOL requireSingleLine;
-@property(assign) BOOL requireStripWhitespace;
+@property(nonatomic,retain) NSString* title;
+@property(nonatomic,retain) NSString* promptText;
+@property(nonatomic,retain) NSString* buttonText;
+@property(nonatomic,retain) NSString* value;
+@property(nonatomic,assign) BOOL requireNonNilValue;
+@property(nonatomic,assign) BOOL requireNonEmptyString;
+@property(nonatomic,assign) BOOL requireSingleLine;
+@property(nonatomic,assign) BOOL requireStripWhitespace;
 
-@property(assign) id target;
-@property(assign) SEL finishSelector;
-@property(assign) SEL cancelSelector;
+@property(nonatomic,assign) id target;
+@property(nonatomic,assign) SEL finishSelector;
+@property(nonatomic,assign) SEL cancelSelector;
 
-@property(assign) id payload;
+@property(nonatomic,assign) id payload;
 
-@property(assign) NSWindow* windowHoldingSheet;
+@property(nonatomic,assign) NSWindow* windowHoldingSheet;
 
 + (GBPromptController*) controller;
 

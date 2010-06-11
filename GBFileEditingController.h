@@ -2,15 +2,15 @@
 {
 }
 
-@property(retain) NSURL* URL;
-@property(retain) NSString* title;
+@property(nonatomic,retain) NSURL* URL;
+@property(nonatomic,retain) NSString* title;
 
-@property(retain) IBOutlet NSTextView* textView;
+@property(nonatomic,retain) IBOutlet NSTextView* textView;
 
-@property(assign) id target;
-@property(assign) SEL finishSelector;
-@property(assign) SEL cancelSelector;
-@property(assign) NSWindow* windowHoldingSheet;
+@property(nonatomic,assign) id target;
+@property(nonatomic,assign) SEL finishSelector;
+@property(nonatomic,assign) SEL cancelSelector;
+@property(nonatomic,assign) NSWindow* windowHoldingSheet;
 
 + (GBFileEditingController*) controller;
 

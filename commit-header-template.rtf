@@ -8,12 +8,12 @@
 \f0\fs24 \cf0 	
 \b \cf2 Commit: 
 \b0 	
-\f1\fs22 \cf3 750ef42516bb343a7755f003720e43cd8dd64c3e
+\f1\fs22 \cf3 commitId
 \f0\fs24 \cf0 \
 \pard\tqr\tx1460\tx1500\pardeftab100\li1520\fi-1520\sa20\ql\qnatural
 \cf0 	
 \b \cf2 Date: 
-\b0 	\cf3 June 10, 2010 3:13:55 PM PDT\cf0 \
+\b0 	\cf3 authorDate\cf0 \
 	
 \b \cf2 Author: 
 \b0 	
@@ -26,6 +26,6 @@
 \b0  <committer@email>\
 	
 \b \cf2 Message: 
-\b0 	\cf0 The easiest way to verify a pack index is to open it through the standard parse_pack_index function, permitting the header check to happen when the file is mapped.  However, the dumb HTTP client needs to verify a pack index before its moved into its proper file name within the objects/pack directory, to prevent a corrupt index from being made available.  So permit the caller to specify the exact path of the index file.\
+\b0 	\cf0 Subject line\
 \pard\tqr\tx1460\tx1500\pardeftab100\li1520\sa20\ql\qnatural
-\cf0 For now we're still using the final destination name within the sole call site in http.c, but eventually we will start to parse the temporary path instead.}
+\cf0 Rest of the message}

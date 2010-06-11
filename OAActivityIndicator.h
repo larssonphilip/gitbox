@@ -13,7 +13,7 @@
 }
 
 // Bind NSProgressIndicator "animate" to "value"
-@property(assign) BOOL value;
+@property(nonatomic,assign) BOOL value;
 
 
 // Methods for shared instance (useful for a single-window applications such as iPhone app)

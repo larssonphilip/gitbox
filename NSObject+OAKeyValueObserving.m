@@ -18,14 +18,14 @@
 	
 }
 
-@property(assign) id observer;
-@property(assign) id target;
-@property(retain) NSString* keyPath;
-@property(assign) SEL selector;
-@property(assign) SEL selectorWithNewValue;
-@property(assign) SEL selectorWithoutArguments;
-@property(retain) id userInfo;
-@property(assign) NSKeyValueObservingOptions options;
+@property(nonatomic,assign) id observer;
+@property(nonatomic,assign) id target;
+@property(nonatomic,retain) NSString* keyPath;
+@property(nonatomic,assign) SEL selector;
+@property(nonatomic,assign) SEL selectorWithNewValue;
+@property(nonatomic,assign) SEL selectorWithoutArguments;
+@property(nonatomic,retain) id userInfo;
+@property(nonatomic,assign) NSKeyValueObservingOptions options;
 
 - (SEL) anySelector;
 
@@ -40,7 +40,7 @@
 	NSMutableDictionary* listeners;
 }
 
-@property(retain) NSMutableDictionary* listeners;
+@property(nonatomic,retain) NSMutableDictionary* listeners;
 
 + (id)defaultCenter;
 

@@ -10,12 +10,12 @@
   GBRepository* repository;
 }
 
-@property(retain) NSString* alias;
-@property(retain) NSString* URLString;
-@property(retain) NSArray* branches;
-@property(retain) NSArray* tags;
+@property(nonatomic,retain) NSString* alias;
+@property(nonatomic,retain) NSString* URLString;
+@property(nonatomic,retain) NSArray* branches;
+@property(nonatomic,retain) NSArray* tags;
 
-@property(assign) GBRepository* repository;
+@property(nonatomic,assign) GBRepository* repository;
 
 
 #pragma mark Interrogation

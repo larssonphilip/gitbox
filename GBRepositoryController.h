@@ -16,21 +16,21 @@
 {
 }
 
-@property(retain) NSURL* repositoryURL;
-@property(retain) GBRepository* repository;
+@property(nonatomic,retain) NSURL* repositoryURL;
+@property(nonatomic,retain) GBRepository* repository;
 
-@property(assign) id<GBRepositoryControllerDelegate> delegate;
+@property(nonatomic,assign) id<GBRepositoryControllerDelegate> delegate;
 
-@property(retain) GBHistoryViewController* historyController;
-@property(retain) GBStageViewController* stageController;
-@property(retain) GBCommitViewController* commitController;
-@property(retain) GBCommitPromptController* commitPromptController;
+@property(nonatomic,retain) GBHistoryViewController* historyController;
+@property(nonatomic,retain) GBStageViewController* stageController;
+@property(nonatomic,retain) GBCommitViewController* commitController;
+@property(nonatomic,retain) GBCommitPromptController* commitPromptController;
 
-@property(retain) IBOutlet NSSplitView* splitView;
+@property(nonatomic,retain) IBOutlet NSSplitView* splitView;
 
-@property(retain) IBOutlet NSPopUpButton* currentBranchPopUpButton;
-@property(retain) IBOutlet NSSegmentedControl* pullPushControl;
-@property(retain) IBOutlet NSPopUpButton* remoteBranchPopUpButton;
+@property(nonatomic,retain) IBOutlet NSPopUpButton* currentBranchPopUpButton;
+@property(nonatomic,retain) IBOutlet NSSegmentedControl* pullPushControl;
+@property(nonatomic,retain) IBOutlet NSPopUpButton* remoteBranchPopUpButton;
 
 + (id) controller;
 

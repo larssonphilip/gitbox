@@ -4,6 +4,6 @@
 {
 }
 
-@property(retain) GBCommit* commit;
+@property(nonatomic,retain) GBCommit* commit;
 
 @end

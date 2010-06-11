@@ -11,3 +11,10 @@
 - (NSString*) stringWithFirstLetterCapitalized;
 
 @end
+
+
+@interface NSMutableString (OAStringHelpers)
+
+- (void) replaceOccurrencesOfString:(NSString*)string1 withString:(NSString*)string2;
+
+@end

@@ -3,13 +3,13 @@
 {
 }
 
-@property(retain) NSString* name;
-@property(retain) NSString* commitId;
-@property(retain) NSString* remoteAlias;
-@property(assign) BOOL isTag;
-@property(assign) BOOL isNewRemoteBranch;
+@property(nonatomic,retain) NSString* name;
+@property(nonatomic,retain) NSString* commitId;
+@property(nonatomic,retain) NSString* remoteAlias;
+@property(nonatomic,assign) BOOL isTag;
+@property(nonatomic,assign) BOOL isNewRemoteBranch;
 
-@property(assign) GBRepository* repository;
+@property(nonatomic,assign) GBRepository* repository;
 
 - (NSString*) nameWithRemoteAlias;
 - (BOOL) isLocalBranch;

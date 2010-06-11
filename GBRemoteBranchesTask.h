@@ -5,6 +5,6 @@
 {
 }
 
-@property(retain) GBRemote* remote;
+@property(nonatomic,retain) GBRemote* remote;
 
 @end
