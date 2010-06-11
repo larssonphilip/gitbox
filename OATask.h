@@ -29,6 +29,7 @@ extern NSString* OATaskNotification;
 
 #pragma mark Interrogation
 
++ (NSString*) systemPathForExecutable:(NSString*)executable;
 - (NSString*) systemPathForExecutable:(NSString*)executable;
 - (int) terminationStatus;
 - (BOOL) isError;

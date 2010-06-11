@@ -188,6 +188,10 @@
   task.currentDirectoryPath = NSHomeDirectory();
   task.executableName = @"git";
   task.arguments = [NSArray arrayWithObject:@"--version"];
+  if (![task launchPath])
+  {
+    return nil;
+  }
   [task launchAndWait];
   return [[[task.output UTF8String] stringByReplacingOccurrencesOfString:@"git version" withString:@""] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 }
@@ -199,6 +203,7 @@
 
 + (BOOL) isSupportedGitVersion:(NSString*)version
 {
+  if (!version) return NO;
   return [version compare:[self supportedGitVersion]] != NSOrderedAscending;
 }
 

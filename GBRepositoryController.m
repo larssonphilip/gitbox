@@ -739,7 +739,8 @@
   
   // Local branch for merging
   
-  if ([repo.localBranches count] > 1)
+  // See a topic branch: 
+  if (NO      &&      [repo.localBranches count] > 1)
   {
     if ([[remoteBranchesMenu itemArray] count] > 1) // ignore dummy item
     {

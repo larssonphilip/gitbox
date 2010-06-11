@@ -214,7 +214,8 @@ NSString* OATaskNotification = @"OATaskNotification";
   return self.terminationStatus != 0;
 }
 
-- (NSString*) systemPathForExecutable:(NSString*)executable
+
++ (NSString*) systemPathForExecutable:(NSString*)executable
 {
   NSFileManager* fm = [NSFileManager defaultManager];
   NSArray* binPaths = [NSArray arrayWithObjects:
@@ -235,6 +236,11 @@ NSString* OATaskNotification = @"OATaskNotification";
     }
   }
   return nil;
+}
+
+- (NSString*) systemPathForExecutable:(NSString*)executable
+{
+  return [OATask systemPathForExecutable:executable];
 }
 
 - (NSString*) command

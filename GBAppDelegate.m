@@ -4,6 +4,7 @@
 
 #import "GBRepository.h"
 #import "GBStage.h"
+#import "OATask.h"
 
 #import "NSFileManager+OAFileManagerHelpers.h"
 #import "NSAlert+OAAlertHelpers.h"
@@ -105,9 +106,10 @@
   if (![GBRepository isSupportedGitVersion:gitVersion])
   {
     [NSAlert message:@"Please update git" 
-         description:[NSString stringWithFormat:NSLocalizedString(@"The Gitbox works with the version %@ or later. Your git version is %@.", @""), 
+         description:[NSString stringWithFormat:NSLocalizedString(@"The Gitbox works with the version %@ or later. Your git version is %@.\n\nPath to git binary: %@", @""), 
                       [GBRepository supportedGitVersion], 
-                      gitVersion]
+                      gitVersion,
+                      [OATask systemPathForExecutable:@"git"]]
          buttonTitle:NSLocalizedString(@"Quit",@"")];
     [NSApp terminate:self];
   }
