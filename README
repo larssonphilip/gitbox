@@ -9,6 +9,7 @@ UILab:
 - tooltip for commit cell to show the unmerged/unpushed status
 - case: when people have multiple installations, one can be outdated and they don't even know about it
 
+
 To do:
 
 0.9.*:
@@ -21,6 +22,8 @@ To do:
 - bug: @mkrautz: @gitboxupdates seems like GitBox resolves symlinks when manually specifying git binary. Bit me, once with my Homebrew git install.
 
 Other:
+- shell command to open gitbox
+- built-in diff view for better UTF8 support (FileMerge is stupid)
 - force push a branch
 - bug: repository stage/branch updating tasks are stuck in activity window with running status
 - glitch: sometimes fake modification of xcodeproj appears in the stage due to async git-status call (it is a case for quick switching from xcode to gitbox right after it synced)
