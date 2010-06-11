@@ -1,6 +1,11 @@
 @class GBRepository;
 @interface GBRemotesController : NSWindowController
 {
+  GBRepository* repository;
+  NSMutableArray* remotesDictionaries;
+  id target;
+  SEL finishSelector;
+  SEL cancelSelector;
 }
 
 @property(nonatomic,retain) GBRepository* repository;

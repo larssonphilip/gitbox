@@ -4,6 +4,8 @@
 @interface GBTask : OATask
 {
   GBRepository* repository;
+  id target;
+  SEL action;
 }
 
 @property(nonatomic,assign) GBRepository* repository;

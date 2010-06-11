@@ -1,6 +1,7 @@
 @class GBRepository;
 @interface GBBaseChangesController : NSViewController<NSTableViewDelegate>
 {
+  GBRepository* repository;
   NSTableView* tableView;
   NSArrayController* statusArrayController;
 }

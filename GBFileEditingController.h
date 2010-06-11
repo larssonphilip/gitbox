@@ -1,5 +1,14 @@
 @interface GBFileEditingController : NSWindowController<NSWindowDelegate>
 {
+  NSURL* URL;
+  NSString* title;
+
+  IBOutlet NSTextView* textView;
+
+  id target;
+  SEL finishSelector;
+  SEL cancelSelector;
+  NSWindow* windowHoldingSheet;
 }
 
 @property(nonatomic,retain) NSURL* URL;

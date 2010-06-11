@@ -3,6 +3,14 @@
 @class GBRef;
 @interface GBHistoryTask : GBTask
 {
+  GBRef* branch;
+  GBRef* joinedBranch;
+  GBRef* substructedBranch;
+  
+  NSUInteger limit;
+  NSUInteger skip;
+  
+  NSArray* commits;  
 }
 
 @property(nonatomic,retain) GBRef* branch;

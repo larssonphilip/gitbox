@@ -1,5 +1,23 @@
 @interface GBPromptController : NSWindowController
 {
+  IBOutlet NSTextField* textField;
+  
+  NSString* title;
+  NSString* promptText;
+  NSString* buttonText;
+  NSString* value;
+  BOOL requireNonNilValue;
+  BOOL requireNonEmptyString;
+  BOOL requireSingleLine;
+  BOOL requireStripWhitespace;
+  
+  id target;
+  SEL finishSelector;
+  SEL cancelSelector;
+  
+  id payload;
+  
+  NSWindow* windowHoldingSheet;  
 }
 
 @property(nonatomic,retain) IBOutlet NSTextField* textField;

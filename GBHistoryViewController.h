@@ -3,6 +3,9 @@
 @class GBCommit;
 @interface GBHistoryViewController : NSViewController<NSTableViewDelegate>
 {
+  GBRepository* repository;
+  IBOutlet NSTableView* tableView;
+  IBOutlet NSArrayController* logArrayController;
 }
 
 @property(nonatomic,retain) GBRepository* repository;

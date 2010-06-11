@@ -3,6 +3,7 @@
                                    NSOpenSavePanelDelegate,
                                    GBRepositoryControllerDelegate>
 {
+  NSMutableSet* windowControllers;
 }
 
 @property(nonatomic,retain) NSMutableSet* windowControllers;

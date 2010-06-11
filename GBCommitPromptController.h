@@ -1,5 +1,15 @@
 @interface GBCommitPromptController : NSWindowController<NSWindowDelegate, NSTextViewDelegate>
 {
+  NSString* value;
+  
+  IBOutlet NSTextView* textView;
+  IBOutlet NSTextField* shortcutTipLabel;
+  
+  id target;
+  SEL finishSelector;
+  SEL cancelSelector;
+  NSWindow* windowHoldingSheet;
+  
   BOOL addedNewLine;
   BOOL removedNewLine;
   BOOL finishedPlayingWithTooltip;

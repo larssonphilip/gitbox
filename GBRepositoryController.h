@@ -14,6 +14,21 @@
                                                       GBRepositoryDelegate, 
                                                       NSTableViewDelegate>
 {
+  NSURL* repositoryURL;
+  GBRepository* repository;
+  
+  id<GBRepositoryControllerDelegate> delegate;
+  
+  GBHistoryViewController* historyController;
+  GBStageViewController* stageController;
+  GBCommitViewController* commitController;
+  GBCommitPromptController* commitPromptController;
+  
+  IBOutlet NSSplitView* splitView;
+  
+  IBOutlet NSPopUpButton* currentBranchPopUpButton;
+  IBOutlet NSSegmentedControl* pullPushControl;
+  IBOutlet NSPopUpButton* remoteBranchPopUpButton;
 }
 
 @property(nonatomic,retain) NSURL* repositoryURL;

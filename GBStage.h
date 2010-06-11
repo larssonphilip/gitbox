@@ -3,6 +3,10 @@
 @class GBChange;
 @interface GBStage : GBCommit
 {
+  NSArray* stagedChanges;
+  NSArray* unstagedChanges;
+  NSArray* untrackedChanges;
+  BOOL hasStagedChanges;
 }
 
 @property(nonatomic,retain) NSArray* stagedChanges;

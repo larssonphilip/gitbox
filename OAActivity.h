@@ -3,6 +3,13 @@
 @class OATask;
 @interface OAActivity : NSObject
 {
+  OATask* task;
+  BOOL isRunning;
+  
+  NSString* path;
+  NSString* command;
+  NSString* status;
+  NSString* textOutput;
 }
 
 @property(nonatomic,assign) OATask* task;

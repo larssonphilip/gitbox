@@ -17,6 +17,29 @@
 @class OATaskManager;
 @interface GBRepository : NSObject
 {
+  NSURL* url;
+  NSURL* dotGitURL;
+  NSArray* localBranches;
+  NSArray* remotes;
+  NSArray* tags;
+  GBStage* stage;
+  GBRef* currentLocalRef;
+  GBRef* currentRemoteBranch;
+  
+  NSArray* commits;
+  NSArray* localBranchCommits;
+  
+  OATaskManager* taskManager;
+  
+  BOOL pulling;
+  BOOL merging;
+  BOOL fetching;
+  BOOL pushing;
+  
+  NSObject<GBRepositoryDelegate>* delegate;
+  
+  GBCommit* selectedCommit;
+  
   BOOL backgroundUpdateEnabled;
   NSTimeInterval backgroundUpdateInterval;
 }

@@ -84,7 +84,7 @@
   
   NSSize titleSize   = [title sizeWithAttributes:titleAttributes];
   NSSize dateSize    = [date sizeWithAttributes:dateAttributes];
-  NSSize messageSize = [message sizeWithAttributes:messageAttributes];
+  //NSSize messageSize = [message sizeWithAttributes:messageAttributes];
   
   
   
@@ -103,7 +103,7 @@
   CGFloat titleWidthRatio = 0.34;
   CGFloat dateWidthRatio = 0.50; // of the rest
   CGFloat padding = 5.0;
-  CGFloat titleMessagePadding = 1.0;
+  //CGFloat titleMessagePadding = 1.0;
   CGFloat verticalShiftForSmallText = 1.0;
   CGFloat x0 = innerRect.origin.x;
   CGFloat y0 = innerRect.origin.y;

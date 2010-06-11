@@ -1,6 +1,12 @@
 @class GBRepository;
 @interface GBRef : NSObject
 {
+  NSString* name;
+  NSString* commitId;
+  NSString* remoteAlias;
+  BOOL isTag;
+  BOOL isNewRemoteBranch;
+  GBRepository* repository;
 }
 
 @property(nonatomic,retain) NSString* name;

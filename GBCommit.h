@@ -13,6 +13,21 @@ typedef enum {
 @class GBCommitCell;
 @interface GBCommit : NSObject
 {
+  NSString* commitId;
+  NSString* treeId;
+  NSArray* parentIds;
+  NSString* authorName;
+  NSString* authorEmail;
+  NSString* committerName;
+  NSString* committerEmail;
+  NSDate* date;
+  NSString* message;
+  
+  NSArray* changes;
+  
+  GBCommitSyncStatus syncStatus;
+  
+  GBRepository* repository;
 }
 
 @property(nonatomic,retain) NSString* commitId;

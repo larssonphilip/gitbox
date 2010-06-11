@@ -2,6 +2,9 @@
 
 @interface GBExtractFileTask : GBTask
 {
+  NSString* objectId;
+  NSURL* originalURL;
+  NSURL* temporaryURL;
 }
 
 @property(nonatomic,retain) NSString* objectId;

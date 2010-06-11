@@ -2,8 +2,23 @@ extern NSString* OATaskNotification;
 @class OAActivity;
 @interface OATask : NSObject
 {
+  NSString* executableName;
+  NSString* launchPath;
+  NSString* currentDirectoryPath;
+  NSTask* nstask;
+  NSMutableData* output;
+  NSArray* arguments;
+  
+  BOOL avoidIndicator;
+  BOOL ignoreFailure;
+  
+  NSTimeInterval pollingPeriod;
+  NSTimeInterval terminateTimeout;
+  
   id standardOutput;
   id standardError;
+  
+  OAActivity* activity;
 }
 
 @property(nonatomic,retain) NSString* executableName;
