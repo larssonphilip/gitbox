@@ -800,35 +800,7 @@
     [newBranchItem setRepresentedObject:remote];
     [remoteBranchesMenu addItem:newBranchItem];
   }
-  
-  // Local branch for merging
-  
-  if ([repo.localBranches count] > 1)
-  {
-    if ([[remoteBranchesMenu itemArray] count] > 1) // ignore dummy item
-    {
-      [remoteBranchesMenu addItem:[NSMenuItem separatorItem]];
-    }
-    
-    NSMenu* localBranchesMenu = [NSMenu menu];
-    for (GBRef* localBranch in repo.localBranches)
-    {
-      if (![localBranch isEqual:repo.currentLocalRef])
-      {
-        NSMenuItem* item = [[NSMenuItem new] autorelease];
-        [item setTitle:localBranch.name];
-        [item setAction:@selector(selectRemoteBranch:)];
-        [item setTarget:self];
-        [item setRepresentedObject:localBranch];
-        [localBranchesMenu addItem:item];
-      }
-    }
-    
-    NSMenuItem* localBranchItem = [NSMenuItem menuItemWithTitle:NSLocalizedString(@"Local branch for merging", @"") submenu:localBranchesMenu];
-    [remoteBranchesMenu addItem:localBranchItem];
-  }
-  
-  
+
   // Add new remote
   
   NSMenuItem* newRemoteItem = nil;
@@ -846,6 +818,71 @@
   [newRemoteItem setTarget:self];
   [newRemoteItem setRepresentedObject:nil];
   [remoteBranchesMenu addItem:newRemoteItem];
+  
+  
+  // Local branch for merging
+  
+  if ([repo.localBranches count] > 1)
+  {
+    if ([[remoteBranchesMenu itemArray] count] > 1) // ignore dummy item
+    {
+      [remoteBranchesMenu addItem:[NSMenuItem separatorItem]];
+    }
+    
+    // For little amount of local branches show them inline
+    if ([repo.localBranches count] < 50)
+    {
+      NSMenuItem* item = [[NSMenuItem new] autorelease];
+      [item setTitle:@"Local Branches"];
+      [item setAction:@selector(thisItemIsActuallyDisabled)];
+      [item setEnabled:NO];
+      [remoteBranchesMenu addItem:item];
+      
+      for (GBRef* localBranch in repo.localBranches)
+      {
+        if (![localBranch isEqual:repo.currentLocalRef])
+        {
+          NSMenuItem* item = [[NSMenuItem new] autorelease];
+          [item setTitle:localBranch.name];
+          [item setAction:@selector(selectRemoteBranch:)];
+          [item setTarget:self];
+          [item setRepresentedObject:localBranch];
+          if ([localBranch isEqual:repo.currentRemoteBranch])
+          {
+            [item setState:NSOnState];
+          }
+          [remoteBranchesMenu addItem:item];
+        }
+      }
+    }
+    else // Too many local branches, hide them in a submenu
+    {
+      NSMenu* localBranchesMenu = [NSMenu menu];
+      for (GBRef* localBranch in repo.localBranches)
+      {
+        if (![localBranch isEqual:repo.currentLocalRef])
+        {
+          NSMenuItem* item = [[NSMenuItem new] autorelease];
+          [item setTitle:localBranch.name];
+          [item setAction:@selector(selectRemoteBranch:)];
+          [item setTarget:self];
+          [item setRepresentedObject:localBranch];
+          if ([localBranch isEqual:repo.currentRemoteBranch])
+          {
+            [item setState:NSOnState];
+          }          
+          [localBranchesMenu addItem:item];
+        }
+      }
+      
+      NSMenuItem* localBranchItem = [NSMenuItem menuItemWithTitle:NSLocalizedString(@"Local branch for merging", @"") submenu:localBranchesMenu];
+      [remoteBranchesMenu addItem:localBranchItem];
+    }
+  }
+  
+  
+  
+  // Finish with a button for the menu
   
   [button setMenu:remoteBranchesMenu];
   

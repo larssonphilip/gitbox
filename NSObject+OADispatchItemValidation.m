@@ -9,6 +9,8 @@
   
   if (!anAction) return NO;
   
+  if (anAction == @selector(thisItemIsActuallyDisabled)) return NO;
+  
   NSString* validationActionName = [NSString stringWithFormat:@"validate%@", 
                                     [[NSString stringWithCString:sel_getName(anAction) 
                                                         encoding:NSASCIIStringEncoding] stringWithFirstLetterCapitalized]];
