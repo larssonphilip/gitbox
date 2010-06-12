@@ -132,6 +132,11 @@
 
 
 
+
+
+
+
+
 #pragma mark Git Actions
 
 
@@ -290,6 +295,11 @@
 
 
 
+
+
+
+
+
 #pragma mark View Actions
 
 
@@ -366,6 +376,10 @@
 
 
 
+
+
+
+
 #pragma mark Actions Validation
 
 
@@ -375,6 +389,12 @@
 {
   return [self dispatchUserInterfaceItemValidation:anItem];
 }
+
+
+
+
+
+
 
 
 
@@ -529,14 +549,53 @@
 
 
 
+
+
+
+
+
+
+
+
 #pragma mark Private Helpers
+
+
+- (void) updateSyncButtons
+{
+  NSSegmentedControl* control = self.pullPushControl;
+  GBRepository* repo = self.repository;
+  
+  if ([repo.currentRemoteBranch isLocalBranch])
+  {
+    [control setLabel:@"← merge" forSegment:0];
+    [control setLabel:@"—" forSegment:1];
+  }
+  else
+  {
+    [control setLabel:@"← pull" forSegment:0];
+    [control setLabel:@"push →" forSegment:1];
+  }
+  
+  
+  
+//  [control setTi]
+  
+}
+
+
+
+
 
 
 - (void) updateBranchMenus
 {
   [self updateCurrentBranchMenus];
   [self updateRemoteBranchMenus];
+  [self updateSyncButtons];
 }
+
+
+
 
 - (void) updateCurrentBranchMenus
 {
@@ -740,7 +799,7 @@
   // Local branch for merging
   
   // See a topic branch: 
-  if (NO      &&      [repo.localBranches count] > 1)
+  if ([repo.localBranches count] > 1)
   {
     if ([[remoteBranchesMenu itemArray] count] > 1) // ignore dummy item
     {

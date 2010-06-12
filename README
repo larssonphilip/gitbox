@@ -4,7 +4,7 @@ UILab:
 - fatter arrows
 - labels from arrows to the bottom of the item
 - bottom bar for stage
-- normal size toolbar controls
++ normal size toolbar controls
 - choose font for commits 
 - tooltip for commit cell to show the unmerged/unpushed status
 - case: when people have multiple installations, one can be outdated and they don't even know about it
@@ -22,6 +22,12 @@ To do:
 - bug: @mkrautz: @gitboxupdates seems like GitBox resolves symlinks when manually specifying git binary. Bit me, once with my Homebrew git install.
 
 Other:
+- browse the server with SSH and select a repository
+- gitosis integration
+- github integration
+- Kaleidoscope.app integration
+- find-as-you-type search in stage
+- space for staging/unstaging a change
 - shell command to open gitbox
 - built-in diff view for better UTF8 support (FileMerge is stupid)
 - force push a branch

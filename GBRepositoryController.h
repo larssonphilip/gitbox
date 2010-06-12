@@ -82,6 +82,7 @@
 - (void) updateBranchMenus;
 - (void) updateCurrentBranchMenus;
 - (void) updateRemoteBranchMenus;
+- (void) updateSyncButtons;
 
 @end
 
