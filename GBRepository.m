@@ -533,9 +533,45 @@
 {
   if (self.currentRemoteBranch)
   {
-    [self pullBranch:self.currentRemoteBranch];
+    if ([self.currentRemoteBranch isLocalBranch])
+    {
+      [self mergeBranch:self.currentRemoteBranch];
+    }
+    else
+    {
+      [self pullBranch:self.currentRemoteBranch];
+    }
   }
 }
+
+- (void) mergeBranch:(GBRef*)aBranch
+{
+  if (!self.pulling)
+  {
+    self.pulling = YES;
+    
+    GBTask* mergeTask = [GBTask task];
+    mergeTask.arguments = [NSArray arrayWithObjects:@"merge", aBranch.name, nil];
+    
+    [mergeTask subscribe:self selector:@selector(mergeTaskDidFinish:)];
+    [self launchTask:mergeTask];
+  }
+}
+  - (void) mergeTaskDidFinish:(NSNotification*)notification
+  {
+    GBTask* task = [notification object];
+    [task unsubscribe:self];
+    self.pulling = NO;
+    
+    if ([task isError])
+    {
+      [self alertWithMessage: @"Merge failed" description:[task.output UTF8String]];
+    }
+    
+    [self reloadCommits];
+    [self updateStatus];
+  }
+
 
 - (void) pullBranch:(GBRef*)aRemoteBranch
 {
@@ -558,6 +594,22 @@
   }
 }
 
+  - (void) pullTaskDidFinish:(NSNotification*)notification
+  {
+    GBTask* task = [notification object];
+    [task unsubscribe:self];
+    self.pulling = NO;
+    
+    if ([task isError])
+    {
+      [self alertWithMessage: @"Pull failed" description:[task.output UTF8String]];
+    }
+    
+    [self reloadCommits];
+    [self updateStatus];
+  }
+
+
 - (void) push
 {
   if (self.currentRemoteBranch)
@@ -579,6 +631,21 @@
     [self launchTask:pushTask];    
   }
 }
+
+  - (void) pushTaskDidFinish:(NSNotification*)notification
+  {
+    GBTask* task = [notification object];
+    [task unsubscribe:self];
+    self.pushing = NO;
+    
+    if ([task isError])
+    {
+      [self fetchSilently];
+      [self alertWithMessage: @"Push failed" description:[task.output UTF8String]];
+    }
+    [self reloadCommits];
+  }
+
 
 - (void) fetchSilently
 {
@@ -606,35 +673,6 @@
 
 #pragma mark Git Task Callbacks
 
-
-- (void) pullTaskDidFinish:(NSNotification*)notification
-{
-  GBTask* task = [notification object];
-  [task unsubscribe:self];
-  self.pulling = NO;
-  
-  if ([task isError])
-  {
-    [self alertWithMessage: @"Pull failed" description:[task.output UTF8String]];
-  }
-  
-  [self reloadCommits];
-  [self updateStatus];
-}
-
-- (void) pushTaskDidFinish:(NSNotification*)notification
-{
-  GBTask* task = [notification object];
-  [task unsubscribe:self];
-  self.pushing = NO;
-  
-  if ([task isError])
-  {
-    [self fetchSilently];
-    [self alertWithMessage: @"Push failed" description:[task.output UTF8String]];
-  }
-  [self reloadCommits];
-}
 
 - (void) fetchSilentlyTaskDidFinish:(NSNotification*)notification
 {

@@ -38,7 +38,7 @@
       return YES;
     }
   }
-  else
+  else if (!self.name && !other.name)
   {
     if (self.commitId) return ([self.commitId isEqualToString:other.commitId]);
   }

@@ -565,10 +565,14 @@
   NSSegmentedControl* control = self.pullPushControl;
   GBRepository* repo = self.repository;
   
+  BOOL pullDisabled = NO;
+  BOOL pushDisabled = NO;
+  
   if ([repo.currentRemoteBranch isLocalBranch])
   {
     [control setLabel:@"← merge" forSegment:0];
     [control setLabel:@"—" forSegment:1];
+    pushDisabled = YES;
   }
   else
   {
@@ -576,7 +580,8 @@
     [control setLabel:@"push →" forSegment:1];
   }
   
-  
+  [control setEnabled:!pullDisabled forSegment:0];
+  [control setEnabled:!pushDisabled forSegment:1];
   
 //  [control setTi]
   
@@ -798,7 +803,6 @@
   
   // Local branch for merging
   
-  // See a topic branch: 
   if ([repo.localBranches count] > 1)
   {
     if ([[remoteBranchesMenu itemArray] count] > 1) // ignore dummy item

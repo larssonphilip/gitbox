@@ -121,6 +121,7 @@
 - (void) selectRemoteBranch:(GBRef*)aBranch;
 
 - (void) pull;
+- (void) mergeBranch:(GBRef*)aBranch;
 - (void) pullBranch:(GBRef*)aRemoteBranch;
 - (void) push;
 - (void) pushBranch:(GBRef*)aLocalBranch to:(GBRef*)aRemoteBranch;

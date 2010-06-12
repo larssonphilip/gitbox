@@ -20,6 +20,7 @@ To do:
 - clone a repo from the gui (menu item)
 - screenshots
 - bug: @mkrautz: @gitboxupdates seems like GitBox resolves symlinks when manually specifying git binary. Bit me, once with my Homebrew git install.
+- very annoying selection loosing bugs
 
 Other:
 - browse the server with SSH and select a repository
