@@ -1,0 +1,10 @@
+
+1. Application contains an AES public key and server contains a private AES key.
+2. When application launches it checks the local certificate file issued for the current ethernet MAC address.
+3. If the certificate for the current machine is not available, it asks the server for the certificate based on license number.
+4. When non-free feature is used and there's no valid license, purchase window pops up.
+5. When user enters the license key, application loads a machine-specific certificate as in 3.
+6. License is issued for a limited time (15 days) to allow comfortable offline work.
+7. License is updated once a week if there's a network connection.
+8. If license is used on another machine, popup appears and suggests to either replace old machine entry with current machine or purchase another license with 20% discount.
+

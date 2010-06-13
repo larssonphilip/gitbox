@@ -13,6 +13,8 @@ UILab:
 To do:
 
 0.9.*:
+
+- payment thing
 - bug: for non-existent HEAD gitbox does not show a staged new file
 - bug: OK button in remotes controller does not sync highlighted textfield due to bindings issue
 - bug: show disabled "No branches" item for inaccessible remote
@@ -23,28 +25,19 @@ To do:
 - very annoying selection loosing bugs
 
 Other:
-- browse the server with SSH and select a repository
-- gitosis integration
-- github integration
-- Kaleidoscope.app integration
+
 - find-as-you-type search in stage
-- space for staging/unstaging a change
+- hitting space bar for staging/unstaging a change
 - shell command to open gitbox
-- built-in diff view for better UTF8 support (FileMerge is stupid)
 - force push a branch
 - bug: repository stage/branch updating tasks are stuck in activity window with running status
 - glitch: sometimes fake modification of xcodeproj appears in the stage due to async git-status call (it is a case for quick switching from xcode to gitbox right after it synced)
-- local branch merge
 - push should be disabled when there's something to merge
 - push should be disabled when remote branch is local
 - pull should be "merge" when remote branch is local
-- remote branch control title should "Other Local Branch" if the remote is local
 - create a new tag
 - gitignore: ignore context menu item in the stage
 - gitignore: drop the file into .gitignore editor
-- performance: group common changes for a single commit command 
-- bug: should try running NSTasks blocking in a background NSOperation to work around the leaks
-- performance: should refresh status on FSEvent directory change (in background)
 - bug: disable status table view while status is updating (double click on a stale row crashes the app)
   (or better: reuse matching changes to avoid that issue and avoid flickering and UI blocking)
 - bug: table row selection is ignored if was no selection for ArrayController. Should check NSTableView selectedRowIndexes? 
@@ -52,8 +45,6 @@ Other:
 - bug: historical diff for Added file shows diff between current state (left) and initial state (right)
 
 - history: probably get rid of dates, and design it in a more cheesy fashion
-
-- github integration: handling other repos/branches, pull requests and initial setup commands
 
 - History: navigate to the sha1
 - History: navigate back and forward (History main menu)
@@ -64,22 +55,43 @@ Other:
 - history: check out a branch from the commit item
 - history: add "load more" cell in the bottom of the log
 - fetch in background should reset fetch interval when new commits are fetched
+
+- submodules UI
+
 - reread remotes on focus: if the names and urls are the same, do not ls-remote
 - do ls-remote in background starting on unfocus
-- stash list: as a local branch menu item?
+
 - individual chunks commit
-- compare image files in an double-pane image viewer
-- compare office files using some office app: cooperate with Caleidoscope
 - maybe put errors in a floating panel
+
+- stash list: as a local branch menu item?
 - stash/apply stash from the menu, context menu
 - maybe: easy/hidden rebase to keep history clean?
+
 - log: mark as read/unread + automatic mark as read
 - commit prompt: cmd+up/down to scroll through the recent messages
 - sidebar to group repositories
 - merge conflict situation: ugly duplication of a single entry, but nothing breaks
 
+- performance: group common changes for a single commit command 
+- bug: should try running NSTasks blocking in a background NSOperation to work around the leaks
+- performance: should refresh status on FSEvent directory change (in background)
+
+- Kaleidoscope.app integration
+- compare office files using some office app: cooperate with Caleidoscope
+- compare image files in an double-pane image viewer
+- built-in diff view for better UTF8 support (FileMerge is stupid)
+
+- browse the server with SSH and select a repository
+- gitosis integration
+- github integration: handling other repos/branches, pull requests and initial setup commands
+
+
 
 Done:
+
+0.9.5:
++ local branch merge
 
 0.9.2:
 + bug: crash on window close: unbind on window closing
