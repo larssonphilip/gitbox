@@ -8,6 +8,7 @@
 
 #import "NSFileManager+OAFileManagerHelpers.h"
 #import "NSAlert+OAAlertHelpers.h"
+#import "NSData+OADataHelpers.h"
 
 @interface GBAppDelegate ()
 - (void) storeRepositories;
@@ -112,6 +113,12 @@
                       [OATask systemPathForExecutable:@"git"]]
          buttonTitle:NSLocalizedString(@"Quit",@"")];
     [NSApp terminate:self];
+    return;
+  }
+  NSString* aPath = [OATask systemPathForExecutable:@"git"];
+  if (aPath)
+  {
+    [[OATask task] rememberPath:aPath forExecutable:@"git"];
   }
 }
 
@@ -169,6 +176,13 @@
 
 - (void) applicationDidFinishLaunching:(NSNotification*) aNotification
 {
+  OATask* task = [OATask task];
+  task.currentDirectoryPath = NSHomeDirectory();
+  task.launchPath = @"/usr/bin/which";
+  task.arguments = [NSArray arrayWithObjects:@"git", nil];
+  [task launchAndWait];
+  NSLog(@"Path to git from which: %@", [task.output UTF8String]);
+  
   [self checkGitVersion];
   [self loadRepositories];
 }

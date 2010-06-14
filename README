@@ -11,6 +11,7 @@ UILab:
 - handle package (.bundle) - see email
 - 'git svn rebase' and 'git svn dcommit'
 
+
 To do:
 
 0.9.*:
@@ -22,6 +23,7 @@ To do:
 - remotes controller: select current remote in the list
 - clone a repo from the gui (menu item)
 - screenshots
+- bug: do not resolve symbolic links when choosing a path
 - bug: @mkrautz: @gitboxupdates seems like GitBox resolves symlinks when manually specifying git binary. Bit me, once with my Homebrew git install.
 - very annoying selection loosing bugs
 
