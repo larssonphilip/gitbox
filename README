@@ -8,7 +8,7 @@ UILab:
 - choose font for commits 
 - tooltip for commit cell to show the unmerged/unpushed status
 - case: when people have multiple installations, one can be outdated and they don't even know about it
-
+- handle package (.bundle) - see email
 
 To do:
 
