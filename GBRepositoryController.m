@@ -255,10 +255,7 @@
 
 - (IBAction) commit:(id)sender
 {
-  if ([[NSUserDefaults standardUserDefaults] boolForKey:@"StageSelectedChangesWhenCommit"])
-  {
-    [self.stageController stageDoStage:sender];
-  }
+  [self.stageController stageDoStage:sender];
   [self.commitPromptController runSheetInWindow:[self window]];
 }
 
