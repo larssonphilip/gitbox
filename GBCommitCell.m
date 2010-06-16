@@ -198,7 +198,14 @@
   
   if ([self isHighlighted])
   {
-    backgroundColor = [NSColor alternateSelectedControlColor];
+    if ([[theControlView window] firstResponder] == theControlView)
+    {
+      backgroundColor = [NSColor alternateSelectedControlColor];
+    }
+    else
+    {
+      backgroundColor = [NSColor secondarySelectedControlColor];
+    }
   }
   
   [backgroundColor set];
