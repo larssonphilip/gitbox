@@ -7,8 +7,6 @@ UILab:
 + normal size toolbar controls
 - choose font for commits 
 - tooltip for commit cell to show the unmerged/unpushed status
-- case: when people have multiple installations, one can be outdated and they don't even know about it
-- handle package (.bundle) - see email
 - 'git svn rebase' and 'git svn dcommit'
 
 
@@ -23,12 +21,12 @@ To do:
 - remotes controller: select current remote in the list
 - clone a repo from the gui (menu item)
 - screenshots
-- bug: do not resolve symbolic links when choosing a path
 - bug: @mkrautz: @gitboxupdates seems like GitBox resolves symlinks when manually specifying git binary. Bit me, once with my Homebrew git install.
 - very annoying selection loosing bugs
 
 Other:
 
+- maybe: easy/hidden rebase to keep history clean?
 - find-as-you-type search in stage
 - hitting space bar for staging/unstaging a change
 - shell command to open gitbox
@@ -69,7 +67,6 @@ Other:
 
 - stash list: as a local branch menu item?
 - stash/apply stash from the menu, context menu
-- maybe: easy/hidden rebase to keep history clean?
 
 - log: mark as read/unread + automatic mark as read
 - commit prompt: cmd+up/down to scroll through the recent messages
@@ -95,6 +92,10 @@ Done:
 
 0.9.5:
 + local branch merge
++ handle package (.bundle) - see email
++ bug: do not resolve symbolic links when choosing a path: can change that in prefs
++ case: when people have multiple installations, one can be outdated and they don't even know about it (prefs for git path)
+
 
 0.9.2:
 + bug: crash on window close: unbind on window closing

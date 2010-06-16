@@ -7,18 +7,20 @@
 	<key>CFBundleDocumentTypes</key>
 	<array>
 		<dict>
-			<key>CFBundleTypeIconFile</key>
-			<string></string>
-			<key>CFBundleTypeName</key>
-			<string>DocumentType</string>
-			<key>CFBundleTypeOSTypes</key>
+			<key>--LSItemContentTypes</key>
 			<array>
-				<string>fold</string>
+				<string>public.directory</string>
 			</array>
+			<key>CFBundleTypeIconFile</key>
+			<string>folder</string>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
-			<key>--NSDocumentClass</key>
-			<string>GBRepository</string>
+			<key>CFBundleTypeName</key>
+			<string>public.directory</string>
+			<key>CFBundleTypeOSTypes</key>
+			<array>
+				<string>****</string>
+			</array>
 		</dict>
 	</array>
 	<key>CFBundleExecutable</key>
@@ -33,16 +35,16 @@
 	<string>${PRODUCT_NAME}</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string></string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>0.9.5</string>
-	<key>CFBundleShortVersionString</key>
-	<string></string>
-	<key>NSHumanReadableCopyright</key>
-	<string>Gitbox 0.9.5 © 2010, Oleg Andreev</string>
 	<key>LSMinimumSystemVersion</key>
 	<string>${MACOSX_DEPLOYMENT_TARGET}</string>
+	<key>NSHumanReadableCopyright</key>
+	<string>Gitbox 0.9.5 © 2010, Oleg Andreev</string>
 	<key>NSMainNibFile</key>
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>

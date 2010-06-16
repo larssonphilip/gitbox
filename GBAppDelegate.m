@@ -66,7 +66,7 @@
   NSOpenPanel* openPanel = [NSOpenPanel openPanel];
   openPanel.delegate = self;
   openPanel.allowsMultipleSelection = NO;
-  openPanel.canChooseFiles = NO;
+  openPanel.canChooseFiles = YES;
   openPanel.canChooseDirectories = YES;
   if ([openPanel runModal] == NSFileHandlingPanelOKButton)
   {
@@ -213,8 +213,8 @@
   else 
   {
     NSURL* url = [NSURL fileURLWithPath:path];
-    if ([NSAlert unsafePrompt:NSLocalizedString(@"Folder is not a git repository.\nMake it a repository?", @"")
-                  description:path] == NSAlertAlternateReturn)
+    if ([NSAlert safePrompt:NSLocalizedString(@"The folder is not a git repository.\nMake it a repository?", @"")
+                  description:path] == NSAlertDefaultReturn)
     {
       [GBRepository initRepositoryAtURL:url];
       GBRepositoryController* ctrl = [self openRepositoryAtURL:url];
