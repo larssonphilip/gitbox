@@ -826,15 +826,15 @@
 				<string key="NSClassName">GBPreferencesController</string>
 			</object>
 			<object class="NSWindowTemplate" id="264760101">
-				<int key="NSWindowStyleMask">15</int>
+				<int key="NSWindowStyleMask">7</int>
 				<int key="NSWindowBacking">2</int>
-				<string key="NSWindowRect">{{1135, 738}, {449, 162}}</string>
+				<string key="NSWindowRect">{{1135, 770}, {342, 130}}</string>
 				<int key="NSWTFlags">-461897728</int>
 				<string key="NSWindowTitle">Gitbox Preferences</string>
 				<string key="NSWindowClass">NSPanel</string>
 				<nil key="NSViewClass"/>
-				<string key="NSWindowContentMaxSize">{866, 738}</string>
-				<string key="NSWindowContentMinSize">{449, 162}</string>
+				<string key="NSWindowContentMaxSize">{500, 130}</string>
+				<string key="NSWindowContentMinSize">{342, 130}</string>
 				<object class="NSView" key="NSWindowView" id="968542644">
 					<reference key="NSNextResponder"/>
 					<int key="NSvFlags">256</int>
@@ -843,7 +843,7 @@
 						<object class="NSTextField" id="1046476229">
 							<reference key="NSNextResponder" ref="968542644"/>
 							<int key="NSvFlags">266</int>
-							<string key="NSFrame">{{17, 125}, {415, 17}}</string>
+							<string key="NSFrame">{{17, 93}, {308, 17}}</string>
 							<reference key="NSSuperview" ref="968542644"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSTextFieldCell" key="NSCell" id="783616765">
@@ -879,7 +879,7 @@
 						<object class="NSTextField" id="449344796">
 							<reference key="NSNextResponder" ref="968542644"/>
 							<int key="NSvFlags">266</int>
-							<string key="NSFrame">{{20, 95}, {409, 22}}</string>
+							<string key="NSFrame">{{20, 63}, {302, 22}}</string>
 							<reference key="NSSuperview" ref="968542644"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSTextFieldCell" key="NSCell" id="341167822">
@@ -909,7 +909,7 @@
 						<object class="NSTextField" id="829520041">
 							<reference key="NSNextResponder" ref="968542644"/>
 							<int key="NSvFlags">266</int>
-							<string key="NSFrame">{{17, 73}, {415, 14}}</string>
+							<string key="NSFrame">{{17, 41}, {308, 14}}</string>
 							<reference key="NSSuperview" ref="968542644"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSTextFieldCell" key="NSCell" id="303884634">
@@ -929,7 +929,7 @@
 						<object class="NSButton" id="842046224">
 							<reference key="NSNextResponder" ref="968542644"/>
 							<int key="NSvFlags">289</int>
-							<string key="NSFrame">{{339, 12}, {96, 32}}</string>
+							<string key="NSFrame">{{232, 12}, {96, 32}}</string>
 							<reference key="NSSuperview" ref="968542644"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSButtonCell" key="NSCell" id="306787425">
@@ -947,12 +947,12 @@
 							</object>
 						</object>
 					</object>
-					<string key="NSFrameSize">{449, 162}</string>
+					<string key="NSFrameSize">{342, 130}</string>
 					<reference key="NSSuperview"/>
 				</object>
 				<string key="NSScreenRect">{{0, 0}, {2560, 1418}}</string>
-				<string key="NSMinSize">{449, 184}</string>
-				<string key="NSMaxSize">{866, 760}</string>
+				<string key="NSMinSize">{342, 152}</string>
+				<string key="NSMaxSize">{500, 152}</string>
 			</object>
 		</object>
 		<object class="IBObjectContainer" key="IBDocument.Objects">
@@ -2257,7 +2257,6 @@
 					<string>737.IBPluginDependency</string>
 					<string>746.IBPluginDependency</string>
 					<string>747.IBPluginDependency</string>
-					<string>748.IBPluginDependency</string>
 					<string>756.IBPluginDependency</string>
 					<string>757.IBPluginDependency</string>
 					<string>79.IBPluginDependency</string>
@@ -2408,15 +2407,14 @@
 					<integer value="1"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{927, 554}, {449, 162}}</string>
+					<string>{{469, 586}, {342, 130}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{927, 554}, {449, 162}}</string>
+					<string>{{469, 586}, {342, 130}}</string>
 					<boolean value="NO"/>
 					<boolean value="YES"/>
 					<boolean value="YES"/>
-					<string>{866, 738}</string>
-					<string>{449, 162}</string>
-					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>{500, 130}</string>
+					<string>{342, 130}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>

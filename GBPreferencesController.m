@@ -1,9 +1,8 @@
 #import "GBPreferencesController.h"
 #import "GBRepository.h"
+#import "OATask.h"
 
 @implementation GBPreferencesController
-
-NSString* GBGitPathKey = @"OATask_pathForExecutable_git";
 
 @synthesize gitPathField;
 @synthesize gitPathStatusLabel;
@@ -75,7 +74,7 @@ NSString* GBGitPathKey = @"OATask_pathForExecutable_git";
 {
   if ([self checkGitPath])
   {
-    [self setString:[self.gitPathField stringValue] forKey:GBGitPathKey];
+    [OATask rememberPath:[self.gitPathField stringValue] forExecutable:@"git"];
   }
 }
 
@@ -101,7 +100,7 @@ NSString* GBGitPathKey = @"OATask_pathForExecutable_git";
 {
   if (!isOpened)
   {
-    [self.gitPathField setStringValue:[self stringForKey:GBGitPathKey]];
+    [self.gitPathField setStringValue:[OATask rememberedPathForExecutable:@"git"]];
   }
   [self checkGitPath];
   
@@ -111,6 +110,7 @@ NSString* GBGitPathKey = @"OATask_pathForExecutable_git";
 - (void) windowDidResignKey:(NSNotification *)notification
 {
   [NSObject cancelPreviousPerformRequestsWithTarget:self];
+  [self delayedGitPathUpdate];
 }
 
 - (void) windowWillClose:(NSNotification *)notification

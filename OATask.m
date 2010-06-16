@@ -51,14 +51,16 @@ NSString* OATaskNotification = @"OATaskNotification";
   return [[self new] autorelease];
 }
 
-- (NSString*) rememberedPathForExecutable:(NSString*)exec
++ (NSString*) rememberedPathForExecutable:(NSString*)exec
 {
   return [[NSUserDefaults standardUserDefaults] stringForKey:[NSString stringWithFormat:@"OATask_pathForExecutable_%@", exec]];
 }
 
-- (void) rememberPath:(NSString*)aPath forExecutable:(NSString*)exec
++ (void) rememberPath:(NSString*)aPath forExecutable:(NSString*)exec
 {
-  [[NSUserDefaults standardUserDefaults] setObject:aPath forKey:[NSString stringWithFormat:@"OATask_pathForExecutable_%@", exec]];
+  NSString* key = [NSString stringWithFormat:@"OATask_pathForExecutable_%@", exec];
+  NSLog(@"OATask rememberPath:%@ forExecutable:%@", aPath, key);
+  [[NSUserDefaults standardUserDefaults] setObject:aPath forKey:key];
 }
 
 - (NSString*) launchPathByAskingUserToLocateExecutable:(NSString*)executable
@@ -108,26 +110,18 @@ NSString* OATaskNotification = @"OATaskNotification";
     NSString* exec = self.executableName;
     NSString* aPath = nil;
     
-    aPath = [self rememberedPathForExecutable:exec];
-    if (aPath && [[NSFileManager defaultManager] isExecutableFileAtPath:aPath])
+    aPath = [self systemPathForExecutable:exec];
+    if (aPath)
     {
       self.launchPath = aPath;
     }
     else
-    {
-      aPath = [self systemPathForExecutable:exec];
+    {          
+      aPath = [self launchPathByAskingUserToLocateExecutable:exec];
       if (aPath)
       {
         self.launchPath = aPath;
-      }
-      else
-      {          
-        aPath = [self launchPathByAskingUserToLocateExecutable:exec];
-        if (aPath)
-        {
-          self.launchPath = aPath;
-          [self rememberPath:aPath forExecutable:exec];
-        }
+        [[self class] rememberPath:aPath forExecutable:exec];
       }
     }
   }
@@ -258,7 +252,20 @@ NSString* OATaskNotification = @"OATaskNotification";
 
 + (NSString*) systemPathForExecutable:(NSString*)executable
 {
-  return [self pathForExecutableUsingWhich:executable];
+  NSString* aPath = [self rememberedPathForExecutable:executable];
+  if (aPath && [[NSFileManager defaultManager] isExecutableFileAtPath:aPath])
+  {
+    return aPath;
+  }
+  else
+  {
+    aPath = [self pathForExecutableUsingWhich:executable];
+    if (aPath)
+    {
+      [self rememberPath:aPath forExecutable:executable];
+    }
+    return aPath;
+  }
 }
 
 - (NSString*) systemPathForExecutable:(NSString*)executable

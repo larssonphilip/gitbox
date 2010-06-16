@@ -112,12 +112,6 @@
 
 - (BOOL) checkGitVersion
 {
-  NSString* aPath = [OATask systemPathForExecutable:@"git"];
-  if (aPath)
-  {
-    [[OATask task] rememberPath:aPath forExecutable:@"git"];
-  }
-  
   NSString* gitVersion = [GBRepository gitVersion];
   if (![GBRepository isSupportedGitVersion:gitVersion])
   {

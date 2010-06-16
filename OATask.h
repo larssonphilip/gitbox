@@ -66,8 +66,8 @@ extern NSString* OATaskNotification;
 - (id) subscribe:(id)observer selector:(SEL) selector;
 - (id) unsubscribe:(id)observer;
 
-- (NSString*) rememberedPathForExecutable:(NSString*)exec;
-- (void) rememberPath:(NSString*)aPath forExecutable:(NSString*)exec;
++ (NSString*) rememberedPathForExecutable:(NSString*)exec;
++ (void) rememberPath:(NSString*)aPath forExecutable:(NSString*)exec;
 
 #pragma mark API for subclasses
 
