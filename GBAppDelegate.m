@@ -1,6 +1,7 @@
 #import "GBAppDelegate.h"
 #import "GBRepositoryController.h"
 #import "GBActivityController.h"
+#import "GBPreferencesController.h"
 
 #import "GBRepository.h"
 #import "GBStage.h"
@@ -18,7 +19,7 @@
 @implementation GBAppDelegate
 
 @synthesize windowControllers;
-@synthesize preferencesPanel;
+@synthesize preferencesController;
 
 - (NSMutableSet*) windowControllers
 {
@@ -50,7 +51,7 @@
 - (void) dealloc
 {
   self.windowControllers = nil;
-  self.preferencesPanel = nil;
+  self.preferencesController = nil;
   [super dealloc];
 }
 
@@ -126,7 +127,7 @@
                       gitVersion,
                       [OATask systemPathForExecutable:@"git"]]
          buttonTitle:NSLocalizedString(@"Change Path",@"")];
-    [self.preferencesPanel makeKeyAndOrderFront:nil];
+    [self.preferencesController showWindow:nil];
     return NO;
   }
   return YES;

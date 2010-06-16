@@ -72,6 +72,7 @@
 #pragma mark Interrogation
 
 + (NSString*) gitVersion;
++ (NSString*) gitVersionForLaunchPath:(NSString*) aLaunchPath;
 + (NSString*) supportedGitVersion;
 + (BOOL) isSupportedGitVersion:(NSString*)version;
 - (GBRef*) loadCurrentLocalRef;

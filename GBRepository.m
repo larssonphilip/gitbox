@@ -189,18 +189,23 @@
 
 + (NSString*) gitVersion
 {
+  return [self gitVersionForLaunchPath:[OATask systemPathForExecutable:@"git"]];
+}
+
++ (NSString*) gitVersionForLaunchPath:(NSString*) aLaunchPath
+{
   OATask* task = [OATask task];
   task.currentDirectoryPath = NSHomeDirectory();
-  task.executableName = @"git";
+  task.launchPath = aLaunchPath;
   task.arguments = [NSArray arrayWithObject:@"--version"];
   if (![task launchPath])
   {
     return nil;
   }
-  NSLog(@"git path: %@", [task launchPath]);
   [task launchAndWait];
   return [[[task.output UTF8String] stringByReplacingOccurrencesOfString:@"git version" withString:@""] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 }
+
 
 + (BOOL) isSupportedGitVersion:(NSString*)version
 {
