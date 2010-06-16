@@ -5,6 +5,7 @@
 
 #import "NSArray+OAArrayHelpers.h"
 #import "NSObject+OAKeyValueObserving.h"
+#import "NSObject+OADispatchItemValidation.h"
 #import "NSView+OAViewHelpers.h"
 
 @implementation GBHistoryViewController
@@ -89,6 +90,18 @@ dataCellForTableColumn:(NSTableColumn*)aTableColumn
 {
   GBCommit* commit = [self.repository.commits objectAtIndex:row];
   return [[commit cellClass] cellHeight];
+}
+
+
+
+
+#pragma mark NSUserInterfaceValidations
+
+// For each action selector "doSomething:" redirects call to "validateDoSomething:"
+// If the selector is not implemented, returns YES.
+- (BOOL) validateUserInterfaceItem:(id<NSValidatedUserInterfaceItem>)anItem
+{
+  return [self dispatchUserInterfaceItemValidation:anItem];
 }
 
 

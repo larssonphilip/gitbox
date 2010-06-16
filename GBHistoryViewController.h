@@ -1,7 +1,7 @@
 
 #import "GBRepository.h"
 @class GBCommit;
-@interface GBHistoryViewController : NSViewController<NSTableViewDelegate>
+@interface GBHistoryViewController : NSViewController<NSTableViewDelegate, NSUserInterfaceValidations>
 {
   GBRepository* repository;
   IBOutlet NSTableView* tableView;

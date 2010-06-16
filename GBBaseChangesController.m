@@ -1,5 +1,6 @@
 #import "GBModels.h"
 #import "GBBaseChangesController.h"
+#import "NSObject+OADispatchItemValidation.h"
 
 @implementation GBBaseChangesController
 
@@ -34,6 +35,20 @@
 
 
 #pragma mark NSTableViewDelegate
+
+
+
+
+
+#pragma mark Actions Validation
+
+
+// For each action selector "doSomething:" redirects call to "validateDoSomething:"
+// If the selector is not implemented, returns YES.
+- (BOOL) validateUserInterfaceItem:(id<NSValidatedUserInterfaceItem>)anItem
+{
+  return [self dispatchUserInterfaceItemValidation:anItem];
+}
 
 
 

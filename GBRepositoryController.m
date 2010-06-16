@@ -28,6 +28,7 @@
 @synthesize delegate;
 
 @synthesize historyController;
+@synthesize changesViewController;
 @synthesize stageController;
 @synthesize commitController;
 @synthesize commitPromptController;
@@ -57,6 +58,7 @@
   self.repository = nil;
   
   self.historyController = nil;
+  self.changesViewController = nil;
   self.stageController = nil;
   self.commitController = nil;
   self.commitPromptController = nil;
@@ -387,7 +389,11 @@
 // If the selector is not implemented, returns YES.
 - (BOOL) validateUserInterfaceItem:(id<NSValidatedUserInterfaceItem>)anItem
 {
-  return [self dispatchUserInterfaceItemValidation:anItem];
+  // FIXME: this should in fact be a bit smarter: should use nextResponder instead of hard-coded subviews,
+  //        also should return NO for the selectors which are not implemented
+  return [self dispatchUserInterfaceItemValidation:anItem] ||
+         [self.historyController validateUserInterfaceItem:anItem] ||
+         [self.changesViewController validateUserInterfaceItem:anItem];
 }
 
 
@@ -420,15 +426,16 @@
 
 - (void) selectedCommitDidChange:(GBCommit*) aCommit
 {
-  NSView* changesPlaceholderView = [[self.splitView subviews] objectAtIndex:1];
   if ([aCommit isStage])
   {
-    [changesPlaceholderView setViewController:self.stageController];
+    self.changesViewController = self.stageController;
   }
   else
   {
-    [changesPlaceholderView setViewController:self.commitController];
+    self.changesViewController = self.commitController;
   }
+  NSView* changesPlaceholderView = [[self.splitView subviews] objectAtIndex:1];
+  [changesPlaceholderView setViewController:self.changesViewController];
 }
 
 - (void) repository:(GBRepository*)repo alertWithError:(NSError*)error
@@ -486,8 +493,9 @@
   NSView* historyPlaceholderView = [[self.splitView subviews] objectAtIndex:0];
   [historyPlaceholderView setViewController:self.historyController];
 
+  self.changesViewController = self.stageController;
   NSView* changesPlaceholderView = [[self.splitView subviews] objectAtIndex:1];
-  [changesPlaceholderView setViewController:self.stageController];
+  [changesPlaceholderView setViewController:self.changesViewController];
   
   
   // Window init

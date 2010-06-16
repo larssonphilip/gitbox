@@ -1,5 +1,5 @@
 @class GBRepository;
-@interface GBBaseChangesController : NSViewController<NSTableViewDelegate>
+@interface GBBaseChangesController : NSViewController<NSTableViewDelegate, NSUserInterfaceValidations>
 {
   GBRepository* repository;
   NSTableView* tableView;

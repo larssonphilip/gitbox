@@ -2,7 +2,6 @@
 
 #import "GBStageViewController.h"
 
-#import "NSObject+OADispatchItemValidation.h"
 #import "NSObject+OAKeyValueObserving.h"
 #import "NSArray+OAArrayHelpers.h"
 
@@ -139,18 +138,6 @@
   [NSApp endSheet:[self window]];
   [[alert window] orderOut:self];
   [alert autorelease];
-}
-
-
-
-#pragma mark Actions Validation
-
-
-// For each action selector "doSomething:" redirects call to "validateDoSomething:"
-// If the selector is not implemented, returns YES.
-- (BOOL) validateUserInterfaceItem:(id<NSValidatedUserInterfaceItem>)anItem
-{
-  return [self dispatchUserInterfaceItemValidation:anItem];
 }
 
 

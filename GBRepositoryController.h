@@ -20,6 +20,7 @@
   id<GBRepositoryControllerDelegate> delegate;
   
   GBHistoryViewController* historyController;
+  NSViewController<NSUserInterfaceValidations>* changesViewController;
   GBStageViewController* stageController;
   GBCommitViewController* commitController;
   GBCommitPromptController* commitPromptController;
@@ -37,6 +38,7 @@
 @property(nonatomic,assign) id<GBRepositoryControllerDelegate> delegate;
 
 @property(nonatomic,retain) GBHistoryViewController* historyController;
+@property(nonatomic,retain) NSViewController<NSUserInterfaceValidations>* changesViewController;
 @property(nonatomic,retain) GBStageViewController* stageController;
 @property(nonatomic,retain) GBCommitViewController* commitController;
 @property(nonatomic,retain) GBCommitPromptController* commitPromptController;

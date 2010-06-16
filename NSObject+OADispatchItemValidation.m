@@ -9,8 +9,7 @@
   SEL anAction = anItem.action;
   
   if (!anAction) return NO;
-  
-  if (anAction == @selector(thisItemIsActuallyDisabled)) return NO;
+  if (![self respondsToSelector:anAction]) return NO;
   
   NSString* validationActionName = [NSString stringWithFormat:@"validate%@", 
                                     [[NSString stringWithCString:sel_getName(anAction) 
