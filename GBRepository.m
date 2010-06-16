@@ -182,6 +182,11 @@
 #pragma mark Interrogation
 
 
++ (NSString*) supportedGitVersion
+{
+  return @"1.7.1";
+}
+
 + (NSString*) gitVersion
 {
   OATask* task = [OATask task];
@@ -192,17 +197,14 @@
   {
     return nil;
   }
+  NSLog(@"git path: %@", [task launchPath]);
   [task launchAndWait];
   return [[[task.output UTF8String] stringByReplacingOccurrencesOfString:@"git version" withString:@""] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 }
 
-+ (NSString*) supportedGitVersion
-{
-  return @"1.7.1";
-}
-
 + (BOOL) isSupportedGitVersion:(NSString*)version
 {
+  NSLog(@"isSupportedGitVersion: %@", version);
   if (!version) return NO;
   return [version compare:[self supportedGitVersion]] != NSOrderedAscending;
 }

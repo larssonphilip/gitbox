@@ -13,7 +13,7 @@
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
 			<integer value="57"/>
-			<integer value="732"/>
+			<integer value="733"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -826,7 +826,7 @@
 			<object class="NSWindowTemplate" id="264760101">
 				<int key="NSWindowStyleMask">15</int>
 				<int key="NSWindowBacking">2</int>
-				<string key="NSWindowRect">{{140, 371}, {326, 87}}</string>
+				<string key="NSWindowRect">{{1135, 813}, {326, 87}}</string>
 				<int key="NSWTFlags">-461897728</int>
 				<string key="NSWindowTitle">Gitbox Preferences</string>
 				<string key="NSWindowClass">NSPanel</string>
@@ -908,16 +908,11 @@
 					<string key="NSFrameSize">{326, 87}</string>
 					<reference key="NSSuperview"/>
 				</object>
-				<string key="NSScreenRect">{{0, 0}, {1280, 778}}</string>
+				<string key="NSScreenRect">{{0, 0}, {2560, 1418}}</string>
 				<string key="NSMinSize">{326, 109}</string>
 				<string key="NSMaxSize">{600, 109}</string>
 			</object>
 			<object class="NSUserDefaultsController" id="448469205">
-				<object class="NSMutableArray" key="NSDeclaredKeys">
-					<bool key="EncodedWithXMLCoder">YES</bool>
-					<string>OATask.pathForExecutable.git</string>
-					<string>OATask_pathForExecutable_git</string>
-				</object>
 				<bool key="NSSharedInstance">YES</bool>
 			</object>
 		</object>
@@ -1307,6 +1302,14 @@
 						</object>
 					</object>
 					<int key="connectionID">742</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">preferencesPanel</string>
+						<reference key="source" ref="671639897"/>
+						<reference key="destination" ref="264760101"/>
+					</object>
+					<int key="connectionID">743</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -2151,6 +2154,7 @@
 					<string>735.IBPluginDependency</string>
 					<string>736.IBPluginDependency</string>
 					<string>737.IBPluginDependency</string>
+					<string>739.IBPluginDependency</string>
 					<string>79.IBPluginDependency</string>
 					<string>79.ImportedFromIB2</string>
 					<string>81.IBEditorWindowLastContentRect</string>
@@ -2299,14 +2303,15 @@
 					<integer value="1"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{346, 317}, {326, 87}}</string>
+					<string>{{855, 839}, {326, 87}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{346, 317}, {326, 87}}</string>
+					<string>{{855, 839}, {326, 87}}</string>
 					<boolean value="NO"/>
 					<boolean value="YES"/>
 					<boolean value="YES"/>
 					<string>{600, 87}</string>
 					<string>{326, 87}</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -2340,7 +2345,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">742</int>
+			<int key="maxID">745</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -2425,6 +2430,17 @@
 								<string key="name">showActivityWindow:</string>
 								<string key="candidateClassName">id</string>
 							</object>
+						</object>
+					</object>
+					<object class="NSMutableDictionary" key="outlets">
+						<string key="NS.key.0">preferencesPanel</string>
+						<string key="NS.object.0">NSPanel</string>
+					</object>
+					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<string key="NS.key.0">preferencesPanel</string>
+						<object class="IBToOneOutletInfo" key="NS.object.0">
+							<string key="name">preferencesPanel</string>
+							<string key="candidateClassName">NSPanel</string>
 						</object>
 					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">

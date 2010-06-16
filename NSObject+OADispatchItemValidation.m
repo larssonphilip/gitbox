@@ -1,5 +1,6 @@
 #import "NSObject+OADispatchItemValidation.h"
 #import "NSString+OAStringHelpers.h"
+#import <objc/runtime.h>
 
 @implementation NSObject (OADispatchItemValidation)
 

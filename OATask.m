@@ -215,8 +215,25 @@ NSString* OATaskNotification = @"OATaskNotification";
   return self.terminationStatus != 0;
 }
 
++ (NSString*) pathForExecutableUsingWhich:(NSString*)executable
+{
+  OATask* task = [OATask task];
+  task.currentDirectoryPath = NSHomeDirectory();
+  task.launchPath = @"/usr/bin/which";
+  task.arguments = [NSArray arrayWithObjects:executable, nil];
+  [task launchAndWait];
+  if (![task isError])
+  {
+    NSString* path = [[task.output UTF8String] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    if (path && [path length] > 1)
+    {
+      return path;
+    }
+  }
+  return nil;
+}
 
-+ (NSString*) systemPathForExecutable:(NSString*)executable
++ (NSString*) pathForExecutableUsingBruteForce:(NSString*)executable
 {
   NSFileManager* fm = [NSFileManager defaultManager];
   NSArray* binPaths = [NSArray arrayWithObjects:
@@ -236,7 +253,12 @@ NSString* OATaskNotification = @"OATaskNotification";
       return execPath;
     }
   }
-  return nil;
+  return nil;  
+}
+
++ (NSString*) systemPathForExecutable:(NSString*)executable
+{
+  return [self pathForExecutableUsingWhich:executable];
 }
 
 - (NSString*) systemPathForExecutable:(NSString*)executable

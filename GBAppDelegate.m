@@ -18,6 +18,8 @@
 @implementation GBAppDelegate
 
 @synthesize windowControllers;
+@synthesize preferencesPanel;
+
 - (NSMutableSet*) windowControllers
 {
   if (!windowControllers)
@@ -48,6 +50,7 @@
 - (void) dealloc
 {
   self.windowControllers = nil;
+  self.preferencesPanel = nil;
   [super dealloc];
 }
 
@@ -77,6 +80,11 @@
 
 - (GBRepositoryController*) openWindowForRepositoryAtURL:(NSURL*)url
 {
+  if (![self checkGitVersion])
+  {
+    return nil;
+  }
+  
   for (GBRepositoryController* ctrl in self.windowControllers)
   {
     if ([ctrl.repository.url isEqual:url])
@@ -101,25 +109,27 @@
   return ctrl;
 }
 
-- (void) checkGitVersion
+- (BOOL) checkGitVersion
 {
-  NSString* gitVersion = [GBRepository gitVersion];
-  if (![GBRepository isSupportedGitVersion:gitVersion])
-  {
-    [NSAlert message:@"Please update git" 
-         description:[NSString stringWithFormat:NSLocalizedString(@"The Gitbox works with the version %@ or later. Your git version is %@.\n\nPath to git binary: %@", @""), 
-                      [GBRepository supportedGitVersion], 
-                      gitVersion,
-                      [OATask systemPathForExecutable:@"git"]]
-         buttonTitle:NSLocalizedString(@"Quit",@"")];
-    [NSApp terminate:self];
-    return;
-  }
   NSString* aPath = [OATask systemPathForExecutable:@"git"];
   if (aPath)
   {
     [[OATask task] rememberPath:aPath forExecutable:@"git"];
   }
+  
+  NSString* gitVersion = [GBRepository gitVersion];
+  if (![GBRepository isSupportedGitVersion:gitVersion])
+  {
+    [NSAlert message:@"Please update git" 
+         description:[NSString stringWithFormat:NSLocalizedString(@"The Gitbox works with the version %@ or later. Your git version is %@.\n\nPath to git executable: %@", @""), 
+                      [GBRepository supportedGitVersion], 
+                      gitVersion,
+                      [OATask systemPathForExecutable:@"git"]]
+         buttonTitle:NSLocalizedString(@"Change Path",@"")];
+    [self.preferencesPanel makeKeyAndOrderFront:nil];
+    return NO;
+  }
+  return YES;
 }
 
 
@@ -176,13 +186,6 @@
 
 - (void) applicationDidFinishLaunching:(NSNotification*) aNotification
 {
-  OATask* task = [OATask task];
-  task.currentDirectoryPath = NSHomeDirectory();
-  task.launchPath = @"/usr/bin/which";
-  task.arguments = [NSArray arrayWithObjects:@"git", nil];
-  [task launchAndWait];
-  NSLog(@"Path to git from which: %@", [task.output UTF8String]);
-  
   [self checkGitVersion];
   [self loadRepositories];
 }
@@ -199,36 +202,34 @@
 
 - (BOOL) application:(NSApplication*)theApplication openFile:(NSString*)path
 {
-  if ([NSFileManager isWritableDirectoryAtPath:path])
+  if (![NSFileManager isWritableDirectoryAtPath:path])
   {
-    NSString* repoPath = [GBRepository validRepositoryPathForPath:path];
-    if (repoPath)
+    [NSAlert message:NSLocalizedString(@"File is not a writable folder.", @"") description:path];
+    return NO;
+  }
+  
+  NSString* repoPath = [GBRepository validRepositoryPathForPath:path];
+  if (repoPath)
+  {
+    NSURL* url = [NSURL fileURLWithPath:repoPath];
+    [self openRepositoryAtURL:url];
+    return YES;
+  }
+  else 
+  {
+    NSURL* url = [NSURL fileURLWithPath:path];
+    if ([NSAlert unsafePrompt:NSLocalizedString(@"Folder is not a git repository.\nMake it a repository?", @"")
+                  description:path] == NSAlertAlternateReturn)
     {
-      NSURL* url = [NSURL fileURLWithPath:repoPath];
-      [self openRepositoryAtURL:url];
-      return YES;
-    }
-    else 
-    {
-      NSURL* url = [NSURL fileURLWithPath:path];
-      if ([NSAlert unsafePrompt:NSLocalizedString(@"Folder is not a git repository.\nMake it a repository?", @"")
-                    description:path] == NSAlertAlternateReturn)
+      [GBRepository initRepositoryAtURL:url];
+      GBRepositoryController* ctrl = [self openRepositoryAtURL:url];
+      if (ctrl)
       {
-        [GBRepository initRepositoryAtURL:url];
-        GBRepositoryController* ctrl = [self openRepositoryAtURL:url];
         [ctrl.repository.stage stageAll];
         [ctrl.repository commitWithMessage:@"Initial commit"];
         return YES;
       }
-      else 
-      {
-        return NO;
-      }
     }
-  }
-  else 
-  {
-    [NSAlert message:NSLocalizedString(@"File is not a writable folder.", @"") description:path];
   }
   return NO;
 }
