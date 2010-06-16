@@ -71,19 +71,34 @@
 
 - (void) stageChanges:(NSArray*)theChanges
 {
+  NSMutableArray* pathsToDelete = [NSMutableArray array];
+  NSMutableArray* pathsToAdd = [NSMutableArray array];
   for (GBChange* aChange in theChanges)
   {
-    GBTask* task = [self.repository task];
     if ([aChange isDeletedFile])
     {
-      task.arguments = [NSArray arrayWithObjects:@"update-index", @"--remove", aChange.srcURL.path, nil];
+      [pathsToDelete addObject:aChange.srcURL.path];
     }
     else
     {
-      task.arguments = [NSArray arrayWithObjects:@"add", aChange.fileURL.path, nil];
+      [pathsToAdd addObject:aChange.fileURL.path];
     }
+  }
+  
+  if ([pathsToDelete count] > 0)
+  {
+    GBTask* task = [self.repository task];
+    task.arguments = [[NSArray arrayWithObjects:@"update-index", @"--remove", nil] arrayByAddingObjectsFromArray:pathsToDelete];
     [[self.repository launchTaskAndWait:task] showErrorIfNeeded];
   }
+  
+  if ([pathsToAdd count] > 0)
+  {
+    GBTask* task = [self.repository task];
+    task.arguments = [[NSArray arrayWithObjects:@"add", nil] arrayByAddingObjectsFromArray:pathsToAdd];
+    [[self.repository launchTaskAndWait:task] showErrorIfNeeded];
+  }
+  
   [self reloadChanges];
 }
 
