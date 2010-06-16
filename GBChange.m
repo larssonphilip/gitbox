@@ -139,6 +139,10 @@
   return [self.srcURL.relativePath compare:other.srcURL.relativePath];
 }
 
+- (NSString*) pathForIgnore
+{
+  return [self fileURL].relativePath;
+}
 
 
 

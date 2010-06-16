@@ -2,6 +2,7 @@
 {
   NSURL* URL;
   NSString* title;
+  NSArray* linesToAppend;
 
   IBOutlet NSTextView* textView;
 
@@ -13,6 +14,7 @@
 
 @property(nonatomic,retain) NSURL* URL;
 @property(nonatomic,retain) NSString* title;
+@property(nonatomic,retain) NSArray* linesToAppend;
 
 @property(nonatomic,retain) IBOutlet NSTextView* textView;
 

@@ -9,6 +9,7 @@
 
 @synthesize URL;
 @synthesize title;
+@synthesize linesToAppend;
 
 @synthesize textView;
 
@@ -26,6 +27,7 @@
 {
   self.URL = nil;
   self.title = nil;
+  self.linesToAppend = nil;
   self.textView = nil;
   [super dealloc];
 }
@@ -48,6 +50,26 @@
   self.windowHoldingSheet = nil;
 }
 
+- (void) prepareContent
+{
+  NSData* data = [NSData dataWithContentsOfURL:self.URL];
+  NSString* content = [data UTF8String];
+  if (self.linesToAppend && [self.linesToAppend count] > 0)
+  {
+    NSUInteger length = [content length];
+    content = [content stringByAppendingString:[self.linesToAppend componentsJoinedByString:@"\n"]];
+    content = [NSString stringWithFormat:@"\n\n%@\n", content];
+    [self.textView setString:content];
+    NSRange selectionRange = NSMakeRange(length + 2, [content length] - 3); // compensations for \n\n%@\n
+    [self.textView setSelectedRange:selectionRange];
+    [self.textView scrollRangeToVisible:selectionRange];
+  }
+  else
+  {
+    [self.textView setString:content];
+  }  
+}
+
 - (void) runSheetInWindow:(NSWindow*)window
 {
   self.windowHoldingSheet = window;
@@ -59,10 +81,15 @@
 #pragma mark NSWindowDelegate
 
 
+- (void) windowDidLoad
+{
+  // This method before sheet appears renders text with awful glitches.
+  //[self prepareContent];
+}
+
 - (void) windowDidBecomeKey:(NSNotification*)notification
 {
-  NSData* data = [NSData dataWithContentsOfURL:self.URL];
-  [self.textView setString:[data UTF8String]];
+  [self prepareContent];
 }
 
 

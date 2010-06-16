@@ -1,6 +1,7 @@
 #import "GBModels.h"
 
 #import "GBStageViewController.h"
+#import "GBFileEditingController.h"
 
 #import "NSObject+OAKeyValueObserving.h"
 #import "NSArray+OAArrayHelpers.h"
@@ -74,6 +75,26 @@
   if ([changes count] < 1) return NO;
   return [changes anyIsTrue:@selector(staged)];
 }
+
+- (IBAction) stageIgnoreFile:(id)sender
+{
+  NSArray* changes = [self selectedChanges];
+  if ([changes count] < 1) return;
+  NSArray* paths = [changes valueForKey:@"pathForIgnore"];
+
+  GBFileEditingController* fileEditor = [GBFileEditingController controller];
+  fileEditor.title = @".gitignore";
+  fileEditor.URL = [self.repository.url URLByAppendingPathComponent:@".gitignore"];
+  fileEditor.linesToAppend = paths;
+  [fileEditor runSheetInWindow:[self window]];
+}
+- (BOOL) validateStageIgnoreFile:(id)sender
+{
+  NSArray* changes = [self selectedChanges];
+  if ([changes count] < 1) return NO;
+  return YES;
+}
+
 
 - (IBAction) stageRevertFile:(id)sender
 {

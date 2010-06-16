@@ -31,6 +31,7 @@
 - (BOOL) isDeletedFile;
 - (BOOL) isUntrackedFile;
 - (NSComparisonResult) compareByPath:(id) other;
+- (NSString*) pathForIgnore;
 
 
 #pragma mark Actions
