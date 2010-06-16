@@ -73,7 +73,6 @@ Other:
 - sidebar to group repositories
 - merge conflict situation: ugly duplication of a single entry, but nothing breaks
 
-- performance: group common changes for a single commit command 
 - bug: should try running NSTasks blocking in a background NSOperation to work around the leaks
 - performance: should refresh status on FSEvent directory change (in background)
 
@@ -95,6 +94,7 @@ Done:
 + handle package (.bundle) - see email
 + bug: do not resolve symbolic links when choosing a path: can change that in prefs
 + case: when people have multiple installations, one can be outdated and they don't even know about it (prefs for git path)
++ performance: group common changes for a single commit command
 
 
 0.9.2:
