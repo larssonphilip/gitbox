@@ -53,12 +53,12 @@ NSString* OATaskNotification = @"OATaskNotification";
 
 + (NSString*) rememberedPathForExecutable:(NSString*)exec
 {
-  return [[NSUserDefaults standardUserDefaults] stringForKey:[NSString stringWithFormat:@"OATask_pathForExecutable_%@", exec]];
+  return [[NSUserDefaults standardUserDefaults] stringForKey:[NSString stringWithFormat:@"OATask_pathForExecutable1_%@", exec]];
 }
 
 + (void) rememberPath:(NSString*)aPath forExecutable:(NSString*)exec
 {
-  NSString* key = [NSString stringWithFormat:@"OATask_pathForExecutable_%@", exec];
+  NSString* key = [NSString stringWithFormat:@"OATask_pathForExecutable1_%@", exec];
   [[NSUserDefaults standardUserDefaults] setObject:aPath forKey:key];
 }
 
@@ -259,6 +259,10 @@ NSString* OATaskNotification = @"OATaskNotification";
   else
   {
     aPath = [self pathForExecutableUsingWhich:executable];
+    if (!aPath)
+    {
+      aPath = [self pathForExecutableUsingBruteForce:executable];
+    }
     if (aPath)
     {
       [self rememberPath:aPath forExecutable:executable];

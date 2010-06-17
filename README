@@ -26,6 +26,7 @@ To do:
 
 Other:
 
+- amend latest commit if it is not pushed yet
 - maybe: easy/hidden rebase to keep history clean?
 - find-as-you-type search in stage
 - hitting space bar for staging/unstaging a change
