@@ -196,7 +196,11 @@
 {
   OATask* task = [OATask task];
   task.currentDirectoryPath = NSHomeDirectory();
-  task.launchPath = aLaunchPath;
+  //task.executableName = @"git";
+  if (aLaunchPath)
+  {
+    task.launchPath = aLaunchPath;
+  }
   task.arguments = [NSArray arrayWithObject:@"--version"];
   if (![task launchPath])
   {

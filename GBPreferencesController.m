@@ -100,7 +100,9 @@
 {
   if (!isOpened)
   {
-    [self.gitPathField setStringValue:[OATask rememberedPathForExecutable:@"git"]];
+    NSString* path = [OATask rememberedPathForExecutable:@"git"];
+    if (!path) path = @"";
+    [self.gitPathField setStringValue:path];
   }
   [self checkGitPath];
   

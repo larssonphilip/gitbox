@@ -113,14 +113,23 @@
 - (BOOL) checkGitVersion
 {
   NSString* gitVersion = [GBRepository gitVersion];
-  if (![GBRepository isSupportedGitVersion:gitVersion])
+  if (!gitVersion)
+  {
+    [NSAlert message:@"Please locate git" 
+         description:[NSString stringWithFormat:NSLocalizedString(@"The Gitbox requires git version %@ or later. Please install git or set its path in Preferences.", @""), 
+                      [GBRepository supportedGitVersion]]
+         buttonTitle:NSLocalizedString(@"Open Preferences",@"")];
+    [self.preferencesController showWindow:nil];
+    return NO;
+  }
+  else if (![GBRepository isSupportedGitVersion:gitVersion])
   {
     [NSAlert message:@"Please update git" 
          description:[NSString stringWithFormat:NSLocalizedString(@"The Gitbox works with the version %@ or later. Your git version is %@.\n\nPath to git executable: %@", @""), 
                       [GBRepository supportedGitVersion], 
                       gitVersion,
                       [OATask systemPathForExecutable:@"git"]]
-         buttonTitle:NSLocalizedString(@"Change Path",@"")];
+         buttonTitle:NSLocalizedString(@"Open Preferences",@"")];
     [self.preferencesController showWindow:nil];
     return NO;
   }
