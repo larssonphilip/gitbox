@@ -234,6 +234,7 @@ NSString* OATaskNotification = @"OATaskNotification";
                        @"/usr/local/git/bin",
                        @"/usr/local/bin",
                        @"/usr/bin",
+                       @"/Developer/usr/bin",
                        @"/opt/local/bin",
                        @"/opt/bin",
                        @"/bin",
