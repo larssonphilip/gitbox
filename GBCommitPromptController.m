@@ -1,9 +1,14 @@
 #import "GBCommitPromptController.h"
 
+#import "GBRepository.h"
+
+#import "NSArray+OAArrayHelpers.h"
 #import "NSString+OAStringHelpers.h"
 #import "NSWindowController+OAWindowControllerHelpers.h"
 
 @implementation GBCommitPromptController
+
+@synthesize repository;
 
 @synthesize value;
 @synthesize textView;
@@ -22,6 +27,7 @@
 - (void) dealloc
 {
   [NSObject cancelPreviousPerformRequestsWithTarget:self];
+  self.repository = nil;
   self.value = nil;
   self.textView = nil;
   self.shortcutTipLabel = nil;
@@ -44,6 +50,8 @@
   
   if (!self.value || [self.value isEmptyString]) return;
   
+  [self addMessageToHistory];
+  
   self.value = [self.value stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
   
   if (finishSelector) [self.target performSelector:finishSelector withObject:self];
@@ -56,6 +64,7 @@
 
 - (IBAction) onCancel:(id)sender
 {
+  [self rewindMessageHistory];
   [self resetMagicFlags];
   if (cancelSelector) [self.target performSelector:cancelSelector withObject:self];
   [self.windowHoldingSheet endSheetForController:self];
@@ -70,12 +79,89 @@
 
 
 
+
+
+#pragma mark Message History
+
+
+- (NSArray*) messageHistory
+{
+  NSArray* list = (NSArray*)[self.repository loadObjectForKey:@"GBCommitPromptMessageHistory"];
+  if (!list) list = [NSArray array];
+  return list;
+}
+
+- (void) rewindMessageHistory
+{
+  messageHistoryIndex = 0;
+}
+
+- (void) addMessageToHistory
+{
+  NSLog(@"addMessageToHistory: %@", self.value);
+  if (self.value)
+  {
+    NSArray* newHistory = [[NSArray arrayWithObject:self.value] arrayByAddingObjectsFromArray:[self messageHistory]];
+    [self.repository saveObject:newHistory forKey:@"GBCommitPromptMessageHistory"];
+  }
+  messageHistoryIndex = 0;
+}
+
+- (NSString*) messageFromHistoryAtIndex:(NSUInteger)index
+{
+  return [[self messageHistory] objectAtIndex:index or:nil];
+}
+
+- (IBAction) previousMessage:(id)sender
+{
+  NSLog(@"previousMessage %d", (int)messageHistoryIndex);
+  NSString* message = [[self messageHistory] objectAtIndex:messageHistoryIndex or:nil];
+  if (message)
+  {
+    // If it is the first scroll back, stash away current text
+    if (messageHistoryIndex == 0)
+    {
+      self.value = [[[self.textView string] copy] autorelease];
+      NSLog(@"stashing current text %@", self.value);
+    }
+    [self.textView setString:message];
+    [self.textView selectAll:nil];
+    messageHistoryIndex++;
+  }
+}
+
+- (IBAction) nextMessage:(id)sender
+{
+  NSLog(@"nextMessage %d", (int)messageHistoryIndex);
+  if (messageHistoryIndex > 0)
+  {
+    messageHistoryIndex--;
+    if (messageHistoryIndex == 0) // reached the last item, recover stashed message
+    {
+      NSLog(@"out of history, recover stashed message: %@", self.value);
+      if (!self.value) self.value = @"";
+      [self.textView setString:self.value];
+      [self.textView selectAll:nil];
+    }
+    else
+    {
+      NSString* message = [[self messageHistory] objectAtIndex:messageHistoryIndex-1 or:nil];
+      if (message)
+      {
+        [self.textView setString:message];
+        [self.textView selectAll:nil];
+      }
+    }
+  }
+}
+
+
+
 #pragma mark NSWindowDelegate
 
 
 - (void) windowDidBecomeKey:(NSNotification*)notification
 {
-  [self.textView selectAll:self];
 }
 
 
@@ -87,6 +173,7 @@
         shouldChangeTextInRange:(NSRange)affectedCharRange
         replacementString:(NSString*)replacementString
 {
+  [self rewindMessageHistory];
   if (!finishedPlayingWithTooltip)
   {
     if (!addedNewLine)
