@@ -17,7 +17,7 @@ To do:
 - KVO crash fixes
 + clean up remote branches menu
 + commit prompt: cmd+up/down to scroll through the recent messages
-
++ current branch hint in commit prompt
 
 0.9.*:
 
