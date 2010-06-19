@@ -119,6 +119,7 @@
   if (!commitPromptController)
   {
     self.commitPromptController = [GBCommitPromptController controller];
+    commitPromptController.repository = self.repository;
     commitPromptController.target = self;
     commitPromptController.finishSelector = @selector(doneCommit:);
   }
