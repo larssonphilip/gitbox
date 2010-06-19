@@ -41,7 +41,7 @@
 #pragma mark Message History
 
 - (void) addMessageToHistory;
-
+- (void) rewindMessageHistory;
 - (IBAction) previousMessage:(id)sender;
 - (IBAction) nextMessage:(id)sender;
 
