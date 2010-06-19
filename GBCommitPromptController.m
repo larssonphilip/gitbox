@@ -57,6 +57,7 @@
   self.value = [self.value stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
   
   self.lastBranchName = self.repository.currentLocalRef.name;
+  [self.branchHintLabel setStringValue:@""];
   
   if (finishSelector) [self.target performSelector:finishSelector withObject:self];
   
