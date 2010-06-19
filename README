@@ -15,7 +15,8 @@ To do:
 
 - Kaleidoscope.app integration
 - KVO crash fixes
-- clean up remote branches menu
++ clean up remote branches menu
++ commit prompt: cmd+up/down to scroll through the recent messages
 
 
 0.9.*:
@@ -74,7 +75,6 @@ Other:
 - stash/apply stash from the menu, context menu
 
 - log: mark as read/unread + automatic mark as read
-- commit prompt: cmd+up/down to scroll through the recent messages
 - sidebar to group repositories
 - merge conflict situation: ugly duplication of a single entry, but nothing breaks
 
