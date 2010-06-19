@@ -3,6 +3,7 @@
 
 @implementation GBCommitCell
 
+@synthesize isKeyCell;
 @dynamic commit;
 - (GBCommit*) commit
 {
@@ -99,7 +100,7 @@
   NSColor* titleColor = textColor;
   NSColor* dateColor = [NSColor colorWithCalibratedRed:107.0/255.0 green:133.0/255.0 blue:200.0/255.0 alpha:1.0];
     
-  if ([self isHighlighted])
+  if ([self isHighlighted] && self.isKeyCell)
   {
     textColor = [NSColor alternateSelectedControlTextColor];
     dateColor = textColor;
@@ -194,11 +195,12 @@
 //- (void)drawWithFrame:(NSRect)cellFrame inView:(NSView *)theControlView
 - (void) drawInteriorWithFrame:(NSRect)cellFrame inView:(NSView*)theControlView
 {  
+  self.isKeyCell = ([[theControlView window] firstResponder] == theControlView);
   NSColor* backgroundColor = [NSColor controlBackgroundColor];
   
   if ([self isHighlighted])
   {
-    if ([[theControlView window] firstResponder] == theControlView)
+    if (isKeyCell)
     {
       backgroundColor = [NSColor alternateSelectedControlColor];
     }

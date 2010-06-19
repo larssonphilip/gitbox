@@ -45,7 +45,7 @@
   textColor = [textColor blendedColorWithFraction:0.3 ofColor:[NSColor whiteColor]];
   dateColor = [dateColor blendedColorWithFraction:0.3 ofColor:[NSColor whiteColor]];
   
-  if ([self isHighlighted])
+  if ([self isHighlighted] && self.isKeyCell)
   {
     textColor = [NSColor alternateSelectedControlTextColor];
     dateColor = textColor;
