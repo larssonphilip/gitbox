@@ -1,6 +1,6 @@
 #import "GBCommitPromptController.h"
 
-#import "GBRepository.h"
+#import "GBModels.h"
 
 #import "NSArray+OAArrayHelpers.h"
 #import "NSString+OAStringHelpers.h"
@@ -9,11 +9,11 @@
 @implementation GBCommitPromptController
 
 @synthesize repository;
-
 @synthesize value;
+@synthesize lastBranchName;
 @synthesize textView;
 @synthesize shortcutTipLabel;
-
+@synthesize branchHintLabel;
 @synthesize target;
 @synthesize finishSelector;
 @synthesize cancelSelector;
@@ -29,8 +29,10 @@
   [NSObject cancelPreviousPerformRequestsWithTarget:self];
   self.repository = nil;
   self.value = nil;
+  self.lastBranchName = nil;
   self.textView = nil;
   self.shortcutTipLabel = nil;
+  self.branchHintLabel = nil;
   [super dealloc];
 }
 
@@ -53,6 +55,8 @@
   [self addMessageToHistory];
   
   self.value = [self.value stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+  
+  self.lastBranchName = self.repository.currentLocalRef.name;
   
   if (finishSelector) [self.target performSelector:finishSelector withObject:self];
   
@@ -160,8 +164,27 @@
 #pragma mark NSWindowDelegate
 
 
+- (void) updateBranchHint
+{
+  NSString* currentBranchName = self.repository.currentLocalRef.name;
+  if (self.lastBranchName && currentBranchName && ![self.lastBranchName isEqualToString:currentBranchName])
+  {
+    [self.branchHintLabel setStringValue:currentBranchName];
+  }
+  else
+  {
+    [self.branchHintLabel setStringValue:@""];
+  }
+}
+
 - (void) windowDidBecomeKey:(NSNotification*)notification
 {
+  [self updateBranchHint];
+}
+
+- (void) windowDidLoad
+{
+  [self updateBranchHint];
 }
 
 

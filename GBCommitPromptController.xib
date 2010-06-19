@@ -289,7 +289,7 @@
 						<object class="NSTextField" id="274445135">
 							<reference key="NSNextResponder" ref="1006"/>
 							<int key="NSvFlags">266</int>
-							<string key="NSFrame">{{17, 97}, {315, 17}}</string>
+							<string key="NSFrame">{{17, 97}, {93, 17}}</string>
 							<reference key="NSSuperview" ref="1006"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSTextFieldCell" key="NSCell" id="956290789">
@@ -304,6 +304,25 @@
 									<string key="NSCatalogName">System</string>
 									<string key="NSColorName">controlTextColor</string>
 									<reference key="NSColor" ref="170896901"/>
+								</object>
+							</object>
+						</object>
+						<object class="NSTextField" id="913997304">
+							<reference key="NSNextResponder" ref="1006"/>
+							<int key="NSvFlags">266</int>
+							<string key="NSFrame">{{122, 97}, {210, 17}}</string>
+							<reference key="NSSuperview" ref="1006"/>
+							<bool key="NSEnabled">YES</bool>
+							<object class="NSTextFieldCell" key="NSCell" id="288811501">
+								<int key="NSCellFlags">67239488</int>
+								<int key="NSCellFlags2">71305216</int>
+								<string key="NSContents">master</string>
+								<reference key="NSSupport" ref="465406920"/>
+								<reference key="NSControlView" ref="913997304"/>
+								<reference key="NSBackgroundColor" ref="343747084"/>
+								<object class="NSColor" key="NSTextColor">
+									<int key="NSColorSpace">3</int>
+									<bytes key="NSWhite">MC41MjkxOTcwODAzAA</bytes>
 								</object>
 							</object>
 						</object>
@@ -376,6 +395,14 @@
 					</object>
 					<int key="connectionID">21</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">branchHintLabel</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="913997304"/>
+					</object>
+					<int key="connectionID">143</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -423,6 +450,7 @@
 							<reference ref="91253954"/>
 							<reference ref="1027038786"/>
 							<reference ref="274445135"/>
+							<reference ref="913997304"/>
 						</object>
 						<reference key="parent" ref="1005"/>
 					</object>
@@ -508,6 +536,20 @@
 						<reference key="object" ref="956290789"/>
 						<reference key="parent" ref="274445135"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">141</int>
+						<reference key="object" ref="913997304"/>
+						<object class="NSMutableArray" key="children">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<reference ref="288811501"/>
+						</object>
+						<reference key="parent" ref="1006"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">142</int>
+						<reference key="object" ref="288811501"/>
+						<reference key="parent" ref="913997304"/>
+					</object>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="flattenedProperties">
@@ -527,6 +569,8 @@
 					<string>12.IBPluginDependency</string>
 					<string>13.IBPluginDependency</string>
 					<string>14.IBPluginDependency</string>
+					<string>141.IBPluginDependency</string>
+					<string>142.IBPluginDependency</string>
 					<string>2.IBPluginDependency</string>
 					<string>3.IBPluginDependency</string>
 					<string>4.IBPluginDependency</string>
@@ -538,14 +582,16 @@
 				</object>
 				<object class="NSMutableArray" key="dict.values">
 					<bool key="EncodedWithXMLCoder">YES</bool>
-					<string>{{525, 486}, {349, 134}}</string>
+					<string>{{518, 485}, {349, 134}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{525, 486}, {349, 134}}</string>
+					<string>{{518, 485}, {349, 134}}</string>
 					<boolean value="NO"/>
 					<string>{196, 240}</string>
 					<string>{{202, 428}, {480, 270}}</string>
 					<boolean value="YES"/>
 					<string>{298, 134}</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -577,7 +623,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">140</int>
+			<int key="maxID">143</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -635,12 +681,14 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>branchHintLabel</string>
 							<string>shortcutTipLabel</string>
 							<string>target</string>
 							<string>textView</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>NSTextField</string>
 							<string>NSTextField</string>
 							<string>id</string>
 							<string>NSTextView</string>
@@ -650,12 +698,17 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>branchHintLabel</string>
 							<string>shortcutTipLabel</string>
 							<string>target</string>
 							<string>textView</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<object class="IBToOneOutletInfo">
+								<string key="name">branchHintLabel</string>
+								<string key="candidateClassName">NSTextField</string>
+							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">shortcutTipLabel</string>
 								<string key="candidateClassName">NSTextField</string>
