@@ -14,7 +14,7 @@ To do:
 0.9.7:
 
 - very annoying selection loosing bugs
-- (null) in .gitignore (perhaps the same selection issue)
++ (null) in .gitignore (perhaps the same selection issue)
 + KVO crash fixes
 + Kaleidoscope.app integration
 + clean up remote branches menu
