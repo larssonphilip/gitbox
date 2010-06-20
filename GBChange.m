@@ -48,6 +48,11 @@
 
 
 
++ (NSArray*) diffTools
+{
+  return [NSArray arrayWithObjects:@"FileMerge", @"Kaleidoscope", nil];
+}
+
 - (NSURL*) fileURL
 {
   if (self.dstURL) return self.dstURL;
@@ -201,6 +206,10 @@
   
   OATask* task = [OATask task];
   task.executableName = @"opendiff";
+  if ([[[NSUserDefaults standardUserDefaults] stringForKey:@"diffTool"] isEqualToString:@"Kaleidoscope"])
+  {
+    task.executableName = @"ksdiff";
+  }
   task.currentDirectoryPath = self.repository.path;
   task.arguments = [NSArray arrayWithObjects:[leftURL path], [rightURL path], nil];
   // opendiff will quit in 5 secs

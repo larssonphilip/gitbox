@@ -25,6 +25,7 @@
 
 #pragma mark Interrogation
 
++ (NSArray*) diffTools;
 - (NSURL*) fileURL;
 - (NSString*) status;
 - (NSString*) pathStatus;

@@ -1,5 +1,5 @@
 #import "GBPreferencesController.h"
-#import "GBRepository.h"
+#import "GBModels.h"
 #import "OATask.h"
 
 @implementation GBPreferencesController
@@ -13,6 +13,11 @@
   self.gitPathField = nil;
   self.gitPathStatusLabel = nil;
   [super dealloc];
+}
+
+- (NSArray*) diffTools
+{
+  return [GBChange diffTools];
 }
 
 

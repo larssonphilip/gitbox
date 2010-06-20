@@ -8,4 +8,6 @@
 @property(nonatomic,retain) IBOutlet NSTextField* gitPathField;
 @property(nonatomic,retain) IBOutlet NSTextField* gitPathStatusLabel;
 
+- (NSArray*) diffTools;
+
 @end

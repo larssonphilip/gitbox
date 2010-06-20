@@ -18,6 +18,9 @@ To do:
 + clean up remote branches menu
 + commit prompt: cmd+up/down to scroll through the recent messages
 + current branch hint in commit prompt
++ fixed text color in inactive selected history cell
++ software updates preferences
+
 
 0.9.*:
 
