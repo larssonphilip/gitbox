@@ -32,7 +32,7 @@ To do:
 - remotes controller: select current remote in the list
 - clone a repo from the gui (menu item)
 - screenshots
-
+- sometimes spinner does not stop spinning or toolbar items are just disabled - maybe bindings problem
 
 Other:
 
