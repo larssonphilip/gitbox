@@ -1,19 +1,7 @@
-UILab:
-
-- disable toolbar editing
-- fatter arrows
-- labels from arrows to the bottom of the item
-- bottom bar for stage
-- choose font for commits 
-- tooltip for commit cell to show the unmerged/unpushed status
-- 'git svn rebase' and 'git svn dcommit'
-
-
-To do:
 
 0.9.7:
 
-- very annoying selection loosing bugs
+- tooltip for commit cell to show the unmerged/unpushed status
 + (null) in .gitignore (perhaps the same selection issue)
 + KVO crash fixes
 + Kaleidoscope.app integration
@@ -26,75 +14,80 @@ To do:
 + gitignore: drop the file into .gitignore editor
 
 
-0.9.*:
-
+Top priority:
 - payment thing
+- nice screenshots
+
+
+Bugs:
+- bug: very annoying selection loosing on stage/unstage
+- bug: table row selection is ignored if was no selection for ArrayController. Should check NSTableView selectedRowIndexes? See http://forums.macrumors.com/showthread.php?t=166469 
 - bug: for non-existent HEAD gitbox does not show a staged new file
 - bug: show disabled "No branches" item for inaccessible remote
 - bug: sometimes spinner does not stop spinning or toolbar items are just disabled - maybe bindings problem
-- remotes controller: select current remote in the list
-- clone a repo from the gui (menu item)
-- screenshots
-
-
-Other:
-
-- performance: should refresh status on FSEvent directory change (in background)
-- amend latest commit if it is not pushed yet
-- maybe: easy/hidden rebase to keep history clean? (actually, need a "rebase continue" and "cancel")
-- find-as-you-type search in stage
-- hitting space bar for staging/unstaging a change
-- shell command to open gitbox
-- force push a branch
 - bug: repository stage/branch updating tasks are stuck in activity window with running status
-- glitch: sometimes fake modification of xcodeproj appears in the stage due to async git-status call (it is a case for quick switching from xcode to gitbox right after it synced)
-
-- create a new tag
-
 - bug: disable status table view while status is updating (double click on a stale row crashes the app)
   (or better: reuse matching changes to avoid that issue and avoid flickering and UI blocking)
-- bug: table row selection is ignored if was no selection for ArrayController. Should check NSTableView selectedRowIndexes? 
-  See http://forums.macrumors.com/showthread.php?t=166469
 - bug: historical diff for Added file shows diff between current state (left) and initial state (right)
 
-- history: probably get rid of dates, and design it in a more cheesy fashion
 
-- History: navigate to the sha1
-- History: navigate back and forward (History main menu)
-- commit header: show parent ids using <a href="gitbox://git@sss.pierlis.com/repo.git#commits/sha1">...</a>
-- handling URL schema: gitbox://git@sss.pierlis.com/repo.git#commits/sha1
+UI glitches:
+- remotes controller: select current remote in the list
+- glitch: sometimes fake modification of xcodeproj appears in the stage due to async git-status call (it is a case for quick switching from xcode to gitbox right after it synced)
 
-- history: checkout a commit
-- history: check out a branch from the commit item
-- history: add "load more" cell in the bottom of the log
-- fetch in background should reset fetch interval when new commits are fetched
 
-- submodules UI
-
-- reread remotes on focus: if the names and urls are the same, do not ls-remote
-- do ls-remote in background starting on unfocus
-
-- individual chunks commit
-- maybe put errors in a floating panel
-
+Easy features:
+- hitting space bar for staging/unstaging a change
+- force push a branch
+- create a new tag
 - stash list: as a local branch menu item?
 - stash/apply stash from the menu, context menu
 
-- log: mark as read/unread + automatic mark as read
+
+Hard features:
+- fsevents: should refresh status on FSEvent directory change (in background)
+- fsevents: reread remotes on focus: if the names and urls are the same, do not ls-remote
+- fsevents: do ls-remote in background starting on unfocus
+
+- maybe: easy/hidden rebase to keep history clean? (actually, need a "rebase continue" and "cancel")
+- 'git svn rebase' and 'git svn dcommit'
+- clone a repo from the gui (menu item)
+- amend latest commit if it is not pushed yet
+- find-as-you-type search in stage
+- shell command to open gitbox
+- redraw scrollbar to appear over the history table with half-opacity
+- history: probably get rid of dates, and design it in a more cheesy fashion
+- history: navigate to the sha1
+- history: navigate back and forward (History main menu)
+- history: checkout a commit
+- history: check out a branch from the commit item
+- history: add "load more" cell in the bottom of the log
+- commit header: show parent ids using <a href="gitbox://git@sss.pierlis.com/repo.git#commits/sha1">...</a>
+- handling URL schema: gitbox://git@sss.pierlis.com/repo.git#commits/sha1
+- fetch in background should reset fetch interval when new commits are fetched
 - sidebar to group repositories
-- merge conflict situation: ugly duplication of a single entry, but nothing breaks
+- gitosis integration
+- submodules UI
+- github integration: handling other repos/branches, pull requests and initial setup commands
+- conflict stage: highlight conflicted changes, allow to choose one of the versions 
+- individual chunks commit
 
+
+Other:
+- browse the server with SSH and select a repository
 - bug: should try running NSTasks blocking in a background NSOperation to work around the leaks
-
-- compare office files using some office app: cooperate with Caleidoscope
+- log: mark as read/unread + automatic mark as read
+- compare office files using some office app: cooperate with Kaleidoscope
 - compare image files in an double-pane image viewer
 - built-in diff view for better UTF8 support (FileMerge is stupid)
 
-- browse the server with SSH and select a repository
-- gitosis integration
-- github integration: handling other repos/branches, pull requests and initial setup commands
 
-
+UILab nonsense:
+- disable toolbar editing
+- fatter arrows
+- labels from arrows to the bottom of the item
+- bottom bar for stage
+- choose font for commits 
 
 
 
