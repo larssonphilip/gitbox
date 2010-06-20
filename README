@@ -23,6 +23,7 @@ To do:
 + fixed text color in inactive selected history cell
 + software updates preferences
 + bug: OK button in remotes controller does not sync highlighted textfield due to bindings issue
++ gitignore: drop the file into .gitignore editor
 
 
 0.9.*:
@@ -30,28 +31,26 @@ To do:
 - payment thing
 - bug: for non-existent HEAD gitbox does not show a staged new file
 - bug: show disabled "No branches" item for inaccessible remote
+- bug: sometimes spinner does not stop spinning or toolbar items are just disabled - maybe bindings problem
 - remotes controller: select current remote in the list
 - clone a repo from the gui (menu item)
 - screenshots
-- sometimes spinner does not stop spinning or toolbar items are just disabled - maybe bindings problem
 
 
 Other:
 
 - performance: should refresh status on FSEvent directory change (in background)
 - amend latest commit if it is not pushed yet
-- maybe: easy/hidden rebase to keep history clean?
+- maybe: easy/hidden rebase to keep history clean? (actually, need a "rebase continue" and "cancel")
 - find-as-you-type search in stage
 - hitting space bar for staging/unstaging a change
 - shell command to open gitbox
 - force push a branch
 - bug: repository stage/branch updating tasks are stuck in activity window with running status
 - glitch: sometimes fake modification of xcodeproj appears in the stage due to async git-status call (it is a case for quick switching from xcode to gitbox right after it synced)
-- push should be disabled when there's something to merge
-- push should be disabled when remote branch is local
-- pull should be "merge" when remote branch is local
+
 - create a new tag
-- gitignore: drop the file into .gitignore editor
+
 - bug: disable status table view while status is updating (double click on a stale row crashes the app)
   (or better: reuse matching changes to avoid that issue and avoid flickering and UI blocking)
 - bug: table row selection is ignored if was no selection for ArrayController. Should check NSTableView selectedRowIndexes? 

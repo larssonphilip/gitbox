@@ -10,6 +10,8 @@
   SEL finishSelector;
   SEL cancelSelector;
   NSWindow* windowHoldingSheet;
+  
+  BOOL contentPrepared;
 }
 
 @property(nonatomic,retain) NSURL* URL;

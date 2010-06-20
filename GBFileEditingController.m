@@ -41,6 +41,7 @@
   
   [self.windowHoldingSheet endSheetForController:self];
   self.windowHoldingSheet = nil;
+  contentPrepared = NO;
 }
 
 - (IBAction) onCancel:(id)sender
@@ -48,6 +49,7 @@
   if (cancelSelector) [self.target performSelector:cancelSelector withObject:self];
   [self.windowHoldingSheet endSheetForController:self];
   self.windowHoldingSheet = nil;
+  contentPrepared = NO;
 }
 
 - (void) prepareContent
@@ -92,7 +94,11 @@
 
 - (void) windowDidBecomeKey:(NSNotification*)notification
 {
-  [self prepareContent];
+  if (!contentPrepared)
+  {
+    contentPrepared = YES;
+    [self prepareContent];
+  }
 }
 
 
