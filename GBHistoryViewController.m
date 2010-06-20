@@ -92,7 +92,19 @@ dataCellForTableColumn:(NSTableColumn*)aTableColumn
   return [[commit cellClass] cellHeight];
 }
 
-
+- (NSString*) tableView:(NSTableView*)aTableView
+         toolTipForCell:(NSCell*)cell
+                   rect:(NSRectPointer)rect
+            tableColumn:(NSTableColumn*)aTableColumn 
+                    row:(NSInteger)row 
+          mouseLocation:(NSPoint)mouseLocation
+{
+  if ([cell isKindOfClass:[GBCommitCell class]])
+  {
+    return [(GBCommitCell*)cell tooltipString];
+  }
+  return nil;
+}
 
 
 #pragma mark NSUserInterfaceValidations

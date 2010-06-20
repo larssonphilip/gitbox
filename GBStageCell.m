@@ -2,6 +2,12 @@
 #import "GBStage.h"
 @implementation GBStageCell
 
+- (NSString*) tooltipString
+{
+  return @"Working directory and stage status";
+}
+
+
 - (void) drawContentInFrame:(NSRect)cellFrame
 {
   GBStage* stage = (GBStage*)[self commit];

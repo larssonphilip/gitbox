@@ -13,4 +13,6 @@
 
 - (void) drawContentInFrame:(NSRect)cellFrame; // override in sublcass
 
+- (NSString*) tooltipString;
+
 @end

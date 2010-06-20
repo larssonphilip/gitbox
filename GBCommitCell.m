@@ -15,6 +15,24 @@
   return 38.0;
 }
 
+- (NSString*) tooltipString
+{
+  GBCommitSyncStatus st = self.commit.syncStatus;
+  NSString* statusPrefix = @"";
+  if (st != GBCommitSyncStatusNormal)
+  {
+    if (st == GBCommitSyncStatusUnmerged)
+    {
+      statusPrefix = @"(Not on the current branch) ";
+    }
+    else
+    {
+      statusPrefix = @"(Not pushed) ";
+    }
+  }
+  return [statusPrefix stringByAppendingString:self.commit.message];
+}
+
 - (NSRect) innerRectForFrame:(NSRect)cellFrame
 {
   NSRect innerRect = NSInsetRect(cellFrame, 6.0, 2.0);
