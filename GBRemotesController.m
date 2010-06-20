@@ -33,9 +33,8 @@
 
 - (IBAction) onOK:(id)sender
 {
-  NSLog(@"TODO: sync stupid bindings for current text field");
-  [self syncRemotesDictionariesWithRepository];
   if (self.finishSelector) [self.target performSelector:self.finishSelector withObject:self];
+  [self syncRemotesDictionariesWithRepository];
 }
 
 - (IBAction) onCancel:(id)sender
@@ -75,10 +74,6 @@
 
 - (void) syncRemotesDictionariesWithRepository
 {
-  NSLog(@"TODO: delete missing remotes");
-  NSLog(@"TODO: add new remotes");
-  NSLog(@"TODO: update exisiting if the difference exists");
-  
   NSArray* oldAliases = [self.repository.remotes valueForKey:@"alias"];
   NSArray* newAliases = [self.remotesDictionaries valueForKey:@"alias"];
   

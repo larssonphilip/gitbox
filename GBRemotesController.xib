@@ -12,7 +12,7 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="27"/>
+			<integer value="39"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -235,7 +235,7 @@
 									<reference key="NSSuperview" ref="638705465"/>
 									<bool key="NSEnabled">YES</bool>
 									<object class="NSTextFieldCell" key="NSCell" id="285324906">
-										<int key="NSCellFlags">-1804468671</int>
+										<int key="NSCellFlags">-1803944383</int>
 										<int key="NSCellFlags2">272630848</int>
 										<string key="NSContents">git@github.com:oleganza/gitbox.git</string>
 										<reference key="NSSupport" ref="841961321"/>
@@ -568,7 +568,7 @@
 									<reference key="NSSuperview" ref="638705465"/>
 									<bool key="NSEnabled">YES</bool>
 									<object class="NSTextFieldCell" key="NSCell" id="21185769">
-										<int key="NSCellFlags">-1804468671</int>
+										<int key="NSCellFlags">-1803944383</int>
 										<int key="NSCellFlags2">272630848</int>
 										<string key="NSContents">origin</string>
 										<object class="NSFont" key="NSSupport">
@@ -785,64 +785,6 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: selection.URLString</string>
-						<reference key="source" ref="662602325"/>
-						<reference key="destination" ref="1065769063"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="662602325"/>
-							<reference key="NSDestination" ref="1065769063"/>
-							<string key="NSLabel">value: selection.URLString</string>
-							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">selection.URLString</string>
-							<object class="NSDictionary" key="NSOptions">
-								<bool key="EncodedWithXMLCoder">YES</bool>
-								<object class="NSArray" key="dict.sortedKeys">
-									<bool key="EncodedWithXMLCoder">YES</bool>
-									<string>NSConditionallySetsEnabled</string>
-									<string>NSValidatesImmediately</string>
-								</object>
-								<object class="NSMutableArray" key="dict.values">
-									<bool key="EncodedWithXMLCoder">YES</bool>
-									<boolean value="YES"/>
-									<boolean value="YES"/>
-								</object>
-							</object>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">79</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: selection.alias</string>
-						<reference key="source" ref="301579198"/>
-						<reference key="destination" ref="1065769063"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="301579198"/>
-							<reference key="NSDestination" ref="1065769063"/>
-							<string key="NSLabel">value: selection.alias</string>
-							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">selection.alias</string>
-							<object class="NSDictionary" key="NSOptions">
-								<bool key="EncodedWithXMLCoder">YES</bool>
-								<object class="NSArray" key="dict.sortedKeys">
-									<bool key="EncodedWithXMLCoder">YES</bool>
-									<string>NSConditionallySetsEnabled</string>
-									<string>NSValidatesImmediately</string>
-								</object>
-								<object class="NSMutableArray" key="dict.values">
-									<bool key="EncodedWithXMLCoder">YES</bool>
-									<boolean value="YES"/>
-									<boolean value="YES"/>
-								</object>
-							</object>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">80</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
 						<string key="label">contentArray: self.remotesDictionaries</string>
 						<reference key="source" ref="1065769063"/>
 						<reference key="destination" ref="1001"/>
@@ -880,6 +822,68 @@
 						</object>
 					</object>
 					<int key="connectionID">82</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: selection.alias</string>
+						<reference key="source" ref="301579198"/>
+						<reference key="destination" ref="1065769063"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="301579198"/>
+							<reference key="NSDestination" ref="1065769063"/>
+							<string key="NSLabel">value: selection.alias</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">selection.alias</string>
+							<object class="NSDictionary" key="NSOptions">
+								<bool key="EncodedWithXMLCoder">YES</bool>
+								<object class="NSArray" key="dict.sortedKeys">
+									<bool key="EncodedWithXMLCoder">YES</bool>
+									<string>NSConditionallySetsEnabled</string>
+									<string>NSContinuouslyUpdatesValue</string>
+									<string>NSValidatesImmediately</string>
+								</object>
+								<object class="NSMutableArray" key="dict.values">
+									<bool key="EncodedWithXMLCoder">YES</bool>
+									<boolean value="YES"/>
+									<boolean value="YES"/>
+									<boolean value="YES"/>
+								</object>
+							</object>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">83</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: selection.URLString</string>
+						<reference key="source" ref="662602325"/>
+						<reference key="destination" ref="1065769063"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="662602325"/>
+							<reference key="NSDestination" ref="1065769063"/>
+							<string key="NSLabel">value: selection.URLString</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">selection.URLString</string>
+							<object class="NSDictionary" key="NSOptions">
+								<bool key="EncodedWithXMLCoder">YES</bool>
+								<object class="NSArray" key="dict.sortedKeys">
+									<bool key="EncodedWithXMLCoder">YES</bool>
+									<string>NSConditionallySetsEnabled</string>
+									<string>NSContinuouslyUpdatesValue</string>
+									<string>NSValidatesImmediately</string>
+								</object>
+								<object class="NSMutableArray" key="dict.values">
+									<bool key="EncodedWithXMLCoder">YES</bool>
+									<boolean value="YES"/>
+									<boolean value="YES"/>
+									<boolean value="YES"/>
+								</object>
+							</object>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">84</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -1225,7 +1229,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">82</int>
+			<int key="maxID">84</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">

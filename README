@@ -21,18 +21,19 @@ To do:
 + commit prompt: current branch hint when needed
 + fixed text color in inactive selected history cell
 + software updates preferences
++ bug: OK button in remotes controller does not sync highlighted textfield due to bindings issue
 
 
 0.9.*:
 
 - payment thing
 - bug: for non-existent HEAD gitbox does not show a staged new file
-- bug: OK button in remotes controller does not sync highlighted textfield due to bindings issue
 - bug: show disabled "No branches" item for inaccessible remote
 - remotes controller: select current remote in the list
 - clone a repo from the gui (menu item)
 - screenshots
 - sometimes spinner does not stop spinning or toolbar items are just disabled - maybe bindings problem
+
 
 Other:
 
