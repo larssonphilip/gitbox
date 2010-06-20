@@ -1,6 +1,7 @@
 
 0.9.7:
 
++ single "S" shortcut for stage/unstage
 + tooltip for commit cell to show the unmerged/unpushed status
 + (null) in .gitignore (perhaps the same selection issue)
 + KVO crash fixes
@@ -37,7 +38,6 @@ UI glitches:
 
 
 Easy features:
-- hitting space bar for staging/unstaging a change
 - force push a branch
 - create a new tag
 - stash list: as a local branch menu item?
@@ -74,6 +74,7 @@ Hard features:
 
 
 Other:
+- hitting space bar for staging/unstaging a change
 - browse the server with SSH and select a repository
 - bug: should try running NSTasks blocking in a background NSOperation to work around the leaks
 - log: mark as read/unread + automatic mark as read
