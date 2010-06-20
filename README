@@ -20,7 +20,7 @@ Top priority:
 
 
 Bugs:
-- bug: very annoying selection loosing on stage/unstage
+- bug: very annoying selection loose on stage/unstage
 - bug: table row selection is ignored if was no selection for ArrayController. Should check NSTableView selectedRowIndexes? See http://forums.macrumors.com/showthread.php?t=166469 
 - bug: for non-existent HEAD gitbox does not show a staged new file
 - bug: show disabled "No branches" item for inaccessible remote
