@@ -37,6 +37,7 @@ To do:
 
 Other:
 
+- performance: should refresh status on FSEvent directory change (in background)
 - amend latest commit if it is not pushed yet
 - maybe: easy/hidden rebase to keep history clean?
 - find-as-you-type search in stage
@@ -84,7 +85,6 @@ Other:
 - merge conflict situation: ugly duplication of a single entry, but nothing breaks
 
 - bug: should try running NSTasks blocking in a background NSOperation to work around the leaks
-- performance: should refresh status on FSEvent directory change (in background)
 
 - compare office files using some office app: cooperate with Caleidoscope
 - compare image files in an double-pane image viewer

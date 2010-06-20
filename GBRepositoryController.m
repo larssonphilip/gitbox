@@ -52,6 +52,7 @@
 
 - (void) dealloc
 {
+  [NSObject cancelPreviousPerformRequestsWithTarget:self];
   NSLog(@"GBRepositoryController dealloc");
   self.repositoryURL = nil;
   if ((id)repository.delegate == self) repository.delegate = nil;
@@ -258,8 +259,18 @@
 
 - (IBAction) commit:(id)sender
 {
+  BOOL delayPrompt = [[self.stageController selectedChanges] count] > 0; 
   [self.stageController stageDoStage:sender];
-  [self.commitPromptController runSheetInWindow:[self window]];
+  if (delayPrompt)
+  {
+    [self.commitPromptController performSelector:@selector(runSheetInWindow:) 
+                                      withObject:[self window] 
+                                      afterDelay:0.3];
+  }
+  else
+  {
+    [self.commitPromptController runSheetInWindow:[self window]];
+  }
 }
 
   - (void) doneCommit:(GBPromptController*)ctrl

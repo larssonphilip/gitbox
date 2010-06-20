@@ -13,6 +13,7 @@
 
 - (void) dealloc
 {
+  [NSObject cancelPreviousPerformRequestsWithTarget:self];
   self.repository = nil;
   self.tableView = nil;
   self.statusArrayController = nil;
