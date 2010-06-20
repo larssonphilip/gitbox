@@ -65,6 +65,7 @@
   return ![changes allAreTrue:@selector(staged)];
 }
 
+
 - (IBAction) stageDoUnstage:(id)sender
 {
   [self.repository.stage unstageChanges:[self selectedChanges]];
@@ -75,6 +76,27 @@
   if ([changes count] < 1) return NO;
   return [changes anyIsTrue:@selector(staged)];
 }
+
+
+- (IBAction) stageDoStageUnstage:(id)sender
+{
+  NSArray* changes = [self selectedChanges];
+  if ([changes allAreTrue:@selector(staged)])
+  {
+    [self.repository.stage unstageChanges:changes];
+  }
+  else
+  {
+    [self.repository.stage stageChanges:changes];
+  }
+}
+- (BOOL) validateStageDoStageUnstage:(id)sender
+{
+  NSArray* changes = [self selectedChanges];
+  if ([changes count] < 1) return NO;
+  return YES;
+}
+
 
 - (IBAction) stageIgnoreFile:(id)sender
 {
