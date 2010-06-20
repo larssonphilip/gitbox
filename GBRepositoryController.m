@@ -762,6 +762,9 @@
     // Note: this is needed according to documentation for pull-down menus. The item will be ignored.
     [remoteBranchesMenu addItem:[NSMenuItem menuItemWithTitle:@"" submenu:nil]];
   }
+  
+  NSMenuItem* addNewRemoteBranchItemInTheBottom = nil;
+  
   if ([remotes count] > 1) // display submenus for each remote
   {
     for (GBRemote* remote in remotes)
@@ -795,6 +798,12 @@
   }
   else if ([remotes count] == 1) // display a flat list of "origin/master"-like titles
   {
+    NSMenuItem* item = [[NSMenuItem new] autorelease];
+    [item setTitle:@"Remote Branches"];
+    [item setAction:@selector(thisItemIsActuallyDisabled)];
+    [item setEnabled:NO];
+    [remoteBranchesMenu addItem:item];
+    
     GBRemote* remote = [remotes firstObject];
     for (GBRef* branch in remote.branches)
     {
@@ -810,13 +819,13 @@
       [remoteBranchesMenu addItem:item];
     }
     
-    [remoteBranchesMenu addItem:[NSMenuItem separatorItem]];
+    
     
     NSMenuItem* newBranchItem = [NSMenuItem menuItemWithTitle:NSLocalizedString(@"New Remote Branch...", @"") submenu:nil];
     [newBranchItem setAction:@selector(createNewRemoteBranch:)];
     [newBranchItem setTarget:self];
     [newBranchItem setRepresentedObject:remote];
-    [remoteBranchesMenu addItem:newBranchItem];
+    addNewRemoteBranchItemInTheBottom = newBranchItem;
   }
 
   // Add new remote
@@ -864,6 +873,12 @@
     }
   } // if > 1 local branches
   
+  
+  if (addNewRemoteBranchItemInTheBottom)
+  {
+    [remoteBranchesMenu addItem:[NSMenuItem separatorItem]];
+    [remoteBranchesMenu addItem:addNewRemoteBranchItemInTheBottom];
+  }
   
   
   // Finish with a button for the menu
