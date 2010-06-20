@@ -1,6 +1,7 @@
 
 0.9.7:
 
++ pull with already present fetched commits should just merge, not fetch again
 + single "S" shortcut for stage/unstage
 + tooltip for commit cell to show the unmerged/unpushed status
 + (null) in .gitignore (perhaps the same selection issue)
@@ -42,7 +43,7 @@ Easy features:
 - create a new tag
 - stash list: as a local branch menu item?
 - stash/apply stash from the menu, context menu
-- pull with already present fetched commits should just merge, not fetch again
+
 
 Hard features:
 - fsevents: should refresh status on FSEvent directory change (in background)

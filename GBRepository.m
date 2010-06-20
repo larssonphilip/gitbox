@@ -602,7 +602,6 @@
 {
   if (!self.pulling)
   {
-    NSLog(@"TODO: check for already fetched commits and merge them with a blocking task instead of pulling again");
     self.pulling = YES;
     
     GBTask* pullTask = [GBTask task];
