@@ -512,7 +512,7 @@
           selectorWithNewValue:@selector(selectedCommitDidChange:)];
   
   [self.repository addObserver:self forKeyPath:@"remotes" 
-          selectorWithoutArguments:@selector(remotesDidChange:)];
+          selectorWithoutArguments:@selector(remotesDidChange)];
   
   [self.repository fetchSilently];
 }
@@ -534,7 +534,7 @@
   
   // we remove observer in the windowWillClose to break the retain cycle (dealloc is never called otherwise)
   [self.repository removeObserver:self keyPath:@"selectedCommit" selector:@selector(selectedCommitDidChange:)];
-  [self.repository removeObserver:self keyPath:@"remotes" selector:@selector(remotesDidChange:)];
+  [self.repository removeObserver:self keyPath:@"remotes" selector:@selector(remotesDidChange)];
   [self.repository endBackgroundUpdate];
   [self.delegate windowControllerWillClose:self];
 }
