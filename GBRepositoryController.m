@@ -53,7 +53,6 @@
 - (void) dealloc
 {
   [NSObject cancelPreviousPerformRequestsWithTarget:self];
-  NSLog(@"GBRepositoryController dealloc");
   self.repositoryURL = nil;
   if ((id)repository.delegate == self) repository.delegate = nil;
   self.repository = nil;
@@ -518,7 +517,6 @@
     
   
   // Set observers
-  
   [self.repository addObserver:self forKeyPath:@"selectedCommit" 
           selectorWithNewValue:@selector(selectedCommitDidChange:)];
   
@@ -537,11 +535,11 @@
 
 - (void) windowWillClose:(NSNotification *)notification
 {
-  //NSLog(@"windowWillClose");
   [[self window] setDelegate:nil]; // so we don't receive windowDidResignKey
   // Unload views in view controllers
   [self.historyController unloadView];
   [self.stageController unloadView];
+  [self.commitController unloadView];
   
   // we remove observer in the windowWillClose to break the retain cycle (dealloc is never called otherwise)
   [self.repository removeObserver:self keyPath:@"selectedCommit" selector:@selector(selectedCommitDidChange:)];

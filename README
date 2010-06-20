@@ -13,8 +13,9 @@ To do:
 
 0.9.7:
 
-- KVO crash fixes
 - very annoying selection loosing bugs
+- (null) in .gitignore (perhaps the same selection issue)
++ KVO crash fixes
 + Kaleidoscope.app integration
 + clean up remote branches menu
 + commit prompt: cmd+up/down to scroll through the recent messages

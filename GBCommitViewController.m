@@ -45,8 +45,8 @@
 
 - (void) viewDidUnload
 {
-  [super viewDidUnload];
   [self.repository removeObserver:self keyPath:@"selectedCommit" selector:@selector(commitDidChange)];
+  [super viewDidUnload];
 }
 
 

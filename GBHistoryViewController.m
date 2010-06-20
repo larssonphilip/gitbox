@@ -35,9 +35,9 @@
 
 - (void) viewDidUnload
 {
-  [super viewDidUnload];
   [self.repository removeObserver:self keyPath:@"stage.changes" selector:@selector(stageDidUpdate)];
   [self.repository removeObserver:self keyPath:@"commits" selector:@selector(commitsDidUpdate)];
+  [super viewDidUnload];
 }
 
 

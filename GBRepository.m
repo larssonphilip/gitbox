@@ -213,7 +213,6 @@
 
 + (BOOL) isSupportedGitVersion:(NSString*)version
 {
-  NSLog(@"isSupportedGitVersion: %@", version);
   if (!version) return NO;
   return [version compare:[self supportedGitVersion]] != NSOrderedAscending;
 }
