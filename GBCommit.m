@@ -139,6 +139,11 @@
   return [fullDateFormatter stringFromDate:self.date];
 }
 
+- (NSString*) tooltipMessage
+{
+  return [NSString stringWithFormat:@"%@: %@", [[self commitId] substringToIndex:6], self.message];
+}
+
 - (NSAttributedString*) attributedHeader
 {
   return [self attributedHeaderForAttributedString:[[[NSMutableAttributedString alloc] initWithString:@""] autorelease]];

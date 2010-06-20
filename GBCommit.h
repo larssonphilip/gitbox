@@ -58,6 +58,7 @@ typedef enum {
 - (NSString*) fullDateString;
 - (NSAttributedString*) attributedHeader;
 - (NSAttributedString*) attributedHeaderForAttributedString:(NSMutableAttributedString*)attributedString;
+- (NSString*) tooltipMessage;
 
 #pragma mark Mutation
 

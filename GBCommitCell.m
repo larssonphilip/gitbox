@@ -30,7 +30,7 @@
       statusPrefix = @"(Not pushed) ";
     }
   }
-  return [statusPrefix stringByAppendingString:self.commit.message];
+  return [statusPrefix stringByAppendingString:[self.commit tooltipMessage]];
 }
 
 - (NSRect) innerRectForFrame:(NSRect)cellFrame
