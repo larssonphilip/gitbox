@@ -549,7 +549,22 @@
     }
     else
     {
-      [self pullBranch:self.currentRemoteBranch];
+      // Try to find some unmerged fetched commits and simply merge them without fetching again
+      BOOL hasUnmergedCommits = NO;
+      NSUInteger c = [self.localBranchCommits count];
+      for (NSUInteger index = 0; index < c && !hasUnmergedCommits && index < 50; index++)
+      {
+        hasUnmergedCommits = hasUnmergedCommits || 
+          (((GBCommit*)[self.localBranchCommits objectAtIndex:index]).syncStatus == GBCommitSyncStatusUnmerged);
+      }
+      if (hasUnmergedCommits)
+      {
+        [self mergeBranch:self.currentRemoteBranch];
+      }
+      else
+      {
+        [self pullBranch:self.currentRemoteBranch];
+      }
     }
   }
 }
@@ -561,7 +576,7 @@
     self.pulling = YES;
     
     GBTask* mergeTask = [GBTask task];
-    mergeTask.arguments = [NSArray arrayWithObjects:@"merge", aBranch.name, nil];
+    mergeTask.arguments = [NSArray arrayWithObjects:@"merge", [aBranch nameWithRemoteAlias], nil];
     
     [mergeTask subscribe:self selector:@selector(mergeTaskDidFinish:)];
     [self launchTask:mergeTask];
