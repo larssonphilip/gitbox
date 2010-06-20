@@ -1,7 +1,7 @@
 
 0.9.7:
 
-- tooltip for commit cell to show the unmerged/unpushed status
++ tooltip for commit cell to show the unmerged/unpushed status
 + (null) in .gitignore (perhaps the same selection issue)
 + KVO crash fixes
 + Kaleidoscope.app integration
