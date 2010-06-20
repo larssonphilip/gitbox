@@ -54,13 +54,16 @@
 {
   NSData* data = [NSData dataWithContentsOfURL:self.URL];
   NSString* content = [data UTF8String];
+  if (!content) content = @"";
   if (self.linesToAppend && [self.linesToAppend count] > 0)
   {
+    content = [content stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     NSUInteger length = [content length];
-    content = [content stringByAppendingString:[self.linesToAppend componentsJoinedByString:@"\n"]];
-    content = [NSString stringWithFormat:@"\n\n%@\n", content];
+    NSString* additionalSpace = (length > 0 ? @"\n\n" : @"");
+    NSString* appendix = [self.linesToAppend componentsJoinedByString:@"\n"];
+    content = [content stringByAppendingFormat:@"%@%@\n", additionalSpace, appendix];
     [self.textView setString:content];
-    NSRange selectionRange = NSMakeRange(length + 2, [content length] - 3); // compensations for \n\n%@\n
+    NSRange selectionRange = NSMakeRange(length + [additionalSpace length], [appendix length]);
     [self.textView setSelectedRange:selectionRange];
     [self.textView scrollRangeToVisible:selectionRange];
   }
