@@ -47,7 +47,10 @@
 - (void) drawSyncStatusIconInRect:(NSRect)rect
 {
   GBCommitSyncStatus st = self.commit.syncStatus;
-  CGContextRef contextRef = (CGContextRef)[[NSGraphicsContext currentContext] graphicsPort];
+//  CGContextRef contextRef = (CGContextRef)[[NSGraphicsContext currentContext] graphicsPort];
+  
+  
+  NSImage* iconImage = nil;
   
   if (st != GBCommitSyncStatusNormal)
   {
@@ -55,33 +58,43 @@
     {
       if ([self isHighlighted])
       {
-        CGContextSetRGBFillColor(contextRef, 1.0, 1.0, 1.0, 0.6);
+        iconImage = [NSImage imageNamed:@"commit-marker-highlighted"];
+        //CGContextSetRGBFillColor(contextRef, 1.0, 1.0, 1.0, 0.6);
       }
       else
       {
+        iconImage = [NSImage imageNamed:@"commit-marker-unmerged"];
         //CGContextSetRGBFillColor(contextRef, 104.0/255.0, 162.0/255.0, 252.0/255.0, 1.0);
-        CGContextSetRGBFillColor(contextRef, 100.0/255.0, 150.0/255.0, 252.0/255.0, 1.0);
+        //CGContextSetRGBFillColor(contextRef, 100.0/255.0, 150.0/255.0, 252.0/255.0, 1.0);
       }
     }
     else
     {
       if ([self isHighlighted])
       {
-        CGContextSetRGBFillColor(contextRef, 1.0, 1.0, 1.0, 0.99);
+        iconImage = [NSImage imageNamed:@"commit-marker-highlighted"];
+        //CGContextSetRGBFillColor(contextRef, 1.0, 1.0, 1.0, 0.99);
       }
       else
       {
+        iconImage = [NSImage imageNamed:@"commit-marker-unpushed"];
         //CGContextSetRGBFillColor(contextRef, 255.0/255.0, 125.0/255.0, 0.0/255.0, 1.0);
-        CGContextSetRGBFillColor(contextRef, 94.0/255.0, 220.0/255.0, 50.0/255.0, 1.0);
+        //CGContextSetRGBFillColor(contextRef, 94.0/255.0, 220.0/255.0, 50.0/255.0, 1.0);
       }
     }
-    NSPoint point = rect.origin;
-    point.x -= 14.0;
-    point.y += 4.0;
-    
-    CGRect circleRect = CGRectMake(point.x, point.y, 8.0, 8.0);
-    
-    CGContextFillEllipseInRect(contextRef, circleRect);
+    if (iconImage)
+    {
+      NSRect imageRect = rect;
+      imageRect.origin.x -= 15.0;
+      imageRect.origin.y += 4.0;
+      imageRect.size = [iconImage size];
+      [iconImage drawInRect:imageRect
+                   fromRect:(NSRect){.size = imageRect.size, .origin = NSZeroPoint}
+                  operation:NSCompositeSourceOver
+                   fraction:1.0 
+             respectFlipped:YES
+                      hints:nil];
+    }
   }
 }
 
@@ -140,7 +153,7 @@
   
 	NSMutableDictionary* titleAttributes = [[[NSMutableDictionary alloc] initWithObjectsAndKeys:
                                            titleColor, NSForegroundColorAttributeName,
-                                           [NSFont boldSystemFontOfSize:11.0], NSFontAttributeName,
+                                           [NSFont boldSystemFontOfSize:12.0], NSFontAttributeName,
                                            paragraphStyle, NSParagraphStyleAttributeName,
                                            nil] autorelease];
   
@@ -178,7 +191,7 @@
   CGFloat dateWidthRatio = 0.5; // 50% of the width
   CGFloat titleDatePadding = 3.0;
   CGFloat titleMessagePadding = 1.0;
-  CGFloat verticalShiftForSmallText = 1.0;
+  CGFloat verticalShiftForSmallText = 2.0;
   CGFloat x0 = innerRect.origin.x;
   CGFloat y0 = innerRect.origin.y;
   
@@ -193,7 +206,7 @@
                                dateSize.height);
   
   NSRect titleRect = NSMakeRect(x0,
-                                y0 + verticalShiftForSmallText,
+                                y0,
                                 innerRect.size.width - dateSize.width - titleDatePadding, 
                                 titleSize.height);
   
