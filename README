@@ -1,19 +1,6 @@
 
-0.9.7:
-
-+ pull with already present fetched commits should just merge, not fetch again
-+ single "S" shortcut for stage/unstage
-+ tooltip for commit cell to show the unmerged/unpushed status
-+ (null) in .gitignore (perhaps the same selection issue)
-+ KVO crash fixes
-+ Kaleidoscope.app integration
-+ clean up remote branches menu
-+ commit prompt: cmd+up/down to scroll through the recent messages
-+ commit prompt: current branch hint when needed
-+ fixed text color in inactive selected history cell
-+ software updates preferences
-+ bug: OK button in remotes controller does not sync highlighted textfield due to bindings issue
-+ gitignore: drop the file into .gitignore editor
+0.9.8:
++ release notes window
 
 
 Top priority:
@@ -95,6 +82,21 @@ UILab nonsense:
 
 Done:
 
+
+0.9.7:
++ pull with already present fetched commits should just merge, not fetch again
++ single "S" shortcut for stage/unstage
++ tooltip for commit cell to show the unmerged/unpushed status
++ (null) in .gitignore (perhaps the same selection issue)
++ KVO crash fixes
++ Kaleidoscope.app integration
++ clean up remote branches menu
++ commit prompt: cmd+up/down to scroll through the recent messages
++ commit prompt: current branch hint when needed
++ fixed text color in inactive selected history cell
++ software updates preferences
++ bug: OK button in remotes controller does not sync highlighted textfield due to bindings issue
++ gitignore: drop the file into .gitignore editor
 
 0.9.6:
 + gitignore: ignore context menu item in the stage

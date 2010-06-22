@@ -40,15 +40,17 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>0.9.7</string>
+	<string>0.9.8</string>
 	<key>LSMinimumSystemVersion</key>
 	<string>${MACOSX_DEPLOYMENT_TARGET}</string>
 	<key>NSHumanReadableCopyright</key>
-	<string>Gitbox 0.9.7 © 2010, Oleg Andreev</string>
+	<string>Gitbox 0.9.8 © 2010, Oleg Andreev</string>
 	<key>NSMainNibFile</key>
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
+	<key>GBReleaseNotesURL</key>
+	<string>http://gitbox.pierlis.com/release-notes/CFBundleVersion.html</string>
 	<key>SUFeedURL</key>
 	<string>http://gitbox.pierlis.com/updates.xml</string>
 	<key>SUPublicDSAKeyFile</key>

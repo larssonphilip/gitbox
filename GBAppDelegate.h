@@ -12,8 +12,9 @@
 @property(nonatomic,retain) NSMutableSet* windowControllers;
 @property(nonatomic,retain) IBOutlet GBPreferencesController* preferencesController;
 
-- (IBAction) openDocument:(id)sender;
-- (IBAction) showActivityWindow:(id)sender;
+- (IBAction) openDocument:(id)_;
+- (IBAction) showActivityWindow:(id)_;
+- (IBAction) releaseNotes:(id)_;
 
 - (BOOL) checkGitVersion;
 

@@ -61,6 +61,14 @@
 #pragma mark Actions
 
 
+- (IBAction) releaseNotes:(id)_
+{
+  NSString* releaseNotesURLString = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"GBReleaseNotesURL"];
+  NSString* bundleVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"];
+  releaseNotesURLString = [releaseNotesURLString stringByReplacingOccurrencesOfString:@"CFBundleVersion" withString:bundleVersion];
+  [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:releaseNotesURLString]];
+}
+
 - (IBAction) openDocument:(id)sender
 {
   NSOpenPanel* openPanel = [NSOpenPanel openPanel];
