@@ -12,7 +12,6 @@ extern NSString* OATaskNotification;
   BOOL avoidIndicator;
   BOOL ignoreFailure;
   
-  NSTimeInterval pollingPeriod;
   NSTimeInterval terminateTimeout;
   
   id standardOutput;
@@ -31,7 +30,6 @@ extern NSString* OATaskNotification;
 @property(nonatomic,assign) BOOL avoidIndicator;
 @property(nonatomic,assign) BOOL ignoreFailure;
 
-@property(nonatomic,assign) NSTimeInterval pollingPeriod;
 @property(nonatomic,assign) NSTimeInterval terminateTimeout;
 
 @property(nonatomic,retain) id standardOutput;
@@ -39,13 +37,16 @@ extern NSString* OATaskNotification;
 
 @property(nonatomic,retain) OAActivity* activity;
 
+
 + (id) task;
+
++ (NSString*) rememberedPathForExecutable:(NSString*)exec;
++ (void) rememberPath:(NSString*)aPath forExecutable:(NSString*)exec;
++ (NSString*) systemPathForExecutable:(NSString*)executable;
 
 
 #pragma mark Interrogation
 
-+ (NSString*) systemPathForExecutable:(NSString*)executable;
-- (NSString*) systemPathForExecutable:(NSString*)executable;
 - (int) terminationStatus;
 - (BOOL) isError;
 - (NSString*) command;
@@ -66,8 +67,6 @@ extern NSString* OATaskNotification;
 - (id) subscribe:(id)observer selector:(SEL) selector;
 - (id) unsubscribe:(id)observer;
 
-+ (NSString*) rememberedPathForExecutable:(NSString*)exec;
-+ (void) rememberPath:(NSString*)aPath forExecutable:(NSString*)exec;
 
 #pragma mark API for subclasses
 

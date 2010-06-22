@@ -34,7 +34,6 @@ NSString* OATaskNotification = @"OATaskNotification";
 @synthesize avoidIndicator;
 @synthesize ignoreFailure;
 
-@synthesize pollingPeriod;
 @synthesize terminateTimeout;
 
 @synthesize standardOutput;
@@ -43,13 +42,9 @@ NSString* OATaskNotification = @"OATaskNotification";
 @synthesize activity;
 
 
-#pragma mark Init
 
+#pragma mark Class Methods
 
-+ (id) task
-{
-  return [[self new] autorelease];
-}
 
 + (NSString*) rememberedPathForExecutable:(NSString*)exec
 {
@@ -60,6 +55,83 @@ NSString* OATaskNotification = @"OATaskNotification";
 {
   NSString* key = [NSString stringWithFormat:@"OATask_pathForExecutable_%@", exec];
   [[NSUserDefaults standardUserDefaults] setObject:aPath forKey:key];
+}
+
++ (NSString*) pathForExecutableUsingWhich:(NSString*)executable
+{
+  OATask* task = [OATask task];
+  task.currentDirectoryPath = NSHomeDirectory();
+  task.launchPath = @"/usr/bin/which";
+  task.arguments = [NSArray arrayWithObjects:executable, nil];
+  [task launchAndWait];
+  if (![task isError])
+  {
+    NSString* path = [[task.output UTF8String] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    if (path && [path length] > 1)
+    {
+      return path;
+    }
+  }
+  return nil;
+}
+
++ (NSString*) pathForExecutableUsingBruteForce:(NSString*)executable
+{
+  NSFileManager* fm = [NSFileManager defaultManager];
+  NSArray* binPaths = [NSArray arrayWithObjects:
+                       @"~/bin",
+                       @"/usr/local/git/bin",
+                       @"/usr/local/bin",
+                       @"/usr/bin",
+                       @"/Developer/usr/bin",
+                       @"/opt/local/bin",
+                       @"/opt/bin",
+                       @"/bin",
+                       nil];
+  for (NSString* folder in binPaths)
+  {
+    NSString* execPath = [folder stringByAppendingPathComponent:executable];
+    if ([fm isExecutableFileAtPath:execPath])
+    {
+      return execPath;
+    }
+  }
+  return nil;  
+}
+
++ (NSString*) systemPathForExecutable:(NSString*)executable
+{
+  NSString* aPath = [self rememberedPathForExecutable:executable];
+  if (aPath && [[NSFileManager defaultManager] isExecutableFileAtPath:aPath])
+  {
+    return aPath;
+  }
+  else
+  {
+    aPath = [self pathForExecutableUsingWhich:executable];
+    if (!aPath)
+    {
+      aPath = [self pathForExecutableUsingBruteForce:executable];
+    }
+    if (aPath)
+    {
+      [self rememberPath:aPath forExecutable:executable];
+    }
+    return aPath;
+  }
+}
+
+
+
+
+
+
+#pragma mark Init
+
+
++ (id) task
+{
+  return [[self new] autorelease];
 }
 
 - (NSString*) launchPathByAskingUserToLocateExecutable:(NSString*)executable
@@ -109,13 +181,13 @@ NSString* OATaskNotification = @"OATaskNotification";
     NSString* exec = self.executableName;
     NSString* aPath = nil;
     
-    aPath = [self systemPathForExecutable:exec];
+    aPath = [[self class] systemPathForExecutable:exec];
     if (aPath)
     {
       self.launchPath = aPath;
     }
     else
-    {          
+    {
       aPath = [self launchPathByAskingUserToLocateExecutable:exec];
       if (aPath)
       {
@@ -125,15 +197,6 @@ NSString* OATaskNotification = @"OATaskNotification";
     }
   }
   return [[launchPath retain] autorelease];
-}
-
-- (NSTimeInterval) pollingPeriod
-{
-  if (pollingPeriod <= 0.0)
-  {
-    pollingPeriod = 0.05;
-  }
-  return pollingPeriod;
 }
 
 - (NSTask*) nstask
@@ -206,75 +269,6 @@ NSString* OATaskNotification = @"OATaskNotification";
 - (BOOL) isError
 {
   return self.terminationStatus != 0;
-}
-
-+ (NSString*) pathForExecutableUsingWhich:(NSString*)executable
-{
-  OATask* task = [OATask task];
-  task.currentDirectoryPath = NSHomeDirectory();
-  task.launchPath = @"/usr/bin/which";
-  task.arguments = [NSArray arrayWithObjects:executable, nil];
-  [task launchAndWait];
-  if (![task isError])
-  {
-    NSString* path = [[task.output UTF8String] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    if (path && [path length] > 1)
-    {
-      return path;
-    }
-  }
-  return nil;
-}
-
-+ (NSString*) pathForExecutableUsingBruteForce:(NSString*)executable
-{
-  NSFileManager* fm = [NSFileManager defaultManager];
-  NSArray* binPaths = [NSArray arrayWithObjects:
-                       @"~/bin",
-                       @"/usr/local/git/bin",
-                       @"/usr/local/bin",
-                       @"/usr/bin",
-                       @"/Developer/usr/bin",
-                       @"/opt/local/bin",
-                       @"/opt/bin",
-                       @"/bin",
-                       nil];
-  for (NSString* folder in binPaths)
-  {
-    NSString* execPath = [folder stringByAppendingPathComponent:executable];
-    if ([fm isExecutableFileAtPath:execPath])
-    {
-      return execPath;
-    }
-  }
-  return nil;  
-}
-
-+ (NSString*) systemPathForExecutable:(NSString*)executable
-{
-  NSString* aPath = [self rememberedPathForExecutable:executable];
-  if (aPath && [[NSFileManager defaultManager] isExecutableFileAtPath:aPath])
-  {
-    return aPath;
-  }
-  else
-  {
-    aPath = [self pathForExecutableUsingWhich:executable];
-    if (!aPath)
-    {
-      aPath = [self pathForExecutableUsingBruteForce:executable];
-    }
-    if (aPath)
-    {
-      [self rememberPath:aPath forExecutable:executable];
-    }
-    return aPath;
-  }
-}
-
-- (NSString*) systemPathForExecutable:(NSString*)executable
-{
-  return [OATask systemPathForExecutable:executable];
 }
 
 - (NSString*) command
