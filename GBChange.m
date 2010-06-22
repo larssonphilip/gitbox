@@ -50,7 +50,7 @@
 
 + (NSArray*) diffTools
 {
-  return [NSArray arrayWithObjects:@"FileMerge", @"Kaleidoscope", nil];
+  return [NSArray arrayWithObjects:@"FileMerge", @"Kaleidoscope", @"Changes", nil];
 }
 
 - (NSURL*) fileURL
