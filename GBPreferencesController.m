@@ -4,12 +4,15 @@
 
 @implementation GBPreferencesController
 
+@synthesize tabView;
 @synthesize gitPathField;
 @synthesize gitPathStatusLabel;
+
 
 - (void) dealloc
 {
   [NSObject cancelPreviousPerformRequestsWithTarget:self];
+  self.tabView = nil;
   self.gitPathField = nil;
   self.gitPathStatusLabel = nil;
   [super dealloc];
@@ -99,6 +102,7 @@
 
 
 #pragma mark NSWindowDelegate
+
 
 
 - (void) windowDidBecomeKey:(NSNotification *)notification

@@ -206,9 +206,14 @@
   
   OATask* task = [OATask task];
   task.executableName = @"opendiff";
-  if ([[[NSUserDefaults standardUserDefaults] stringForKey:@"diffTool"] isEqualToString:@"Kaleidoscope"])
+  NSString* diffTool = [[NSUserDefaults standardUserDefaults] stringForKey:@"diffTool"];
+  if ([diffTool isEqualToString:@"Kaleidoscope"])
   {
     task.executableName = @"ksdiff";
+  }
+  else if ([diffTool isEqualToString:@"Changes"])
+  {
+    task.executableName = @"chdiff";
   }
   task.currentDirectoryPath = self.repository.path;
   task.arguments = [NSArray arrayWithObjects:[leftURL path], [rightURL path], nil];
