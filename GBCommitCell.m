@@ -130,7 +130,7 @@
   NSColor* textColor = [NSColor textColor];
   NSColor* titleColor = textColor;
   NSColor* dateColor = [NSColor colorWithCalibratedRed:107.0/255.0 green:133.0/255.0 blue:200.0/255.0 alpha:1.0];
-    
+  
   if ([self isHighlighted] && self.isKeyCell)
   {
     textColor = [NSColor alternateSelectedControlTextColor];
@@ -138,14 +138,23 @@
     titleColor = textColor;
   }
   
+  if ([object isMerge])
+  {
+    CGFloat fadeRatio = 0.5;
+    NSColor* whiteColor = [NSColor whiteColor];
+    titleColor = [titleColor blendedColorWithFraction:fadeRatio ofColor:whiteColor];
+    textColor = [textColor blendedColorWithFraction:fadeRatio ofColor:whiteColor];
+    dateColor = [dateColor blendedColorWithFraction:fadeRatio ofColor:whiteColor];
+  }
+  
   if (object.syncStatus == GBCommitSyncStatusUnmerged)
   {
-    CGFloat fadeRatio = 0.35;
+    CGFloat fadeRatio = 0.5;
     titleColor = [titleColor colorWithAlphaComponent:fadeRatio];
     textColor = [textColor colorWithAlphaComponent:fadeRatio];
     dateColor = [dateColor colorWithAlphaComponent:fadeRatio];
   }
-  
+    
   
   NSMutableParagraphStyle* paragraphStyle = [[NSMutableParagraphStyle new] autorelease];
   [paragraphStyle setLineBreakMode:NSLineBreakByTruncatingTail];
@@ -240,7 +249,7 @@
       backgroundColor = [NSColor secondarySelectedControlColor];
     }
   }
-  
+
   [backgroundColor set];
   NSRectFill(cellFrame);
 
