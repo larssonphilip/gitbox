@@ -98,10 +98,10 @@
   {
     return [GBStageCell class];
   }
-  if ([self isMerge])
-  {
-    return [GBMergeCommitCell class];
-  }
+//  if ([self isMerge])
+//  {
+//    return [GBMergeCommitCell class];
+//  }
   return [GBCommitCell class];
 }
 
