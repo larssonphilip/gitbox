@@ -23,7 +23,7 @@ Bugs:
 UI glitches:
 - remotes controller: select current remote in the list
 - glitch: sometimes fake modification of xcodeproj appears in the stage due to async git-status call (it is a case for quick switching from xcode to gitbox right after it synced)
-
+- remember activity window position
 
 Easy features:
 - force push a branch
