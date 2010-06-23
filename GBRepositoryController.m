@@ -389,6 +389,15 @@
 
 
 
+#pragma mark Command menu
+
+
+- (IBAction) commandMenuItem:(id)sender
+{
+  // empty action to make validations work
+}
+
+
 
 
 
@@ -396,10 +405,24 @@
 #pragma mark Actions Validation
 
 
+
 // For each action selector "doSomething:" redirects call to "validateDoSomething:"
 // If the selector is not implemented, returns YES.
-- (BOOL) validateUserInterfaceItem:(id<NSValidatedUserInterfaceItem>)anItem
+- (BOOL) validateUserInterfaceItem:(NSObject<NSValidatedUserInterfaceItem>*)anItem
 {
+  NSMenuItem* menuItem;
+  if ([anItem isKindOfClass:[NSMenuItem class]])
+  {
+    menuItem = (NSMenuItem*)anItem;
+    if ([menuItem tag] == 500) // Command menu item
+    {
+      NSMenu* menu = [NSMenu menuWithTitle:[menuItem title]];
+      NSLog(@"!!! %@", [menuItem title]);
+      [menuItem setMenu:menu];
+      return YES;
+    }
+  }
+  
   // FIXME: this should in fact be a bit smarter: should use nextResponder instead of hard-coded subviews,
   //        also should return NO for the selectors which are not implemented
   return [self dispatchUserInterfaceItemValidation:anItem] ||
