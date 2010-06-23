@@ -408,7 +408,7 @@
 
 // For each action selector "doSomething:" redirects call to "validateDoSomething:"
 // If the selector is not implemented, returns YES.
-- (BOOL) validateUserInterfaceItem:(NSObject<NSValidatedUserInterfaceItem>*)anItem
+- (BOOL) XXXvalidateUserInterfaceItem:(NSObject<NSValidatedUserInterfaceItem>*)anItem
 {
   NSMenuItem* menuItem;
   if ([anItem isKindOfClass:[NSMenuItem class]])
