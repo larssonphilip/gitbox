@@ -9,6 +9,7 @@
 #import "GBPromptController.h"
 #import "GBCommitPromptController.h"
 #import "GBFileEditingController.h"
+#import "GBCommandsController.h"
 
 #import "NSArray+OAArrayHelpers.h"
 #import "NSString+OAStringHelpers.h"
@@ -32,6 +33,7 @@
 @synthesize stageController;
 @synthesize commitController;
 @synthesize commitPromptController;
+@synthesize commandsController;
 
 @synthesize splitView;
 
@@ -46,8 +48,7 @@
 
 + (id) controller
 {
-  GBRepositoryController* windowController = [[[GBRepositoryController alloc] initWithWindowNibName:@"GBRepositoryController"] autorelease];
-  return windowController;
+  return [[[GBRepositoryController alloc] initWithWindowNibName:@"GBRepositoryController"] autorelease];
 }
 
 - (void) dealloc
@@ -62,6 +63,7 @@
   self.stageController = nil;
   self.commitController = nil;
   self.commitPromptController = nil;
+  self.commandsController = nil;
   
   self.splitView = nil;
   
@@ -126,6 +128,15 @@
   return [[commitPromptController retain] autorelease];
 }
 
+- (GBCommandsController*) commandsController
+{
+  if (!commandsController)
+  {
+    self.commandsController = [GBCommandsController controller];
+    
+  }
+  return [[commandsController retain] autorelease];
+}
 
 
 #pragma mark Interrogation
@@ -333,7 +344,7 @@
 
 - (IBAction) editRepositories:(id)sender
 {
-  GBRemotesController* remotesController = [[[GBRemotesController alloc] initWithWindowNibName:@"GBRemotesController"] autorelease];
+  GBRemotesController* remotesController = [GBRemotesController controller];
   
   remotesController.repository = self.repository;
   remotesController.target = self;

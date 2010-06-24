@@ -78,7 +78,6 @@
 		2093A7D211AF0F3200239185 /* GBCommitViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2093A7D111AF0F3200239185 /* GBCommitViewController.xib */; };
 		2093A80711AF20D100239185 /* NSObject+OADispatchItemValidation.m in Sources */ = {isa = PBXBuildFile; fileRef = 2093A80611AF20D100239185 /* NSObject+OADispatchItemValidation.m */; };
 		2093A85E11AF33B500239185 /* WhiteNSView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2093A85D11AF33B500239185 /* WhiteNSView.m */; };
-		2093A93211AF436600239185 /* GBMergeCommitCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2093A93111AF436600239185 /* GBMergeCommitCell.m */; };
 		2093AAAA11B15E1500239185 /* NSSplitView+OASplitViewHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 2093AAA911B15E1500239185 /* NSSplitView+OASplitViewHelpers.m */; };
 		2093AC8711B2EB9100239185 /* GBCommitPromptController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2093AC8611B2EB9100239185 /* GBCommitPromptController.m */; };
 		2093AC9111B2EBFF00239185 /* GBCommitPromptController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2093AC9011B2EBFF00239185 /* GBCommitPromptController.xib */; };
@@ -226,8 +225,6 @@
 		2093A80611AF20D100239185 /* NSObject+OADispatchItemValidation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+OADispatchItemValidation.m"; sourceTree = "<group>"; };
 		2093A85C11AF33B500239185 /* WhiteNSView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WhiteNSView.h; sourceTree = "<group>"; };
 		2093A85D11AF33B500239185 /* WhiteNSView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WhiteNSView.m; sourceTree = "<group>"; };
-		2093A93011AF436600239185 /* GBMergeCommitCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBMergeCommitCell.h; sourceTree = "<group>"; };
-		2093A93111AF436600239185 /* GBMergeCommitCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBMergeCommitCell.m; sourceTree = "<group>"; };
 		2093AAA811B15E1500239185 /* NSSplitView+OASplitViewHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSSplitView+OASplitViewHelpers.h"; sourceTree = "<group>"; };
 		2093AAA911B15E1500239185 /* NSSplitView+OASplitViewHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSSplitView+OASplitViewHelpers.m"; sourceTree = "<group>"; };
 		2093AC8511B2EB9100239185 /* GBCommitPromptController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBCommitPromptController.h; sourceTree = "<group>"; };
@@ -425,8 +422,6 @@
 			children = (
 				2057964011ADD3AA004715FE /* GBCommitCell.h */,
 				2057964111ADD3AA004715FE /* GBCommitCell.m */,
-				2093A93011AF436600239185 /* GBMergeCommitCell.h */,
-				2093A93111AF436600239185 /* GBMergeCommitCell.m */,
 				2057979911ADEEEE004715FE /* GBStageCell.h */,
 				2057979A11ADEEEE004715FE /* GBStageCell.m */,
 			);
@@ -672,7 +667,6 @@
 				2093A7CE11AF0EC800239185 /* GBCommitViewController.m in Sources */,
 				2093A80711AF20D100239185 /* NSObject+OADispatchItemValidation.m in Sources */,
 				2093A85E11AF33B500239185 /* WhiteNSView.m in Sources */,
-				2093A93211AF436600239185 /* GBMergeCommitCell.m in Sources */,
 				2093AAAA11B15E1500239185 /* NSSplitView+OASplitViewHelpers.m in Sources */,
 				2093AC8711B2EB9100239185 /* GBCommitPromptController.m in Sources */,
 				200B08B511B6E359004C09A8 /* GBLocalRemoteAssociationTask.m in Sources */,

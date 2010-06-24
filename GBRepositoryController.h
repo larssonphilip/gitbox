@@ -10,6 +10,7 @@
 @class GBStageViewController;
 @class GBCommitViewController;
 @class GBCommitPromptController;
+@class GBCommandsController;
 @interface GBRepositoryController : NSWindowController<
                                                       GBRepositoryDelegate, 
                                                       NSTableViewDelegate>
@@ -24,6 +25,7 @@
   GBStageViewController* stageController;
   GBCommitViewController* commitController;
   GBCommitPromptController* commitPromptController;
+  GBCommandsController* commandsController;
   
   IBOutlet NSSplitView* splitView;
   
@@ -42,6 +44,7 @@
 @property(nonatomic,retain) GBStageViewController* stageController;
 @property(nonatomic,retain) GBCommitViewController* commitController;
 @property(nonatomic,retain) GBCommitPromptController* commitPromptController;
+@property(nonatomic,retain) GBCommandsController* commandsController;
 
 @property(nonatomic,retain) IBOutlet NSSplitView* splitView;
 

@@ -3,6 +3,15 @@
 
 @implementation GBCommandsController
 
++ (id) controller
+{
+  return [[[self alloc] initWithWindowNibName:@"GBCommandsController"] autorelease];
+}
+
+
+
+#pragma mark Actions
+
 - (IBAction) onOK:(id)sender
 {
   
