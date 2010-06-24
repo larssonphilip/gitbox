@@ -5,7 +5,6 @@
 #import "NSString+OAGitHelpers.h"
 
 #import "GBCommitCell.h"
-#import "GBMergeCommitCell.h"
 #import "GBStageCell.h"
 
 #import "NSAttributedString+OAAttributedStringHelpers.h"
@@ -98,10 +97,6 @@
   {
     return [GBStageCell class];
   }
-//  if ([self isMerge])
-//  {
-//    return [GBMergeCommitCell class];
-//  }
   return [GBCommitCell class];
 }
 
