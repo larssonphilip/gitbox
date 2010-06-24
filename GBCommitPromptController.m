@@ -103,7 +103,6 @@
 
 - (void) addMessageToHistory
 {
-  NSLog(@"addMessageToHistory: %@", self.value);
   if (self.value)
   {
     NSArray* newHistory = [[NSArray arrayWithObject:self.value] arrayByAddingObjectsFromArray:[self messageHistory]];
@@ -119,7 +118,6 @@
 
 - (IBAction) previousMessage:(id)sender
 {
-  NSLog(@"previousMessage %d", (int)messageHistoryIndex);
   NSString* message = [[self messageHistory] objectAtIndex:messageHistoryIndex or:nil];
   if (message)
   {
@@ -137,13 +135,11 @@
 
 - (IBAction) nextMessage:(id)sender
 {
-  NSLog(@"nextMessage %d", (int)messageHistoryIndex);
   if (messageHistoryIndex > 0)
   {
     messageHistoryIndex--;
     if (messageHistoryIndex == 0) // reached the last item, recover stashed message
     {
-      NSLog(@"out of history, recover stashed message: %@", self.value);
       if (!self.value) self.value = @"";
       [self.textView setString:self.value];
       [self.textView selectAll:nil];
