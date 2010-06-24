@@ -37,6 +37,9 @@ Hard features:
 - fsevents: reread remotes on focus: if the names and urls are the same, do not ls-remote
 - fsevents: do ls-remote in background starting on unfocus
 
+- find/nav bar sliding down in the history:
+  - filters commits by sha-1, modified filenames and text
+  - back/forward buttons allow undo/redo commit selection (clicking on parents)
 - maybe: easy/hidden rebase to keep history clean? (actually, need a "rebase continue" and "cancel")
 - 'git svn rebase' and 'git svn dcommit'
 - clone a repo from the gui (menu item)
