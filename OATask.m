@@ -113,10 +113,6 @@ NSString* OATaskNotification = @"OATaskNotification";
     {
       aPath = [self pathForExecutableUsingBruteForce:executable];
     }
-    if (aPath)
-    {
-      [self rememberPath:aPath forExecutable:executable];
-    }
     return aPath;
   }
 }

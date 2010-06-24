@@ -408,17 +408,23 @@
 
 // For each action selector "doSomething:" redirects call to "validateDoSomething:"
 // If the selector is not implemented, returns YES.
-- (BOOL) XXXvalidateUserInterfaceItem:(NSObject<NSValidatedUserInterfaceItem>*)anItem
+- (BOOL) validateUserInterfaceItem:(NSObject<NSValidatedUserInterfaceItem>*)anItem
 {
-  NSMenuItem* menuItem;
   if ([anItem isKindOfClass:[NSMenuItem class]])
   {
-    menuItem = (NSMenuItem*)anItem;
+    NSMenuItem* menuItem = (NSMenuItem*)anItem;
     if ([menuItem tag] == 500) // Command menu item
     {
-      NSMenu* menu = [NSMenu menuWithTitle:[menuItem title]];
-      NSLog(@"!!! %@", [menuItem title]);
-      [menuItem setMenu:menu];
+      NSMenu* menu = [menuItem submenu];
+      [menu removeAllItems];
+      
+      NSMenuItem* commandItem = [[[NSMenuItem alloc] initWithTitle:@"Some Command" 
+                                                            action:@selector(doCommand:)
+                                                     keyEquivalent:@"1"] autorelease];
+      [commandItem setKeyEquivalentModifierMask:NSCommandKeyMask];
+      [menu addItem:commandItem];
+      
+      [menuItem setSubmenu:menu];
       return YES;
     }
   }
@@ -429,9 +435,6 @@
          [self.historyController validateUserInterfaceItem:anItem] ||
          [self.changesViewController validateUserInterfaceItem:anItem];
 }
-
-
-
 
 
 
@@ -790,6 +793,12 @@
   
   if ([remotes count] > 1) // display submenus for each remote
   {
+    NSMenuItem* item = [[NSMenuItem new] autorelease];
+    [item setTitle:@"Remote Branches"];
+    [item setAction:@selector(thisItemIsActuallyDisabled)];
+    [item setEnabled:NO];
+    [remoteBranchesMenu addItem:item];
+    
     for (GBRemote* remote in remotes)
     {
       NSMenu* remoteMenu = [[NSMenu new] autorelease];
