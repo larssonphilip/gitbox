@@ -32,6 +32,9 @@
 		2030F19611B82BED00C260E0 /* commit-marker-unpushed-highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 2030F19411B82BED00C260E0 /* commit-marker-unpushed-highlighted.png */; };
 		2035623311D383BE00965765 /* GBCommandsController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2035623211D383BE00965765 /* GBCommandsController.xib */; };
 		2035623811D383D000965765 /* GBCommandsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2035623711D383D000965765 /* GBCommandsController.m */; };
+		2035632F11D3B57800965765 /* GBHistoryScroller.m in Sources */ = {isa = PBXBuildFile; fileRef = 2035632E11D3B57800965765 /* GBHistoryScroller.m */; };
+		2035634E11D3BCB100965765 /* CGContext+OACGContextHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 2035634D11D3BCB100965765 /* CGContext+OACGContextHelpers.m */; };
+		2035639E11D3C14C00965765 /* GBHistoryScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2035639D11D3C14C00965765 /* GBHistoryScrollView.m */; };
 		2038F1B11193664D0087CE37 /* GBRepositoryController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58290DA1D0D100B32029 /* GBRepositoryController.xib */; };
 		2038F1B3119366660087CE37 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C1660FE840EACC02AAC07 /* InfoPlist.strings */; };
 		2038F1B7119366960087CE37 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD582B0DA1D0D100B32029 /* MainMenu.xib */; };
@@ -149,6 +152,12 @@
 		2035623211D383BE00965765 /* GBCommandsController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBCommandsController.xib; sourceTree = "<group>"; };
 		2035623611D383D000965765 /* GBCommandsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBCommandsController.h; sourceTree = "<group>"; };
 		2035623711D383D000965765 /* GBCommandsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBCommandsController.m; sourceTree = "<group>"; };
+		2035632D11D3B57800965765 /* GBHistoryScroller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBHistoryScroller.h; sourceTree = "<group>"; };
+		2035632E11D3B57800965765 /* GBHistoryScroller.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBHistoryScroller.m; sourceTree = "<group>"; };
+		2035634C11D3BCB100965765 /* CGContext+OACGContextHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CGContext+OACGContextHelpers.h"; sourceTree = "<group>"; };
+		2035634D11D3BCB100965765 /* CGContext+OACGContextHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CGContext+OACGContextHelpers.m"; sourceTree = "<group>"; };
+		2035639C11D3C14C00965765 /* GBHistoryScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBHistoryScrollView.h; sourceTree = "<group>"; };
+		2035639D11D3C14C00965765 /* GBHistoryScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBHistoryScrollView.m; sourceTree = "<group>"; };
 		2038F1DD11936B060087CE37 /* GBAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBAppDelegate.h; sourceTree = "<group>"; };
 		2038F1DE11936B060087CE37 /* GBAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBAppDelegate.m; sourceTree = "<group>"; };
 		2038F1EA11936CA50087CE37 /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
@@ -424,6 +433,10 @@
 				2057964111ADD3AA004715FE /* GBCommitCell.m */,
 				2057979911ADEEEE004715FE /* GBStageCell.h */,
 				2057979A11ADEEEE004715FE /* GBStageCell.m */,
+				2035632D11D3B57800965765 /* GBHistoryScroller.h */,
+				2035632E11D3B57800965765 /* GBHistoryScroller.m */,
+				2035639C11D3C14C00965765 /* GBHistoryScrollView.h */,
+				2035639D11D3C14C00965765 /* GBHistoryScrollView.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -461,6 +474,8 @@
 				2093AAA911B15E1500239185 /* NSSplitView+OASplitViewHelpers.m */,
 				2025D3B811BF1F2D004715FA /* NSAttributedString+OAAttributedStringHelpers.h */,
 				2025D3B911BF1F2D004715FA /* NSAttributedString+OAAttributedStringHelpers.m */,
+				2035634C11D3BCB100965765 /* CGContext+OACGContextHelpers.h */,
+				2035634D11D3BCB100965765 /* CGContext+OACGContextHelpers.m */,
 			);
 			name = Libs;
 			sourceTree = "<group>";
@@ -676,6 +691,9 @@
 				2025D3BA11BF1F2D004715FA /* NSAttributedString+OAAttributedStringHelpers.m in Sources */,
 				2043A83111C900A0001ED307 /* GBPreferencesController.m in Sources */,
 				2035623811D383D000965765 /* GBCommandsController.m in Sources */,
+				2035632F11D3B57800965765 /* GBHistoryScroller.m in Sources */,
+				2035634E11D3BCB100965765 /* CGContext+OACGContextHelpers.m in Sources */,
+				2035639E11D3C14C00965765 /* GBHistoryScrollView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

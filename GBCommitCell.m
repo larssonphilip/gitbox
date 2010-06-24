@@ -1,6 +1,8 @@
 #import "GBCommit.h"
 #import "GBCommitCell.h"
 
+#import "CGContext+OACGContextHelpers.h"
+
 @implementation GBCommitCell
 
 @synthesize isFocused;
@@ -12,7 +14,7 @@
 
 + (CGFloat) cellHeight
 {
-  return 38.0;
+  return 40.0;
 }
 
 - (NSString*) tooltipString
@@ -239,6 +241,10 @@
   
   self.isFocused = ([window firstResponder] && [window firstResponder] == theControlView && 
                     [window isMainWindow] && [window isKeyWindow]);
+  
+  [[NSColor whiteColor] setFill];
+  NSRectFill(cellFrame);
+  
   NSColor* backgroundColor = [NSColor controlBackgroundColor];
   
   if ([self isHighlighted])
@@ -254,7 +260,14 @@
   }
 
   [backgroundColor set];
-  NSRectFill(cellFrame);
+  
+  CGRect bgRect = CGRectInset(NSRectToCGRect(cellFrame), 0.0, 0.0);
+  CGFloat offsetLeft = -3.0;
+  bgRect.origin.x += offsetLeft;
+  bgRect.size.width -= offsetLeft;
+  CGContextRef context = CGContextCurrentContext();
+  CGContextAddRoundRect(context, bgRect, 4.0);
+  CGContextFillPath(context);
 
   [self drawContentInFrame:cellFrame];
 }

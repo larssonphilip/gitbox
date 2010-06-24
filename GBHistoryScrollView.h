@@ -1,0 +1,5 @@
+@interface GBHistoryScrollView : NSScrollView
+{
+}
+
+@end
