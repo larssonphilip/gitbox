@@ -3,7 +3,7 @@
 
 @implementation GBCommitCell
 
-@synthesize isKeyCell;
+@synthesize isFocused;
 @dynamic commit;
 - (GBCommit*) commit
 {
@@ -56,7 +56,7 @@
   {
     if (st == GBCommitSyncStatusUnmerged)
     {
-      if ([self isHighlighted] && self.isKeyCell)
+      if ([self isHighlighted] && self.isFocused)
       {
         iconImage = [NSImage imageNamed:@"commit-marker-highlighted"];
         //CGContextSetRGBFillColor(contextRef, 1.0, 1.0, 1.0, 0.6);
@@ -70,7 +70,7 @@
     }
     else
     {
-      if ([self isHighlighted] && self.isKeyCell)
+      if ([self isHighlighted] && self.isFocused)
       {
         iconImage = [NSImage imageNamed:@"commit-marker-highlighted"];
         //CGContextSetRGBFillColor(contextRef, 1.0, 1.0, 1.0, 0.99);
@@ -131,7 +131,7 @@
   NSColor* titleColor = textColor;
   NSColor* dateColor = [NSColor colorWithCalibratedRed:107.0/255.0 green:133.0/255.0 blue:200.0/255.0 alpha:1.0];
   
-  if ([self isHighlighted] && self.isKeyCell)
+  if ([self isHighlighted] && self.isFocused)
   {
     textColor = [NSColor alternateSelectedControlTextColor];
     dateColor = textColor;
@@ -235,12 +235,15 @@
 //- (void)drawWithFrame:(NSRect)cellFrame inView:(NSView *)theControlView
 - (void) drawInteriorWithFrame:(NSRect)cellFrame inView:(NSView*)theControlView
 {  
-  self.isKeyCell = ([[theControlView window] firstResponder] == theControlView);
+  NSWindow* window = [theControlView window];
+  
+  self.isFocused = ([window firstResponder] && [window firstResponder] == theControlView && 
+                    [window isMainWindow] && [window isKeyWindow]);
   NSColor* backgroundColor = [NSColor controlBackgroundColor];
   
   if ([self isHighlighted])
   {
-    if (isKeyCell)
+    if (isFocused)
     {
       backgroundColor = [NSColor alternateSelectedControlColor];
     }

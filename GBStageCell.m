@@ -18,7 +18,7 @@
   
   NSColor* textColor = [NSColor textColor];
   
-  if ([self isHighlighted] && self.isKeyCell)
+  if ([self isHighlighted] && self.isFocused)
   {
     textColor = [NSColor alternateSelectedControlTextColor];
   }

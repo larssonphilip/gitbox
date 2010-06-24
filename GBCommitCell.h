@@ -2,9 +2,9 @@
 
 @interface GBCommitCell : NSCell
 {
-  BOOL isKeyCell;
+  BOOL isFocused;
 }
-@property(assign) BOOL isKeyCell;
+@property(assign) BOOL isFocused;
 @property(readonly) GBCommit* commit;
 
 + (CGFloat) cellHeight;
