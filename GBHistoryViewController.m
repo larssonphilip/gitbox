@@ -29,6 +29,7 @@
 - (void) loadView
 {
   [super loadView];
+  [self.tableView setIntercellSpacing:NSMakeSize(0.0, 0.0)]; // remove awful paddings
   [self.repository addObserver:self forKeyPath:@"stage.changes" selectorWithoutArguments:@selector(stageDidUpdate)];
   [self.repository addObserver:self forKeyPath:@"commits" selectorWithoutArguments:@selector(commitsDidUpdate)];
 }
