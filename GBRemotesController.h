@@ -14,6 +14,8 @@
 @property(nonatomic,assign) SEL finishSelector;
 @property(nonatomic,assign) SEL cancelSelector;
 
++ (id) controller;
+
 - (IBAction) onCancel:(id)sender;
 - (IBAction) onOK:(id)sender;
 

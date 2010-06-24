@@ -15,6 +15,11 @@
 @synthesize finishSelector;
 @synthesize cancelSelector;
 
++ (id) controller
+{
+  return [[[GBRemotesController alloc] initWithWindowNibName:@"GBRemotesController"] autorelease];
+}
+
 - (void) dealloc
 {
   self.repository = nil;
