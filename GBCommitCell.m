@@ -56,7 +56,7 @@
   {
     if (st == GBCommitSyncStatusUnmerged)
     {
-      if ([self isHighlighted])
+      if ([self isHighlighted] && self.isKeyCell)
       {
         iconImage = [NSImage imageNamed:@"commit-marker-highlighted"];
         //CGContextSetRGBFillColor(contextRef, 1.0, 1.0, 1.0, 0.6);
@@ -70,7 +70,7 @@
     }
     else
     {
-      if ([self isHighlighted])
+      if ([self isHighlighted] && self.isKeyCell)
       {
         iconImage = [NSImage imageNamed:@"commit-marker-highlighted"];
         //CGContextSetRGBFillColor(contextRef, 1.0, 1.0, 1.0, 0.99);
