@@ -260,14 +260,15 @@
   }
 
   [backgroundColor set];
+  NSRectFill(cellFrame);
   
-  CGRect bgRect = CGRectInset(NSRectToCGRect(cellFrame), 0.0, 0.0);
-  CGFloat offsetLeft = -3.0;
-  bgRect.origin.x += offsetLeft;
-  bgRect.size.width -= offsetLeft;
-  CGContextRef context = CGContextCurrentContext();
-  CGContextAddRoundRect(context, bgRect, 4.0);
-  CGContextFillPath(context);
+//  CGRect bgRect = CGRectInset(NSRectToCGRect(cellFrame), 0.0, 0.0);
+//  CGFloat offsetLeft = -3.0;
+//  bgRect.origin.x += offsetLeft;
+//  bgRect.size.width -= offsetLeft;
+//  CGContextRef context = CGContextCurrentContext();
+//  CGContextAddRoundRect(context, bgRect, 4.0);
+//  CGContextFillPath(context);
 
   [self drawContentInFrame:cellFrame];
 }

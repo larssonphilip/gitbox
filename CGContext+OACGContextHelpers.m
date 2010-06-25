@@ -1,21 +1,21 @@
 #import "CGContext+OACGContextHelpers.h"
 
-void CGContextAddRoundRect(CGContextRef context, CGRect rect, CGFloat radius)
+void CGContextAddRoundRect(CGContextRef c, CGRect rect, CGFloat radius)
 {
-	CGContextMoveToPoint(context, rect.origin.x, rect.origin.y + radius);
-	CGContextAddLineToPoint(context, rect.origin.x, rect.origin.y + rect.size.height - radius);
-	CGContextAddArc(context, rect.origin.x + radius, rect.origin.y + rect.size.height - radius, 
-                  radius, M_PI / 4, M_PI / 2, 1);
-	CGContextAddLineToPoint(context, rect.origin.x + rect.size.width - radius, 
-                          rect.origin.y + rect.size.height);
-	CGContextAddArc(context, rect.origin.x + rect.size.width - radius, 
-                  rect.origin.y + rect.size.height - radius, radius, M_PI / 2, 0.0f, 1);
-	CGContextAddLineToPoint(context, rect.origin.x + rect.size.width, rect.origin.y + radius);
-	CGContextAddArc(context, rect.origin.x + rect.size.width - radius, rect.origin.y + radius, 
-                  radius, 0.0f, -M_PI / 2, 1);
-	CGContextAddLineToPoint(context, rect.origin.x + radius, rect.origin.y);
-	CGContextAddArc(context, rect.origin.x + radius, rect.origin.y + radius, radius, 
-                  -M_PI / 2, M_PI, 1);
+  CGFloat left = rect.origin.x;
+  CGFloat right = left + rect.size.width;
+  CGFloat bottom = rect.origin.y;
+  CGFloat top = bottom + rect.size.height;
+  
+	CGContextMoveToPoint(c, left, bottom + radius);
+	CGContextAddLineToPoint(c, left, top - radius);
+	CGContextAddQuadCurveToPoint(c, left, top, left + radius, top);
+  CGContextAddLineToPoint(c, right - radius, top);
+  CGContextAddQuadCurveToPoint(c, right, top, right, top - radius);
+  CGContextAddLineToPoint(c, right, bottom + radius);
+  CGContextAddQuadCurveToPoint(c, right, bottom, right - radius, bottom);
+  CGContextAddLineToPoint(c, left + radius, bottom);
+  CGContextAddQuadCurveToPoint(c, left, bottom, left, bottom + radius);
 }
 
 CGContextRef CGContextCurrentContext()

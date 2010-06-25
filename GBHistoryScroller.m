@@ -12,14 +12,15 @@
 
 - (void)drawRect:(NSRect)dirtyRect
 {
-  [super drawRect:dirtyRect];
+  //[super drawRect:dirtyRect];
+  [self drawKnob];
 }
 
 - (void) gbclearRect:(NSRect)rect
 {
-  [[NSColor colorWithDeviceWhite:0.5 alpha:0.5] setFill];
+  //[[NSColor colorWithDeviceWhite:0.5 alpha:0.5] setFill];
   //NSRectFillListUsingOperation(&rect, 1, NSCompositeCopy);  
-  NSRectFill(rect);
+  //NSRectFill(rect);
 }
 
 - (void) drawArrow:(NSScrollerArrow)arrow highlightPart:(int)flag
@@ -30,26 +31,13 @@
 
 - (void) drawKnobSlotInRect:(NSRect)rect highlight:(BOOL)highlight
 {
-  [self gbclearRect:rect];
-  
-//	NSImage *scrollTrack;
-//	
-//	if ([[super window] isMainWindow] && [[super window] isKeyWindow]) {
-//		scrollTrack = [NSImage imageNamed:@"ScrollTrackFill"];
-//	} else {
-//		scrollTrack = [NSImage imageNamed:@"ScrollTrackFillInactive"];
-//	}
-//	
-//	[scrollTrack drawInRect:rect fromRect: NSMakeRect(0, 18, 15, 8) operation:NSCompositeSourceOver fraction:1.0];
-//	[scrollTrack drawInRect:NSMakeRect(rect.origin.x, rect.origin.y-4, rect.size.width, 18) fromRect: NSMakeRect(0, 0, 15, 18) operation:NSCompositeSourceOver fraction:1.0];
-//	[scrollTrack drawInRect:NSMakeRect(rect.origin.x, rect.origin.y+rect.size.height-18, rect.size.width, 18) fromRect: NSMakeRect(0, 26, 15, 18) operation:NSCompositeSourceOver fraction:1.0];
 }
 
 - (void) drawKnob
 {
 	CGRect rect = NSRectToCGRect([self rectForPart:NSScrollerKnob]);
   
-  rect = CGRectInset(rect, 2.0, 0.0);
+  rect = CGRectInset(rect, 1.5, 0.5);
   
   CGContextRef context = CGContextCurrentContext();
   
@@ -59,14 +47,18 @@
   {
     alpha = 0.25;
   }
+    
+  CGContextSetRGBFillColor(context, 0, 0, 0, alpha);
+  CGContextSetRGBStrokeColor(context, 1, 1, 1, alpha);
+  CGContextSetLineWidth(context, 1.0);
+  CGContextSetLineJoin(context, kCGLineJoinRound);
+  CGContextSetLineCap(context, kCGLineCapButt);
   
-  CGContextSetRGBStrokeColor(context, 0, 0, 0, alpha);
-  CGContextSetLineWidth(context, rect.size.width);
-  CGContextSetLineCap(context, kCGLineCapRound);
-  CGFloat radius = rect.size.width/2;
-  CGContextMoveToPoint(context, rect.origin.x + radius, rect.origin.y + radius);
-  CGContextAddLineToPoint(context, rect.origin.x + radius, rect.origin.y + rect.size.height/2 - radius);
-  CGContextDrawPath(context, kCGPathStroke);
+  CGContextAddRoundRect(context, rect, 7.0);
+//  CGContextClip(context);
+  
+//  CGGradientRef gradient = CGGradientCreateWithColors
+  CGContextDrawPath(context, kCGPathFillStroke);
 }
 
 @end
