@@ -37,11 +37,11 @@
 
 - (NSRect) innerRectForFrame:(NSRect)cellFrame
 {
-  NSRect innerRect = NSInsetRect(cellFrame, 6.0, 2.0);
+  NSRect innerRect = NSInsetRect(cellFrame, 0.0, 2.0);
   
-  CGFloat offset = 13.0;
-  innerRect.origin.x += offset;
-  innerRect.size.width -= offset;
+  CGFloat leftOffset = 19.0;
+  innerRect.origin.x += leftOffset;
+  innerRect.size.width -= leftOffset;
   
   return innerRect;
 }
