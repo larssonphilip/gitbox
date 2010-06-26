@@ -23,6 +23,10 @@
   if (!plist)
   {
     self.plist = [OAFile mutablePropertyListForPath:[self.plistURL path]];
+    if (!plist)
+    {
+      self.plist = [NSMutableDictionary dictionary];
+    }
   }
   return plist;
 }
