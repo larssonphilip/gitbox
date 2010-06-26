@@ -40,8 +40,9 @@
   NSRect innerRect = NSInsetRect(cellFrame, 0.0, 2.0);
   
   CGFloat leftOffset = 19.0;
+  CGFloat rightOffset = 16.0;
   innerRect.origin.x += leftOffset;
-  innerRect.size.width -= leftOffset;
+  innerRect.size.width -= (leftOffset + rightOffset);
   
   return innerRect;
 }
@@ -87,7 +88,7 @@
     if (iconImage)
     {
       NSRect imageRect = rect;
-      imageRect.origin.x -= 15.0;
+      imageRect.origin.x -= 14.0;
       imageRect.origin.y += 4.0;
       imageRect.size = [iconImage size];
       [iconImage drawInRect:imageRect
