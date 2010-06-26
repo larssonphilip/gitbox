@@ -47,18 +47,41 @@
   {
     alpha = 0.25;
   }
-    
-  CGContextSetRGBFillColor(context, 0, 0, 0, alpha);
-  CGContextSetRGBStrokeColor(context, 1, 1, 1, alpha);
+  CGFloat radius = 7.0;
+  CGContextSaveGState(context);
+  CGContextAddRoundRect(context, rect, radius);
+  CGContextClip(context);
+  
+  CGColorRef color1 = CGColorCreateGenericRGB(0.4, 0.4, 0.4, alpha);
+  CGColorRef color2 = CGColorCreateGenericRGB(0.0, 0.0, 0.0, alpha);
+  CGColorRef colorsList[] = { color1, color2 };
+  CFArrayRef colors = CFArrayCreate(NULL, (const void**)colorsList, sizeof(colorsList) / sizeof(CGColorRef), &kCFTypeArrayCallBacks);
+  
+  CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+  CGGradientRef gradient = CGGradientCreateWithColors(colorSpace, colors, NULL);
+  
+  CGContextDrawLinearGradient(context, 
+                              gradient,
+                              rect.origin, 
+                              CGPointMake(rect.origin.x + rect.size.width, rect.origin.y), 
+                              0);
+  
+  CFRelease(colorSpace);
+  CFRelease(colors);
+  CFRelease(color1);
+  CFRelease(color2);
+  CFRelease(gradient);
+  
+  CGContextRestoreGState(context);
+  
+  CGContextAddRoundRect(context, rect, radius);
+
+  CGContextSetRGBStrokeColor(context, 1, 1, 1, alpha*0.4);
   CGContextSetLineWidth(context, 1.0);
   CGContextSetLineJoin(context, kCGLineJoinRound);
   CGContextSetLineCap(context, kCGLineCapButt);
   
-  CGContextAddRoundRect(context, rect, 7.0);
-//  CGContextClip(context);
-  
-//  CGGradientRef gradient = CGGradientCreateWithColors
-  CGContextDrawPath(context, kCGPathFillStroke);
+  CGContextDrawPath(context, kCGPathStroke);
 }
 
 @end
