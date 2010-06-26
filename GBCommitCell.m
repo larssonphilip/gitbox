@@ -271,7 +271,7 @@
     [deviceColor getRed:&r green:&g blue:&b alpha:&a];
     
     CGFloat k1 = 0.2;
-    CGFloat k2 = 1-0.1;
+    CGFloat k2 = 1-0.07;
     
     CGColorRef color1 = CGColorCreateGenericRGB(k1+r*(1-k1), k1+g*(1-k1), k1+b*(1-k1), a);
     CGColorRef color2 = CGColorCreateGenericRGB(r, g, b, a);
@@ -302,6 +302,9 @@
   {
     [backgroundColor set];
     NSRectFill(cellFrame);
+    
+    [[NSColor colorWithDeviceWhite:0.96 alpha:1.0] set];
+    NSRectFill(NSMakeRect(cellFrame.origin.x, cellFrame.origin.y + cellFrame.size.height - 1.0, cellFrame.size.width, 1.0));
   }
   
   [self drawContentInFrame:cellFrame];
