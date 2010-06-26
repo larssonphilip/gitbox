@@ -257,19 +257,53 @@
     {
       backgroundColor = [NSColor secondarySelectedControlColor];
     }
+    
+//    [backgroundColor set];
+//    NSRectFill(cellFrame);
+
+    CGRect rect = NSRectToCGRect(cellFrame);
+    
+    NSColor* deviceColor = [backgroundColor colorUsingColorSpaceName:NSDeviceRGBColorSpace];
+    CGFloat r = 0.0;
+    CGFloat g = 0.0;
+    CGFloat b = 0.0;
+    CGFloat a = 0.0;
+    [deviceColor getRed:&r green:&g blue:&b alpha:&a];
+    
+    CGFloat k1 = 0.2;
+    CGFloat k2 = 1-0.1;
+    
+    CGColorRef color1 = CGColorCreateGenericRGB(k1+r*(1-k1), k1+g*(1-k1), k1+b*(1-k1), a);
+    CGColorRef color2 = CGColorCreateGenericRGB(r, g, b, a);
+    CGColorRef color3 = CGColorCreateGenericRGB(r*k2, g*k2, b*k2, a);
+    
+    CGColorRef colorsList[] = { color1, color2, color3 };
+    CFArrayRef colors = CFArrayCreate(NULL, (const void**)colorsList, sizeof(colorsList) / sizeof(CGColorRef), &kCFTypeArrayCallBacks);
+    
+    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+    CGGradientRef gradient = CGGradientCreateWithColors(colorSpace, colors, NULL);
+    
+    CGContextRef context = CGContextCurrentContext();
+    CGContextDrawLinearGradient(context, 
+                                gradient,
+                                rect.origin,
+                                CGPointMake(rect.origin.x, rect.origin.y + rect.size.height), 
+                                0);
+    
+    CFRelease(colorSpace);
+    CFRelease(colors);
+    
+    CFRelease(color1);
+    CFRelease(color2);
+    CFRelease(color3);
+    CFRelease(gradient);
   }
-
-  [backgroundColor set];
-  NSRectFill(cellFrame);
+  else
+  {
+    [backgroundColor set];
+    NSRectFill(cellFrame);
+  }
   
-//  CGRect bgRect = CGRectInset(NSRectToCGRect(cellFrame), 0.0, 0.0);
-//  CGFloat offsetLeft = -3.0;
-//  bgRect.origin.x += offsetLeft;
-//  bgRect.size.width -= offsetLeft;
-//  CGContextRef context = CGContextCurrentContext();
-//  CGContextAddRoundRect(context, bgRect, 4.0);
-//  CGContextFillPath(context);
-
   [self drawContentInFrame:cellFrame];
 }
 
