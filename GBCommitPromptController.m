@@ -93,6 +93,8 @@
 {
   NSArray* list = (NSArray*)[self.repository loadObjectForKey:@"GBCommitPromptMessageHistory"];
   if (!list) list = [NSArray array];
+  NSUInteger maxLength =101;
+  if ([list count] > maxLength) list = [list subarrayWithRange:NSMakeRange(0, maxLength)];
   return list;
 }
 
