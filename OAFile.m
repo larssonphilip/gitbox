@@ -164,11 +164,11 @@
 {
   NSString *errorString = nil;
   NSData *data = [NSPropertyListSerialization dataFromPropertyList:plist 
-                                                            format:NSPropertyListBinaryFormat_v1_0 
+                                                            format:NSPropertyListXMLFormat_v1_0 
                                                   errorDescription:&errorString];
   if (errorString) 
   {
-    NSLog(@"OAFile: Error occured while serializing dependencies: %@", errorString);
+    NSLog(@"OAFile: Error occured while serializing property list: %@", errorString);
     [errorString release];
   }
   
