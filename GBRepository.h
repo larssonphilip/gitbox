@@ -15,6 +15,7 @@
 @class GBChange;
 @class GBTask;
 @class OATaskManager;
+@class OAPropertyListController;
 @interface GBRepository : NSObject
 {
   NSURL* url;
@@ -42,6 +43,8 @@
   
   BOOL backgroundUpdateEnabled;
   NSTimeInterval backgroundUpdateInterval;
+  
+  OAPropertyListController* plistController;
 }
 
 @property(nonatomic,retain) NSURL* url;
@@ -56,17 +59,16 @@
 @property(nonatomic,retain) NSArray* commits;
 @property(nonatomic,retain) NSArray* localBranchCommits;
 
-@property(nonatomic,retain) OATaskManager* taskManager;
-
 @property(nonatomic,assign) BOOL pulling;
 @property(nonatomic,assign) BOOL merging;
 @property(nonatomic,assign) BOOL fetching;
 @property(nonatomic,assign) BOOL pushing;
 
+@property(nonatomic,retain) OATaskManager* taskManager;
+
 @property(nonatomic,assign) NSObject<GBRepositoryDelegate>* delegate;
-
 @property(nonatomic,retain) GBCommit* selectedCommit;
-
+@property(nonatomic,retain) OAPropertyListController* plistController;
 
 
 #pragma mark Interrogation
@@ -97,7 +99,7 @@
 - (void) reloadRemotes;
 - (void) resetCurrentLocalRef;
 - (void) remoteDidUpdate:(GBRemote*)aRemote;
-
+- (void) finish;
 
 #pragma mark Background Update
 

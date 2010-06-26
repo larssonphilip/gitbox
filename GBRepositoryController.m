@@ -581,7 +581,7 @@
   // we remove observer in the windowWillClose to break the retain cycle (dealloc is never called otherwise)
   [self.repository removeObserver:self keyPath:@"selectedCommit" selector:@selector(selectedCommitDidChange:)];
   [self.repository removeObserver:self keyPath:@"remotes" selector:@selector(remotesDidChange)];
-  [self.repository endBackgroundUpdate];
+  [self.repository finish];
   [self.delegate windowControllerWillClose:self];
 }
 

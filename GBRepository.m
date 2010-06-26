@@ -12,6 +12,8 @@
 #import "NSData+OADataHelpers.h"
 #import "NSArray+OAArrayHelpers.h"
 
+#import "OAPropertyListController.h"
+
 @implementation GBRepository
 
 @synthesize url;
@@ -26,16 +28,15 @@
 @synthesize commits;
 @synthesize localBranchCommits;
 
-@synthesize taskManager;
-
 @synthesize pulling;
 @synthesize merging;
 @synthesize fetching;
 @synthesize pushing;
 
+@synthesize taskManager;
 @synthesize delegate;
-
 @synthesize selectedCommit;
+@synthesize plistController;
 
 #pragma mark Init
 
@@ -57,8 +58,8 @@
   self.localBranchCommits = nil;
   
   self.taskManager = nil;
-  
   self.selectedCommit = nil;
+  self.plistController = nil;
   
   [super dealloc];
 }
@@ -158,8 +159,27 @@
 }
 
 
+- (OAPropertyListController*) plistController
+{
+  if (!plistController)
+  {
+    self.plistController = [[OAPropertyListController new] autorelease];
+    plistController.plistURL = [NSURL fileURLWithPath:[[[self path] stringByAppendingPathComponent:@".git"] stringByAppendingPathComponent:@"gitbox.plist"]];
+  }
+  return plistController; // it is used inside this object only, so we can not retain+autorelease it.
+}
+
+
+
 - (void) saveObject:(id)obj forKey:(NSString*)key
 {
+  if (!obj) return;
+  
+  [self.plistController setObject:obj forKey:key];
+    
+  return;
+  
+  // Legacy non-used pre-0.9.8 code
   NSString* repokey = [NSString stringWithFormat:@"optionsFor:%@", self.path];
   NSDictionary* dict = [[NSUserDefaults standardUserDefaults] dictionaryForKey:repokey];
   NSMutableDictionary* mdict = nil;
@@ -171,10 +191,24 @@
 
 - (id) loadObjectForKey:(NSString*)key
 {
-  NSString* repokey = [NSString stringWithFormat:@"optionsFor:%@", self.path];
-  NSDictionary* dict = [[NSUserDefaults standardUserDefaults] dictionaryForKey:repokey];
-  if (!dict) dict = [NSDictionary dictionary];
-  return [dict objectForKey:key];
+  // try to find data in a .git/gitbox.plist
+  // if not found, but found in NSUserDefaults, then write to .git/gitbox.plist
+  id obj = nil;
+  obj = [self.plistController objectForKey:key];
+  if (!obj)
+  {
+    // Legacy API (pre 0.9.8)
+    NSString* repokey = [NSString stringWithFormat:@"optionsFor:%@", self.path];
+    NSDictionary* dict = [[NSUserDefaults standardUserDefaults] dictionaryForKey:repokey];
+    obj = [dict objectForKey:key];
+    
+    // Save to a new storage
+    if (obj)
+    {
+      [self saveObject:obj forKey:key];
+    }
+  }
+  return obj;
 }
 
 
@@ -386,6 +420,13 @@
 - (void) remoteDidUpdate:(GBRemote*)aRemote
 {
   [self.delegate repository:self didUpdateRemote:aRemote];
+}
+
+
+- (void) finish
+{
+  [self.plistController synchronizeIfNeeded];
+  [self endBackgroundUpdate];
 }
 
 
