@@ -1,11 +1,15 @@
 
 0.9.8:
 + release notes window
-
++ nice scrollbar and commit cell selection
 
 Top priority:
 - payment thing
 - nice screenshots
+- simpler definition and wording
+- clone repo
+- github integration: handling other repos/branches, pull requests and initial setup commands
+- bonjour publishing and cloning (see http://github.com/chad/gitjour)
 
 
 Bugs:
@@ -62,7 +66,6 @@ Hard features:
 - sidebar to group repositories
 - gitosis integration
 - submodules UI
-- github integration: handling other repos/branches, pull requests and initial setup commands
 - conflict stage: highlight conflicted changes, allow to choose one of the versions 
 - individual chunks commit
 
