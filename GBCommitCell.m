@@ -271,7 +271,7 @@
     CGFloat a = 0.0;
     [deviceColor getRed:&r green:&g blue:&b alpha:&a];
     
-    CGFloat k1 = 0.2;
+    CGFloat k1 = 0.15;
     CGFloat k2 = 1-0.07;
     
     CGColorRef color1 = CGColorCreateGenericRGB(k1+r*(1-k1), k1+g*(1-k1), k1+b*(1-k1), a);
