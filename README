@@ -18,6 +18,9 @@ Bugs:
 - bug: disable status table view while status is updating (double click on a stale row crashes the app)
   (or better: reuse matching changes to avoid that issue and avoid flickering and UI blocking)
 - bug: historical diff for Added file shows diff between current state (left) and initial state (right)
+- bug: preferences toolbar has no selected item
+- bug: diff tool radio group has no selected item
+- bug: should prefer branch connection in the .git/config (and .git/gitbox.plist as a backup)
 
 
 UI glitches:
