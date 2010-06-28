@@ -41,8 +41,10 @@
   
   GBCommit* selectedCommit;
   
+  
   BOOL backgroundUpdateEnabled;
   NSTimeInterval backgroundUpdateInterval;
+  NSString* topCommitId;
   
   OAPropertyListController* plistController;
 }
@@ -68,6 +70,7 @@
 
 @property(nonatomic,assign) NSObject<GBRepositoryDelegate>* delegate;
 @property(nonatomic,retain) GBCommit* selectedCommit;
+@property(nonatomic,retain) NSString* topCommitId;
 @property(nonatomic,retain) OAPropertyListController* plistController;
 
 
@@ -103,6 +106,7 @@
 
 #pragma mark Background Update
 
+- (void) resetBackgroundUpdateInterval;
 - (void) beginBackgroundUpdate;
 - (void) endBackgroundUpdate;
 

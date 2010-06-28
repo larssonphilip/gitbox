@@ -36,6 +36,9 @@
 @synthesize taskManager;
 @synthesize delegate;
 @synthesize selectedCommit;
+
+@synthesize topCommitId;
+
 @synthesize plistController;
 
 #pragma mark Init
@@ -59,6 +62,9 @@
   
   self.taskManager = nil;
   self.selectedCommit = nil;
+  
+  self.topCommitId = nil;
+  
   self.plistController = nil;
   
   [super dealloc];
@@ -364,6 +370,12 @@
 }
   - (void) didReceiveLocalAndRemoteCommits:(NSArray*)theCommits
   {
+    NSString* newTopCommitId = [[theCommits objectAtIndex:0 or:nil] commitId];
+    if (newTopCommitId && ![topCommitId isEqualToString:newTopCommitId])
+    {
+      [self resetBackgroundUpdateInterval];
+    }
+    self.topCommitId = newTopCommitId;
     self.localBranchCommits = theCommits;
     
     GBHistoryTask* unmergedCommitsTask = [GBHistoryTask task];
@@ -435,12 +447,18 @@
 #pragma mark Background Update
 
 
+- (void) resetBackgroundUpdateInterval
+{
+  backgroundUpdateInterval = 10.0 + 2*2*(0.5-drand48()); 
+}
+
+
 - (void) beginBackgroundUpdate
 {
   [self endBackgroundUpdate];
   backgroundUpdateEnabled = YES;
   // randomness is added to make all opened windows fetch at different points of time
-  backgroundUpdateInterval = 10.0 + 2*2*(0.5-drand48()); 
+  [self resetBackgroundUpdateInterval];
   [self performSelector:@selector(fetchSilentlyDuringBackgroundUpdate) 
              withObject:nil 
              afterDelay:15.0];
