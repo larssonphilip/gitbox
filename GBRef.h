@@ -22,7 +22,7 @@
 - (BOOL) isRemoteBranch;
 
 - (GBRef*) rememberedOrGuessedRemoteBranch;
-- (GBRef*) guessedRemoteBranch;
+- (GBRef*) configuredRemoteBranch;
 - (GBRef*) rememberedRemoteBranch;
 - (void) rememberRemoteBranch:(GBRef*)aRemoteBranch;
 

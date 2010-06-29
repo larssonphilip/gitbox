@@ -89,11 +89,11 @@
 - (GBRef*) rememberedOrGuessedRemoteBranch
 {
   GBRef* branch = [self rememberedRemoteBranch];
-  if (!branch) branch = [self guessedRemoteBranch];
+  if (!branch) branch = [self configuredRemoteBranch];
   return branch;
 }
 
-- (GBRef*) guessedRemoteBranch
+- (GBRef*) configuredRemoteBranch
 {
   GBLocalRemoteAssociationTask* task = [GBLocalRemoteAssociationTask task];
   task.localBranchName = self.name;
