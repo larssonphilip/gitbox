@@ -21,7 +21,7 @@
 - (BOOL) isLocalBranch;
 - (BOOL) isRemoteBranch;
 
-- (GBRef*) rememberedOrGuessedRemoteBranch;
+- (GBRef*) configuredOrRememberedRemoteBranch;
 - (GBRef*) configuredRemoteBranch;
 - (GBRef*) rememberedRemoteBranch;
 - (void) rememberRemoteBranch:(GBRef*)aRemoteBranch;

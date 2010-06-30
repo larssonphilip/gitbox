@@ -86,10 +86,10 @@
 #pragma mark Save/load remote branch
 
 
-- (GBRef*) rememberedOrGuessedRemoteBranch
+- (GBRef*) configuredOrRememberedRemoteBranch
 {
-  GBRef* branch = [self rememberedRemoteBranch];
-  if (!branch) branch = [self configuredRemoteBranch];
+  GBRef* branch = [self configuredRemoteBranch];
+  if (!branch) branch = [self rememberedRemoteBranch];
   return branch;
 }
 

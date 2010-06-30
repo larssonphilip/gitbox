@@ -139,7 +139,7 @@
 {
   if (!currentRemoteBranch)
   {
-    self.currentRemoteBranch = [self.currentLocalRef rememberedOrGuessedRemoteBranch];
+    self.currentRemoteBranch = [self.currentLocalRef configuredOrRememberedRemoteBranch];
     [self.currentLocalRef rememberRemoteBranch:currentRemoteBranch];
   }
   return [[currentRemoteBranch retain] autorelease];
@@ -535,7 +535,7 @@
 - (void) resetCurrentLocalRef
 {
   self.currentLocalRef = [self loadCurrentLocalRef];
-  GBRef* ref = [self.currentLocalRef rememberedOrGuessedRemoteBranch];
+  GBRef* ref = [self.currentLocalRef configuredOrRememberedRemoteBranch];
   if (ref) self.currentRemoteBranch = ref;
   [self.currentLocalRef rememberRemoteBranch:self.currentRemoteBranch];
 }

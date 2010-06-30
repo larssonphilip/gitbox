@@ -7,9 +7,11 @@ Top priority:
 - payment thing
 - nice screenshots
 - simpler definition and wording
+- welcome screen
 - clone repo
-- github integration: handling other repos/branches, pull requests and initial setup commands
 - bonjour publishing and cloning (see http://github.com/chad/gitjour)
+- github integration: handling other repos/branches, pull requests and initial setup commands
+
 
 
 Bugs:
