@@ -47,6 +47,12 @@
 {
   NSString* aPath = [self.gitPathField stringValue];
 
+  if ([aPath isEqualToString:@""])
+  {
+    [self.gitPathStatusLabel setStringValue:@""];
+    return NO;
+  }
+  
   BOOL isDirectory = NO;
   if (![[NSFileManager defaultManager] fileExistsAtPath:aPath isDirectory:&isDirectory])
   {
