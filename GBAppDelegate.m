@@ -228,8 +228,8 @@
   else 
   {
     NSURL* url = [NSURL fileURLWithPath:path];
-    if ([NSAlert safePrompt:NSLocalizedString(@"The folder is not a git repository.\nMake it a repository?", @"")
-                  description:path] == NSAlertDefaultReturn)
+    if ([NSAlert prompt:NSLocalizedString(@"The folder is not a git repository.\nMake it a repository?", @"")
+                  description:path])
     {
       [GBRepository initRepositoryAtURL:url];
       GBRepositoryController* ctrl = [self openRepositoryAtURL:url];

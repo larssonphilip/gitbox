@@ -5,6 +5,7 @@
 #import "GBStageViewController.h"
 #import "GBCommitViewController.h"
 
+#import "GBAppDelegate.h"
 #import "GBRemotesController.h"
 #import "GBPromptController.h"
 #import "GBCommitPromptController.h"
@@ -520,6 +521,13 @@
     [[alert window] orderOut:self];
     [alert autorelease];
   }
+
+
+- (void) repositoryWantsOpenPreferencesWindow:(GBRepository*)repo
+{
+  GBAppDelegate* appDelegate = [NSApp delegate];
+  [appDelegate.preferencesController showWindow:self];
+}
 
 
 

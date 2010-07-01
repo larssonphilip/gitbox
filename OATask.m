@@ -41,6 +41,8 @@ NSString* OATaskNotification = @"OATaskNotification";
 
 @synthesize activity;
 
+@synthesize alertExecutableNotFoundBlock;
+
 
 
 #pragma mark Class Methods
@@ -135,8 +137,8 @@ NSString* OATaskNotification = @"OATaskNotification";
   NSString* cannotFindPathString = [NSString stringWithFormat:NSLocalizedString(@"Cannot find path to %@.", @""), executable];
   NSString* doYouWantToLocateString = NSLocalizedString(@"Do you want to locate it on disk?\n(Use ⌘⇧G to enter the path.)",@"");
   
-  if ([NSAlert safePrompt:cannotFindPathString
-               description:doYouWantToLocateString] == NSAlertDefaultReturn)
+  if ([NSAlert prompt:cannotFindPathString
+               description:doYouWantToLocateString])
   {
     while (1)
     {
@@ -184,12 +186,7 @@ NSString* OATaskNotification = @"OATaskNotification";
     }
     else
     {
-      aPath = [self launchPathByAskingUserToLocateExecutable:exec];
-      if (aPath)
-      {
-        self.launchPath = aPath;
-        [[self class] rememberPath:aPath forExecutable:exec];
-      }
+      [self alertExecutableNotFound:exec];
     }
   }
   return [[launchPath retain] autorelease];
@@ -237,6 +234,7 @@ NSString* OATaskNotification = @"OATaskNotification";
     [nstask terminate];
   }
   
+  self.alertExecutableNotFoundBlock = nil;
   self.executableName = nil;
   self.launchPath = nil;
   self.currentDirectoryPath = nil;
@@ -505,6 +503,20 @@ NSString* OATaskNotification = @"OATaskNotification";
   // for subclasses
 }
 
+
+- (void) alertExecutableNotFound:(NSString*)executable
+{
+  if (alertExecutableNotFoundBlock)
+  {
+    alertExecutableNotFoundBlock(executable);
+  }
+  else
+  {
+    NSString* message = [NSString stringWithFormat:NSLocalizedString(@"Cannot find path to %@.", @""), executable];
+    NSString* advice = NSLocalizedString(@"Please put it into your $PATH or a well-known location such as /usr/local/bin", @"");
+    [NSAlert message:message description:advice];
+  }
+}
 
 
 

@@ -34,26 +34,22 @@
   return [alert runModal];  
 }
 
-+ (NSInteger) safePrompt:(NSString*)message description:(NSString*)description
++ (BOOL) prompt:(NSString*)message description:(NSString*)description ok:(NSString*)okTitle
 {
   if (!message) return 0;
   NSAlert* alert = [NSAlert alertWithMessageText:message
-                                   defaultButton:NSLocalizedString(@"OK", @"")
+                                   defaultButton:okTitle
                                  alternateButton:NSLocalizedString(@"Cancel", @"")
                                      otherButton:nil
                        informativeTextWithFormat:description ? description : @""];
-  return [alert runModal];
+  
+  return ([alert runModal] == NSAlertDefaultReturn);  
 }
 
-+ (NSInteger) unsafePrompt:(NSString*)message description:(NSString*)description
++ (BOOL) prompt:(NSString*)message description:(NSString*)description
 {
-  if (!message) return 0;
-  NSAlert* alert = [NSAlert alertWithMessageText:message
-                                   defaultButton:NSLocalizedString(@"Cancel", @"")
-                                 alternateButton:NSLocalizedString(@"OK", @"")
-                                     otherButton:nil
-                       informativeTextWithFormat:description ? description : @""];
-  return [alert runModal];
+  return [self prompt:message description:description ok:NSLocalizedString(@"OK", @"")];
 }
+
 
 @end

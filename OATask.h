@@ -1,3 +1,6 @@
+
+typedef void (^OATaskBlockWithString)(NSString*);
+
 extern NSString* OATaskNotification;
 @class OAActivity;
 @interface OATask : NSObject
@@ -18,6 +21,8 @@ extern NSString* OATaskNotification;
   id standardError;
   
   OAActivity* activity;
+  
+  OATaskBlockWithString alertExecutableNotFoundBlock;
 }
 
 @property(nonatomic,retain) NSString* executableName;
@@ -37,6 +42,7 @@ extern NSString* OATaskNotification;
 
 @property(nonatomic,retain) OAActivity* activity;
 
+@property(nonatomic,copy) OATaskBlockWithString alertExecutableNotFoundBlock;
 
 + (id) task;
 
@@ -71,5 +77,6 @@ extern NSString* OATaskNotification;
 #pragma mark API for subclasses
 
 - (void) didFinish;
+- (void) alertExecutableNotFound:(NSString*)executable;
 
 @end

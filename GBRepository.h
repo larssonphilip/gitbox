@@ -3,6 +3,7 @@
 @protocol GBRepositoryDelegate
 - (void) repositoryDidUpdateStatus:(GBRepository*)repo;
 - (void) repository:(GBRepository*)repo didUpdateRemote:(GBRemote*)remote;
+- (void) repositoryWantsOpenPreferencesWindow:(GBRepository*)repo;
 @optional
 - (void) repository:(GBRepository*)repo alertWithError:(NSError*)error;
 - (void) repository:(GBRepository*)repo alertWithMessage:(NSString*)message description:(NSString*)description;
@@ -143,6 +144,7 @@
 - (id) launchTaskAndWait:(GBTask*)aTask;
 - (NSURL*) gitURLWithSuffix:(NSString*)suffix;
 
+- (void) openPreferences;
 
 @end
 

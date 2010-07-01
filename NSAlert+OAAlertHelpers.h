@@ -7,7 +7,6 @@
 + (NSInteger) message:(NSString*)message;
 + (NSInteger) message:(NSString*)message description:(NSString*)description;
 + (NSInteger) message:(NSString*)message description:(NSString*)description buttonTitle:(NSString*)buttonTitle;
-+ (NSInteger) safePrompt:(NSString*)message description:(NSString*)description;
-+ (NSInteger) unsafePrompt:(NSString*)message description:(NSString*)description;
-
++ (BOOL) prompt:(NSString*)message description:(NSString*)description;
++ (BOOL) prompt:(NSString*)message description:(NSString*)description ok:(NSString*)okTitle;
 @end

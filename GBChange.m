@@ -4,6 +4,7 @@
 #import "OATaskManager.h"
 
 #import "NSString+OAGitHelpers.h"
+#import "NSAlert+OAAlertHelpers.h"
 
 @implementation GBChange
 
@@ -220,6 +221,17 @@
   // opendiff will quit in 5 secs
   // It also messes with xcode's PTY so after first launch xcode does not show log (but Console.app does).
   task.avoidIndicator = YES;
+  task.alertExecutableNotFoundBlock = ^(NSString* executable)
+  {
+    NSString* message = [NSString stringWithFormat:NSLocalizedString(@"Cannot find path to %@ launch binary (%@).", @""), 
+                         diffTool, executable];
+    NSString* advice = NSLocalizedString(@"Please install the executable, choose another diff tool or specify a path to launcher in Preferences.", @"");
+
+    if ([NSAlert prompt:message description:advice ok:NSLocalizedString(@"Open Preferences",@"")])
+    {
+      [self.repository openPreferences];
+    }
+  };
   [self.repository.taskManager launchTask:task];
 }
 
