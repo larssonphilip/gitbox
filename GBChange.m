@@ -218,7 +218,6 @@
   {
     task.executableName = @"chdiff";
   }
-  task.executableName = @"xyzdiff";
   task.currentDirectoryPath = self.repository.path;
   task.arguments = [NSArray arrayWithObjects:[leftURL path], [rightURL path], nil];
   // opendiff will quit in 5 secs

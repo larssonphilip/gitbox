@@ -30,7 +30,7 @@
 
 - (IBAction) diffToolDidChange:(id)_
 {
-  NSString* diffTool = [[NSUserDefaults standardUserDefaults] stringForKey:@"diffTool"];
+  NSString* diffTool = [self stringForKey:@"diffTool"];
   
   NSString* executableName = @"opendiff";
   
@@ -47,7 +47,7 @@
   NSString* path = [OATask systemPathForExecutable:executableName];
   if (!path) path = @"";
 
-  [[NSUserDefaults standardUserDefaults] setObject:path forKey:@"diffToolLaunchPath"];
+  [self setString:path forKey:@"diffToolLaunchPath"];
 }
 
 
@@ -146,6 +146,21 @@
     NSString* path = [OATask rememberedPathForExecutable:@"git"];
     if (!path) path = @"";
     [self.gitPathField setStringValue:path];
+    
+    if ([path isEqual:@""])
+    {
+      NSString* path = [OATask systemPathForExecutable:@"git"];
+      if (path)
+      {
+        [self.gitPathField setStringValue:path];
+      }
+    }
+    
+    NSString* diffToolLaunchPath = [self stringForKey:@"diffToolLaunchPath"];
+    if (!diffToolLaunchPath || [diffToolLaunchPath isEqualToString:@""])
+    {
+      [self diffToolDidChange:nil];
+    }
   }
   [self checkGitPath];
   

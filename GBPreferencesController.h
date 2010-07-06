@@ -15,4 +15,8 @@
 - (IBAction) selectDiffToolTab;
 - (IBAction) diffToolDidChange:(id)_;
 
+- (NSString*) stringForKey:(NSString*)key;
+- (void) setString:(NSString*) string forKey:(NSString*)key;
+
+
 @end
