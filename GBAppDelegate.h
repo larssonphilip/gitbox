@@ -15,6 +15,7 @@
 - (IBAction) openDocument:(id)_;
 - (IBAction) showActivityWindow:(id)_;
 - (IBAction) releaseNotes:(id)_;
+- (IBAction) showDiffToolPreferences:(id)_;
 
 - (BOOL) checkGitVersion;
 

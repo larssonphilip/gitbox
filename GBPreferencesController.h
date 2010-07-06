@@ -12,4 +12,7 @@
 
 - (NSArray*) diffTools;
 
+- (IBAction) selectDiffToolTab;
+- (IBAction) diffToolDidChange:(id)_;
+
 @end

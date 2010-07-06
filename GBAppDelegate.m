@@ -142,6 +142,12 @@
   return YES;
 }
 
+- (IBAction) showDiffToolPreferences:(id)_
+{
+  [self.preferencesController selectDiffToolTab];
+  [self.preferencesController showWindow:nil];
+}
+
 
 
 #pragma mark Window states

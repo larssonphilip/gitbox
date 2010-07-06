@@ -523,12 +523,6 @@
   }
 
 
-- (void) repositoryWantsOpenPreferencesWindow:(GBRepository*)repo
-{
-  GBAppDelegate* appDelegate = [NSApp delegate];
-  [appDelegate.preferencesController showWindow:self];
-}
-
 
 
 

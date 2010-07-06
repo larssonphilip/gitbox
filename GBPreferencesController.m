@@ -23,6 +23,34 @@
   return [GBChange diffTools];
 }
 
+- (IBAction) selectDiffToolTab
+{
+  [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithUnsignedInteger:1] forKey:@"GBPreferencesTabIndex"];
+}
+
+- (IBAction) diffToolDidChange:(id)_
+{
+  NSString* diffTool = [[NSUserDefaults standardUserDefaults] stringForKey:@"diffTool"];
+  
+  NSString* executableName = @"opendiff";
+  
+  if (!diffTool) diffTool = @"FileMerge";
+  if ([diffTool isEqualToString:@"Kaleidoscope"])
+  {
+    executableName = @"ksdiff";
+  }
+  else if ([diffTool isEqualToString:@"Changes"])
+  {
+    executableName = @"chdiff";
+  }
+  
+  NSString* path = [OATask systemPathForExecutable:executableName];
+  if (!path) path = @"";
+
+  [[NSUserDefaults standardUserDefaults] setObject:path forKey:@"diffToolLaunchPath"];
+}
+
+
 
 
 #pragma mark Storage

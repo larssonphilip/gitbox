@@ -806,11 +806,5 @@
   return [self.dotGitURL URLByAppendingPathComponent:suffix];
 }
 
-- (void) openPreferences
-{
-  [self.delegate repositoryWantsOpenPreferencesWindow:self];
-}
-
-
 
 @end

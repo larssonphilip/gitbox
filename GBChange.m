@@ -207,7 +207,9 @@
   
   OATask* task = [OATask task];
   task.executableName = @"opendiff";
+  
   NSString* diffTool = [[NSUserDefaults standardUserDefaults] stringForKey:@"diffTool"];
+  if (!diffTool) diffTool = @"FileMerge";
   if ([diffTool isEqualToString:@"Kaleidoscope"])
   {
     task.executableName = @"ksdiff";
@@ -216,6 +218,7 @@
   {
     task.executableName = @"chdiff";
   }
+  task.executableName = @"xyzdiff";
   task.currentDirectoryPath = self.repository.path;
   task.arguments = [NSArray arrayWithObjects:[leftURL path], [rightURL path], nil];
   // opendiff will quit in 5 secs
@@ -223,13 +226,13 @@
   task.avoidIndicator = YES;
   task.alertExecutableNotFoundBlock = ^(NSString* executable)
   {
-    NSString* message = [NSString stringWithFormat:NSLocalizedString(@"Cannot find path to %@ launch binary (%@).", @""), 
-                         diffTool, executable];
-    NSString* advice = NSLocalizedString(@"Please install the executable, choose another diff tool or specify a path to launcher in Preferences.", @"");
+    NSString* message = [NSString stringWithFormat:
+                         NSLocalizedString(@"Cannot find path to %@.", @""), diffTool];
+    NSString* advice = [NSString stringWithFormat:NSLocalizedString(@"Please install the executable %@, choose another diff tool or specify a path to launcher in Preferences.", @""), task.executableName];
 
     if ([NSAlert prompt:message description:advice ok:NSLocalizedString(@"Open Preferences",@"")])
     {
-      [self.repository openPreferences];
+      [NSApp sendAction:@selector(showDiffToolPreferences:) to:nil from:self];
     }
   };
   [self.repository.taskManager launchTask:task];
