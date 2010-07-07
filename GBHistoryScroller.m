@@ -53,7 +53,7 @@
   CGContextClip(context);
   
   CGColorRef color1 = CGColorCreateGenericRGB(0.9, 0.9, 0.9, alpha);
-  CGColorRef color2 = CGColorCreateGenericRGB(0.5, 0.5, 0.5, alpha);
+  CGColorRef color2 = CGColorCreateGenericRGB(0.7, 0.7, 0.7, alpha);
   CGColorRef colorsList[] = { color1, color2 };
   CFArrayRef colors = CFArrayCreate(NULL, (const void**)colorsList, sizeof(colorsList) / sizeof(CGColorRef), &kCFTypeArrayCallBacks);
   

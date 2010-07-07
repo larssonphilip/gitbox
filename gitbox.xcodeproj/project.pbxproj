@@ -30,6 +30,7 @@
 		2025D3BA11BF1F2D004715FA /* NSAttributedString+OAAttributedStringHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 2025D3B911BF1F2D004715FA /* NSAttributedString+OAAttributedStringHelpers.m */; };
 		20265C0311D68D3400709F6B /* OAPropertyListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20265C0211D68D3400709F6B /* OAPropertyListController.m */; };
 		20265C1411D68F1300709F6B /* OAFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 20265C1311D68F1300709F6B /* OAFile.m */; };
+		20265E4B11E3EB9B00709F6B /* GBWelcomeController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 20265E4A11E3EB9B00709F6B /* GBWelcomeController.xib */; };
 		2030F19511B82BED00C260E0 /* commit-marker-unmerged-highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 2030F19311B82BED00C260E0 /* commit-marker-unmerged-highlighted.png */; };
 		2030F19611B82BED00C260E0 /* commit-marker-unpushed-highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 2030F19411B82BED00C260E0 /* commit-marker-unpushed-highlighted.png */; };
 		2035623311D383BE00965765 /* GBCommandsController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2035623211D383BE00965765 /* GBCommandsController.xib */; };
@@ -153,6 +154,7 @@
 		20265C0211D68D3400709F6B /* OAPropertyListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAPropertyListController.m; sourceTree = "<group>"; };
 		20265C1211D68F1300709F6B /* OAFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAFile.h; sourceTree = "<group>"; };
 		20265C1311D68F1300709F6B /* OAFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAFile.m; sourceTree = "<group>"; };
+		20265E4A11E3EB9B00709F6B /* GBWelcomeController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBWelcomeController.xib; sourceTree = "<group>"; };
 		2030F19311B82BED00C260E0 /* commit-marker-unmerged-highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "commit-marker-unmerged-highlighted.png"; sourceTree = "<group>"; };
 		2030F19411B82BED00C260E0 /* commit-marker-unpushed-highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "commit-marker-unpushed-highlighted.png"; sourceTree = "<group>"; };
 		2035623211D383BE00965765 /* GBCommandsController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBCommandsController.xib; sourceTree = "<group>"; };
@@ -387,6 +389,7 @@
 				209A935911BA92B6006B0B5C /* GBFileEditingController.xib */,
 				2015F5C111C6D41B00BBA543 /* GBMultipleGitPathsFoundController.xib */,
 				2035623211D383BE00965765 /* GBCommandsController.xib */,
+				20265E4A11E3EB9B00709F6B /* GBWelcomeController.xib */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -621,6 +624,7 @@
 				2015F5C211C6D41B00BBA543 /* GBMultipleGitPathsFoundController.xib in Resources */,
 				20BF302011D0E3DC00B6DDC9 /* commit-marker-highlighted.png in Resources */,
 				2035623311D383BE00965765 /* GBCommandsController.xib in Resources */,
+				20265E4B11E3EB9B00709F6B /* GBWelcomeController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
