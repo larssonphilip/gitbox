@@ -41,19 +41,19 @@
   
   CGContextRef context = CGContextCurrentContext();
   
-  CGFloat alpha = 0.15;
+  CGFloat alpha = 0.5;
   
   if ([[self window] isMainWindow] && [[self window] isKeyWindow])
   {
-    alpha = 0.25;
+    alpha = 0.7;
   }
   CGFloat radius = 7.0;
   CGContextSaveGState(context);
   CGContextAddRoundRect(context, rect, radius);
   CGContextClip(context);
   
-  CGColorRef color1 = CGColorCreateGenericRGB(0.4, 0.4, 0.4, alpha);
-  CGColorRef color2 = CGColorCreateGenericRGB(0.0, 0.0, 0.0, alpha);
+  CGColorRef color1 = CGColorCreateGenericRGB(0.9, 0.9, 0.9, alpha);
+  CGColorRef color2 = CGColorCreateGenericRGB(0.5, 0.5, 0.5, alpha);
   CGColorRef colorsList[] = { color1, color2 };
   CFArrayRef colors = CFArrayCreate(NULL, (const void**)colorsList, sizeof(colorsList) / sizeof(CGColorRef), &kCFTypeArrayCallBacks);
   
@@ -76,7 +76,7 @@
   
   CGContextAddRoundRect(context, rect, radius);
 
-  CGContextSetRGBStrokeColor(context, 1, 1, 1, alpha*0.4);
+  CGContextSetRGBStrokeColor(context, 0.3, 0.3, 0.3, alpha*0.3);
   CGContextSetLineWidth(context, 1.0);
   CGContextSetLineJoin(context, kCGLineJoinRound);
   CGContextSetLineCap(context, kCGLineCapButt);
