@@ -32,6 +32,13 @@
   return [firstLetter stringByAppendingString:nextLetters];
 }
 
+- (NSString*) twoLastPathComponents
+{
+  NSArray* comps = [self pathComponents];
+  if ([comps count] < 2) return [self lastPathComponent];
+  return [[self lastPathComponent] stringByAppendingFormat:@" — %@", [[self stringByDeletingLastPathComponent] lastPathComponent]];
+}
+
 @end
 
 @implementation NSMutableString (OAStringHelpers)

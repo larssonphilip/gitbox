@@ -9,6 +9,7 @@
 - (BOOL) isEmptyString;
 
 - (NSString*) stringWithFirstLetterCapitalized;
+- (NSString*) twoLastPathComponents;
 
 @end
 
