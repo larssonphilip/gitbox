@@ -37,6 +37,7 @@ UI glitches:
 - remember activity window visibility
 
 Easy features:
+- TO TEST: pull should merge fetched commits, but perform the pull immediately afterwards
 - force push a branch
 - create a new tag
 - stash list: as a local branch menu item?

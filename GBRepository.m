@@ -619,6 +619,7 @@
       if (hasUnmergedCommits)
       {
         [self mergeBranch:self.currentRemoteBranch];
+        [self pullBranch:self.currentRemoteBranch];
       }
       else
       {
