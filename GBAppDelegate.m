@@ -2,6 +2,7 @@
 #import "GBRepositoryController.h"
 #import "GBActivityController.h"
 #import "GBPreferencesController.h"
+#import "GBLicenseCheck.h"
 
 #import "GBRepository.h"
 #import "GBStage.h"
@@ -10,6 +11,7 @@
 #import "NSFileManager+OAFileManagerHelpers.h"
 #import "NSAlert+OAAlertHelpers.h"
 #import "NSData+OADataHelpers.h"
+
 
 @interface GBAppDelegate ()
 - (void) storeRepositories;
@@ -87,6 +89,20 @@
 
 - (GBRepositoryController*) openWindowForRepositoryAtURL:(NSURL*)url
 {
+  if ([self.windowControllers count] > 1)
+  {
+    if (!GBIsValidLicense())
+    {
+      [NSObject cancelPreviousPerformRequestsWithTarget:self 
+                                               selector:@selector(askForLicense)
+                                                 object:nil];
+      [self performSelector:@selector(askForLicense)
+                 withObject:nil
+                 afterDelay:0.0];
+      return nil;
+    }
+  }
+  
   if (![self checkGitVersion])
   {
     return nil;
@@ -111,8 +127,11 @@
 - (GBRepositoryController*) openRepositoryAtURL:(NSURL*)url
 {
   id ctrl = [self openWindowForRepositoryAtURL:url];
-  [self storeRepositories];
-  [[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:url];
+  if (ctrl)
+  {
+    [self storeRepositories];
+    [[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:url];    
+  }
   return ctrl;
 }
 
@@ -180,6 +199,19 @@
     } // for
   } // if paths
 }
+
+
+
+
+#pragma mark License
+
+
+- (void) askForLicense
+{
+  
+}
+
+
 
 
 

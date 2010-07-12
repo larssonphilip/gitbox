@@ -26,6 +26,8 @@
 		2010732F11A7E9C300EFDE56 /* app.icns in Resources */ = {isa = PBXBuildFile; fileRef = 2010732E11A7E9C300EFDE56 /* app.icns */; };
 		201073B611A80A4600EFDE56 /* GBRemotesTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 201073B511A80A4600EFDE56 /* GBRemotesTask.m */; };
 		2015F5C211C6D41B00BBA543 /* GBMultipleGitPathsFoundController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2015F5C111C6D41B00BBA543 /* GBMultipleGitPathsFoundController.xib */; };
+		201E02E311EA205C007E4420 /* GBLicenseCheck.m in Sources */ = {isa = PBXBuildFile; fileRef = 201E02E211EA205C007E4420 /* GBLicenseCheck.m */; };
+		201E02F711EA231D007E4420 /* GBLicenseController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 201E02F611EA231D007E4420 /* GBLicenseController.xib */; };
 		201E5F6811AA71E00061EFD6 /* NSObject+OAKeyValueObserving.m in Sources */ = {isa = PBXBuildFile; fileRef = 201E5F6711AA71E00061EFD6 /* NSObject+OAKeyValueObserving.m */; };
 		2025D3BA11BF1F2D004715FA /* NSAttributedString+OAAttributedStringHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 2025D3B911BF1F2D004715FA /* NSAttributedString+OAAttributedStringHelpers.m */; };
 		20265C0311D68D3400709F6B /* OAPropertyListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20265C0211D68D3400709F6B /* OAPropertyListController.m */; };
@@ -146,6 +148,9 @@
 		201073B411A80A4600EFDE56 /* GBRemotesTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBRemotesTask.h; sourceTree = "<group>"; };
 		201073B511A80A4600EFDE56 /* GBRemotesTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBRemotesTask.m; sourceTree = "<group>"; };
 		2015F5C111C6D41B00BBA543 /* GBMultipleGitPathsFoundController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBMultipleGitPathsFoundController.xib; sourceTree = "<group>"; };
+		201E02E111EA205C007E4420 /* GBLicenseCheck.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBLicenseCheck.h; sourceTree = "<group>"; };
+		201E02E211EA205C007E4420 /* GBLicenseCheck.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBLicenseCheck.m; sourceTree = "<group>"; };
+		201E02F611EA231D007E4420 /* GBLicenseController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBLicenseController.xib; sourceTree = "<group>"; };
 		201E5F6611AA71E00061EFD6 /* NSObject+OAKeyValueObserving.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+OAKeyValueObserving.h"; sourceTree = "<group>"; };
 		201E5F6711AA71E00061EFD6 /* NSObject+OAKeyValueObserving.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+OAKeyValueObserving.m"; sourceTree = "<group>"; };
 		2025D3B811BF1F2D004715FA /* NSAttributedString+OAAttributedStringHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSAttributedString+OAAttributedStringHelpers.h"; sourceTree = "<group>"; };
@@ -328,6 +333,16 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		201E02DA11EA1ED3007E4420 /* License */ = {
+			isa = PBXGroup;
+			children = (
+				201E02E111EA205C007E4420 /* GBLicenseCheck.h */,
+				201E02E211EA205C007E4420 /* GBLicenseCheck.m */,
+				201E02F611EA231D007E4420 /* GBLicenseController.xib */,
+			);
+			name = License;
+			sourceTree = "<group>";
+		};
 		2038F30811952FAE0087CE37 /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -508,6 +523,7 @@
 		2A37F4ABFDCFA73011CA2CEA /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				201E02DA11EA1ED3007E4420 /* License */,
 				2038F30811952FAE0087CE37 /* Models */,
 				2038F6C611A030FF0087CE37 /* Tasks */,
 				2038F30911952FB80087CE37 /* Controllers */,
@@ -625,6 +641,7 @@
 				20BF302011D0E3DC00B6DDC9 /* commit-marker-highlighted.png in Resources */,
 				2035623311D383BE00965765 /* GBCommandsController.xib in Resources */,
 				20265E4B11E3EB9B00709F6B /* GBWelcomeController.xib in Resources */,
+				201E02F711EA231D007E4420 /* GBLicenseController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -710,6 +727,7 @@
 				2035639E11D3C14C00965765 /* GBHistoryScrollView.m in Sources */,
 				20265C0311D68D3400709F6B /* OAPropertyListController.m in Sources */,
 				20265C1411D68F1300709F6B /* OAFile.m in Sources */,
+				201E02E311EA205C007E4420 /* GBLicenseCheck.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -618,7 +618,8 @@
       }
       if (hasUnmergedCommits)
       {
-        [self mergeBranch:self.currentRemoteBranch];
+        // TODO: should create a queue for the tasks to replace the conditional flags like self.pulling
+        //[self mergeBranch:self.currentRemoteBranch];
         [self pullBranch:self.currentRemoteBranch];
       }
       else
