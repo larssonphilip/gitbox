@@ -22,6 +22,8 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		2000324311FC72620069C70D /* OAPrimaryMACAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = 2000324211FC72620069C70D /* OAPrimaryMACAddress.m */; };
+		2000325411FC75050069C70D /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2000325311FC75050069C70D /* IOKit.framework */; };
 		200B08B511B6E359004C09A8 /* GBLocalRemoteAssociationTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 200B08B411B6E359004C09A8 /* GBLocalRemoteAssociationTask.m */; };
 		2010732F11A7E9C300EFDE56 /* app.icns in Resources */ = {isa = PBXBuildFile; fileRef = 2010732E11A7E9C300EFDE56 /* app.icns */; };
 		201073B611A80A4600EFDE56 /* GBRemotesTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 201073B511A80A4600EFDE56 /* GBRemotesTask.m */; };
@@ -144,6 +146,9 @@
 		13E42FBA07B3F13500E4EEF1 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
 		1DDD58290DA1D0D100B32029 /* GBRepositoryController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBRepositoryController.xib; sourceTree = "<group>"; };
 		1DDD582B0DA1D0D100B32029 /* MainMenu.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
+		2000324111FC72620069C70D /* OAPrimaryMACAddress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAPrimaryMACAddress.h; sourceTree = "<group>"; };
+		2000324211FC72620069C70D /* OAPrimaryMACAddress.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAPrimaryMACAddress.m; sourceTree = "<group>"; };
+		2000325311FC75050069C70D /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
 		2009871711C4597800F35630 /* PAYMENT */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = PAYMENT; sourceTree = "<group>"; };
 		200B08B311B6E359004C09A8 /* GBLocalRemoteAssociationTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBLocalRemoteAssociationTask.h; sourceTree = "<group>"; };
 		200B08B411B6E359004C09A8 /* GBLocalRemoteAssociationTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBLocalRemoteAssociationTask.m; sourceTree = "<group>"; };
@@ -308,6 +313,7 @@
 			files = (
 				8D15AC340486D014006FF6A4 /* Cocoa.framework in Frameworks */,
 				2057EF7611ABE5B5009EDF2F /* Sparkle.framework in Frameworks */,
+				2000325411FC75050069C70D /* IOKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -329,6 +335,7 @@
 				2A37F4C4FDCFA73011CA2CEA /* AppKit.framework */,
 				13E42FBA07B3F13500E4EEF1 /* CoreData.framework */,
 				2A37F4C5FDCFA73011CA2CEA /* Foundation.framework */,
+				2000325311FC75050069C70D /* IOKit.framework */,
 			);
 			name = "Other Frameworks";
 			sourceTree = "<group>";
@@ -350,6 +357,8 @@
 				201E030A11EE2CBD007E4420 /* GBLicenseController.m */,
 				201E030411EE09D7007E4420 /* GBCertificateUpdateController.h */,
 				201E030511EE09D7007E4420 /* GBCertificateUpdateController.m */,
+				2000324111FC72620069C70D /* OAPrimaryMACAddress.h */,
+				2000324211FC72620069C70D /* OAPrimaryMACAddress.m */,
 				201E02F611EA231D007E4420 /* GBLicenseController.xib */,
 				201E030111EE083D007E4420 /* GBCertificateUpdateController.xib */,
 			);
@@ -744,6 +753,7 @@
 				201E02E311EA205C007E4420 /* GBLicenseCheck.m in Sources */,
 				201E030611EE09D7007E4420 /* GBCertificateUpdateController.m in Sources */,
 				201E030B11EE2CBD007E4420 /* GBLicenseController.m in Sources */,
+				2000324311FC72620069C70D /* OAPrimaryMACAddress.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

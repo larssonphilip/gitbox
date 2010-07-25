@@ -12,6 +12,7 @@
 #import "NSAlert+OAAlertHelpers.h"
 #import "NSData+OADataHelpers.h"
 
+#import "OAPrimaryMACAddress.h"
 
 @interface GBAppDelegate ()
 - (void) storeRepositories;
