@@ -42,6 +42,7 @@ Easy features:
 - create a new tag
 - stash list: as a local branch menu item?
 - stash/apply stash from the menu, context menu
+- quicklook for the file on space in stage
 
 
 Hard features:
