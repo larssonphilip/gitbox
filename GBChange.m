@@ -223,8 +223,7 @@
   // opendiff will quit in 5 secs
   // It also messes with xcode's PTY so after first launch xcode does not show log (but Console.app does).
   task.avoidIndicator = YES;
-  task.alertExecutableNotFoundBlock = ^(NSString* executable)
-  {
+  task.alertExecutableNotFoundBlock = ^(NSString* executable) {
     NSString* message = [NSString stringWithFormat:
                          NSLocalizedString(@"Cannot find path to %@.", @""), diffTool];
     NSString* advice = [NSString stringWithFormat:NSLocalizedString(@"Please install the executable %@, choose another diff tool or specify a path to launcher in Preferences.", @""), task.executableName];

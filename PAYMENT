@@ -5,8 +5,8 @@
 4. When non-free feature is used and there's no valid license, purchase window pops up.
 5. When user enters the license key, application loads a machine-specific certificate as in 3.
 6. License is issued for a current app version.
-7. License is updated when another version is running.
-8. If license is used on another machine, popup appears and suggests to either replace old machine entry with current machine or purchase another license with 20% discount.
+7. License is updated when another version is running by sending current certificate (we don't store license number)
+8. If the license is used on another machine, popup appears and suggests to either replace old machine entry with current machine or purchase another license with 20% discount.
 9. When old machine entry is replaced, old MAC address is blacklisted and further updates cannot use license for that MAC address.
 
 

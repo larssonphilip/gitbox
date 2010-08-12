@@ -50,9 +50,11 @@
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
 	<key>GBReleaseNotesURL</key>
-	<string>http://gitbox.pierlis.com/release-notes/${APP_VERSION}.html</string>
+	<string>http://gitboxapp.com/release-notes/${APP_VERSION}.html</string>
+	<key>GBPurchaseURL</key>
+	<string>http://gitboxapp.com/purchase.html</string>
 	<key>SUFeedURL</key>
-	<string>http://gitbox.pierlis.com/updates.xml</string>
+	<string>http://gitboxapp.com/updates.xml</string>
 	<key>SUPublicDSAKeyFile</key>
 	<string>sparkle_dsa_pub.pem</string>
 </dict>
