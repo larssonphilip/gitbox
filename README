@@ -37,7 +37,7 @@ UI glitches:
 - remember activity window visibility
 
 Easy features:
-- TO TEST: pull should merge fetched commits, but perform the pull immediately afterwards
+- DONE, SHOULD TEST: pull should merge fetched commits, but perform the pull immediately afterwards
 - force push a branch
 - create a new tag
 - stash list: as a local branch menu item?
@@ -72,6 +72,7 @@ Hard features:
 - submodules UI
 - conflict stage: highlight conflicted changes, allow to choose one of the versions 
 - individual chunks commit
+- bundle git binaries with the app package
 
 
 Other:
@@ -91,6 +92,9 @@ UILab nonsense:
 - bottom bar for stage
 - choose font for commits 
 
+Bonjour info:
+- publish and locate service with NSNetService API
+- see gitjour ruby script and try to use it to test client
 
 
 Done:
