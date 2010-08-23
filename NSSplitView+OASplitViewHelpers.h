@@ -5,7 +5,7 @@
  
    When splitview is autoresized by dragging a parent view or a window, 
    subviews are equally resizes without asking delegate to contraint their sizes.
-   This method helps to contrain first view size in case of autoresizing.
+   This method helps to constrain first view size in case of autoresizing.
    
    Note: do not forget to also implement splitView:constrainMinCoordinate:ofSubviewAt:
  

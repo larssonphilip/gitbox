@@ -1,0 +1,7 @@
+
+1. Stage area data mapping
+
+Problem: when status of the change is updated, the UI selection is lost (because binding source changes)
+
+Solution: keep the dictionary of the items (key is path) and update them instead of creating new ones.
+

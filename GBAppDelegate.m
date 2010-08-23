@@ -1,5 +1,5 @@
 #import "GBAppDelegate.h"
-#import "GBRepositoryController.h"
+#import "GBMainWindowController.h"
 #import "GBActivityController.h"
 #import "GBPreferencesController.h"
 #import "GBLicenseCheck.h"
@@ -21,39 +21,21 @@
 
 @implementation GBAppDelegate
 
-@synthesize windowControllers;
+@synthesize windowController;
 @synthesize preferencesController;
 
-- (NSMutableSet*) windowControllers
+- (GBMainWindowController*) windowController
 {
-  if (!windowControllers)
+  if (!windowController)
   {
-    self.windowControllers = [NSMutableSet set];
+    self.windowController = [GBMainWindowController controller];
   }
-  return [[windowControllers retain] autorelease];
-}
-
-- (void)addWindowController:(id)aController
-{
-  [self.windowControllers addObject:aController];
-}
-
-- (void)removeWindowController:(id)aController
-{
-  [self.windowControllers removeObject:aController];
-}
-
-- (GBRepositoryController*) windowController
-{
-  GBRepositoryController* windowController = [GBRepositoryController controller];
-  windowController.delegate = self;
-  [windowController setShouldCascadeWindows:NO];
-  return windowController;
+  return [[windowController retain] autorelease];
 }
 
 - (void) dealloc
 {
-  self.windowControllers = nil;
+  self.windowController = nil;
   self.preferencesController = nil;
   [super dealloc];
 }
@@ -88,53 +70,56 @@
   [[GBActivityController sharedActivityController] showWindow:sender];
 }
 
-- (GBRepositoryController*) openWindowForRepositoryAtURL:(NSURL*)url
-{
-  if ([self.windowControllers count] > 1)
-  {
-    if (!GBIsValidLicense())
-    {
-      [NSObject cancelPreviousPerformRequestsWithTarget:self 
-                                               selector:@selector(askForLicense)
-                                                 object:nil];
-      [self performSelector:@selector(askForLicense)
-                 withObject:nil
-                 afterDelay:0.0];
-      return nil;
-    }
-  }
-  
-  if (![self checkGitVersion])
-  {
-    return nil;
-  }
-  
-  for (GBRepositoryController* ctrl in self.windowControllers)
-  {
-    if ([ctrl.repository.url isEqual:url])
-    {
-      [ctrl showWindow:self];
-      return ctrl;
-    }
-  }
-  
-  GBRepositoryController* windowController = [self windowController];
-  windowController.repositoryURL = url;
-  [self addWindowController:windowController];
-  [windowController showWindow:self];
-  return windowController;
-}
 
-- (GBRepositoryController*) openRepositoryAtURL:(NSURL*)url
-{
-  id ctrl = [self openWindowForRepositoryAtURL:url];
-  if (ctrl)
-  {
-    [self storeRepositories];
-    [[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:url];    
-  }
-  return ctrl;
-}
+
+
+//- (GBRepositoryController*) openWindowForRepositoryAtURL:(NSURL*)url
+//{
+//  if ([self.windowControllers count] > 1)
+//  {
+//    if (!GBIsValidLicense())
+//    {
+//      [NSObject cancelPreviousPerformRequestsWithTarget:self 
+//                                               selector:@selector(askForLicense)
+//                                                 object:nil];
+//      [self performSelector:@selector(askForLicense)
+//                 withObject:nil
+//                 afterDelay:0.0];
+//      return nil;
+//    }
+//  }
+//  
+//  if (![self checkGitVersion])
+//  {
+//    return nil;
+//  }
+//  
+//  for (GBRepositoryController* ctrl in self.windowControllers)
+//  {
+//    if ([ctrl.repository.url isEqual:url])
+//    {
+//      [ctrl showWindow:self];
+//      return ctrl;
+//    }
+//  }
+//  
+//  GBRepositoryController* windowController = [self windowController];
+//  windowController.repositoryURL = url;
+//  [self addWindowController:windowController];
+//  [windowController showWindow:self];
+//  return windowController;
+//}
+
+//- (GBRepositoryController*) openRepositoryAtURL:(NSURL*)url
+//{
+//  id ctrl = [self openWindowForRepositoryAtURL:url];
+//  if (ctrl)
+//  {
+//    [self storeRepositories];
+//    [[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:url];    
+//  }
+//  return ctrl;
+//}
 
 - (BOOL) checkGitVersion
 {
@@ -173,35 +158,35 @@
 #pragma mark Window states
 
 
-- (void) storeRepositories
-{
-  NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
-  NSMutableArray* paths = [NSMutableArray array];
-  for (GBRepositoryController* ctrl in self.windowControllers)
-  {
-    [paths addObject:ctrl.repository.path];
-  }
-  [defaults setObject:paths forKey:@"openedRepositories"];
-}
-
-- (void) loadRepositories
-{
-  NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
-  NSArray* paths = [defaults objectForKey:@"openedRepositories"];
-  if (paths && [paths isKindOfClass:[NSArray class]])
-  {
-    for (NSString* path in paths)
-    {
-      if ([NSFileManager isWritableDirectoryAtPath:path] &&
-          [GBRepository validRepositoryPathForPath:path])
-      {
-        [self openWindowForRepositoryAtURL:[NSURL fileURLWithPath:path]];
-      } // if path is valid repo
-    } // for
-  } // if paths
-}
-
-
+//- (void) storeRepositories
+//{
+//  NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+//  NSMutableArray* paths = [NSMutableArray array];
+//  for (GBRepositoryController* ctrl in self.windowControllers)
+//  {
+//    [paths addObject:ctrl.repository.path];
+//  }
+//  [defaults setObject:paths forKey:@"openedRepositories"];
+//}
+//
+//- (void) loadRepositories
+//{
+//  NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+//  NSArray* paths = [defaults objectForKey:@"openedRepositories"];
+//  if (paths && [paths isKindOfClass:[NSArray class]])
+//  {
+//    for (NSString* path in paths)
+//    {
+//      if ([NSFileManager isWritableDirectoryAtPath:path] &&
+//          [GBRepository validRepositoryPathForPath:path])
+//      {
+//        [self openWindowForRepositoryAtURL:[NSURL fileURLWithPath:path]];
+//      } // if path is valid repo
+//    } // for
+//  } // if paths
+//}
+//
+//
 
 
 #pragma mark License
@@ -218,16 +203,6 @@
 
 
 
-#pragma mark GBRepositoryControllerDelegate
-
-
-- (void) windowControllerWillClose:(GBRepositoryController*)aController
-{
-  [self removeWindowController:aController];
-  [self storeRepositories];
-}
-
-
 
 
 
@@ -237,12 +212,14 @@
 - (void) applicationDidFinishLaunching:(NSNotification*) aNotification
 {
   [self checkGitVersion];
-  [self loadRepositories];
+  NSLog(@"TODO: tell window controller to restore the state");
+  [self.windowController showWindow:self];
 }
 
 - (void) applicationWillTerminate:(NSNotification*)aNotification
 {
-  [self storeRepositories];
+  NSLog(@"TODO: tell window controller to remember the state");
+  //[self storeRepositories];
 }
 
 - (BOOL) applicationShouldOpenUntitledFile:(NSApplication*) app
@@ -252,36 +229,37 @@
 
 - (BOOL) application:(NSApplication*)theApplication openFile:(NSString*)path
 {
-  if (![NSFileManager isWritableDirectoryAtPath:path])
-  {
-    [NSAlert message:NSLocalizedString(@"File is not a writable folder.", @"") description:path];
-    return NO;
-  }
-  
-  NSString* repoPath = [GBRepository validRepositoryPathForPath:path];
-  if (repoPath)
-  {
-    NSURL* url = [NSURL fileURLWithPath:repoPath];
-    [self openRepositoryAtURL:url];
-    return YES;
-  }
-  else 
-  {
-    NSURL* url = [NSURL fileURLWithPath:path];
-    if ([NSAlert prompt:NSLocalizedString(@"The folder is not a git repository.\nMake it a repository?", @"")
-                  description:path])
-    {
-      [GBRepository initRepositoryAtURL:url];
-      GBRepositoryController* ctrl = [self openRepositoryAtURL:url];
-      if (ctrl)
-      {
-        [ctrl.repository.stage stageAll];
-        [ctrl.repository commitWithMessage:@"Initial commit"];
-        return YES;
-      }
-    }
-  }
-  return NO;
+  NSLog(@"TODO: tell windowController to add a repo");
+//  if (![NSFileManager isWritableDirectoryAtPath:path])
+//  {
+//    [NSAlert message:NSLocalizedString(@"File is not a writable folder.", @"") description:path];
+//    return NO;
+//  }
+//  
+//  NSString* repoPath = [GBRepository validRepositoryPathForPath:path];
+//  if (repoPath)
+//  {
+//    NSURL* url = [NSURL fileURLWithPath:repoPath];
+//    [self openRepositoryAtURL:url];
+//    return YES;
+//  }
+//  else 
+//  {
+//    NSURL* url = [NSURL fileURLWithPath:path];
+//    if ([NSAlert prompt:NSLocalizedString(@"The folder is not a git repository.\nMake it a repository?", @"")
+//                  description:path])
+//    {
+//      [GBRepository initRepositoryAtURL:url];
+//      GBRepositoryController* ctrl = [self openRepositoryAtURL:url];
+//      if (ctrl)
+//      {
+//        [ctrl.repository.stage stageAll];
+//        [ctrl.repository commitWithMessage:@"Initial commit"];
+//        return YES;
+//      }
+//    }
+//  }
+//  return NO;
 }
 
 

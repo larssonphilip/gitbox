@@ -12,20 +12,6 @@
   return self;
 }
 
-- (NSView*) setViewController:(NSViewController*)aViewController
-{
-  [self removeAllSubviews];
-  if (aViewController)
-  {
-    //NSView* otherView = [aViewController view];
-    [[aViewController view] setFrame:[self bounds]];
-    [self addSubview:[aViewController view]];
-    [[aViewController view] setNextResponder:aViewController];
-    [aViewController setNextResponder:self];    
-  }
-  return self;
-}
-
 @end
 
 
@@ -38,8 +24,26 @@
 
 - (void) unloadView
 {
-  [[self view] removeFromSuperview];
-  [self viewDidUnload];
+  if (self.view)
+  {
+    [self.view removeFromSuperview];
+    [self viewDidUnload];    
+  }
+}
+
+- (id) loadInView:(NSView*) targetView
+{
+  if (targetView)
+  {
+    [self unloadView];
+    NSViewController* aViewController = self;
+    NSView* controllerView = [aViewController view];
+    [controllerView setFrame:[targetView bounds]];
+    [targetView addSubview:controllerView];
+    [controllerView setNextResponder:aViewController];
+    [aViewController setNextResponder:targetView];
+  }  
+  return self;
 }
 
 @end

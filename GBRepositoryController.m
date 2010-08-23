@@ -483,8 +483,8 @@
   {
     self.changesViewController = self.commitController;
   }
-  NSView* changesPlaceholderView = [[self.splitView subviews] objectAtIndex:1];
-  [changesPlaceholderView setViewController:self.changesViewController];
+  NSView* changesPlaceholderView = [[self.splitView subviews] objectAtIndex:2];
+  [self.changesViewController loadInView:changesPlaceholderView];
 }
 
 - (void) repository:(GBRepository*)repo alertWithError:(NSError*)error
@@ -540,13 +540,12 @@
   [self.repository reloadCommits];
 
   // View controllers init  
-  NSView* historyPlaceholderView = [[self.splitView subviews] objectAtIndex:0];
-  [historyPlaceholderView setViewController:self.historyController];
+  NSView* historyPlaceholderView = [[self.splitView subviews] objectAtIndex:1];
+  [self.historyController loadInView:historyPlaceholderView];
 
   self.changesViewController = self.stageController;
-  NSView* changesPlaceholderView = [[self.splitView subviews] objectAtIndex:1];
-  [changesPlaceholderView setViewController:self.changesViewController];
-  
+  NSView* changesPlaceholderView = [[self.splitView subviews] objectAtIndex:2];
+  [self.changesViewController loadInView:changesPlaceholderView];
   
   // Window init
   //[self.window setTitleWithRepresentedFilename:self.repository.path];

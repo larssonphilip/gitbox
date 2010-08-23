@@ -1,15 +1,15 @@
 #import "GBRepositoryController.h"
 @class GBPreferencesController;
+@class GBMainWindowController;
 @interface GBAppDelegate : NSObject <NSApplicationDelegate, 
                                    NSOpenSavePanelDelegate,
                                    GBRepositoryControllerDelegate>
 {
-  NSMutableSet* windowControllers;
-  NSPanel* preferencesPanel;
+  GBMainWindowController* windowController;
   GBPreferencesController* preferencesController;
 }
 
-@property(nonatomic,retain) NSMutableSet* windowControllers;
+@property(nonatomic,retain) GBMainWindowController* windowController;
 @property(nonatomic,retain) IBOutlet GBPreferencesController* preferencesController;
 
 - (IBAction) openDocument:(id)_;
