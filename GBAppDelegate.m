@@ -1,5 +1,7 @@
 #import "GBAppDelegate.h"
 #import "GBMainWindowController.h"
+#import "GBSourcesController.h"
+
 #import "GBActivityController.h"
 #import "GBPreferencesController.h"
 #import "GBLicenseCheck.h"
@@ -110,8 +112,13 @@
 //  return windowController;
 //}
 
-//- (GBRepositoryController*) openRepositoryAtURL:(NSURL*)url
-//{
+- (GBRepositoryController*) openRepositoryAtURL:(NSURL*)url
+{
+  if (self.windowController.sourcesController)
+    
+//  GBRepository* repo = [[GBRepository new] autorelease];
+//  repo.url = repositoryURL;
+
 //  id ctrl = [self openWindowForRepositoryAtURL:url];
 //  if (ctrl)
 //  {
@@ -119,7 +126,7 @@
 //    [[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:url];    
 //  }
 //  return ctrl;
-//}
+}
 
 - (BOOL) checkGitVersion
 {
@@ -230,25 +237,25 @@
 - (BOOL) application:(NSApplication*)theApplication openFile:(NSString*)path
 {
   NSLog(@"TODO: tell windowController to add a repo");
-//  if (![NSFileManager isWritableDirectoryAtPath:path])
-//  {
-//    [NSAlert message:NSLocalizedString(@"File is not a writable folder.", @"") description:path];
-//    return NO;
-//  }
-//  
-//  NSString* repoPath = [GBRepository validRepositoryPathForPath:path];
-//  if (repoPath)
-//  {
-//    NSURL* url = [NSURL fileURLWithPath:repoPath];
-//    [self openRepositoryAtURL:url];
-//    return YES;
-//  }
-//  else 
-//  {
-//    NSURL* url = [NSURL fileURLWithPath:path];
-//    if ([NSAlert prompt:NSLocalizedString(@"The folder is not a git repository.\nMake it a repository?", @"")
-//                  description:path])
-//    {
+  if (![NSFileManager isWritableDirectoryAtPath:path])
+  {
+    [NSAlert message:NSLocalizedString(@"File is not a writable folder.", @"") description:path];
+    return NO;
+  }
+  
+  NSString* repoPath = [GBRepository validRepositoryPathForPath:path];
+  if (repoPath)
+  {
+    NSURL* url = [NSURL fileURLWithPath:repoPath];
+    [self openRepositoryAtURL:url];
+    return YES;
+  }
+  else 
+  {
+    NSURL* url = [NSURL fileURLWithPath:path];
+    if ([NSAlert prompt:NSLocalizedString(@"The folder is not a git repository.\nMake it a repository?", @"")
+                  description:path])
+    {
 //      [GBRepository initRepositoryAtURL:url];
 //      GBRepositoryController* ctrl = [self openRepositoryAtURL:url];
 //      if (ctrl)
@@ -257,9 +264,9 @@
 //        [ctrl.repository commitWithMessage:@"Initial commit"];
 //        return YES;
 //      }
-//    }
-//  }
-//  return NO;
+    }
+  }
+  return NO;
 }
 
 

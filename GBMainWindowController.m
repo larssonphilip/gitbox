@@ -150,15 +150,15 @@
   }
 }
 
-- (CGFloat)splitView:(NSSplitView*) aSplitView constrainMaxCoordinate:(CGFloat)proposedMax ofSubviewAt:(NSInteger)dividerIndex
-{
-  return [[[self window] contentView] bounds].size.width / 2.0;
-}
+//- (CGFloat)splitView:(NSSplitView*) aSplitView constrainMaxCoordinate:(CGFloat)proposedMax ofSubviewAt:(NSInteger)dividerIndex
+//{
+//  return [[[self window] contentView] bounds].size.width / 2.0;
+//}
 
-- (void) splitView:(NSSplitView*)aSplitView resizeSubviewsWithOldSize:(NSSize)oldSize
-{
-  [aSplitView resizeSubviewsWithOldSize:oldSize firstViewSizeLimit:120.0];
-}
+//- (void) splitView:(NSSplitView*)aSplitView resizeSubviewsWithOldSize:(NSSize)oldSize
+//{
+//  [aSplitView resizeSubviewsWithOldSize:oldSize firstViewSizeLimit:120.0];
+//}
 
 - (BOOL)splitView:(NSSplitView *)splitView canCollapseSubview:(NSView *)subview
 {// DOES NOT WORK
