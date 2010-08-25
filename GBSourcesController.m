@@ -60,14 +60,35 @@
   NSMutableArray* paths = [NSMutableArray array];
   for (GBRepository* repo in self.localRepositories)
   {
-    [paths addObject:[repo path]];
+    NSData* bookmarkData = [repo.url bookmarkDataWithOptions:NSURLBookmarkCreationMinimalBookmark
+                         includingResourceValuesForKeys:nil
+                                          relativeToURL:nil
+                                                  error:NULL];
+    if (bookmarkData)
+    {
+      [paths addObject:bookmarkData];
+    }
   }
   [defaults setObject:paths forKey:@"localRepositories"];
 }
 
 - (void) restoreRepositories
 {
-  
+  NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+  NSArray* bookmarks = [defaults objectForKey:@"localRepositories"];
+  if (bookmarks && [bookmarks isKindOfClass:[NSArray class]])
+  {
+    for (NSData* bookmarkData in bookmarks)
+    {
+      
+      
+      if ([NSFileManager isWritableDirectoryAtPath:path] &&
+          [GBRepository validRepositoryPathForPath:path])
+      {
+        [self openWindowForRepositoryAtURL:[NSURL fileURLWithPath:path]];
+      } // if path is valid repo
+    } // for
+  } // if paths  
 }
 
 
