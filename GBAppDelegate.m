@@ -114,8 +114,7 @@
   GBRepository* repo = [sourcesController repositoryWithURL:url];
   if (!repo)
   {
-    repo = [[GBRepository new] autorelease];
-    repo.url = url;
+    repo = [GBRepository repositoryWithURL:url];
     [sourcesController addRepository:repo];
     [[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:url];
   }
@@ -213,14 +212,13 @@
 - (void) applicationDidFinishLaunching:(NSNotification*) aNotification
 {
   [self checkGitVersion];
-  NSLog(@"TODO: tell window controller to restore the state");
   [self.windowController showWindow:self];
+  [self.windowController loadState];
 }
 
 - (void) applicationWillTerminate:(NSNotification*)aNotification
 {
-  NSLog(@"TODO: tell window controller to remember the state");
-  //[self storeRepositories];
+  [self.windowController saveState];
 }
 
 - (BOOL) applicationShouldOpenUntitledFile:(NSApplication*) app

@@ -1,19 +1,18 @@
 @class GBRepository;
-@interface GBSourcesController : NSViewController<NSOutlineViewDataSource>
+@interface GBSourcesController : NSViewController<NSOutlineViewDataSource, NSOutlineViewDelegate>
 {
-  NSMutableArray* localRepositories;
-  NSOutlineView* outlineView;
 }
 
-@property(retain) NSMutableArray* localRepositories;
-@property(retain) NSArray* nextViews;
-@property(retain) IBOutlet NSOutlineView* outlineView;
+@property(nonatomic,retain) NSMutableArray* sections;
+@property(nonatomic,retain) NSMutableArray* localRepositories;
+@property(nonatomic,retain) NSArray* nextViews;
+@property(nonatomic,retain) IBOutlet NSOutlineView* outlineView;
 
 - (GBRepository*) repositoryWithURL:(NSURL*)url;
 - (void) addRepository:(GBRepository*)repo;
 - (void) selectRepository:(GBRepository*)repo;
 
-- (void) rememberRepositories;
-- (void) restoreRepositories;
+- (void) saveState;
+- (void) loadState;
 
 @end

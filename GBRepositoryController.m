@@ -549,7 +549,7 @@
   
   // Window init
   //[self.window setTitleWithRepresentedFilename:self.repository.path];
-  [self.window setTitle:[self.repository.path twoLastPathComponents]];
+  [self.window setTitle:[self.repository.path twoLastPathComponentsWithDash]];
   [self.window setRepresentedFilename:self.repository.path];
   [self.window setFrameAutosaveName:[NSString stringWithFormat:@"%@[path=%@].window.frame", [self class], self.repository.path]];
   

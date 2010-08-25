@@ -14,4 +14,7 @@
 
 + (id) controller;
 
+- (void) saveState;
+- (void) loadState;
+
 @end

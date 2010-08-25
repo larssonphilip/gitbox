@@ -4,8 +4,6 @@
 @interface GBAppDelegate : NSObject <NSApplicationDelegate, 
                                    NSOpenSavePanelDelegate>
 {
-  GBMainWindowController* windowController;
-  GBPreferencesController* preferencesController;
 }
 
 @property(nonatomic,retain) GBMainWindowController* windowController;

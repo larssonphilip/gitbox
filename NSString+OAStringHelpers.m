@@ -32,11 +32,20 @@
   return [firstLetter stringByAppendingString:nextLetters];
 }
 
-- (NSString*) twoLastPathComponents
+- (NSString*) twoLastPathComponentsWithSlash
 {
   NSArray* comps = [self pathComponents];
   if ([comps count] < 2) return [self lastPathComponent];
-  return [[self lastPathComponent] stringByAppendingFormat:@" — %@", [[self stringByDeletingLastPathComponent] lastPathComponent]];
+  return [[[self stringByDeletingLastPathComponent] lastPathComponent] stringByAppendingFormat:@"/%@",  
+          [self lastPathComponent]];  
+}
+
+- (NSString*) twoLastPathComponentsWithDash
+{
+  NSArray* comps = [self pathComponents];
+  if ([comps count] < 2) return [self lastPathComponent];
+  return [[self lastPathComponent] stringByAppendingFormat:@" — %@", 
+          [[self stringByDeletingLastPathComponent] lastPathComponent]];  
 }
 
 @end

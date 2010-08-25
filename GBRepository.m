@@ -41,6 +41,8 @@
 
 @synthesize plistController;
 
+
+
 #pragma mark Init
 
 
@@ -69,6 +71,22 @@
   
   [super dealloc];
 }
+
++ (id) repository
+{
+  return [[self new] autorelease];
+}
+
++ (id) repositoryWithURL:(NSURL*)url
+{
+  GBRepository* r = [self repository];
+  r.url = url;
+  return r;
+}
+
+
+
+
 
 - (NSURL*) dotGitURL
 {
@@ -298,6 +316,16 @@
 - (NSString*) path
 {
   return [url path];
+}
+
+- (NSString*) name
+{
+  
+}
+
+- (NSString*) twoPartName
+{
+  
 }
 
 - (GBRemote*) defaultRemote

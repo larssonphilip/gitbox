@@ -74,6 +74,10 @@
 @property(nonatomic,retain) OAPropertyListController* plistController;
 
 
++ (id) repository;
++ (id) repositoryWithURL:(NSURL*)url;
+
+
 #pragma mark Interrogation
 
 + (NSString*) gitVersion;
@@ -82,7 +86,13 @@
 + (BOOL) isSupportedGitVersion:(NSString*)version;
 - (GBRef*) loadCurrentLocalRef;
 + (NSString*) validRepositoryPathForPath:(NSString*)aPath;
+
+
 - (NSString*) path;
+- (NSString*) name;
+- (NSString*) twoPartName;
+
+
 - (GBRemote*) defaultRemote;
 - (NSArray*) composedCommits;
 - (NSArray*) loadLocalBranches;
