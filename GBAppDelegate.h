@@ -2,8 +2,7 @@
 @class GBPreferencesController;
 @class GBMainWindowController;
 @interface GBAppDelegate : NSObject <NSApplicationDelegate, 
-                                   NSOpenSavePanelDelegate,
-                                   GBRepositoryControllerDelegate>
+                                   NSOpenSavePanelDelegate>
 {
   GBMainWindowController* windowController;
   GBPreferencesController* preferencesController;

@@ -12,4 +12,6 @@
 @property(retain) IBOutlet NSSplitView* splitView;
 @property(retain) IBOutlet NSToolbar* toolbar;
 
++ (id) controller;
+
 @end

@@ -16,10 +16,6 @@
 
 #import "OAPrimaryMACAddress.h"
 
-@interface GBAppDelegate ()
-- (void) storeRepositories;
-@end
-
 
 @implementation GBAppDelegate
 
@@ -112,20 +108,18 @@
 //  return windowController;
 //}
 
-- (GBRepositoryController*) openRepositoryAtURL:(NSURL*)url
+- (void) openRepositoryAtURL:(NSURL*)url
 {
-  if (self.windowController.sourcesController)
-    
-//  GBRepository* repo = [[GBRepository new] autorelease];
-//  repo.url = repositoryURL;
-
-//  id ctrl = [self openWindowForRepositoryAtURL:url];
-//  if (ctrl)
-//  {
-//    [self storeRepositories];
-//    [[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:url];    
-//  }
-//  return ctrl;
+  GBSourcesController* sourcesController = self.windowController.sourcesController;
+  GBRepository* repo = [sourcesController repositoryWithURL:url];
+  if (!repo)
+  {
+    repo = [[GBRepository new] autorelease];
+    repo.url = url;
+    [sourcesController addRepository:repo];
+    [[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:url];
+  }
+  [sourcesController selectRepository:repo];
 }
 
 - (BOOL) checkGitVersion
@@ -252,10 +246,10 @@
   }
   else 
   {
-    NSURL* url = [NSURL fileURLWithPath:path];
     if ([NSAlert prompt:NSLocalizedString(@"The folder is not a git repository.\nMake it a repository?", @"")
                   description:path])
     {
+        //NSURL* url = [NSURL fileURLWithPath:path];
 //      [GBRepository initRepositoryAtURL:url];
 //      GBRepositoryController* ctrl = [self openRepositoryAtURL:url];
 //      if (ctrl)
