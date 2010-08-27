@@ -137,7 +137,7 @@
 									</object>
 								</object>
 								<double key="NSRowHeight">20</double>
-								<int key="NSTvFlags">-767557632</int>
+								<int key="NSTvFlags">-2109734912</int>
 								<reference key="NSDelegate"/>
 								<reference key="NSDataSource"/>
 								<string key="NSAutosaveName">sourcerepositories</string>

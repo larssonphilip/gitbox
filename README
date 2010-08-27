@@ -17,6 +17,12 @@ Top priority:
 - bonjour publishing and cloning (see http://github.com/chad/gitjour)
 - github integration: handling other repos/branches, pull requests and initial setup commands
 
+Sources:
+- delete key
+- context menu to delete item
+- cmd+shift+[] to switch between repos
+- change window title
+- reorder repos
 
 
 Bugs:

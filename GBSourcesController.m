@@ -61,13 +61,14 @@
 - (void) addRepository:(GBRepository*)repo
 {
   [self.localRepositories addObject:repo];
-  //[self.outlineView reloadData];
-  [self.outlineView reloadItem:nil];
+  [self.outlineView expandItem:self.localRepositories];
+  [self reloadOutlineView];
 }
 
 - (void) selectRepository:(GBRepository*)repo
 {
-  
+  [self.outlineView selectRowIndexes:[NSIndexSet indexSetWithIndex:[self.outlineView rowForItem:repo]] 
+                byExtendingSelection:NO];
 }
 
 
@@ -77,10 +78,39 @@
 #pragma mark UI State
 
 
+- (void) reloadOutlineView
+{
+  [self saveExpandedState];
+  [self.outlineView reloadData];
+  [self loadExpandedState];  
+}
+
+- (void) saveExpandedState
+{
+  NSMutableArray* expandedSections = [NSMutableArray array];
+  if ([self.outlineView isItemExpanded:self.localRepositories])
+    [expandedSections addObject:@"localRepositories"];
+  
+  // TODO: repeat for other sections
+  
+  [[NSUserDefaults standardUserDefaults] setObject:expandedSections forKey:@"GBSourcesController_expandedSections"];
+}
+
+- (void) loadExpandedState
+{
+  NSArray* expandedSections = [[NSUserDefaults standardUserDefaults] objectForKey:@"GBSourcesController_expandedSections"];
+  
+  if ([expandedSections containsObject:@"localRepositories"])
+    [self.outlineView expandItem:self.localRepositories];
+  
+  // TODO: repeat for other sections
+  
+}
+
 
 - (void) saveState
 {
-  NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+  [self saveExpandedState];
   NSMutableArray* paths = [NSMutableArray array];
   for (GBRepository* repo in self.localRepositories)
   {
@@ -93,13 +123,12 @@
       [paths addObject:bookmarkData];
     }
   }
-  [defaults setObject:paths forKey:@"localRepositories"];
+  [[NSUserDefaults standardUserDefaults] setObject:paths forKey:@"GBSourcesController_localRepositories"];
 }
 
 - (void) loadState
 {
-  NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
-  NSArray* bookmarks = [defaults objectForKey:@"localRepositories"];
+  NSArray* bookmarks = [[NSUserDefaults standardUserDefaults] objectForKey:@"GBSourcesController_localRepositories"];
   if (bookmarks && [bookmarks isKindOfClass:[NSArray class]])
   {
     for (NSData* bookmarkData in bookmarks)
@@ -121,9 +150,12 @@
     } // for
     
     [self.outlineView reloadData];
-    
+    [self loadExpandedState];
   } // if paths
 }
+
+
+
 
 
 
@@ -189,6 +221,9 @@
 
 
 
+
+
+
 #pragma mark NSOutlineViewDelegate
 
 
@@ -202,8 +237,21 @@
 - (BOOL)outlineView:(NSOutlineView*)anOutlineView shouldSelectItem:(id)item
 {
   if (item == nil) return NO;
-  if ([self.sections containsObject:item]) return NO;
+  if ([self.sections containsObject:item]) return NO; // do not select sections
   return YES;
 }
+
+- (BOOL)outlineView:(NSOutlineView*)anOutlineView shouldEditTableColumn:(NSTableColumn*)tableColumn item:(id)item
+{
+  return NO;
+}
+
+- (void)outlineViewSelectionDidChange:(NSNotification*)notification
+{
+  NSLog(@"selection did change!");
+}
+
+
+
 
 @end
