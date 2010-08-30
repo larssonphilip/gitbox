@@ -111,7 +111,7 @@
 {
   if (!localBranches)
   {
-    self.localBranches = [self loadLocalBranches];
+    self.localBranches = [NSArray array]; //[self loadLocalBranches];
   }
   return [[localBranches retain] autorelease];
 }
@@ -120,7 +120,7 @@
 {
   if (!remotes)
   {
-    self.remotes = [self loadRemotes];
+    self.remotes = [NSArray array]; //[self loadRemotes];
   }
   return [[remotes retain] autorelease];
 }
@@ -139,7 +139,7 @@
 {
   if (!tags)
   {
-    self.tags = [self loadTags];
+    self.tags = [NSArray array]; //[self loadTags];
   }
   return [[tags retain] autorelease];
 }
@@ -195,6 +195,17 @@
 
 
 
+
+
+
+
+
+
+#pragma mark Per-repo options
+
+
+
+
 - (void) saveObject:(id)obj forKey:(NSString*)key
 {
   if (!obj) return;
@@ -238,6 +249,9 @@
 
 
 #pragma mark Interrogation
+
+
+
 
 
 + (NSString*) supportedGitVersion
@@ -318,24 +332,29 @@
   return [url path];
 }
 
-- (NSString*) name
+
+
+
+
+
+
+#pragma mark Update
+
+
+
+- (void) updateLocalBranchesAndTagsWithBlock:(void (^)())block
 {
-  
+  GBLocalBranchesTask* task = [GBLocalBranchesTask task];
+  task.repository = self;
+  [task launchWithBlock:^{
+    self.localBranches = task.branches;
+    self.tags = task.tags;
+    NSLog(@"localBranches: %@", task.branches);
+    block();
+  }];
 }
 
-- (NSString*) twoPartName
-{
-  
-}
 
-- (GBRemote*) defaultRemote
-{
-  for (GBRemote* remote in self.remotes)
-  {
-    if ([remote.alias isEqualToString:@"origin"]) return remote;
-  }
-  return [self.remotes firstObject];
-}
 
 - (NSArray*) loadLocalBranches
 {
@@ -360,9 +379,6 @@
 
 
 
-
-
-#pragma mark Update methods
 
 
 - (void) updateStatus

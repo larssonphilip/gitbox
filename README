@@ -80,7 +80,7 @@ Hard features:
 - conflict stage: highlight conflicted changes, allow to choose one of the versions 
 - individual chunks commit
 - bundle git binaries with the app package
-
+- show branch/tag names in history using "label" (+color in green/blue to connect with green/blue "pills")
 
 Other:
 - hitting space bar for staging/unstaging a change

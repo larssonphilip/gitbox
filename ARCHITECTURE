@@ -1,0 +1,9 @@
+
+1. GBAppDelegate controls windows
+2. GBWindowController controls main menu and view controllers: sources, toolbar, history view, stage/changes view
+3. Controllers access models to read data: GBRepository, GBRef, GBCommit, GBStage etc.
+4. Models never trigger async operations implicitely: these operations are handled explicitely by controllers
+
+ 
+
+

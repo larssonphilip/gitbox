@@ -1,29 +1,6 @@
-
-typedef void (^OATaskBlockWithString)(NSString*);
-
 extern NSString* OATaskNotification;
 @class OAActivity;
 @interface OATask : NSObject
-{
-  NSString* executableName;
-  NSString* launchPath;
-  NSString* currentDirectoryPath;
-  NSTask* nstask;
-  NSMutableData* output;
-  NSArray* arguments;
-  
-  BOOL avoidIndicator;
-  BOOL ignoreFailure;
-  
-  NSTimeInterval terminateTimeout;
-  
-  id standardOutput;
-  id standardError;
-  
-  OAActivity* activity;
-  
-  OATaskBlockWithString alertExecutableNotFoundBlock;
-}
 
 @property(nonatomic,retain) NSString* executableName;
 @property(nonatomic,retain) NSString* launchPath;
@@ -42,7 +19,9 @@ extern NSString* OATaskNotification;
 
 @property(nonatomic,retain) OAActivity* activity;
 
-@property(nonatomic,copy) OATaskBlockWithString alertExecutableNotFoundBlock;
+@property(nonatomic,copy) void (^alertExecutableNotFoundBlock)(NSString*);
+
+@property(nonatomic,copy) void (^callbackBlock)();
 
 + (id) task;
 
@@ -60,9 +39,11 @@ extern NSString* OATaskNotification;
 
 #pragma mark Mutation methods
 
+- (void) prepareTask; // for subclasses
+
 - (id) launch;
+- (void) launchWithBlock:(void(^)())block;
 - (id) launchAndWait;
-- (id) launchWithArguments:(NSArray*)args;
 - (id) launchWithArgumentsAndWait:(NSArray*)args;
 
 - (void) terminate;

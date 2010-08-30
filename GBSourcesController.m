@@ -4,12 +4,22 @@
 #import "NSFileManager+OAFileManagerHelpers.h"
 #import "NSString+OAStringHelpers.h"
 
+@interface GBSourcesController ()
+- (void) reloadOutlineView;
+@end
+
 @implementation GBSourcesController
 
 @synthesize sections;
 @synthesize localRepositories;
 @synthesize nextViews;
 @synthesize outlineView;
+@synthesize selectedRepository;
+
++ (NSString*) repositoryDidChangeNotificationName
+{
+  return @"GBSourcesController_repositoryDidChange";
+}
 
 - (void) dealloc
 {
@@ -17,6 +27,7 @@
   self.localRepositories = nil;
   self.nextViews = nil;
   self.outlineView = nil;
+  self.selectedRepository = nil;
   [super dealloc];
 }
 
@@ -40,6 +51,16 @@
   return [[sections retain] autorelease];
 }
 
+
+#pragma mark Private Helpers
+
+
+- (void) setSelectedRepositoryAndSendNotification:(GBRepository*) repo
+{
+  self.selectedRepository = repo;
+  [[NSNotificationCenter defaultCenter] 
+   postNotificationName:[[self class] repositoryDidChangeNotificationName] object:self];
+}
 
 
 
@@ -69,7 +90,64 @@
 {
   [self.outlineView selectRowIndexes:[NSIndexSet indexSetWithIndex:[self.outlineView rowForItem:repo]] 
                 byExtendingSelection:NO];
+  [self setSelectedRepositoryAndSendNotification:repo];
 }
+
+
+
+
+
+#pragma mark IBActions
+
+
+
+- (id) firstNonGroupRowStartingAtRow:(NSInteger)row direction:(NSInteger)direction
+{
+  if (direction != -1) direction = 1;
+  while (row >= 0 && row < [self.outlineView numberOfRows])
+  {
+    id item = [self.outlineView itemAtRow:row];
+    if (![self outlineView:self.outlineView isGroupItem:item])
+    {
+      return item;
+    }
+    row += direction;
+  }
+  return nil;
+}
+
+- (IBAction) selectPreviousRepository:(id)_
+{
+  NSInteger index = [self.outlineView rowForItem:self.selectedRepository];
+  GBRepository* item = nil;
+  if (index < 0)
+  {
+    item = [self firstNonGroupRowStartingAtRow:0 direction:+1];
+  }
+  else
+  {
+    item = [self firstNonGroupRowStartingAtRow:index-1 direction:-1];
+  }
+  if (item) [self selectRepository:item];
+}
+
+- (IBAction) selectNextRepository:(id)_
+{
+  NSInteger index = [self.outlineView rowForItem:self.selectedRepository];
+  GBRepository* item = nil;
+  if (index < 0)
+  {
+    item = [self firstNonGroupRowStartingAtRow:0 direction:+1];
+  }
+  else
+  {
+    item = [self firstNonGroupRowStartingAtRow:index+1 direction:+1];
+  }
+  if (item) [self selectRepository:item];
+}
+
+
+
 
 
 
@@ -78,12 +156,6 @@
 #pragma mark UI State
 
 
-- (void) reloadOutlineView
-{
-  [self saveExpandedState];
-  [self.outlineView reloadData];
-  [self loadExpandedState];  
-}
 
 - (void) saveExpandedState
 {
@@ -107,6 +179,12 @@
   
 }
 
+- (void) reloadOutlineView
+{
+  [self saveExpandedState];
+  [self.outlineView reloadData];
+  [self loadExpandedState];  
+}
 
 - (void) saveState
 {
@@ -248,7 +326,13 @@
 
 - (void)outlineViewSelectionDidChange:(NSNotification*)notification
 {
-  NSLog(@"selection did change!");
+  NSInteger row = [self.outlineView selectedRow];
+  id item = nil;
+  if (row >= 0 && row < [self.outlineView numberOfRows])
+  {
+    item = [self.outlineView itemAtRow:row];
+  }
+  [self setSelectedRepositoryAndSendNotification:item];
 }
 
 

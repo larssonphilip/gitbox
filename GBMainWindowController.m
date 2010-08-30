@@ -3,9 +3,17 @@
 #import "GBSourcesController.h"
 #import "GBToolbarController.h"
 
+#import "GBRepository.h"
+
 #import "NSWindowController+OAWindowControllerHelpers.h"
 #import "NSView+OAViewHelpers.h"
 #import "NSSplitView+OASplitViewHelpers.h"
+#import "NSString+OAStringHelpers.h"
+
+@interface GBMainWindowController ()
+- (void) updateWindowTitle;
+@end
+
 
 @implementation GBMainWindowController
 
@@ -17,11 +25,13 @@
 
 - (void) dealloc
 {
+  [[NSNotificationCenter defaultCenter] removeObserver:self name:[GBSourcesController repositoryDidChangeNotificationName] object:self.sourcesController];
+  
   self.sourcesController = nil;
   self.toolbarController = nil;
   
   self.splitView = nil;
-  self.toolbar = nil;  
+  self.toolbar = nil;
   
   [super dealloc];
 }
@@ -30,6 +40,26 @@
 {
   return [[[GBMainWindowController alloc] initWithWindowNibName:@"GBMainWindowController"] autorelease];
 }
+
+
+
+#pragma mark IBActions
+
+
+// Redirect these messages to sources controller
+
+- (IBAction) selectPreviousRepository:(id)_
+{
+  [self.sourcesController selectPreviousRepository:_];
+}
+
+- (IBAction) selectNextRepository:(id)_
+{
+  [self.sourcesController selectNextRepository:_];
+}
+
+
+
 
 
 
@@ -51,6 +81,12 @@
   [self.sourcesController loadInView:firstView];
   
   
+  [[NSNotificationCenter defaultCenter] addObserver:self 
+                                           selector:@selector(repositoryDidChange:) 
+                                               name:[GBSourcesController repositoryDidChangeNotificationName] 
+                                             object:self.sourcesController];
+  
+  [self updateWindowTitle];
 //  // Repository init
 //  
 //  self.repository.selectedCommit = self.repository.stage;
@@ -130,7 +166,15 @@
 
 
 
+#pragma mark Notifications from controllers
 
+
+- (void) repositoryDidChange:(NSNotification*)notification
+{
+  [self updateWindowTitle];
+  self.toolbarController.repository = self.sourcesController.selectedRepository;
+  [self.toolbarController update];
+}
 
 
 
@@ -174,14 +218,42 @@
 #pragma mark UI state
 
 
-- (void) saveState
+- (void) updateWindowTitle
 {
-  [self.sourcesController saveState];
+  GBRepository* repo = self.sourcesController.selectedRepository;
+  if (repo)
+  {
+    [self.window setTitle:[[repo path] twoLastPathComponentsWithDash]];
+    [self.window setRepresentedURL:repo.url];
+  }
+  else
+  {
+    [self.window setTitle:@"Gitbox"];
+    [self.window setRepresentedURL:nil];
+  }  
 }
 
 - (void) loadState
 {
   [self.sourcesController loadState];
+  [self.toolbarController loadState];
+  
+  for (GBRepository* repo in self.sourcesController.localRepositories)
+  {
+    [repo updateLocalBranchesAndTagsWithBlock:^{
+      if (repo == self.toolbarController.repository)
+      {
+        [self.toolbarController updateCurrentBranchMenus];
+      }
+    }];    
+  }
+  
+}
+
+- (void) saveState
+{
+  [self.sourcesController saveState];
+  [self.toolbarController saveState];
 }
 
 

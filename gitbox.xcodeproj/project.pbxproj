@@ -253,6 +253,7 @@
 		206A07BD11A33519003BB9E3 /* OATask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OATask.m; sourceTree = "<group>"; };
 		206A088511A7AB36003BB9E3 /* OAActivityIndicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAActivityIndicator.h; sourceTree = "<group>"; };
 		206A088611A7AB36003BB9E3 /* OAActivityIndicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAActivityIndicator.m; sourceTree = "<group>"; };
+		206CAB38122A771D009284FE /* ARCHITECTURE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ARCHITECTURE; sourceTree = "<group>"; };
 		2093A7C611AF0E8300239185 /* GBBaseChangesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBBaseChangesController.h; sourceTree = "<group>"; };
 		2093A7C711AF0E8300239185 /* GBBaseChangesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBBaseChangesController.m; sourceTree = "<group>"; };
 		2093A7C911AF0EA300239185 /* GBStageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBStageViewController.h; sourceTree = "<group>"; };
@@ -408,11 +409,11 @@
 				20A37BA7120DC27B0068AB8B /* GBMainWindowController.h */,
 				20A37BA8120DC27B0068AB8B /* GBMainWindowController.m */,
 				20A37BBD120DDBA60068AB8B /* GBMainWindowController.xib */,
-				20A37BAA120DC4510068AB8B /* GBToolbarController.h */,
-				20A37BAB120DC4510068AB8B /* GBToolbarController.m */,
 				20A37BA4120DC1D90068AB8B /* GBSourcesController.h */,
 				20A37BA5120DC1D90068AB8B /* GBSourcesController.m */,
 				20A37BB5120DC7640068AB8B /* GBSourcesController.xib */,
+				20A37BAA120DC4510068AB8B /* GBToolbarController.h */,
+				20A37BAB120DC4510068AB8B /* GBToolbarController.m */,
 				2038F21911936FDE0087CE37 /* GBRepositoryController.h */,
 				2038F21A11936FDE0087CE37 /* GBRepositoryController.m */,
 				1DDD58290DA1D0D100B32029 /* GBRepositoryController.xib */,
@@ -599,6 +600,7 @@
 				2038F1EA11936CA50087CE37 /* README */,
 				20C716BB120EF7E6002B594F /* DESIGN_NOTES */,
 				2009871711C4597800F35630 /* PAYMENT */,
+				206CAB38122A771D009284FE /* ARCHITECTURE */,
 				2A37F4B9FDCFA73011CA2CEA /* Credits.rtf */,
 				8D15AC360486D014006FF6A4 /* info.plist */,
 				089C1660FE840EACC02AAC07 /* InfoPlist.strings */,

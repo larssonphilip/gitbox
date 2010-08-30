@@ -89,21 +89,19 @@
 
 
 - (NSString*) path;
-- (NSString*) name;
-- (NSString*) twoPartName;
 
-
-- (GBRemote*) defaultRemote;
 - (NSArray*) composedCommits;
-- (NSArray*) loadLocalBranches;
-- (NSArray*) loadTags;
-- (NSArray*) loadRemotes;
+- (NSArray*) loadLocalBranches; // obsolete
+- (NSArray*) loadTags; // obsolete
+- (NSArray*) loadRemotes; // obsolete
 
 - (void) saveObject:(id)obj forKey:(NSString*)key;
 - (id) loadObjectForKey:(NSString*)key;
 
 
 #pragma mark Update
+
+- (void) updateLocalBranchesAndTagsWithBlock:(void (^)())block;
 
 - (void) updateStatus;
 - (void) updateBranchStatus;

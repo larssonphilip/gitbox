@@ -5,3 +5,21 @@ Problem: when status of the change is updated, the UI selection is lost (because
 
 Solution: keep the dictionary of the items (key is path) and update them instead of creating new ones.
 
+
+
+2. Block-based API to invoke tasks
+
+Objects: controller, model, task, task manager, activity 
+
+
+
+
+3. FSEvents and app operations.
+
+App listens to fsevents only when window is not active to avoid triggering 
+updates when the app itself runs git commands.
+
+App listens to both root folder (./) and .git folder. Need to investigate 
+how the events are differentiated...
+
+

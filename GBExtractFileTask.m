@@ -62,25 +62,27 @@
 #pragma mark OATask
 
 
-- (id) standardOutput
+- (void) prepareTask
 {
-  if (!standardOutput)
+  if (!self.standardOutput)
   {
     if (self.temporaryURL)
     {
       NSError* outError;
       NSFileHandle* handle = [NSFileHandle fileHandleForWritingToURL:self.temporaryURL error:&outError];
-      if (!handle)
+      if (handle)
+      {
+        self.standardOutput = handle;
+      }
+      else
       {
         NSLog(@"ERROR: NSFileHandle couldn't open %@ for writing: %@", self.temporaryURL, [outError localizedDescription]);
         // invalidate temp URL
         self.temporaryURL = nil;
-        return nil;
       }
-      self.standardOutput = handle;
     }
   }
-  return [[standardOutput retain] autorelease];
+  [super prepareTask];
 }
 
 - (NSArray*) arguments

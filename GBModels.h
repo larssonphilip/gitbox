@@ -1,4 +1,4 @@
-// This is for saving from typing all headers
+// This saves me from typing all the headers
 
 #import "GBRepository.h"
 #import "GBRef.h"

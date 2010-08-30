@@ -17,4 +17,7 @@
 - (void) saveState;
 - (void) loadState;
 
+- (IBAction) selectPreviousRepository:(id)_;
+- (IBAction) selectNextRepository:(id)_;
+
 @end

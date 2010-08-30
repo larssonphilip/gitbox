@@ -16,9 +16,8 @@ NSString* OATaskNotification = @"OATaskNotification";
 - (void) doFinish;
 - (NSFileHandle*) fileHandleForReading;
 
-- (id) prepareTask;
-- (id) launchAsynchronously;
-- (id) launchBlocking;
+- (void) launchAsynchronously;
+- (void) launchBlocking;
 
 @end
 
@@ -43,6 +42,38 @@ NSString* OATaskNotification = @"OATaskNotification";
 
 @synthesize alertExecutableNotFoundBlock;
 
+@synthesize callbackBlock;
+
+
+- (void) dealloc
+{
+  [NSObject cancelPreviousPerformRequestsWithTarget:self];
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
+  
+  if (nstask && [nstask isRunning])
+  {
+    self.activity.isRunning = NO;
+    self.activity.status = @"Disconnected";
+    self.activity.textOutput = @"Task was released: it was sent a TERM signal to subprocess, but stopped listening to its status.";
+    //self.activity.task = nil;
+    self.activity = nil;
+    [nstask terminate];
+  }
+  
+  self.alertExecutableNotFoundBlock = nil;
+  self.callbackBlock = nil;
+  self.executableName = nil;
+  self.launchPath = nil;
+  self.currentDirectoryPath = nil;
+  self.arguments = nil;
+  self.nstask = nil;
+  self.output = nil;
+  self.standardOutput = nil;
+  self.standardError = nil;
+  self.activity.task = nil;
+  self.activity = nil;
+  [super dealloc];
+}
 
 
 #pragma mark Class Methods
@@ -219,34 +250,6 @@ NSString* OATaskNotification = @"OATaskNotification";
   return [[activity retain] autorelease];
 }
 
-- (void) dealloc
-{
-  [NSObject cancelPreviousPerformRequestsWithTarget:self];
-  [[NSNotificationCenter defaultCenter] removeObserver:self];
-
-  if (nstask && [nstask isRunning])
-  {
-    self.activity.isRunning = NO;
-    self.activity.status = @"Disconnected";
-    self.activity.textOutput = @"Task was released: it was sent a TERM signal to subprocess, but stopped listening to its status.";
-    //self.activity.task = nil;
-    self.activity = nil;
-    [nstask terminate];
-  }
-  
-  self.alertExecutableNotFoundBlock = nil;
-  self.executableName = nil;
-  self.launchPath = nil;
-  self.currentDirectoryPath = nil;
-  self.arguments = nil;
-  self.nstask = nil;
-  self.output = nil;
-  self.standardOutput = nil;
-  self.standardError = nil;
-  self.activity.task = nil;
-  self.activity = nil;
-  [super dealloc];
-}
 
 
 
@@ -276,23 +279,39 @@ NSString* OATaskNotification = @"OATaskNotification";
 
 
 
-#pragma mark Mutation methods
+
+
+
+
+
+
+#pragma mark Launch methods
+
+
 
 
 - (id) launch
 {
-  return [[self prepareTask] launchAsynchronously];
+  [self prepareTask];
+  [self launchAsynchronously];
+  return self;
+}
+
+- (void) launchWithBlock:(void(^)())block
+{
+  NSLog(@"Executing %@:%p in async queue (%@)", [self class], self, [self command]);
+  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+    
+    [self launchAndWait];
+    dispatch_async(dispatch_get_main_queue(), block);
+  });
 }
 
 - (id) launchAndWait
 {
-  return [[self prepareTask] launchBlocking];
-}
-
-- (id) launchWithArguments:(NSArray*)args
-{
-  self.arguments = args;
-  return [self launch];
+  [self prepareTask];
+  [self launchBlocking];
+  return self;
 }
 
 - (id) launchWithArgumentsAndWait:(NSArray*)args
@@ -490,6 +509,9 @@ NSString* OATaskNotification = @"OATaskNotification";
   [self finishActivity];
   [self didFinish];
   
+  if (self.callbackBlock) callbackBlock();
+  self.callbackBlock = nil;
+  
   NSNotification* notification = [NSNotification notificationWithName:OATaskNotification object:self];
   // NSPostNow because NSPostASAP causes properties to be updated with a delay and bindings are updated in a strange fashion
   // See commit 1c2d52b99c1ccf82e3540be10a3e1f0e3e054065 which fixes strange things with activity indicator.
@@ -524,7 +546,7 @@ NSString* OATaskNotification = @"OATaskNotification";
 #pragma mark Helpers
 
 
-- (id) prepareTask
+- (void) prepareTask
 {
   NSPipe* defaultPipe = nil;
   [self.nstask setCurrentDirectoryPath:self.currentDirectoryPath];
@@ -557,21 +579,18 @@ NSString* OATaskNotification = @"OATaskNotification";
   self.activity.task = self;
   self.activity.path = self.currentDirectoryPath;
   self.activity.command = [self command];
-  
-  return self;
 }
 
-- (id) launchAsynchronously
+- (void) launchAsynchronously
 {
   [[GBActivityController sharedActivityController] addActivity:self.activity];
   [self beginAllCallbacks];
   //NSLog(@"ASYNC: %@", [self command]);
   [self.nstask launch];
   [[self fileHandleForReading] readInBackgroundAndNotify];
-  return self;
 }
 
-- (id) launchBlocking
+- (void) launchBlocking
 {
   //NSLog(@"BLOCKING: %@", [self command]);
   [self.nstask launch];
@@ -583,7 +602,6 @@ NSString* OATaskNotification = @"OATaskNotification";
   [self.nstask waitUntilExit];
   [self doFinish];
   [[GBActivityController sharedActivityController] addActivity:self.activity];
-  return self;
 }
 
 
