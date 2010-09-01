@@ -4,6 +4,28 @@
 3. Controllers access models to read data: GBRepository, GBRef, GBCommit, GBStage etc.
 4. Models never trigger async operations implicitely: these operations are handled explicitely by controllers
 
- 
+The whole app is about controlling the repository by reading 
+and modifying its state + presenting the state in the UI. 
+It's easy to access a model, but it is hard to synchronize 
+the state with all the visual controls. 
+
+To deal with that, we break an app into several parts 
+and making them play well together. 
+
+We have models (M), views (V), view controllers (VC) and model controllers (MC).
+
+VC has two kinds of methods:
+- view update methods: sets up the views and event handlers
+- event handling methods: send messages to MC to update the state
+
+The rule: never call view update methods from the event handler.
+
+MC has one kind of methods: those which read/modify the model and send update messages to VCs.
+
+For async operations MC uses blocks.
+
+By splitting controllers into VCs and MCs we are splitting two kinds of job: 
+- setting up and updating the views
+- synchronizing views with a model
 
 

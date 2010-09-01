@@ -1,13 +1,16 @@
-#import "GBRepositoryController.h"
-@class GBPreferencesController;
-@class GBMainWindowController;
-@interface GBAppDelegate : NSObject <NSApplicationDelegate, 
-                                   NSOpenSavePanelDelegate>
-{
-}
+@class GBRepositoriesController;
+@class GBRepositoryController;
 
-@property(nonatomic,retain) GBMainWindowController* windowController;
-@property(nonatomic,retain) IBOutlet GBPreferencesController* preferencesController;
+@class GBMainWindowController;
+@class GBPreferencesController;
+
+@interface GBAppDelegate : NSObject <NSApplicationDelegate, NSOpenSavePanelDelegate>
+
+@property(retain) GBRepositoriesController* repositoriesController;
+@property(retain) GBRepositoryController* repositoryController;
+
+@property(retain) GBMainWindowController* windowController;
+@property(retain) IBOutlet GBPreferencesController* preferencesController;
 
 - (IBAction) openDocument:(id)_;
 - (IBAction) showActivityWindow:(id)_;

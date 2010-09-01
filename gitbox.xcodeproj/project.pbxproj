@@ -45,11 +45,11 @@
 		2035632F11D3B57800965765 /* GBHistoryScroller.m in Sources */ = {isa = PBXBuildFile; fileRef = 2035632E11D3B57800965765 /* GBHistoryScroller.m */; };
 		2035634E11D3BCB100965765 /* CGContext+OACGContextHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 2035634D11D3BCB100965765 /* CGContext+OACGContextHelpers.m */; };
 		2035639E11D3C14C00965765 /* GBHistoryScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2035639D11D3C14C00965765 /* GBHistoryScrollView.m */; };
-		2038F1B11193664D0087CE37 /* GBRepositoryController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58290DA1D0D100B32029 /* GBRepositoryController.xib */; };
+		2038F1B11193664D0087CE37 /* ObsoleteGBRepositoryController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58290DA1D0D100B32029 /* ObsoleteGBRepositoryController.xib */; };
 		2038F1B3119366660087CE37 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C1660FE840EACC02AAC07 /* InfoPlist.strings */; };
 		2038F1B7119366960087CE37 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD582B0DA1D0D100B32029 /* MainMenu.xib */; };
 		2038F1DF11936B060087CE37 /* GBAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2038F1DE11936B060087CE37 /* GBAppDelegate.m */; };
-		2038F21B11936FDE0087CE37 /* GBRepositoryController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2038F21A11936FDE0087CE37 /* GBRepositoryController.m */; };
+		2038F21B11936FDE0087CE37 /* ObsoleteGBRepositoryController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2038F21A11936FDE0087CE37 /* ObsoleteGBRepositoryController.m */; };
 		2038F30C11952FCF0087CE37 /* GBRepository.m in Sources */ = {isa = PBXBuildFile; fileRef = 2038F30B11952FCF0087CE37 /* GBRepository.m */; };
 		2038F39711953CB60087CE37 /* GBRef.m in Sources */ = {isa = PBXBuildFile; fileRef = 2038F39611953CB60087CE37 /* GBRef.m */; };
 		2038F3E1119546E90087CE37 /* NSArray+OAArrayHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 2038F3E0119546E90087CE37 /* NSArray+OAArrayHelpers.m */; };
@@ -84,6 +84,8 @@
 		2059E82811AB3C2C00E4CF0B /* GBCommittedChangesTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 2059E82711AB3C2C00E4CF0B /* GBCommittedChangesTask.m */; };
 		206A07BE11A33519003BB9E3 /* OATask.m in Sources */ = {isa = PBXBuildFile; fileRef = 206A07BD11A33519003BB9E3 /* OATask.m */; };
 		206A088711A7AB36003BB9E3 /* OAActivityIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 206A088611A7AB36003BB9E3 /* OAActivityIndicator.m */; };
+		206CAC71122EB5F7009284FE /* GBRepositoryController.m in Sources */ = {isa = PBXBuildFile; fileRef = 206CAC70122EB5F7009284FE /* GBRepositoryController.m */; };
+		206CAC75122EBCAD009284FE /* GBRepositoriesController.m in Sources */ = {isa = PBXBuildFile; fileRef = 206CAC74122EBCAD009284FE /* GBRepositoriesController.m */; };
 		2093A7C811AF0E8300239185 /* GBBaseChangesController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2093A7C711AF0E8300239185 /* GBBaseChangesController.m */; };
 		2093A7CB11AF0EA300239185 /* GBStageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2093A7CA11AF0EA300239185 /* GBStageViewController.m */; };
 		2093A7CE11AF0EC800239185 /* GBCommitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2093A7CD11AF0EC800239185 /* GBCommitViewController.m */; };
@@ -149,7 +151,7 @@
 		089C1660FE840EACC02AAC07 /* InfoPlist.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = InfoPlist.strings; sourceTree = "<group>"; };
 		1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		13E42FBA07B3F13500E4EEF1 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
-		1DDD58290DA1D0D100B32029 /* GBRepositoryController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBRepositoryController.xib; sourceTree = "<group>"; };
+		1DDD58290DA1D0D100B32029 /* ObsoleteGBRepositoryController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ObsoleteGBRepositoryController.xib; sourceTree = "<group>"; };
 		1DDD582B0DA1D0D100B32029 /* MainMenu.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
 		2000324111FC72620069C70D /* OAPrimaryMACAddress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAPrimaryMACAddress.h; sourceTree = "<group>"; };
 		2000324211FC72620069C70D /* OAPrimaryMACAddress.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAPrimaryMACAddress.m; sourceTree = "<group>"; };
@@ -192,8 +194,8 @@
 		2038F1DD11936B060087CE37 /* GBAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBAppDelegate.h; sourceTree = "<group>"; };
 		2038F1DE11936B060087CE37 /* GBAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBAppDelegate.m; sourceTree = "<group>"; };
 		2038F1EA11936CA50087CE37 /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
-		2038F21911936FDE0087CE37 /* GBRepositoryController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBRepositoryController.h; sourceTree = "<group>"; };
-		2038F21A11936FDE0087CE37 /* GBRepositoryController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBRepositoryController.m; sourceTree = "<group>"; };
+		2038F21911936FDE0087CE37 /* ObsoleteGBRepositoryController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObsoleteGBRepositoryController.h; sourceTree = "<group>"; };
+		2038F21A11936FDE0087CE37 /* ObsoleteGBRepositoryController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ObsoleteGBRepositoryController.m; sourceTree = "<group>"; };
 		2038F30A11952FCF0087CE37 /* GBRepository.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBRepository.h; sourceTree = "<group>"; };
 		2038F30B11952FCF0087CE37 /* GBRepository.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBRepository.m; sourceTree = "<group>"; };
 		2038F39511953CB60087CE37 /* GBRef.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBRef.h; sourceTree = "<group>"; };
@@ -254,6 +256,10 @@
 		206A088511A7AB36003BB9E3 /* OAActivityIndicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAActivityIndicator.h; sourceTree = "<group>"; };
 		206A088611A7AB36003BB9E3 /* OAActivityIndicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAActivityIndicator.m; sourceTree = "<group>"; };
 		206CAB38122A771D009284FE /* ARCHITECTURE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ARCHITECTURE; sourceTree = "<group>"; };
+		206CAC6F122EB5F7009284FE /* GBRepositoryController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBRepositoryController.h; sourceTree = "<group>"; };
+		206CAC70122EB5F7009284FE /* GBRepositoryController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBRepositoryController.m; sourceTree = "<group>"; };
+		206CAC73122EBCAD009284FE /* GBRepositoriesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBRepositoriesController.h; sourceTree = "<group>"; };
+		206CAC74122EBCAD009284FE /* GBRepositoriesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBRepositoriesController.m; sourceTree = "<group>"; };
 		2093A7C611AF0E8300239185 /* GBBaseChangesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBBaseChangesController.h; sourceTree = "<group>"; };
 		2093A7C711AF0E8300239185 /* GBBaseChangesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBBaseChangesController.m; sourceTree = "<group>"; };
 		2093A7C911AF0EA300239185 /* GBStageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBStageViewController.h; sourceTree = "<group>"; };
@@ -400,7 +406,7 @@
 			name = Models;
 			sourceTree = "<group>";
 		};
-		2038F30911952FB80087CE37 /* Controllers */ = {
+		2038F30911952FB80087CE37 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
 				2038F1DD11936B060087CE37 /* GBAppDelegate.h */,
@@ -414,9 +420,9 @@
 				20A37BB5120DC7640068AB8B /* GBSourcesController.xib */,
 				20A37BAA120DC4510068AB8B /* GBToolbarController.h */,
 				20A37BAB120DC4510068AB8B /* GBToolbarController.m */,
-				2038F21911936FDE0087CE37 /* GBRepositoryController.h */,
-				2038F21A11936FDE0087CE37 /* GBRepositoryController.m */,
-				1DDD58290DA1D0D100B32029 /* GBRepositoryController.xib */,
+				2038F21911936FDE0087CE37 /* ObsoleteGBRepositoryController.h */,
+				2038F21A11936FDE0087CE37 /* ObsoleteGBRepositoryController.m */,
+				1DDD58290DA1D0D100B32029 /* ObsoleteGBRepositoryController.xib */,
 				2058E97E11AEE26F00F2853F /* GBHistoryViewController.h */,
 				2058E97F11AEE26F00F2853F /* GBHistoryViewController.m */,
 				2058E98311AEE30E00F2853F /* GBHistoryController.xib */,
@@ -451,7 +457,7 @@
 				2035623211D383BE00965765 /* GBCommandsController.xib */,
 				20265E4A11E3EB9B00709F6B /* GBWelcomeController.xib */,
 			);
-			name = Controllers;
+			name = "View Controllers";
 			sourceTree = "<group>";
 		};
 		2038F6C611A030FF0087CE37 /* Tasks */ = {
@@ -508,6 +514,17 @@
 				2035639D11D3C14C00965765 /* GBHistoryScrollView.m */,
 			);
 			name = Views;
+			sourceTree = "<group>";
+		};
+		206CAC72122EB619009284FE /* Model Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				206CAC73122EBCAD009284FE /* GBRepositoriesController.h */,
+				206CAC74122EBCAD009284FE /* GBRepositoriesController.m */,
+				206CAC6F122EB5F7009284FE /* GBRepositoryController.h */,
+				206CAC70122EB5F7009284FE /* GBRepositoryController.m */,
+			);
+			name = "Model Controllers";
 			sourceTree = "<group>";
 		};
 		20B1620D11944B6900A709CF /* Libs */ = {
@@ -571,7 +588,8 @@
 				201E02DA11EA1ED3007E4420 /* License */,
 				2038F30811952FAE0087CE37 /* Models */,
 				2038F6C611A030FF0087CE37 /* Tasks */,
-				2038F30911952FB80087CE37 /* Controllers */,
+				206CAC72122EB619009284FE /* Model Controllers */,
+				2038F30911952FB80087CE37 /* View Controllers */,
 				2057963E11ADD37F004715FE /* Views */,
 				20B1620D11944B6900A709CF /* Libs */,
 			);
@@ -667,7 +685,7 @@
 				209A963E11BC630C006B0B5C /* default_gitignore in Resources */,
 				8D15AC2C0486D014006FF6A4 /* Credits.rtf in Resources */,
 				2038F1B3119366660087CE37 /* InfoPlist.strings in Resources */,
-				2038F1B11193664D0087CE37 /* GBRepositoryController.xib in Resources */,
+				2038F1B11193664D0087CE37 /* ObsoleteGBRepositoryController.xib in Resources */,
 				2038F1B7119366960087CE37 /* MainMenu.xib in Resources */,
 				2058FA4811982F5100FB018D /* GBRemotesController.xib in Resources */,
 				20B8B83911A4A72A006D6442 /* GBPromptController.xib in Resources */,
@@ -720,7 +738,7 @@
 			files = (
 				8D15AC320486D014006FF6A4 /* main.m in Sources */,
 				2038F1DF11936B060087CE37 /* GBAppDelegate.m in Sources */,
-				2038F21B11936FDE0087CE37 /* GBRepositoryController.m in Sources */,
+				2038F21B11936FDE0087CE37 /* ObsoleteGBRepositoryController.m in Sources */,
 				20B1621211944C0F00A709CF /* NSFileManager+OAFileManagerHelpers.m in Sources */,
 				2038F30C11952FCF0087CE37 /* GBRepository.m in Sources */,
 				2038F39711953CB60087CE37 /* GBRef.m in Sources */,
@@ -784,6 +802,8 @@
 				20A37BA6120DC1D90068AB8B /* GBSourcesController.m in Sources */,
 				20A37BA9120DC27B0068AB8B /* GBMainWindowController.m in Sources */,
 				20A37BAC120DC4510068AB8B /* GBToolbarController.m in Sources */,
+				206CAC71122EB5F7009284FE /* GBRepositoryController.m in Sources */,
+				206CAC75122EBCAD009284FE /* GBRepositoriesController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

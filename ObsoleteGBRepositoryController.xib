@@ -12,7 +12,6 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="100097"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -30,7 +29,7 @@
 		<object class="NSMutableArray" key="IBDocument.RootObjects" id="580458321">
 			<bool key="EncodedWithXMLCoder">YES</bool>
 			<object class="NSCustomObject" id="512844837">
-				<string key="NSClassName">GBRepositoryController</string>
+				<string key="NSClassName">ObsoleteGBRepositoryController</string>
 			</object>
 			<object class="NSCustomObject" id="613418571">
 				<string key="NSClassName">FirstResponder</string>
@@ -79,12 +78,10 @@
 								<string key="NSToolbarItemPaletteLabel">Activity Indicator</string>
 								<nil key="NSToolbarItemToolTip"/>
 								<object class="NSProgressIndicator" key="NSToolbarItemView" id="614430428">
-									<reference key="NSNextResponder"/>
+									<nil key="NSNextResponder"/>
 									<int key="NSvFlags">1292</int>
 									<object class="NSPSMatrix" key="NSDrawMatrix"/>
 									<string key="NSFrame">{{41, 14}, {16, 16}}</string>
-									<reference key="NSSuperview"/>
-									<reference key="NSWindow"/>
 									<int key="NSpiFlags">28938</int>
 									<double key="NSMaxValue">100</double>
 								</object>
@@ -107,11 +104,9 @@
 								<string key="NSToolbarItemPaletteLabel">Other Branch</string>
 								<nil key="NSToolbarItemToolTip"/>
 								<object class="NSPopUpButton" key="NSToolbarItemView" id="496183261">
-									<reference key="NSNextResponder"/>
+									<nil key="NSNextResponder"/>
 									<int key="NSvFlags">268</int>
 									<string key="NSFrame">{{0, 14}, {200, 25}}</string>
-									<reference key="NSSuperview"/>
-									<reference key="NSWindow"/>
 									<bool key="NSEnabled">YES</bool>
 									<object class="NSPopUpButtonCell" key="NSCell" id="547539069">
 										<int key="NSCellFlags">-2076049856</int>
@@ -217,11 +212,9 @@
 								<string key="NSToolbarItemPaletteLabel">Local Branch</string>
 								<nil key="NSToolbarItemToolTip"/>
 								<object class="NSPopUpButton" key="NSToolbarItemView" id="451021642">
-									<reference key="NSNextResponder"/>
+									<nil key="NSNextResponder"/>
 									<int key="NSvFlags">268</int>
 									<string key="NSFrame">{{0, 14}, {200, 25}}</string>
-									<reference key="NSSuperview"/>
-									<reference key="NSWindow"/>
 									<bool key="NSEnabled">YES</bool>
 									<object class="NSPopUpButtonCell" key="NSCell" id="603841213">
 										<int key="NSCellFlags">-2076049856</int>
@@ -343,11 +336,9 @@
 								<string key="NSToolbarItemPaletteLabel"/>
 								<nil key="NSToolbarItemToolTip"/>
 								<object class="NSSegmentedControl" key="NSToolbarItemView" id="723410101">
-									<reference key="NSNextResponder"/>
+									<nil key="NSNextResponder"/>
 									<int key="NSvFlags">268</int>
 									<string key="NSFrame">{{0, 14}, {132, 25}}</string>
-									<reference key="NSSuperview"/>
-									<reference key="NSWindow"/>
 									<bool key="NSEnabled">YES</bool>
 									<object class="NSSegmentedCell" key="NSCell" id="909504413">
 										<int key="NSCellFlags">-2080244224</int>
@@ -395,11 +386,9 @@
 								<string key="NSToolbarItemPaletteLabel"/>
 								<nil key="NSToolbarItemToolTip"/>
 								<object class="NSButton" key="NSToolbarItemView" id="1048878109">
-									<reference key="NSNextResponder"/>
+									<nil key="NSNextResponder"/>
 									<int key="NSvFlags">268</int>
 									<string key="NSFrame">{{0, 14}, {77, 25}}</string>
-									<reference key="NSSuperview"/>
-									<reference key="NSWindow"/>
 									<bool key="NSEnabled">YES</bool>
 									<object class="NSButtonCell" key="NSCell" id="441069746">
 										<int key="NSCellFlags">-2080244224</int>
@@ -536,7 +525,7 @@
 				<string key="NSWindowContentMaxSize">{1.79769e+308, 1.79769e+308}</string>
 				<string key="NSWindowContentMinSize">{400, 200}</string>
 				<object class="NSView" key="NSWindowView" id="568628114">
-					<reference key="NSNextResponder"/>
+					<nil key="NSNextResponder"/>
 					<int key="NSvFlags">256</int>
 					<object class="NSMutableArray" key="NSSubviews">
 						<bool key="EncodedWithXMLCoder">YES</bool>
@@ -725,7 +714,6 @@
 						</object>
 					</object>
 					<string key="NSFrameSize">{665, 377}</string>
-					<reference key="NSSuperview"/>
 				</object>
 				<string key="NSScreenRect">{{0, 0}, {1280, 778}}</string>
 				<string key="NSMinSize">{400, 271}</string>
@@ -1657,7 +1645,57 @@
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
-					<string key="className">GBRepositoryController</string>
+					<string key="className">NSMenu</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier" id="347389350">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">NSMenu+OAMenuHelpers.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">NSMenuItem</string>
+					<reference key="sourceIdentifier" ref="347389350"/>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">NSObject</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">NSObject+OADispatchItemValidation.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">NSObject</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">NSObject+OAKeyValueObserving.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">NSSplitView</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">NSSplitView+OASplitViewHelpers.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">NSView</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">NSView+OAViewHelpers.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">NSWindow</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier" id="866863076">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">NSWindowController+OAWindowControllerHelpers.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">NSWindowController</string>
+					<reference key="sourceIdentifier" ref="866863076"/>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">ObsoleteGBRepositoryController</string>
 					<string key="superclassName">NSWindowController</string>
 					<object class="NSMutableDictionary" key="actions">
 						<bool key="EncodedWithXMLCoder">YES</bool>
@@ -1850,67 +1888,9 @@
 						</object>
 					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">GBRepositoryController.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">GBRepositoryController</string>
-					<string key="superclassName">NSWindowController</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBUserSource</string>
 						<string key="minorKey"/>
 					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">NSMenu</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier" id="347389350">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">NSMenu+OAMenuHelpers.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">NSMenuItem</string>
-					<reference key="sourceIdentifier" ref="347389350"/>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">NSObject</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">NSObject+OADispatchItemValidation.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">NSObject</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">NSObject+OAKeyValueObserving.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">NSSplitView</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">NSSplitView+OASplitViewHelpers.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">NSView</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">NSView+OAViewHelpers.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">NSWindow</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier" id="866863076">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">NSWindowController+OAWindowControllerHelpers.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">NSWindowController</string>
-					<reference key="sourceIdentifier" ref="866863076"/>
 				</object>
 			</object>
 			<object class="NSMutableArray" key="referencedPartialClassDescriptionsV3.2+">

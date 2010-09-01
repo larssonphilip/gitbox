@@ -1,3 +1,6 @@
+#import "GBRepositoriesController.h"
+#import "GBRepositoryController.h"
+
 #import "GBMainWindowController.h"
 
 #import "GBSourcesController.h"
@@ -17,6 +20,9 @@
 
 @implementation GBMainWindowController
 
+@synthesize repositoriesController;
+@synthesize repositoryController;
+
 @synthesize sourcesController;
 @synthesize toolbarController;
 
@@ -24,8 +30,6 @@
 
 - (void) dealloc
 {
-  [[NSNotificationCenter defaultCenter] removeObserver:self name:[GBSourcesController repositoryDidChangeNotificationName] object:self.sourcesController];
-  
   self.sourcesController = nil;
   self.toolbarController = nil;
   
@@ -72,15 +76,17 @@
   [self.toolbarController windowDidLoad];
   
   self.sourcesController = [[[GBSourcesController alloc] initWithNibName:@"GBSourcesController" bundle:nil] autorelease];
+  
+  self.toolbarController.repositoryController = self.repositoryController;
+  
+  self.sourcesController.repositoriesController = self.repositoriesController;
+  self.sourcesController.repositoryController = self.repositoryController;
+
+  
   self.sourcesController.nextViews = [self.splitView.subviews subarrayWithRange:NSMakeRange(1, [self.splitView.subviews count] - 1)];
   NSView* firstView = [self.splitView.subviews objectAtIndex:0];
   [self.sourcesController loadInView:firstView];
   
-  
-  [[NSNotificationCenter defaultCenter] addObserver:self 
-                                           selector:@selector(repositoryDidChange:) 
-                                               name:[GBSourcesController repositoryDidChangeNotificationName] 
-                                             object:self.sourcesController];
   
   [self updateWindowTitle];
 //  // Repository init
@@ -162,14 +168,12 @@
 
 
 
-#pragma mark Notifications from controllers
 
-
-- (void) repositoryDidChange:(NSNotification*)notification
+- (void) didSelectRepository:(GBRepository*)repo
 {
   [self updateWindowTitle];
-  self.toolbarController.repository = self.sourcesController.selectedRepository;
-  [self.toolbarController update];
+  [self.sourcesController didSelectRepository:repo];
+  [self.toolbarController didSelectRepository:repo];
 }
 
 
@@ -216,7 +220,7 @@
 
 - (void) updateWindowTitle
 {
-  GBRepository* repo = self.sourcesController.selectedRepository;
+  GBRepository* repo = self.repositoryController.repository;
   if (repo)
   {
     [self.window setTitle:[[repo path] twoLastPathComponentsWithDash]];
@@ -233,17 +237,6 @@
 {
   [self.sourcesController loadState];
   [self.toolbarController loadState];
-  
-  for (GBRepository* repo in self.sourcesController.localRepositories)
-  {
-    [repo updateLocalBranchesAndTagsWithBlock:^{
-      if (repo == self.toolbarController.repository)
-      {
-        [self.toolbarController updateCurrentBranchMenus];
-      }
-    }];    
-  }
-  
 }
 
 - (void) saveState

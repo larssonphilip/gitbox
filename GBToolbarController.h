@@ -1,10 +1,11 @@
+@class GBRepositoryController;
 
 @class GBRepository;
-@interface GBToolbarController : NSObject
-{
-}
 
-@property(retain) GBRepository* repository;
+@interface GBToolbarController : NSObject
+
+@property(assign) GBRepositoryController* repositoryController;
+
 @property(retain) IBOutlet NSToolbar* toolbar;
 
 @property(retain) IBOutlet NSPopUpButton* currentBranchPopUpButton;
@@ -22,5 +23,7 @@
 
 - (void) saveState;
 - (void) loadState;
+
+- (void) didSelectRepository:(GBRepository*)repo;
 
 @end

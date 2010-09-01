@@ -1,4 +1,8 @@
 #import "GBAppDelegate.h"
+
+#import "GBRepositoriesController.h"
+#import "GBRepositoryController.h"
+
 #import "GBMainWindowController.h"
 #import "GBSourcesController.h"
 
@@ -19,22 +23,20 @@
 
 @implementation GBAppDelegate
 
+@synthesize repositoriesController;
+@synthesize repositoryController;
+
 @synthesize windowController;
 @synthesize preferencesController;
-
-- (GBMainWindowController*) windowController
-{
-  if (!windowController)
-  {
-    self.windowController = [GBMainWindowController controller];
-  }
-  return [[windowController retain] autorelease];
-}
 
 - (void) dealloc
 {
   self.windowController = nil;
   self.preferencesController = nil;
+  
+  self.repositoriesController = nil;
+  self.repositoryController = nil;
+
   [super dealloc];
 }
 
@@ -110,15 +112,14 @@
 
 - (void) openRepositoryAtURL:(NSURL*)url
 {
-  GBSourcesController* sourcesController = self.windowController.sourcesController;
-  GBRepository* repo = [sourcesController repositoryWithURL:url];
+  GBRepository* repo = [self.repositoriesController repositoryWithURL:url];
   if (!repo)
   {
     repo = [GBRepository repositoryWithURL:url];
-    [sourcesController addRepository:repo];
+    [self.repositoriesController addRepository:repo];
     [[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:url];
   }
-  [sourcesController selectRepository:repo];
+  [self.repositoryController selectRepository:repo];
 }
 
 - (BOOL) checkGitVersion
@@ -211,13 +212,31 @@
 
 - (void) applicationDidFinishLaunching:(NSNotification*) aNotification
 {
+  // Instantiate controllers
+  self.repositoriesController = [[GBRepositoriesController new] autorelease];
+  self.repositoryController = [[GBRepositoryController new] autorelease];
+  self.windowController = [GBMainWindowController controller];
+  
+  // Connect controllers
+  self.repositoriesController.repositoryController = self.repositoryController;  
+  self.repositoriesController.windowController = self.windowController;
+  self.repositoryController.windowController = self.windowController;
+  self.windowController.repositoriesController = self.repositoriesController;
+  self.windowController.repositoryController = self.repositoryController;
+  
+  // Launch the updates
   [self checkGitVersion];
   [self.windowController showWindow:self];
+  
+  [self.repositoriesController loadRepositories];
+  [self.repositoriesController updateBranches];
+  
   [self.windowController loadState];
 }
 
 - (void) applicationWillTerminate:(NSNotification*)aNotification
 {
+  [self.repositoriesController saveRepositories];
   [self.windowController saveState];
 }
 
@@ -228,7 +247,6 @@
 
 - (BOOL) application:(NSApplication*)theApplication openFile:(NSString*)path
 {
-  NSLog(@"TODO: tell windowController to add a repo");
   if (![NSFileManager isWritableDirectoryAtPath:path])
   {
     [NSAlert message:NSLocalizedString(@"File is not a writable folder.", @"") description:path];

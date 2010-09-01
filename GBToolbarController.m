@@ -1,3 +1,5 @@
+#import "GBRepositoryController.h"
+
 #import "GBToolbarController.h"
 #import "GBModels.h"
 
@@ -12,7 +14,7 @@
 
 @implementation GBToolbarController
 
-@synthesize repository;
+@synthesize repositoryController;
 @synthesize toolbar;
 @synthesize currentBranchPopUpButton;
 @synthesize pullPushControl;
@@ -20,7 +22,6 @@
 
 - (void) dealloc
 {
-  self.repository = nil;
   self.toolbar = nil;
   self.currentBranchPopUpButton = nil;
   self.pullPushControl = nil;
@@ -48,6 +49,16 @@
 
 
 
+#pragma mark Model callbacks
+
+
+- (void) didSelectRepository:(GBRepository*)repo
+{
+  [self update];  
+}
+
+
+
 
 
 
@@ -71,7 +82,7 @@
 
 - (void) updateCurrentBranchMenus
 {
-  GBRepository* repo = self.repository;
+  GBRepository* repo = self.repositoryController.repository;
   
   // Local branches
   NSMenu* newMenu = [[NSMenu new] autorelease];
@@ -135,7 +146,7 @@
   NSMenu* remoteBranchesMenu = [NSMenu menu];
   if ([repo.remotes count] > 1) // display submenus for each remote
   {
-    for (GBRemote* remote in self.repository.remotes)
+    for (GBRemote* remote in repo.remotes)
     {
       if ([remote.branches count] > 0)
       {
@@ -197,7 +208,7 @@
   
   // If no branch is found the name could be empty.
   // I make sure that the name is set nevertheless.
-  NSString* title = [self.repository.currentLocalRef displayName];
+  NSString* title = [repo.currentLocalRef displayName];
   if (title) [button setTitle:title];
 }
 
@@ -212,7 +223,7 @@
 
 - (void) updateRemoteBranchMenus
 {
-  GBRepository* repo = self.repository;
+  GBRepository* repo = self.repositoryController.repository;
   NSArray* remotes = repo.remotes;
   
   NSPopUpButton* button = self.remoteBranchPopUpButton;
@@ -367,7 +378,7 @@
 - (void) updateSyncButtons
 {
   NSSegmentedControl* control = self.pullPushControl;
-  GBRepository* repo = self.repository;
+  GBRepository* repo = self.repositoryController.repository;
   
   BOOL pullDisabled = NO;
   BOOL pushDisabled = NO;
