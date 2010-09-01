@@ -76,10 +76,20 @@
   // Local branches
   NSMenu* newMenu = [[NSMenu new] autorelease];
   NSPopUpButton* button = self.currentBranchPopUpButton;
+  
   if ([button pullsDown])
   {
     // Note: this is needed according to documentation for pull-down menus. The item will be ignored.
     [newMenu addItem:[NSMenuItem menuItemWithTitle:@"" submenu:nil]];
+  }
+  
+  [button setEnabled:YES];
+  
+  if (!repo)
+  {
+    [button setMenu:newMenu];
+    [button setEnabled:NO];
+    return;
   }
   
   for (GBRef* localBranch in repo.localBranches)
@@ -187,7 +197,8 @@
   
   // If no branch is found the name could be empty.
   // I make sure that the name is set nevertheless.
-  [button setTitle:[self.repository.currentLocalRef displayName]];
+  NSString* title = [self.repository.currentLocalRef displayName];
+  if (title) [button setTitle:title];
 }
 
 

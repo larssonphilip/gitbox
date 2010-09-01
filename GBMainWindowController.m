@@ -21,7 +21,6 @@
 @synthesize toolbarController;
 
 @synthesize splitView;
-@synthesize toolbar;
 
 - (void) dealloc
 {
@@ -31,7 +30,6 @@
   self.toolbarController = nil;
   
   self.splitView = nil;
-  self.toolbar = nil;
   
   [super dealloc];
 }
@@ -71,8 +69,6 @@
 {
   [super windowDidLoad];
 
-  self.toolbarController = [[GBToolbarController new] autorelease];
-  self.toolbarController.toolbar = self.toolbar;
   [self.toolbarController windowDidLoad];
   
   self.sourcesController = [[[GBSourcesController alloc] initWithNibName:@"GBSourcesController" bundle:nil] autorelease];

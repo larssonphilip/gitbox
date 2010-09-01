@@ -7,10 +7,9 @@
 }
 
 @property(retain) GBSourcesController* sourcesController;
-@property(retain) GBToolbarController* toolbarController;
+@property(retain) IBOutlet GBToolbarController* toolbarController;
 
 @property(retain) IBOutlet NSSplitView* splitView;
-@property(retain) IBOutlet NSToolbar* toolbar;
 
 + (id) controller;
 
