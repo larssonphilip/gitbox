@@ -38,7 +38,7 @@
 			<object class="NSCustomObject" id="796877042">
 				<string key="NSClassName">NSApplication</string>
 			</object>
-			<object class="NSCustomObject" id="890746930">
+			<object class="NSCustomObject" id="724065351">
 				<string key="NSClassName">GBToolbarController</string>
 			</object>
 			<object class="NSWindowTemplate" id="275939982">
@@ -610,7 +610,7 @@
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
 						<string key="label">toolbar</string>
-						<reference key="source" ref="890746930"/>
+						<reference key="source" ref="724065351"/>
 						<reference key="destination" ref="959528133"/>
 					</object>
 					<int key="connectionID">100382</int>
@@ -626,7 +626,7 @@
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
 						<string key="label">currentBranchPopUpButton</string>
-						<reference key="source" ref="890746930"/>
+						<reference key="source" ref="724065351"/>
 						<reference key="destination" ref="451021642"/>
 					</object>
 					<int key="connectionID">100387</int>
@@ -634,7 +634,7 @@
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
 						<string key="label">pullPushControl</string>
-						<reference key="source" ref="890746930"/>
+						<reference key="source" ref="724065351"/>
 						<reference key="destination" ref="723410101"/>
 					</object>
 					<int key="connectionID">100388</int>
@@ -642,7 +642,7 @@
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
 						<string key="label">remoteBranchPopUpButton</string>
-						<reference key="source" ref="890746930"/>
+						<reference key="source" ref="724065351"/>
 						<reference key="destination" ref="496183261"/>
 					</object>
 					<int key="connectionID">100389</int>
@@ -651,9 +651,17 @@
 					<object class="IBOutletConnection" key="connection">
 						<string key="label">toolbarController</string>
 						<reference key="source" ref="512844837"/>
-						<reference key="destination" ref="890746930"/>
+						<reference key="destination" ref="724065351"/>
 					</object>
 					<int key="connectionID">100390</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">progressIndicator</string>
+						<reference key="source" ref="724065351"/>
+						<reference key="destination" ref="614430428"/>
+					</object>
+					<int key="connectionID">100391</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -993,7 +1001,7 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">100381</int>
-						<reference key="object" ref="890746930"/>
+						<reference key="object" ref="724065351"/>
 						<reference key="parent" ref="0"/>
 					</object>
 				</object>
@@ -1123,7 +1131,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">100390</int>
+			<int key="maxID">100391</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -1216,6 +1224,7 @@
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>currentBranchPopUpButton</string>
+							<string>progressIndicator</string>
 							<string>pullPushControl</string>
 							<string>remoteBranchPopUpButton</string>
 							<string>toolbar</string>
@@ -1223,6 +1232,7 @@
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>NSPopUpButton</string>
+							<string>NSProgressIndicator</string>
 							<string>NSSegmentedControl</string>
 							<string>NSPopUpButton</string>
 							<string>NSToolbar</string>
@@ -1233,6 +1243,7 @@
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>currentBranchPopUpButton</string>
+							<string>progressIndicator</string>
 							<string>pullPushControl</string>
 							<string>remoteBranchPopUpButton</string>
 							<string>toolbar</string>
@@ -1242,6 +1253,10 @@
 							<object class="IBToOneOutletInfo">
 								<string key="name">currentBranchPopUpButton</string>
 								<string key="candidateClassName">NSPopUpButton</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">progressIndicator</string>
+								<string key="candidateClassName">NSProgressIndicator</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">pullPushControl</string>

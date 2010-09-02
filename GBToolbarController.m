@@ -19,6 +19,7 @@
 @synthesize currentBranchPopUpButton;
 @synthesize pullPushControl;
 @synthesize remoteBranchPopUpButton;
+@synthesize progressIndicator;
 
 - (void) dealloc
 {
@@ -26,6 +27,7 @@
   self.currentBranchPopUpButton = nil;
   self.pullPushControl = nil;
   self.remoteBranchPopUpButton = nil;
+  self.progressIndicator = nil;
   [super dealloc];
 }
 
@@ -49,6 +51,71 @@
 
 
 
+#pragma mark Git Actions
+
+
+
+- (IBAction) checkoutBranch:(NSMenuItem*)sender
+{
+  [self.repositoryController checkoutRef:[sender representedObject]];
+}
+
+//- (IBAction) checkoutRemoteBranch:(id)sender
+//{
+//  GBRef* remoteBranch = [sender representedObject];
+//  NSString* defaultName = [remoteBranch.name uniqueStringForStrings:[self.repository.localBranches valueForKey:@"name"]];
+//  
+//  GBPromptController* ctrl = [GBPromptController controller];
+//  
+//  ctrl.title = NSLocalizedString(@"Remote Branch Checkout", @"");
+//  ctrl.promptText = NSLocalizedString(@"Branch Name:", @"");
+//  ctrl.buttonText = NSLocalizedString(@"Checkout", @"");
+//  ctrl.value = defaultName;
+//  ctrl.requireStripWhitespace = YES;
+//  
+//  ctrl.target = self;
+//  ctrl.finishSelector = @selector(doneChoosingNameForRemoteBranchCheckout:);
+//  
+//  ctrl.payload = remoteBranch;
+//  
+//  [ctrl runSheetInWindow:[self window]];
+//}
+//
+//- (void) doneChoosingNameForRemoteBranchCheckout:(GBPromptController*)ctrl
+//{
+//  [self.repository checkoutRef:ctrl.payload withNewBranchName:ctrl.value];
+//  self.repository.localBranches = [self.repository loadLocalBranches];
+//  [self updateBranchMenus];
+//  [self.repository reloadCommits];
+//}
+//
+//
+//- (IBAction) checkoutNewBranch:(id)sender
+//{
+//  GBPromptController* ctrl = [GBPromptController controller];
+//  
+//  ctrl.title = NSLocalizedString(@"New Branch", @"");
+//  ctrl.promptText = NSLocalizedString(@"Branch Name:", @"");
+//  ctrl.buttonText = NSLocalizedString(@"Create", @"");
+//  ctrl.requireStripWhitespace = YES;
+//  
+//  ctrl.target = self;
+//  ctrl.finishSelector = @selector(doneChoosingNameForNewBranchCheckout:);
+//  
+//  [ctrl runSheetInWindow:[self window]];
+//}
+//
+//- (void) doneChoosingNameForNewBranchCheckout:(GBPromptController*)ctrl
+//{
+//  [self.repository checkoutNewBranchName:ctrl.value];
+//  self.repository.localBranches = [self.repository loadLocalBranches];
+//  [self updateBranchMenus];
+//}
+
+
+
+
+
 #pragma mark Model callbacks
 
 
@@ -60,10 +127,32 @@
 
 
 
-
-
 #pragma mark UI update methods
 
+
+- (void) pushDisabled
+{
+  isDisabled++;
+  if (isDisabled == 1) [self update];
+}
+
+- (void) popDisabled
+{
+  isDisabled--;
+  if (isDisabled == 0) [self update];
+}
+
+- (void) pushSpinning
+{
+  isSpinning++;
+  if (isSpinning == 1) [self.progressIndicator startAnimation:self];
+}
+
+- (void) popSpinning
+{
+  isSpinning--;
+  if (isSpinning == 0) [self.progressIndicator stopAnimation:self];
+}
 
 
 - (void) update
@@ -87,6 +176,12 @@
   // Local branches
   NSMenu* newMenu = [[NSMenu new] autorelease];
   NSPopUpButton* button = self.currentBranchPopUpButton;
+  
+  if (isDisabled)
+  {
+    [button setEnabled:NO];
+    return;    
+  }
   
   if ([button pullsDown])
   {

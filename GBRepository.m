@@ -349,7 +349,6 @@
   [task launchWithBlock:^{
     self.localBranches = task.branches;
     self.tags = task.tags;
-    NSLog(@"localBranches: %@", task.branches);
     block();
   }];
 }
@@ -589,6 +588,17 @@
   [[[self task] launchWithArgumentsAndWait:[NSArray arrayWithObjects:@"checkout", [ref commitish], nil]] showErrorIfNeeded];
   
   [self resetCurrentLocalRef];
+}
+
+- (void) checkoutRef:(GBRef*)ref withBlock:(void (^)())block
+{
+  GBTask* task = [self task];
+  task.arguments = [NSArray arrayWithObjects:@"checkout", [ref commitish], nil];
+  [task launchWithBlock:^{
+    [task showErrorIfNeeded];
+    [self resetCurrentLocalRef];
+    block();
+  }];
 }
 
 - (void) checkoutRef:(GBRef*)ref withNewBranchName:(NSString*)name

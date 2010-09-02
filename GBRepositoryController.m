@@ -29,7 +29,14 @@
 
 - (void) checkoutRef:(GBRef*) ref
 {
-  
+  [self.windowController.toolbarController pushDisabled];
+  [self.windowController.toolbarController pushSpinning];
+  [self.repository checkoutRef:ref withBlock:^{
+    // TODO: Reload commits
+    //[self.repository reloadCommits];
+    [self.windowController.toolbarController popDisabled];
+    [self.windowController.toolbarController popSpinning];
+  }];
 }
 
 
