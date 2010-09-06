@@ -164,7 +164,7 @@
 - (void) updateBranchMenus
 {
   [self updateCurrentBranchMenus];
-//  [self updateRemoteBranchMenus];
+  [self updateRemoteBranchMenus];
   [self updateSyncButtons];
 }
 
@@ -323,6 +323,15 @@
   
   NSPopUpButton* button = self.remoteBranchPopUpButton;
   NSMenu* remoteBranchesMenu = [NSMenu menu];
+  
+  if (isDisabled)
+  {
+    [button setEnabled:NO];
+    return;    
+  }
+  
+  [button setEnabled:YES];
+  
   if ([button pullsDown])
   {
     // Note: this is needed according to documentation for pull-down menus. The item will be ignored.
@@ -481,7 +490,7 @@
   if (repo.currentRemoteBranch && [repo.currentRemoteBranch isLocalBranch])
   {
     [control setLabel:@"← merge" forSegment:0];
-    [control setLabel:@"—" forSegment:1];
+    [control setLabel:@" " forSegment:1];
     pushDisabled = YES;
   }
   else
@@ -492,9 +501,6 @@
   
   [control setEnabled:!pullDisabled && !isDisabled && repo forSegment:0];
   [control setEnabled:!pushDisabled && !isDisabled && repo forSegment:1];
-  
-  //  [control setTitle:]
-  
 }
 
 
