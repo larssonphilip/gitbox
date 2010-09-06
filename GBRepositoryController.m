@@ -24,6 +24,19 @@
 - (void) selectRepository:(GBRepository*) repo
 {
   self.repository = repo;
+  [repo updateLocalBranchesAndTagsIfNeededWithBlock:^{
+    if (repo == self.repository)
+    {
+      [self.windowController.toolbarController updateCurrentBranchMenus];
+    }
+  }];
+  [repo updateRemotesIfNeededWithBlock:^{
+    for (GBRemote* remote in repo.remotes)
+    {
+      
+    }
+  }];
+  
   [self.windowController didSelectRepository:repo];
 }
 

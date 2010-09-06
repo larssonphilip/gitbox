@@ -12,4 +12,5 @@
 - (void) selectRepository:(GBRepository*) repo;
 - (void) checkoutRef:(GBRef*) ref;
 
+
 @end

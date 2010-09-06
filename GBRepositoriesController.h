@@ -14,7 +14,7 @@
 - (void) addRepository:(GBRepository*)repo;
 - (void) loadRepositories;
 - (void) saveRepositories;
-- (void) updateBranches;
+- (void) setNeedsUpdateEverything;
 
 
 @end

@@ -42,6 +42,10 @@ UI glitches:
 - glitch: sometimes fake modification of xcodeproj appears in the stage due to async git-status call (it is a case for quick switching from xcode to gitbox right after it synced)
 - remember activity window visibility
 
+UI features:
+- human message in case git cannot merge/pull when some files are modified (error: Untracked working tree file 'Patryst.xcodeproj/project.pbxproj' would be overwritten by merge.)
+
+
 Easy features:
 - DONE, SHOULD TEST: pull should merge fetched commits, but perform the pull immediately afterwards
 - force push a branch

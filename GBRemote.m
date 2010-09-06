@@ -9,6 +9,7 @@
 @synthesize alias;
 @synthesize URLString;
 @synthesize branches;
+@synthesize newBranches;
 @synthesize tags;
 
 @synthesize repository;
@@ -20,20 +21,19 @@
 
 - (NSArray*) branches
 {
-  if (!branches)
-  {
-    self.branches = [self loadBranches];
-  }
+  if (!branches) self.branches = [NSArray array];
   return [[branches retain] autorelease];
+}
+
+- (NSArray*) newBranches
+{
+  if (!newBranches) self.newBranches = [NSArray array];
+  return [[newBranches retain] autorelease];
 }
 
 - (NSArray*) tags
 {
-  if (!tags)
-  {
-    [self branches]; // if branches are nil will trigger branches and tags update
-    self.tags = [NSArray array];
-  }
+  if (!tags) self.tags = [NSArray array];
   return [[tags retain] autorelease];
 }
 
@@ -42,6 +42,7 @@
   self.alias = nil;
   self.URLString = nil;
   self.branches = nil;
+  self.newBranches = nil;
   self.tags = nil;
   [super dealloc];
 }
@@ -86,6 +87,10 @@
   return list;  
 }
 
+- (NSArray*) pushedAndNewBranches
+{
+  return [self.branches arrayByAddingObjectsFromArray:self.newBranches];
+}
 
 
 
@@ -94,7 +99,7 @@
 
 - (void) addBranch:(GBRef*)branch
 {
-  self.branches = [self.branches arrayByAddingObject:branch];
+  self.newBranches = [self.newBranches arrayByAddingObject:branch];
 }
 
 - (NSArray*) loadBranches

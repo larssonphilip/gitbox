@@ -18,7 +18,6 @@
 @property(nonatomic,retain) OAActivityIndicator* activityIndicator;
 
 - (OATask*) launchTask:(OATask*)task;
-- (OATask*) enqueueTask:(OATask*)task;
 
 #pragma mark Private
 

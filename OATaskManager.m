@@ -68,12 +68,6 @@
   return task;
 }
 
-- (OATask*) enqueueTask:(OATask*)task
-{
-  [self.queuedTasks addObject:task];
-  [self launchNextEnqueuedTask];
-  return task;
-}
 
 
 

@@ -229,7 +229,7 @@
   [self.windowController showWindow:self];
   
   [self.repositoriesController loadRepositories];
-  [self.repositoriesController updateBranches];
+  [self.repositoriesController setNeedsUpdateEverything];
   
   [self.windowController loadState];
 }

@@ -33,6 +33,9 @@
 @synthesize fetching;
 @synthesize pushing;
 
+@synthesize needsLocalBranchesUpdate;
+@synthesize needsRemotesUpdate;
+
 @synthesize taskManager;
 @synthesize delegate;
 @synthesize selectedCommit;
@@ -109,19 +112,19 @@
 
 - (NSArray*) localBranches
 {
-  if (!localBranches)
-  {
-    self.localBranches = [NSArray array]; //[self loadLocalBranches];
-  }
+  if (!localBranches) self.localBranches = [NSArray array];
   return [[localBranches retain] autorelease];
+}
+
+- (NSArray*) tags
+{
+  if (!tags) self.tags = [NSArray array];
+  return [[tags retain] autorelease];
 }
 
 - (NSArray*) remotes
 {
-  if (!remotes)
-  {
-    self.remotes = [NSArray array]; //[self loadRemotes];
-  }
+  if (!remotes) self.remotes = [NSArray array];
   return [[remotes retain] autorelease];
 }
 
@@ -135,21 +138,9 @@
   return list;
 }
 
-- (NSArray*) tags
-{
-  if (!tags)
-  {
-    self.tags = [NSArray array]; //[self loadTags];
-  }
-  return [[tags retain] autorelease];
-}
-
 - (GBRef*) currentLocalRef
 {
-  if (!currentLocalRef)
-  {
-    self.currentLocalRef = [self loadCurrentLocalRef];
-  }
+  if (!currentLocalRef) self.currentLocalRef = [self loadCurrentLocalRef];
   return [[currentLocalRef retain] autorelease];
 }
 
@@ -342,41 +333,41 @@
 
 
 
+- (void) updateLocalBranchesAndTagsIfNeededWithBlock:(void (^)())block
+{
+  if (!needsLocalBranchesUpdate) return;
+  [self updateLocalBranchesAndTagsWithBlock:block];
+  
+}
+
 - (void) updateLocalBranchesAndTagsWithBlock:(void (^)())block
 {
   GBLocalBranchesTask* task = [GBLocalBranchesTask task];
   task.repository = self;
   [task launchWithBlock:^{
+    self.needsLocalBranchesUpdate = NO;
     self.localBranches = task.branches;
     self.tags = task.tags;
     block();
   }];
 }
 
-
-
-- (NSArray*) loadLocalBranches
+- (void) updateRemotesIfNeededWithBlock:(void (^)())block
 {
-  GBLocalBranchesTask* task = [GBLocalBranchesTask task];
-  [self launchTaskAndWait:task];
-  self.tags = task.tags;
-  return task.branches;
+  if (!needsRemotesUpdate) return;
+  [self updateRemotesWithBlock:block];
 }
 
-- (NSArray*) loadTags
+- (void) updateRemotesWithBlock:(void (^)())block
 {
-  GBLocalBranchesTask* task = [GBLocalBranchesTask task];
-  [self launchTaskAndWait:task];
-  self.localBranches = task.branches;
-  return task.tags;
+  GBRemotesTask* task = [GBRemotesTask task];
+  task.repository = self;
+  [task launchWithBlock:^{
+    self.needsRemotesUpdate = NO;
+    self.remotes = task.remotes;
+    block();
+  }];
 }
-
-- (NSArray*) loadRemotes
-{
-  return [[self launchTaskAndWait:[GBRemotesTask task]] remotes];
-}
-
-
 
 
 
@@ -836,13 +827,6 @@
   return task;
 }
 
-- (id) enqueueTask:(GBTask*)aTask
-{
-  aTask.repository = self;
-  [self.taskManager enqueueTask:aTask];
-  return aTask;
-}
-
 - (id) launchTask:(GBTask*)aTask
 {
   aTask.repository = self;
@@ -861,6 +845,41 @@
 {
   return [self.dotGitURL URLByAppendingPathComponent:suffix];
 }
+
+
+
+
+
+
+#pragma mark OBSOLETE
+
+
+
+
+
+- (NSArray*) loadLocalBranches
+{
+  GBLocalBranchesTask* task = [GBLocalBranchesTask task];
+  [self launchTaskAndWait:task];
+  self.tags = task.tags;
+  return task.branches;
+}
+
+- (NSArray*) loadTags
+{
+  GBLocalBranchesTask* task = [GBLocalBranchesTask task];
+  [self launchTaskAndWait:task];
+  self.localBranches = task.branches;
+  return task.tags;
+}
+
+- (NSArray*) loadRemotes
+{
+  return [[self launchTaskAndWait:[GBRemotesTask task]] remotes];
+}
+
+
+
 
 
 @end

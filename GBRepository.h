@@ -18,35 +18,8 @@
 @class OAPropertyListController;
 @interface GBRepository : NSObject
 {
-  NSURL* url;
-  NSURL* dotGitURL;
-  NSArray* localBranches;
-  NSArray* remotes;
-  NSArray* tags;
-  GBStage* stage;
-  GBRef* currentLocalRef;
-  GBRef* currentRemoteBranch;
-  
-  NSArray* commits;
-  NSArray* localBranchCommits;
-  
-  OATaskManager* taskManager;
-  
-  BOOL pulling;
-  BOOL merging;
-  BOOL fetching;
-  BOOL pushing;
-  
-  NSObject<GBRepositoryDelegate>* delegate;
-  
-  GBCommit* selectedCommit;
-  
-  
   BOOL backgroundUpdateEnabled;
   NSTimeInterval backgroundUpdateInterval;
-  NSString* topCommitId;
-  
-  OAPropertyListController* plistController;
 }
 
 @property(nonatomic,retain) NSURL* url;
@@ -66,10 +39,13 @@
 @property(nonatomic,assign) BOOL fetching;
 @property(nonatomic,assign) BOOL pushing;
 
+@property(nonatomic,assign) BOOL needsLocalBranchesUpdate;
+@property(nonatomic,assign) BOOL needsRemotesUpdate;
+
 @property(nonatomic,retain) OATaskManager* taskManager;
 
 @property(nonatomic,assign) NSObject<GBRepositoryDelegate>* delegate;
-@property(nonatomic,retain) GBCommit* selectedCommit;
+@property(nonatomic,retain) GBCommit* selectedCommit; // fixme: should move this into repositorycontroller or commitcontroller
 @property(nonatomic,retain) NSString* topCommitId;
 @property(nonatomic,retain) OAPropertyListController* plistController;
 
@@ -91,9 +67,7 @@
 - (NSString*) path;
 
 - (NSArray*) composedCommits;
-- (NSArray*) loadLocalBranches; // obsolete
-- (NSArray*) loadTags; // obsolete
-- (NSArray*) loadRemotes; // obsolete
+
 
 - (void) saveObject:(id)obj forKey:(NSString*)key;
 - (id) loadObjectForKey:(NSString*)key;
@@ -101,7 +75,10 @@
 
 #pragma mark Update
 
+- (void) updateLocalBranchesAndTagsIfNeededWithBlock:(void (^)())block;
 - (void) updateLocalBranchesAndTagsWithBlock:(void (^)())block;
+- (void) updateRemotesIfNeededWithBlock:(void (^)())block;
+- (void) updateRemotesWithBlock:(void (^)())block;
 
 - (void) updateStatus;
 - (void) updateBranchStatus;
@@ -147,10 +124,19 @@
 #pragma mark Util
 
 - (id) task;
-- (id) enqueueTask:(GBTask*)aTask;
 - (id) launchTask:(GBTask*)aTask;
 - (id) launchTaskAndWait:(GBTask*)aTask;
 - (NSURL*) gitURLWithSuffix:(NSString*)suffix;
+
+
+
+#pragma mark OBSOLETE
+
+
+- (NSArray*) loadLocalBranches; // obsolete
+- (NSArray*) loadTags; // obsolete
+- (NSArray*) loadRemotes; // obsolete
+
 
 @end
 

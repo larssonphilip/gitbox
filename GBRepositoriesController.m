@@ -1,6 +1,5 @@
 #import "GBRepositoryController.h"
-#import "GBRepository.h"
-#import "GBRef.h"
+#import "GBModels.h"
 
 #import "GBMainWindowController.h"
 #import "GBToolbarController.h"
@@ -60,15 +59,23 @@
 
 - (void) addRepository:(GBRepository*)repo
 {
+  repo.needsLocalBranchesUpdate = YES;
+  repo.needsRemotesUpdate = YES;
   [self.localRepositories addObject:repo];
   [self.windowController.sourcesController didAddRepository:repo];
-  [repo updateLocalBranchesAndTagsWithBlock:^{
-    if (repo == self.repositoryController.repository)
-    {
-      [self.windowController.toolbarController updateCurrentBranchMenus];
-    }
-  }];  
 }
+
+- (void) setNeedsUpdateEverything
+{
+  for (GBRepository* repo in self.localRepositories)
+  {
+    repo.needsLocalBranchesUpdate = YES;
+    repo.needsRemotesUpdate = YES;
+  }
+}
+
+
+
 
 - (void) loadRepositories
 {
@@ -110,21 +117,7 @@
   }
   [[NSUserDefaults standardUserDefaults] setObject:paths forKey:@"GBRepositoriesController_localRepositories"];
 }
- 
 
-- (void) updateBranches
-{
-  for (GBRepository* repo in self.localRepositories)
-  {
-    [repo updateLocalBranchesAndTagsWithBlock:^{
-      if (repo == self.repositoryController.repository)
-      {
-        [self.windowController.toolbarController updateCurrentBranchMenus];
-      }
-    }];    
-  }  
-}
- 
 
 
 @end

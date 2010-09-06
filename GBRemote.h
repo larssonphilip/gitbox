@@ -1,18 +1,11 @@
 @class GBRef;
 @class GBRepository;
 @interface GBRemote : NSObject
-{
-  NSString* alias;
-  NSString* URLString;
-  NSArray* branches;
-  NSArray* tags;
-  
-  GBRepository* repository;
-}
 
 @property(nonatomic,retain) NSString* alias;
 @property(nonatomic,retain) NSString* URLString;
 @property(nonatomic,retain) NSArray* branches;
+@property(nonatomic,retain) NSArray* newBranches;
 @property(nonatomic,retain) NSArray* tags;
 
 @property(nonatomic,assign) GBRepository* repository;
@@ -22,6 +15,7 @@
 
 - (GBRef*) defaultBranch;
 - (NSArray*) guessedBranches;
+- (NSArray*) pushedAndNewBranches;
 
 
 #pragma mark Actions

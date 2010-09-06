@@ -165,7 +165,7 @@
 {
   [self updateCurrentBranchMenus];
 //  [self updateRemoteBranchMenus];
-//  [self updateSyncButtons];
+  [self updateSyncButtons];
 }
 
 
@@ -478,7 +478,7 @@
   BOOL pullDisabled = NO;
   BOOL pushDisabled = NO;
   
-  if ([repo.currentRemoteBranch isLocalBranch])
+  if (repo.currentRemoteBranch && [repo.currentRemoteBranch isLocalBranch])
   {
     [control setLabel:@"← merge" forSegment:0];
     [control setLabel:@"—" forSegment:1];
@@ -490,10 +490,10 @@
     [control setLabel:@"push →" forSegment:1];
   }
   
-  [control setEnabled:!pullDisabled forSegment:0];
-  [control setEnabled:!pushDisabled forSegment:1];
+  [control setEnabled:!pullDisabled && !isDisabled && repo forSegment:0];
+  [control setEnabled:!pushDisabled && !isDisabled && repo forSegment:1];
   
-  //  [control setTi]
+  //  [control setTitle:]
   
 }
 
