@@ -14,13 +14,13 @@
 #pragma mark Interrogation
 
 - (GBRef*) defaultBranch;
-- (NSArray*) guessedBranches;
+//- (NSArray*) guessedBranches;
 - (NSArray*) pushedAndNewBranches;
 
 
 #pragma mark Actions
 
 - (void) addBranch:(GBRef*)branch;
-- (NSArray*) loadBranches;
+- (void) updateBranchesWithBlock:(void(^)())block;
 
 @end

@@ -463,11 +463,6 @@
   return [[NSArray arrayWithObject:self.stage] arrayByAddingObjectsFromArray:self.localBranchCommits];
 }
 
-- (void) remoteDidUpdate:(GBRemote*)aRemote
-{
-  [self.delegate repository:self didUpdateRemote:aRemote];
-}
-
 
 - (void) finish
 {

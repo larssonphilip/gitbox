@@ -1,6 +1,5 @@
 
-#import "GBRepository.h"
-#import "GBRef.h"
+#import "GBModels.h"
 
 #import "GBMainWindowController.h"
 #import "GBToolbarController.h"
@@ -27,13 +26,15 @@
   [repo updateLocalBranchesAndTagsIfNeededWithBlock:^{
     if (repo == self.repository)
     {
-      [self.windowController.toolbarController updateCurrentBranchMenus];
+      [self.windowController.toolbarController updateBranchMenus];
     }
   }];
   [repo updateRemotesIfNeededWithBlock:^{
     for (GBRemote* remote in repo.remotes)
     {
-      
+      [remote updateBranchesWithBlock:^{
+        [self.windowController.toolbarController updateBranchMenus];
+      }];
     }
   }];
   

@@ -2,7 +2,6 @@
 @class GBRemote;
 @protocol GBRepositoryDelegate
 - (void) repositoryDidUpdateStatus:(GBRepository*)repo;
-- (void) repository:(GBRepository*)repo didUpdateRemote:(GBRemote*)remote;
 @optional
 - (void) repository:(GBRepository*)repo alertWithError:(NSError*)error;
 - (void) repository:(GBRepository*)repo alertWithMessage:(NSString*)message description:(NSString*)description;
@@ -86,7 +85,6 @@
 - (void) reloadCommits;
 - (void) reloadRemotes;
 - (void) resetCurrentLocalRef;
-- (void) remoteDidUpdate:(GBRemote*)aRemote;
 - (void) finish;
 
 #pragma mark Background Update

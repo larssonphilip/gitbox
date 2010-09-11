@@ -62,30 +62,30 @@
   return [self.branches firstObject];
 }
 
-- (NSArray*) guessedBranches
-{
-  NSMutableArray* list = [NSMutableArray array];
-  NSURL* aurl = [self.repository gitURLWithSuffix:[@"refs/remotes" stringByAppendingPathComponent:self.alias]];
-  if ([[NSFileManager defaultManager] isReadableDirectoryAtPath:aurl.path])
-  {
-    for (NSURL* aURL in [NSFileManager contentsOfDirectoryAtURL:aurl])
-    {
-      if ([[NSFileManager defaultManager] isReadableFileAtPath:aURL.path])
-      {
-        NSString* name = [[aURL pathComponents] lastObject];
-        if (![name isEqualToString:@"HEAD"])
-        {
-          GBRef* ref = [[GBRef new] autorelease];
-          ref.repository = self.repository;
-          ref.name = name;
-          ref.remoteAlias = self.alias;
-          [list addObject:ref];
-        }
-      }
-    }    
-  }
-  return list;  
-}
+//- (NSArray*) guessedBranches
+//{
+//  NSMutableArray* list = [NSMutableArray array];
+//  NSURL* aurl = [self.repository gitURLWithSuffix:[@"refs/remotes" stringByAppendingPathComponent:self.alias]];
+//  if ([[NSFileManager defaultManager] isReadableDirectoryAtPath:aurl.path])
+//  {
+//    for (NSURL* aURL in [NSFileManager contentsOfDirectoryAtURL:aurl])
+//    {
+//      if ([[NSFileManager defaultManager] isReadableFileAtPath:aURL.path])
+//      {
+//        NSString* name = [[aURL pathComponents] lastObject];
+//        if (![name isEqualToString:@"HEAD"])
+//        {
+//          GBRef* ref = [[GBRef new] autorelease];
+//          ref.repository = self.repository;
+//          ref.name = name;
+//          ref.remoteAlias = self.alias;
+//          [list addObject:ref];
+//        }
+//      }
+//    }    
+//  }
+//  return list;  
+//}
 
 - (NSArray*) pushedAndNewBranches
 {
@@ -102,31 +102,18 @@
   self.newBranches = [self.newBranches arrayByAddingObject:branch];
 }
 
-- (NSArray*) loadBranches
+- (void) updateBranchesWithBlock:(void(^)())block;
 {
   GBRemoteBranchesTask* task = [GBRemoteBranchesTask task];
   task.remote = self;
-  task.target = self;
-  task.action = @selector(remoteBranchesTaskDidFinish:);
-  // task will set later correct branches, but we can return our estimate
-  [self.repository launchTask:task]; 
-  return [self guessedBranches];
-}
-
-- (void) remoteBranchesTaskDidFinish:(GBRemoteBranchesTask*)task
-{
-  if (task.branches)
-  {
-    self.branches = task.branches;
-  }
-  if (task.tags)
-  {
-    self.tags = task.tags;
-  }
+  task.repository = self.repository;
   
-  [self.repository remoteDidUpdate:self];
+  [task launchWithBlock:^{
+    self.branches = task.branches;
+    self.tags = task.tags;
+    block();
+  }];
 }
-
 
 
 @end
