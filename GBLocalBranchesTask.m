@@ -69,9 +69,6 @@
   
   self.branches = theBranches;
   self.tags = theTags;
-  
-  [self.target performSelector:self.action withObject:self];
-  
 }
 
 

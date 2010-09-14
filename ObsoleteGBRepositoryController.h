@@ -11,9 +11,7 @@
 @class GBCommitViewController;
 @class GBCommitPromptController;
 @class GBCommandsController;
-@interface ObsoleteGBRepositoryController : NSWindowController<
-                                                      GBRepositoryDelegate, 
-                                                      NSTableViewDelegate>
+@interface ObsoleteGBRepositoryController : NSWindowController<NSTableViewDelegate>
 {
   NSURL* repositoryURL;
   GBRepository* repository;

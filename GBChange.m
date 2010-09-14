@@ -1,7 +1,6 @@
 #import "GBModels.h"
 #import "GBExtractFileTask.h"
 #import "OATask.h"
-#import "OATaskManager.h"
 
 #import "NSString+OAGitHelpers.h"
 #import "NSAlert+OAAlertHelpers.h"
@@ -233,7 +232,7 @@
       [NSApp sendAction:@selector(showDiffToolPreferences:) to:nil from:self];
     }
   };
-  [self.repository.taskManager launchTask:task];
+  [self.repository launchTask:task];
 }
 
 - (void) revealInFinder:(id)sender

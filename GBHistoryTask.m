@@ -57,7 +57,6 @@
 {
   [super didFinish];
   self.commits = [self commitsFromRawFormatData:self.output];
-  [self.target performSelector:self.action withObject:self.commits];
 }
 
 

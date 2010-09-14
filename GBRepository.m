@@ -1,14 +1,11 @@
 #import "GBModels.h"
 
-#import "OATaskManager.h"
-
 #import "GBTask.h"
 #import "GBRemotesTask.h"
 #import "GBHistoryTask.h"
 #import "GBLocalBranchesTask.h"
 
 #import "NSFileManager+OAFileManagerHelpers.h"
-#import "NSAlert+OAAlertHelpers.h"
 #import "NSData+OADataHelpers.h"
 #import "NSArray+OAArrayHelpers.h"
 
@@ -36,8 +33,6 @@
 @synthesize needsLocalBranchesUpdate;
 @synthesize needsRemotesUpdate;
 
-@synthesize taskManager;
-@synthesize delegate;
 @synthesize selectedCommit;
 
 @synthesize topCommitId;
@@ -65,7 +60,6 @@
   self.commits = nil;
   self.localBranchCommits = nil;
   
-  self.taskManager = nil;
   self.selectedCommit = nil;
   
   self.topCommitId = nil;
@@ -162,15 +156,6 @@
     self.commits = [self composedCommits];
   }
   return [[commits retain] autorelease];
-}
-
-- (OATaskManager*) taskManager
-{
-  if (!taskManager)
-  {
-    self.taskManager = [[OATaskManager new] autorelease];
-  }
-  return [[taskManager retain] autorelease];
 }
 
 
@@ -300,8 +285,7 @@
                                                error:&outError];
   if (!HEAD)
   {
-    [self alertWithError:outError];
-    return nil;
+    NSLog(@"GBRepository: loadcurrentLocalRef error: %@", outError);
   }
   HEAD = [HEAD stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
   NSString* refprefix = @"ref: refs/heads/";
@@ -376,16 +360,16 @@
   [self.stage reloadChanges];
 }
 
-- (void) updateBranchStatus
-{
-  GBRef* ref = [self loadCurrentLocalRef];
-  if (![ref isEqual:self.currentLocalRef])
-  {
-    [self resetCurrentLocalRef];
-    [self reloadCommits];
-  }
-  self.localBranches = [self loadLocalBranches];
-}
+//- (void) updateBranchStatus
+//{
+//  GBRef* ref = [self loadCurrentLocalRef];
+//  if (![ref isEqual:self.currentLocalRef])
+//  {
+//    [self resetCurrentLocalRef];
+//    [self reloadCommits];
+//  }
+//  self.localBranches = [self loadLocalBranches];
+//}
 
 - (void) updateCommits
 {
@@ -395,10 +379,9 @@
 - (void) reloadCommits
 {
   GBHistoryTask* localAndRemoteCommitsTask = [GBHistoryTask task];
+  localAndRemoteCommitsTask.repository = self;
   localAndRemoteCommitsTask.branch = self.currentLocalRef;
   localAndRemoteCommitsTask.joinedBranch = self.currentRemoteBranch;
-  localAndRemoteCommitsTask.target = self;
-  localAndRemoteCommitsTask.action = @selector(didReceiveLocalAndRemoteCommits:);
   [self launchTask:localAndRemoteCommitsTask];
   [self updateCommits];
 }
@@ -415,15 +398,11 @@
     GBHistoryTask* unmergedCommitsTask = [GBHistoryTask task];
     unmergedCommitsTask.branch = self.currentRemoteBranch;
     unmergedCommitsTask.substructedBranch = self.currentLocalRef;
-    unmergedCommitsTask.target = self;
-    unmergedCommitsTask.action = @selector(didReceiveUnmergedRemoteCommits:);
     [self launchTaskAndWait:unmergedCommitsTask];
 
     GBHistoryTask* unpushedCommitsTask = [GBHistoryTask task];
     unpushedCommitsTask.branch = self.currentLocalRef;
     unpushedCommitsTask.substructedBranch = self.currentRemoteBranch;
-    unpushedCommitsTask.target = self;
-    unpushedCommitsTask.action = @selector(didReceiveUnpushedLocalCommits:);
     [self launchTaskAndWait:unpushedCommitsTask];
     
     [self updateCommits];
@@ -515,35 +494,6 @@
 
 
 
-#pragma mark Alerts
-
-
-- (void) alertWithError:(NSError*)error
-{
-  if ([delegate respondsToSelector:@selector(repository:alertWithError:)])
-  {
-    [delegate repository:self alertWithError:error];
-  }
-  else
-  {
-    [NSAlert error:error];
-  }
-}
-
-- (void) alertWithMessage:(NSString*)msg description:(NSString*)description
-{
-  if ([delegate respondsToSelector:@selector(repository:alertWithMessage:description:)])
-  {
-    [delegate repository:self alertWithMessage:msg description:description];
-  }
-  else
-  {
-    [NSAlert message:msg description:description];
-  }
-}
-
-
-
 
 
 #pragma mark Mutation methods
@@ -567,13 +517,6 @@
   GBRef* ref = [self.currentLocalRef configuredOrRememberedRemoteBranch];
   if (ref) self.currentRemoteBranch = ref;
   [self.currentLocalRef rememberRemoteBranch:self.currentRemoteBranch];
-}
-
-- (void) checkoutRef:(GBRef*)ref
-{
-  [[[self task] launchWithArgumentsAndWait:[NSArray arrayWithObjects:@"checkout", [ref commitish], nil]] showErrorIfNeeded];
-  
-  [self resetCurrentLocalRef];
 }
 
 - (void) checkoutRef:(GBRef*)ref withBlock:(void (^)())block
@@ -822,10 +765,10 @@
   return task;
 }
 
-- (id) launchTask:(GBTask*)aTask
+- (id) launchTask:(GBTask*)aTask withBlock:(void (^)())block
 {
   aTask.repository = self;
-  [self.taskManager launchTask:aTask];
+  [aTask launchWithBlock:block];
   return aTask;
 }
 
@@ -840,40 +783,6 @@
 {
   return [self.dotGitURL URLByAppendingPathComponent:suffix];
 }
-
-
-
-
-
-
-#pragma mark OBSOLETE
-
-
-
-
-
-- (NSArray*) loadLocalBranches
-{
-  GBLocalBranchesTask* task = [GBLocalBranchesTask task];
-  [self launchTaskAndWait:task];
-  self.tags = task.tags;
-  return task.branches;
-}
-
-- (NSArray*) loadTags
-{
-  GBLocalBranchesTask* task = [GBLocalBranchesTask task];
-  [self launchTaskAndWait:task];
-  self.localBranches = task.branches;
-  return task.tags;
-}
-
-- (NSArray*) loadRemotes
-{
-  return [[self launchTaskAndWait:[GBRemotesTask task]] remotes];
-}
-
-
 
 
 

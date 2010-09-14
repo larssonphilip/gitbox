@@ -56,7 +56,7 @@
 {
   [NSObject cancelPreviousPerformRequestsWithTarget:self];
   self.repositoryURL = nil;
-  if ((id)repository.delegate == self) repository.delegate = nil;
+  //if ((id)repository.delegate == self) repository.delegate = nil;
   self.repository = nil;
   
   self.historyController = nil;
@@ -81,7 +81,6 @@
   {
     GBRepository* repo = [[GBRepository new] autorelease];
     repo.url = repositoryURL;
-    repo.delegate = self;
     self.repository = repo;
   }
   return [[repository retain] autorelease];
@@ -157,7 +156,7 @@
 
 - (IBAction) checkoutBranch:(NSMenuItem*)sender
 {
-  [self.repository checkoutRef:[sender representedObject]];
+//  [self.repository checkoutRef:[sender representedObject]];
   [self updateBranchMenus];
   [self.repository reloadCommits];
 }
@@ -186,7 +185,7 @@
   - (void) doneChoosingNameForRemoteBranchCheckout:(GBPromptController*)ctrl
   {
     [self.repository checkoutRef:ctrl.payload withNewBranchName:ctrl.value];
-    self.repository.localBranches = [self.repository loadLocalBranches];
+    //self.repository.localBranches = [self.repository loadLocalBranches];
     [self updateBranchMenus];
     [self.repository reloadCommits];
   }
@@ -210,7 +209,7 @@
   - (void) doneChoosingNameForNewBranchCheckout:(GBPromptController*)ctrl
   {
     [self.repository checkoutNewBranchName:ctrl.value];
-    self.repository.localBranches = [self.repository loadLocalBranches];
+    //self.repository.localBranches = [self.repository loadLocalBranches];
     [self updateBranchMenus];
   }
 
@@ -458,20 +457,6 @@
 
 
 
-- (void) repositoryDidUpdateStatus:(GBRepository*)repo
-{
-  
-}
-
-- (void) repository:(GBRepository*)repo didUpdateRemote:(GBRemote*)remote
-{
-  [self updateBranchMenus];
-}
-
-- (void) remotesDidChange
-{
-  [self updateBranchMenus];
-}
 
 - (void) selectedCommitDidChange:(GBCommit*) aCommit
 {
@@ -489,7 +474,7 @@
 
 - (void) repository:(GBRepository*)repo alertWithError:(NSError*)error
 {
-  [self repository:repo alertWithMessage:[error localizedDescription] description:@""];
+//  [self repository:repo alertWithMessage:[error localizedDescription] description:@""];
 }
 
 - (void) repository:(GBRepository*)repo alertWithMessage:(NSString*)message description:(NSString*)description

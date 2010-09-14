@@ -1,11 +1,5 @@
 @class GBRepository;
 @class GBRemote;
-@protocol GBRepositoryDelegate
-- (void) repositoryDidUpdateStatus:(GBRepository*)repo;
-@optional
-- (void) repository:(GBRepository*)repo alertWithError:(NSError*)error;
-- (void) repository:(GBRepository*)repo alertWithMessage:(NSString*)message description:(NSString*)description;
-@end
 
 @class GBRef;
 @class GBRemote;
@@ -13,7 +7,6 @@
 @class GBStage;
 @class GBChange;
 @class GBTask;
-@class OATaskManager;
 @class OAPropertyListController;
 @interface GBRepository : NSObject
 {
@@ -41,9 +34,6 @@
 @property(nonatomic,assign) BOOL needsLocalBranchesUpdate;
 @property(nonatomic,assign) BOOL needsRemotesUpdate;
 
-@property(nonatomic,retain) OATaskManager* taskManager;
-
-@property(nonatomic,assign) NSObject<GBRepositoryDelegate>* delegate;
 @property(nonatomic,retain) GBCommit* selectedCommit; // fixme: should move this into repositorycontroller or commitcontroller
 @property(nonatomic,retain) NSString* topCommitId;
 @property(nonatomic,retain) OAPropertyListController* plistController;
@@ -94,16 +84,9 @@
 - (void) endBackgroundUpdate;
 
 
-#pragma mark Alerts
-
-- (void) alertWithError:(NSError*)error;
-- (void) alertWithMessage:(NSString*)msg description:(NSString*)description;
-
-
 #pragma mark Mutation
 
 + (void) initRepositoryAtURL:(NSURL*)url;
-- (void) checkoutRef:(GBRef*)ref; // obsolete
 - (void) checkoutRef:(GBRef*)ref withBlock:(void (^)())block;
 - (void) checkoutRef:(GBRef*)ref withNewBranchName:(NSString*)name;
 - (void) checkoutNewBranchName:(NSString*)name;
@@ -122,18 +105,10 @@
 #pragma mark Util
 
 - (id) task;
-- (id) launchTask:(GBTask*)aTask;
+- (id) launchTask:(GBTask*)aTask withBlock:(void (^)())block;
 - (id) launchTaskAndWait:(GBTask*)aTask;
 - (NSURL*) gitURLWithSuffix:(NSString*)suffix;
 
-
-
-#pragma mark OBSOLETE
-
-
-- (NSArray*) loadLocalBranches; // obsolete
-- (NSArray*) loadTags; // obsolete
-- (NSArray*) loadRemotes; // obsolete
 
 
 @end

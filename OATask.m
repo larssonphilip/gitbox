@@ -290,13 +290,6 @@ NSString* OATaskNotification = @"OATaskNotification";
 
 
 
-- (id) launch
-{
-  [self prepareTask];
-  [self launchAsynchronously];
-  return self;
-}
-
 - (void) launchWithBlock:(void(^)())block
 {
   NSLog(@"Executing %@:%p in async queue (%@)", [self class], self, [self command]);

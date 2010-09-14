@@ -6,8 +6,6 @@
 @implementation GBTask
 
 @synthesize repository;
-@synthesize target;
-@synthesize action;
 
 - (NSString*) executableName
 {

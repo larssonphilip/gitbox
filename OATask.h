@@ -41,7 +41,6 @@ extern NSString* OATaskNotification;
 
 - (void) prepareTask; // for subclasses
 
-- (id) launch;
 - (void) launchWithBlock:(void(^)())block;
 - (id) launchAndWait;
 - (id) launchWithArgumentsAndWait:(NSArray*)args;
