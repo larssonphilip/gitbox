@@ -1,16 +1,19 @@
 
 @class GBRepositoriesController;
 @class GBRepositoryController;
-@class GBSourcesController;
+
 @class GBToolbarController;
+@class GBSourcesController;
+@class GBHistoryViewController;
 
 @interface GBMainWindowController : NSWindowController<NSSplitViewDelegate>
 
 @property(assign) GBRepositoriesController* repositoriesController;
 @property(assign) GBRepositoryController* repositoryController;
 
-@property(retain) GBSourcesController* sourcesController;
 @property(retain) IBOutlet GBToolbarController* toolbarController;
+@property(retain) GBSourcesController* sourcesController;
+@property(retain) GBHistoryViewController* historyController;
 
 @property(retain) IBOutlet NSSplitView* splitView;
 

@@ -91,7 +91,7 @@
   if (!historyController)
   {
     self.historyController = [[[GBHistoryViewController alloc] initWithNibName:@"GBHistoryController" bundle:nil] autorelease];
-    historyController.repository = self.repository;
+    //historyController.repository = self.repository;
   }
   return [[historyController retain] autorelease];
 }

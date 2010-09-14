@@ -7,6 +7,11 @@
 + bug: should prefer branch connection in the .git/config (and .git/gitbox.plist as a backup)
 + bug: preferences window shows "error: file not found" on fresh setup
 + redraw scrollbar to appear over the history table with half-opacity
++ bundle git binaries with the app package
+
+- show in about box or in preferences a message how to obtain git source
+- allow switching to a system-provided git in preferences
+
 
 Top priority:
 - payment thing
@@ -83,7 +88,6 @@ Hard features:
 - submodules UI
 - conflict stage: highlight conflicted changes, allow to choose one of the versions 
 - individual chunks commit
-- bundle git binaries with the app package
 - show branch/tag names in history using "label" (+color in green/blue to connect with green/blue "pills")
 
 Other:

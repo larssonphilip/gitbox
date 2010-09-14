@@ -17,13 +17,11 @@
 @synthesize repositoryController;
 
 @synthesize sections;
-@synthesize nextViews;
 @synthesize outlineView;
 
 - (void) dealloc
 {
   self.sections = nil;
-  self.nextViews = nil;
   self.outlineView = nil;
   [super dealloc];
 }
@@ -55,9 +53,10 @@
 {
   [self.outlineView selectRowIndexes:[NSIndexSet indexSetWithIndex:[self.outlineView rowForItem:repo]] 
                 byExtendingSelection:NO];
+  
+  
+  
 }
-
-
 
 
 

@@ -1,0 +1,79 @@
+'\" t
+.\"     Title: git-fmt-merge-msg
+.\"    Author: [see the "Author" section]
+.\" Generator: DocBook XSL Stylesheets v1.75.2 <http://docbook.sf.net/>
+.\"      Date: 04/24/2010
+.\"    Manual: Git Manual
+.\"    Source: Git 1.7.1
+.\"  Language: English
+.\"
+.TH "GIT\-FMT\-MERGE\-MSG" "1" "04/24/2010" "Git 1\&.7\&.1" "Git Manual"
+.\" -----------------------------------------------------------------
+.\" * set default formatting
+.\" -----------------------------------------------------------------
+.\" disable hyphenation
+.nh
+.\" disable justification (adjust text to left margin only)
+.ad l
+.\" -----------------------------------------------------------------
+.\" * MAIN CONTENT STARTS HERE *
+.\" -----------------------------------------------------------------
+.SH "NAME"
+git-fmt-merge-msg \- Produce a merge commit message
+.SH "SYNOPSIS"
+.sp
+.nf
+\fIgit fmt\-merge\-msg\fR [\-\-log | \-\-no\-log] <$GIT_DIR/FETCH_HEAD
+\fIgit fmt\-merge\-msg\fR [\-\-log | \-\-no\-log] \-F <file>
+.fi
+.sp
+.SH "DESCRIPTION"
+.sp
+Takes the list of merged objects on stdin and produces a suitable commit message to be used for the merge commit, usually to be passed as the \fI<merge\-message>\fR argument of \fIgit merge\fR\&.
+.sp
+This command is intended mostly for internal use by scripts automatically invoking \fIgit merge\fR\&.
+.SH "OPTIONS"
+.PP
+\-\-log
+.RS 4
+In addition to branch names, populate the log message with one\-line descriptions from the actual commits that are being merged\&.
+.RE
+.PP
+\-\-no\-log
+.RS 4
+Do not list one\-line descriptions from the actual commits being merged\&.
+.RE
+.PP
+\-\-summary, \-\-no\-summary
+.RS 4
+Synonyms to \-\-log and \-\-no\-log; these are deprecated and will be removed in the future\&.
+.RE
+.PP
+\-F <file>, \-\-file <file>
+.RS 4
+Take the list of merged objects from <file> instead of stdin\&.
+.RE
+.SH "CONFIGURATION"
+.PP
+merge\&.log
+.RS 4
+Whether to include summaries of merged commits in newly merge commit messages\&. False by default\&.
+.RE
+.PP
+merge\&.summary
+.RS 4
+Synonym to
+merge\&.log; this is deprecated and will be removed in the future\&.
+.RE
+.SH "SEE ALSO"
+.sp
+\fBgit-merge\fR(1)
+.SH "AUTHOR"
+.sp
+Written by Junio C Hamano <gitster@pobox\&.com>
+.SH "DOCUMENTATION"
+.sp
+Documentation by Petr Baudis, Junio C Hamano and the git\-list <git@vger\&.kernel\&.org>\&.
+.SH "GIT"
+.sp
+Part of the \fBgit\fR(1) suite

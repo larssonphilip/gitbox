@@ -1,5 +1,6 @@
 #import "GBModels.h"
 
+#import "GBRepositoryController.h"
 #import "GBHistoryViewController.h"
 #import "GBCommitCell.h"
 
@@ -10,7 +11,7 @@
 
 @implementation GBHistoryViewController
 
-@synthesize repository;
+@synthesize repositoryController;
 @synthesize tableView;
 @synthesize logArrayController;
 
@@ -20,7 +21,7 @@
 
 - (void) dealloc
 {  
-  self.repository = nil;
+  self.repositoryController = nil;
   self.tableView = nil;
   self.logArrayController = nil;
   [super dealloc];
@@ -30,14 +31,14 @@
 {
   [super loadView];
   [self.tableView setIntercellSpacing:NSMakeSize(0.0, 0.0)]; // remove awful paddings
-  [self.repository addObserver:self forKeyPath:@"stage.changes" selectorWithoutArguments:@selector(stageDidUpdate)];
-  [self.repository addObserver:self forKeyPath:@"commits" selectorWithoutArguments:@selector(commitsDidUpdate)];
+//  [self.repository addObserver:self forKeyPath:@"stage.changes" selectorWithoutArguments:@selector(stageDidUpdate)];
+//  [self.repository addObserver:self forKeyPath:@"commits" selectorWithoutArguments:@selector(commitsDidUpdate)];
 }
 
 - (void) viewDidUnload
 {
-  [self.repository removeObserver:self keyPath:@"stage.changes" selector:@selector(stageDidUpdate)];
-  [self.repository removeObserver:self keyPath:@"commits" selector:@selector(commitsDidUpdate)];
+//  [self.repository removeObserver:self keyPath:@"stage.changes" selector:@selector(stageDidUpdate)];
+//  [self.repository removeObserver:self keyPath:@"commits" selector:@selector(commitsDidUpdate)];
   [super viewDidUnload];
 }
 

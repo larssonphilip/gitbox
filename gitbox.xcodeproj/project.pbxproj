@@ -77,7 +77,7 @@
 		2057F11011ACF751009EDF2F /* GBActivityController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2057F10F11ACF751009EDF2F /* GBActivityController.m */; };
 		2057F11611ACFA60009EDF2F /* OAActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 2057F11511ACFA60009EDF2F /* OAActivity.m */; };
 		2058E98011AEE26F00F2853F /* GBHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2058E97F11AEE26F00F2853F /* GBHistoryViewController.m */; };
-		2058E98411AEE30E00F2853F /* GBHistoryController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2058E98311AEE30E00F2853F /* GBHistoryController.xib */; };
+		2058E98411AEE30E00F2853F /* GBHistoryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2058E98311AEE30E00F2853F /* GBHistoryViewController.xib */; };
 		2058EA0811AEEE3200F2853F /* NSView+OAViewHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 2058EA0711AEEE3200F2853F /* NSView+OAViewHelpers.m */; };
 		2058FA4811982F5100FB018D /* GBRemotesController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2058FA4711982F5100FB018D /* GBRemotesController.xib */; };
 		2059792211A877A500E11A56 /* GBExtractFileTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 2059792111A877A500E11A56 /* GBExtractFileTask.m */; };
@@ -119,6 +119,7 @@
 		20B8B84811A4AAF2006D6442 /* NSString+OAStringHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B8B84711A4AAF2006D6442 /* NSString+OAStringHelpers.m */; };
 		20BF302011D0E3DC00B6DDC9 /* commit-marker-highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 20BF301F11D0E3DC00B6DDC9 /* commit-marker-highlighted.png */; };
 		20F8058811C1B35A00ADDADA /* commit-header-template.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 20F8058711C1B35A00ADDADA /* commit-header-template.rtf */; };
+		20FAA190123F831400E8FA0E /* git-1.7.1.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 20FAA18F123F831400E8FA0E /* git-1.7.1.bundle */; };
 		8D15AC2C0486D014006FF6A4 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 2A37F4B9FDCFA73011CA2CEA /* Credits.rtf */; };
 		8D15AC320486D014006FF6A4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A37F4B0FDCFA73011CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D15AC340486D014006FF6A4 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */; };
@@ -243,7 +244,7 @@
 		2057F11511ACFA60009EDF2F /* OAActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAActivity.m; sourceTree = "<group>"; };
 		2058E97E11AEE26F00F2853F /* GBHistoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBHistoryViewController.h; sourceTree = "<group>"; };
 		2058E97F11AEE26F00F2853F /* GBHistoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBHistoryViewController.m; sourceTree = "<group>"; };
-		2058E98311AEE30E00F2853F /* GBHistoryController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBHistoryController.xib; sourceTree = "<group>"; };
+		2058E98311AEE30E00F2853F /* GBHistoryViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBHistoryViewController.xib; sourceTree = "<group>"; };
 		2058EA0611AEEE3200F2853F /* NSView+OAViewHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSView+OAViewHelpers.h"; sourceTree = "<group>"; };
 		2058EA0711AEEE3200F2853F /* NSView+OAViewHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSView+OAViewHelpers.m"; sourceTree = "<group>"; };
 		2058FA4711982F5100FB018D /* GBRemotesController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBRemotesController.xib; sourceTree = "<group>"; };
@@ -318,6 +319,7 @@
 		20C716BB120EF7E6002B594F /* DESIGN_NOTES */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = DESIGN_NOTES; sourceTree = "<group>"; };
 		20E59CE711A5C9EA00E7FB72 /* GBModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBModels.h; sourceTree = "<group>"; };
 		20F8058711C1B35A00ADDADA /* commit-header-template.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = "commit-header-template.rtf"; sourceTree = "<group>"; };
+		20FAA18F123F831400E8FA0E /* git-1.7.1.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = "git-1.7.1.bundle"; sourceTree = "<group>"; };
 		2564AD2C0F5327BB00F57823 /* prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = prefix.pch; sourceTree = "<group>"; };
 		2A37F4B0FDCFA73011CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		2A37F4BAFDCFA73011CA2CEA /* English */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = English; path = English.lproj/Credits.rtf; sourceTree = "<group>"; };
@@ -425,7 +427,7 @@
 				1DDD58290DA1D0D100B32029 /* ObsoleteGBRepositoryController.xib */,
 				2058E97E11AEE26F00F2853F /* GBHistoryViewController.h */,
 				2058E97F11AEE26F00F2853F /* GBHistoryViewController.m */,
-				2058E98311AEE30E00F2853F /* GBHistoryController.xib */,
+				2058E98311AEE30E00F2853F /* GBHistoryViewController.xib */,
 				2093A7C611AF0E8300239185 /* GBBaseChangesController.h */,
 				2093A7C711AF0E8300239185 /* GBBaseChangesController.m */,
 				2093A7C911AF0EA300239185 /* GBStageViewController.h */,
@@ -608,6 +610,7 @@
 		2A37F4B8FDCFA73011CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				20FAA18F123F831400E8FA0E /* git-1.7.1.bundle */,
 				20F8058711C1B35A00ADDADA /* commit-header-template.rtf */,
 				2030F19311B82BED00C260E0 /* commit-marker-unmerged-highlighted.png */,
 				2030F19411B82BED00C260E0 /* commit-marker-unpushed-highlighted.png */,
@@ -666,7 +669,14 @@
 			isa = PBXProject;
 			buildConfigurationList = C05733CB08A9546B00998B17 /* Build configuration list for PBXProject "gitbox" */;
 			compatibilityVersion = "Xcode 3.1";
+			developmentRegion = English;
 			hasScannedForEncodings = 1;
+			knownRegions = (
+				English,
+				Japanese,
+				French,
+				German,
+			);
 			mainGroup = 2A37F4AAFDCFA73011CA2CEA /* gitbox */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -692,7 +702,7 @@
 				2010732F11A7E9C300EFDE56 /* app.icns in Resources */,
 				2057F0D711ACF075009EDF2F /* sparkle_dsa_pub.pem in Resources */,
 				2057F10511ACF4C0009EDF2F /* GBActivityController.xib in Resources */,
-				2058E98411AEE30E00F2853F /* GBHistoryController.xib in Resources */,
+				2058E98411AEE30E00F2853F /* GBHistoryViewController.xib in Resources */,
 				2093A7D011AF0F2700239185 /* GBStageViewController.xib in Resources */,
 				2093A7D211AF0F3200239185 /* GBCommitViewController.xib in Resources */,
 				2093AC9111B2EBFF00239185 /* GBCommitPromptController.xib in Resources */,
@@ -710,6 +720,7 @@
 				201E030211EE083D007E4420 /* GBCertificateUpdateController.xib in Resources */,
 				20A37BB6120DC7640068AB8B /* GBSourcesController.xib in Resources */,
 				20A37BBE120DDBA60068AB8B /* GBMainWindowController.xib in Resources */,
+				20FAA190123F831400E8FA0E /* git-1.7.1.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -3,8 +3,9 @@
 
 #import "GBMainWindowController.h"
 
-#import "GBSourcesController.h"
 #import "GBToolbarController.h"
+#import "GBSourcesController.h"
+#import "GBHistoryViewController.h"
 
 #import "GBRepository.h"
 
@@ -23,15 +24,17 @@
 @synthesize repositoriesController;
 @synthesize repositoryController;
 
-@synthesize sourcesController;
 @synthesize toolbarController;
+@synthesize sourcesController;
+@synthesize historyController;
 
 @synthesize splitView;
 
 - (void) dealloc
 {
-  self.sourcesController = nil;
   self.toolbarController = nil;
+  self.sourcesController = nil;
+  self.historyController = nil;
   
   self.splitView = nil;
   
@@ -82,10 +85,15 @@
   self.sourcesController.repositoriesController = self.repositoriesController;
   self.sourcesController.repositoryController = self.repositoryController;
 
-  
-  self.sourcesController.nextViews = [self.splitView.subviews subarrayWithRange:NSMakeRange(1, [self.splitView.subviews count] - 1)];
   NSView* firstView = [self.splitView.subviews objectAtIndex:0];
-  [self.sourcesController loadInView:firstView];
+  if (firstView) [self.sourcesController loadInView:firstView];
+
+  
+  self.historyController = [[[GBHistoryViewController alloc] initWithNibName:@"GBHistoryViewController" bundle:nil] autorelease];
+  self.historyController.repositoryController = self.repositoryController;
+  
+  NSView* secondView = [self.splitView.subviews objectAtIndex:1];
+  [self.historyController loadInView:secondView];
   
   
   [self updateWindowTitle];
@@ -228,7 +236,7 @@
   }
   else
   {
-    [self.window setTitle:@"Gitbox"];
+    [self.window setTitle:@"No Repository Selected"];
     [self.window setRepresentedURL:nil];
   }  
 }
