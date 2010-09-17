@@ -74,7 +74,7 @@
 
 - (void) tableViewSelectionDidChange:(NSNotification *)aNotification
 {
-  self.repository.selectedCommit = [self selectedCommit];
+//  self.repository.selectedCommit = [self selectedCommit];
 }
 
 - (NSCell*) tableView:(NSTableView*)aTableView 
@@ -84,14 +84,16 @@ dataCellForTableColumn:(NSTableColumn*)aTableColumn
   // according to documentation, tableView may ask for a tableView separator cell giving a nil table column, so odd...
   if (aTableColumn == nil) return nil;
   
-  GBCommit* commit = [self.repository.commits objectAtIndex:row];
-  return [commit cell];
+//  GBCommit* commit = [self.repository.commits objectAtIndex:row];
+//  return [commit cell];
+  return nil;
 }
 
 - (CGFloat)tableView:(NSTableView *)tableView heightOfRow:(NSInteger)row
 {
-  GBCommit* commit = [self.repository.commits objectAtIndex:row];
-  return [[commit cellClass] cellHeight];
+//  GBCommit* commit = [self.repository.commits objectAtIndex:row];
+//  return [[commit cellClass] cellHeight];
+  return 0.0;
 }
 
 - (NSString*) tableView:(NSTableView*)aTableView

@@ -10,6 +10,6 @@
 - (void) stop;
 
 - (void) addPath:(NSString*)aPath withBlock:(void(^)())block;
-- (void) addPath:(NSString*)aPath withBlock:(void(^)())block;
+- (void) removePath:(NSString*)aPath;
 
 @end

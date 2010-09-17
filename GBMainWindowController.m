@@ -6,6 +6,8 @@
 #import "GBToolbarController.h"
 #import "GBSourcesController.h"
 #import "GBHistoryViewController.h"
+#import "GBStageViewController.h"
+#import "GBCommitViewController.h"
 
 #import "GBRepository.h"
 
@@ -27,6 +29,8 @@
 @synthesize toolbarController;
 @synthesize sourcesController;
 @synthesize historyController;
+@synthesize stageController;
+@synthesize commitController;
 
 @synthesize splitView;
 
@@ -35,6 +39,8 @@
   self.toolbarController = nil;
   self.sourcesController = nil;
   self.historyController = nil;
+  self.stageController = nil;
+  self.commitController = nil;
   
   self.splitView = nil;
   
@@ -75,28 +81,33 @@
 - (void) windowDidLoad
 {
   [super windowDidLoad];
-
+  
+  // ToolbarController is taken from nib. Why is it there? Because of IBActions and IBOutlets.
   [self.toolbarController windowDidLoad];
-  
-  self.sourcesController = [[[GBSourcesController alloc] initWithNibName:@"GBSourcesController" bundle:nil] autorelease];
-  
   self.toolbarController.repositoryController = self.repositoryController;
   
+  // SourcesController displays repositories in a sidebar
+  self.sourcesController = [[[GBSourcesController alloc] initWithNibName:@"GBSourcesController" bundle:nil] autorelease];
   self.sourcesController.repositoriesController = self.repositoriesController;
   self.sourcesController.repositoryController = self.repositoryController;
-
   NSView* firstView = [self.splitView.subviews objectAtIndex:0];
   if (firstView) [self.sourcesController loadInView:firstView];
 
-  
+  // HistoryController displays list of commits for the selected repo and branch
   self.historyController = [[[GBHistoryViewController alloc] initWithNibName:@"GBHistoryViewController" bundle:nil] autorelease];
   self.historyController.repositoryController = self.repositoryController;
-  
   NSView* secondView = [self.splitView.subviews objectAtIndex:1];
   [self.historyController loadInView:secondView];
   
+  self.stageController = [[[GBStageViewController alloc] initWithNibName:@"GBStageViewController" bundle:nil] autorelease];
+  //self.stageController.repository = self.repository;
+
+  self.commitController = [[[GBCommitViewController alloc] initWithNibName:@"GBCommitViewController" bundle:nil] autorelease];
+  //self.commitController.repository = self.repository;
   
   [self updateWindowTitle];
+  
+  
 //  // Repository init
 //  
 //  self.repository.selectedCommit = self.repository.stage;

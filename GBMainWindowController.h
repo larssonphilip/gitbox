@@ -14,6 +14,8 @@
 @property(retain) IBOutlet GBToolbarController* toolbarController;
 @property(retain) GBSourcesController* sourcesController;
 @property(retain) GBHistoryViewController* historyController;
+@property(retain) GBStageViewController* stageController;
+@property(retain) GBCommitViewController* commitController;
 
 @property(retain) IBOutlet NSSplitView* splitView;
 
