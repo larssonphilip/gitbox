@@ -349,33 +349,43 @@
     self.topCommitId = newTopCommitId;
     self.localBranchCommits = task.commits;
     
-    GBHistoryTask* unmergedCommitsTask = [GBHistoryTask task];
-    unmergedCommitsTask.repository = self;
-    unmergedCommitsTask.branch = self.currentRemoteBranch;
-    unmergedCommitsTask.substructedBranch = self.currentLocalRef;
-    [unmergedCommitsTask launchWithBlock:^{
-      NSArray* allCommits = self.localBranchCommits;
-      for (GBCommit* commit in unmergedCommitsTask.commits)
-      {
-        NSUInteger index = [allCommits indexOfObject:commit];
-        commit = [allCommits objectAtIndex:index];
-        commit.syncStatus = GBCommitSyncStatusUnmerged;
-      }
-    }];
-    
-    GBHistoryTask* unpushedCommitsTask = [GBHistoryTask task];
-    unpushedCommitsTask.repository = self;
-    unpushedCommitsTask.branch = self.currentLocalRef;
-    unpushedCommitsTask.substructedBranch = self.currentRemoteBranch;
-    [unpushedCommitsTask launchWithBlock:^{
-      NSArray* allCommits = self.localBranchCommits;
-      for (GBCommit* commit in unpushedCommitsTask.commits)
-      {
-        NSUInteger index = [allCommits indexOfObject:commit];
-        commit = [allCommits objectAtIndex:index];
-        commit.syncStatus = GBCommitSyncStatusUnpushed;
-      }
-    }];
+    block();
+  }];
+}
+
+- (void) updateUnmergedCommitsWithBlock:(GBBlock)block
+{
+  GBHistoryTask* task = [GBHistoryTask task];
+  task.repository = self;
+  task.branch = self.currentRemoteBranch;
+  task.substructedBranch = self.currentLocalRef;
+  [task launchWithBlock:^{
+    NSArray* allCommits = self.localBranchCommits;
+    for (GBCommit* commit in task.commits)
+    {
+      NSUInteger index = [allCommits indexOfObject:commit];
+      commit = [allCommits objectAtIndex:index];
+      commit.syncStatus = GBCommitSyncStatusUnmerged;
+    }
+    block();
+  }];  
+}
+
+- (void) updateUnpushedCommitsWithBlock:(GBBlock)block
+{
+  GBHistoryTask* task = [GBHistoryTask task];
+  task.repository = self;
+  task.branch = self.currentLocalRef;
+  task.substructedBranch = self.currentRemoteBranch;
+  [task launchWithBlock:^{
+    NSArray* allCommits = self.localBranchCommits;
+    for (GBCommit* commit in task.commits)
+    {
+      NSUInteger index = [allCommits indexOfObject:commit];
+      commit = [allCommits objectAtIndex:index];
+      commit.syncStatus = GBCommitSyncStatusUnpushed;
+    }
+    block();
   }];
 }
 

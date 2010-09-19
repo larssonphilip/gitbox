@@ -63,6 +63,8 @@ typedef void (^GBBlock)();
 - (void) updateRemotesIfNeededWithBlock:(GBBlock)block;
 - (void) updateRemotesWithBlock:(GBBlock)block;
 - (void) updateLocalBranchCommitsWithBlock:(GBBlock)block;
+- (void) updateUnmergedCommitsWithBlock:(GBBlock)block;
+- (void) updateUnpushedCommitsWithBlock:(GBBlock)block;
 
 - (void) updateStatus;
 - (void) resetCurrentLocalRef;

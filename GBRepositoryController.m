@@ -11,7 +11,10 @@
 #import "GBRepositoryController.h"
 
 @interface GBRepositoryController ()
+- (void) _loadCommits;
 - (void) _updateCommits;
+- (void) _pushSpinning;
+- (void) _popSpinning;
 @end
 
 @implementation GBRepositoryController
@@ -56,9 +59,7 @@
   
   if (!self.repository.localBranchCommits)
   {
-    [self.repository updateLocalBranchCommitsWithBlock:^{
-      [self _updateCommits];
-    }];
+    [self _loadCommits];
   }
   
   [self.windowController didSelectRepository:repo];
@@ -68,21 +69,16 @@
 - (void) checkoutRef:(GBRef*) ref
 {
   [self.windowController.toolbarController pushDisabled];
-  [self.windowController.toolbarController pushSpinning];
+  [self _pushSpinning];
   
   self.repository.localBranchCommits = nil;
   [self _updateCommits];
   
   [self.repository checkoutRef:ref withBlock:^{
     
-    [self.windowController.toolbarController pushSpinning];
-    [self.repository updateLocalBranchCommitsWithBlock:^{
-      [self _updateCommits];
-      [self.windowController.toolbarController popSpinning];
-    }];
-    
+    [self _loadCommits];
     [self.windowController.toolbarController popDisabled];
-    [self.windowController.toolbarController popSpinning];
+    [self _popSpinning];
   }];
 }
 
@@ -100,11 +96,39 @@
 #pragma mark Private
 
 
+- (void) _loadCommits
+{
+  [self _pushSpinning];
+  [self.repository updateLocalBranchCommitsWithBlock:^{
+    [self _updateCommits];
+    [self _pushSpinning];
+    [self.repository updateUnmergedCommitsWithBlock:^{
+      [self _updateCommits];
+      [self _popSpinning];
+    }];
+    [self _pushSpinning];
+    [self.repository updateUnpushedCommitsWithBlock:^{
+      [self _updateCommits];
+      [self _popSpinning];
+    }];
+    [self _popSpinning];
+  }];  
+}
+
 - (void) _updateCommits
 {
   self.windowController.historyController.commits = [self.repository stageAndCommits];
 }
 
+- (void) _pushSpinning
+{
+  [self.windowController.toolbarController pushSpinning];
+}
+
+- (void) _popSpinning
+{
+  [self.windowController.toolbarController popSpinning];
+}
 
 
 @end
