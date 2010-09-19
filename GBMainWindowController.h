@@ -5,6 +5,8 @@
 @class GBToolbarController;
 @class GBSourcesController;
 @class GBHistoryViewController;
+@class GBStageViewController;
+@class GBCommitViewController;
 
 @interface GBMainWindowController : NSWindowController<NSSplitViewDelegate>
 

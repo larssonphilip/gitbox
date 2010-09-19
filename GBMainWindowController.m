@@ -100,45 +100,13 @@
   [self.historyController loadInView:secondView];
   
   self.stageController = [[[GBStageViewController alloc] initWithNibName:@"GBStageViewController" bundle:nil] autorelease];
-  //self.stageController.repository = self.repository;
+  self.stageController.repositoryController = self.repositoryController;
 
   self.commitController = [[[GBCommitViewController alloc] initWithNibName:@"GBCommitViewController" bundle:nil] autorelease];
-  //self.commitController.repository = self.repository;
+  self.commitController.repositoryController = self.repositoryController;
   
   [self updateWindowTitle];
   
-  
-//  // Repository init
-//  
-//  self.repository.selectedCommit = self.repository.stage;
-//  
-//  [self.repository reloadCommits];
-//  
-//  // View controllers init  
-//  NSView* historyPlaceholderView = [[self.splitView subviews] objectAtIndex:1];
-//  [historyPlaceholderView setViewController:self.historyController];
-//  
-//  self.changesViewController = self.stageController;
-//  NSView* changesPlaceholderView = [[self.splitView subviews] objectAtIndex:2];
-//  [changesPlaceholderView setViewController:self.changesViewController];
-//  
-//  
-//  // Window init
-//  //[self.window setTitleWithRepresentedFilename:self.repository.path];
-//  [self.window setTitle:[self.repository.path twoLastPathComponentsWithDash]];
-//  [self.window setRepresentedFilename:self.repository.path];
-//  [self.window setFrameAutosaveName:[NSString stringWithFormat:@"%@[path=%@].window.frame", [self class], self.repository.path]];
-//  
-//  [self updateBranchMenus];
-//  
-//  
-//  // Set observers
-//  [self.repository addObserver:self forKeyPath:@"selectedCommit" 
-//          selectorWithNewValue:@selector(selectedCommitDidChange:)];
-//  
-//  [self.repository addObserver:self forKeyPath:@"remotes" 
-//      selectorWithoutArguments:@selector(remotesDidChange)];
-//  
 //  [self.repository fetchSilently];
 }
 

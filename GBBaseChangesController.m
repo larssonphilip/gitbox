@@ -4,7 +4,7 @@
 
 @implementation GBBaseChangesController
 
-@synthesize repository;
+@synthesize repositoryController;
 @synthesize tableView;
 @synthesize statusArrayController; 
 
@@ -14,7 +14,6 @@
 - (void) dealloc
 {
   [NSObject cancelPreviousPerformRequestsWithTarget:self];
-  self.repository = nil;
   self.tableView = nil;
   self.statusArrayController = nil;
   [super dealloc];

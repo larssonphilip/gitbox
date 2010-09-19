@@ -12,6 +12,7 @@
 @implementation GBHistoryViewController
 
 @synthesize repositoryController;
+@synthesize commits;
 @synthesize tableView;
 @synthesize logArrayController;
 
@@ -22,6 +23,7 @@
 - (void) dealloc
 {  
   self.repositoryController = nil;
+  self.commits = nil;
   self.tableView = nil;
   self.logArrayController = nil;
   [super dealloc];
@@ -31,14 +33,10 @@
 {
   [super loadView];
   [self.tableView setIntercellSpacing:NSMakeSize(0.0, 0.0)]; // remove awful paddings
-//  [self.repository addObserver:self forKeyPath:@"stage.changes" selectorWithoutArguments:@selector(stageDidUpdate)];
-//  [self.repository addObserver:self forKeyPath:@"commits" selectorWithoutArguments:@selector(commitsDidUpdate)];
 }
 
 - (void) viewDidUnload
 {
-//  [self.repository removeObserver:self keyPath:@"stage.changes" selector:@selector(stageDidUpdate)];
-//  [self.repository removeObserver:self keyPath:@"commits" selector:@selector(commitsDidUpdate)];
   [super viewDidUnload];
 }
 
@@ -52,17 +50,12 @@
   return (GBCommit*)[[self.logArrayController selectedObjects] firstObject];
 }
 
-
-
-#pragma mark GBRepository observing
-
-
-- (void) stageDidUpdate
+- (void) updateStage
 {
   [self.tableView reloadDataForRowIndexes:[NSIndexSet indexSetWithIndex:0] columnIndexes:[NSIndexSet indexSetWithIndex:0]];
 }
 
-- (void) commitsDidUpdate
+- (void) updateCommits
 {
   [self.tableView reloadData];
 }
@@ -74,7 +67,7 @@
 
 - (void) tableViewSelectionDidChange:(NSNotification *)aNotification
 {
-//  self.repository.selectedCommit = [self selectedCommit];
+  [self.repositoryController selectCommit:[self selectedCommit]];
 }
 
 - (NSCell*) tableView:(NSTableView*)aTableView 
@@ -84,16 +77,14 @@ dataCellForTableColumn:(NSTableColumn*)aTableColumn
   // according to documentation, tableView may ask for a tableView separator cell giving a nil table column, so odd...
   if (aTableColumn == nil) return nil;
   
-//  GBCommit* commit = [self.repository.commits objectAtIndex:row];
-//  return [commit cell];
-  return nil;
+  GBCommit* commit = [self.commits objectAtIndex:row];
+  return [commit cell];
 }
 
 - (CGFloat)tableView:(NSTableView *)tableView heightOfRow:(NSInteger)row
 {
-//  GBCommit* commit = [self.repository.commits objectAtIndex:row];
-//  return [[commit cellClass] cellHeight];
-  return 0.0;
+  GBCommit* commit = [self.commits objectAtIndex:row];
+  return [[commit cellClass] cellHeight];
 }
 
 - (NSString*) tableView:(NSTableView*)aTableView

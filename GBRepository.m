@@ -22,18 +22,11 @@
 @synthesize currentLocalRef;
 @synthesize currentRemoteBranch;
 
-@synthesize commits;
 @synthesize localBranchCommits;
-
-@synthesize pulling;
-@synthesize merging;
-@synthesize fetching;
-@synthesize pushing;
 
 @synthesize needsLocalBranchesUpdate;
 @synthesize needsRemotesUpdate;
 
-@synthesize selectedCommit;
 
 @synthesize topCommitId;
 
@@ -57,10 +50,7 @@
   self.currentLocalRef = nil;
   self.currentRemoteBranch = nil;
   
-  self.commits = nil;
   self.localBranchCommits = nil;
-  
-  self.selectedCommit = nil;
   
   self.topCommitId = nil;
   
@@ -146,16 +136,6 @@
     [self.currentLocalRef rememberRemoteBranch:currentRemoteBranch];
   }
   return [[currentRemoteBranch retain] autorelease];
-}
-
-
-- (NSArray*) commits
-{
-  if (!commits)
-  {
-    self.commits = [self composedCommits];
-  }
-  return [[commits retain] autorelease];
 }
 
 
@@ -317,14 +297,14 @@
 
 
 
-- (void) updateLocalBranchesAndTagsIfNeededWithBlock:(void (^)())block
+- (void) updateLocalBranchesAndTagsIfNeededWithBlock:(GBBlock)block
 {
   if (!needsLocalBranchesUpdate) return;
   [self updateLocalBranchesAndTagsWithBlock:block];
   
 }
 
-- (void) updateLocalBranchesAndTagsWithBlock:(void (^)())block
+- (void) updateLocalBranchesAndTagsWithBlock:(GBBlock)block
 {
   GBLocalBranchesTask* task = [GBLocalBranchesTask task];
   task.repository = self;
@@ -336,13 +316,13 @@
   }];
 }
 
-- (void) updateRemotesIfNeededWithBlock:(void (^)())block
+- (void) updateRemotesIfNeededWithBlock:(GBBlock)block
 {
   if (!needsRemotesUpdate) return;
   [self updateRemotesWithBlock:block];
 }
 
-- (void) updateRemotesWithBlock:(void (^)())block
+- (void) updateRemotesWithBlock:(GBBlock)block
 {
   GBRemotesTask* task = [GBRemotesTask task];
   task.repository = self;
@@ -353,7 +333,51 @@
   }];
 }
 
-
+- (void) updateLocalBranchCommitsWithBlock:(GBBlock)block
+{
+  GBHistoryTask* task = [GBHistoryTask task];
+  task.repository = self;
+  task.branch = self.currentLocalRef;
+  task.joinedBranch = self.currentRemoteBranch;
+  [task launchWithBlock:^{
+    
+    NSString* newTopCommitId = [[task.commits objectAtIndex:0 or:nil] commitId];
+    if (newTopCommitId && ![topCommitId isEqualToString:newTopCommitId])
+    {
+      [self resetBackgroundUpdateInterval];
+    }
+    self.topCommitId = newTopCommitId;
+    self.localBranchCommits = task.commits;
+    
+    GBHistoryTask* unmergedCommitsTask = [GBHistoryTask task];
+    unmergedCommitsTask.repository = self;
+    unmergedCommitsTask.branch = self.currentRemoteBranch;
+    unmergedCommitsTask.substructedBranch = self.currentLocalRef;
+    [unmergedCommitsTask launchWithBlock:^{
+      NSArray* allCommits = self.localBranchCommits;
+      for (GBCommit* commit in unmergedCommitsTask.commits)
+      {
+        NSUInteger index = [allCommits indexOfObject:commit];
+        commit = [allCommits objectAtIndex:index];
+        commit.syncStatus = GBCommitSyncStatusUnmerged;
+      }
+    }];
+    
+    GBHistoryTask* unpushedCommitsTask = [GBHistoryTask task];
+    unpushedCommitsTask.repository = self;
+    unpushedCommitsTask.branch = self.currentLocalRef;
+    unpushedCommitsTask.substructedBranch = self.currentRemoteBranch;
+    [unpushedCommitsTask launchWithBlock:^{
+      NSArray* allCommits = self.localBranchCommits;
+      for (GBCommit* commit in unpushedCommitsTask.commits)
+      {
+        NSUInteger index = [allCommits indexOfObject:commit];
+        commit = [allCommits objectAtIndex:index];
+        commit.syncStatus = GBCommitSyncStatusUnpushed;
+      }
+    }];
+  }];
+}
 
 - (void) updateStatus
 {
@@ -371,75 +395,16 @@
 //  self.localBranches = [self loadLocalBranches];
 //}
 
-- (void) updateCommits
-{
-  self.commits = [self composedCommits];
-}
 
-- (void) reloadCommits
+
+- (NSArray*) stageAndCommits
 {
-  GBHistoryTask* localAndRemoteCommitsTask = [GBHistoryTask task];
-  localAndRemoteCommitsTask.repository = self;
-  localAndRemoteCommitsTask.branch = self.currentLocalRef;
-  localAndRemoteCommitsTask.joinedBranch = self.currentRemoteBranch;
-  [self launchTask:localAndRemoteCommitsTask];
-  [self updateCommits];
-}
-  - (void) didReceiveLocalAndRemoteCommits:(NSArray*)theCommits
+  NSArray* list = [NSArray arrayWithObject:self.stage];
+  if (self.localBranchCommits)
   {
-    NSString* newTopCommitId = [[theCommits objectAtIndex:0 or:nil] commitId];
-    if (newTopCommitId && ![topCommitId isEqualToString:newTopCommitId])
-    {
-      [self resetBackgroundUpdateInterval];
-    }
-    self.topCommitId = newTopCommitId;
-    self.localBranchCommits = theCommits;
-    
-    GBHistoryTask* unmergedCommitsTask = [GBHistoryTask task];
-    unmergedCommitsTask.branch = self.currentRemoteBranch;
-    unmergedCommitsTask.substructedBranch = self.currentLocalRef;
-    [self launchTaskAndWait:unmergedCommitsTask];
-
-    GBHistoryTask* unpushedCommitsTask = [GBHistoryTask task];
-    unpushedCommitsTask.branch = self.currentLocalRef;
-    unpushedCommitsTask.substructedBranch = self.currentRemoteBranch;
-    [self launchTaskAndWait:unpushedCommitsTask];
-    
-    [self updateCommits];
+    list = [list arrayByAddingObjectsFromArray:self.localBranchCommits];
   }
-
-    - (void) didReceiveUnmergedRemoteCommits:(NSArray*)unmergedCommits
-    {
-      NSArray* allCommits = self.localBranchCommits;
-      for (GBCommit* commit in unmergedCommits)
-      {
-        NSUInteger index = [allCommits indexOfObject:commit];
-        commit = [allCommits objectAtIndex:index];
-        commit.syncStatus = GBCommitSyncStatusUnmerged;
-      }
-    }
-
-    - (void) didReceiveUnpushedLocalCommits:(NSArray*)unpushedCommits
-    {
-      NSArray* allCommits = self.localBranchCommits;
-      for (GBCommit* commit in unpushedCommits)
-      {
-        NSUInteger index = [allCommits indexOfObject:commit];
-        commit = [allCommits objectAtIndex:index];
-        commit.syncStatus = GBCommitSyncStatusUnpushed;
-      }
-    }
-
-
-- (void) reloadRemotes
-{
-  self.remotes = [self loadRemotes];
-}
-
-- (NSArray*) composedCommits
-{
-  if (!self.localBranchCommits) self.localBranchCommits = [NSArray array];
-  return [[NSArray arrayWithObject:self.stage] arrayByAddingObjectsFromArray:self.localBranchCommits];
+  return list;
 }
 
 
@@ -519,7 +484,7 @@
   [self.currentLocalRef rememberRemoteBranch:self.currentRemoteBranch];
 }
 
-- (void) checkoutRef:(GBRef*)ref withBlock:(void (^)())block
+- (void) checkoutRef:(GBRef*)ref withBlock:(GBBlock)block
 {
   GBTask* task = [self task];
   task.arguments = [NSArray arrayWithObjects:@"checkout", [ref commitish], nil];
@@ -530,13 +495,13 @@
   }];
 }
 
-- (void) checkoutRef:(GBRef*)ref withNewBranchName:(NSString*)name
+- (void) checkoutRef:(GBRef*)ref withNewBranchName:(NSString*)name withBlock:(GBBlock)block
 {
   [[[self task] launchWithArgumentsAndWait:[NSArray arrayWithObjects:@"checkout", @"-b", name, [ref commitish], nil]] showErrorIfNeeded];
   
   if ([ref isRemoteBranch])
   {
-    GBTask* task = [GBTask task];
+    GBTask* task = [self task];
     task.arguments = [NSArray arrayWithObjects:@"config", 
                       [NSString stringWithFormat:@"branch.%@.remote", name], 
                       ref.remoteAlias, 
@@ -615,41 +580,36 @@
 
 - (void) mergeBranch:(GBRef*)aBranch
 {
-  if (!self.pulling)
-  {
-    self.pulling = YES;
+//  if (!self.pulling)
+//  {
+//    self.pulling = YES;
     
-    GBTask* mergeTask = [GBTask task];
-    mergeTask.arguments = [NSArray arrayWithObjects:@"merge", [aBranch nameWithRemoteAlias], nil];
+    GBTask* task = [self task];
+    task.arguments = [NSArray arrayWithObjects:@"merge", [aBranch nameWithRemoteAlias], nil];
     
-    [mergeTask subscribe:self selector:@selector(mergeTaskDidFinish:)];
-    [self launchTask:mergeTask];
-  }
+    [task launchWithBlock:^{
+//      self.pulling = NO;
+      
+      if ([task isError])
+      {
+        [self alertWithMessage: @"Merge failed" description:[task.output UTF8String]];
+      }
+      
+      [self reloadCommits];
+      [self updateStatus];      
+    }];
+//  }
 }
-  - (void) mergeTaskDidFinish:(NSNotification*)notification
-  {
-    GBTask* task = [notification object];
-    [task unsubscribe:self];
-    self.pulling = NO;
-    
-    if ([task isError])
-    {
-      [self alertWithMessage: @"Merge failed" description:[task.output UTF8String]];
-    }
-    
-    [self reloadCommits];
-    [self updateStatus];
-  }
 
 
 - (void) pullBranch:(GBRef*)aRemoteBranch
 {
-  if (!self.pulling)
-  {
-    self.pulling = YES;
+//  if (!self.pulling)
+//  {
+//    self.pulling = YES;
     
-    GBTask* pullTask = [GBTask task];
-    pullTask.arguments = [NSArray arrayWithObjects:@"pull", 
+    GBTask* task = [self task];
+    task.arguments = [NSArray arrayWithObjects:@"pull", 
                            @"--tags", 
                            @"--force", 
                            aRemoteBranch.remoteAlias, 
@@ -657,25 +617,19 @@
                             aRemoteBranch.name, [aRemoteBranch nameWithRemoteAlias]],
                            nil];
     
-    [pullTask subscribe:self selector:@selector(pullTaskDidFinish:)];
-    [self launchTask:pullTask];
-  }
+    [task launchWithBlock:^{
+//      self.pulling = NO;
+      
+      if ([task isError])
+      {
+        [self alertWithMessage: @"Pull failed" description:[task.output UTF8String]];
+      }
+      
+      [self reloadCommits];
+      [self updateStatus];    
+    }];
+//  }
 }
-
-  - (void) pullTaskDidFinish:(NSNotification*)notification
-  {
-    GBTask* task = [notification object];
-    [task unsubscribe:self];
-    self.pulling = NO;
-    
-    if ([task isError])
-    {
-      [self alertWithMessage: @"Pull failed" description:[task.output UTF8String]];
-    }
-    
-    [self reloadCommits];
-    [self updateStatus];
-  }
 
 
 - (void) push
@@ -688,67 +642,47 @@
 
 - (void) pushBranch:(GBRef*)aLocalBranch to:(GBRef*)aRemoteBranch
 {
-  if (!self.pushing && !self.pulling)
-  {
-    self.pushing = YES;
+//  if (!self.pushing && !self.pulling)
+//  {
+//    self.pushing = YES;
     aRemoteBranch.isNewRemoteBranch = NO;
-    GBTask* pushTask = [GBTask task];
+    GBTask* task = [self task];
     NSString* refspec = [NSString stringWithFormat:@"%@:%@", aLocalBranch.name, aRemoteBranch.name];
-    pushTask.arguments = [NSArray arrayWithObjects:@"push", @"--tags", aRemoteBranch.remoteAlias, refspec, nil];
-    [pushTask subscribe:self selector:@selector(pushTaskDidFinish:)];
-    [self launchTask:pushTask];    
-  }
+    task.arguments = [NSArray arrayWithObjects:@"push", @"--tags", aRemoteBranch.remoteAlias, refspec, nil];
+    [task launchWithBlock:^{
+      //    self.pushing = NO;
+      
+      if ([task isError])
+      {
+        [self fetchSilently];
+        [self alertWithMessage: @"Push failed" description:[task.output UTF8String]];
+      }
+      [self reloadCommits];      
+    }];    
+//  }
 }
-
-  - (void) pushTaskDidFinish:(NSNotification*)notification
-  {
-    GBTask* task = [notification object];
-    [task unsubscribe:self];
-    self.pushing = NO;
-    
-    if ([task isError])
-    {
-      [self fetchSilently];
-      [self alertWithMessage: @"Push failed" description:[task.output UTF8String]];
-    }
-    [self reloadCommits];
-  }
 
 
 - (void) fetchSilently
 {
   GBRef* aRemoteBranch = self.currentRemoteBranch;
-  if (!self.fetching && aRemoteBranch && [aRemoteBranch isRemoteBranch])
-  {
-    self.fetching = YES;
+//  if (!self.fetching && aRemoteBranch && [aRemoteBranch isRemoteBranch])
+//  {
+//    self.fetching = YES;
     
-    GBTask* fetchTask = [GBTask task];
-    fetchTask.arguments = [NSArray arrayWithObjects:@"fetch", 
+    GBTask* task = [GBTask task];
+    task.arguments = [NSArray arrayWithObjects:@"fetch", 
                            @"--tags", 
                            @"--force", 
                            aRemoteBranch.remoteAlias, 
                            [NSString stringWithFormat:@"%@:refs/remotes/%@", 
                             aRemoteBranch.name, [aRemoteBranch nameWithRemoteAlias]],
                            nil];
-    [fetchTask subscribe:self selector:@selector(fetchSilentlyTaskDidFinish:)];
-    [self launchTask:fetchTask];
-  }
-}
-
-
-
-
-
-#pragma mark Git Task Callbacks
-
-
-- (void) fetchSilentlyTaskDidFinish:(NSNotification*)notification
-{
-  GBTask* task = [notification object];
-  [task unsubscribe:self];
-  self.fetching = NO;
-  
-  [self reloadCommits];
+    [task launchWithBlock:^{
+      //self.fetching = NO;
+      [self reloadCommits];      
+    }];
+//  }
 }
 
 

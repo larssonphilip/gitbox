@@ -9,22 +9,15 @@
 
 @implementation GBStageViewController
 
-
+@synthesize stage;
 
 #pragma mark Init
 
 - (void) dealloc
 {
+  self.stage = nil;
   [super dealloc];
 }
-
-
-
-#pragma mark Interrogation
-
-
-
-
 
 
 
@@ -55,7 +48,7 @@
 
 - (IBAction) stageDoStage:(id)sender
 {
-  [self.repository.stage stageChanges:[self selectedChanges]];
+  [self.stage stageChanges:[self selectedChanges]];
 }
 
 - (BOOL) validateStageDoStage:(id)sender
@@ -68,7 +61,7 @@
 
 - (IBAction) stageDoUnstage:(id)sender
 {
-  [self.repository.stage unstageChanges:[self selectedChanges]];
+  [self.stage unstageChanges:[self selectedChanges]];
 }
 - (BOOL) validateStageDoUnstage:(id)sender
 {
@@ -83,11 +76,11 @@
   NSArray* changes = [self selectedChanges];
   if ([changes allAreTrue:@selector(staged)])
   {
-    [self.repository.stage unstageChanges:changes];
+    [self.stage unstageChanges:changes];
   }
   else
   {
-    [self.repository.stage stageChanges:changes];
+    [self.stage stageChanges:changes];
   }
 }
 - (BOOL) validateStageDoStageUnstage:(id)sender
@@ -106,7 +99,7 @@
 
   GBFileEditingController* fileEditor = [GBFileEditingController controller];
   fileEditor.title = @".gitignore";
-  fileEditor.URL = [self.repository.url URLByAppendingPathComponent:@".gitignore"];
+  fileEditor.URL = [[self.repositoryController url] URLByAppendingPathComponent:@".gitignore"];
   fileEditor.linesToAppend = paths;
   [fileEditor runSheetInWindow:[self window]];
 }
@@ -142,7 +135,7 @@
 {
   if (returnCode == NSAlertFirstButtonReturn)
   {
-    [self.repository.stage revertChanges:[self selectedChanges]];
+    [self.stage revertChanges:[self selectedChanges]];
   }
   [NSApp endSheet:[self window]];
   [[alert window] orderOut:self];
@@ -176,7 +169,7 @@
 {
   if (returnCode == NSAlertFirstButtonReturn)
   {
-    [self.repository.stage deleteFiles:[self selectedChanges]];
+    [self.stage deleteFiles:[self selectedChanges]];
   }
   [NSApp endSheet:[self window]];
   [[alert window] orderOut:self];

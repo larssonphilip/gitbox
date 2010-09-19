@@ -1,7 +1,9 @@
 #import "GBBaseChangesController.h"
+
+@class GBStage;
 @interface GBStageViewController : GBBaseChangesController
-{
-}
+
+@property(retain) GBStage* stage;
 
 - (IBAction) stageShowDifference:(id)sender;
 - (IBAction) stageRevealInFinder:(id)sender;

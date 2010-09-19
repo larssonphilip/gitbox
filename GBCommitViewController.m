@@ -1,5 +1,6 @@
 #import "GBModels.h"
 #import "GBCommitViewController.h"
+#import "GBRepositoryController.h"
 
 #import "NSArray+OAArrayHelpers.h"
 #import "NSSplitView+OASplitViewHelpers.h"
@@ -39,13 +40,11 @@
 - (void) loadView
 {
   [super loadView];
-  [self.repository addObserver:self forKeyPath:@"selectedCommit" selectorWithoutArguments:@selector(commitDidChange)];
   [self commitDidChange];
 }
 
 - (void) viewDidUnload
 {
-  [self.repository removeObserver:self keyPath:@"selectedCommit" selector:@selector(commitDidChange)];
   [super viewDidUnload];
 }
 
@@ -86,7 +85,7 @@
   [self.headerTextView setEditable:NO];
   [self.headerTextView setString:@""];
   
-  GBCommit* commit = self.repository.selectedCommit;
+  GBCommit* commit = self.repositoryController.selectedCommit;
   if (commit && ![commit isStage])
   {
     // Load the template

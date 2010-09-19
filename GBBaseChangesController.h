@@ -1,14 +1,14 @@
-@class GBRepository;
+@class GBRepositoryController;
 @interface GBBaseChangesController : NSViewController<NSTableViewDelegate, NSUserInterfaceValidations>
 {
-  GBRepository* repository;
+  GBRepositoryController* repositoryController;
   NSTableView* tableView;
   NSArrayController* statusArrayController;
 }
 
-@property(nonatomic,retain) GBRepository* repository;
-@property(nonatomic,retain) IBOutlet NSTableView* tableView;
-@property(nonatomic,retain) IBOutlet NSArrayController* statusArrayController; 
+@property(assign) GBRepositoryController* repositoryController;
+@property(retain) IBOutlet NSTableView* tableView;
+@property(retain) IBOutlet NSArrayController* statusArrayController; 
 
 
 #pragma mark Interrogation

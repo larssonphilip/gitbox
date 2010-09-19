@@ -1,4 +1,7 @@
 extern NSString* OATaskNotification;
+
+typedef void (^OATaskBlock)();
+
 @class OAActivity;
 @interface OATask : NSObject
 
@@ -21,7 +24,7 @@ extern NSString* OATaskNotification;
 
 @property(nonatomic,copy) void (^alertExecutableNotFoundBlock)(NSString*);
 
-@property(nonatomic,copy) void (^callbackBlock)();
+@property(nonatomic,copy) OATaskBlock callbackBlock;
 
 + (id) task;
 
@@ -41,7 +44,7 @@ extern NSString* OATaskNotification;
 
 - (void) prepareTask; // for subclasses
 
-- (void) launchWithBlock:(void(^)())block;
+- (void) launchWithBlock:(OATaskBlock)block;
 - (id) launchAndWait;
 - (id) launchWithArgumentsAndWait:(NSArray*)args;
 

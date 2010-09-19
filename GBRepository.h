@@ -8,6 +8,9 @@
 @class GBChange;
 @class GBTask;
 @class OAPropertyListController;
+
+typedef void (^GBBlock)();
+
 @interface GBRepository : NSObject
 {
   BOOL backgroundUpdateEnabled;
@@ -23,18 +26,11 @@
 @property(nonatomic,retain) GBRef* currentLocalRef;
 @property(nonatomic,retain) GBRef* currentRemoteBranch;
 
-@property(nonatomic,retain) NSArray* commits;
 @property(nonatomic,retain) NSArray* localBranchCommits;
-
-@property(nonatomic,assign) BOOL pulling;
-@property(nonatomic,assign) BOOL merging;
-@property(nonatomic,assign) BOOL fetching;
-@property(nonatomic,assign) BOOL pushing;
 
 @property(nonatomic,assign) BOOL needsLocalBranchesUpdate;
 @property(nonatomic,assign) BOOL needsRemotesUpdate;
 
-@property(nonatomic,retain) GBCommit* selectedCommit; // fixme: should move this into repositorycontroller or commitcontroller
 @property(nonatomic,retain) NSString* topCommitId;
 @property(nonatomic,retain) OAPropertyListController* plistController;
 
@@ -52,10 +48,8 @@
 - (GBRef*) loadCurrentLocalRef;
 + (NSString*) validRepositoryPathForPath:(NSString*)aPath;
 
-
 - (NSString*) path;
-
-- (NSArray*) composedCommits;
+- (NSArray*) stageAndCommits;
 
 
 - (void) saveObject:(id)obj forKey:(NSString*)key;
@@ -64,16 +58,13 @@
 
 #pragma mark Update
 
-- (void) updateLocalBranchesAndTagsIfNeededWithBlock:(void (^)())block;
-- (void) updateLocalBranchesAndTagsWithBlock:(void (^)())block;
-- (void) updateRemotesIfNeededWithBlock:(void (^)())block;
-- (void) updateRemotesWithBlock:(void (^)())block;
+- (void) updateLocalBranchesAndTagsIfNeededWithBlock:(GBBlock)block;
+- (void) updateLocalBranchesAndTagsWithBlock:(GBBlock)block;
+- (void) updateRemotesIfNeededWithBlock:(GBBlock)block;
+- (void) updateRemotesWithBlock:(GBBlock)block;
+- (void) updateLocalBranchCommitsWithBlock:(GBBlock)block;
 
 - (void) updateStatus;
-- (void) updateBranchStatus;
-- (void) updateCommits;
-- (void) reloadCommits;
-- (void) reloadRemotes;
 - (void) resetCurrentLocalRef;
 - (void) finish;
 
@@ -87,8 +78,8 @@
 #pragma mark Mutation
 
 + (void) initRepositoryAtURL:(NSURL*)url;
-- (void) checkoutRef:(GBRef*)ref withBlock:(void (^)())block;
-- (void) checkoutRef:(GBRef*)ref withNewBranchName:(NSString*)name;
+- (void) checkoutRef:(GBRef*)ref withBlock:(GBBlock)block;
+- (void) checkoutRef:(GBRef*)ref withNewBranchName:(NSString*)name withBlock:(GBBlock)block;
 - (void) checkoutNewBranchName:(NSString*)name;
 - (void) commitWithMessage:(NSString*) message;
 

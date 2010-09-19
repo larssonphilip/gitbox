@@ -133,7 +133,7 @@
     }
   }
   
-  if (dirtyFlag) [self.repository reloadRemotes];
+  if (dirtyFlag) [self.repository updateRemotesWithBlock:^{}];
   dirtyFlag = NO;
   
   for (GBRemote* remote in self.repository.remotes)
@@ -160,7 +160,7 @@
     }
   }
   
-  if (dirtyFlag) [self.repository reloadRemotes];
+  if (dirtyFlag) [self.repository updateRemotesWithBlock:^{}];
 }
 
 @end

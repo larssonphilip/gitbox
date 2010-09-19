@@ -25,6 +25,17 @@
   return self.repository.path;
 }
 
+- (void) prepareTask
+{
+  [super prepareTask];
+  if (!self.repository)
+  {
+    NSException *exception = [NSException exceptionWithName:@"RepositoryIsNil"
+                                                     reason:@"You may use GBRepository#task to prepare GBTask"  userInfo:nil];
+    @throw exception;
+  }
+}
+
 - (void) dealloc
 {
   [super dealloc];

@@ -101,7 +101,7 @@
   if (!stageController)
   {
     self.stageController = [[[GBStageViewController alloc] initWithNibName:@"GBStageViewController" bundle:nil] autorelease];
-    stageController.repository = self.repository;
+//    stageController.repository = self.repository;
   }
   return [[stageController retain] autorelease];
 }
@@ -111,7 +111,7 @@
   if (!commitController)
   {
     self.commitController = [[[GBCommitViewController alloc] initWithNibName:@"GBCommitViewController" bundle:nil] autorelease];
-    commitController.repository = self.repository;
+//    commitController.repository = self.repository;
   }
   return [[commitController retain] autorelease];
 }
@@ -520,7 +520,7 @@
   
   // Repository init
   
-  self.repository.selectedCommit = self.repository.stage;
+//  self.repository.selectedCommit = self.repository.stage;
   
   [self.repository reloadCommits];
 
@@ -578,7 +578,7 @@
   //NSLog(@"windowDidBecomeKey");
   [self.repository endBackgroundUpdate];
   [self.repository updateStatus];
-  [self.repository updateBranchStatus];
+//  [self.repository updateBranchStatus];
   [self updateBranchMenus];
 }
 
