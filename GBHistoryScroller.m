@@ -53,7 +53,8 @@
   }
   CGFloat radius = 3.0;
   CGContextSaveGState(context);
-  CGContextBeginTransparencyLayerWithRect(context, rect, NULL);
+  // transparency layer is used because we play with blend mode for stroke (see below)
+  CGContextBeginTransparencyLayerWithRect(context, rect, NULL);  
   CGContextAddRoundRect(context, rect, radius);
   CGContextClip(context);
   
@@ -85,7 +86,10 @@
   CGContextSetLineWidth(context, 1.0);
   CGContextSetLineJoin(context, kCGLineJoinRound);
   CGContextSetLineCap(context, kCGLineCapButt);
-  CGContextSetBlendMode(context, kCGBlendModeCopy);
+  
+  // Stroke is drawn over the fill color. To discard fill color below the stroke, we use "copy" blending mode.
+  CGContextSetBlendMode(context, kCGBlendModeCopy); 
+  
   CGContextDrawPath(context, kCGPathStroke);
   CGContextEndTransparencyLayer(context);
 }
