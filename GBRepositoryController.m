@@ -68,6 +68,8 @@
 
 - (void) checkoutRef:(GBRef*) ref
 {
+  if (!self.repository) return;
+  
   [self.windowController.toolbarController pushDisabled];
   [self _pushSpinning];
   
