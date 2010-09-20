@@ -57,7 +57,7 @@
   
   [self _updateCommits];
   
-  if (self.repository && !self.repository.localBranchCommits)
+  if (!self.repository.localBranchCommits)
   {
     [self _loadCommits];
   }
@@ -99,6 +99,8 @@
 
 - (void) _loadCommits
 {
+  if (!self.repository) return;
+  
   [self _pushSpinning];
   [self.repository updateLocalBranchCommitsWithBlock:^{
     [self _updateCommits];
