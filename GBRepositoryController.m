@@ -57,7 +57,7 @@
   
   [self _updateCommits];
   
-  if (!self.repository.localBranchCommits)
+  if (self.repository && !self.repository.localBranchCommits)
   {
     [self _loadCommits];
   }
@@ -86,6 +86,7 @@
 - (void) selectCommit:(GBCommit*)commit
 {
   self.selectedCommit = commit;
+  NSLog(@"selectCommit:...");
   // TODO: update controllers ...
 }
 

@@ -144,8 +144,9 @@
 							<object class="NSScroller" id="711804487">
 								<reference key="NSNextResponder" ref="964536093"/>
 								<int key="NSvFlags">-2147483392</int>
-								<string key="NSFrame">{{259, 17}, {15, 381}}</string>
+								<string key="NSFrame">{{259, 17}, {11, 381}}</string>
 								<reference key="NSSuperview" ref="964536093"/>
+								<int key="NSsFlags">256</int>
 								<int key="NSArrowsLoc">2</int>
 								<reference key="NSTarget" ref="964536093"/>
 								<string key="NSAction">_doScroller:</string>
