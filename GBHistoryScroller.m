@@ -37,23 +37,28 @@
 {
 	CGRect rect = NSRectToCGRect([self rectForPart:NSScrollerKnob]);
   
-  rect = CGRectInset(rect, 1.5, 0.5);
+  rect = CGRectInset(rect, 0, 0.5);
+  rect.origin.x = rect.origin.x + (rect.size.width - 6.0 - 1.0) - 0.5;
+  rect.size.width = 6.0;
+  
+  
   
   CGContextRef context = CGContextCurrentContext();
   
-  CGFloat alpha = 0.5;
+  CGFloat alpha = 0.3; // inactive window
   
   if ([[self window] isMainWindow] && [[self window] isKeyWindow])
   {
-    alpha = 0.7;
+    alpha = 0.5;
   }
-  CGFloat radius = 7.0;
+  CGFloat radius = 3.0;
   CGContextSaveGState(context);
+  CGContextBeginTransparencyLayerWithRect(context, rect, NULL);
   CGContextAddRoundRect(context, rect, radius);
   CGContextClip(context);
   
-  CGColorRef color1 = CGColorCreateGenericRGB(0.9, 0.9, 0.9, alpha);
-  CGColorRef color2 = CGColorCreateGenericRGB(0.7, 0.7, 0.7, alpha);
+  CGColorRef color1 = CGColorCreateGenericRGB(0.0, 0.0, 0.0, alpha*0.55);
+  CGColorRef color2 = CGColorCreateGenericRGB(0.0, 0.0, 0.0, alpha*0.8);
   CGColorRef colorsList[] = { color1, color2 };
   CFArrayRef colors = CFArrayCreate(NULL, (const void**)colorsList, sizeof(colorsList) / sizeof(CGColorRef), &kCFTypeArrayCallBacks);
   
@@ -76,12 +81,13 @@
   
   CGContextAddRoundRect(context, rect, radius);
 
-  CGContextSetRGBStrokeColor(context, 0.3, 0.3, 0.3, alpha*0.3);
+  CGContextSetRGBStrokeColor(context, 1.0, 1.0, 1.0, alpha*0.3);
   CGContextSetLineWidth(context, 1.0);
   CGContextSetLineJoin(context, kCGLineJoinRound);
   CGContextSetLineCap(context, kCGLineCapButt);
-  
+  CGContextSetBlendMode(context, kCGBlendModeCopy);
   CGContextDrawPath(context, kCGPathStroke);
+  CGContextEndTransparencyLayer(context);
 }
 
 @end
