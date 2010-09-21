@@ -1,3 +1,14 @@
+JUMP GOALS:
+
+- achtung: when RepositoryController performs block, self.repository may change
+- select/associate remote branch
+- pull
+- push
+- checkout new branch
+- checkout remote branch
+
+
+
 
 0.9.8:
 + release notes window

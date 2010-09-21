@@ -51,7 +51,36 @@
 
 
 
-#pragma mark Git Actions
+#pragma mark Actions
+
+
+
+- (IBAction) pullOrPush:(NSSegmentedControl*)segmentedControl
+{
+  NSInteger segment = [segmentedControl selectedSegment];
+  if (segment == 0)
+  {
+    [self pull:segmentedControl];
+  }
+  else if (segment == 1)
+  {
+    [self push:segmentedControl];
+  }
+  else
+  {
+    NSLog(@"ERROR: Unrecognized push/pull segment %d", (int)segment);
+  }
+}
+
+- (IBAction) pull:(id)sender
+{
+  [self.repositoryController pull];
+}
+
+- (IBAction) push:(id)sender
+{
+  [self.repositoryController push];
+}
 
 
 
@@ -59,6 +88,8 @@
 {
   [self.repositoryController checkoutRef:[sender representedObject]];
 }
+
+
 
 //- (IBAction) checkoutRemoteBranch:(id)sender
 //{
