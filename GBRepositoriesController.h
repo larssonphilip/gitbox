@@ -12,6 +12,7 @@
 - (GBRepository*) repositoryWithURL:(NSURL*)url;
 
 - (void) addRepository:(GBRepository*)repo;
+- (void) selectRepository:(GBRepository*) repo;
 - (void) loadRepositories;
 - (void) saveRepositories;
 - (void) setNeedsUpdateEverything;

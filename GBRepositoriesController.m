@@ -65,6 +65,11 @@
   [self.windowController.sourcesController didAddRepository:repo];
 }
 
+- (void) selectRepository:(GBRepository*) repo
+{
+  
+}
+
 - (void) setNeedsUpdateEverything
 {
   for (GBRepository* repo in self.localRepositories)

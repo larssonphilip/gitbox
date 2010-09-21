@@ -91,7 +91,7 @@
   {
     item = [self firstNonGroupRowStartingAtRow:index-1 direction:-1];
   }
-  if (item) [self.repositoryController selectRepository:item];
+  if (item) [self.repositoriesController selectRepository:item];
 }
 
 - (IBAction) selectNextRepository:(id)_
@@ -106,7 +106,7 @@
   {
     item = [self firstNonGroupRowStartingAtRow:index+1 direction:+1];
   }
-  if (item) [self.repositoryController selectRepository:item];
+  if (item) [self.repositoriesController selectRepository:item];
 }
 
 
@@ -260,7 +260,7 @@
   {
     item = [self.outlineView itemAtRow:row];
   }
-  [self.repositoryController selectRepository:item];
+  [self.repositoriesController selectRepository:item];
 }
 
 

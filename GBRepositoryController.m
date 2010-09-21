@@ -37,9 +37,9 @@
 }
 
 
-- (void) selectRepository:(GBRepository*) repo
+- (void) didSelectRepository
 {
-  self.repository = repo;
+  GBRepository* repo = self.repository;
   [repo updateLocalBranchesAndTagsIfNeededWithBlock:^{
     if (repo == self.repository)
     {

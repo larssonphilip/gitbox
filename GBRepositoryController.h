@@ -19,7 +19,7 @@
 
 - (NSURL*) url;
 
-- (void) selectRepository:(GBRepository*) repo;
+- (void) didSelectRepository;
 - (void) checkoutRef:(GBRef*) ref;
 - (void) selectCommit:(GBCommit*)commit;
 - (void) pull;
