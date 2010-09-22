@@ -66,9 +66,6 @@
 
 - (void) didSelectRepositoryController
 {
-  self.windowController.repositoryController
-  
-  
   GBRepository* repo = self.repository;
   [repo updateLocalBranchesAndTagsIfNeededWithBlock:^{
     if (repo == self.repository)

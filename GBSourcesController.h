@@ -17,7 +17,7 @@
 - (IBAction) selectPreviousRepository:(id)_;
 - (IBAction) selectNextRepository:(id)_;
 
-- (void) didAddRepository:(GBRepository*)repo;
-- (void) didSelectRepository:(GBRepository*)repo;
+- (void) didAddRepositoryController:(GBRepositoryController*)repoCtrl;
+- (void) didSelectRepositoryController:(GBRepositoryController*)repoCtrl;
 
 @end

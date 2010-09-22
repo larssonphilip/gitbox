@@ -34,6 +34,5 @@
 - (void) saveState;
 - (void) loadState;
 
-- (void) didSelectRepository:(GBRepository*)repo;
 
 @end

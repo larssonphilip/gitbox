@@ -31,7 +31,7 @@
   if (!sections)
   {
     self.sections = [NSMutableArray arrayWithObjects:
-                     self.repositoriesController.localRepositories, 
+                     self.repositoriesController.localRepositoryControllers, 
                      nil];
   }
   return [[sections retain] autorelease];
@@ -43,15 +43,15 @@
 
 
 
-- (void) didAddRepository:(GBRepository*)repo
+- (void) didAddRepositoryController:(GBRepositoryController*)repoCtrl
 {
-  [self.outlineView expandItem:self.repositoriesController.localRepositories];
+  [self.outlineView expandItem:self.repositoriesController.localRepositoryControllers];
   [self reloadOutlineView];
 }
 
-- (void) didSelectRepository:(GBRepository*)repo
+- (void) didSelectRepositoryController:(GBRepositoryController*)repoCtrl
 {
-  [self.outlineView selectRowIndexes:[NSIndexSet indexSetWithIndex:[self.outlineView rowForItem:repo]] 
+  [self.outlineView selectRowIndexes:[NSIndexSet indexSetWithIndex:[self.outlineView rowForItem:repoCtrl]] 
                 byExtendingSelection:NO];
   
   
@@ -81,8 +81,8 @@
 
 - (IBAction) selectPreviousRepository:(id)_
 {
-  NSInteger index = [self.outlineView rowForItem:self.repositoryController.repository];
-  GBRepository* item = nil;
+  NSInteger index = [self.outlineView rowForItem:self.repositoriesController.selectedRepositoryController];
+  GBRepositoryController* item = nil;
   if (index < 0)
   {
     item = [self firstNonGroupRowStartingAtRow:0 direction:+1];
@@ -91,13 +91,13 @@
   {
     item = [self firstNonGroupRowStartingAtRow:index-1 direction:-1];
   }
-  if (item) [self.repositoriesController selectRepository:item];
+  if (item) [self.repositoriesController selectRepositoryController:item];
 }
 
 - (IBAction) selectNextRepository:(id)_
 {
-  NSInteger index = [self.outlineView rowForItem:self.repositoryController.repository];
-  GBRepository* item = nil;
+  NSInteger index = [self.outlineView rowForItem:self.repositoriesController.selectedRepositoryController];
+  GBRepositoryController* item = nil;
   if (index < 0)
   {
     item = [self firstNonGroupRowStartingAtRow:0 direction:+1];
@@ -106,7 +106,7 @@
   {
     item = [self firstNonGroupRowStartingAtRow:index+1 direction:+1];
   }
-  if (item) [self.repositoriesController selectRepository:item];
+  if (item) [self.repositoriesController selectRepositoryController:item];
 }
 
 
@@ -123,7 +123,7 @@
 - (void) saveExpandedState
 {
   NSMutableArray* expandedSections = [NSMutableArray array];
-  if ([self.outlineView isItemExpanded:self.repositoriesController.localRepositories])
+  if ([self.outlineView isItemExpanded:self.repositoriesController.localRepositoryControllers])
     [expandedSections addObject:@"localRepositories"];
   
   // TODO: repeat for other sections
@@ -136,7 +136,7 @@
   NSArray* expandedSections = [[NSUserDefaults standardUserDefaults] objectForKey:@"GBSourcesController_expandedSections"];
   
   if ([expandedSections containsObject:@"localRepositories"])
-    [self.outlineView expandItem:self.repositoriesController.localRepositories];
+    [self.outlineView expandItem:self.repositoriesController.localRepositoryControllers];
   
   // TODO: repeat for other sections
   
@@ -177,16 +177,16 @@
   {
     return [self.sections count];
   }
-  else if (item == self.repositoriesController.localRepositories)
+  else if (item == self.repositoriesController.localRepositoryControllers)
   {
-    return [self.repositoriesController.localRepositories count];
+    return [self.repositoriesController.localRepositoryControllers count];
   }
   return 0;
 }
 
 - (BOOL)outlineView:(NSOutlineView*)anOutlineView isItemExpandable:(id)item
 {
-  if (item == self.repositoriesController.localRepositories)
+  if (item == self.repositoriesController.localRepositoryControllers)
   {
     return YES;
   }
@@ -200,9 +200,9 @@
   {
     children = self.sections;
   } 
-  else if (item == self.repositoriesController.localRepositories)
+  else if (item == self.repositoriesController.localRepositoryControllers)
   {
-    children = self.repositoriesController.localRepositories;
+    children = self.repositoriesController.localRepositoryControllers;
   }
   
   return children ? [children objectAtIndex:index] : nil;
@@ -210,7 +210,7 @@
 
 - (id)outlineView:(NSOutlineView*)anOutlineView objectValueForTableColumn:(NSTableColumn*)tableColumn byItem:(id)item
 {
-  if (item == self.repositoriesController.localRepositories)
+  if (item == self.repositoriesController.localRepositoryControllers)
   {
     return @"REPOSITORIES";
   }
@@ -260,7 +260,7 @@
   {
     item = [self.outlineView itemAtRow:row];
   }
-  [self.repositoriesController selectRepository:item];
+  [self.repositoriesController selectRepositoryController:item];
 }
 
 

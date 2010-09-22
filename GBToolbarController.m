@@ -150,11 +150,6 @@
 #pragma mark Model callbacks
 
 
-- (void) didSelectRepository:(GBRepository*)repo
-{
-  [self update];  
-}
-
 
 
 

@@ -84,28 +84,24 @@
   
   // ToolbarController is taken from nib. Why is it there? Because of IBActions and IBOutlets.
   [self.toolbarController windowDidLoad];
-  self.toolbarController.repositoryController = self.repositoryController;
   
   // SourcesController displays repositories in a sidebar
   self.sourcesController = [[[GBSourcesController alloc] initWithNibName:@"GBSourcesController" bundle:nil] autorelease];
-  self.sourcesController.repositoriesController = self.repositoriesController;
-  self.sourcesController.repositoryController = self.repositoryController;
   NSView* firstView = [self.splitView.subviews objectAtIndex:0];
   if (firstView) [self.sourcesController loadInView:firstView];
 
   // HistoryController displays list of commits for the selected repo and branch
   self.historyController = [[[GBHistoryViewController alloc] initWithNibName:@"GBHistoryViewController" bundle:nil] autorelease];
-  self.historyController.repositoryController = self.repositoryController;
   NSView* secondView = [self.splitView.subviews objectAtIndex:1];
   [self.historyController loadInView:secondView];
   
   self.stageController = [[[GBStageViewController alloc] initWithNibName:@"GBStageViewController" bundle:nil] autorelease];
-  self.stageController.repositoryController = self.repositoryController;
-
-  self.commitController = [[[GBCommitViewController alloc] initWithNibName:@"GBCommitViewController" bundle:nil] autorelease];
-  self.commitController.repositoryController = self.repositoryController;
   
-  [self updateWindowTitle];
+  self.commitController = [[[GBCommitViewController alloc] initWithNibName:@"GBCommitViewController" bundle:nil] autorelease];
+  
+
+  self.sourcesController.repositoriesController = self.repositoriesController;
+  
   
 //  [self.repository fetchSilently];
 }
@@ -156,11 +152,18 @@
 
 
 
-- (void) didSelectRepository:(GBRepository*)repo
+- (void) selectRepositoryController:(GBRepositoryController*)repoCtrl
 {
+  self.repositoryController = repoCtrl;
+  self.toolbarController.repositoryController = self.repositoryController;
+  self.sourcesController.repositoryController = self.repositoryController;
+  self.historyController.repositoryController = self.repositoryController;
+  self.stageController.repositoryController   = self.repositoryController;
+  self.commitController.repositoryController  = self.repositoryController;
+  
   [self updateWindowTitle];
-  [self.sourcesController didSelectRepository:repo];
-  [self.toolbarController didSelectRepository:repo];
+  [self.sourcesController selectR:repoCtrl];
+  [self.toolbarController update];
 }
 
 
