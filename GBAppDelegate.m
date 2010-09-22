@@ -24,7 +24,6 @@
 @implementation GBAppDelegate
 
 @synthesize repositoriesController;
-@synthesize repositoryController;
 
 @synthesize windowController;
 @synthesize preferencesController;
@@ -35,7 +34,6 @@
   self.preferencesController = nil;
   
   self.repositoriesController = nil;
-  self.repositoryController = nil;
 
   [super dealloc];
 }
@@ -112,14 +110,14 @@
 
 - (void) openRepositoryAtURL:(NSURL*)url
 {
-  GBRepository* repo = [self.repositoriesController repositoryWithURL:url];
-  if (!repo)
+  GBRepositoryController* repoCtrl = [self.repositoriesController repositoryControllerWithURL:url];
+  if (!repoCtrl)
   {
-    repo = [GBRepository repositoryWithURL:url];
-    [self.repositoriesController addRepository:repo];
+    repoCtrl = [GBRepositoryController repositoryControllerWithURL:url];
+    [self.repositoriesController addLocalRepositoryController:repoCtrl];
     [[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:url];
   }
-  [self.repositoryController selectRepository:repo];
+  [self.repositoriesController selectRepositoryController:repoCtrl];
 }
 
 - (BOOL) checkGitVersion
@@ -214,15 +212,11 @@
 {
   // Instantiate controllers
   self.repositoriesController = [[GBRepositoriesController new] autorelease];
-  self.repositoryController = [[GBRepositoryController new] autorelease];
   self.windowController = [GBMainWindowController controller];
   
   // Connect controllers
-  self.repositoriesController.repositoryController = self.repositoryController;  
   self.repositoriesController.windowController = self.windowController;
-  self.repositoryController.windowController = self.windowController;
   self.windowController.repositoriesController = self.repositoriesController;
-  self.windowController.repositoryController = self.repositoryController;
   
   // Launch the updates
   [self checkGitVersion];
@@ -260,7 +254,7 @@
     [self openRepositoryAtURL:url];
     return YES;
   }
-  else 
+  else
   {
     if ([NSAlert prompt:NSLocalizedString(@"The folder is not a git repository.\nMake it a repository?", @"")
                   description:path])

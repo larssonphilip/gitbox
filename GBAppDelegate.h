@@ -1,5 +1,4 @@
 @class GBRepositoriesController;
-@class GBRepositoryController;
 
 @class GBMainWindowController;
 @class GBPreferencesController;
@@ -7,7 +6,6 @@
 @interface GBAppDelegate : NSObject <NSApplicationDelegate, NSOpenSavePanelDelegate>
 
 @property(retain) GBRepositoriesController* repositoriesController;
-@property(retain) GBRepositoryController* repositoryController;
 
 @property(retain) GBMainWindowController* windowController;
 @property(retain) IBOutlet GBPreferencesController* preferencesController;

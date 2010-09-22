@@ -11,13 +11,14 @@
 
 @implementation GBRepositoriesController
 
-@synthesize repositoryController;
-@synthesize localRepositories;
+@synthesize selectedRepositoryController;
+@synthesize localRepositoryControllers;
 @synthesize windowController;
 
 - (void) dealloc
 {
-  self.localRepositories = nil;
+  self.selectedRepositoryController = nil;
+  self.localRepositoryControllers = nil;
   self.windowController = nil;
   [super dealloc];
 }
@@ -32,17 +33,17 @@
 
 
 
-- (NSMutableArray*) localRepositories
+- (NSMutableArray*) localRepositoryControllers
 {
-  if (!localRepositories) self.localRepositories = [NSMutableArray array];
-  return [[localRepositories retain] autorelease];
+  if (!localRepositoryControllers) self.localRepositoryControllers = [NSMutableArray array];
+  return [[localRepositoryControllers retain] autorelease];
 }
 
-- (GBRepository*) repositoryWithURL:(NSURL*)url
+- (GBRepositoryController*) repositoryControllerWithURL:(NSURL*)url
 {
-  for (GBRepository* repo in self.localRepositories)
+  for (GBRepositoryController* repoCtrl in self.localRepositoryControllers)
   {
-    if ([repo.url isEqual:url]) return repo;
+    if ([[repoCtrl url] isEqual:url]) return repoCtrl;
   }
   return nil;
 }
@@ -57,25 +58,32 @@
 
 
 
-- (void) addRepository:(GBRepository*)repo
+- (void) addLocalRepositoryController:(GBRepositoryController*)repoCtrl
 {
-  repo.needsLocalBranchesUpdate = YES;
-  repo.needsRemotesUpdate = YES;
-  [self.localRepositories addObject:repo];
-  [self.windowController.sourcesController didAddRepository:repo];
+  repoCtrl.repositoriesController = self;
+  repoCtrl.windowController = self.windowController;
+  [repoCtrl setNeedsUpdateEverything];
+  [self.localRepositoryControllers addObject:repoCtrl];
+  [self.windowController.sourcesController didAddRepositoryController:repoCtrl];
 }
 
-- (void) selectRepository:(GBRepository*) repo
+- (void) selectRepositoryController:(GBRepositoryController*) repoCtrl
 {
-  
+  if (self.selectedRepositoryController)
+  {
+    [self.selectedRepositoryController willDeselectRepositoryController];
+    self.selectedRepositoryController.windowController = nil;
+  }
+  self.selectedRepositoryController = repoCtrl;
+  self.selectedRepositoryController.windowController = self.windowController;
+  [self.selectedRepositoryController didSelectRepositoryController];
 }
 
 - (void) setNeedsUpdateEverything
 {
-  for (GBRepository* repo in self.localRepositories)
+  for (GBRepositoryController* repoCtrl in self.localRepositoryControllers)
   {
-    repo.needsLocalBranchesUpdate = YES;
-    repo.needsRemotesUpdate = YES;
+    [repoCtrl setNeedsUpdateEverything];
   }
 }
 
@@ -99,8 +107,10 @@
       if ([NSFileManager isWritableDirectoryAtPath:path] &&
           [GBRepository validRepositoryPathForPath:path])
       {
-        GBRepository* repo = [GBRepository repositoryWithURL:url];
-        [self.localRepositories addObject:repo];
+        GBRepositoryController* repoCtrl = [GBRepositoryController repositoryControllerWithURL:url];
+        repoCtrl.repositoriesController = self;
+        repoCtrl.windowController = self.windowController;
+        [self.localRepositoryControllers addObject:repoCtrl];
       } // if path is valid repo
     } // for
   } // if paths
@@ -109,9 +119,9 @@
 - (void) saveRepositories
 {
   NSMutableArray* paths = [NSMutableArray array];
-  for (GBRepository* repo in self.localRepositories)
+  for (GBRepositoryController* repoCtrl in self.localRepositoryControllers)
   {
-    NSData* bookmarkData = [repo.url bookmarkDataWithOptions:NSURLBookmarkCreationMinimalBookmark
+    NSData* bookmarkData = [repoCtrl.url bookmarkDataWithOptions:NSURLBookmarkCreationMinimalBookmark
                               includingResourceValuesForKeys:nil
                                                relativeToURL:nil
                                                        error:NULL];
@@ -123,6 +133,18 @@
   [[NSUserDefaults standardUserDefaults] setObject:paths forKey:@"GBRepositoriesController_localRepositories"];
 }
 
+
+
+
+- (void) pushSpinning
+{
+  [self.windowController.toolbarController pushSpinning];
+}
+
+- (void) popSpinning
+{
+  [self.windowController.toolbarController popSpinning];
+}
 
 
 @end

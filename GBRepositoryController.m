@@ -8,6 +8,7 @@
 #import "GBStageViewController.h"
 #import "GBCommitViewController.h"
 
+#import "GBRepositoriesController.h"
 #import "GBRepositoryController.h"
 
 @interface GBRepositoryController ()
@@ -19,6 +20,7 @@
 
 @implementation GBRepositoryController
 
+@synthesize repositoriesController;
 @synthesize repository;
 @synthesize windowController;
 @synthesize selectedCommit;
@@ -31,14 +33,42 @@
   [super dealloc];
 }
 
++ (id) repositoryControllerWithURL:(NSURL*)url
+{
+  GBRepositoryController* ctrl = [[self new] autorelease];
+  GBRepository* repo = [GBRepository repositoryWithURL:url];
+  ctrl.repository = repo;
+  return ctrl;
+}
+
 - (NSURL*) url
 {
   return self.repository.url;
 }
 
-
-- (void) didSelectRepository
+- (void) setNeedsUpdateEverything
 {
+  self.repository.needsLocalBranchesUpdate = YES;
+  self.repository.needsRemotesUpdate = YES;
+}
+
+
+
+#pragma mark Select/Deselect
+
+
+
+- (void) willDeselectRepositoryController
+{
+  // You should clean up window state here before other (or none) controller gets selected
+  
+}
+
+- (void) didSelectRepositoryController
+{
+  self.windowController.repositoryController
+  
+  
   GBRepository* repo = self.repository;
   [repo updateLocalBranchesAndTagsIfNeededWithBlock:^{
     if (repo == self.repository)
@@ -64,6 +94,17 @@
   
   [self.windowController didSelectRepository:repo];
 }
+
+
+
+
+
+
+
+#pragma mark Git actions
+
+
+
 
 
 - (void) checkoutRef:(GBRef*) ref
@@ -138,12 +179,12 @@
 
 - (void) _pushSpinning
 {
-  [self.windowController.toolbarController pushSpinning];
+  [self.repositoriesController pushSpinning];
 }
 
 - (void) _popSpinning
 {
-  [self.windowController.toolbarController popSpinning];
+  [self.repositoriesController popSpinning];
 }
 
 
