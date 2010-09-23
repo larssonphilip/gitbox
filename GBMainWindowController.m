@@ -88,6 +88,7 @@
   
   // SourcesController displays repositories in a sidebar
   self.sourcesController = [[[GBSourcesController alloc] initWithNibName:@"GBSourcesController" bundle:nil] autorelease];
+  self.sourcesController.repositoriesController = self.repositoriesController;
   NSView* firstView = [self.splitView.subviews objectAtIndex:0];
   if (firstView) [self.sourcesController loadInView:firstView];
 
@@ -100,7 +101,6 @@
   
   self.commitController = [[[GBCommitViewController alloc] initWithNibName:@"GBCommitViewController" bundle:nil] autorelease];  
   
-  self.sourcesController.repositoriesController = self.repositoriesController;
   
 //  [self.repository fetchSilently];
 }
@@ -167,7 +167,7 @@
 
 - (void) repositoriesControllerDidAddRepository:(GBRepositoriesController*)aRepositoriesController
 {
-  
+  [self.sourcesController repositoriesControllerDidAddRepository:aRepositoriesController];
 }
 
 - (void) repositoriesControllerWillSelectRepository:(GBRepositoriesController*)aRepositoriesController
@@ -177,8 +177,10 @@
 
 - (void) repositoriesControllerDidSelectRepository:(GBRepositoriesController*)aRepositoriesController
 {
-  [self updateWindowTitleWithRepositoryController:aRepositoriesController.selectedRepositoryController];
-  self.toolbarController.repositoryController = aRepositoriesController.selectedRepositoryController;
+  GBRepositoryController* repoCtrl = aRepositoriesController.selectedRepositoryController;
+  [self updateWindowTitleWithRepositoryController:repoCtrl];
+  self.toolbarController.repositoryController = repoCtrl;
+  self.historyController.commits = [repoCtrl commits];
   [self.toolbarController update];
   [self.sourcesController repositoriesControllerDidSelectRepository:aRepositoriesController];
 }
@@ -188,24 +190,35 @@
 #pragma mark GBRepositoryControllerDelegate
 
 
-- (void) repositoryControllerDidChangeDisabledStatus:(GBRepositoryController*)aRepositoryController
+- (void) repositoryControllerDidChangeDisabledStatus:(GBRepositoryController*)repoCtrl
 {
+  if (repoCtrl != self.repositoriesController.selectedRepositoryController) return;
   [self.toolbarController updateDisabledState];
 }
 
-- (void) repositoryControllerDidChangeSpinningStatus:(GBRepositoryController*)aRepositoryController
+- (void) repositoryControllerDidChangeSpinningStatus:(GBRepositoryController*)repoCtrl
 {
+  if (repoCtrl != self.repositoriesController.selectedRepositoryController) return;
   [self.toolbarController updateSpinner];
 }
 
-- (void) repositoryControllerDidUpdateCommits:(GBRepositoryController*)aRepositoryController
+- (void) repositoryControllerDidUpdateCommits:(GBRepositoryController*)repoCtrl
 {
-  self.historyController.commits = [aRepositoryController.repository stageAndCommits];
+  if (repoCtrl != self.repositoriesController.selectedRepositoryController) return;
+  self.historyController.commits = [repoCtrl commits];
 }
 
+- (void) repositoryControllerDidUpdateBranches:(GBRepositoryController*)repoCtrl
+{
+  if (repoCtrl != self.repositoriesController.selectedRepositoryController) return;
+  [self.toolbarController updateBranchMenus];
+}
 
-
-
+- (void) repositoryControllerDidChangeBranch:(GBRepositoryController*)repoCtrl
+{
+  if (repoCtrl != self.repositoriesController.selectedRepositoryController) return;
+  [self.toolbarController updateBranchMenus];
+}
 
 
 #pragma mark NSSplitViewDelegate

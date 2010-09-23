@@ -33,6 +33,4 @@
 - (IBAction) selectPreviousRepository:(id)_;
 - (IBAction) selectNextRepository:(id)_;
 
-- (void) selectRepositoryController:(GBRepositoryController*)repoCtrl;
-
 @end

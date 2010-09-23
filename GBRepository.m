@@ -545,7 +545,7 @@
   {
     [[[self task] launchWithArgumentsAndWait:[NSArray arrayWithObjects:@"commit", @"-m", message, nil]] showErrorIfNeeded];
     [self updateStatus];
-    [self reloadCommits];
+//    [self reloadCommits];
   }
 }
 
@@ -553,7 +553,7 @@
 {
   self.currentRemoteBranch = aBranch;
   [self.currentLocalRef rememberRemoteBranch:aBranch];
-  [self reloadCommits];
+//  [self reloadCommits];
 }
 
 - (void) pull

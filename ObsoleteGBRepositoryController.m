@@ -154,12 +154,6 @@
 #pragma mark Git Actions
 
 
-- (IBAction) checkoutBranch:(NSMenuItem*)sender
-{
-//  [self.repository checkoutRef:[sender representedObject]];
-  [self updateBranchMenus];
-  [self.repository reloadCommits];
-}
 
 - (IBAction) checkoutRemoteBranch:(id)sender
 {
@@ -184,10 +178,10 @@
 
   - (void) doneChoosingNameForRemoteBranchCheckout:(GBPromptController*)ctrl
   {
-    [self.repository checkoutRef:ctrl.payload withNewBranchName:ctrl.value];
+//    [self.repository checkoutRef:ctrl.payload withNewBranchName:ctrl.value];
     //self.repository.localBranches = [self.repository loadLocalBranches];
     [self updateBranchMenus];
-    [self.repository reloadCommits];
+//    [self.repository reloadCommits];
   }
 
 
@@ -330,7 +324,7 @@
   - (void) doneEditRepositories:(GBRemotesController*)remotesController
   {
     [self updateBranchMenus];
-    [self.repository reloadCommits];
+//    [self.repository reloadCommits];
     [self endSheetForController:remotesController];
   }
 
@@ -495,7 +489,7 @@
   
 //  self.repository.selectedCommit = self.repository.stage;
   
-  [self.repository reloadCommits];
+//  [self.repository reloadCommits];
 
   // View controllers init  
   NSView* historyPlaceholderView = [[self.splitView subviews] objectAtIndex:1];
@@ -563,57 +557,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-#pragma mark Private Helpers
-
-
-- (void) updateSyncButtons
-{
-  NSSegmentedControl* control = self.pullPushControl;
-  GBRepository* repo = self.repository;
-  
-  BOOL pullDisabled = NO;
-  BOOL pushDisabled = NO;
-  
-  if ([repo.currentRemoteBranch isLocalBranch])
-  {
-    [control setLabel:@"← merge" forSegment:0];
-    [control setLabel:@"—" forSegment:1];
-    pushDisabled = YES;
-  }
-  else
-  {
-    [control setLabel:@"← pull" forSegment:0];
-    [control setLabel:@"push →" forSegment:1];
-  }
-  
-  [control setEnabled:!pullDisabled forSegment:0];
-  [control setEnabled:!pushDisabled forSegment:1];
-  
-//  [control setTi]
-  
-}
-
-
-
-
-
-
-- (void) updateBranchMenus
-{
-  [self updateCurrentBranchMenus];
-  [self updateRemoteBranchMenus];
-  [self updateSyncButtons];
-}
 
 
 

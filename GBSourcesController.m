@@ -215,10 +215,10 @@
     return @"REPOSITORIES";
   }
   
-  if ([item isKindOfClass:[GBRepository class]])
+  if ([item isKindOfClass:[GBRepositoryController class]])
   {
-    GBRepository* repo = (GBRepository*)item;
-    return [[repo path] twoLastPathComponentsWithSlash];
+    GBRepositoryController* repoCtrl = (GBRepositoryController*)item;
+    return [[[repoCtrl url] path] twoLastPathComponentsWithSlash];
   }
   return nil;
 }

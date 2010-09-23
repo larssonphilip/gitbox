@@ -59,16 +59,12 @@
 
 #pragma mark Git Actions
 
-- (IBAction) checkoutBranch:(id)sender;
 - (IBAction) checkoutRemoteBranch:(id)sender;
 - (IBAction) checkoutNewBranch:(id)sender;
 - (IBAction) selectRemoteBranch:(id)sender;
 - (IBAction) createNewRemoteBranch:(id)sender;
 - (IBAction) createNewRemote:(id)sender;
 - (IBAction) commit:(id)sender;
-- (IBAction) pullOrPush:(NSSegmentedControl*)segmentedControl;
-- (IBAction) pull:(id)sender;
-- (IBAction) push:(id)sender;
 
 
 #pragma mark View Actions
@@ -80,14 +76,6 @@
 - (IBAction) openInTerminal:(id)sender;
 - (IBAction) openInFinder:(id)sender;
 - (IBAction) commandMenuItem:(id)sender;
-
-
-#pragma mark Private Helpers
-
-- (void) updateBranchMenus;
-- (void) updateCurrentBranchMenus;
-- (void) updateRemoteBranchMenus;
-- (void) updateSyncButtons;
 
 @end
 

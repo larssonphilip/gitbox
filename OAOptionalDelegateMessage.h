@@ -1,4 +1,5 @@
 
 #define OAOptionalDelegateMessage(selector) \
-          if ([delegate respondsToSelector:@selector(selector)]) \
-          { [delegate selector self]; }
+          if ([delegate respondsToSelector:selector]) { \
+            [delegate performSelector:selector withObject:self]; \
+          }

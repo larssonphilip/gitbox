@@ -60,17 +60,18 @@
 
 - (void) addLocalRepositoryController:(GBRepositoryController*)repoCtrl
 {
-  OAOptionalDelegateMessage(repositoriesControllerWillAddRepository:);
+  OAOptionalDelegateMessage(@selector(repositoriesControllerWillAddRepository:));
   [repoCtrl setNeedsUpdateEverything];
   [self.localRepositoryControllers addObject:repoCtrl];
-  OAOptionalDelegateMessage(repositoriesControllerDidAddRepository:);
+  OAOptionalDelegateMessage(@selector(repositoriesControllerDidAddRepository:));
 }
 
 - (void) selectRepositoryController:(GBRepositoryController*) repoCtrl
 {
-  OAOptionalDelegateMessage(repositoriesControllerWillSelectRepository:);
+  OAOptionalDelegateMessage(@selector(repositoriesControllerWillSelectRepository:));
   self.selectedRepositoryController = repoCtrl;
-  OAOptionalDelegateMessage(repositoriesControllerDidSelectRepository:);
+  [repoCtrl updateRepository];
+  OAOptionalDelegateMessage(@selector(repositoriesControllerDidSelectRepository:));
 }
 
 - (void) setNeedsUpdateEverything
@@ -81,6 +82,15 @@
   }
 }
 
+- (void) beginBackgroundUpdate
+{
+  
+}
+
+- (void) endBackgroundUpdate
+{
+  
+}
 
 
 

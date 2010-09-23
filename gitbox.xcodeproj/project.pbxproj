@@ -523,9 +523,9 @@
 			isa = PBXGroup;
 			children = (
 				2002AE07124A8F930072075C /* GBRepositoriesControllerDelegate.h */,
-				2002AE08124A94990072075C /* GBRepositoryControllerDelegate.h */,
 				206CAC73122EBCAD009284FE /* GBRepositoriesController.h */,
 				206CAC74122EBCAD009284FE /* GBRepositoriesController.m */,
+				2002AE08124A94990072075C /* GBRepositoryControllerDelegate.h */,
 				206CAC6F122EB5F7009284FE /* GBRepositoryController.h */,
 				206CAC70122EB5F7009284FE /* GBRepositoryController.m */,
 			);

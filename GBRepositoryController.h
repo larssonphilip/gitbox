@@ -20,11 +20,12 @@
 
 @property(assign) NSInteger isDisabled;
 @property(assign) NSInteger isSpinning;
-@property(assign) id<GBRepositoryControllerDelegate> delegate;
+@property(assign) NSObject<GBRepositoryControllerDelegate>* delegate;
 
 + (id) repositoryControllerWithURL:(NSURL*)url;
 
 - (NSURL*) url;
+- (NSArray*) commits;
 
 - (void) pushDisabled;
 - (void) popDisabled;

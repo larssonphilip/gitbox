@@ -26,4 +26,11 @@
 - (void) loadState;
 
 
+#pragma mark IBActions
+
+- (IBAction) pullOrPush:(NSSegmentedControl*)segmentedControl;
+- (IBAction) pull:(id)sender;
+- (IBAction) push:(id)sender;
+- (IBAction) checkoutBranch:(NSMenuItem*)sender;
+
 @end

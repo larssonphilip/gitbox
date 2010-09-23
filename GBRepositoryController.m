@@ -21,7 +21,6 @@
 
 @synthesize repository;
 @synthesize selectedCommit;
-@synthesize commits;
 
 @synthesize isDisabled;
 @synthesize isSpinning;
@@ -31,7 +30,6 @@
 {
   self.repository = nil;
   self.selectedCommit = nil;
-  self.commits = nil;
   [super dealloc];
 }
 
@@ -48,12 +46,17 @@
   return self.repository.url;
 }
 
+- (NSArray*) commits
+{
+  return [self.repository stageAndCommits];
+}
+
 - (void) pushDisabled
 {
   isDisabled++;
   if (isDisabled == 1)
   {
-    OAOptionalDelegateMessage(repositoryControllerDidChangeDisabledStatus:);
+    OAOptionalDelegateMessage(@selector(repositoryControllerDidChangeDisabledStatus:));
   }
 }
 
@@ -62,7 +65,7 @@
   isDisabled--;
   if (isDisabled == 0)
   {
-    OAOptionalDelegateMessage(repositoryControllerDidChangeDisabledStatus:);
+    OAOptionalDelegateMessage(@selector(repositoryControllerDidChangeDisabledStatus:));
   }
 }
 
@@ -71,7 +74,7 @@
   isSpinning++;
   if (isSpinning == 1) 
   {
-    OAOptionalDelegateMessage(repositoryControllerDidChangeSpinningStatus:);
+    OAOptionalDelegateMessage(@selector(repositoryControllerDidChangeSpinningStatus:));
   }
 }
 
@@ -80,7 +83,7 @@
   isSpinning--;
   if (isSpinning == 0)
   {
-    OAOptionalDelegateMessage(repositoryControllerDidChangeSpinningStatus:);
+    OAOptionalDelegateMessage(@selector(repositoryControllerDidChangeSpinningStatus:));
   }  
 }
 
@@ -100,21 +103,16 @@
 {
   GBRepository* repo = self.repository;
   [repo updateLocalBranchesAndTagsIfNeededWithBlock:^{
-    if (repo == self.repository)
-    {
-      [self.windowController.toolbarController updateBranchMenus];
-    }
+    OAOptionalDelegateMessage(@selector(repositoryControllerDidUpdateBranches:));
   }];
   [repo updateRemotesIfNeededWithBlock:^{
     for (GBRemote* remote in repo.remotes)
     {
       [remote updateBranchesWithBlock:^{
-        [self.windowController.toolbarController updateBranchMenus];
+        OAOptionalDelegateMessage(@selector(repositoryControllerDidUpdateBranches:));
       }];
     }
   }];
-  
-  [self _updateCommits];
   
   if (!self.repository.localBranchCommits)
   {
@@ -142,10 +140,11 @@
   [self pushSpinning];
   
   self.repository.localBranchCommits = nil;
-  [self _updateCommits];
+  
+  OAOptionalDelegateMessage(@selector(repositoryControllerDidUpdateCommits:));
   
   [self.repository checkoutRef:ref withBlock:^{
-    
+    OAOptionalDelegateMessage(@selector(repositoryControllerDidChangeBranch:));
     [self _loadCommits];
     [self popDisabled];
     [self popSpinning];
@@ -184,15 +183,15 @@
   
   [self pushSpinning];
   [self.repository updateLocalBranchCommitsWithBlock:^{
-    OAOptionalDelegateMessage(repositoryControllerDidUpdateCommits:);
+    OAOptionalDelegateMessage(@selector(repositoryControllerDidUpdateCommits:));
     [self pushSpinning];
     [self.repository updateUnmergedCommitsWithBlock:^{
-      OAOptionalDelegateMessage(repositoryControllerDidUpdateCommits:);
+      OAOptionalDelegateMessage(@selector(repositoryControllerDidUpdateCommits:));
       [self popSpinning];
     }];
     [self pushSpinning];
     [self.repository updateUnpushedCommitsWithBlock:^{
-      OAOptionalDelegateMessage(repositoryControllerDidUpdateCommits:);
+      OAOptionalDelegateMessage(@selector(repositoryControllerDidUpdateCommits:));
       [self popSpinning];
     }];
     [self popSpinning];

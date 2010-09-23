@@ -7,12 +7,14 @@
 
 @property(retain) GBRepositoryController* selectedRepositoryController;
 @property(nonatomic,retain) NSMutableArray* localRepositoryControllers;
-@property(assign) id<GBRepositoriesControllerDelegate> delegate;
+@property(assign) NSObject<GBRepositoriesControllerDelegate>* delegate;
 
 - (GBRepositoryController*) repositoryControllerWithURL:(NSURL*)url;
 
 - (void) addLocalRepositoryController:(GBRepositoryController*)repoCtrl;
 - (void) selectRepositoryController:(GBRepositoryController*) repoCtrl;
 - (void) setNeedsUpdateEverything;
+- (void) beginBackgroundUpdate;
+- (void) endBackgroundUpdate;
 
 @end

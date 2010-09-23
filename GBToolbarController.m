@@ -52,108 +52,6 @@
 
 
 
-#pragma mark Actions
-
-
-
-- (IBAction) pullOrPush:(NSSegmentedControl*)segmentedControl
-{
-  NSInteger segment = [segmentedControl selectedSegment];
-  if (segment == 0)
-  {
-    [self pull:segmentedControl];
-  }
-  else if (segment == 1)
-  {
-    [self push:segmentedControl];
-  }
-  else
-  {
-    NSLog(@"ERROR: Unrecognized push/pull segment %d", (int)segment);
-  }
-}
-
-- (IBAction) pull:(id)sender
-{
-  [self.repositoryController pull];
-}
-
-- (IBAction) push:(id)sender
-{
-  [self.repositoryController push];
-}
-
-
-
-- (IBAction) checkoutBranch:(NSMenuItem*)sender
-{
-  [self.repositoryController checkoutRef:[sender representedObject]];
-}
-
-
-
-//- (IBAction) checkoutRemoteBranch:(id)sender
-//{
-//  GBRef* remoteBranch = [sender representedObject];
-//  NSString* defaultName = [remoteBranch.name uniqueStringForStrings:[self.repository.localBranches valueForKey:@"name"]];
-//  
-//  GBPromptController* ctrl = [GBPromptController controller];
-//  
-//  ctrl.title = NSLocalizedString(@"Remote Branch Checkout", @"");
-//  ctrl.promptText = NSLocalizedString(@"Branch Name:", @"");
-//  ctrl.buttonText = NSLocalizedString(@"Checkout", @"");
-//  ctrl.value = defaultName;
-//  ctrl.requireStripWhitespace = YES;
-//  
-//  ctrl.target = self;
-//  ctrl.finishSelector = @selector(doneChoosingNameForRemoteBranchCheckout:);
-//  
-//  ctrl.payload = remoteBranch;
-//  
-//  [ctrl runSheetInWindow:[self window]];
-//}
-//
-//- (void) doneChoosingNameForRemoteBranchCheckout:(GBPromptController*)ctrl
-//{
-//  [self.repository checkoutRef:ctrl.payload withNewBranchName:ctrl.value];
-//  self.repository.localBranches = [self.repository loadLocalBranches];
-//  [self updateBranchMenus];
-//  [self.repository reloadCommits];
-//}
-//
-//
-//- (IBAction) checkoutNewBranch:(id)sender
-//{
-//  GBPromptController* ctrl = [GBPromptController controller];
-//  
-//  ctrl.title = NSLocalizedString(@"New Branch", @"");
-//  ctrl.promptText = NSLocalizedString(@"Branch Name:", @"");
-//  ctrl.buttonText = NSLocalizedString(@"Create", @"");
-//  ctrl.requireStripWhitespace = YES;
-//  
-//  ctrl.target = self;
-//  ctrl.finishSelector = @selector(doneChoosingNameForNewBranchCheckout:);
-//  
-//  [ctrl runSheetInWindow:[self window]];
-//}
-//
-//- (void) doneChoosingNameForNewBranchCheckout:(GBPromptController*)ctrl
-//{
-//  [self.repository checkoutNewBranchName:ctrl.value];
-//  self.repository.localBranches = [self.repository loadLocalBranches];
-//  [self updateBranchMenus];
-//}
-
-
-
-
-
-#pragma mark Model callbacks
-
-
-
-
-
 #pragma mark UI update methods
 
 
@@ -532,8 +430,106 @@
 
 - (void) saveState
 {
-  
 }
+
+
+
+
+
+
+
+
+
+#pragma mark IBActions
+
+
+- (IBAction) pullOrPush:(NSSegmentedControl*)segmentedControl
+{
+  NSInteger segment = [segmentedControl selectedSegment];
+  if (segment == 0)
+  {
+    [self pull:segmentedControl];
+  }
+  else if (segment == 1)
+  {
+    [self push:segmentedControl];
+  }
+  else
+  {
+    NSLog(@"ERROR: Unrecognized push/pull segment %d", (int)segment);
+  }
+}
+
+- (IBAction) pull:(id)sender
+{
+  [self.repositoryController pull];
+}
+
+- (IBAction) push:(id)sender
+{
+  [self.repositoryController push];
+}
+
+- (IBAction) checkoutBranch:(NSMenuItem*)sender
+{
+  [self.repositoryController checkoutRef:[sender representedObject]];
+}
+
+
+
+//- (IBAction) checkoutRemoteBranch:(id)sender
+//{
+//  GBRef* remoteBranch = [sender representedObject];
+//  NSString* defaultName = [remoteBranch.name uniqueStringForStrings:[self.repository.localBranches valueForKey:@"name"]];
+//  
+//  GBPromptController* ctrl = [GBPromptController controller];
+//  
+//  ctrl.title = NSLocalizedString(@"Remote Branch Checkout", @"");
+//  ctrl.promptText = NSLocalizedString(@"Branch Name:", @"");
+//  ctrl.buttonText = NSLocalizedString(@"Checkout", @"");
+//  ctrl.value = defaultName;
+//  ctrl.requireStripWhitespace = YES;
+//  
+//  ctrl.target = self;
+//  ctrl.finishSelector = @selector(doneChoosingNameForRemoteBranchCheckout:);
+//  
+//  ctrl.payload = remoteBranch;
+//  
+//  [ctrl runSheetInWindow:[self window]];
+//}
+//
+//- (void) doneChoosingNameForRemoteBranchCheckout:(GBPromptController*)ctrl
+//{
+//  [self.repository checkoutRef:ctrl.payload withNewBranchName:ctrl.value];
+//  self.repository.localBranches = [self.repository loadLocalBranches];
+//  [self updateBranchMenus];
+//  [self.repository reloadCommits];
+//}
+//
+//
+//- (IBAction) checkoutNewBranch:(id)sender
+//{
+//  GBPromptController* ctrl = [GBPromptController controller];
+//  
+//  ctrl.title = NSLocalizedString(@"New Branch", @"");
+//  ctrl.promptText = NSLocalizedString(@"Branch Name:", @"");
+//  ctrl.buttonText = NSLocalizedString(@"Create", @"");
+//  ctrl.requireStripWhitespace = YES;
+//  
+//  ctrl.target = self;
+//  ctrl.finishSelector = @selector(doneChoosingNameForNewBranchCheckout:);
+//  
+//  [ctrl runSheetInWindow:[self window]];
+//}
+//
+//- (void) doneChoosingNameForNewBranchCheckout:(GBPromptController*)ctrl
+//{
+//  [self.repository checkoutNewBranchName:ctrl.value];
+//  self.repository.localBranches = [self.repository loadLocalBranches];
+//  [self updateBranchMenus];
+//}
+
+
 
 
 
