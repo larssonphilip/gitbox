@@ -11,25 +11,27 @@
 #import "GBRepositoriesController.h"
 #import "GBRepositoryController.h"
 
+#import "OAOptionalDelegateMessage.h"
+
 @interface GBRepositoryController ()
 - (void) _loadCommits;
-- (void) _updateCommits;
-- (void) _pushSpinning;
-- (void) _popSpinning;
 @end
 
 @implementation GBRepositoryController
 
-@synthesize repositoriesController;
 @synthesize repository;
-@synthesize windowController;
 @synthesize selectedCommit;
+@synthesize commits;
+
+@synthesize isDisabled;
+@synthesize isSpinning;
+@synthesize delegate;
 
 - (void) dealloc
 {
   self.repository = nil;
-  self.windowController = nil;
   self.selectedCommit = nil;
+  self.commits = nil;
   [super dealloc];
 }
 
@@ -46,6 +48,42 @@
   return self.repository.url;
 }
 
+- (void) pushDisabled
+{
+  isDisabled++;
+  if (isDisabled == 1)
+  {
+    OAOptionalDelegateMessage(repositoryControllerDidChangeDisabledStatus:);
+  }
+}
+
+- (void) popDisabled
+{
+  isDisabled--;
+  if (isDisabled == 0)
+  {
+    OAOptionalDelegateMessage(repositoryControllerDidChangeDisabledStatus:);
+  }
+}
+
+- (void) pushSpinning
+{
+  isSpinning++;
+  if (isSpinning == 1) 
+  {
+    OAOptionalDelegateMessage(repositoryControllerDidChangeSpinningStatus:);
+  }
+}
+
+- (void) popSpinning
+{
+  isSpinning--;
+  if (isSpinning == 0)
+  {
+    OAOptionalDelegateMessage(repositoryControllerDidChangeSpinningStatus:);
+  }  
+}
+
 - (void) setNeedsUpdateEverything
 {
   self.repository.needsLocalBranchesUpdate = YES;
@@ -58,13 +96,7 @@
 
 
 
-- (void) willDeselectRepositoryController
-{
-  // You should clean up window state here before other (or none) controller gets selected
-  
-}
-
-- (void) didSelectRepositoryController
+- (void) updateRepository
 {
   GBRepository* repo = self.repository;
   [repo updateLocalBranchesAndTagsIfNeededWithBlock:^{
@@ -88,8 +120,6 @@
   {
     [self _loadCommits];
   }
-  
-  [self.windowController didSelectRepository:repo];
 }
 
 
@@ -108,8 +138,8 @@
 {
   if (!self.repository) return;
   
-  [self.windowController.toolbarController pushDisabled];
-  [self _pushSpinning];
+  [self pushDisabled];
+  [self pushSpinning];
   
   self.repository.localBranchCommits = nil;
   [self _updateCommits];
@@ -117,8 +147,8 @@
   [self.repository checkoutRef:ref withBlock:^{
     
     [self _loadCommits];
-    [self.windowController.toolbarController popDisabled];
-    [self _popSpinning];
+    [self popDisabled];
+    [self popSpinning];
   }];
 }
 
@@ -152,37 +182,23 @@
 {
   if (!self.repository) return;
   
-  [self _pushSpinning];
+  [self pushSpinning];
   [self.repository updateLocalBranchCommitsWithBlock:^{
-    [self _updateCommits];
-    [self _pushSpinning];
+    OAOptionalDelegateMessage(repositoryControllerDidUpdateCommits:);
+    [self pushSpinning];
     [self.repository updateUnmergedCommitsWithBlock:^{
-      [self _updateCommits];
-      [self _popSpinning];
+      OAOptionalDelegateMessage(repositoryControllerDidUpdateCommits:);
+      [self popSpinning];
     }];
-    [self _pushSpinning];
+    [self pushSpinning];
     [self.repository updateUnpushedCommitsWithBlock:^{
-      [self _updateCommits];
-      [self _popSpinning];
+      OAOptionalDelegateMessage(repositoryControllerDidUpdateCommits:);
+      [self popSpinning];
     }];
-    [self _popSpinning];
+    [self popSpinning];
   }];  
 }
 
-- (void) _updateCommits
-{
-  self.windowController.historyController.commits = [self.repository stageAndCommits];
-}
-
-- (void) _pushSpinning
-{
-  [self.repositoriesController pushSpinning];
-}
-
-- (void) _popSpinning
-{
-  [self.repositoriesController popSpinning];
-}
 
 
 @end

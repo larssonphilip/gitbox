@@ -1,13 +1,8 @@
 @class GBRepositoryController;
 
-@class GBRepository;
-
 @interface GBToolbarController : NSObject
-{
-  NSInteger isDisabled;
-  NSInteger isSpinning;
-}
-@property(assign) GBRepositoryController* repositoryController;
+
+@property(retain) GBRepositoryController* repositoryController;
 
 @property(retain) IBOutlet NSToolbar* toolbar;
 
@@ -20,16 +15,12 @@
 - (void) windowDidUnload;
 
 - (void) update;
+- (void) updateDisabledState;
+- (void) updateSpinner;
 - (void) updateBranchMenus;
 - (void) updateCurrentBranchMenus;
 - (void) updateRemoteBranchMenus;
 - (void) updateSyncButtons;
-
-- (void) pushDisabled;
-- (void) popDisabled;
-
-- (void) pushSpinning;
-- (void) popSpinning;
 
 - (void) saveState;
 - (void) loadState;

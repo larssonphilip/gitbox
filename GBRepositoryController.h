@@ -1,5 +1,6 @@
 
-@class GBRepositoriesController;
+#import "GBRepositoryControllerDelegate.h"
+
 @class GBRepository;
 @class GBRef;
 @class GBCommit;
@@ -14,18 +15,25 @@
   NSUInteger fetching;
 }
 
-@property(assign) GBRepositoriesController* repositoriesController;
 @property(retain) GBRepository* repository;
-@property(retain) GBMainWindowController* windowController;
 @property(retain) GBCommit* selectedCommit;
+
+@property(assign) NSInteger isDisabled;
+@property(assign) NSInteger isSpinning;
+@property(assign) id<GBRepositoryControllerDelegate> delegate;
 
 + (id) repositoryControllerWithURL:(NSURL*)url;
 
 - (NSURL*) url;
 
+- (void) pushDisabled;
+- (void) popDisabled;
+
+- (void) pushSpinning;
+- (void) popSpinning;
+
 - (void) setNeedsUpdateEverything;
-- (void) willDeselectRepositoryController;
-- (void) didSelectRepositoryController;
+- (void) updateRepository;
 - (void) checkoutRef:(GBRef*) ref;
 - (void) selectCommit:(GBCommit*)commit;
 - (void) pull;

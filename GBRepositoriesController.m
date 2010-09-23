@@ -8,18 +8,18 @@
 #import "GBRepositoriesController.h"
 
 #import "NSFileManager+OAFileManagerHelpers.h"
+#import "OAOptionalDelegateMessage.h"
 
 @implementation GBRepositoriesController
 
 @synthesize selectedRepositoryController;
 @synthesize localRepositoryControllers;
-@synthesize windowController;
+@synthesize delegate;
 
 - (void) dealloc
 {
   self.selectedRepositoryController = nil;
   self.localRepositoryControllers = nil;
-  self.windowController = nil;
   [super dealloc];
 }
 
@@ -60,23 +60,17 @@
 
 - (void) addLocalRepositoryController:(GBRepositoryController*)repoCtrl
 {
-  repoCtrl.repositoriesController = self;
-  repoCtrl.windowController = self.windowController;
+  OAOptionalDelegateMessage(repositoriesControllerWillAddRepository:);
   [repoCtrl setNeedsUpdateEverything];
   [self.localRepositoryControllers addObject:repoCtrl];
-  [self.windowController.sourcesController didAddRepositoryController:repoCtrl];
+  OAOptionalDelegateMessage(repositoriesControllerDidAddRepository:);
 }
 
 - (void) selectRepositoryController:(GBRepositoryController*) repoCtrl
 {
-  if (self.selectedRepositoryController)
-  {
-    [self.selectedRepositoryController willDeselectRepositoryController];
-    self.selectedRepositoryController.windowController = nil;
-  }
+  OAOptionalDelegateMessage(repositoriesControllerWillSelectRepository:);
   self.selectedRepositoryController = repoCtrl;
-  self.selectedRepositoryController.windowController = self.windowController;
-  [self.selectedRepositoryController didSelectRepositoryController];
+  OAOptionalDelegateMessage(repositoriesControllerDidSelectRepository:);
 }
 
 - (void) setNeedsUpdateEverything
@@ -89,62 +83,6 @@
 
 
 
-
-- (void) loadRepositories
-{
-  NSArray* bookmarks = [[NSUserDefaults standardUserDefaults] objectForKey:@"GBRepositoriesController_localRepositories"];
-  if (bookmarks && [bookmarks isKindOfClass:[NSArray class]])
-  {
-    for (NSData* bookmarkData in bookmarks)
-    {
-      NSURL* url = [NSURL URLByResolvingBookmarkData:bookmarkData 
-                                             options:NSURLBookmarkResolutionWithoutUI | 
-                    NSURLBookmarkResolutionWithoutMounting
-                                       relativeToURL:nil 
-                                 bookmarkDataIsStale:NO 
-                                               error:NULL];
-      NSString* path = [url path];
-      if ([NSFileManager isWritableDirectoryAtPath:path] &&
-          [GBRepository validRepositoryPathForPath:path])
-      {
-        GBRepositoryController* repoCtrl = [GBRepositoryController repositoryControllerWithURL:url];
-        repoCtrl.repositoriesController = self;
-        repoCtrl.windowController = self.windowController;
-        [self.localRepositoryControllers addObject:repoCtrl];
-      } // if path is valid repo
-    } // for
-  } // if paths
-}
-
-- (void) saveRepositories
-{
-  NSMutableArray* paths = [NSMutableArray array];
-  for (GBRepositoryController* repoCtrl in self.localRepositoryControllers)
-  {
-    NSData* bookmarkData = [repoCtrl.url bookmarkDataWithOptions:NSURLBookmarkCreationMinimalBookmark
-                              includingResourceValuesForKeys:nil
-                                               relativeToURL:nil
-                                                       error:NULL];
-    if (bookmarkData)
-    {
-      [paths addObject:bookmarkData];
-    }
-  }
-  [[NSUserDefaults standardUserDefaults] setObject:paths forKey:@"GBRepositoriesController_localRepositories"];
-}
-
-
-
-
-- (void) pushSpinning
-{
-  [self.windowController.toolbarController pushSpinning];
-}
-
-- (void) popSpinning
-{
-  [self.windowController.toolbarController popSpinning];
-}
 
 
 @end

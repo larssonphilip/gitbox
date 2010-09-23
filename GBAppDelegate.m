@@ -21,6 +21,11 @@
 #import "OAPrimaryMACAddress.h"
 
 
+@interface GBAppDelegate ()
+- (void) loadRepositories;
+- (void) saveRepositories;
+@end
+
 @implementation GBAppDelegate
 
 @synthesize repositoriesController;
@@ -114,6 +119,7 @@
   if (!repoCtrl)
   {
     repoCtrl = [GBRepositoryController repositoryControllerWithURL:url];
+    repoCtrl.delegate = self.windowController;
     [self.repositoriesController addLocalRepositoryController:repoCtrl];
     [[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:url];
   }
@@ -154,40 +160,6 @@
 
 
 
-#pragma mark Window states
-
-
-//- (void) storeRepositories
-//{
-//  NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
-//  NSMutableArray* paths = [NSMutableArray array];
-//  for (GBRepositoryController* ctrl in self.windowControllers)
-//  {
-//    [paths addObject:ctrl.repository.path];
-//  }
-//  [defaults setObject:paths forKey:@"openedRepositories"];
-//}
-//
-//- (void) loadRepositories
-//{
-//  NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
-//  NSArray* paths = [defaults objectForKey:@"openedRepositories"];
-//  if (paths && [paths isKindOfClass:[NSArray class]])
-//  {
-//    for (NSString* path in paths)
-//    {
-//      if ([NSFileManager isWritableDirectoryAtPath:path] &&
-//          [GBRepository validRepositoryPathForPath:path])
-//      {
-//        [self openWindowForRepositoryAtURL:[NSURL fileURLWithPath:path]];
-//      } // if path is valid repo
-//    } // for
-//  } // if paths
-//}
-//
-//
-
-
 #pragma mark License
 
 
@@ -199,6 +171,51 @@
 
 
 
+
+#pragma mark Loading model state
+
+
+- (void) loadRepositories
+{
+  NSArray* bookmarks = [[NSUserDefaults standardUserDefaults] objectForKey:@"GBRepositoriesController_localRepositories"];
+  if (bookmarks && [bookmarks isKindOfClass:[NSArray class]])
+  {
+    for (NSData* bookmarkData in bookmarks)
+    {
+      NSURL* url = [NSURL URLByResolvingBookmarkData:bookmarkData 
+                                             options:NSURLBookmarkResolutionWithoutUI | 
+                    NSURLBookmarkResolutionWithoutMounting
+                                       relativeToURL:nil 
+                                 bookmarkDataIsStale:NO 
+                                               error:NULL];
+      NSString* path = [url path];
+      if ([NSFileManager isWritableDirectoryAtPath:path] &&
+          [GBRepository validRepositoryPathForPath:path])
+      {
+        GBRepositoryController* repoCtrl = [GBRepositoryController repositoryControllerWithURL:url];
+        repoCtrl.delegate = self.windowController;
+        [self.repositoriesController addLocalRepositoryController:repoCtrl];
+      } // if path is valid repo
+    } // for
+  } // if paths
+}
+
+- (void) saveRepositories
+{
+  NSMutableArray* paths = [NSMutableArray array];
+  for (GBRepositoryController* repoCtrl in self.repositoriesController.localRepositoryControllers)
+  {
+    NSData* bookmarkData = [repoCtrl.url bookmarkDataWithOptions:NSURLBookmarkCreationMinimalBookmark
+                                  includingResourceValuesForKeys:nil
+                                                   relativeToURL:nil
+                                                           error:NULL];
+    if (bookmarkData)
+    {
+      [paths addObject:bookmarkData];
+    }
+  }
+  [[NSUserDefaults standardUserDefaults] setObject:paths forKey:@"GBRepositoriesController_localRepositories"];
+}
 
 
 
@@ -215,22 +232,22 @@
   self.windowController = [GBMainWindowController controller];
   
   // Connect controllers
-  self.repositoriesController.windowController = self.windowController;
   self.windowController.repositoriesController = self.repositoriesController;
   
   // Launch the updates
   [self checkGitVersion];
   [self.windowController showWindow:self];
   
-  [self.repositoriesController loadRepositories];
-  [self.repositoriesController setNeedsUpdateEverything];
-  
+  [self loadRepositories];
   [self.windowController loadState];
+  
+  self.repositoriesController.delegate = self.windowController;
 }
 
 - (void) applicationWillTerminate:(NSNotification*)aNotification
 {
-  [self.repositoriesController saveRepositories];
+  self.repositoriesController.delegate = nil;
+  [self saveRepositories];
   [self.windowController saveState];
 }
 
@@ -272,6 +289,9 @@
   }
   return NO;
 }
+
+
+
 
 
 

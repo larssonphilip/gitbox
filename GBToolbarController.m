@@ -23,6 +23,7 @@
 
 - (void) dealloc
 {
+  self.repositoryController = nil;
   self.toolbar = nil;
   self.currentBranchPopUpButton = nil;
   self.pullPushControl = nil;
@@ -156,34 +157,34 @@
 #pragma mark UI update methods
 
 
-- (void) pushDisabled
-{
-  isDisabled++;
-  if (isDisabled == 1) [self update];
-}
-
-- (void) popDisabled
-{
-  isDisabled--;
-  if (isDisabled == 0) [self update];
-}
-
-- (void) pushSpinning
-{
-  isSpinning++;
-  if (isSpinning == 1) [self.progressIndicator startAnimation:self];
-}
-
-- (void) popSpinning
-{
-  isSpinning--;
-  if (isSpinning == 0) [self.progressIndicator stopAnimation:self];
-}
-
 
 - (void) update
 {
   [self updateBranchMenus];
+  [self updateDisabledState];
+  [self updateSpinner];
+}
+
+- (void) updateDisabledState
+{
+  BOOL isDisabled = self.repositoryController.isDisabled || !self.repositoryController;
+  BOOL isCurrentBranchDisabled = NO; // TODO: get from repo controller
+  BOOL isRemoteBranchDisabled  = NO; // TODO: get from repo controller
+  [self.currentBranchPopUpButton setEnabled:!isDisabled && !isCurrentBranchDisabled];
+  [self.remoteBranchPopUpButton setEnabled:!isDisabled && !isRemoteBranchDisabled];
+  [self updateSyncButtons];
+}
+
+- (void) updateSpinner
+{
+  if (self.repositoryController.isSpinning)
+  {
+    [self.progressIndicator startAnimation:self];
+  }
+  else
+  {
+    [self.progressIndicator stopAnimation:self];
+  }
 }
 
 
@@ -202,20 +203,12 @@
   // Local branches
   NSMenu* newMenu = [[NSMenu new] autorelease];
   NSPopUpButton* button = self.currentBranchPopUpButton;
-  
-  if (isDisabled)
-  {
-    [button setEnabled:NO];
-    return;    
-  }
-  
+    
   if ([button pullsDown])
   {
     // Note: this is needed according to documentation for pull-down menus. The item will be ignored.
     [newMenu addItem:[NSMenuItem menuItemWithTitle:@"" submenu:nil]];
   }
-  
-  [button setEnabled:YES];
   
   if (!repo)
   {
@@ -349,14 +342,6 @@
   
   NSPopUpButton* button = self.remoteBranchPopUpButton;
   NSMenu* remoteBranchesMenu = [NSMenu menu];
-  
-  if (isDisabled)
-  {
-    [button setEnabled:NO];
-    return;    
-  }
-  
-  [button setEnabled:YES];
   
   if ([button pullsDown])
   {
@@ -510,6 +495,7 @@
   NSSegmentedControl* control = self.pullPushControl;
   GBRepository* repo = self.repositoryController.repository;
   
+  BOOL isDisabled = self.repositoryController.isDisabled;
   BOOL pullDisabled = NO;
   BOOL pushDisabled = NO;
   

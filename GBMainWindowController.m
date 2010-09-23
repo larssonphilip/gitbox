@@ -1,5 +1,5 @@
 #import "GBRepositoriesController.h"
-#import "GBRepositoryController.h"
+//#import "GBRepositoryController.h"
 
 #import "GBMainWindowController.h"
 
@@ -17,14 +17,13 @@
 #import "NSString+OAStringHelpers.h"
 
 @interface GBMainWindowController ()
-- (void) updateWindowTitle;
 @end
 
 
 @implementation GBMainWindowController
 
 @synthesize repositoriesController;
-@synthesize repositoryController;
+//@synthesize repositoryController;
 
 @synthesize toolbarController;
 @synthesize sourcesController;
@@ -36,6 +35,8 @@
 
 - (void) dealloc
 {
+  self.repositoriesController = nil;
+  
   self.toolbarController = nil;
   self.sourcesController = nil;
   self.historyController = nil;
@@ -97,11 +98,9 @@
   
   self.stageController = [[[GBStageViewController alloc] initWithNibName:@"GBStageViewController" bundle:nil] autorelease];
   
-  self.commitController = [[[GBCommitViewController alloc] initWithNibName:@"GBCommitViewController" bundle:nil] autorelease];
+  self.commitController = [[[GBCommitViewController alloc] initWithNibName:@"GBCommitViewController" bundle:nil] autorelease];  
   
-
   self.sourcesController.repositoriesController = self.repositoriesController;
-  
   
 //  [self.repository fetchSilently];
 }
@@ -115,56 +114,97 @@
 
 - (void) windowWillClose:(NSNotification *)notification
 {
-  // TODO: resend to child controllers
-  
-//  [[self window] setDelegate:nil]; // so we don't receive windowDidResignKey
-  
-  // Unload views in view controllers
-//  [self.toolbarController windowDidUnload];
-//  [self.sourcesController unloadView];
-  
-//  [self.historyController unloadView];
-//  [self.stageController unloadView];
-//  [self.commitController unloadView];
-//  
-//  // we remove observer in the windowWillClose to break the retain cycle (dealloc is never called otherwise)
-//  [self.repository removeObserver:self keyPath:@"selectedCommit" selector:@selector(selectedCommitDidChange:)];
-//  [self.repository removeObserver:self keyPath:@"remotes" selector:@selector(remotesDidChange)];
-//  [self.repository finish];
-//  [self.delegate windowControllerWillClose:self];
 }
 
 - (void) windowDidBecomeKey:(NSNotification *)notification
 {
-  // TODO: resend to child controllers
-//  [self.repository endBackgroundUpdate];
-//  [self.repository updateStatus];
-//  [self.repository updateBranchStatus];
-//  [self updateBranchMenus];
+  [self.repositoriesController endBackgroundUpdate];
 }
 
 - (void) windowDidResignKey:(NSNotification *)notification
 {
-  // TODO: resend to child controllers
-  //[self.repository beginBackgroundUpdate];
+  [self.repositoriesController beginBackgroundUpdate];
 }
 
 
 
 
-- (void) selectRepositoryController:(GBRepositoryController*)repoCtrl
+#pragma mark UI state
+
+
+- (void) updateWindowTitleWithRepositoryController:(GBRepositoryController*) repoCtrl
 {
-  self.repositoryController = repoCtrl;
-  self.toolbarController.repositoryController = self.repositoryController;
-  self.sourcesController.repositoryController = self.repositoryController;
-  self.historyController.repositoryController = self.repositoryController;
-  self.stageController.repositoryController   = self.repositoryController;
-  self.commitController.repositoryController  = self.repositoryController;
-  
-  [self updateWindowTitle];
-  [self.sourcesController selectR:repoCtrl];
-  [self.toolbarController update];
+  if (repoCtrl)
+  {
+    [self.window setTitle:[[[repoCtrl url] path] twoLastPathComponentsWithDash]];
+    [self.window setRepresentedURL:[repoCtrl url]];
+  }
+  else
+  {
+    [self.window setTitle:@"No Repository Selected"];
+    [self.window setRepresentedURL:nil];
+  }  
 }
+
+- (void) loadState
+{
+  [self.sourcesController loadState];
+  [self.toolbarController loadState];
+}
+
+- (void) saveState
+{
+  [self.sourcesController saveState];
+  [self.toolbarController saveState];
+}
+
+
+
+
+
+#pragma mark GBRepositoriesControllerDelegate
+
+
+- (void) repositoriesControllerDidAddRepository:(GBRepositoriesController*)aRepositoriesController
+{
+  
+}
+
+- (void) repositoriesControllerWillSelectRepository:(GBRepositoriesController*)aRepositoriesController
+{
+  
+}
+
+- (void) repositoriesControllerDidSelectRepository:(GBRepositoriesController*)aRepositoriesController
+{
+  [self updateWindowTitleWithRepositoryController:aRepositoriesController.selectedRepositoryController];
+  self.toolbarController.repositoryController = aRepositoriesController.selectedRepositoryController;
+  [self.toolbarController update];
+  [self.sourcesController repositoriesControllerDidSelectRepository:aRepositoriesController];
+}
+
+
+
+#pragma mark GBRepositoryControllerDelegate
+
+
+- (void) repositoryControllerDidChangeDisabledStatus:(GBRepositoryController*)aRepositoryController
+{
+  [self.toolbarController updateDisabledState];
+}
+
+- (void) repositoryControllerDidChangeSpinningStatus:(GBRepositoryController*)aRepositoryController
+{
+  [self.toolbarController updateSpinner];
+}
+
+- (void) repositoryControllerDidUpdateCommits:(GBRepositoryController*)aRepositoryController
+{
+  self.historyController.commits = [aRepositoryController.repository stageAndCommits];
+}
+
+
+
 
 
 
@@ -202,39 +242,6 @@
   }
   return NO;
 }
-
-
-
-#pragma mark UI state
-
-
-- (void) updateWindowTitle
-{
-  GBRepository* repo = self.repositoryController.repository;
-  if (repo)
-  {
-    [self.window setTitle:[[repo path] twoLastPathComponentsWithDash]];
-    [self.window setRepresentedURL:repo.url];
-  }
-  else
-  {
-    [self.window setTitle:@"No Repository Selected"];
-    [self.window setRepresentedURL:nil];
-  }  
-}
-
-- (void) loadState
-{
-  [self.sourcesController loadState];
-  [self.toolbarController loadState];
-}
-
-- (void) saveState
-{
-  [self.sourcesController saveState];
-  [self.toolbarController saveState];
-}
-
 
 
 @end

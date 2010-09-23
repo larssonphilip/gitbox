@@ -159,6 +159,9 @@
 		2000325311FC75050069C70D /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
 		2002AC0A123CA1A20072075C /* OAFSEventStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAFSEventStream.h; sourceTree = "<group>"; };
 		2002AC0B123CA1A20072075C /* OAFSEventStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAFSEventStream.m; sourceTree = "<group>"; };
+		2002AE07124A8F930072075C /* GBRepositoriesControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBRepositoriesControllerDelegate.h; sourceTree = "<group>"; };
+		2002AE08124A94990072075C /* GBRepositoryControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBRepositoryControllerDelegate.h; sourceTree = "<group>"; };
+		2002AE09124A9BAB0072075C /* OAOptionalDelegateMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAOptionalDelegateMessage.h; sourceTree = "<group>"; };
 		2009871711C4597800F35630 /* PAYMENT */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = PAYMENT; sourceTree = "<group>"; };
 		200B08B311B6E359004C09A8 /* GBLocalRemoteAssociationTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBLocalRemoteAssociationTask.h; sourceTree = "<group>"; };
 		200B08B411B6E359004C09A8 /* GBLocalRemoteAssociationTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBLocalRemoteAssociationTask.m; sourceTree = "<group>"; };
@@ -519,6 +522,8 @@
 		206CAC72122EB619009284FE /* Model Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				2002AE07124A8F930072075C /* GBRepositoriesControllerDelegate.h */,
+				2002AE08124A94990072075C /* GBRepositoryControllerDelegate.h */,
 				206CAC73122EBCAD009284FE /* GBRepositoriesController.h */,
 				206CAC74122EBCAD009284FE /* GBRepositoriesController.m */,
 				206CAC6F122EB5F7009284FE /* GBRepositoryController.h */,
@@ -530,6 +535,7 @@
 		20B1620D11944B6900A709CF /* Libs */ = {
 			isa = PBXGroup;
 			children = (
+				2002AE09124A9BAB0072075C /* OAOptionalDelegateMessage.h */,
 				20B1621011944C0F00A709CF /* NSFileManager+OAFileManagerHelpers.h */,
 				20B1621111944C0F00A709CF /* NSFileManager+OAFileManagerHelpers.m */,
 				2038F3DF119546E90087CE37 /* NSArray+OAArrayHelpers.h */,
@@ -669,7 +675,6 @@
 			isa = PBXProject;
 			buildConfigurationList = C05733CB08A9546B00998B17 /* Build configuration list for PBXProject "gitbox" */;
 			compatibilityVersion = "Xcode 3.1";
-			developmentRegion = English;
 			hasScannedForEncodings = 1;
 			knownRegions = (
 				English,

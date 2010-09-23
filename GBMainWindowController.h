@@ -1,6 +1,8 @@
 
+#import "GBRepositoriesControllerDelegate.h"
+#import "GBRepositoryControllerDelegate.h"
 @class GBRepositoriesController;
-@class GBRepositoryController;
+//@class GBRepositoryController;
 
 @class GBToolbarController;
 @class GBSourcesController;
@@ -8,10 +10,12 @@
 @class GBStageViewController;
 @class GBCommitViewController;
 
-@interface GBMainWindowController : NSWindowController<NSSplitViewDelegate>
+@interface GBMainWindowController : NSWindowController<NSSplitViewDelegate,
+                                                       GBRepositoriesControllerDelegate,
+                                                       GBRepositoryControllerDelegate>
 
-@property(assign) GBRepositoriesController* repositoriesController;
-@property(assign) GBRepositoryController* repositoryController;
+@property(retain) GBRepositoriesController* repositoriesController;
+//@property(assign) GBRepositoryController* repositoryController;
 
 @property(retain) IBOutlet GBToolbarController* toolbarController;
 @property(retain) GBSourcesController* sourcesController;

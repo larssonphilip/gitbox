@@ -13,16 +13,15 @@
 
 @implementation GBSourcesController
 
-@synthesize repositoriesController;
-@synthesize repositoryController;
-
 @synthesize sections;
 @synthesize outlineView;
+@synthesize repositoriesController;
 
 - (void) dealloc
 {
   self.sections = nil;
   self.outlineView = nil;
+  self.repositoriesController = nil;
   [super dealloc];
 }
 
@@ -43,14 +42,15 @@
 
 
 
-- (void) didAddRepositoryController:(GBRepositoryController*)repoCtrl
+- (void) repositoriesControllerDidAddRepository:(GBRepositoriesController*)aRepositoriesController
 {
   [self.outlineView expandItem:self.repositoriesController.localRepositoryControllers];
   [self reloadOutlineView];
 }
 
-- (void) didSelectRepositoryController:(GBRepositoryController*)repoCtrl
+- (void) repositoriesControllerDidSelectRepository:(GBRepositoriesController*)aRepositoriesController
 {
+  GBRepositoryController* repoCtrl = aRepositoriesController.selectedRepositoryController;
   [self.outlineView selectRowIndexes:[NSIndexSet indexSetWithIndex:[self.outlineView rowForItem:repoCtrl]] 
                 byExtendingSelection:NO];
   

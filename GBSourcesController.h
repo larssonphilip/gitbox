@@ -1,12 +1,15 @@
+#import "GBRepositoriesControllerDelegate.h"
+
 @class GBRepositoriesController;
 @class GBRepositoryController;
 @class GBRepository;
 @class GBHistoryViewController;
 
-@interface GBSourcesController : NSViewController<NSOutlineViewDataSource, NSOutlineViewDelegate>
+@interface GBSourcesController : NSViewController<NSOutlineViewDataSource,
+                                                  NSOutlineViewDelegate,
+                                                  GBRepositoriesControllerDelegate>
 
-@property(assign) GBRepositoriesController* repositoriesController;
-@property(assign) GBRepositoryController* repositoryController;
+@property(retain) GBRepositoriesController* repositoriesController;
 
 @property(nonatomic,retain) NSMutableArray* sections;
 @property(retain) IBOutlet NSOutlineView* outlineView;
@@ -16,8 +19,5 @@
 
 - (IBAction) selectPreviousRepository:(id)_;
 - (IBAction) selectNextRepository:(id)_;
-
-- (void) didAddRepositoryController:(GBRepositoryController*)repoCtrl;
-- (void) didSelectRepositoryController:(GBRepositoryController*)repoCtrl;
 
 @end
