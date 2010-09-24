@@ -1,11 +1,9 @@
 JUMP GOALS:
 
-- achtung: when RepositoryController performs block, self.repository may change
+- when new branch is created, it is not associated with any branch and causes some blocking task to run every time repo is selected
 - select/associate remote branch
 - pull
 - push
-- checkout new branch
-- checkout remote branch
 
 
 
