@@ -505,7 +505,7 @@
   }];
 }
 
-- (void) checkoutRef:(GBRef*)ref withNewBranchName:(NSString*)name withBlock:(GBBlock)block
+- (void) checkoutRef:(GBRef*)ref withNewName:(NSString*)name withBlock:(GBBlock)block
 {
   [[[self task] launchWithArgumentsAndWait:[NSArray arrayWithObjects:@"checkout", @"-b", name, [ref commitish], nil]] showErrorIfNeeded];
   
@@ -539,7 +539,7 @@
   }
 }
 
-- (void) checkoutNewBranchName:(NSString*)name withBlock:(GBBlock)block
+- (void) checkoutNewBranchWithName:(NSString*)name withBlock:(GBBlock)block
 {
   GBTask* task = [self task];
   task.arguments = [NSArray arrayWithObjects:@"checkout", @"-b", name, nil];

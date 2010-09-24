@@ -159,17 +159,17 @@
   }];
 }
 
-- (void) checkoutRef:(GBRef*)ref withNewBranchName:(NSString*)name
+- (void) checkoutRef:(GBRef*)ref withNewName:(NSString*)name
 {
   [self checkoutHelper:^(void(^block)()){
-    [self.repository checkoutRef:ref withNewBranchName:name withBlock:block];
+    [self.repository checkoutRef:ref withNewName:name withBlock:block];
   }];
 }
 
-- (void) checkoutNewBranchName:(NSString*)name
+- (void) checkoutNewBranchWithName:(NSString*)name
 {
   [self checkoutHelper:^(void(^block)()){
-    [self.repository checkoutNewBranchName:name withBlock:block];
+    [self.repository checkoutNewBranchWithName:name withBlock:block];
   }];
 }
 

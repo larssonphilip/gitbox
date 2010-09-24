@@ -37,8 +37,8 @@
 - (void) updateRepository;
 
 - (void) checkoutRef:(GBRef*) ref;
-- (void) checkoutRef:(GBRef*) ref withNewBranchName:(NSString*)name;
-- (void) checkoutNewBranchName:(NSString*)name;
+- (void) checkoutRef:(GBRef*) ref withNewName:(NSString*)name;
+- (void) checkoutNewBranchWithName:(NSString*)name;
 
 - (void) selectCommit:(GBCommit*)commit;
 - (void) pull;

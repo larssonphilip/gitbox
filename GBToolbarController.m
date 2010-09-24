@@ -492,7 +492,7 @@
   ctrl.value = defaultName;
   ctrl.requireStripWhitespace = YES;
   ctrl.finishBlock = ^{
-    [self.repositoryController checkoutRef:remoteBranch withNewBranchName:ctrl.value];
+    [self.repositoryController checkoutRef:remoteBranch withNewName:ctrl.value];
   };
   [ctrl runSheetInWindow:self.window];
 }
@@ -506,7 +506,7 @@
   ctrl.buttonText = NSLocalizedString(@"Create", @"");
   ctrl.requireStripWhitespace = YES;
   ctrl.finishBlock = ^{
-    [self.repositoryController checkoutNewBranchName:ctrl.value];
+    [self.repositoryController checkoutNewBranchWithName:ctrl.value];
   };
   [ctrl runSheetInWindow:[self window]];
 }
