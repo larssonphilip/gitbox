@@ -491,46 +491,25 @@
   ctrl.buttonText = NSLocalizedString(@"Checkout", @"");
   ctrl.value = defaultName;
   ctrl.requireStripWhitespace = YES;
-  
-  ctrl.target = self;
-  ctrl.finishSelector = @selector(doneChoosingNameForRemoteBranchCheckout:);
-  
-  ctrl.payload = remoteBranch;
-  
+  ctrl.finishBlock = ^{
+    [self.repositoryController checkoutRef:remoteBranch withNewBranchName:ctrl.value];
+  };
   [ctrl runSheetInWindow:self.window];
 }
 
-- (void) doneChoosingNameForRemoteBranchCheckout:(GBPromptController*)ctrl
+- (IBAction) checkoutNewBranch:(id)sender
 {
-  //[self.repository checkoutRef:ctrl.payload withNewBranchName:ctrl.value];
-  //self.repository.localBranches = [self.repository loadLocalBranches];
-  //[self updateBranchMenus];
-  //[self.repository reloadCommits];
+  GBPromptController* ctrl = [GBPromptController controller];
+  
+  ctrl.title = NSLocalizedString(@"New Branch", @"");
+  ctrl.promptText = NSLocalizedString(@"Branch Name:", @"");
+  ctrl.buttonText = NSLocalizedString(@"Create", @"");
+  ctrl.requireStripWhitespace = YES;
+  ctrl.finishBlock = ^{
+    [self.repositoryController checkoutNewBranchName:ctrl.value];
+  };
+  [ctrl runSheetInWindow:[self window]];
 }
-//
-//
-//- (IBAction) checkoutNewBranch:(id)sender
-//{
-//  GBPromptController* ctrl = [GBPromptController controller];
-//  
-//  ctrl.title = NSLocalizedString(@"New Branch", @"");
-//  ctrl.promptText = NSLocalizedString(@"Branch Name:", @"");
-//  ctrl.buttonText = NSLocalizedString(@"Create", @"");
-//  ctrl.requireStripWhitespace = YES;
-//  
-//  ctrl.target = self;
-//  ctrl.finishSelector = @selector(doneChoosingNameForNewBranchCheckout:);
-//  
-//  [ctrl runSheetInWindow:[self window]];
-//}
-//
-//- (void) doneChoosingNameForNewBranchCheckout:(GBPromptController*)ctrl
-//{
-//  [self.repository checkoutNewBranchName:ctrl.value];
-//  self.repository.localBranches = [self.repository loadLocalBranches];
-//  [self updateBranchMenus];
-//}
-
 
 
 

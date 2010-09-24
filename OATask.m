@@ -292,9 +292,8 @@ NSString* OATaskNotification = @"OATaskNotification";
 
 - (void) launchWithBlock:(void(^)())block
 {
-  NSLog(@"Executing %@:%p in async queue (%@)", [self class], self, [self command]);
+  NSLog(@"Executing %@ in async queue", [self class]);
   dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-    
     [self launchAndWait];
     dispatch_async(dispatch_get_main_queue(), block);
   });
@@ -309,6 +308,7 @@ NSString* OATaskNotification = @"OATaskNotification";
 
 - (id) launchWithArgumentsAndWait:(NSArray*)args
 {
+  NSLog(@"DEPRECATED: OATask launchWithArgumentsAndWait. Please use block-based API instead.");
   self.arguments = args;
   return [self launchAndWait];
 }

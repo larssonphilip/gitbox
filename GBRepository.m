@@ -516,28 +516,45 @@
                       [NSString stringWithFormat:@"branch.%@.remote", name], 
                       ref.remoteAlias, 
                       nil];
-    [self launchTaskAndWait:task];
-    task = [GBTask task];
-    task.arguments = [NSArray arrayWithObjects:@"config", 
-                      [NSString stringWithFormat:@"branch.%@.merge", name],
-                      [NSString stringWithFormat:@"refs/heads/%@", ref.name],
-                      nil];
-    [self launchTaskAndWait:task];
+    [task launchWithBlock:^{
+      GBTask* task2 = [self task];
+      task2.arguments = [NSArray arrayWithObjects:@"config", 
+                        [NSString stringWithFormat:@"branch.%@.merge", name],
+                        [NSString stringWithFormat:@"refs/heads/%@", ref.name],
+                        nil];
+      [task2 launchWithBlock:^{
+        [task2 showErrorIfNeeded];
+        [self resetCurrentLocalRef];
+        if ([ref isRemoteBranch])
+        {
+          self.currentRemoteBranch = ref;
+        }
+        block();
+      }];
+    }];
   }
-  
-  [self resetCurrentLocalRef];
-  if ([ref isRemoteBranch])
+  else
   {
-    self.currentRemoteBranch = ref;
+    block();
   }
 }
 
-- (void) checkoutNewBranchName:(NSString*)name
+- (void) checkoutNewBranchName:(NSString*)name withBlock:(GBBlock)block
 {
-  [[[self task] launchWithArgumentsAndWait:[NSArray arrayWithObjects:@"checkout", @"-b", name, nil]] showErrorIfNeeded];
-  
-  [self resetCurrentLocalRef];
+  GBTask* task = [self task];
+  task.arguments = [NSArray arrayWithObjects:@"checkout", @"-b", name, nil];
+  [task launchWithBlock:^{
+    [task showErrorIfNeeded];
+    [self resetCurrentLocalRef];
+    block();
+  }];
 }
+
+
+
+
+
+
 
 - (void) commitWithMessage:(NSString*) message
 {

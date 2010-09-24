@@ -15,11 +15,9 @@
 @synthesize requireSingleLine;
 @synthesize requireStripWhitespace;
 
-@synthesize target;
-@synthesize finishSelector;
-@synthesize cancelSelector;
+@synthesize finishBlock;
+@synthesize cancelBlock;
 
-@synthesize payload;
 @synthesize windowHoldingSheet;
 
 + (GBPromptController*) controller
@@ -48,6 +46,8 @@
   self.promptText = nil;
   self.buttonText = nil;
   self.value = nil;
+  self.finishBlock = nil;
+  self.cancelBlock = nil;
   [super dealloc];
 }
 
@@ -65,18 +65,16 @@
   }
   if (requireNonNilValue && !self.value) self.value = @"";
   if (requireNonEmptyString && (!self.value || [self.value isEmptyString])) return;
-      
-  if (finishSelector) [self.target performSelector:finishSelector withObject:self];
+  
+  if (finishBlock) finishBlock();
   self.value = @"";
-  [self.windowHoldingSheet endSheetForController:self];
-  self.windowHoldingSheet = nil;
+  [self endSheet];
 }
 
 - (IBAction) onCancel:(id)sender
 {
-  if (cancelSelector) [self.target performSelector:cancelSelector withObject:self];
-  [self.windowHoldingSheet endSheetForController:self];
-  self.windowHoldingSheet = nil;
+  if (cancelBlock) cancelBlock();
+  [self endSheet];
 }
 
 - (void) runSheetInWindow:(NSWindow*)window
@@ -84,6 +82,14 @@
   self.windowHoldingSheet = window;
   [window beginSheetForController:self];
   [self.textField setStringValue:self.value];
+}
+
+- (void) endSheet
+{
+  self.finishBlock = nil;
+  self.cancelBlock = nil;
+  [self.windowHoldingSheet endSheetForController:self];
+  self.windowHoldingSheet = nil;
 }
 
 @end

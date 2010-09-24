@@ -11,11 +11,8 @@
 @property(assign) BOOL requireSingleLine;
 @property(assign) BOOL requireStripWhitespace;
 
-@property(assign) id target;
-@property(assign) SEL finishSelector;
-@property(assign) SEL cancelSelector;
-
-@property(assign) id payload;
+@property(copy) void (^finishBlock)();
+@property(copy) void (^cancelBlock)();
 
 @property(assign) NSWindow* windowHoldingSheet;
 
@@ -25,5 +22,6 @@
 - (IBAction) onCancel:(id)sender;
 
 - (void) runSheetInWindow:(NSWindow*)window;
+- (void) endSheet;
 
 @end

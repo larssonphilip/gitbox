@@ -130,9 +130,7 @@
 
 
 
-
-
-- (void) checkoutRef:(GBRef*) ref
+- (void) checkoutHelper:(void(^)(void(^)()))checkoutBlock
 {
   if (!self.repository) return;
   
@@ -143,13 +141,39 @@
   
   OAOptionalDelegateMessage(@selector(repositoryControllerDidUpdateCommits:));
   
-  [self.repository checkoutRef:ref withBlock:^{
+  checkoutBlock(^{
     OAOptionalDelegateMessage(@selector(repositoryControllerDidChangeBranch:));
+    [self.repository updateLocalBranchesAndTagsWithBlock:^{
+      OAOptionalDelegateMessage(@selector(repositoryControllerDidUpdateBranches:));
+    }];
     [self _loadCommits];
     [self popDisabled];
     [self popSpinning];
+  });  
+}
+
+- (void) checkoutRef:(GBRef*)ref
+{
+  [self checkoutHelper:^(void(^block)()){
+    [self.repository checkoutRef:ref withBlock:block];
   }];
 }
+
+- (void) checkoutRef:(GBRef*)ref withNewBranchName:(NSString*)name
+{
+  [self checkoutHelper:^(void(^block)()){
+    [self.repository checkoutRef:ref withNewBranchName:name withBlock:block];
+  }];
+}
+
+- (void) checkoutNewBranchName:(NSString*)name
+{
+  [self checkoutHelper:^(void(^block)()){
+    [self.repository checkoutNewBranchName:name withBlock:block];
+  }];
+}
+
+
 
 
 - (void) selectCommit:(GBCommit*)commit

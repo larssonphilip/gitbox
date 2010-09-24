@@ -35,7 +35,11 @@
 
 - (void) setNeedsUpdateEverything;
 - (void) updateRepository;
+
 - (void) checkoutRef:(GBRef*) ref;
+- (void) checkoutRef:(GBRef*) ref withNewBranchName:(NSString*)name;
+- (void) checkoutNewBranchName:(NSString*)name;
+
 - (void) selectCommit:(GBCommit*)commit;
 - (void) pull;
 - (void) push;

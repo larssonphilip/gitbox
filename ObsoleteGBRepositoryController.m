@@ -168,10 +168,10 @@
   ctrl.value = defaultName;
   ctrl.requireStripWhitespace = YES;
   
-  ctrl.target = self;
-  ctrl.finishSelector = @selector(doneChoosingNameForRemoteBranchCheckout:);
+//  ctrl.target = self;
+//  ctrl.finishSelector = @selector(doneChoosingNameForRemoteBranchCheckout:);
+//  ctrl.payload = remoteBranch;
   
-  ctrl.payload = remoteBranch;
   
   [ctrl runSheetInWindow:[self window]];
 }
@@ -180,7 +180,7 @@
   {
 //    [self.repository checkoutRef:ctrl.payload withNewBranchName:ctrl.value];
     //self.repository.localBranches = [self.repository loadLocalBranches];
-    [self updateBranchMenus];
+//    [self updateBranchMenus];
 //    [self.repository reloadCommits];
   }
 
@@ -194,8 +194,8 @@
   ctrl.buttonText = NSLocalizedString(@"Create", @"");
   ctrl.requireStripWhitespace = YES;
   
-  ctrl.target = self;
-  ctrl.finishSelector = @selector(doneChoosingNameForNewBranchCheckout:);
+//  ctrl.target = self;
+//  ctrl.finishSelector = @selector(doneChoosingNameForNewBranchCheckout:);
   
   [ctrl runSheetInWindow:[self window]];
 }
@@ -204,7 +204,7 @@
   {
     [self.repository checkoutNewBranchName:ctrl.value];
     //self.repository.localBranches = [self.repository loadLocalBranches];
-    [self updateBranchMenus];
+    //[self updateBranchMenus];
   }
 
 
@@ -214,7 +214,7 @@
   GBRef* remoteBranch = [sender representedObject];
   [self.repository selectRemoteBranch:remoteBranch];
   [self.remoteBranchPopUpButton setTitle:[remoteBranch nameWithRemoteAlias]];
-  [self updateBranchMenus];
+  //[self updateBranchMenus];
 }
 
 - (IBAction) createNewRemoteBranch:(id)sender
@@ -233,16 +233,16 @@
   ctrl.requireStripWhitespace = YES;
   ctrl.value = defaultName;
   
-  ctrl.target = self;
-  ctrl.finishSelector = @selector(doneChoosingNameForNewRemoteBranch:);
+//  ctrl.target = self;
+//  ctrl.finishSelector = @selector(doneChoosingNameForNewRemoteBranch:);
   
-  ctrl.payload = [sender representedObject]; // GBRemote passed from menu item
+//  ctrl.payload = [sender representedObject]; // GBRemote passed from menu item
   [ctrl runSheetInWindow:[self window]];
 }
 
   - (void) doneChoosingNameForNewRemoteBranch:(GBPromptController*)ctrl
   {
-    GBRemote* remote = ctrl.payload;
+    GBRemote* remote = nil ; //ctrl.payload;
     
     GBRef* remoteBranch = [[GBRef new] autorelease];
     remoteBranch.repository = self.repository;
@@ -252,7 +252,7 @@
     [remote addBranch:remoteBranch];
     
     [self.repository selectRemoteBranch:remoteBranch];
-    [self updateBranchMenus];
+    //[self updateBranchMenus];
   }
 
 - (IBAction) createNewRemote:(id)sender
@@ -323,7 +323,7 @@
 
   - (void) doneEditRepositories:(GBRemotesController*)remotesController
   {
-    [self updateBranchMenus];
+//    [self updateBranchMenus];
 //    [self.repository reloadCommits];
     [self endSheetForController:remotesController];
   }
@@ -478,48 +478,6 @@
 
 
 
-#pragma mark NSWindowController
-
-
-- (void) windowDidLoad
-{
-  [super windowDidLoad];
-  
-  // Repository init
-  
-//  self.repository.selectedCommit = self.repository.stage;
-  
-//  [self.repository reloadCommits];
-
-  // View controllers init  
-  NSView* historyPlaceholderView = [[self.splitView subviews] objectAtIndex:1];
-  [self.historyController loadInView:historyPlaceholderView];
-
-  self.changesViewController = self.stageController;
-  NSView* changesPlaceholderView = [[self.splitView subviews] objectAtIndex:2];
-  [self.changesViewController loadInView:changesPlaceholderView];
-  
-  // Window init
-  //[self.window setTitleWithRepresentedFilename:self.repository.path];
-  [self.window setTitle:[self.repository.path twoLastPathComponentsWithDash]];
-  [self.window setRepresentedFilename:self.repository.path];
-  [self.window setFrameAutosaveName:[NSString stringWithFormat:@"%@[path=%@].window.frame", [self class], self.repository.path]];
-  
-  [self updateBranchMenus];
-    
-  
-  // Set observers
-  [self.repository addObserver:self forKeyPath:@"selectedCommit" 
-          selectorWithNewValue:@selector(selectedCommitDidChange:)];
-  
-  [self.repository addObserver:self forKeyPath:@"remotes" 
-          selectorWithoutArguments:@selector(remotesDidChange)];
-  
-  [self.repository fetchSilently];
-}
-
-
-
 
 
 #pragma mark NSWindowDelegate
@@ -546,7 +504,7 @@
   [self.repository endBackgroundUpdate];
   [self.repository updateStatus];
 //  [self.repository updateBranchStatus];
-  [self updateBranchMenus];
+//  [self updateBranchMenus];
 }
 
 - (void) windowDidResignKey:(NSNotification *)notification

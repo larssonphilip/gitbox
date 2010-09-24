@@ -82,7 +82,9 @@ typedef void (^GBBlock)();
 + (void) initRepositoryAtURL:(NSURL*)url;
 - (void) checkoutRef:(GBRef*)ref withBlock:(GBBlock)block;
 - (void) checkoutRef:(GBRef*)ref withNewBranchName:(NSString*)name withBlock:(GBBlock)block;
-- (void) checkoutNewBranchName:(NSString*)name;
+- (void) checkoutNewBranchName:(NSString*)name withBlock:(GBBlock)block;
+
+
 - (void) commitWithMessage:(NSString*) message;
 
 - (void) selectRemoteBranch:(GBRef*)aBranch;
