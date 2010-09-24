@@ -4,6 +4,7 @@
 
 @property(retain) GBRepositoryController* repositoryController;
 
+@property(assign) IBOutlet NSWindow* window;
 @property(retain) IBOutlet NSToolbar* toolbar;
 
 @property(retain) IBOutlet NSPopUpButton* currentBranchPopUpButton;

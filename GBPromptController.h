@@ -1,43 +1,23 @@
 @interface GBPromptController : NSWindowController
-{
-  IBOutlet NSTextField* textField;
-  
-  NSString* title;
-  NSString* promptText;
-  NSString* buttonText;
-  NSString* value;
-  BOOL requireNonNilValue;
-  BOOL requireNonEmptyString;
-  BOOL requireSingleLine;
-  BOOL requireStripWhitespace;
-  
-  id target;
-  SEL finishSelector;
-  SEL cancelSelector;
-  
-  id payload;
-  
-  NSWindow* windowHoldingSheet;  
-}
 
-@property(nonatomic,retain) IBOutlet NSTextField* textField;
+@property(retain) IBOutlet NSTextField* textField;
 
-@property(nonatomic,retain) NSString* title;
-@property(nonatomic,retain) NSString* promptText;
-@property(nonatomic,retain) NSString* buttonText;
-@property(nonatomic,retain) NSString* value;
-@property(nonatomic,assign) BOOL requireNonNilValue;
-@property(nonatomic,assign) BOOL requireNonEmptyString;
-@property(nonatomic,assign) BOOL requireSingleLine;
-@property(nonatomic,assign) BOOL requireStripWhitespace;
+@property(retain) NSString* title;
+@property(retain) NSString* promptText;
+@property(retain) NSString* buttonText;
+@property(retain) NSString* value;
+@property(assign) BOOL requireNonNilValue;
+@property(assign) BOOL requireNonEmptyString;
+@property(assign) BOOL requireSingleLine;
+@property(assign) BOOL requireStripWhitespace;
 
-@property(nonatomic,assign) id target;
-@property(nonatomic,assign) SEL finishSelector;
-@property(nonatomic,assign) SEL cancelSelector;
+@property(assign) id target;
+@property(assign) SEL finishSelector;
+@property(assign) SEL cancelSelector;
 
-@property(nonatomic,assign) id payload;
+@property(assign) id payload;
 
-@property(nonatomic,assign) NSWindow* windowHoldingSheet;
+@property(assign) NSWindow* windowHoldingSheet;
 
 + (GBPromptController*) controller;
 

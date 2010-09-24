@@ -1,11 +1,12 @@
+#import "GBModels.h"
 #import "GBRepositoryController.h"
 
 #import "GBToolbarController.h"
-#import "GBModels.h"
+#import "GBPromptController.h"
 
 #import "NSMenu+OAMenuHelpers.h"
 #import "NSArray+OAArrayHelpers.h"
-
+#import "NSString+OAStringHelpers.h"
 
 @interface GBToolbarController ()
 
@@ -15,6 +16,7 @@
 @implementation GBToolbarController
 
 @synthesize repositoryController;
+@synthesize window;
 @synthesize toolbar;
 @synthesize currentBranchPopUpButton;
 @synthesize pullPushControl;
@@ -477,34 +479,34 @@
 
 
 
-//- (IBAction) checkoutRemoteBranch:(id)sender
-//{
-//  GBRef* remoteBranch = [sender representedObject];
-//  NSString* defaultName = [remoteBranch.name uniqueStringForStrings:[self.repository.localBranches valueForKey:@"name"]];
-//  
-//  GBPromptController* ctrl = [GBPromptController controller];
-//  
-//  ctrl.title = NSLocalizedString(@"Remote Branch Checkout", @"");
-//  ctrl.promptText = NSLocalizedString(@"Branch Name:", @"");
-//  ctrl.buttonText = NSLocalizedString(@"Checkout", @"");
-//  ctrl.value = defaultName;
-//  ctrl.requireStripWhitespace = YES;
-//  
-//  ctrl.target = self;
-//  ctrl.finishSelector = @selector(doneChoosingNameForRemoteBranchCheckout:);
-//  
-//  ctrl.payload = remoteBranch;
-//  
-//  [ctrl runSheetInWindow:[self window]];
-//}
-//
-//- (void) doneChoosingNameForRemoteBranchCheckout:(GBPromptController*)ctrl
-//{
-//  [self.repository checkoutRef:ctrl.payload withNewBranchName:ctrl.value];
-//  self.repository.localBranches = [self.repository loadLocalBranches];
-//  [self updateBranchMenus];
-//  [self.repository reloadCommits];
-//}
+- (IBAction) checkoutRemoteBranch:(id)sender
+{
+  GBRef* remoteBranch = [sender representedObject];
+  NSString* defaultName = [remoteBranch.name uniqueStringForStrings:[self.repositoryController.repository.localBranches valueForKey:@"name"]];
+  
+  GBPromptController* ctrl = [GBPromptController controller];
+  
+  ctrl.title = NSLocalizedString(@"Remote Branch Checkout", @"");
+  ctrl.promptText = NSLocalizedString(@"Branch Name:", @"");
+  ctrl.buttonText = NSLocalizedString(@"Checkout", @"");
+  ctrl.value = defaultName;
+  ctrl.requireStripWhitespace = YES;
+  
+  ctrl.target = self;
+  ctrl.finishSelector = @selector(doneChoosingNameForRemoteBranchCheckout:);
+  
+  ctrl.payload = remoteBranch;
+  
+  [ctrl runSheetInWindow:self.window];
+}
+
+- (void) doneChoosingNameForRemoteBranchCheckout:(GBPromptController*)ctrl
+{
+  //[self.repository checkoutRef:ctrl.payload withNewBranchName:ctrl.value];
+  //self.repository.localBranches = [self.repository loadLocalBranches];
+  //[self updateBranchMenus];
+  //[self.repository reloadCommits];
+}
 //
 //
 //- (IBAction) checkoutNewBranch:(id)sender

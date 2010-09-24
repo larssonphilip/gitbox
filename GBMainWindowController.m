@@ -100,9 +100,6 @@
   self.stageController = [[[GBStageViewController alloc] initWithNibName:@"GBStageViewController" bundle:nil] autorelease];
   
   self.commitController = [[[GBCommitViewController alloc] initWithNibName:@"GBCommitViewController" bundle:nil] autorelease];  
-  
-  
-//  [self.repository fetchSilently];
 }
 
 
