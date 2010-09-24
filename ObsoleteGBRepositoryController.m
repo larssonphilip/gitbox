@@ -46,66 +46,6 @@
 
 #pragma mark Init
 
-
-+ (id) controller
-{
-  return [[[ObsoleteGBRepositoryController alloc] initWithWindowNibName:@"GBRepositoryController"] autorelease];
-}
-
-- (void) dealloc
-{
-  [NSObject cancelPreviousPerformRequestsWithTarget:self];
-  self.repositoryURL = nil;
-  //if ((id)repository.delegate == self) repository.delegate = nil;
-  self.repository = nil;
-  
-  self.historyController = nil;
-  self.changesViewController = nil;
-  self.stageController = nil;
-  self.commitController = nil;
-  self.commitPromptController = nil;
-  self.commandsController = nil;
-  
-  self.splitView = nil;
-  
-  self.currentBranchPopUpButton = nil;
-  self.pullPushControl = nil;
-  self.remoteBranchPopUpButton = nil;
-  
-  [super dealloc];
-}   
-
-- (GBRepository*) repository
-{
-  if (!repository)
-  {
-    GBRepository* repo = [[GBRepository new] autorelease];
-    repo.url = repositoryURL;
-    self.repository = repo;
-  }
-  return [[repository retain] autorelease];
-}
-
-- (GBHistoryViewController*) historyController
-{
-  if (!historyController)
-  {
-    self.historyController = [[[GBHistoryViewController alloc] initWithNibName:@"GBHistoryController" bundle:nil] autorelease];
-    //historyController.repository = self.repository;
-  }
-  return [[historyController retain] autorelease];
-}
-
-- (GBStageViewController*) stageController
-{
-  if (!stageController)
-  {
-    self.stageController = [[[GBStageViewController alloc] initWithNibName:@"GBStageViewController" bundle:nil] autorelease];
-//    stageController.repository = self.repository;
-  }
-  return [[stageController retain] autorelease];
-}
-
 - (GBCommitViewController*) commitController
 {
   if (!commitController)
@@ -153,59 +93,6 @@
 
 #pragma mark Git Actions
 
-
-
-- (IBAction) checkoutRemoteBranch:(id)sender
-{
-  GBRef* remoteBranch = [sender representedObject];
-  NSString* defaultName = [remoteBranch.name uniqueStringForStrings:[self.repository.localBranches valueForKey:@"name"]];
-  
-  GBPromptController* ctrl = [GBPromptController controller];
-  
-  ctrl.title = NSLocalizedString(@"Remote Branch Checkout", @"");
-  ctrl.promptText = NSLocalizedString(@"Branch Name:", @"");
-  ctrl.buttonText = NSLocalizedString(@"Checkout", @"");
-  ctrl.value = defaultName;
-  ctrl.requireStripWhitespace = YES;
-  
-//  ctrl.target = self;
-//  ctrl.finishSelector = @selector(doneChoosingNameForRemoteBranchCheckout:);
-//  ctrl.payload = remoteBranch;
-  
-  
-  [ctrl runSheetInWindow:[self window]];
-}
-
-  - (void) doneChoosingNameForRemoteBranchCheckout:(GBPromptController*)ctrl
-  {
-//    [self.repository checkoutRef:ctrl.payload withNewBranchName:ctrl.value];
-    //self.repository.localBranches = [self.repository loadLocalBranches];
-//    [self updateBranchMenus];
-//    [self.repository reloadCommits];
-  }
-
-
-- (IBAction) checkoutNewBranch:(id)sender
-{
-  GBPromptController* ctrl = [GBPromptController controller];
-  
-  ctrl.title = NSLocalizedString(@"New Branch", @"");
-  ctrl.promptText = NSLocalizedString(@"Branch Name:", @"");
-  ctrl.buttonText = NSLocalizedString(@"Create", @"");
-  ctrl.requireStripWhitespace = YES;
-  
-//  ctrl.target = self;
-//  ctrl.finishSelector = @selector(doneChoosingNameForNewBranchCheckout:);
-  
-  [ctrl runSheetInWindow:[self window]];
-}
-
-  - (void) doneChoosingNameForNewBranchCheckout:(GBPromptController*)ctrl
-  {
-    [self.repository checkoutNewBranchName:ctrl.value];
-    //self.repository.localBranches = [self.repository loadLocalBranches];
-    //[self updateBranchMenus];
-  }
 
 
 
@@ -477,41 +364,6 @@
 
 
 
-
-
-
-#pragma mark NSWindowDelegate
-
-
-- (void) windowWillClose:(NSNotification *)notification
-{
-  [[self window] setDelegate:nil]; // so we don't receive windowDidResignKey
-  // Unload views in view controllers
-  [self.historyController unloadView];
-  [self.stageController unloadView];
-  [self.commitController unloadView];
-  
-  // we remove observer in the windowWillClose to break the retain cycle (dealloc is never called otherwise)
-  [self.repository removeObserver:self keyPath:@"selectedCommit" selector:@selector(selectedCommitDidChange:)];
-  [self.repository removeObserver:self keyPath:@"remotes" selector:@selector(remotesDidChange)];
-  [self.repository finish];
-  [self.delegate windowControllerWillClose:self];
-}
-
-- (void) windowDidBecomeKey:(NSNotification *)notification
-{
-  //NSLog(@"windowDidBecomeKey");
-  [self.repository endBackgroundUpdate];
-  [self.repository updateStatus];
-//  [self.repository updateBranchStatus];
-//  [self updateBranchMenus];
-}
-
-- (void) windowDidResignKey:(NSNotification *)notification
-{
-  //NSLog(@"windowDidResignKey");
-  [self.repository beginBackgroundUpdate];
-}
 
 
 
