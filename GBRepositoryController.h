@@ -6,6 +6,7 @@
 @class GBCommit;
 
 @class GBMainWindowController;
+@class OAPropertyListController;
 
 @interface GBRepositoryController : NSObject
 {
@@ -13,10 +14,14 @@
   NSUInteger pushing;
   NSUInteger merging;
   NSUInteger fetching;
+  
+  BOOL backgroundUpdateEnabled;
+  NSTimeInterval backgroundUpdateInterval;
 }
 
 @property(retain) GBRepository* repository;
 @property(retain) GBCommit* selectedCommit;
+@property(nonatomic,retain) OAPropertyListController* plistController;
 
 @property(assign) NSInteger isDisabled;
 @property(assign) NSInteger isSpinning;
@@ -34,14 +39,36 @@
 - (void) popSpinning;
 
 - (void) setNeedsUpdateEverything;
-- (void) updateRepository;
+- (void) updateRepositoryIfNeeded;
+- (void) updateCurrentBranchesIfNeeded;
 
 - (void) checkoutRef:(GBRef*) ref;
 - (void) checkoutRef:(GBRef*) ref withNewName:(NSString*)name;
 - (void) checkoutNewBranchWithName:(NSString*)name;
 
+
+
+
 - (void) selectCommit:(GBCommit*)commit;
 - (void) pull;
 - (void) push;
+
+- (void) loadCommits; // private
+
+
+- (GBRef*) rememberedRemoteBranchForBranch:(GBRef*)localBranch;
+- (void) rememberRemoteBranch:(GBRef*)remoteBranch forBranch:(GBRef*)localBranch;
+
+- (void) saveObject:(id)obj forKey:(NSString*)key;
+- (id) loadObjectForKey:(NSString*)key;
+
+
+#pragma mark Background Update
+
+// FIXME: move to GBRepositoryController
+- (void) resetBackgroundUpdateInterval;
+//- (void) beginBackgroundUpdate;
+//- (void) endBackgroundUpdate;
+
 
 @end

@@ -70,7 +70,7 @@
 {
   OAOptionalDelegateMessage(@selector(repositoriesControllerWillSelectRepository:));
   self.selectedRepositoryController = repoCtrl;
-  [repoCtrl updateRepository];
+  [repoCtrl updateRepositoryIfNeeded];
   OAOptionalDelegateMessage(@selector(repositoriesControllerDidSelectRepository:));
 }
 

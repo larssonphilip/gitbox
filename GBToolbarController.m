@@ -477,8 +477,6 @@
   [self.repositoryController checkoutRef:[sender representedObject]];
 }
 
-
-
 - (IBAction) checkoutRemoteBranch:(id)sender
 {
   GBRef* remoteBranch = [sender representedObject];
@@ -509,6 +507,24 @@
     [self.repositoryController checkoutNewBranchWithName:ctrl.value];
   };
   [ctrl runSheetInWindow:[self window]];
+}
+
+- (IBAction) selectRemoteBranch:(id)sender
+{
+  GBRef* remoteBranch = [sender representedObject];
+  //  [self.repository selectRemoteBranch:remoteBranch];
+  [self.remoteBranchPopUpButton setTitle:[remoteBranch nameWithRemoteAlias]];
+  //[self updateBranchMenus];  
+}
+
+- (IBAction) createNewRemoteBranch:(id)sender
+{
+  
+}
+
+- (IBAction) createNewRemote:(id)sender
+{
+  
 }
 
 

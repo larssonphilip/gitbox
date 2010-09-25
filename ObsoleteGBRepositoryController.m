@@ -96,14 +96,6 @@
 
 
 
-- (IBAction) selectRemoteBranch:(id)sender
-{
-  GBRef* remoteBranch = [sender representedObject];
-  [self.repository selectRemoteBranch:remoteBranch];
-  [self.remoteBranchPopUpButton setTitle:[remoteBranch nameWithRemoteAlias]];
-  //[self updateBranchMenus];
-}
-
 - (IBAction) createNewRemoteBranch:(id)sender
 {
   // Usually, new remote branch is created for the new local branch,
@@ -138,7 +130,7 @@
     remoteBranch.isNewRemoteBranch = YES;
     [remote addBranch:remoteBranch];
     
-    [self.repository selectRemoteBranch:remoteBranch];
+//    [self.repository selectRemoteBranch:remoteBranch];
     //[self updateBranchMenus];
   }
 

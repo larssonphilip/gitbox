@@ -8,9 +8,11 @@
 @synthesize name;
 @synthesize commitId;
 @synthesize remoteAlias;
+@synthesize configuredRemoteBranch;
+@synthesize rememberedRemoteBranch;
+
 @synthesize isTag;
 @synthesize isNewRemoteBranch;
-
 @synthesize repository;
 
 - (void) dealloc
@@ -18,6 +20,8 @@
   self.name = nil;
   self.commitId = nil;
   self.remoteAlias = nil;
+  self.configuredRemoteBranch = nil;
+  self.rememberedRemoteBranch = nil;
   [super dealloc];
 }
 
@@ -77,71 +81,24 @@
   return nil;
 }
 
-
-
-
-
-
-
-#pragma mark Save/load remote branch
-
-
 - (GBRef*) configuredOrRememberedRemoteBranch
 {
-  GBRef* branch = [self configuredRemoteBranch];
-  if (!branch) branch = [self rememberedRemoteBranch];
+  GBRef* branch = self.configuredRemoteBranch;
+  if (!branch) branch = self.rememberedRemoteBranch;
   return branch;
 }
 
-- (GBRef*) configuredRemoteBranch
+
+- (void) loadConfiguredRemoteBranchWithBlock:(void(^)())block
 {
   GBLocalRemoteAssociationTask* task = [GBLocalRemoteAssociationTask task];
   task.localBranchName = self.name;
-  [self.repository launchTaskAndWait:task];
-  return task.remoteBranch;
+  task.repository = self.repository;
+  [task launchWithBlock:^{
+    self.configuredRemoteBranch = task.remoteBranch;
+    block();
+  }];
 }
-
-- (GBRef*) rememberedRemoteBranch
-{
-  NSDictionary* remoteBranchDict = [self loadObjectForKey:@"remoteBranch"];
-  if (remoteBranchDict && [remoteBranchDict objectForKey:@"remoteAlias"] && [remoteBranchDict objectForKey:@"name"])
-  {
-    GBRef* ref = [[GBRef new] autorelease];
-    ref.repository = self.repository;
-    ref.remoteAlias = [remoteBranchDict objectForKey:@"remoteAlias"];
-    ref.name = [remoteBranchDict objectForKey:@"name"];
-    return ref;
-  }
-  return nil;
-}
-
-
-// FIXME: move into GBRepositoryController
-- (void) rememberRemoteBranch:(GBRef*)aRemoteBranch
-{
-  if ([self isLocalBranch] && aRemoteBranch && [aRemoteBranch isRemoteBranch])
-  {
-    id dict = [NSDictionary dictionaryWithObjectsAndKeys:
-               aRemoteBranch.remoteAlias, @"remoteAlias", 
-               aRemoteBranch.name, @"name", 
-               nil];
-    [self saveObject:dict forKey:@"remoteBranch"];
-  }  
-}
-
-
-// FIXME: move into GBRepositoryController
-- (void) saveObject:(id)obj forKey:(NSString*)key
-{
-  [self.repository saveObject:obj forKey:[NSString stringWithFormat:@"ref:%@:%@", self.displayName, key]];
-}
-
-// FIXME: move into GBRepositoryController
-- (id) loadObjectForKey:(NSString*)key
-{
-  return [self.repository loadObjectForKey:[NSString stringWithFormat:@"ref:%@:%@", self.displayName, key]];
-}
-
 
 
 @end

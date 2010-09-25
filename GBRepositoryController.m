@@ -1,4 +1,3 @@
-
 #import "GBModels.h"
 
 #import "GBMainWindowController.h"
@@ -11,16 +10,14 @@
 #import "GBRepositoriesController.h"
 #import "GBRepositoryController.h"
 
+#import "OAPropertyListController.h"
 #import "OAOptionalDelegateMessage.h"
-
-@interface GBRepositoryController ()
-- (void) _loadCommits;
-@end
 
 @implementation GBRepositoryController
 
 @synthesize repository;
 @synthesize selectedCommit;
+@synthesize plistController;
 
 @synthesize isDisabled;
 @synthesize isSpinning;
@@ -30,6 +27,7 @@
 {
   self.repository = nil;
   self.selectedCommit = nil;
+  self.plistController = nil;
   [super dealloc];
 }
 
@@ -40,6 +38,18 @@
   ctrl.repository = repo;
   return ctrl;
 }
+
+- (OAPropertyListController*) plistController
+{
+  if (!plistController)
+  {
+    self.plistController = [[OAPropertyListController new] autorelease];
+    plistController.plistURL = [NSURL fileURLWithPath:[[[[self url] path] stringByAppendingPathComponent:@".git"] stringByAppendingPathComponent:@"gitbox.plist"]];
+  }
+  return plistController; // it is used inside this object only, so we may skip retain+autorelease.
+}
+
+
 
 - (NSURL*) url
 {
@@ -95,32 +105,63 @@
 
 
 
-#pragma mark Select/Deselect
+
+
+#pragma mark Updates
 
 
 
-- (void) updateRepository
+- (void) updateRepositoryIfNeeded
 {
   GBRepository* repo = self.repository;
+  [self updateCurrentBranchesIfNeeded];
   [repo updateLocalBranchesAndTagsIfNeededWithBlock:^{
-    OAOptionalDelegateMessage(@selector(repositoryControllerDidUpdateBranches:));
+    OAOptionalDelegateMessage(@selector(repositoryControllerDidUpdateLocalBranches:));
   }];
   [repo updateRemotesIfNeededWithBlock:^{
     for (GBRemote* remote in repo.remotes)
     {
       [remote updateBranchesWithBlock:^{
-        OAOptionalDelegateMessage(@selector(repositoryControllerDidUpdateBranches:));
+        OAOptionalDelegateMessage(@selector(repositoryControllerDidUpdateRemoteBranches:));
       }];
     }
   }];
   
   if (!self.repository.localBranchCommits)
   {
-    [self _loadCommits];
+    [self loadCommits];
   }
 }
 
 
+- (void) updateCurrentBranchesIfNeeded
+{
+  GBRepository* repo = self.repository;
+  
+  if (!repo.currentLocalRef)
+  {
+    repo.currentLocalRef = [repo loadCurrentLocalRef];
+  }
+  
+  if (!repo.currentLocalRef.configuredRemoteBranch)
+  {
+    [repo.currentLocalRef loadConfiguredRemoteBranchWithBlock:^{
+      repo.currentRemoteBranch = [repo.currentLocalRef configuredOrRememberedRemoteBranch];
+      OAOptionalDelegateMessage(@selector(repositoryControllerDidUpdateRemoteBranches:));
+    }];
+  }
+  
+  if (!repo.currentLocalRef.rememberedRemoteBranch)
+  {
+    
+  }
+  
+  if (!repo.currentRemoteBranch)
+  {
+    repo.currentRemoteBranch = [repo.currentLocalRef configuredOrRememberedRemoteBranch];
+    OAOptionalDelegateMessage(@selector(repositoryControllerDidUpdateRemoteBranches:));
+  }  
+}
 
 
 
@@ -132,21 +173,26 @@
 
 - (void) checkoutHelper:(void(^)(void(^)()))checkoutBlock
 {
-  if (!self.repository) return;
+  GBRepository* repo = self.repository;
   
   [self pushDisabled];
   [self pushSpinning];
   
-  self.repository.localBranchCommits = nil;
+  repo.localBranchCommits = nil;
   
   OAOptionalDelegateMessage(@selector(repositoryControllerDidUpdateCommits:));
   
   checkoutBlock(^{
+    
+    repo.currentLocalRef = nil;
+    repo.currentRemoteBranch = nil;
+    [self updateCurrentBranchesIfNeeded];
+    
     OAOptionalDelegateMessage(@selector(repositoryControllerDidChangeBranch:));
     [self.repository updateLocalBranchesAndTagsWithBlock:^{
-      OAOptionalDelegateMessage(@selector(repositoryControllerDidUpdateBranches:));
+      OAOptionalDelegateMessage(@selector(repositoryControllerDidUpdateLocalBranches:));
     }];
-    [self _loadCommits];
+    [self loadCommits];
     [self popDisabled];
     [self popSpinning];
   });  
@@ -188,24 +234,20 @@
 - (void) selectCommit:(GBCommit*)commit
 {
   self.selectedCommit = commit;
-  NSLog(@"selectCommit:...");
-  // TODO: update controllers ...
+  NSLog(@"TODO: tell somebody about selected commit");
 }
 
 
-
-
-
-
-#pragma mark Private
-
-
-- (void) _loadCommits
+- (void) loadCommits // private
 {
-  if (!self.repository) return;
-  
   [self pushSpinning];
+  NSString* oldTopCommitId = self.repository.topCommitId;
   [self.repository updateLocalBranchCommitsWithBlock:^{
+    NSString* newTopCommitId = self.repository.topCommitId;
+    if (newTopCommitId && ![oldTopCommitId isEqualToString:newTopCommitId])
+    {
+      [self resetBackgroundUpdateInterval];
+    }
     OAOptionalDelegateMessage(@selector(repositoryControllerDidUpdateCommits:));
     [self pushSpinning];
     [self.repository updateUnmergedCommitsWithBlock:^{
@@ -221,6 +263,160 @@
   }];  
 }
 
+
+
+
+
+
+#pragma mark Remembered local-remote branch association
+
+
+
+- (GBRef*) rememberedRemoteBranchForBranch:(GBRef*)localBranch
+{
+  return nil;
+}
+
+- (void) rememberRemoteBranch:(GBRef*)remoteBranch forBranch:(GBRef*)localBranch
+{
+  
+}
+
+//- (GBRef*) rememberedRemoteBranch
+//{
+//  NSDictionary* remoteBranchDict = [self loadObjectForKey:@"remoteBranch"];
+//  if (remoteBranchDict && [remoteBranchDict objectForKey:@"remoteAlias"] && [remoteBranchDict objectForKey:@"name"])
+//  {
+//    GBRef* ref = [[GBRef new] autorelease];
+//    ref.repository = self.repository;
+//    ref.remoteAlias = [remoteBranchDict objectForKey:@"remoteAlias"];
+//    ref.name = [remoteBranchDict objectForKey:@"name"];
+//    return ref;
+//  }
+//  return nil;
+//}
+//
+//
+// FIXME: move into GBRepositoryController
+//- (void) rememberRemoteBranch:(GBRef*)aRemoteBranch
+//{
+//  if ([self isLocalBranch] && aRemoteBranch && [aRemoteBranch isRemoteBranch])
+//  {
+//    id dict = [NSDictionary dictionaryWithObjectsAndKeys:
+//               aRemoteBranch.remoteAlias, @"remoteAlias", 
+//               aRemoteBranch.name, @"name", 
+//               nil];
+//    [self saveObject:dict forKey:@"remoteBranch"];
+//  }  
+//}
+//
+//
+// FIXME: move into GBRepositoryController
+//- (void) saveObject:(id)obj forKey:(NSString*)key
+//{
+//  [self.repository saveObject:obj forKey:[NSString stringWithFormat:@"ref:%@:%@", self.displayName, key]];
+//}
+//
+// FIXME: move into GBRepositoryController
+//- (id) loadObjectForKey:(NSString*)key
+//{
+//  return [self.repository loadObjectForKey:[NSString stringWithFormat:@"ref:%@:%@", self.displayName, key]];
+//}
+//
+
+
+
+
+
+#pragma mark Config
+
+
+- (void) saveObject:(id)obj forKey:(NSString*)key
+{
+  if (!obj) return;
+  
+  [self.plistController setObject:obj forKey:key];
+  
+  return;
+  
+  // Legacy non-used pre-0.9.8 code
+  NSString* repokey = [NSString stringWithFormat:@"optionsFor:%@", [[self url] path]];
+  NSDictionary* dict = [[NSUserDefaults standardUserDefaults] dictionaryForKey:repokey];
+  NSMutableDictionary* mdict = nil;
+  if (dict) mdict = [[dict mutableCopy] autorelease];
+  if (!dict) mdict = [NSMutableDictionary dictionary];
+  [mdict setObject:obj forKey:key];
+  [[NSUserDefaults standardUserDefaults] setObject:mdict forKey:repokey];
+}
+
+- (id) loadObjectForKey:(NSString*)key
+{
+  // try to find data in a .git/gitbox.plist
+  // if not found, but found in NSUserDefaults, write to .git/gitbox.plist
+  id obj = nil;
+  obj = [self.plistController objectForKey:key];
+  if (!obj)
+  {
+    // Legacy API (pre 0.9.8)
+    NSString* repokey = [NSString stringWithFormat:@"optionsFor:%@", [[self url] path]];
+    NSDictionary* dict = [[NSUserDefaults standardUserDefaults] dictionaryForKey:repokey];
+    obj = [dict objectForKey:key];
+    
+    // Save to a new storage
+    if (obj)
+    {
+      [self saveObject:obj forKey:key];
+    }
+  }
+  return obj;
+}
+
+
+
+
+
+
+
+
+
+
+#pragma mark Background Update
+
+
+- (void) resetBackgroundUpdateInterval
+{
+  backgroundUpdateInterval = 10.0 + 2*2*(0.5-drand48()); 
+}
+
+//- (void) beginBackgroundUpdate
+//{
+//  [self endBackgroundUpdate];
+//  backgroundUpdateEnabled = YES;
+//  // randomness is added to make all opened windows fetch at different points of time
+//  [self resetBackgroundUpdateInterval];
+//  [self performSelector:@selector(fetchSilentlyDuringBackgroundUpdate) 
+//             withObject:nil 
+//             afterDelay:15.0];
+//}
+//
+//- (void) endBackgroundUpdate
+//{
+//  backgroundUpdateEnabled = NO;
+//  [NSObject cancelPreviousPerformRequestsWithTarget:self 
+//                                           selector:@selector(fetchSilentlyDuringBackgroundUpdate) 
+//                                             object:nil];
+//}
+//
+//- (void) fetchSilentlyDuringBackgroundUpdate
+//{
+//  if (!backgroundUpdateEnabled) return;
+//  backgroundUpdateInterval *= 1.3;
+//  [self performSelector:@selector(fetchSilentlyDuringBackgroundUpdate) 
+//             withObject:nil 
+//             afterDelay:backgroundUpdateInterval];
+//  [self fetchSilently];
+//}
+//
 
 
 @end

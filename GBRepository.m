@@ -21,16 +21,11 @@
 @synthesize stage;
 @synthesize currentLocalRef;
 @synthesize currentRemoteBranch;
-
 @synthesize localBranchCommits;
+@synthesize topCommitId;
 
 @synthesize needsLocalBranchesUpdate;
 @synthesize needsRemotesUpdate;
-
-
-@synthesize topCommitId;
-
-@synthesize plistController;
 
 
 
@@ -49,13 +44,9 @@
   self.stage = nil;
   self.currentLocalRef = nil;
   self.currentRemoteBranch = nil;
-  
   self.localBranchCommits = nil;
-  
   self.topCommitId = nil;
-  
-  self.plistController = nil;
-  
+    
   [super dealloc];
 }
 
@@ -70,143 +61,6 @@
   r.url = url;
   return r;
 }
-
-
-
-
-
-- (NSURL*) dotGitURL
-{
-  if (!dotGitURL)
-  {
-    self.dotGitURL = [self.url URLByAppendingPathComponent:@".git"];
-  }
-  return [[dotGitURL retain]  autorelease];
-}
-
-- (GBStage*) stage
-{
-  if (!stage)
-  {
-    self.stage = [[GBStage new] autorelease];
-    stage.repository = self;
-  }
-  return [[stage retain] autorelease];
-}
-
-- (NSArray*) localBranches
-{
-  if (!localBranches) self.localBranches = [NSArray array];
-  return [[localBranches retain] autorelease];
-}
-
-- (NSArray*) tags
-{
-  if (!tags) self.tags = [NSArray array];
-  return [[tags retain] autorelease];
-}
-
-- (NSArray*) remotes
-{
-  if (!remotes) self.remotes = [NSArray array];
-  return [[remotes retain] autorelease];
-}
-
-- (NSArray*) remoteBranches
-{
-  NSMutableArray* list = [NSMutableArray array];
-  for (GBRemote* remote in self.remotes)
-  {
-    [list addObjectsFromArray:remote.branches];
-  }
-  return list;
-}
-
-- (GBRef*) currentLocalRef
-{
-  if (!currentLocalRef) self.currentLocalRef = [self loadCurrentLocalRef];
-  return [[currentLocalRef retain] autorelease];
-}
-
-- (GBRef*) currentRemoteBranch
-{
-  if (!currentRemoteBranch)
-  {
-    self.currentRemoteBranch = [self.currentLocalRef configuredOrRememberedRemoteBranch];
-    [self.currentLocalRef rememberRemoteBranch:currentRemoteBranch];
-  }
-  return [[currentRemoteBranch retain] autorelease];
-}
-
-
-- (OAPropertyListController*) plistController
-{
-  if (!plistController)
-  {
-    self.plistController = [[OAPropertyListController new] autorelease];
-    plistController.plistURL = [NSURL fileURLWithPath:[[[self path] stringByAppendingPathComponent:@".git"] stringByAppendingPathComponent:@"gitbox.plist"]];
-  }
-  return plistController; // it is used inside this object only, so we can not retain+autorelease it.
-}
-
-
-
-
-
-
-
-
-
-#pragma mark Per-repo options
-
-
-
-
-- (void) saveObject:(id)obj forKey:(NSString*)key
-{
-  if (!obj) return;
-  
-  [self.plistController setObject:obj forKey:key];
-    
-  return;
-  
-  // Legacy non-used pre-0.9.8 code
-  NSString* repokey = [NSString stringWithFormat:@"optionsFor:%@", self.path];
-  NSDictionary* dict = [[NSUserDefaults standardUserDefaults] dictionaryForKey:repokey];
-  NSMutableDictionary* mdict = nil;
-  if (dict) mdict = [[dict mutableCopy] autorelease];
-  if (!dict) mdict = [NSMutableDictionary dictionary];
-  [mdict setObject:obj forKey:key];
-  [[NSUserDefaults standardUserDefaults] setObject:mdict forKey:repokey];
-}
-
-- (id) loadObjectForKey:(NSString*)key
-{
-  // try to find data in a .git/gitbox.plist
-  // if not found, but found in NSUserDefaults, then write to .git/gitbox.plist
-  id obj = nil;
-  obj = [self.plistController objectForKey:key];
-  if (!obj)
-  {
-    // Legacy API (pre 0.9.8)
-    NSString* repokey = [NSString stringWithFormat:@"optionsFor:%@", self.path];
-    NSDictionary* dict = [[NSUserDefaults standardUserDefaults] dictionaryForKey:repokey];
-    obj = [dict objectForKey:key];
-    
-    // Save to a new storage
-    if (obj)
-    {
-      [self saveObject:obj forKey:key];
-    }
-  }
-  return obj;
-}
-
-
-
-#pragma mark Interrogation
-
-
 
 
 
@@ -257,6 +111,89 @@
   return aPath;
 }
 
+
++ (void) initRepositoryAtURL:(NSURL*)url
+{
+  OATask* task = [OATask task];
+  task.currentDirectoryPath = url.path;
+  task.executableName = @"git";
+  task.arguments = [NSArray arrayWithObjects:@"init", nil];
+  [task launchAndWait];
+  [[NSFileManager defaultManager] copyItemAtPath:[[NSBundle mainBundle] pathForResource:@"default_gitignore" ofType:nil]
+                                          toPath:[url.path stringByAppendingPathComponent:@".gitignore"] 
+                                           error:NULL];
+}
+
+
+
+
+
+#pragma mark Properties
+
+
+
+- (NSURL*) dotGitURL
+{
+  if (!dotGitURL)
+  {
+    self.dotGitURL = [self.url URLByAppendingPathComponent:@".git"];
+  }
+  return [[dotGitURL retain]  autorelease];
+}
+
+- (GBStage*) stage
+{
+  if (!stage)
+  {
+    self.stage = [[GBStage new] autorelease];
+    stage.repository = self;
+  }
+  return [[stage retain] autorelease];
+}
+
+- (NSArray*) localBranches
+{
+  if (!localBranches) self.localBranches = [NSArray array];
+  return [[localBranches retain] autorelease];
+}
+
+- (NSArray*) tags
+{
+  if (!tags) self.tags = [NSArray array];
+  return [[tags retain] autorelease];
+}
+
+- (NSArray*) remotes
+{
+  if (!remotes) self.remotes = [NSArray array];
+  return [[remotes retain] autorelease];
+}
+
+- (NSArray*) remoteBranches
+{
+  NSMutableArray* list = [NSMutableArray array];
+  for (GBRemote* remote in self.remotes)
+  {
+    [list addObjectsFromArray:remote.branches];
+  }
+  return list;
+}
+
+
+
+
+
+
+
+
+
+
+#pragma mark Interrogation
+
+
+
+
+
 - (GBRef*) loadCurrentLocalRef
 {
   NSError* outError = nil;
@@ -287,6 +224,15 @@
   return [url path];
 }
 
+- (NSArray*) stageAndCommits
+{
+  NSArray* list = [NSArray arrayWithObject:self.stage];
+  if (self.localBranchCommits)
+  {
+    list = [list arrayByAddingObjectsFromArray:self.localBranchCommits];
+  }
+  return list;
+}
 
 
 
@@ -342,10 +288,6 @@
   [task launchWithBlock:^{
     
     NSString* newTopCommitId = [[task.commits objectAtIndex:0 or:nil] commitId];
-    if (newTopCommitId && ![topCommitId isEqualToString:newTopCommitId])
-    {
-      [self resetBackgroundUpdateInterval];
-    }
     self.topCommitId = newTopCommitId;
     self.localBranchCommits = task.commits;
     
@@ -389,83 +331,6 @@
   }];
 }
 
-- (void) updateStatus
-{
-  [self.stage reloadChanges];
-}
-
-//- (void) updateBranchStatus
-//{
-//  GBRef* ref = [self loadCurrentLocalRef];
-//  if (![ref isEqual:self.currentLocalRef])
-//  {
-//    [self resetCurrentLocalRef];
-//    [self reloadCommits];
-//  }
-//  self.localBranches = [self loadLocalBranches];
-//}
-
-
-
-- (NSArray*) stageAndCommits
-{
-  NSArray* list = [NSArray arrayWithObject:self.stage];
-  if (self.localBranchCommits)
-  {
-    list = [list arrayByAddingObjectsFromArray:self.localBranchCommits];
-  }
-  return list;
-}
-
-
-- (void) finish
-{
-  [self.plistController synchronizeIfNeeded];
-  [self endBackgroundUpdate];
-}
-
-
-
-
-#pragma mark Background Update
-
-
-- (void) resetBackgroundUpdateInterval
-{
-  backgroundUpdateInterval = 10.0 + 2*2*(0.5-drand48()); 
-}
-
-
-- (void) beginBackgroundUpdate
-{
-  [self endBackgroundUpdate];
-  backgroundUpdateEnabled = YES;
-  // randomness is added to make all opened windows fetch at different points of time
-  [self resetBackgroundUpdateInterval];
-  [self performSelector:@selector(fetchSilentlyDuringBackgroundUpdate) 
-             withObject:nil 
-             afterDelay:15.0];
-}
-
-- (void) endBackgroundUpdate
-{
-  backgroundUpdateEnabled = NO;
-  [NSObject cancelPreviousPerformRequestsWithTarget:self 
-                                           selector:@selector(fetchSilentlyDuringBackgroundUpdate) 
-                                             object:nil];
-}
-
-- (void) fetchSilentlyDuringBackgroundUpdate
-{
-  if (!backgroundUpdateEnabled) return;
-  backgroundUpdateInterval *= 1.3;
-  [self performSelector:@selector(fetchSilentlyDuringBackgroundUpdate) 
-             withObject:nil 
-             afterDelay:backgroundUpdateInterval];
-  [self fetchSilently];
-}
-
-
 
 
 
@@ -474,33 +339,12 @@
 #pragma mark Mutation methods
 
 
-+ (void) initRepositoryAtURL:(NSURL*)url
-{
-  OATask* task = [OATask task];
-  task.currentDirectoryPath = url.path;
-  task.executableName = @"git";
-  task.arguments = [NSArray arrayWithObjects:@"init", nil];
-  [task launchAndWait];
-  [[NSFileManager defaultManager] copyItemAtPath:[[NSBundle mainBundle] pathForResource:@"default_gitignore" ofType:nil]
-                                          toPath:[url.path stringByAppendingPathComponent:@".gitignore"] 
-                                           error:NULL];
-}
-
-- (void) resetCurrentLocalRef
-{
-  self.currentLocalRef = [self loadCurrentLocalRef];
-  GBRef* ref = [self.currentLocalRef configuredOrRememberedRemoteBranch];
-  if (ref) self.currentRemoteBranch = ref;
-  [self.currentLocalRef rememberRemoteBranch:self.currentRemoteBranch];
-}
-
 - (void) checkoutRef:(GBRef*)ref withBlock:(GBBlock)block
 {
   GBTask* task = [self task];
   task.arguments = [NSArray arrayWithObjects:@"checkout", [ref commitish], nil];
   [task launchWithBlock:^{
     [task showErrorIfNeeded];
-    [self resetCurrentLocalRef];
     block();
   }];
 }
@@ -524,11 +368,6 @@
                         nil];
       [task2 launchWithBlock:^{
         [task2 showErrorIfNeeded];
-        [self resetCurrentLocalRef];
-        if ([ref isRemoteBranch])
-        {
-          self.currentRemoteBranch = ref;
-        }
         block();
       }];
     }];
@@ -545,7 +384,6 @@
   task.arguments = [NSArray arrayWithObjects:@"checkout", @"-b", name, nil];
   [task launchWithBlock:^{
     [task showErrorIfNeeded];
-    [self resetCurrentLocalRef];
     block();
   }];
 }
@@ -566,12 +404,6 @@
   }
 }
 
-- (void) selectRemoteBranch:(GBRef*)aBranch
-{
-  self.currentRemoteBranch = aBranch;
-  [self.currentLocalRef rememberRemoteBranch:aBranch];
-//  [self reloadCommits];
-}
 
 - (void) pull
 {
@@ -711,6 +543,22 @@
     }];
 //  }
 }
+
+
+
+
+
+
+
+
+// FIXME: get rid of this
+- (void) updateStatus
+{
+  [self.stage reloadChanges];
+}
+
+
+
 
 
 

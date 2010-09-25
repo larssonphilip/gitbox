@@ -594,8 +594,8 @@
 			isa = PBXGroup;
 			children = (
 				201E02DA11EA1ED3007E4420 /* License */,
-				2038F30811952FAE0087CE37 /* Models */,
 				2038F6C611A030FF0087CE37 /* Tasks */,
+				2038F30811952FAE0087CE37 /* Models */,
 				206CAC72122EB619009284FE /* Model Controllers */,
 				2038F30911952FB80087CE37 /* View Controllers */,
 				2057963E11ADD37F004715FE /* Views */,

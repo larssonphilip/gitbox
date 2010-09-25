@@ -7,54 +7,43 @@
 @class GBStage;
 @class GBChange;
 @class GBTask;
-@class OAPropertyListController;
 
 typedef void (^GBBlock)();
 
 @interface GBRepository : NSObject
-{
-  BOOL backgroundUpdateEnabled;
-  NSTimeInterval backgroundUpdateInterval;
-}
 
-@property(nonatomic,retain) NSURL* url;
+@property(retain) NSURL* url;
 @property(nonatomic,retain) NSURL* dotGitURL;
 @property(nonatomic,retain) NSArray* localBranches;
 @property(nonatomic,retain) NSArray* remotes;
 @property(nonatomic,retain) NSArray* tags;
 @property(nonatomic,retain) GBStage* stage;
-@property(nonatomic,retain) GBRef* currentLocalRef;
-@property(nonatomic,retain) GBRef* currentRemoteBranch;
+@property(retain) GBRef* currentLocalRef;
+@property(retain) GBRef* currentRemoteBranch;
+@property(retain) NSArray* localBranchCommits;
+@property(retain) NSString* topCommitId;
 
-@property(nonatomic,retain) NSArray* localBranchCommits;
-
-@property(nonatomic,assign) BOOL needsLocalBranchesUpdate;
-@property(nonatomic,assign) BOOL needsRemotesUpdate;
-
-@property(nonatomic,retain) NSString* topCommitId;
-@property(nonatomic,retain) OAPropertyListController* plistController;
+@property(assign) BOOL needsLocalBranchesUpdate;
+@property(assign) BOOL needsRemotesUpdate;
 
 
 + (id) repository;
 + (id) repositoryWithURL:(NSURL*)url;
 
-
-#pragma mark Interrogation
-
 + (NSString*) gitVersion;
 + (NSString*) gitVersionForLaunchPath:(NSString*) aLaunchPath;
 + (NSString*) supportedGitVersion;
 + (BOOL) isSupportedGitVersion:(NSString*)version;
-- (GBRef*) loadCurrentLocalRef;
 + (NSString*) validRepositoryPathForPath:(NSString*)aPath;
+
+
+
+#pragma mark Interrogation
 
 - (NSString*) path;
 - (NSArray*) stageAndCommits;
+- (GBRef*) loadCurrentLocalRef;
 
-
-// FIXME: move into GBRepositoryController
-- (void) saveObject:(id)obj forKey:(NSString*)key;
-- (id) loadObjectForKey:(NSString*)key;
 
 
 #pragma mark Update
@@ -67,19 +56,6 @@ typedef void (^GBBlock)();
 - (void) updateUnmergedCommitsWithBlock:(GBBlock)block;
 - (void) updateUnpushedCommitsWithBlock:(GBBlock)block;
 
-// FIXME: change for blocks
-- (void) updateStatus;
-- (void) resetCurrentLocalRef;
-
-// FIXME: move to GBRepositoryController
-- (void) finish;
-
-#pragma mark Background Update
-
-// FIXME: move to GBRepositoryController
-- (void) resetBackgroundUpdateInterval;
-- (void) beginBackgroundUpdate;
-- (void) endBackgroundUpdate;
 
 
 #pragma mark Mutation
@@ -92,7 +68,6 @@ typedef void (^GBBlock)();
 
 - (void) commitWithMessage:(NSString*) message;
 
-- (void) selectRemoteBranch:(GBRef*)aBranch;
 
 - (void) pull;
 - (void) mergeBranch:(GBRef*)aBranch;
@@ -100,6 +75,13 @@ typedef void (^GBBlock)();
 - (void) push;
 - (void) pushBranch:(GBRef*)aLocalBranch to:(GBRef*)aRemoteBranch;
 - (void) fetchSilently;
+
+
+
+
+// FIXME: get rid of this
+- (void) updateStatus;
+
 
 
 #pragma mark Util

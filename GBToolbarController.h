@@ -33,5 +33,10 @@
 - (IBAction) pull:(id)sender;
 - (IBAction) push:(id)sender;
 - (IBAction) checkoutBranch:(NSMenuItem*)sender;
+- (IBAction) checkoutRemoteBranch:(id)sender;
+- (IBAction) checkoutNewBranch:(id)sender;
+- (IBAction) selectRemoteBranch:(id)sender;
+- (IBAction) createNewRemoteBranch:(id)sender;
+- (IBAction) createNewRemote:(id)sender;
 
 @end

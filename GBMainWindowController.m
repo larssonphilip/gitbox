@@ -205,11 +205,18 @@
   self.historyController.commits = [repoCtrl commits];
 }
 
-- (void) repositoryControllerDidUpdateBranches:(GBRepositoryController*)repoCtrl
+- (void) repositoryControllerDidUpdateLocalBranches:(GBRepositoryController*)repoCtrl
 {
   if (repoCtrl != self.repositoriesController.selectedRepositoryController) return;
   [self.toolbarController updateBranchMenus];
 }
+
+- (void) repositoryControllerDidUpdateRemoteBranches:(GBRepositoryController*)repoCtrl
+{
+  if (repoCtrl != self.repositoriesController.selectedRepositoryController) return;
+  [self.toolbarController updateRemoteBranchMenus];
+}
+
 
 - (void) repositoryControllerDidChangeBranch:(GBRepositoryController*)repoCtrl
 {
