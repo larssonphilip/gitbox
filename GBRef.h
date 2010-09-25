@@ -24,8 +24,11 @@
 - (GBRef*) configuredOrRememberedRemoteBranch;
 - (GBRef*) configuredRemoteBranch;
 - (GBRef*) rememberedRemoteBranch;
+
+// FIXME: move into GBRepositoryController
 - (void) rememberRemoteBranch:(GBRef*)aRemoteBranch;
 
+// FIXME: move into GBRepositoryController
 - (void) saveObject:(id)obj forKey:(NSString*)key;
 - (id) loadObjectForKey:(NSString*)key;
 

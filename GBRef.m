@@ -116,7 +116,7 @@
 }
 
 
-
+// FIXME: move into GBRepositoryController
 - (void) rememberRemoteBranch:(GBRef*)aRemoteBranch
 {
   if ([self isLocalBranch] && aRemoteBranch && [aRemoteBranch isRemoteBranch])
@@ -130,11 +130,13 @@
 }
 
 
+// FIXME: move into GBRepositoryController
 - (void) saveObject:(id)obj forKey:(NSString*)key
 {
   [self.repository saveObject:obj forKey:[NSString stringWithFormat:@"ref:%@:%@", self.displayName, key]];
 }
 
+// FIXME: move into GBRepositoryController
 - (id) loadObjectForKey:(NSString*)key
 {
   return [self.repository loadObjectForKey:[NSString stringWithFormat:@"ref:%@:%@", self.displayName, key]];

@@ -52,6 +52,7 @@ typedef void (^GBBlock)();
 - (NSArray*) stageAndCommits;
 
 
+// FIXME: move into GBRepositoryController
 - (void) saveObject:(id)obj forKey:(NSString*)key;
 - (id) loadObjectForKey:(NSString*)key;
 
@@ -66,12 +67,16 @@ typedef void (^GBBlock)();
 - (void) updateUnmergedCommitsWithBlock:(GBBlock)block;
 - (void) updateUnpushedCommitsWithBlock:(GBBlock)block;
 
+// FIXME: change for blocks
 - (void) updateStatus;
 - (void) resetCurrentLocalRef;
+
+// FIXME: move to GBRepositoryController
 - (void) finish;
 
 #pragma mark Background Update
 
+// FIXME: move to GBRepositoryController
 - (void) resetBackgroundUpdateInterval;
 - (void) beginBackgroundUpdate;
 - (void) endBackgroundUpdate;
