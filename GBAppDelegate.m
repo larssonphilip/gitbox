@@ -176,7 +176,7 @@
 
 
 - (void) loadRepositories
-{return;
+{
   NSArray* bookmarks = [[NSUserDefaults standardUserDefaults] objectForKey:@"GBRepositoriesController_localRepositories"];
   if (bookmarks && [bookmarks isKindOfClass:[NSArray class]])
   {
