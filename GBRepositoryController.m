@@ -143,11 +143,6 @@
     repo.currentLocalRef = [repo loadCurrentLocalRef];
   }
   
-//  if (!repo.currentLocalRef.rememberedRemoteBranch)
-//  {
-//    repo.currentLocalRef.rememberedRemoteBranch = [self rememberedRemoteBranchForBranch:repo.currentLocalRef];
-//  }
-  
   [repo.currentLocalRef loadConfiguredRemoteBranchIfNeededWithBlock:^{
     repo.currentRemoteBranch = repo.currentLocalRef.configuredRemoteBranch;
     OAOptionalDelegateMessage(@selector(repositoryControllerDidUpdateRemoteBranches:));
