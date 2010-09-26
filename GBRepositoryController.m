@@ -153,7 +153,7 @@
   
   if (!repo.currentLocalRef.rememberedRemoteBranch)
   {
-    
+    repo.currentLocalRef.rememberedRemoteBranch = [self rememberedRemoteBranchForBranch:repo.currentLocalRef];
   }
   
   if (!repo.currentRemoteBranch)
@@ -188,14 +188,14 @@
     repo.currentRemoteBranch = nil;
     [self updateCurrentBranchesIfNeeded];
     
-    OAOptionalDelegateMessage(@selector(repositoryControllerDidChangeBranch:));
+    OAOptionalDelegateMessage(@selector(repositoryControllerDidCheckoutBranch:));
     [self.repository updateLocalBranchesAndTagsWithBlock:^{
       OAOptionalDelegateMessage(@selector(repositoryControllerDidUpdateLocalBranches:));
     }];
     [self loadCommits];
     [self popDisabled];
     [self popSpinning];
-  });  
+  });
 }
 
 - (void) checkoutRef:(GBRef*)ref
@@ -217,6 +217,13 @@
   [self checkoutHelper:^(void(^block)()){
     [self.repository checkoutNewBranchWithName:name withBlock:block];
   }];
+}
+
+- (void) selectRemoteBranch:(GBRef*) remoteBranch
+{
+  self.repository.currentRemoteBranch = remoteBranch;
+  [self rememberRemoteBranch:remoteBranch forBranch:self.repository.currentLocalRef];
+  OAOptionalDelegateMessage(@selector(repositoryControllerDidChangeRemoteBranch:));
 }
 
 - (void) pull
@@ -272,57 +279,33 @@
 
 
 
-- (GBRef*) rememberedRemoteBranchForBranch:(GBRef*)localBranch
+- (GBRef*) rememberedRemoteBranchForBranch:(GBRef*)aLocalBranch
 {
+  NSString* key = [NSString stringWithFormat:@"ref:%@:%@", aLocalBranch.displayName, @"remoteBranch"];
+  NSDictionary* remoteBranchDict = [self loadObjectForKey:key];
+  if (remoteBranchDict && [remoteBranchDict objectForKey:@"remoteAlias"] && [remoteBranchDict objectForKey:@"name"])
+  {
+    GBRef* ref = [[GBRef new] autorelease];
+    ref.repository = self.repository;
+    ref.remoteAlias = [remoteBranchDict objectForKey:@"remoteAlias"];
+    ref.name = [remoteBranchDict objectForKey:@"name"];
+    return ref;
+  }
   return nil;
 }
 
-- (void) rememberRemoteBranch:(GBRef*)remoteBranch forBranch:(GBRef*)localBranch
+- (void) rememberRemoteBranch:(GBRef*)aRemoteBranch forBranch:(GBRef*)aLocalBranch
 {
-  
+  NSString* key = [NSString stringWithFormat:@"ref:%@:%@", aLocalBranch.displayName, @"remoteBranch"];
+  if ([aLocalBranch isLocalBranch] && aRemoteBranch && [aRemoteBranch isRemoteBranch])
+  {
+    id dict = [NSDictionary dictionaryWithObjectsAndKeys:
+               aRemoteBranch.remoteAlias, @"remoteAlias", 
+               aRemoteBranch.name, @"name", 
+               nil];
+    [self saveObject:dict forKey:key];
+  }
 }
-
-//- (GBRef*) rememberedRemoteBranch
-//{
-//  NSDictionary* remoteBranchDict = [self loadObjectForKey:@"remoteBranch"];
-//  if (remoteBranchDict && [remoteBranchDict objectForKey:@"remoteAlias"] && [remoteBranchDict objectForKey:@"name"])
-//  {
-//    GBRef* ref = [[GBRef new] autorelease];
-//    ref.repository = self.repository;
-//    ref.remoteAlias = [remoteBranchDict objectForKey:@"remoteAlias"];
-//    ref.name = [remoteBranchDict objectForKey:@"name"];
-//    return ref;
-//  }
-//  return nil;
-//}
-//
-//
-// FIXME: move into GBRepositoryController
-//- (void) rememberRemoteBranch:(GBRef*)aRemoteBranch
-//{
-//  if ([self isLocalBranch] && aRemoteBranch && [aRemoteBranch isRemoteBranch])
-//  {
-//    id dict = [NSDictionary dictionaryWithObjectsAndKeys:
-//               aRemoteBranch.remoteAlias, @"remoteAlias", 
-//               aRemoteBranch.name, @"name", 
-//               nil];
-//    [self saveObject:dict forKey:@"remoteBranch"];
-//  }  
-//}
-//
-//
-// FIXME: move into GBRepositoryController
-//- (void) saveObject:(id)obj forKey:(NSString*)key
-//{
-//  [self.repository saveObject:obj forKey:[NSString stringWithFormat:@"ref:%@:%@", self.displayName, key]];
-//}
-//
-// FIXME: move into GBRepositoryController
-//- (id) loadObjectForKey:(NSString*)key
-//{
-//  return [self.repository loadObjectForKey:[NSString stringWithFormat:@"ref:%@:%@", self.displayName, key]];
-//}
-//
 
 
 
@@ -417,6 +400,12 @@
 //  [self fetchSilently];
 //}
 //
+
+- (void) finishOperations
+{
+  //[self endBackgroundUpdate];
+  [self.plistController synchronize];
+}
 
 
 @end

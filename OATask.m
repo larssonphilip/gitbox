@@ -292,7 +292,7 @@ NSString* OATaskNotification = @"OATaskNotification";
 
 - (void) launchWithBlock:(void(^)())block
 {
-  NSLog(@"Executing %@ in async queue", [self class]);
+  NSLog(@"%@ launched", [self class]);
   dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     [self launchAndWait];
     dispatch_async(dispatch_get_main_queue(), block);

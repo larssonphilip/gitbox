@@ -41,6 +41,13 @@
 #pragma mark GBSourcesController
 
 
+- (void) _withoutOutlineViewDelegate:(void(^)())block
+{
+  id temporarilyRemovedDelegateToSurpressCallbackCycle = [self.outlineView delegate];
+  [self.outlineView setDelegate:nil];
+  block();
+  [self.outlineView setDelegate:temporarilyRemovedDelegateToSurpressCallbackCycle];  
+}
 
 - (void) repositoriesControllerDidAddRepository:(GBRepositoriesController*)aRepositoriesController
 {
@@ -51,11 +58,10 @@
 - (void) repositoriesControllerDidSelectRepository:(GBRepositoriesController*)aRepositoriesController
 {
   GBRepositoryController* repoCtrl = aRepositoriesController.selectedRepositoryController;
-  [self.outlineView selectRowIndexes:[NSIndexSet indexSetWithIndex:[self.outlineView rowForItem:repoCtrl]] 
-                byExtendingSelection:NO];
-  
-  
-  
+  [self _withoutOutlineViewDelegate:^{
+    [self.outlineView selectRowIndexes:[NSIndexSet indexSetWithIndex:[self.outlineView rowForItem:repoCtrl]] 
+                  byExtendingSelection:NO];
+  }];
 }
 
 

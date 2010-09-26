@@ -252,10 +252,10 @@
 
 - (void) updateLocalBranchesAndTagsWithBlock:(GBBlock)block
 {
+  self.needsLocalBranchesUpdate = NO;
   GBLocalBranchesTask* task = [GBLocalBranchesTask task];
   task.repository = self;
   [task launchWithBlock:^{
-    self.needsLocalBranchesUpdate = NO;
     self.localBranches = task.branches;
     self.tags = task.tags;
     block();
@@ -270,10 +270,10 @@
 
 - (void) updateRemotesWithBlock:(GBBlock)block
 {
+  self.needsRemotesUpdate = NO;
   GBRemotesTask* task = [GBRemotesTask task];
   task.repository = self;
   [task launchWithBlock:^{
-    self.needsRemotesUpdate = NO;
     self.remotes = task.remotes;
     block();
   }];

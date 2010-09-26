@@ -45,7 +45,7 @@
 - (void) checkoutRef:(GBRef*) ref;
 - (void) checkoutRef:(GBRef*) ref withNewName:(NSString*)name;
 - (void) checkoutNewBranchWithName:(NSString*)name;
-
+- (void) selectRemoteBranch:(GBRef*) remoteBranch;
 
 
 
@@ -56,8 +56,8 @@
 - (void) loadCommits; // private
 
 
-- (GBRef*) rememberedRemoteBranchForBranch:(GBRef*)localBranch;
-- (void) rememberRemoteBranch:(GBRef*)remoteBranch forBranch:(GBRef*)localBranch;
+- (GBRef*) rememberedRemoteBranchForBranch:(GBRef*)aLocalBranch;
+- (void) rememberRemoteBranch:(GBRef*)aRemoteBranch forBranch:(GBRef*)aLocalBranch;
 
 - (void) saveObject:(id)obj forKey:(NSString*)key;
 - (id) loadObjectForKey:(NSString*)key;
@@ -69,6 +69,7 @@
 - (void) resetBackgroundUpdateInterval;
 //- (void) beginBackgroundUpdate;
 //- (void) endBackgroundUpdate;
+- (void) finishOperations;
 
 
 @end

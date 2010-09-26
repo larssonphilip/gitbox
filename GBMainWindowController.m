@@ -215,10 +215,16 @@
 {
   if (repoCtrl != self.repositoriesController.selectedRepositoryController) return;
   [self.toolbarController updateRemoteBranchMenus];
+  [self.toolbarController updateSyncButtons];
 }
 
+- (void) repositoryControllerDidCheckoutBranch:(GBRepositoryController*)repoCtrl
+{
+  if (repoCtrl != self.repositoriesController.selectedRepositoryController) return;
+  [self.toolbarController updateBranchMenus];
+}
 
-- (void) repositoryControllerDidChangeBranch:(GBRepositoryController*)repoCtrl
+- (void) repositoryControllerDidChangeRemoteBranch:(GBRepositoryController*)repoCtrl
 {
   if (repoCtrl != self.repositoriesController.selectedRepositoryController) return;
   [self.toolbarController updateBranchMenus];

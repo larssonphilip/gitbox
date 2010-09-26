@@ -7,5 +7,6 @@
 - (void) repositoryControllerDidUpdateCommits:          (GBRepositoryController*)aRepositoryController;
 - (void) repositoryControllerDidUpdateLocalBranches:    (GBRepositoryController*)aRepositoryController;
 - (void) repositoryControllerDidUpdateRemoteBranches:   (GBRepositoryController*)aRepositoryController;
-- (void) repositoryControllerDidChangeBranch:           (GBRepositoryController*)aRepositoryController;
+- (void) repositoryControllerDidCheckoutBranch:         (GBRepositoryController*)aRepositoryController;
+- (void) repositoryControllerDidChangeRemoteBranch:     (GBRepositoryController*)aRepositoryController;
 @end

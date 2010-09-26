@@ -10,7 +10,9 @@
 {
   if (isDirty)
   {
-    NSLog(@"WARNING: OAPropertyListController is deallocated when out of sync! You should call -synchronize.");
+    NSException *exception = [NSException exceptionWithName:@"Not synchronized when deallocated"
+      reason:@"OAPropertyListController is deallocated when out of sync! You should call -synchronize."  userInfo:nil];
+    @throw exception;
   }
   [NSObject cancelPreviousPerformRequestsWithTarget:self];
   self.plistURL = nil;
@@ -75,6 +77,7 @@
 - (BOOL) synchronize
 {
   isDirty = NO;
+  [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(synchronize) object:nil];
   [OAFile setPropertyList:self.plist forPath:[self.plistURL path]];
   return YES;
 }

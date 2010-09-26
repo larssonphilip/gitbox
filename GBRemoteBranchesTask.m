@@ -25,7 +25,6 @@
 - (void) didFinish
 {
   [super didFinish];
-  
   if (self.terminationStatus != 0)
   {
     return;

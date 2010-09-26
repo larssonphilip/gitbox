@@ -411,6 +411,8 @@
     [control setLabel:@"push →" forSegment:1];
   }
   
+  if (!repo.currentRemoteBranch) pushDisabled = pullDisabled = YES;
+  
   [control setEnabled:!pullDisabled && !isDisabled && repo forSegment:0];
   [control setEnabled:!pushDisabled && !isDisabled && repo forSegment:1];
 }
@@ -512,9 +514,7 @@
 - (IBAction) selectRemoteBranch:(id)sender
 {
   GBRef* remoteBranch = [sender representedObject];
-  //  [self.repository selectRemoteBranch:remoteBranch];
-  [self.remoteBranchPopUpButton setTitle:[remoteBranch nameWithRemoteAlias]];
-  //[self updateBranchMenus];  
+  [self.repositoryController selectRemoteBranch:remoteBranch];
 }
 
 - (IBAction) createNewRemoteBranch:(id)sender
