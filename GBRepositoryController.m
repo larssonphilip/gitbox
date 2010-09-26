@@ -143,13 +143,13 @@
     repo.currentLocalRef = [repo loadCurrentLocalRef];
   }
   
-  if (!repo.currentLocalRef.rememberedRemoteBranch)
-  {
-    repo.currentLocalRef.rememberedRemoteBranch = [self rememberedRemoteBranchForBranch:repo.currentLocalRef];
-  }
+//  if (!repo.currentLocalRef.rememberedRemoteBranch)
+//  {
+//    repo.currentLocalRef.rememberedRemoteBranch = [self rememberedRemoteBranchForBranch:repo.currentLocalRef];
+//  }
   
   [repo.currentLocalRef loadConfiguredRemoteBranchIfNeededWithBlock:^{
-    repo.currentRemoteBranch = [repo.currentLocalRef configuredOrRememberedRemoteBranch];
+    repo.currentRemoteBranch = repo.currentLocalRef.configuredRemoteBranch;
     OAOptionalDelegateMessage(@selector(repositoryControllerDidUpdateRemoteBranches:));
     block();
   }];
@@ -214,8 +214,11 @@
 - (void) selectRemoteBranch:(GBRef*) remoteBranch
 {
   self.repository.currentRemoteBranch = remoteBranch;
-  [self rememberRemoteBranch:remoteBranch forBranch:self.repository.currentLocalRef];
-  OAOptionalDelegateMessage(@selector(repositoryControllerDidChangeRemoteBranch:));
+  [self.repository configureTrackingRemoteBranch:remoteBranch 
+                                   withLocalName:self.repository.currentLocalRef.name 
+                                       withBlock:^{
+    OAOptionalDelegateMessage(@selector(repositoryControllerDidChangeRemoteBranch:));
+  }];
 }
 
 - (void) pull
@@ -263,41 +266,6 @@
 }
 
 
-
-
-
-
-#pragma mark Remembered local-remote branch association
-
-
-
-- (GBRef*) rememberedRemoteBranchForBranch:(GBRef*)aLocalBranch
-{
-  NSString* key = [NSString stringWithFormat:@"ref:%@:%@", aLocalBranch.displayName, @"remoteBranch"];
-  NSDictionary* remoteBranchDict = [self loadObjectForKey:key];
-  if (remoteBranchDict && [remoteBranchDict objectForKey:@"remoteAlias"] && [remoteBranchDict objectForKey:@"name"])
-  {
-    GBRef* ref = [[GBRef new] autorelease];
-    ref.repository = self.repository;
-    ref.remoteAlias = [remoteBranchDict objectForKey:@"remoteAlias"];
-    ref.name = [remoteBranchDict objectForKey:@"name"];
-    return ref;
-  }
-  return nil;
-}
-
-- (void) rememberRemoteBranch:(GBRef*)aRemoteBranch forBranch:(GBRef*)aLocalBranch
-{
-  NSString* key = [NSString stringWithFormat:@"ref:%@:%@", aLocalBranch.displayName, @"remoteBranch"];
-  if ([aLocalBranch isLocalBranch] && aRemoteBranch && [aRemoteBranch isRemoteBranch])
-  {
-    id dict = [NSDictionary dictionaryWithObjectsAndKeys:
-               aRemoteBranch.remoteAlias, @"remoteAlias", 
-               aRemoteBranch.name, @"name", 
-               nil];
-    [self saveObject:dict forKey:key];
-  }
-}
 
 
 

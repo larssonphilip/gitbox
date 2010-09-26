@@ -5,7 +5,6 @@
 @property(retain) NSString* commitId;
 @property(retain) NSString* remoteAlias;
 @property(retain) GBRef* configuredRemoteBranch;
-@property(retain) GBRef* rememberedRemoteBranch;
 
 @property(assign) BOOL isTag;
 @property(assign) BOOL isNewRemoteBranch;
@@ -16,7 +15,6 @@
 - (BOOL) isRemoteBranch;
 - (NSString*) displayName;
 - (NSString*) commitish;
-- (GBRef*) configuredOrRememberedRemoteBranch;
 
 - (void) loadConfiguredRemoteBranchIfNeededWithBlock:(void(^)())block;
 - (void) loadConfiguredRemoteBranchWithBlock:(void(^)())block;

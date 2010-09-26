@@ -9,7 +9,6 @@
 @synthesize commitId;
 @synthesize remoteAlias;
 @synthesize configuredRemoteBranch;
-@synthesize rememberedRemoteBranch;
 
 @synthesize isTag;
 @synthesize isNewRemoteBranch;
@@ -21,7 +20,6 @@
   self.commitId = nil;
   self.remoteAlias = nil;
   self.configuredRemoteBranch = nil;
-  self.rememberedRemoteBranch = nil;
   [super dealloc];
 }
 
@@ -79,13 +77,6 @@
   if (self.name) return [self nameWithRemoteAlias];
   if (self.commitId) return self.commitId;
   return nil;
-}
-
-- (GBRef*) configuredOrRememberedRemoteBranch
-{
-  GBRef* branch = self.configuredRemoteBranch;
-  if (!branch) branch = self.rememberedRemoteBranch;
-  return branch;
 }
 
 - (void) loadConfiguredRemoteBranchIfNeededWithBlock:(void(^)())block

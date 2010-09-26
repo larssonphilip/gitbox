@@ -56,9 +56,6 @@
 - (void) loadCommits; // private
 
 
-- (GBRef*) rememberedRemoteBranchForBranch:(GBRef*)aLocalBranch;
-- (void) rememberRemoteBranch:(GBRef*)aRemoteBranch forBranch:(GBRef*)aLocalBranch;
-
 - (void) saveObject:(id)obj forKey:(NSString*)key;
 - (id) loadObjectForKey:(NSString*)key;
 
