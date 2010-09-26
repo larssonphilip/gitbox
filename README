@@ -1,11 +1,10 @@
 JUMP GOALS:
 
 - when new branch is created, it is not associated with any branch and causes some blocking task to run every time repo is selected
-- clean up messy rememberedRemoteBranch
-- select/associate remote branch
 
 - pull
 - push
+- remove repo from sources list
 
 
 

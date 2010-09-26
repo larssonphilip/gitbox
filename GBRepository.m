@@ -243,7 +243,7 @@
 
 
 
-- (void) updateLocalBranchesAndTagsIfNeededWithBlock:(GBBlock)block
+- (void) updateLocalBranchesAndTagsWithBlockIfNeeded:(GBBlock)block
 {
   if (!needsLocalBranchesUpdate) return;
   [self updateLocalBranchesAndTagsWithBlock:block];
@@ -262,7 +262,7 @@
   }];
 }
 
-- (void) updateRemotesIfNeededWithBlock:(GBBlock)block
+- (void) updateRemotesWithBlockIfNeeded:(GBBlock)block
 {
   if (!needsRemotesUpdate) return;
   [self updateRemotesWithBlock:block];
@@ -339,6 +339,33 @@
 #pragma mark Mutation methods
 
 
+- (void) configureTrackingRemoteBranch:(GBRef*)ref withLocalName:(NSString*)name withBlock:(GBBlock)block
+{
+  if (!ref || ![ref isRemoteBranch] || !name)
+  {
+    block();
+    return;
+  }
+  
+  GBTask* task1 = [self task];
+  task1.arguments = [NSArray arrayWithObjects:@"config", 
+                     [NSString stringWithFormat:@"branch.%@.remote", name], 
+                     ref.remoteAlias, 
+                     nil];
+  [task1 launchWithBlock:^{
+    GBTask* task2 = [self task];
+    task2.arguments = [NSArray arrayWithObjects:@"config", 
+                       [NSString stringWithFormat:@"branch.%@.merge", name],
+                       [NSString stringWithFormat:@"refs/heads/%@", ref.name],
+                       nil];
+    [task2 launchWithBlock:^{
+      [task2 showErrorIfNeeded];
+      block();
+    }];
+  }];  
+}
+
+
 - (void) checkoutRef:(GBRef*)ref withBlock:(GBBlock)block
 {
   GBTask* task = [self task];
@@ -351,25 +378,13 @@
 
 - (void) checkoutRef:(GBRef*)ref withNewName:(NSString*)name withBlock:(GBBlock)block
 {
-  [[[self task] launchWithArgumentsAndWait:[NSArray arrayWithObjects:@"checkout", @"-b", name, [ref commitish], nil]] showErrorIfNeeded];
-  
   if ([ref isRemoteBranch])
   {
-    GBTask* task = [self task];
-    task.arguments = [NSArray arrayWithObjects:@"config", 
-                      [NSString stringWithFormat:@"branch.%@.remote", name], 
-                      ref.remoteAlias, 
-                      nil];
-    [task launchWithBlock:^{
-      GBTask* task2 = [self task];
-      task2.arguments = [NSArray arrayWithObjects:@"config", 
-                        [NSString stringWithFormat:@"branch.%@.merge", name],
-                        [NSString stringWithFormat:@"refs/heads/%@", ref.name],
-                        nil];
-      [task2 launchWithBlock:^{
-        [task2 showErrorIfNeeded];
-        block();
-      }];
+    GBTask* checkoutTask = [self task];
+    checkoutTask.arguments = [NSArray arrayWithObjects:@"checkout", @"-b", name, [ref commitish], nil];
+    [checkoutTask launchWithBlock:^{
+      [checkoutTask showErrorIfNeeded];
+      [self configureTrackingRemoteBranch:ref withLocalName:name withBlock:block];
     }];
   }
   else
@@ -380,11 +395,11 @@
 
 - (void) checkoutNewBranchWithName:(NSString*)name withBlock:(GBBlock)block
 {
-  GBTask* task = [self task];
-  task.arguments = [NSArray arrayWithObjects:@"checkout", @"-b", name, nil];
-  [task launchWithBlock:^{
-    [task showErrorIfNeeded];
-    block();
+  GBTask* checkoutTask = [self task];
+  checkoutTask.arguments = [NSArray arrayWithObjects:@"checkout", @"-b", name, nil];
+  [checkoutTask launchWithBlock:^{
+    [checkoutTask showErrorIfNeeded];
+    [self configureTrackingRemoteBranch:self.currentRemoteBranch withLocalName:name withBlock:block];
   }];
 }
 

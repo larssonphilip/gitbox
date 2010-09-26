@@ -88,6 +88,17 @@
   return branch;
 }
 
+- (void) loadConfiguredRemoteBranchIfNeededWithBlock:(void(^)())block
+{
+  if (!self.configuredRemoteBranch)
+  {
+    [self loadConfiguredRemoteBranchWithBlock:block];
+  }
+  else
+  {
+    block();
+  }
+}
 
 - (void) loadConfiguredRemoteBranchWithBlock:(void(^)())block
 {

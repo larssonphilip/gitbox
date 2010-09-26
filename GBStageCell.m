@@ -4,7 +4,7 @@
 
 - (NSString*) tooltipString
 {
-  return @"Working directory and stage status";
+  return NSLocalizedString(@"Working directory and stage status", @"");
 }
 
 

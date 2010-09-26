@@ -114,27 +114,27 @@
 - (void) updateRepositoryIfNeeded
 {
   GBRepository* repo = self.repository;
-  [self updateCurrentBranchesIfNeeded];
-  [repo updateLocalBranchesAndTagsIfNeededWithBlock:^{
-    OAOptionalDelegateMessage(@selector(repositoryControllerDidUpdateLocalBranches:));
-  }];
-  [repo updateRemotesIfNeededWithBlock:^{
-    for (GBRemote* remote in repo.remotes)
+  [self updateCurrentBranchesIfNeededWithBlock:^{
+    [repo updateLocalBranchesAndTagsWithBlockIfNeeded:^{
+      OAOptionalDelegateMessage(@selector(repositoryControllerDidUpdateLocalBranches:));
+    }];
+    [repo updateRemotesWithBlockIfNeeded:^{
+      for (GBRemote* remote in repo.remotes)
+      {
+        [remote updateBranchesWithBlock:^{
+          OAOptionalDelegateMessage(@selector(repositoryControllerDidUpdateRemoteBranches:));
+        }];
+      }
+    }];
+    if (!self.repository.localBranchCommits)
     {
-      [remote updateBranchesWithBlock:^{
-        OAOptionalDelegateMessage(@selector(repositoryControllerDidUpdateRemoteBranches:));
-      }];
+      [self loadCommits];
     }
   }];
-  
-  if (!self.repository.localBranchCommits)
-  {
-    [self loadCommits];
-  }
 }
 
 
-- (void) updateCurrentBranchesIfNeeded
+- (void) updateCurrentBranchesIfNeededWithBlock:(void(^)())block
 {
   GBRepository* repo = self.repository;
   
@@ -143,24 +143,16 @@
     repo.currentLocalRef = [repo loadCurrentLocalRef];
   }
   
-  if (!repo.currentLocalRef.configuredRemoteBranch)
-  {
-    [repo.currentLocalRef loadConfiguredRemoteBranchWithBlock:^{
-      repo.currentRemoteBranch = [repo.currentLocalRef configuredOrRememberedRemoteBranch];
-      OAOptionalDelegateMessage(@selector(repositoryControllerDidUpdateRemoteBranches:));
-    }];
-  }
-  
   if (!repo.currentLocalRef.rememberedRemoteBranch)
   {
     repo.currentLocalRef.rememberedRemoteBranch = [self rememberedRemoteBranchForBranch:repo.currentLocalRef];
   }
   
-  if (!repo.currentRemoteBranch)
-  {
+  [repo.currentLocalRef loadConfiguredRemoteBranchIfNeededWithBlock:^{
     repo.currentRemoteBranch = [repo.currentLocalRef configuredOrRememberedRemoteBranch];
     OAOptionalDelegateMessage(@selector(repositoryControllerDidUpdateRemoteBranches:));
-  }  
+    block();
+  }];
 }
 
 
@@ -186,15 +178,15 @@
     
     repo.currentLocalRef = nil;
     repo.currentRemoteBranch = nil;
-    [self updateCurrentBranchesIfNeeded];
-    
-    OAOptionalDelegateMessage(@selector(repositoryControllerDidCheckoutBranch:));
-    [self.repository updateLocalBranchesAndTagsWithBlock:^{
-      OAOptionalDelegateMessage(@selector(repositoryControllerDidUpdateLocalBranches:));
+    [self updateCurrentBranchesIfNeededWithBlock:^{
+      OAOptionalDelegateMessage(@selector(repositoryControllerDidCheckoutBranch:));
+      [self.repository updateLocalBranchesAndTagsWithBlock:^{
+        OAOptionalDelegateMessage(@selector(repositoryControllerDidUpdateLocalBranches:));
+      }];
+      [self loadCommits];
+      [self popDisabled];
+      [self popSpinning];
     }];
-    [self loadCommits];
-    [self popDisabled];
-    [self popSpinning];
   });
 }
 

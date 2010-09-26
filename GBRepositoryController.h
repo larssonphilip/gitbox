@@ -40,7 +40,7 @@
 
 - (void) setNeedsUpdateEverything;
 - (void) updateRepositoryIfNeeded;
-- (void) updateCurrentBranchesIfNeeded;
+- (void) updateCurrentBranchesIfNeededWithBlock:(void(^)())block;
 
 - (void) checkoutRef:(GBRef*) ref;
 - (void) checkoutRef:(GBRef*) ref withNewName:(NSString*)name;

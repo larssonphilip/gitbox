@@ -18,6 +18,7 @@
 - (NSString*) commitish;
 - (GBRef*) configuredOrRememberedRemoteBranch;
 
+- (void) loadConfiguredRemoteBranchIfNeededWithBlock:(void(^)())block;
 - (void) loadConfiguredRemoteBranchWithBlock:(void(^)())block;
 
 @end

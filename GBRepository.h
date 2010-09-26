@@ -48,9 +48,9 @@ typedef void (^GBBlock)();
 
 #pragma mark Update
 
-- (void) updateLocalBranchesAndTagsIfNeededWithBlock:(GBBlock)block;
+- (void) updateLocalBranchesAndTagsWithBlockIfNeeded:(GBBlock)block;
 - (void) updateLocalBranchesAndTagsWithBlock:(GBBlock)block;
-- (void) updateRemotesIfNeededWithBlock:(GBBlock)block;
+- (void) updateRemotesWithBlockIfNeeded:(GBBlock)block;
 - (void) updateRemotesWithBlock:(GBBlock)block;
 - (void) updateLocalBranchCommitsWithBlock:(GBBlock)block;
 - (void) updateUnmergedCommitsWithBlock:(GBBlock)block;
@@ -61,6 +61,7 @@ typedef void (^GBBlock)();
 #pragma mark Mutation
 
 + (void) initRepositoryAtURL:(NSURL*)url;
+- (void) configureTrackingRemoteBranch:(GBRef*)ref withLocalName:(NSString*)name withBlock:(GBBlock)block;
 - (void) checkoutRef:(GBRef*)ref withBlock:(GBBlock)block;
 - (void) checkoutRef:(GBRef*)ref withNewName:(NSString*)name withBlock:(GBBlock)block;
 - (void) checkoutNewBranchWithName:(NSString*)name withBlock:(GBBlock)block;
