@@ -7,6 +7,12 @@ JUMP GOALS:
 - remove repo from sources list
 
 
+Newbie-oriented features:
++ bundled git binaries
+- SSH_ASKPASS for interacting with ssh
+- bonjour repo sharing
+- conflict state representation
+
 
 
 0.9.8:
