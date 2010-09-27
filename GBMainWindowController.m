@@ -177,6 +177,7 @@
   GBRepositoryController* repoCtrl = aRepositoriesController.selectedRepositoryController;
   [self updateWindowTitleWithRepositoryController:repoCtrl];
   self.toolbarController.repositoryController = repoCtrl;
+  self.historyController.repositoryController = repoCtrl;
   self.historyController.commits = [repoCtrl commits];
   [self.toolbarController update];
   [self.sourcesController repositoriesControllerDidSelectRepository:aRepositoriesController];
@@ -229,6 +230,9 @@
   if (repoCtrl != self.repositoriesController.selectedRepositoryController) return;
   [self.toolbarController updateBranchMenus];
 }
+
+
+
 
 
 #pragma mark NSSplitViewDelegate
