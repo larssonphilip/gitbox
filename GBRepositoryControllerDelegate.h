@@ -9,4 +9,5 @@
 - (void) repositoryControllerDidUpdateRemoteBranches:   (GBRepositoryController*)aRepositoryController;
 - (void) repositoryControllerDidCheckoutBranch:         (GBRepositoryController*)aRepositoryController;
 - (void) repositoryControllerDidChangeRemoteBranch:     (GBRepositoryController*)aRepositoryController;
+- (void) repositoryControllerDidSelectCommit:           (GBRepositoryController*)aRepositoryController;
 @end

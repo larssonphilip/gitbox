@@ -22,6 +22,7 @@
 - (void) updateCurrentBranchMenus;
 - (void) updateRemoteBranchMenus;
 - (void) updateSyncButtons;
+- (void) updateCommitButton;
 
 - (void) saveState;
 - (void) loadState;

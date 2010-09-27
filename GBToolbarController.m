@@ -420,6 +420,14 @@
 
 
 
+- (void) updateCommitButton
+{
+  NSLog(@"TODO: updateCommitButton: disable button if commit is stage and is clean");
+  NSLog(@"TODO: updateCommitButton: hide button if commit is not stage");
+}
+
+
+
 
 
 

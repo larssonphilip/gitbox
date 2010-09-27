@@ -231,6 +231,12 @@
   [self.toolbarController updateBranchMenus];
 }
 
+- (void) repositoryControllerDidSelectCommit:(GBRepositoryController*)repoCtrl
+{
+  if (repoCtrl != self.repositoriesController.selectedRepositoryController) return;
+  [self.toolbarController updateBranchMenus];
+}
+
 
 
 

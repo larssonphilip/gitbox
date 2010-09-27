@@ -227,11 +227,10 @@
 }
 
 
-
 - (void) selectCommit:(GBCommit*)commit
 {
   self.selectedCommit = commit;
-  NSLog(@"TODO: tell somebody about selected commit");
+  OAOptionalDelegateMessage(@selector(repositoryControllerDidSelectCommit:));
 }
 
 
