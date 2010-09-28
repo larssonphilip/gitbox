@@ -14,5 +14,4 @@
 - (IBAction) stageRevertFile:(id)sender;
 - (IBAction) stageDeleteFile:(id)sender;
 
-
 @end

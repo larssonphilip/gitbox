@@ -4,7 +4,6 @@
 
 @implementation GBBaseChangesController
 
-@synthesize repositoryController;
 @synthesize tableView;
 @synthesize statusArrayController; 
 
@@ -31,6 +30,14 @@
 - (NSWindow*) window
 {
   return [[self view] window];
+}
+
+
+#pragma mark Update
+
+
+- (void) update
+{
 }
 
 

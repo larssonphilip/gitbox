@@ -1,10 +1,6 @@
 #import "GBChangesBaseTask.h"
 @class GBCommit;
 @interface GBCommittedChangesTask : GBChangesBaseTask
-{
-  GBCommit* commit;
-}
-
-@property(nonatomic,retain) GBCommit* commit;
-
+@property(retain) GBCommit* commit;
+@property(retain) NSArray* changes;
 @end

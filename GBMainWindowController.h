@@ -1,8 +1,8 @@
 
 #import "GBRepositoriesControllerDelegate.h"
 #import "GBRepositoryControllerDelegate.h"
+
 @class GBRepositoriesController;
-//@class GBRepositoryController;
 
 @class GBToolbarController;
 @class GBSourcesController;
@@ -15,7 +15,6 @@
                                                        GBRepositoryControllerDelegate>
 
 @property(retain) GBRepositoriesController* repositoriesController;
-//@property(assign) GBRepositoryController* repositoryController;
 
 @property(retain) IBOutlet GBToolbarController* toolbarController;
 @property(retain) GBSourcesController* sourcesController;

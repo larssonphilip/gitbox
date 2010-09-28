@@ -11,6 +11,7 @@
 @property(retain) IBOutlet NSSegmentedControl* pullPushControl;
 @property(retain) IBOutlet NSPopUpButton* remoteBranchPopUpButton;
 @property(retain) IBOutlet NSProgressIndicator* progressIndicator;
+@property(retain) IBOutlet NSButton* commitButton;
 
 - (void) windowDidLoad;
 - (void) windowDidUnload;
@@ -39,5 +40,7 @@
 - (IBAction) selectRemoteBranch:(id)sender;
 - (IBAction) createNewRemoteBranch:(id)sender;
 - (IBAction) createNewRemote:(id)sender;
+- (IBAction) commit:(id)sender;
+
 
 @end

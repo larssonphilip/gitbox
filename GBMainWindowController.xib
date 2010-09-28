@@ -12,7 +12,7 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="100021"/>
+			<integer value="100152"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -578,6 +578,7 @@
 				<string key="NSScreenRect">{{0, 0}, {1280, 778}}</string>
 				<string key="NSMinSize">{400, 271}</string>
 				<string key="NSMaxSize">{1.79769e+308, 1.79769e+308}</string>
+				<string key="NSFrameAutosaveName">gitboxwindow</string>
 			</object>
 		</object>
 		<object class="IBObjectContainer" key="IBDocument.Objects">
@@ -670,6 +671,22 @@
 						<reference key="destination" ref="275939982"/>
 					</object>
 					<int key="connectionID">100392</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">commitButton</string>
+						<reference key="source" ref="724065351"/>
+						<reference key="destination" ref="1048878109"/>
+					</object>
+					<int key="connectionID">100393</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">commit:</string>
+						<reference key="source" ref="724065351"/>
+						<reference key="destination" ref="1048878109"/>
+					</object>
+					<int key="connectionID">100394</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -1062,6 +1079,7 @@
 					<string>5.IBPluginDependency</string>
 					<string>5.IBWindowTemplateEditedContentRect</string>
 					<string>5.ImportedFromIB2</string>
+					<string>5.NSWindowTemplate.visibleAtLaunch</string>
 					<string>5.editorWindowContentRectSynchronizationRect</string>
 					<string>5.windowTemplate.hasMinSize</string>
 					<string>5.windowTemplate.minSize</string>
@@ -1114,6 +1132,7 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>{{192, 306}, {665, 377}}</string>
 					<integer value="1"/>
+					<boolean value="YES"/>
 					<string>{{201, 387}, {507, 413}}</string>
 					<integer value="1"/>
 					<string>{400, 200}</string>
@@ -1137,7 +1156,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">100392</int>
+			<int key="maxID">100394</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -1230,15 +1249,27 @@
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>checkoutBranch:</string>
+							<string>checkoutNewBranch:</string>
+							<string>checkoutRemoteBranch:</string>
+							<string>commit:</string>
+							<string>createNewRemote:</string>
+							<string>createNewRemoteBranch:</string>
 							<string>pull:</string>
 							<string>pullOrPush:</string>
 							<string>push:</string>
+							<string>selectRemoteBranch:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>NSMenuItem</string>
 							<string>id</string>
+							<string>id</string>
+							<string>id</string>
+							<string>id</string>
+							<string>id</string>
+							<string>id</string>
 							<string>NSSegmentedControl</string>
+							<string>id</string>
 							<string>id</string>
 						</object>
 					</object>
@@ -1247,15 +1278,41 @@
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>checkoutBranch:</string>
+							<string>checkoutNewBranch:</string>
+							<string>checkoutRemoteBranch:</string>
+							<string>commit:</string>
+							<string>createNewRemote:</string>
+							<string>createNewRemoteBranch:</string>
 							<string>pull:</string>
 							<string>pullOrPush:</string>
 							<string>push:</string>
+							<string>selectRemoteBranch:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<object class="IBActionInfo">
 								<string key="name">checkoutBranch:</string>
 								<string key="candidateClassName">NSMenuItem</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">checkoutNewBranch:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">checkoutRemoteBranch:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">commit:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">createNewRemote:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">createNewRemoteBranch:</string>
+								<string key="candidateClassName">id</string>
 							</object>
 							<object class="IBActionInfo">
 								<string key="name">pull:</string>
@@ -1269,12 +1326,17 @@
 								<string key="name">push:</string>
 								<string key="candidateClassName">id</string>
 							</object>
+							<object class="IBActionInfo">
+								<string key="name">selectRemoteBranch:</string>
+								<string key="candidateClassName">id</string>
+							</object>
 						</object>
 					</object>
 					<object class="NSMutableDictionary" key="outlets">
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>commitButton</string>
 							<string>currentBranchPopUpButton</string>
 							<string>progressIndicator</string>
 							<string>pullPushControl</string>
@@ -1284,6 +1346,7 @@
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>NSButton</string>
 							<string>NSPopUpButton</string>
 							<string>NSProgressIndicator</string>
 							<string>NSSegmentedControl</string>
@@ -1296,6 +1359,7 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>commitButton</string>
 							<string>currentBranchPopUpButton</string>
 							<string>progressIndicator</string>
 							<string>pullPushControl</string>
@@ -1305,6 +1369,10 @@
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<object class="IBToOneOutletInfo">
+								<string key="name">commitButton</string>
+								<string key="candidateClassName">NSButton</string>
+							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">currentBranchPopUpButton</string>
 								<string key="candidateClassName">NSPopUpButton</string>

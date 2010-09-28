@@ -1,6 +1,5 @@
 #import "GBModels.h"
 #import "GBCommitViewController.h"
-#import "GBRepositoryController.h"
 
 #import "NSArray+OAArrayHelpers.h"
 #import "NSSplitView+OASplitViewHelpers.h"
@@ -8,18 +7,16 @@
 #import "NSString+OAStringHelpers.h"
 #import "NSView+OAViewHelpers.h"
 
-@interface GBCommitViewController ()
-- (void) commitDidChange;
-@end
-
 @implementation GBCommitViewController
 
+@synthesize commit;
 @synthesize headerRTFTemplate;
 @synthesize headerScrollView;
 @synthesize headerTextView;
 
 - (void) dealloc
 {
+  self.commit = nil;
   self.headerRTFTemplate = nil;
   self.headerScrollView = nil;
   self.headerTextView = nil;
@@ -35,12 +32,14 @@
   return [[headerRTFTemplate retain] autorelease];
 }
 
+
+
 #pragma mark GBBaseViewController
 
 - (void) loadView
 {
   [super loadView];
-  [self commitDidChange];
+  [self update];
 }
 
 - (void) viewDidUnload
@@ -76,17 +75,14 @@
 
 
 
-#pragma mark GBRepository observer
-
-
-- (void) commitDidChange
+- (void) update
 {
   // Reset text view
   [self.headerTextView setEditable:NO];
   [self.headerTextView setString:@""];
   
-  GBCommit* commit = self.repositoryController.selectedCommit;
-  if (commit && ![commit isStage])
+  GBCommit* aCommit = self.commit;
+  if (aCommit && ![aCommit isStage])
   {
     // Load the template
     NSTextStorage* storage = [self.headerTextView textStorage];
@@ -97,18 +93,18 @@
     NSMutableString* string = [storage mutableString];
     
     [string replaceOccurrencesOfString:@"commitId" 
-                            withString:commit.commitId];
+                            withString:aCommit.commitId];
     
     [string replaceOccurrencesOfString:@"authorDate" 
-                            withString:[commit fullDateString]];
+                            withString:[aCommit fullDateString]];
     
     [string replaceOccurrencesOfString:@"Author Name" 
-                            withString:commit.authorName];
+                            withString:aCommit.authorName];
     
     [string replaceOccurrencesOfString:@"author@email" 
-                            withString:commit.authorEmail];
+                            withString:aCommit.authorEmail];
     
-    if ([commit.authorName isEqualToString:commit.committerName])
+    if ([aCommit.authorName isEqualToString:aCommit.committerName])
     {
       [string replaceOccurrencesOfString:@"	Committer: 	Committer Name <committer@email>\n"
                               withString:@""];
@@ -116,13 +112,13 @@
     else
     {
       [string replaceOccurrencesOfString:@"Committer Name" 
-                              withString:commit.committerName];
+                              withString:aCommit.committerName];
       
       [string replaceOccurrencesOfString:@"committer@email" 
-                              withString:commit.committerEmail];      
+                              withString:aCommit.committerEmail];      
     }
 
-    NSString* message = commit.message ? commit.message : @"";
+    NSString* message = aCommit.message ? aCommit.message : @"";
     NSArray* paragraphs = [message componentsSeparatedByString:@"\n"];
     NSString* restOfTheMessage = @"";
     if ([paragraphs count] > 1)

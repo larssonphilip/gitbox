@@ -1,5 +1,6 @@
 JUMP GOALS:
 
+- stage
 - pull
 - push
 - remove repo from sources list
@@ -14,6 +15,8 @@ Newbie-oriented features:
 
 
 0.9.8:
+- show in about box or in preferences a message how to obtain git source
+- allow switching to a system-provided git in preferences
 + release notes window
 + nice scrollbar and commit cell selection
 + bug: preferences toolbar has no selected item
@@ -23,8 +26,6 @@ Newbie-oriented features:
 + redraw scrollbar to appear over the history table with half-opacity
 + bundle git binaries with the app package
 
-- show in about box or in preferences a message how to obtain git source
-- allow switching to a system-provided git in preferences
 
 
 Top priority:
@@ -39,9 +40,9 @@ Top priority:
 Sources:
 - delete key
 - context menu to delete item
-- cmd+shift+[] to switch between repos
-- change window title
 - reorder repos
++ cmd+shift+[] to switch between repos
++ change window title
 
 
 Bugs:

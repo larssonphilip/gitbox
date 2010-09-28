@@ -1,12 +1,10 @@
 @class GBRepositoryController;
 @interface GBBaseChangesController : NSViewController<NSTableViewDelegate, NSUserInterfaceValidations>
 {
-  GBRepositoryController* repositoryController;
   NSTableView* tableView;
   NSArrayController* statusArrayController;
 }
 
-@property(assign) GBRepositoryController* repositoryController;
 @property(retain) IBOutlet NSTableView* tableView;
 @property(retain) IBOutlet NSArrayController* statusArrayController; 
 
@@ -15,6 +13,11 @@
 
 - (NSArray*) selectedChanges;
 - (NSWindow*) window;
+
+
+#pragma mark Update
+
+- (void) update;
 
 
 @end

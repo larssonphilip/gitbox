@@ -1,55 +1,35 @@
-
-
 typedef enum {
   GBCommitSyncStatusNormal = 0,
   GBCommitSyncStatusUnmerged,
   GBCommitSyncStatusUnpushed
 } GBCommitSyncStatus;
 
-
-
 @class GBChange;
 @class GBRepository;
 @class GBCommitCell;
+@class GBStage;
+
 @interface GBCommit : NSObject
-{
-  NSString* commitId;
-  NSString* treeId;
-  NSArray* parentIds;
-  NSString* authorName;
-  NSString* authorEmail;
-  NSString* committerName;
-  NSString* committerEmail;
-  NSDate* date;
-  NSString* message;
-  
-  NSArray* changes;
-  
-  GBCommitSyncStatus syncStatus;
-  
-  GBRepository* repository;
-}
 
-@property(nonatomic,retain) NSString* commitId;
-@property(nonatomic,retain) NSString* treeId;
-@property(nonatomic,retain) NSArray* parentIds;
-@property(nonatomic,retain) NSString* authorName;
-@property(nonatomic,retain) NSString* authorEmail;
-@property(nonatomic,retain) NSString* committerName;
-@property(nonatomic,retain) NSString* committerEmail;
-@property(nonatomic,retain) NSDate* date;
-@property(nonatomic,retain) NSString* message;
+@property(retain) NSString* commitId;
+@property(retain) NSString* treeId;
+@property(retain) NSString* authorName;
+@property(retain) NSString* authorEmail;
+@property(retain) NSString* committerName;
+@property(retain) NSString* committerEmail;
+@property(retain) NSDate* date;
+@property(retain) NSString* message;
+@property(retain) NSArray* parentIds;
+@property(retain) NSArray* changes;
 
-@property(nonatomic,retain) NSArray* changes;
-
-@property(nonatomic,assign) GBCommitSyncStatus syncStatus;
-
-@property(nonatomic,assign) GBRepository* repository;
+@property(assign) GBCommitSyncStatus syncStatus;
+@property(assign) GBRepository* repository;
 
 
 #pragma mark Interrogation
 
 - (BOOL) isStage;
+- (GBStage*) asStage;
 - (BOOL) isMerge;
 - (NSString*) longAuthorLine;
 - (Class) cellClass;
@@ -60,13 +40,15 @@ typedef enum {
 
 #pragma mark Mutation
 
-- (void) updateChanges;
-- (void) reloadChanges;
-- (void) resetChanges; // to save memory
 
-- (NSArray*) allChanges;
-- (NSArray*) loadChanges;
+- (void) loadChangesWithBlock:(void(^)())block;
 
-- (void) asyncTaskGotChanges:(NSArray*)theChanges;
+//- (void) updateChanges;
+//- (void) reloadChanges;
+//
+//- (NSArray*) allChanges;
+//- (NSArray*) loadChanges;
+//
+//- (void) asyncTaskGotChanges:(NSArray*)theChanges;
 
 @end

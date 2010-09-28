@@ -99,7 +99,7 @@
 
   GBFileEditingController* fileEditor = [GBFileEditingController controller];
   fileEditor.title = @".gitignore";
-  fileEditor.URL = [[self.repositoryController url] URLByAppendingPathComponent:@".gitignore"];
+  fileEditor.URL = [[self.stage.repository url] URLByAppendingPathComponent:@".gitignore"];
   fileEditor.linesToAppend = paths;
   [fileEditor runSheetInWindow:[self window]];
 }

@@ -22,6 +22,7 @@
 @synthesize pullPushControl;
 @synthesize remoteBranchPopUpButton;
 @synthesize progressIndicator;
+@synthesize commitButton;
 
 - (void) dealloc
 {
@@ -31,6 +32,7 @@
   self.pullPushControl = nil;
   self.remoteBranchPopUpButton = nil;
   self.progressIndicator = nil;
+  self.commitButton = nil;
   [super dealloc];
 }
 
@@ -422,8 +424,18 @@
 
 - (void) updateCommitButton
 {
-  NSLog(@"TODO: updateCommitButton: disable button if commit is stage and is clean");
-  NSLog(@"TODO: updateCommitButton: hide button if commit is not stage");
+  GBCommit* commit = self.repositoryController.selectedCommit;
+  
+  if ([commit isStage])
+  {
+    [self.commitButton setHidden:NO];
+    [self.commitButton setEnabled:[[commit asStage] isDirty]];
+  }
+  else
+  {
+    [self.commitButton setHidden:YES];
+    [self.commitButton setEnabled:NO];
+  }
 }
 
 
@@ -535,7 +547,9 @@
   
 }
 
-
-
+- (IBAction) commit:(id)sender
+{
+  
+}
 
 @end

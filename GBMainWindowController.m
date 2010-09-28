@@ -1,5 +1,5 @@
 #import "GBRepositoriesController.h"
-//#import "GBRepositoryController.h"
+#import "GBRepositoryController.h"
 
 #import "GBMainWindowController.h"
 
@@ -10,6 +10,7 @@
 #import "GBCommitViewController.h"
 
 #import "GBRepository.h"
+#import "GBCommit.h"
 
 #import "NSWindowController+OAWindowControllerHelpers.h"
 #import "NSView+OAViewHelpers.h"
@@ -23,7 +24,6 @@
 @implementation GBMainWindowController
 
 @synthesize repositoriesController;
-//@synthesize repositoryController;
 
 @synthesize toolbarController;
 @synthesize sourcesController;
@@ -58,7 +58,7 @@
 #pragma mark IBActions
 
 
-// Redirect these messages to sources controller
+
 
 - (IBAction) selectPreviousRepository:(id)_
 {
@@ -141,6 +141,39 @@
     [self.window setTitle:@"No Repository Selected"];
     [self.window setRepresentedURL:nil];
   }  
+}
+
+- (void) refreshChangesController
+{
+  GBCommit* commit = self.repositoriesController.selectedRepositoryController.selectedCommit;
+  if ([commit isStage])
+  {
+    [self.stageController update];
+  }
+  else
+  {
+    [self.commitController update];
+  }
+}
+
+- (void) updateChangesController
+{
+  GBCommit* commit = self.repositoriesController.selectedRepositoryController.selectedCommit;
+  NSView* targetView = [[self.splitView subviews] objectAtIndex:2];
+  if ([commit isStage])
+  {
+    self.commitController.commit = nil;
+    [self.commitController unloadView];
+    self.stageController.stage = [commit asStage];
+    [self.stageController loadInView:targetView];
+  }
+  else
+  {
+    self.stageController.stage = nil;
+    [self.stageController unloadView];
+    self.commitController.commit = commit;
+    [self.commitController loadInView:targetView];
+  }
 }
 
 - (void) loadState
@@ -234,10 +267,16 @@
 - (void) repositoryControllerDidSelectCommit:(GBRepositoryController*)repoCtrl
 {
   if (repoCtrl != self.repositoriesController.selectedRepositoryController) return;
-  [self.toolbarController updateBranchMenus];
+  [self.toolbarController updateCommitButton];
+  [self updateChangesController];
 }
 
-
+- (void) repositoryControllerDidUpdateCommitChanges:(GBRepositoryController*)repoCtrl
+{
+  if (repoCtrl != self.repositoriesController.selectedRepositoryController) return;
+  [self.toolbarController updateCommitButton];
+  [self refreshChangesController];  
+}
 
 
 

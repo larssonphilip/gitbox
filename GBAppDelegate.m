@@ -290,7 +290,10 @@
   return NO;
 }
 
-
+- (void)applicationDidBecomeActive:(NSNotification *)aNotification
+{
+  [self.windowController showWindow:self];
+}
 
 
 

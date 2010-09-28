@@ -3,10 +3,12 @@
 
 @implementation GBCommittedChangesTask
 @synthesize commit;
+@synthesize changes;
 
 - (void) dealloc
 {
   self.commit = nil;
+  self.changes = nil;
   [super dealloc];
 }
 
@@ -30,11 +32,11 @@
   [super didFinish];
   if ([self isError])
   {
-    [self.commit asyncTaskGotChanges:[NSArray array]];
+    self.changes = [NSArray array];
   }
   else
   {
-    [self.commit asyncTaskGotChanges:[self changesFromDiffOutput:self.output]];
+    self.changes = [self changesFromDiffOutput:self.output];
   }
 }
 

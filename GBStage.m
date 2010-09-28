@@ -23,7 +23,6 @@
   self.unstagedChanges = nil;
   self.untrackedChanges = nil;
   
-  [[NSNotificationCenter defaultCenter] removeObserver:self];
   [super dealloc];
 }
 
@@ -50,19 +49,30 @@
 }
 
 
+
+
+
 #pragma mark Actions
 
 
-- (NSArray*) loadChanges
+- (void) loadChangesWithBlock:(void(^)())block
 {
-  self.hasStagedChanges = NO;
-  [self.repository launchTaskAndWait:[GBRefreshIndexTask task]];
-  [self.repository launchTask:[GBStagedChangesTask task]];
-  [self.repository launchTask:[GBUnstagedChangesTask task]];
-  [self.repository launchTask:[GBUntrackedChangesTask task]];
   
-  return [self allChanges];
 }
+
+//- (NSArray*) loadChanges
+//{
+//  self.hasStagedChanges = NO;
+//  [self.repository launchTaskAndWait:[GBRefreshIndexTask task]];
+//  [self.repository launchTask:[GBStagedChangesTask task]];
+//  [self.repository launchTask:[GBUnstagedChangesTask task]];
+//  [self.repository launchTask:[GBUntrackedChangesTask task]];
+//  
+//  return [self allChanges];
+//}
+
+
+
 
 - (void) stageChange:(GBChange*)aChange
 {
@@ -154,6 +164,11 @@
 - (BOOL) isStage
 {
   return YES;
+}
+
+- (GBStage*) asStage
+{
+  return self;
 }
 
 - (NSString*) message
