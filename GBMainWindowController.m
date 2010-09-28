@@ -166,6 +166,7 @@
     [self.commitController unloadView];
     self.stageController.stage = [commit asStage];
     [self.stageController loadInView:targetView];
+    [self.stageController update];
   }
   else
   {
@@ -173,6 +174,7 @@
     [self.stageController unloadView];
     self.commitController.commit = commit;
     [self.commitController loadInView:targetView];
+    [self.commitController update];
   }
 }
 
