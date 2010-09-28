@@ -22,11 +22,7 @@
 - (void) didFinish
 {
   [super didFinish];
-  if ([self isError])
-  {
-    self.changes = [NSArray array];
-  }
-  else
+  if (![self isError])
   {
     self.changes = [self changesFromDiffOutput:self.output];
   }

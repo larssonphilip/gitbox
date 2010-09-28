@@ -8,6 +8,7 @@
 #import "NSObject+OAKeyValueObserving.h"
 #import "NSObject+OADispatchItemValidation.h"
 #import "NSView+OAViewHelpers.h"
+#import "NSTableView+OATableViewHelpers.h"
 
 @implementation GBHistoryViewController
 
@@ -50,14 +51,31 @@
   return (GBCommit*)[[self.logArrayController selectedObjects] firstObject];
 }
 
+
+#pragma mark Updates
+
 - (void) updateStage
 {
-  [self.tableView reloadDataForRowIndexes:[NSIndexSet indexSetWithIndex:0] columnIndexes:[NSIndexSet indexSetWithIndex:0]];
+  if ([self.commits count] > 0)
+  {
+    [self.tableView reloadDataForRowIndexes:[NSIndexSet indexSetWithIndex:0] columnIndexes:[NSIndexSet indexSetWithIndex:0]];
+  }
 }
 
 - (void) updateCommits
 {
   [self.tableView reloadData];
+  id commit = self.repositoryController.selectedCommit;
+  if (commit && self.commits)
+  {
+    NSUInteger index = [self.commits indexOfObject:commit];
+    if (index != NSNotFound)
+    {
+      [self.tableView withoutDelegate:^{
+        [self.tableView selectRowIndexes:[NSIndexSet indexSetWithIndex:index] byExtendingSelection:NO];
+      }];      
+    }
+  }
 }
 
 

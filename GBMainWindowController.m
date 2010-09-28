@@ -75,57 +75,6 @@
 
 
 
-
-#pragma mark NSWindowController
-
-
-- (void) windowDidLoad
-{
-  [super windowDidLoad];
-  
-  // ToolbarController is taken from nib. Why is it there? Because of IBActions and IBOutlets.
-  [self.toolbarController windowDidLoad];
-  
-  // SourcesController displays repositories in a sidebar
-  self.sourcesController = [[[GBSourcesController alloc] initWithNibName:@"GBSourcesController" bundle:nil] autorelease];
-  self.sourcesController.repositoriesController = self.repositoriesController;
-  NSView* firstView = [self.splitView.subviews objectAtIndex:0];
-  if (firstView) [self.sourcesController loadInView:firstView];
-
-  // HistoryController displays list of commits for the selected repo and branch
-  self.historyController = [[[GBHistoryViewController alloc] initWithNibName:@"GBHistoryViewController" bundle:nil] autorelease];
-  NSView* secondView = [self.splitView.subviews objectAtIndex:1];
-  [self.historyController loadInView:secondView];
-  
-  self.stageController = [[[GBStageViewController alloc] initWithNibName:@"GBStageViewController" bundle:nil] autorelease];
-  
-  self.commitController = [[[GBCommitViewController alloc] initWithNibName:@"GBCommitViewController" bundle:nil] autorelease];  
-}
-
-
-
-
-
-#pragma mark NSWindowDelegate
-
-
-- (void) windowWillClose:(NSNotification *)notification
-{
-}
-
-- (void) windowDidBecomeKey:(NSNotification *)notification
-{
-  [self.repositoriesController endBackgroundUpdate];
-}
-
-- (void) windowDidResignKey:(NSNotification *)notification
-{
-  [self.repositoriesController beginBackgroundUpdate];
-}
-
-
-
-
 #pragma mark UI state
 
 
@@ -146,7 +95,7 @@
 - (void) refreshChangesController
 {
   GBCommit* commit = self.repositoriesController.selectedRepositoryController.selectedCommit;
-  if ([commit isStage])
+  if (!commit || [commit isStage])
   {
     [self.stageController update];
   }
@@ -160,7 +109,7 @@
 {
   GBCommit* commit = self.repositoriesController.selectedRepositoryController.selectedCommit;
   NSView* targetView = [[self.splitView subviews] objectAtIndex:2];
-  if ([commit isStage])
+  if (!commit || [commit isStage])
   {
     self.commitController.commit = nil;
     [self.commitController unloadView];
@@ -212,9 +161,13 @@
   GBRepositoryController* repoCtrl = aRepositoriesController.selectedRepositoryController;
   [self updateWindowTitleWithRepositoryController:repoCtrl];
   self.toolbarController.repositoryController = repoCtrl;
+  [self.toolbarController update];
   self.historyController.repositoryController = repoCtrl;
   self.historyController.commits = [repoCtrl commits];
-  [self.toolbarController update];
+  [self.historyController updateCommits];
+  [self.historyController updateStage];
+  [self updateChangesController];
+  [self refreshChangesController];  
   [self.sourcesController repositoriesControllerDidSelectRepository:aRepositoriesController];
 }
 
@@ -271,14 +224,76 @@
   if (repoCtrl != self.repositoriesController.selectedRepositoryController) return;
   [self.toolbarController updateCommitButton];
   [self updateChangesController];
+  [self refreshChangesController];
+  [self.historyController updateCommits];
+  [self.historyController updateStage];
 }
 
 - (void) repositoryControllerDidUpdateCommitChanges:(GBRepositoryController*)repoCtrl
 {
   if (repoCtrl != self.repositoriesController.selectedRepositoryController) return;
   [self.toolbarController updateCommitButton];
-  [self refreshChangesController];  
+  [self refreshChangesController];
+  [self.historyController updateStage];
 }
+
+
+
+
+
+
+#pragma mark NSWindowController
+
+
+- (void) windowDidLoad
+{
+  [super windowDidLoad];
+  
+  // ToolbarController is taken from nib. Why is it there? Because of IBActions and IBOutlets.
+  [self.toolbarController windowDidLoad];
+  
+  // SourcesController displays repositories in a sidebar
+  self.sourcesController = [[[GBSourcesController alloc] initWithNibName:@"GBSourcesController" bundle:nil] autorelease];
+  self.sourcesController.repositoriesController = self.repositoriesController;
+  NSView* firstView = [self.splitView.subviews objectAtIndex:0];
+  if (firstView) [self.sourcesController loadInView:firstView];
+  
+  // HistoryController displays list of commits for the selected repo and branch
+  self.historyController = [[[GBHistoryViewController alloc] initWithNibName:@"GBHistoryViewController" bundle:nil] autorelease];
+  NSView* secondView = [self.splitView.subviews objectAtIndex:1];
+  [self.historyController loadInView:secondView];
+  
+  self.stageController = [[[GBStageViewController alloc] initWithNibName:@"GBStageViewController" bundle:nil] autorelease];
+  
+  self.commitController = [[[GBCommitViewController alloc] initWithNibName:@"GBCommitViewController" bundle:nil] autorelease];  
+  
+  [self.toolbarController update];
+  [self updateChangesController];
+}
+
+
+
+
+
+#pragma mark NSWindowDelegate
+
+
+- (void) windowWillClose:(NSNotification *)notification
+{
+}
+
+- (void) windowDidBecomeKey:(NSNotification *)notification
+{
+  [self.repositoriesController endBackgroundUpdate];
+}
+
+- (void) windowDidResignKey:(NSNotification *)notification
+{
+  [self.repositoriesController beginBackgroundUpdate];
+}
+
+
+
 
 
 

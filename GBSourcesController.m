@@ -6,6 +6,7 @@
 
 #import "NSFileManager+OAFileManagerHelpers.h"
 #import "NSString+OAStringHelpers.h"
+#import "NSTableView+OATableViewHelpers.h"
 
 @interface GBSourcesController ()
 - (void) reloadOutlineView;
@@ -41,14 +42,6 @@
 #pragma mark GBSourcesController
 
 
-- (void) _withoutOutlineViewDelegate:(void(^)())block
-{
-  id temporarilyRemovedDelegateToSurpressCallbackCycle = [self.outlineView delegate];
-  [self.outlineView setDelegate:nil];
-  block();
-  [self.outlineView setDelegate:temporarilyRemovedDelegateToSurpressCallbackCycle];  
-}
-
 - (void) repositoriesControllerDidAddRepository:(GBRepositoriesController*)aRepositoriesController
 {
   [self.outlineView expandItem:self.repositoriesController.localRepositoryControllers];
@@ -58,7 +51,7 @@
 - (void) repositoriesControllerDidSelectRepository:(GBRepositoriesController*)aRepositoriesController
 {
   GBRepositoryController* repoCtrl = aRepositoriesController.selectedRepositoryController;
-  [self _withoutOutlineViewDelegate:^{
+  [self.outlineView withoutDelegate:^{
     [self.outlineView selectRowIndexes:[NSIndexSet indexSetWithIndex:[self.outlineView rowForItem:repoCtrl]] 
                   byExtendingSelection:NO];
   }];

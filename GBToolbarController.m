@@ -65,6 +65,7 @@
   [self updateBranchMenus];
   [self updateDisabledState];
   [self updateSpinner];
+  [self updateCommitButton];
 }
 
 - (void) updateDisabledState

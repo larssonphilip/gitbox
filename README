@@ -47,7 +47,8 @@ Sources:
 
 
 Bugs:
-- bug: when selected a repo, stage is half-updated + stale content from the previous repo
++ bug: when selecting commit, the cell is not updated immediately
++ bug: when selected a repo, stage is half-updated + stale content from the previous repo
 - bug: commit button should be enabled only when the stage is not clean or there is a selection in the tableview
 - bug: very annoying selection loose on stage/unstage
 - bug: table row selection is ignored if was no selection for ArrayController. Should check NSTableView selectedRowIndexes? See http://forums.macrumors.com/showthread.php?t=166469 

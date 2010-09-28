@@ -64,6 +64,7 @@
 		2038F6C511A030F70087CE37 /* GBTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 2038F6C411A030F70087CE37 /* GBTask.m */; };
 		2038F76D11A04A290087CE37 /* NSString+OAGitHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 2038F76C11A04A290087CE37 /* NSString+OAGitHelpers.m */; };
 		203976651251A63700770D13 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 203976631251A63700770D13 /* Credits.rtf */; };
+		203977E71252815000770D13 /* NSTableView+OATableViewHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 203977E61252815000770D13 /* NSTableView+OATableViewHelpers.m */; };
 		203A572811B6C28900497636 /* commit-marker-unmerged.png in Resources */ = {isa = PBXBuildFile; fileRef = 203A572611B6C28900497636 /* commit-marker-unmerged.png */; };
 		203A572911B6C28900497636 /* commit-marker-unpushed.png in Resources */ = {isa = PBXBuildFile; fileRef = 203A572711B6C28900497636 /* commit-marker-unpushed.png */; };
 		2043A83111C900A0001ED307 /* GBPreferencesController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2043A83011C900A0001ED307 /* GBPreferencesController.m */; };
@@ -227,6 +228,8 @@
 		2038F76B11A04A290087CE37 /* NSString+OAGitHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+OAGitHelpers.h"; sourceTree = "<group>"; };
 		2038F76C11A04A290087CE37 /* NSString+OAGitHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+OAGitHelpers.m"; sourceTree = "<group>"; };
 		203976641251A63700770D13 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
+		203977E51252815000770D13 /* NSTableView+OATableViewHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSTableView+OATableViewHelpers.h"; sourceTree = "<group>"; };
+		203977E61252815000770D13 /* NSTableView+OATableViewHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSTableView+OATableViewHelpers.m"; sourceTree = "<group>"; };
 		203A572611B6C28900497636 /* commit-marker-unmerged.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "commit-marker-unmerged.png"; sourceTree = "<group>"; };
 		203A572711B6C28900497636 /* commit-marker-unpushed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "commit-marker-unpushed.png"; sourceTree = "<group>"; };
 		2043A82F11C900A0001ED307 /* GBPreferencesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBPreferencesController.h; sourceTree = "<group>"; };
@@ -552,6 +555,8 @@
 				20B8B7C111A49975006D6442 /* NSMenu+OAMenuHelpers.m */,
 				20B8B81111A49E8D006D6442 /* NSWindowController+OAWindowControllerHelpers.h */,
 				20B8B81211A49E8D006D6442 /* NSWindowController+OAWindowControllerHelpers.m */,
+				203977E51252815000770D13 /* NSTableView+OATableViewHelpers.h */,
+				203977E61252815000770D13 /* NSTableView+OATableViewHelpers.m */,
 				2058EA0611AEEE3200F2853F /* NSView+OAViewHelpers.h */,
 				2058EA0711AEEE3200F2853F /* NSView+OAViewHelpers.m */,
 				206A088511A7AB36003BB9E3 /* OAActivityIndicator.h */,
@@ -823,6 +828,7 @@
 				206CAC71122EB5F7009284FE /* GBRepositoryController.m in Sources */,
 				206CAC75122EBCAD009284FE /* GBRepositoriesController.m in Sources */,
 				2002AC0C123CA1A20072075C /* OAFSEventStream.m in Sources */,
+				203977E71252815000770D13 /* NSTableView+OATableViewHelpers.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

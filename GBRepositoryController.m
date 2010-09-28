@@ -231,7 +231,7 @@
 - (void) selectCommit:(GBCommit*)commit
 {
   self.selectedCommit = commit;
-  if (!commit.changes)
+  if (commit && !commit.changes)
   {
     [commit loadChangesWithBlock:^{
       OAOptionalDelegateMessage(@selector(repositoryControllerDidUpdateCommitChanges:));
