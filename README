@@ -3,6 +3,7 @@ JUMP GOALS:
 - stage
 - pull
 - push
+- replace pull-push with a single merge or pull button when push is impossible
 - remove repo from sources list
 
 
@@ -46,6 +47,8 @@ Sources:
 
 
 Bugs:
+- bug: when selected a repo, stage is half-updated + stale content from the previous repo
+- bug: commit button should be enabled only when the stage is not clean or there is a selection in the tableview
 - bug: very annoying selection loose on stage/unstage
 - bug: table row selection is ignored if was no selection for ArrayController. Should check NSTableView selectedRowIndexes? See http://forums.macrumors.com/showthread.php?t=166469 
 - bug: for non-existent HEAD gitbox does not show a staged new file
