@@ -8,6 +8,13 @@
 
 @synthesize repository;
 
++ (id) taskWithRepository:(GBRepository*)repo
+{
+  GBTask* task = [self task];
+  task.repository = repo;
+  return task;
+}
+
 - (NSString*) executableName
 {
   return @"git";

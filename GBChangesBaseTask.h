@@ -2,10 +2,9 @@
 @class GBChange;
 @class GBCommit;
 @interface GBChangesBaseTask : GBTask
-{
-}
 
-- (void) updateChangesForCommit:(GBCommit*)commit;
+@property(retain) NSArray* changes;
+
 - (NSArray*) changesFromDiffOutput:(NSData*) data;
 - (void) initializeChange:(GBChange*)change;
 

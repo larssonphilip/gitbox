@@ -55,21 +55,33 @@
 #pragma mark Actions
 
 
-- (void) loadChangesWithBlock:(void(^)())block
+- (void) update
 {
-  
+  self.hasStagedChanges = (self.stagedChanges && [self.stagedChanges count] > 0);
+  self.changes = [self allChanges];
 }
 
-//- (NSArray*) loadChanges
-//{
-//  self.hasStagedChanges = NO;
-//  [self.repository launchTaskAndWait:[GBRefreshIndexTask task]];
-//  [self.repository launchTask:[GBStagedChangesTask task]];
-//  [self.repository launchTask:[GBUnstagedChangesTask task]];
-//  [self.repository launchTask:[GBUntrackedChangesTask task]];
-//  
-//  return [self allChanges];
-//}
+- (void) loadChangesWithBlock:(void(^)())block
+{
+  GBTask* refreshIndexTask = [GBRefreshIndexTask taskWithRepository:self.repository];
+  [refreshIndexTask launchWithBlock:^{
+    GBStagedChangesTask* stagedChangesTask = [GBStagedChangesTask taskWithRepository:self.repository];
+    [stagedChangesTask launchWithBlock:^{
+      self.stagedChanges = stagedChangesTask.changes;
+      [self update];
+    }];
+    GBUnstagedChangesTask* unstagedChangesTask = [GBUnstagedChangesTask taskWithRepository:self.repository];
+    [unstagedChangesTask launchWithBlock:^{
+      self.unstagedChanges = unstagedChangesTask.changes;
+      [self update];
+    }];
+    GBUntrackedChangesTask* untrackedChangesTask = [GBUntrackedChangesTask taskWithRepository:self.repository];
+    [untrackedChangesTask launchWithBlock:^{
+      self.untrackedChanges = untrackedChangesTask.changes;
+      [self update];
+    }];
+  }];
+}
 
 
 

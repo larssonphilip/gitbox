@@ -2,5 +2,6 @@
 
 @class GBRepository;
 @interface GBTask : OATask
-@property(nonatomic,assign) GBRepository* repository;
+@property(assign) GBRepository* repository;
++ (id) taskWithRepository:(GBRepository*)repo;
 @end

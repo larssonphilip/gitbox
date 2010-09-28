@@ -13,20 +13,4 @@
   return YES;
 }
 
-
-- (void) didFinish
-{
-  [super didFinish];
-  GBStage* stage = self.repository.stage;
-  if ([self isError])
-  {
-    stage.unstagedChanges = [NSArray array];
-  }
-  else
-  {
-    stage.unstagedChanges = [self changesFromDiffOutput:self.output];
-  }
-  [self updateChangesForCommit:stage];
-}
-
 @end

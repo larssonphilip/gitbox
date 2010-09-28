@@ -6,16 +6,30 @@
 
 @implementation GBChangesBaseTask
 
+@synthesize changes;
+
+- (void) dealloc
+{
+  self.changes = nil;
+  [super dealloc];
+}
+
 - (BOOL) shouldReadInBackground
 {
   return YES;
 }
 
-- (void) updateChangesForCommit:(GBCommit*)commit
+- (void) didFinish
 {
-  // this little delay helps to group several status tasks in a single UI update to avoid flickering
-  [NSObject cancelPreviousPerformRequestsWithTarget:commit selector:@selector(updateChanges) object:nil];
-  [commit performSelector:@selector(updateChanges) withObject:nil afterDelay:0.1];
+  [super didFinish];
+  if ([self isError])
+  {
+    self.changes = [NSArray array];
+  }
+  else
+  {
+    self.changes = [self changesFromDiffOutput:self.output];
+  }
 }
 
 - (NSArray*) changesFromDiffOutput:(NSData*) data
