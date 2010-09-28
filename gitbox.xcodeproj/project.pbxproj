@@ -63,6 +63,7 @@
 		2038F6B711A02D550087CE37 /* GBStage.m in Sources */ = {isa = PBXBuildFile; fileRef = 2038F6B611A02D550087CE37 /* GBStage.m */; };
 		2038F6C511A030F70087CE37 /* GBTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 2038F6C411A030F70087CE37 /* GBTask.m */; };
 		2038F76D11A04A290087CE37 /* NSString+OAGitHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 2038F76C11A04A290087CE37 /* NSString+OAGitHelpers.m */; };
+		203976651251A63700770D13 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 203976631251A63700770D13 /* Credits.rtf */; };
 		203A572811B6C28900497636 /* commit-marker-unmerged.png in Resources */ = {isa = PBXBuildFile; fileRef = 203A572611B6C28900497636 /* commit-marker-unmerged.png */; };
 		203A572911B6C28900497636 /* commit-marker-unpushed.png in Resources */ = {isa = PBXBuildFile; fileRef = 203A572711B6C28900497636 /* commit-marker-unpushed.png */; };
 		2043A83111C900A0001ED307 /* GBPreferencesController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2043A83011C900A0001ED307 /* GBPreferencesController.m */; };
@@ -120,7 +121,6 @@
 		20BF302011D0E3DC00B6DDC9 /* commit-marker-highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 20BF301F11D0E3DC00B6DDC9 /* commit-marker-highlighted.png */; };
 		20F8058811C1B35A00ADDADA /* commit-header-template.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 20F8058711C1B35A00ADDADA /* commit-header-template.rtf */; };
 		20FAA190123F831400E8FA0E /* git-1.7.1.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 20FAA18F123F831400E8FA0E /* git-1.7.1.bundle */; };
-		8D15AC2C0486D014006FF6A4 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 2A37F4B9FDCFA73011CA2CEA /* Credits.rtf */; };
 		8D15AC320486D014006FF6A4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A37F4B0FDCFA73011CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D15AC340486D014006FF6A4 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */; };
 /* End PBXBuildFile section */
@@ -226,6 +226,7 @@
 		2038F6C411A030F70087CE37 /* GBTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBTask.m; sourceTree = "<group>"; };
 		2038F76B11A04A290087CE37 /* NSString+OAGitHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+OAGitHelpers.h"; sourceTree = "<group>"; };
 		2038F76C11A04A290087CE37 /* NSString+OAGitHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+OAGitHelpers.m"; sourceTree = "<group>"; };
+		203976641251A63700770D13 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
 		203A572611B6C28900497636 /* commit-marker-unmerged.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "commit-marker-unmerged.png"; sourceTree = "<group>"; };
 		203A572711B6C28900497636 /* commit-marker-unpushed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "commit-marker-unpushed.png"; sourceTree = "<group>"; };
 		2043A82F11C900A0001ED307 /* GBPreferencesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBPreferencesController.h; sourceTree = "<group>"; };
@@ -325,7 +326,6 @@
 		20FAA18F123F831400E8FA0E /* git-1.7.1.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = "git-1.7.1.bundle"; sourceTree = "<group>"; };
 		2564AD2C0F5327BB00F57823 /* prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = prefix.pch; sourceTree = "<group>"; };
 		2A37F4B0FDCFA73011CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		2A37F4BAFDCFA73011CA2CEA /* English */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = English; path = English.lproj/Credits.rtf; sourceTree = "<group>"; };
 		2A37F4C4FDCFA73011CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		2A37F4C5FDCFA73011CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		8D15AC360486D014006FF6A4 /* info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = info.plist; sourceTree = "<group>"; };
@@ -616,6 +616,7 @@
 		2A37F4B8FDCFA73011CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				203976631251A63700770D13 /* Credits.rtf */,
 				20FAA18F123F831400E8FA0E /* git-1.7.1.bundle */,
 				20F8058711C1B35A00ADDADA /* commit-header-template.rtf */,
 				2030F19311B82BED00C260E0 /* commit-marker-unmerged-highlighted.png */,
@@ -628,7 +629,6 @@
 				20C716BB120EF7E6002B594F /* DESIGN_NOTES */,
 				2009871711C4597800F35630 /* PAYMENT */,
 				206CAB38122A771D009284FE /* ARCHITECTURE */,
-				2A37F4B9FDCFA73011CA2CEA /* Credits.rtf */,
 				8D15AC360486D014006FF6A4 /* info.plist */,
 				089C1660FE840EACC02AAC07 /* InfoPlist.strings */,
 				2057F0D611ACF075009EDF2F /* sparkle_dsa_pub.pem */,
@@ -701,7 +701,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				209A963E11BC630C006B0B5C /* default_gitignore in Resources */,
-				8D15AC2C0486D014006FF6A4 /* Credits.rtf in Resources */,
 				2038F1B3119366660087CE37 /* InfoPlist.strings in Resources */,
 				2038F1B11193664D0087CE37 /* ObsoleteGBRepositoryController.xib in Resources */,
 				2038F1B7119366960087CE37 /* MainMenu.xib in Resources */,
@@ -729,6 +728,7 @@
 				20A37BB6120DC7640068AB8B /* GBSourcesController.xib in Resources */,
 				20A37BBE120DDBA60068AB8B /* GBMainWindowController.xib in Resources */,
 				20FAA190123F831400E8FA0E /* git-1.7.1.bundle in Resources */,
+				203976651251A63700770D13 /* Credits.rtf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -837,10 +837,10 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		2A37F4B9FDCFA73011CA2CEA /* Credits.rtf */ = {
+		203976631251A63700770D13 /* Credits.rtf */ = {
 			isa = PBXVariantGroup;
 			children = (
-				2A37F4BAFDCFA73011CA2CEA /* English */,
+				203976641251A63700770D13 /* en */,
 			);
 			name = Credits.rtf;
 			sourceTree = "<group>";
