@@ -210,9 +210,10 @@
 {
   self.repository.currentRemoteBranch = remoteBranch;
   [self.repository configureTrackingRemoteBranch:remoteBranch 
-                                   withLocalName:self.repository.currentLocalRef.name 
-                                       withBlock:^{
-    OAOptionalDelegateMessage(@selector(repositoryControllerDidChangeRemoteBranch:));
+       withLocalName:self.repository.currentLocalRef.name 
+           withBlock:^{
+                        OAOptionalDelegateMessage(@selector(repositoryControllerDidChangeRemoteBranch:));
+                        [self loadCommits];
   }];
 }
 

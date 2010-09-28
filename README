@@ -1,7 +1,5 @@
 JUMP GOALS:
 
-- when new branch is created, it is not associated with any branch and causes some blocking task to run every time repo is selected
-
 - pull
 - push
 - remove repo from sources list
