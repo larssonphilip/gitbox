@@ -115,6 +115,7 @@
     [self.commitController unloadView];
     self.stageController.stage = [commit asStage];
     [self.stageController loadInView:targetView];
+    [self.historyController.tableView setNextKeyView:self.stageController.tableView];
     [self.stageController update];
   }
   else
@@ -123,6 +124,7 @@
     [self.stageController unloadView];
     self.commitController.commit = commit;
     [self.commitController loadInView:targetView];
+    [self.historyController.tableView setNextKeyView:self.commitController.tableView];
     [self.commitController update];
   }
 }
@@ -256,7 +258,7 @@
   self.sourcesController = [[[GBSourcesController alloc] initWithNibName:@"GBSourcesController" bundle:nil] autorelease];
   self.sourcesController.repositoriesController = self.repositoriesController;
   NSView* firstView = [self.splitView.subviews objectAtIndex:0];
-  if (firstView) [self.sourcesController loadInView:firstView];
+  [self.sourcesController loadInView:firstView];
   
   // HistoryController displays list of commits for the selected repo and branch
   self.historyController = [[[GBHistoryViewController alloc] initWithNibName:@"GBHistoryViewController" bundle:nil] autorelease];
@@ -266,6 +268,8 @@
   self.stageController = [[[GBStageViewController alloc] initWithNibName:@"GBStageViewController" bundle:nil] autorelease];
   
   self.commitController = [[[GBCommitViewController alloc] initWithNibName:@"GBCommitViewController" bundle:nil] autorelease];  
+  
+  [self.sourcesController.outlineView setNextKeyView:self.historyController.tableView];
   
   [self.toolbarController update];
   [self updateChangesController];
