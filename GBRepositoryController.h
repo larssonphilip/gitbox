@@ -16,6 +16,10 @@
   NSUInteger merging;
   NSUInteger fetching;
   
+  BOOL needsLocalBranchesUpdate;
+  BOOL needsRemotesUpdate;
+  BOOL needsCommitsUpdate;
+  
   BOOL backgroundUpdateEnabled;
   NSTimeInterval backgroundUpdateInterval;
 }

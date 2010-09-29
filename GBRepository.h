@@ -23,9 +23,6 @@ typedef void (^GBBlock)();
 @property(retain) NSArray* localBranchCommits;
 @property(retain) NSString* topCommitId;
 
-@property(assign) BOOL needsLocalBranchesUpdate;
-@property(assign) BOOL needsRemotesUpdate;
-
 
 + (id) repository;
 + (id) repositoryWithURL:(NSURL*)url;
@@ -48,9 +45,7 @@ typedef void (^GBBlock)();
 
 #pragma mark Update
 
-- (void) updateLocalBranchesAndTagsWithBlockIfNeeded:(GBBlock)block;
 - (void) updateLocalBranchesAndTagsWithBlock:(GBBlock)block;
-- (void) updateRemotesWithBlockIfNeeded:(GBBlock)block;
 - (void) updateRemotesWithBlock:(GBBlock)block;
 - (void) updateLocalBranchCommitsWithBlock:(GBBlock)block;
 - (void) updateUnmergedCommitsWithBlock:(GBBlock)block;

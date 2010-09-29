@@ -24,9 +24,6 @@
 @synthesize localBranchCommits;
 @synthesize topCommitId;
 
-@synthesize needsLocalBranchesUpdate;
-@synthesize needsRemotesUpdate;
-
 
 
 #pragma mark Init
@@ -243,16 +240,8 @@
 
 
 
-- (void) updateLocalBranchesAndTagsWithBlockIfNeeded:(GBBlock)block
-{
-  if (!needsLocalBranchesUpdate) return;
-  [self updateLocalBranchesAndTagsWithBlock:block];
-  
-}
-
 - (void) updateLocalBranchesAndTagsWithBlock:(GBBlock)block
 {
-  self.needsLocalBranchesUpdate = NO;
   GBLocalBranchesTask* task = [GBLocalBranchesTask task];
   task.repository = self;
   [task launchWithBlock:^{
@@ -262,15 +251,8 @@
   }];
 }
 
-- (void) updateRemotesWithBlockIfNeeded:(GBBlock)block
-{
-  if (!needsRemotesUpdate) return;
-  [self updateRemotesWithBlock:block];
-}
-
 - (void) updateRemotesWithBlock:(GBBlock)block
 {
-  self.needsRemotesUpdate = NO;
   GBRemotesTask* task = [GBRemotesTask task];
   task.repository = self;
   [task launchWithBlock:^{

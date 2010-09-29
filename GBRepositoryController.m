@@ -102,8 +102,9 @@
 
 - (void) setNeedsUpdateEverything
 {
-  self.repository.needsLocalBranchesUpdate = YES;
-  self.repository.needsRemotesUpdate = YES;
+  needsLocalBranchesUpdate = YES;
+  needsRemotesUpdate = YES;
+  needsCommitsUpdate = YES;
 }
 
 
@@ -118,19 +119,28 @@
 {
   GBRepository* repo = self.repository;
   [self updateCurrentBranchesIfNeededWithBlock:^{
-    [repo updateLocalBranchesAndTagsWithBlockIfNeeded:^{
-      OAOptionalDelegateMessage(@selector(repositoryControllerDidUpdateLocalBranches:));
-    }];
-    [repo updateRemotesWithBlockIfNeeded:^{
-      for (GBRemote* remote in repo.remotes)
-      {
-        [remote updateBranchesWithBlock:^{
-          OAOptionalDelegateMessage(@selector(repositoryControllerDidUpdateRemoteBranches:));
-        }];
-      }
-    }];
-    if (!self.repository.localBranchCommits)
+    if (needsLocalBranchesUpdate)
     {
+      needsLocalBranchesUpdate = NO;
+      [repo updateLocalBranchesAndTagsWithBlock:^{
+        OAOptionalDelegateMessage(@selector(repositoryControllerDidUpdateLocalBranches:));
+      }];
+    }
+    if (needsRemotesUpdate)
+    {
+      needsRemotesUpdate = NO;
+      [repo updateRemotesWithBlock:^{
+        for (GBRemote* remote in repo.remotes)
+        {
+          [remote updateBranchesWithBlock:^{
+            OAOptionalDelegateMessage(@selector(repositoryControllerDidUpdateRemoteBranches:));
+          }];
+        }
+      }];
+    }
+    if (needsCommitsUpdate)
+    {
+      needsCommitsUpdate = NO;
       [self loadCommits];
     }
   }];

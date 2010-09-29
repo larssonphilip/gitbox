@@ -73,6 +73,10 @@
   self.selectedRepositoryController = repoCtrl;
   [repoCtrl updateRepositoryIfNeeded];
   OAOptionalDelegateMessage(@selector(repositoriesControllerDidSelectRepository:));
+  if (!repoCtrl.selectedCommit)
+  {
+    [repoCtrl selectCommit:repoCtrl.repository.stage];
+  }
 }
 
 - (void) setNeedsUpdateEverything
