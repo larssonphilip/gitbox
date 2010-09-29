@@ -4,6 +4,9 @@ typedef void (^OATaskBlock)();
 
 @class OAActivity;
 @interface OATask : NSObject
+{
+  NSInteger logIndentation;
+}
 
 @property(nonatomic,retain) NSString* executableName;
 @property(nonatomic,retain) NSString* launchPath;

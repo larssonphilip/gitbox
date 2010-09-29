@@ -12,12 +12,14 @@
 
 #import "OAPropertyListController.h"
 #import "OAOptionalDelegateMessage.h"
+#import "OAFSEventStream.h"
 
 @implementation GBRepositoryController
 
 @synthesize repository;
 @synthesize selectedCommit;
 @synthesize plistController;
+@synthesize fsEventStream;
 
 @synthesize isDisabled;
 @synthesize isSpinning;
@@ -28,6 +30,7 @@
   self.repository = nil;
   self.selectedCommit = nil;
   self.plistController = nil;
+  self.fsEventStream = nil;
   [super dealloc];
 }
 
@@ -362,10 +365,20 @@
 //}
 //
 
-- (void) finishOperations
+- (void) start
+{
+  self.fsEventStream = [[OAFSEventStream new] autorelease];
+  [self.fsEventStream addPath:[[self url] path] withBlock:^{
+    NSLog(@"FSEvent: %@", [self url]);
+  }];
+  [self.fsEventStream start];
+}
+
+- (void) stop
 {
   //[self endBackgroundUpdate];
   [self.plistController synchronize];
+  [self.fsEventStream stop];
 }
 
 

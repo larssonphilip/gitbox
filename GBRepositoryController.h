@@ -7,6 +7,7 @@
 
 @class GBMainWindowController;
 @class OAPropertyListController;
+@class OAFSEventStream;
 
 @interface GBRepositoryController : NSObject
 {
@@ -22,6 +23,7 @@
 @property(retain) GBRepository* repository;
 @property(retain) GBCommit* selectedCommit;
 @property(nonatomic,retain) OAPropertyListController* plistController;
+@property(retain) OAFSEventStream* fsEventStream;
 
 @property(assign) NSInteger isDisabled;
 @property(assign) NSInteger isSpinning;
@@ -66,7 +68,10 @@
 - (void) resetBackgroundUpdateInterval;
 //- (void) beginBackgroundUpdate;
 //- (void) endBackgroundUpdate;
-- (void) finishOperations;
+
+
+- (void) start;
+- (void) stop;
 
 
 @end

@@ -61,8 +61,9 @@
 - (void) addLocalRepositoryController:(GBRepositoryController*)repoCtrl
 {
   OAOptionalDelegateMessage(@selector(repositoriesControllerWillAddRepository:));
-  [repoCtrl setNeedsUpdateEverything];
   [self.localRepositoryControllers addObject:repoCtrl];
+  [repoCtrl setNeedsUpdateEverything];
+  [repoCtrl start];
   OAOptionalDelegateMessage(@selector(repositoriesControllerDidAddRepository:));
 }
 

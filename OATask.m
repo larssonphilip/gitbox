@@ -7,6 +7,8 @@
 #import "GBActivityController.h"
 
 NSString* OATaskNotification = @"OATaskNotification";
+NSInteger totalRunningTasks = 0;
+NSInteger totalFinishedUnindentedTasks = 0;
 
 
 @interface OATask ()
@@ -293,13 +295,20 @@ NSString* OATaskNotification = @"OATaskNotification";
 - (void) launchWithBlock:(void(^)())block
 {
 #if DEBUG
-  NSLog(@"%@:%p launched", [self class], self);
+  //logIndentation = totalRunningTasks;
+  NSLog(@"%@%@:%p launched", [@"" stringByPaddingToLength:logIndentation*4 withString:@" " startingAtIndex:0], [self class], self);
+  //totalRunningTasks++;
 #endif
   dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     [self launchAndWait];
 #if DEBUG
     dispatch_async(dispatch_get_main_queue(), ^{
-      NSLog(@"%@:%p finished.", [self class], self);
+      NSLog(@"%@%@:%p finished.", [@"" stringByPaddingToLength:logIndentation*4 withString:@" " startingAtIndex:0], [self class], self);
+//      totalFinishedUnindentedTasks++;
+//      if (logIndentation == (totalRunningTasks - 1))
+//      {
+//        totalRunningTasks -= totalFinishedUnindentedTasks;
+//      }
       block();
     });
 #else
