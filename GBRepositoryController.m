@@ -368,8 +368,11 @@
 - (void) start
 {
   self.fsEventStream = [[OAFSEventStream new] autorelease];
-  [self.fsEventStream addPath:[[self url] path] withBlock:^{
-    NSLog(@"FSEvent: %@", [self url]);
+#if DEBUG
+  //self.fsEventStream.shouldLogEvents = YES;
+#endif
+  [self.fsEventStream addPath:[[self url] path] withBlock:^(NSString* path){
+    NSLog(@"FSEvent: %@", path);
   }];
   [self.fsEventStream start];
 }
