@@ -106,13 +106,13 @@ void OAFSEventStreamCallback( ConstFSEventStreamRef streamRef,
   FSEventStreamRelease(streamRef);
 }
 
-- (void) pause
+- (void) pushPause
 {
   paused++;
   if (paused == 1) FSEventStreamStop(streamRef);
 }
 
-- (void) resume
+- (void) popPause
 {
   paused--;
   if (paused == 0) FSEventStreamStart(streamRef);
@@ -134,7 +134,7 @@ void OAFSEventStreamCallback( ConstFSEventStreamRef streamRef,
   //NSLog(@".. %@", watchedPath);
   OAFSEventStreamCallbackBlock block = [self.blocksByPaths objectForKey:watchedPath];
   NSString* changedPath = [self.coalescedPathsByPaths objectForKey:watchedPath];
-  if (block && changedPath) block(changedPath);
+  if (block && changedPath && !paused) block(changedPath);
   [self.coalescedPathsByPaths removeObjectForKey:watchedPath];
 }
 

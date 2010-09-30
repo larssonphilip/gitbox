@@ -17,8 +17,8 @@ typedef void (^OAFSEventStreamCallbackBlock)(NSString*);
 - (void) start;
 - (void) stop;
 
-- (void) pause;
-- (void) resume;
+- (void) pushPause;
+- (void) popPause;
 
 - (void) addPath:(NSString*)aPath withBlock:(OAFSEventStreamCallbackBlock)block;
 - (void) removePath:(NSString*)aPath;
