@@ -381,8 +381,11 @@
 #if DEBUG
   //self.fsEventStream.shouldLogEvents = YES;
 #endif
-  [self.fsEventStream addPath:[[self url] path] withBlock:^(NSString* path){
-    NSLog(@"FSEvent: %@", path);
+  [self.fsEventStream addPath:[self.repository path] withBlock:^(NSString* path){
+    NSLog(@"FSEvent for repo: %@", path);
+  }];
+  [self.fsEventStream addPath:[self.repository.dotGitURL path] withBlock:^(NSString* path){
+    NSLog(@"FSEvent for .git: %@", path);
   }];
   [self.fsEventStream start];
 }

@@ -11,6 +11,7 @@ typedef void (^OAFSEventStreamCallbackBlock)(NSString*);
 }
 
 @property(nonatomic,retain) NSMutableDictionary* blocksByPaths;
+@property(nonatomic,retain) NSMutableDictionary* coalescedPathsByPaths;
 @property(assign) BOOL shouldLogEvents;
 
 - (void) start;

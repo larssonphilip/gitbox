@@ -1,5 +1,5 @@
 #import "OAFSEventStream.h"
-
+#import "NSString+OAStringHelpers.h"
 
 void OAFSEventStreamCallback( ConstFSEventStreamRef streamRef,
                              void* info,
@@ -19,11 +19,13 @@ void OAFSEventStreamCallback( ConstFSEventStreamRef streamRef,
 
 @implementation OAFSEventStream
 @synthesize blocksByPaths;
+@synthesize coalescedPathsByPaths;
 @synthesize shouldLogEvents;
 
 - (void) dealloc
 {
   self.blocksByPaths = nil;
+  self.coalescedPathsByPaths = nil;
   [super dealloc];
 }
 
@@ -34,6 +36,15 @@ void OAFSEventStreamCallback( ConstFSEventStreamRef streamRef,
     self.blocksByPaths = [NSMutableDictionary dictionary];
   }
   return blocksByPaths;
+}
+
+- (NSMutableDictionary*) coalescedPathsByPaths
+{
+  if (!coalescedPathsByPaths)
+  {
+    self.coalescedPathsByPaths = [NSMutableDictionary dictionary];
+  }
+  return coalescedPathsByPaths;
 }
 
 - (void) addPath:(NSString*)aPath withBlock:(OAFSEventStreamCallbackBlock)block
@@ -57,7 +68,7 @@ void OAFSEventStreamCallback( ConstFSEventStreamRef streamRef,
   streamContext.release = NULL;
   streamContext.copyDescription = NULL;
   
-  CFAbsoluteTime latency = 1.0; /* seconds */
+  CFAbsoluteTime latency = 0.2; /* seconds */
   
   /* Create the stream, passing in a callback */
   streamRef = FSEventStreamCreate(NULL,
@@ -88,6 +99,8 @@ void OAFSEventStreamCallback( ConstFSEventStreamRef streamRef,
 
 - (void) stop
 {
+  [NSObject cancelPreviousPerformRequestsWithTarget:self];
+  self.coalescedPathsByPaths = nil;
   FSEventStreamUnscheduleFromRunLoop(streamRef, CFRunLoopGetCurrent(), kCFRunLoopDefaultMode);
   FSEventStreamStop(streamRef);
   FSEventStreamRelease(streamRef);
@@ -103,6 +116,26 @@ void OAFSEventStreamCallback( ConstFSEventStreamRef streamRef,
 {
   paused--;
   if (paused == 0) FSEventStreamStart(streamRef);
+}
+
+- (void) delayCallbackForPath:(NSString*)watchedPath
+{
+  //NSLog(@"!! %@", watchedPath);
+  [NSObject cancelPreviousPerformRequestsWithTarget:self
+                                           selector:@selector(delayedCallbackForPath:)
+                                             object:watchedPath];
+  [self performSelector:@selector(delayedCallbackForPath:)
+             withObject:watchedPath
+             afterDelay:0.3];
+}
+
+- (void) delayedCallbackForPath:(NSString*)watchedPath
+{
+  //NSLog(@".. %@", watchedPath);
+  OAFSEventStreamCallbackBlock block = [self.blocksByPaths objectForKey:watchedPath];
+  NSString* changedPath = [self.coalescedPathsByPaths objectForKey:watchedPath];
+  if (block && changedPath) block(changedPath);
+  [self.coalescedPathsByPaths removeObjectForKey:watchedPath];
 }
 
 - (void) eventDidHappenWithPath:(NSString*)path id:(FSEventStreamEventId)eventId flags:(FSEventStreamEventFlags)eventFlags
@@ -130,25 +163,35 @@ void OAFSEventStreamCallback( ConstFSEventStreamRef streamRef,
   }
   
   OAFSEventStreamCallbackBlock block = [self.blocksByPaths objectForKey:path];
+  NSString* watchedPath = nil;
   if (block)
   {
-    block(path);
+    watchedPath = path;
   }
   else
   {
-    for (NSString* watchedPath in self.blocksByPaths)
+    NSString* longestCommonPrefix = @"";
+    for (NSString* wp in self.blocksByPaths)
     {
-      NSLog(@"FIXME: commonPrefix may be incorrect: /foo vs. /foobar => /foo (OAFSEventStream)");
-      
-      NSString* commonPrefix = [path commonPrefixWithString:watchedPath options:0];
-      if ([commonPrefix isEqualToString:watchedPath])
+      NSString* commonPrefix = [path commonPrefixWithPath:wp];
+      if ([commonPrefix isEqualToString:wp] &&
+          [commonPrefix length] > [longestCommonPrefix length])
       {
-        block = [self.blocksByPaths objectForKey:watchedPath];
-        if (block) block(path);
+        longestCommonPrefix = commonPrefix;
       }
     }
+    if ([longestCommonPrefix length] == 0) return;
+    
+    watchedPath = longestCommonPrefix;
   }
+  NSString* shortestCoalescedPath = [self.coalescedPathsByPaths objectForKey:watchedPath];
+  if (!shortestCoalescedPath || [shortestCoalescedPath length] > [path length])
+  {
+    [self.coalescedPathsByPaths setObject:path forKey:watchedPath];
+  }
+  [self delayCallbackForPath:watchedPath];
 }
+
 
 
 @end
