@@ -264,6 +264,41 @@
   }];
 }
 
+- (void) dotgitStateDidChange
+{
+  // reload local branches, load commits
+
+  GBRepository* repo = self.repository;
+  
+  [self pushDisabled];
+  [self pushSpinning];
+  
+  repo.currentLocalRef = nil;
+  repo.currentRemoteBranch = nil;
+  [self updateCurrentBranchesIfNeededWithBlock:^{
+    [self.repository updateLocalBranchesAndTagsWithBlock:^{
+      OAOptionalDelegateMessage(@selector(repositoryControllerDidUpdateLocalBranches:));
+    }];
+    [self loadCommits];
+    [self popDisabled];
+    [self popSpinning];
+  }];
+}
+
+- (void) workingDirectoryStateDidChange
+{
+  // update stage
+  
+  GBRepository* repo = self.repository;
+  
+  if (repo.stage)
+  {
+    [repo.stage loadChangesWithBlock:^{
+      OAOptionalDelegateMessage(@selector(repositoryControllerDidUpdateCommitChanges:));
+    }];
+  }
+}
+
 - (void) pull
 {
   
@@ -417,10 +452,10 @@
 #endif
   
   [self.fsEventStream addPath:[self.repository path] withBlock:^(NSString* path){
-    NSLog(@"FSEvent for repo: %@", path);
+    [self workingDirectoryStateDidChange];
   }];
   [self.fsEventStream addPath:[self.repository.dotGitURL path] withBlock:^(NSString* path){
-    NSLog(@"FSEvent for .git: %@", path);
+    [self dotgitStateDidChange];
   }];
   [self.fsEventStream start];
 }
