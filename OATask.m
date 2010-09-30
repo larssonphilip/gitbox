@@ -7,9 +7,6 @@
 #import "GBActivityController.h"
 
 NSString* OATaskNotification = @"OATaskNotification";
-NSInteger totalRunningTasks = 0;
-NSInteger totalFinishedUnindentedTasks = 0;
-
 
 @interface OATask ()
 - (void) beginAllCallbacks;
@@ -294,21 +291,23 @@ NSInteger totalFinishedUnindentedTasks = 0;
 
 - (void) launchWithBlock:(void(^)())block
 {
+  static char columns[13] = "000000000000\0";
+  
 #if DEBUG
-  //logIndentation = totalRunningTasks;
-  NSLog(@"%@%@:%p launched", [@"" stringByPaddingToLength:logIndentation*4 withString:@" " startingAtIndex:0], [self class], self);
-  //totalRunningTasks++;
+  char* c = columns;
+  NSInteger logIndentation = 0;
+  while (*c++ == '1') logIndentation++;
+  if (logIndentation > 11) logIndentation = 11;
+  columns[logIndentation] = '1';
+  
+  NSLog(@"%@%@!", [@"" stringByPaddingToLength:logIndentation*16 withString:@" " startingAtIndex:0], [self class]);
 #endif
   dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     [self launchAndWait];
 #if DEBUG
     dispatch_async(dispatch_get_main_queue(), ^{
-      NSLog(@"%@%@:%p finished.", [@"" stringByPaddingToLength:logIndentation*4 withString:@" " startingAtIndex:0], [self class], self);
-//      totalFinishedUnindentedTasks++;
-//      if (logIndentation == (totalRunningTasks - 1))
-//      {
-//        totalRunningTasks -= totalFinishedUnindentedTasks;
-//      }
+      NSLog(@"%@%@.", [@"" stringByPaddingToLength:logIndentation*16 withString:@" " startingAtIndex:0], [self class]);
+      columns[logIndentation] = '0';
       block();
     });
 #else

@@ -267,13 +267,15 @@
 - (void) workingDirectoryStateDidChange
 {
   // update stage
-  
+  //NSLog(@"FSEvents: workingDirectoryStateDidChange");
   GBRepository* repo = self.repository;
   
   if (repo.stage)
   {
+    [self pushSpinning];
     [repo.stage loadChangesWithBlock:^{
       OAOptionalDelegateMessage(@selector(repositoryControllerDidUpdateCommitChanges:));
+      [self popSpinning];
     }];
   }
 }
@@ -281,7 +283,7 @@
 - (void) dotgitStateDidChange
 {
   // reload local branches, load commits
-  
+  //NSLog(@"FSEvents: dotgitStateDidChange");
   GBRepository* repo = self.repository;
   
   [self pushDisabled];
@@ -295,10 +297,15 @@
     }];
     [self loadCommits];
     [self popDisabled];
+    
+    [self pushSpinning];
+    [repo.stage loadChangesWithBlock:^{
+      OAOptionalDelegateMessage(@selector(repositoryControllerDidUpdateCommitChanges:));
+      [self popSpinning];
+    }];
+    
     [self popSpinning];
   }];
-  
-  [self workingDirectoryStateDidChange];
 }
 
 - (void) pull
@@ -317,8 +324,10 @@
   self.selectedCommit = commit;
   if (commit && !commit.changes)
   {
+    [self pushSpinning];
     [commit loadChangesWithBlock:^{
       OAOptionalDelegateMessage(@selector(repositoryControllerDidUpdateCommitChanges:));
+      [self popSpinning];
     }];
   }
   OAOptionalDelegateMessage(@selector(repositoryControllerDidSelectCommit:));
@@ -329,25 +338,28 @@
 {
   [self pushSpinning];
   NSString* oldTopCommitId = self.repository.topCommitId;
-  [self.repository updateLocalBranchCommitsWithBlock:^{
-    NSString* newTopCommitId = self.repository.topCommitId;
-    if (newTopCommitId && ![oldTopCommitId isEqualToString:newTopCommitId])
-    {
-      [self resetBackgroundUpdateInterval];
-    }
-    OAOptionalDelegateMessage(@selector(repositoryControllerDidUpdateCommits:));
-    [self pushSpinning];
-    [self.repository updateUnmergedCommitsWithBlock:^{
+  if (self.repository.currentLocalRef)
+  {
+    [self.repository updateLocalBranchCommitsWithBlock:^{
+      NSString* newTopCommitId = self.repository.topCommitId;
+      if (newTopCommitId && ![oldTopCommitId isEqualToString:newTopCommitId])
+      {
+        [self resetBackgroundUpdateInterval];
+      }
       OAOptionalDelegateMessage(@selector(repositoryControllerDidUpdateCommits:));
+      [self pushSpinning];
+      [self.repository updateUnmergedCommitsWithBlock:^{
+        OAOptionalDelegateMessage(@selector(repositoryControllerDidUpdateCommits:));
+        [self popSpinning];
+      }];
+      [self pushSpinning];
+      [self.repository updateUnpushedCommitsWithBlock:^{
+        OAOptionalDelegateMessage(@selector(repositoryControllerDidUpdateCommits:));
+        [self popSpinning];
+      }];
       [self popSpinning];
-    }];
-    [self pushSpinning];
-    [self.repository updateUnpushedCommitsWithBlock:^{
-      OAOptionalDelegateMessage(@selector(repositoryControllerDidUpdateCommits:));
-      [self popSpinning];
-    }];
-    [self popSpinning];
-  }];  
+    }];    
+  }
 }
 
 

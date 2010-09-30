@@ -59,7 +59,14 @@
 - (void) didFinish
 {
   [super didFinish];
-  self.commits = [self commitsFromRawFormatData:self.output];
+  if ([self isError])
+  {
+    self.commits = [NSArray array];
+  }
+  else
+  {
+    self.commits = [self commitsFromRawFormatData:self.output];
+  }
 }
 
 

@@ -69,19 +69,17 @@
     [stagedChangesTask launchWithBlock:^{
       self.stagedChanges = stagedChangesTask.changes;
       [self update];
-      block();
-    }];
-    GBUnstagedChangesTask* unstagedChangesTask = [GBUnstagedChangesTask taskWithRepository:self.repository];
-    [unstagedChangesTask launchWithBlock:^{
-      self.unstagedChanges = unstagedChangesTask.changes;
-      [self update];
-      block();
-    }];
-    GBUntrackedChangesTask* untrackedChangesTask = [GBUntrackedChangesTask taskWithRepository:self.repository];
-    [untrackedChangesTask launchWithBlock:^{
-      self.untrackedChanges = untrackedChangesTask.changes;
-      [self update];
-      block();
+      GBUnstagedChangesTask* unstagedChangesTask = [GBUnstagedChangesTask taskWithRepository:self.repository];
+      [unstagedChangesTask launchWithBlock:^{
+        self.unstagedChanges = unstagedChangesTask.changes;
+        [self update];
+        GBUntrackedChangesTask* untrackedChangesTask = [GBUntrackedChangesTask taskWithRepository:self.repository];
+        [untrackedChangesTask launchWithBlock:^{
+          self.untrackedChanges = untrackedChangesTask.changes;
+          [self update];
+          block();
+        }];
+      }];
     }];
   }];
 }

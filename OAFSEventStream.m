@@ -111,8 +111,10 @@ void OAFSEventStreamCallback( ConstFSEventStreamRef streamRef,
   paused++;
   if (paused == 1)
   {
-    
-    FSEventStreamStop(streamRef);
+    //NSLog(@"OAFSEventStream: stopped");
+    // Looks like the stream flushes accumulated events when it was stopped. 
+    // Let's not stop it, but simply ignore if on pause.
+    //if (streamRef) FSEventStreamStop(streamRef);
   }
 }
 
@@ -121,8 +123,10 @@ void OAFSEventStreamCallback( ConstFSEventStreamRef streamRef,
   paused--;
   if (paused == 0)
   {
-    
-    FSEventStreamStart(streamRef);
+    //NSLog(@"OAFSEventStream: started again");
+    // Looks like the stream flushes accumulated events when it was stopped. 
+    // Let's not stop it, but simply ignore if on pause
+    //if (streamRef) FSEventStreamStart(streamRef);
   }
 }
 
@@ -141,7 +145,7 @@ void OAFSEventStreamCallback( ConstFSEventStreamRef streamRef,
 
 - (void) delayCallbackForPath:(NSString*)watchedPath
 {
-  //NSLog(@"!! %@", watchedPath);
+  //NSLog(@"OAFSEventStream: delayCallbackForPath:%@", watchedPath);
   [NSObject cancelPreviousPerformRequestsWithTarget:self
                                            selector:@selector(delayedCallbackForPath:)
                                              object:watchedPath];
@@ -152,10 +156,10 @@ void OAFSEventStreamCallback( ConstFSEventStreamRef streamRef,
 
 - (void) delayedCallbackForPath:(NSString*)watchedPath
 {
-  //NSLog(@".. %@", watchedPath);
+  //NSLog(@"OAFSEventStream: delayedCallbackForPath:%@ (later)", watchedPath);
   OAFSEventStreamCallbackBlock block = [self.blocksByPaths objectForKey:watchedPath];
   NSString* changedPath = [[[self.coalescedPathsByPaths objectForKey:watchedPath] copy] autorelease];
-  if (block && changedPath && !paused) 
+  if (block && changedPath) 
   {
     block(changedPath);
   }
@@ -184,8 +188,10 @@ void OAFSEventStreamCallback( ConstFSEventStreamRef streamRef,
       if (eventFlags & kFSEventStreamEventFlagUnmount)         [flags addObject: @"Unmount"];
     }
     
-    NSLog(@"OAFSEventStream: event with path %@ (flags: %@)", path, [flags componentsJoinedByString:@"|"]);    
+    NSLog(@"OAFSEventStream: event with path %@ (flags: %@) paused = %d", path, [flags componentsJoinedByString:@"|"], (int)paused);    
   }
+  
+  if (paused) return;
   
   OAFSEventStreamCallbackBlock block = [self.blocksByPaths objectForKey:path];
   NSString* watchedPath = nil;
