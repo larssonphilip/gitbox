@@ -47,6 +47,7 @@ Sources:
 
 
 Bugs:
+- fsevents: after commit *** -[NSCFArray objectAtIndex:]: index (9223372036854775807 (or possibly larger)) beyond bounds (613)
 + bug: when selecting commit, the cell is not updated immediately
 + bug: when selected a repo, stage is half-updated + stale content from the previous repo
 - bug: commit button should be enabled only when the stage is not clean or there is a selection in the tableview
