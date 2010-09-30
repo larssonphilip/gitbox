@@ -30,6 +30,7 @@
 @property(retain) OAFSEventStream* fsEventStream;
 
 @property(assign) NSInteger isDisabled;
+@property(assign) NSInteger isRemoteBranchesDisabled;
 @property(assign) NSInteger isSpinning;
 @property(assign) NSObject<GBRepositoryControllerDelegate>* delegate;
 
@@ -40,6 +41,9 @@
 
 - (void) pushDisabled;
 - (void) popDisabled;
+
+- (void) pushRemoteBranchesDisabled;
+- (void) popRemoteBranchesDisabled;
 
 - (void) pushSpinning;
 - (void) popSpinning;

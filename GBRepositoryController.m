@@ -22,6 +22,7 @@
 @synthesize fsEventStream;
 
 @synthesize isDisabled;
+@synthesize isRemoteBranchesDisabled;
 @synthesize isSpinning;
 @synthesize delegate;
 
@@ -82,6 +83,24 @@
   }
 }
 
+- (void) pushRemoteBranchesDisabled
+{
+  isRemoteBranchesDisabled++;
+  if (isRemoteBranchesDisabled == 1)
+  {
+    OAOptionalDelegateMessage(@selector(repositoryControllerDidChangeDisabledStatus:));
+  }
+}
+
+- (void) popRemoteBranchesDisabled
+{
+  isRemoteBranchesDisabled--;
+  if (isRemoteBranchesDisabled == 0)
+  {
+    OAOptionalDelegateMessage(@selector(repositoryControllerDidChangeDisabledStatus:));
+  }
+}
+
 - (void) pushSpinning
 {
   isSpinning++;
@@ -118,24 +137,35 @@
 - (void) updateRepositoryIfNeeded
 {
   GBRepository* repo = self.repository;
+  [self pushSpinning];
   [self updateCurrentBranchesIfNeededWithBlock:^{
     if (needsLocalBranchesUpdate)
     {
       needsLocalBranchesUpdate = NO;
+      [self pushSpinning];
       [repo updateLocalBranchesAndTagsWithBlock:^{
         OAOptionalDelegateMessage(@selector(repositoryControllerDidUpdateLocalBranches:));
+        [self popSpinning];
       }];
     }
     if (needsRemotesUpdate)
     {
       needsRemotesUpdate = NO;
+      [self pushSpinning];
+      [self pushRemoteBranchesDisabled];
       [repo updateRemotesWithBlock:^{
         for (GBRemote* remote in repo.remotes)
         {
+          [self pushSpinning];
+          [self pushRemoteBranchesDisabled];
           [remote updateBranchesWithBlock:^{
             OAOptionalDelegateMessage(@selector(repositoryControllerDidUpdateRemoteBranches:));
+            [self popSpinning];
+            [self popRemoteBranchesDisabled];
           }];
         }
+        [self popSpinning];
+        [self popRemoteBranchesDisabled];
       }];
     }
     if (needsCommitsUpdate)
@@ -143,6 +173,7 @@
       needsCommitsUpdate = NO;
       [self loadCommits];
     }
+    [self popSpinning];
   }];
 }
 
@@ -155,11 +186,12 @@
   {
     repo.currentLocalRef = [repo loadCurrentLocalRef];
   }
-  
+  [self pushSpinning];
   [repo.currentLocalRef loadConfiguredRemoteBranchIfNeededWithBlock:^{
     repo.currentRemoteBranch = repo.currentLocalRef.configuredRemoteBranch;
     OAOptionalDelegateMessage(@selector(repositoryControllerDidUpdateRemoteBranches:));
     block();
+    [self popSpinning];
   }];
 }
 

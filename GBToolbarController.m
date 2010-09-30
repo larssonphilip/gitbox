@@ -72,7 +72,7 @@
 {
   BOOL isDisabled = self.repositoryController.isDisabled || !self.repositoryController;
   BOOL isCurrentBranchDisabled = NO; // TODO: get from repo controller
-  BOOL isRemoteBranchDisabled  = NO; // TODO: get from repo controller
+  BOOL isRemoteBranchDisabled  = self.repositoryController.isRemoteBranchesDisabled;
   [self.currentBranchPopUpButton setEnabled:!isDisabled && !isCurrentBranchDisabled];
   [self.remoteBranchPopUpButton setEnabled:!isDisabled && !isRemoteBranchDisabled];
   [self updateSyncButtons];
@@ -398,7 +398,7 @@
   NSSegmentedControl* control = self.pullPushControl;
   GBRepository* repo = self.repositoryController.repository;
   
-  BOOL isDisabled = self.repositoryController.isDisabled;
+  BOOL isDisabled = self.repositoryController.isDisabled || self.repositoryController.isRemoteBranchesDisabled;
   BOOL pullDisabled = NO;
   BOOL pushDisabled = NO;
   
