@@ -264,10 +264,24 @@
   }];
 }
 
+- (void) workingDirectoryStateDidChange
+{
+  // update stage
+  
+  GBRepository* repo = self.repository;
+  
+  if (repo.stage)
+  {
+    [repo.stage loadChangesWithBlock:^{
+      OAOptionalDelegateMessage(@selector(repositoryControllerDidUpdateCommitChanges:));
+    }];
+  }
+}
+
 - (void) dotgitStateDidChange
 {
   // reload local branches, load commits
-
+  
   GBRepository* repo = self.repository;
   
   [self pushDisabled];
@@ -283,20 +297,8 @@
     [self popDisabled];
     [self popSpinning];
   }];
-}
-
-- (void) workingDirectoryStateDidChange
-{
-  // update stage
   
-  GBRepository* repo = self.repository;
-  
-  if (repo.stage)
-  {
-    [repo.stage loadChangesWithBlock:^{
-      OAOptionalDelegateMessage(@selector(repositoryControllerDidUpdateCommitChanges:));
-    }];
-  }
+  [self workingDirectoryStateDidChange];
 }
 
 - (void) pull
