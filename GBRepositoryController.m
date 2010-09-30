@@ -103,6 +103,7 @@
 
 - (void) pushSpinning
 {
+  [self pushFSEventsPause];
   isSpinning++;
   if (isSpinning == 1) 
   {
@@ -112,6 +113,7 @@
 
 - (void) popSpinning
 {
+  [self popFSEventsPause];
   isSpinning--;
   if (isSpinning == 0)
   {
@@ -413,6 +415,7 @@
 #if DEBUG
   //self.fsEventStream.shouldLogEvents = YES;
 #endif
+  
   [self.fsEventStream addPath:[self.repository path] withBlock:^(NSString* path){
     NSLog(@"FSEvent for repo: %@", path);
   }];
@@ -427,6 +430,17 @@
   //[self endBackgroundUpdate];
   [self.plistController synchronize];
   [self.fsEventStream stop];
+}
+
+// FIXME: change this to per-path pauses to allow other repos update  
+- (void) pushFSEventsPause
+{
+  [self.fsEventStream pushPause];
+}
+
+- (void) popFSEventsPause
+{
+  [self.fsEventStream popPause];
 }
 
 

@@ -109,13 +109,21 @@ void OAFSEventStreamCallback( ConstFSEventStreamRef streamRef,
 - (void) pushPause
 {
   paused++;
-  if (paused == 1) FSEventStreamStop(streamRef);
+  if (paused == 1)
+  {
+    
+    FSEventStreamStop(streamRef);
+  }
 }
 
 - (void) popPause
 {
   paused--;
-  if (paused == 0) FSEventStreamStart(streamRef);
+  if (paused == 0)
+  {
+    
+    FSEventStreamStart(streamRef);
+  }
 }
 
 - (void) delayCallbackForPath:(NSString*)watchedPath

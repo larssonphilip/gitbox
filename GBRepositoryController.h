@@ -48,6 +48,9 @@
 - (void) pushSpinning;
 - (void) popSpinning;
 
+- (void) pushFSEventsPause;
+- (void) popFSEventsPause;
+
 - (void) setNeedsUpdateEverything;
 - (void) updateRepositoryIfNeeded;
 - (void) updateCurrentBranchesIfNeededWithBlock:(void(^)())block;
