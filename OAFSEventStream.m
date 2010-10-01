@@ -151,7 +151,7 @@ void OAFSEventStreamCallback( ConstFSEventStreamRef streamRef,
                                              object:watchedPath];
   [self performSelector:@selector(delayedCallbackForPath:)
              withObject:watchedPath
-             afterDelay:0.3];
+             afterDelay:0.7];
 }
 
 - (void) delayedCallbackForPath:(NSString*)watchedPath
