@@ -97,8 +97,7 @@
   GBCommit* commit = self.repositoriesController.selectedRepositoryController.selectedCommit;
   if (!commit || [commit isStage])
   {
-    self.stageController.changes = commit.changes;
-    [self.stageController update];
+    [self.stageController updateWithChanges:commit.changes];
   }
   else
   {

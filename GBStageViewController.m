@@ -29,6 +29,31 @@
   }
 }
 
+- (void) updateWithChanges:(NSArray*)newChanges
+{
+  // Here we have to save selection, replace changes and restore selection. 
+  NSMutableSet* selectedURLs = [NSMutableSet set];
+  for (GBChange* aChange in [self selectedChanges])
+  {
+    if (aChange.srcURL) [selectedURLs addObject:aChange.srcURL];
+    if (aChange.dstURL) [selectedURLs addObject:aChange.dstURL];
+  }
+  
+  self.changes = newChanges;
+  [self update];
+  
+  NSMutableArray* newSelectedChanges = [NSMutableArray array];
+  for (GBChange* aChange in [self.statusArrayController arrangedObjects])
+  {
+    if ([selectedURLs containsObject:[aChange fileURL]])
+    {
+      [newSelectedChanges addObject:aChange];
+    }
+  }
+  
+  [self.statusArrayController setSelectedObjects: newSelectedChanges];
+}
+
 
 
 #pragma mark Actions

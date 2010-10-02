@@ -5,6 +5,8 @@
 
 @property(retain) GBStage* stage;
 
+- (void) updateWithChanges:(NSArray*)newChanges;
+
 - (IBAction) stageShowDifference:(id)sender;
 - (IBAction) stageRevealInFinder:(id)sender;
 - (IBAction) stageDoStage:(id)sender;
