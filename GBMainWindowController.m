@@ -97,10 +97,12 @@
   GBCommit* commit = self.repositoriesController.selectedRepositoryController.selectedCommit;
   if (!commit || [commit isStage])
   {
+    self.stageController.changes = commit.changes;
     [self.stageController update];
   }
   else
   {
+    self.commitController.changes = commit.changes;
     [self.commitController update];
   }
 }
@@ -116,7 +118,6 @@
     self.stageController.stage = [commit asStage];
     [self.stageController loadInView:targetView];
     [self.historyController.tableView setNextKeyView:self.stageController.tableView];
-    [self.stageController update];
   }
   else
   {
@@ -125,8 +126,8 @@
     self.commitController.commit = commit;
     [self.commitController loadInView:targetView];
     [self.historyController.tableView setNextKeyView:self.commitController.tableView];
-    [self.commitController update];
   }
+  [self refreshChangesController];
 }
 
 - (void) loadState
@@ -161,15 +162,19 @@
 - (void) repositoriesControllerDidSelectRepository:(GBRepositoriesController*)aRepositoriesController
 {
   GBRepositoryController* repoCtrl = aRepositoriesController.selectedRepositoryController;
-  [self updateWindowTitleWithRepositoryController:repoCtrl];
   self.toolbarController.repositoryController = repoCtrl;
-  [self.toolbarController update];
   self.historyController.repositoryController = repoCtrl;
+  self.commitController.repositoryController = repoCtrl;
+  self.stageController.repositoryController = repoCtrl;
+  
   self.historyController.commits = [repoCtrl commits];
+  
+  [self updateWindowTitleWithRepositoryController:repoCtrl];
+  [self.toolbarController update];
   [self.historyController updateCommits];
   [self.historyController updateStage];
   [self updateChangesController];
-  [self refreshChangesController];  
+  
   [self.sourcesController repositoriesControllerDidSelectRepository:aRepositoriesController];
 }
 
@@ -226,7 +231,6 @@
   if (repoCtrl != self.repositoriesController.selectedRepositoryController) return;
   [self.toolbarController updateCommitButton];
   [self updateChangesController];
-  [self refreshChangesController];
   [self.historyController updateCommits];
   [self.historyController updateStage];
 }

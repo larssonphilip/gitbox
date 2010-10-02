@@ -266,24 +266,11 @@
 
 - (void) workingDirectoryStateDidChange
 {
-  // update stage
-  //NSLog(@"FSEvents: workingDirectoryStateDidChange");
-  GBRepository* repo = self.repository;
-  
-  if (repo.stage)
-  {
-    [self pushSpinning];
-    [repo.stage loadChangesWithBlock:^{
-      OAOptionalDelegateMessage(@selector(repositoryControllerDidUpdateCommitChanges:));
-      [self popSpinning];
-    }];
-  }
+  [self loadChangesForCommit:self.repository.stage];
 }
 
 - (void) dotgitStateDidChange
 {
-  // reload local branches, load commits
-  //NSLog(@"FSEvents: dotgitStateDidChange");
   GBRepository* repo = self.repository;
   
   [self pushDisabled];
@@ -298,11 +285,7 @@
     [self loadCommits];
     [self popDisabled];
     
-    [self pushSpinning];
-    [repo.stage loadChangesWithBlock:^{
-      OAOptionalDelegateMessage(@selector(repositoryControllerDidUpdateCommitChanges:));
-      [self popSpinning];
-    }];
+    [self loadChangesForCommit:repo.stage];
     
     [self popSpinning];
   }];
@@ -322,19 +305,168 @@
 - (void) selectCommit:(GBCommit*)commit
 {
   self.selectedCommit = commit;
-  if (commit && !commit.changes)
+  if (commit && (!commit.changes || [commit isStage]))
   {
-    [self pushSpinning];
-    [commit loadChangesWithBlock:^{
-      OAOptionalDelegateMessage(@selector(repositoryControllerDidUpdateCommitChanges:));
-      [self popSpinning];
-    }];
+    [self loadChangesForCommit:commit];
   }
   OAOptionalDelegateMessage(@selector(repositoryControllerDidSelectCommit:));
 }
 
 
-- (void) loadCommits // private
+
+
+
+
+
+
+
+#pragma mark GBChangeDelegate
+
+
+//[self pushSpinning];
+//[commit loadChangesWithBlock:^{
+//  OAOptionalDelegateMessage(@selector(repositoryControllerDidUpdateCommitChanges:));
+//  [self popSpinning];
+//}];
+
+
+/*
+In Gitbox (gitboxapp.com) there is a stage view on the right where you can see
+a list of all changes in working directory: untracked, modified, 
+added, deleted, renamed files. Each change has a checkbox which you can click
+to stage or unstage the change ("git add", "git reset").
+When the change staging finishes, we run another task to load all the changes 
+("git status").
+When the loading task completes we notify the UI to update the list of changes.
+All tasks are asynchronous.
+
+The problem: 
+When the user quickly clicks on checkboxes we should not refresh it
+multiple times. Otherwise, it will flicker with the inconsistent checkbox
+states in between loading times.
+
+Possible (non-)solutions:
+1. The synchronous execution solves the problem at the expense of 
+  slowing down the user interaction.
+2. Updating UI with a delay does not solve the problem: it just makes the 
+  updates to appear later and produces flickering when user clicks slower.
+
+So here is the real solution.
+
+Let's observe possible combinations of two pairs of tasks: staging and changes' loading
+when user clicks on two checkboxes subsequently.
+Abbreviations: S = staging, L = loading changes, U = UI update
+
+Scenario 1: S2 starts before L1, so we should avoid running L1 at all.
+ S1----->L1----->U1
+     S2----->L2----->U2
+
+
+
+Scenario 2: S2 started after L1 start, but before U1, so we should avoid U1.
+ S1----->L1----->U1
+             S2----->L2----->U2
+
+In both scenarios we need to know is there any other staging process running or not.
+If there is one, we simply avoid running loading task or at least updating the UI.
+This is solved using isStaging counter (named like a boolean because we don't care 
+about an actual number of running tasks, only about the fact that they are running).
+isStaging is incremented before stage/unstage task begins and decremented 
+right after it finishes. If it is not zero afterwards, we simply avoid running next tasks.
+
+However, there's another, more subtle scenario which I spotted only after some more time of testing:
+
+Scenario 3: L1 starts before S2, but finishes after *both* S1 and S2 have finished.
+ S1----->L1--------->U1
+             S2-->L2--------->U2
+
+In this case it is not enough to have isStaging flag. We should also ask is there any 
+loading task still running. For that we use isLoadingChanges counter.
+
+After finding this scenario I tried to get away with just a single flag isStaging, 
+but it turned out to be impossible: if I decrement isStaging after loading is complete,
+I can not avoid starting a loading task because in scenario 1 both L1 and L2 look identical.
+So without an additional flag I would have to start changes loading task each time the checkbox
+is clicked which drops the performance significantly.
+
+In this little snippet of code we greatly improve user experience using a lot of programming patterns:
+
+1. Grand Central Dispatch for asynchronous operations without thread management.
+2. Blocks to preserve the execution context between operations and impose a strict order of events.
+3. Semaphore counters for managing the stage of operations and activity indicator (popSpinning/pushSpinning)
+4. Block taking a block as an argument to wrap asynchronous operations.
+5. Delegation pattern to notify the UI about new data
+6. Bindings and Key-Value-Observing for blocking a checkbox when the staging is in process (aChange.busy flag)
+
+This gives you an idea of what kind of code powers Gitbox.
+In the next update soon.
+http://gitboxapp.com/
+*/
+
+// NSInteger isStaging; // maintains a count of number of staging tasks running
+// NSInteger isLoadingChanges; // maintains a count of number of changes loading tasks running
+
+// This method helps to factor out common code for both staging and unstaging tasks.
+// Block declaration might look tricky, but it's just a convenient wrapper, nothing special.
+// See the stage and unstage methods below.
+- (void) stagingHelperForChange:(GBChange*)aChange withBlock:(void(^)(GBStage*, void(^)()))block
+{
+  GBStage* stage = self.repository.stage;
+  if (aChange.busy || !stage) return;
+  aChange.busy = YES;
+  
+  [self pushSpinning];
+  isStaging++;
+  block(stage, ^{
+    isStaging--;
+    // Avoid loading changes if another staging is running.
+    if (!isStaging) 
+    {
+      [self pushSpinning];
+      isLoadingChanges++;
+      [stage loadChangesWithBlock:^{
+        isLoadingChanges--;
+        // Avoid publishing changes if another staging is running
+        // or another loading task is running.
+        if (!isStaging && !isLoadingChanges)
+        {
+          OAOptionalDelegateMessage(@selector(repositoryControllerDidUpdateCommitChanges:)); 
+        }
+        [self popSpinning];
+      }];
+      [self popSpinning];      
+    }
+  });
+}
+
+// These methods are called when the user clicks a checkbox (GBChange setStaged:)
+
+- (void) stageChange:(GBChange*)aChange
+{
+  [self stagingHelperForChange:aChange withBlock:^(GBStage* stage, void(^block)()){
+    [stage stageChanges:[NSArray arrayWithObject:aChange] withBlock:block];
+  }];
+}
+
+- (void) unstageChange:(GBChange*)aChange
+{
+  [self stagingHelperForChange:aChange withBlock:^(GBStage* stage, void(^block)()){
+    [stage unstageChanges:[NSArray arrayWithObject:aChange] withBlock:block];
+  }];
+}
+
+
+
+
+
+
+
+#pragma mark Private helpers
+
+
+
+
+- (void) loadCommits
 {
   [self pushSpinning];
   NSString* oldTopCommitId = self.repository.topCommitId;
@@ -362,7 +494,15 @@
   }
 }
 
-
+- (void) loadChangesForCommit:(GBCommit*)commit
+{
+  if (!commit) return;
+  [self pushSpinning];
+  [commit loadChangesWithBlock:^{
+    OAOptionalDelegateMessage(@selector(repositoryControllerDidUpdateCommitChanges:));
+    [self popSpinning];
+  }];
+}
 
 
 

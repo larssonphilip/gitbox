@@ -2,12 +2,6 @@
 @class GBTask;
 @class GBChange;
 @interface GBStage : GBCommit
-{
-  NSArray* stagedChanges;
-  NSArray* unstagedChanges;
-  NSArray* untrackedChanges;
-  BOOL hasStagedChanges;
-}
 
 @property(nonatomic,retain) NSArray* stagedChanges;
 @property(nonatomic,retain) NSArray* unstagedChanges;
@@ -16,11 +10,10 @@
 
 - (BOOL) isDirty;
 
-- (void) stageChange:(GBChange*)aChange;
-- (void) stageChanges:(NSArray*)theChanges;
-- (void) stageAll;
-- (void) unstageChange:(GBChange*)aChange;
-- (void) unstageChanges:(NSArray*)theChanges;
+- (void) stageChanges:(NSArray*)theChanges withBlock:(void(^)())block;
+- (void) unstageChanges:(NSArray*)theChanges withBlock:(void(^)())block;
+- (void) stageAllWithBlock:(void(^)())block;
+
 - (void) revertChanges:(NSArray*)theChanges;
 - (void) deleteFiles:(NSArray*)theChanges;
 

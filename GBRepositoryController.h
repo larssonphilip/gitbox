@@ -1,5 +1,6 @@
 
 #import "GBRepositoryControllerDelegate.h"
+#import "GBChangeDelegate.h"
 
 @class GBRepository;
 @class GBRef;
@@ -9,16 +10,14 @@
 @class OAPropertyListController;
 @class OAFSEventStream;
 
-@interface GBRepositoryController : NSObject
+@interface GBRepositoryController : NSObject<GBChangeDelegate>
 {
-  NSUInteger pulling;
-  NSUInteger pushing;
-  NSUInteger merging;
-  NSUInteger fetching;
-  
   BOOL needsLocalBranchesUpdate;
   BOOL needsRemotesUpdate;
   BOOL needsCommitsUpdate;
+  
+  NSInteger isStaging; // maintains a count of number of staging tasks running
+  NSInteger isLoadingChanges; // maintains a count of number of changes loading tasks running
   
   BOOL backgroundUpdateEnabled;
   NSTimeInterval backgroundUpdateInterval;
@@ -66,8 +65,9 @@
 - (void) pull;
 - (void) push;
 
-- (void) loadCommits; // private
 
+- (void) loadCommits; // private
+- (void) loadChangesForCommit:(GBCommit*)commit; // private
 
 - (void) saveObject:(id)obj forKey:(NSString*)key;
 - (id) loadObjectForKey:(NSString*)key;

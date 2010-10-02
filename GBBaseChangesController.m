@@ -6,7 +6,8 @@
 
 @synthesize tableView;
 @synthesize statusArrayController; 
-
+@synthesize repositoryController;
+@synthesize changes;
 
 #pragma mark Init
 
@@ -15,6 +16,8 @@
   [NSObject cancelPreviousPerformRequestsWithTarget:self];
   self.tableView = nil;
   self.statusArrayController = nil;
+  self.repositoryController = nil;
+  self.changes = nil;
   [super dealloc];
 }
 

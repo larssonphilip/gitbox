@@ -65,34 +65,66 @@
 {
   GBTask* refreshIndexTask = [GBRefreshIndexTask taskWithRepository:self.repository];
   [refreshIndexTask launchWithBlock:^{
+    
     GBStagedChangesTask* stagedChangesTask = [GBStagedChangesTask taskWithRepository:self.repository];
     [stagedChangesTask launchWithBlock:^{
       self.stagedChanges = stagedChangesTask.changes;
       [self update];
+      
       GBUnstagedChangesTask* unstagedChangesTask = [GBUnstagedChangesTask taskWithRepository:self.repository];
       [unstagedChangesTask launchWithBlock:^{
         self.unstagedChanges = unstagedChangesTask.changes;
         [self update];
+        
         GBUntrackedChangesTask* untrackedChangesTask = [GBUntrackedChangesTask taskWithRepository:self.repository];
         [untrackedChangesTask launchWithBlock:^{
           self.untrackedChanges = untrackedChangesTask.changes;
           [self update];
           block();
         }];
+        
       }];
+      
     }];
+    
   }];
 }
 
 
 
-
-- (void) stageChange:(GBChange*)aChange
+- (void) stageDeletedPaths:(NSArray*)pathsToDelete withBlock:(void(^)())block
 {
-  [self stageChanges:[NSArray arrayWithObject:aChange]];
+  if ([pathsToDelete count] <= 0)
+  {
+    block();
+    return;
+  }
+  
+  GBTask* task = [self.repository task];
+  task.arguments = [[NSArray arrayWithObjects:@"update-index", @"--remove", nil] arrayByAddingObjectsFromArray:pathsToDelete];
+  [task launchWithBlock:^{
+    [task showErrorIfNeeded];
+    block();
+  }];
 }
 
-- (void) stageChanges:(NSArray*)theChanges
+- (void) stageAddedPaths:(NSArray*)pathsToAdd withBlock:(void(^)())block
+{
+  if ([pathsToAdd count] <= 0)
+  {
+    block();
+    return;
+  }
+  
+  GBTask* task = [self.repository task];
+  task.arguments = [[NSArray arrayWithObjects:@"add", nil] arrayByAddingObjectsFromArray:pathsToAdd];
+  [task launchWithBlock:^{
+    [task showErrorIfNeeded];
+    block();
+  }];
+}
+
+- (void) stageChanges:(NSArray*)theChanges withBlock:(void(^)())block
 {
   NSMutableArray* pathsToDelete = [NSMutableArray array];
   NSMutableArray* pathsToAdd = [NSMutableArray array];
@@ -108,43 +140,34 @@
     }
   }
   
-  if ([pathsToDelete count] > 0)
-  {
-    GBTask* task = [self.repository task];
-    task.arguments = [[NSArray arrayWithObjects:@"update-index", @"--remove", nil] arrayByAddingObjectsFromArray:pathsToDelete];
-    [[self.repository launchTaskAndWait:task] showErrorIfNeeded];
-  }
-  
-  if ([pathsToAdd count] > 0)
-  {
-    GBTask* task = [self.repository task];
-    task.arguments = [[NSArray arrayWithObjects:@"add", nil] arrayByAddingObjectsFromArray:pathsToAdd];
-    [[self.repository launchTaskAndWait:task] showErrorIfNeeded];
-  }
-  
-  [self reloadChanges];
+  [self stageDeletedPaths:pathsToDelete withBlock:^{
+    [self stageAddedPaths:pathsToAdd withBlock:block];
+  }];
 }
 
-- (void) stageAll
+- (void) unstageChanges:(NSArray*)theChanges withBlock:(void(^)())block
 {
-  GBTask* task = [self.repository task];
-  task.arguments = [NSArray arrayWithObjects:@"add", @".", nil];
-  [[self.repository launchTaskAndWait:task] showErrorIfNeeded];
-  [self reloadChanges];
-}
-
-- (void) unstageChange:(GBChange*)aChange
-{
-  [self unstageChanges:[NSArray arrayWithObject:aChange]];
-}
-
-- (void) unstageChanges:(NSArray*)theChanges
-{
+  NSMutableArray* paths = [NSMutableArray array];
   for (GBChange* aChange in theChanges)
   {
-    [aChange unstage];
+    [paths addObject:aChange.fileURL.path];
   }
-  [self reloadChanges];
+  GBTask* task = [self.repository task];
+  task.arguments = [[NSArray arrayWithObjects:@"reset", @"--", nil] arrayByAddingObjectsFromArray:paths];
+  [task launchWithBlock:^{
+    // Commented out because git spits out error code even if the unstage is successful.
+    // [task showErrorIfNeeded];
+    block();
+  }];
+}
+
+- (void) stageAllWithBlock:(void(^)())block
+{
+  NSLog(@"TODO: GBStage stageAllWithBlock:");
+//  GBTask* task = [self.repository task];
+//  task.arguments = [NSArray arrayWithObjects:@"add", @".", nil];
+//  [[self.repository launchTaskAndWait:task] showErrorIfNeeded];
+//  [self reloadChanges];
 }
 
 - (void) revertChanges:(NSArray*)theChanges

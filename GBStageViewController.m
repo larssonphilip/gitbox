@@ -1,5 +1,6 @@
 #import "GBModels.h"
 
+#import "GBRepositoryController.h"
 #import "GBStageViewController.h"
 #import "GBFileEditingController.h"
 
@@ -19,6 +20,14 @@
   [super dealloc];
 }
 
+
+- (void) update
+{
+  for (GBChange* change in self.changes)
+  {
+    change.delegate = self.repositoryController;
+  }
+}
 
 
 
@@ -48,54 +57,57 @@
 
 - (IBAction) stageDoStage:(id)sender
 {
+  NSLog(@"FIXME: stageDoStage");
   [self.stage stageChanges:[self selectedChanges]];
 }
 
 - (BOOL) validateStageDoStage:(id)sender
 {
-  NSArray* changes = [self selectedChanges];
-  if ([changes count] < 1) return NO;
-  return ![changes allAreTrue:@selector(staged)];
+  NSArray* selChanges = [self selectedChanges];
+  if ([selChanges count] < 1) return NO;
+  return ![selChanges allAreTrue:@selector(staged)];
 }
 
 
 - (IBAction) stageDoUnstage:(id)sender
 {
+  NSLog(@"FIXME: stageDoUnstage");
   [self.stage unstageChanges:[self selectedChanges]];
 }
 - (BOOL) validateStageDoUnstage:(id)sender
 {
-  NSArray* changes = [self selectedChanges];
-  if ([changes count] < 1) return NO;
-  return [changes anyIsTrue:@selector(staged)];
+  NSArray* selChanges = [self selectedChanges];
+  if ([selChanges count] < 1) return NO;
+  return [selChanges anyIsTrue:@selector(staged)];
 }
 
 
 - (IBAction) stageDoStageUnstage:(id)sender
 {
-  NSArray* changes = [self selectedChanges];
-  if ([changes allAreTrue:@selector(staged)])
+  NSLog(@"FIXME: stageDoStageUnstage");
+  NSArray* selChanges = [self selectedChanges];
+  if ([selChanges allAreTrue:@selector(staged)])
   {
-    [self.stage unstageChanges:changes];
+    [self.stage unstageChanges:selChanges];
   }
   else
   {
-    [self.stage stageChanges:changes];
+    [self.stage stageChanges:selChanges];
   }
 }
 - (BOOL) validateStageDoStageUnstage:(id)sender
 {
-  NSArray* changes = [self selectedChanges];
-  if ([changes count] < 1) return NO;
+  NSArray* selChanges = [self selectedChanges];
+  if ([selChanges count] < 1) return NO;
   return YES;
 }
 
 
 - (IBAction) stageIgnoreFile:(id)sender
 {
-  NSArray* changes = [self selectedChanges];
-  if ([changes count] < 1) return;
-  NSArray* paths = [changes valueForKey:@"pathForIgnore"];
+  NSArray* selChanges = [self selectedChanges];
+  if ([selChanges count] < 1) return;
+  NSArray* paths = [selChanges valueForKey:@"pathForIgnore"];
 
   GBFileEditingController* fileEditor = [GBFileEditingController controller];
   fileEditor.title = @".gitignore";
@@ -105,8 +117,8 @@
 }
 - (BOOL) validateStageIgnoreFile:(id)sender
 {
-  NSArray* changes = [self selectedChanges];
-  if ([changes count] < 1) return NO;
+  NSArray* selChanges = [self selectedChanges];
+  if ([selChanges count] < 1) return NO;
   return YES;
 }
 

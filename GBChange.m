@@ -12,8 +12,10 @@
 @synthesize statusCode;
 @synthesize oldRevision;
 @synthesize newRevision;
-@synthesize staged;
 
+@synthesize staged;
+@synthesize delegate;
+@synthesize busy;
 @synthesize repository;
 
 - (void) dealloc
@@ -33,11 +35,11 @@
     staged = flag;
     if (flag)
     {
-      [self.repository.stage stageChange:self];
+      [delegate stageChange:self];
     }
     else
     {
-      [self.repository.stage unstageChange:self];
+      [delegate unstageChange:self];
     }
   }
 }
@@ -59,6 +61,7 @@
   return self.srcURL;
 }
 
+// TODO: remove this
 - (BOOL) isEqual:(GBChange*)other
 {
   if (!other) return NO;
@@ -249,11 +252,11 @@
   return (self.fileURL && ![self isDeletedFile]);
 }
 
-- (void) unstage
-{
-  [[self.repository task] 
-   launchWithArgumentsAndWait:[NSArray arrayWithObjects:@"reset", @"--", self.fileURL.path, nil]];
-}
+//- (void) unstage
+//{
+//  [[self.repository task] 
+//   launchWithArgumentsAndWait:[NSArray arrayWithObjects:@"reset", @"--", self.fileURL.path, nil]];
+//}
 
 - (void) revert
 {

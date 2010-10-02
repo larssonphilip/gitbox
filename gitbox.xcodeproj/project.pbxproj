@@ -270,6 +270,7 @@
 		206CAC70122EB5F7009284FE /* GBRepositoryController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBRepositoryController.m; sourceTree = "<group>"; };
 		206CAC73122EBCAD009284FE /* GBRepositoriesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBRepositoriesController.h; sourceTree = "<group>"; };
 		206CAC74122EBCAD009284FE /* GBRepositoriesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBRepositoriesController.m; sourceTree = "<group>"; };
+		2080DC2912567B0800D05B33 /* GBChangeDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBChangeDelegate.h; sourceTree = "<group>"; };
 		2093A7C611AF0E8300239185 /* GBBaseChangesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBBaseChangesController.h; sourceTree = "<group>"; };
 		2093A7C711AF0E8300239185 /* GBBaseChangesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBBaseChangesController.m; sourceTree = "<group>"; };
 		2093A7C911AF0EA300239185 /* GBStageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBStageViewController.h; sourceTree = "<group>"; };
@@ -406,6 +407,7 @@
 				2038F603119DBBAB0087CE37 /* GBCommit.m */,
 				2038F6B511A02D550087CE37 /* GBStage.h */,
 				2038F6B611A02D550087CE37 /* GBStage.m */,
+				2080DC2912567B0800D05B33 /* GBChangeDelegate.h */,
 				2038F5F1119DB9CE0087CE37 /* GBChange.h */,
 				2038F5F2119DB9CE0087CE37 /* GBChange.m */,
 				2038F67611A025AF0087CE37 /* GBRemote.h */,

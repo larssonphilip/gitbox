@@ -1,27 +1,19 @@
+#import "GBChangeDelegate.h"
+
 @class GBRepository;
 @interface GBChange : NSObject
-{
-  NSURL* srcURL;
-  NSURL* dstURL;
-  NSString* statusCode;
-  NSString* oldRevision;
-  NSString* newRevision;
-  BOOL staged;
-  
-  GBRepository* repository;
-}
 
-@property(nonatomic,retain) NSURL* srcURL;
-@property(nonatomic,retain) NSURL* dstURL;
-@property(nonatomic,retain) NSString* statusCode;
-@property(nonatomic,retain) NSString* oldRevision;
-@property(nonatomic,retain) NSString* newRevision;
+@property(retain) NSURL* srcURL;
+@property(retain) NSURL* dstURL;
+@property(retain) NSString* statusCode;
+@property(retain) NSString* oldRevision;
+@property(retain) NSString* newRevision;
 
-// Important: this property is only for checkbox binding in UI, do not use it programmatically.
+// Important: staged property & delegate are only used for checkbox binding in UI.
 @property(nonatomic,assign) BOOL staged;
-
-@property(nonatomic,assign) GBRepository* repository;
-
+@property(assign) id<GBChangeDelegate> delegate;
+@property(assign) BOOL busy;
+@property(assign) GBRepository* repository;
 
 #pragma mark Interrogation
 
@@ -41,7 +33,7 @@
 - (void) revealInFinder:(id)sender;
 - (BOOL) validateRevealInFinder:(id)sender;
 
-- (void) unstage;
+//- (void) unstage;
 - (void) revert;
 - (void) deleteFile;
 - (void) moveToTrash;

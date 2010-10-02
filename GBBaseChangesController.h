@@ -1,13 +1,10 @@
 @class GBRepositoryController;
 @interface GBBaseChangesController : NSViewController<NSTableViewDelegate, NSUserInterfaceValidations>
-{
-  NSTableView* tableView;
-  NSArrayController* statusArrayController;
-}
 
 @property(retain) IBOutlet NSTableView* tableView;
 @property(retain) IBOutlet NSArrayController* statusArrayController; 
-
+@property(retain) GBRepositoryController* repositoryController;
+@property(retain) NSArray* changes; // bound to statusArrayController
 
 #pragma mark Interrogation
 
