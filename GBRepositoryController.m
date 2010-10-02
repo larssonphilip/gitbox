@@ -452,7 +452,12 @@
   }];
 }
 
-
+- (void) revertChanges:(NSArray*)changes
+{
+  [self stagingHelperForChanges:changes withBlock:^(NSArray* notBusyChanges, GBStage* stage, void(^block)()){
+    [stage revertChanges:notBusyChanges withBlock:block];
+  }];
+}
 
 
 - (void) pull

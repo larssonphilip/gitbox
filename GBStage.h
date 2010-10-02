@@ -14,7 +14,7 @@
 - (void) unstageChanges:(NSArray*)theChanges withBlock:(void(^)())block;
 - (void) stageAllWithBlock:(void(^)())block;
 
-- (void) revertChanges:(NSArray*)theChanges;
+- (void) revertChanges:(NSArray*)theChanges withBlock:(void(^)())block;
 - (void) deleteFiles:(NSArray*)theChanges;
 
 

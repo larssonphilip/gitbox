@@ -271,7 +271,9 @@
       [NSApp sendAction:@selector(showDiffToolPreferences:) to:nil from:self];
     }
   };
-  [self.repository launchTask:task];
+  [task launchWithBlock:^{
+    
+  }];
 }
 
 - (void) revealInFinder:(id)sender
@@ -288,17 +290,6 @@
   return (self.fileURL && ![self isDeletedFile]);
 }
 
-//- (void) unstage
-//{
-//  [[self.repository task] 
-//   launchWithArgumentsAndWait:[NSArray arrayWithObjects:@"reset", @"--", self.fileURL.path, nil]];
-//}
-
-- (void) revert
-{
-  [[self.repository task] 
-   launchWithArgumentsAndWait:[NSArray arrayWithObjects:@"checkout", @"HEAD", @"--", self.fileURL.path, nil]];
-}
 
 - (void) deleteFile
 {

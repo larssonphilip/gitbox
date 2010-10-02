@@ -81,6 +81,9 @@
   return [change validateRevealInFinder:sender];
 }
 
+
+
+
 - (IBAction) stageDoStage:(id)sender
 {
   [self.repositoryController stageChanges:[self selectedChanges]];
@@ -108,7 +111,6 @@
 
 - (IBAction) stageDoStageUnstage:(id)sender
 {
-  NSLog(@"FIXME: stageDoStageUnstage");
   NSArray* selChanges = [self selectedChanges];
   if ([selChanges allAreTrue:@selector(staged)])
   {
@@ -152,8 +154,8 @@
   NSAlert* alert = [[[NSAlert alloc] init] autorelease];
   [alert addButtonWithTitle:@"OK"];
   [alert addButtonWithTitle:@"Cancel"];
-  [alert setMessageText:@"Revert selected files to last committed state?"];
-  [alert setInformativeText:@"All non-committed changes will be lost."];
+  [alert setMessageText:NSLocalizedString(@"Revert selected files to last committed state?", @"Stage")];
+  [alert setInformativeText:NSLocalizedString(@"All non-committed changes will be lost.",@"Stage")];
   [alert setAlertStyle:NSWarningAlertStyle];
   [alert retain];
   [alert beginSheetModalForWindow:[self window]
@@ -171,7 +173,7 @@
 {
   if (returnCode == NSAlertFirstButtonReturn)
   {
-    [self.stage revertChanges:[self selectedChanges]];
+    [self.repositoryController revertChanges:[self selectedChanges]];
   }
   [NSApp endSheet:[self window]];
   [[alert window] orderOut:self];

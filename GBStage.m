@@ -154,6 +154,11 @@
     [aChange setStagedSilently:NO];
     [paths addObject:aChange.fileURL.path];
   }
+  if ([paths count] <= 0)
+  {
+    block();
+    return;
+  }
   GBTask* task = [self.repository task];
   task.arguments = [[NSArray arrayWithObjects:@"reset", @"--", nil] arrayByAddingObjectsFromArray:paths];
   [task launchWithBlock:^{
@@ -165,21 +170,32 @@
 
 - (void) stageAllWithBlock:(void(^)())block
 {
-  NSLog(@"TODO: GBStage stageAllWithBlock:");
-//  GBTask* task = [self.repository task];
-//  task.arguments = [NSArray arrayWithObjects:@"add", @".", nil];
-//  [[self.repository launchTaskAndWait:task] showErrorIfNeeded];
-//  [self reloadChanges];
+  GBTask* task = [self.repository task];
+  task.arguments = [NSArray arrayWithObjects:@"add", @".", nil];
+  [task launchWithBlock:^{
+    [task showErrorIfNeeded];
+    block();
+  }];
 }
 
-- (void) revertChanges:(NSArray*)theChanges
+- (void) revertChanges:(NSArray*)theChanges withBlock:(void(^)())block
 {
+  NSMutableArray* paths = [NSMutableArray array];
   for (GBChange* aChange in theChanges)
   {
-    if (aChange.staged) [aChange unstage];
-    [aChange revert];
+    [aChange setStagedSilently:NO];
+    [paths addObject:aChange.fileURL.path];
   }
-  [self reloadChanges];
+  if ([paths count] <= 0)
+  {
+    block();
+    return;
+  }
+  GBTask* task = [self.repository task];
+  task.arguments = [[NSArray arrayWithObjects:@"checkout", @"HEAD", @"--", nil] arrayByAddingObjectsFromArray:paths];
+  [task launchWithBlock:^{
+    block();
+  }];
 }
 
 - (void) deleteFiles:(NSArray*)theChanges

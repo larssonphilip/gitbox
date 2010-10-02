@@ -37,8 +37,6 @@
 - (void) revealInFinder:(id)sender;
 - (BOOL) validateRevealInFinder:(id)sender;
 
-//- (void) unstage;
-- (void) revert;
 - (void) deleteFile;
 - (void) moveToTrash;
 - (void) gitRm;
