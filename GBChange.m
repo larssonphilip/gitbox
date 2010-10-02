@@ -10,6 +10,7 @@
 @synthesize srcURL;
 @synthesize dstURL;
 @synthesize statusCode;
+@synthesize status;
 @synthesize oldRevision;
 @synthesize newRevision;
 
@@ -23,6 +24,7 @@
   self.srcURL = nil;
   self.dstURL = nil;
   self.statusCode = nil;
+  self.status = nil;
   self.oldRevision = nil;
   self.newRevision = nil;
   [super dealloc];
@@ -42,6 +44,15 @@
       [delegate unstageChange:self];
     }
   }
+  [self update];
+}
+
+- (void) setStagedSilently:(BOOL) flag
+{
+  id<GBChangeDelegate> aDelegate = self.delegate;
+  self.delegate = nil;
+  [self setStaged:flag];
+  self.delegate = aDelegate;
 }
 
 
@@ -81,7 +92,9 @@
           staged == other.staged);
 }
 
-- (NSString*) status
+
+
+- (NSString*) statusForStatusCode:(NSString*)aStatusCode
 {
   /*
    Possible status letters are:
@@ -105,21 +118,44 @@
    Status letters C and R are always followed by a score (denoting the percentage of similarity between the source and target of the move or copy), and are the only ones to be so.
    
    */
+    
+  if (!aStatusCode || [aStatusCode length] < 1)
+  {
+    if (self.busy)
+    {
+      return self.staged ? NSLocalizedString(@"Staging...", @"Change") : NSLocalizedString(@"Unstaging...", @"Change");
+    }
+    else
+    {
+      return NSLocalizedString(@"Untracked", @"Change");
+    }
+  }
   
-  if (!self.statusCode || [self.statusCode length] < 1) return NSLocalizedString(@"Untracked", @"");
-  
-  const char* cstatusCode = [self.statusCode cStringUsingEncoding:NSUTF8StringEncoding];
+  const char* cstatusCode = [aStatusCode cStringUsingEncoding:NSUTF8StringEncoding];
   char c = *cstatusCode;
-  if (c == 'A') return NSLocalizedString(@"Added", @"");
-  if (c == 'C') return NSLocalizedString(@"Copied", @"");
-  if (c == 'D') return NSLocalizedString(@"Deleted", @"");
-  if (c == 'M') return NSLocalizedString(@"Modified", @"");
-  if (c == 'R') return NSLocalizedString(@"Renamed", @"");
-  if (c == 'T') return NSLocalizedString(@"Type changed", @"");
-  if (c == 'U') return NSLocalizedString(@"Unmerged", @"");
-  if (c == 'X') return NSLocalizedString(@"Unknown", @"");
   
-  return self.statusCode;
+  if (self.busy)
+  {
+    BOOL s = self.staged;
+    if (c == 'D') return NSLocalizedString(@"Restoring...", @"Change");
+    return s ? NSLocalizedString(@"Staging...", @"Change") : NSLocalizedString(@"Unstaging...", @"Change");
+  }
+  
+  if (c == 'A') return NSLocalizedString(@"Added", @"Change");
+  if (c == 'C') return NSLocalizedString(@"Copied", @"Change");
+  if (c == 'D') return NSLocalizedString(@"Deleted", @"Change");
+  if (c == 'M') return NSLocalizedString(@"Modified", @"Change");
+  if (c == 'R') return NSLocalizedString(@"Renamed", @"Change");
+  if (c == 'T') return NSLocalizedString(@"Type changed", @"Change");
+  if (c == 'U') return NSLocalizedString(@"Unmerged", @"Change");
+  if (c == 'X') return NSLocalizedString(@"Unknown", @"Change");
+  
+  return aStatusCode;
+}
+
+- (void) update
+{
+  self.status = [self statusForStatusCode:self.statusCode];
 }
 
 - (NSString*) pathStatus

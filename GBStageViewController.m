@@ -23,6 +23,7 @@
 
 - (void) update
 {
+  [super update];
   for (GBChange* change in self.changes)
   {
     change.delegate = self.repositoryController;

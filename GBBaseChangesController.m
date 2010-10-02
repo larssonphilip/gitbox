@@ -41,6 +41,10 @@
 
 - (void) update
 {
+  for (GBChange* change in self.changes)
+  {
+    [change update];
+  }
 }
 
 

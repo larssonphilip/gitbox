@@ -6,6 +6,7 @@
 @property(retain) NSURL* srcURL;
 @property(retain) NSURL* dstURL;
 @property(retain) NSString* statusCode;
+@property(retain) NSString* status;
 @property(retain) NSString* oldRevision;
 @property(retain) NSString* newRevision;
 
@@ -19,12 +20,15 @@
 
 + (NSArray*) diffTools;
 - (NSURL*) fileURL;
-- (NSString*) status;
 - (NSString*) pathStatus;
 - (BOOL) isDeletedFile;
 - (BOOL) isUntrackedFile;
 - (NSComparisonResult) compareByPath:(id) other;
 - (NSString*) pathForIgnore;
+
+
+- (void) setStagedSilently:(BOOL) flag;
+- (void) update;
 
 
 #pragma mark Actions

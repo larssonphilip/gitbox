@@ -130,6 +130,7 @@
   NSMutableArray* pathsToAdd = [NSMutableArray array];
   for (GBChange* aChange in theChanges)
   {
+    [aChange setStagedSilently:YES];
     if ([aChange isDeletedFile])
     {
       [pathsToDelete addObject:aChange.srcURL.path];
@@ -150,6 +151,7 @@
   NSMutableArray* paths = [NSMutableArray array];
   for (GBChange* aChange in theChanges)
   {
+    [aChange setStagedSilently:NO];
     [paths addObject:aChange.fileURL.path];
   }
   GBTask* task = [self.repository task];
