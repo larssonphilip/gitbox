@@ -45,7 +45,7 @@
   NSMutableArray* newSelectedChanges = [NSMutableArray array];
   for (GBChange* aChange in [self.statusArrayController arrangedObjects])
   {
-    if ([selectedURLs containsObject:[aChange fileURL]])
+    if (aChange.fileURL && [selectedURLs containsObject:aChange.fileURL])
     {
       [newSelectedChanges addObject:aChange];
     }
