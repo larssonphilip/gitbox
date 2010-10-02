@@ -291,16 +291,6 @@
   }];
 }
 
-- (void) pull
-{
-  
-}
-
-- (void) push
-{
-  
-}
-
 
 - (void) selectCommit:(GBCommit*)commit
 {
@@ -317,10 +307,6 @@
 
 
 
-
-
-
-#pragma mark GBChangeDelegate
 
 
 //[self pushSpinning];
@@ -409,15 +395,25 @@ http://gitboxapp.com/
 // This method helps to factor out common code for both staging and unstaging tasks.
 // Block declaration might look tricky, but it's just a convenient wrapper, nothing special.
 // See the stage and unstage methods below.
-- (void) stagingHelperForChange:(GBChange*)aChange withBlock:(void(^)(GBStage*, void(^)()))block
+- (void) stagingHelperForChanges:(NSArray*)changes withBlock:(void(^)(NSArray*, GBStage*, void(^)()))block
 {
   GBStage* stage = self.repository.stage;
-  if (aChange.busy || !stage) return;
-  aChange.busy = YES;
+  if (!stage) return;
+  
+  NSMutableArray* notBusyChanges = [NSMutableArray array];
+  for (GBChange* aChange in changes) {
+    if (!aChange.busy)
+    {
+      [notBusyChanges addObject:aChange];
+      aChange.busy = YES;
+    }
+  }
+  
+  if ([notBusyChanges count] < 1) return;
   
   [self pushSpinning];
   isStaging++;
-  block(stage, ^{
+  block(notBusyChanges, stage, ^{
     isStaging--;
     // Avoid loading changes if another staging is running.
     if (!isStaging) 
@@ -441,18 +437,48 @@ http://gitboxapp.com/
 
 // These methods are called when the user clicks a checkbox (GBChange setStaged:)
 
+- (void) stageChanges:(NSArray*)changes
+{
+  [self stagingHelperForChanges:changes withBlock:^(NSArray* notBusyChanges, GBStage* stage, void(^block)()){
+    [stage stageChanges:notBusyChanges withBlock:block];
+  }];
+}
+
+- (void) unstageChanges:(NSArray*)changes
+{
+  [self stagingHelperForChanges:changes withBlock:^(NSArray* notBusyChanges, GBStage* stage, void(^block)()){
+    [stage unstageChanges:notBusyChanges withBlock:block];
+  }];
+}
+
+
+
+
+- (void) pull
+{
+  
+}
+
+- (void) push
+{
+  
+}
+
+
+
+#pragma mark GBChangeDelegate
+
+
+
+
 - (void) stageChange:(GBChange*)aChange
 {
-  [self stagingHelperForChange:aChange withBlock:^(GBStage* stage, void(^block)()){
-    [stage stageChanges:[NSArray arrayWithObject:aChange] withBlock:block];
-  }];
+  [self stageChanges:[NSArray arrayWithObject:aChange]];
 }
 
 - (void) unstageChange:(GBChange*)aChange
 {
-  [self stagingHelperForChange:aChange withBlock:^(GBStage* stage, void(^block)()){
-    [stage unstageChanges:[NSArray arrayWithObject:aChange] withBlock:block];
-  }];
+  [self unstageChanges:[NSArray arrayWithObject:aChange]];
 }
 
 

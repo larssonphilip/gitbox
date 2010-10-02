@@ -59,9 +59,13 @@
 - (void) checkoutNewBranchWithName:(NSString*)name;
 - (void) selectRemoteBranch:(GBRef*) remoteBranch;
 
-
-
 - (void) selectCommit:(GBCommit*)commit;
+
+
+- (void) stageChanges:(NSArray*)changes;
+- (void) unstageChanges:(NSArray*)changes;
+
+
 - (void) pull;
 - (void) push;
 

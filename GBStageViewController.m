@@ -57,8 +57,7 @@
 
 - (IBAction) stageDoStage:(id)sender
 {
-  NSLog(@"FIXME: stageDoStage");
-  [self.stage stageChanges:[self selectedChanges]];
+  [self.repositoryController stageChanges:[self selectedChanges]];
 }
 
 - (BOOL) validateStageDoStage:(id)sender
@@ -71,8 +70,7 @@
 
 - (IBAction) stageDoUnstage:(id)sender
 {
-  NSLog(@"FIXME: stageDoUnstage");
-  [self.stage unstageChanges:[self selectedChanges]];
+  [self.repositoryController  unstageChanges:[self selectedChanges]];
 }
 - (BOOL) validateStageDoUnstage:(id)sender
 {
@@ -88,11 +86,11 @@
   NSArray* selChanges = [self selectedChanges];
   if ([selChanges allAreTrue:@selector(staged)])
   {
-    [self.stage unstageChanges:selChanges];
+    [self.repositoryController unstageChanges:selChanges];
   }
   else
   {
-    [self.stage stageChanges:selChanges];
+    [self.repositoryController stageChanges:selChanges];
   }
 }
 - (BOOL) validateStageDoStageUnstage:(id)sender
