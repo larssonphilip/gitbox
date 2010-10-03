@@ -16,6 +16,7 @@
 #import "NSView+OAViewHelpers.h"
 #import "NSSplitView+OASplitViewHelpers.h"
 #import "NSString+OAStringHelpers.h"
+#import "NSObject+OADispatchItemValidation.h"
 
 @interface GBMainWindowController ()
 @end
@@ -70,6 +71,22 @@
   [self.sourcesController selectNextRepository:_];
 }
 
+- (IBAction) pullOrPush:(id)_
+{
+  [self.toolbarController pullOrPush:_];
+}
+
+
+
+
+#pragma mark NSUserInterfaceValidations
+
+// For each action selector "doSomething:" redirects call to "validateDoSomething:"
+// If the selector is not implemented, returns YES.
+- (BOOL) validateUserInterfaceItem:(id<NSValidatedUserInterfaceItem>)anItem
+{
+  return [self dispatchUserInterfaceItemValidation:anItem];
+}
 
 
 
