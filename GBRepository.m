@@ -403,158 +403,137 @@
 }
 
 
-- (void) pull
+
+
+
+
+#pragma mark Pull, Merge, Push
+
+
+- (void) alertWithMessage:(NSString*)message description:(NSString*)description
+{
+  NSAlert* alert = [[[NSAlert alloc] init] autorelease];
+  [alert addButtonWithTitle:@"OK"];
+  [alert setMessageText:message];
+  [alert setInformativeText:description];
+  [alert setAlertStyle:NSWarningAlertStyle];
+  
+  [alert runModal];
+  
+  //[alert retain];
+  // This cycle delay helps to avoid toolbar deadlock
+  //[self performSelector:@selector(slideAlert:) withObject:alert afterDelay:0.1];
+}
+
+
+- (void) pullOrMergeWithBlock:(GBBlock)block
 {
   if (self.currentRemoteBranch)
   {
     if ([self.currentRemoteBranch isLocalBranch])
     {
-      [self mergeBranch:self.currentRemoteBranch];
+      [self mergeBranch:self.currentRemoteBranch withBlock:block];
     }
     else
     {
-      // Try to find some unmerged fetched commits and simply merge them without fetching again
-      BOOL hasUnmergedCommits = NO;
-      NSUInteger c = [self.localBranchCommits count];
-      for (NSUInteger index = 0; index < c && !hasUnmergedCommits && index < 50; index++)
-      {
-        hasUnmergedCommits = hasUnmergedCommits || 
-          (((GBCommit*)[self.localBranchCommits objectAtIndex:index]).syncStatus == GBCommitSyncStatusUnmerged);
-      }
-      if (hasUnmergedCommits)
-      {
-        // TODO: should create a queue for the tasks to replace the conditional flags like self.pulling
-        //[self mergeBranch:self.currentRemoteBranch];
-        [self pullBranch:self.currentRemoteBranch];
-      }
-      else
-      {
-        [self pullBranch:self.currentRemoteBranch];
-      }
+      [self pullBranch:self.currentRemoteBranch withBlock:block];
     }
+  }
+  else
+  {
+    block();
   }
 }
 
-- (void) mergeBranch:(GBRef*)aBranch
+- (void) mergeBranch:(GBRef*)aBranch withBlock:(GBBlock)block
 {
-//  if (!self.pulling)
-//  {
-//    self.pulling = YES;
-    
-    GBTask* task = [self task];
-    task.arguments = [NSArray arrayWithObjects:@"merge", [aBranch nameWithRemoteAlias], nil];
-    
-    [task launchWithBlock:^{
-//      self.pulling = NO;
-      
-      if ([task isError])
-      {
-        [self alertWithMessage: @"Merge failed" description:[task.output UTF8String]];
-      }
-      
-      [self reloadCommits];
-      [self updateStatus];      
-    }];
-//  }
+  GBTask* task = [self task];
+  task.arguments = [NSArray arrayWithObjects:@"merge", [aBranch nameWithRemoteAlias], nil];
+  [task launchWithBlock:^{
+    if ([task isError])
+    {
+      [self alertWithMessage: @"Merge failed" description:[task.output UTF8String]];
+    }
+    block();
+  }];
 }
 
-
-- (void) pullBranch:(GBRef*)aRemoteBranch
+- (void) pullBranch:(GBRef*)aRemoteBranch withBlock:(GBBlock)block
 {
-//  if (!self.pulling)
-//  {
-//    self.pulling = YES;
-    
-    GBTask* task = [self task];
-    task.arguments = [NSArray arrayWithObjects:@"pull", 
-                           @"--tags", 
-                           @"--force", 
-                           aRemoteBranch.remoteAlias, 
-                           [NSString stringWithFormat:@"%@:refs/remotes/%@", 
-                            aRemoteBranch.name, [aRemoteBranch nameWithRemoteAlias]],
-                           nil];
-    
-    [task launchWithBlock:^{
-//      self.pulling = NO;
-      
-      if ([task isError])
-      {
-        [self alertWithMessage: @"Pull failed" description:[task.output UTF8String]];
-      }
-      
-      [self reloadCommits];
-      [self updateStatus];    
-    }];
-//  }
-}
-
-
-- (void) push
-{
-  if (self.currentRemoteBranch)
+  if (!aRemoteBranch)
   {
-    [self pushBranch:self.currentLocalRef to:self.currentRemoteBranch];
-  }  
+    block();
+    return;
+  }
+  GBTask* task = [self task];
+  task.arguments = [NSArray arrayWithObjects:@"pull", 
+                         @"--tags", 
+                         @"--force", 
+                         aRemoteBranch.remoteAlias, 
+                         [NSString stringWithFormat:@"%@:refs/remotes/%@", 
+                          aRemoteBranch.name, [aRemoteBranch nameWithRemoteAlias]],
+                         nil];
+  
+  [task launchWithBlock:^{
+    if ([task isError])
+    {
+      [self alertWithMessage: @"Pull failed" description:[task.output UTF8String]];
+    }
+    block();
+  }];
 }
 
-- (void) pushBranch:(GBRef*)aLocalBranch to:(GBRef*)aRemoteBranch
+- (void) fetchBranch:(GBRef*)aRemoteBranch withBlock:(GBBlock)block
 {
-//  if (!self.pushing && !self.pulling)
-//  {
-//    self.pushing = YES;
+  if (!aRemoteBranch)
+  {
+    block();
+    return;
+  }
+  GBTask* task = [self task];
+  task.arguments = [NSArray arrayWithObjects:@"fetch", 
+                    @"--tags", 
+                    @"--force", 
+                    aRemoteBranch.remoteAlias, 
+                    [NSString stringWithFormat:@"%@:refs/remotes/%@", 
+                     aRemoteBranch.name, [aRemoteBranch nameWithRemoteAlias]],
+                    nil];
+  
+  [task launchWithBlock:^{
+    if ([task isError])
+    {
+      [self alertWithMessage: @"Fetch failed" description:[task.output UTF8String]];
+    }
+    block();
+  }];
+}
+
+- (void) pushWithBlock:(GBBlock)block
+{
+  [self pushBranch:self.currentLocalRef toRemoteBranch:self.currentRemoteBranch withBlock:block];
+}
+
+- (void) pushBranch:(GBRef*)aLocalBranch toRemoteBranch:(GBRef*)aRemoteBranch withBlock:(GBBlock)block
+{
+  if (!aLocalBranch || !aRemoteBranch)
+  {
+    block();
+    return;
+  }
+  
+  GBTask* task = [self task];
+  NSString* refspec = [NSString stringWithFormat:@"%@:%@", aLocalBranch.name, aRemoteBranch.name];
+  task.arguments = [NSArray arrayWithObjects:@"push", @"--tags", aRemoteBranch.remoteAlias, refspec, nil];
+  [task launchWithBlock:^{
+    if ([task isError])
+    {
+      [self alertWithMessage: @"Push failed" description:[task.output UTF8String]];
+    }
+
     aRemoteBranch.isNewRemoteBranch = NO;
-    GBTask* task = [self task];
-    NSString* refspec = [NSString stringWithFormat:@"%@:%@", aLocalBranch.name, aRemoteBranch.name];
-    task.arguments = [NSArray arrayWithObjects:@"push", @"--tags", aRemoteBranch.remoteAlias, refspec, nil];
-    [task launchWithBlock:^{
-      //    self.pushing = NO;
-      
-      if ([task isError])
-      {
-        [self fetchSilently];
-        [self alertWithMessage: @"Push failed" description:[task.output UTF8String]];
-      }
-      [self reloadCommits];      
-    }];    
-//  }
+    block();
+  }];   
 }
-
-
-- (void) fetchSilently
-{
-  GBRef* aRemoteBranch = self.currentRemoteBranch;
-//  if (!self.fetching && aRemoteBranch && [aRemoteBranch isRemoteBranch])
-//  {
-//    self.fetching = YES;
-    
-    GBTask* task = [GBTask task];
-    task.arguments = [NSArray arrayWithObjects:@"fetch", 
-                           @"--tags", 
-                           @"--force", 
-                           aRemoteBranch.remoteAlias, 
-                           [NSString stringWithFormat:@"%@:refs/remotes/%@", 
-                            aRemoteBranch.name, [aRemoteBranch nameWithRemoteAlias]],
-                           nil];
-    [task launchWithBlock:^{
-      //self.fetching = NO;
-      [self reloadCommits];      
-    }];
-//  }
-}
-
-
-
-
-
-
-
-
-// FIXME: get rid of this
-- (void) updateStatus
-{
-  [self.stage reloadChanges];
-}
-
 
 
 

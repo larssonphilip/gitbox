@@ -504,12 +504,24 @@
 
 - (void) pull
 {
-  NSLog(@"TODO: pull");
+  [self pushSpinning];
+  [self pushDisabled];
+  [self.repository pullOrMergeWithBlock:^{
+    [self loadCommits];
+    [self popDisabled];
+    [self popSpinning];
+  }];
 }
 
 - (void) push
 {
-  NSLog(@"TODO: push");
+  [self pushSpinning];
+  [self pushDisabled];
+  [self.repository pushWithBlock:^{
+    [self loadCommits];
+    [self popDisabled];
+    [self popSpinning];
+  }];
 }
 
 

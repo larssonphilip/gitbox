@@ -63,19 +63,12 @@ typedef void (^GBBlock)();
 
 - (void) commitWithMessage:(NSString*) message block:(void(^)())block;
 
-- (void) pull;
-- (void) mergeBranch:(GBRef*)aBranch;
-- (void) pullBranch:(GBRef*)aRemoteBranch;
-- (void) push;
-- (void) pushBranch:(GBRef*)aLocalBranch to:(GBRef*)aRemoteBranch;
-- (void) fetchSilently;
-
-
-
-
-// FIXME: get rid of this
-- (void) updateStatus;
-
+- (void) pullOrMergeWithBlock:(GBBlock)block;
+- (void) mergeBranch:(GBRef*)aBranch withBlock:(GBBlock)block;
+- (void) pullBranch:(GBRef*)aRemoteBranch withBlock:(GBBlock)block;
+- (void) fetchBranch:(GBRef*)aRemoteBranch withBlock:(GBBlock)block;
+- (void) pushWithBlock:(GBBlock)block;
+- (void) pushBranch:(GBRef*)aLocalBranch toRemoteBranch:(GBRef*)aRemoteBranch withBlock:(GBBlock)block;
 
 
 #pragma mark Util
