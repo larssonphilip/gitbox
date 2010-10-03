@@ -32,8 +32,12 @@
 #pragma mark IBActions
 
 - (IBAction) pullOrPush:(NSSegmentedControl*)segmentedControl;
+
 - (IBAction) pull:(id)sender;
 - (IBAction) push:(id)sender;
+- (BOOL) validatePull:(id)sender;
+- (BOOL) validatePush:(id)sender;
+
 - (IBAction) checkoutBranch:(NSMenuItem*)sender;
 - (IBAction) checkoutRemoteBranch:(id)sender;
 - (IBAction) checkoutNewBranch:(id)sender;

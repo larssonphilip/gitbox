@@ -76,6 +76,25 @@
   [self.toolbarController pullOrPush:_];
 }
 
+- (IBAction) pull:(id)_
+{
+  [self.toolbarController pull:_];
+}
+
+- (IBAction) push:(id)_
+{
+  [self.toolbarController push:_];
+}
+
+- (BOOL) validatePull:(id)_
+{
+  return [self.toolbarController validatePull:_];
+}
+
+- (BOOL) validatePush:(id)_
+{
+  return [self.toolbarController validatePush:_];
+}
 
 
 

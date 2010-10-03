@@ -391,6 +391,7 @@
   }
 }
 
+ 
 
 
 - (void) updateSyncButtons
@@ -398,15 +399,10 @@
   NSSegmentedControl* control = self.pullPushControl;
   GBRepository* repo = self.repositoryController.repository;
   
-  BOOL isDisabled = self.repositoryController.isDisabled || self.repositoryController.isRemoteBranchesDisabled;
-  BOOL pullDisabled = NO;
-  BOOL pushDisabled = NO;
-  
   if (repo.currentRemoteBranch && [repo.currentRemoteBranch isLocalBranch])
   {
     [control setLabel:@"← merge" forSegment:0];
     [control setLabel:@" " forSegment:1];
-    pushDisabled = YES;
   }
   else
   {
@@ -414,10 +410,8 @@
     [control setLabel:@"push →" forSegment:1];
   }
   
-  if (!repo.currentRemoteBranch) pushDisabled = pullDisabled = YES;
-  
-  [control setEnabled:!pullDisabled && !isDisabled && repo forSegment:0];
-  [control setEnabled:!pushDisabled && !isDisabled && repo forSegment:1];
+  [control setEnabled:[self validatePull:nil] forSegment:0];
+  [control setEnabled:[self validatePush:nil] forSegment:1];
 }
 
 
@@ -485,6 +479,7 @@
   }
 }
 
+
 - (IBAction) pull:(id)sender
 {
   [self.repositoryController pull];
@@ -494,6 +489,21 @@
 {
   [self.repositoryController push];
 }
+
+- (BOOL) validatePull:(id)_
+{
+  GBRepositoryController* rc = self.repositoryController;
+  return rc.repository.currentRemoteBranch && !rc.isDisabled && !rc.isRemoteBranchesDisabled;
+}
+
+- (BOOL) validatePush:(id)_
+{
+  GBRepositoryController* rc = self.repositoryController;
+  return rc.repository.currentRemoteBranch && !rc.isDisabled && !rc.isRemoteBranchesDisabled && ![rc.repository.currentRemoteBranch isLocalBranch];
+}
+
+
+
 
 - (IBAction) checkoutBranch:(NSMenuItem*)sender
 {
