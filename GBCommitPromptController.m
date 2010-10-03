@@ -8,15 +8,14 @@
 
 @implementation GBCommitPromptController
 
-@synthesize repository;
 @synthesize value;
-@synthesize lastBranchName;
+@synthesize branchName;
 @synthesize textView;
 @synthesize shortcutTipLabel;
 @synthesize branchHintLabel;
-@synthesize target;
-@synthesize finishSelector;
-@synthesize cancelSelector;
+@synthesize finishBlock;
+@synthesize cancelBlock;
+
 @synthesize windowHoldingSheet;
 
 + (GBCommitPromptController*) controller
@@ -27,12 +26,13 @@
 - (void) dealloc
 {
   [NSObject cancelPreviousPerformRequestsWithTarget:self];
-  self.repository = nil;
   self.value = nil;
-  self.lastBranchName = nil;
+  self.branchName = nil;
   self.textView = nil;
   self.shortcutTipLabel = nil;
   self.branchHintLabel = nil;
+  self.finishBlock = nil;
+  self.cancelBlock = nil;
   [super dealloc];
 }
 
@@ -48,32 +48,31 @@
 - (IBAction) onOK:(id)sender
 {
   [self resetMagicFlags];
-  self.value = [self.textView string];
+  self.value = [[[self.textView string] copy] autorelease];
   
-  if (!self.value || [self.value isEmptyString]) return;
-  
-  [self addMessageToHistory];
+  if (!self.value || [self.value isEmptyString]) 
+  {
+    [self onCancel:sender];
+    return;
+  }
   
   self.value = [self.value stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
   
-  self.lastBranchName = self.repository.currentLocalRef.name;
+  if (self.finishBlock) self.finishBlock();
+  
+  //[self rewindMessageHistory];
   [self.branchHintLabel setStringValue:@""];
-  
-  if (finishSelector) [self.target performSelector:finishSelector withObject:self];
-  
   [self.textView setString:@""];
-  
-  [self.windowHoldingSheet endSheetForController:self];
-  self.windowHoldingSheet = nil;
+  [self endSheet];
 }
 
 - (IBAction) onCancel:(id)sender
 {
-  [self rewindMessageHistory];
+  //[self rewindMessageHistory];
   [self resetMagicFlags];
-  if (cancelSelector) [self.target performSelector:cancelSelector withObject:self];
-  [self.windowHoldingSheet endSheetForController:self];
-  self.windowHoldingSheet = nil;
+  self.value = [[[self.textView string] copy] autorelease];
+  if (self.cancelBlock) self.cancelBlock();
+  [self endSheet];
 }
 
 - (void) runSheetInWindow:(NSWindow*)window
@@ -82,109 +81,121 @@
   [window beginSheetForController:self];
 }
 
-
-
-
-
-#pragma mark Message History
-
-
-- (NSArray*) messageHistory
+- (void) endSheet
 {
-  NSArray* list = (NSArray*)[self.repository loadObjectForKey:@"GBCommitPromptMessageHistory"];
-  if (!list) list = [NSArray array];
-  NSUInteger maxLength =101;
-  if ([list count] > maxLength) list = [list subarrayWithRange:NSMakeRange(0, maxLength)];
-  return list;
+  self.finishBlock = nil;
+  self.cancelBlock = nil;
+  [self.windowHoldingSheet endSheetForController:self];
+  self.windowHoldingSheet = nil;
 }
 
-- (void) rewindMessageHistory
-{
-  messageHistoryIndex = 0;
-}
 
-- (void) addMessageToHistory
-{
-  if (self.value)
-  {
-    NSArray* newHistory = [[NSArray arrayWithObject:self.value] arrayByAddingObjectsFromArray:[self messageHistory]];
-    [self.repository saveObject:newHistory forKey:@"GBCommitPromptMessageHistory"];
-  }
-  messageHistoryIndex = 0;
-}
 
-- (NSString*) messageFromHistoryAtIndex:(NSUInteger)index
-{
-  return [[self messageHistory] objectAtIndex:index or:nil];
-}
 
-- (IBAction) previousMessage:(id)sender
-{
-  NSString* message = [[self messageHistory] objectAtIndex:messageHistoryIndex or:nil];
-  if (message)
-  {
-    // If it is the first scroll back, stash away current text
-    if (messageHistoryIndex == 0)
-    {
-      self.value = [[[self.textView string] copy] autorelease];
-      NSLog(@"stashing current text %@", self.value);
-    }
-    [self.textView setString:message];
-    [self.textView selectAll:nil];
-    messageHistoryIndex++;
-  }
-}
 
-- (IBAction) nextMessage:(id)sender
-{
-  if (messageHistoryIndex > 0)
-  {
-    messageHistoryIndex--;
-    if (messageHistoryIndex == 0) // reached the last item, recover stashed message
-    {
-      if (!self.value) self.value = @"";
-      [self.textView setString:self.value];
-      [self.textView selectAll:nil];
-    }
-    else
-    {
-      NSString* message = [[self messageHistory] objectAtIndex:messageHistoryIndex-1 or:nil];
-      if (message)
-      {
-        [self.textView setString:message];
-        [self.textView selectAll:nil];
-      }
-    }
-  }
-}
+
+
+
+//#pragma mark Message History
+//
+//
+//
+//- (NSArray*) messageHistory
+//{
+//  NSArray* list = (NSArray*)[self.repositoryController loadObjectForKey:@"GBCommitPromptMessageHistory"];
+//  if (!list) list = [NSArray array];
+//  NSUInteger maxLength =101;
+//  if ([list count] > maxLength) list = [list subarrayWithRange:NSMakeRange(0, maxLength)];
+//  return list;
+//}
+//
+//- (void) rewindMessageHistory
+//{
+//  messageHistoryIndex = 0;
+//}
+//
+//- (void) addMessageToHistory
+//{
+//  if (self.value)
+//  {
+//    NSArray* newHistory = [[NSArray arrayWithObject:self.value] arrayByAddingObjectsFromArray:[self messageHistory]];
+//    [self.repositoryController saveObject:newHistory forKey:@"GBCommitPromptMessageHistory"];
+//  }
+//  messageHistoryIndex = 0;
+//}
+//
+//- (NSString*) messageFromHistoryAtIndex:(NSUInteger)index
+//{
+//  return [[self messageHistory] objectAtIndex:index or:nil];
+//}
+//
+//
+//- (IBAction) previousMessage:(id)sender
+//{
+//  NSString* message = [[self messageHistory] objectAtIndex:messageHistoryIndex or:nil];
+//  if (message)
+//  {
+//    // If it is the first scroll back, stash away current text
+//    if (messageHistoryIndex == 0)
+//    {
+//      self.value = [[[self.textView string] copy] autorelease];
+//      NSLog(@"stashing current text %@", self.value);
+//    }
+//    [self.textView setString:message];
+//    [self.textView selectAll:nil];
+//    messageHistoryIndex++;
+//  }
+//}
+//
+//- (IBAction) nextMessage:(id)sender
+//{
+//  if (messageHistoryIndex > 0)
+//  {
+//    messageHistoryIndex--;
+//    if (messageHistoryIndex == 0) // reached the last item, recover stashed message
+//    {
+//      if (!self.value) self.value = @"";
+//      [self.textView setString:self.value];
+//      [self.textView selectAll:nil];
+//    }
+//    else
+//    {
+//      NSString* message = [[self messageHistory] objectAtIndex:messageHistoryIndex-1 or:nil];
+//      if (message)
+//      {
+//        [self.textView setString:message];
+//        [self.textView selectAll:nil];
+//      }
+//    }
+//  }
+//}
+
+
 
 
 
 #pragma mark NSWindowDelegate
 
 
-- (void) updateBranchHint
+- (void) updateWindow
 {
-  NSString* currentBranchName = self.repository.currentLocalRef.name;
-  if (self.lastBranchName && currentBranchName && ![self.lastBranchName isEqualToString:currentBranchName])
-  {
-    [self.branchHintLabel setStringValue:currentBranchName];
-  }
-  else
-  {
-    [self.branchHintLabel setStringValue:@""];
-  }
+  [self.branchHintLabel setStringValue:self.branchName ? self.branchName : @""];
+  [self.textView setString:self.value ? [[self.value copy] autorelease] : @""];
 }
 
 - (void) windowDidBecomeKey:(NSNotification*)notification
 {
-  [self updateBranchHint];
+  [self updateWindow];
 }
 
 - (void) windowDidLoad
 {
-  [self updateBranchHint];
+  [self updateWindow];
 }
+
+
+
+
 
 
 
@@ -195,7 +206,7 @@
         shouldChangeTextInRange:(NSRange)affectedCharRange
         replacementString:(NSString*)replacementString
 {
-  [self rewindMessageHistory];
+//  [self rewindMessageHistory];
   if (!finishedPlayingWithTooltip)
   {
     if (!addedNewLine)

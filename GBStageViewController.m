@@ -3,6 +3,7 @@
 #import "GBRepositoryController.h"
 #import "GBStageViewController.h"
 #import "GBFileEditingController.h"
+#import "GBCommitPromptController.h"
 
 #import "NSObject+OAKeyValueObserving.h"
 #import "NSArray+OAArrayHelpers.h"
@@ -11,12 +12,14 @@
 @implementation GBStageViewController
 
 @synthesize stage;
+@synthesize commitPromptController;
 
 #pragma mark Init
 
 - (void) dealloc
 {
   self.stage = nil;
+  self.commitPromptController = nil;
   [super dealloc];
 }
 
@@ -213,6 +216,55 @@
   [[alert window] orderOut:self];
   [alert autorelease];
 }
+
+
+
+- (IBAction) commit:(id)sender
+{
+  [self.repositoryController stageChanges:[self selectedChanges] withBlock:^{
+    
+    if (!self.commitPromptController)
+    {
+      self.commitPromptController = [GBCommitPromptController controller];
+    }
+    
+    GBCommitPromptController* prompt = self.commitPromptController;
+    GBRepositoryController* repoCtrl = self.repositoryController;
+    
+    prompt.value = repoCtrl.cancelledCommitMessage ? repoCtrl.cancelledCommitMessage : @"";
+    prompt.branchName = nil;
+    
+    [prompt updateWindow];
+    
+    NSString* currentBranchName = self.repositoryController.repository.currentLocalRef.name;
+    
+    if (currentBranchName && 
+        repoCtrl.lastCommitBranchName && 
+        ![repoCtrl.lastCommitBranchName isEqualToString:currentBranchName])
+    {
+      prompt.branchName = currentBranchName;
+    }
+    
+    prompt.finishBlock = ^{
+      repoCtrl.cancelledCommitMessage = @"";
+      repoCtrl.lastCommitBranchName = currentBranchName;
+      [repoCtrl commitWithMessage:prompt.value];
+    };
+    prompt.cancelBlock = ^{
+      repoCtrl.cancelledCommitMessage = prompt.value;
+    };
+    
+    [prompt runSheetInWindow:[self window]];
+  }];
+}
+
+
+- (BOOL) validateCommit:(id)sender
+{
+  return [self.stage isCommitable];
+}
+
+
 
 
 

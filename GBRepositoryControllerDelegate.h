@@ -12,4 +12,5 @@
 - (void) repositoryControllerDidSelectCommit:           (GBRepositoryController*)aRepositoryController;
 - (void) repositoryControllerDidUpdateCommitChanges:    (GBRepositoryController*)aRepositoryController;
 - (void) repositoryControllerDidUpdateCommitableChanges:(GBRepositoryController*)aRepositoryController;
+- (void) repositoryControllerDidCommit:                 (GBRepositoryController*)aRepositoryController;
 @end

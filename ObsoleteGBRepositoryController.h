@@ -36,7 +36,7 @@
 
 - (IBAction) createNewRemoteBranch:(id)sender;
 - (IBAction) createNewRemote:(id)sender;
-- (IBAction) commit:(id)sender;
+//- (IBAction) commit:(id)sender;
 
 
 #pragma mark View Actions

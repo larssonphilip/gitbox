@@ -291,9 +291,8 @@ NSString* OATaskNotification = @"OATaskNotification";
 
 - (void) launchWithBlock:(void(^)())block
 {
+#if OATASK_DEBUG
   static char columns[13] = "000000000000\0";
-  
-#if DEBUG
   char* c = columns;
   NSInteger logIndentation = 0;
   while (*c++ == '1') logIndentation++;
@@ -304,7 +303,7 @@ NSString* OATaskNotification = @"OATaskNotification";
 #endif
   dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     [self launchAndWait];
-#if DEBUG
+#if OATASK_DEBUG
     dispatch_async(dispatch_get_main_queue(), ^{
       NSLog(@"%@%@.", [@"" stringByPaddingToLength:logIndentation*16 withString:@" " startingAtIndex:0], [self class]);
       columns[logIndentation] = '0';

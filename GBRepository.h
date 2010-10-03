@@ -61,9 +61,7 @@ typedef void (^GBBlock)();
 - (void) checkoutRef:(GBRef*)ref withNewName:(NSString*)name withBlock:(GBBlock)block;
 - (void) checkoutNewBranchWithName:(NSString*)name withBlock:(GBBlock)block;
 
-
-- (void) commitWithMessage:(NSString*) message;
-
+- (void) commitWithMessage:(NSString*) message block:(void(^)())block;
 
 - (void) pull;
 - (void) mergeBranch:(GBRef*)aBranch;

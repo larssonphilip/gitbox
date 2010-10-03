@@ -38,6 +38,8 @@ Sources:
 
 
 Bugs:
+- maybe a bug: if the stage view is not selected, commit: action is not available
+- bug: when adding files to stage too quickly, git-add fails on .git/index.lock (should put all index modifying operations in a single serial dispatch queue)
 - fsevents: reset a notification delay when receiving update to the same path again (usefull if some long process keeps updating disk: like git-checkout)
 - bug: table row selection is ignored if was no selection for ArrayController. Should check NSTableView selectedRowIndexes? See http://forums.macrumors.com/showthread.php?t=166469 
 - bug: for non-existent HEAD gitbox does not show a staged new file

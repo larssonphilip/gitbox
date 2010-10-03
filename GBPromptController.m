@@ -10,13 +10,13 @@
 @synthesize promptText;
 @synthesize buttonText;
 @synthesize value;
+@synthesize finishBlock;
+@synthesize cancelBlock;
+
 @synthesize requireNonNilValue;
 @synthesize requireNonEmptyString;
 @synthesize requireSingleLine;
 @synthesize requireStripWhitespace;
-
-@synthesize finishBlock;
-@synthesize cancelBlock;
 
 @synthesize windowHoldingSheet;
 
@@ -66,14 +66,14 @@
   if (requireNonNilValue && !self.value) self.value = @"";
   if (requireNonEmptyString && (!self.value || [self.value isEmptyString])) return;
   
-  if (finishBlock) finishBlock();
+  if (self.finishBlock) self.finishBlock();
   self.value = @"";
   [self endSheet];
 }
 
 - (IBAction) onCancel:(id)sender
 {
-  if (cancelBlock) cancelBlock();
+  if (self.cancelBlock) self.cancelBlock();
   [self endSheet];
 }
 

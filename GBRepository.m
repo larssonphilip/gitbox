@@ -385,19 +385,20 @@
   }];
 }
 
-
-
-
-
-
-
-- (void) commitWithMessage:(NSString*) message
+- (void) commitWithMessage:(NSString*) message block:(void(^)())block
 {
   if (message && [message length] > 0)
   {
-    [[[self task] launchWithArgumentsAndWait:[NSArray arrayWithObjects:@"commit", @"-m", message, nil]] showErrorIfNeeded];
-    [self updateStatus];
-//    [self reloadCommits];
+    GBTask* task = [self task];
+    task.arguments = [NSArray arrayWithObjects:@"commit", @"-m", message, nil];
+    [task launchWithBlock:^{
+      [task showErrorIfNeeded];
+      block();
+    }];
+  }
+  else
+  {
+    block();
   }
 }
 

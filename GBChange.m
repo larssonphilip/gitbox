@@ -119,6 +119,11 @@
    
    */
     
+  if (self.busy)
+  {
+    return @"...";
+  }
+  
   if (!aStatusCode || [aStatusCode length] < 1)
   {
     if (self.busy)

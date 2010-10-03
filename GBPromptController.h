@@ -6,13 +6,13 @@
 @property(retain) NSString* promptText;
 @property(retain) NSString* buttonText;
 @property(retain) NSString* value;
+@property(copy) void (^finishBlock)();
+@property(copy) void (^cancelBlock)();
+
 @property(assign) BOOL requireNonNilValue;
 @property(assign) BOOL requireNonEmptyString;
 @property(assign) BOOL requireSingleLine;
 @property(assign) BOOL requireStripWhitespace;
-
-@property(copy) void (^finishBlock)();
-@property(copy) void (^cancelBlock)();
 
 @property(assign) NSWindow* windowHoldingSheet;
 

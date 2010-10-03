@@ -27,10 +27,13 @@
 @property(retain) GBCommit* selectedCommit;
 @property(nonatomic,retain) OAPropertyListController* plistController;
 @property(retain) OAFSEventStream* fsEventStream;
+@property(retain) NSString* lastCommitBranchName;
+@property(retain) NSString* cancelledCommitMessage;
 
 @property(assign) NSInteger isDisabled;
 @property(assign) NSInteger isRemoteBranchesDisabled;
 @property(assign) NSInteger isSpinning;
+@property(assign) BOOL isCommitting;
 @property(assign) NSObject<GBRepositoryControllerDelegate>* delegate;
 
 + (id) repositoryControllerWithURL:(NSURL*)url;
@@ -62,11 +65,13 @@
 - (void) selectCommit:(GBCommit*)commit;
 
 - (void) stageChanges:(NSArray*)changes;
+- (void) stageChanges:(NSArray*)changes withBlock:(void(^)())block;
 - (void) unstageChanges:(NSArray*)changes;
 - (void) revertChanges:(NSArray*)changes;
 - (void) deleteFilesInChanges:(NSArray*)changes;
 
 - (void) selectCommitableChanges:(NSArray*)changes;
+- (void) commitWithMessage:(NSString*)message;
 
 - (void) pull;
 - (void) push;

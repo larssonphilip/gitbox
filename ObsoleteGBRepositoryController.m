@@ -61,9 +61,9 @@
   if (!commitPromptController)
   {
     self.commitPromptController = [GBCommitPromptController controller];
-    commitPromptController.repository = self.repository;
-    commitPromptController.target = self;
-    commitPromptController.finishSelector = @selector(doneCommit:);
+//    commitPromptController.repository = self.repository;
+//    commitPromptController.target = self;
+//    commitPromptController.finishSelector = @selector(doneCommit:);
   }
   return [[commitPromptController retain] autorelease];
 }
@@ -140,26 +140,26 @@
 }
 
 
-- (IBAction) commit:(id)sender
-{
-  BOOL delayPrompt = [[self.stageController selectedChanges] count] > 0; 
-  [self.stageController stageDoStage:sender];
-  if (delayPrompt)
-  {
-    [self.commitPromptController performSelector:@selector(runSheetInWindow:) 
-                                      withObject:[self window] 
-                                      afterDelay:0.3];
-  }
-  else
-  {
-    [self.commitPromptController runSheetInWindow:[self window]];
-  }
-}
-
-  - (void) doneCommit:(GBPromptController*)ctrl
-  {
-    [self.repository commitWithMessage:ctrl.value];
-  }
+//- (IBAction) commit:(id)sender
+//{
+//  BOOL delayPrompt = [[self.stageController selectedChanges] count] > 0; 
+//  [self.stageController stageDoStage:sender];
+//  if (delayPrompt)
+//  {
+//    [self.commitPromptController performSelector:@selector(runSheetInWindow:) 
+//                                      withObject:[self window] 
+//                                      afterDelay:0.3];
+//  }
+//  else
+//  {
+//    [self.commitPromptController runSheetInWindow:[self window]];
+//  }
+//}
+//
+//  - (void) doneCommit:(GBPromptController*)ctrl
+//  {
+//    [self.repository commitWithMessage:ctrl.value];
+//  }
 
 
 

@@ -40,7 +40,7 @@
 - (IBAction) selectRemoteBranch:(id)sender;
 - (IBAction) createNewRemoteBranch:(id)sender;
 - (IBAction) createNewRemote:(id)sender;
-- (IBAction) commit:(id)sender;
+//- (IBAction) commit:(id)sender;
 
 
 @end

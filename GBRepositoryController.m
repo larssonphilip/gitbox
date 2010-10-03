@@ -20,10 +20,13 @@
 @synthesize selectedCommit;
 @synthesize plistController;
 @synthesize fsEventStream;
+@synthesize lastCommitBranchName;
+@synthesize cancelledCommitMessage;
 
 @synthesize isDisabled;
 @synthesize isRemoteBranchesDisabled;
 @synthesize isSpinning;
+@synthesize isCommitting;
 @synthesize delegate;
 
 - (void) dealloc
@@ -32,6 +35,8 @@
   self.selectedCommit = nil;
   self.plistController = nil;
   self.fsEventStream = nil;
+  self.lastCommitBranchName = nil;
+  self.cancelledCommitMessage = nil;
   [super dealloc];
 }
 
@@ -346,13 +351,13 @@
  
  Scenario 1: S2 starts before L1, so we should avoid running L1 at all.
  S1----->L1----->U1
- S2----->L2----->U2
+     S2----->L2----->U2
  
  
  
  Scenario 2: S2 started after L1, so we should avoid U1.
  S1----->L1----->U1
- S2----->L2----->U2
+             S2----->L2----->U2
  
  In both scenarios we need to know whether there are any other staging processes running or not.
  If there is one, we simply avoid running loading task or at least avoid updating the UI.
@@ -365,7 +370,7 @@
  
  Scenario 3: L1 starts before S2, but finishes after *both* S1 and S2 have finished.
  S1---->L1------------>U1
- S2---->L2---------->U2
+            S2---->L2---------->U2
  
  In this case it is not enough to have isStaging flag. We should also ask whether there is any 
  loading tasks still running. For that we use isLoadingChanges counter.
@@ -393,13 +398,38 @@
 // NSInteger isStaging; // maintains a count of the staging tasks running
 // NSInteger isLoadingChanges; // maintains a count of the changes loading tasks running
 
+- (void) loadStageChanges
+{
+  if (self.repository.stage)
+  {
+    [self pushSpinning];
+    isLoadingChanges++;
+    [self.repository.stage loadChangesWithBlock:^{
+      isLoadingChanges--;
+      // Avoid publishing changes if another staging is running
+      // or another loading task is running.
+      if (!isStaging && !isLoadingChanges)
+      {
+        OAOptionalDelegateMessage(@selector(repositoryControllerDidUpdateCommitChanges:)); 
+      }
+      [self popSpinning];
+    }];
+  }
+}
+
 // This method helps to factor out common code for both staging and unstaging tasks.
 // Block declaration might look tricky, but it's just a convenient wrapper, nothing special.
 // See the stage and unstage methods below.
-- (void) stagingHelperForChanges:(NSArray*)changes withBlock:(void(^)(NSArray*, GBStage*, void(^)()))block
+- (void) stagingHelperForChanges:(NSArray*)changes 
+                       withBlock:(void(^)(NSArray*, GBStage*, void(^)()))block
+                  postStageBlock:(void(^)())postStageBlock
 {
   GBStage* stage = self.repository.stage;
-  if (!stage) return;
+  if (!stage)
+  {
+    if (postStageBlock) postStageBlock();
+    return;
+  }
   
   NSMutableArray* notBusyChanges = [NSMutableArray array];
   for (GBChange* aChange in changes) {
@@ -410,27 +440,21 @@
     }
   }
   
-  if ([notBusyChanges count] < 1) return;
+  if ([notBusyChanges count] < 1)
+  {
+    if (postStageBlock) postStageBlock();
+    return;
+  }
   
   [self pushSpinning];
   isStaging++;
   block(notBusyChanges, stage, ^{
     isStaging--;
+    if (postStageBlock) postStageBlock();
     // Avoid loading changes if another staging is running.
     if (!isStaging) 
     {
-      [self pushSpinning];
-      isLoadingChanges++;
-      [stage loadChangesWithBlock:^{
-        isLoadingChanges--;
-        // Avoid publishing changes if another staging is running
-        // or another loading task is running.
-        if (!isStaging && !isLoadingChanges)
-        {
-          OAOptionalDelegateMessage(@selector(repositoryControllerDidUpdateCommitChanges:)); 
-        }
-        [self popSpinning];
-      }];
+      [self loadStageChanges];
     }
     [self popSpinning];
   });
@@ -440,16 +464,21 @@
 
 - (void) stageChanges:(NSArray*)changes
 {
-  [self stagingHelperForChanges:changes withBlock:^(NSArray* notBusyChanges, GBStage* stage, void(^block)()){
-    [stage stageChanges:notBusyChanges withBlock:block];
-  }];
+  [self stageChanges:changes withBlock:nil];
+}
+
+- (void) stageChanges:(NSArray*)changes withBlock:(void(^)())block
+{
+  [self stagingHelperForChanges:changes withBlock:^(NSArray* notBusyChanges, GBStage* stage, void(^helperBlock)()){
+    [stage stageChanges:notBusyChanges withBlock:helperBlock];
+  } postStageBlock:block];  
 }
 
 - (void) unstageChanges:(NSArray*)changes
 {
   [self stagingHelperForChanges:changes withBlock:^(NSArray* notBusyChanges, GBStage* stage, void(^block)()){
     [stage unstageChanges:notBusyChanges withBlock:block];
-  }];
+  } postStageBlock:nil];
 }
 
 - (void) revertChanges:(NSArray*)changes
@@ -462,7 +491,7 @@
       [stage unstageChanges:notBusyChanges withBlock:^{
         [stage revertChanges:notBusyChanges withBlock:block];
       }];
-    }];
+    } postStageBlock:nil];
   }
 }
 
@@ -470,15 +499,29 @@
 {
   [self stagingHelperForChanges:changes withBlock:^(NSArray* notBusyChanges, GBStage* stage, void(^block)()){
     [stage deleteFilesInChanges:notBusyChanges withBlock:block];
-  }];
+  } postStageBlock:nil];
 }
-
 
 - (void) selectCommitableChanges:(NSArray*)changes
 {
   self.repository.stage.hasSelectedChanges = ([changes count] > 0);
   OAOptionalDelegateMessage(@selector(repositoryControllerDidUpdateCommitableChanges:));
 }
+
+- (void) commitWithMessage:(NSString*)message
+{
+  if (self.isCommitting) return;
+  self.isCommitting = YES;
+  [self pushSpinning];
+  [self.repository commitWithMessage:message block:^{
+    self.isCommitting = NO;
+    [self loadStageChanges];
+    [self loadCommits];
+    [self popSpinning];
+    OAOptionalDelegateMessage(@selector(repositoryControllerDidCommit:));
+  }];
+}
+
 
 - (void) pull
 {
