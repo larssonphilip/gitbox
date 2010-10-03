@@ -50,7 +50,7 @@
 
 - (BOOL) isCommitable
 {
-  return [self isDirty] && ([self.stagedChanges count] > 0 || self.hasSelectedChanges);
+  return ([self.stagedChanges count] > 0 || self.hasSelectedChanges);
 }
 
 
