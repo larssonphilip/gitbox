@@ -61,12 +61,12 @@
 
 - (void) selectCommit:(GBCommit*)commit;
 
-
 - (void) stageChanges:(NSArray*)changes;
 - (void) unstageChanges:(NSArray*)changes;
 - (void) revertChanges:(NSArray*)changes;
 - (void) deleteFilesInChanges:(NSArray*)changes;
 
+- (void) selectCommitableChanges:(NSArray*)changes;
 
 - (void) pull;
 - (void) push;

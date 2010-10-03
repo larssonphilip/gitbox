@@ -13,7 +13,7 @@
 @synthesize unstagedChanges;
 @synthesize untrackedChanges;
 @synthesize hasStagedChanges;
-
+@synthesize hasSelectedChanges;
 
 #pragma mark Init
 
@@ -46,6 +46,11 @@
 - (BOOL) isDirty
 {
   return ([self.stagedChanges count] + [self.unstagedChanges count]) > 0;
+}
+
+- (BOOL) isCommitable
+{
+  return [self isDirty] && ([self.stagedChanges count] > 0 || self.hasSelectedChanges);
 }
 
 

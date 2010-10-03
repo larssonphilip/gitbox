@@ -11,4 +11,5 @@
 - (void) repositoryControllerDidChangeRemoteBranch:     (GBRepositoryController*)aRepositoryController;
 - (void) repositoryControllerDidSelectCommit:           (GBRepositoryController*)aRepositoryController;
 - (void) repositoryControllerDidUpdateCommitChanges:    (GBRepositoryController*)aRepositoryController;
+- (void) repositoryControllerDidUpdateCommitableChanges:(GBRepositoryController*)aRepositoryController;
 @end

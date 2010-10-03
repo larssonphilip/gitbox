@@ -242,6 +242,11 @@
   [self.historyController updateStage];
 }
 
+- (void) repositoryControllerDidUpdateCommitableChanges:(GBRepositoryController*)repoCtrl
+{
+  if (repoCtrl != self.repositoriesController.selectedRepositoryController) return;
+  [self.toolbarController updateCommitButton];
+}
 
 
 

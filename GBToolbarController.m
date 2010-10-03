@@ -430,7 +430,7 @@
   if ([commit isStage])
   {
     [self.commitButton setHidden:NO];
-    [self.commitButton setEnabled:[[commit asStage] isDirty]];
+    [self.commitButton setEnabled:[[commit asStage] isCommitable]];
   }
   else
   {

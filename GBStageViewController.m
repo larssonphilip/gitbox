@@ -242,7 +242,10 @@
   return !(columnIndex == 0);
 }
 
-
+- (void)tableViewSelectionDidChange:(NSNotification *)aNotification
+{
+  [self.repositoryController selectCommitableChanges:[self selectedChanges]];
+}
 
 
 @end

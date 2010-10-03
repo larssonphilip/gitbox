@@ -474,6 +474,12 @@
 }
 
 
+- (void) selectCommitableChanges:(NSArray*)changes
+{
+  self.repository.stage.hasSelectedChanges = ([changes count] > 0);
+  OAOptionalDelegateMessage(@selector(repositoryControllerDidUpdateCommitableChanges:));
+}
+
 - (void) pull
 {
   
