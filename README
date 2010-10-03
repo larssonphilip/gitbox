@@ -1,6 +1,6 @@
 JUMP GOALS:
 
-- stage
++ stage
 - pull
 - push
 - replace pull-push with a single merge or pull button when push is impossible
@@ -18,14 +18,6 @@ Newbie-oriented features:
 0.9.8:
 - show in about box or in preferences a message how to obtain git source
 - allow switching to a system-provided git in preferences
-+ release notes window
-+ nice scrollbar and commit cell selection
-+ bug: preferences toolbar has no selected item
-+ bug: diff tool radio group has no selected item
-+ bug: should prefer branch connection in the .git/config (and .git/gitbox.plist as a backup)
-+ bug: preferences window shows "error: file not found" on fresh setup
-+ redraw scrollbar to appear over the history table with half-opacity
-+ bundle git binaries with the app package
 
 
 
@@ -42,29 +34,19 @@ Sources:
 - delete key
 - context menu to delete item
 - reorder repos
-+ cmd+shift+[] to switch between repos
-+ change window title
 
 
 Bugs:
 - fsevents: reset a notification delay when receiving update to the same path again (usefull if some long process keeps updating disk: like git-checkout)
-+ bug: when selecting commit, the cell is not updated immediately
-+ bug: when selected a repo, stage is half-updated + stale content from the previous repo
 - bug: commit button should be enabled only when the stage is not clean or there is a selection in the tableview
-- bug: very annoying selection loose on stage/unstage
 - bug: table row selection is ignored if was no selection for ArrayController. Should check NSTableView selectedRowIndexes? See http://forums.macrumors.com/showthread.php?t=166469 
 - bug: for non-existent HEAD gitbox does not show a staged new file
 - bug: show disabled "No branches" item for inaccessible remote
-- bug: sometimes spinner does not stop spinning or toolbar items are just disabled - maybe bindings problem
 - bug: repository stage/branch updating tasks are stuck in activity window with running status
-- bug: disable status table view while status is updating (double click on a stale row crashes the app)
-  (or better: reuse matching changes to avoid that issue and avoid flickering and UI blocking)
 - bug: historical diff for Added file shows diff between current state (left) and initial state (right)
 
 
 UI glitches:
-- remotes controller: select current remote in the list
-- glitch: sometimes fake modification of xcodeproj appears in the stage due to async git-status call (it is a case for quick switching from xcode to gitbox right after it synced)
 - remember activity window visibility
 
 UI features:
@@ -81,9 +63,7 @@ Easy features:
 
 
 Hard features:
-- fsevents: should refresh status on FSEvent directory change (in background)
-- fsevents: reread remotes on focus: if the names and urls are the same, do not ls-remote
-- fsevents: do ls-remote in background starting on unfocus
+- do ls-remote in background starting on unfocus (or not only in background)
 
 - find/nav bar sliding down in the history:
   - filters commits by sha-1, modified filenames and text
@@ -103,7 +83,6 @@ Hard features:
 - commit header: show parent ids using <a href="gitbox://git@sss.pierlis.com/repo.git#commits/sha1">...</a>
 - handling URL schema: gitbox://git@sss.pierlis.com/repo.git#commits/sha1
 - fetch in background should reset fetch interval when new commits are fetched
-- sidebar to group repositories
 - gitosis integration
 - submodules UI
 - conflict stage: highlight conflicted changes, allow to choose one of the versions 
@@ -113,7 +92,6 @@ Hard features:
 Other:
 - hitting space bar for staging/unstaging a change
 - browse the server with SSH and select a repository
-- bug: should try running NSTasks blocking in a background NSOperation to work around the leaks
 - log: mark as read/unread + automatic mark as read
 - compare office files using some office app: cooperate with Kaleidoscope
 - compare image files in an double-pane image viewer
@@ -121,7 +99,6 @@ Other:
 
 
 UILab nonsense:
-- disable toolbar editing
 - fatter arrows
 - labels from arrows to the bottom of the item
 - bottom bar for stage
@@ -133,6 +110,28 @@ Bonjour info:
 
 
 Done:
++ release notes window
++ nice scrollbar and commit cell selection
++ bug: preferences toolbar has no selected item
++ bug: diff tool radio group has no selected item
++ bug: should prefer branch connection in the .git/config (and .git/gitbox.plist as a backup)
++ bug: preferences window shows "error: file not found" on fresh setup
++ redraw scrollbar to appear over the history table with half-opacity
++ bundle git binaries with the app package
++ sidebar: cmd+shift+[] to switch between repos
++ change window title when repo is switched
++ bug: when selecting commit, the cell is not updated immediately
++ bug: when selected a repo, stage is half-updated + stale content from the previous repo
++ bug: very annoying selection loose on stage/unstage
++ bug: sometimes spinner does not stop spinning or toolbar items are just disabled - maybe bindings problem
++ bug: disable status table view while status is updating (double click on a stale row crashes the app)
++ remotes controller: select current remote in the list
++ glitch: sometimes fake modification of xcodeproj appears in the stage due to async git-status call (it is a case for quick switching from xcode to gitbox right after it synced)
++ fsevents: should refresh status on FSEvent directory change (in background)
++ fsevents: reread remotes on focus: if the names and urls are the same, do not ls-remote
++ sidebar to group repositories
++ bug: should try running NSTasks blocking in a background to work around the leaks (should be fixed with GCD)
++ disable toolbar editing
 
 
 0.9.7:
