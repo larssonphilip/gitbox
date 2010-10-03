@@ -72,25 +72,6 @@
   return self.srcURL;
 }
 
-// TODO: remove this
-- (BOOL) isEqual:(GBChange*)other
-{
-  if (!other) return NO;
-  
-//  if (staged == other.staged)
-//  {
-//    // Special case: when both changes are staged, one of them may be a "just staged", without a new revision yet.
-//    return (([self.srcURL isEqual:other.srcURL] || (!srcURL && !other.srcURL)) &&
-//            ([self.dstURL isEqual:other.dstURL] || (!dstURL && !other.dstURL)));  
-//  }
-  
-  return ([self.oldRevision isEqualToString:other.oldRevision] && 
-          [self.newRevision isEqualToString:other.newRevision] &&
-          [self.statusCode isEqualToString:other.statusCode] &&
-          ([self.srcURL isEqual:other.srcURL] || (!srcURL && !other.srcURL)) &&
-          ([self.dstURL isEqual:other.dstURL] || (!dstURL && !other.dstURL)) &&
-          staged == other.staged);
-}
 
 
 
@@ -119,18 +100,14 @@
    
    */
     
-  if (self.busy)
-  {
-    return @"...";
-  }
   
   if (!aStatusCode || [aStatusCode length] < 1)
   {
-    if (self.busy)
-    {
-      return self.staged ? NSLocalizedString(@"Staging...", @"Change") : NSLocalizedString(@"Unstaging...", @"Change");
-    }
-    else
+//    if (self.busy)
+//    {
+//      return self.staged ? NSLocalizedString(@"Staging...", @"Change") : NSLocalizedString(@"Unstaging...", @"Change");
+//    }
+//    else
     {
       return NSLocalizedString(@"Untracked", @"Change");
     }
@@ -139,12 +116,12 @@
   const char* cstatusCode = [aStatusCode cStringUsingEncoding:NSUTF8StringEncoding];
   char c = *cstatusCode;
   
-  if (self.busy)
-  {
-    BOOL s = self.staged;
-    if (c == 'D') return NSLocalizedString(@"Restoring...", @"Change");
-    return s ? NSLocalizedString(@"Staging...", @"Change") : NSLocalizedString(@"Unstaging...", @"Change");
-  }
+//  if (self.busy)
+//  {
+//    BOOL s = self.staged;
+//    if (c == 'D') return NSLocalizedString(@"Restoring...", @"Change");
+//    return s ? NSLocalizedString(@"Staging...", @"Change") : NSLocalizedString(@"Unstaging...", @"Change");
+//  }
   
   if (c == 'A') return NSLocalizedString(@"Added", @"Change");
   if (c == 'C') return NSLocalizedString(@"Copied", @"Change");
