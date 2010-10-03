@@ -431,8 +431,8 @@
         }
         [self popSpinning];
       }];
-      [self popSpinning];      
     }
+    [self popSpinning];
   });
 }
 
@@ -454,8 +454,22 @@
 
 - (void) revertChanges:(NSArray*)changes
 {
+  // Revert each file individually because added untracked file causes a total failure
+  // in 'git checkout HEAD' command when mixed with tracked paths.
+  for (GBChange* change in changes)
+  {
+    [self stagingHelperForChanges:[NSArray arrayWithObject:change] withBlock:^(NSArray* notBusyChanges, GBStage* stage, void(^block)()){
+      [stage unstageChanges:notBusyChanges withBlock:^{
+        [stage revertChanges:notBusyChanges withBlock:block];
+      }];
+    }];
+  }
+}
+
+- (void) deleteFilesInChanges:(NSArray*)changes
+{
   [self stagingHelperForChanges:changes withBlock:^(NSArray* notBusyChanges, GBStage* stage, void(^block)()){
-    [stage revertChanges:notBusyChanges withBlock:block];
+    [stage deleteFilesInChanges:notBusyChanges withBlock:block];
   }];
 }
 

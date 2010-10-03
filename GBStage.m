@@ -198,13 +198,54 @@
   }];
 }
 
-- (void) deleteFiles:(NSArray*)theChanges
+- (void) deleteFilesInChanges:(NSArray*)theChanges withBlock:(void(^)())block
 {
+  NSMutableArray* URLsToTrash = [NSMutableArray array];
+  NSMutableArray* pathsToGitRm = [NSMutableArray array];
+  
   for (GBChange* aChange in theChanges)
   {
-    [aChange deleteFile];
+    if (!aChange.staged && [aChange fileURL])
+    {
+      if ([aChange isUntrackedFile])
+      {
+        [URLsToTrash addObject:[aChange fileURL]];
+      }
+      else
+      {
+        [pathsToGitRm addObject:[[aChange fileURL] path]];
+      }
+    }
   }
-  [self reloadChanges];
+  
+  // move to trash
+  
+  void (^trashingBlock)() = ^{
+    if ([URLsToTrash count] > 0)
+    {
+      [[NSWorkspace sharedWorkspace] recycleURLs:URLsToTrash 
+                               completionHandler:^(NSDictionary *newURLs, NSError *error){
+                                 block();
+                               }];    
+    }
+    else
+    {
+      block();
+    }
+  };
+  
+  if ([pathsToGitRm count] > 0)
+  {
+    GBTask* task = [self.repository task];
+    task.arguments = [[NSArray arrayWithObjects:@"rm", nil] arrayByAddingObjectsFromArray:pathsToGitRm];
+    [task launchWithBlock:^{
+      trashingBlock();
+    }];
+  }
+  else
+  {
+    trashingBlock();
+  }
 }
 
 

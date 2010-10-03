@@ -65,6 +65,7 @@
 - (void) stageChanges:(NSArray*)changes;
 - (void) unstageChanges:(NSArray*)changes;
 - (void) revertChanges:(NSArray*)changes;
+- (void) deleteFilesInChanges:(NSArray*)changes;
 
 
 - (void) pull;

@@ -152,8 +152,8 @@
 - (IBAction) stageRevertFile:(id)sender
 {
   NSAlert* alert = [[[NSAlert alloc] init] autorelease];
-  [alert addButtonWithTitle:@"OK"];
-  [alert addButtonWithTitle:@"Cancel"];
+  [alert addButtonWithTitle:NSLocalizedString(@"OK", @"")];
+  [alert addButtonWithTitle:NSLocalizedString(@"Cancel", @"")];
   [alert setMessageText:NSLocalizedString(@"Revert selected files to last committed state?", @"Stage")];
   [alert setInformativeText:NSLocalizedString(@"All non-committed changes will be lost.",@"Stage")];
   [alert setAlertStyle:NSWarningAlertStyle];
@@ -183,10 +183,10 @@
 - (IBAction) stageDeleteFile:(id)sender
 {
   NSAlert* alert = [[[NSAlert alloc] init] autorelease];
-  [alert addButtonWithTitle:@"OK"];
-  [alert addButtonWithTitle:@"Cancel"];
-  [alert setMessageText:@"Delete selected files?"];
-  [alert setInformativeText:@"All non-committed changes will be lost."];
+  [alert addButtonWithTitle:NSLocalizedString(@"OK", @"")];
+  [alert addButtonWithTitle:NSLocalizedString(@"Cancel", @"")];
+  [alert setMessageText:NSLocalizedString(@"Delete selected files?", @"Stage")];
+  [alert setInformativeText:NSLocalizedString(@"All non-committed changes will be lost.", @"Stage")];
   [alert setAlertStyle:NSWarningAlertStyle];
   [alert retain];
   [alert beginSheetModalForWindow:[self window]
@@ -207,7 +207,7 @@
 {
   if (returnCode == NSAlertFirstButtonReturn)
   {
-    [self.stage deleteFiles:[self selectedChanges]];
+    [self.repositoryController deleteFilesInChanges:[self selectedChanges]];
   }
   [NSApp endSheet:[self window]];
   [[alert window] orderOut:self];

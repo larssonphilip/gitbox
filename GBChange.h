@@ -37,8 +37,4 @@
 - (void) revealInFinder:(id)sender;
 - (BOOL) validateRevealInFinder:(id)sender;
 
-- (void) deleteFile;
-- (void) moveToTrash;
-- (void) gitRm;
-
 @end

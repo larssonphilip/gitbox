@@ -291,38 +291,4 @@
 }
 
 
-- (void) deleteFile
-{
-  if (!self.staged)
-  {
-    if ([self isUntrackedFile])
-    {
-      [self moveToTrash];
-    }
-    else
-    {
-      [self gitRm];
-    }    
-  }
-}
-
-- (void) moveToTrash
-{
-  NSString* aPath = self.fileURL.path;
-  NSString* sourceDir = [aPath stringByDeletingLastPathComponent]; 
-  NSString* aName = [aPath lastPathComponent];
-  NSInteger tag;
-  [[NSWorkspace sharedWorkspace] performFileOperation:NSWorkspaceRecycleOperation
-                                               source:sourceDir
-                                          destination:@""
-                                                files:[NSArray arrayWithObject:aName]
-                                                  tag:&tag];  
-}
-
-- (void) gitRm
-{
-  [[self.repository task]
-   launchWithArgumentsAndWait:[NSArray arrayWithObjects:@"rm", self.fileURL.path, nil]];
-}
-
 @end
