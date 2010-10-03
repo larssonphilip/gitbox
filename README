@@ -92,6 +92,7 @@ Hard features:
 - show branch/tag names in history using "label" (+color in green/blue to connect with green/blue "pills")
 
 Other:
+- when starting a gitbox should configure user's name and email if missing
 - hitting space bar for staging/unstaging a change
 - browse the server with SSH and select a repository
 - log: mark as read/unread + automatic mark as read
