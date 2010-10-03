@@ -306,6 +306,7 @@ NSString* OATaskNotification = @"OATaskNotification";
   dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 
     [self.nstask launch];
+    //NSLog(@"nstask env: %@", [self.nstask environment]);
     NSFileHandle* pipeFileHandle = [self fileHandleForReading];
     if (pipeFileHandle)
     {
@@ -351,10 +352,7 @@ NSString* OATaskNotification = @"OATaskNotification";
 
 - (id) showErrorIfNeeded
 {
-  if ([self isError])
-  {
-    [self showError];
-  }
+  if ([self isError]) [self showError];
   return self;
 }
 
@@ -574,6 +572,15 @@ NSString* OATaskNotification = @"OATaskNotification";
   [self.nstask setCurrentDirectoryPath:self.currentDirectoryPath];
   [self.nstask setLaunchPath:    self.launchPath];
   [self.nstask setArguments:     self.arguments];
+  NSString* binPath = [self.launchPath stringByDeletingLastPathComponent];
+  NSMutableDictionary* environment = [[[[NSProcessInfo processInfo] environment] mutableCopy] autorelease];
+  NSString* path = [environment objectForKey:@"PATH"];
+  if (!path) path = binPath;
+  else path = [path stringByAppendingFormat:@":%@", binPath];
+  [environment setObject:path forKey:@"PATH"];
+  //NSLog(@"set env: %@", environment);
+  [self.nstask setEnvironment:environment];
+  
   if (!self.standardOutput)
   {
     defaultPipe = (defaultPipe ? defaultPipe : [NSPipe pipe]);
@@ -590,11 +597,9 @@ NSString* OATaskNotification = @"OATaskNotification";
   
   if ([self.standardOutput isKindOfClass:[NSPipe class]])
   {
-    NSDictionary* defaultEnvironment = [[NSProcessInfo processInfo] environment];
-    NSMutableDictionary* environment = [[[NSMutableDictionary alloc] initWithDictionary:defaultEnvironment] autorelease];
     [environment setObject:@"YES" forKey:@"NSUnbufferedIO"];
-    [self.nstask setEnvironment:environment];    
   }
+  [self.nstask setEnvironment:environment];    
   
   self.activity.isRunning = YES;
   self.activity.status = @"Running";

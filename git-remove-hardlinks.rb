@@ -1,8 +1,15 @@
 #!/usr/bin/env ruby
 
-prefix = "git-1.7.1.bundle/libexec/git-core"
+def hardlink_binaries(bins)
+  resources_path = "#{ENV['BUILT_PRODUCTS_DIR']}/#{ENV['PROJECT_NAME']}.app/Contents/Resources"
+  prefix = "#{resources_path}/git-1.7.1.bundle/libexec/git-core"
+  
+  bins.each do |bin|
+    system(%{ln #{prefix}/#{git} #{prefix}/#{bin}})
+  end
+end
 
-binaries = %w[git-add
+hardlink_binaries(%w[git-add
 git-annotate
 git-apply
 git-archive
@@ -104,11 +111,7 @@ git-var
 git-verify-pack
 git-verify-tag
 git-whatchanged
-git-write-tree]
+git-write-tree])
 
 
-
-binaries.each do |bin|
-  system("rm -v #{prefix}/#{bin}")
-end
 
