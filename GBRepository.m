@@ -321,7 +321,7 @@
 #pragma mark Mutation methods
 
 
-- (void) configureTrackingRemoteBranch:(GBRef*)ref withLocalName:(NSString*)name withBlock:(GBBlock)block
+- (void) configureTrackingRemoteBranch:(GBRef*)ref withLocalName:(NSString*)name block:(GBBlock)block
 {
   if (!ref || ![ref isRemoteBranch] || !name)
   {
@@ -358,7 +358,7 @@
   }];
 }
 
-- (void) checkoutRef:(GBRef*)ref withNewName:(NSString*)name withBlock:(GBBlock)block
+- (void) checkoutRef:(GBRef*)ref withNewName:(NSString*)name block:(GBBlock)block
 {
   if ([ref isRemoteBranch])
   {
@@ -366,7 +366,7 @@
     checkoutTask.arguments = [NSArray arrayWithObjects:@"checkout", @"-b", name, [ref commitish], nil];
     [checkoutTask launchWithBlock:^{
       [checkoutTask showErrorIfNeeded];
-      [self configureTrackingRemoteBranch:ref withLocalName:name withBlock:block];
+      [self configureTrackingRemoteBranch:ref withLocalName:name block:block];
     }];
   }
   else
@@ -375,13 +375,13 @@
   }
 }
 
-- (void) checkoutNewBranchWithName:(NSString*)name withBlock:(GBBlock)block
+- (void) checkoutNewBranchWithName:(NSString*)name block:(GBBlock)block
 {
   GBTask* checkoutTask = [self task];
   checkoutTask.arguments = [NSArray arrayWithObjects:@"checkout", @"-b", name, nil];
   [checkoutTask launchWithBlock:^{
     [checkoutTask showErrorIfNeeded];
-    [self configureTrackingRemoteBranch:self.currentRemoteBranch withLocalName:name withBlock:block];
+    [self configureTrackingRemoteBranch:self.currentRemoteBranch withLocalName:name block:block];
   }];
 }
 

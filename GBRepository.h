@@ -56,10 +56,10 @@ typedef void (^GBBlock)();
 #pragma mark Mutation
 
 + (void) initRepositoryAtURL:(NSURL*)url;
-- (void) configureTrackingRemoteBranch:(GBRef*)ref withLocalName:(NSString*)name withBlock:(GBBlock)block;
+- (void) configureTrackingRemoteBranch:(GBRef*)ref withLocalName:(NSString*)name block:(GBBlock)block;
 - (void) checkoutRef:(GBRef*)ref withBlock:(GBBlock)block;
-- (void) checkoutRef:(GBRef*)ref withNewName:(NSString*)name withBlock:(GBBlock)block;
-- (void) checkoutNewBranchWithName:(NSString*)name withBlock:(GBBlock)block;
+- (void) checkoutRef:(GBRef*)ref withNewName:(NSString*)name block:(GBBlock)block;
+- (void) checkoutNewBranchWithName:(NSString*)name block:(GBBlock)block;
 
 - (void) commitWithMessage:(NSString*) message block:(void(^)())block;
 

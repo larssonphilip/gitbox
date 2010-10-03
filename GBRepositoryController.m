@@ -247,14 +247,14 @@
 - (void) checkoutRef:(GBRef*)ref withNewName:(NSString*)name
 {
   [self checkoutHelper:^(void(^block)()){
-    [self.repository checkoutRef:ref withNewName:name withBlock:block];
+    [self.repository checkoutRef:ref withNewName:name block:block];
   }];
 }
 
 - (void) checkoutNewBranchWithName:(NSString*)name
 {
   [self checkoutHelper:^(void(^block)()){
-    [self.repository checkoutNewBranchWithName:name withBlock:block];
+    [self.repository checkoutNewBranchWithName:name block:block];
   }];
 }
 
@@ -263,7 +263,7 @@
   self.repository.currentRemoteBranch = remoteBranch;
   [self.repository configureTrackingRemoteBranch:remoteBranch 
        withLocalName:self.repository.currentLocalRef.name 
-           withBlock:^{
+           block:^{
                         OAOptionalDelegateMessage(@selector(repositoryControllerDidChangeRemoteBranch:));
                         [self loadCommits];
   }];
