@@ -68,7 +68,7 @@
 
 + (NSString*) gitVersion
 {
-  return [self gitVersionForLaunchPath:[OATask systemPathForExecutable:@"git"]];
+  return [self gitVersionForLaunchPath:[GBTask pathToBundledBinary:@"git"]];
 }
 
 + (NSString*) gitVersionForLaunchPath:(NSString*) aLaunchPath
