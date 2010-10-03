@@ -504,13 +504,15 @@
 
 - (void) pull
 {
-  
+  NSLog(@"TODO: pull");
 }
 
 - (void) push
 {
-  
+  NSLog(@"TODO: push");
 }
+
+
 
 
 
