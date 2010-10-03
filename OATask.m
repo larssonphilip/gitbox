@@ -291,29 +291,42 @@ NSString* OATaskNotification = @"OATaskNotification";
 
 - (void) launchWithBlock:(void(^)())block
 {
-#if OATASK_DEBUG
-  static char columns[13] = "000000000000\0";
-  char* c = columns;
-  NSInteger logIndentation = 0;
-  while (*c++ == '1') logIndentation++;
-  if (logIndentation > 11) logIndentation = 11;
-  columns[logIndentation] = '1';
+  #if OATASK_DEBUG
+    static char columns[13] = "000000000000\0";
+    char* c = columns;
+    NSInteger logIndentation = 0;
+    while (*c++ == '1') logIndentation++;
+    if (logIndentation > 11) logIndentation = 11;
+    columns[logIndentation] = '1';
+    
+    NSLog(@"%@%@!", [@"" stringByPaddingToLength:logIndentation*16 withString:@" " startingAtIndex:0], [self class]);
+  #endif
   
-  NSLog(@"%@%@!", [@"" stringByPaddingToLength:logIndentation*16 withString:@" " startingAtIndex:0], [self class]);
-#endif
+  [self prepareTask];
   dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-    [self launchAndWait];
-#if OATASK_DEBUG
+
+    [self.nstask launch];
+    NSFileHandle* pipeFileHandle = [self fileHandleForReading];
+    if (pipeFileHandle)
+    {
+      [self.output appendData:[pipeFileHandle readDataToEndOfFile]];
+    }
+    [self.nstask waitUntilExit];
+
     dispatch_async(dispatch_get_main_queue(), ^{
-      NSLog(@"%@%@.", [@"" stringByPaddingToLength:logIndentation*16 withString:@" " startingAtIndex:0], [self class]);
-      columns[logIndentation] = '0';
+      #if OATASK_DEBUG
+        NSLog(@"%@%@.", [@"" stringByPaddingToLength:logIndentation*16 withString:@" " startingAtIndex:0], [self class]);
+        columns[logIndentation] = '0';
+      #endif
+      [self doFinish];
+      [[GBActivityController sharedActivityController] addActivity:self.activity];
       block();
     });
-#else
-    dispatch_async(dispatch_get_main_queue(), block);
-#endif
+
   });
 }
+
+
 
 - (id) launchAndWait
 {
