@@ -78,6 +78,7 @@
 
 
 - (void) loadCommits; // private
+- (void) loadStageChanges; // private
 - (void) loadChangesForCommit:(GBCommit*)commit; // private
 
 - (void) saveObject:(id)obj forKey:(NSString*)key;

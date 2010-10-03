@@ -77,6 +77,7 @@
 
 - (void) update
 {
+  [super update];
   // Reset text view
   [self.headerTextView setEditable:NO];
   [self.headerTextView setString:@""];

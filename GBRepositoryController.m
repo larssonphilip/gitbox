@@ -300,25 +300,22 @@
 - (void) selectCommit:(GBCommit*)commit
 {
   self.selectedCommit = commit;
-  if (commit && (!commit.changes || [commit isStage]))
+  if (commit)
   {
-    [self loadChangesForCommit:commit];
+    if ([commit isStage])
+    {
+      [self loadStageChanges];
+    }
+    else if (!commit.changes)
+    {
+      [self loadChangesForCommit:commit];
+    }
   }
   OAOptionalDelegateMessage(@selector(repositoryControllerDidSelectCommit:));
 }
 
 
 
-
-
-
-
-
-//[self pushSpinning];
-//[commit loadChangesWithBlock:^{
-//  OAOptionalDelegateMessage(@selector(repositoryControllerDidUpdateCommitChanges:));
-//  [self popSpinning];
-//}];
 
 
 /*
@@ -398,24 +395,6 @@
 // NSInteger isStaging; // maintains a count of the staging tasks running
 // NSInteger isLoadingChanges; // maintains a count of the changes loading tasks running
 
-- (void) loadStageChanges
-{
-  if (self.repository.stage)
-  {
-    [self pushSpinning];
-    isLoadingChanges++;
-    [self.repository.stage loadChangesWithBlock:^{
-      isLoadingChanges--;
-      // Avoid publishing changes if another staging is running
-      // or another loading task is running.
-      if (!isStaging && !isLoadingChanges)
-      {
-        OAOptionalDelegateMessage(@selector(repositoryControllerDidUpdateCommitChanges:)); 
-      }
-      [self popSpinning];
-    }];
-  }
-}
 
 // This method helps to factor out common code for both staging and unstaging tasks.
 // Block declaration might look tricky, but it's just a convenient wrapper, nothing special.
@@ -587,6 +566,24 @@
       [self popSpinning];
     }];    
   }
+}
+
+- (void) loadStageChanges
+{
+  if (!self.repository.stage) return;
+
+  [self pushSpinning];
+  isLoadingChanges++;
+  [self.repository.stage loadChangesWithBlock:^{
+    isLoadingChanges--;
+    // Avoid publishing changes if another staging is running
+    // or another loading task is running.
+    if (!isStaging && !isLoadingChanges)
+    {
+      OAOptionalDelegateMessage(@selector(repositoryControllerDidUpdateCommitChanges:)); 
+    }
+    [self popSpinning];
+  }];
 }
 
 - (void) loadChangesForCommit:(GBCommit*)commit
