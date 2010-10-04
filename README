@@ -101,6 +101,7 @@ UILab nonsense:
 
 
 Done:
++ improvement: open panel is a sheet
 + bug: table row selection is ignored if was no selection for ArrayController. Should check NSTableView selectedRowIndexes? See http://forums.macrumors.com/showthread.php?t=166469 
 + sources: remove item
 + sources: sort by name

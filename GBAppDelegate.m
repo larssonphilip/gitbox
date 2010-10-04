@@ -62,10 +62,12 @@
   openPanel.allowsMultipleSelection = NO;
   openPanel.canChooseFiles = YES;
   openPanel.canChooseDirectories = YES;
-  if ([openPanel runModal] == NSFileHandlingPanelOKButton)
-  {
-    [self application:NSApp openFile:[[[openPanel URLs] objectAtIndex:0] path]];
-  }
+  [openPanel beginSheetModalForWindow:[self.windowController window] completionHandler:^(NSInteger result){
+    if (result == NSFileHandlingPanelOKButton)
+    {
+      [self application:NSApp openFile:[[[openPanel URLs] objectAtIndex:0] path]];
+    }    
+  }];
 }
 
 - (IBAction) showActivityWindow:(id)sender
