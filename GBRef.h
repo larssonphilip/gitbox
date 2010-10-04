@@ -16,7 +16,6 @@
 - (NSString*) displayName;
 - (NSString*) commitish;
 
-- (void) loadConfiguredRemoteBranchIfNeededWithBlock:(void(^)())block;
 - (void) loadConfiguredRemoteBranchWithBlock:(void(^)())block;
 
 @end

@@ -20,6 +20,7 @@
 @synthesize toolbar;
 @synthesize currentBranchPopUpButton;
 @synthesize pullPushControl;
+@synthesize pullButton;
 @synthesize remoteBranchPopUpButton;
 @synthesize progressIndicator;
 @synthesize commitButton;
@@ -30,6 +31,7 @@
   self.toolbar = nil;
   self.currentBranchPopUpButton = nil;
   self.pullPushControl = nil;
+  self.pullButton = nil;
   self.remoteBranchPopUpButton = nil;
   self.progressIndicator = nil;
   self.commitButton = nil;
@@ -89,6 +91,54 @@
     [self.progressIndicator stopAnimation:self];
   }
 }
+
+- (void) updateSyncButtons
+{
+  NSSegmentedControl* control = self.pullPushControl;
+  GBRepository* repo = self.repositoryController.repository;
+  
+  if (repo.currentRemoteBranch && [repo.currentRemoteBranch isLocalBranch])
+  {
+    [control setLabel:@"← merge" forSegment:0];
+    [control setLabel:@" " forSegment:1];
+    [self.pullButton setTitle:@"← merge   "];
+    [self.toolbar removeItemAtIndex:1];
+    [self.toolbar insertItemWithItemIdentifier:@"pull" atIndex:1];
+  }
+  else
+  {
+    [control setLabel:@"← pull" forSegment:0];
+    [control setLabel:@"push →" forSegment:1];
+    [self.pullButton setTitle:@"← pull   "];
+    [self.toolbar removeItemAtIndex:1];
+    [self.toolbar insertItemWithItemIdentifier:@"pullpush" atIndex:1];
+  }
+  
+  [control setEnabled:[self validatePull:nil] forSegment:0];
+  [control setEnabled:[self validatePush:nil] forSegment:1];
+  [self.pullButton setEnabled:[self validatePull:nil]];
+}
+
+
+
+
+- (void) updateCommitButton
+{
+  GBCommit* commit = self.repositoryController.selectedCommit;
+  
+  if ([commit isStage])
+  {
+    [self.commitButton setHidden:NO];
+    [self.commitButton setEnabled:[[commit asStage] isCommitable]];
+  }
+  else
+  {
+    [self.commitButton setHidden:YES];
+    [self.commitButton setEnabled:NO];
+  }
+}
+
+
 
 
 - (void) updateBranchMenus
@@ -392,47 +442,6 @@
 }
 
  
-
-
-- (void) updateSyncButtons
-{
-  NSSegmentedControl* control = self.pullPushControl;
-  GBRepository* repo = self.repositoryController.repository;
-  
-  if (repo.currentRemoteBranch && [repo.currentRemoteBranch isLocalBranch])
-  {
-    [control setLabel:@"← merge" forSegment:0];
-    [control setLabel:@" " forSegment:1];
-  }
-  else
-  {
-    [control setLabel:@"← pull" forSegment:0];
-    [control setLabel:@"push →" forSegment:1];
-  }
-  
-  [control setEnabled:[self validatePull:nil] forSegment:0];
-  [control setEnabled:[self validatePush:nil] forSegment:1];
-}
-
-
-
-
-- (void) updateCommitButton
-{
-  GBCommit* commit = self.repositoryController.selectedCommit;
-  
-  if ([commit isStage])
-  {
-    [self.commitButton setHidden:NO];
-    [self.commitButton setEnabled:[[commit asStage] isCommitable]];
-  }
-  else
-  {
-    [self.commitButton setHidden:YES];
-    [self.commitButton setEnabled:NO];
-  }
-}
-
 
 
 

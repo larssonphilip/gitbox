@@ -9,6 +9,7 @@
 
 @property(retain) IBOutlet NSPopUpButton* currentBranchPopUpButton;
 @property(retain) IBOutlet NSSegmentedControl* pullPushControl;
+@property(retain) IBOutlet NSButton* pullButton;
 @property(retain) IBOutlet NSPopUpButton* remoteBranchPopUpButton;
 @property(retain) IBOutlet NSProgressIndicator* progressIndicator;
 @property(retain) IBOutlet NSButton* commitButton;

@@ -144,6 +144,7 @@
 - (void) updateRepositoryIfNeeded
 {
   GBRepository* repo = self.repository;
+  
   [self pushSpinning];
   [self updateCurrentBranchesIfNeededWithBlock:^{
     if (needsLocalBranchesUpdate)
@@ -193,13 +194,21 @@
   {
     repo.currentLocalRef = [repo loadCurrentLocalRef];
   }
-  [self pushSpinning];
-  [repo.currentLocalRef loadConfiguredRemoteBranchIfNeededWithBlock:^{
-    repo.currentRemoteBranch = repo.currentLocalRef.configuredRemoteBranch;
-    OAOptionalDelegateMessage(@selector(repositoryControllerDidUpdateRemoteBranches:));
+  
+  if (repo.currentLocalRef && !repo.currentLocalRef.configuredRemoteBranch)
+  {
+    [self pushSpinning];
+    [repo.currentLocalRef loadConfiguredRemoteBranchWithBlock:^{
+      repo.currentRemoteBranch = repo.currentLocalRef.configuredRemoteBranch;
+      OAOptionalDelegateMessage(@selector(repositoryControllerDidUpdateRemoteBranches:));
+      block();
+      [self popSpinning];
+    }];
+  }
+  else
+  {
     block();
-    [self popSpinning];
-  }];
+  }
 }
 
 
