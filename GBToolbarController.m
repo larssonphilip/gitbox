@@ -99,17 +99,17 @@
   
   if (repo.currentRemoteBranch && [repo.currentRemoteBranch isLocalBranch])
   {
-    [control setLabel:@"← merge" forSegment:0];
+    [control setLabel:NSLocalizedString(@"← merge", @"Toolbar") forSegment:0];
     [control setLabel:@" " forSegment:1];
-    [self.pullButton setTitle:@"← merge   "];
+    [self.pullButton setTitle:NSLocalizedString(@"← merge   ", @"Toolbar")];
     [self.toolbar removeItemAtIndex:1];
     [self.toolbar insertItemWithItemIdentifier:@"pull" atIndex:1];
   }
   else
   {
-    [control setLabel:@"← pull" forSegment:0];
-    [control setLabel:@"push →" forSegment:1];
-    [self.pullButton setTitle:@"← pull   "];
+    [control setLabel:NSLocalizedString(@"← pull", @"Toolbar") forSegment:0];
+    [control setLabel:NSLocalizedString(@"push →", @"Toolbar") forSegment:1];
+    [self.pullButton setTitle:NSLocalizedString(@"← pull   ", @"Toolbar")];
     [self.toolbar removeItemAtIndex:1];
     [self.toolbar insertItemWithItemIdentifier:@"pullpush" atIndex:1];
   }
@@ -126,6 +126,7 @@
 {
   GBCommit* commit = self.repositoryController.selectedCommit;
   
+  [self.commitButton setTitle:NSLocalizedString(@"Commit", @"Toolbar")];
   if ([commit isStage])
   {
     [self.commitButton setHidden:NO];
@@ -204,7 +205,7 @@
   }
   if ([[tagsMenu itemArray] count] > 0)
   {
-    [newMenu addItem:[NSMenuItem menuItemWithTitle:NSLocalizedString(@"Checkout Tag", @"") submenu:tagsMenu]];
+    [newMenu addItem:[NSMenuItem menuItemWithTitle:NSLocalizedString(@"Checkout Tag", @"Command") submenu:tagsMenu]];
   }
   
   
@@ -251,13 +252,13 @@
   }
   if ([[remoteBranchesMenu itemArray] count] > 0)
   {
-    [newMenu addItem:[NSMenuItem menuItemWithTitle:NSLocalizedString(@"Checkout Remote Branch", @"") submenu:remoteBranchesMenu]];
+    [newMenu addItem:[NSMenuItem menuItemWithTitle:NSLocalizedString(@"Checkout Remote Branch", @"Command") submenu:remoteBranchesMenu]];
   }
   
   // Checkout New Branch
   
   NSMenuItem* checkoutNewBranchItem = [[NSMenuItem new] autorelease];
-  [checkoutNewBranchItem setTitle:NSLocalizedString(@"New Branch...",@"")];
+  [checkoutNewBranchItem setTitle:NSLocalizedString(@"New Branch...", @"Command")];
   [checkoutNewBranchItem setTarget:self];
   [checkoutNewBranchItem setAction:@selector(checkoutNewBranch:)];
   [newMenu addItem:checkoutNewBranchItem];
@@ -332,7 +333,7 @@
       }
       if (addedBranch) [remoteMenu addItem:[NSMenuItem separatorItem]];
       
-      NSMenuItem* newBranchItem = [NSMenuItem menuItemWithTitle:NSLocalizedString(@"New Remote Branch...", @"") submenu:nil];
+      NSMenuItem* newBranchItem = [NSMenuItem menuItemWithTitle:NSLocalizedString(@"New Remote Branch...", @"Command") submenu:nil];
       [newBranchItem setAction:@selector(createNewRemoteBranch:)];
       [newBranchItem setTarget:self];
       [newBranchItem setRepresentedObject:remote];
@@ -344,7 +345,7 @@
   else if ([remotes count] == 1) // display a flat list of "origin/master"-like titles
   {
     NSMenuItem* item = [[NSMenuItem new] autorelease];
-    [item setTitle:@"Remote Branches"];
+    [item setTitle:NSLocalizedString(@"Remote Branches", @"Toolbar")];
     [item setAction:@selector(thisItemIsActuallyDisabled)];
     [item setEnabled:NO];
     [remoteBranchesMenu addItem:item];
@@ -366,7 +367,7 @@
     
     
     
-    NSMenuItem* newBranchItem = [NSMenuItem menuItemWithTitle:NSLocalizedString(@"New Remote Branch...", @"") submenu:nil];
+    NSMenuItem* newBranchItem = [NSMenuItem menuItemWithTitle:NSLocalizedString(@"New Remote Branch...", @"Command") submenu:nil];
     [newBranchItem setAction:@selector(createNewRemoteBranch:)];
     [newBranchItem setTarget:self];
     [newBranchItem setRepresentedObject:remote];
@@ -377,7 +378,7 @@
   
   if ([[remoteBranchesMenu itemArray] count] <= 1) // ignore dummy item
   {
-    NSMenuItem* newRemoteItem = [NSMenuItem menuItemWithTitle:NSLocalizedString(@"Add Remote...", @"") submenu:nil];
+    NSMenuItem* newRemoteItem = [NSMenuItem menuItemWithTitle:NSLocalizedString(@"Add Remote...", @"Command") submenu:nil];
     [newRemoteItem setAction:@selector(createNewRemote:)];
     [newRemoteItem setTarget:self];
     [newRemoteItem setRepresentedObject:nil];
@@ -395,7 +396,7 @@
     }
     
     NSMenuItem* item = [[NSMenuItem new] autorelease];
-    [item setTitle:@"Local Branches"];
+    [item setTitle:NSLocalizedString(@"Local Branches", @"Toolbar")];
     [item setAction:@selector(thisItemIsActuallyDisabled)];
     [item setEnabled:NO];
     [remoteBranchesMenu addItem:item];

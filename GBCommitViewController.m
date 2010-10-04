@@ -95,7 +95,7 @@
         NSMutableParagraphStyle* paragraphStyle = [storage attribute:NSParagraphStyleAttributeName atIndex:0 effectiveRange:NULL];
         if (!paragraphStyle)
         {
-          NSLog(@"no existing paragraph style.");
+          NSLog(@"WARNING: GBCommitViewController: no existing paragraph style.");
           paragraphStyle = [[[NSMutableParagraphStyle alloc] init] autorelease];
         }
         NSMutableParagraphStyle* truncatingParagraphStyle = [[paragraphStyle mutableCopy] autorelease];

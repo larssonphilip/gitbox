@@ -278,7 +278,7 @@
   
   if (modifications + newFiles <= 0)
   {
-    return NSLocalizedString(@"Working directory clean", @"");
+    return NSLocalizedString(@"Working directory clean", @"Stage");
   }
   
   NSMutableArray* titles = [NSMutableArray array];

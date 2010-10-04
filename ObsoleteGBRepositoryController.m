@@ -43,42 +43,6 @@
 @synthesize remoteBranchPopUpButton;
 
 
-
-#pragma mark Init
-
-- (GBCommitViewController*) commitController
-{
-  if (!commitController)
-  {
-    self.commitController = [[[GBCommitViewController alloc] initWithNibName:@"GBCommitViewController" bundle:nil] autorelease];
-//    commitController.repository = self.repository;
-  }
-  return [[commitController retain] autorelease];
-}
-
-- (GBCommitPromptController*) commitPromptController
-{
-  if (!commitPromptController)
-  {
-    self.commitPromptController = [GBCommitPromptController controller];
-//    commitPromptController.repository = self.repository;
-//    commitPromptController.target = self;
-//    commitPromptController.finishSelector = @selector(doneCommit:);
-  }
-  return [[commitPromptController retain] autorelease];
-}
-
-- (GBCommandsController*) commandsController
-{
-  if (!commandsController)
-  {
-    self.commandsController = [GBCommandsController controller];
-    
-  }
-  return [[commandsController retain] autorelease];
-}
-
-
 #pragma mark Interrogation
 
 
@@ -138,29 +102,6 @@
 {
   [self editRepositories:sender];
 }
-
-
-//- (IBAction) commit:(id)sender
-//{
-//  BOOL delayPrompt = [[self.stageController selectedChanges] count] > 0; 
-//  [self.stageController stageDoStage:sender];
-//  if (delayPrompt)
-//  {
-//    [self.commitPromptController performSelector:@selector(runSheetInWindow:) 
-//                                      withObject:[self window] 
-//                                      afterDelay:0.3];
-//  }
-//  else
-//  {
-//    [self.commitPromptController runSheetInWindow:[self window]];
-//  }
-//}
-//
-//  - (void) doneCommit:(GBPromptController*)ctrl
-//  {
-//    [self.repository commitWithMessage:ctrl.value];
-//  }
-
 
 
 
@@ -301,22 +242,6 @@
 
 #pragma mark GBRepositoryDelegate
 
-
-
-
-- (void) selectedCommitDidChange:(GBCommit*) aCommit
-{
-  if ([aCommit isStage])
-  {
-    self.changesViewController = self.stageController;
-  }
-  else
-  {
-    self.changesViewController = self.commitController;
-  }
-  NSView* changesPlaceholderView = [[self.splitView subviews] objectAtIndex:2];
-  [self.changesViewController loadInView:changesPlaceholderView];
-}
 
 - (void) repository:(GBRepository*)repo alertWithError:(NSError*)error
 {

@@ -57,12 +57,12 @@
         }
         else
         {
-          NSLog(@"ERROR: expected refs/heads/* or refs/tags/*, got: %@", line);
+          NSLog(@"ERROR: GBLocalBranchesTask: expected refs/heads/* or refs/tags/*, got: %@", line);
         }
       }
       else
       {
-        NSLog(@"ERROR: expected '<sha1> <ref>', got: %@", line);
+        NSLog(@"ERROR: GBLocalBranchesTask: expected '<sha1> <ref>', got: %@", line);
       } // if line is valid
     } // if line not empty
   } // for loop

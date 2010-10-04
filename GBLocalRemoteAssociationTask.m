@@ -54,12 +54,12 @@
         }
         else
         {
-          NSLog(@"ERROR: expected branch.<name>.*, got: %@", key);
+          NSLog(@"ERROR: GBLocalRemoteAssociationTask: expected branch.<name>.*, got: %@", key);
         }
       }
       else
       {
-        NSLog(@"ERROR: expected '<key> <value>', got: %@", line);
+        NSLog(@"ERROR: GBLocalRemoteAssociationTask: expected '<key> <value>', got: %@", line);
       } // if line is valid
     } // if line not empty
   } // for loop

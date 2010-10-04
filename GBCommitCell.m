@@ -25,11 +25,11 @@
   {
     if (st == GBCommitSyncStatusUnmerged)
     {
-      statusPrefix = @"(Not on the current branch) ";
+      statusPrefix = NSLocalizedString(@"(Not on the current branch) ", @"Commit");
     }
     else
     {
-      statusPrefix = @"(Not pushed) ";
+      statusPrefix = NSLocalizedString(@"(Not pushed) ", @"Commit");
     }
   }
   return [statusPrefix stringByAppendingString:[self.commit tooltipMessage]];

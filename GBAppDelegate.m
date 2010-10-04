@@ -133,21 +133,21 @@
   NSString* gitVersion = [GBRepository gitVersion];
   if (!gitVersion)
   {
-    [NSAlert message:@"Please locate git" 
-         description:[NSString stringWithFormat:NSLocalizedString(@"The Gitbox requires git version %@ or later. Please install git or set its path in Preferences.", @""), 
+    [NSAlert message:NSLocalizedString(@"Please locate git", @"App")
+         description:[NSString stringWithFormat:NSLocalizedString(@"The Gitbox requires git version %@ or later. Please install git or set its path in Preferences.", @"App"), 
                       [GBRepository supportedGitVersion]]
-         buttonTitle:NSLocalizedString(@"Open Preferences",@"")];
+         buttonTitle:NSLocalizedString(@"Open Preferences",@"App")];
     [self.preferencesController showWindow:nil];
     return NO;
   }
   else if (![GBRepository isSupportedGitVersion:gitVersion])
   {
-    [NSAlert message:@"Please update git" 
-         description:[NSString stringWithFormat:NSLocalizedString(@"The Gitbox works with the version %@ or later. Your git version is %@.\n\nPath to git executable: %@", @""), 
+    [NSAlert message:NSLocalizedString(@"Please locate git", @"App")
+         description:[NSString stringWithFormat:NSLocalizedString(@"The Gitbox works with the version %@ or later. Your git version is %@.\n\nPath to git executable: %@", @"App"), 
                       [GBRepository supportedGitVersion], 
                       gitVersion,
                       [OATask systemPathForExecutable:@"git"]]
-         buttonTitle:NSLocalizedString(@"Open Preferences",@"")];
+         buttonTitle:NSLocalizedString(@"Open Preferences",@"App")];
     [self.preferencesController showWindow:nil];
     return NO;
   }
@@ -275,7 +275,7 @@
   }
   else
   {
-    if ([NSAlert prompt:NSLocalizedString(@"The folder is not a git repository.\nMake it a repository?", @"")
+    if ([NSAlert prompt:NSLocalizedString(@"The folder is not a git repository.\nMake it a repository?", @"App")
                   description:path])
     {
         //NSURL* url = [NSURL fileURLWithPath:path];

@@ -52,8 +52,8 @@ NSString* OATaskNotification = @"OATaskNotification";
   if (nstask && [nstask isRunning])
   {
     self.activity.isRunning = NO;
-    self.activity.status = @"Disconnected";
-    self.activity.textOutput = @"Task was released: it was sent a TERM signal to subprocess, but stopped listening to its status.";
+    self.activity.status = NSLocalizedString(@"Disconnected", @"Task");
+    self.activity.textOutput = NSLocalizedString(@"Task was released: it was sent a TERM signal to subprocess, but stopped listening to its status.", @"Task");
     //self.activity.task = nil;
     self.activity = nil;
     [nstask terminate];
@@ -165,7 +165,7 @@ NSString* OATaskNotification = @"OATaskNotification";
 - (NSString*) launchPathByAskingUserToLocateExecutable:(NSString*)executable
 {
   NSString* cannotFindPathString = [NSString stringWithFormat:NSLocalizedString(@"Cannot find path to %@.", @""), executable];
-  NSString* doYouWantToLocateString = NSLocalizedString(@"Do you want to locate it on disk?\n(Use ⌘⇧G to enter the path.)",@"");
+  NSString* doYouWantToLocateString = NSLocalizedString(@"Do you want to locate it on disk?\n(Use ⌘⇧G to enter the path.)", @"Task");
   
   if ([NSAlert prompt:cannotFindPathString
                description:doYouWantToLocateString])
@@ -186,7 +186,7 @@ NSString* OATaskNotification = @"OATaskNotification";
         }
         else if (aPath)
         {
-          [NSAlert message:NSLocalizedString(@"Selected file is not an executable. Please try again.", @"") description:aPath];
+          [NSAlert message:NSLocalizedString(@"Selected file is not an executable. Please try again.", @"Task") description:aPath];
         }
         else
         {
@@ -345,8 +345,8 @@ NSString* OATaskNotification = @"OATaskNotification";
 
 - (id) showError
 {
-  [NSAlert message: [NSString stringWithFormat:@"Command failed: %@", [self command]]
-       description:[[self.output UTF8String] stringByAppendingFormat:@"\nCode: %d", self.terminationStatus]];
+  [NSAlert message: [NSString stringWithFormat:NSLocalizedString(@"Command failed: %@", @"Task"), [self command]]
+       description:[[self.output UTF8String] stringByAppendingFormat:NSLocalizedString(@"\nCode: %d", @"Task"), self.terminationStatus]];
   return self;
 }
 
@@ -497,11 +497,11 @@ NSString* OATaskNotification = @"OATaskNotification";
   
   if ([self terminationStatus] == 0)
   {
-    self.activity.status = @"Finished";
+    self.activity.status = NSLocalizedString(@"Finished", @"Task");
   }
   else
   {
-    self.activity.status = [NSString stringWithFormat:@"Finished [%d]", [self terminationStatus]];
+    self.activity.status = [NSString stringWithFormat:@"%@ [%d]", NSLocalizedString(@"Finished", @"Task"), [self terminationStatus]];
   }
   self.activity.textOutput = [self.output UTF8String];  
 }
@@ -554,8 +554,8 @@ NSString* OATaskNotification = @"OATaskNotification";
   }
   else
   {
-    NSString* message = [NSString stringWithFormat:NSLocalizedString(@"Cannot find path to %@.", @""), executable];
-    NSString* advice = NSLocalizedString(@"Please put it into your $PATH or a well-known location such as /usr/local/bin", @"");
+    NSString* message = [NSString stringWithFormat:NSLocalizedString(@"Cannot find path to %@.", @"Task"), executable];
+    NSString* advice = NSLocalizedString(@"Please put it into your $PATH or a well-known location such as /usr/local/bin", @"Task");
     [NSAlert message:message description:advice];
   }
 }
@@ -602,7 +602,7 @@ NSString* OATaskNotification = @"OATaskNotification";
   [self.nstask setEnvironment:environment];    
   
   self.activity.isRunning = YES;
-  self.activity.status = @"Running";
+  self.activity.status = NSLocalizedString(@"Running", @"Task");
   self.activity.task = self;
   self.activity.path = self.currentDirectoryPath;
   self.activity.command = [self command];

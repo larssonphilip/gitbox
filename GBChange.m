@@ -211,13 +211,13 @@
   
   if (!leftURL)
   {
-    NSLog(@"ERROR: No leftURL for blob %@", leftCommitId);
+    NSLog(@"ERROR: GBChange: No leftURL for blob %@", leftCommitId);
     return;
   }
   
   if (!rightURL)
   {
-    NSLog(@"ERROR: No rightURL for blob %@", rightCommitId);
+    NSLog(@"ERROR: GBChange: No rightURL for blob %@", rightCommitId);
     return;
   }
     
@@ -245,10 +245,10 @@
   task.avoidIndicator = YES;
   task.alertExecutableNotFoundBlock = ^(NSString* executable) {
     NSString* message = [NSString stringWithFormat:
-                         NSLocalizedString(@"Cannot find path to %@.", @""), diffTool];
-    NSString* advice = [NSString stringWithFormat:NSLocalizedString(@"Please install the executable %@, choose another diff tool or specify a path to launcher in Preferences.", @""), task.executableName];
+                         NSLocalizedString(@"Cannot find path to %@.", @"Change"), diffTool];
+    NSString* advice = [NSString stringWithFormat:NSLocalizedString(@"Please install the executable %@, choose another diff tool or specify a path to launcher in Preferences.", @"Change"), task.executableName];
 
-    if ([NSAlert prompt:message description:advice ok:NSLocalizedString(@"Open Preferences",@"")])
+    if ([NSAlert prompt:message description:advice ok:NSLocalizedString(@"Open Preferences",@"App")])
     {
       [NSApp sendAction:@selector(showDiffToolPreferences:) to:nil from:self];
     }

@@ -155,8 +155,8 @@
 - (IBAction) stageRevertFile:(id)sender
 {
   NSAlert* alert = [[[NSAlert alloc] init] autorelease];
-  [alert addButtonWithTitle:NSLocalizedString(@"OK", @"")];
-  [alert addButtonWithTitle:NSLocalizedString(@"Cancel", @"")];
+  [alert addButtonWithTitle:NSLocalizedString(@"OK", @"App")];
+  [alert addButtonWithTitle:NSLocalizedString(@"Cancel", @"App")];
   [alert setMessageText:NSLocalizedString(@"Revert selected files to last committed state?", @"Stage")];
   [alert setInformativeText:NSLocalizedString(@"All non-committed changes will be lost.",@"Stage")];
   [alert setAlertStyle:NSWarningAlertStyle];

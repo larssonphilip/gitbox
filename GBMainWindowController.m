@@ -123,7 +123,7 @@
   }
   else
   {
-    [self.window setTitle:@"No Repository Selected"];
+    [self.window setTitle:NSLocalizedString(@"No Repository Selected", @"App")];
     [self.window setRepresentedURL:nil];
   }  
 }

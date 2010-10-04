@@ -24,7 +24,7 @@
 {
   if (!self.objectId)
   {
-    NSLog(@"ERROR: self.objectId is nil");
+    NSLog(@"ERROR: GBExtractFileTask: self.objectId is nil");
     return nil;
   }
   
@@ -76,7 +76,7 @@
       }
       else
       {
-        NSLog(@"ERROR: NSFileHandle couldn't open %@ for writing: %@", self.temporaryURL, [outError localizedDescription]);
+        NSLog(@"ERROR: GBExtractFileTask: NSFileHandle couldn't open %@ for writing: %@", self.temporaryURL, [outError localizedDescription]);
         // invalidate temp URL
         self.temporaryURL = nil;
       }

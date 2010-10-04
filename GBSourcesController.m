@@ -236,7 +236,7 @@
 {
   if (item == self.repositoriesController.localRepositoryControllers)
   {
-    return @"REPOSITORIES";
+    return NSLocalizedString(@"REPOSITORIES", @"Sources");
   }
   
   if ([item isKindOfClass:[GBRepositoryController class]])

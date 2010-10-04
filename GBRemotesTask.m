@@ -26,7 +26,7 @@
   {
     if (line && [line length] > 0)
     {
-      NSArray* keyAndAddress = [line componentsSeparatedByString:@" "]; // ["remote.origin.url", "git@sss.pierlis.com:oleganza/gitbox.git"]
+      NSArray* keyAndAddress = [line componentsSeparatedByString:@" "];
       if (keyAndAddress && [keyAndAddress count] >= 2)
       {
         NSString* key = [keyAndAddress objectAtIndex:0];
