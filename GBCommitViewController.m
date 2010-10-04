@@ -23,15 +23,6 @@
   [super dealloc];
 }
 
-- (NSData*) headerRTFTemplate
-{
-  if (!headerRTFTemplate)
-  {
-    self.headerRTFTemplate = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"commit-header-template" ofType:@"rtf"]];
-  }
-  return [[headerRTFTemplate retain] autorelease];
-}
-
 
 
 #pragma mark GBBaseViewController
@@ -86,9 +77,32 @@
   if (aCommit && ![aCommit isStage])
   {
     // Load the template
+    if (!self.headerRTFTemplate) 
+      self.headerRTFTemplate = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"commit-header-template" ofType:@"rtf"]];
     NSTextStorage* storage = [self.headerTextView textStorage];
     [storage beginEditing];
     [storage readFromData:self.headerRTFTemplate options:nil documentAttributes:nil];
+    
+    // FIXME: this code is very brittle! Should either pre-create an RTF template with proper paragraph styles
+    //        or run through a list of possible attributes in a range of text to update them with truncating paragraph style.
+    
+    NSRange firstNewlineRange = [[storage string] rangeOfString:@"\n"];
+    if (firstNewlineRange.location != NSNotFound)
+    {
+      NSRange truncatingRange = NSMakeRange(0, firstNewlineRange.location);
+      if (truncatingRange.location != NSNotFound)
+      {
+        NSMutableParagraphStyle* paragraphStyle = [storage attribute:NSParagraphStyleAttributeName atIndex:0 effectiveRange:NULL];
+        if (!paragraphStyle)
+        {
+          NSLog(@"no existing paragraph style.");
+          paragraphStyle = [[[NSMutableParagraphStyle alloc] init] autorelease];
+        }
+        NSMutableParagraphStyle* truncatingParagraphStyle = [[paragraphStyle mutableCopy] autorelease];
+        [truncatingParagraphStyle setLineBreakMode:NSLineBreakByTruncatingTail];
+        [storage addAttribute:NSParagraphStyleAttributeName value:truncatingParagraphStyle range:truncatingRange];          
+      }
+    }
     
     // Replace placeholders
     NSMutableString* string = [storage mutableString];
