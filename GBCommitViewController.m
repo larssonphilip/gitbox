@@ -44,7 +44,9 @@
 
 - (IBAction) stageShowDifference:(id)sender
 {
-  [[[self selectedChanges] firstObject] launchComparisonTool:sender];
+  [[[self selectedChanges] firstObject] launchDiffWithBlock:^{
+    
+  }];
 }
 - (BOOL) validateStageShowDifference:(id)sender
 {
@@ -53,14 +55,14 @@
 
 - (IBAction) stageRevealInFinder:(id)sender
 {
-  [[[self selectedChanges] firstObject] revealInFinder:sender];
+  [[[self selectedChanges] firstObject] revealInFinder];
 }
 
 - (BOOL) validateStageRevealInFinder:(id)sender
 {
   if ([[self selectedChanges] count] != 1) return NO;
   GBChange* change = [[self selectedChanges] firstObject];
-  return [change validateRevealInFinder:sender];
+  return [change validateRevealInFinder];
 }
 
 

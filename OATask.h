@@ -4,8 +4,6 @@ typedef void (^OATaskBlock)();
 
 @class OAActivity;
 @interface OATask : NSObject
-{
-}
 
 @property(nonatomic,retain) NSString* executableName;
 @property(nonatomic,retain) NSString* launchPath;
@@ -24,14 +22,14 @@ typedef void (^OATaskBlock)();
 
 @property(nonatomic,retain) OAActivity* activity;
 
-@property(nonatomic,copy) void (^alertExecutableNotFoundBlock)(NSString*);
+//@property(nonatomic,copy) void (^alertExecutableNotFoundBlock)(NSString*);
 
 @property(nonatomic,copy) OATaskBlock callbackBlock;
 
 + (id) task;
 
-+ (NSString*) rememberedPathForExecutable:(NSString*)exec;
-+ (void) rememberPath:(NSString*)aPath forExecutable:(NSString*)exec;
+//+ (NSString*) rememberedPathForExecutable:(NSString*)exec;
+//+ (void) rememberPath:(NSString*)aPath forExecutable:(NSString*)exec;
 + (NSString*) systemPathForExecutable:(NSString*)executable;
 
 
@@ -62,6 +60,6 @@ typedef void (^OATaskBlock)();
 #pragma mark API for subclasses
 
 - (void) didFinish;
-- (void) alertExecutableNotFound:(NSString*)executable;
+//- (void) alertExecutableNotFound:(NSString*)executable;
 
 @end

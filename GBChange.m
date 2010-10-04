@@ -63,7 +63,8 @@
 
 + (NSArray*) diffTools
 {
-  return [NSArray arrayWithObjects:@"FileMerge", @"Kaleidoscope", @"Changes", nil];
+  return [NSArray arrayWithObjects:@"FileMerge", @"Kaleidoscope", @"Changes", 
+          NSLocalizedString(@"Other (full path to executable):", @"Change"), nil];
 }
 
 - (NSURL*) fileURL
@@ -186,7 +187,7 @@
   return task.temporaryURL;
 }
 
-- (void) launchComparisonTool:(id)sender
+- (void) launchDiffWithBlock:(void(^)())block
 {
   // Do nothing for deleted file
   if ([self isDeletedFile])
@@ -220,17 +221,19 @@
     NSLog(@"ERROR: GBChange: No rightURL for blob %@", rightCommitId);
     return;
   }
-    
-//  NSLog(@"blobs %@ %@", leftCommitId, rightCommitId);
-//  NSLog(@"original paths %@ %@", [leftURL path], [rightURL path]);
-//  NSLog(@"opendiff %@ %@", [leftURL path], [rightURL path]);
   
   OATask* task = [OATask task];
-  task.executableName = @"opendiff";
   
   NSString* diffTool = [[NSUserDefaults standardUserDefaults] stringForKey:@"diffTool"];
+  NSString* diffToolLaunchPath = [[NSUserDefaults standardUserDefaults] stringForKey:@"diffToolLaunchPath"];
+  
   if (!diffTool) diffTool = @"FileMerge";
-  if ([diffTool isEqualToString:@"Kaleidoscope"])
+  
+  if ([diffTool isEqualToString:@"FileMerge"])
+  {
+    task.executableName = @"opendiff";
+  }
+  else if ([diffTool isEqualToString:@"Kaleidoscope"])
   {
     task.executableName = @"ksdiff";
   }
@@ -238,27 +241,38 @@
   {
     task.executableName = @"chdiff";
   }
+  else if (diffToolLaunchPath && [[NSFileManager defaultManager] isExecutableFileAtPath:diffToolLaunchPath])
+  {
+    task.launchPath = diffToolLaunchPath;
+  }
+  else
+  {
+    NSLog(@"ERROR: no diff is found or launch path is invalid; TODO: add an error to repository error stack");
+    block();
+    return;
+  }
+
   task.currentDirectoryPath = self.repository.path;
   task.arguments = [NSArray arrayWithObjects:[leftURL path], [rightURL path], nil];
   // opendiff will quit in 5 secs
   // It also messes with xcode's PTY so after first launch xcode does not show log (but Console.app does).
   task.avoidIndicator = YES;
-  task.alertExecutableNotFoundBlock = ^(NSString* executable) {
-    NSString* message = [NSString stringWithFormat:
-                         NSLocalizedString(@"Cannot find path to %@.", @"Change"), diffTool];
-    NSString* advice = [NSString stringWithFormat:NSLocalizedString(@"Please install the executable %@, choose another diff tool or specify a path to launcher in Preferences.", @"Change"), task.executableName];
-
-    if ([NSAlert prompt:message description:advice ok:NSLocalizedString(@"Open Preferences",@"App")])
-    {
-      [NSApp sendAction:@selector(showDiffToolPreferences:) to:nil from:self];
-    }
-  };
+//  task.alertExecutableNotFoundBlock = ^(NSString* executable) {
+//    NSString* message = [NSString stringWithFormat:
+//                         NSLocalizedString(@"Cannot find path to %@.", @"Change"), diffTool];
+//    NSString* advice = [NSString stringWithFormat:NSLocalizedString(@"Please install the executable %@, choose another diff tool or specify a path to launcher in Preferences.", @"Change"), task.executableName];
+//
+//    if ([NSAlert prompt:message description:advice ok:NSLocalizedString(@"Open Preferences",@"App")])
+//    {
+//      [NSApp sendAction:@selector(showDiffToolPreferences:) to:nil from:self];
+//    }
+//  };
   [task launchWithBlock:^{
-    
+    block();
   }];
 }
 
-- (void) revealInFinder:(id)sender
+- (void) revealInFinder
 {
   NSString* path = [self.fileURL path];
   if (path && ![self isDeletedFile])
@@ -267,7 +281,7 @@
   }
 }
 
-- (BOOL) validateRevealInFinder:(id)sender
+- (BOOL) validateRevealInFinder
 {
   return (self.fileURL && ![self isDeletedFile]);
 }

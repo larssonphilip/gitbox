@@ -26,15 +26,14 @@
 - (NSComparisonResult) compareByPath:(id) other;
 - (NSString*) pathForIgnore;
 
-
 - (void) setStagedSilently:(BOOL) flag;
 - (void) update;
 
 
 #pragma mark Actions
 
-- (void) launchComparisonTool:(id)sender;
-- (void) revealInFinder:(id)sender;
-- (BOOL) validateRevealInFinder:(id)sender;
+- (void) launchDiffWithBlock:(void(^)())block;
+- (void) revealInFinder;
+- (BOOL) validateRevealInFinder;
 
 @end

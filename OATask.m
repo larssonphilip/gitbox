@@ -39,7 +39,7 @@ NSString* OATaskNotification = @"OATaskNotification";
 
 @synthesize activity;
 
-@synthesize alertExecutableNotFoundBlock;
+//@synthesize alertExecutableNotFoundBlock;
 
 @synthesize callbackBlock;
 
@@ -59,7 +59,7 @@ NSString* OATaskNotification = @"OATaskNotification";
     [nstask terminate];
   }
   
-  self.alertExecutableNotFoundBlock = nil;
+//  self.alertExecutableNotFoundBlock = nil;
   self.callbackBlock = nil;
   self.executableName = nil;
   self.launchPath = nil;
@@ -77,17 +77,6 @@ NSString* OATaskNotification = @"OATaskNotification";
 
 #pragma mark Class Methods
 
-
-+ (NSString*) rememberedPathForExecutable:(NSString*)exec
-{
-  return [[NSUserDefaults standardUserDefaults] stringForKey:[NSString stringWithFormat:@"OATask_pathForExecutable_%@", exec]];
-}
-
-+ (void) rememberPath:(NSString*)aPath forExecutable:(NSString*)exec
-{
-  NSString* key = [NSString stringWithFormat:@"OATask_pathForExecutable_%@", exec];
-  [[NSUserDefaults standardUserDefaults] setObject:aPath forKey:key];
-}
 
 + (NSString*) pathForExecutableUsingWhich:(NSString*)executable
 {
@@ -133,20 +122,12 @@ NSString* OATaskNotification = @"OATaskNotification";
 
 + (NSString*) systemPathForExecutable:(NSString*)executable
 {
-  NSString* aPath = [self rememberedPathForExecutable:executable];
-  if (aPath && [[NSFileManager defaultManager] isExecutableFileAtPath:aPath])
+  NSString* aPath = [self pathForExecutableUsingWhich:executable];
+  if (!aPath)
   {
-    return aPath;
+    aPath = [self pathForExecutableUsingBruteForce:executable];
   }
-  else
-  {
-    aPath = [self pathForExecutableUsingWhich:executable];
-    if (!aPath)
-    {
-      aPath = [self pathForExecutableUsingBruteForce:executable];
-    }
-    return aPath;
-  }
+  return aPath;
 }
 
 
@@ -162,45 +143,45 @@ NSString* OATaskNotification = @"OATaskNotification";
   return [[self new] autorelease];
 }
 
-- (NSString*) launchPathByAskingUserToLocateExecutable:(NSString*)executable
-{
-  NSString* cannotFindPathString = [NSString stringWithFormat:NSLocalizedString(@"Cannot find path to %@.", @""), executable];
-  NSString* doYouWantToLocateString = NSLocalizedString(@"Do you want to locate it on disk?\n(Use ⌘⇧G to enter the path.)", @"Task");
-  
-  if ([NSAlert prompt:cannotFindPathString
-               description:doYouWantToLocateString])
-  {
-    while (1)
-    {
-      NSOpenPanel* openPanel = [NSOpenPanel openPanel];
-      openPanel.delegate = nil;
-      openPanel.allowsMultipleSelection = NO;
-      openPanel.canChooseFiles = YES;
-      openPanel.canChooseDirectories = NO;
-      if ([openPanel runModal] == NSFileHandlingPanelOKButton)
-      {
-        NSString* aPath = [[[openPanel URLs] firstObject] path];
-        if ([[NSFileManager defaultManager] isExecutableFileAtPath:aPath])
-        {
-          return aPath;
-        }
-        else if (aPath)
-        {
-          [NSAlert message:NSLocalizedString(@"Selected file is not an executable. Please try again.", @"Task") description:aPath];
-        }
-        else
-        {
-          return nil;
-        }
-      }
-      else
-      {
-        return nil;
-      } // if OK clicked
-    } // while(1)
-  } // if locating on disk
-  return nil;
-}
+//- (NSString*) launchPathByAskingUserToLocateExecutable:(NSString*)executable
+//{
+//  NSString* cannotFindPathString = [NSString stringWithFormat:NSLocalizedString(@"Cannot find path to %@.", @""), executable];
+//  NSString* doYouWantToLocateString = NSLocalizedString(@"Do you want to locate it on disk?\n(Use ⌘⇧G to enter the path.)", @"Task");
+//  
+//  if ([NSAlert prompt:cannotFindPathString
+//               description:doYouWantToLocateString])
+//  {
+//    while (1)
+//    {
+//      NSOpenPanel* openPanel = [NSOpenPanel openPanel];
+//      openPanel.delegate = nil;
+//      openPanel.allowsMultipleSelection = NO;
+//      openPanel.canChooseFiles = YES;
+//      openPanel.canChooseDirectories = NO;
+//      if ([openPanel runModal] == NSFileHandlingPanelOKButton)
+//      {
+//        NSString* aPath = [[[openPanel URLs] firstObject] path];
+//        if ([[NSFileManager defaultManager] isExecutableFileAtPath:aPath])
+//        {
+//          return aPath;
+//        }
+//        else if (aPath)
+//        {
+//          [NSAlert message:NSLocalizedString(@"Selected file is not an executable. Please try again.", @"Task") description:aPath];
+//        }
+//        else
+//        {
+//          return nil;
+//        }
+//      }
+//      else
+//      {
+//        return nil;
+//      } // if OK clicked
+//    } // while(1)
+//  } // if locating on disk
+//  return nil;
+//}
 
 - (NSString*) launchPath
 {
@@ -216,7 +197,7 @@ NSString* OATaskNotification = @"OATaskNotification";
     }
     else
     {
-      [self alertExecutableNotFound:exec];
+      //[self alertExecutableNotFound:exec];
     }
   }
   return [[launchPath retain] autorelease];
@@ -546,19 +527,19 @@ NSString* OATaskNotification = @"OATaskNotification";
 }
 
 
-- (void) alertExecutableNotFound:(NSString*)executable
-{
-  if (alertExecutableNotFoundBlock)
-  {
-    alertExecutableNotFoundBlock(executable);
-  }
-  else
-  {
-    NSString* message = [NSString stringWithFormat:NSLocalizedString(@"Cannot find path to %@.", @"Task"), executable];
-    NSString* advice = NSLocalizedString(@"Please put it into your $PATH or a well-known location such as /usr/local/bin", @"Task");
-    [NSAlert message:message description:advice];
-  }
-}
+//- (void) alertExecutableNotFound:(NSString*)executable
+//{
+//  if (alertExecutableNotFoundBlock)
+//  {
+//    alertExecutableNotFoundBlock(executable);
+//  }
+//  else
+//  {
+//    NSString* message = [NSString stringWithFormat:NSLocalizedString(@"Cannot find path to %@.", @"Task"), executable];
+//    NSString* advice = NSLocalizedString(@"Please put it into your $PATH or a well-known location such as /usr/local/bin", @"Task");
+//    [NSAlert message:message description:advice];
+//  }
+//}
 
 
 
