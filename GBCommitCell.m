@@ -119,12 +119,20 @@
     if ([object.date timeIntervalSinceNow] > -12*3600)
     {
       [dateFormatter setDateStyle:NSDateFormatterNoStyle];
+      [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
     }
     else
     {
       [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+      if (innerRect.size.width < 250.0)
+      {
+        [dateFormatter setTimeStyle:NSDateFormatterNoStyle];
+      }
+      else
+      {
+        [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+      }
     }
-    [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
     date = [dateFormatter stringFromDate:object.date];
   }
   
