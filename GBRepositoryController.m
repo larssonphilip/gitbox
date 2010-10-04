@@ -13,6 +13,7 @@
 #import "OAPropertyListController.h"
 #import "OAOptionalDelegateMessage.h"
 #import "OAFSEventStream.h"
+#import "NSString+OAStringHelpers.h"
 
 @implementation GBRepositoryController
 
@@ -23,6 +24,7 @@
 @synthesize lastCommitBranchName;
 @synthesize cancelledCommitMessage;
 
+@synthesize displaysTwoPathComponents;
 @synthesize isDisabled;
 @synthesize isRemoteBranchesDisabled;
 @synthesize isSpinning;
@@ -63,6 +65,28 @@
 - (NSURL*) url
 {
   return self.repository.url;
+}
+
+- (NSString*) nameForSourceList
+{
+  if (self.displaysTwoPathComponents)
+  {
+    return [self longNameForSourceList];
+  }
+  else
+  {
+    return [self shortNameForSourceList];
+  }
+}
+
+- (NSString*) shortNameForSourceList
+{
+  return [[[self url] path] lastPathComponent];
+}
+
+- (NSString*) longNameForSourceList
+{
+  return [[[self url] path] twoLastPathComponentsWithSlash];
 }
 
 - (NSArray*) commits

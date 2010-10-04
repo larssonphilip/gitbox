@@ -189,6 +189,11 @@
   [self.sourcesController repositoriesControllerDidAddRepository:aRepositoriesController];
 }
 
+- (void) repositoriesControllerDidRemoveRepository:(GBRepositoriesController*)aRepositoriesController
+{
+  [self.sourcesController repositoriesControllerDidRemoveRepository:aRepositoriesController];
+}
+
 - (void) repositoriesControllerWillSelectRepository:(GBRepositoriesController*)aRepositoriesController
 {
   

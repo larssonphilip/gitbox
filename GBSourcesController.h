@@ -20,4 +20,6 @@
 - (IBAction) selectPreviousRepository:(id)_;
 - (IBAction) selectNextRepository:(id)_;
 
+- (IBAction) remove:(id)_;
+
 @end

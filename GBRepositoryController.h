@@ -30,6 +30,7 @@
 @property(retain) NSString* lastCommitBranchName;
 @property(retain) NSString* cancelledCommitMessage;
 
+@property(assign) BOOL displaysTwoPathComponents;
 @property(assign) NSInteger isDisabled;
 @property(assign) NSInteger isRemoteBranchesDisabled;
 @property(assign) NSInteger isSpinning;
@@ -39,6 +40,10 @@
 + (id) repositoryControllerWithURL:(NSURL*)url;
 
 - (NSURL*) url;
+- (NSString*) nameForSourceList;
+- (NSString*) shortNameForSourceList;
+- (NSString*) longNameForSourceList;
+
 - (NSArray*) commits;
 
 - (void) pushDisabled;

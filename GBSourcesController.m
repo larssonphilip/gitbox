@@ -5,8 +5,8 @@
 #import "GBRepository.h"
 
 #import "NSFileManager+OAFileManagerHelpers.h"
-#import "NSString+OAStringHelpers.h"
 #import "NSTableView+OATableViewHelpers.h"
+#import "NSObject+OADispatchItemValidation.h"
 
 @interface GBSourcesController ()
 - (void) reloadOutlineView;
@@ -45,6 +45,11 @@
 - (void) repositoriesControllerDidAddRepository:(GBRepositoriesController*)aRepositoriesController
 {
   [self.outlineView expandItem:self.repositoriesController.localRepositoryControllers];
+  [self reloadOutlineView];
+}
+
+- (void) repositoriesControllerDidRemoveRepository:(GBRepositoriesController*)aRepositoriesController
+{
   [self reloadOutlineView];
 }
 
@@ -108,7 +113,27 @@
   if (item) [self.repositoriesController selectRepositoryController:item];
 }
 
+- (IBAction) remove:(id)_
+{
+  NSInteger row = [self.outlineView clickedRow];
+  if (row >= 0)
+  {
+    id item = [self.outlineView itemAtRow:row];
+    [self.repositoriesController removeLocalRepositoryController:item];
+  }
+}
 
+
+
+
+
+#pragma mark OADispatchItemValidation
+
+
+- (BOOL) validateUserInterfaceItem:(id<NSValidatedUserInterfaceItem>)anItem
+{
+  return [self dispatchUserInterfaceItemValidation:anItem];
+}
 
 
 
@@ -217,7 +242,7 @@
   if ([item isKindOfClass:[GBRepositoryController class]])
   {
     GBRepositoryController* repoCtrl = (GBRepositoryController*)item;
-    return [[[repoCtrl url] path] twoLastPathComponentsWithSlash];
+    return [repoCtrl nameForSourceList];
   }
   return nil;
 }
@@ -262,6 +287,13 @@
   [self.repositoriesController selectRepositoryController:item];
 }
 
+- (void)outlineView:(NSOutlineView*)anOutlineView willDisplayCell:(id)cell forTableColumn:(NSTableColumn*)tableColumn item:(id)item
+{
+  if (![item isKindOfClass:[GBRepositoryController class]])
+  {
+    [cell setMenu:nil];
+  }
+}
 
 
 

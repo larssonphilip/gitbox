@@ -57,14 +57,43 @@
 
 
 
+- (void) updateRepositoriesPresentation
+{
+  NSCountedSet* allOneComponentNames = [NSCountedSet set];
+  for (GBRepositoryController* ctrl in self.localRepositoryControllers)
+  {
+    [allOneComponentNames addObject:[ctrl shortNameForSourceList]];
+  }
+  for (GBRepositoryController* ctrl in self.localRepositoryControllers)
+  {
+    NSString* name = [ctrl shortNameForSourceList];
+    ctrl.displaysTwoPathComponents = ([allOneComponentNames countForObject:name] > 1);
+  }
+  [self.localRepositoryControllers sortUsingComparator:^(GBRepositoryController* a,GBRepositoryController* b){
+    return [[a longNameForSourceList] compare:[b longNameForSourceList]];
+    //return [[[a url] path] compare:[[b url] path]];
+  }];
+}
 
 - (void) addLocalRepositoryController:(GBRepositoryController*)repoCtrl
 {
+  if (!repoCtrl) return;
   OAOptionalDelegateMessage(@selector(repositoriesControllerWillAddRepository:));
   [self.localRepositoryControllers addObject:repoCtrl];
+  [self updateRepositoriesPresentation];
   [repoCtrl setNeedsUpdateEverything];
   [repoCtrl start];
   OAOptionalDelegateMessage(@selector(repositoriesControllerDidAddRepository:));
+}
+
+- (void) removeLocalRepositoryController:(GBRepositoryController*)repoCtrl
+{
+  if (!repoCtrl || ![self.localRepositoryControllers containsObject:repoCtrl]) return;
+  OAOptionalDelegateMessage(@selector(repositoriesControllerWillRemoveRepository:));
+  [repoCtrl stop];
+  [self.localRepositoryControllers removeObject:repoCtrl];
+  [self updateRepositoriesPresentation];
+  OAOptionalDelegateMessage(@selector(repositoriesControllerDidRemoveRepository:));  
 }
 
 - (void) selectRepositoryController:(GBRepositoryController*) repoCtrl

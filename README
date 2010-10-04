@@ -26,12 +26,6 @@ Top priority:
 - bonjour publishing and cloning (see http://github.com/chad/gitjour)
 - github integration: handling other repos/branches, pull requests and initial setup commands
 
-Sources:
-- delete key
-- context menu to delete item
-- reorder repos
-
-
 Bugs:
 - maybe a bug: if the stage view is not selected, commit: action is not available
 - bug: when adding files to stage too quickly, git-add fails on .git/index.lock (should put all index modifying operations in a single serial dispatch queue)
@@ -93,6 +87,11 @@ Other:
 - compare image files in an double-pane image viewer
 - built-in diff view for better UTF8 support (FileMerge is stupid)
 
+Bonjour info:
+- publish and locate service with NSNetService API
+- see gitjour ruby script and try to use it to test client
+
+
 
 UILab nonsense:
 - fatter arrows
@@ -100,12 +99,10 @@ UILab nonsense:
 - bottom bar for stage
 - choose font for commits 
 
-Bonjour info:
-- publish and locate service with NSNetService API
-- see gitjour ruby script and try to use it to test client
-
 
 Done:
++ sources: remove item
++ sources: sort by name
 + fsevents: reset a notification delay when receiving update to the same path again (usefull if some long process keeps updating disk: like git-checkout)
 + replace pull-push with a single merge or pull button when push is impossible
 + bug: commit button should be enabled only when the stage is not clean or there is a selection in the tableview

@@ -12,6 +12,7 @@
 - (GBRepositoryController*) repositoryControllerWithURL:(NSURL*)url;
 
 - (void) addLocalRepositoryController:(GBRepositoryController*)repoCtrl;
+- (void) removeLocalRepositoryController:(GBRepositoryController*)repoCtrl;
 - (void) selectRepositoryController:(GBRepositoryController*) repoCtrl;
 - (void) setNeedsUpdateEverything;
 - (void) beginBackgroundUpdate;
