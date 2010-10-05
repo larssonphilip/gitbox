@@ -15,7 +15,6 @@ Ongoing tasks:
 - restore message history in commit prompt (cmd+up; cmd+down)
 - check that opendiff is selected by default on new start + it is not selected if it is missing
 - GIT_ASKPASS/SSH_ASKPASS for interacting with ssh
-- help menu: Git License item: a message how to obtain git source & HNU lincense
 - human message in case git cannot merge/pull when some files are modified (error: Untracked working tree file 'Patryst.xcodeproj/project.pbxproj' would be overwritten by merge.)
 - a block-based method for GBRepository to temporarily remember current error (name, description) for the use in the UI
 - create a new tag
@@ -101,7 +100,7 @@ Something to think about:
 
 Features:
 + Single window with a list of the repositories in the sidebar.
-+ Git binaries are bundled with application (see Help / Git Version).
++ Git binaries are bundled with application (see Gitbox / Legal Info...).
 + Light scrollbar for the commit log.
 + Release notes window (Help / Release Notes).
 
