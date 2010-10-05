@@ -16,6 +16,7 @@ Ongoing tasks (not critical, but should be done):
 - human message in case git cannot merge/pull when some files are modified (error: Untracked working tree file 'Patryst.xcodeproj/project.pbxproj' would be overwritten by merge.)
 - a block-based method for GBRepository to temporarily remember current error (name, description) for the use in the UI
 - create a new tag
+- check for memory leaks
 
 
 Bugs (doesn't work):
