@@ -237,7 +237,6 @@
   self.windowController.repositoriesController = self.repositoriesController;
   
   // Launch the updates
-  [self checkGitVersion];
   [self.windowController showWindow:self];
   
   [self loadRepositories];
