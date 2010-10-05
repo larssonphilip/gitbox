@@ -193,6 +193,11 @@
   [self updateWindow];
 }
 
+- (void)windowDidResignKey:(NSNotification *)notification
+{
+  self.value = [[[self.textView string] copy] autorelease];
+}
+
 
 
 
