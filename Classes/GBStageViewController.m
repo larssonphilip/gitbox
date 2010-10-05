@@ -157,7 +157,6 @@
 
 - (IBAction) stageRevertFile:(id)sender
 {
-  // FIXME: should remember the list of changes to be reverted
   NSAlert* alert = [[[NSAlert alloc] init] autorelease];
   [alert addButtonWithTitle:NSLocalizedString(@"OK", @"App")];
   [alert addButtonWithTitle:NSLocalizedString(@"Cancel", @"App")];
@@ -168,7 +167,7 @@
   [alert beginSheetModalForWindow:[self window]
                     modalDelegate:self
                    didEndSelector:@selector(stageRevertFileAlertDidEnd:returnCode:contextInfo:)
-                      contextInfo:nil];
+                      contextInfo:[[self selectedChanges] copy]];
 }
 - (BOOL) validateStageRevertFile:(id)sender
 {
@@ -176,12 +175,13 @@
   return ![[self selectedChanges] allAreTrue:@selector(isUntrackedFile)]; 
 }
 
-- (void) stageRevertFileAlertDidEnd:(NSAlert*)alert returnCode:(NSInteger)returnCode contextInfo:(void*)contextInfo
+- (void) stageRevertFileAlertDidEnd:(NSAlert*)alert returnCode:(NSInteger)returnCode contextInfo:(NSArray*)changes
 {
   if (returnCode == NSAlertFirstButtonReturn)
   {
-    [self.repositoryController revertChanges:[self selectedChanges]];
+    [self.repositoryController revertChanges:changes];
   }
+  [changes autorelease];
   [NSApp endSheet:[self window]];
   [[alert window] orderOut:self];
   [alert autorelease];
@@ -199,7 +199,7 @@
   [alert beginSheetModalForWindow:[self window]
                     modalDelegate:self
                    didEndSelector:@selector(stageDeleteFileAlertDidEnd:returnCode:contextInfo:)
-                      contextInfo:nil];  
+                      contextInfo:[[self selectedChanges] copy]];  
 }
 
 - (BOOL) validateStageDeleteFile:(id)sender
@@ -210,12 +210,13 @@
   return YES;
 }
 
-- (void) stageDeleteFileAlertDidEnd:(NSAlert*)alert returnCode:(NSInteger)returnCode contextInfo:(void*)contextInfo
+- (void) stageDeleteFileAlertDidEnd:(NSAlert*)alert returnCode:(NSInteger)returnCode contextInfo:(NSArray*)changes
 {
   if (returnCode == NSAlertFirstButtonReturn)
   {
-    [self.repositoryController deleteFilesInChanges:[self selectedChanges]];
+    [self.repositoryController deleteFilesInChanges:changes];
   }
+  [changes autorelease];
   [NSApp endSheet:[self window]];
   [[alert window] orderOut:self];
   [alert autorelease];

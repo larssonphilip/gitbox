@@ -23,14 +23,14 @@ Ongoing tasks:
 
 Bugs:
 
-+ bug: do not run ANY change-related operations if the change is busy (causes crashes sometimes)
-- bug: revert and delete command when invoked with a right-click loose selection because of the prompt window. Should use block API for prompt and remember selected items immediately.
 - maybe a bug: if the stage view is not selected, commit: action is not available
 - bug: when adding files to stage too quickly, git-add fails on .git/index.lock (should put all index modifying operations in a single serial dispatch queue)
 - bug: for non-existent HEAD gitbox does not show a staged new file
 - bug: show disabled "No branches" item for inaccessible remote
 - bug: repository stage/branch updating tasks are stuck in activity window with running status
 - bug: historical diff for Added file shows diff between current state (left) and initial state (right)
++ bug: do not run ANY change-related operations if the change is busy (causes crashes sometimes)
++ bug: revert and delete command when invoked with a right-click loose selection because of the prompt window. Should use block API for prompt and remember selected items immediately.
 
 
 Cool features:
