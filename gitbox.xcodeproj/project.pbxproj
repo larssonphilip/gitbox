@@ -120,7 +120,7 @@
 		20C3B714125BCCC600ABEDE7 /* commit-marker-unpushed.png in Resources */ = {isa = PBXBuildFile; fileRef = 20C3B70F125BCCC600ABEDE7 /* commit-marker-unpushed.png */; };
 		20C3B71F125BCDC100ABEDE7 /* OAPrimaryMACAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = 20C3B71E125BCDC100ABEDE7 /* OAPrimaryMACAddress.m */; };
 		20F8058811C1B35A00ADDADA /* commit-header-template.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 20F8058711C1B35A00ADDADA /* commit-header-template.rtf */; };
-		20FAA190123F831400E8FA0E /* git-1.7.1.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 20FAA18F123F831400E8FA0E /* git-1.7.1.bundle */; };
+		20FAA190123F831400E8FA0E /* git.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 20FAA18F123F831400E8FA0E /* git.bundle */; };
 		8D15AC320486D014006FF6A4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A37F4B0FDCFA73011CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D15AC340486D014006FF6A4 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */; };
 /* End PBXBuildFile section */
@@ -325,7 +325,7 @@
 		20C716BB120EF7E6002B594F /* DESIGN_NOTES */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = DESIGN_NOTES; sourceTree = "<group>"; };
 		20E59CE711A5C9EA00E7FB72 /* GBModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBModels.h; sourceTree = "<group>"; };
 		20F8058711C1B35A00ADDADA /* commit-header-template.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = "commit-header-template.rtf"; sourceTree = "<group>"; };
-		20FAA18F123F831400E8FA0E /* git-1.7.1.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = "git-1.7.1.bundle"; sourceTree = "<group>"; };
+		20FAA18F123F831400E8FA0E /* git.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = git.bundle; sourceTree = "<group>"; };
 		2564AD2C0F5327BB00F57823 /* prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = prefix.pch; sourceTree = "<group>"; };
 		2A37F4B0FDCFA73011CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		2A37F4C4FDCFA73011CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
@@ -634,7 +634,7 @@
 			children = (
 				20C3B700125BCC5B00ABEDE7 /* Images */,
 				203976631251A63700770D13 /* Credits.rtf */,
-				20FAA18F123F831400E8FA0E /* git-1.7.1.bundle */,
+				20FAA18F123F831400E8FA0E /* git.bundle */,
 				20F8058711C1B35A00ADDADA /* commit-header-template.rtf */,
 				2010732E11A7E9C300EFDE56 /* app.icns */,
 				2038F1EA11936CA50087CE37 /* README */,
@@ -734,7 +734,7 @@
 				201E030211EE083D007E4420 /* GBCertificateUpdateController.xib in Resources */,
 				20A37BB6120DC7640068AB8B /* GBSourcesController.xib in Resources */,
 				20A37BBE120DDBA60068AB8B /* GBMainWindowController.xib in Resources */,
-				20FAA190123F831400E8FA0E /* git-1.7.1.bundle in Resources */,
+				20FAA190123F831400E8FA0E /* git.bundle in Resources */,
 				203976651251A63700770D13 /* Credits.rtf in Resources */,
 				20C3B710125BCCC600ABEDE7 /* commit-marker-highlighted.png in Resources */,
 				20C3B711125BCCC600ABEDE7 /* commit-marker-unmerged-highlighted.png in Resources */,

@@ -20,6 +20,7 @@ Ongoing tasks (not critical, but should be done):
 
 
 Bugs (doesn't work):
+
 - bug: do not run ANY change-related operations if the change is busy (causes crashes sometimes)
 - bug: revert and delete command when invoked with a right-click loose selection because of the prompt window. Should use block API for prompt and remember selected items immediately.
 - maybe a bug: if the stage view is not selected, commit: action is not available
@@ -115,7 +116,7 @@ Bug fixes:
 + Preferences: toolbar now always has a selected tab.
 + Preferences: some diff tool is always selected.
 + Preferences window was showing "Error: file not found" on first run
-
++ sorting order is not maintained after updating changes list
 
 
 0.9.7:

@@ -17,7 +17,7 @@
 
 + (NSString*) pathToBundledBinary:(NSString*)name
 {
-  NSBundle* gitBundle = [NSBundle bundleWithPath:[[NSBundle mainBundle] pathForResource:@"git-1.7.1" ofType:@"bundle"]];
+  NSBundle* gitBundle = [NSBundle bundleWithPath:[[NSBundle mainBundle] pathForResource:@"git" ofType:@"bundle"]];
   NSString* pathToBinary = [gitBundle pathForResource:name ofType:nil inDirectory:@"libexec/git-core"];
   return pathToBinary;
 }

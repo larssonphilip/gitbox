@@ -31,6 +31,7 @@
   {
     change.delegate = self.repositoryController;
   }
+  [self.statusArrayController arrangeObjects:self.changes];
 }
 
 - (void) updateWithChanges:(NSArray*)newChanges
