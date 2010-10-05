@@ -25,6 +25,7 @@
 - (BOOL) isUntrackedFile;
 - (NSComparisonResult) compareByPath:(id) other;
 - (NSString*) pathForIgnore;
+- (GBChange*) nilIfBusy;
 
 - (void) setStagedSilently:(BOOL) flag;
 - (void) update;

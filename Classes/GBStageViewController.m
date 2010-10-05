@@ -66,25 +66,25 @@
 
 - (IBAction) stageShowDifference:(id)sender
 {
-  [[[self selectedChanges] firstObject] launchDiffWithBlock:^{
+  [[[[self selectedChanges] firstObject] nilIfBusy] launchDiffWithBlock:^{
     
   }];
 }
 - (BOOL) validateStageShowDifference:(id)sender
 {
-  return ([[self selectedChanges] count] == 1);
+  return ([[self selectedChanges] count] == 1) && !![[[self selectedChanges] firstObject] nilIfBusy];
 }
 
 - (IBAction) stageRevealInFinder:(id)sender
 {
-  [[[self selectedChanges] firstObject] revealInFinder];
+  [[[[self selectedChanges] firstObject] nilIfBusy] revealInFinder];
 }
 
 - (BOOL) validateStageRevealInFinder:(id)sender
 {
   if ([[self selectedChanges] count] != 1) return NO;
   GBChange* change = [[self selectedChanges] firstObject];
-  return [change validateRevealInFinder];
+  return [[change nilIfBusy] validateRevealInFinder];
 }
 
 
@@ -157,6 +157,7 @@
 
 - (IBAction) stageRevertFile:(id)sender
 {
+  // FIXME: should remember the list of changes to be reverted
   NSAlert* alert = [[[NSAlert alloc] init] autorelease];
   [alert addButtonWithTitle:NSLocalizedString(@"OK", @"App")];
   [alert addButtonWithTitle:NSLocalizedString(@"Cancel", @"App")];

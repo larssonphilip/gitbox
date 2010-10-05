@@ -171,7 +171,11 @@
   return [self fileURL].relativePath;
 }
 
-
+- (GBChange*) nilIfBusy
+{
+  if (self.busy) return nil;
+  return self;
+}
 
 
 #pragma mark Actions
