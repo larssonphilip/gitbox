@@ -1,5 +1,6 @@
 
 Showstoppers:
+
 - clone repo
 - welcome screen
 - payment thing
@@ -7,7 +8,8 @@ Showstoppers:
 - simpler definition and wording
 
 
-Ongoing tasks (not critical, but should be done):
+Ongoing tasks:
+
 - the rest of helper windows
 - Secondary windows are opened in sheets (Preferences, Open Repository etc.)
 - check that opendiff is selected by default on new start + it is not selected if it is missing
@@ -19,7 +21,7 @@ Ongoing tasks (not critical, but should be done):
 - check for memory leaks
 
 
-Bugs (doesn't work):
+Bugs:
 
 + bug: do not run ANY change-related operations if the change is busy (causes crashes sometimes)
 - bug: revert and delete command when invoked with a right-click loose selection because of the prompt window. Should use block API for prompt and remember selected items immediately.
@@ -31,7 +33,8 @@ Bugs (doesn't work):
 - bug: historical diff for Added file shows diff between current state (left) and initial state (right)
 
 
-Cool features (not critical, but awsome):
+Cool features:
+
 - conflict state representation
 - bonjour publishing and cloning (see http://github.com/chad/gitjour; NSNetService)
 - github integration: handling other repos/branches, pull requests and initial setup commands
@@ -68,6 +71,7 @@ Cool features (not critical, but awsome):
 
 
 Enhancements (works fine, but can be better):
+
 - remember activity window visibility
 - fetch menu item
 - fetch holding alt
@@ -75,7 +79,8 @@ Enhancements (works fine, but can be better):
 - hitting space bar for staging/unstaging a change
 
 
-Might be interesting:
+Something to think about:
+
 - allow switching to a system-provided git in preferences
 - browse the server with SSH and select a repository
 - log: mark as read/unread + automatic mark as read
