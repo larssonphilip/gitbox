@@ -1,32 +1,25 @@
-JUMP GOALS:
 
-- remove repo from sources list
-- the rest of helper windows
-
-Newbie-oriented features:
-+ bundled git binaries
-- GIT_ASKPASS/SSH_ASKPASS for interacting with ssh
-- bonjour repo sharing
-- conflict state representation
-
-
-
-0.9.8:
-- show in about box or in preferences a message how to obtain git source
-- allow switching to a system-provided git in preferences
-
-
-
-Top priority:
+Showstoppers:
+- clone repo
+- welcome screen
 - payment thing
 - nice screenshots
 - simpler definition and wording
-- welcome screen
-- clone repo
-- bonjour publishing and cloning (see http://github.com/chad/gitjour)
-- github integration: handling other repos/branches, pull requests and initial setup commands
 
-Bugs:
+
+Ongoing tasks (not critical, but should be done):
+- the rest of helper windows
+- Secondary windows are opened in sheets (Preferences, Open Repository etc.)
+- check that opendiff is selected by default on new start + it is not selected if it is missing
+- GIT_ASKPASS/SSH_ASKPASS for interacting with ssh
+- help menu: Git License item: a message how to obtain git source & HNU lincense
+- human message in case git cannot merge/pull when some files are modified (error: Untracked working tree file 'Patryst.xcodeproj/project.pbxproj' would be overwritten by merge.)
+- a block-based method for GBRepository to temporarily remember current error (name, description) for the use in the UI
+- create a new tag
+
+
+Bugs (doesn't work):
+- bug: do not run ANY change-related operations if the change is busy (causes crashes sometimes)
 - bug: revert and delete command when invoked with a right-click loose selection because of the prompt window. Should use block API for prompt and remember selected items immediately.
 - maybe a bug: if the stage view is not selected, commit: action is not available
 - bug: when adding files to stage too quickly, git-add fails on .git/index.lock (should put all index modifying operations in a single serial dispatch queue)
@@ -36,33 +29,24 @@ Bugs:
 - bug: historical diff for Added file shows diff between current state (left) and initial state (right)
 
 
-UI glitches:
-- remember activity window visibility
-
-UI features:
-- human message in case git cannot merge/pull when some files are modified (error: Untracked working tree file 'Patryst.xcodeproj/project.pbxproj' would be overwritten by merge.)
-- a block-based method for GBRepository to temporarily remember current error (name, description) for the use in the UI
-
-Easy features:
+Cool features (not critical, but awsome):
+- conflict state representation
+- bonjour publishing and cloning (see http://github.com/chad/gitjour; NSNetService)
+- github integration: handling other repos/branches, pull requests and initial setup commands
 - fetch periodically
+- do ls-remote in background starting on unfocus (or not only in background)
 - force push a branch
-- create a new tag
 - stash list: as a local branch menu item?
 - stash/apply stash from the menu, context menu
 - quicklook for the file on space in stage
 - drop folder to source list
 - user-sortable list of repositories
 - drag GBChange to open in application or copy to finder
-
-Hard features:
-- do ls-remote in background starting on unfocus (or not only in background)
-
+- gitosis integration
 - find/nav bar sliding down in the history:
   - filters commits by sha-1, modified filenames and text
   - back/forward buttons allow undo/redo commit selection (clicking on parents)
 - maybe: easy/hidden rebase to keep history clean? (actually, need a "rebase continue" and "cancel")
-- 'git svn rebase' and 'git svn dcommit'
-- clone a repo from the gui (menu item)
 - amend latest commit if it is not pushed yet
 - find-as-you-type search in stage
 - shell command to open gitbox
@@ -75,64 +59,62 @@ Hard features:
 - commit header: show parent ids using <a href="gitbox://git@sss.pierlis.com/repo.git#commits/sha1">...</a>
 - handling URL schema: gitbox://git@sss.pierlis.com/repo.git#commits/sha1
 - fetch in background should reset fetch interval when new commits are fetched
-- gitosis integration
 - submodules UI
 - conflict stage: highlight conflicted changes, allow to choose one of the versions 
 - individual chunks commit
 - show branch/tag names in history using "label" (+color in green/blue to connect with green/blue "pills")
 
-Other:
+
+Enhancements (works fine, but can be better):
+- remember activity window visibility
+- fetch menu item
+- fetch holding alt
 - when starting a gitbox should configure user's name and email if missing
 - hitting space bar for staging/unstaging a change
+
+
+Might be interesting:
+- allow switching to a system-provided git in preferences
 - browse the server with SSH and select a repository
 - log: mark as read/unread + automatic mark as read
 - compare office files using some office app: cooperate with Kaleidoscope
 - compare image files in an double-pane image viewer
 - built-in diff view for better UTF8 support (FileMerge is stupid)
-
-Bonjour info:
-- publish and locate service with NSNetService API
-- see gitjour ruby script and try to use it to test client
-
+- mercurial support
+- svn support ('git svn rebase' and 'git svn dcommit')
+- csv support
 
 
-UILab nonsense:
-- fatter arrows
-- labels from arrows to the bottom of the item
-- bottom bar for stage
-- choose font for commits 
+
+-------------------------------------------------------------------------------
 
 
-Done:
-+ improvement: open panel is a sheet
-+ bug: table row selection is ignored if was no selection for ArrayController. Should check NSTableView selectedRowIndexes? See http://forums.macrumors.com/showthread.php?t=166469 
-+ sources: remove item
-+ sources: sort by name
-+ fsevents: reset a notification delay when receiving update to the same path again (usefull if some long process keeps updating disk: like git-checkout)
-+ replace pull-push with a single merge or pull button when push is impossible
-+ bug: commit button should be enabled only when the stage is not clean or there is a selection in the tableview
-+ release notes window
-+ nice scrollbar and commit cell selection
-+ bug: preferences toolbar has no selected item
-+ bug: diff tool radio group has no selected item
-+ bug: should prefer branch connection in the .git/config (and .git/gitbox.plist as a backup)
-+ bug: preferences window shows "error: file not found" on fresh setup
-+ redraw scrollbar to appear over the history table with half-opacity
-+ bundle git binaries with the app package
-+ sidebar: cmd+shift+[] to switch between repos
-+ change window title when repo is switched
-+ bug: when selecting commit, the cell is not updated immediately
-+ bug: when selected a repo, stage is half-updated + stale content from the previous repo
-+ bug: very annoying selection loose on stage/unstage
-+ bug: sometimes spinner does not stop spinning or toolbar items are just disabled - maybe bindings problem
-+ bug: disable status table view while status is updating (double click on a stale row crashes the app)
-+ remotes controller: select current remote in the list
-+ glitch: sometimes fake modification of xcodeproj appears in the stage due to async git-status call (it is a case for quick switching from xcode to gitbox right after it synced)
-+ fsevents: should refresh status on FSEvent directory change (in background)
-+ fsevents: reread remotes on focus: if the names and urls are the same, do not ls-remote
-+ sidebar to group repositories
-+ bug: should try running NSTasks blocking in a background to work around the leaks (should be fixed with GCD)
-+ disable toolbar editing
+0.9.8:
+
+Features:
++ Single window with a list of the repositories in the sidebar.
++ Git binaries are bundled with application (see Help / Git Version).
++ Light scrollbar for the commit log.
++ Release notes window (Help / Release Notes).
+
+Enhancements:
+- !!! Secondary windows are opened in sheets (Preferences, Open Repository etc.)
++ Repository status is updated automatically on file system changes. You can work with Terminal and Gitbox at the same time. This also fixes various glitches in staging area.
++ Pull-push button is replaced with a single "Merge" button if the local branch selected on the right.
++ Window title contains the parent folder name to disambiguate repository location.
+
+Bug fixes:
++ Fixed right-click selection in the list of changes.
++ Commit button is enabled only when there is something to commit.
++ Brach tracking is handled only with the standard git-config mechanism
++ Fixed loss of selection in stage view on stage/unstage.
++ Spinner now does not stuck spinning indefinitely.
++ Fixed crashes related to clicking on changes in the stage view. 
++ Remotes editing window selects the current remote in the list.
++ Preferences: toolbar now always has a selected tab.
++ Preferences: some diff tool is always selected.
++ Preferences window was showing "Error: file not found" on first run
+
 
 
 0.9.7:
@@ -245,7 +227,6 @@ Done:
 Strange things:
 
 - if a lazy accessor is bound, there can be infinite loop on setter call; perhaps should not use setter within a getter
-
 
 Not to do:
 
