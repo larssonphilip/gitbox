@@ -19,7 +19,7 @@ Ongoing tasks:
 - a block-based method for GBRepository to temporarily remember current error (name, description) for the use in the UI
 - create a new tag
 - check for memory leaks
-
+- sidebar: sort by two components, but display two components for every repo in a folder if one of them is long
 
 Bugs:
 
