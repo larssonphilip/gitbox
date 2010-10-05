@@ -32,6 +32,7 @@
 
 #pragma mark Actions
 
+- (void) launchDiff:(id)sender; // for double-click binding
 - (void) launchDiffWithBlock:(void(^)())block;
 - (void) revealInFinder;
 - (BOOL) validateRevealInFinder;

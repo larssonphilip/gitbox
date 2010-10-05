@@ -187,6 +187,11 @@
   return task.temporaryURL;
 }
 
+- (void) launchDiff:(id)sender; // for double-click binding
+{
+  [self launchDiffWithBlock:^{}];
+}
+
 - (void) launchDiffWithBlock:(void(^)())block
 {
   // Do nothing for deleted file
