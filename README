@@ -12,6 +12,7 @@ Ongoing tasks:
 
 - the rest of helper windows
 - Secondary windows are opened in sheets (Preferences, Open Repository etc.)
+- restore message history in commit prompt (cmd+up; cmd+down)
 - check that opendiff is selected by default on new start + it is not selected if it is missing
 - GIT_ASKPASS/SSH_ASKPASS for interacting with ssh
 - help menu: Git License item: a message how to obtain git source & HNU lincense
