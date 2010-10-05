@@ -294,7 +294,10 @@
 
 - (void)applicationDidBecomeActive:(NSNotification *)aNotification
 {
-  [self.windowController showWindow:self];
+  if (![NSApp keyWindow])
+  {
+    [self.windowController showWindow:self];
+  }
 }
 
 
