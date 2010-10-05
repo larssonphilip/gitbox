@@ -42,9 +42,6 @@
 #pragma mark View Actions
 
 - (IBAction) toggleSplitViewOrientation:(id)sender;
-- (IBAction) editRepositories:(id)sender;
-- (IBAction) editGitIgnore:(id)sender;
-- (IBAction) editGitConfig:(id)sender;
 - (IBAction) commandMenuItem:(id)sender;
 
 @end

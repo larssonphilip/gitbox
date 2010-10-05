@@ -12,6 +12,9 @@
 #import "GBRepository.h"
 #import "GBCommit.h"
 
+#import "GBRemotesController.h"
+#import "GBFileEditingController.h"
+
 #import "NSWindowController+OAWindowControllerHelpers.h"
 #import "NSView+OAViewHelpers.h"
 #import "NSSplitView+OASplitViewHelpers.h"
@@ -59,9 +62,73 @@
 #pragma mark IBActions
 
 
+
+- (GBRepositoryController*) selectedRepositoryController
+{
+  return self.repositoriesController.selectedRepositoryController;
+}
+
+
+
+- (IBAction) editRepositories:(id)_
+{
+  GBRemotesController* remotesController = [GBRemotesController controller];
+  
+  remotesController.repository = [self selectedRepositoryController].repository;
+  remotesController.target = self;
+  remotesController.finishSelector = @selector(doneEditRepositories:);
+  remotesController.cancelSelector = @selector(cancelledEditRepositories:);
+  
+  [self beginSheetForController:remotesController];
+}
+
+- (void) doneEditRepositories:(GBRemotesController*)remotesController
+{
+  [[self selectedRepositoryController] setNeedsUpdateEverything];
+  [[self selectedRepositoryController] updateRepositoryIfNeeded];
+  [self endSheetForController:remotesController];
+}
+
+- (void) cancelledEditRepositories:(GBRemotesController*)remotesController
+{
+  [self endSheetForController:remotesController];
+}
+
+- (BOOL) validateEditRepositories:(id)_
+{
+  return !![self selectedRepositoryController];
+}
+
+
+- (IBAction) editGitIgnore:(id)_
+{
+  GBFileEditingController* fileEditor = [GBFileEditingController controller];
+  fileEditor.title = @".gitignore";
+  fileEditor.URL = [[[self selectedRepositoryController] url] URLByAppendingPathComponent:@".gitignore"];
+  [fileEditor runSheetInWindow:[self window]];
+}
+
+- (IBAction) editGitConfig:(id)_
+{
+  GBFileEditingController* fileEditor = [GBFileEditingController controller];
+  fileEditor.title = @".git/config";
+  fileEditor.URL = [[[self selectedRepositoryController] url] URLByAppendingPathComponent:@".git/config"];
+  [fileEditor runSheetInWindow:[self window]];
+}
+
+- (BOOL) validateEditGitIgnore:(id)_
+{
+  return !![self selectedRepositoryController];
+}
+
+- (BOOL) validateGitConfig:(id)_
+{
+  return !![self selectedRepositoryController];
+}
+
 - (IBAction) openInTerminal:(id)sender
 { 
-  NSString* path = [[self.repositoriesController.selectedRepositoryController url] path];
+  NSString* path = [[[self selectedRepositoryController] url] path];
   NSString* s = [NSString stringWithFormat:
                  @"tell application \"Terminal\" to do script \"cd %@\"", path];
   
@@ -71,18 +138,25 @@
 
 - (IBAction) openInFinder:(id)_
 {
-  [[NSWorkspace sharedWorkspace] openFile:[[self.repositoriesController.selectedRepositoryController url] path]];
+  [[NSWorkspace sharedWorkspace] openFile:[[[self selectedRepositoryController] url] path]];
 }
 
 - (BOOL) validateOpenInTerminal:(id)_
 {
-  return !!(self.repositoriesController.selectedRepositoryController);
+  return !![self selectedRepositoryController];
 }
 
 - (BOOL) validateOpenInFinder:(id)_
 {
-  return !!(self.repositoriesController.selectedRepositoryController);
+  return !![self selectedRepositoryController];
 }
+
+
+
+
+
+
+
 
 - (IBAction) selectPreviousRepository:(id)_
 {

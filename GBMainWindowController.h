@@ -29,6 +29,10 @@
 - (void) saveState;
 - (void) loadState;
 
+- (IBAction) editRepositories:(id)_;
+- (IBAction) editGitIgnore:(id)_;
+- (IBAction) editGitConfig:(id)_;
+
 - (IBAction) openInTerminal:(id)_;
 - (IBAction) openInFinder:(id)_;
 - (IBAction) selectPreviousRepository:(id)_;

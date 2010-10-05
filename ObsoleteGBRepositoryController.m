@@ -100,7 +100,7 @@
 
 - (IBAction) createNewRemote:(id)sender
 {
-  [self editRepositories:sender];
+//  [self editRepositories:sender];
 }
 
 
@@ -128,48 +128,6 @@
     [sender setTitle:NSLocalizedString(@"Vertical Views",@"")];
   }
 }
-
-- (IBAction) editRepositories:(id)sender
-{
-  GBRemotesController* remotesController = [GBRemotesController controller];
-  
-  remotesController.repository = self.repository;
-  remotesController.target = self;
-  remotesController.finishSelector = @selector(doneEditRepositories:);
-  remotesController.cancelSelector = @selector(cancelledEditRepositories:);
-  
-  [self beginSheetForController:remotesController];
-}
-
-  - (void) doneEditRepositories:(GBRemotesController*)remotesController
-  {
-//    [self updateBranchMenus];
-//    [self.repository reloadCommits];
-    [self endSheetForController:remotesController];
-  }
-
-  - (void) cancelledEditRepositories:(GBRemotesController*)remotesController
-  {
-    [self endSheetForController:remotesController];
-  }
-
-
-- (IBAction) editGitIgnore:(id)sender
-{
-  GBFileEditingController* fileEditor = [GBFileEditingController controller];
-  fileEditor.title = @".gitignore";
-  fileEditor.URL = [self.repository.url URLByAppendingPathComponent:@".gitignore"];
-  [fileEditor runSheetInWindow:[self window]];
-}
-
-- (IBAction) editGitConfig:(id)sender
-{
-  GBFileEditingController* fileEditor = [GBFileEditingController controller];
-  fileEditor.title = @".git/config";
-  fileEditor.URL = [self.repository.url URLByAppendingPathComponent:@".git/config"];
-  [fileEditor runSheetInWindow:[self window]];
-}
-
 
 
 
