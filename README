@@ -20,6 +20,7 @@ Ongoing tasks:
 - create a new tag
 - check for memory leaks
 - sidebar: sort by two components, but display two components for every repo in a folder if one of them is long
+- sidebar context menu: show in finder, open in terminal
 
 Bugs:
 
