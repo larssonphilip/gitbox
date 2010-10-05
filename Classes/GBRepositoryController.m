@@ -89,6 +89,11 @@
   return [[[self url] path] twoLastPathComponentsWithSlash];
 }
 
+- (NSString*) parentFolderName
+{
+  return [[[[self url] path] stringByDeletingLastPathComponent] lastPathComponent];
+}
+
 - (NSArray*) commits
 {
   return [self.repository stageAndCommits];

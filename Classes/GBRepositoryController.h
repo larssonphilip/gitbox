@@ -43,6 +43,7 @@
 - (NSString*) nameForSourceList;
 - (NSString*) shortNameForSourceList;
 - (NSString*) longNameForSourceList;
+- (NSString*) parentFolderName;
 
 - (NSArray*) commits;
 

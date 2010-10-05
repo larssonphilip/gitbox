@@ -60,17 +60,20 @@
 - (void) updateRepositoriesPresentation
 {
   NSCountedSet* allOneComponentNames = [NSCountedSet set];
+  NSCountedSet* allParentNames = [NSCountedSet set];
   for (GBRepositoryController* ctrl in self.localRepositoryControllers)
   {
     [allOneComponentNames addObject:[ctrl shortNameForSourceList]];
+    [allParentNames addObject:[ctrl parentFolderName]];
   }
   for (GBRepositoryController* ctrl in self.localRepositoryControllers)
   {
-    NSString* name = [ctrl shortNameForSourceList];
-    ctrl.displaysTwoPathComponents = ([allOneComponentNames countForObject:name] > 1);
+    ctrl.displaysTwoPathComponents = 
+      ([allOneComponentNames countForObject:[ctrl shortNameForSourceList]] > 1) ||
+      ([allParentNames countForObject:[ctrl parentFolderName]] > 1);
   }
   [self.localRepositoryControllers sortUsingComparator:^(GBRepositoryController* a,GBRepositoryController* b){
-    return [[a longNameForSourceList] compare:[b longNameForSourceList]];
+    return [[a nameForSourceList] compare:[b nameForSourceList]];
     //return [[[a url] path] compare:[[b url] path]];
   }];
 }
