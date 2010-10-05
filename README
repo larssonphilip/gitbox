@@ -5,7 +5,7 @@ JUMP GOALS:
 
 Newbie-oriented features:
 + bundled git binaries
-- SSH_ASKPASS for interacting with ssh
+- GIT_ASKPASS/SSH_ASKPASS for interacting with ssh
 - bonjour repo sharing
 - conflict state representation
 
