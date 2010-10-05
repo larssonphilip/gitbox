@@ -22,13 +22,11 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		2000324311FC72620069C70D /* OAPrimaryMACAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = 2000324211FC72620069C70D /* OAPrimaryMACAddress.m */; };
 		2000325411FC75050069C70D /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2000325311FC75050069C70D /* IOKit.framework */; };
 		2002AC0C123CA1A20072075C /* OAFSEventStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 2002AC0B123CA1A20072075C /* OAFSEventStream.m */; };
 		200B08B511B6E359004C09A8 /* GBLocalRemoteAssociationTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 200B08B411B6E359004C09A8 /* GBLocalRemoteAssociationTask.m */; };
 		2010732F11A7E9C300EFDE56 /* app.icns in Resources */ = {isa = PBXBuildFile; fileRef = 2010732E11A7E9C300EFDE56 /* app.icns */; };
 		201073B611A80A4600EFDE56 /* GBRemotesTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 201073B511A80A4600EFDE56 /* GBRemotesTask.m */; };
-		2015F5C211C6D41B00BBA543 /* GBMultipleGitPathsFoundController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2015F5C111C6D41B00BBA543 /* GBMultipleGitPathsFoundController.xib */; };
 		201E02E311EA205C007E4420 /* GBLicenseCheck.m in Sources */ = {isa = PBXBuildFile; fileRef = 201E02E211EA205C007E4420 /* GBLicenseCheck.m */; };
 		201E02F711EA231D007E4420 /* GBLicenseController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 201E02F611EA231D007E4420 /* GBLicenseController.xib */; };
 		201E030211EE083D007E4420 /* GBCertificateUpdateController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 201E030111EE083D007E4420 /* GBCertificateUpdateController.xib */; };
@@ -39,8 +37,6 @@
 		20265C0311D68D3400709F6B /* OAPropertyListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20265C0211D68D3400709F6B /* OAPropertyListController.m */; };
 		20265C1411D68F1300709F6B /* OAFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 20265C1311D68F1300709F6B /* OAFile.m */; };
 		20265E4B11E3EB9B00709F6B /* GBWelcomeController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 20265E4A11E3EB9B00709F6B /* GBWelcomeController.xib */; };
-		2030F19511B82BED00C260E0 /* commit-marker-unmerged-highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 2030F19311B82BED00C260E0 /* commit-marker-unmerged-highlighted.png */; };
-		2030F19611B82BED00C260E0 /* commit-marker-unpushed-highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 2030F19411B82BED00C260E0 /* commit-marker-unpushed-highlighted.png */; };
 		2035623311D383BE00965765 /* GBCommandsController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2035623211D383BE00965765 /* GBCommandsController.xib */; };
 		2035623811D383D000965765 /* GBCommandsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2035623711D383D000965765 /* GBCommandsController.m */; };
 		2035632F11D3B57800965765 /* GBHistoryScroller.m in Sources */ = {isa = PBXBuildFile; fileRef = 2035632E11D3B57800965765 /* GBHistoryScroller.m */; };
@@ -65,8 +61,6 @@
 		2038F76D11A04A290087CE37 /* NSString+OAGitHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 2038F76C11A04A290087CE37 /* NSString+OAGitHelpers.m */; };
 		203976651251A63700770D13 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 203976631251A63700770D13 /* Credits.rtf */; };
 		203977E71252815000770D13 /* NSTableView+OATableViewHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 203977E61252815000770D13 /* NSTableView+OATableViewHelpers.m */; };
-		203A572811B6C28900497636 /* commit-marker-unmerged.png in Resources */ = {isa = PBXBuildFile; fileRef = 203A572611B6C28900497636 /* commit-marker-unmerged.png */; };
-		203A572911B6C28900497636 /* commit-marker-unpushed.png in Resources */ = {isa = PBXBuildFile; fileRef = 203A572711B6C28900497636 /* commit-marker-unpushed.png */; };
 		2043A83111C900A0001ED307 /* GBPreferencesController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2043A83011C900A0001ED307 /* GBPreferencesController.m */; };
 		2057964211ADD3AA004715FE /* GBCommitCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2057964111ADD3AA004715FE /* GBCommitCell.m */; };
 		2057979B11ADEEEE004715FE /* GBStageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2057979A11ADEEEE004715FE /* GBStageCell.m */; };
@@ -119,7 +113,12 @@
 		20B8B83911A4A72A006D6442 /* GBPromptController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 20B8B83811A4A72A006D6442 /* GBPromptController.xib */; };
 		20B8B83D11A4A776006D6442 /* GBPromptController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B8B83C11A4A776006D6442 /* GBPromptController.m */; };
 		20B8B84811A4AAF2006D6442 /* NSString+OAStringHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B8B84711A4AAF2006D6442 /* NSString+OAStringHelpers.m */; };
-		20BF302011D0E3DC00B6DDC9 /* commit-marker-highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 20BF301F11D0E3DC00B6DDC9 /* commit-marker-highlighted.png */; };
+		20C3B710125BCCC600ABEDE7 /* commit-marker-highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 20C3B70B125BCCC600ABEDE7 /* commit-marker-highlighted.png */; };
+		20C3B711125BCCC600ABEDE7 /* commit-marker-unmerged-highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 20C3B70C125BCCC600ABEDE7 /* commit-marker-unmerged-highlighted.png */; };
+		20C3B712125BCCC600ABEDE7 /* commit-marker-unmerged.png in Resources */ = {isa = PBXBuildFile; fileRef = 20C3B70D125BCCC600ABEDE7 /* commit-marker-unmerged.png */; };
+		20C3B713125BCCC600ABEDE7 /* commit-marker-unpushed-highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 20C3B70E125BCCC600ABEDE7 /* commit-marker-unpushed-highlighted.png */; };
+		20C3B714125BCCC600ABEDE7 /* commit-marker-unpushed.png in Resources */ = {isa = PBXBuildFile; fileRef = 20C3B70F125BCCC600ABEDE7 /* commit-marker-unpushed.png */; };
+		20C3B71F125BCDC100ABEDE7 /* OAPrimaryMACAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = 20C3B71E125BCDC100ABEDE7 /* OAPrimaryMACAddress.m */; };
 		20F8058811C1B35A00ADDADA /* commit-header-template.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 20F8058711C1B35A00ADDADA /* commit-header-template.rtf */; };
 		20FAA190123F831400E8FA0E /* git-1.7.1.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 20FAA18F123F831400E8FA0E /* git-1.7.1.bundle */; };
 		8D15AC320486D014006FF6A4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A37F4B0FDCFA73011CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
@@ -155,8 +154,6 @@
 		13E42FBA07B3F13500E4EEF1 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
 		1DDD58290DA1D0D100B32029 /* ObsoleteGBRepositoryController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ObsoleteGBRepositoryController.xib; sourceTree = "<group>"; };
 		1DDD582B0DA1D0D100B32029 /* MainMenu.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
-		2000324111FC72620069C70D /* OAPrimaryMACAddress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAPrimaryMACAddress.h; sourceTree = "<group>"; };
-		2000324211FC72620069C70D /* OAPrimaryMACAddress.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAPrimaryMACAddress.m; sourceTree = "<group>"; };
 		2000325311FC75050069C70D /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
 		2002AC0A123CA1A20072075C /* OAFSEventStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAFSEventStream.h; sourceTree = "<group>"; };
 		2002AC0B123CA1A20072075C /* OAFSEventStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAFSEventStream.m; sourceTree = "<group>"; };
@@ -169,7 +166,6 @@
 		2010732E11A7E9C300EFDE56 /* app.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = app.icns; sourceTree = "<group>"; };
 		201073B411A80A4600EFDE56 /* GBRemotesTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBRemotesTask.h; sourceTree = "<group>"; };
 		201073B511A80A4600EFDE56 /* GBRemotesTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBRemotesTask.m; sourceTree = "<group>"; };
-		2015F5C111C6D41B00BBA543 /* GBMultipleGitPathsFoundController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBMultipleGitPathsFoundController.xib; sourceTree = "<group>"; };
 		201E02E111EA205C007E4420 /* GBLicenseCheck.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBLicenseCheck.h; sourceTree = "<group>"; };
 		201E02E211EA205C007E4420 /* GBLicenseCheck.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBLicenseCheck.m; sourceTree = "<group>"; };
 		201E02F611EA231D007E4420 /* GBLicenseController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBLicenseController.xib; sourceTree = "<group>"; };
@@ -187,8 +183,6 @@
 		20265C1211D68F1300709F6B /* OAFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAFile.h; sourceTree = "<group>"; };
 		20265C1311D68F1300709F6B /* OAFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAFile.m; sourceTree = "<group>"; };
 		20265E4A11E3EB9B00709F6B /* GBWelcomeController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBWelcomeController.xib; sourceTree = "<group>"; };
-		2030F19311B82BED00C260E0 /* commit-marker-unmerged-highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "commit-marker-unmerged-highlighted.png"; sourceTree = "<group>"; };
-		2030F19411B82BED00C260E0 /* commit-marker-unpushed-highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "commit-marker-unpushed-highlighted.png"; sourceTree = "<group>"; };
 		2035623211D383BE00965765 /* GBCommandsController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBCommandsController.xib; sourceTree = "<group>"; };
 		2035623611D383D000965765 /* GBCommandsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBCommandsController.h; sourceTree = "<group>"; };
 		2035623711D383D000965765 /* GBCommandsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBCommandsController.m; sourceTree = "<group>"; };
@@ -230,8 +224,6 @@
 		203976641251A63700770D13 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
 		203977E51252815000770D13 /* NSTableView+OATableViewHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSTableView+OATableViewHelpers.h"; sourceTree = "<group>"; };
 		203977E61252815000770D13 /* NSTableView+OATableViewHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSTableView+OATableViewHelpers.m"; sourceTree = "<group>"; };
-		203A572611B6C28900497636 /* commit-marker-unmerged.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "commit-marker-unmerged.png"; sourceTree = "<group>"; };
-		203A572711B6C28900497636 /* commit-marker-unpushed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "commit-marker-unpushed.png"; sourceTree = "<group>"; };
 		2043A82F11C900A0001ED307 /* GBPreferencesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBPreferencesController.h; sourceTree = "<group>"; };
 		2043A83011C900A0001ED307 /* GBPreferencesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBPreferencesController.m; sourceTree = "<group>"; };
 		2057964011ADD3AA004715FE /* GBCommitCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBCommitCell.h; sourceTree = "<group>"; };
@@ -323,7 +315,13 @@
 		20B8B83C11A4A776006D6442 /* GBPromptController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBPromptController.m; sourceTree = "<group>"; };
 		20B8B84611A4AAF2006D6442 /* NSString+OAStringHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+OAStringHelpers.h"; sourceTree = "<group>"; };
 		20B8B84711A4AAF2006D6442 /* NSString+OAStringHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+OAStringHelpers.m"; sourceTree = "<group>"; };
-		20BF301F11D0E3DC00B6DDC9 /* commit-marker-highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "commit-marker-highlighted.png"; sourceTree = "<group>"; };
+		20C3B70B125BCCC600ABEDE7 /* commit-marker-highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "commit-marker-highlighted.png"; sourceTree = "<group>"; };
+		20C3B70C125BCCC600ABEDE7 /* commit-marker-unmerged-highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "commit-marker-unmerged-highlighted.png"; sourceTree = "<group>"; };
+		20C3B70D125BCCC600ABEDE7 /* commit-marker-unmerged.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "commit-marker-unmerged.png"; sourceTree = "<group>"; };
+		20C3B70E125BCCC600ABEDE7 /* commit-marker-unpushed-highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "commit-marker-unpushed-highlighted.png"; sourceTree = "<group>"; };
+		20C3B70F125BCCC600ABEDE7 /* commit-marker-unpushed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "commit-marker-unpushed.png"; sourceTree = "<group>"; };
+		20C3B71D125BCDC100ABEDE7 /* OAPrimaryMACAddress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAPrimaryMACAddress.h; sourceTree = "<group>"; };
+		20C3B71E125BCDC100ABEDE7 /* OAPrimaryMACAddress.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAPrimaryMACAddress.m; sourceTree = "<group>"; };
 		20C716BB120EF7E6002B594F /* DESIGN_NOTES */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = DESIGN_NOTES; sourceTree = "<group>"; };
 		20E59CE711A5C9EA00E7FB72 /* GBModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBModels.h; sourceTree = "<group>"; };
 		20F8058711C1B35A00ADDADA /* commit-header-template.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = "commit-header-template.rtf"; sourceTree = "<group>"; };
@@ -387,8 +385,6 @@
 				201E030A11EE2CBD007E4420 /* GBLicenseController.m */,
 				201E030411EE09D7007E4420 /* GBCertificateUpdateController.h */,
 				201E030511EE09D7007E4420 /* GBCertificateUpdateController.m */,
-				2000324111FC72620069C70D /* OAPrimaryMACAddress.h */,
-				2000324211FC72620069C70D /* OAPrimaryMACAddress.m */,
 				201E02F611EA231D007E4420 /* GBLicenseController.xib */,
 				201E030111EE083D007E4420 /* GBCertificateUpdateController.xib */,
 			);
@@ -464,7 +460,6 @@
 				2035623611D383D000965765 /* GBCommandsController.h */,
 				2035623711D383D000965765 /* GBCommandsController.m */,
 				2035623211D383BE00965765 /* GBCommandsController.xib */,
-				2015F5C111C6D41B00BBA543 /* GBMultipleGitPathsFoundController.xib */,
 				20265E4A11E3EB9B00709F6B /* GBWelcomeController.xib */,
 			);
 			name = "View Controllers";
@@ -541,6 +536,8 @@
 			isa = PBXGroup;
 			children = (
 				2002AE09124A9BAB0072075C /* OAOptionalDelegateMessage.h */,
+				20C3B71D125BCDC100ABEDE7 /* OAPrimaryMACAddress.h */,
+				20C3B71E125BCDC100ABEDE7 /* OAPrimaryMACAddress.m */,
 				20B1621011944C0F00A709CF /* NSFileManager+OAFileManagerHelpers.h */,
 				20B1621111944C0F00A709CF /* NSFileManager+OAFileManagerHelpers.m */,
 				2038F3DF119546E90087CE37 /* NSArray+OAArrayHelpers.h */,
@@ -582,7 +579,19 @@
 				2002AC0A123CA1A20072075C /* OAFSEventStream.h */,
 				2002AC0B123CA1A20072075C /* OAFSEventStream.m */,
 			);
-			name = Libs;
+			path = Libs;
+			sourceTree = "<group>";
+		};
+		20C3B700125BCC5B00ABEDE7 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				20C3B70B125BCCC600ABEDE7 /* commit-marker-highlighted.png */,
+				20C3B70C125BCCC600ABEDE7 /* commit-marker-unmerged-highlighted.png */,
+				20C3B70D125BCCC600ABEDE7 /* commit-marker-unmerged.png */,
+				20C3B70E125BCCC600ABEDE7 /* commit-marker-unpushed-highlighted.png */,
+				20C3B70F125BCCC600ABEDE7 /* commit-marker-unpushed.png */,
+			);
+			path = Images;
 			sourceTree = "<group>";
 		};
 		2A37F4AAFDCFA73011CA2CEA /* gitbox */ = {
@@ -608,7 +617,7 @@
 				2057963E11ADD37F004715FE /* Views */,
 				20B1620D11944B6900A709CF /* Libs */,
 			);
-			name = Classes;
+			path = Classes;
 			sourceTree = "<group>";
 		};
 		2A37F4AFFDCFA73011CA2CEA /* Other Sources */ = {
@@ -623,14 +632,10 @@
 		2A37F4B8FDCFA73011CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				20C3B700125BCC5B00ABEDE7 /* Images */,
 				203976631251A63700770D13 /* Credits.rtf */,
 				20FAA18F123F831400E8FA0E /* git-1.7.1.bundle */,
 				20F8058711C1B35A00ADDADA /* commit-header-template.rtf */,
-				2030F19311B82BED00C260E0 /* commit-marker-unmerged-highlighted.png */,
-				2030F19411B82BED00C260E0 /* commit-marker-unpushed-highlighted.png */,
-				203A572611B6C28900497636 /* commit-marker-unmerged.png */,
-				203A572711B6C28900497636 /* commit-marker-unpushed.png */,
-				20BF301F11D0E3DC00B6DDC9 /* commit-marker-highlighted.png */,
 				2010732E11A7E9C300EFDE56 /* app.icns */,
 				2038F1EA11936CA50087CE37 /* README */,
 				20C716BB120EF7E6002B594F /* DESIGN_NOTES */,
@@ -721,14 +726,8 @@
 				2093A7D011AF0F2700239185 /* GBStageViewController.xib in Resources */,
 				2093A7D211AF0F3200239185 /* GBCommitViewController.xib in Resources */,
 				2093AC9111B2EBFF00239185 /* GBCommitPromptController.xib in Resources */,
-				203A572811B6C28900497636 /* commit-marker-unmerged.png in Resources */,
-				203A572911B6C28900497636 /* commit-marker-unpushed.png in Resources */,
-				2030F19511B82BED00C260E0 /* commit-marker-unmerged-highlighted.png in Resources */,
-				2030F19611B82BED00C260E0 /* commit-marker-unpushed-highlighted.png in Resources */,
 				209A935A11BA92B6006B0B5C /* GBFileEditingController.xib in Resources */,
 				20F8058811C1B35A00ADDADA /* commit-header-template.rtf in Resources */,
-				2015F5C211C6D41B00BBA543 /* GBMultipleGitPathsFoundController.xib in Resources */,
-				20BF302011D0E3DC00B6DDC9 /* commit-marker-highlighted.png in Resources */,
 				2035623311D383BE00965765 /* GBCommandsController.xib in Resources */,
 				20265E4B11E3EB9B00709F6B /* GBWelcomeController.xib in Resources */,
 				201E02F711EA231D007E4420 /* GBLicenseController.xib in Resources */,
@@ -737,6 +736,11 @@
 				20A37BBE120DDBA60068AB8B /* GBMainWindowController.xib in Resources */,
 				20FAA190123F831400E8FA0E /* git-1.7.1.bundle in Resources */,
 				203976651251A63700770D13 /* Credits.rtf in Resources */,
+				20C3B710125BCCC600ABEDE7 /* commit-marker-highlighted.png in Resources */,
+				20C3B711125BCCC600ABEDE7 /* commit-marker-unmerged-highlighted.png in Resources */,
+				20C3B712125BCCC600ABEDE7 /* commit-marker-unmerged.png in Resources */,
+				20C3B713125BCCC600ABEDE7 /* commit-marker-unpushed-highlighted.png in Resources */,
+				20C3B714125BCCC600ABEDE7 /* commit-marker-unpushed.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -837,7 +841,6 @@
 				201E02E311EA205C007E4420 /* GBLicenseCheck.m in Sources */,
 				201E030611EE09D7007E4420 /* GBCertificateUpdateController.m in Sources */,
 				201E030B11EE2CBD007E4420 /* GBLicenseController.m in Sources */,
-				2000324311FC72620069C70D /* OAPrimaryMACAddress.m in Sources */,
 				20A37BA6120DC1D90068AB8B /* GBSourcesController.m in Sources */,
 				20A37BA9120DC27B0068AB8B /* GBMainWindowController.m in Sources */,
 				20A37BAC120DC4510068AB8B /* GBToolbarController.m in Sources */,
@@ -845,6 +848,7 @@
 				206CAC75122EBCAD009284FE /* GBRepositoriesController.m in Sources */,
 				2002AC0C123CA1A20072075C /* OAFSEventStream.m in Sources */,
 				203977E71252815000770D13 /* NSTableView+OATableViewHelpers.m in Sources */,
+				20C3B71F125BCDC100ABEDE7 /* OAPrimaryMACAddress.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
