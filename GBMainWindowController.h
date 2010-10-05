@@ -29,6 +29,8 @@
 - (void) saveState;
 - (void) loadState;
 
+- (IBAction) openInTerminal:(id)_;
+- (IBAction) openInFinder:(id)_;
 - (IBAction) selectPreviousRepository:(id)_;
 - (IBAction) selectNextRepository:(id)_;
 

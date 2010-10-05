@@ -45,8 +45,6 @@
 - (IBAction) editRepositories:(id)sender;
 - (IBAction) editGitIgnore:(id)sender;
 - (IBAction) editGitConfig:(id)sender;
-- (IBAction) openInTerminal:(id)sender;
-- (IBAction) openInFinder:(id)sender;
 - (IBAction) commandMenuItem:(id)sender;
 
 @end

@@ -59,7 +59,30 @@
 #pragma mark IBActions
 
 
+- (IBAction) openInTerminal:(id)sender
+{ 
+  NSString* path = [[self.repositoriesController.selectedRepositoryController url] path];
+  NSString* s = [NSString stringWithFormat:
+                 @"tell application \"Terminal\" to do script \"cd %@\"", path];
+  
+  NSAppleScript* as = [[[NSAppleScript alloc] initWithSource: s] autorelease];
+  [as executeAndReturnError:nil];
+}
 
+- (IBAction) openInFinder:(id)_
+{
+  [[NSWorkspace sharedWorkspace] openFile:[[self.repositoriesController.selectedRepositoryController url] path]];
+}
+
+- (BOOL) validateOpenInTerminal:(id)_
+{
+  return !!(self.repositoriesController.selectedRepositoryController);
+}
+
+- (BOOL) validateOpenInFinder:(id)_
+{
+  return !!(self.repositoriesController.selectedRepositoryController);
+}
 
 - (IBAction) selectPreviousRepository:(id)_
 {
