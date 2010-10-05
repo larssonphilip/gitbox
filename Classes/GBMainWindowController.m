@@ -417,6 +417,11 @@
   
   self.stageController = [[[GBStageViewController alloc] initWithNibName:@"GBStageViewController" bundle:nil] autorelease];
   
+  [self.stageController view]; // preloads view
+  [self.historyController view]; // preloads view
+  [self.stageController.tableView setNextKeyView:[self.window contentView]];
+  [self.historyController.tableView setNextKeyView:[self.window contentView]];
+
   self.commitController = [[[GBCommitViewController alloc] initWithNibName:@"GBCommitViewController" bundle:nil] autorelease];  
   
   [self.sourcesController.outlineView setNextKeyView:self.historyController.tableView];
