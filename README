@@ -50,7 +50,9 @@ Easy features:
 - stash list: as a local branch menu item?
 - stash/apply stash from the menu, context menu
 - quicklook for the file on space in stage
-
+- drop folder to source list
+- user-sortable list of repositories
+- drag GBChange to open in application or copy to finder
 
 Hard features:
 - do ls-remote in background starting on unfocus (or not only in background)
