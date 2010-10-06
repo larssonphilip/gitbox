@@ -60,9 +60,11 @@
   
   self.value = [self.value stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
   
+  [self addMessageToHistory];
+  [self rewindMessageHistory];
+  
   if (self.finishBlock) self.finishBlock();
   
-  [self rewindMessageHistory];
   [self.branchHintLabel setStringValue:@""];
   [self.textView setString:@""];
   [self endSheet];
