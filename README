@@ -25,6 +25,8 @@ Ongoing tasks:
 
 Bugs:
 
+- bug: double click on an added change opens diff with a current version
+- bug: double click on a non-diffable change runs executable
 - preferences: should select "Other" when typing
 - preferences: should focus text field when selected "Other"
 - maybe a bug: if the stage view is not selected, commit: action is not available

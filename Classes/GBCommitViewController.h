@@ -9,5 +9,6 @@
 
 - (IBAction) stageShowDifference:(id)sender;
 - (IBAction) stageRevealInFinder:(id)sender;
+- (IBAction) stageOpenWithFinder:(id)sender;
 
 @end

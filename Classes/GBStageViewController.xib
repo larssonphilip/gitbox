@@ -13,6 +13,7 @@
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
 			<integer value="13"/>
+			<integer value="15"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -319,7 +320,15 @@
 					</object>
 					<object class="NSMenuItem" id="1021011829">
 						<reference key="NSMenu" ref="406243151"/>
-						<string key="NSTitle">Show In Finder</string>
+						<string key="NSTitle">Show in Finder</string>
+						<string key="NSKeyEquiv"/>
+						<int key="NSMnemonicLoc">2147483647</int>
+						<reference key="NSOnImage" ref="433958093"/>
+						<reference key="NSMixedImage" ref="1014374096"/>
+					</object>
+					<object class="NSMenuItem" id="762353186">
+						<reference key="NSMenu" ref="406243151"/>
+						<string key="NSTitle">Open with Finder</string>
 						<string key="NSKeyEquiv"/>
 						<int key="NSMnemonicLoc">2147483647</int>
 						<reference key="NSOnImage" ref="433958093"/>
@@ -550,14 +559,6 @@
 					<int key="connectionID">50</int>
 				</object>
 				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">stageIgnoreFile:</string>
-						<reference key="source" ref="1003"/>
-						<reference key="destination" ref="932009263"/>
-					</object>
-					<int key="connectionID">53</int>
-				</object>
-				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
 						<string key="label">contentArray: changes</string>
 						<reference key="source" ref="665104064"/>
@@ -606,12 +607,28 @@
 							<string key="NSKeyPath">selection</string>
 							<object class="NSDictionary" key="NSOptions">
 								<string key="NS.key.0">NSSelectorName</string>
-								<string key="NS.object.0">launchDiff:</string>
+								<string key="NS.object.0">doubleClick:</string>
 							</object>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
-					<int key="connectionID">63</int>
+					<int key="connectionID">64</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">stageOpenWithFinder:</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="762353186"/>
+					</object>
+					<int key="connectionID">66</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">stageIgnoreFile:</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="932009263"/>
+					</object>
+					<int key="connectionID">67</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -671,6 +688,7 @@
 							<reference ref="1043954354"/>
 							<reference ref="660702133"/>
 							<reference ref="932009263"/>
+							<reference ref="762353186"/>
 						</object>
 						<reference key="parent" ref="0"/>
 						<string key="objectName">stageMenu</string>
@@ -805,6 +823,11 @@
 						<reference key="object" ref="932009263"/>
 						<reference key="parent" ref="406243151"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">65</int>
+						<reference key="object" ref="762353186"/>
+						<reference key="parent" ref="406243151"/>
+					</object>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="flattenedProperties">
@@ -839,6 +862,7 @@
 					<string>33.IBPluginDependency</string>
 					<string>51.IBPluginDependency</string>
 					<string>52.IBPluginDependency</string>
+					<string>65.IBPluginDependency</string>
 				</object>
 				<object class="NSMutableArray" key="dict.values">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -848,7 +872,8 @@
 					<string>{{217, 442}, {480, 272}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{485, 129}, {152, 173}}</string>
+					<string>{{530, 136}, {169, 193}}</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -888,7 +913,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">63</int>
+			<int key="maxID">67</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -946,12 +971,14 @@
 							<string>stageDoStageUnstage:</string>
 							<string>stageDoUnstage:</string>
 							<string>stageIgnoreFile:</string>
+							<string>stageOpenWithFinder:</string>
 							<string>stageRevealInFinder:</string>
 							<string>stageRevertFile:</string>
 							<string>stageShowDifference:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>
@@ -973,6 +1000,7 @@
 							<string>stageDoStageUnstage:</string>
 							<string>stageDoUnstage:</string>
 							<string>stageIgnoreFile:</string>
+							<string>stageOpenWithFinder:</string>
 							<string>stageRevealInFinder:</string>
 							<string>stageRevertFile:</string>
 							<string>stageShowDifference:</string>
@@ -1001,6 +1029,10 @@
 							</object>
 							<object class="IBActionInfo">
 								<string key="name">stageIgnoreFile:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">stageOpenWithFinder:</string>
 								<string key="candidateClassName">id</string>
 							</object>
 							<object class="IBActionInfo">

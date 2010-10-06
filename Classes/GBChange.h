@@ -30,12 +30,14 @@
 - (void) setStagedSilently:(BOOL) flag;
 - (void) update;
 
+- (NSURL*) existingOrTemporaryFileURL;
 
 #pragma mark Actions
 
-- (void) launchDiff:(id)sender; // for double-click binding
+- (void) doubleClick:(id)sender;
 - (void) launchDiffWithBlock:(void(^)())block;
 - (void) revealInFinder;
+- (void) openWithFinder;
 - (BOOL) validateRevealInFinder;
 
 @end

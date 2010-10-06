@@ -4,6 +4,7 @@
 
 #import "NSString+OAGitHelpers.h"
 #import "NSAlert+OAAlertHelpers.h"
+#import "NSFileManager+OAFileManagerHelpers.h"
 
 @implementation GBChange
 
@@ -178,6 +179,8 @@
 }
 
 
+
+
 #pragma mark Actions
 
 
@@ -191,7 +194,42 @@
   return task.temporaryURL;
 }
 
-- (void) launchDiff:(id)sender; // for double-click binding
+- (NSURL*) existingOrTemporaryFileURL
+{
+  if ([self isUntrackedFile])
+  {
+    return [self fileURL];
+  }
+  
+  NSString* commitId = [self.newRevision nonZeroCommitId];
+  NSURL* targetURL = [self fileURL];
+  if (!commitId)
+  {
+    commitId = [self.oldRevision nonZeroCommitId];
+    if (self.srcURL) targetURL = self.srcURL;
+  }
+  
+  if (commitId)
+  {
+    if (!targetURL)
+    {
+      NSLog(@"ERROR: GBChange openWithFinder: commitId is given, but all URLs are nil. id: %@", commitId);
+    }
+    return [self temporaryURLForObjectId:commitId optionalURL:targetURL];
+  }
+  else
+  {
+    NSLog(@"ERROR: GBChange openWithFinder: the change is not untracked, but no commit is valid. fileURL: %@", [self fileURL]);
+  }
+  return nil;
+}
+
+
+
+
+
+
+- (void) doubleClick:(id)sender
 {
   [self launchDiffWithBlock:^{}];
 }
@@ -204,20 +242,22 @@
     return;
   }
 
-  // This is untracked file: just open the app
+  // This is untracked file: do nothing
   if ([self isUntrackedFile])
   {
-    [[NSWorkspace sharedWorkspace] openURL:self.fileURL];
     return;
   }
   
   NSString* leftCommitId = [self.oldRevision nonZeroCommitId];
   NSString* rightCommitId = [self.newRevision nonZeroCommitId];
-    
-  // Note: using fileURL instead of dstURL so that it defaults to srcURL if no dst defined.
   
-  NSURL* leftURL  = (leftCommitId ? [self temporaryURLForObjectId:leftCommitId optionalURL:self.srcURL] : self.srcURL);
-  NSURL* rightURL = (rightCommitId ? [self temporaryURLForObjectId:rightCommitId optionalURL:self.fileURL] : self.fileURL);
+  if (!leftCommitId)
+  {
+    return;
+  }
+  
+  NSURL* leftURL  = [self temporaryURLForObjectId:leftCommitId optionalURL:self.srcURL];
+  NSURL* rightURL = (rightCommitId ? [self temporaryURLForObjectId:rightCommitId optionalURL:self.dstURL] : [self fileURL]);
   
   if (!leftURL)
   {
@@ -283,8 +323,12 @@
 
 - (void) revealInFinder
 {
-  NSString* path = [self.fileURL path];
-  if (path && ![self isDeletedFile])
+  NSURL* url = [self existingOrTemporaryFileURL];
+  if (!url) return;
+  
+  NSString* path = [url path];
+  if (path && ([[NSFileManager defaultManager] isReadableFileAtPath:path] || 
+               [[NSFileManager defaultManager] isReadableDirectoryAtPath:path]))
   {
     [[NSWorkspace sharedWorkspace] selectFile:path inFileViewerRootedAtPath:nil];
   }
@@ -294,6 +338,14 @@
 {
   return (self.fileURL && ![self isDeletedFile]);
 }
+
+- (void) openWithFinder
+{
+  NSURL* url = [self existingOrTemporaryFileURL];
+  if (!url) return;
+  [[NSWorkspace sharedWorkspace] openURL:url];
+}
+
 
 
 @end

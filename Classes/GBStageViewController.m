@@ -87,6 +87,17 @@
   return [[change nilIfBusy] validateRevealInFinder];
 }
 
+- (IBAction) stageOpenWithFinder:(id)sender
+{
+  [[[[self selectedChanges] firstObject] nilIfBusy] openWithFinder];
+}
+
+- (BOOL) validateStageOpenWithFinder:(id)sender
+{
+  if ([[self selectedChanges] count] != 1) return NO;
+  return YES;
+}
+
 
 
 
