@@ -2,7 +2,6 @@
 Showstoppers:
 
 - clone repo
-- welcome screen
 - payment thing
 - nice screenshots
 - simpler definition and wording
@@ -110,6 +109,7 @@ Enhancements:
 + Repository status is updated automatically on file system changes. You can work with Terminal and Gitbox at the same time. This also fixes various glitches in staging area.
 + Pull-push button is replaced with a single "Merge" button if the local branch selected on the right.
 + Window title contains the parent folder name to disambiguate repository location.
++ Welcome screen to clone a repo or open a folder.
 
 Bug fixes:
 + Fixed right-click selection in the list of changes.

@@ -55,7 +55,7 @@
   [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:releaseNotesURLString]];
 }
 
-- (IBAction) openDocument:(id)sender
+- (IBAction) openDocument:_
 {
   NSOpenPanel* openPanel = [NSOpenPanel openPanel];
   openPanel.delegate = self;
@@ -70,10 +70,17 @@
   }];
 }
 
+- (IBAction) cloneRepository:_
+{
+  NSLog(@"TODO: GBAppDelegate cloneRepository: show a floating window with URL text field and progress indicator. Also allow to select a folder from disk.");
+}
+
 - (IBAction) showActivityWindow:(id)sender
 {
   [[GBActivityController sharedActivityController] showWindow:sender];
 }
+
+
 
 
 
@@ -241,6 +248,12 @@
   
   [self loadRepositories];
   [self.windowController loadState];
+  
+  if ([self.repositoriesController isEmpty] || ![[NSUserDefaults standardUserDefaults] objectForKey:@"WelcomeWasDisplayed"])
+  {
+    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:YES] forKey:@"WelcomeWasDisplayed"];
+    [self.windowController showWelcomeWindow:self];
+  }
   
   self.repositoriesController.delegate = self.windowController;
 }

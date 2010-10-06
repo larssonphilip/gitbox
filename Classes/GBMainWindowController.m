@@ -8,6 +8,7 @@
 #import "GBHistoryViewController.h"
 #import "GBStageViewController.h"
 #import "GBCommitViewController.h"
+#import "GBWelcomeController.h"
 
 #import "GBRepository.h"
 #import "GBCommit.h"
@@ -34,6 +35,7 @@
 @synthesize historyController;
 @synthesize stageController;
 @synthesize commitController;
+@synthesize welcomeController;
 
 @synthesize splitView;
 
@@ -46,6 +48,7 @@
   self.historyController = nil;
   self.stageController = nil;
   self.commitController = nil;
+  self.welcomeController = nil;
   
   self.splitView = nil;
   
@@ -191,6 +194,17 @@
 - (BOOL) validatePush:(id)_
 {
   return [self.toolbarController validatePush:_];
+}
+
+
+
+- (IBAction) showWelcomeWindow:(id)_
+{
+  if (!self.welcomeController)
+  {
+    self.welcomeController = [[[GBWelcomeController alloc] initWithWindowNibName:@"GBWelcomeController"] autorelease];
+  }
+  [self.welcomeController runSheetInWindow:[self window]];
 }
 
 

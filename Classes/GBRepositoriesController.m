@@ -48,7 +48,11 @@
   return nil;
 }
 
-
+- (BOOL) isEmpty
+{
+  // TODO: update this when other sections are added
+  return [self.localRepositoryControllers count] < 1;
+}
 
 
 

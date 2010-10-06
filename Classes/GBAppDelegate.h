@@ -10,10 +10,11 @@
 @property(retain) GBMainWindowController* windowController;
 @property(retain) IBOutlet GBPreferencesController* preferencesController;
 
-- (IBAction) openDocument:(id)_;
-- (IBAction) showActivityWindow:(id)_;
-- (IBAction) releaseNotes:(id)_;
-- (IBAction) showDiffToolPreferences:(id)_;
+- (IBAction) openDocument:_;
+- (IBAction) cloneRepository:_;
+- (IBAction) showActivityWindow:_;
+- (IBAction) releaseNotes:_;
+- (IBAction) showDiffToolPreferences:_;
 
 - (BOOL) checkGitVersion;
 

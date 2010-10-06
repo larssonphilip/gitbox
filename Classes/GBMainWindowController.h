@@ -9,7 +9,7 @@
 @class GBHistoryViewController;
 @class GBStageViewController;
 @class GBCommitViewController;
-
+@class GBWelcomeController;
 @interface GBMainWindowController : NSWindowController<NSSplitViewDelegate,
                                                        GBRepositoriesControllerDelegate,
                                                        GBRepositoryControllerDelegate>
@@ -21,6 +21,7 @@
 @property(retain) GBHistoryViewController* historyController;
 @property(retain) GBStageViewController* stageController;
 @property(retain) GBCommitViewController* commitController;
+@property(retain) GBWelcomeController* welcomeController;
 
 @property(retain) IBOutlet NSSplitView* splitView;
 
@@ -37,5 +38,7 @@
 - (IBAction) openInFinder:(id)_;
 - (IBAction) selectPreviousRepository:(id)_;
 - (IBAction) selectNextRepository:(id)_;
+
+- (IBAction) showWelcomeWindow:(id)_;
 
 @end
