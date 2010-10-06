@@ -10,6 +10,7 @@
 
 @synthesize value;
 @synthesize branchName;
+@synthesize messageHistory;
 @synthesize textView;
 @synthesize shortcutTipLabel;
 @synthesize branchHintLabel;
@@ -28,6 +29,7 @@
   [NSObject cancelPreviousPerformRequestsWithTarget:self];
   self.value = nil;
   self.branchName = nil;
+  self.messageHistory = nil;
   self.textView = nil;
   self.shortcutTipLabel = nil;
   self.branchHintLabel = nil;
@@ -60,7 +62,7 @@
   
   if (self.finishBlock) self.finishBlock();
   
-  //[self rewindMessageHistory];
+  [self rewindMessageHistory];
   [self.branchHintLabel setStringValue:@""];
   [self.textView setString:@""];
   [self endSheet];
@@ -68,7 +70,7 @@
 
 - (IBAction) onCancel:(id)sender
 {
-  //[self rewindMessageHistory];
+  [self rewindMessageHistory];
   [self resetMagicFlags];
   self.value = [[[self.textView string] copy] autorelease];
   if (self.cancelBlock) self.cancelBlock();
@@ -96,79 +98,62 @@
 
 
 
-//#pragma mark Message History
-//
-//
-//
-//- (NSArray*) messageHistory
-//{
-//  NSArray* list = (NSArray*)[self.repositoryController loadObjectForKey:@"GBCommitPromptMessageHistory"];
-//  if (!list) list = [NSArray array];
-//  NSUInteger maxLength =101;
-//  if ([list count] > maxLength) list = [list subarrayWithRange:NSMakeRange(0, maxLength)];
-//  return list;
-//}
-//
-//- (void) rewindMessageHistory
-//{
-//  messageHistoryIndex = 0;
-//}
-//
-//- (void) addMessageToHistory
-//{
-//  if (self.value)
-//  {
-//    NSArray* newHistory = [[NSArray arrayWithObject:self.value] arrayByAddingObjectsFromArray:[self messageHistory]];
-//    [self.repositoryController saveObject:newHistory forKey:@"GBCommitPromptMessageHistory"];
-//  }
-//  messageHistoryIndex = 0;
-//}
-//
-//- (NSString*) messageFromHistoryAtIndex:(NSUInteger)index
-//{
-//  return [[self messageHistory] objectAtIndex:index or:nil];
-//}
-//
-//
-//- (IBAction) previousMessage:(id)sender
-//{
-//  NSString* message = [[self messageHistory] objectAtIndex:messageHistoryIndex or:nil];
-//  if (message)
-//  {
-//    // If it is the first scroll back, stash away current text
-//    if (messageHistoryIndex == 0)
-//    {
-//      self.value = [[[self.textView string] copy] autorelease];
-//      NSLog(@"stashing current text %@", self.value);
-//    }
-//    [self.textView setString:message];
-//    [self.textView selectAll:nil];
-//    messageHistoryIndex++;
-//  }
-//}
-//
-//- (IBAction) nextMessage:(id)sender
-//{
-//  if (messageHistoryIndex > 0)
-//  {
-//    messageHistoryIndex--;
-//    if (messageHistoryIndex == 0) // reached the last item, recover stashed message
-//    {
-//      if (!self.value) self.value = @"";
-//      [self.textView setString:self.value];
-//      [self.textView selectAll:nil];
-//    }
-//    else
-//    {
-//      NSString* message = [[self messageHistory] objectAtIndex:messageHistoryIndex-1 or:nil];
-//      if (message)
-//      {
-//        [self.textView setString:message];
-//        [self.textView selectAll:nil];
-//      }
-//    }
-//  }
-//}
+#pragma mark Message History
+
+
+
+- (void) rewindMessageHistory
+{
+  messageHistoryIndex = 0;
+}
+
+- (void) addMessageToHistory
+{
+  if (self.value)
+  {
+    [self.messageHistory insertObject:self.value atIndex:0];
+  }
+  [self rewindMessageHistory];
+}
+
+- (IBAction) previousMessage:(id)sender
+{
+  NSString* message = [self.messageHistory objectAtIndex:messageHistoryIndex or:nil];
+  if (message)
+  {
+    // If it is the first scroll back, stash away the current text
+    if (messageHistoryIndex == 0)
+    {
+      self.value = [[[self.textView string] copy] autorelease];
+    }
+    [self.textView setString:message];
+    [self.textView selectAll:nil];
+    messageHistoryIndex++;
+  }
+}
+
+- (IBAction) nextMessage:(id)sender
+{
+  if (messageHistoryIndex > 0)
+  {
+    messageHistoryIndex--;
+    if (messageHistoryIndex == 0) // reached the last item, recover stashed message
+    {
+      if (!self.value) self.value = @"";
+      [self.textView setString:self.value];
+      [self.textView selectAll:nil];
+    }
+    else
+    {
+      NSString* message = [[self messageHistory] objectAtIndex:messageHistoryIndex-1 or:nil];
+      if (message)
+      {
+        [self.textView setString:message];
+        [self.textView selectAll:nil];
+      }
+    }
+  }
+}
 
 
 
