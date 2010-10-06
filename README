@@ -18,12 +18,15 @@ Ongoing tasks:
 - create a new tag
 - check for memory leaks
 - sidebar context menu: show in finder, open in terminal
+- make preferences a single view with all options
 + sidebar: sort by two components, but display two components for every repo in a folder if one of them is long
 + restore message history in commit prompt (cmd+up; cmd+down)
 
 
 Bugs:
 
+- preferences: should select "Other" when typing
+- preferences: should focus text field when selected "Other"
 - maybe a bug: if the stage view is not selected, commit: action is not available
 - bug: when adding files to stage too quickly, git-add fails on .git/index.lock (should put all index modifying operations in a single serial dispatch queue)
 - bug: for non-existent HEAD gitbox does not show a staged new file
