@@ -12,7 +12,6 @@ Ongoing tasks:
 
 - the rest of helper windows
 - Secondary windows are opened in sheets (Preferences, Open Repository etc.)
-- restore message history in commit prompt (cmd+up; cmd+down)
 - check that opendiff is selected by default on new start + it is not selected if it is missing
 - GIT_ASKPASS/SSH_ASKPASS for interacting with ssh
 - human message in case git cannot merge/pull when some files are modified (error: Untracked working tree file 'Patryst.xcodeproj/project.pbxproj' would be overwritten by merge.)
@@ -21,7 +20,7 @@ Ongoing tasks:
 - check for memory leaks
 - sidebar context menu: show in finder, open in terminal
 + sidebar: sort by two components, but display two components for every repo in a folder if one of them is long
-
++ restore message history in commit prompt (cmd+up; cmd+down)
 
 Bugs:
 
@@ -108,7 +107,6 @@ Features:
 + Release notes window (Help / Release Notes).
 
 Enhancements:
-- !!! Secondary windows are opened in sheets (Preferences, Open Repository etc.)
 + Repository status is updated automatically on file system changes. You can work with Terminal and Gitbox at the same time. This also fixes various glitches in staging area.
 + Pull-push button is replaced with a single "Merge" button if the local branch selected on the right.
 + Window title contains the parent folder name to disambiguate repository location.
