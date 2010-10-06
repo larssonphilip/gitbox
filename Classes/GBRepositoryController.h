@@ -29,6 +29,7 @@
 @property(retain) OAFSEventStream* fsEventStream;
 @property(retain) NSString* lastCommitBranchName;
 @property(retain) NSString* cancelledCommitMessage;
+@property(nonatomic,retain) NSMutableArray* commitMessageHistory;
 
 @property(assign) BOOL displaysTwoPathComponents;
 @property(assign) NSInteger isDisabled;

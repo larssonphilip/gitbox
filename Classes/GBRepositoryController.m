@@ -23,6 +23,7 @@
 @synthesize fsEventStream;
 @synthesize lastCommitBranchName;
 @synthesize cancelledCommitMessage;
+@synthesize commitMessageHistory;
 
 @synthesize displaysTwoPathComponents;
 @synthesize isDisabled;
@@ -39,6 +40,7 @@
   self.fsEventStream = nil;
   self.lastCommitBranchName = nil;
   self.cancelledCommitMessage = nil;
+  self.commitMessageHistory = nil;
   [super dealloc];
 }
 
@@ -60,7 +62,14 @@
   return plistController; // it is used inside this object only, so we may skip retain+autorelease.
 }
 
-
+- (NSMutableArray*) commitMessageHistory
+{
+  if (!commitMessageHistory)
+  {
+    self.commitMessageHistory = [NSMutableArray array];
+  }
+  return [[commitMessageHistory retain] autorelease];
+}
 
 - (NSURL*) url
 {
