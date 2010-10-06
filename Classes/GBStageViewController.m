@@ -236,6 +236,7 @@
     GBCommitPromptController* prompt = self.commitPromptController;
     GBRepositoryController* repoCtrl = self.repositoryController;
     
+    prompt.messageHistory = self.repositoryController.commitMessageHistory;
     prompt.value = repoCtrl.cancelledCommitMessage ? repoCtrl.cancelledCommitMessage : @"";
     prompt.branchName = nil;
     
