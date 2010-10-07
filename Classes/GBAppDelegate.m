@@ -5,9 +5,9 @@
 
 #import "GBMainWindowController.h"
 #import "GBSourcesController.h"
-
 #import "GBActivityController.h"
 #import "GBPreferencesController.h"
+#import "GBPromptController.h"
 #import "GBLicenseCheck.h"
 
 #import "GBRepository.h"
@@ -29,7 +29,6 @@
 @implementation GBAppDelegate
 
 @synthesize repositoriesController;
-
 @synthesize windowController;
 @synthesize preferencesController;
 
@@ -37,7 +36,6 @@
 {
   self.windowController = nil;
   self.preferencesController = nil;
-  
   self.repositoriesController = nil;
 
   [super dealloc];
@@ -72,7 +70,18 @@
 
 - (IBAction) cloneRepository:_
 {
-  NSLog(@"TODO: GBAppDelegate cloneRepository: show a floating window with URL text field and progress indicator. Also allow to select a folder from disk.");
+  GBPromptController* ctrl = [GBPromptController controller];
+  
+  ctrl.title = NSLocalizedString(@"Clone Repository", @"");
+  ctrl.promptText = NSLocalizedString(@"Repository URL:", @"");
+  ctrl.buttonText = NSLocalizedString(@"Clone", @"");
+  ctrl.requireStripWhitespace = YES;
+  ctrl.requireNonEmptyString = YES;
+  ctrl.requireSingleLine = YES;
+  ctrl.finishBlock = ^{
+    NSLog(@"TODO: open a folder where to clone");
+  };
+  [ctrl runSheetInWindow:[self.windowController window]];
 }
 
 - (IBAction) showActivityWindow:(id)sender
