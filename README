@@ -11,7 +11,10 @@ Ongoing tasks:
 
 - create a remote
 - create a remote branch
+- fetch periodically
+- fetch in background should reset fetch interval when new commits are fetched
 - Secondary windows are opened in sheets (Preferences, Open Repository etc.)
+- check behavior when opendiff is missing
 - check that opendiff is selected by default on new start + it is not selected if it is missing
 - GIT_ASKPASS/SSH_ASKPASS for interacting with ssh
 - human message in case git cannot merge/pull when some files are modified (error: Untracked working tree file 'Patryst.xcodeproj/project.pbxproj' would be overwritten by merge.)
@@ -34,39 +37,39 @@ Bugs:
 
 Cool features:
 
-- conflict state representation
+- conflict stage: highlight conflicted changes, allow to choose one of the versions 
+- do ls-remote in background starting on unfocus (or not only in background)
+- delete local branch
+- delete remote branch
+- force push a branch (when push fails, allow force push)
+- quicklook for the file on space in stage
 - bonjour publishing and cloning (see http://github.com/chad/gitjour; NSNetService)
 - github integration: handling other repos/branches, pull requests and initial setup commands
-- fetch periodically
-- do ls-remote in background starting on unfocus (or not only in background)
-- force push a branch
-- stash list: as a local branch menu item?
-- stash/apply stash from the menu, context menu
-- quicklook for the file on space in stage
-- drop folder to source list
+- drop folder to the source list
 - user-sortable list of repositories
 - drag GBChange to open in application or copy to finder
-- gitosis integration
 - find/nav bar sliding down in the history:
   - filters commits by sha-1, modified filenames and text
   - back/forward buttons allow undo/redo commit selection (clicking on parents)
 - maybe: easy/hidden rebase to keep history clean? (actually, need a "rebase continue" and "cancel")
 - amend latest commit if it is not pushed yet
 - find-as-you-type search in stage
-- shell command to open gitbox
 - history: probably get rid of dates, and design it in a more cheesy fashion
 - history: navigate to the sha1
 - history: navigate back and forward (History main menu)
 - history: checkout a commit
 - history: check out a branch from the commit item
 - history: add "load more" cell in the bottom of the log
+- show branch/tag names in history using "label" (+color in green/blue to connect with green/blue "pills")
+- gitosis integration
+- shell command to open gitbox
+- stash list: as a local branch menu item?
+- stash/apply stash from the menu, context menu
 - commit header: show parent ids using <a href="gitbox://git@sss.pierlis.com/repo.git#commits/sha1">...</a>
 - handling URL schema: gitbox://git@sss.pierlis.com/repo.git#commits/sha1
-- fetch in background should reset fetch interval when new commits are fetched
 - submodules UI
-- conflict stage: highlight conflicted changes, allow to choose one of the versions 
 - individual chunks commit
-- show branch/tag names in history using "label" (+color in green/blue to connect with green/blue "pills")
+
 
 
 Enhancements (works fine, but can be better):
