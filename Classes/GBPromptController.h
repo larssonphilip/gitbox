@@ -13,6 +13,7 @@
 @property(assign) BOOL requireNonEmptyString;
 @property(assign) BOOL requireSingleLine;
 @property(assign) BOOL requireStripWhitespace;
+@property(assign) NSTimeInterval callbackDelay;
 
 @property(assign) NSWindow* windowHoldingSheet;
 

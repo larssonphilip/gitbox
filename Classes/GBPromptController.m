@@ -17,6 +17,7 @@
 @synthesize requireNonEmptyString;
 @synthesize requireSingleLine;
 @synthesize requireStripWhitespace;
+@synthesize callbackDelay;
 
 @synthesize windowHoldingSheet;
 
@@ -41,6 +42,7 @@
 
 - (void) dealloc
 {
+  [NSObject cancelPreviousPerformRequestsWithTarget:self];
   self.textField = nil;
   self.title = nil;
   self.promptText = nil;
@@ -49,6 +51,24 @@
   self.finishBlock = nil;
   self.cancelBlock = nil;
   [super dealloc];
+}
+
+- (void) performCallbackAndRelease:(void(^)())block
+{
+  block();
+  [self autorelease];
+}
+
+- (void) performCallbackNowOrLater:(void(^)())block
+{
+  if (!block) return;
+  if (self.callbackDelay <= 0.0)
+  {
+    block();
+    return;
+  }
+  [self retain];
+  [self performSelector:@selector(performCallbackAndRelease:) withObject:block afterDelay:self.callbackDelay];
 }
 
 - (IBAction) onOK:(id)sender
@@ -66,14 +86,14 @@
   if (requireNonNilValue && !self.value) self.value = @"";
   if (requireNonEmptyString && (!self.value || [self.value isEmptyString])) return;
   
-  if (self.finishBlock) self.finishBlock();
+  [self performCallbackNowOrLater:self.finishBlock];
   self.value = @"";
   [self endSheet];
 }
 
 - (IBAction) onCancel:(id)sender
 {
-  if (self.cancelBlock) self.cancelBlock();
+  [self performCallbackNowOrLater:self.cancelBlock];
   [self endSheet];
 }
 

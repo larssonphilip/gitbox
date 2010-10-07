@@ -78,8 +78,30 @@
   ctrl.requireStripWhitespace = YES;
   ctrl.requireNonEmptyString = YES;
   ctrl.requireSingleLine = YES;
+  ctrl.callbackDelay = 0.1;
   ctrl.finishBlock = ^{
-    NSLog(@"TODO: open a folder where to clone");
+    
+    NSURL* repositoryURL = [NSURL URLWithString:ctrl.value];
+    
+    NSOpenPanel* openPanel = [NSOpenPanel openPanel];
+    openPanel.allowsMultipleSelection = NO;
+    openPanel.canChooseFiles = NO;
+    openPanel.canChooseDirectories = YES;
+    [openPanel beginSheetModalForWindow:[self.windowController window] completionHandler:^(NSInteger result){
+      if (result == NSFileHandlingPanelOKButton)
+      {
+        NSURL* destinationFolderURL = [[openPanel URLs] objectAtIndex:0];
+        
+        
+//        repoCtrl = [GBRepositoryController repositoryControllerWithURL:url];
+//        repoCtrl.delegate = self.windowController;
+//        [self.repositoriesController addLocalRepositoryController:repoCtrl];
+//        [[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:url];
+        
+        
+        NSLog(@"TODO: add a GBCloningRepositoryController to the local repository controllers");
+      }
+    }];
   };
   [ctrl runSheetInWindow:[self.windowController window]];
 }
