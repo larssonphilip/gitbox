@@ -120,6 +120,8 @@
 		20C3B714125BCCC600ABEDE7 /* commit-marker-unpushed.png in Resources */ = {isa = PBXBuildFile; fileRef = 20C3B70F125BCCC600ABEDE7 /* commit-marker-unpushed.png */; };
 		20C3B71F125BCDC100ABEDE7 /* OAPrimaryMACAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = 20C3B71E125BCDC100ABEDE7 /* OAPrimaryMACAddress.m */; };
 		20C3C234125C4DB600ABEDE7 /* GBWelcomeController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20C3C233125C4DB600ABEDE7 /* GBWelcomeController.m */; };
+		20C3C30B125D9EA900ABEDE7 /* GBCloneWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 20C3C30A125D9EA900ABEDE7 /* GBCloneWindowController.xib */; };
+		20C3C312125DA0BC00ABEDE7 /* GBCloneWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20C3C311125DA0BC00ABEDE7 /* GBCloneWindowController.m */; };
 		20F8058811C1B35A00ADDADA /* commit-header-template.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 20F8058711C1B35A00ADDADA /* commit-header-template.rtf */; };
 		20FAA190123F831400E8FA0E /* git.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 20FAA18F123F831400E8FA0E /* git.bundle */; };
 		8D15AC320486D014006FF6A4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A37F4B0FDCFA73011CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
@@ -325,6 +327,9 @@
 		20C3B71E125BCDC100ABEDE7 /* OAPrimaryMACAddress.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAPrimaryMACAddress.m; sourceTree = "<group>"; };
 		20C3C232125C4DB600ABEDE7 /* GBWelcomeController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBWelcomeController.h; sourceTree = "<group>"; };
 		20C3C233125C4DB600ABEDE7 /* GBWelcomeController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBWelcomeController.m; sourceTree = "<group>"; };
+		20C3C30A125D9EA900ABEDE7 /* GBCloneWindowController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBCloneWindowController.xib; sourceTree = "<group>"; };
+		20C3C310125DA0BC00ABEDE7 /* GBCloneWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBCloneWindowController.h; sourceTree = "<group>"; };
+		20C3C311125DA0BC00ABEDE7 /* GBCloneWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBCloneWindowController.m; sourceTree = "<group>"; };
 		20C716BB120EF7E6002B594F /* DESIGN_NOTES */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = DESIGN_NOTES; sourceTree = "<group>"; };
 		20E59CE711A5C9EA00E7FB72 /* GBModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBModels.h; sourceTree = "<group>"; };
 		20F8058711C1B35A00ADDADA /* commit-header-template.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = "commit-header-template.rtf"; sourceTree = "<group>"; };
@@ -466,6 +471,9 @@
 				20C3C232125C4DB600ABEDE7 /* GBWelcomeController.h */,
 				20C3C233125C4DB600ABEDE7 /* GBWelcomeController.m */,
 				20265E4A11E3EB9B00709F6B /* GBWelcomeController.xib */,
+				20C3C310125DA0BC00ABEDE7 /* GBCloneWindowController.h */,
+				20C3C311125DA0BC00ABEDE7 /* GBCloneWindowController.m */,
+				20C3C30A125D9EA900ABEDE7 /* GBCloneWindowController.xib */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -746,6 +754,7 @@
 				20C3B712125BCCC600ABEDE7 /* commit-marker-unmerged.png in Resources */,
 				20C3B713125BCCC600ABEDE7 /* commit-marker-unpushed-highlighted.png in Resources */,
 				20C3B714125BCCC600ABEDE7 /* commit-marker-unpushed.png in Resources */,
+				20C3C30B125D9EA900ABEDE7 /* GBCloneWindowController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -855,6 +864,7 @@
 				203977E71252815000770D13 /* NSTableView+OATableViewHelpers.m in Sources */,
 				20C3B71F125BCDC100ABEDE7 /* OAPrimaryMACAddress.m in Sources */,
 				20C3C234125C4DB600ABEDE7 /* GBWelcomeController.m in Sources */,
+				20C3C312125DA0BC00ABEDE7 /* GBCloneWindowController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

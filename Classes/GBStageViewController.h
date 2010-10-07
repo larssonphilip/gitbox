@@ -9,10 +9,6 @@
 
 - (void) updateWithChanges:(NSArray*)newChanges;
 
-- (IBAction) stageShowDifference:(id)sender;
-- (IBAction) stageRevealInFinder:(id)sender;
-- (IBAction) stageOpenWithFinder:(id)sender;
-
 - (IBAction) stageDoStage:(id)sender;
 - (IBAction) stageDoUnstage:(id)sender;
 - (IBAction) stageDoStageUnstage:(id)sender;

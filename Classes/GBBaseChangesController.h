@@ -17,4 +17,11 @@
 - (void) update;
 
 
+#pragma mark Actions
+
+- (IBAction) stageShowDifference:_;
+- (IBAction) stageRevealInFinder:_;
+- (IBAction) stageOpenWithFinder:_;
+
+
 @end

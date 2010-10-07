@@ -1,6 +1,7 @@
 #import "GBModels.h"
 #import "GBBaseChangesController.h"
 #import "NSObject+OADispatchItemValidation.h"
+#import "NSArray+OAArrayHelpers.h"
 
 @implementation GBBaseChangesController
 
