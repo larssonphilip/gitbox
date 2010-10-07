@@ -65,8 +65,52 @@
 }
 
 
+
+
 #pragma mark NSTableViewDelegate
 
+
+
+
+
+
+#pragma mark Actions
+
+
+
+- (IBAction) stageShowDifference:(id)sender
+{
+  [[[[self selectedChanges] firstObject] nilIfBusy] launchDiffWithBlock:^{
+    
+  }];
+}
+- (BOOL) validateStageShowDifference:(id)sender
+{
+  if ([[self selectedChanges] count] != 1) return NO;
+  return [[[[self selectedChanges] firstObject] nilIfBusy] validateShowDifference];
+}
+
+- (IBAction) stageRevealInFinder:(id)sender
+{
+  [[[[self selectedChanges] firstObject] nilIfBusy] revealInFinder];
+}
+
+- (BOOL) validateStageRevealInFinder:(id)sender
+{
+  if ([[self selectedChanges] count] != 1) return NO;
+  return [[[[self selectedChanges] firstObject] nilIfBusy] validateRevealInFinder];
+}
+
+- (IBAction) stageOpenWithFinder:(id)sender
+{
+  [[[[self selectedChanges] firstObject] nilIfBusy] openWithFinder];
+}
+
+- (BOOL) validateStageOpenWithFinder:(id)sender
+{
+  if ([[self selectedChanges] count] != 1) return NO;
+  return [[[[self selectedChanges] firstObject] nilIfBusy] validateOpenWithFinder];
+}
 
 
 

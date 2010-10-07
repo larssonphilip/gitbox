@@ -36,8 +36,11 @@
 
 - (void) doubleClick:(id)sender;
 - (void) launchDiffWithBlock:(void(^)())block;
+- (BOOL) validateShowDifference;
+
 - (void) revealInFinder;
 - (void) openWithFinder;
 - (BOOL) validateRevealInFinder;
+- (BOOL) validateOpenWithFinder;
 
 @end

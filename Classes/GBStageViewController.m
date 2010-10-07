@@ -64,42 +64,6 @@
 #pragma mark Actions
 
 
-- (IBAction) stageShowDifference:(id)sender
-{
-  [[[[self selectedChanges] firstObject] nilIfBusy] launchDiffWithBlock:^{
-    
-  }];
-}
-- (BOOL) validateStageShowDifference:(id)sender
-{
-  return ([[self selectedChanges] count] == 1) && !![[[self selectedChanges] firstObject] nilIfBusy];
-}
-
-- (IBAction) stageRevealInFinder:(id)sender
-{
-  [[[[self selectedChanges] firstObject] nilIfBusy] revealInFinder];
-}
-
-- (BOOL) validateStageRevealInFinder:(id)sender
-{
-  if ([[self selectedChanges] count] != 1) return NO;
-  GBChange* change = [[self selectedChanges] firstObject];
-  return [[change nilIfBusy] validateRevealInFinder];
-}
-
-- (IBAction) stageOpenWithFinder:(id)sender
-{
-  [[[[self selectedChanges] firstObject] nilIfBusy] openWithFinder];
-}
-
-- (BOOL) validateStageOpenWithFinder:(id)sender
-{
-  if ([[self selectedChanges] count] != 1) return NO;
-  return YES;
-}
-
-
-
 
 - (IBAction) stageDoStage:(id)sender
 {

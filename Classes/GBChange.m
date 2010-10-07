@@ -321,6 +321,16 @@
   }];
 }
 
+- (BOOL) validateShowDifference
+{
+  NSLog(@"TODO: validateShowDifference: validate availability of the diff tool");
+  if ([self isDeletedFile]) return NO;
+  if ([self isUntrackedFile]) return NO;
+  if (![self.oldRevision nonZeroCommitId]) return NO;
+  return YES;
+}
+
+
 - (void) revealInFinder
 {
   NSURL* url = [self existingOrTemporaryFileURL];
@@ -336,7 +346,7 @@
 
 - (BOOL) validateRevealInFinder
 {
-  return (self.fileURL && ![self isDeletedFile]);
+  return ([self isUntrackedFile] || !![self.newRevision nonZeroCommitId] || !![self.oldRevision nonZeroCommitId]);
 }
 
 - (void) openWithFinder
@@ -346,6 +356,10 @@
   [[NSWorkspace sharedWorkspace] openURL:url];
 }
 
+- (BOOL) validateOpenWithFinder
+{
+  return [self validateRevealInFinder];
+}
 
 
 @end
