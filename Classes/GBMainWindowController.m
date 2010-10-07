@@ -415,6 +415,8 @@
 {
   [super windowDidLoad];
   
+  [self updateWindowTitleWithRepositoryController:nil];
+  
   // ToolbarController is taken from nib. Why is it there? Because of IBActions and IBOutlets.
   [self.toolbarController windowDidLoad];
   
