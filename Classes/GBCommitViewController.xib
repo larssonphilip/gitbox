@@ -12,6 +12,7 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
+			<integer value="15"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -465,7 +466,7 @@
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<object class="NSMenuItem" id="911847394">
 						<reference key="NSMenu" ref="379477385"/>
-						<string key="NSTitle">Show Changes</string>
+						<string key="NSTitle">Show Difference</string>
 						<string key="NSKeyEquiv"/>
 						<int key="NSMnemonicLoc">2147483647</int>
 						<object class="NSCustomResource" key="NSOnImage" id="842232736">
@@ -485,7 +486,7 @@
 						<reference key="NSOnImage" ref="842232736"/>
 						<reference key="NSMixedImage" ref="501386776"/>
 					</object>
-					<object class="NSMenuItem" id="689431896">
+					<object class="NSMenuItem" id="495317544">
 						<reference key="NSMenu" ref="379477385"/>
 						<string key="NSTitle">Open with Finder</string>
 						<string key="NSKeyEquiv"/>
@@ -659,7 +660,7 @@
 					<object class="IBActionConnection" key="connection">
 						<string key="label">stageOpenWithFinder:</string>
 						<reference key="source" ref="1001"/>
-						<reference key="destination" ref="689431896"/>
+						<reference key="destination" ref="495317544"/>
 					</object>
 					<int key="connectionID">106</int>
 				</object>
@@ -713,7 +714,7 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="589269837"/>
 							<reference ref="911847394"/>
-							<reference ref="689431896"/>
+							<reference ref="495317544"/>
 						</object>
 						<reference key="parent" ref="0"/>
 						<string key="objectName">contextMenu</string>
@@ -849,7 +850,7 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">105</int>
-						<reference key="object" ref="689431896"/>
+						<reference key="object" ref="495317544"/>
 						<reference key="parent" ref="379477385"/>
 					</object>
 				</object>
@@ -894,7 +895,7 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{454, 309}, {288, 63}}</string>
+					<string>{{454, 309}, {169, 63}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
