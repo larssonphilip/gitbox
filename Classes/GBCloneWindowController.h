@@ -6,6 +6,7 @@ typedef enum {
   GBCloneStateFailed,
   GBCloneStateCancelled
 } GBCloneState;
+
 @interface GBCloneWindowController : NSWindowController<NSWindowDelegate>
 {
   GBCloneState state;
@@ -17,6 +18,6 @@ typedef enum {
 @property(retain) IBOutlet NSButton* cloneButton;
 
 - (IBAction) cancel:_;
-- (IBAction) clone:_;
+- (IBAction) ok:_;
 
 @end
