@@ -3,29 +3,23 @@
 	<data>
 		<int key="IBDocument.SystemTarget">1060</int>
 		<string key="IBDocument.SystemVersion">10F569</string>
-		<string key="IBDocument.InterfaceBuilderVersion">788</string>
+		<string key="IBDocument.InterfaceBuilderVersion">804</string>
 		<string key="IBDocument.AppKitVersion">1038.29</string>
 		<string key="IBDocument.HIToolboxVersion">461.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin</string>
-			<string key="NS.object.0">788</string>
+			<string key="NS.object.0">804</string>
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="5"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
 			<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 		</object>
 		<object class="NSMutableDictionary" key="IBDocument.Metadata">
-			<bool key="EncodedWithXMLCoder">YES</bool>
-			<object class="NSArray" key="dict.sortedKeys" id="0">
-				<bool key="EncodedWithXMLCoder">YES</bool>
-			</object>
-			<object class="NSMutableArray" key="dict.values">
-				<bool key="EncodedWithXMLCoder">YES</bool>
-			</object>
+			<string key="NS.key.0">PluginDependencyRecalculationVersion</string>
+			<integer value="1" key="NS.object.0"/>
 		</object>
 		<object class="NSMutableArray" key="IBDocument.RootObjects" id="580458321">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -44,7 +38,7 @@
 			<object class="NSWindowTemplate" id="275939982">
 				<int key="NSWindowStyleMask">15</int>
 				<int key="NSWindowBacking">2</int>
-				<string key="NSWindowRect">{{349, 287}, {665, 387}}</string>
+				<string key="NSWindowRect">{{1573, 883}, {799, 435}}</string>
 				<int key="NSWTFlags">1886912512</int>
 				<string key="NSWindowTitle">Window</string>
 				<string key="NSWindowClass">NSWindow</string>
@@ -83,12 +77,10 @@
 								<string key="NSToolbarItemPaletteLabel">Activity Indicator</string>
 								<nil key="NSToolbarItemToolTip"/>
 								<object class="NSProgressIndicator" key="NSToolbarItemView" id="614430428">
-									<reference key="NSNextResponder"/>
+									<nil key="NSNextResponder"/>
 									<int key="NSvFlags">1292</int>
 									<object class="NSPSMatrix" key="NSDrawMatrix"/>
 									<string key="NSFrame">{{41, 14}, {16, 16}}</string>
-									<reference key="NSSuperview"/>
-									<reference key="NSWindow"/>
 									<int key="NSpiFlags">28938</int>
 									<double key="NSMaxValue">100</double>
 								</object>
@@ -111,11 +103,9 @@
 								<string key="NSToolbarItemPaletteLabel"/>
 								<nil key="NSToolbarItemToolTip"/>
 								<object class="NSButton" key="NSToolbarItemView" id="840289140">
-									<reference key="NSNextResponder"/>
+									<nil key="NSNextResponder"/>
 									<int key="NSvFlags">268</int>
 									<string key="NSFrame">{{0, 14}, {132, 25}}</string>
-									<reference key="NSSuperview"/>
-									<reference key="NSWindow"/>
 									<bool key="NSEnabled">YES</bool>
 									<object class="NSButtonCell" key="NSCell" id="180867585">
 										<int key="NSCellFlags">-2080244224</int>
@@ -154,11 +144,9 @@
 								<string key="NSToolbarItemPaletteLabel">Other Branch</string>
 								<nil key="NSToolbarItemToolTip"/>
 								<object class="NSPopUpButton" key="NSToolbarItemView" id="496183261">
-									<reference key="NSNextResponder"/>
+									<nil key="NSNextResponder"/>
 									<int key="NSvFlags">268</int>
 									<string key="NSFrame">{{0, 14}, {200, 25}}</string>
-									<reference key="NSSuperview"/>
-									<reference key="NSWindow"/>
 									<bool key="NSEnabled">YES</bool>
 									<object class="NSPopUpButtonCell" key="NSCell" id="547539069">
 										<int key="NSCellFlags">-2076049856</int>
@@ -260,11 +248,9 @@
 								<string key="NSToolbarItemPaletteLabel">Local Branch</string>
 								<nil key="NSToolbarItemToolTip"/>
 								<object class="NSPopUpButton" key="NSToolbarItemView" id="451021642">
-									<reference key="NSNextResponder"/>
+									<nil key="NSNextResponder"/>
 									<int key="NSvFlags">268</int>
 									<string key="NSFrame">{{0, 14}, {200, 25}}</string>
-									<reference key="NSSuperview"/>
-									<reference key="NSWindow"/>
 									<bool key="NSEnabled">YES</bool>
 									<object class="NSPopUpButtonCell" key="NSCell" id="603841213">
 										<int key="NSCellFlags">-2076049856</int>
@@ -386,11 +372,9 @@
 								<string key="NSToolbarItemPaletteLabel"/>
 								<nil key="NSToolbarItemToolTip"/>
 								<object class="NSSegmentedControl" key="NSToolbarItemView" id="723410101">
-									<reference key="NSNextResponder"/>
+									<nil key="NSNextResponder"/>
 									<int key="NSvFlags">268</int>
 									<string key="NSFrame">{{0, 14}, {132, 25}}</string>
-									<reference key="NSSuperview"/>
-									<reference key="NSWindow"/>
 									<bool key="NSEnabled">YES</bool>
 									<object class="NSSegmentedCell" key="NSCell" id="909504413">
 										<int key="NSCellFlags">-2080244224</int>
@@ -438,11 +422,9 @@
 								<string key="NSToolbarItemPaletteLabel"/>
 								<nil key="NSToolbarItemToolTip"/>
 								<object class="NSButton" key="NSToolbarItemView" id="1048878109">
-									<reference key="NSNextResponder"/>
+									<nil key="NSNextResponder"/>
 									<int key="NSvFlags">268</int>
 									<string key="NSFrame">{{0, 14}, {77, 25}}</string>
-									<reference key="NSSuperview"/>
-									<reference key="NSWindow"/>
 									<bool key="NSEnabled">YES</bool>
 									<object class="NSButtonCell" key="NSCell" id="441069746">
 										<int key="NSCellFlags">-2080244224</int>
@@ -592,40 +574,45 @@
 								<object class="NSCustomView" id="464340179">
 									<reference key="NSNextResponder" ref="50605990"/>
 									<int key="NSvFlags">268</int>
-									<string key="NSFrameSize">{131, 387}</string>
+									<string key="NSFrameSize">{157, 435}</string>
 									<reference key="NSSuperview" ref="50605990"/>
+									<reference key="NSWindow"/>
 									<reference key="NSNextKeyView" ref="910591720"/>
 									<string key="NSClassName">NSView</string>
 								</object>
 								<object class="NSCustomView" id="910591720">
 									<reference key="NSNextResponder" ref="50605990"/>
 									<int key="NSvFlags">256</int>
-									<string key="NSFrame">{{132, 0}, {246, 387}}</string>
+									<string key="NSFrame">{{158, 0}, {296, 435}}</string>
 									<reference key="NSSuperview" ref="50605990"/>
+									<reference key="NSWindow"/>
 									<reference key="NSNextKeyView" ref="720248462"/>
 									<string key="NSClassName">NSView</string>
 								</object>
 								<object class="NSCustomView" id="720248462">
 									<reference key="NSNextResponder" ref="50605990"/>
 									<int key="NSvFlags">256</int>
-									<string key="NSFrame">{{379, 0}, {286, 387}}</string>
+									<string key="NSFrame">{{455, 0}, {344, 435}}</string>
 									<reference key="NSSuperview" ref="50605990"/>
+									<reference key="NSWindow"/>
 									<string key="NSClassName">NSView</string>
 								</object>
 							</object>
-							<string key="NSFrameSize">{665, 387}</string>
+							<string key="NSFrameSize">{799, 435}</string>
 							<reference key="NSSuperview" ref="568628114"/>
+							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="464340179"/>
 							<bool key="NSIsVertical">YES</bool>
 							<int key="NSDividerStyle">2</int>
 							<string key="NSAutosaveName">SplitViewDividerPosition</string>
 						</object>
 					</object>
-					<string key="NSFrameSize">{665, 387}</string>
+					<string key="NSFrameSize">{799, 435}</string>
 					<reference key="NSSuperview"/>
+					<reference key="NSWindow"/>
 					<reference key="NSNextKeyView" ref="50605990"/>
 				</object>
-				<string key="NSScreenRect">{{0, 0}, {1280, 778}}</string>
+				<string key="NSScreenRect">{{0, 0}, {2560, 1418}}</string>
 				<string key="NSMinSize">{400, 271}</string>
 				<string key="NSMaxSize">{1.79769e+308, 1.79769e+308}</string>
 				<string key="NSFrameAutosaveName">gitboxwindow</string>
@@ -768,7 +755,9 @@
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<object class="IBObjectRecord">
 						<int key="objectID">0</int>
-						<reference key="object" ref="0"/>
+						<object class="NSArray" key="object" id="0">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+						</object>
 						<reference key="children" ref="580458321"/>
 						<nil key="parent"/>
 					</object>
@@ -1236,9 +1225,9 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>pull</string>
-					<string>{{333, 299}, {665, 387}}</string>
+					<string>{{638, 696}, {799, 435}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{333, 299}, {665, 387}}</string>
+					<string>{{638, 696}, {799, 435}}</string>
 					<integer value="1"/>
 					<boolean value="YES"/>
 					<string>{{201, 387}, {507, 413}}</string>
@@ -1272,6 +1261,45 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">GBBaseChangesController</string>
 					<string key="superclassName">NSViewController</string>
+					<object class="NSMutableDictionary" key="actions">
+						<bool key="EncodedWithXMLCoder">YES</bool>
+						<object class="NSArray" key="dict.sortedKeys">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>stageOpenWithFinder:</string>
+							<string>stageRevealInFinder:</string>
+							<string>stageShowDifference:</string>
+						</object>
+						<object class="NSMutableArray" key="dict.values">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>id</string>
+							<string>id</string>
+							<string>id</string>
+						</object>
+					</object>
+					<object class="NSMutableDictionary" key="actionInfosByName">
+						<bool key="EncodedWithXMLCoder">YES</bool>
+						<object class="NSArray" key="dict.sortedKeys">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>stageOpenWithFinder:</string>
+							<string>stageRevealInFinder:</string>
+							<string>stageShowDifference:</string>
+						</object>
+						<object class="NSMutableArray" key="dict.values">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<object class="IBActionInfo">
+								<string key="name">stageOpenWithFinder:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">stageRevealInFinder:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">stageShowDifference:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+						</object>
+					</object>
 					<object class="NSMutableDictionary" key="outlets">
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
@@ -1306,7 +1334,7 @@
 					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">GBBaseChangesController.h</string>
+						<string key="minorKey">Classes/GBBaseChangesController.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
@@ -1316,11 +1344,23 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>editGitConfig:</string>
+							<string>editGitIgnore:</string>
+							<string>editRepositories:</string>
+							<string>openInFinder:</string>
+							<string>openInTerminal:</string>
 							<string>selectNextRepository:</string>
 							<string>selectPreviousRepository:</string>
+							<string>showWelcomeWindow:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>id</string>
+							<string>id</string>
+							<string>id</string>
+							<string>id</string>
+							<string>id</string>
+							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 						</object>
@@ -1329,17 +1369,47 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>editGitConfig:</string>
+							<string>editGitIgnore:</string>
+							<string>editRepositories:</string>
+							<string>openInFinder:</string>
+							<string>openInTerminal:</string>
 							<string>selectNextRepository:</string>
 							<string>selectPreviousRepository:</string>
+							<string>showWelcomeWindow:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<object class="IBActionInfo">
+								<string key="name">editGitConfig:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">editGitIgnore:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">editRepositories:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">openInFinder:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">openInTerminal:</string>
+								<string key="candidateClassName">id</string>
+							</object>
 							<object class="IBActionInfo">
 								<string key="name">selectNextRepository:</string>
 								<string key="candidateClassName">id</string>
 							</object>
 							<object class="IBActionInfo">
 								<string key="name">selectPreviousRepository:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">showWelcomeWindow:</string>
 								<string key="candidateClassName">id</string>
 							</object>
 						</object>
@@ -1378,7 +1448,7 @@
 					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">GBMainWindowController.h</string>
+						<string key="minorKey">Classes/GBMainWindowController.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
@@ -1394,14 +1464,10 @@
 							<string>stageDoStageUnstage:</string>
 							<string>stageDoUnstage:</string>
 							<string>stageIgnoreFile:</string>
-							<string>stageRevealInFinder:</string>
 							<string>stageRevertFile:</string>
-							<string>stageShowDifference:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>id</string>
-							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>
@@ -1421,9 +1487,7 @@
 							<string>stageDoStageUnstage:</string>
 							<string>stageDoUnstage:</string>
 							<string>stageIgnoreFile:</string>
-							<string>stageRevealInFinder:</string>
 							<string>stageRevertFile:</string>
-							<string>stageShowDifference:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
@@ -1452,22 +1516,14 @@
 								<string key="candidateClassName">id</string>
 							</object>
 							<object class="IBActionInfo">
-								<string key="name">stageRevealInFinder:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
 								<string key="name">stageRevertFile:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">stageShowDifference:</string>
 								<string key="candidateClassName">id</string>
 							</object>
 						</object>
 					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">GBStageViewController.h</string>
+						<string key="minorKey">Classes/GBStageViewController.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
@@ -1630,69 +1686,69 @@
 					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">GBToolbarController.h</string>
+						<string key="minorKey">Classes/GBToolbarController.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
 					<string key="className">NSMenu</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier" id="32563239">
+					<object class="IBClassDescriptionSource" key="sourceIdentifier" id="526219307">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">NSMenu+OAMenuHelpers.h</string>
+						<string key="minorKey">Classes/Libs/NSMenu+OAMenuHelpers.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
 					<string key="className">NSMenuItem</string>
-					<reference key="sourceIdentifier" ref="32563239"/>
+					<reference key="sourceIdentifier" ref="526219307"/>
 				</object>
 				<object class="IBPartialClassDescription">
 					<string key="className">NSObject</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">NSObject+OADispatchItemValidation.h</string>
+						<string key="minorKey">Classes/Libs/NSObject+OADispatchItemValidation.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
 					<string key="className">NSObject</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">NSObject+OAKeyValueObserving.h</string>
+						<string key="minorKey">Classes/Libs/NSObject+OAKeyValueObserving.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
 					<string key="className">NSSplitView</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">NSSplitView+OASplitViewHelpers.h</string>
+						<string key="minorKey">Classes/Libs/NSSplitView+OASplitViewHelpers.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
 					<string key="className">NSTableView</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">NSTableView+OATableViewHelpers.h</string>
+						<string key="minorKey">Classes/Libs/NSTableView+OATableViewHelpers.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
 					<string key="className">NSView</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier" id="259224651">
+					<object class="IBClassDescriptionSource" key="sourceIdentifier" id="328339561">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">NSView+OAViewHelpers.h</string>
+						<string key="minorKey">Classes/Libs/NSView+OAViewHelpers.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
 					<string key="className">NSViewController</string>
-					<reference key="sourceIdentifier" ref="259224651"/>
+					<reference key="sourceIdentifier" ref="328339561"/>
 				</object>
 				<object class="IBPartialClassDescription">
 					<string key="className">NSWindow</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier" id="710887986">
+					<object class="IBClassDescriptionSource" key="sourceIdentifier" id="613026031">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">NSWindowController+OAWindowControllerHelpers.h</string>
+						<string key="minorKey">Classes/Libs/NSWindowController+OAWindowControllerHelpers.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
 					<string key="className">NSWindowController</string>
-					<reference key="sourceIdentifier" ref="710887986"/>
+					<reference key="sourceIdentifier" ref="613026031"/>
 				</object>
 			</object>
 			<object class="NSMutableArray" key="referencedPartialClassDescriptionsV3.2+">
@@ -2279,7 +2335,7 @@
 			<integer value="3000" key="NS.object.0"/>
 		</object>
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
-		<string key="IBDocument.LastKnownRelativeProjectPath">gitbox.xcodeproj</string>
+		<string key="IBDocument.LastKnownRelativeProjectPath">../gitbox.xcodeproj</string>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<object class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
 			<bool key="EncodedWithXMLCoder">YES</bool>
