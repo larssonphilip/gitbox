@@ -1,7 +1,7 @@
 
 Showstoppers:
 
-- clone repo
+- clone a repo
 - payment thing
 - nice screenshots
 - simpler definition and wording
@@ -9,7 +9,8 @@ Showstoppers:
 
 Ongoing tasks:
 
-- the rest of helper windows
+- create a remote
+- create a remote branch
 - Secondary windows are opened in sheets (Preferences, Open Repository etc.)
 - check that opendiff is selected by default on new start + it is not selected if it is missing
 - GIT_ASKPASS/SSH_ASKPASS for interacting with ssh
@@ -19,25 +20,16 @@ Ongoing tasks:
 - check for memory leaks
 - sidebar context menu: show in finder, open in terminal
 - make preferences a single view with all options
-+ sidebar: sort by two components, but display two components for every repo in a folder if one of them is long
-+ restore message history in commit prompt (cmd+up; cmd+down)
 
 
 Bugs:
 
-- bug: double click on an added change opens diff with a current version
-- bug: double click on a non-diffable change runs executable
+- bug: for non-existent HEAD gitbox does not show a staged new file
+- bug: when adding files to stage too quickly, git-add fails on .git/index.lock (should put all index modifying operations in a single serial dispatch queue)
+- bug: show disabled "No branches" item for inaccessible remote
+- maybe a bug: if the stage view is not selected, commit: action is not available
 - preferences: should select "Other" when typing
 - preferences: should focus text field when selected "Other"
-- maybe a bug: if the stage view is not selected, commit: action is not available
-- bug: when adding files to stage too quickly, git-add fails on .git/index.lock (should put all index modifying operations in a single serial dispatch queue)
-- bug: for non-existent HEAD gitbox does not show a staged new file
-- bug: show disabled "No branches" item for inaccessible remote
-- bug: repository stage/branch updating tasks are stuck in activity window with running status
-- bug: historical diff for Added file shows diff between current state (left) and initial state (right)
-+ bug: do not run ANY change-related operations if the change is busy (causes crashes sometimes)
-+ bug: revert and delete command when invoked with a right-click loose selection because of the prompt window. Should use block API for prompt and remember selected items immediately.
-+ commit text field is cleared when focused (fixes old bug with full text selection)
 
 
 Cool features:
@@ -103,19 +95,21 @@ Something to think about:
 -------------------------------------------------------------------------------
 
 
-0.9.8:
+0.9.8 (not released yet):
 
 Features:
 + Single window with a list of the repositories in the sidebar.
 + Git binaries are bundled with application (see Gitbox / Legal Info...).
 + Light scrollbar for the commit log.
 + Release notes window (Help / Release Notes).
++ Open with Finder and Reveal in Finder any file from the history.
 
 Enhancements:
 + Repository status is updated automatically on file system changes. You can work with Terminal and Gitbox at the same time. This also fixes various glitches in staging area.
 + Pull-push button is replaced with a single "Merge" button if the local branch selected on the right.
 + Window title contains the parent folder name to disambiguate repository location.
 + Welcome screen to clone a repo or open a folder.
++ When the changed file is double-clicked, only the diff program is launched. If the file is untracked, added or deleted, diff is not launched.
 
 Bug fixes:
 + Fixed right-click selection in the list of changes.
@@ -129,6 +123,14 @@ Bug fixes:
 + Preferences: some diff tool is always selected.
 + Preferences window was showing "Error: file not found" on first run
 + sorting order is not maintained after updating changes list
+
+
+
+
+
+
+
+
 
 
 0.9.7:
