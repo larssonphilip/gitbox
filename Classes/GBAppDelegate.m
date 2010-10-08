@@ -31,13 +31,14 @@
 @synthesize repositoriesController;
 @synthesize windowController;
 @synthesize preferencesController;
+@synthesize cloneAccessoryView;
 
 - (void) dealloc
 {
   self.windowController = nil;
   self.preferencesController = nil;
   self.repositoriesController = nil;
-
+  self.cloneAccessoryView = nil;
   [super dealloc];
 }
 
@@ -70,39 +71,60 @@
 
 - (IBAction) cloneRepository:_
 {
-  GBPromptController* ctrl = [GBPromptController controller];
-  
-  ctrl.title = NSLocalizedString(@"Clone Repository", @"");
-  ctrl.promptText = NSLocalizedString(@"Repository URL:", @"");
-  ctrl.buttonText = NSLocalizedString(@"Clone", @"");
-  ctrl.requireStripWhitespace = YES;
-  ctrl.requireNonEmptyString = YES;
-  ctrl.requireSingleLine = YES;
-  ctrl.callbackDelay = 0.1;
-  ctrl.finishBlock = ^{
-    
-    NSURL* repositoryURL = [NSURL URLWithString:ctrl.value];
-    
-    NSOpenPanel* openPanel = [NSOpenPanel openPanel];
-    openPanel.allowsMultipleSelection = NO;
-    openPanel.canChooseFiles = NO;
-    openPanel.canChooseDirectories = YES;
-    [openPanel beginSheetModalForWindow:[self.windowController window] completionHandler:^(NSInteger result){
-      if (result == NSFileHandlingPanelOKButton)
-      {
-        NSURL* destinationFolderURL = [[openPanel URLs] objectAtIndex:0];
-        
-        
+
+  NSOpenPanel* openPanel = [NSOpenPanel openPanel];
+  openPanel.allowsMultipleSelection = NO;
+  openPanel.canChooseFiles = NO;
+  openPanel.canChooseDirectories = YES;
+  [openPanel setAccessoryView:self.cloneAccessoryView];
+  [openPanel beginSheetModalForWindow:[self.windowController window] completionHandler:^(NSInteger result){
+    if (result == NSFileHandlingPanelOKButton)
+    {
+      NSURL* destinationFolderURL = [[openPanel URLs] objectAtIndex:0];
+      
+      
 //        repoCtrl = [GBRepositoryController repositoryControllerWithURL:url];
 //        [self.repositoriesController addLocalRepositoryController:repoCtrl];
 //        [[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:url];
-        
-        
-        NSLog(@"TODO: add a GBCloningRepositoryController to the local repository controllers");
-      }
-    }];
-  };
-  [ctrl runSheetInWindow:[self.windowController window]];
+      
+      
+      NSLog(@"TODO: add a GBCloningRepositoryController to the local repository controllers");
+    }
+  }];
+  
+//  GBPromptController* ctrl = [GBPromptController controller];
+//  
+//  ctrl.title = NSLocalizedString(@"Clone Repository", @"");
+//  ctrl.promptText = NSLocalizedString(@"Enter repository URL and choose destination folder:", @"");
+//  ctrl.buttonText = NSLocalizedString(@"Clone", @"");
+//  ctrl.requireStripWhitespace = YES;
+//  ctrl.requireNonEmptyString = YES;
+//  ctrl.requireSingleLine = YES;
+//  ctrl.callbackDelay = 0.1;
+//  ctrl.finishBlock = ^{
+//    
+//    NSURL* repositoryURL = [NSURL URLWithString:ctrl.value];
+//    
+//    NSOpenPanel* openPanel = [NSOpenPanel openPanel];
+//    openPanel.allowsMultipleSelection = NO;
+//    openPanel.canChooseFiles = NO;
+//    openPanel.canChooseDirectories = YES;
+//    [openPanel beginSheetModalForWindow:[self.windowController window] completionHandler:^(NSInteger result){
+//      if (result == NSFileHandlingPanelOKButton)
+//      {
+//        NSURL* destinationFolderURL = [[openPanel URLs] objectAtIndex:0];
+//        
+//        
+////        repoCtrl = [GBRepositoryController repositoryControllerWithURL:url];
+////        [self.repositoriesController addLocalRepositoryController:repoCtrl];
+////        [[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:url];
+//        
+//        
+//        NSLog(@"TODO: add a GBCloningRepositoryController to the local repository controllers");
+//      }
+//    }];
+//  };
+//  [ctrl runSheetInWindow:[self.windowController window]];
 }
 
 - (IBAction) showActivityWindow:(id)sender

@@ -8,6 +8,7 @@
 @property(retain) GBRepositoriesController* repositoriesController;
 @property(retain) GBMainWindowController* windowController;
 @property(retain) IBOutlet GBPreferencesController* preferencesController;
+@property(retain) IBOutlet NSView* cloneAccessoryView;
 
 - (IBAction) openDocument:_;
 - (IBAction) cloneRepository:_;
