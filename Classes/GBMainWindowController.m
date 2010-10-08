@@ -159,8 +159,6 @@
 
 
 
-
-
 - (IBAction) selectPreviousRepository:(id)_
 {
   [self.sourcesController selectPreviousRepository:_];
@@ -217,6 +215,8 @@
 {
   return [self dispatchUserInterfaceItemValidation:anItem];
 }
+
+
 
 
 
@@ -292,6 +292,12 @@
 
 
 
+
+
+
+
+
+
 #pragma mark GBRepositoriesControllerDelegate
 
 
@@ -328,6 +334,13 @@
   
   [self.sourcesController repositoriesControllerDidSelectRepository:aRepositoriesController];
 }
+
+
+
+
+
+
+
 
 
 
@@ -405,6 +418,12 @@
   if (repoCtrl != self.repositoriesController.selectedRepositoryController) return;
   [self.toolbarController updateCommitButton];
 }
+
+
+
+
+
+
 
 
 
