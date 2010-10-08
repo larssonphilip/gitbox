@@ -6,8 +6,6 @@
 #import "GBToolbarController.h"
 #import "GBSourcesController.h"
 #import "GBHistoryViewController.h"
-#import "GBStageViewController.h"
-#import "GBCommitViewController.h"
 #import "GBWelcomeController.h"
 
 #import "GBRepository.h"
@@ -33,8 +31,6 @@
 @synthesize toolbarController;
 @synthesize sourcesController;
 @synthesize historyController;
-@synthesize stageController;
-@synthesize commitController;
 @synthesize welcomeController;
 
 @synthesize splitView;
@@ -46,8 +42,6 @@
   self.toolbarController = nil;
   self.sourcesController = nil;
   self.historyController = nil;
-  self.stageController = nil;
-  self.commitController = nil;
   self.welcomeController = nil;
   
   self.splitView = nil;
@@ -239,43 +233,6 @@
   }  
 }
 
-- (void) refreshChangesController
-{
-  GBCommit* commit = self.repositoriesController.selectedRepositoryController.selectedCommit;
-  if (!commit || [commit isStage])
-  {
-    [self.stageController updateWithChanges:commit.changes];
-  }
-  else
-  {
-    self.commitController.changes = commit.changes;
-    [self.commitController update];
-  }
-}
-
-- (void) updateChangesController
-{
-  GBCommit* commit = self.repositoriesController.selectedRepositoryController.selectedCommit;
-  NSView* targetView = [[self.splitView subviews] objectAtIndex:2];
-  if (!commit || [commit isStage])
-  {
-    self.commitController.commit = nil;
-    [self.commitController unloadView];
-    self.stageController.stage = [commit asStage];
-    [self.stageController loadInView:targetView];
-    [self.historyController.tableView setNextKeyView:self.stageController.tableView];
-  }
-  else
-  {
-    self.stageController.stage = nil;
-    [self.stageController unloadView];
-    self.commitController.commit = commit;
-    [self.commitController loadInView:targetView];
-    [self.historyController.tableView setNextKeyView:self.commitController.tableView];
-  }
-  [self refreshChangesController];
-}
-
 - (void) loadState
 {
   [self.sourcesController loadState];
@@ -313,111 +270,24 @@
 
 - (void) repositoriesControllerWillSelectRepository:(GBRepositoriesController*)aRepositoriesController
 {
-  
+  aRepositoriesController.selectedRepositoryController.delegate = nil;
 }
 
 - (void) repositoriesControllerDidSelectRepository:(GBRepositoriesController*)aRepositoriesController
 {
   GBRepositoryController* repoCtrl = aRepositoriesController.selectedRepositoryController;
+  
+  repoCtrl.delegate = self.historyController;
+  
   self.toolbarController.repositoryController = repoCtrl;
   self.historyController.repositoryController = repoCtrl;
-  self.commitController.repositoryController = repoCtrl;
-  self.stageController.repositoryController = repoCtrl;
-  
   self.historyController.commits = [repoCtrl commits];
   
-  [self updateWindowTitleWithRepositoryController:repoCtrl];
-  [self.toolbarController update];
-  [self.historyController updateCommits];
-  [self.historyController updateStage];
-  [self updateChangesController];
-  
+  [self.historyController update];
+  [self updateWindowTitleWithRepositoryController:repoCtrl];  
   [self.sourcesController repositoriesControllerDidSelectRepository:aRepositoriesController];
 }
 
-
-
-
-
-
-
-
-
-
-#pragma mark GBRepositoryControllerDelegate
-
-
-- (void) repositoryControllerDidChangeDisabledStatus:(GBRepositoryController*)repoCtrl
-{
-  if (repoCtrl != self.repositoriesController.selectedRepositoryController) return;
-  [self.toolbarController updateDisabledState];
-}
-
-- (void) repositoryControllerDidChangeSpinningStatus:(GBRepositoryController*)repoCtrl
-{
-  if (repoCtrl != self.repositoriesController.selectedRepositoryController) return;
-  [self.toolbarController updateSpinner];
-}
-
-- (void) repositoryControllerDidUpdateCommits:(GBRepositoryController*)repoCtrl
-{
-  if (repoCtrl != self.repositoriesController.selectedRepositoryController) return;
-  self.historyController.commits = [repoCtrl commits];
-}
-
-- (void) repositoryControllerDidUpdateLocalBranches:(GBRepositoryController*)repoCtrl
-{
-  if (repoCtrl != self.repositoriesController.selectedRepositoryController) return;
-  [self.toolbarController updateBranchMenus];
-}
-
-- (void) repositoryControllerDidUpdateRemoteBranches:(GBRepositoryController*)repoCtrl
-{
-  if (repoCtrl != self.repositoriesController.selectedRepositoryController) return;
-  [self.toolbarController updateRemoteBranchMenus];
-  [self.toolbarController updateSyncButtons];
-}
-
-- (void) repositoryControllerDidCheckoutBranch:(GBRepositoryController*)repoCtrl
-{
-  if (repoCtrl != self.repositoriesController.selectedRepositoryController) return;
-  [self.toolbarController updateBranchMenus];
-}
-
-- (void) repositoryControllerDidChangeRemoteBranch:(GBRepositoryController*)repoCtrl
-{
-  if (repoCtrl != self.repositoriesController.selectedRepositoryController) return;
-  [self.toolbarController updateBranchMenus];
-}
-
-- (void) repositoryControllerDidSelectCommit:(GBRepositoryController*)repoCtrl
-{
-  if (repoCtrl != self.repositoriesController.selectedRepositoryController) return;
-  [self.toolbarController updateCommitButton];
-  [self updateChangesController];
-  [self.historyController updateCommits];
-  [self.historyController updateStage];
-}
-
-- (void) repositoryControllerDidUpdateCommitChanges:(GBRepositoryController*)repoCtrl
-{
-  if (repoCtrl != self.repositoriesController.selectedRepositoryController) return;
-  [self.toolbarController updateCommitButton];
-  [self refreshChangesController];
-  [self.historyController updateStage];
-}
-
-- (void) repositoryControllerDidUpdateCommitableChanges:(GBRepositoryController*)repoCtrl
-{
-  if (repoCtrl != self.repositoriesController.selectedRepositoryController) return;
-  [self.toolbarController updateCommitButton];
-}
-
-- (void) repositoryControllerDidCommit:(GBRepositoryController*)repoCtrl
-{
-  if (repoCtrl != self.repositoriesController.selectedRepositoryController) return;
-  [self.toolbarController updateCommitButton];
-}
 
 
 
@@ -448,21 +318,18 @@
   // HistoryController displays list of commits for the selected repo and branch
   self.historyController = [[[GBHistoryViewController alloc] initWithNibName:@"GBHistoryViewController" bundle:nil] autorelease];
   NSView* secondView = [self.splitView.subviews objectAtIndex:1];
+  NSView* thirdView = [self.splitView.subviews objectAtIndex:2];
+  self.historyController.additionalView = thirdView;
+  self.historyController.toolbarController = self.toolbarController;
   [self.historyController loadInView:secondView];
-  
-  self.stageController = [[[GBStageViewController alloc] initWithNibName:@"GBStageViewController" bundle:nil] autorelease];
-  
-  [self.stageController view]; // preloads view
   [self.historyController view]; // preloads view
-  [self.stageController.tableView setNextKeyView:[self.window contentView]];
   [self.historyController.tableView setNextKeyView:[self.window contentView]];
-
-  self.commitController = [[[GBCommitViewController alloc] initWithNibName:@"GBCommitViewController" bundle:nil] autorelease];  
+  [self.historyController loadAdditionalControllers];
   
   [self.sourcesController.outlineView setNextKeyView:self.historyController.tableView];
   
   [self.toolbarController update];
-  [self updateChangesController];
+  [self.historyController update];
 }
 
 

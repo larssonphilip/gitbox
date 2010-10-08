@@ -94,7 +94,6 @@
         
         
 //        repoCtrl = [GBRepositoryController repositoryControllerWithURL:url];
-//        repoCtrl.delegate = self.windowController;
 //        [self.repositoriesController addLocalRepositoryController:repoCtrl];
 //        [[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:url];
         
@@ -121,7 +120,6 @@
   if (!repoCtrl)
   {
     repoCtrl = [GBRepositoryController repositoryControllerWithURL:url];
-    repoCtrl.delegate = self.windowController;
     [self.repositoriesController addLocalRepositoryController:repoCtrl];
     [[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:url];
   }
@@ -280,11 +278,11 @@
   }
   else
   {
-    NSLog("@TODO: GBAppDelegate: change this NSAlert to a sheet");
+    NSLog(@"TODO: GBAppDelegate: change this NSAlert to a sheet");
     if ([NSAlert prompt:NSLocalizedString(@"The folder is not a git repository.\nMake it a repository?", @"App")
                   description:path])
     {
-      NSLog("@TODO: GBAppDelegate: init a git repo in the selected folder");
+      NSLog(@"TODO: GBAppDelegate: init a git repo in the selected folder");
         //NSURL* url = [NSURL fileURLWithPath:path];
 //      [GBRepository initRepositoryAtURL:url];
 //      GBRepositoryController* ctrl = [self openRepositoryAtURL:url];

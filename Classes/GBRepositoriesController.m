@@ -1,11 +1,6 @@
+#import "GBRepositoriesController.h"
 #import "GBRepositoryController.h"
 #import "GBModels.h"
-
-#import "GBMainWindowController.h"
-#import "GBToolbarController.h"
-#import "GBSourcesController.h"
-
-#import "GBRepositoriesController.h"
 
 #import "NSFileManager+OAFileManagerHelpers.h"
 #import "OAOptionalDelegateMessage.h"
@@ -107,8 +102,8 @@
 {
   OAOptionalDelegateMessage(@selector(repositoriesControllerWillSelectRepository:));
   self.selectedRepositoryController = repoCtrl;
-  [repoCtrl updateRepositoryIfNeeded];
   OAOptionalDelegateMessage(@selector(repositoriesControllerDidSelectRepository:));
+  [repoCtrl updateRepositoryIfNeeded];
   if (!repoCtrl.selectedCommit)
   {
     [repoCtrl selectCommit:repoCtrl.repository.stage];

@@ -1,7 +1,6 @@
 #import "GBRepositoriesControllerDelegate.h"
 
 @class GBRepositoryController;
-@class GBMainWindowController;
 
 @interface GBRepositoriesController : NSObject
 

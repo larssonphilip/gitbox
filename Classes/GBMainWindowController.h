@@ -1,26 +1,20 @@
 
 #import "GBRepositoriesControllerDelegate.h"
-#import "GBRepositoryControllerDelegate.h"
 
 @class GBRepositoriesController;
 
 @class GBToolbarController;
 @class GBSourcesController;
 @class GBHistoryViewController;
-@class GBStageViewController;
-@class GBCommitViewController;
 @class GBWelcomeController;
 @interface GBMainWindowController : NSWindowController<NSSplitViewDelegate,
-                                                       GBRepositoriesControllerDelegate,
-                                                       GBRepositoryControllerDelegate>
+                                                       GBRepositoriesControllerDelegate>
 
 @property(retain) GBRepositoriesController* repositoriesController;
 
 @property(retain) IBOutlet GBToolbarController* toolbarController;
 @property(retain) GBSourcesController* sourcesController;
 @property(retain) GBHistoryViewController* historyController;
-@property(retain) GBStageViewController* stageController;
-@property(retain) GBCommitViewController* commitController;
 @property(retain) GBWelcomeController* welcomeController;
 
 @property(retain) IBOutlet NSSplitView* splitView;

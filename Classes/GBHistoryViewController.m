@@ -1,7 +1,11 @@
 #import "GBModels.h"
 
 #import "GBRepositoryController.h"
+#import "GBToolbarController.h"
 #import "GBHistoryViewController.h"
+#import "GBStageViewController.h"
+#import "GBCommitViewController.h"
+
 #import "GBCommitCell.h"
 
 #import "NSArray+OAArrayHelpers.h"
@@ -13,7 +17,11 @@
 @implementation GBHistoryViewController
 
 @synthesize repositoryController;
+@synthesize toolbarController;
+@synthesize stageController;
+@synthesize commitController;
 @synthesize commits;
+@synthesize additionalView;
 @synthesize tableView;
 @synthesize logArrayController;
 
@@ -24,7 +32,11 @@
 - (void) dealloc
 {  
   self.repositoryController = nil;
+  self.toolbarController = nil;
+  self.stageController = nil;
+  self.commitController = nil;
   self.commits = nil;
+  self.additionalView = nil;
   self.tableView = nil;
   self.logArrayController = nil;
   [super dealloc];
@@ -41,6 +53,20 @@
   [super viewDidUnload];
 }
 
+- (void) loadAdditionalControllers
+{
+  self.stageController = [[[GBStageViewController alloc] initWithNibName:@"GBStageViewController" bundle:nil] autorelease];
+
+  self.commitController = [[[GBCommitViewController alloc] initWithNibName:@"GBCommitViewController" bundle:nil] autorelease];  
+
+  [self.stageController view]; // preloads view
+  [self.stageController.tableView setNextKeyView:[self.tableView nextKeyView]];
+  [self.commitController view]; // preloads view
+  [self.commitController.tableView setNextKeyView:[self.tableView nextKeyView]];
+}
+
+
+
 
 
 #pragma mark Interrogation
@@ -52,7 +78,11 @@
 }
 
 
+
+
+
 #pragma mark Updates
+
 
 - (void) updateStage
 {
@@ -77,6 +107,130 @@
     }
   }
 }
+
+- (void) refreshChangesController
+{
+  GBCommit* commit = self.repositoryController.selectedCommit;
+  if (!commit || [commit isStage])
+  {
+    [self.stageController updateWithChanges:commit.changes];
+  }
+  else
+  {
+    self.commitController.changes = commit.changes;
+    [self.commitController update];
+  }
+}
+
+- (void) updateChangesController
+{
+  GBCommit* commit = self.repositoryController.selectedCommit;
+  NSView* targetView = self.additionalView;
+  if (!commit || [commit isStage])
+  {
+    self.commitController.commit = nil;
+    [self.commitController unloadView];
+    self.stageController.stage = [commit asStage];
+    [self.stageController loadInView:targetView];
+    [self.tableView setNextKeyView:self.stageController.tableView];
+  }
+  else
+  {
+    self.stageController.stage = nil;
+    [self.stageController unloadView];
+    self.commitController.commit = commit;
+    [self.commitController loadInView:targetView];
+    [self.tableView setNextKeyView:self.commitController.tableView];
+  }
+  [self refreshChangesController];
+}
+
+- (void) update
+{
+  self.commitController.repositoryController = self.repositoryController;
+  self.stageController.repositoryController = self.repositoryController;
+  
+  [self.toolbarController update];
+  [self updateStage];
+  [self updateCommits];
+  [self updateChangesController];
+}
+
+
+
+
+
+
+
+#pragma mark GBRepositoryControllerDelegate
+
+
+- (void) repositoryControllerDidChangeDisabledStatus:(GBRepositoryController*)repoCtrl
+{
+  [self.toolbarController updateDisabledState];
+}
+
+- (void) repositoryControllerDidChangeSpinningStatus:(GBRepositoryController*)repoCtrl
+{
+  [self.toolbarController updateSpinner];
+}
+
+- (void) repositoryControllerDidUpdateCommits:(GBRepositoryController*)repoCtrl
+{
+  self.commits = [repoCtrl commits];
+}
+
+- (void) repositoryControllerDidUpdateLocalBranches:(GBRepositoryController*)repoCtrl
+{
+  [self.toolbarController updateBranchMenus];
+}
+
+- (void) repositoryControllerDidUpdateRemoteBranches:(GBRepositoryController*)repoCtrl
+{
+  [self.toolbarController updateRemoteBranchMenus];
+  [self.toolbarController updateSyncButtons];
+}
+
+- (void) repositoryControllerDidCheckoutBranch:(GBRepositoryController*)repoCtrl
+{
+  [self.toolbarController updateBranchMenus];
+}
+
+- (void) repositoryControllerDidChangeRemoteBranch:(GBRepositoryController*)repoCtrl
+{
+  [self.toolbarController updateBranchMenus];
+}
+
+- (void) repositoryControllerDidSelectCommit:(GBRepositoryController*)repoCtrl
+{
+  [self.toolbarController updateCommitButton];
+  [self update];
+}
+
+- (void) repositoryControllerDidUpdateCommitChanges:(GBRepositoryController*)repoCtrl
+{
+  [self.toolbarController updateCommitButton];
+  [self refreshChangesController];
+  [self updateStage];
+}
+
+- (void) repositoryControllerDidUpdateCommitableChanges:(GBRepositoryController*)repoCtrl
+{
+  [self.toolbarController updateCommitButton];
+}
+
+- (void) repositoryControllerDidCommit:(GBRepositoryController*)repoCtrl
+{
+  [self.toolbarController updateCommitButton];
+}
+
+
+
+
+
+
+
+
 
 
 

@@ -1,7 +1,6 @@
 #import "GBModels.h"
 
 #import "ObsoleteGBRepositoryController.h"
-#import "GBHistoryViewController.h"
 #import "GBStageViewController.h"
 #import "GBCommitViewController.h"
 
