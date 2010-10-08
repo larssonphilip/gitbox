@@ -115,44 +115,6 @@
 
 
 
-
-//- (GBRepositoryController*) openWindowForRepositoryAtURL:(NSURL*)url
-//{
-//  if ([self.windowControllers count] > 1)
-//  {
-//    if (!GBIsValidLicense())
-//    {
-//      [NSObject cancelPreviousPerformRequestsWithTarget:self 
-//                                               selector:@selector(askForLicense)
-//                                                 object:nil];
-//      [self performSelector:@selector(askForLicense)
-//                 withObject:nil
-//                 afterDelay:0.0];
-//      return nil;
-//    }
-//  }
-//  
-//  if (![self checkGitVersion])
-//  {
-//    return nil;
-//  }
-//  
-//  for (GBRepositoryController* ctrl in self.windowControllers)
-//  {
-//    if ([ctrl.repository.url isEqual:url])
-//    {
-//      [ctrl showWindow:self];
-//      return ctrl;
-//    }
-//  }
-//  
-//  GBRepositoryController* windowController = [self windowController];
-//  windowController.repositoryURL = url;
-//  [self addWindowController:windowController];
-//  [windowController showWindow:self];
-//  return windowController;
-//}
-
 - (void) openRepositoryAtURL:(NSURL*)url
 {
   GBRepositoryController* repoCtrl = [self.repositoriesController repositoryControllerWithURL:url];
@@ -318,9 +280,11 @@
   }
   else
   {
+    NSLog("@TODO: GBAppDelegate: change this NSAlert to a sheet");
     if ([NSAlert prompt:NSLocalizedString(@"The folder is not a git repository.\nMake it a repository?", @"App")
                   description:path])
     {
+      NSLog("@TODO: GBAppDelegate: init a git repo in the selected folder");
         //NSURL* url = [NSURL fileURLWithPath:path];
 //      [GBRepository initRepositoryAtURL:url];
 //      GBRepositoryController* ctrl = [self openRepositoryAtURL:url];
