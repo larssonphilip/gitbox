@@ -44,7 +44,7 @@ Cool features:
 - delete local branch
 - delete remote branch
 - force push a branch (when push fails, allow force push)
-- quicklook for the file on space in stage
+- quicklook for the file on space in stage (QLPreviewPanel)
 - bonjour publishing and cloning (see http://github.com/chad/gitjour; NSNetService)
 - github integration: handling other repos/branches, pull requests and initial setup commands
 - drop folder to the source list
