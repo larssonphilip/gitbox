@@ -37,11 +37,18 @@
 {
 	CGRect rect = NSRectToCGRect([self rectForPart:NSScrollerKnob]);
   
+  CGFloat alphaDistanceMultiplier = 1.0; // 1.0 if farther than 50px, 
+  CGFloat threshold = fminf(rect.size.height/2.0, 30.0);
+  if (rect.origin.y < threshold)
+  {
+    alphaDistanceMultiplier = rect.origin.y/(threshold);
+    CGFloat limit = 0.1;
+    alphaDistanceMultiplier = limit + (1-limit)*alphaDistanceMultiplier;
+  }
+  
   rect = CGRectInset(rect, 0, 0.5);
   rect.origin.x = rect.origin.x + (rect.size.width - 6.0 - 1.0) - 0.5;
   rect.size.width = 6.0;
-  
-  
   
   CGContextRef context = CGContextCurrentContext();
   
@@ -49,8 +56,11 @@
   
   if ([[self window] isMainWindow] && [[self window] isKeyWindow])
   {
-    alpha = 0.5;
+    alpha = 0.6;
   }
+  
+  alpha *= alphaDistanceMultiplier;
+  
   CGFloat radius = 3.0;
   CGContextSaveGState(context);
   // transparency layer is used because we play with blend mode for stroke (see below)
