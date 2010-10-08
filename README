@@ -12,8 +12,10 @@ Ongoing tasks:
 - create a repo out of an empty folder
 - create a remote
 - create a remote branch
+- read ls-remotes when updated .git
 - fetch periodically
 - fetch in background should reset fetch interval when new commits are fetched
+- do ls-remote in background starting on unfocus (or not only in background)
 - Secondary windows are opened in sheets (Preferences, Open Repository etc.)
 - check behavior when opendiff is missing
 - check that opendiff is selected by default on new start + it is not selected if it is missing
@@ -39,7 +41,6 @@ Bugs:
 Cool features:
 
 - conflict stage: highlight conflicted changes, allow to choose one of the versions 
-- do ls-remote in background starting on unfocus (or not only in background)
 - delete local branch
 - delete remote branch
 - force push a branch (when push fails, allow force push)
