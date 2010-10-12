@@ -7,6 +7,7 @@
 #import "GBSourcesController.h"
 #import "GBActivityController.h"
 #import "GBPreferencesController.h"
+#import "GBCloneWindowController.h"
 #import "GBPromptController.h"
 #import "GBLicenseCheck.h"
 
@@ -17,6 +18,7 @@
 #import "NSFileManager+OAFileManagerHelpers.h"
 #import "NSAlert+OAAlertHelpers.h"
 #import "NSData+OADataHelpers.h"
+#import "NSWindowController+OAWindowControllerHelpers.h"
 
 #import "OAPrimaryMACAddress.h"
 
@@ -31,14 +33,14 @@
 @synthesize repositoriesController;
 @synthesize windowController;
 @synthesize preferencesController;
-@synthesize cloneAccessoryView;
+@synthesize cloneWindowController;
 
 - (void) dealloc
 {
   self.windowController = nil;
   self.preferencesController = nil;
   self.repositoriesController = nil;
-  self.cloneAccessoryView = nil;
+  self.cloneWindowController = nil;
   [super dealloc];
 }
 
@@ -71,60 +73,22 @@
 
 - (IBAction) cloneRepository:_
 {
-
-  NSOpenPanel* openPanel = [NSOpenPanel openPanel];
-  openPanel.allowsMultipleSelection = NO;
-  openPanel.canChooseFiles = NO;
-  openPanel.canChooseDirectories = YES;
-  [openPanel setAccessoryView:self.cloneAccessoryView];
-  [openPanel beginSheetModalForWindow:[self.windowController window] completionHandler:^(NSInteger result){
-    if (result == NSFileHandlingPanelOKButton)
-    {
-      NSURL* destinationFolderURL = [[openPanel URLs] objectAtIndex:0];
-      
-      
-//        repoCtrl = [GBRepositoryController repositoryControllerWithURL:url];
-//        [self.repositoriesController addLocalRepositoryController:repoCtrl];
-//        [[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:url];
-      
-      
-      NSLog(@"TODO: add a GBCloningRepositoryController to the local repository controllers");
-    }
-  }];
+  if (!self.cloneWindowController)
+  {
+    self.cloneWindowController = [[[GBCloneWindowController alloc] initWithWindowNibName:@"GBCloneWindowController"] autorelease];
+  }
   
-//  GBPromptController* ctrl = [GBPromptController controller];
-//  
-//  ctrl.title = NSLocalizedString(@"Clone Repository", @"");
-//  ctrl.promptText = NSLocalizedString(@"Enter repository URL and choose destination folder:", @"");
-//  ctrl.buttonText = NSLocalizedString(@"Clone", @"");
-//  ctrl.requireStripWhitespace = YES;
-//  ctrl.requireNonEmptyString = YES;
-//  ctrl.requireSingleLine = YES;
-//  ctrl.callbackDelay = 0.1;
-//  ctrl.finishBlock = ^{
-//    
-//    NSURL* repositoryURL = [NSURL URLWithString:ctrl.value];
-//    
-//    NSOpenPanel* openPanel = [NSOpenPanel openPanel];
-//    openPanel.allowsMultipleSelection = NO;
-//    openPanel.canChooseFiles = NO;
-//    openPanel.canChooseDirectories = YES;
-//    [openPanel beginSheetModalForWindow:[self.windowController window] completionHandler:^(NSInteger result){
-//      if (result == NSFileHandlingPanelOKButton)
-//      {
-//        NSURL* destinationFolderURL = [[openPanel URLs] objectAtIndex:0];
-//        
-//        
-////        repoCtrl = [GBRepositoryController repositoryControllerWithURL:url];
-////        [self.repositoriesController addLocalRepositoryController:repoCtrl];
-////        [[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:url];
-//        
-//        
-//        NSLog(@"TODO: add a GBCloningRepositoryController to the local repository controllers");
-//      }
-//    }];
-//  };
-//  [ctrl runSheetInWindow:[self.windowController window]];
+  GBCloneWindowController* ctrl = self.cloneWindowController;
+  
+  ctrl.finishBlock = ^{
+    if (ctrl.remoteURL && ctrl.folderURL)
+    {
+      // TODO: create repo controller and add it to the sidebar
+      // TODO: launch cloning
+    }
+  };
+  
+  [ctrl runSheetInWindow:[self.windowController window]];
 }
 
 - (IBAction) showActivityWindow:(id)sender
@@ -200,6 +164,7 @@
 - (void) loadRepositories
 {
   NSArray* bookmarks = [[NSUserDefaults standardUserDefaults] objectForKey:@"GBRepositoriesController_localRepositories"];
+  NSData* selectedLocalRepoData = [[NSUserDefaults standardUserDefaults] objectForKey:@"GBRepositoriesController_selectedLocalRepository"];
   if (bookmarks && [bookmarks isKindOfClass:[NSArray class]])
   {
     for (NSData* bookmarkData in bookmarks)
@@ -220,11 +185,23 @@
       } // if path is valid repo
     } // for
   } // if paths
+  
+  if (selectedLocalRepoData && [selectedLocalRepoData isKindOfClass:[NSData class]])
+  {
+    NSURL* url = [NSURL URLByResolvingBookmarkData:selectedLocalRepoData 
+                                           options:NSURLBookmarkResolutionWithoutUI | 
+                  NSURLBookmarkResolutionWithoutMounting
+                                     relativeToURL:nil 
+                               bookmarkDataIsStale:NO 
+                                             error:NULL];
+    if (url) [self openRepositoryAtURL:url];
+  }
 }
 
 - (void) saveRepositories
 {
-  NSMutableArray* paths = [NSMutableArray array];
+  NSMutableArray* bookmarks = [NSMutableArray array];
+  NSData* selectedLocalRepoData = nil;
   for (GBRepositoryController* repoCtrl in self.repositoriesController.localRepositoryControllers)
   {
     NSData* bookmarkData = [repoCtrl.url bookmarkDataWithOptions:NSURLBookmarkCreationMinimalBookmark
@@ -233,10 +210,23 @@
                                                            error:NULL];
     if (bookmarkData)
     {
-      [paths addObject:bookmarkData];
+      [bookmarks addObject:bookmarkData];
+      if (repoCtrl == self.repositoriesController.selectedRepositoryController)
+      {
+        selectedLocalRepoData = bookmarkData;
+      }
     }
   }
-  [[NSUserDefaults standardUserDefaults] setObject:paths forKey:@"GBRepositoriesController_localRepositories"];
+  [[NSUserDefaults standardUserDefaults] setObject:bookmarks forKey:@"GBRepositoriesController_localRepositories"];
+  if (selectedLocalRepoData)
+  {
+    [[NSUserDefaults standardUserDefaults] setObject:selectedLocalRepoData 
+                                              forKey:@"GBRepositoriesController_selectedLocalRepository"];
+  }
+  else
+  {
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"GBRepositoriesController_selectedLocalRepository"];
+  }
 }
 
 
@@ -259,6 +249,8 @@
   // Launch the updates
   [self.windowController showWindow:self];
   
+  self.repositoriesController.delegate = self.windowController;
+  
   [self loadRepositories];
   [self.windowController loadState];
   
@@ -267,8 +259,6 @@
     [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:YES] forKey:@"WelcomeWasDisplayed"];
     [self.windowController showWelcomeWindow:self];
   }
-  
-  self.repositoriesController.delegate = self.windowController;
 }
 
 - (void) applicationWillTerminate:(NSNotification*)aNotification

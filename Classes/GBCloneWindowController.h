@@ -1,21 +1,16 @@
 
-typedef enum {
-  GBCloneStateIdle = 0,
-  GBCloneStateInProgress,
-  GBCloneStateFinished,
-  GBCloneStateFailed,
-  GBCloneStateCancelled
-} GBCloneState;
-
 @interface GBCloneWindowController : NSWindowController<NSWindowDelegate>
-{
-  GBCloneState state;
-}
 
 @property(retain) IBOutlet NSTextField* urlField;
-@property(retain) IBOutlet NSProgressIndicator* progressIndicator;
-@property(retain) IBOutlet NSTextField* messageLabel;
+@property(retain) IBOutlet NSPopUpButton* folderPopUpButton;
 @property(retain) IBOutlet NSButton* cloneButton;
+@property(retain) NSURL* remoteURL;
+@property(retain) NSURL* folderURL;
+@property(copy) void (^finishBlock)();
+
+@property(assign) NSWindow* windowHoldingSheet;
+
+- (void) runSheetInWindow:(NSWindow*)aWindow;
 
 - (IBAction) cancel:_;
 - (IBAction) ok:_;

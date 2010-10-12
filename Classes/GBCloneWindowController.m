@@ -1,90 +1,98 @@
 #import "GBCloneWindowController.h"
-
-
-/*
- - initial state: "Clone" button, enabled text field, disabled activity indicator, no progress text
- - progress state: "Clone" button disabled, disabled text field, enabled activity indicator, show progress text
- - finished: enable and clear text field, show "Complete!" text, stop spinning; clear message when typing or after timeout 5 sec.
- - failed: enable text field, show error message, stop spinning, enable Clone; when emptying the text field or clicking clone - clear the message
- - cancelled: 
-*/
+#import "NSWindowController+OAWindowControllerHelpers.h"
 
 @implementation GBCloneWindowController
 
 @synthesize urlField;
-@synthesize progressIndicator;
-@synthesize messageLabel;
+@synthesize folderPopUpButton;
 @synthesize cloneButton;
+@synthesize finishBlock;
+@synthesize remoteURL;
+@synthesize folderURL;
+
+@synthesize windowHoldingSheet;
 
 - (void) dealloc
 {
   self.urlField = nil;
-  self.progressIndicator = nil;
-  self.messageLabel = nil;
+  self.folderPopUpButton = nil;
   self.cloneButton = nil;
+  self.finishBlock = nil;
+  self.remoteURL = nil;
+  self.folderURL = nil;
   [super dealloc];
 }
 
 - (void) update
 {
-  if (state == GBCloneStateIdle)
-  {
-    [self.messageLabel setValue:@""];
-  }
-  else if (state == GBCloneStateInProgress)
-  {
-  }
-  else if (state == GBCloneStateFinished)
-  {
-  }
-  else if (state == GBCloneStateFailed)
-  {
-  }
-  else if (state == GBCloneStateCancelled)
-  {
-  }
 }
 
 - (IBAction) cancel:_
 {
-  if (state == GBCloneStateInProgress)
-  {
-    NSLog(@"Cancel the task and go to cancelled state");
-  }
-  else
-  {
-    [self.messageLabel setValue:@""];
-    [[self window] orderOut:_];
-  }
+  if (self.windowHoldingSheet) [self.windowHoldingSheet endSheetForController:self];
 }
 
 - (IBAction) ok:_
 {
-  if (state == GBCloneStateIdle)
+  NSString* urlString = [self.urlField stringValue];
+  if ([urlString rangeOfString:@"://"].location == NSNotFound)
   {
+    urlString = [NSString stringWithFormat:@"ssh://%@", urlString];
   }
-  else if (state == GBCloneStateInProgress)
+  self.remoteURL = [NSURL URLWithString:urlString];
+  self.folderURL = (NSURL*)[[self.folderPopUpButton selectedItem] representedObject];
+  
+  if (self.folderURL && self.remoteURL)
   {
-    
+    if (self.finishBlock) self.finishBlock();
   }
-  else if (state == GBCloneStateFinished)
-  {
-  }
-  else if (state == GBCloneStateFailed)
-  {
-  }
-  else if (state == GBCloneStateCancelled)
-  {
-  }  
+  
+  // clean up for later use
+  self.remoteURL = nil;
+  self.folderURL = nil;
+  
+  if (self.windowHoldingSheet) [self.windowHoldingSheet endSheetForController:self];
 }
 
+
+- (void) selectFolder:_
+{
+  if (self.windowHoldingSheet) [self.windowHoldingSheet endSheetForController:self];
+  
+  //  NSOpenPanel* openPanel = [NSOpenPanel openPanel];
+  //  openPanel.allowsMultipleSelection = NO;
+  //  openPanel.canChooseFiles = NO;
+  //  openPanel.canChooseDirectories = YES;
+  //  [openPanel setAccessoryView:self.cloneAccessoryView];
+  //  [openPanel beginSheetModalForWindow:[self.windowController window] completionHandler:^(NSInteger result){
+  //    if (result == NSFileHandlingPanelOKButton)
+  //    {
+  //      NSURL* destinationFolderURL = [[openPanel URLs] objectAtIndex:0];
+  //      
+  //      
+  ////        repoCtrl = [GBRepositoryController repositoryControllerWithURL:url];
+  ////        [self.repositoriesController addLocalRepositoryController:repoCtrl];
+  ////        [[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:url];
+  //      
+  //      
+  //      NSLog(@"TODO: add a GBCloningRepositoryController to the local repository controllers");
+  //    }
+  //    if (self.windowHoldingSheet) [self.windowHoldingSheet endSheetForController:self];
+  //  }];
+}
 
 
 - (void) windowDidLoad
 {
   [super windowDidLoad];
-  state = GBCloneStateIdle;
   [self update];
+}
+
+
+- (void) runSheetInWindow:(NSWindow*)aWindow
+{
+  self.windowHoldingSheet = aWindow;
+  [aWindow beginSheetForController:self];
 }
 
 

@@ -2,13 +2,14 @@
 
 @class GBMainWindowController;
 @class GBPreferencesController;
+@class GBCloneWindowController;
 
 @interface GBAppDelegate : NSObject <NSApplicationDelegate, NSOpenSavePanelDelegate>
 
 @property(retain) GBRepositoriesController* repositoriesController;
 @property(retain) GBMainWindowController* windowController;
 @property(retain) IBOutlet GBPreferencesController* preferencesController;
-@property(retain) IBOutlet NSView* cloneAccessoryView;
+@property(retain) IBOutlet GBCloneWindowController* cloneWindowController;
 
 - (IBAction) openDocument:_;
 - (IBAction) cloneRepository:_;
