@@ -633,7 +633,7 @@
 {
   if (!self.repository.stage) return;
 
-  [self pushSpinning];
+  [self pushFSEventsPause];
   isLoadingChanges++;
   [self.repository.stage loadChangesWithBlock:^{
     isLoadingChanges--;
@@ -643,17 +643,17 @@
     {
       OAOptionalDelegateMessage(@selector(repositoryControllerDidUpdateCommitChanges:)); 
     }
-    [self popSpinning];
+    [self popFSEventsPause];
   }];
 }
 
 - (void) loadChangesForCommit:(GBCommit*)commit
 {
   if (!commit) return;
-  [self pushSpinning];
+  [self pushFSEventsPause];
   [commit loadChangesWithBlock:^{
     OAOptionalDelegateMessage(@selector(repositoryControllerDidUpdateCommitChanges:));
-    [self popSpinning];
+    [self popFSEventsPause];
   }];
 }
 
