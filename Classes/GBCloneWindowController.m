@@ -26,6 +26,8 @@
 {
   NSString* urlString = [self.urlField stringValue];
   if ([urlString isEqual:@""]) return nil;
+  urlString = [urlString stringByReplacingOccurrencesOfString:@"git clone" withString:@""];
+  urlString = [urlString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
   if ([urlString rangeOfString:@"://"].location == NSNotFound)
   {
     if ([[NSFileManager defaultManager] fileExistsAtPath:urlString])
