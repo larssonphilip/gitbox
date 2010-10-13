@@ -83,6 +83,7 @@ Cool features:
 
 Enhancements (works fine, but can be better):
 
+- clone: read a string from pasteboard: if it is a git URL, immediately show NSSavePanel, without a prompt
 - remember activity window visibility
 - fetch menu item
 - fetch holding alt
