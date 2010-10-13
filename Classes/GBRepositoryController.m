@@ -25,7 +25,6 @@
 @synthesize cancelledCommitMessage;
 @synthesize commitMessageHistory;
 
-@synthesize displaysTwoPathComponents;
 @synthesize isDisabled;
 @synthesize isRemoteBranchesDisabled;
 @synthesize isSpinning;
@@ -74,33 +73,6 @@
 - (NSURL*) url
 {
   return self.repository.url;
-}
-
-- (NSString*) nameForSourceList
-{
-  if (self.displaysTwoPathComponents)
-  {
-    return [self longNameForSourceList];
-  }
-  else
-  {
-    return [self shortNameForSourceList];
-  }
-}
-
-- (NSString*) shortNameForSourceList
-{
-  return [[[self url] path] lastPathComponent];
-}
-
-- (NSString*) longNameForSourceList
-{
-  return [[[self url] path] twoLastPathComponentsWithSlash];
-}
-
-- (NSString*) parentFolderName
-{
-  return [[[[self url] path] stringByDeletingLastPathComponent] lastPathComponent];
 }
 
 - (NSArray*) commits

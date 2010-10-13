@@ -12,10 +12,6 @@
   [super dealloc];
 }
 
-- (void) setNeedsUpdateEverything {}
-
-- (void) updateRepositoryIfNeeded {}
-
 - (void) start
 {
   NSLog(@"TODO: begin clone");

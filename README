@@ -2,7 +2,8 @@
 Showstoppers:
 
 - clone a repo
-  - create a base class with little common methods
+  - DO NOT SWIZZLE delegate: harms inheritance 
+  + create a base class with little common methods
   
 - payment thing
 - nice screenshots

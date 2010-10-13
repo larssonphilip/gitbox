@@ -86,6 +86,7 @@
 		206CAC71122EB5F7009284FE /* GBRepositoryController.m in Sources */ = {isa = PBXBuildFile; fileRef = 206CAC70122EB5F7009284FE /* GBRepositoryController.m */; };
 		206CAC75122EBCAD009284FE /* GBRepositoriesController.m in Sources */ = {isa = PBXBuildFile; fileRef = 206CAC74122EBCAD009284FE /* GBRepositoriesController.m */; };
 		2082B7C4126587CA00667A7F /* GBCloningRepositoryController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2082B7C3126587CA00667A7F /* GBCloningRepositoryController.m */; };
+		2082B8111266500800667A7F /* GBBaseRepositoryController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2082B8101266500800667A7F /* GBBaseRepositoryController.m */; };
 		2093A7C811AF0E8300239185 /* GBBaseChangesController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2093A7C711AF0E8300239185 /* GBBaseChangesController.m */; };
 		2093A7CB11AF0EA300239185 /* GBStageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2093A7CA11AF0EA300239185 /* GBStageViewController.m */; };
 		2093A7CE11AF0EC800239185 /* GBCommitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2093A7CD11AF0EC800239185 /* GBCommitViewController.m */; };
@@ -274,6 +275,8 @@
 		2080DC2912567B0800D05B33 /* GBChangeDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBChangeDelegate.h; sourceTree = "<group>"; };
 		2082B7C2126587CA00667A7F /* GBCloningRepositoryController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBCloningRepositoryController.h; sourceTree = "<group>"; };
 		2082B7C3126587CA00667A7F /* GBCloningRepositoryController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBCloningRepositoryController.m; sourceTree = "<group>"; };
+		2082B80F1266500800667A7F /* GBBaseRepositoryController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBBaseRepositoryController.h; sourceTree = "<group>"; };
+		2082B8101266500800667A7F /* GBBaseRepositoryController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBBaseRepositoryController.m; sourceTree = "<group>"; };
 		2093A7C611AF0E8300239185 /* GBBaseChangesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBBaseChangesController.h; sourceTree = "<group>"; };
 		2093A7C711AF0E8300239185 /* GBBaseChangesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBBaseChangesController.m; sourceTree = "<group>"; };
 		2093A7C911AF0EA300239185 /* GBStageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBStageViewController.h; sourceTree = "<group>"; };
@@ -550,6 +553,8 @@
 				206CAC73122EBCAD009284FE /* GBRepositoriesController.h */,
 				206CAC74122EBCAD009284FE /* GBRepositoriesController.m */,
 				2002AE08124A94990072075C /* GBRepositoryControllerDelegate.h */,
+				2082B80F1266500800667A7F /* GBBaseRepositoryController.h */,
+				2082B8101266500800667A7F /* GBBaseRepositoryController.m */,
 				206CAC6F122EB5F7009284FE /* GBRepositoryController.h */,
 				206CAC70122EB5F7009284FE /* GBRepositoryController.m */,
 				2082B7C2126587CA00667A7F /* GBCloningRepositoryController.h */,
@@ -881,6 +886,7 @@
 				20C3C312125DA0BC00ABEDE7 /* GBCloneWindowController.m in Sources */,
 				2054FFF0125DE9D200692C77 /* GBCloneProcessViewController.m in Sources */,
 				2082B7C4126587CA00667A7F /* GBCloningRepositoryController.m in Sources */,
+				2082B8111266500800667A7F /* GBBaseRepositoryController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

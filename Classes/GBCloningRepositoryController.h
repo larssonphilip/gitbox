@@ -1,12 +1,8 @@
-@interface GBCloningRepositoryController : NSObject
+#import "GBBaseRepositoryController.h"
+
+@interface GBCloningRepositoryController : GBBaseRepositoryController
 
 @property(retain) NSURL* sourceURL;
 @property(retain) NSURL* url;
-
-- (void) setNeedsUpdateEverything;
-- (void) updateRepositoryIfNeeded;
-
-- (void) start;
-- (void) stop;
 
 @end

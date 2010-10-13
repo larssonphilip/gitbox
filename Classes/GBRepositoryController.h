@@ -1,4 +1,4 @@
-
+#import "GBBaseRepositoryController.h"
 #import "GBRepositoryControllerDelegate.h"
 #import "GBChangeDelegate.h"
 
@@ -10,7 +10,7 @@
 @class OAPropertyListController;
 @class OAFSEventStream;
 
-@interface GBRepositoryController : NSObject<GBChangeDelegate>
+@interface GBRepositoryController : GBBaseRepositoryController<GBChangeDelegate>
 {
   BOOL needsLocalBranchesUpdate;
   BOOL needsRemotesUpdate;
@@ -31,7 +31,6 @@
 @property(retain) NSString* cancelledCommitMessage;
 @property(nonatomic,retain) NSMutableArray* commitMessageHistory;
 
-@property(assign) BOOL displaysTwoPathComponents;
 @property(assign) NSInteger isDisabled;
 @property(assign) NSInteger isRemoteBranchesDisabled;
 @property(assign) NSInteger isSpinning;
@@ -39,12 +38,6 @@
 @property(assign) NSObject<GBRepositoryControllerDelegate>* delegate;
 
 + (id) repositoryControllerWithURL:(NSURL*)url;
-
-- (NSURL*) url;
-- (NSString*) nameForSourceList;
-- (NSString*) shortNameForSourceList;
-- (NSString*) longNameForSourceList;
-- (NSString*) parentFolderName;
 
 - (NSArray*) commits;
 
@@ -71,19 +64,6 @@
 - (void) push;
 
 
-#pragma mark Background Update
-
-// FIXME: move to GBRepositoryController
-- (void) resetBackgroundUpdateInterval;
-//- (void) beginBackgroundUpdate;
-//- (void) endBackgroundUpdate;
-
-
-- (void) start;
-- (void) stop;
-
-
-
 #pragma mark Private
 
 
@@ -103,6 +83,8 @@
 - (void) loadStageChanges;
 - (void) loadChangesForCommit:(GBCommit*)commit;
 - (void) updateCurrentBranchesIfNeededWithBlock:(void(^)())block;
+
+- (void) resetBackgroundUpdateInterval;
 
 // Obsolete:
 - (void) saveObject:(id)obj forKey:(NSString*)key;
