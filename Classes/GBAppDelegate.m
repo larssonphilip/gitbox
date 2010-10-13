@@ -81,10 +81,16 @@
   GBCloneWindowController* ctrl = self.cloneWindowController;
   
   ctrl.finishBlock = ^{
-    if (ctrl.remoteURL && ctrl.folderURL)
+    if (ctrl.sourceURL && ctrl.targetURL)
     {
       // TODO: create repo controller and add it to the sidebar
       // TODO: launch cloning
+      //        repoCtrl = [GBRepositoryController repositoryControllerWithURL:url];
+      //        [self.repositoriesController addLocalRepositoryController:repoCtrl];
+      //        [[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:url];
+      
+      NSLog(@"TODO: add a GBCloningRepositoryController to the local repository controllers");
+      
     }
   };
   

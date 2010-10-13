@@ -1,30 +1,46 @@
 #import "GBCloneWindowController.h"
 #import "NSWindowController+OAWindowControllerHelpers.h"
+#import "NSFileManager+OAFileManagerHelpers.h"
 
 @implementation GBCloneWindowController
 
 @synthesize urlField;
-@synthesize folderPopUpButton;
-@synthesize cloneButton;
+@synthesize nextButton;
 @synthesize finishBlock;
-@synthesize remoteURL;
-@synthesize folderURL;
+@synthesize sourceURL;
+@synthesize targetDirectoryURL;
+@synthesize targetURL;
 
 @synthesize windowHoldingSheet;
 
 - (void) dealloc
 {
   self.urlField = nil;
-  self.folderPopUpButton = nil;
-  self.cloneButton = nil;
-  self.finishBlock = nil;
-  self.remoteURL = nil;
-  self.folderURL = nil;
+  self.nextButton = nil;
+  self.targetDirectoryURL = nil;
+  self.targetURL = nil;
   [super dealloc];
+}
+
+- (NSURL*) urlFromTextField
+{
+  NSString* urlString = [self.urlField stringValue];
+  if ([urlString isEqual:@""]) return nil;
+  if ([urlString rangeOfString:@"://"].location == NSNotFound)
+  {
+    if ([[NSFileManager defaultManager] fileExistsAtPath:urlString])
+    {
+      return [NSURL fileURLWithPath:urlString];
+    }
+    urlString = [NSString stringWithFormat:@"ssh://%@", urlString];
+  }
+  NSURL* url = [NSURL URLWithString:urlString];
+  return url;
 }
 
 - (void) update
 {
+  [self.nextButton setEnabled:!![self urlFromTextField]];
 }
 
 - (IBAction) cancel:_
@@ -34,53 +50,52 @@
 
 - (IBAction) ok:_
 {
-  NSString* urlString = [self.urlField stringValue];
-  if ([urlString rangeOfString:@"://"].location == NSNotFound)
+  self.sourceURL = [self urlFromTextField];
+  
+  if (self.sourceURL)
   {
-    urlString = [NSString stringWithFormat:@"ssh://%@", urlString];
+    if (self.windowHoldingSheet) [self.windowHoldingSheet endSheetForController:self];
+    
+    NSString* suggestedName = [[self.sourceURL absoluteString] lastPathComponent];
+    if (!suggestedName) suggestedName = @"";
+    NSInteger dotgitlocation = 0;
+    if (suggestedName && 
+        [suggestedName length] > 4 && 
+        (dotgitlocation = [suggestedName rangeOfString:@".git"].location) == ([suggestedName length] - 4))
+    {
+      suggestedName = [suggestedName substringToIndex:dotgitlocation];
+    }
+    
+    NSSavePanel* panel = [NSSavePanel savePanel];
+    [panel setMessage:[self.sourceURL absoluteString]];
+    [panel setNameFieldLabel:NSLocalizedString(@"Clone To:", @"Clone")];
+    [panel setNameFieldStringValue:[[suggestedName copy] autorelease]];
+    [panel setPrompt:NSLocalizedString(@"Clone", @"Clone")];
+    [panel setDelegate:self];
+    [panel beginSheetModalForWindow:self.windowHoldingSheet completionHandler:^(NSInteger result){
+      if (result == NSFileHandlingPanelOKButton)
+      {
+        self.targetDirectoryURL = [panel directoryURL];
+        self.targetURL = [panel URL];
+        
+        if (self.targetDirectoryURL && self.targetURL)
+        {
+          if (self.finishBlock) self.finishBlock();
+          
+          // Clean up for next use.
+          [self.urlField setStringValue:@""];
+          self.sourceURL = nil;
+          self.targetDirectoryURL = nil;
+          self.targetURL = nil;
+        }
+      }
+      else
+      {
+        [self.windowHoldingSheet performSelector:@selector(beginSheetForController:) withObject:self afterDelay:0.0];
+      }
+    }];
   }
-  self.remoteURL = [NSURL URLWithString:urlString];
-  self.folderURL = (NSURL*)[[self.folderPopUpButton selectedItem] representedObject];
-  
-  if (self.folderURL && self.remoteURL)
-  {
-    if (self.finishBlock) self.finishBlock();
-  }
-  
-  // clean up for later use
-  self.remoteURL = nil;
-  self.folderURL = nil;
-  
-  if (self.windowHoldingSheet) [self.windowHoldingSheet endSheetForController:self];
 }
-
-
-- (void) selectFolder:_
-{
-  if (self.windowHoldingSheet) [self.windowHoldingSheet endSheetForController:self];
-  
-  //  NSOpenPanel* openPanel = [NSOpenPanel openPanel];
-  //  openPanel.allowsMultipleSelection = NO;
-  //  openPanel.canChooseFiles = NO;
-  //  openPanel.canChooseDirectories = YES;
-  //  [openPanel setAccessoryView:self.cloneAccessoryView];
-  //  [openPanel beginSheetModalForWindow:[self.windowController window] completionHandler:^(NSInteger result){
-  //    if (result == NSFileHandlingPanelOKButton)
-  //    {
-  //      NSURL* destinationFolderURL = [[openPanel URLs] objectAtIndex:0];
-  //      
-  //      
-  ////        repoCtrl = [GBRepositoryController repositoryControllerWithURL:url];
-  ////        [self.repositoriesController addLocalRepositoryController:repoCtrl];
-  ////        [[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:url];
-  //      
-  //      
-  //      NSLog(@"TODO: add a GBCloningRepositoryController to the local repository controllers");
-  //    }
-  //    if (self.windowHoldingSheet) [self.windowHoldingSheet endSheetForController:self];
-  //  }];
-}
-
 
 - (void) windowDidLoad
 {
@@ -88,13 +103,40 @@
   [self update];
 }
 
-
 - (void) runSheetInWindow:(NSWindow*)aWindow
 {
   self.windowHoldingSheet = aWindow;
   [aWindow beginSheetForController:self];
+  [self update];
 }
 
 
+#pragma mark NSTextFieldDelegate
+
+
+- (void)controlTextDidChange:(NSNotification *)aNotification
+{
+  [self update];
+}
+
+
+
+#pragma mark NSOpenSavePanelDelegate
+
+
+- (BOOL)panel:(NSSavePanel*)aPanel validateURL:(NSURL*)url error:(NSError **)outError
+{
+  return ![[NSFileManager defaultManager] fileExistsAtPath:[url path]];
+}
+
+
+- (NSString*)panel:(NSSavePanel*)aPanel userEnteredFilename:(NSString*)filename confirmed:(BOOL)okFlag
+{
+  if (okFlag) // on 10.6 we are still not receiving okFlag == NO, so I don't want to have this feature untested.
+  {
+    if ([[NSFileManager defaultManager] fileExistsAtPath:[[aPanel URL] path]]) return nil;
+  }
+  return filename;
+}
 
 @end
