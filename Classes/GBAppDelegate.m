@@ -2,6 +2,7 @@
 
 #import "GBRepositoriesController.h"
 #import "GBRepositoryController.h"
+#import "GBCloningRepositoryController.h"
 
 #import "GBMainWindowController.h"
 #import "GBSourcesController.h"
@@ -83,14 +84,17 @@
   ctrl.finishBlock = ^{
     if (ctrl.sourceURL && ctrl.targetURL)
     {
-      // TODO: create repo controller and add it to the sidebar
-      // TODO: launch cloning
-      //        repoCtrl = [GBRepositoryController repositoryControllerWithURL:url];
-      //        [self.repositoriesController addLocalRepositoryController:repoCtrl];
-      //        [[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:url];
+      if (![ctrl.targetURL isFileURL])
+      {
+        NSLog(@"ERROR: GBCloneWindowController targetURL is not file URL (%@)", ctrl.targetURL);
+        return;
+      }
       
-      NSLog(@"TODO: add a GBCloningRepositoryController to the local repository controllers");
-      
+      GBCloningRepositoryController* cloneController = [[GBCloningRepositoryController new] autorelease];
+      cloneController.sourceURL = ctrl.sourceURL;
+      cloneController.url = ctrl.targetURL;
+      [self.repositoriesController addLocalRepositoryController:cloneController];
+      [[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:cloneController.url];
     }
   };
   

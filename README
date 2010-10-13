@@ -2,6 +2,8 @@
 Showstoppers:
 
 - clone a repo
+  - create a base class with little common methods
+  
 - payment thing
 - nice screenshots
 - simpler definition and wording

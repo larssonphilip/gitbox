@@ -48,21 +48,8 @@
 
 - (NSArray*) commits;
 
-- (void) pushDisabled;
-- (void) popDisabled;
-
-- (void) pushRemoteBranchesDisabled;
-- (void) popRemoteBranchesDisabled;
-
-- (void) pushSpinning;
-- (void) popSpinning;
-
-- (void) pushFSEventsPause;
-- (void) popFSEventsPause;
-
 - (void) setNeedsUpdateEverything;
 - (void) updateRepositoryIfNeeded;
-- (void) updateCurrentBranchesIfNeededWithBlock:(void(^)())block;
 
 - (void) checkoutRef:(GBRef*) ref;
 - (void) checkoutRef:(GBRef*) ref withNewName:(NSString*)name;
@@ -84,14 +71,6 @@
 - (void) push;
 
 
-- (void) loadCommits; // private
-- (void) loadStageChanges; // private
-- (void) loadChangesForCommit:(GBCommit*)commit; // private
-
-- (void) saveObject:(id)obj forKey:(NSString*)key;
-- (id) loadObjectForKey:(NSString*)key;
-
-
 #pragma mark Background Update
 
 // FIXME: move to GBRepositoryController
@@ -102,6 +81,32 @@
 
 - (void) start;
 - (void) stop;
+
+
+
+#pragma mark Private
+
+
+- (void) pushDisabled;
+- (void) popDisabled;
+
+- (void) pushRemoteBranchesDisabled;
+- (void) popRemoteBranchesDisabled;
+
+- (void) pushSpinning;
+- (void) popSpinning;
+
+- (void) pushFSEventsPause;
+- (void) popFSEventsPause;
+
+- (void) loadCommits;
+- (void) loadStageChanges;
+- (void) loadChangesForCommit:(GBCommit*)commit;
+- (void) updateCurrentBranchesIfNeededWithBlock:(void(^)())block;
+
+// Obsolete:
+- (void) saveObject:(id)obj forKey:(NSString*)key;
+- (id) loadObjectForKey:(NSString*)key;
 
 
 @end
