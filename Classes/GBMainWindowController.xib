@@ -3,15 +3,16 @@
 	<data>
 		<int key="IBDocument.SystemTarget">1060</int>
 		<string key="IBDocument.SystemVersion">10F569</string>
-		<string key="IBDocument.InterfaceBuilderVersion">804</string>
+		<string key="IBDocument.InterfaceBuilderVersion">788</string>
 		<string key="IBDocument.AppKitVersion">1038.29</string>
 		<string key="IBDocument.HIToolboxVersion">461.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin</string>
-			<string key="NS.object.0">804</string>
+			<string key="NS.object.0">788</string>
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
+			<integer value="5"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -38,7 +39,7 @@
 			<object class="NSWindowTemplate" id="275939982">
 				<int key="NSWindowStyleMask">15</int>
 				<int key="NSWindowBacking">2</int>
-				<string key="NSWindowRect">{{1573, 883}, {799, 435}}</string>
+				<string key="NSWindowRect">{{229, 212}, {799, 435}}</string>
 				<int key="NSWTFlags">1886912512</int>
 				<string key="NSWindowTitle">Window</string>
 				<string key="NSWindowClass">NSWindow</string>
@@ -576,7 +577,6 @@
 									<int key="NSvFlags">268</int>
 									<string key="NSFrameSize">{157, 435}</string>
 									<reference key="NSSuperview" ref="50605990"/>
-									<reference key="NSWindow"/>
 									<reference key="NSNextKeyView" ref="910591720"/>
 									<string key="NSClassName">NSView</string>
 								</object>
@@ -585,7 +585,6 @@
 									<int key="NSvFlags">256</int>
 									<string key="NSFrame">{{158, 0}, {296, 435}}</string>
 									<reference key="NSSuperview" ref="50605990"/>
-									<reference key="NSWindow"/>
 									<reference key="NSNextKeyView" ref="720248462"/>
 									<string key="NSClassName">NSView</string>
 								</object>
@@ -594,13 +593,11 @@
 									<int key="NSvFlags">256</int>
 									<string key="NSFrame">{{455, 0}, {344, 435}}</string>
 									<reference key="NSSuperview" ref="50605990"/>
-									<reference key="NSWindow"/>
 									<string key="NSClassName">NSView</string>
 								</object>
 							</object>
 							<string key="NSFrameSize">{799, 435}</string>
 							<reference key="NSSuperview" ref="568628114"/>
-							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="464340179"/>
 							<bool key="NSIsVertical">YES</bool>
 							<int key="NSDividerStyle">2</int>
@@ -609,10 +606,9 @@
 					</object>
 					<string key="NSFrameSize">{799, 435}</string>
 					<reference key="NSSuperview"/>
-					<reference key="NSWindow"/>
 					<reference key="NSNextKeyView" ref="50605990"/>
 				</object>
-				<string key="NSScreenRect">{{0, 0}, {2560, 1418}}</string>
+				<string key="NSScreenRect">{{0, 0}, {1280, 778}}</string>
 				<string key="NSMinSize">{400, 271}</string>
 				<string key="NSMaxSize">{1.79769e+308, 1.79769e+308}</string>
 				<string key="NSFrameAutosaveName">gitboxwindow</string>
@@ -1225,9 +1221,9 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>pull</string>
-					<string>{{638, 696}, {799, 435}}</string>
+					<string>{{229, 211}, {799, 435}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{638, 696}, {799, 435}}</string>
+					<string>{{229, 211}, {799, 435}}</string>
 					<integer value="1"/>
 					<boolean value="YES"/>
 					<string>{{201, 387}, {507, 413}}</string>
