@@ -41,8 +41,9 @@
   CGFloat threshold = fminf(rect.size.height/2.0, 30.0);
   if (rect.origin.y < threshold)
   {
-    alphaDistanceMultiplier = rect.origin.y/(threshold);
-    CGFloat limit = 0.1;
+    alphaDistanceMultiplier = (rect.origin.y - 3.0)/(threshold);
+    if (alphaDistanceMultiplier < 0) alphaDistanceMultiplier = 0;
+    CGFloat limit = 0.2;
     alphaDistanceMultiplier = limit + (1-limit)*alphaDistanceMultiplier;
   }
   
@@ -56,7 +57,7 @@
   
   if ([[self window] isMainWindow] && [[self window] isKeyWindow])
   {
-    alpha = 0.6;
+    alpha = 0.5;
   }
   
   alpha *= alphaDistanceMultiplier;
