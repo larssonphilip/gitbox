@@ -12,7 +12,6 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="15"/>
 			<integer value="13"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
@@ -320,7 +319,7 @@
 					</object>
 					<object class="NSMenuItem" id="1021011829">
 						<reference key="NSMenu" ref="406243151"/>
-						<string key="NSTitle">Show in Finder</string>
+						<string key="NSTitle">Reveal in Finder</string>
 						<string key="NSKeyEquiv"/>
 						<int key="NSMnemonicLoc">2147483647</int>
 						<reference key="NSOnImage" ref="433958093"/>
@@ -372,7 +371,7 @@
 					</object>
 					<object class="NSMenuItem" id="932009263">
 						<reference key="NSMenu" ref="406243151"/>
-						<string key="NSTitle">Ignore File...</string>
+						<string key="NSTitle">Ignore...</string>
 						<string key="NSKeyEquiv"/>
 						<int key="NSMnemonicLoc">2147483647</int>
 						<reference key="NSOnImage" ref="433958093"/>
@@ -921,6 +920,45 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">GBBaseChangesController</string>
 					<string key="superclassName">NSViewController</string>
+					<object class="NSMutableDictionary" key="actions">
+						<bool key="EncodedWithXMLCoder">YES</bool>
+						<object class="NSArray" key="dict.sortedKeys">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>stageOpenWithFinder:</string>
+							<string>stageRevealInFinder:</string>
+							<string>stageShowDifference:</string>
+						</object>
+						<object class="NSMutableArray" key="dict.values">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>id</string>
+							<string>id</string>
+							<string>id</string>
+						</object>
+					</object>
+					<object class="NSMutableDictionary" key="actionInfosByName">
+						<bool key="EncodedWithXMLCoder">YES</bool>
+						<object class="NSArray" key="dict.sortedKeys">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>stageOpenWithFinder:</string>
+							<string>stageRevealInFinder:</string>
+							<string>stageShowDifference:</string>
+						</object>
+						<object class="NSMutableArray" key="dict.values">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<object class="IBActionInfo">
+								<string key="name">stageOpenWithFinder:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">stageRevealInFinder:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">stageShowDifference:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+						</object>
+					</object>
 					<object class="NSMutableDictionary" key="outlets">
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
@@ -971,16 +1009,10 @@
 							<string>stageDoStageUnstage:</string>
 							<string>stageDoUnstage:</string>
 							<string>stageIgnoreFile:</string>
-							<string>stageOpenWithFinder:</string>
-							<string>stageRevealInFinder:</string>
 							<string>stageRevertFile:</string>
-							<string>stageShowDifference:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>id</string>
-							<string>id</string>
-							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>
@@ -1000,10 +1032,7 @@
 							<string>stageDoStageUnstage:</string>
 							<string>stageDoUnstage:</string>
 							<string>stageIgnoreFile:</string>
-							<string>stageOpenWithFinder:</string>
-							<string>stageRevealInFinder:</string>
 							<string>stageRevertFile:</string>
-							<string>stageShowDifference:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
@@ -1032,19 +1061,7 @@
 								<string key="candidateClassName">id</string>
 							</object>
 							<object class="IBActionInfo">
-								<string key="name">stageOpenWithFinder:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">stageRevealInFinder:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
 								<string key="name">stageRevertFile:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">stageShowDifference:</string>
 								<string key="candidateClassName">id</string>
 							</object>
 						</object>

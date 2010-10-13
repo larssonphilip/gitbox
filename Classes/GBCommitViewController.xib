@@ -39,7 +39,7 @@
 				<string key="NSClassName">NSApplication</string>
 			</object>
 			<object class="NSCustomView" id="1005">
-				<reference key="NSNextResponder"/>
+				<nil key="NSNextResponder"/>
 				<int key="NSvFlags">274</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -68,7 +68,6 @@
 														<int key="NSvFlags">2322</int>
 														<string key="NSFrame">{{0, 70}, {491, 28}}</string>
 														<reference key="NSSuperview" ref="450449755"/>
-														<reference key="NSWindow"/>
 														<object class="NSTextContainer" key="NSTextContainer" id="641308749">
 															<object class="NSLayoutManager" key="NSLayoutManager">
 																<object class="NSTextStorage" key="NSTextStorage">
@@ -174,7 +173,6 @@
 												</object>
 												<string key="NSFrameSize">{491, 164}</string>
 												<reference key="NSSuperview" ref="859846803"/>
-												<reference key="NSWindow"/>
 												<reference key="NSNextKeyView" ref="114575093"/>
 												<reference key="NSDocView" ref="114575093"/>
 												<reference key="NSBGColor" ref="316666258"/>
@@ -189,7 +187,6 @@
 												<int key="NSvFlags">-2147483392</int>
 												<string key="NSFrame">{{403, 0}, {15, 26}}</string>
 												<reference key="NSSuperview" ref="859846803"/>
-												<reference key="NSWindow"/>
 												<reference key="NSTarget" ref="859846803"/>
 												<string key="NSAction">_doScroller:</string>
 												<double key="NSPercent">0.86486486486486491</double>
@@ -199,7 +196,6 @@
 												<int key="NSvFlags">-2147483392</int>
 												<string key="NSFrame">{{-100, -100}, {87, 18}}</string>
 												<reference key="NSSuperview" ref="859846803"/>
-												<reference key="NSWindow"/>
 												<int key="NSsFlags">1</int>
 												<reference key="NSTarget" ref="859846803"/>
 												<string key="NSAction">_doScroller:</string>
@@ -209,7 +205,6 @@
 										</object>
 										<string key="NSFrameSize">{491, 164}</string>
 										<reference key="NSSuperview" ref="66438201"/>
-										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="450449755"/>
 										<int key="NSsFlags">528</int>
 										<reference key="NSVScroller" ref="210632299"/>
@@ -219,7 +214,6 @@
 								</object>
 								<string key="NSFrameSize">{491, 164}</string>
 								<reference key="NSSuperview" ref="42749282"/>
-								<reference key="NSWindow"/>
 								<string key="NSClassName">WhiteNSView</string>
 							</object>
 							<object class="NSCustomView" id="224550951">
@@ -242,14 +236,12 @@
 														<int key="NSvFlags">4352</int>
 														<string key="NSFrameSize">{491, 338}</string>
 														<reference key="NSSuperview" ref="736787808"/>
-														<reference key="NSWindow"/>
 														<bool key="NSEnabled">YES</bool>
 														<object class="NSTableHeaderView" key="NSHeaderView" id="221966411">
 															<reference key="NSNextResponder" ref="50547812"/>
 															<int key="NSvFlags">256</int>
 															<string key="NSFrameSize">{491, 17}</string>
 															<reference key="NSSuperview" ref="50547812"/>
-															<reference key="NSWindow"/>
 															<reference key="NSTableView" ref="998955717"/>
 														</object>
 														<object class="_NSCornerView" key="NSCornerView" id="935991468">
@@ -257,7 +249,6 @@
 															<int key="NSvFlags">-2147483392</int>
 															<string key="NSFrame">{{259, 0}, {16, 17}}</string>
 															<reference key="NSSuperview" ref="879972282"/>
-															<reference key="NSWindow"/>
 														</object>
 														<object class="NSMutableArray" key="NSTableColumns">
 															<bool key="EncodedWithXMLCoder">YES</bool>
@@ -370,7 +361,6 @@
 												</object>
 												<string key="NSFrame">{{0, 17}, {491, 338}}</string>
 												<reference key="NSSuperview" ref="879972282"/>
-												<reference key="NSWindow"/>
 												<reference key="NSNextKeyView" ref="998955717"/>
 												<reference key="NSDocView" ref="998955717"/>
 												<reference key="NSBGColor" ref="172403509"/>
@@ -381,7 +371,6 @@
 												<int key="NSvFlags">-2147483392</int>
 												<string key="NSFrame">{{259, 17}, {15, 381}}</string>
 												<reference key="NSSuperview" ref="879972282"/>
-												<reference key="NSWindow"/>
 												<reference key="NSTarget" ref="879972282"/>
 												<string key="NSAction">_doScroller:</string>
 												<double key="NSPercent">0.99705882352941178</double>
@@ -391,7 +380,6 @@
 												<int key="NSvFlags">-2147483392</int>
 												<string key="NSFrame">{{0, 289}, {459, 15}}</string>
 												<reference key="NSSuperview" ref="879972282"/>
-												<reference key="NSWindow"/>
 												<int key="NSsFlags">1</int>
 												<reference key="NSTarget" ref="879972282"/>
 												<string key="NSAction">_doScroller:</string>
@@ -407,7 +395,6 @@
 												</object>
 												<string key="NSFrameSize">{491, 17}</string>
 												<reference key="NSSuperview" ref="879972282"/>
-												<reference key="NSWindow"/>
 												<reference key="NSNextKeyView" ref="221966411"/>
 												<reference key="NSDocView" ref="221966411"/>
 												<reference key="NSBGColor" ref="172403509"/>
@@ -417,7 +404,6 @@
 										</object>
 										<string key="NSFrameSize">{491, 355}</string>
 										<reference key="NSSuperview" ref="224550951"/>
-										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="736787808"/>
 										<int key="NSsFlags">560</int>
 										<reference key="NSVScroller" ref="684502845"/>
@@ -430,20 +416,16 @@
 								</object>
 								<string key="NSFrame">{{0, 165}, {491, 354}}</string>
 								<reference key="NSSuperview" ref="42749282"/>
-								<reference key="NSWindow"/>
 								<string key="NSClassName">NSView</string>
 							</object>
 						</object>
 						<string key="NSFrameSize">{491, 519}</string>
 						<reference key="NSSuperview" ref="1005"/>
-						<reference key="NSWindow"/>
 						<int key="NSDividerStyle">2</int>
 						<string key="NSAutosaveName">CommitSplitView</string>
 					</object>
 				</object>
 				<string key="NSFrameSize">{491, 519}</string>
-				<reference key="NSSuperview"/>
-				<reference key="NSWindow"/>
 				<string key="NSClassName">NSView</string>
 			</object>
 			<object class="NSArrayController" id="678840269">
@@ -480,7 +462,7 @@
 					</object>
 					<object class="NSMenuItem" id="589269837">
 						<reference key="NSMenu" ref="379477385"/>
-						<string key="NSTitle">Show in Finder</string>
+						<string key="NSTitle">Reveal in Finder</string>
 						<string key="NSKeyEquiv"/>
 						<int key="NSMnemonicLoc">2147483647</int>
 						<reference key="NSOnImage" ref="842232736"/>
@@ -940,6 +922,45 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">GBBaseChangesController</string>
 					<string key="superclassName">NSViewController</string>
+					<object class="NSMutableDictionary" key="actions">
+						<bool key="EncodedWithXMLCoder">YES</bool>
+						<object class="NSArray" key="dict.sortedKeys">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>stageOpenWithFinder:</string>
+							<string>stageRevealInFinder:</string>
+							<string>stageShowDifference:</string>
+						</object>
+						<object class="NSMutableArray" key="dict.values">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>id</string>
+							<string>id</string>
+							<string>id</string>
+						</object>
+					</object>
+					<object class="NSMutableDictionary" key="actionInfosByName">
+						<bool key="EncodedWithXMLCoder">YES</bool>
+						<object class="NSArray" key="dict.sortedKeys">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>stageOpenWithFinder:</string>
+							<string>stageRevealInFinder:</string>
+							<string>stageShowDifference:</string>
+						</object>
+						<object class="NSMutableArray" key="dict.values">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<object class="IBActionInfo">
+								<string key="name">stageOpenWithFinder:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">stageRevealInFinder:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">stageShowDifference:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+						</object>
+					</object>
 					<object class="NSMutableDictionary" key="outlets">
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
@@ -980,45 +1001,6 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">GBCommitViewController</string>
 					<string key="superclassName">GBBaseChangesController</string>
-					<object class="NSMutableDictionary" key="actions">
-						<bool key="EncodedWithXMLCoder">YES</bool>
-						<object class="NSArray" key="dict.sortedKeys">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>stageOpenWithFinder:</string>
-							<string>stageRevealInFinder:</string>
-							<string>stageShowDifference:</string>
-						</object>
-						<object class="NSMutableArray" key="dict.values">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>id</string>
-							<string>id</string>
-							<string>id</string>
-						</object>
-					</object>
-					<object class="NSMutableDictionary" key="actionInfosByName">
-						<bool key="EncodedWithXMLCoder">YES</bool>
-						<object class="NSArray" key="dict.sortedKeys">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>stageOpenWithFinder:</string>
-							<string>stageRevealInFinder:</string>
-							<string>stageShowDifference:</string>
-						</object>
-						<object class="NSMutableArray" key="dict.values">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<object class="IBActionInfo">
-								<string key="name">stageOpenWithFinder:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">stageRevealInFinder:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">stageShowDifference:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-						</object>
-					</object>
 					<object class="NSMutableDictionary" key="outlets">
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
