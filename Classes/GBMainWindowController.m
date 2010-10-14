@@ -270,18 +270,19 @@
 
 - (void) repositoriesControllerWillSelectRepository:(GBRepositoriesController*)aRepositoriesController
 {
-  aRepositoriesController.selectedRepositoryController.delegate = nil;
 }
 
 - (void) repositoriesControllerDidSelectRepository:(GBRepositoriesController*)aRepositoriesController
 {
   GBRepositoryController* repoCtrl = aRepositoriesController.selectedRepositoryController;
   
-  repoCtrl.delegate = self.historyController;
+  self.historyController.repositoryController.delegate = nil;
+  self.historyController.repositoryController = repoCtrl;
+  self.historyController.repositoryController.delegate = self.historyController;
+  
+  self.historyController.commits = [repoCtrl commits];
   
   self.toolbarController.repositoryController = repoCtrl;
-  self.historyController.repositoryController = repoCtrl;
-  self.historyController.commits = [repoCtrl commits];
   
   [self.historyController update];
   [self updateWindowTitleWithRepositoryController:repoCtrl];  
