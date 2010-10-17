@@ -1,6 +1,6 @@
 
 //@class GBRepositoryController;
-@protocol GBRepositoryControllerDelegate
+//@protocol GBRepositoryControllerDelegate
 //@optional
 //- (void) repositoryControllerDidChangeDisabledStatus:   (GBRepositoryController*)aRepositoryController;
 //- (void) repositoryControllerDidChangeSpinningStatus:   (GBRepositoryController*)aRepositoryController;
@@ -13,4 +13,4 @@
 //- (void) repositoryControllerDidUpdateCommitChanges:    (GBRepositoryController*)aRepositoryController;
 //- (void) repositoryControllerDidUpdateCommitableChanges:(GBRepositoryController*)aRepositoryController;
 //- (void) repositoryControllerDidCommit:                 (GBRepositoryController*)aRepositoryController;
-@end
+//@end

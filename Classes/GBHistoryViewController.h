@@ -1,13 +1,10 @@
-#import "GBRepositoryControllerDelegate.h"
 
 @class GBRepositoryController;
-//@class GBToolbarController;
 @class GBStageViewController;
 @class GBCommitViewController;
-@interface GBHistoryViewController : NSViewController<NSTableViewDelegate, NSUserInterfaceValidations, GBRepositoryControllerDelegate>
+@interface GBHistoryViewController : NSViewController<NSTableViewDelegate, NSUserInterfaceValidations>
 
 @property(retain) GBRepositoryController* repositoryController;
-//@property(retain) GBToolbarController* toolbarController;
 @property(retain) GBStageViewController* stageController;
 @property(retain) GBCommitViewController* commitController;
 @property(retain) NSArray* commits;

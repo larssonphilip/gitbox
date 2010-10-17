@@ -1,5 +1,4 @@
 #import "GBBaseRepositoryController.h"
-#import "GBRepositoryControllerDelegate.h"
 #import "GBChangeDelegate.h"
 
 #import "GBNotificationMacros.h"
@@ -49,7 +48,6 @@ GBNotificationDeclare(GBRepositoryControllerDidCommit);
 @property(assign) NSInteger isRemoteBranchesDisabled;
 @property(assign) NSInteger isSpinning;
 @property(assign) BOOL isCommitting;
-@property(assign) NSObject<GBRepositoryControllerDelegate>* delegate;
 
 + (id) repositoryControllerWithURL:(NSURL*)url;
 

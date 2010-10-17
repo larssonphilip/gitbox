@@ -190,7 +190,6 @@
           [GBRepository validRepositoryPathForPath:path])
       {
         GBRepositoryController* repoCtrl = [GBRepositoryController repositoryControllerWithURL:url];
-        repoCtrl.delegate = self.windowController;
         [self.repositoriesController addLocalRepositoryController:repoCtrl];
       } // if path is valid repo
     } // for

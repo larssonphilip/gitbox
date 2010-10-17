@@ -17,7 +17,6 @@
 @implementation GBHistoryViewController
 
 @synthesize repositoryController;
-//@synthesize toolbarController;
 @synthesize stageController;
 @synthesize commitController;
 @synthesize commits;
@@ -32,7 +31,6 @@
 - (void) dealloc
 {  
   self.repositoryController = nil;
-//  self.toolbarController = nil;
   self.stageController = nil;
   self.commitController = nil;
   self.commits = nil;
@@ -45,7 +43,7 @@
 - (void) loadView
 {
   [super loadView];
-  [self.tableView setIntercellSpacing:NSMakeSize(0.0, 0.0)]; // remove awful paddings
+  [self.tableView setIntercellSpacing:NSMakeSize(0.0, 0.0)]; // remove the awful paddings
 }
 
 - (void) viewDidUnload
@@ -56,7 +54,6 @@
 - (void) loadAdditionalControllers
 {
   self.stageController = [[[GBStageViewController alloc] initWithNibName:@"GBStageViewController" bundle:nil] autorelease];
-
   self.commitController = [[[GBCommitViewController alloc] initWithNibName:@"GBCommitViewController" bundle:nil] autorelease];  
 
   [self.stageController view]; // preloads view
@@ -149,7 +146,6 @@
   self.commitController.repositoryController = self.repositoryController;
   self.stageController.repositoryController = self.repositoryController;
   
-//  [self.toolbarController update];
   [self updateStage];
   [self updateCommits];
   [self updateChangesController];
