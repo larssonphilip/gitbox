@@ -63,13 +63,7 @@
 - (void) unsubscribeFromRepositoriesController
 {
   [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                  name:GBRepositoriesControllerDidAddRepository 
-                                                object:self.repositoriesController];
-  [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                  name:GBRepositoriesControllerDidRemoveRepository
-                                                object:self.repositoriesController];
-  [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                  name:GBRepositoriesControllerDidSelectRepository
+                                                  name:nil
                                                 object:self.repositoriesController];
 }
 

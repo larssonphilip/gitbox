@@ -167,79 +167,45 @@
 
 - (void) subscribeToRepositoryController
 {
-//  [[NSNotificationCenter defaultCenter] addObserver:self
-//                                           selector:@selector(repositoryControllerDidUpdateCommits:)
-//                                               name:GBRepositoryControllerDidUpdateCommits
-//                                             object:self.repositoryController];  
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(repositoryControllerDidUpdateCommits:)
+                                               name:GBRepositoryControllerDidUpdateCommits
+                                             object:self.repositoryController];
+
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(repositoryControllerDidSelectCommit:)
+                                               name:GBRepositoryControllerDidSelectCommit
+                                             object:self.repositoryController];
+
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(repositoryControllerDidUpdateCommitChanges:)
+                                               name:GBRepositoryControllerDidUpdateCommitChanges
+                                             object:self.repositoryController];
 }
 
 - (void) unsubscribeFromRepositoryController
 {
-  
+  [[NSNotificationCenter defaultCenter] removeObserver:self 
+                                                  name:nil 
+                                                object:self.repositoryController];
 }
 
 
-
-- (void) repositoryControllerDidUpdateCommits:(GBRepositoryController*)repoCtrl
+- (void) repositoryControllerDidUpdateCommits:(NSNotification*)aNotification
 {
-  self.commits = [repoCtrl commits];
+  self.commits = [self.repositoryController commits];
 }
 
-- (void) repositoryControllerDidSelectCommit:(GBRepositoryController*)repoCtrl
+- (void) repositoryControllerDidSelectCommit:(NSNotification*)aNotification
 {
-  //  [self.toolbarController updateCommitButton];
   [self update];
 }
 
-- (void) repositoryControllerDidUpdateCommitChanges:(GBRepositoryController*)repoCtrl
+- (void) repositoryControllerDidUpdateCommitChanges:(NSNotification*)aNotification
 {
-  //  [self.toolbarController updateCommitButton];
   [self refreshChangesController];
   [self updateStage];
 }
-
-
-//- (void) repositoryControllerDidChangeDisabledStatus:(GBRepositoryController*)repoCtrl
-//{
-//  [self.toolbarController updateDisabledState];
-//}
-//
-//- (void) repositoryControllerDidChangeSpinningStatus:(GBRepositoryController*)repoCtrl
-//{
-//  [self.toolbarController updateSpinner];
-//}
-//
-//- (void) repositoryControllerDidUpdateLocalBranches:(GBRepositoryController*)repoCtrl
-//{
-//  [self.toolbarController updateBranchMenus];
-//}
-//
-//- (void) repositoryControllerDidUpdateRemoteBranches:(GBRepositoryController*)repoCtrl
-//{
-//  [self.toolbarController updateRemoteBranchMenus];
-//  [self.toolbarController updateSyncButtons];
-//}
-//
-//- (void) repositoryControllerDidCheckoutBranch:(GBRepositoryController*)repoCtrl
-//{
-//  [self.toolbarController updateBranchMenus];
-//}
-//
-//- (void) repositoryControllerDidChangeRemoteBranch:(GBRepositoryController*)repoCtrl
-//{
-//  [self.toolbarController updateBranchMenus];
-//}
-//
-//- (void) repositoryControllerDidUpdateCommitableChanges:(GBRepositoryController*)repoCtrl
-//{
-//  [self.toolbarController updateCommitButton];
-//}
-//
-//- (void) repositoryControllerDidCommit:(GBRepositoryController*)repoCtrl
-//{
-//  [self.toolbarController updateCommitButton];
-//}
-
 
 
 

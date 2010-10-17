@@ -290,18 +290,17 @@
 {
   GBRepositoryController* repoCtrl = self.repositoriesController.selectedRepositoryController;
   
-  // TODO: refactor this stuff into notifications
-  self.historyController.repositoryController.delegate = nil;
+  [self.historyController unsubscribeFromRepositoryController];
   self.historyController.repositoryController = repoCtrl;
-  self.historyController.repositoryController.delegate = self.historyController;
-  
-  self.historyController.commits = [repoCtrl commits];
+  [self.historyController subscribeToRepositoryController];
   
   [self.toolbarController unsubscribeFromRepositoryController];
   self.toolbarController.repositoryController = repoCtrl;
   [self.toolbarController subscribeToRepositoryController];
   
+  self.historyController.commits = [repoCtrl commits];
   [self.historyController update];
+  
   [self updateWindowTitleWithRepositoryController:repoCtrl];
 }
 

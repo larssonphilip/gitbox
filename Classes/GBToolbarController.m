@@ -92,6 +92,7 @@
                                              object:self.repositoryController];
 
   
+  
   [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(repositoryControllerDidUpdateCommit:)
                                                name:GBRepositoryControllerDidSelectCommit
