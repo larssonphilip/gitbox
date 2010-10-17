@@ -1,3 +1,5 @@
+#import "GBNotificationMacros.h"
+
 @interface GBBaseRepositoryController : NSObject
 
 @property(assign) BOOL displaysTwoPathComponents;

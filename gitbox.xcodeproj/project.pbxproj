@@ -164,7 +164,6 @@
 		2000325311FC75050069C70D /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
 		2002AC0A123CA1A20072075C /* OAFSEventStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAFSEventStream.h; sourceTree = "<group>"; };
 		2002AC0B123CA1A20072075C /* OAFSEventStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAFSEventStream.m; sourceTree = "<group>"; };
-		2002AE08124A94990072075C /* GBRepositoryControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBRepositoryControllerDelegate.h; sourceTree = "<group>"; };
 		2002AE09124A9BAB0072075C /* OAOptionalDelegateMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAOptionalDelegateMessage.h; sourceTree = "<group>"; };
 		2009871711C4597800F35630 /* PAYMENT */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = PAYMENT; sourceTree = "<group>"; };
 		200B08B311B6E359004C09A8 /* GBLocalRemoteAssociationTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBLocalRemoteAssociationTask.h; sourceTree = "<group>"; };
@@ -552,7 +551,6 @@
 				201E5350126888E6007EA827 /* GBNotificationMacros.h */,
 				206CAC73122EBCAD009284FE /* GBRepositoriesController.h */,
 				206CAC74122EBCAD009284FE /* GBRepositoriesController.m */,
-				2002AE08124A94990072075C /* GBRepositoryControllerDelegate.h */,
 				2082B80F1266500800667A7F /* GBBaseRepositoryController.h */,
 				2082B8101266500800667A7F /* GBBaseRepositoryController.m */,
 				206CAC6F122EB5F7009284FE /* GBRepositoryController.h */,
