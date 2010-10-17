@@ -2,6 +2,20 @@
 #import "GBRepositoryControllerDelegate.h"
 #import "GBChangeDelegate.h"
 
+#import "GBNotificationMacros.h"
+
+GBNotificationDeclare(GBRepositoryControllerDidChangeDisabledStatus);
+GBNotificationDeclare(GBRepositoryControllerDidChangeSpinningStatus);
+GBNotificationDeclare(GBRepositoryControllerDidUpdateCommits);
+GBNotificationDeclare(GBRepositoryControllerDidUpdateLocalBranches);
+GBNotificationDeclare(GBRepositoryControllerDidUpdateRemoteBranches);
+GBNotificationDeclare(GBRepositoryControllerDidCheckoutBranch);
+GBNotificationDeclare(GBRepositoryControllerDidChangeRemoteBranch);
+GBNotificationDeclare(GBRepositoryControllerDidSelectCommit);
+GBNotificationDeclare(GBRepositoryControllerDidUpdateCommitChanges);
+GBNotificationDeclare(GBRepositoryControllerDidUpdateCommitableChanges);
+GBNotificationDeclare(GBRepositoryControllerDidCommit);
+
 @class GBRepository;
 @class GBRef;
 @class GBCommit;
@@ -62,33 +76,5 @@
 
 - (void) pull;
 - (void) push;
-
-
-#pragma mark Private
-
-
-- (void) pushDisabled;
-- (void) popDisabled;
-
-- (void) pushRemoteBranchesDisabled;
-- (void) popRemoteBranchesDisabled;
-
-- (void) pushSpinning;
-- (void) popSpinning;
-
-- (void) pushFSEventsPause;
-- (void) popFSEventsPause;
-
-- (void) loadCommits;
-- (void) loadStageChanges;
-- (void) loadChangesForCommit:(GBCommit*)commit;
-- (void) updateCurrentBranchesIfNeededWithBlock:(void(^)())block;
-
-- (void) resetBackgroundUpdateInterval;
-
-// Obsolete:
-- (void) saveObject:(id)obj forKey:(NSString*)key;
-- (id) loadObjectForKey:(NSString*)key;
-
 
 @end

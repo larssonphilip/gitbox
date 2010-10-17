@@ -3,13 +3,19 @@
 #import "GBModels.h"
 
 #import "NSFileManager+OAFileManagerHelpers.h"
-#import "OAOptionalDelegateMessage.h"
+
+GBNotificationDefine(GBRepositoriesControllerWillAddRepository);
+GBNotificationDefine(GBRepositoriesControllerDidAddRepository);
+GBNotificationDefine(GBRepositoriesControllerWillRemoveRepository);
+GBNotificationDefine(GBRepositoriesControllerDidRemoveRepository);
+GBNotificationDefine(GBRepositoriesControllerWillSelectRepository);
+GBNotificationDefine(GBRepositoriesControllerDidSelectRepository);
+
 
 @implementation GBRepositoriesController
 
 @synthesize selectedRepositoryController;
 @synthesize localRepositoryControllers;
-@synthesize delegate;
 
 - (void) dealloc
 {
@@ -80,29 +86,29 @@
 - (void) addLocalRepositoryController:(GBRepositoryController*)repoCtrl
 {
   if (!repoCtrl) return;
-  OAOptionalDelegateMessage(@selector(repositoriesControllerWillAddRepository:));
+  GBNotificationSend(GBRepositoriesControllerWillAddRepository);
   [self.localRepositoryControllers addObject:repoCtrl];
   [self updateRepositoriesPresentation];
   [repoCtrl setNeedsUpdateEverything];
   [repoCtrl start];
-  OAOptionalDelegateMessage(@selector(repositoriesControllerDidAddRepository:));
+  GBNotificationSend(GBRepositoriesControllerDidAddRepository);
 }
 
 - (void) removeLocalRepositoryController:(GBRepositoryController*)repoCtrl
 {
   if (!repoCtrl || ![self.localRepositoryControllers containsObject:repoCtrl]) return;
-  OAOptionalDelegateMessage(@selector(repositoriesControllerWillRemoveRepository:));
+  GBNotificationSend(GBRepositoriesControllerWillRemoveRepository);
   [repoCtrl stop];
   [self.localRepositoryControllers removeObject:repoCtrl];
   [self updateRepositoriesPresentation];
-  OAOptionalDelegateMessage(@selector(repositoriesControllerDidRemoveRepository:));  
+  GBNotificationSend(GBRepositoriesControllerDidRemoveRepository);
 }
 
 - (void) selectRepositoryController:(GBRepositoryController*) repoCtrl
 {
-  OAOptionalDelegateMessage(@selector(repositoriesControllerWillSelectRepository:));
+  GBNotificationSend(GBRepositoriesControllerWillSelectRepository);
   self.selectedRepositoryController = repoCtrl;
-  OAOptionalDelegateMessage(@selector(repositoriesControllerDidSelectRepository:));
+  GBNotificationSend(GBRepositoriesControllerDidSelectRepository);
   [repoCtrl updateRepositoryIfNeeded];
   if (!repoCtrl.selectedCommit)
   {

@@ -29,6 +29,8 @@
 - (void) saveState;
 - (void) loadState;
 
+- (void) subscribeToRepositoryController;
+- (void) unsubscribeFromRepositoryController;
 
 #pragma mark IBActions
 

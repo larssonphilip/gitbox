@@ -1,4 +1,11 @@
-#import "GBRepositoriesControllerDelegate.h"
+#import "GBNotificationMacros.h"
+
+GBNotificationDeclare(GBRepositoriesControllerWillAddRepository);
+GBNotificationDeclare(GBRepositoriesControllerDidAddRepository);
+GBNotificationDeclare(GBRepositoriesControllerWillRemoveRepository);
+GBNotificationDeclare(GBRepositoriesControllerDidRemoveRepository);
+GBNotificationDeclare(GBRepositoriesControllerWillSelectRepository);
+GBNotificationDeclare(GBRepositoriesControllerDidSelectRepository);
 
 @class GBRepositoryController;
 
@@ -6,7 +13,6 @@
 
 @property(retain) GBRepositoryController* selectedRepositoryController;
 @property(nonatomic,retain) NSMutableArray* localRepositoryControllers;
-@property(assign) NSObject<GBRepositoriesControllerDelegate>* delegate;
 
 - (GBRepositoryController*) repositoryControllerWithURL:(NSURL*)url;
 - (BOOL) isEmpty;
@@ -17,7 +23,5 @@
 - (void) setNeedsUpdateEverything;
 - (void) beginBackgroundUpdate;
 - (void) endBackgroundUpdate;
-
-
 
 @end

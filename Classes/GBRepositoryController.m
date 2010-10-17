@@ -15,6 +15,49 @@
 #import "OAFSEventStream.h"
 #import "NSString+OAStringHelpers.h"
 
+GBNotificationDefine(GBRepositoryControllerDidChangeDisabledStatus);
+GBNotificationDefine(GBRepositoryControllerDidChangeSpinningStatus);
+GBNotificationDefine(GBRepositoryControllerDidUpdateCommits);
+GBNotificationDefine(GBRepositoryControllerDidUpdateLocalBranches);
+GBNotificationDefine(GBRepositoryControllerDidUpdateRemoteBranches);
+GBNotificationDefine(GBRepositoryControllerDidCheckoutBranch);
+GBNotificationDefine(GBRepositoryControllerDidChangeRemoteBranch);
+GBNotificationDefine(GBRepositoryControllerDidSelectCommit);
+GBNotificationDefine(GBRepositoryControllerDidUpdateCommitChanges);
+GBNotificationDefine(GBRepositoryControllerDidUpdateCommitableChanges);
+GBNotificationDefine(GBRepositoryControllerDidCommit);
+
+
+@interface GBRepositoryController ()
+
+- (void) pushDisabled;
+- (void) popDisabled;
+
+- (void) pushRemoteBranchesDisabled;
+- (void) popRemoteBranchesDisabled;
+
+- (void) pushSpinning;
+- (void) popSpinning;
+
+- (void) pushFSEventsPause;
+- (void) popFSEventsPause;
+
+- (void) loadCommits;
+- (void) loadStageChanges;
+- (void) loadChangesForCommit:(GBCommit*)commit;
+- (void) updateCurrentBranchesIfNeededWithBlock:(void(^)())block;
+- (void) updateLocalBranchesAndTags;
+- (void) resetBackgroundUpdateInterval;
+- (void) workingDirectoryStateDidChange;
+- (void) dotgitStateDidChange;
+
+// Obsolete:
+//- (void) saveObject:(id)obj forKey:(NSString*)key;
+//- (id) loadObjectForKey:(NSString*)key;
+
+@end
+
+
 @implementation GBRepositoryController
 
 @synthesize repository;
@@ -80,61 +123,32 @@
   return [self.repository stageAndCommits];
 }
 
-- (void) pushDisabled
+
+- (void) start
 {
-  isDisabled++;
-  if (isDisabled == 1)
-  {
-    OAOptionalDelegateMessage(@selector(repositoryControllerDidChangeDisabledStatus:));
-  }
+  self.fsEventStream = [[OAFSEventStream new] autorelease];
+#if DEBUG
+  //self.fsEventStream.shouldLogEvents = YES;
+#endif
+  
+  [self.fsEventStream addPath:[self.repository path] withBlock:^(NSString* path){
+    [self workingDirectoryStateDidChange];
+  }];
+  [self.fsEventStream addPath:[self.repository.dotGitURL path] withBlock:^(NSString* path){
+    [self dotgitStateDidChange];
+  }];
+  [self.fsEventStream start];
 }
 
-- (void) popDisabled
+- (void) stop
 {
-  isDisabled--;
-  if (isDisabled == 0)
-  {
-    OAOptionalDelegateMessage(@selector(repositoryControllerDidChangeDisabledStatus:));
-  }
+  //[self endBackgroundUpdate];
+  [self.plistController synchronize];
+  [self.fsEventStream stop];
 }
 
-- (void) pushRemoteBranchesDisabled
-{
-  isRemoteBranchesDisabled++;
-  if (isRemoteBranchesDisabled == 1)
-  {
-    OAOptionalDelegateMessage(@selector(repositoryControllerDidChangeDisabledStatus:));
-  }
-}
 
-- (void) popRemoteBranchesDisabled
-{
-  isRemoteBranchesDisabled--;
-  if (isRemoteBranchesDisabled == 0)
-  {
-    OAOptionalDelegateMessage(@selector(repositoryControllerDidChangeDisabledStatus:));
-  }
-}
 
-- (void) pushSpinning
-{
-  [self pushFSEventsPause];
-  isSpinning++;
-  if (isSpinning == 1) 
-  {
-    OAOptionalDelegateMessage(@selector(repositoryControllerDidChangeSpinningStatus:));
-  }
-}
-
-- (void) popSpinning
-{
-  [self popFSEventsPause];
-  isSpinning--;
-  if (isSpinning == 0)
-  {
-    OAOptionalDelegateMessage(@selector(repositoryControllerDidChangeSpinningStatus:));
-  }  
-}
 
 - (void) setNeedsUpdateEverything
 {
@@ -160,11 +174,7 @@
     if (needsLocalBranchesUpdate)
     {
       needsLocalBranchesUpdate = NO;
-      [self pushSpinning];
-      [repo updateLocalBranchesAndTagsWithBlock:^{
-        OAOptionalDelegateMessage(@selector(repositoryControllerDidUpdateLocalBranches:));
-        [self popSpinning];
-      }];
+      [self updateLocalBranchesAndTags];
     }
     if (needsRemotesUpdate)
     {
@@ -178,6 +188,7 @@
           [self pushRemoteBranchesDisabled];
           [remote updateBranchesWithBlock:^{
             OAOptionalDelegateMessage(@selector(repositoryControllerDidUpdateRemoteBranches:));
+            GBNotificationSend(GBRepositoryControllerDidUpdateRemoteBranches);
             [self popSpinning];
             [self popRemoteBranchesDisabled];
           }];
@@ -211,6 +222,7 @@
     [repo.currentLocalRef loadConfiguredRemoteBranchWithBlock:^{
       repo.currentRemoteBranch = repo.currentLocalRef.configuredRemoteBranch;
       OAOptionalDelegateMessage(@selector(repositoryControllerDidUpdateRemoteBranches:));
+      GBNotificationSend(GBRepositoryControllerDidUpdateRemoteBranches);
       block();
       [self popSpinning];
     }];
@@ -239,16 +251,15 @@
   repo.localBranchCommits = nil;
   
   OAOptionalDelegateMessage(@selector(repositoryControllerDidUpdateCommits:));
-  
+  GBNotificationSend(GBRepositoryControllerDidUpdateCommits);
   checkoutBlock(^{
     
     repo.currentLocalRef = nil;
     repo.currentRemoteBranch = nil;
     [self updateCurrentBranchesIfNeededWithBlock:^{
       OAOptionalDelegateMessage(@selector(repositoryControllerDidCheckoutBranch:));
-      [self.repository updateLocalBranchesAndTagsWithBlock:^{
-        OAOptionalDelegateMessage(@selector(repositoryControllerDidUpdateLocalBranches:));
-      }];
+      GBNotificationSend(GBRepositoryControllerDidCheckoutBranch);
+      [self updateLocalBranchesAndTags];
       [self loadCommits];
       [self popDisabled];
       [self popSpinning];
@@ -283,8 +294,9 @@
   [self.repository configureTrackingRemoteBranch:remoteBranch 
        withLocalName:self.repository.currentLocalRef.name 
            block:^{
-                        OAOptionalDelegateMessage(@selector(repositoryControllerDidChangeRemoteBranch:));
-                        [self loadCommits];
+            OAOptionalDelegateMessage(@selector(repositoryControllerDidChangeRemoteBranch:));
+            GBNotificationSend(GBRepositoryControllerDidChangeRemoteBranch);
+            [self loadCommits];
   }];
 }
 
@@ -303,14 +315,10 @@
   repo.currentLocalRef = nil;
   repo.currentRemoteBranch = nil;
   [self updateCurrentBranchesIfNeededWithBlock:^{
-    [self.repository updateLocalBranchesAndTagsWithBlock:^{
-      OAOptionalDelegateMessage(@selector(repositoryControllerDidUpdateLocalBranches:));
-    }];
+    [self updateLocalBranchesAndTags];
     [self loadCommits];
-    [self popDisabled];
-    
     [self loadChangesForCommit:repo.stage];
-    
+    [self popDisabled];
     [self popSpinning];
   }];
 }
@@ -331,6 +339,7 @@
     }
   }
   OAOptionalDelegateMessage(@selector(repositoryControllerDidSelectCommit:));
+  GBNotificationSend(GBRepositoryControllerDidSelectCommit);
 }
 
 
@@ -474,8 +483,8 @@
 
 - (void) unstageChanges:(NSArray*)changes
 {
-  [self stagingHelperForChanges:changes withBlock:^(NSArray* notBusyChanges, GBStage* stage, void(^block)()){
-    [stage unstageChanges:notBusyChanges withBlock:block];
+  [self stagingHelperForChanges:changes withBlock:^(NSArray* notBusyChanges, GBStage* stage, void(^helperBlock)()){
+    [stage unstageChanges:notBusyChanges withBlock:helperBlock];
   } postStageBlock:nil];
 }
 
@@ -504,6 +513,7 @@
 {
   self.repository.stage.hasSelectedChanges = ([changes count] > 0);
   OAOptionalDelegateMessage(@selector(repositoryControllerDidUpdateCommitableChanges:));
+  GBNotificationSend(GBRepositoryControllerDidUpdateCommitableChanges);
 }
 
 - (void) commitWithMessage:(NSString*)message
@@ -517,6 +527,7 @@
     [self loadCommits];
     [self popSpinning];
     OAOptionalDelegateMessage(@selector(repositoryControllerDidCommit:));
+    GBNotificationSend(GBRepositoryControllerDidCommit);
   }];
 }
 
@@ -573,6 +584,80 @@
 
 
 
+- (void) pushDisabled
+{
+  isDisabled++;
+  if (isDisabled == 1)
+  {
+    OAOptionalDelegateMessage(@selector(repositoryControllerDidChangeDisabledStatus:));
+    GBNotificationSend(GBRepositoryControllerDidChangeDisabledStatus);
+  }
+}
+
+- (void) popDisabled
+{
+  isDisabled--;
+  if (isDisabled == 0)
+  {
+    OAOptionalDelegateMessage(@selector(repositoryControllerDidChangeDisabledStatus:));
+    GBNotificationSend(GBRepositoryControllerDidChangeDisabledStatus);
+  }
+}
+
+- (void) pushRemoteBranchesDisabled
+{
+  isRemoteBranchesDisabled++;
+  if (isRemoteBranchesDisabled == 1)
+  {
+    OAOptionalDelegateMessage(@selector(repositoryControllerDidChangeDisabledStatus:));
+    GBNotificationSend(GBRepositoryControllerDidChangeDisabledStatus);
+  }
+}
+
+- (void) popRemoteBranchesDisabled
+{
+  isRemoteBranchesDisabled--;
+  if (isRemoteBranchesDisabled == 0)
+  {
+    OAOptionalDelegateMessage(@selector(repositoryControllerDidChangeDisabledStatus:));
+    GBNotificationSend(GBRepositoryControllerDidChangeDisabledStatus);
+  }
+}
+
+- (void) pushSpinning
+{
+  [self pushFSEventsPause];
+  isSpinning++;
+  if (isSpinning == 1) 
+  {
+    OAOptionalDelegateMessage(@selector(repositoryControllerDidChangeSpinningStatus:));
+    GBNotificationSend(GBRepositoryControllerDidChangeSpinningStatus);
+  }
+}
+
+- (void) popSpinning
+{
+  [self popFSEventsPause];
+  isSpinning--;
+  if (isSpinning == 0)
+  {
+    OAOptionalDelegateMessage(@selector(repositoryControllerDidChangeSpinningStatus:));
+    GBNotificationSend(GBRepositoryControllerDidChangeSpinningStatus);
+  }  
+}
+
+
+
+
+- (void) updateLocalBranchesAndTags
+{
+  [self.repository updateLocalBranchesAndTagsWithBlock:^{
+    OAOptionalDelegateMessage(@selector(repositoryControllerDidUpdateLocalBranches:));
+    GBNotificationSend(GBRepositoryControllerDidUpdateLocalBranches);
+  }];  
+}
+
+
 - (void) loadCommits
 {
   [self pushSpinning];
@@ -586,15 +671,18 @@
         [self resetBackgroundUpdateInterval];
       }
       OAOptionalDelegateMessage(@selector(repositoryControllerDidUpdateCommits:));
-      [self pushSpinning];
+      GBNotificationSend(GBRepositoryControllerDidUpdateCommits);
+      //[self pushSpinning];
       [self.repository updateUnmergedCommitsWithBlock:^{
         OAOptionalDelegateMessage(@selector(repositoryControllerDidUpdateCommits:));
-        [self popSpinning];
+        GBNotificationSend(GBRepositoryControllerDidUpdateCommits);
+        //[self popSpinning];
       }];
-      [self pushSpinning];
+      //[self pushSpinning];
       [self.repository updateUnpushedCommitsWithBlock:^{
         OAOptionalDelegateMessage(@selector(repositoryControllerDidUpdateCommits:));
-        [self popSpinning];
+        GBNotificationSend(GBRepositoryControllerDidUpdateCommits);
+        //[self popSpinning];
       }];
       [self popSpinning];
     }];    
@@ -614,6 +702,7 @@
     if (!isStaging && !isLoadingChanges)
     {
       OAOptionalDelegateMessage(@selector(repositoryControllerDidUpdateCommitChanges:)); 
+      GBNotificationSend(GBRepositoryControllerDidUpdateCommitChanges);
     }
     [self popFSEventsPause];
   }];
@@ -625,63 +714,68 @@
   [self pushFSEventsPause];
   [commit loadChangesWithBlock:^{
     OAOptionalDelegateMessage(@selector(repositoryControllerDidUpdateCommitChanges:));
+    GBNotificationSend(GBRepositoryControllerDidUpdateCommitChanges);
     [self popFSEventsPause];
   }];
 }
 
 
 
+//
+//
+//- (void) saveObject:(id)obj forKey:(NSString*)key
+//{
+//  if (!obj) return;
+//  
+//  [self.plistController setObject:obj forKey:key];
+//  
+//  return;
+//  
+//  // Legacy non-used pre-0.9.8 code
+//  NSString* repokey = [NSString stringWithFormat:@"optionsFor:%@", [[self url] path]];
+//  NSDictionary* dict = [[NSUserDefaults standardUserDefaults] dictionaryForKey:repokey];
+//  NSMutableDictionary* mdict = nil;
+//  if (dict) mdict = [[dict mutableCopy] autorelease];
+//  if (!dict) mdict = [NSMutableDictionary dictionary];
+//  [mdict setObject:obj forKey:key];
+//  [[NSUserDefaults standardUserDefaults] setObject:mdict forKey:repokey];
+//}
+//
+//- (id) loadObjectForKey:(NSString*)key
+//{
+//  // try to find data in a .git/gitbox.plist
+//  // if not found, but found in NSUserDefaults, write to .git/gitbox.plist
+//  id obj = nil;
+//  obj = [self.plistController objectForKey:key];
+//  if (!obj)
+//  {
+//    // Legacy API (pre 0.9.8)
+//    NSString* repokey = [NSString stringWithFormat:@"optionsFor:%@", [[self url] path]];
+//    NSDictionary* dict = [[NSUserDefaults standardUserDefaults] dictionaryForKey:repokey];
+//    obj = [dict objectForKey:key];
+//    
+//    // Save to a new storage
+//    if (obj)
+//    {
+//      [self saveObject:obj forKey:key];
+//    }
+//  }
+//  return obj;
+//}
+//
 
 
-#pragma mark Config
 
-
-- (void) saveObject:(id)obj forKey:(NSString*)key
+// FIXME: change this to per-path pauses to allow other repos update  
+- (void) pushFSEventsPause
 {
-  if (!obj) return;
-  
-  [self.plistController setObject:obj forKey:key];
-  
-  return;
-  
-  // Legacy non-used pre-0.9.8 code
-  NSString* repokey = [NSString stringWithFormat:@"optionsFor:%@", [[self url] path]];
-  NSDictionary* dict = [[NSUserDefaults standardUserDefaults] dictionaryForKey:repokey];
-  NSMutableDictionary* mdict = nil;
-  if (dict) mdict = [[dict mutableCopy] autorelease];
-  if (!dict) mdict = [NSMutableDictionary dictionary];
-  [mdict setObject:obj forKey:key];
-  [[NSUserDefaults standardUserDefaults] setObject:mdict forKey:repokey];
+  [self.fsEventStream pushPause];
 }
 
-- (id) loadObjectForKey:(NSString*)key
+- (void) popFSEventsPause
 {
-  // try to find data in a .git/gitbox.plist
-  // if not found, but found in NSUserDefaults, write to .git/gitbox.plist
-  id obj = nil;
-  obj = [self.plistController objectForKey:key];
-  if (!obj)
-  {
-    // Legacy API (pre 0.9.8)
-    NSString* repokey = [NSString stringWithFormat:@"optionsFor:%@", [[self url] path]];
-    NSDictionary* dict = [[NSUserDefaults standardUserDefaults] dictionaryForKey:repokey];
-    obj = [dict objectForKey:key];
-    
-    // Save to a new storage
-    if (obj)
-    {
-      [self saveObject:obj forKey:key];
-    }
-  }
-  return obj;
+  [self.fsEventStream popPause];
 }
-
-
-
-
-
-
-
 
 
 
@@ -722,40 +816,6 @@
 //  [self fetchSilently];
 //}
 //
-
-- (void) start
-{
-  self.fsEventStream = [[OAFSEventStream new] autorelease];
-#if DEBUG
-  //self.fsEventStream.shouldLogEvents = YES;
-#endif
-  
-  [self.fsEventStream addPath:[self.repository path] withBlock:^(NSString* path){
-    [self workingDirectoryStateDidChange];
-  }];
-  [self.fsEventStream addPath:[self.repository.dotGitURL path] withBlock:^(NSString* path){
-    [self dotgitStateDidChange];
-  }];
-  [self.fsEventStream start];
-}
-
-- (void) stop
-{
-  //[self endBackgroundUpdate];
-  [self.plistController synchronize];
-  [self.fsEventStream stop];
-}
-
-// FIXME: change this to per-path pauses to allow other repos update  
-- (void) pushFSEventsPause
-{
-  [self.fsEventStream pushPause];
-}
-
-- (void) popFSEventsPause
-{
-  [self.fsEventStream popPause];
-}
 
 
 @end

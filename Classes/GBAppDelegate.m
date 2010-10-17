@@ -251,18 +251,16 @@
 {
   // Instantiate controllers
   self.repositoriesController = [[GBRepositoriesController new] autorelease];
-  self.windowController = [GBMainWindowController controller];
+  self.windowController = [[[GBMainWindowController alloc] initWithWindowNibName:@"GBMainWindowController"] autorelease];
   
   // Connect controllers
   self.windowController.repositoriesController = self.repositoriesController;
+  [self.windowController subscribeToRepositoriesController];
   
   // Launch the updates
   [self.windowController showWindow:self];
-  
-  self.repositoriesController.delegate = self.windowController;
-  
-  [self loadRepositories];
   [self.windowController loadState];
+  [self loadRepositories];
   
   if ([self.repositoriesController isEmpty] || ![[NSUserDefaults standardUserDefaults] objectForKey:@"WelcomeWasDisplayed"])
   {
@@ -273,7 +271,7 @@
 
 - (void) applicationWillTerminate:(NSNotification*)aNotification
 {
-  self.repositoriesController.delegate = nil;
+  [self.windowController unsubscribeFromRepositoriesController];
   [self saveRepositories];
   [self.windowController saveState];
 }

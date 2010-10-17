@@ -49,9 +49,16 @@
   [super dealloc];
 }
 
-+ (id) controller
+- (id)initWithWindow:(NSWindow*)aWindow
 {
-  return [[[GBMainWindowController alloc] initWithWindowNibName:@"GBMainWindowController"] autorelease];
+  if (self = [super initWithWindow:aWindow])
+  {
+    self.sourcesController = [[[GBSourcesController alloc] initWithNibName:@"GBSourcesController" bundle:nil] autorelease];
+    self.historyController = [[[GBHistoryViewController alloc] initWithNibName:@"GBHistoryViewController" bundle:nil] autorelease];
+    
+    
+  }
+  return self;
 }
 
 
@@ -255,27 +262,35 @@
 
 
 
-#pragma mark GBRepositoriesControllerDelegate
+#pragma mark GBRepositoriesController Notifications
 
 
-- (void) repositoriesControllerDidAddRepository:(GBRepositoriesController*)aRepositoriesController
+- (void) subscribeToRepositoriesController
 {
-  [self.sourcesController repositoriesControllerDidAddRepository:aRepositoriesController];
-}
-
-- (void) repositoriesControllerDidRemoveRepository:(GBRepositoriesController*)aRepositoriesController
-{
-  [self.sourcesController repositoriesControllerDidRemoveRepository:aRepositoriesController];
-}
-
-- (void) repositoriesControllerWillSelectRepository:(GBRepositoriesController*)aRepositoriesController
-{
-}
-
-- (void) repositoriesControllerDidSelectRepository:(GBRepositoriesController*)aRepositoriesController
-{
-  GBRepositoryController* repoCtrl = aRepositoriesController.selectedRepositoryController;
+  self.sourcesController.repositoriesController = self.repositoriesController;
+  [self.sourcesController subscribeToRepositoriesController];
   
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(repositoriesControllerDidSelectRepository:)
+                                               name:GBRepositoriesControllerDidSelectRepository 
+                                             object:self.repositoriesController];
+}
+
+- (void) unsubscribeFromRepositoriesController
+{
+  [self.sourcesController unsubscribeFromRepositoriesController];
+  
+  [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                  name:GBRepositoriesControllerDidSelectRepository 
+                                                object:self.repositoriesController];
+}
+
+
+- (void) repositoriesControllerDidSelectRepository:(NSNotification*)aNotification
+{
+  GBRepositoryController* repoCtrl = self.repositoriesController.selectedRepositoryController;
+  
+  // TODO: refactor this stuff into notifications
   self.historyController.repositoryController.delegate = nil;
   self.historyController.repositoryController = repoCtrl;
   self.historyController.repositoryController.delegate = self.historyController;
@@ -285,8 +300,7 @@
   self.toolbarController.repositoryController = repoCtrl;
   
   [self.historyController update];
-  [self updateWindowTitleWithRepositoryController:repoCtrl];  
-  [self.sourcesController repositoriesControllerDidSelectRepository:aRepositoriesController];
+  [self updateWindowTitleWithRepositoryController:repoCtrl];
 }
 
 
@@ -309,17 +323,13 @@
   
   // ToolbarController is taken from nib. Why is it there? Because of IBActions and IBOutlets.
   [self.toolbarController windowDidLoad];
-  
-  // SourcesController displays repositories in a sidebar
-  self.sourcesController = [[[GBSourcesController alloc] initWithNibName:@"GBSourcesController" bundle:nil] autorelease];
-  self.sourcesController.repositoriesController = self.repositoriesController;
+
   NSView* firstView = [self.splitView.subviews objectAtIndex:0];
-  [self.sourcesController loadInView:firstView];
-  
-  // HistoryController displays list of commits for the selected repo and branch
-  self.historyController = [[[GBHistoryViewController alloc] initWithNibName:@"GBHistoryViewController" bundle:nil] autorelease];
   NSView* secondView = [self.splitView.subviews objectAtIndex:1];
   NSView* thirdView = [self.splitView.subviews objectAtIndex:2];
+  
+  [self.sourcesController loadInView:firstView];
+  
   self.historyController.additionalView = thirdView;
   self.historyController.toolbarController = self.toolbarController;
   [self.historyController loadInView:secondView];

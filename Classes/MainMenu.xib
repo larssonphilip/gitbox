@@ -3873,7 +3873,7 @@ R2VuZXJhbApQdWJsaWMgTGljZW5zZSBpbnN0ZWFkIG9mIHRoaXMgTGljZW5zZS4KA</bytes>
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">925</int>
+			<int key="maxID">928</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -3987,11 +3987,15 @@ R2VuZXJhbApQdWJsaWMgTGljZW5zZSBpbnN0ZWFkIG9mIHRoaXMgTGljZW5zZS4KA</bytes>
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>cloneWindowController</string>
 							<string>preferencesController</string>
+							<string>repositoriesController</string>
+							<string>windowController</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>GBCloneWindowController</string>
 							<string>GBPreferencesController</string>
+							<string>GBRepositoriesController</string>
+							<string>GBMainWindowController</string>
 						</object>
 					</object>
 					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
@@ -4000,6 +4004,8 @@ R2VuZXJhbApQdWJsaWMgTGljZW5zZSBpbnN0ZWFkIG9mIHRoaXMgTGljZW5zZS4KA</bytes>
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>cloneWindowController</string>
 							<string>preferencesController</string>
+							<string>repositoriesController</string>
+							<string>windowController</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
@@ -4010,6 +4016,14 @@ R2VuZXJhbApQdWJsaWMgTGljZW5zZSBpbnN0ZWFkIG9mIHRoaXMgTGljZW5zZS4KA</bytes>
 							<object class="IBToOneOutletInfo">
 								<string key="name">preferencesController</string>
 								<string key="candidateClassName">GBPreferencesController</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">repositoriesController</string>
+								<string key="candidateClassName">GBRepositoriesController</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">windowController</string>
+								<string key="candidateClassName">GBMainWindowController</string>
 							</object>
 						</object>
 					</object>
@@ -4412,6 +4426,14 @@ R2VuZXJhbApQdWJsaWMgTGljZW5zZSBpbnN0ZWFkIG9mIHRoaXMgTGljZW5zZS4KA</bytes>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">Classes/GBPreferencesController.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">GBRepositoriesController</string>
+					<string key="superclassName">NSObject</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">Classes/GBRepositoriesController.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">

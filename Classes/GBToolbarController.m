@@ -57,6 +57,20 @@
 
 
 
+- (void) subscribeToRepositoryController
+{
+  
+}
+
+- (void) unsubscribeFromRepositoryController
+{
+  
+}
+
+
+
+
+
 
 #pragma mark UI update methods
 

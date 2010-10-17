@@ -164,7 +164,6 @@
 		2000325311FC75050069C70D /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
 		2002AC0A123CA1A20072075C /* OAFSEventStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAFSEventStream.h; sourceTree = "<group>"; };
 		2002AC0B123CA1A20072075C /* OAFSEventStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAFSEventStream.m; sourceTree = "<group>"; };
-		2002AE07124A8F930072075C /* GBRepositoriesControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBRepositoriesControllerDelegate.h; sourceTree = "<group>"; };
 		2002AE08124A94990072075C /* GBRepositoryControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBRepositoryControllerDelegate.h; sourceTree = "<group>"; };
 		2002AE09124A9BAB0072075C /* OAOptionalDelegateMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAOptionalDelegateMessage.h; sourceTree = "<group>"; };
 		2009871711C4597800F35630 /* PAYMENT */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = PAYMENT; sourceTree = "<group>"; };
@@ -181,6 +180,7 @@
 		201E030511EE09D7007E4420 /* GBCertificateUpdateController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBCertificateUpdateController.m; sourceTree = "<group>"; };
 		201E030911EE2CBD007E4420 /* GBLicenseController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBLicenseController.h; sourceTree = "<group>"; };
 		201E030A11EE2CBD007E4420 /* GBLicenseController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBLicenseController.m; sourceTree = "<group>"; };
+		201E5350126888E6007EA827 /* GBNotificationMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBNotificationMacros.h; sourceTree = "<group>"; };
 		201E5F6611AA71E00061EFD6 /* NSObject+OAKeyValueObserving.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+OAKeyValueObserving.h"; sourceTree = "<group>"; };
 		201E5F6711AA71E00061EFD6 /* NSObject+OAKeyValueObserving.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+OAKeyValueObserving.m"; sourceTree = "<group>"; };
 		2025D3B811BF1F2D004715FA /* NSAttributedString+OAAttributedStringHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSAttributedString+OAAttributedStringHelpers.h"; sourceTree = "<group>"; };
@@ -549,7 +549,7 @@
 		206CAC72122EB619009284FE /* Model Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				2002AE07124A8F930072075C /* GBRepositoriesControllerDelegate.h */,
+				201E5350126888E6007EA827 /* GBNotificationMacros.h */,
 				206CAC73122EBCAD009284FE /* GBRepositoriesController.h */,
 				206CAC74122EBCAD009284FE /* GBRepositoriesController.m */,
 				2002AE08124A94990072075C /* GBRepositoryControllerDelegate.h */,

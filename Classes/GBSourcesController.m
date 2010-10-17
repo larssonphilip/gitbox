@@ -26,7 +26,7 @@
   [super dealloc];
 }
 
-- (NSMutableArray*) sections
+- (NSMutableArray*) sections 
 {
   if (!sections)
   {
@@ -39,28 +39,62 @@
 
 
 
+
+
 #pragma mark GBSourcesController
 
 
-- (void) repositoriesControllerDidAddRepository:(GBRepositoriesController*)aRepositoriesController
+- (void) subscribeToRepositoriesController
+{
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(repositoriesControllerDidAddRepository:)
+                                               name:GBRepositoriesControllerDidAddRepository
+                                             object:self.repositoriesController];
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(repositoriesControllerDidRemoveRepository:)
+                                               name:GBRepositoriesControllerDidRemoveRepository
+                                             object:self.repositoriesController];
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(repositoriesControllerDidSelectRepository:)
+                                               name:GBRepositoriesControllerDidSelectRepository
+                                             object:self.repositoriesController];
+}
+
+- (void) unsubscribeFromRepositoriesController
+{
+  [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                  name:GBRepositoriesControllerDidAddRepository 
+                                                object:self.repositoriesController];
+  [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                  name:GBRepositoriesControllerDidRemoveRepository
+                                                object:self.repositoriesController];
+  [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                  name:GBRepositoriesControllerDidSelectRepository
+                                                object:self.repositoriesController];
+}
+
+
+- (void) repositoriesControllerDidAddRepository:(NSNotification*)aNotification
 {
   [self.outlineView expandItem:self.repositoriesController.localRepositoryControllers];
   [self reloadOutlineView];
 }
 
-- (void) repositoriesControllerDidRemoveRepository:(GBRepositoriesController*)aRepositoriesController
+- (void) repositoriesControllerDidRemoveRepository:(NSNotification*)aNotification
 {
   [self reloadOutlineView];
 }
 
-- (void) repositoriesControllerDidSelectRepository:(GBRepositoriesController*)aRepositoriesController
+- (void) repositoriesControllerDidSelectRepository:(NSNotification*)aNotification
 {
-  GBRepositoryController* repoCtrl = aRepositoriesController.selectedRepositoryController;
+  GBRepositoryController* repoCtrl = self.repositoriesController.selectedRepositoryController;
   [self.outlineView withoutDelegate:^{
     [self.outlineView selectRowIndexes:[NSIndexSet indexSetWithIndex:[self.outlineView rowForItem:repoCtrl]] 
                   byExtendingSelection:NO];
   }];
 }
+
+
 
 
 

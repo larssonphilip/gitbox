@@ -1,4 +1,3 @@
-#import "GBRepositoriesControllerDelegate.h"
 
 @class GBRepositoriesController;
 @class GBRepositoryController;
@@ -6,8 +5,7 @@
 @class GBHistoryViewController;
 
 @interface GBSourcesController : NSViewController<NSOutlineViewDataSource,
-                                                  NSOutlineViewDelegate,
-                                                  GBRepositoriesControllerDelegate>
+                                                  NSOutlineViewDelegate>
 
 @property(retain) GBRepositoriesController* repositoriesController;
 
@@ -21,5 +19,8 @@
 - (IBAction) selectNextRepository:(id)_;
 
 - (IBAction) remove:(id)_;
+
+- (void) subscribeToRepositoriesController;
+- (void) unsubscribeFromRepositoriesController;
 
 @end

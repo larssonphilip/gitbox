@@ -23,3 +23,7 @@ App listens to both root folder (./) and .git folder. Need to investigate
 how the events are differentiated...
 
 
+4. Different kinds of repository controllers
+
+RepositoriesController makes distinction between types of objects and sends appropriate notifications (didSelectLocalRepo, didSelectCloningRepo etc.)
+
