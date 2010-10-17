@@ -201,6 +201,11 @@ GBNotificationDefine(GBRepositoryControllerDidCommit);
     }
     [self popSpinning];
   }];
+  
+  if (!self.selectedCommit && self.repository.stage)
+  {
+    [self selectCommit:self.repository.stage];
+  }
 }
 
 

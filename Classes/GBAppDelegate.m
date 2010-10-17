@@ -1,6 +1,7 @@
 #import "GBAppDelegate.h"
 
 #import "GBRepositoriesController.h"
+#import "GBBaseRepositoryController.h"
 #import "GBRepositoryController.h"
 #import "GBCloningRepositoryController.h"
 
@@ -110,9 +111,9 @@
 
 
 
-- (void) openRepositoryAtURL:(NSURL*)url
+- (void) openLocalRepositoryAtURL:(NSURL*)url
 {
-  GBRepositoryController* repoCtrl = [self.repositoriesController repositoryControllerWithURL:url];
+  GBBaseRepositoryController* repoCtrl = [self.repositoriesController repositoryControllerWithURL:url];
   if (!repoCtrl)
   {
     repoCtrl = [GBRepositoryController repositoryControllerWithURL:url];
@@ -203,7 +204,7 @@
                                      relativeToURL:nil 
                                bookmarkDataIsStale:NO 
                                              error:NULL];
-    if (url) [self openRepositoryAtURL:url];
+    if (url) [self openLocalRepositoryAtURL:url];
   }
 }
 
@@ -292,7 +293,7 @@
   if (repoPath)
   {
     NSURL* url = [NSURL fileURLWithPath:repoPath];
-    [self openRepositoryAtURL:url];
+    [self openLocalRepositoryAtURL:url];
     return YES;
   }
   else
@@ -304,7 +305,7 @@
       NSLog(@"TODO: GBAppDelegate: init a git repo in the selected folder");
         //NSURL* url = [NSURL fileURLWithPath:path];
 //      [GBRepository initRepositoryAtURL:url];
-//      GBRepositoryController* ctrl = [self openRepositoryAtURL:url];
+//      GBRepositoryController* ctrl = [self openLocalRepositoryAtURL:url];
 //      if (ctrl)
 //      {
 //        [ctrl.repository.stage stageAll];

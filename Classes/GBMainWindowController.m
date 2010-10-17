@@ -1,5 +1,6 @@
 #import "GBRepositoriesController.h"
 #import "GBRepositoryController.h"
+#import "GBBaseRepositoryController.h"
 
 #import "GBMainWindowController.h"
 
@@ -67,9 +68,14 @@
 
 
 
-- (GBRepositoryController*) selectedRepositoryController
+- (GBBaseRepositoryController*) selectedRepositoryController
 {
   return self.repositoriesController.selectedRepositoryController;
+}
+
+- (GBRepositoryController*) selectedLocalRepositoryController
+{
+  return [self.repositoriesController selectedLocalRepositoryController];
 }
 
 
@@ -78,7 +84,7 @@
 {
   GBRemotesController* remotesController = [GBRemotesController controller];
   
-  remotesController.repository = [self selectedRepositoryController].repository;
+  remotesController.repository = [self selectedLocalRepositoryController].repository;
   remotesController.target = self;
   remotesController.finishSelector = @selector(doneEditRepositories:);
   remotesController.cancelSelector = @selector(cancelledEditRepositories:);
@@ -100,7 +106,7 @@
 
 - (BOOL) validateEditRepositories:(id)_
 {
-  return !![self selectedRepositoryController];
+  return !![self selectedLocalRepositoryController];
 }
 
 
@@ -122,17 +128,17 @@
 
 - (BOOL) validateEditGitIgnore:(id)_
 {
-  return !![self selectedRepositoryController];
+  return !![self selectedLocalRepositoryController];
 }
 
 - (BOOL) validateGitConfig:(id)_
 {
-  return !![self selectedRepositoryController];
+  return !![self selectedLocalRepositoryController];
 }
 
 - (IBAction) openInTerminal:(id)sender
 { 
-  NSString* path = [[[self selectedRepositoryController] url] path];
+  NSString* path = [[[self selectedLocalRepositoryController] url] path];
   NSString* s = [NSString stringWithFormat:
                  @"tell application \"Terminal\" to do script \"cd %@\"", path];
   
@@ -147,12 +153,12 @@
 
 - (BOOL) validateOpenInTerminal:(id)_
 {
-  return !![self selectedRepositoryController];
+  return !![self selectedLocalRepositoryController];
 }
 
 - (BOOL) validateOpenInFinder:(id)_
 {
-  return !![self selectedRepositoryController];
+  return !![self selectedLocalRepositoryController];
 }
 
 
@@ -231,13 +237,18 @@
   if (repoCtrl)
   {
     [self.window setTitle:[[[repoCtrl url] path] twoLastPathComponentsWithDash]];
-    [self.window setRepresentedURL:[repoCtrl url]];
+    NSURL* url = [repoCtrl url];
+    [self.window setRepresentedURL:nil];
+    if ([url isFileURL] && [[NSFileManager defaultManager] fileExistsAtPath:[url path]])
+    {
+      [self.window setRepresentedURL:url];
+    }
   }
   else
   {
     [self.window setTitle:NSLocalizedString(@"No Repository Selected", @"App")];
     [self.window setRepresentedURL:nil];
-  }  
+  }
 }
 
 - (void) loadState
@@ -274,6 +285,16 @@
                                            selector:@selector(repositoriesControllerDidSelectRepository:)
                                                name:GBRepositoriesControllerDidSelectRepository 
                                              object:self.repositoriesController];
+
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(repositoriesControllerDidSelectLocalRepository:)
+                                               name:GBRepositoriesControllerDidSelectLocalRepository
+                                             object:self.repositoriesController];
+  
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(repositoriesControllerDidSelectCloningRepository:)
+                                               name:GBRepositoriesControllerDidSelectCloningRepository 
+                                             object:self.repositoriesController];
 }
 
 - (void) unsubscribeFromRepositoriesController
@@ -281,14 +302,21 @@
   [self.sourcesController unsubscribeFromRepositoriesController];
   
   [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                  name:GBRepositoriesControllerDidSelectRepository 
+                                                  name:nil 
                                                 object:self.repositoriesController];
 }
 
 
 - (void) repositoriesControllerDidSelectRepository:(NSNotification*)aNotification
 {
-  GBRepositoryController* repoCtrl = self.repositoriesController.selectedRepositoryController;
+  GBRepositoryController* repoCtrl = [self.repositoriesController selectedLocalRepositoryController];
+  [self updateWindowTitleWithRepositoryController:repoCtrl];
+}
+
+
+- (void) repositoriesControllerDidSelectLocalRepository:(NSNotification*)aNotification
+{
+  GBRepositoryController* repoCtrl = [self.repositoriesController selectedLocalRepositoryController];
   
   [self.historyController unsubscribeFromRepositoryController];
   self.historyController.repositoryController = repoCtrl;
@@ -299,13 +327,15 @@
   [self.toolbarController subscribeToRepositoryController];
   
   self.historyController.commits = [repoCtrl commits];
-  [self.historyController update];
-  
-  [self updateWindowTitleWithRepositoryController:repoCtrl];
+  [self.historyController update];  
 }
 
 
-
+- (void) repositoriesControllerDidSelectCloningRepository:(NSNotification*)aNotification
+{
+  [self.historyController unsubscribeFromRepositoryController];
+  [self.toolbarController unsubscribeFromRepositoryController];
+}
 
 
 

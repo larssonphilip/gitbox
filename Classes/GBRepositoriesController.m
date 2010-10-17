@@ -1,5 +1,6 @@
 #import "GBRepositoriesController.h"
 #import "GBRepositoryController.h"
+#import "GBCloningRepositoryController.h"
 #import "GBModels.h"
 
 #import "NSFileManager+OAFileManagerHelpers.h"
@@ -10,6 +11,8 @@ GBNotificationDefine(GBRepositoriesControllerWillRemoveRepository);
 GBNotificationDefine(GBRepositoriesControllerDidRemoveRepository);
 GBNotificationDefine(GBRepositoriesControllerWillSelectRepository);
 GBNotificationDefine(GBRepositoriesControllerDidSelectRepository);
+GBNotificationDefine(GBRepositoriesControllerDidSelectLocalRepository);
+GBNotificationDefine(GBRepositoriesControllerDidSelectCloningRepository);
 
 
 @implementation GBRepositoriesController
@@ -40,9 +43,9 @@ GBNotificationDefine(GBRepositoriesControllerDidSelectRepository);
   return [[localRepositoryControllers retain] autorelease];
 }
 
-- (GBRepositoryController*) repositoryControllerWithURL:(NSURL*)url
+- (GBBaseRepositoryController*) repositoryControllerWithURL:(NSURL*)url
 {
-  for (GBRepositoryController* repoCtrl in self.localRepositoryControllers)
+  for (GBBaseRepositoryController* repoCtrl in self.localRepositoryControllers)
   {
     if ([[repoCtrl url] isEqual:url]) return repoCtrl;
   }
@@ -55,7 +58,23 @@ GBNotificationDefine(GBRepositoriesControllerDidSelectRepository);
   return [self.localRepositoryControllers count] < 1;
 }
 
+- (GBRepositoryController*) selectedLocalRepositoryController
+{
+  if ([self.selectedRepositoryController isKindOfClass:[GBRepositoryController class]])
+  {
+    return (GBRepositoryController*) self.selectedRepositoryController;
+  }
+  return nil;
+}
 
+- (GBCloningRepositoryController*) selectedCloningRepositoryController
+{
+  if ([self.selectedRepositoryController isKindOfClass:[GBCloningRepositoryController class]])
+  {
+    return (GBCloningRepositoryController*) self.selectedRepositoryController;
+  }
+  return nil;
+}
 
 
 #pragma mark Actions
@@ -83,7 +102,7 @@ GBNotificationDefine(GBRepositoriesControllerDidSelectRepository);
   }];
 }
 
-- (void) addLocalRepositoryController:(GBRepositoryController*)repoCtrl
+- (void) addLocalRepositoryController:(GBBaseRepositoryController*)repoCtrl
 {
   if (!repoCtrl) return;
   GBNotificationSend(GBRepositoriesControllerWillAddRepository);
@@ -94,7 +113,7 @@ GBNotificationDefine(GBRepositoriesControllerDidSelectRepository);
   GBNotificationSend(GBRepositoriesControllerDidAddRepository);
 }
 
-- (void) removeLocalRepositoryController:(GBRepositoryController*)repoCtrl
+- (void) removeLocalRepositoryController:(GBBaseRepositoryController*)repoCtrl
 {
   if (!repoCtrl || ![self.localRepositoryControllers containsObject:repoCtrl]) return;
   GBNotificationSend(GBRepositoriesControllerWillRemoveRepository);
@@ -104,21 +123,25 @@ GBNotificationDefine(GBRepositoriesControllerDidSelectRepository);
   GBNotificationSend(GBRepositoriesControllerDidRemoveRepository);
 }
 
-- (void) selectRepositoryController:(GBRepositoryController*) repoCtrl
+- (void) selectRepositoryController:(GBBaseRepositoryController*) repoCtrl
 {
   GBNotificationSend(GBRepositoriesControllerWillSelectRepository);
   self.selectedRepositoryController = repoCtrl;
   GBNotificationSend(GBRepositoriesControllerDidSelectRepository);
-  [repoCtrl updateRepositoryIfNeeded];
-  if (!repoCtrl.selectedCommit)
+  if ([self selectedLocalRepositoryController])
   {
-    [repoCtrl selectCommit:repoCtrl.repository.stage];
+    GBNotificationSend(GBRepositoriesControllerDidSelectLocalRepository);
   }
+  else if ([self selectedCloningRepositoryController])
+  {
+    GBNotificationSend(GBRepositoriesControllerDidSelectCloningRepository);
+  }
+  [repoCtrl updateRepositoryIfNeeded];
 }
 
 - (void) setNeedsUpdateEverything
 {
-  for (GBRepositoryController* repoCtrl in self.localRepositoryControllers)
+  for (GBBaseRepositoryController* repoCtrl in self.localRepositoryControllers)
   {
     [repoCtrl setNeedsUpdateEverything];
   }

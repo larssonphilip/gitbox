@@ -1,3 +1,4 @@
+#import "GBBaseRepositoryController.h"
 #import "GBRepositoryController.h"
 #import "GBRepositoriesController.h"
 
@@ -81,7 +82,7 @@
 
 - (void) repositoriesControllerDidSelectRepository:(NSNotification*)aNotification
 {
-  GBRepositoryController* repoCtrl = self.repositoriesController.selectedRepositoryController;
+  GBBaseRepositoryController* repoCtrl = self.repositoriesController.selectedRepositoryController;
   [self.outlineView withoutDelegate:^{
     [self.outlineView selectRowIndexes:[NSIndexSet indexSetWithIndex:[self.outlineView rowForItem:repoCtrl]] 
                   byExtendingSelection:NO];
