@@ -17,7 +17,7 @@
 @implementation GBHistoryViewController
 
 @synthesize repositoryController;
-@synthesize toolbarController;
+//@synthesize toolbarController;
 @synthesize stageController;
 @synthesize commitController;
 @synthesize commits;
@@ -32,7 +32,7 @@
 - (void) dealloc
 {  
   self.repositoryController = nil;
-  self.toolbarController = nil;
+//  self.toolbarController = nil;
   self.stageController = nil;
   self.commitController = nil;
   self.commits = nil;
@@ -64,7 +64,6 @@
   [self.commitController view]; // preloads view
   [self.commitController.tableView setNextKeyView:[self.tableView nextKeyView]];
 }
-
 
 
 
@@ -150,7 +149,7 @@
   self.commitController.repositoryController = self.repositoryController;
   self.stageController.repositoryController = self.repositoryController;
   
-  [self.toolbarController update];
+//  [self.toolbarController update];
   [self updateStage];
   [self updateCommits];
   [self updateChangesController];
@@ -165,64 +164,81 @@
 #pragma mark GBRepositoryControllerDelegate
 
 
-- (void) repositoryControllerDidChangeDisabledStatus:(GBRepositoryController*)repoCtrl
+
+- (void) subscribeToRepositoryController
 {
-  [self.toolbarController updateDisabledState];
+//  [[NSNotificationCenter defaultCenter] addObserver:self
+//                                           selector:@selector(repositoryControllerDidUpdateCommits:)
+//                                               name:GBRepositoryControllerDidUpdateCommits
+//                                             object:self.repositoryController];  
 }
 
-- (void) repositoryControllerDidChangeSpinningStatus:(GBRepositoryController*)repoCtrl
+- (void) unsubscribeFromRepositoryController
 {
-  [self.toolbarController updateSpinner];
+  
 }
+
+
 
 - (void) repositoryControllerDidUpdateCommits:(GBRepositoryController*)repoCtrl
 {
   self.commits = [repoCtrl commits];
 }
 
-- (void) repositoryControllerDidUpdateLocalBranches:(GBRepositoryController*)repoCtrl
-{
-  [self.toolbarController updateBranchMenus];
-}
-
-- (void) repositoryControllerDidUpdateRemoteBranches:(GBRepositoryController*)repoCtrl
-{
-  [self.toolbarController updateRemoteBranchMenus];
-  [self.toolbarController updateSyncButtons];
-}
-
-- (void) repositoryControllerDidCheckoutBranch:(GBRepositoryController*)repoCtrl
-{
-  [self.toolbarController updateBranchMenus];
-}
-
-- (void) repositoryControllerDidChangeRemoteBranch:(GBRepositoryController*)repoCtrl
-{
-  [self.toolbarController updateBranchMenus];
-}
-
 - (void) repositoryControllerDidSelectCommit:(GBRepositoryController*)repoCtrl
 {
-  [self.toolbarController updateCommitButton];
+  //  [self.toolbarController updateCommitButton];
   [self update];
 }
 
 - (void) repositoryControllerDidUpdateCommitChanges:(GBRepositoryController*)repoCtrl
 {
-  [self.toolbarController updateCommitButton];
+  //  [self.toolbarController updateCommitButton];
   [self refreshChangesController];
   [self updateStage];
 }
 
-- (void) repositoryControllerDidUpdateCommitableChanges:(GBRepositoryController*)repoCtrl
-{
-  [self.toolbarController updateCommitButton];
-}
 
-- (void) repositoryControllerDidCommit:(GBRepositoryController*)repoCtrl
-{
-  [self.toolbarController updateCommitButton];
-}
+//- (void) repositoryControllerDidChangeDisabledStatus:(GBRepositoryController*)repoCtrl
+//{
+//  [self.toolbarController updateDisabledState];
+//}
+//
+//- (void) repositoryControllerDidChangeSpinningStatus:(GBRepositoryController*)repoCtrl
+//{
+//  [self.toolbarController updateSpinner];
+//}
+//
+//- (void) repositoryControllerDidUpdateLocalBranches:(GBRepositoryController*)repoCtrl
+//{
+//  [self.toolbarController updateBranchMenus];
+//}
+//
+//- (void) repositoryControllerDidUpdateRemoteBranches:(GBRepositoryController*)repoCtrl
+//{
+//  [self.toolbarController updateRemoteBranchMenus];
+//  [self.toolbarController updateSyncButtons];
+//}
+//
+//- (void) repositoryControllerDidCheckoutBranch:(GBRepositoryController*)repoCtrl
+//{
+//  [self.toolbarController updateBranchMenus];
+//}
+//
+//- (void) repositoryControllerDidChangeRemoteBranch:(GBRepositoryController*)repoCtrl
+//{
+//  [self.toolbarController updateBranchMenus];
+//}
+//
+//- (void) repositoryControllerDidUpdateCommitableChanges:(GBRepositoryController*)repoCtrl
+//{
+//  [self.toolbarController updateCommitButton];
+//}
+//
+//- (void) repositoryControllerDidCommit:(GBRepositoryController*)repoCtrl
+//{
+//  [self.toolbarController updateCommitButton];
+//}
 
 
 

@@ -59,13 +59,92 @@
 
 - (void) subscribeToRepositoryController
 {
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(repositoryControllerDidChangeDisabledStatus:)
+                                               name:GBRepositoryControllerDidChangeDisabledStatus
+                                             object:self.repositoryController];
+
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(repositoryControllerDidChangeSpinningStatus:)
+                                               name:GBRepositoryControllerDidChangeSpinningStatus
+                                             object:self.repositoryController];
+
   
+  
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(repositoryControllerDidUpdateAnyBranches:)
+                                               name:GBRepositoryControllerDidUpdateRemoteBranches
+                                             object:self.repositoryController];
+
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(repositoryControllerDidUpdateAnyBranches:)
+                                               name:GBRepositoryControllerDidUpdateLocalBranches
+                                             object:self.repositoryController];
+  
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(repositoryControllerDidUpdateAnyBranches:)
+                                               name:GBRepositoryControllerDidCheckoutBranch
+                                             object:self.repositoryController];
+  
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(repositoryControllerDidUpdateAnyBranches:)
+                                               name:GBRepositoryControllerDidChangeRemoteBranch
+                                             object:self.repositoryController];
+
+  
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(repositoryControllerDidUpdateCommit:)
+                                               name:GBRepositoryControllerDidSelectCommit
+                                             object:self.repositoryController];
+  
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(repositoryControllerDidUpdateCommit:)
+                                               name:GBRepositoryControllerDidUpdateCommitChanges
+                                             object:self.repositoryController];
+  
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(repositoryControllerDidUpdateCommit:)
+                                               name:GBRepositoryControllerDidUpdateCommitableChanges
+                                             object:self.repositoryController];
+
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(repositoryControllerDidUpdateCommit:)
+                                               name:GBRepositoryControllerDidCommit
+                                             object:self.repositoryController];
 }
+
 
 - (void) unsubscribeFromRepositoryController
 {
-  
+  [[NSNotificationCenter defaultCenter] removeObserver:self 
+                                                  name:nil
+                                                object:self.repositoryController];
 }
+
+
+
+- (void) repositoryControllerDidChangeDisabledStatus:(NSNotification*)aNotification
+{
+  [self updateDisabledState];
+}
+
+- (void) repositoryControllerDidChangeSpinningStatus:(NSNotification*)aNotification
+{
+  [self updateSpinner];
+}
+
+- (void) repositoryControllerDidUpdateAnyBranches:(NSNotification*)aNotification
+{
+  [self updateBranchMenus];
+}
+
+- (void) repositoryControllerDidUpdateCommit:(NSNotification*)aNotification
+{
+  [self updateCommitButton];
+}
+
+
+
 
 
 

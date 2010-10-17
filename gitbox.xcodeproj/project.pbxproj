@@ -434,6 +434,9 @@
 		2038F30911952FB80087CE37 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				2038F21911936FDE0087CE37 /* ObsoleteGBRepositoryController.h */,
+				2038F21A11936FDE0087CE37 /* ObsoleteGBRepositoryController.m */,
+				1DDD58290DA1D0D100B32029 /* ObsoleteGBRepositoryController.xib */,
 				2038F1DD11936B060087CE37 /* GBAppDelegate.h */,
 				2038F1DE11936B060087CE37 /* GBAppDelegate.m */,
 				1DDD582B0DA1D0D100B32029 /* MainMenu.xib */,
@@ -445,9 +448,6 @@
 				20A37BB5120DC7640068AB8B /* GBSourcesController.xib */,
 				20A37BAA120DC4510068AB8B /* GBToolbarController.h */,
 				20A37BAB120DC4510068AB8B /* GBToolbarController.m */,
-				2038F21911936FDE0087CE37 /* ObsoleteGBRepositoryController.h */,
-				2038F21A11936FDE0087CE37 /* ObsoleteGBRepositoryController.m */,
-				1DDD58290DA1D0D100B32029 /* ObsoleteGBRepositoryController.xib */,
 				2058E97E11AEE26F00F2853F /* GBHistoryViewController.h */,
 				2058E97F11AEE26F00F2853F /* GBHistoryViewController.m */,
 				2058E98311AEE30E00F2853F /* GBHistoryViewController.xib */,

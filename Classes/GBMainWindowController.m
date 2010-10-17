@@ -297,7 +297,9 @@
   
   self.historyController.commits = [repoCtrl commits];
   
+  [self.toolbarController unsubscribeFromRepositoryController];
   self.toolbarController.repositoryController = repoCtrl;
+  [self.toolbarController subscribeToRepositoryController];
   
   [self.historyController update];
   [self updateWindowTitleWithRepositoryController:repoCtrl];
@@ -331,7 +333,7 @@
   [self.sourcesController loadInView:firstView];
   
   self.historyController.additionalView = thirdView;
-  self.historyController.toolbarController = self.toolbarController;
+//  self.historyController.toolbarController = self.toolbarController;
   [self.historyController loadInView:secondView];
   [self.historyController view]; // preloads view
   [self.historyController.tableView setNextKeyView:[self.window contentView]];
