@@ -381,7 +381,6 @@
   [self.sourcesController loadInView:firstView];
   
   self.historyController.additionalView = thirdView;
-//  self.historyController.toolbarController = self.toolbarController;
   [self.historyController loadInView:secondView];
   [self.historyController view]; // preloads view
   [self.historyController.tableView setNextKeyView:[self.window contentView]];
