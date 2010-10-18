@@ -262,7 +262,7 @@
   [self.windowController loadState];
   [self loadRepositories];
   
-  if ([self.repositoriesController isEmpty] || ![[NSUserDefaults standardUserDefaults] objectForKey:@"WelcomeWasDisplayed"])
+  if (![[NSUserDefaults standardUserDefaults] objectForKey:@"WelcomeWasDisplayed"])
   {
     [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:YES] forKey:@"WelcomeWasDisplayed"];
     [self.windowController showWelcomeWindow:self];

@@ -46,10 +46,6 @@
   [self.tableView setIntercellSpacing:NSMakeSize(0.0, 0.0)]; // remove the awful paddings
 }
 
-- (void) viewDidUnload
-{
-  [super viewDidUnload];
-}
 
 - (void) loadAdditionalControllers
 {
@@ -122,18 +118,21 @@
 {
   GBCommit* commit = self.repositoryController.selectedCommit;
   NSView* targetView = self.additionalView;
+  
+  self.commitController.commit = nil;
+  [self.commitController unloadView];
+  
+  self.stageController.stage = nil;
+  [self.stageController unloadView];
+
   if (!commit || [commit isStage])
   {
-    self.commitController.commit = nil;
-    [self.commitController unloadView];
     self.stageController.stage = [commit asStage];
     [self.stageController loadInView:targetView];
     [self.tableView setNextKeyView:self.stageController.tableView];
   }
   else
   {
-    self.stageController.stage = nil;
-    [self.stageController unloadView];
     self.commitController.commit = commit;
     [self.commitController loadInView:targetView];
     [self.tableView setNextKeyView:self.commitController.tableView];
@@ -143,6 +142,7 @@
 
 - (void) update
 {
+  self.commits = [self.repositoryController commits];
   self.commitController.repositoryController = self.repositoryController;
   self.stageController.repositoryController = self.repositoryController;
   

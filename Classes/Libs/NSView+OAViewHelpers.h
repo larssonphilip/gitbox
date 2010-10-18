@@ -7,7 +7,6 @@
 
 @interface NSViewController (OAViewHelpers)
 
-- (void) viewDidUnload;
 - (void) unloadView;
 - (id) loadInView:(NSView*) targetView;
 

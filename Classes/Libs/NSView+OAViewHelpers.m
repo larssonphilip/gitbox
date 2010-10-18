@@ -17,17 +17,12 @@
 
 @implementation NSViewController (OAViewHelpers)
 
-- (void) viewDidUnload
-{
-  // to be overriden by subclasses
-}
 
 - (void) unloadView
 {
   if (self.view)
   {
     [self.view removeFromSuperview];
-    [self viewDidUnload];    
   }
 }
 

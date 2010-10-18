@@ -33,11 +33,6 @@
   [self update];
 }
 
-- (void) viewDidUnload
-{
-  [super viewDidUnload];
-}
-
 
 
 

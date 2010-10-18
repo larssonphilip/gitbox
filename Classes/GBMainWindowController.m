@@ -295,6 +295,13 @@
                                            selector:@selector(repositoriesControllerDidSelectCloningRepository:)
                                                name:GBRepositoriesControllerDidSelectCloningRepository 
                                              object:self.repositoriesController];
+  
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(repositoriesControllerDidRemoveRepository:)
+                                               name:GBRepositoriesControllerDidRemoveRepository
+                                             object:self.repositoriesController];
+  
+  
 }
 
 - (void) unsubscribeFromRepositoriesController
@@ -326,8 +333,7 @@
   self.toolbarController.repositoryController = repoCtrl;
   [self.toolbarController subscribeToRepositoryController];
   
-  self.historyController.commits = [repoCtrl commits];
-  [self.historyController update];  
+  [self.historyController update];
 }
 
 
@@ -335,6 +341,19 @@
 {
   [self.historyController unsubscribeFromRepositoryController];
   [self.toolbarController unsubscribeFromRepositoryController];
+  self.historyController.repositoryController = nil;
+  self.toolbarController.repositoryController = nil;
+  [self.historyController update];
+}
+
+- (void) repositoriesControllerDidRemoveRepository:(NSNotification*)aNotification
+{
+  [self.historyController unsubscribeFromRepositoryController];
+  [self.toolbarController unsubscribeFromRepositoryController];
+  self.historyController.repositoryController = nil;
+  self.toolbarController.repositoryController = nil;
+  [self.toolbarController update];
+  [self.historyController update];
 }
 
 
