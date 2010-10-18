@@ -333,6 +333,7 @@
   self.toolbarController.repositoryController = repoCtrl;
   [self.toolbarController subscribeToRepositoryController];
   
+  [self.toolbarController update];
   [self.historyController update];
 }
 
@@ -343,6 +344,7 @@
   [self.toolbarController unsubscribeFromRepositoryController];
   self.historyController.repositoryController = nil;
   self.toolbarController.repositoryController = nil;
+  [self.toolbarController update];
   [self.historyController update];
 }
 
