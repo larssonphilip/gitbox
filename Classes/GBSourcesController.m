@@ -268,7 +268,7 @@
     return NSLocalizedString(@"REPOSITORIES", @"Sources");
   }
   
-  if ([item isKindOfClass:[GBRepositoryController class]])
+  if ([item isKindOfClass:[GBBaseRepositoryController class]])
   {
     GBRepositoryController* repoCtrl = (GBRepositoryController*)item;
     return [repoCtrl nameForSourceList];
