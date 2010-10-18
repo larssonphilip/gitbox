@@ -29,3 +29,28 @@ By splitting controllers into VCs and MCs we are splitting two kinds of job:
 - synchronizing views with a model
 
 
+Since we may use the same view controller for different kinds of repositories, 
+we use another indirection layer in form of the repository controller delegates.
+
+
+Event flow:
+
+first responder
+  |
+  V
+  view controller
+    |
+    V
+    model controller
+      |
+      V
+      model update,
+      delegate notifications
+        |
+        V
+        view controllers
+      
+
+
+
+
