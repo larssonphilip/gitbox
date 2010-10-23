@@ -42,6 +42,7 @@
 		2035632F11D3B57800965765 /* GBHistoryScroller.m in Sources */ = {isa = PBXBuildFile; fileRef = 2035632E11D3B57800965765 /* GBHistoryScroller.m */; };
 		2035634E11D3BCB100965765 /* CGContext+OACGContextHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 2035634D11D3BCB100965765 /* CGContext+OACGContextHelpers.m */; };
 		2035639E11D3C14C00965765 /* GBHistoryScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2035639D11D3C14C00965765 /* GBHistoryScrollView.m */; };
+		20372977126CCAC60097C43A /* GBMainMenuController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20372976126CCAC60097C43A /* GBMainMenuController.m */; };
 		2038F1B11193664D0087CE37 /* ObsoleteGBRepositoryController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58290DA1D0D100B32029 /* ObsoleteGBRepositoryController.xib */; };
 		2038F1B3119366660087CE37 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C1660FE840EACC02AAC07 /* InfoPlist.strings */; };
 		2038F1B7119366960087CE37 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD582B0DA1D0D100B32029 /* MainMenu.xib */; };
@@ -198,6 +199,8 @@
 		2035634D11D3BCB100965765 /* CGContext+OACGContextHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CGContext+OACGContextHelpers.m"; sourceTree = "<group>"; };
 		2035639C11D3C14C00965765 /* GBHistoryScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBHistoryScrollView.h; sourceTree = "<group>"; };
 		2035639D11D3C14C00965765 /* GBHistoryScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBHistoryScrollView.m; sourceTree = "<group>"; };
+		20372975126CCAC60097C43A /* GBMainMenuController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBMainMenuController.h; sourceTree = "<group>"; };
+		20372976126CCAC60097C43A /* GBMainMenuController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBMainMenuController.m; sourceTree = "<group>"; };
 		2038F1DD11936B060087CE37 /* GBAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBAppDelegate.h; sourceTree = "<group>"; };
 		2038F1DE11936B060087CE37 /* GBAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBAppDelegate.m; sourceTree = "<group>"; };
 		2038F1EA11936CA50087CE37 /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
@@ -439,6 +442,8 @@
 				2038F1DD11936B060087CE37 /* GBAppDelegate.h */,
 				2038F1DE11936B060087CE37 /* GBAppDelegate.m */,
 				1DDD582B0DA1D0D100B32029 /* MainMenu.xib */,
+				20372975126CCAC60097C43A /* GBMainMenuController.h */,
+				20372976126CCAC60097C43A /* GBMainMenuController.m */,
 				20A37BA7120DC27B0068AB8B /* GBMainWindowController.h */,
 				20A37BA8120DC27B0068AB8B /* GBMainWindowController.m */,
 				20A37BBD120DDBA60068AB8B /* GBMainWindowController.xib */,
@@ -885,6 +890,7 @@
 				2054FFF0125DE9D200692C77 /* GBCloneProcessViewController.m in Sources */,
 				2082B7C4126587CA00667A7F /* GBCloningRepositoryController.m in Sources */,
 				2082B8111266500800667A7F /* GBBaseRepositoryController.m in Sources */,
+				20372977126CCAC60097C43A /* GBMainMenuController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

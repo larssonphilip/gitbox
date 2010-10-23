@@ -14,8 +14,9 @@
 
 - (void) start
 {
-  NSLog(@"TODO: begin clone");
-  NSLog(@"TODO: when done, remove self from local repositories and add the proper controller");
+  
+//  NSLog(@"TODO: begin clone: %@", self.url);
+//  NSLog(@"TODO: when done, remove self from local repositories and add the proper controller");
 }
 
 - (void) stop

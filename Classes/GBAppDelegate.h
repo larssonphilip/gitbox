@@ -3,6 +3,7 @@
 @class GBMainWindowController;
 @class GBPreferencesController;
 @class GBCloneWindowController;
+@class GBMainMenuController;
 
 @interface GBAppDelegate : NSObject <NSApplicationDelegate, NSOpenSavePanelDelegate>
 
@@ -16,7 +17,5 @@
 - (IBAction) showActivityWindow:_;
 - (IBAction) releaseNotes:_;
 - (IBAction) showDiffToolPreferences:_;
-
-- (BOOL) checkGitVersion;
 
 @end

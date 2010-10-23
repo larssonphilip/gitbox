@@ -28,6 +28,10 @@ By splitting controllers into VCs and MCs we are splitting two kinds of job:
 - setting up and updating the views
 - synchronizing views with a model
 
+Current problem:
+
+- toolbar controller should work with cloning repository controller
+
 
 Since we may use the same view controller for different kinds of repositories, 
 we use another indirection layer in form of the repository controller delegates.
@@ -41,15 +45,65 @@ first responder
   view controller
     |
     V
-    model controller
+    model controller (updates model)
       |
       V
-      model update,
-      delegate notifications
+      delegate
         |
         V
         view controllers
-      
+
+
+Responsibilities Outline:
+
+GBAppDelegate:
+- responds to app events such as launching an app, opening a file or URL
+- creates a GBRepositoriesController
+- creates a GBMainWindowController
+- creates a GBRepositoriesControllerDelegate which knows about the window ctrl and repositories controller
+
+RepositoriesController:
+- manages a list of RepositryControllers
+- sends notifications to GBRepositoriesControllerDelegate
+
+RepositoryController:
+- manages a repository, current branches and commits
+- sends notifications to GBRepositoryControllerDelegate
+
+GBMainWindowController:
+- manages window features (filename, file proxy, toolbar, sources list, additional views)
+
+GBMainMenuController:
+- manages main menu items
+- knows about the window to display sheets
+- knows about model controllers
+- sends events to model controllers
+
+GBToolbarController:
+- knows about the window to display sheets
+- knows about misc model controllers to send actions to
+- updates itself when asked 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

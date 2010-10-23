@@ -5,6 +5,7 @@
 #import "GBRepositoryController.h"
 #import "GBCloningRepositoryController.h"
 
+#import "GBMainMenuController.h"
 #import "GBMainWindowController.h"
 #import "GBSourcesController.h"
 #import "GBActivityController.h"
@@ -39,9 +40,9 @@
 
 - (void) dealloc
 {
+  self.repositoriesController = nil;
   self.windowController = nil;
   self.preferencesController = nil;
-  self.repositoriesController = nil;
   self.cloneWindowController = nil;
   [super dealloc];
 }
@@ -69,7 +70,7 @@
     if (result == NSFileHandlingPanelOKButton)
     {
       [self application:NSApp openFile:[[[openPanel URLs] objectAtIndex:0] path]];
-    }    
+    }
   }];
 }
 
@@ -94,6 +95,7 @@
       GBCloningRepositoryController* cloneController = [[GBCloningRepositoryController new] autorelease];
       cloneController.sourceURL = ctrl.sourceURL;
       cloneController.url = ctrl.targetURL;
+      NSLog(@"TODO: change for the cloning-specific API here (i.e. addCloningRepositoryController:)");
       [self.repositoriesController addLocalRepositoryController:cloneController];
       [[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:cloneController.url];
     }
@@ -123,31 +125,31 @@
   [self.repositoriesController selectRepositoryController:repoCtrl];
 }
 
-- (BOOL) checkGitVersion
-{
-  NSString* gitVersion = [GBRepository gitVersion];
-  if (!gitVersion)
-  {
-    [NSAlert message:NSLocalizedString(@"Please locate git", @"App")
-         description:[NSString stringWithFormat:NSLocalizedString(@"The Gitbox requires git version %@ or later. Please install git or set its path in Preferences.", @"App"), 
-                      [GBRepository supportedGitVersion]]
-         buttonTitle:NSLocalizedString(@"Open Preferences",@"App")];
-    [self.preferencesController showWindow:nil];
-    return NO;
-  }
-  else if (![GBRepository isSupportedGitVersion:gitVersion])
-  {
-    [NSAlert message:NSLocalizedString(@"Please locate git", @"App")
-         description:[NSString stringWithFormat:NSLocalizedString(@"The Gitbox works with the version %@ or later. Your git version is %@.\n\nPath to git executable: %@", @"App"), 
-                      [GBRepository supportedGitVersion], 
-                      gitVersion,
-                      [OATask systemPathForExecutable:@"git"]]
-         buttonTitle:NSLocalizedString(@"Open Preferences",@"App")];
-    [self.preferencesController showWindow:nil];
-    return NO;
-  }
-  return YES;
-}
+//- (BOOL) checkGitVersion
+//{
+//  NSString* gitVersion = [GBRepository gitVersion];
+//  if (!gitVersion)
+//  {
+//    [NSAlert message:NSLocalizedString(@"Please locate git", @"App")
+//         description:[NSString stringWithFormat:NSLocalizedString(@"The Gitbox requires git version %@ or later. Please install git or set its path in Preferences.", @"App"), 
+//                      [GBRepository supportedGitVersion]]
+//         buttonTitle:NSLocalizedString(@"Open Preferences",@"App")];
+//    [self.preferencesController showWindow:nil];
+//    return NO;
+//  }
+//  else if (![GBRepository isSupportedGitVersion:gitVersion])
+//  {
+//    [NSAlert message:NSLocalizedString(@"Please locate git", @"App")
+//         description:[NSString stringWithFormat:NSLocalizedString(@"The Gitbox works with the version %@ or later. Your git version is %@.\n\nPath to git executable: %@", @"App"), 
+//                      [GBRepository supportedGitVersion], 
+//                      gitVersion,
+//                      [OATask systemPathForExecutable:@"git"]]
+//         buttonTitle:NSLocalizedString(@"Open Preferences",@"App")];
+//    [self.preferencesController showWindow:nil];
+//    return NO;
+//  }
+//  return YES;
+//}
 
 - (IBAction) showDiffToolPreferences:(id)_
 {
