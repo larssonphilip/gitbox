@@ -12,6 +12,7 @@ Showstoppers:
 
 Ongoing tasks:
 
+- git config core.quotepath false - to support full UTF-8 filenames and display them correctly
 - read carefully: https://git.wiki.kernel.org/index.php/GitSurvey2010
 - reactions to macappstore: http://www.tuaw.com/2010/10/21/developer-reactions-to-the-mac-app-store/#continued
 - create a repo out of an empty folder
