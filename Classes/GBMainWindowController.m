@@ -283,6 +283,9 @@
 
 - (void) repositoriesControllerDidRemoveRepository:(GBRepositoriesController*)reposCtrl
 {
+  [self.sourcesController update];
+  [self.toolbarController update];
+  [self.historyController update];
 }
 
 - (void) repositoriesControllerWillSelectRepository:(GBRepositoriesController*)reposCtrl
