@@ -3,7 +3,6 @@
 @class GBMainWindowController;
 @class GBPreferencesController;
 @class GBCloneWindowController;
-@class GBMainMenuController;
 
 @interface GBAppDelegate : NSObject <NSApplicationDelegate, NSOpenSavePanelDelegate>
 

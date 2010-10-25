@@ -1,14 +1,4 @@
-#import "GBNotificationMacros.h"
-
-GBNotificationDeclare(GBRepositoriesControllerWillAddRepository);
-GBNotificationDeclare(GBRepositoriesControllerDidAddRepository);
-GBNotificationDeclare(GBRepositoriesControllerWillRemoveRepository);
-GBNotificationDeclare(GBRepositoriesControllerDidRemoveRepository);
-
-GBNotificationDeclare(GBRepositoriesControllerWillSelectRepository);
-GBNotificationDeclare(GBRepositoriesControllerDidSelectRepository);
-GBNotificationDeclare(GBRepositoriesControllerDidSelectLocalRepository);
-GBNotificationDeclare(GBRepositoriesControllerDidSelectCloningRepository);
+#import "GBRepositoriesControllerDelegate.h"
 
 @class GBBaseRepositoryController;
 @class GBRepositoryController;
@@ -18,6 +8,8 @@ GBNotificationDeclare(GBRepositoriesControllerDidSelectCloningRepository);
 
 @property(retain) GBBaseRepositoryController* selectedRepositoryController;
 @property(nonatomic,retain) NSMutableArray* localRepositoryControllers;
+
+@property(assign) id<GBRepositoriesControllerDelegate> delegate;
 
 - (GBBaseRepositoryController*) repositoryControllerWithURL:(NSURL*)url;
 - (BOOL) isEmpty;

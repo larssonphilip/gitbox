@@ -5,20 +5,12 @@
 
 #import "NSFileManager+OAFileManagerHelpers.h"
 
-GBNotificationDefine(GBRepositoriesControllerWillAddRepository);
-GBNotificationDefine(GBRepositoriesControllerDidAddRepository);
-GBNotificationDefine(GBRepositoriesControllerWillRemoveRepository);
-GBNotificationDefine(GBRepositoriesControllerDidRemoveRepository);
-GBNotificationDefine(GBRepositoriesControllerWillSelectRepository);
-GBNotificationDefine(GBRepositoriesControllerDidSelectRepository);
-GBNotificationDefine(GBRepositoriesControllerDidSelectLocalRepository);
-GBNotificationDefine(GBRepositoriesControllerDidSelectCloningRepository);
-
-
 @implementation GBRepositoriesController
 
 @synthesize selectedRepositoryController;
 @synthesize localRepositoryControllers;
+
+@synthesize delegate;
 
 - (void) dealloc
 {
@@ -93,8 +85,8 @@ GBNotificationDefine(GBRepositoriesControllerDidSelectCloningRepository);
   for (GBRepositoryController* ctrl in self.localRepositoryControllers)
   {
     ctrl.displaysTwoPathComponents = 
-      ([allOneComponentNames countForObject:[ctrl shortNameForSourceList]] > 1) ||
-      ([allParentNames countForObject:[ctrl parentFolderName]] > 1);
+    ([allOneComponentNames countForObject:[ctrl shortNameForSourceList]] > 1) ||
+    ([allParentNames countForObject:[ctrl parentFolderName]] > 1);
   }
   [self.localRepositoryControllers sortUsingComparator:^(GBRepositoryController* a,GBRepositoryController* b){
     return [[a nameForSourceList] compare:[b nameForSourceList]];
@@ -105,38 +97,31 @@ GBNotificationDefine(GBRepositoriesControllerDidSelectCloningRepository);
 - (void) addLocalRepositoryController:(GBBaseRepositoryController*)repoCtrl
 {
   if (!repoCtrl) return;
-  GBNotificationSend(GBRepositoriesControllerWillAddRepository);
+  if ([self.delegate respondsToSelector:@selector(repositoriesControllerWillAddRepository:)]) { [self.delegate repositoriesControllerWillAddRepository:self]; }
   [self.localRepositoryControllers addObject:repoCtrl];
   [self updateRepositoriesPresentation];
   [repoCtrl setNeedsUpdateEverything];
   [repoCtrl start];
-  GBNotificationSend(GBRepositoriesControllerDidAddRepository);
+  if ([self.delegate respondsToSelector:@selector(repositoriesControllerDidAddRepository:)]) { [self.delegate repositoriesControllerDidAddRepository:self]; }
 }
 
 - (void) removeLocalRepositoryController:(GBBaseRepositoryController*)repoCtrl
 {
   if (!repoCtrl || ![self.localRepositoryControllers containsObject:repoCtrl]) return;
-  GBNotificationSend(GBRepositoriesControllerWillRemoveRepository);
+  [self selectRepositoryController:nil];
+  if ([self.delegate respondsToSelector:@selector(repositoriesControllerWillRemoveRepository:)]) { [self.delegate repositoriesControllerWillRemoveRepository:self]; }
   [repoCtrl stop];
   [self.localRepositoryControllers removeObject:repoCtrl];
   [self updateRepositoriesPresentation];
-  GBNotificationSend(GBRepositoriesControllerDidRemoveRepository);
+  if ([self.delegate respondsToSelector:@selector(repositoriesControllerDidRemoveRepository:)]) { [self.delegate repositoriesControllerDidRemoveRepository:self]; }
 }
 
 - (void) selectRepositoryController:(GBBaseRepositoryController*) repoCtrl
 {
-  GBNotificationSend(GBRepositoriesControllerWillSelectRepository);
+  if ([self.delegate respondsToSelector:@selector(repositoriesControllerWillSelectRepository:)]) { [self.delegate repositoriesControllerWillSelectRepository:self]; }
   self.selectedRepositoryController = repoCtrl;
-  GBNotificationSend(GBRepositoriesControllerDidSelectRepository);
-  if ([self selectedLocalRepositoryController])
-  {
-    GBNotificationSend(GBRepositoriesControllerDidSelectLocalRepository);
-  }
-  else if ([self selectedCloningRepositoryController])
-  {
-    GBNotificationSend(GBRepositoriesControllerDidSelectCloningRepository);
-  }
-  [repoCtrl updateRepositoryIfNeeded];
+  if ([self.delegate respondsToSelector:@selector(repositoriesControllerDidSelectRepository:)]) { [self.delegate repositoriesControllerDidSelectRepository:self]; }
+  [self.selectedRepositoryController didSelect];
 }
 
 - (void) setNeedsUpdateEverything

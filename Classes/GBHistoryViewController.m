@@ -157,57 +157,6 @@
 
 
 
-#pragma mark GBRepositoryControllerDelegate
-
-
-
-- (void) subscribeToRepositoryController
-{
-  [[NSNotificationCenter defaultCenter] addObserver:self
-                                           selector:@selector(repositoryControllerDidUpdateCommits:)
-                                               name:GBRepositoryControllerDidUpdateCommits
-                                             object:self.repositoryController];
-
-  [[NSNotificationCenter defaultCenter] addObserver:self
-                                           selector:@selector(repositoryControllerDidSelectCommit:)
-                                               name:GBRepositoryControllerDidSelectCommit
-                                             object:self.repositoryController];
-
-  [[NSNotificationCenter defaultCenter] addObserver:self
-                                           selector:@selector(repositoryControllerDidUpdateCommitChanges:)
-                                               name:GBRepositoryControllerDidUpdateCommitChanges
-                                             object:self.repositoryController];
-}
-
-- (void) unsubscribeFromRepositoryController
-{
-  [[NSNotificationCenter defaultCenter] removeObserver:self 
-                                                  name:nil 
-                                                object:self.repositoryController];
-}
-
-
-- (void) repositoryControllerDidUpdateCommits:(NSNotification*)aNotification
-{
-  self.commits = [self.repositoryController commits];
-}
-
-- (void) repositoryControllerDidSelectCommit:(NSNotification*)aNotification
-{
-  [self update];
-}
-
-- (void) repositoryControllerDidUpdateCommitChanges:(NSNotification*)aNotification
-{
-  [self refreshChangesController];
-  [self updateStage];
-}
-
-
-
-
-
-
 
 
 

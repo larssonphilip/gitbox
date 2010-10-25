@@ -17,8 +17,6 @@
 - (void) updateStage;
 - (void) updateCommits;
 - (void) update;
-
-- (void) subscribeToRepositoryController;
-- (void) unsubscribeFromRepositoryController;
+- (void) refreshChangesController;
 
 @end

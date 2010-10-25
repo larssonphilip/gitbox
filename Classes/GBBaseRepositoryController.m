@@ -3,6 +3,7 @@
 
 @implementation GBBaseRepositoryController
 
+@synthesize delegate;
 @synthesize displaysTwoPathComponents;
 
 - (NSURL*) url
@@ -38,6 +39,17 @@
   return [[[[self url] path] stringByDeletingLastPathComponent] lastPathComponent];
 }
 
+- (NSString*) windowTitle
+{
+  return [[[self url] path] twoLastPathComponentsWithDash];
+}
+
+- (NSURL*) windowRepresentedURL
+{
+  return nil;
+}
+
+
 - (void) setNeedsUpdateEverything {}
 - (void) updateRepositoryIfNeeded {}
 
@@ -46,5 +58,10 @@
 
 - (void) start {}
 - (void) stop {}
+
+- (void) didSelect
+{
+  [self updateRepositoryIfNeeded];
+}
 
 @end

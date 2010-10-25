@@ -28,7 +28,7 @@
 @implementation GBMainWindowController
 
 @synthesize repositoriesController;
-
+@synthesize repositoryController;
 @synthesize toolbarController;
 @synthesize sourcesController;
 @synthesize historyController;
@@ -39,7 +39,7 @@
 - (void) dealloc
 {
   self.repositoriesController = nil;
-  
+  self.repositoryController = nil;
   self.toolbarController = nil;
   self.sourcesController = nil;
   self.historyController = nil;
@@ -61,6 +61,8 @@
   }
   return self;
 }
+
+
 
 
 
@@ -232,17 +234,12 @@
 #pragma mark UI state
 
 
-- (void) updateWindowTitleWithRepositoryController:(GBRepositoryController*) repoCtrl
+- (void) updateWindowTitleWithRepositoryController:(GBBaseRepositoryController*) repoCtrl
 {
   if (repoCtrl)
   {
-    [self.window setTitle:[[[repoCtrl url] path] twoLastPathComponentsWithDash]];
-    NSURL* url = [repoCtrl url];
-    [self.window setRepresentedURL:nil];
-    if ([url isFileURL] && [[NSFileManager defaultManager] fileExistsAtPath:[url path]])
-    {
-      [self.window setRepresentedURL:url];
-    }
+    [self.window setTitle:[repoCtrl windowTitle]];
+    [self.window setRepresentedURL:[repoCtrl windowRepresentedURL]];
   }
   else
   {
@@ -253,6 +250,7 @@
 
 - (void) loadState
 {
+  self.sourcesController.repositoriesController = self.repositoriesController;
   [self.sourcesController loadState];
   [self.toolbarController loadState];
 }
@@ -273,90 +271,127 @@
 
 
 
-#pragma mark GBRepositoriesController Notifications
+#pragma mark GBRepositoriesControllerDelegate
 
 
-- (void) subscribeToRepositoriesController
+
+- (void) repositoriesControllerDidAddRepository:(GBRepositoriesController*)reposCtrl
 {
-  self.sourcesController.repositoriesController = self.repositoriesController;
-  [self.sourcesController subscribeToRepositoriesController];
-  
-  [[NSNotificationCenter defaultCenter] addObserver:self
-                                           selector:@selector(repositoriesControllerDidSelectRepository:)
-                                               name:GBRepositoriesControllerDidSelectRepository 
-                                             object:self.repositoriesController];
-
-  [[NSNotificationCenter defaultCenter] addObserver:self
-                                           selector:@selector(repositoriesControllerDidSelectLocalRepository:)
-                                               name:GBRepositoriesControllerDidSelectLocalRepository
-                                             object:self.repositoriesController];
-  
-  [[NSNotificationCenter defaultCenter] addObserver:self
-                                           selector:@selector(repositoriesControllerDidSelectCloningRepository:)
-                                               name:GBRepositoriesControllerDidSelectCloningRepository 
-                                             object:self.repositoriesController];
-  
-  [[NSNotificationCenter defaultCenter] addObserver:self
-                                           selector:@selector(repositoriesControllerDidRemoveRepository:)
-                                               name:GBRepositoriesControllerDidRemoveRepository
-                                             object:self.repositoriesController];
-  
-  
+  [self.sourcesController expandLocalRepositories];
+  [self.sourcesController update];
 }
 
-- (void) unsubscribeFromRepositoriesController
+- (void) repositoriesControllerDidRemoveRepository:(GBRepositoriesController*)reposCtrl
 {
-  [self.sourcesController unsubscribeFromRepositoriesController];
-  
-  [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                  name:nil 
-                                                object:self.repositoriesController];
 }
 
-
-- (void) repositoriesControllerDidSelectRepository:(NSNotification*)aNotification
+- (void) repositoriesControllerWillSelectRepository:(GBRepositoriesController*)reposCtrl
 {
-  GBRepositoryController* repoCtrl = [self.repositoriesController selectedLocalRepositoryController];
+  self.repositoriesController.selectedRepositoryController.delegate = nil;
+}
+
+- (void) repositoriesControllerDidSelectRepository:(GBRepositoriesController*)reposCtrl
+{
+  GBBaseRepositoryController* repoCtrl = self.repositoriesController.selectedRepositoryController;
+  repoCtrl.delegate = self;
+  
+  self.historyController.repositoryController = nil;
+  self.toolbarController.repositoryController = nil;
+
   [self updateWindowTitleWithRepositoryController:repoCtrl];
+  [self.sourcesController updateSelectedRow];
 }
 
 
-- (void) repositoriesControllerDidSelectLocalRepository:(NSNotification*)aNotification
+
+
+
+
+
+
+#pragma mark GBRepositoryControllerDelegate
+
+
+
+- (void) repositoryControllerDidSelect:(GBRepositoryController*)repoCtrl
 {
-  GBRepositoryController* repoCtrl = [self.repositoriesController selectedLocalRepositoryController];
-  
-  [self.historyController unsubscribeFromRepositoryController];
   self.historyController.repositoryController = repoCtrl;
-  [self.historyController subscribeToRepositoryController];
-  
-  [self.toolbarController unsubscribeFromRepositoryController];
   self.toolbarController.repositoryController = repoCtrl;
-  [self.toolbarController subscribeToRepositoryController];
-  
   [self.toolbarController update];
-  [self.historyController update];
+  [self.historyController update]; 
 }
 
-
-- (void) repositoriesControllerDidSelectCloningRepository:(NSNotification*)aNotification
+- (void) repositoryControllerDidChangeDisabledStatus:(GBRepositoryController*)repoCtrl
 {
-  [self.historyController unsubscribeFromRepositoryController];
-  [self.toolbarController unsubscribeFromRepositoryController];
-  self.historyController.repositoryController = nil;
-  self.toolbarController.repositoryController = nil;
+  [self.toolbarController updateDisabledState];
+}
+
+- (void) repositoryControllerDidChangeSpinningStatus:(GBRepositoryController*)repoCtrl
+{
+  [self.toolbarController updateSpinner]; 
+}
+
+- (void) repositoryControllerDidUpdateCommits:(GBRepositoryController*)repoCtrl
+{
+  self.historyController.commits = [self.repositoryController commits];
+}
+
+- (void) repositoryControllerDidUpdateLocalBranches:(GBRepositoryController*)repoCtrl
+{
+  [self.toolbarController updateBranchMenus];
+}
+
+- (void) repositoryControllerDidUpdateRemoteBranches:(GBRepositoryController*)repoCtrl
+{
+  [self.toolbarController updateBranchMenus];
+}
+
+- (void) repositoryControllerDidCheckoutBranch:(GBRepositoryController*)repoCtrl
+{
+  [self.toolbarController updateBranchMenus];
+}
+
+- (void) repositoryControllerDidChangeRemoteBranch:(GBRepositoryController*)repoCtrl
+{
+  [self.toolbarController updateBranchMenus];
+}
+
+- (void) repositoryControllerDidSelectCommit:(GBRepositoryController*)repoCtrl
+{
+  [self.toolbarController updateCommitButton];
+  [self.historyController update];
+}
+
+- (void) repositoryControllerDidUpdateCommitChanges:(GBRepositoryController*)repoCtrl
+{
+  [self.toolbarController updateCommitButton];
+  [self.historyController refreshChangesController];
+  [self.historyController updateStage];
+}
+
+- (void) repositoryControllerDidUpdateCommitableChanges:(GBRepositoryController*)repoCtrl
+{
+  [self.toolbarController updateCommitButton];
+}
+
+- (void) repositoryControllerDidCommit:(GBRepositoryController*)repoCtrl
+{
+  [self.toolbarController updateCommitButton];
+}
+
+
+
+
+
+#pragma mark GBCloningRepositoryControllerDelegate
+
+
+- (void) cloningRepositoryControllerDidSelect:(GBCloningRepositoryController*)repoCtrl
+{
   [self.toolbarController update];
   [self.historyController update];
 }
 
-- (void) repositoriesControllerDidRemoveRepository:(NSNotification*)aNotification
-{
-  [self.historyController unsubscribeFromRepositoryController];
-  [self.toolbarController unsubscribeFromRepositoryController];
-  self.historyController.repositoryController = nil;
-  self.toolbarController.repositoryController = nil;
-  [self.toolbarController update];
-  [self.historyController update];
-}
 
 
 
@@ -370,6 +405,8 @@
 - (void) windowDidLoad
 {
   [super windowDidLoad];
+  
+  self.sourcesController.repositoriesController = self.repositoriesController;
   
   [self updateWindowTitleWithRepositoryController:nil];
   

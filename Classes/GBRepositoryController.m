@@ -14,19 +14,6 @@
 #import "OAFSEventStream.h"
 #import "NSString+OAStringHelpers.h"
 
-GBNotificationDefine(GBRepositoryControllerDidChangeDisabledStatus);
-GBNotificationDefine(GBRepositoryControllerDidChangeSpinningStatus);
-GBNotificationDefine(GBRepositoryControllerDidUpdateCommits);
-GBNotificationDefine(GBRepositoryControllerDidUpdateLocalBranches);
-GBNotificationDefine(GBRepositoryControllerDidUpdateRemoteBranches);
-GBNotificationDefine(GBRepositoryControllerDidCheckoutBranch);
-GBNotificationDefine(GBRepositoryControllerDidChangeRemoteBranch);
-GBNotificationDefine(GBRepositoryControllerDidSelectCommit);
-GBNotificationDefine(GBRepositoryControllerDidUpdateCommitChanges);
-GBNotificationDefine(GBRepositoryControllerDidUpdateCommitableChanges);
-GBNotificationDefine(GBRepositoryControllerDidCommit);
-
-
 @interface GBRepositoryController ()
 
 - (void) pushDisabled;
@@ -71,6 +58,7 @@ GBNotificationDefine(GBRepositoryControllerDidCommit);
 @synthesize isRemoteBranchesDisabled;
 @synthesize isSpinning;
 @synthesize isCommitting;
+@synthesize delegate;
 
 - (void) dealloc
 {
@@ -116,6 +104,12 @@ GBNotificationDefine(GBRepositoryControllerDidCommit);
   return self.repository.url;
 }
 
+- (NSURL*) windowRepresentedURL
+{
+  return [self url];
+}
+
+
 - (NSArray*) commits
 {
   return [self.repository stageAndCommits];
@@ -145,6 +139,13 @@ GBNotificationDefine(GBRepositoryControllerDidCommit);
   [self.fsEventStream stop];
 }
 
+- (void) didSelect
+{
+  [super didSelect];
+  if ([self.delegate respondsToSelector:@selector(repositoryControllerDidSelect:)]) { 
+    [self.delegate repositoryControllerDidSelect:self];
+  }
+}
 
 
 
@@ -185,7 +186,7 @@ GBNotificationDefine(GBRepositoryControllerDidCommit);
           [self pushSpinning];
           [self pushRemoteBranchesDisabled];
           [remote updateBranchesWithBlock:^{
-            GBNotificationSend(GBRepositoryControllerDidUpdateRemoteBranches);
+            if ([self.delegate respondsToSelector:@selector(repositoryControllerDidUpdateRemoteBranches:)]) { [self.delegate repositoryControllerDidUpdateRemoteBranches:self]; }
             [self popSpinning];
             [self popRemoteBranchesDisabled];
           }];
@@ -223,7 +224,7 @@ GBNotificationDefine(GBRepositoryControllerDidCommit);
     [self pushSpinning];
     [repo.currentLocalRef loadConfiguredRemoteBranchWithBlock:^{
       repo.currentRemoteBranch = repo.currentLocalRef.configuredRemoteBranch;
-      GBNotificationSend(GBRepositoryControllerDidUpdateRemoteBranches);
+      if ([self.delegate respondsToSelector:@selector(repositoryControllerDidUpdateRemoteBranches:)]) { [self.delegate repositoryControllerDidUpdateRemoteBranches:self]; }
       block();
       [self popSpinning];
     }];
@@ -251,13 +252,13 @@ GBNotificationDefine(GBRepositoryControllerDidCommit);
   
   repo.localBranchCommits = nil;
   
-  GBNotificationSend(GBRepositoryControllerDidUpdateCommits);
+  if ([self.delegate respondsToSelector:@selector(repositoryControllerDidUpdateCommits:)]) [self.delegate repositoryControllerDidUpdateCommits:self];
   checkoutBlock(^{
     
     repo.currentLocalRef = nil;
     repo.currentRemoteBranch = nil;
     [self updateCurrentBranchesIfNeededWithBlock:^{
-      GBNotificationSend(GBRepositoryControllerDidCheckoutBranch);
+      if ([self.delegate respondsToSelector:@selector(repositoryControllerDidCheckoutBranch:)]) { [self.delegate repositoryControllerDidCheckoutBranch:self]; }
       [self updateLocalBranchesAndTags];
       [self loadCommits];
       [self popDisabled];
@@ -291,11 +292,11 @@ GBNotificationDefine(GBRepositoryControllerDidCommit);
 {
   self.repository.currentRemoteBranch = remoteBranch;
   [self.repository configureTrackingRemoteBranch:remoteBranch 
-       withLocalName:self.repository.currentLocalRef.name 
-           block:^{
-            GBNotificationSend(GBRepositoryControllerDidChangeRemoteBranch);
-            [self loadCommits];
-  }];
+                                   withLocalName:self.repository.currentLocalRef.name 
+                                           block:^{
+                                             if ([self.delegate respondsToSelector:@selector(repositoryControllerDidChangeRemoteBranch:)]) { [self.delegate repositoryControllerDidChangeRemoteBranch:self]; }
+                                             [self loadCommits];
+                                           }];
 }
 
 - (void) workingDirectoryStateDidChange
@@ -336,7 +337,7 @@ GBNotificationDefine(GBRepositoryControllerDidCommit);
       [self loadChangesForCommit:commit];
     }
   }
-  GBNotificationSend(GBRepositoryControllerDidSelectCommit);
+  if ([self.delegate respondsToSelector:@selector(repositoryControllerDidSelectCommit:)]) { [self.delegate repositoryControllerDidSelectCommit:self]; }
 }
 
 
@@ -509,7 +510,7 @@ GBNotificationDefine(GBRepositoryControllerDidCommit);
 - (void) selectCommitableChanges:(NSArray*)changes
 {
   self.repository.stage.hasSelectedChanges = ([changes count] > 0);
-  GBNotificationSend(GBRepositoryControllerDidUpdateCommitableChanges);
+  if ([self.delegate respondsToSelector:@selector(repositoryControllerDidUpdateCommitableChanges:)]) { [self.delegate repositoryControllerDidUpdateCommitableChanges:self]; }
 }
 
 - (void) commitWithMessage:(NSString*)message
@@ -522,7 +523,7 @@ GBNotificationDefine(GBRepositoryControllerDidCommit);
     [self loadStageChanges];
     [self loadCommits];
     [self popSpinning];
-    GBNotificationSend(GBRepositoryControllerDidCommit);
+    if ([self.delegate respondsToSelector:@selector(repositoryControllerDidCommit:)]) { [self.delegate repositoryControllerDidCommit:self]; }
   }];
 }
 
@@ -584,7 +585,7 @@ GBNotificationDefine(GBRepositoryControllerDidCommit);
   isDisabled++;
   if (isDisabled == 1)
   {
-    GBNotificationSend(GBRepositoryControllerDidChangeDisabledStatus);
+    if ([self.delegate respondsToSelector:@selector(repositoryControllerDidChangeDisabledStatus:)]) { [self.delegate repositoryControllerDidChangeDisabledStatus:self]; }
   }
 }
 
@@ -593,7 +594,7 @@ GBNotificationDefine(GBRepositoryControllerDidCommit);
   isDisabled--;
   if (isDisabled == 0)
   {
-    GBNotificationSend(GBRepositoryControllerDidChangeDisabledStatus);
+    if ([self.delegate respondsToSelector:@selector(repositoryControllerDidChangeDisabledStatus:)]) { [self.delegate repositoryControllerDidChangeDisabledStatus:self]; }
   }
 }
 
@@ -602,7 +603,7 @@ GBNotificationDefine(GBRepositoryControllerDidCommit);
   isRemoteBranchesDisabled++;
   if (isRemoteBranchesDisabled == 1)
   {
-    GBNotificationSend(GBRepositoryControllerDidChangeDisabledStatus);
+    if ([self.delegate respondsToSelector:@selector(repositoryControllerDidChangeDisabledStatus:)]) { [self.delegate repositoryControllerDidChangeDisabledStatus:self]; }
   }
 }
 
@@ -611,7 +612,7 @@ GBNotificationDefine(GBRepositoryControllerDidCommit);
   isRemoteBranchesDisabled--;
   if (isRemoteBranchesDisabled == 0)
   {
-    GBNotificationSend(GBRepositoryControllerDidChangeDisabledStatus);
+    if ([self.delegate respondsToSelector:@selector(repositoryControllerDidChangeDisabledStatus:)]) { [self.delegate repositoryControllerDidChangeDisabledStatus:self]; }
   }
 }
 
@@ -621,7 +622,7 @@ GBNotificationDefine(GBRepositoryControllerDidCommit);
   isSpinning++;
   if (isSpinning == 1) 
   {
-    GBNotificationSend(GBRepositoryControllerDidChangeSpinningStatus);
+    if ([self.delegate respondsToSelector:@selector(repositoryControllerDidChangeSpinningStatus:)]) { [self.delegate repositoryControllerDidChangeSpinningStatus:self]; }
   }
 }
 
@@ -631,7 +632,7 @@ GBNotificationDefine(GBRepositoryControllerDidCommit);
   isSpinning--;
   if (isSpinning == 0)
   {
-    GBNotificationSend(GBRepositoryControllerDidChangeSpinningStatus);
+    if ([self.delegate respondsToSelector:@selector(repositoryControllerDidChangeSpinningStatus:)]) { [self.delegate repositoryControllerDidChangeSpinningStatus:self]; }
   }  
 }
 
@@ -641,7 +642,7 @@ GBNotificationDefine(GBRepositoryControllerDidCommit);
 - (void) updateLocalBranchesAndTags
 {
   [self.repository updateLocalBranchesAndTagsWithBlock:^{
-    GBNotificationSend(GBRepositoryControllerDidUpdateLocalBranches);
+    if ([self.delegate respondsToSelector:@selector(repositoryControllerDidUpdateLocalBranches:)]) { [self.delegate repositoryControllerDidUpdateLocalBranches:self]; }
   }];  
 }
 
@@ -658,15 +659,15 @@ GBNotificationDefine(GBRepositoryControllerDidCommit);
       {
         [self resetBackgroundUpdateInterval];
       }
-      GBNotificationSend(GBRepositoryControllerDidUpdateCommits);
+      if ([self.delegate respondsToSelector:@selector(repositoryControllerDidUpdateCommits:)]) { [self.delegate repositoryControllerDidUpdateCommits:self]; }
       //[self pushSpinning];
       [self.repository updateUnmergedCommitsWithBlock:^{
-        GBNotificationSend(GBRepositoryControllerDidUpdateCommits);
+        if ([self.delegate respondsToSelector:@selector(repositoryControllerDidUpdateCommits:)]) { [self.delegate repositoryControllerDidUpdateCommits:self]; }
         //[self popSpinning];
       }];
       //[self pushSpinning];
       [self.repository updateUnpushedCommitsWithBlock:^{
-        GBNotificationSend(GBRepositoryControllerDidUpdateCommits);
+        if ([self.delegate respondsToSelector:@selector(repositoryControllerDidUpdateCommits:)]) { [self.delegate repositoryControllerDidUpdateCommits:self]; }
         //[self popSpinning];
       }];
       [self popSpinning];
@@ -677,7 +678,7 @@ GBNotificationDefine(GBRepositoryControllerDidCommit);
 - (void) loadStageChanges
 {
   if (!self.repository.stage) return;
-
+  
   [self pushFSEventsPause];
   isLoadingChanges++;
   [self.repository.stage loadChangesWithBlock:^{
@@ -686,7 +687,7 @@ GBNotificationDefine(GBRepositoryControllerDidCommit);
     // or another loading task is running.
     if (!isStaging && !isLoadingChanges)
     {
-      GBNotificationSend(GBRepositoryControllerDidUpdateCommitChanges);
+      if ([self.delegate respondsToSelector:@selector(repositoryControllerDidUpdateCommitChanges:)]) { [self.delegate repositoryControllerDidUpdateCommitChanges:self]; }
     }
     [self popFSEventsPause];
   }];
@@ -697,14 +698,14 @@ GBNotificationDefine(GBRepositoryControllerDidCommit);
   if (!commit) return;
   [self pushFSEventsPause];
   [commit loadChangesWithBlock:^{
-    GBNotificationSend(GBRepositoryControllerDidUpdateCommitChanges);
+    if ([self.delegate respondsToSelector:@selector(repositoryControllerDidUpdateCommitChanges:)]) { [self.delegate repositoryControllerDidUpdateCommitChanges:self]; }
     [self popFSEventsPause];
   }];
 }
 
 
 
-//
+// OBSOLETE
 //
 //- (void) saveObject:(id)obj forKey:(NSString*)key
 //{

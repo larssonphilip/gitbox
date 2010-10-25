@@ -1,13 +1,18 @@
+#import "GBRepositoriesControllerDelegate.h"
+#import "GBRepositoryControllerDelegate.h"
 
 @class GBRepositoriesController;
-
+@class GBRepositoryController;
 @class GBToolbarController;
 @class GBSourcesController;
 @class GBHistoryViewController;
 @class GBWelcomeController;
-@interface GBMainWindowController : NSWindowController<NSSplitViewDelegate>
+@interface GBMainWindowController : NSWindowController<NSSplitViewDelegate, 
+                                                      GBRepositoriesControllerDelegate,
+                                                      GBRepositoryControllerDelegate>
 
 @property(retain) GBRepositoriesController* repositoriesController;
+@property(retain) GBRepositoryController* repositoryController;
 
 @property(retain) IBOutlet GBToolbarController* toolbarController;
 @property(retain) GBSourcesController* sourcesController;
@@ -29,8 +34,5 @@
 - (IBAction) selectNextRepository:(id)_;
 
 - (IBAction) showWelcomeWindow:(id)_;
-
-- (void) subscribeToRepositoriesController;
-- (void) unsubscribeFromRepositoriesController;
 
 @end

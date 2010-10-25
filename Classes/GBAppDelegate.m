@@ -5,7 +5,6 @@
 #import "GBRepositoryController.h"
 #import "GBCloningRepositoryController.h"
 
-#import "GBMainMenuController.h"
 #import "GBMainWindowController.h"
 #import "GBSourcesController.h"
 #import "GBActivityController.h"
@@ -257,7 +256,7 @@
   
   // Connect controllers
   self.windowController.repositoriesController = self.repositoriesController;
-  [self.windowController subscribeToRepositoriesController];
+  self.repositoriesController.delegate = self.windowController;
   
   // Launch the updates
   [self.windowController showWindow:self];
@@ -273,7 +272,7 @@
 
 - (void) applicationWillTerminate:(NSNotification*)aNotification
 {
-  [self.windowController unsubscribeFromRepositoriesController];
+  self.repositoriesController.delegate = nil;
   [self saveRepositories];
   [self.windowController saveState];
 }

@@ -9,10 +9,6 @@
 #import "NSTableView+OATableViewHelpers.h"
 #import "NSObject+OADispatchItemValidation.h"
 
-@interface GBSourcesController ()
-- (void) reloadOutlineView;
-@end
-
 @implementation GBSourcesController
 
 @synthesize sections;
@@ -36,57 +32,6 @@
                      nil];
   }
   return [[sections retain] autorelease];
-}
-
-
-
-
-
-#pragma mark GBSourcesController
-
-
-- (void) subscribeToRepositoriesController
-{
-  [[NSNotificationCenter defaultCenter] addObserver:self
-                                           selector:@selector(repositoriesControllerDidAddRepository:)
-                                               name:GBRepositoriesControllerDidAddRepository
-                                             object:self.repositoriesController];
-  [[NSNotificationCenter defaultCenter] addObserver:self
-                                           selector:@selector(repositoriesControllerDidRemoveRepository:)
-                                               name:GBRepositoriesControllerDidRemoveRepository
-                                             object:self.repositoriesController];
-  [[NSNotificationCenter defaultCenter] addObserver:self
-                                           selector:@selector(repositoriesControllerDidSelectRepository:)
-                                               name:GBRepositoriesControllerDidSelectRepository
-                                             object:self.repositoriesController];
-}
-
-- (void) unsubscribeFromRepositoriesController
-{
-  [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                  name:nil
-                                                object:self.repositoriesController];
-}
-
-
-- (void) repositoriesControllerDidAddRepository:(NSNotification*)aNotification
-{
-  [self.outlineView expandItem:self.repositoriesController.localRepositoryControllers];
-  [self reloadOutlineView];
-}
-
-- (void) repositoriesControllerDidRemoveRepository:(NSNotification*)aNotification
-{
-  [self reloadOutlineView];
-}
-
-- (void) repositoriesControllerDidSelectRepository:(NSNotification*)aNotification
-{
-  GBBaseRepositoryController* repoCtrl = self.repositoriesController.selectedRepositoryController;
-  [self.outlineView withoutDelegate:^{
-    [self.outlineView selectRowIndexes:[NSIndexSet indexSetWithIndex:[self.outlineView rowForItem:repoCtrl]] 
-                  byExtendingSelection:NO];
-  }];
 }
 
 
@@ -195,12 +140,32 @@
   
 }
 
-- (void) reloadOutlineView
+- (void) update
 {
   [self saveExpandedState];
   [self.outlineView reloadData];
   [self loadExpandedState];  
 }
+
+- (void) updateSelectedRow
+{
+  GBBaseRepositoryController* repoCtrl = self.repositoriesController.selectedRepositoryController;
+  [self.outlineView withoutDelegate:^{
+    [self.outlineView selectRowIndexes:[NSIndexSet indexSetWithIndex:[self.outlineView rowForItem:repoCtrl]] 
+                  byExtendingSelection:NO];
+  }];
+}
+
+- (void) expandLocalRepositories
+{
+  [self.outlineView expandItem:self.repositoriesController.localRepositoryControllers];
+}
+
+
+
+#pragma mark State load/save
+
+
 
 - (void) saveState
 {

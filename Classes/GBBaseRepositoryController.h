@@ -1,7 +1,8 @@
-#import "GBNotificationMacros.h"
+#import "GBBaseRepositoryControllerDelegate.h"
 
 @interface GBBaseRepositoryController : NSObject
 
+@property(assign) id<GBBaseRepositoryControllerDelegate> delegate;
 @property(assign) BOOL displaysTwoPathComponents;
 
 - (NSURL*) url;
@@ -9,6 +10,8 @@
 - (NSString*) shortNameForSourceList;
 - (NSString*) longNameForSourceList;
 - (NSString*) parentFolderName;
+- (NSString*) windowTitle;
+- (NSURL*) windowRepresentedURL;
 
 - (void) setNeedsUpdateEverything;
 - (void) updateRepositoryIfNeeded;
@@ -18,5 +21,7 @@
 
 - (void) start;
 - (void) stop;
+
+- (void) didSelect;
 
 @end

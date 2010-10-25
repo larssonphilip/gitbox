@@ -1,19 +1,7 @@
 #import "GBBaseRepositoryController.h"
 #import "GBChangeDelegate.h"
 
-#import "GBNotificationMacros.h"
-
-GBNotificationDeclare(GBRepositoryControllerDidChangeDisabledStatus);
-GBNotificationDeclare(GBRepositoryControllerDidChangeSpinningStatus);
-GBNotificationDeclare(GBRepositoryControllerDidUpdateCommits);
-GBNotificationDeclare(GBRepositoryControllerDidUpdateLocalBranches);
-GBNotificationDeclare(GBRepositoryControllerDidUpdateRemoteBranches);
-GBNotificationDeclare(GBRepositoryControllerDidCheckoutBranch);
-GBNotificationDeclare(GBRepositoryControllerDidChangeRemoteBranch);
-GBNotificationDeclare(GBRepositoryControllerDidSelectCommit);
-GBNotificationDeclare(GBRepositoryControllerDidUpdateCommitChanges);
-GBNotificationDeclare(GBRepositoryControllerDidUpdateCommitableChanges);
-GBNotificationDeclare(GBRepositoryControllerDidCommit);
+#import "GBRepositoryControllerDelegate.h"
 
 @class GBRepository;
 @class GBRef;
@@ -48,6 +36,7 @@ GBNotificationDeclare(GBRepositoryControllerDidCommit);
 @property(assign) NSInteger isRemoteBranchesDisabled;
 @property(assign) NSInteger isSpinning;
 @property(assign) BOOL isCommitting;
+@property(assign) id<GBRepositoryControllerDelegate> delegate;
 
 + (id) repositoryControllerWithURL:(NSURL*)url;
 

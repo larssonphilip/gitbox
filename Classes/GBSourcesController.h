@@ -15,12 +15,13 @@
 - (void) saveState;
 - (void) loadState;
 
+- (void) update;
+- (void) updateSelectedRow;
+- (void) expandLocalRepositories;
+
 - (IBAction) selectPreviousRepository:(id)_;
 - (IBAction) selectNextRepository:(id)_;
 
 - (IBAction) remove:(id)_;
-
-- (void) subscribeToRepositoriesController;
-- (void) unsubscribeFromRepositoriesController;
 
 @end
