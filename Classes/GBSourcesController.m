@@ -1,5 +1,4 @@
 #import "GBBaseRepositoryController.h"
-#import "GBRepositoryController.h"
 #import "GBRepositoriesController.h"
 
 #import "GBSourcesController.h"
@@ -60,7 +59,7 @@
 - (IBAction) selectPreviousRepository:(id)_
 {
   NSInteger index = [self.outlineView rowForItem:self.repositoriesController.selectedRepositoryController];
-  GBRepositoryController* item = nil;
+  GBBaseRepositoryController* item = nil;
   if (index < 0)
   {
     item = [self firstNonGroupRowStartingAtRow:0 direction:+1];
@@ -75,7 +74,7 @@
 - (IBAction) selectNextRepository:(id)_
 {
   NSInteger index = [self.outlineView rowForItem:self.repositoriesController.selectedRepositoryController];
-  GBRepositoryController* item = nil;
+  GBBaseRepositoryController* item = nil;
   if (index < 0)
   {
     item = [self firstNonGroupRowStartingAtRow:0 direction:+1];
@@ -235,7 +234,7 @@
   
   if ([item isKindOfClass:[GBBaseRepositoryController class]])
   {
-    GBRepositoryController* repoCtrl = (GBRepositoryController*)item;
+    GBBaseRepositoryController* repoCtrl = (GBBaseRepositoryController*)item;
     return [repoCtrl nameForSourceList];
   }
   return nil;
@@ -283,7 +282,7 @@
 
 - (void)outlineView:(NSOutlineView*)anOutlineView willDisplayCell:(id)cell forTableColumn:(NSTableColumn*)tableColumn item:(id)item
 {
-  if (![item isKindOfClass:[GBRepositoryController class]])
+  if (![item isKindOfClass:[GBBaseRepositoryController class]])
   {
     [cell setMenu:nil];
   }
