@@ -96,6 +96,7 @@
       cloneController.url = ctrl.targetURL;
       NSLog(@"TODO: change for the cloning-specific API here (i.e. addCloningRepositoryController:)");
       [self.repositoriesController addLocalRepositoryController:cloneController];
+      [self.repositoriesController selectRepositoryController:cloneController];
       [[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:cloneController.url];
     }
   };
@@ -215,7 +216,7 @@
   NSData* selectedLocalRepoData = nil;
   for (GBRepositoryController* repoCtrl in self.repositoriesController.localRepositoryControllers)
   {
-    NSData* bookmarkData = [repoCtrl.url bookmarkDataWithOptions:NSURLBookmarkCreationMinimalBookmark
+    NSData* bookmarkData = [[repoCtrl url] bookmarkDataWithOptions:NSURLBookmarkCreationMinimalBookmark
                                   includingResourceValuesForKeys:nil
                                                    relativeToURL:nil
                                                            error:NULL];
