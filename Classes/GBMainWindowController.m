@@ -1,16 +1,16 @@
+#import "GBRepository.h"
+#import "GBCommit.h"
+
 #import "GBRepositoriesController.h"
 #import "GBRepositoryController.h"
 #import "GBBaseRepositoryController.h"
 
 #import "GBMainWindowController.h"
-
 #import "GBToolbarController.h"
 #import "GBSourcesController.h"
 #import "GBHistoryViewController.h"
 #import "GBWelcomeController.h"
-
-#import "GBRepository.h"
-#import "GBCommit.h"
+#import "GBCloneProcessViewController.h"
 
 #import "GBRemotesController.h"
 #import "GBFileEditingController.h"
@@ -33,6 +33,7 @@
 @synthesize sourcesController;
 @synthesize historyController;
 @synthesize welcomeController;
+@synthesize cloneProcessViewController;
 
 @synthesize splitView;
 
@@ -44,6 +45,7 @@
   self.sourcesController = nil;
   self.historyController = nil;
   self.welcomeController = nil;
+  self.cloneProcessViewController = nil;
   
   self.splitView = nil;
   
@@ -56,8 +58,7 @@
   {
     self.sourcesController = [[[GBSourcesController alloc] initWithNibName:@"GBSourcesController" bundle:nil] autorelease];
     self.historyController = [[[GBHistoryViewController alloc] initWithNibName:@"GBHistoryViewController" bundle:nil] autorelease];
-    
-    
+    self.cloneProcessViewController = [[[GBCloneProcessViewController alloc] initWithNibName:@"GBCloneProcessViewController" bundle:nil] autorelease];
   }
   return self;
 }
@@ -291,6 +292,8 @@
 - (void) repositoriesControllerWillSelectRepository:(GBRepositoriesController*)reposCtrl
 {
   self.repositoriesController.selectedRepositoryController.delegate = nil;
+  [self.historyController unloadView];
+  [self.cloneProcessViewController unloadView];
 }
 
 - (void) repositoriesControllerDidSelectRepository:(GBRepositoriesController*)reposCtrl
@@ -321,7 +324,8 @@
   self.historyController.repositoryController = repoCtrl;
   self.toolbarController.repositoryController = repoCtrl;
   [self.toolbarController update];
-  [self.historyController update]; 
+  [self.historyController update];
+  [self.historyController loadInView:[[self.splitView subviews] objectAtIndex:1]];
 }
 
 - (void) repositoryControllerDidChangeDisabledStatus:(GBRepositoryController*)repoCtrl
@@ -393,6 +397,7 @@
 {
   [self.toolbarController update];
   [self.historyController update];
+  [self.cloneProcessViewController loadInView:[[self.splitView subviews] objectAtIndex:1]];
 }
 
 

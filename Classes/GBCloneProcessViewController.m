@@ -15,8 +15,8 @@
 - (void) update
 {
   // TODO: check for repository controller status
-  [self.messageLabel setValue:NSLocalizedString(@"  Clone in progress...", @"Clone")];
-  [self.errorLabel setValue:@""];
+  [self.messageLabel setStringValue:NSLocalizedString(@"  Clone in progress...", @"Clone")];
+  [self.errorLabel setStringValue:@""];
 }
 
 - (IBAction) cancel:_

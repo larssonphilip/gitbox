@@ -7,6 +7,7 @@
 @class GBSourcesController;
 @class GBHistoryViewController;
 @class GBWelcomeController;
+@class GBCloneProcessViewController;
 @interface GBMainWindowController : NSWindowController<NSSplitViewDelegate, 
                                                       GBRepositoriesControllerDelegate,
                                                       GBRepositoryControllerDelegate>
@@ -18,6 +19,7 @@
 @property(retain) GBSourcesController* sourcesController;
 @property(retain) GBHistoryViewController* historyController;
 @property(retain) GBWelcomeController* welcomeController;
+@property(retain) GBCloneProcessViewController* cloneProcessViewController;
 
 @property(retain) IBOutlet NSSplitView* splitView;
 

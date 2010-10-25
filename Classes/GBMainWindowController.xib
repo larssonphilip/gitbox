@@ -12,7 +12,7 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="5"/>
+			<integer value="6"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -567,6 +567,13 @@
 					<int key="NSvFlags">256</int>
 					<object class="NSMutableArray" key="NSSubviews">
 						<bool key="EncodedWithXMLCoder">YES</bool>
+						<object class="NSCustomView" id="635323578">
+							<reference key="NSNextResponder" ref="568628114"/>
+							<int key="NSvFlags">274</int>
+							<string key="NSFrameSize">{799, 435}</string>
+							<reference key="NSSuperview" ref="568628114"/>
+							<string key="NSClassName">WhiteNSView</string>
+						</object>
 						<object class="NSSplitView" id="50605990">
 							<reference key="NSNextResponder" ref="568628114"/>
 							<int key="NSvFlags">4370</int>
@@ -786,6 +793,7 @@
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="50605990"/>
+							<reference ref="635323578"/>
 						</object>
 						<reference key="parent" ref="275939982"/>
 					</object>
@@ -1112,6 +1120,11 @@
 						<reference key="object" ref="180867585"/>
 						<reference key="parent" ref="840289140"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">100402</int>
+						<reference key="object" ref="635323578"/>
+						<reference key="parent" ref="568628114"/>
+					</object>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="flattenedProperties">
@@ -1163,6 +1176,7 @@
 					<string>100398.IBPluginDependency</string>
 					<string>100399.IBPluginDependency</string>
 					<string>100399.designableToolbarItemIdentifier</string>
+					<string>100402.IBPluginDependency</string>
 					<string>5.IBEditorWindowLastContentRect</string>
 					<string>5.IBPluginDependency</string>
 					<string>5.IBWindowTemplateEditedContentRect</string>
@@ -1221,9 +1235,10 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>pull</string>
-					<string>{{229, 211}, {799, 435}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{229, 211}, {799, 435}}</string>
+					<string>{{337, 152}, {799, 435}}</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>{{337, 152}, {799, 435}}</string>
 					<integer value="1"/>
 					<boolean value="YES"/>
 					<string>{{201, 387}, {507, 413}}</string>
@@ -1249,7 +1264,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">100401</int>
+			<int key="maxID">100402</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -1745,6 +1760,14 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">NSWindowController</string>
 					<reference key="sourceIdentifier" ref="613026031"/>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">WhiteNSView</string>
+					<string key="superclassName">NSView</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">Classes/Libs/WhiteNSView.h</string>
+					</object>
 				</object>
 			</object>
 			<object class="NSMutableArray" key="referencedPartialClassDescriptionsV3.2+">
