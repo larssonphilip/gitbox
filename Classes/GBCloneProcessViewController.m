@@ -5,28 +5,34 @@
 
 @synthesize messageLabel;
 @synthesize errorLabel;
+@synthesize cancelButton;
 @synthesize repositoryController;
 
 - (void) dealloc
 {
   self.messageLabel = nil;
   self.errorLabel = nil;
+  self.cancelButton = nil;
   self.repositoryController = nil;
   [super dealloc];
 }
 
 - (void) update
 {
-  // TODO: check for repository controller status
   [self.messageLabel setStringValue:NSLocalizedString(@"  Clone in progress...", @"Clone")];
   [self.errorLabel setStringValue:@""];
+  
+  if (self.repositoryController.error)
+  {
+    [self.messageLabel setStringValue:NSLocalizedString(@"Clone Error", @"Clone")];
+    [self.errorLabel setStringValue:NSLocalizedString(@"Check the URL or the network connection.", @"Clone")];
+    [self.cancelButton setTitle:NSLocalizedString(@"Close", @"")];
+  }
 }
 
 - (IBAction) cancel:_
 {
-  // TODO: tell repository controller to stop cloning
-  [self.repositoryController stop];
-  NSLog(@"GBCloneProcessViewController: TODO: tell repositoriesController to remove this controller");
+  [self.repositoryController cancelCloning];
 }
 
 - (void) loadView

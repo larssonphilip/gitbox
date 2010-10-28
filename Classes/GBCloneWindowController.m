@@ -28,12 +28,19 @@
   if ([urlString isEqual:@""]) return nil;
   urlString = [urlString stringByReplacingOccurrencesOfString:@"git clone" withString:@""];
   urlString = [urlString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+  
+  if ([urlString rangeOfString:@"~/"].location == 0)
+  {
+    urlString = [urlString stringByReplacingOccurrencesOfString:@"~" withString:NSHomeDirectory()];
+  }
+  
   if ([urlString rangeOfString:@"://"].location == NSNotFound)
   {
     if ([[NSFileManager defaultManager] fileExistsAtPath:urlString])
     {
       return [NSURL fileURLWithPath:urlString];
     }
+    urlString = [urlString stringByReplacingOccurrencesOfString:@":" withString:@"/"]; // git@github.com:oleganza/path => git@github.com/oleganza/path
     urlString = [NSString stringWithFormat:@"ssh://%@", urlString];
   }
   NSURL* url = [NSURL URLWithString:urlString];

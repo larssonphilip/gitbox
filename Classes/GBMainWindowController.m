@@ -3,6 +3,7 @@
 
 #import "GBRepositoriesController.h"
 #import "GBRepositoryController.h"
+#import "GBCloningRepositoryController.h"
 #import "GBBaseRepositoryController.h"
 
 #import "GBMainWindowController.h"
@@ -403,12 +404,21 @@
 
 - (void) cloningRepositoryControllerDidFinish:(GBCloningRepositoryController*)repoCtrl
 {
-  NSLog(@"TODO: remove this controller and add a real one");
+  [self.repositoriesController removeLocalRepositoryController:repoCtrl];
+  GBRepositoryController* readyRepoCtrl = [GBRepositoryController repositoryControllerWithURL:repoCtrl.targetURL];
+  [self.repositoriesController addLocalRepositoryController:readyRepoCtrl];
+  [[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:repoCtrl.targetURL];
+  [self.repositoriesController selectRepositoryController:readyRepoCtrl];
 }
 
 - (void) cloningRepositoryControllerDidFail:(GBCloningRepositoryController*)repoCtrl
 {
-  NSLog(@"TODO: display an error message");
+  [self.cloneProcessViewController update];
+}
+
+- (void) cloningRepositoryControllerDidCancel:(GBCloningRepositoryController*)repoCtrl
+{
+  [self.repositoriesController removeLocalRepositoryController:repoCtrl];
 }
 
 

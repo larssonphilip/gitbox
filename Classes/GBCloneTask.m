@@ -25,7 +25,6 @@
 
 - (void) prepareTask
 {
-  NSLog(@"OACloneTask: %@ => %@", self.sourceURL, self.targetURL);
   NSString* folder = [[self.targetURL path] lastPathComponent];
   self.arguments = [NSArray arrayWithObjects:@"clone", [self.sourceURL absoluteString], folder, nil];
   [super prepareTask];

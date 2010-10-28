@@ -4,7 +4,6 @@ Showstoppers:
 - clone a repo
   - DO NOT SWIZZLE delegate: harms inheritance 
   + create a base class with little common methods
-  
 - payment thing
 - nice screenshots
 - simpler definition and wording
@@ -44,7 +43,7 @@ Bugs:
 - maybe a bug: if the stage view is not selected, commit: action is not available
 - preferences: should select "Other" when typing
 - preferences: should focus text field when selected "Other"
-
+- todo: think on a best and consistent way to terminate tasks
 
 Cool features:
 

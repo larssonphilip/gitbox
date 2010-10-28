@@ -5,4 +5,5 @@
 - (void) cloningRepositoryControllerDidSelect:(GBCloningRepositoryController*)repoCtrl;
 - (void) cloningRepositoryControllerDidFinish:(GBCloningRepositoryController*)repoCtrl;
 - (void) cloningRepositoryControllerDidFail:(GBCloningRepositoryController*)repoCtrl;
+- (void) cloningRepositoryControllerDidCancel:(GBCloningRepositoryController*)repoCtrl;
 @end

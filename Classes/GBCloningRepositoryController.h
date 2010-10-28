@@ -7,7 +7,10 @@
 @property(retain) NSURL* sourceURL;
 @property(retain) NSURL* targetURL;
 @property(retain) GBCloneTask* cloneTask;
+@property(retain) NSError* error;
 
 @property(assign) id<GBCloningRepositoryControllerDelegate> delegate;
+
+- (void) cancelCloning;
 
 @end

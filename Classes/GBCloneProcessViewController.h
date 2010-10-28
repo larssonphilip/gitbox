@@ -1,8 +1,10 @@
 @class GBCloningRepositoryController;
 
 @interface GBCloneProcessViewController : NSViewController
+
 @property(retain) IBOutlet NSTextField* messageLabel;
 @property(retain) IBOutlet NSTextField* errorLabel;
+@property(retain) IBOutlet NSButton* cancelButton;
 @property(retain) GBCloningRepositoryController* repositoryController;
 
 - (void) update;
