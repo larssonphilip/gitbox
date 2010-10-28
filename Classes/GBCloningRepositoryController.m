@@ -1,34 +1,60 @@
 #import "GBCloningRepositoryController.h"
+#import "GBCloneTask.h"
 
 @implementation GBCloningRepositoryController
 
 @synthesize sourceURL;
-@synthesize url;
+@synthesize targetURL;
+@synthesize cloneTask;
 
 @synthesize delegate;
 
 - (void) dealloc
 {
   self.sourceURL = nil;
-  self.url = nil;
+  self.targetURL = nil;
+  self.cloneTask = nil;
   [super dealloc];
 }
 
 - (NSURL*) windowRepresentedURL
 {
-  return self.url;
+  return self.targetURL;
 }
 
+- (NSURL*) url
+{
+  return self.targetURL;
+}
 
 - (void) start
 {
-  
-//  NSLog(@"TODO: begin clone: %@", self.url);
-//  NSLog(@"TODO: when done, remove self from local repositories and add the proper controller");
+  self.cloneTask = [[GBCloneTask new] autorelease];
+  self.cloneTask.sourceURL = self.sourceURL;
+  self.cloneTask.targetURL = self.targetURL;
+  [self.cloneTask launchWithBlock:^{
+    [self.cloneTask showErrorIfNeeded];
+    if (self.cloneTask.isTerminated || [self.cloneTask isError])
+    {
+      NSLog(@"GBCloningRepositoryController: did FAIL to clone at %@", self.targetURL);
+      if ([self.delegate respondsToSelector:@selector(cloningRepositoryControllerDidFail:)]) {
+        [self.delegate cloningRepositoryControllerDidFail:self];
+      }
+    }
+    else
+    {
+      NSLog(@"GBCloningRepositoryController: did finish clone at %@", self.targetURL);
+      if ([self.delegate respondsToSelector:@selector(cloningRepositoryControllerDidFinish:)]) {
+        [self.delegate cloningRepositoryControllerDidFinish:self];
+      }
+    }
+    self.cloneTask = nil;
+  }];
 }
 
 - (void) stop
 {
+  [self.cloneTask terminate];
   // repo removed from list: may cancel cloning or clean up after finishing
 }
 

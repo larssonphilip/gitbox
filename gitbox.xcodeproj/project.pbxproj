@@ -117,6 +117,7 @@
 		20B8B83911A4A72A006D6442 /* GBPromptController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 20B8B83811A4A72A006D6442 /* GBPromptController.xib */; };
 		20B8B83D11A4A776006D6442 /* GBPromptController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B8B83C11A4A776006D6442 /* GBPromptController.m */; };
 		20B8B84811A4AAF2006D6442 /* NSString+OAStringHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B8B84711A4AAF2006D6442 /* NSString+OAStringHelpers.m */; };
+		20BF14121279533900A30EE6 /* GBCloneTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 20BF14111279533900A30EE6 /* GBCloneTask.m */; };
 		20C3B710125BCCC600ABEDE7 /* commit-marker-highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 20C3B70B125BCCC600ABEDE7 /* commit-marker-highlighted.png */; };
 		20C3B711125BCCC600ABEDE7 /* commit-marker-unmerged-highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 20C3B70C125BCCC600ABEDE7 /* commit-marker-unmerged-highlighted.png */; };
 		20C3B712125BCCC600ABEDE7 /* commit-marker-unmerged.png in Resources */ = {isa = PBXBuildFile; fileRef = 20C3B70D125BCCC600ABEDE7 /* commit-marker-unmerged.png */; };
@@ -332,6 +333,8 @@
 		20B8B83C11A4A776006D6442 /* GBPromptController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBPromptController.m; sourceTree = "<group>"; };
 		20B8B84611A4AAF2006D6442 /* NSString+OAStringHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+OAStringHelpers.h"; sourceTree = "<group>"; };
 		20B8B84711A4AAF2006D6442 /* NSString+OAStringHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+OAStringHelpers.m"; sourceTree = "<group>"; };
+		20BF14101279533900A30EE6 /* GBCloneTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBCloneTask.h; sourceTree = "<group>"; };
+		20BF14111279533900A30EE6 /* GBCloneTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBCloneTask.m; sourceTree = "<group>"; };
 		20C3B70B125BCCC600ABEDE7 /* commit-marker-highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "commit-marker-highlighted.png"; sourceTree = "<group>"; };
 		20C3B70C125BCCC600ABEDE7 /* commit-marker-unmerged-highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "commit-marker-unmerged-highlighted.png"; sourceTree = "<group>"; };
 		20C3B70D125BCCC600ABEDE7 /* commit-marker-unmerged.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "commit-marker-unmerged.png"; sourceTree = "<group>"; };
@@ -530,6 +533,8 @@
 				2057EF6311ABDCCE009EDF2F /* GBRefreshIndexTask.m */,
 				200B08B311B6E359004C09A8 /* GBLocalRemoteAssociationTask.h */,
 				200B08B411B6E359004C09A8 /* GBLocalRemoteAssociationTask.m */,
+				20BF14101279533900A30EE6 /* GBCloneTask.h */,
+				20BF14111279533900A30EE6 /* GBCloneTask.m */,
 			);
 			name = Tasks;
 			sourceTree = "<group>";
@@ -893,6 +898,7 @@
 				2054FFF0125DE9D200692C77 /* GBCloneProcessViewController.m in Sources */,
 				2082B7C4126587CA00667A7F /* GBCloningRepositoryController.m in Sources */,
 				2082B8111266500800667A7F /* GBBaseRepositoryController.m in Sources */,
+				20BF14121279533900A30EE6 /* GBCloneTask.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

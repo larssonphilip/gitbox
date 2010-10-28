@@ -1,14 +1,17 @@
 #import "GBCloneProcessViewController.h"
+#import "GBCloningRepositoryController.h"
 
 @implementation GBCloneProcessViewController
 
 @synthesize messageLabel;
 @synthesize errorLabel;
+@synthesize repositoryController;
 
 - (void) dealloc
 {
   self.messageLabel = nil;
   self.errorLabel = nil;
+  self.repositoryController = nil;
   [super dealloc];
 }
 
@@ -22,6 +25,8 @@
 - (IBAction) cancel:_
 {
   // TODO: tell repository controller to stop cloning
+  [self.repositoryController stop];
+  NSLog(@"GBCloneProcessViewController: TODO: tell repositoriesController to remove this controller");
 }
 
 - (void) loadView

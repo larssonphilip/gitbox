@@ -39,9 +39,8 @@ NSString* OATaskNotification = @"OATaskNotification";
 
 @synthesize activity;
 
-//@synthesize alertExecutableNotFoundBlock;
-
 @synthesize callbackBlock;
+@synthesize isTerminated;
 
 
 - (void) dealloc
@@ -59,7 +58,6 @@ NSString* OATaskNotification = @"OATaskNotification";
     [nstask terminate];
   }
   
-//  self.alertExecutableNotFoundBlock = nil;
   self.callbackBlock = nil;
   self.executableName = nil;
   self.launchPath = nil;
@@ -339,6 +337,7 @@ NSString* OATaskNotification = @"OATaskNotification";
 
 - (void) terminate
 {
+  self.isTerminated = YES;
   [self endAllCallbacks];
   [self.nstask terminate];
   NSFileHandle* pipeFileHandle = [self fileHandleForReading];

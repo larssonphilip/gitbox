@@ -397,8 +397,20 @@
 {
   [self.toolbarController update];
   [self.historyController update];
+  self.cloneProcessViewController.repositoryController = repoCtrl;
   [self.cloneProcessViewController loadInView:[[self.splitView subviews] objectAtIndex:1]];
 }
+
+- (void) cloningRepositoryControllerDidFinish:(GBCloningRepositoryController*)repoCtrl
+{
+  NSLog(@"TODO: remove this controller and add a real one");
+}
+
+- (void) cloningRepositoryControllerDidFail:(GBCloningRepositoryController*)repoCtrl
+{
+  NSLog(@"TODO: display an error message");
+}
+
 
 
 

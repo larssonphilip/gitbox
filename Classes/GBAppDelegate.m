@@ -93,7 +93,7 @@
       
       GBCloningRepositoryController* cloneController = [[GBCloningRepositoryController new] autorelease];
       cloneController.sourceURL = ctrl.sourceURL;
-      cloneController.url = ctrl.targetURL;
+      cloneController.targetURL = ctrl.targetURL;
       NSLog(@"TODO: change for the cloning-specific API here (i.e. addCloningRepositoryController:)");
       [self.repositoriesController addLocalRepositoryController:cloneController];
       [self.repositoriesController selectRepositoryController:cloneController];

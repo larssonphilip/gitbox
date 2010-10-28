@@ -14,6 +14,7 @@ typedef void (^OATaskBlock)();
 
 @property(nonatomic,assign) BOOL avoidIndicator;
 @property(nonatomic,assign) BOOL ignoreFailure;
+@property(nonatomic,assign) BOOL isTerminated;
 
 @property(nonatomic,assign) NSTimeInterval terminateTimeout;
 
@@ -21,8 +22,6 @@ typedef void (^OATaskBlock)();
 @property(nonatomic,retain) id standardError;
 
 @property(nonatomic,retain) OAActivity* activity;
-
-//@property(nonatomic,copy) void (^alertExecutableNotFoundBlock)(NSString*);
 
 @property(nonatomic,copy) OATaskBlock callbackBlock;
 
@@ -60,6 +59,5 @@ typedef void (^OATaskBlock)();
 #pragma mark API for subclasses
 
 - (void) didFinish;
-//- (void) alertExecutableNotFound:(NSString*)executable;
 
 @end
