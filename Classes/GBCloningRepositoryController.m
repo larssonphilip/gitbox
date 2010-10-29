@@ -33,10 +33,13 @@
 - (void) start
 {
   GBCloneTask* task = [[GBCloneTask new] autorelease];
+  self.isDisabled++;
+  self.isSpinning++;
   task.sourceURL = self.sourceURL;
   task.targetURL = self.targetURL;
   self.cloneTask = task;
   [task launchWithBlock:^{
+    self.isSpinning--;
     self.cloneTask = nil;
     if ([task isError])
     {
@@ -72,6 +75,7 @@
 {
   if (self.cloneTask)
   {
+    self.isSpinning--;
     [self.cloneTask terminate];
     self.cloneTask = nil;
     [[NSFileManager defaultManager] removeItemAtURL:self.targetURL error:NULL];

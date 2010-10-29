@@ -2,8 +2,11 @@
 
 @interface GBBaseRepositoryController : NSObject
 
-@property(assign) id<GBBaseRepositoryControllerDelegate> delegate;
 @property(assign) BOOL displaysTwoPathComponents;
+@property(assign) NSInteger isDisabled;
+@property(assign) NSInteger isSpinning;
+@property(assign) id<GBBaseRepositoryControllerDelegate> delegate;
+
 
 - (NSURL*) url;
 - (NSString*) nameForSourceList;

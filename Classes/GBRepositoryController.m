@@ -54,9 +54,7 @@
 @synthesize cancelledCommitMessage;
 @synthesize commitMessageHistory;
 
-@synthesize isDisabled;
 @synthesize isRemoteBranchesDisabled;
-@synthesize isSpinning;
 @synthesize isCommitting;
 @synthesize delegate;
 
@@ -582,8 +580,8 @@
 
 - (void) pushDisabled
 {
-  isDisabled++;
-  if (isDisabled == 1)
+  self.isDisabled++;
+  if (self.isDisabled == 1)
   {
     if ([self.delegate respondsToSelector:@selector(repositoryControllerDidChangeDisabledStatus:)]) { [self.delegate repositoryControllerDidChangeDisabledStatus:self]; }
   }
@@ -591,8 +589,8 @@
 
 - (void) popDisabled
 {
-  isDisabled--;
-  if (isDisabled == 0)
+  self.isDisabled--;
+  if (self.isDisabled == 0)
   {
     if ([self.delegate respondsToSelector:@selector(repositoryControllerDidChangeDisabledStatus:)]) { [self.delegate repositoryControllerDidChangeDisabledStatus:self]; }
   }
@@ -619,8 +617,8 @@
 - (void) pushSpinning
 {
   [self pushFSEventsPause];
-  isSpinning++;
-  if (isSpinning == 1) 
+  self.isSpinning++;
+  if (self.isSpinning == 1) 
   {
     if ([self.delegate respondsToSelector:@selector(repositoryControllerDidChangeSpinningStatus:)]) { [self.delegate repositoryControllerDidChangeSpinningStatus:self]; }
   }
@@ -629,8 +627,8 @@
 - (void) popSpinning
 {
   [self popFSEventsPause];
-  isSpinning--;
-  if (isSpinning == 0)
+  self.isSpinning--;
+  if (self.isSpinning == 0)
   {
     if ([self.delegate respondsToSelector:@selector(repositoryControllerDidChangeSpinningStatus:)]) { [self.delegate repositoryControllerDidChangeSpinningStatus:self]; }
   }  

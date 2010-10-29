@@ -2,17 +2,17 @@
 
 @interface GBToolbarController : NSObject
 
+@property(retain) GBBaseRepositoryController* baseRepositoryController;
 @property(retain) GBRepositoryController* repositoryController;
-
-@property(assign) IBOutlet NSWindow* window;
 @property(retain) IBOutlet NSToolbar* toolbar;
-
 @property(retain) IBOutlet NSPopUpButton* currentBranchPopUpButton;
 @property(retain) IBOutlet NSSegmentedControl* pullPushControl;
 @property(retain) IBOutlet NSButton* pullButton;
 @property(retain) IBOutlet NSPopUpButton* remoteBranchPopUpButton;
 @property(retain) IBOutlet NSProgressIndicator* progressIndicator;
 @property(retain) IBOutlet NSButton* commitButton;
+
+@property(assign) IBOutlet NSWindow* window;
 
 - (void) windowDidLoad;
 - (void) windowDidUnload;

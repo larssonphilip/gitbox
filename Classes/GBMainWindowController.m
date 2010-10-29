@@ -281,6 +281,7 @@
 {
   [self.sourcesController expandLocalRepositories];
   [self.sourcesController update];
+  [self.toolbarController update];
 }
 
 - (void) repositoriesControllerDidRemoveRepository:(GBRepositoriesController*)reposCtrl
@@ -303,6 +304,7 @@
   repoCtrl.delegate = self;
   
   self.historyController.repositoryController = nil;
+  self.toolbarController.baseRepositoryController = nil;
   self.toolbarController.repositoryController = nil;
 
   [self updateWindowTitleWithRepositoryController:repoCtrl];
@@ -323,6 +325,7 @@
 - (void) repositoryControllerDidSelect:(GBRepositoryController*)repoCtrl
 {
   self.historyController.repositoryController = repoCtrl;
+  self.toolbarController.baseRepositoryController = repoCtrl;
   self.toolbarController.repositoryController = repoCtrl;
   [self.toolbarController update];
   [self.historyController update];
@@ -398,6 +401,7 @@
 {
   [self.toolbarController update];
   [self.historyController update];
+  self.toolbarController.baseRepositoryController = repoCtrl;
   self.cloneProcessViewController.repositoryController = repoCtrl;
   [self.cloneProcessViewController loadInView:[[self.splitView subviews] objectAtIndex:1]];
 }

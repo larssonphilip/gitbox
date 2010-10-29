@@ -32,9 +32,7 @@
 @property(retain) NSString* cancelledCommitMessage;
 @property(nonatomic,retain) NSMutableArray* commitMessageHistory;
 
-@property(assign) NSInteger isDisabled;
 @property(assign) NSInteger isRemoteBranchesDisabled;
-@property(assign) NSInteger isSpinning;
 @property(assign) BOOL isCommitting;
 @property(assign) id<GBRepositoryControllerDelegate> delegate;
 

@@ -3,8 +3,10 @@
 
 @implementation GBBaseRepositoryController
 
-@synthesize delegate;
 @synthesize displaysTwoPathComponents;
+@synthesize isDisabled;
+@synthesize isSpinning;
+@synthesize delegate;
 
 - (NSURL*) url
 {

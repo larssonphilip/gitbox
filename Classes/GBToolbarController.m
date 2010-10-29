@@ -1,4 +1,5 @@
 #import "GBModels.h"
+#import "GBBaseRepositoryController.h"
 #import "GBRepositoryController.h"
 
 #import "GBToolbarController.h"
@@ -15,8 +16,8 @@
 
 @implementation GBToolbarController
 
+@synthesize baseRepositoryController;
 @synthesize repositoryController;
-@synthesize window;
 @synthesize toolbar;
 @synthesize currentBranchPopUpButton;
 @synthesize pullPushControl;
@@ -25,8 +26,11 @@
 @synthesize progressIndicator;
 @synthesize commitButton;
 
+@synthesize window;
+
 - (void) dealloc
 {
+  self.baseRepositoryController = nil;
   self.repositoryController = nil;
   self.toolbar = nil;
   self.currentBranchPopUpButton = nil;
@@ -77,9 +81,9 @@
 
 - (void) updateDisabledState
 {
-  BOOL isDisabled = self.repositoryController.isDisabled || !self.repositoryController;
+  BOOL isDisabled = self.baseRepositoryController.isDisabled || !self.baseRepositoryController;
   BOOL isCurrentBranchDisabled = NO; // TODO: get from repo controller
-  BOOL isRemoteBranchDisabled  = self.repositoryController.isRemoteBranchesDisabled;
+  BOOL isRemoteBranchDisabled  = self.repositoryController && self.repositoryController.isRemoteBranchesDisabled;
   [self.currentBranchPopUpButton setEnabled:!isDisabled && !isCurrentBranchDisabled];
   [self.remoteBranchPopUpButton setEnabled:!isDisabled && !isRemoteBranchDisabled];
   [self updateSyncButtons];
@@ -87,7 +91,8 @@
 
 - (void) updateSpinner
 {
-  if (self.repositoryController.isSpinning)
+  NSLog(@"updateSpinner: self.baseRepositoryController = %@", self.baseRepositoryController);
+  if (self.baseRepositoryController.isSpinning)
   {
     [self.progressIndicator startAnimation:self];
   }
