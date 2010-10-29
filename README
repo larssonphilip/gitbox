@@ -1,12 +1,19 @@
 
-To release:
+0.9.8:
 
-- payment thing
-- nice screenshots
-- simpler definition and wording
-- nice page
 - spinner for clone
 - folder icons in source list
+
+- linode server
+- dns config
+- ssl certificates
+- paypal button
+- paypal notifications IPN
+- nice screenshots
+- video
+- simpler definition and wording
+- revamped page design
+- revamped app icon
 
 
 Ongoing tasks:
@@ -31,6 +38,7 @@ Ongoing tasks:
 - check for memory leaks
 - sidebar context menu: show in finder, open in terminal
 - make preferences a single view with all options
+- changes: reveal in finder should open a NSSavePanel to choose the destination (or better - use drag/drop)
 
 
 Bugs:
@@ -118,13 +126,13 @@ Something to think about:
 
 Features:
 + Single window with a list of the repositories in the sidebar.
++ Clone a local or remote repository
 + Git binaries are bundled with application (see Gitbox / Legal Info...).
-+ Light scrollbar for the commit log.
 + Release notes window (Help / Release Notes).
 + Open with Finder and Reveal in Finder any file from the history.
-+ Clone a local or remote repository
 
 Enhancements:
++ Light scrollbar for the commit log.
 + Repository status is updated automatically on file system changes. You can work with Terminal and Gitbox at the same time. This also fixes various glitches in staging area.
 + Pull-push button is replaced with a single "Merge" button if the local branch selected on the right.
 + Window title contains the parent folder name to disambiguate repository location.

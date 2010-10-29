@@ -1,4 +1,15 @@
 
+
+PayPal:
+
+1. SSL
+2. Website Payments Standard button "Buy Now": https://cms.paypal.com/us/cgi-bin/?&cmd=_render-content&content_ID=developer/howto_html_wp_standard_overview
+3. Instant Payment Notification (IPN) for callbacks: https://cms.paypal.com/us/cgi-bin/?&cmd=_render-content&content_ID=developer/e_howto_admin_IPNIntro
+
+
+
+Crypto:
+
 1. Application contains an DSA public key and server contains a private DSA key.
 2. When application launches it checks the local certificate file issued for the current ethernet MAC address.
 3. If the certificate for the current machine is not available, it asks the server for the certificate based on license number.
