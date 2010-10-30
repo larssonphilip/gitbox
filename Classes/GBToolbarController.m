@@ -81,6 +81,7 @@
 
 - (void) updateDisabledState
 {
+  //NSLog(@"updateDisabledState: ctrl: %d  isDisabled: %d", (int)(!!self.baseRepositoryController), (int)(!!self.baseRepositoryController.isDisabled));
   BOOL isDisabled = self.baseRepositoryController.isDisabled || !self.baseRepositoryController;
   BOOL isCurrentBranchDisabled = NO; // TODO: get from repo controller
   BOOL isRemoteBranchDisabled  = self.repositoryController && self.repositoryController.isRemoteBranchesDisabled;
@@ -91,7 +92,7 @@
 
 - (void) updateSpinner
 {
-  NSLog(@"updateSpinner: self.baseRepositoryController = %@", self.baseRepositoryController);
+  //NSLog(@"updateSpinner: self.baseRepositoryController = %@", self.baseRepositoryController);
   if (self.baseRepositoryController.isSpinning)
   {
     [self.progressIndicator startAnimation:self];
