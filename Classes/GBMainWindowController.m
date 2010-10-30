@@ -399,9 +399,9 @@
 
 - (void) cloningRepositoryControllerDidSelect:(GBCloningRepositoryController*)repoCtrl
 {
+  self.toolbarController.baseRepositoryController = repoCtrl;
   [self.toolbarController update];
   [self.historyController update];
-  self.toolbarController.baseRepositoryController = repoCtrl;
   self.cloneProcessViewController.repositoryController = repoCtrl;
   [self.cloneProcessViewController loadInView:[[self.splitView subviews] objectAtIndex:1]];
 }
