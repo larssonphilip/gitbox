@@ -108,7 +108,11 @@
 - (void) removeLocalRepositoryController:(GBBaseRepositoryController*)repoCtrl
 {
   if (!repoCtrl || ![self.localRepositoryControllers containsObject:repoCtrl]) return;
-  [self selectRepositoryController:nil];
+  
+  if (repoCtrl == self.selectedRepositoryController)
+  {
+    [self selectRepositoryController:nil];
+  }
   if ([self.delegate respondsToSelector:@selector(repositoriesControllerWillRemoveRepository:)]) { [self.delegate repositoriesControllerWillRemoveRepository:self]; }
   [repoCtrl stop];
   [self.localRepositoryControllers removeObject:repoCtrl];

@@ -93,7 +93,7 @@
     NSUInteger index = [self.commits indexOfObject:commit];
     if (index != NSNotFound)
     {
-      [self.tableView withoutDelegate:^{
+      [self.tableView withDelegate:nil doBlock:^{
         [self.tableView selectRowIndexes:[NSIndexSet indexSetWithIndex:index] byExtendingSelection:NO];
       }];      
     }

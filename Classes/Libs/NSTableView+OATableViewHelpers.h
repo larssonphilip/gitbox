@@ -1,6 +1,6 @@
 
 @interface NSTableView (OATableViewHelpers)
 
-- (void) withoutDelegate:(void(^)())block;
+- (void) withDelegate:(id<NSTableViewDelegate>)aDelegate doBlock:(void(^)())block;
 
 @end

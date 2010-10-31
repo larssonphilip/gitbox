@@ -2,7 +2,7 @@
 #import "GBRepositoryControllerDelegate.h"
 
 @class GBRepositoriesController;
-@class GBRepositoryController;
+@class GBBaseRepositoryController;
 @class GBToolbarController;
 @class GBSourcesController;
 @class GBHistoryViewController;
@@ -13,7 +13,7 @@
                                                       GBRepositoryControllerDelegate>
 
 @property(retain) GBRepositoriesController* repositoriesController;
-@property(retain) GBRepositoryController* repositoryController;
+@property(retain) GBBaseRepositoryController* repositoryController;
 
 @property(retain) IBOutlet GBToolbarController* toolbarController;
 @property(retain) GBSourcesController* sourcesController;

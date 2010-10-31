@@ -2,12 +2,12 @@
 
 @implementation NSTableView (OATableViewHelpers)
 
-- (void) withoutDelegate:(void(^)())block
+- (void) withDelegate:(id<NSTableViewDelegate>)aDelegate doBlock:(void(^)())block
 {
   id temporarilyRemovedDelegateToSurpressCallbackCycle = [self delegate];
-  [self setDelegate:nil];
+  [self setDelegate:aDelegate];
   block();
-  [self setDelegate:temporarilyRemovedDelegateToSurpressCallbackCycle];  
+  [self setDelegate:temporarilyRemovedDelegateToSurpressCallbackCycle];
 }
 
 @end

@@ -293,7 +293,6 @@
 
 - (void) repositoriesControllerWillSelectRepository:(GBRepositoriesController*)reposCtrl
 {
-  self.repositoriesController.selectedRepositoryController.delegate = nil;
   [self.historyController unloadView];
   [self.cloneProcessViewController unloadView];
 }
@@ -301,6 +300,7 @@
 - (void) repositoriesControllerDidSelectRepository:(GBRepositoriesController*)reposCtrl
 {
   GBBaseRepositoryController* repoCtrl = self.repositoriesController.selectedRepositoryController;
+  self.repositoryController = repoCtrl;
   repoCtrl.delegate = self;
   
   self.historyController.repositoryController = nil;
@@ -312,7 +312,10 @@
 }
 
 
-
+- (BOOL) isSelectedRepositoryController:(GBBaseRepositoryController*)repoCtrl
+{
+  return (self.repositoryController == repoCtrl);
+}
 
 
 
@@ -324,6 +327,8 @@
 
 - (void) repositoryControllerDidSelect:(GBRepositoryController*)repoCtrl
 {
+  if (![self isSelectedRepositoryController:repoCtrl]) return;
+  
   self.historyController.repositoryController = repoCtrl;
   self.toolbarController.baseRepositoryController = repoCtrl;
   self.toolbarController.repositoryController = repoCtrl;
@@ -334,47 +339,56 @@
 
 - (void) repositoryControllerDidChangeDisabledStatus:(GBRepositoryController*)repoCtrl
 {
+  if (![self isSelectedRepositoryController:repoCtrl]) return;
   [self.toolbarController updateDisabledState];
 }
 
 - (void) repositoryControllerDidChangeSpinningStatus:(GBRepositoryController*)repoCtrl
 {
+  if (![self isSelectedRepositoryController:repoCtrl]) return;
   [self.toolbarController updateSpinner]; 
 }
 
 - (void) repositoryControllerDidUpdateCommits:(GBRepositoryController*)repoCtrl
 {
-  self.historyController.commits = [self.repositoryController commits];
+  if (![self isSelectedRepositoryController:repoCtrl]) return;
+  self.historyController.commits = [repoCtrl commits];
 }
 
 - (void) repositoryControllerDidUpdateLocalBranches:(GBRepositoryController*)repoCtrl
 {
+  if (![self isSelectedRepositoryController:repoCtrl]) return;
   [self.toolbarController updateBranchMenus];
 }
 
 - (void) repositoryControllerDidUpdateRemoteBranches:(GBRepositoryController*)repoCtrl
 {
+  if (![self isSelectedRepositoryController:repoCtrl]) return;
   [self.toolbarController updateBranchMenus];
 }
 
 - (void) repositoryControllerDidCheckoutBranch:(GBRepositoryController*)repoCtrl
 {
+  if (![self isSelectedRepositoryController:repoCtrl]) return;
   [self.toolbarController updateBranchMenus];
 }
 
 - (void) repositoryControllerDidChangeRemoteBranch:(GBRepositoryController*)repoCtrl
 {
+  if (![self isSelectedRepositoryController:repoCtrl]) return;
   [self.toolbarController updateBranchMenus];
 }
 
 - (void) repositoryControllerDidSelectCommit:(GBRepositoryController*)repoCtrl
 {
+  if (![self isSelectedRepositoryController:repoCtrl]) return;
   [self.toolbarController updateCommitButton];
   [self.historyController update];
 }
 
 - (void) repositoryControllerDidUpdateCommitChanges:(GBRepositoryController*)repoCtrl
 {
+  if (![self isSelectedRepositoryController:repoCtrl]) return;
   [self.toolbarController updateCommitButton];
   [self.historyController refreshChangesController];
   [self.historyController updateStage];
@@ -382,11 +396,13 @@
 
 - (void) repositoryControllerDidUpdateCommitableChanges:(GBRepositoryController*)repoCtrl
 {
+  if (![self isSelectedRepositoryController:repoCtrl]) return;
   [self.toolbarController updateCommitButton];
 }
 
 - (void) repositoryControllerDidCommit:(GBRepositoryController*)repoCtrl
 {
+  if (![self isSelectedRepositoryController:repoCtrl]) return;
   [self.toolbarController updateCommitButton];
 }
 
@@ -408,11 +424,16 @@
 
 - (void) cloningRepositoryControllerDidFinish:(GBCloningRepositoryController*)repoCtrl
 {
+  BOOL shouldSelectReadyRepo = [self isSelectedRepositoryController:repoCtrl];
   [self.repositoriesController removeLocalRepositoryController:repoCtrl];
   GBRepositoryController* readyRepoCtrl = [GBRepositoryController repositoryControllerWithURL:repoCtrl.targetURL];
   [self.repositoriesController addLocalRepositoryController:readyRepoCtrl];
   [[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:repoCtrl.targetURL];
-  [self.repositoriesController selectRepositoryController:readyRepoCtrl];
+  
+  if (shouldSelectReadyRepo)
+  {
+    [self.repositoriesController selectRepositoryController:readyRepoCtrl];
+  }
 }
 
 - (void) cloningRepositoryControllerDidFail:(GBCloningRepositoryController*)repoCtrl

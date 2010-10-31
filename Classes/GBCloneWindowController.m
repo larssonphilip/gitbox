@@ -78,7 +78,7 @@
     NSSavePanel* panel = [NSSavePanel savePanel];
     [panel setMessage:[self.sourceURL absoluteString]];
     [panel setNameFieldLabel:NSLocalizedString(@"Clone To:", @"Clone")];
-    [panel setNameFieldStringValue:[[suggestedName copy] autorelease]];
+    [panel setNameFieldStringValue:suggestedName];
     [panel setPrompt:NSLocalizedString(@"Clone", @"Clone")];
     [panel setDelegate:self];
     [panel beginSheetModalForWindow:self.windowHoldingSheet completionHandler:^(NSInteger result){
@@ -146,6 +146,24 @@
     if ([[NSFileManager defaultManager] fileExistsAtPath:[[aPanel URL] path]]) return nil;
   }
   return filename;
+}
+
+- (void)panel:(NSSavePanel*)aPanel didChangeToDirectoryURL:(NSURL *)aURL
+{
+  NSString* enteredName = [aPanel nameFieldStringValue];
+  NSString* uniqueName = enteredName;
+  
+  if (aURL && enteredName && [enteredName length] > 0)
+  {
+    NSString* targetPath = [[aPanel directoryURL] path];
+    NSUInteger counter = 0;
+    while ([[NSFileManager defaultManager] fileExistsAtPath:[targetPath stringByAppendingPathComponent:uniqueName]])
+    {
+      counter++;
+      uniqueName = [enteredName stringByAppendingFormat:@"%d", counter];
+    }
+    [aPanel setNameFieldStringValue:uniqueName];
+  }
 }
 
 @end

@@ -142,16 +142,27 @@
 - (void) update
 {
   [self saveExpandedState];
+  ignoreSelectionChange++;
   [self.outlineView reloadData];
-  [self loadExpandedState];  
+  ignoreSelectionChange--;
+  [self loadExpandedState];
+  [self updateSelectedRow];
 }
 
 - (void) updateSelectedRow
 {
   GBBaseRepositoryController* repoCtrl = self.repositoriesController.selectedRepositoryController;
-  [self.outlineView withoutDelegate:^{
-    [self.outlineView selectRowIndexes:[NSIndexSet indexSetWithIndex:[self.outlineView rowForItem:repoCtrl]] 
-                  byExtendingSelection:NO];
+  NSLog(@"updateSelectedRow: repoCtrl = %@", repoCtrl);
+  [self.outlineView withDelegate:nil doBlock:^{
+    if (!repoCtrl)
+    {
+      [self.outlineView deselectAll:self];
+    }
+    else
+    {
+      [self.outlineView selectRowIndexes:[NSIndexSet indexSetWithIndex:[self.outlineView rowForItem:repoCtrl]] 
+                    byExtendingSelection:NO];
+    }
   }];
 }
 
@@ -271,6 +282,7 @@
 
 - (void)outlineViewSelectionDidChange:(NSNotification*)notification
 {
+  if (ignoreSelectionChange) return;
   NSInteger row = [self.outlineView selectedRow];
   id item = nil;
   if (row >= 0 && row < [self.outlineView numberOfRows])

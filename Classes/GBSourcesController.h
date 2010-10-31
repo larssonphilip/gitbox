@@ -6,6 +6,9 @@
 
 @interface GBSourcesController : NSViewController<NSOutlineViewDataSource,
                                                   NSOutlineViewDelegate>
+{
+  NSUInteger ignoreSelectionChange;
+}
 
 @property(retain) GBRepositoriesController* repositoriesController;
 
