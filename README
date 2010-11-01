@@ -40,7 +40,6 @@ Ongoing tasks:
 - a block-based method for GBRepository to temporarily remember current error (name, description) for the use in the UI
 - changes: reveal in finder should open a NSSavePanel to choose the destination (or better - use drag/drop)
 - sidebar context menu: show in finder, open in terminal
-- make preferences a single view with all options
 - GIT_ASKPASS/SSH_ASKPASS for interacting with ssh
 - Secondary windows are opened in sheets (Preferences, Open Repository etc.)
 - check for memory leaks
@@ -48,7 +47,7 @@ Ongoing tasks:
 - check that opendiff is selected by default on new start + it is not selected if it is missing
 - Option key lets to fetch instead of pull
 - Shift key lets force push
-
++ make preferences a single view with all options
 
 Bugs:
 
