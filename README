@@ -1,7 +1,6 @@
 
 1.0:
 
-- create a new tag (need a tag badge)
 - create a repo out of an empty folder
 - create a remote
 - create a remote branch
@@ -9,6 +8,7 @@
 - fetch periodically
 - fetch in background should reset fetch interval when new commits are fetched
 - do ls-remote in background starting on unfocus (or not only in background)
+- create a new tag (need a tag badge)
 
 - linode server
 - dns config
@@ -46,6 +46,8 @@ Ongoing tasks:
 - check for memory leaks
 - check behavior when opendiff is missing
 - check that opendiff is selected by default on new start + it is not selected if it is missing
+- Option key lets to fetch instead of pull
+- Shift key lets force push
 
 
 Bugs:
@@ -53,7 +55,7 @@ Bugs:
 - bug: index.lock issue when switching a branch in heavy repo like git.git (should queue some git operations)
 - bug: when adding files to stage too quickly, git-add fails on .git/index.lock (should put all index modifying operations in a single serial dispatch queue)
 - bug: for non-existent HEAD gitbox does not show a staged new file
-- bug: 'open -a gitbox .' does not add repo to the list if gitbox was not already launched
++ bug: 'open -a gitbox .' does not add repo to the list if gitbox was not already launched
 - bug: show disabled "No branches" item for inaccessible remote
 - maybe a bug: if the stage view is not selected, commit: action is not available
 - preferences: should select "Other" when typing

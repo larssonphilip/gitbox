@@ -10,6 +10,7 @@
 @property(retain) IBOutlet GBMainWindowController* windowController;
 @property(retain) IBOutlet GBPreferencesController* preferencesController;
 @property(retain) IBOutlet GBCloneWindowController* cloneWindowController;
+@property(retain) NSMutableArray* URLsToOpenAfterLaunch;
 
 - (IBAction) openDocument:_;
 - (IBAction) cloneRepository:_;

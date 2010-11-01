@@ -37,6 +37,7 @@
 @synthesize windowController;
 @synthesize preferencesController;
 @synthesize cloneWindowController;
+@synthesize URLsToOpenAfterLaunch;
 
 - (void) dealloc
 {
@@ -44,6 +45,7 @@
   self.windowController = nil;
   self.preferencesController = nil;
   self.cloneWindowController = nil;
+  self.URLsToOpenAfterLaunch = nil;
   [super dealloc];
 }
 
@@ -119,6 +121,12 @@
 
 - (void) openLocalRepositoryAtURL:(NSURL*)url
 {
+  if (!self.repositoriesController) // not yet initialized
+  {
+    if (!self.URLsToOpenAfterLaunch) self.URLsToOpenAfterLaunch = [NSMutableArray array];
+    [self.URLsToOpenAfterLaunch addObject:url];
+    return;
+  }
   GBBaseRepositoryController* repoCtrl = [self.repositoriesController repositoryControllerWithURL:url];
   if (!repoCtrl)
   {
@@ -253,8 +261,10 @@
 #pragma mark NSApplicationDelegate
 
 
+
 - (void) applicationDidFinishLaunching:(NSNotification*) aNotification
 {
+  NSLog(@"applicationDidFinishLaunching");
   // Instantiate controllers
   self.repositoriesController = [[GBRepositoriesController new] autorelease];
   self.windowController = [[[GBMainWindowController alloc] initWithWindowNibName:@"GBMainWindowController"] autorelease];
@@ -273,11 +283,18 @@
     [self.windowController loadState];
     [self loadRepositories];
     
+    NSArray* urls = [[self.URLsToOpenAfterLaunch retain] autorelease];
+    self.URLsToOpenAfterLaunch = nil;
+    for (NSURL* url in urls)
+    {
+      [self openLocalRepositoryAtURL:url];
+    }
+    
     if (![[NSUserDefaults standardUserDefaults] objectForKey:@"WelcomeWasDisplayed"])
     {
       [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:YES] forKey:@"WelcomeWasDisplayed"];
       [self.windowController showWelcomeWindow:self];
-    }    
+    }
   }];
 }
 
@@ -295,6 +312,7 @@
 
 - (BOOL) application:(NSApplication*)theApplication openFile:(NSString*)path
 {
+  NSLog(@"application:openFile: %@", path);
   if (![NSFileManager isWritableDirectoryAtPath:path])
   {
     [NSAlert message:NSLocalizedString(@"File is not a writable folder.", @"") description:path];
@@ -315,7 +333,7 @@
                   description:path])
     {
       NSLog(@"TODO: GBAppDelegate: init a git repo in the selected folder");
-        //NSURL* url = [NSURL fileURLWithPath:path];
+//      NSURL* url = [NSURL fileURLWithPath:path];
 //      [GBRepository initRepositoryAtURL:url];
 //      GBRepositoryController* ctrl = [self openLocalRepositoryAtURL:url];
 //      if (ctrl)
