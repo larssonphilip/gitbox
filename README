@@ -1,8 +1,6 @@
 
 1.0:
 
-- folder icons in source list
-
 - create a new tag
 - create a repo out of an empty folder
 - create a remote
@@ -26,7 +24,7 @@
 
 1.1:
 
-- drag and drop for sources
+- drag and drop for sources (see the SourceView sample code for handling the drag and drop)
 - drag and drop for changes
 - find in commits
 - quicklook in changes
