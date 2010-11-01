@@ -62,13 +62,16 @@
 {
   NSOpenPanel* openPanel = [NSOpenPanel openPanel];
   openPanel.delegate = self;
-  openPanel.allowsMultipleSelection = NO;
+  openPanel.allowsMultipleSelection = YES;
   openPanel.canChooseFiles = YES;
   openPanel.canChooseDirectories = YES;
   [openPanel beginSheetModalForWindow:[self.windowController window] completionHandler:^(NSInteger result){
     if (result == NSFileHandlingPanelOKButton)
     {
-      [self application:NSApp openFile:[[[openPanel URLs] objectAtIndex:0] path]];
+      for (NSURL* url in [openPanel URLs])
+      {
+        [self application:NSApp openFile:[url path]];
+      }
     }
   }];
 }

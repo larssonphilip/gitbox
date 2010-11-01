@@ -64,7 +64,7 @@ Bugs:
 - preferences: should select "Other" when typing
 - preferences: should focus text field when selected "Other"
 - todo: think on the best and consistent way to terminate tasks
-
+- bug: terminal window opens behind the gitbox window (see http://www.wmdeveloper.com/2010/09/open-terminal-here.html)
 
 Cool features:
 
@@ -72,7 +72,7 @@ Cool features:
 - delete local branch
 - delete remote branch
 - force push a branch (when push fails, allow force push)
-- quicklook for the file on space in stage (QLPreviewPanel)
+- quicklook for the file on space in stage (QLPreviewPanel, sample code: QuickLookDownloader)
 - bonjour publishing and cloning (see http://github.com/chad/gitjour; NSNetService)
 - github integration: handling other repos/branches, pull requests and initial setup commands
 - drop a folder to the source list
@@ -149,6 +149,7 @@ Enhancements:
 + Window title contains the parent folder name to disambiguate repository location.
 + Welcome screen to clone a repo or open a folder.
 + When the changed file is double-clicked, only the diff program is launched. If the file is untracked, added or deleted, diff is not launched.
++ Multiple repositories can be opened at once using Open Panel.
 
 Bug fixes:
 + Fixed right-click selection in the list of changes.

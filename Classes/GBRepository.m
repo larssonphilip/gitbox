@@ -99,6 +99,7 @@
 + (NSString*) validRepositoryPathForPath:(NSString*)aPath
 {
   if (!aPath) return nil;
+  if ([aPath rangeOfString:@"/.Trash/"].location != NSNotFound) return nil;
   while (![NSFileManager isWritableDirectoryAtPath:[aPath stringByAppendingPathComponent:@".git"]])
   {
     if ([aPath isEqualToString:@"/"] || [aPath isEqualToString:@""]) return nil;

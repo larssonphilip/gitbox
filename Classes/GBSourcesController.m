@@ -152,7 +152,7 @@
 - (void) updateSelectedRow
 {
   GBBaseRepositoryController* repoCtrl = self.repositoriesController.selectedRepositoryController;
-  NSLog(@"updateSelectedRow: repoCtrl = %@", repoCtrl);
+  //NSLog(@"updateSelectedRow: repoCtrl = %@", repoCtrl);
   [self.outlineView withDelegate:nil doBlock:^{
     if (!repoCtrl)
     {

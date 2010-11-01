@@ -10,7 +10,6 @@
 #import "GBRepositoriesController.h"
 #import "GBRepositoryController.h"
 
-#import "OAPropertyListController.h"
 #import "OAFSEventStream.h"
 #import "NSString+OAStringHelpers.h"
 
@@ -48,11 +47,11 @@
 
 @synthesize repository;
 @synthesize selectedCommit;
-@synthesize plistController;
 @synthesize fsEventStream;
 @synthesize lastCommitBranchName;
 @synthesize cancelledCommitMessage;
 @synthesize commitMessageHistory;
+@synthesize urlBookmarkData;
 
 @synthesize isRemoteBranchesDisabled;
 @synthesize isCommitting;
@@ -62,11 +61,11 @@
 {
   self.repository = nil;
   self.selectedCommit = nil;
-  self.plistController = nil;
   self.fsEventStream = nil;
   self.lastCommitBranchName = nil;
   self.cancelledCommitMessage = nil;
   self.commitMessageHistory = nil;
+  self.urlBookmarkData = nil;
   [super dealloc];
 }
 
@@ -76,16 +75,6 @@
   GBRepository* repo = [GBRepository repositoryWithURL:url];
   ctrl.repository = repo;
   return ctrl;
-}
-
-- (OAPropertyListController*) plistController
-{
-  if (!plistController)
-  {
-    self.plistController = [[OAPropertyListController new] autorelease];
-    plistController.plistURL = [NSURL fileURLWithPath:[[[[self url] path] stringByAppendingPathComponent:@".git"] stringByAppendingPathComponent:@"gitbox.plist"]];
-  }
-  return plistController; // it is used inside this object only, so we may skip retain+autorelease.
 }
 
 - (NSMutableArray*) commitMessageHistory
@@ -113,19 +102,50 @@
   return [self.repository stageAndCommits];
 }
 
+- (BOOL) checkRepositoryExistance
+{
+  if (![[NSFileManager defaultManager] fileExistsAtPath:[self.repository path]])
+  {
+    NSLog(@"GBRepositoryController: repo does not exist at path %@", [self.repository path]);
+    NSURL* url = [NSURL URLByResolvingBookmarkData:self.urlBookmarkData 
+                                           options:NSURLBookmarkResolutionWithoutUI | 
+                                                   NSURLBookmarkResolutionWithoutMounting
+                                     relativeToURL:nil 
+                               bookmarkDataIsStale:NO 
+                                             error:NULL];
+    [self.delegate repositoryController:self didMoveToURL:url];
+    return NO;
+  }
+  return YES;
+}
+
 
 - (void) start
 {
   self.fsEventStream = [[OAFSEventStream new] autorelease];
 #if DEBUG
-  //self.fsEventStream.shouldLogEvents = YES;
+  self.fsEventStream.shouldLogEvents = NO;
 #endif
   
+  self.urlBookmarkData =  [[self url] bookmarkDataWithOptions:NSURLBookmarkCreationPreferFileIDResolution
+                                                          includingResourceValuesForKeys:nil
+                                                                           relativeToURL:nil
+                                                                                   error:NULL];
+  //NSLog(@"GBRepositoryController start: %@", [self url]);
   [self.fsEventStream addPath:[self.repository path] withBlock:^(NSString* path){
-    [self workingDirectoryStateDidChange];
+    
+    if ([self checkRepositoryExistance])
+    {
+      //NSLog(@"FSEvents: workingDirectoryStateDidChange");
+      [self workingDirectoryStateDidChange];
+    }
   }];
   [self.fsEventStream addPath:[self.repository.dotGitURL path] withBlock:^(NSString* path){
-    [self dotgitStateDidChange];
+    if ([self checkRepositoryExistance])
+    {
+      //NSLog(@"FSEvents: dotgitStateDidChange");
+      [self dotgitStateDidChange];
+    }
   }];
   [self.fsEventStream start];
 }
@@ -133,7 +153,6 @@
 - (void) stop
 {
   //[self endBackgroundUpdate];
-  [self.plistController synchronize];
   [self.fsEventStream stop];
 }
 
@@ -701,50 +720,6 @@
   }];
 }
 
-
-
-// OBSOLETE
-//
-//- (void) saveObject:(id)obj forKey:(NSString*)key
-//{
-//  if (!obj) return;
-//  
-//  [self.plistController setObject:obj forKey:key];
-//  
-//  return;
-//  
-//  // Legacy non-used pre-0.9.8 code
-//  NSString* repokey = [NSString stringWithFormat:@"optionsFor:%@", [[self url] path]];
-//  NSDictionary* dict = [[NSUserDefaults standardUserDefaults] dictionaryForKey:repokey];
-//  NSMutableDictionary* mdict = nil;
-//  if (dict) mdict = [[dict mutableCopy] autorelease];
-//  if (!dict) mdict = [NSMutableDictionary dictionary];
-//  [mdict setObject:obj forKey:key];
-//  [[NSUserDefaults standardUserDefaults] setObject:mdict forKey:repokey];
-//}
-//
-//- (id) loadObjectForKey:(NSString*)key
-//{
-//  // try to find data in a .git/gitbox.plist
-//  // if not found, but found in NSUserDefaults, write to .git/gitbox.plist
-//  id obj = nil;
-//  obj = [self.plistController objectForKey:key];
-//  if (!obj)
-//  {
-//    // Legacy API (pre 0.9.8)
-//    NSString* repokey = [NSString stringWithFormat:@"optionsFor:%@", [[self url] path]];
-//    NSDictionary* dict = [[NSUserDefaults standardUserDefaults] dictionaryForKey:repokey];
-//    obj = [dict objectForKey:key];
-//    
-//    // Save to a new storage
-//    if (obj)
-//    {
-//      [self saveObject:obj forKey:key];
-//    }
-//  }
-//  return obj;
-//}
-//
 
 
 

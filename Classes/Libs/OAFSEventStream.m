@@ -145,7 +145,7 @@ void OAFSEventStreamCallback( ConstFSEventStreamRef streamRef,
 
 - (void) delayCallbackForPath:(NSString*)watchedPath
 {
-  //NSLog(@"OAFSEventStream: delayCallbackForPath:%@", watchedPath);
+  if (shouldLogEvents)  NSLog(@"OAFSEventStream: delayCallbackForPath:%@", watchedPath);
   [NSObject cancelPreviousPerformRequestsWithTarget:self
                                            selector:@selector(delayedCallbackForPath:)
                                              object:watchedPath];
@@ -156,7 +156,7 @@ void OAFSEventStreamCallback( ConstFSEventStreamRef streamRef,
 
 - (void) delayedCallbackForPath:(NSString*)watchedPath
 {
-  //NSLog(@"OAFSEventStream: delayedCallbackForPath:%@ (later)", watchedPath);
+  if (shouldLogEvents) NSLog(@"OAFSEventStream: delayedCallbackForPath:%@ (later)", watchedPath);
   OAFSEventStreamCallbackBlock block = [self.blocksByPaths objectForKey:watchedPath];
   NSString* changedPath = [[[self.coalescedPathsByPaths objectForKey:watchedPath] copy] autorelease];
   if (block && changedPath) 
@@ -188,7 +188,7 @@ void OAFSEventStreamCallback( ConstFSEventStreamRef streamRef,
       if (eventFlags & kFSEventStreamEventFlagUnmount)         [flags addObject: @"Unmount"];
     }
     
-    NSLog(@"OAFSEventStream: event with path %@ (flags: %@) paused = %d", path, [flags componentsJoinedByString:@"|"], (int)paused);    
+    NSLog(@"OAFSEventStream: event with path %@ (flags: %@) paused = %d", path, [flags componentsJoinedByString:@"|"], (int)paused);
   }
   
   if (paused) return;

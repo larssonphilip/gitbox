@@ -97,12 +97,12 @@
 - (void) addLocalRepositoryController:(GBBaseRepositoryController*)repoCtrl
 {
   if (!repoCtrl) return;
-  if ([self.delegate respondsToSelector:@selector(repositoriesControllerWillAddRepository:)]) { [self.delegate repositoriesControllerWillAddRepository:self]; }
+  if ([self.delegate respondsToSelector:@selector(repositoriesController:willAddRepository:)]) { [self.delegate repositoriesController:self willAddRepository:repoCtrl]; }
   [self.localRepositoryControllers addObject:repoCtrl];
   [self updateRepositoriesPresentation];
   [repoCtrl setNeedsUpdateEverything];
   [repoCtrl start];
-  if ([self.delegate respondsToSelector:@selector(repositoriesControllerDidAddRepository:)]) { [self.delegate repositoriesControllerDidAddRepository:self]; }
+  if ([self.delegate respondsToSelector:@selector(repositoriesController:didAddRepository:)]) { [self.delegate repositoriesController:self didAddRepository:repoCtrl]; }
 }
 
 - (void) removeLocalRepositoryController:(GBBaseRepositoryController*)repoCtrl
@@ -113,18 +113,18 @@
   {
     [self selectRepositoryController:nil];
   }
-  if ([self.delegate respondsToSelector:@selector(repositoriesControllerWillRemoveRepository:)]) { [self.delegate repositoriesControllerWillRemoveRepository:self]; }
+  if ([self.delegate respondsToSelector:@selector(repositoriesController:willRemoveRepository:)]) { [self.delegate repositoriesController:self willRemoveRepository:repoCtrl]; }
   [repoCtrl stop];
   [self.localRepositoryControllers removeObject:repoCtrl];
   [self updateRepositoriesPresentation];
-  if ([self.delegate respondsToSelector:@selector(repositoriesControllerDidRemoveRepository:)]) { [self.delegate repositoriesControllerDidRemoveRepository:self]; }
+  if ([self.delegate respondsToSelector:@selector(repositoriesController:didRemoveRepository:)]) { [self.delegate repositoriesController:self didRemoveRepository:repoCtrl]; }
 }
 
 - (void) selectRepositoryController:(GBBaseRepositoryController*) repoCtrl
 {
-  if ([self.delegate respondsToSelector:@selector(repositoriesControllerWillSelectRepository:)]) { [self.delegate repositoriesControllerWillSelectRepository:self]; }
+  if ([self.delegate respondsToSelector:@selector(repositoriesController:willSelectRepository:)]) { [self.delegate repositoriesController:self willSelectRepository:repoCtrl]; }
   self.selectedRepositoryController = repoCtrl;
-  if ([self.delegate respondsToSelector:@selector(repositoriesControllerDidSelectRepository:)]) { [self.delegate repositoriesControllerDidSelectRepository:self]; }
+  if ([self.delegate respondsToSelector:@selector(repositoriesController:didSelectRepository:)]) { [self.delegate repositoriesController:self didSelectRepository:repoCtrl]; }
   [self.selectedRepositoryController didSelect];
 }
 

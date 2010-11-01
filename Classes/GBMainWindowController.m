@@ -277,31 +277,30 @@
 
 
 
-- (void) repositoriesControllerDidAddRepository:(GBRepositoriesController*)reposCtrl
+- (void) repositoriesController:(GBRepositoriesController*)reposCtrl didAddRepository:(GBBaseRepositoryController*)repoCtrl
 {
+  repoCtrl.delegate = self;
   [self.sourcesController expandLocalRepositories];
   [self.sourcesController update];
   [self.toolbarController update];
 }
 
-- (void) repositoriesControllerDidRemoveRepository:(GBRepositoriesController*)reposCtrl
+- (void) repositoriesController:(GBRepositoriesController*)reposCtrl didRemoveRepository:(GBBaseRepositoryController*)repoCtrl
 {
   [self.sourcesController update];
   [self.toolbarController update];
   [self.historyController update];
 }
 
-- (void) repositoriesControllerWillSelectRepository:(GBRepositoriesController*)reposCtrl
+- (void) repositoriesController:(GBRepositoriesController*)reposCtrl willSelectRepository:(GBBaseRepositoryController*)repoCtrl
 {
   [self.historyController unloadView];
   [self.cloneProcessViewController unloadView];
 }
 
-- (void) repositoriesControllerDidSelectRepository:(GBRepositoriesController*)reposCtrl
+- (void) repositoriesController:(GBRepositoriesController*)reposCtrl didSelectRepository:(GBBaseRepositoryController*)repoCtrl
 {
-  GBBaseRepositoryController* repoCtrl = self.repositoriesController.selectedRepositoryController;
   self.repositoryController = repoCtrl;
-  repoCtrl.delegate = self;
   
   self.historyController.repositoryController = nil;
   self.toolbarController.baseRepositoryController = nil;
@@ -406,7 +405,24 @@
   [self.toolbarController updateCommitButton];
 }
 
-
+- (void) repositoryController:(GBRepositoryController*)repoCtrl didMoveToURL:(NSURL*)newURL
+{
+  BOOL shouldSelectNewRepo = [self isSelectedRepositoryController:repoCtrl];
+  [self.repositoriesController removeLocalRepositoryController:repoCtrl];
+  if (newURL)
+  {
+    if ([[newURL absoluteString] rangeOfString:@"/.Trash/"].location == NSNotFound)
+    {
+      GBRepositoryController* newRepoCtrl = [GBRepositoryController repositoryControllerWithURL:newURL];
+      [self.repositoriesController addLocalRepositoryController:newRepoCtrl];
+      [[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:newURL];
+      if (shouldSelectNewRepo)
+      {
+        [self.repositoriesController selectRepositoryController:newRepoCtrl];
+      }
+    }
+  }
+}
 
 
 
@@ -424,15 +440,15 @@
 
 - (void) cloningRepositoryControllerDidFinish:(GBCloningRepositoryController*)repoCtrl
 {
-  BOOL shouldSelectReadyRepo = [self isSelectedRepositoryController:repoCtrl];
+  BOOL shouldSelectNewRepo = [self isSelectedRepositoryController:repoCtrl];
   [self.repositoriesController removeLocalRepositoryController:repoCtrl];
-  GBRepositoryController* readyRepoCtrl = [GBRepositoryController repositoryControllerWithURL:repoCtrl.targetURL];
-  [self.repositoriesController addLocalRepositoryController:readyRepoCtrl];
+  GBRepositoryController* newRepoCtrl = [GBRepositoryController repositoryControllerWithURL:repoCtrl.targetURL];
+  [self.repositoriesController addLocalRepositoryController:newRepoCtrl];
   [[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:repoCtrl.targetURL];
   
-  if (shouldSelectReadyRepo)
+  if (shouldSelectNewRepo)
   {
-    [self.repositoriesController selectRepositoryController:readyRepoCtrl];
+    [self.repositoriesController selectRepositoryController:newRepoCtrl];
   }
 }
 

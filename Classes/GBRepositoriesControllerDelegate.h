@@ -1,12 +1,11 @@
 @class GBRepositoriesController;
+@class GBBaseRepositoryController;
 @protocol GBRepositoriesControllerDelegate<NSObject>
 @optional
-- (void) repositoriesControllerWillAddRepository:(GBRepositoriesController*)reposCtrl;
-- (void) repositoriesControllerDidAddRepository:(GBRepositoriesController*)reposCtrl;
-- (void) repositoriesControllerWillRemoveRepository:(GBRepositoriesController*)reposCtrl;
-- (void) repositoriesControllerDidRemoveRepository:(GBRepositoriesController*)reposCtrl;
-- (void) repositoriesControllerWillSelectRepository:(GBRepositoriesController*)reposCtrl;
-- (void) repositoriesControllerDidSelectRepository:(GBRepositoriesController*)reposCtrl;
-- (void) repositoriesControllerDidSelectLocalRepository:(GBRepositoriesController*)reposCtrl;
-- (void) repositoriesControllerDidSelectCloningRepository:(GBRepositoriesController*)reposCtrl;
+- (void) repositoriesController:(GBRepositoriesController*)reposCtrl willAddRepository:   (GBBaseRepositoryController*)repoCtrl;
+- (void) repositoriesController:(GBRepositoriesController*)reposCtrl didAddRepository:    (GBBaseRepositoryController*)repoCtrl;
+- (void) repositoriesController:(GBRepositoriesController*)reposCtrl willRemoveRepository:(GBBaseRepositoryController*)repoCtrl;
+- (void) repositoriesController:(GBRepositoriesController*)reposCtrl didRemoveRepository: (GBBaseRepositoryController*)repoCtrl;
+- (void) repositoriesController:(GBRepositoriesController*)reposCtrl willSelectRepository:(GBBaseRepositoryController*)repoCtrl;
+- (void) repositoriesController:(GBRepositoriesController*)reposCtrl didSelectRepository: (GBBaseRepositoryController*)repoCtrl;
 @end

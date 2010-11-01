@@ -577,6 +577,8 @@
 		20B1620D11944B6900A709CF /* Libs */ = {
 			isa = PBXGroup;
 			children = (
+				2002AC0A123CA1A20072075C /* OAFSEventStream.h */,
+				2002AC0B123CA1A20072075C /* OAFSEventStream.m */,
 				2002AE09124A9BAB0072075C /* OAOptionalDelegateMessage.h */,
 				20C3B71D125BCDC100ABEDE7 /* OAPrimaryMACAddress.h */,
 				20C3B71E125BCDC100ABEDE7 /* OAPrimaryMACAddress.m */,
@@ -618,8 +620,6 @@
 				20265C0211D68D3400709F6B /* OAPropertyListController.m */,
 				20265C1211D68F1300709F6B /* OAFile.h */,
 				20265C1311D68F1300709F6B /* OAFile.m */,
-				2002AC0A123CA1A20072075C /* OAFSEventStream.h */,
-				2002AC0B123CA1A20072075C /* OAFSEventStream.m */,
 			);
 			path = Libs;
 			sourceTree = "<group>";

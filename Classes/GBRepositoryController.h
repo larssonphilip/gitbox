@@ -8,7 +8,6 @@
 @class GBCommit;
 
 @class GBMainWindowController;
-@class OAPropertyListController;
 @class OAFSEventStream;
 
 @interface GBRepositoryController : GBBaseRepositoryController<GBChangeDelegate>
@@ -26,11 +25,11 @@
 
 @property(retain) GBRepository* repository;
 @property(retain) GBCommit* selectedCommit;
-@property(nonatomic,retain) OAPropertyListController* plistController;
 @property(retain) OAFSEventStream* fsEventStream;
 @property(retain) NSString* lastCommitBranchName;
 @property(retain) NSString* cancelledCommitMessage;
 @property(nonatomic,retain) NSMutableArray* commitMessageHistory;
+@property(retain) NSData* urlBookmarkData;
 
 @property(assign) NSInteger isRemoteBranchesDisabled;
 @property(assign) BOOL isCommitting;
