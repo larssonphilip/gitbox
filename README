@@ -3,7 +3,6 @@
 
 - folder icons in source list
 
-- git config core.quotepath false - to support full UTF-8 filenames and display them correctly
 - create a new tag
 - create a repo out of an empty folder
 - create a remote
@@ -160,10 +159,9 @@ Bug fixes:
 + Preferences: toolbar now always has a selected tab.
 + Preferences: some diff tool is always selected.
 + Preferences window was showing "Error: file not found" on first run
-+ sorting order is not maintained after updating changes list
-+ bug: when folder is deleted, gitbox crashes (should simply stop all updates and remove from the list)
-
-
++ Fixed sorting order after updating changes list
++ Fixed crashes and bugs when the repository is moved, renamed or deleted.
++ Enabled UTF-8 paths by writing to ~/.gitconfig core.quotepath = false (can be overriden by local .git/config files)
 
 
 

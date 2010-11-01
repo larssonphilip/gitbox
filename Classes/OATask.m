@@ -549,6 +549,7 @@ NSString* OATaskNotification = @"OATaskNotification";
 - (void) prepareTask
 {
   NSPipe* defaultPipe = nil;
+  if (!self.currentDirectoryPath) self.currentDirectoryPath = NSHomeDirectory();
   [self.nstask setCurrentDirectoryPath:self.currentDirectoryPath];
   [self.nstask setLaunchPath:    self.launchPath];
   [self.nstask setArguments:     self.arguments];

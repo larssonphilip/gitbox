@@ -16,6 +16,7 @@
 #import "GBRepository.h"
 #import "GBStage.h"
 #import "OATask.h"
+#import "GBTask.h"
 
 #import "NSFileManager+OAFileManagerHelpers.h"
 #import "NSAlert+OAAlertHelpers.h"
@@ -264,14 +265,20 @@
   
   // Launch the updates
   [self.windowController showWindow:self];
-  [self.windowController loadState];
-  [self loadRepositories];
   
-  if (![[NSUserDefaults standardUserDefaults] objectForKey:@"WelcomeWasDisplayed"])
-  {
-    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:YES] forKey:@"WelcomeWasDisplayed"];
-    [self.windowController showWelcomeWindow:self];
-  }
+  OATask* enableUTF8Task = [OATask task];
+  enableUTF8Task.launchPath = [GBTask pathToBundledBinary:@"git"];
+  enableUTF8Task.arguments = [NSArray arrayWithObjects:@"config", @"--global", @"core.quotepath", @"false",  nil];
+  [enableUTF8Task launchWithBlock:^{
+    [self.windowController loadState];
+    [self loadRepositories];
+    
+    if (![[NSUserDefaults standardUserDefaults] objectForKey:@"WelcomeWasDisplayed"])
+    {
+      [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:YES] forKey:@"WelcomeWasDisplayed"];
+      [self.windowController showWelcomeWindow:self];
+    }    
+  }];
 }
 
 - (void) applicationWillTerminate:(NSNotification*)aNotification

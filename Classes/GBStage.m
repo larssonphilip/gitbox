@@ -86,13 +86,10 @@
           self.untrackedChanges = untrackedChangesTask.changes;
           [self update];
           block();
-        }];
-        
-      }];
-      
-    }];
-    
-  }];
+        }]; // untracked
+      }]; // unstaged
+    }]; // staged
+  }]; // refresh-index
 }
 
 
