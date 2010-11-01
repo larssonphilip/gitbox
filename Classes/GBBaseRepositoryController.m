@@ -1,5 +1,6 @@
 #import "GBBaseRepositoryController.h"
 #import "NSString+OAStringHelpers.h"
+#import "GBRepositoryCell.h"
 
 @implementation GBBaseRepositoryController
 
@@ -64,6 +65,15 @@
 - (void) didSelect
 {
   [self updateRepositoryIfNeeded];
+}
+
+
+- (NSCell*) cell
+{
+  GBRepositoryCell* cell = [[GBRepositoryCell new] autorelease];
+  cell.repositoryController = self;
+  [cell setRepresentedObject:self];
+  return cell;
 }
 
 @end

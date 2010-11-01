@@ -27,4 +27,6 @@
 
 - (void) didSelect;
 
+- (NSCell*) cell;
+
 @end

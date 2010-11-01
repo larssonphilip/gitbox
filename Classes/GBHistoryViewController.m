@@ -173,7 +173,7 @@
 dataCellForTableColumn:(NSTableColumn*)aTableColumn
                   row:(NSInteger)row
 {
-  // according to documentation, tableView may ask for a tableView separator cell giving a nil table column, so odd...
+  // according to the documentation, tableView may ask for a tableView separator cell giving a nil table column, so odd...
   if (aTableColumn == nil) return nil;
   
   GBCommit* commit = [self.commits objectAtIndex:row];

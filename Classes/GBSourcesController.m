@@ -300,6 +300,21 @@
   }
 }
 
+- (NSCell *)outlineView:(NSOutlineView *)outlineView dataCellForTableColumn:(NSTableColumn *)tableColumn item:(id)item
+{
+  // tableColumn == nil means the outlineView needs a separator cell
+  if (!tableColumn) return nil;
+  
+  if ([item isKindOfClass:[GBBaseRepositoryController class]])
+  {
+    GBBaseRepositoryController* repoCtrl = (GBBaseRepositoryController*)item;
+    return [repoCtrl cell];
+  }
+  
+  return [tableColumn dataCell];
+}
+
+
 
 
 @end
