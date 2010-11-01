@@ -71,7 +71,6 @@
 - (NSCell*) cell
 {
   GBRepositoryCell* cell = [[GBRepositoryCell new] autorelease];
-  cell.repositoryController = self;
   [cell setRepresentedObject:self];
   return cell;
 }

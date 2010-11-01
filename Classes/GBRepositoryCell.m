@@ -12,13 +12,6 @@
 #define kTextOriginYOffset	2
 #define kTextHeightAdjust	4
 
-@synthesize repositoryController;
-
-- (void) dealloc
-{
-  self.repositoryController = nil;
-  [super dealloc];
-}
 
 - (id)init
 {
@@ -30,7 +23,7 @@
 
 - (void) drawInteriorWithFrame:(NSRect)cellFrame inView:(NSView*)theControlView
 {
-  NSImage* image = [[NSWorkspace sharedWorkspace] iconForFile:[[self.repositoryController url] path]];
+  NSImage* image = [[NSWorkspace sharedWorkspace] iconForFile:[[[self repositoryController] url] path]];
   
   NSSize imageSize = NSMakeSize(kIconImageWidth, kIconImageWidth);
   [image setSize:imageSize];
@@ -60,9 +53,13 @@
 - (id) copyWithZone:(NSZone *)zone
 {
   GBRepositoryCell* c = [super copyWithZone:zone];
-  c.representedObject = self.representedObject;
-  c.repositoryController = self.repositoryController;
+  [c setRepresentedObject:[self representedObject]];
   return c;
+}
+
+- (GBBaseRepositoryController*) repositoryController
+{
+  return (GBBaseRepositoryController*)[self representedObject];
 }
 
 @end

@@ -3,6 +3,6 @@
 {
 }
 
-@property(retain) GBBaseRepositoryController* repositoryController;
+- (GBBaseRepositoryController*) repositoryController;
 
 @end
