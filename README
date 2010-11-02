@@ -149,19 +149,19 @@ Enhancements:
 + Multiple repositories can be opened at once using Open Panel.
 
 Bug fixes:
-+ Fixed right-click selection in the list of changes.
-+ Commit button is enabled only when there is something to commit.
-+ Brach tracking is handled only with the standard git-config mechanism
-+ Fixed loss of selection in stage view on stage/unstage.
-+ Spinner now does not stuck spinning indefinitely.
 + Fixed crashes related to clicking on changes in the stage view. 
-+ Remotes editing window selects the current remote in the list.
-+ Preferences: toolbar now always has a selected tab.
-+ Preferences: some diff tool is always selected.
-+ Preferences window was showing "Error: file not found" on first run
-+ Fixed sorting order after updating changes list
++ Fixed sorting order after updating changes list.
 + Fixed crashes and bugs when the repository is moved, renamed or deleted.
++ Fixed a crash when showing file paths with escaped characters (quote, double quote, backslash etc).
++ Spinner now does not stuck spinning indefinitely.
++ Fixed right-click selection in the list of changes.
++ Fixed a loss of selection in stage view on stage/unstage.
 + Enabled UTF-8 paths by writing to ~/.gitconfig core.quotepath = false (can be overriden by local .git/config files)
++ Remotes editing window selects the current remote in the list.
++ Preferences: some diff tool is always selected.
++ Preferences window was showing "Error: file not found" on the first run.
++ Brach tracking is handled only with the standard git-config mechanism.
++ Commit button is enabled only when there is something to commit.
 
 
 
