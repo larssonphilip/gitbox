@@ -18,14 +18,13 @@
 {
   NSUInteger length = [self length];
   if (length < 1) return self;
-  if ([self rangeOfString:@"\""].location == 0) // if in double quotes, it is escaped
+  if ([self rangeOfString:@"\""].location == 0 & length > 2) // if in double quotes, it is escaped
   {
     NSMutableString* unescapedString = [[[self substringWithRange:NSMakeRange(1, length - 2)] mutableCopy] autorelease];
-    NSRange wholeRange = NSMakeRange(0, length - 2);
-    [unescapedString replaceOccurrencesOfString:@"\\t" withString:@"\t" options:0 range:wholeRange];
-    [unescapedString replaceOccurrencesOfString:@"\\n" withString:@"\n" options:0 range:wholeRange];
-    [unescapedString replaceOccurrencesOfString:@"\\\"" withString:@"\"" options:0 range:wholeRange];
-    [unescapedString replaceOccurrencesOfString:@"\\\\" withString:@"\\" options:0 range:wholeRange];
+    [unescapedString replaceOccurrencesOfString:@"\\t" withString:@"\t" options:0 range:NSMakeRange(0, unescapedString.length)];
+    [unescapedString replaceOccurrencesOfString:@"\\n" withString:@"\n" options:0 range:NSMakeRange(0, unescapedString.length)];
+    [unescapedString replaceOccurrencesOfString:@"\\\"" withString:@"\"" options:0 range:NSMakeRange(0, unescapedString.length)];
+    [unescapedString replaceOccurrencesOfString:@"\\\\" withString:@"\\" options:0 range:NSMakeRange(0, unescapedString.length)];
     return unescapedString;
   }
   return self;
