@@ -98,7 +98,7 @@
    When -z option is not used, TAB, LF, and backslash characters in pathnames are represented as \t, \n, and \\, respectively.
    
    */
-#define ChangesScanError(msg) {NSLog(@"ERROR: GBChangesTask parse error: %@", msg); return aChanges;}
+#define ChangesScanError(msg) {NSLog(@"ERROR: GBChangesBaseTask parse error: %@", msg); return aChanges;}
   
   NSMutableArray* aChanges = [NSMutableArray array];
   NSScanner* scanner = [NSScanner scannerWithString:[data UTF8String]];
