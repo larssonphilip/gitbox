@@ -10,11 +10,6 @@
   return [@"ls-files --other --exclude-standard" componentsSeparatedByString:@" "];
 }
 
-- (BOOL) avoidIndicator
-{
-  return YES;
-}
-
 // overriden to match the ls-files output format
 - (NSArray*) changesFromDiffOutput:(NSData*) data
 {

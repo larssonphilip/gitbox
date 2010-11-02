@@ -20,9 +20,4 @@
   return YES;
 }
 
-- (BOOL) avoidIndicator
-{
-  return YES;
-}
-
 @end

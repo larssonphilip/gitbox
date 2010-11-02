@@ -12,7 +12,6 @@ typedef void (^OATaskBlock)();
 @property(nonatomic,retain) NSMutableData* output;
 @property(nonatomic,retain) NSArray* arguments;
 
-@property(nonatomic,assign) BOOL avoidIndicator;
 @property(nonatomic,assign) BOOL ignoreFailure;
 @property(nonatomic,assign) BOOL isTerminated;
 

@@ -8,9 +8,4 @@
   return [@"diff-files -C -M --ignore-submodules" componentsSeparatedByString:@" "];
 }
 
-- (BOOL) avoidIndicator
-{
-  return YES;
-}
-
 @end

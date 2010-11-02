@@ -305,7 +305,7 @@
   task.arguments = [NSArray arrayWithObjects:[leftURL path], [rightURL path], nil];
   // opendiff will quit in 5 secs
   // It also messes with xcode's PTY so after first launch xcode does not show log (but Console.app does).
-  task.avoidIndicator = YES;
+  
 //  task.alertExecutableNotFoundBlock = ^(NSString* executable) {
 //    NSString* message = [NSString stringWithFormat:
 //                         NSLocalizedString(@"Cannot find path to %@.", @"Change"), diffTool];

@@ -29,7 +29,6 @@ NSString* OATaskNotification = @"OATaskNotification";
 @synthesize output;
 @synthesize arguments;
 
-@synthesize avoidIndicator;
 @synthesize ignoreFailure;
 
 @synthesize terminateTimeout;
