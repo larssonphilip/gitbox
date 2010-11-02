@@ -2,6 +2,7 @@
 #import "GBUntrackedChangesTask.h"
 
 #import "NSData+OADataHelpers.h"
+#import "NSString+OAGitHelpers.h"
 
 @implementation GBUntrackedChangesTask
 
@@ -19,6 +20,7 @@
     if (path && [path length] > 0)
     {
       GBChange* change = [[GBChange new] autorelease];
+      path = [path stringByUnescapingGitFilename];
       change.srcURL = [NSURL URLWithString:[path stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding] 
                              relativeToURL:self.repository.url];
       change.repository = self.repository;
