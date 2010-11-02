@@ -52,11 +52,6 @@
   return args;
 }
 
-- (BOOL) shouldReadInBackground
-{
-  return YES;
-}
-
 - (void) didFinish
 {
   [super didFinish];

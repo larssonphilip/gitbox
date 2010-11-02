@@ -17,11 +17,6 @@
   return [NSArray arrayWithObjects:@"ls-remote", @"--tags", @"--heads", self.remote.alias, nil];
 }
 
-- (BOOL) shouldReadInBackground
-{
-  return YES;
-}
-
 - (void) didFinish
 {
   [super didFinish];

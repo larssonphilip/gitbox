@@ -15,9 +15,4 @@
   return [NSArray arrayWithObjects:@"diff-tree", @"--no-commit-id", @"-r", @"-m", @"-C", @"-M", @"--root", self.commit.commitId, nil];
 }
 
-- (BOOL) shouldReadInBackground
-{
-  return YES;
-}
-
 @end

@@ -10,11 +10,6 @@
   return [NSArray arrayWithObjects:@"show-ref", @"--tags", @"--heads", nil];
 }
 
-- (BOOL) shouldReadInBackground
-{
-  return YES;
-}
-
 - (void) didFinish
 {
   [super didFinish];
