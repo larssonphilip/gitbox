@@ -119,6 +119,7 @@
 		20B8B84811A4AAF2006D6442 /* NSString+OAStringHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B8B84711A4AAF2006D6442 /* NSString+OAStringHelpers.m */; };
 		20BF14121279533900A30EE6 /* GBCloneTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 20BF14111279533900A30EE6 /* GBCloneTask.m */; };
 		20BF1771127EF68800A30EE6 /* GBRepositoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 20BF1770127EF68800A30EE6 /* GBRepositoryCell.m */; };
+		20BF18701280C11C00A30EE6 /* GBStagedChangesBeforeFirstCommitTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 20BF186F1280C11C00A30EE6 /* GBStagedChangesBeforeFirstCommitTask.m */; };
 		20C3B710125BCCC600ABEDE7 /* commit-marker-highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 20C3B70B125BCCC600ABEDE7 /* commit-marker-highlighted.png */; };
 		20C3B711125BCCC600ABEDE7 /* commit-marker-unmerged-highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 20C3B70C125BCCC600ABEDE7 /* commit-marker-unmerged-highlighted.png */; };
 		20C3B712125BCCC600ABEDE7 /* commit-marker-unmerged.png in Resources */ = {isa = PBXBuildFile; fileRef = 20C3B70D125BCCC600ABEDE7 /* commit-marker-unmerged.png */; };
@@ -338,6 +339,8 @@
 		20BF14111279533900A30EE6 /* GBCloneTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBCloneTask.m; sourceTree = "<group>"; };
 		20BF176F127EF68800A30EE6 /* GBRepositoryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBRepositoryCell.h; sourceTree = "<group>"; };
 		20BF1770127EF68800A30EE6 /* GBRepositoryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBRepositoryCell.m; sourceTree = "<group>"; };
+		20BF186E1280C11C00A30EE6 /* GBStagedChangesBeforeFirstCommitTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBStagedChangesBeforeFirstCommitTask.h; sourceTree = "<group>"; };
+		20BF186F1280C11C00A30EE6 /* GBStagedChangesBeforeFirstCommitTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBStagedChangesBeforeFirstCommitTask.m; sourceTree = "<group>"; };
 		20C3B70B125BCCC600ABEDE7 /* commit-marker-highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "commit-marker-highlighted.png"; sourceTree = "<group>"; };
 		20C3B70C125BCCC600ABEDE7 /* commit-marker-unmerged-highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "commit-marker-unmerged-highlighted.png"; sourceTree = "<group>"; };
 		20C3B70D125BCCC600ABEDE7 /* commit-marker-unmerged.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "commit-marker-unmerged.png"; sourceTree = "<group>"; };
@@ -516,6 +519,8 @@
 				2059E82711AB3C2C00E4CF0B /* GBCommittedChangesTask.m */,
 				20B8B70D11A48BF1006D6442 /* GBStagedChangesTask.h */,
 				20B8B70E11A48BF1006D6442 /* GBStagedChangesTask.m */,
+				20BF186E1280C11C00A30EE6 /* GBStagedChangesBeforeFirstCommitTask.h */,
+				20BF186F1280C11C00A30EE6 /* GBStagedChangesBeforeFirstCommitTask.m */,
 				20B8B71011A48E3E006D6442 /* GBUnstagedChangesTask.h */,
 				20B8B71111A48E3E006D6442 /* GBUnstagedChangesTask.m */,
 				20B8B71E11A48F60006D6442 /* GBUntrackedChangesTask.h */,
@@ -905,6 +910,7 @@
 				2082B8111266500800667A7F /* GBBaseRepositoryController.m in Sources */,
 				20BF14121279533900A30EE6 /* GBCloneTask.m in Sources */,
 				20BF1771127EF68800A30EE6 /* GBRepositoryCell.m in Sources */,
+				20BF18701280C11C00A30EE6 /* GBStagedChangesBeforeFirstCommitTask.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
