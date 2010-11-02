@@ -15,10 +15,11 @@
 
 - (id)init
 {
-	self = [super init];
+  self = [super init];
   [self setEditable:NO];
-	[self setFont:[NSFont systemFontOfSize:[NSFont smallSystemFontSize]]];
-	return self;
+  [self setFont:[NSFont systemFontOfSize:[NSFont smallSystemFontSize]]];
+  [self setLineBreakMode:NSLineBreakByTruncatingTail];
+  return self;
 }
 
 - (void) drawInteriorWithFrame:(NSRect)cellFrame inView:(NSView*)theControlView
