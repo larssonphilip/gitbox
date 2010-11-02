@@ -2,6 +2,7 @@
 #import "GBTask.h"
 #import "GBRefreshIndexTask.h"
 #import "GBStagedChangesTask.h"
+#import "GBStagedChangesBeforeFirstCommitTask.h"
 #import "GBUnstagedChangesTask.h"
 #import "GBUntrackedChangesTask.h"
 
@@ -73,21 +74,41 @@
     
     GBStagedChangesTask* stagedChangesTask = [GBStagedChangesTask taskWithRepository:self.repository];
     [stagedChangesTask launchWithBlock:^{
-      self.stagedChanges = stagedChangesTask.changes;
-      [self update];
       
-      GBUnstagedChangesTask* unstagedChangesTask = [GBUnstagedChangesTask taskWithRepository:self.repository];
-      [unstagedChangesTask launchWithBlock:^{
-        self.unstagedChanges = unstagedChangesTask.changes;
-        [self update];
-        
-        GBUntrackedChangesTask* untrackedChangesTask = [GBUntrackedChangesTask taskWithRepository:self.repository];
-        [untrackedChangesTask launchWithBlock:^{
-          self.untrackedChanges = untrackedChangesTask.changes;
+      GBBlock unstagedTasksBlock = ^{
+        GBUnstagedChangesTask* unstagedChangesTask = [GBUnstagedChangesTask taskWithRepository:self.repository];
+        [unstagedChangesTask launchWithBlock:^{
+          self.unstagedChanges = unstagedChangesTask.changes;
           [self update];
-          block();
-        }]; // untracked
-      }]; // unstaged
+          
+          GBUntrackedChangesTask* untrackedChangesTask = [GBUntrackedChangesTask taskWithRepository:self.repository];
+          [untrackedChangesTask launchWithBlock:^{
+            self.untrackedChanges = untrackedChangesTask.changes;
+            [self update];
+            block();
+          }]; // untracked
+        }]; // unstaged        
+      };
+      
+      if ([stagedChangesTask terminationStatus] == 0)
+      {
+        self.stagedChanges = stagedChangesTask.changes;
+        [self update];
+        unstagedTasksBlock();
+      }
+      else
+      {
+        // No staged changes found: try a special task.
+        // (actually, suitable for the rare situation when HEAD does not yet exist).
+        GBStagedChangesBeforeFirstCommitTask* stagedChangesTask2 = [GBStagedChangesBeforeFirstCommitTask taskWithRepository:self.repository];
+        [stagedChangesTask2 launchWithBlock:^{
+          self.stagedChanges = stagedChangesTask2.changes;
+          [self update];
+          unstagedTasksBlock();
+        }];
+      }
+
+      
     }]; // staged
   }]; // refresh-index
 }
