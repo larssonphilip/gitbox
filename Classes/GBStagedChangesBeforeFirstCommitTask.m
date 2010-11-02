@@ -8,11 +8,8 @@
 
 - (NSArray*) arguments
 {
-  // This always returns a proper results even before the first commit exists.
-  // Comparing to diff-index this does not return src object id.
-  // Because of that, this class is used only when diff-index fails which means:
-  // - either we don't have any staged changes,
-  // - or we don't have a HEAD yet.
+  // This returns what's on the stage now. 
+  // Useful when we don't have a HEAD commit yet and diff-tree does not work.
   return [@"ls-files --cached --stage" componentsSeparatedByString:@" "];
 }
 
