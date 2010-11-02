@@ -2,7 +2,7 @@
 #import "GBTask.h"
 #import "GBRefreshIndexTask.h"
 #import "GBStagedChangesTask.h"
-#import "GBStagedChangesBeforeFirstCommitTask.h"
+#import "GBAllStagedFilesTask.h"
 #import "GBUnstagedChangesTask.h"
 #import "GBUntrackedChangesTask.h"
 
@@ -98,9 +98,8 @@
       }
       else
       {
-        // No staged changes found: try a special task.
-        // (actually, suitable for the rare situation when HEAD does not yet exist).
-        GBStagedChangesBeforeFirstCommitTask* stagedChangesTask2 = [GBStagedChangesBeforeFirstCommitTask taskWithRepository:self.repository];
+        // diff-tree failed: we don't have a HEAD commit, try another task
+        GBAllStagedFilesTask* stagedChangesTask2 = [GBAllStagedFilesTask taskWithRepository:self.repository];
         [stagedChangesTask2 launchWithBlock:^{
           self.stagedChanges = stagedChangesTask2.changes;
           [self update];

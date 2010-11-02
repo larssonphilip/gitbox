@@ -1,10 +1,10 @@
 #import "GBModels.h"
-#import "GBStagedChangesBeforeFirstCommitTask.h"
+#import "GBAllStagedFilesTask.h"
 
 #import "NSData+OADataHelpers.h"
 #import "NSString+OAGitHelpers.h"
 
-@implementation GBStagedChangesBeforeFirstCommitTask
+@implementation GBAllStagedFilesTask
 
 - (NSArray*) arguments
 {
