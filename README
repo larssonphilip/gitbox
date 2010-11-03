@@ -74,6 +74,7 @@ Cool features:
 - quicklook for the file on space in stage (QLPreviewPanel, sample code: QuickLookDownloader)
 - bonjour publishing and cloning (see http://github.com/chad/gitjour; NSNetService)
 - github integration: handling other repos/branches, pull requests and initial setup commands
+- show number of pending changes in the sidebar (like in Mail.app)
 - drop a folder to the source list
 - user-sortable list of repositories
 - drag GBChange to open in application or copy to finder
