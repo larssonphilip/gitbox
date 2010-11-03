@@ -1,7 +1,7 @@
 
 1.0:
 
-- create a repo out of an empty folder
++ create a repo out of an empty folder
 - create a remote
 - create a remote branch
 - read ls-remotes when updated .git
@@ -58,6 +58,7 @@ Bugs:
 + bug: for non-existent HEAD gitbox does not show a staged new file (should use git ls-files --stage/deleted/modified when HEAD does not exist yet)
 + bug: 'open -a gitbox .' does not add repo to the list if gitbox was not already launched
 - bug: show disabled "No branches" item for inaccessible remote
+- bug: reload branches list when the did first commit
 - bug: show "No branch yet" message in popdown in the new repo without commits (and disable the popdowns for both local and remote)
 - maybe a bug: if the stage view is not selected, commit: action is not available
 - preferences: should select "Other" when typing
@@ -143,13 +144,14 @@ Features:
 + Open with Finder and Reveal in Finder any file from the history.
 
 Enhancements:
-+ Light scrollbar for the commit log.
-+ Repository status is updated automatically on file system changes. You can work with Terminal and Gitbox at the same time. This also fixes various glitches in staging area.
++ Light scrollbar for the history view.
++ Repository status is updated automatically on file system changes. You can work with Terminal and Gitbox at the same time. 
 + Pull-push button is replaced with a single "Merge" button if the local branch selected on the right.
 + Window title contains the parent folder name to disambiguate repository location.
 + Welcome screen to clone a repo or open a folder.
 + When the changed file is double-clicked, only the diff program is launched. If the file is untracked, added or deleted, diff is not launched.
-+ Multiple repositories can be opened at once using Open Panel.
++ Multiple repositories can be opened at once using an Open Panel.
++ New repository is now created without an initial commit.
 
 Bug fixes:
 + Fixed crashes related to clicking on changes in the stage view. 
@@ -165,7 +167,7 @@ Bug fixes:
 + Preferences window was showing "Error: file not found" on the first run.
 + Brach tracking is handled only with the standard git-config mechanism.
 + Commit button is enabled only when there is something to commit.
-
++ Fixed display of changes for the initial commit and the stage in a clean repository.
 
 
 
