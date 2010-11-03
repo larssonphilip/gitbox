@@ -33,8 +33,6 @@ NSString* OATaskNotification = @"OATaskNotification";
 @synthesize activity;
 @synthesize callbackBlock;
 
-@dynamic dispatchQueue;
-
 @synthesize ignoreFailure;
 @synthesize isTerminated;
 @synthesize terminateTimeout;
@@ -132,20 +130,6 @@ NSString* OATaskNotification = @"OATaskNotification";
 #pragma mark Init
 
 
-
-- (dispatch_queue_t) dispatchQueue
-{
-  return dispatchQueue;
-}
-
-- (void) setDispatchQueue:(dispatch_queue_t)aQueue
-{
-  if (dispatchQueue != aQueue)
-  {
-//    if (dispatchQueue) dispatch_release(dispatchQueue)
-  }
-  dispatch_retain(aQueue);
-}
 
 + (id) task
 {
@@ -277,9 +261,12 @@ NSString* OATaskNotification = @"OATaskNotification";
 #pragma mark Launch methods
 
 
-
-
 - (void) launchWithBlock:(void(^)())block
+{
+  [self launchInQueue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0) withBlock:block];
+}
+
+- (void) launchInQueue:(dispatch_queue_t)aQueue withBlock:(void(^)())block
 {
   #if OATASK_DEBUG
     static char columns[13] = "000000000000\0";
@@ -293,7 +280,10 @@ NSString* OATaskNotification = @"OATaskNotification";
   #endif
   
   [self prepareTask];
-  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+  
+  dispatch_queue_t callerQueue = dispatch_get_current_queue();
+  dispatch_retain(callerQueue);
+  dispatch_async(aQueue, ^{
 
     [self.nstask launch];
     //NSLog(@"nstask env: %@", [self.nstask environment]);
@@ -304,7 +294,7 @@ NSString* OATaskNotification = @"OATaskNotification";
     }
     [self.nstask waitUntilExit];
 
-    dispatch_async(dispatch_get_main_queue(), ^{
+    dispatch_async(callerQueue, ^{
       #if OATASK_DEBUG
         NSLog(@"%@%@.", [@"" stringByPaddingToLength:logIndentation*16 withString:@" " startingAtIndex:0], [self class]);
         columns[logIndentation] = '0';
@@ -312,8 +302,8 @@ NSString* OATaskNotification = @"OATaskNotification";
       [self doFinish];
       [[GBActivityController sharedActivityController] addActivity:self.activity];
       block();
+      dispatch_release(callerQueue);
     });
-
   });
 }
 

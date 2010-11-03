@@ -18,8 +18,6 @@ typedef void (^OATaskBlock)();
 @property(nonatomic,retain) OAActivity* activity;
 @property(nonatomic,copy) OATaskBlock callbackBlock;
 
-@property(nonatomic) dispatch_queue_t dispatchQueue;
-
 @property(nonatomic,assign) BOOL ignoreFailure;
 @property(nonatomic,assign) BOOL isTerminated;
 @property(nonatomic,assign) NSTimeInterval terminateTimeout;
@@ -44,6 +42,8 @@ typedef void (^OATaskBlock)();
 - (void) prepareTask; // for subclasses
 
 - (void) launchWithBlock:(OATaskBlock)block;
+- (void) launchInQueue:(dispatch_queue_t)aQueue withBlock:(void(^)())block;
+
 - (id) launchAndWait;
 - (id) launchWithArgumentsAndWait:(NSArray*)args;
 
