@@ -70,7 +70,7 @@
 - (void) loadChangesWithBlock:(void(^)())block
 {
   GBTask* refreshIndexTask = [GBRefreshIndexTask taskWithRepository:self.repository];
-  [refreshIndexTask launchWithBlock:^{
+  [refreshIndexTask launchInQueue:self.repository.dispatchQueue withBlock:^{
     
     GBStagedChangesTask* stagedChangesTask = [GBStagedChangesTask taskWithRepository:self.repository];
     [stagedChangesTask launchWithBlock:^{
@@ -107,7 +107,6 @@
         }];
       }
 
-      
     }]; // staged
   }]; // refresh-index
 }
@@ -191,18 +190,31 @@
   }
 
   //
-  // TODO: run two tasks: "git reset" and "git rm --cached"
+  // run two tasks: "git reset" and "git rm --cached"
   //       do not run if paths list is empty
   //       use a single common queue to make it easier to order the tasks
   //       "git rm --cached" is needed in case when HEAD does not yet exist
-  GBTask* task = [self.repository task];
-  task.arguments = [[NSArray arrayWithObjects:@"reset", @"--", nil] arrayByAddingObjectsFromArray:otherPaths];
-  //task.arguments = [[NSArray arrayWithObjects:@"rm", @"--cached", nil] arrayByAddingObjectsFromArray:paths];
-  [task launchWithBlock:^{
-    // Commented out because git spits out error code even if the unstage is successful.
-    // [task showErrorIfNeeded];
-    block();
-  }];
+  
+  if ([otherPaths count] > 0)
+  {
+    GBTask* resetTask = [self.repository task];
+    resetTask.arguments = [[NSArray arrayWithObjects:@"reset", @"--", nil] arrayByAddingObjectsFromArray:otherPaths];
+    [self.repository launchTask:resetTask withBlock:^{
+      // Commented out because git spits out error code even if the unstage is successful.
+      // [task showErrorIfNeeded];
+    }];
+  }
+  
+  if ([addedPaths count] > 0)
+  {
+    GBTask* rmTask = [self.repository task];
+    rmTask.arguments = [[NSArray arrayWithObjects:@"rm", @"--cached", nil] arrayByAddingObjectsFromArray:addedPaths];
+    [self.repository launchTask:rmTask withBlock:^{
+      // Commented out because git spits out error code even if the unstage is successful.
+      // [task showErrorIfNeeded];
+    }];    
+  }
+  [self.repository dispatchBlock:block];
 }
 
 - (void) stageAllWithBlock:(void(^)())block

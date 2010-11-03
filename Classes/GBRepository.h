@@ -7,6 +7,7 @@
 @class GBStage;
 @class GBChange;
 @class GBTask;
+@class OATask;
 
 typedef void (^GBBlock)();
 
@@ -22,7 +23,7 @@ typedef void (^GBBlock)();
 @property(retain) GBRef* currentRemoteBranch;
 @property(retain) NSArray* localBranchCommits;
 @property(retain) NSString* topCommitId;
-
+@property(nonatomic) dispatch_queue_t dispatchQueue;
 
 + (id) repository;
 + (id) repositoryWithURL:(NSURL*)url;
@@ -74,7 +75,8 @@ typedef void (^GBBlock)();
 #pragma mark Util
 
 - (id) task;
-- (id) launchTask:(GBTask*)aTask withBlock:(void (^)())block;
+- (void) launchTask:(OATask*)aTask withBlock:(void(^)())block;
+- (void) dispatchBlock:(void (^)())block;
 - (id) launchTaskAndWait:(GBTask*)aTask;
 - (NSURL*) gitURLWithSuffix:(NSString*)suffix;
 

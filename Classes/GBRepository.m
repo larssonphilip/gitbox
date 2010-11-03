@@ -23,7 +23,7 @@
 @synthesize currentRemoteBranch;
 @synthesize localBranchCommits;
 @synthesize topCommitId;
-
+@synthesize dispatchQueue;
 
 
 #pragma mark Init
@@ -43,9 +43,25 @@
   self.currentRemoteBranch = nil;
   self.localBranchCommits = nil;
   self.topCommitId = nil;
+  
+  if (self.dispatchQueue) dispatch_release(self.dispatchQueue);
+  self.dispatchQueue = nil;
     
   [super dealloc];
 }
+
+
+- (id) init
+{
+  if (self = [super init])
+  {
+    self.dispatchQueue = dispatch_queue_create("com.oleganza.gitbox.repository_queue", NULL);
+  }
+  return self;
+}
+
+
+
 
 + (id) repository
 {
@@ -335,17 +351,17 @@
                      [NSString stringWithFormat:@"branch.%@.remote", name], 
                      ref.remoteAlias, 
                      nil];
-  [task1 launchWithBlock:^{
-    GBTask* task2 = [self task];
-    task2.arguments = [NSArray arrayWithObjects:@"config", 
-                       [NSString stringWithFormat:@"branch.%@.merge", name],
-                       [NSString stringWithFormat:@"refs/heads/%@", ref.name],
-                       nil];
-    [task2 launchWithBlock:^{
-      [task2 showErrorIfNeeded];
-      block();
-    }];
-  }];  
+  [self launchTask:task1 withBlock:^{
+  }];
+  GBTask* task2 = [self task];
+  task2.arguments = [NSArray arrayWithObjects:@"config", 
+                     [NSString stringWithFormat:@"branch.%@.merge", name],
+                     [NSString stringWithFormat:@"refs/heads/%@", ref.name],
+                     nil];
+  [self launchTask:task2 withBlock:^{
+    [task2 showErrorIfNeeded];
+  }];
+  [self dispatchBlock:block];
 }
 
 
@@ -353,7 +369,7 @@
 {
   GBTask* task = [self task];
   task.arguments = [NSArray arrayWithObjects:@"checkout", [ref commitish], nil];
-  [task launchWithBlock:^{
+  [self launchTask:task withBlock:^{
     [task showErrorIfNeeded];
     block();
   }];
@@ -552,11 +568,16 @@
   return task;
 }
 
-- (id) launchTask:(GBTask*)aTask withBlock:(void (^)())block
+- (void) launchTask:(OATask*)aTask withBlock:(void(^)())block
 {
-  aTask.repository = self;
-  [aTask launchWithBlock:block];
-  return aTask;
+  [aTask launchInQueue:self.dispatchQueue withBlock:block];
+}
+
+- (void) dispatchBlock:(void(^)())block
+{
+  dispatch_async(self.dispatchQueue, ^{
+    dispatch_async(dispatch_get_main_queue(), block);
+  });
 }
 
 - (id) launchTaskAndWait:(GBTask*)aTask
