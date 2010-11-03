@@ -151,6 +151,11 @@
   return self.srcURL.relativePath;
 }
 
+- (BOOL) isAddedFile
+{
+  return [self.statusCode isEqualToString:@"A"];
+}
+
 - (BOOL) isDeletedFile
 {
   return [self.statusCode isEqualToString:@"D"];

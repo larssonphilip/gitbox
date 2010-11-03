@@ -21,6 +21,7 @@
 + (NSArray*) diffTools;
 - (NSURL*) fileURL;
 - (NSString*) pathStatus;
+- (BOOL) isAddedFile;
 - (BOOL) isDeletedFile;
 - (BOOL) isUntrackedFile;
 - (NSComparisonResult) compareByPath:(id) other;
