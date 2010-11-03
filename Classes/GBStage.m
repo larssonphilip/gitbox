@@ -170,19 +170,34 @@
 
 - (void) unstageChanges:(NSArray*)theChanges withBlock:(void(^)())block
 {
-  NSMutableArray* paths = [NSMutableArray array];
-  for (GBChange* aChange in theChanges)
-  {
-    [aChange setStagedSilently:NO];
-    [paths addObject:aChange.fileURL.path];
-  }
-  if ([paths count] <= 0)
+  if ([theChanges count] <= 0)
   {
     block();
     return;
   }
+  NSMutableArray* addedPaths = [NSMutableArray array];
+  NSMutableArray* otherPaths = [NSMutableArray array];
+  for (GBChange* aChange in theChanges)
+  {
+    [aChange setStagedSilently:NO];
+    if ([aChange isAddedFile])
+    {
+      [addedPaths addObject:aChange.fileURL.path];
+    }
+    else
+    {
+      [otherPaths addObject:aChange.fileURL.path];
+    }
+  }
+
+  //
+  // TODO: run two tasks: "git reset" and "git rm --cached"
+  //       do not run if paths list is empty
+  //       use a single common queue to make it easier to order the tasks
+  //
   GBTask* task = [self.repository task];
-  task.arguments = [[NSArray arrayWithObjects:@"reset", @"--", nil] arrayByAddingObjectsFromArray:paths];
+  task.arguments = [[NSArray arrayWithObjects:@"reset", @"--", nil] arrayByAddingObjectsFromArray:otherPaths];
+  //task.arguments = [[NSArray arrayWithObjects:@"rm", @"--cached", nil] arrayByAddingObjectsFromArray:paths];
   [task launchWithBlock:^{
     // Commented out because git spits out error code even if the unstage is successful.
     // [task showErrorIfNeeded];
