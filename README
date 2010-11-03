@@ -38,7 +38,8 @@ Ongoing tasks:
 
 - human message in case git cannot merge/pull when some files are modified (error: Untracked working tree file 'Patryst.xcodeproj/project.pbxproj' would be overwritten by merge.)
 - a block-based method for GBRepository to temporarily remember current error (name, description) for the use in the UI
-- changes: reveal in finder should open a NSSavePanel to choose the destination (or better - use drag/drop)
+- changes: "reveal in finder" menu item should be enabled only when file exists in working directory and reveal the existing file
+- changes: "extract file..." menu item should open a NSSavePanel to choose the destination
 - sidebar context menu: show in finder, open in terminal
 - GIT_ASKPASS/SSH_ASKPASS for interacting with ssh
 - Secondary windows are opened in sheets (Preferences, Open Repository etc.)
@@ -52,11 +53,12 @@ Ongoing tasks:
 Bugs:
 
 - bug: bare repository is not recognized as such: should provide read-only access
-- bug: index.lock issue when switching a branch in heavy repo like git.git (should queue some git operations)
-- bug: when adding files to stage too quickly, git-add fails on .git/index.lock (should put all index modifying operations in a single serial dispatch queue)
++ bug: index.lock issue when switching a branch in heavy repo like git.git (should queue some git operations)
++ bug: when adding files to stage too quickly, git-add fails on .git/index.lock (should put all index modifying operations in a single serial dispatch queue)
 + bug: for non-existent HEAD gitbox does not show a staged new file (should use git ls-files --stage/deleted/modified when HEAD does not exist yet)
 + bug: 'open -a gitbox .' does not add repo to the list if gitbox was not already launched
 - bug: show disabled "No branches" item for inaccessible remote
+- bug: show "No branch yet" message in popdown in the new repo without commits (and disable the popdowns for both local and remote)
 - maybe a bug: if the stage view is not selected, commit: action is not available
 - preferences: should select "Other" when typing
 - preferences: should focus text field when selected "Other"
