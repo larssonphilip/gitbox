@@ -194,7 +194,7 @@
   // TODO: run two tasks: "git reset" and "git rm --cached"
   //       do not run if paths list is empty
   //       use a single common queue to make it easier to order the tasks
-  //
+  //       "git rm --cached" is needed in case when HEAD does not yet exist
   GBTask* task = [self.repository task];
   task.arguments = [[NSArray arrayWithObjects:@"reset", @"--", nil] arrayByAddingObjectsFromArray:otherPaths];
   //task.arguments = [[NSArray arrayWithObjects:@"rm", @"--cached", nil] arrayByAddingObjectsFromArray:paths];
