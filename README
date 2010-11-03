@@ -8,7 +8,6 @@
 - fetch periodically
 - fetch in background should reset fetch interval when new commits are fetched
 - do ls-remote in background starting on unfocus (or not only in background)
-- create a new tag (need a tag badge)
 
 - linode server
 - dns config
@@ -28,7 +27,9 @@
 - drag and drop for changes
 - find in commits
 - quicklook in changes
-
+- badges for sidebar
+- tag and branch badges in history
+- create a new tag (need a tag badge)
 
 
 Ongoing tasks:
@@ -46,8 +47,6 @@ Ongoing tasks:
 - check for memory leaks
 - check behavior when opendiff is missing
 - check that opendiff is selected by default on new start + it is not selected if it is missing
-- Option key lets to fetch instead of pull
-- Shift key lets force push
 + make preferences a single view with all options
 
 
@@ -107,14 +106,14 @@ Cool features:
 - diff viewer: switch to hide history
 - diff viewer: button to go to a folder at this commit 
 - changes view: 2 tabs: changes & tree (tree should show a status as usual)
+- Option/Alt key lets to fetch instead of pull
+- Shift key lets force push
 
 
 Enhancements (works fine, but can be better):
 
-- Clone: read a string from pasteboard
 - remember activity window visibility
 - Menu item: "Fetch"
-- Fetch holding alt (option key)
 - when starting a gitbox should configure user's name and email if missing
 - hitting space bar for staging/unstaging a change
 
