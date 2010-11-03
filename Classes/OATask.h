@@ -4,25 +4,26 @@ typedef void (^OATaskBlock)();
 
 @class OAActivity;
 @interface OATask : NSObject
-
+{
+  dispatch_queue_t dispatchQueue;
+}
 @property(nonatomic,retain) NSString* executableName;
 @property(nonatomic,retain) NSString* launchPath;
 @property(nonatomic,retain) NSString* currentDirectoryPath;
 @property(nonatomic,retain) NSTask* nstask;
 @property(nonatomic,retain) NSMutableData* output;
 @property(nonatomic,retain) NSArray* arguments;
+@property(nonatomic,retain) id standardOutput;
+@property(nonatomic,retain) id standardError;
+@property(nonatomic,retain) OAActivity* activity;
+@property(nonatomic,copy) OATaskBlock callbackBlock;
+
+@property(nonatomic) dispatch_queue_t dispatchQueue;
 
 @property(nonatomic,assign) BOOL ignoreFailure;
 @property(nonatomic,assign) BOOL isTerminated;
-
 @property(nonatomic,assign) NSTimeInterval terminateTimeout;
 
-@property(nonatomic,retain) id standardOutput;
-@property(nonatomic,retain) id standardError;
-
-@property(nonatomic,retain) OAActivity* activity;
-
-@property(nonatomic,copy) OATaskBlock callbackBlock;
 
 + (id) task;
 

@@ -28,19 +28,16 @@ NSString* OATaskNotification = @"OATaskNotification";
 @synthesize nstask;
 @synthesize output;
 @synthesize arguments;
-
-@synthesize ignoreFailure;
-
-@synthesize terminateTimeout;
-
 @synthesize standardOutput;
 @synthesize standardError;
-
 @synthesize activity;
-
 @synthesize callbackBlock;
-@synthesize isTerminated;
 
+@dynamic dispatchQueue;
+
+@synthesize ignoreFailure;
+@synthesize isTerminated;
+@synthesize terminateTimeout;
 
 - (void) dealloc
 {
@@ -134,6 +131,21 @@ NSString* OATaskNotification = @"OATaskNotification";
 
 #pragma mark Init
 
+
+
+- (dispatch_queue_t) dispatchQueue
+{
+  return dispatchQueue;
+}
+
+- (void) setDispatchQueue:(dispatch_queue_t)aQueue
+{
+  if (dispatchQueue != aQueue)
+  {
+//    if (dispatchQueue) dispatch_release(dispatchQueue)
+  }
+  dispatch_retain(aQueue);
+}
 
 + (id) task
 {
