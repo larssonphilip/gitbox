@@ -358,6 +358,7 @@
 {
   if (![self isSelectedRepositoryController:repoCtrl]) return;
   [self.toolbarController updateBranchMenus];
+  [self.toolbarController updateDisabledState];
 }
 
 - (void) repositoryControllerDidUpdateRemoteBranches:(GBRepositoryController*)repoCtrl

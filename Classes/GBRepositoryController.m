@@ -539,6 +539,10 @@
     self.isCommitting = NO;
     [self loadStageChanges];
     [self loadCommits];
+    if ([self.repository.localBranches count] < 1)
+    {
+      [self updateLocalBranchesAndTags];
+    }
     [self popSpinning];
     if ([self.delegate respondsToSelector:@selector(repositoryControllerDidCommit:)]) { [self.delegate repositoryControllerDidCommit:self]; }
   }];

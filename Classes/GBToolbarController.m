@@ -85,6 +85,9 @@
   BOOL isDisabled = self.baseRepositoryController.isDisabled || !self.baseRepositoryController;
   BOOL isCurrentBranchDisabled = NO; // TODO: get from repo controller
   BOOL isRemoteBranchDisabled  = self.repositoryController && self.repositoryController.isRemoteBranchesDisabled;
+  
+  isDisabled = isDisabled || (self.repositoryController && [self.repositoryController.repository.localBranches count] < 1);
+  
   [self.currentBranchPopUpButton setEnabled:!isDisabled && !isCurrentBranchDisabled];
   [self.remoteBranchPopUpButton setEnabled:!isDisabled && !isRemoteBranchDisabled];
   [self updateSyncButtons];
@@ -180,6 +183,14 @@
     [button setMenu:newMenu];
     [button setEnabled:NO];
     return;
+  }
+  
+  if ([repo.localBranches count] < 1)
+  {
+    [button setMenu:newMenu];
+    [button setEnabled:NO];
+    [button setTitle:NSLocalizedString(@"No branch yet", @"Toolbar")];
+    return;    
   }
   
   for (GBRef* localBranch in repo.localBranches)
@@ -319,7 +330,7 @@
   if ([remotes count] > 1) // display submenus for each remote
   {
     NSMenuItem* item = [[NSMenuItem new] autorelease];
-    [item setTitle:@"Remote Branches"];
+    [item setTitle:NSLocalizedString(@"Remote Branches", @"Toolbar")];
     [item setAction:@selector(thisItemIsActuallyDisabled)];
     [item setEnabled:NO];
     [remoteBranchesMenu addItem:item];
@@ -449,7 +460,7 @@
   }
   else
   {
-    [button setTitle:NSLocalizedString(@"—", @"")];
+    [button setTitle:NSLocalizedString(@"No branch", @"Toolbar")];
   }
 }
 
