@@ -328,20 +328,12 @@
   }
   else
   {
-    NSLog(@"TODO: GBAppDelegate: change this NSAlert to a sheet");
     if ([NSAlert prompt:NSLocalizedString(@"The folder is not a git repository.\nMake it a repository?", @"App")
                   description:path])
     {
-      NSLog(@"TODO: GBAppDelegate: init a git repo in the selected folder");
-//      NSURL* url = [NSURL fileURLWithPath:path];
-//      [GBRepository initRepositoryAtURL:url];
-//      GBRepositoryController* ctrl = [self openLocalRepositoryAtURL:url];
-//      if (ctrl)
-//      {
-//        [ctrl.repository.stage stageAll];
-//        [ctrl.repository commitWithMessage:@"Initial commit"];
-//        return YES;
-//      }
+      NSURL* url = [NSURL fileURLWithPath:path];
+      [GBRepository initRepositoryAtURL:url];
+      [self openLocalRepositoryAtURL:url];
     }
   }
   return NO;

@@ -130,7 +130,7 @@
 {
   OATask* task = [OATask task];
   task.currentDirectoryPath = url.path;
-  task.executableName = @"git";
+  task.launchPath = [GBTask pathToBundledBinary:@"git"];
   task.arguments = [NSArray arrayWithObjects:@"init", nil];
   [task launchAndWait];
   [[NSFileManager defaultManager] copyItemAtPath:[[NSBundle mainBundle] pathForResource:@"default_gitignore" ofType:nil]
