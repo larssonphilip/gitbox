@@ -108,10 +108,10 @@ Cool features:
 
 Enhancements (works fine, but can be better):
 
-- clone: read a string from pasteboard: if it is a git URL, immediately show NSSavePanel, without a prompt
+- Clone: read a string from pasteboard
 - remember activity window visibility
-- fetch menu item
-- fetch holding alt
+- Menu item: "Fetch"
+- Fetch holding alt (option key)
 - when starting a gitbox should configure user's name and email if missing
 - hitting space bar for staging/unstaging a change
 
