@@ -17,8 +17,8 @@
 
 - (IBAction) buy
 {
-  NSString* releaseNotesURLString = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"GBPurchaseURL"];
-  [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:releaseNotesURLString]];
+  NSString* purchaseURLString = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"GBPurchaseURL"];
+  [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:purchaseURLString]];
 }
 
 - (IBAction) cancel
