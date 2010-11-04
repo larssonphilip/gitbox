@@ -1,5 +1,7 @@
+#import "GBBasePromptController.h"
+
 @class GBRepositoryController;
-@interface GBCommitPromptController : NSWindowController<NSWindowDelegate, NSTextViewDelegate>
+@interface GBCommitPromptController : GBBasePromptController
 {
   NSUInteger messageHistoryIndex;
   BOOL addedNewLine;
@@ -12,20 +14,7 @@
 @property(retain) IBOutlet NSTextView* textView;
 @property(retain) IBOutlet NSTextField* shortcutTipLabel;
 @property(retain) IBOutlet NSTextField* branchHintLabel;
-@property(copy) void (^finishBlock)();
-@property(copy) void (^cancelBlock)();
 
-@property(nonatomic,assign) NSWindow* windowHoldingSheet;
-
-+ (GBCommitPromptController*) controller;
-
-- (IBAction) onOK:(id)sender;
-- (IBAction) onCancel:(id)sender;
-
-- (void) runSheetInWindow:(NSWindow*)window;
-- (void) endSheet;
-
-- (void) updateWindow;
 
 #pragma mark Message History
 

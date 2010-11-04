@@ -4,7 +4,6 @@
 
 #import "NSArray+OAArrayHelpers.h"
 #import "NSString+OAStringHelpers.h"
-#import "NSWindowController+OAWindowControllerHelpers.h"
 
 @implementation GBCommitPromptController
 
@@ -14,15 +13,6 @@
 @synthesize textView;
 @synthesize shortcutTipLabel;
 @synthesize branchHintLabel;
-@synthesize finishBlock;
-@synthesize cancelBlock;
-
-@synthesize windowHoldingSheet;
-
-+ (GBCommitPromptController*) controller
-{
-  return [[[self alloc] initWithWindowNibName:@"GBCommitPromptController"] autorelease];
-}
 
 - (void) dealloc
 {
@@ -33,8 +23,6 @@
   self.textView = nil;
   self.shortcutTipLabel = nil;
   self.branchHintLabel = nil;
-  self.finishBlock = nil;
-  self.cancelBlock = nil;
   [super dealloc];
 }
 
@@ -78,21 +66,6 @@
   if (self.cancelBlock) self.cancelBlock();
   [self endSheet];
 }
-
-- (void) runSheetInWindow:(NSWindow*)window
-{
-  self.windowHoldingSheet = window;
-  [window beginSheetForController:self];
-}
-
-- (void) endSheet
-{
-  self.finishBlock = nil;
-  self.cancelBlock = nil;
-  [self.windowHoldingSheet endSheetForController:self];
-  self.windowHoldingSheet = nil;
-}
-
 
 
 
@@ -168,16 +141,6 @@
 {
   [self.branchHintLabel setStringValue:self.branchName ? self.branchName : @""];
   [self.textView setString:self.value ? [[self.value copy] autorelease] : @""];
-}
-
-- (void) windowDidBecomeKey:(NSNotification*)notification
-{
-  [self updateWindow];
-}
-
-- (void) windowDidLoad
-{
-  [self updateWindow];
 }
 
 - (void)windowDidResignKey:(NSNotification *)notification
