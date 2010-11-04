@@ -1,9 +1,5 @@
 @class ObsoleteGBRepositoryController;
 
-@protocol GBRepositoryControllerDelegate
-- (void) windowControllerWillClose:(ObsoleteGBRepositoryController*)aController;
-@end
-
 #import "GBRepository.h"
 @class GBCommit;
 @class GBHistoryViewController;
@@ -15,8 +11,6 @@
 
 @property(nonatomic,retain) NSURL* repositoryURL;
 @property(nonatomic,retain) GBRepository* repository;
-
-@property(nonatomic,assign) id<GBRepositoryControllerDelegate> delegate;
 
 @property(nonatomic,retain) GBHistoryViewController* historyController;
 @property(nonatomic,retain) NSViewController<NSUserInterfaceValidations>* changesViewController;
@@ -36,7 +30,6 @@
 
 - (IBAction) createNewRemoteBranch:(id)sender;
 - (IBAction) createNewRemote:(id)sender;
-//- (IBAction) commit:(id)sender;
 
 
 #pragma mark View Actions

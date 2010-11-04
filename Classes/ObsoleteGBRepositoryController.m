@@ -19,14 +19,10 @@
 #import "NSObject+OAKeyValueObserving.h"
 #import "NSObject+OADispatchItemValidation.h"
 
-#import <objc/runtime.h>
-
 @implementation ObsoleteGBRepositoryController
 
 @synthesize repositoryURL;
 @synthesize repository;
-
-@synthesize delegate;
 
 @synthesize historyController;
 @synthesize changesViewController;
