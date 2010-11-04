@@ -276,10 +276,7 @@
   // Launch the updates
   [self.windowController showWindow:self];
   
-  OATask* enableUTF8Task = [OATask task];
-  enableUTF8Task.launchPath = [GBTask pathToBundledBinary:@"git"];
-  enableUTF8Task.arguments = [NSArray arrayWithObjects:@"config", @"--global", @"core.quotepath", @"false",  nil];
-  [enableUTF8Task launchWithBlock:^{
+  [GBRepository configureUTF8WithBlock:^{
     [self.windowController loadState];
     [self loadRepositories];
     
