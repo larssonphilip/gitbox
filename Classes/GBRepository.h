@@ -34,6 +34,11 @@ typedef void (^GBBlock)();
 + (BOOL) isSupportedGitVersion:(NSString*)version;
 + (NSString*) validRepositoryPathForPath:(NSString*)aPath;
 
++ (void) initRepositoryAtURL:(NSURL*)url;
++ (void) configureUTF8WithBlock:(GBBlock)block;
++ (void) configureName:(NSString*)name email:(NSString*)email withBlock:(GBBlock)block;
++ (NSString*) globalConfiguredName;
++ (NSString*) globalConfiguredEmail;
 
 
 #pragma mark Interrogation
@@ -56,7 +61,6 @@ typedef void (^GBBlock)();
 
 #pragma mark Mutation
 
-+ (void) initRepositoryAtURL:(NSURL*)url;
 - (void) configureTrackingRemoteBranch:(GBRef*)ref withLocalName:(NSString*)name block:(GBBlock)block;
 - (void) checkoutRef:(GBRef*)ref withBlock:(GBBlock)block;
 - (void) checkoutRef:(GBRef*)ref withNewName:(NSString*)name block:(GBBlock)block;

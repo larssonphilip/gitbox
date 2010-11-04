@@ -138,7 +138,31 @@
                                            error:NULL];
 }
 
++ (void) configureUTF8WithBlock:(GBBlock)block
+{
+  OATask* task = [OATask task];
+  task.launchPath = [GBTask pathToBundledBinary:@"git"];
+  task.arguments = [NSArray arrayWithObjects:@"config", @"--global", @"core.quotepath", @"false",  nil];
+  [task launchWithBlock:block];
+}
 
++ (void) configureName:(NSString*)name email:(NSString*)email withBlock:(GBBlock)block
+{
+  // git config --global user.name "Joey Joejoe"
+  // git config --global user.email "joey@joejoe.com"
+
+  block();
+}
+
++ (NSString*) globalConfiguredName
+{
+  return @"";
+}
+
++ (NSString*) globalConfiguredEmail
+{
+  return @"";
+}
 
 
 
