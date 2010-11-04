@@ -1,12 +1,14 @@
 
 1.0:
 
+- bug: edit global gitconfig shows nothing
 - create a remote
 - create a remote branch
 - read ls-remotes when updated .git
 - fetch periodically
 - fetch in background should reset fetch interval when new commits are fetched
 - do ls-remote in background starting on unfocus (or not only in background)
+- main menu: edit global .gitconfig
 + create a repo out of an empty folder
 + when starting a gitbox should configure user's name and email if missing
 

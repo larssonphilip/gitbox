@@ -130,12 +130,21 @@
   [fileEditor runSheetInWindow:[self window]];
 }
 
+- (IBAction) editGlobalGitConfig:(id)_
+{
+  GBFileEditingController* fileEditor = [GBFileEditingController controller];
+  fileEditor.title = @"~/.gitconfig";
+  NSLog(@".gitconfig: %@", [NSHomeDirectory() stringByAppendingPathComponent:@".gitconfig"]);
+  fileEditor.URL = [NSURL URLWithString:[NSHomeDirectory() stringByAppendingPathComponent:@".gitconfig"]];
+  [fileEditor runSheetInWindow:[self window]];  
+}
+
 - (BOOL) validateEditGitIgnore:(id)_
 {
   return !![self selectedLocalRepositoryController];
 }
 
-- (BOOL) validateGitConfig:(id)_
+- (BOOL) validateEditGitConfig:(id)_
 {
   return !![self selectedLocalRepositoryController];
 }
@@ -185,6 +194,11 @@
   [self.toolbarController pullOrPush:_];
 }
 
+- (IBAction) fetch:(id)_
+{
+  [self.toolbarController fetch:_];
+}
+
 - (IBAction) pull:(id)_
 {
   [self.toolbarController pull:_];
@@ -193,6 +207,11 @@
 - (IBAction) push:(id)_
 {
   [self.toolbarController push:_];
+}
+
+- (BOOL) validateFetch:(id)_
+{
+  return [self.toolbarController validateFetch:_];
 }
 
 - (BOOL) validatePull:(id)_

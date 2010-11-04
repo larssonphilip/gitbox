@@ -72,6 +72,7 @@ typedef void (^GBBlock)();
 - (void) commitWithMessage:(NSString*) message block:(void(^)())block;
 
 - (void) pullOrMergeWithBlock:(GBBlock)block;
+- (void) fetchWithBlock:(GBBlock)block;
 - (void) mergeBranch:(GBRef*)aBranch withBlock:(GBBlock)block;
 - (void) pullBranch:(GBRef*)aRemoteBranch withBlock:(GBBlock)block;
 - (void) fetchBranch:(GBRef*)aRemoteBranch withBlock:(GBBlock)block;

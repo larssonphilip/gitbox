@@ -494,6 +494,11 @@
 #pragma mark IBActions
 
 
+- (IBAction) fetch:(id)_
+{
+  [self.repositoryController fetch];
+}
+
 - (IBAction) pullOrPush:(NSSegmentedControl*)segmentedControl
 {
   NSInteger segment = [segmentedControl selectedSegment];
@@ -522,10 +527,16 @@
   [self.repositoryController push];
 }
 
-- (BOOL) validatePull:(id)_
+- (BOOL) validateFetch:(id)_
 {
   GBRepositoryController* rc = self.repositoryController;
   return rc.repository.currentRemoteBranch && !rc.isDisabled && !rc.isRemoteBranchesDisabled;
+}
+
+- (BOOL) validatePull:(id)_
+{
+  GBRepositoryController* rc = self.repositoryController;
+  return rc.repository.currentLocalRef && rc.repository.currentRemoteBranch && !rc.isDisabled && !rc.isRemoteBranchesDisabled;
 }
 
 - (BOOL) validatePush:(id)_

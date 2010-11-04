@@ -58,6 +58,7 @@
 - (void) selectCommitableChanges:(NSArray*)changes;
 - (void) commitWithMessage:(NSString*)message;
 
+- (void) fetch;
 - (void) pull;
 - (void) push;
 

@@ -548,6 +548,16 @@
   }];
 }
 
+- (void) fetch
+{
+  [self pushSpinning];
+  [self pushDisabled];
+  [self.repository fetchWithBlock:^{
+    [self loadCommits];
+    [self popDisabled];
+    [self popSpinning];
+  }];  
+}
 
 - (void) pull
 {

@@ -29,6 +29,7 @@
 - (IBAction) editRepositories:(id)_;
 - (IBAction) editGitIgnore:(id)_;
 - (IBAction) editGitConfig:(id)_;
+- (IBAction) editGlobalGitConfig:(id)_;
 
 - (IBAction) openInTerminal:(id)_;
 - (IBAction) openInFinder:(id)_;

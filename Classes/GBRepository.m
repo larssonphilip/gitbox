@@ -485,6 +485,17 @@
   //[self performSelector:@selector(slideAlert:) withObject:alert afterDelay:0.1];
 }
 
+- (void) fetchWithBlock:(GBBlock)block
+{
+  if (self.currentRemoteBranch && [self.currentRemoteBranch isRemoteBranch])
+  {
+    [self fetchBranch:self.currentRemoteBranch withBlock:block];
+  }
+  else
+  {
+    block();
+  }  
+}
 
 - (void) pullOrMergeWithBlock:(GBBlock)block
 {

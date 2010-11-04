@@ -31,10 +31,11 @@
 
 #pragma mark IBActions
 
+- (IBAction) fetch:(id)_;
 - (IBAction) pullOrPush:(NSSegmentedControl*)segmentedControl;
-
 - (IBAction) pull:(id)sender;
 - (IBAction) push:(id)sender;
+- (BOOL) validateFetch:(id)sender;
 - (BOOL) validatePull:(id)sender;
 - (BOOL) validatePush:(id)sender;
 
