@@ -36,6 +36,9 @@ typedef void (^GBBlock)();
 
 + (void) initRepositoryAtURL:(NSURL*)url;
 + (void) configureUTF8WithBlock:(GBBlock)block;
+
++ (NSString*) configValueForKey:(NSString*)key;
++ (void) setConfigValue:(NSString*)value forKey:(NSString*)key;
 + (void) configureName:(NSString*)name email:(NSString*)email withBlock:(GBBlock)block;
 + (NSString*) globalConfiguredName;
 + (NSString*) globalConfiguredEmail;

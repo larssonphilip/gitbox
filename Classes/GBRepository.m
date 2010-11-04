@@ -146,22 +146,41 @@
   [task launchWithBlock:block];
 }
 
++ (NSString*) configValueForKey:(NSString*)key
+{
+  OATask* task = [OATask task];
+  task.launchPath = [GBTask pathToBundledBinary:@"git"];
+  task.arguments = [NSArray arrayWithObjects:@"config", @"--global", key,  nil];
+  [task launchAndWait];
+  return [[task.output UTF8String] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+}
+
++ (void) setConfigValue:(NSString*)value forKey:(NSString*)key
+{
+  OATask* task = [OATask task];
+  task.launchPath = [GBTask pathToBundledBinary:@"git"];
+  task.arguments = [NSArray arrayWithObjects:@"config", @"--global", key, value,  nil];
+  [task launchAndWait];
+}
+
 + (void) configureName:(NSString*)name email:(NSString*)email withBlock:(GBBlock)block
 {
   // git config --global user.name "Joey Joejoe"
   // git config --global user.email "joey@joejoe.com"
-
+  
+  [self setConfigValue:name forKey:@"user.name"];
+  [self setConfigValue:email forKey:@"user.email"];
   block();
 }
 
 + (NSString*) globalConfiguredName
 {
-  return @"";
+  return [self configValueForKey:@"user.name"];
 }
 
 + (NSString*) globalConfiguredEmail
 {
-  return @"";
+  return [self configValueForKey:@"user.email"];
 }
 
 
