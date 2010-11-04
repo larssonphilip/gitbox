@@ -27,3 +27,29 @@ how the events are differentiated...
 
 RepositoriesController makes distinction between types of objects and sends appropriate notifications (didSelectLocalRepo, didSelectCloningRepo etc.)
 
+
+
+Menu:
+
+- stage/unstage
+- commit
+- fetch
+- pull
+- push
+
+- show difference   - only when modified
+- reveal in finder  - only for the existing files (dstURL)
+- extract file      - only for the historical files (dstURL)
+- ignore            - only for the stage changes
+- revert            - only for the stage changes
+- delete            - only for the stage changes
+
+- open repo in terminal
+- open repo in finder
+- edit remotes
+- edit .gitignore
+- edit .git/config
+- edit .gitconfig
+
+
+

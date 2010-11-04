@@ -1,13 +1,13 @@
 
 1.0:
 
-- create a remote
 - create a remote branch
 - read ls-remotes when updated .git
 - fetch periodically
 - fetch in background should reset fetch interval when new commits are fetched
 - do ls-remote in background starting on unfocus (or not only in background)
-- main menu: revamp git menu into two menus: repository, commit
+- menu item: extract file
+- bug: after adding a remote, the list of remote branches is fucked up
 + create a repo out of an empty folder
 + when starting a gitbox should configure user's name and email if missing
 

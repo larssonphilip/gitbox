@@ -40,8 +40,6 @@
 - (BOOL) validateShowDifference;
 
 - (void) revealInFinder;
-- (void) openWithFinder;
 - (BOOL) validateRevealInFinder;
-- (BOOL) validateOpenWithFinder;
 
 @end

@@ -13,6 +13,7 @@
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
 			<integer value="13"/>
+			<integer value="15"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -303,61 +304,27 @@
 				<string key="NSTitle"/>
 				<object class="NSMutableArray" key="NSMenuItems">
 					<bool key="EncodedWithXMLCoder">YES</bool>
-					<object class="NSMenuItem" id="895120728">
-						<reference key="NSMenu" ref="406243151"/>
-						<string key="NSTitle">Show Difference</string>
-						<string key="NSKeyEquiv"/>
-						<int key="NSMnemonicLoc">2147483647</int>
-						<object class="NSCustomResource" key="NSOnImage" id="433958093">
-							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">NSMenuCheckmark</string>
-						</object>
-						<object class="NSCustomResource" key="NSMixedImage" id="1014374096">
-							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">NSMenuMixedState</string>
-						</object>
-					</object>
-					<object class="NSMenuItem" id="1021011829">
-						<reference key="NSMenu" ref="406243151"/>
-						<string key="NSTitle">Reveal in Finder</string>
-						<string key="NSKeyEquiv"/>
-						<int key="NSMnemonicLoc">2147483647</int>
-						<reference key="NSOnImage" ref="433958093"/>
-						<reference key="NSMixedImage" ref="1014374096"/>
-					</object>
-					<object class="NSMenuItem" id="762353186">
-						<reference key="NSMenu" ref="406243151"/>
-						<string key="NSTitle">Open with Finder</string>
-						<string key="NSKeyEquiv"/>
-						<int key="NSMnemonicLoc">2147483647</int>
-						<reference key="NSOnImage" ref="433958093"/>
-						<reference key="NSMixedImage" ref="1014374096"/>
-					</object>
-					<object class="NSMenuItem" id="1009412407">
-						<reference key="NSMenu" ref="406243151"/>
-						<bool key="NSIsDisabled">YES</bool>
-						<bool key="NSIsSeparator">YES</bool>
-						<string key="NSTitle"/>
-						<string key="NSKeyEquiv"/>
-						<int key="NSMnemonicLoc">2147483647</int>
-						<reference key="NSOnImage" ref="433958093"/>
-						<reference key="NSMixedImage" ref="1014374096"/>
-					</object>
 					<object class="NSMenuItem" id="298280379">
 						<reference key="NSMenu" ref="406243151"/>
 						<string key="NSTitle">Stage</string>
 						<string key="NSKeyEquiv"/>
 						<int key="NSMnemonicLoc">2147483647</int>
-						<reference key="NSOnImage" ref="433958093"/>
-						<reference key="NSMixedImage" ref="1014374096"/>
+						<object class="NSCustomResource" key="NSOnImage" id="1044813253">
+							<string key="NSClassName">NSImage</string>
+							<string key="NSResourceName">NSMenuCheckmark</string>
+						</object>
+						<object class="NSCustomResource" key="NSMixedImage" id="164999429">
+							<string key="NSClassName">NSImage</string>
+							<string key="NSResourceName">NSMenuMixedState</string>
+						</object>
 					</object>
 					<object class="NSMenuItem" id="735007963">
 						<reference key="NSMenu" ref="406243151"/>
 						<string key="NSTitle">Unstage</string>
 						<string key="NSKeyEquiv"/>
 						<int key="NSMnemonicLoc">2147483647</int>
-						<reference key="NSOnImage" ref="433958093"/>
-						<reference key="NSMixedImage" ref="1014374096"/>
+						<reference key="NSOnImage" ref="1044813253"/>
+						<reference key="NSMixedImage" ref="164999429"/>
 					</object>
 					<object class="NSMenuItem" id="267540823">
 						<reference key="NSMenu" ref="406243151"/>
@@ -366,42 +333,66 @@
 						<string key="NSTitle"/>
 						<string key="NSKeyEquiv"/>
 						<int key="NSMnemonicLoc">2147483647</int>
-						<reference key="NSOnImage" ref="433958093"/>
-						<reference key="NSMixedImage" ref="1014374096"/>
+						<reference key="NSOnImage" ref="1044813253"/>
+						<reference key="NSMixedImage" ref="164999429"/>
 					</object>
-					<object class="NSMenuItem" id="932009263">
+					<object class="NSMenuItem" id="895120728">
 						<reference key="NSMenu" ref="406243151"/>
-						<string key="NSTitle">Ignore...</string>
+						<string key="NSTitle">Show Difference</string>
 						<string key="NSKeyEquiv"/>
 						<int key="NSMnemonicLoc">2147483647</int>
-						<reference key="NSOnImage" ref="433958093"/>
-						<reference key="NSMixedImage" ref="1014374096"/>
+						<reference key="NSOnImage" ref="1044813253"/>
+						<reference key="NSMixedImage" ref="164999429"/>
 					</object>
-					<object class="NSMenuItem" id="660702133">
+					<object class="NSMenuItem" id="1021011829">
+						<reference key="NSMenu" ref="406243151"/>
+						<string key="NSTitle">Show in Finder</string>
+						<string key="NSKeyEquiv"/>
+						<int key="NSMnemonicLoc">2147483647</int>
+						<reference key="NSOnImage" ref="1044813253"/>
+						<reference key="NSMixedImage" ref="164999429"/>
+					</object>
+					<object class="NSMenuItem" id="762353186">
+						<reference key="NSMenu" ref="406243151"/>
+						<string key="NSTitle">Extract File...</string>
+						<string key="NSKeyEquiv"/>
+						<int key="NSMnemonicLoc">2147483647</int>
+						<reference key="NSOnImage" ref="1044813253"/>
+						<reference key="NSMixedImage" ref="164999429"/>
+					</object>
+					<object class="NSMenuItem" id="1009412407">
 						<reference key="NSMenu" ref="406243151"/>
 						<bool key="NSIsDisabled">YES</bool>
 						<bool key="NSIsSeparator">YES</bool>
 						<string key="NSTitle"/>
 						<string key="NSKeyEquiv"/>
 						<int key="NSMnemonicLoc">2147483647</int>
-						<reference key="NSOnImage" ref="433958093"/>
-						<reference key="NSMixedImage" ref="1014374096"/>
+						<reference key="NSOnImage" ref="1044813253"/>
+						<reference key="NSMixedImage" ref="164999429"/>
+					</object>
+					<object class="NSMenuItem" id="932009263">
+						<reference key="NSMenu" ref="406243151"/>
+						<string key="NSTitle">Ignore File...</string>
+						<string key="NSKeyEquiv"/>
+						<int key="NSMnemonicLoc">2147483647</int>
+						<reference key="NSOnImage" ref="1044813253"/>
+						<reference key="NSMixedImage" ref="164999429"/>
 					</object>
 					<object class="NSMenuItem" id="43660681">
 						<reference key="NSMenu" ref="406243151"/>
-						<string key="NSTitle">Revert...</string>
+						<string key="NSTitle">Revert File...</string>
 						<string key="NSKeyEquiv"/>
 						<int key="NSMnemonicLoc">2147483647</int>
-						<reference key="NSOnImage" ref="433958093"/>
-						<reference key="NSMixedImage" ref="1014374096"/>
+						<reference key="NSOnImage" ref="1044813253"/>
+						<reference key="NSMixedImage" ref="164999429"/>
 					</object>
 					<object class="NSMenuItem" id="1043954354">
 						<reference key="NSMenu" ref="406243151"/>
-						<string key="NSTitle">Delete...</string>
+						<string key="NSTitle">Delete File...</string>
 						<string key="NSKeyEquiv"/>
 						<int key="NSMnemonicLoc">2147483647</int>
-						<reference key="NSOnImage" ref="433958093"/>
-						<reference key="NSMixedImage" ref="1014374096"/>
+						<reference key="NSOnImage" ref="1044813253"/>
+						<reference key="NSMixedImage" ref="164999429"/>
 					</object>
 				</object>
 			</object>
@@ -511,22 +502,6 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBActionConnection" key="connection">
-						<string key="label">stageShowDifference:</string>
-						<reference key="source" ref="1001"/>
-						<reference key="destination" ref="895120728"/>
-					</object>
-					<int key="connectionID">45</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">stageRevealInFinder:</string>
-						<reference key="source" ref="1001"/>
-						<reference key="destination" ref="1021011829"/>
-					</object>
-					<int key="connectionID">46</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
 						<string key="label">stageDoStage:</string>
 						<reference key="source" ref="1001"/>
 						<reference key="destination" ref="298280379"/>
@@ -615,19 +590,35 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBActionConnection" key="connection">
-						<string key="label">stageOpenWithFinder:</string>
-						<reference key="source" ref="1001"/>
-						<reference key="destination" ref="762353186"/>
-					</object>
-					<int key="connectionID">66</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
 						<string key="label">stageIgnoreFile:</string>
 						<reference key="source" ref="1001"/>
 						<reference key="destination" ref="932009263"/>
 					</object>
 					<int key="connectionID">67</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">stageRevealInFinder:</string>
+						<reference key="source" ref="1003"/>
+						<reference key="destination" ref="1021011829"/>
+					</object>
+					<int key="connectionID">68</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">stageExtractFile:</string>
+						<reference key="source" ref="1003"/>
+						<reference key="destination" ref="762353186"/>
+					</object>
+					<int key="connectionID">70</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">stageShowDifference:</string>
+						<reference key="source" ref="1003"/>
+						<reference key="destination" ref="895120728"/>
+					</object>
+					<int key="connectionID">71</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -677,17 +668,16 @@
 						<reference key="object" ref="406243151"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="267540823"/>
-							<reference ref="735007963"/>
-							<reference ref="298280379"/>
 							<reference ref="43660681"/>
 							<reference ref="1009412407"/>
 							<reference ref="1021011829"/>
 							<reference ref="895120728"/>
 							<reference ref="1043954354"/>
-							<reference ref="660702133"/>
 							<reference ref="932009263"/>
 							<reference ref="762353186"/>
+							<reference ref="298280379"/>
+							<reference ref="735007963"/>
+							<reference ref="267540823"/>
 						</object>
 						<reference key="parent" ref="0"/>
 						<string key="objectName">stageMenu</string>
@@ -813,11 +803,6 @@
 						<reference key="parent" ref="348828196"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">51</int>
-						<reference key="object" ref="660702133"/>
-						<reference key="parent" ref="406243151"/>
-					</object>
-					<object class="IBObjectRecord">
 						<int key="objectID">52</int>
 						<reference key="object" ref="932009263"/>
 						<reference key="parent" ref="406243151"/>
@@ -859,7 +844,6 @@
 					<string>31.IBPluginDependency</string>
 					<string>32.IBPluginDependency</string>
 					<string>33.IBPluginDependency</string>
-					<string>51.IBPluginDependency</string>
 					<string>52.IBPluginDependency</string>
 					<string>65.IBPluginDependency</string>
 				</object>
@@ -871,8 +855,7 @@
 					<string>{{217, 442}, {480, 272}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{530, 136}, {169, 193}}</string>
-					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>{{530, 146}, {162, 183}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -912,7 +895,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">67</int>
+			<int key="maxID">71</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -924,7 +907,7 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>stageOpenWithFinder:</string>
+							<string>stageExtractFile:</string>
 							<string>stageRevealInFinder:</string>
 							<string>stageShowDifference:</string>
 						</object>
@@ -939,14 +922,14 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>stageOpenWithFinder:</string>
+							<string>stageExtractFile:</string>
 							<string>stageRevealInFinder:</string>
 							<string>stageShowDifference:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<object class="IBActionInfo">
-								<string key="name">stageOpenWithFinder:</string>
+								<string key="name">stageExtractFile:</string>
 								<string key="candidateClassName">id</string>
 							</object>
 							<object class="IBActionInfo">
@@ -1257,6 +1240,13 @@
 					<object class="IBClassDescriptionSource" key="sourceIdentifier" id="194671633">
 						<string key="majorKey">IBFrameworkSource</string>
 						<string key="minorKey">AppKit.framework/Headers/NSMenuItem.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">NSObject</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBFrameworkSource</string>
+						<string key="minorKey">AddressBook.framework/Headers/ABActions.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">

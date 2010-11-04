@@ -338,12 +338,8 @@
 
 - (void) revealInFinder
 {
-  NSURL* url = [self existingOrTemporaryFileURL];
-  if (!url) return;
-  
-  NSString* path = [url path];
-  if (path && ([[NSFileManager defaultManager] isReadableFileAtPath:path] || 
-               [[NSFileManager defaultManager] isReadableDirectoryAtPath:path]))
+  NSString* path = [[self fileURL] path];
+  if (path && [[NSFileManager defaultManager] isReadableFileAtPath:path])
   {
     [[NSWorkspace sharedWorkspace] selectFile:path inFileViewerRootedAtPath:nil];
   }
@@ -351,19 +347,8 @@
 
 - (BOOL) validateRevealInFinder
 {
-  return ([self isUntrackedFile] || !![self.newRevision nonZeroCommitId] || !![self.oldRevision nonZeroCommitId]);
-}
-
-- (void) openWithFinder
-{
-  NSURL* url = [self existingOrTemporaryFileURL];
-  if (!url) return;
-  [[NSWorkspace sharedWorkspace] openURL:url];
-}
-
-- (BOOL) validateOpenWithFinder
-{
-  return [self validateRevealInFinder];
+  NSString* path = [[self fileURL] path];
+  return path && [[NSFileManager defaultManager] isReadableFileAtPath:path];
 }
 
 

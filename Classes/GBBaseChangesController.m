@@ -77,41 +77,43 @@
 
 #pragma mark Actions
 
+// TODO: modify to work with multiple changes
 
 
-- (IBAction) stageShowDifference:(id)sender
+- (IBAction) stageShowDifference:_
 {
   [[[[self selectedChanges] firstObject] nilIfBusy] launchDiffWithBlock:^{
     
   }];
 }
-- (BOOL) validateStageShowDifference:(id)sender
-{
-  if ([[self selectedChanges] count] != 1) return NO;
-  return [[[[self selectedChanges] firstObject] nilIfBusy] validateShowDifference];
-}
+  - (BOOL) validateStageShowDifference:_
+  {
+    if ([[self selectedChanges] count] != 1) return NO;
+    return [[[[self selectedChanges] firstObject] nilIfBusy] validateShowDifference];
+  }
 
-- (IBAction) stageRevealInFinder:(id)sender
+
+- (IBAction) stageRevealInFinder:_
 {
   [[[[self selectedChanges] firstObject] nilIfBusy] revealInFinder];
 }
+  - (BOOL) validateStageRevealInFinder:_
+  {
+    if ([[self selectedChanges] count] != 1) return NO;
+    return [[[[self selectedChanges] firstObject] nilIfBusy] validateRevealInFinder];
+  }
 
-- (BOOL) validateStageRevealInFinder:(id)sender
-{
-  if ([[self selectedChanges] count] != 1) return NO;
-  return [[[[self selectedChanges] firstObject] nilIfBusy] validateRevealInFinder];
-}
 
-- (IBAction) stageOpenWithFinder:(id)sender
+- (IBAction) stageExtractFile:_
 {
-  [[[[self selectedChanges] firstObject] nilIfBusy] openWithFinder];
+//  [[[[self selectedChanges] firstObject] nilIfBusy] openWithFinder];
 }
-
-- (BOOL) validateStageOpenWithFinder:(id)sender
-{
-  if ([[self selectedChanges] count] != 1) return NO;
-  return [[[[self selectedChanges] firstObject] nilIfBusy] validateOpenWithFinder];
-}
+  - (BOOL) validateStageExtractFile:_
+  {
+    if ([[self selectedChanges] count] != 1) return NO;
+    //return [[[[self selectedChanges] firstObject] nilIfBusy] validateOpenWithFinder];
+    return NO;
+  }
 
 
 
