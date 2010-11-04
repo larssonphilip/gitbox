@@ -55,6 +55,7 @@ Ongoing tasks:
 
 Bugs:
 
+- when a long process modifies the working directory, the FSEvents wait till the very end, but should refresh each 2 seconds or so.
 - bug: bare repository is not recognized as such: should provide read-only access
 - maybe a bug: if the stage view is not selected, commit: action is not available
 - preferences: should select "Other" when typing
