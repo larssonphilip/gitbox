@@ -27,6 +27,7 @@
 @synthesize commitButton;
 
 @synthesize window;
+@synthesize mainWindowController;
 
 - (void) dealloc
 {
@@ -401,8 +402,8 @@
   if ([[remoteBranchesMenu itemArray] count] <= 1) // ignore dummy item
   {
     NSMenuItem* newRemoteItem = [NSMenuItem menuItemWithTitle:NSLocalizedString(@"Add Remote...", @"Command") submenu:nil];
-    [newRemoteItem setAction:@selector(createNewRemote:)];
-    [newRemoteItem setTarget:self];
+    [newRemoteItem setAction:@selector(editRepositories:)];
+    [newRemoteItem setTarget:self.mainWindowController];
     [newRemoteItem setRepresentedObject:nil];
     [remoteBranchesMenu addItem:newRemoteItem];
   }

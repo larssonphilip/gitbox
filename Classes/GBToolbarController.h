@@ -1,4 +1,5 @@
 @class GBRepositoryController;
+@class GBMainWindowController;
 
 @interface GBToolbarController : NSObject
 
@@ -13,6 +14,7 @@
 @property(retain) IBOutlet NSButton* commitButton;
 
 @property(assign) IBOutlet NSWindow* window;
+@property(assign) IBOutlet GBMainWindowController* mainWindowController;
 
 - (void) windowDidLoad;
 - (void) windowDidUnload;
