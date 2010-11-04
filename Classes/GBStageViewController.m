@@ -4,9 +4,15 @@
 #import "GBStageViewController.h"
 #import "GBFileEditingController.h"
 #import "GBCommitPromptController.h"
+#import "GBUserNameEmailController.h"
 
 #import "NSObject+OAKeyValueObserving.h"
 #import "NSArray+OAArrayHelpers.h"
+
+@interface GBStageViewController ()
+- (void) checkUserNameAndEmailIfNeededWithBlock:(void(^)())block;
+@end
+
 
 
 @implementation GBStageViewController
@@ -201,41 +207,43 @@
 
 - (IBAction) commit:(id)sender
 {
-  [self.repositoryController stageChanges:[self selectedChanges] withBlock:^{
-    
-    if (!self.commitPromptController)
-    {
-      self.commitPromptController = [GBCommitPromptController controller];
-    }
-    
-    GBCommitPromptController* prompt = self.commitPromptController;
-    GBRepositoryController* repoCtrl = self.repositoryController;
-    
-    prompt.messageHistory = self.repositoryController.commitMessageHistory;
-    prompt.value = repoCtrl.cancelledCommitMessage ? repoCtrl.cancelledCommitMessage : @"";
-    prompt.branchName = nil;
-    
-    [prompt updateWindow];
-    
-    NSString* currentBranchName = self.repositoryController.repository.currentLocalRef.name;
-    
-    if (currentBranchName && 
-        repoCtrl.lastCommitBranchName && 
-        ![repoCtrl.lastCommitBranchName isEqualToString:currentBranchName])
-    {
-      prompt.branchName = currentBranchName;
-    }
-    
-    prompt.finishBlock = ^{
-      repoCtrl.cancelledCommitMessage = @"";
-      repoCtrl.lastCommitBranchName = currentBranchName;
-      [repoCtrl commitWithMessage:prompt.value];
-    };
-    prompt.cancelBlock = ^{
-      repoCtrl.cancelledCommitMessage = prompt.value;
-    };
-    
-    [prompt runSheetInWindow:[self window]];
+  [self checkUserNameAndEmailIfNeededWithBlock:^{
+    [self.repositoryController stageChanges:[self selectedChanges] withBlock:^{
+      
+      if (!self.commitPromptController)
+      {
+        self.commitPromptController = [[[GBCommitPromptController alloc] initWithWindowNibName:@"GBCommitPromptController"] autorelease];
+      }
+      
+      GBCommitPromptController* prompt = self.commitPromptController;
+      GBRepositoryController* repoCtrl = self.repositoryController;
+      
+      prompt.messageHistory = self.repositoryController.commitMessageHistory;
+      prompt.value = repoCtrl.cancelledCommitMessage ? repoCtrl.cancelledCommitMessage : @"";
+      prompt.branchName = nil;
+      
+      [prompt updateWindow];
+      
+      NSString* currentBranchName = self.repositoryController.repository.currentLocalRef.name;
+      
+      if (currentBranchName && 
+          repoCtrl.lastCommitBranchName && 
+          ![repoCtrl.lastCommitBranchName isEqualToString:currentBranchName])
+      {
+        prompt.branchName = currentBranchName;
+      }
+      
+      prompt.finishBlock = ^{
+        repoCtrl.cancelledCommitMessage = @"";
+        repoCtrl.lastCommitBranchName = currentBranchName;
+        [repoCtrl commitWithMessage:prompt.value];
+      };
+      prompt.cancelBlock = ^{
+        repoCtrl.cancelledCommitMessage = prompt.value;
+      };
+      
+      [prompt runSheetInWindow:[self window]];
+    }];
   }];
 }
 
@@ -278,6 +286,39 @@
 - (void)tableViewSelectionDidChange:(NSNotification *)aNotification
 {
   [self.repositoryController selectCommitableChanges:[self selectedChanges]];
+}
+
+
+
+
+
+#pragma mark User name and email
+
+
+- (void) checkUserNameAndEmailIfNeededWithBlock:(void(^)())block
+{
+  if (alreadyCheckedUserNameAndEmail)
+  {
+    block();
+    return;
+  }
+  
+  NSString* email = [GBRepository globalConfiguredEmail];
+  
+  if (email && [email length] > 3)
+  {
+    alreadyCheckedUserNameAndEmail = YES;
+    block();
+    return;
+  }
+  
+  GBUserNameEmailController* ctrl = [[[GBUserNameEmailController alloc] initWithWindowNibName:@"GBUserNameEmailController"] autorelease];
+  [ctrl fillWithAddressBookData];
+  ctrl.finishBlock = ^{
+    alreadyCheckedUserNameAndEmail = YES;
+    [GBRepository configureName:ctrl.userName email:ctrl.userEmail withBlock:block];
+  };
+  [ctrl runSheetInWindow:[self window]];
 }
 
 

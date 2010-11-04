@@ -3,7 +3,9 @@
 @class GBStage;
 @class GBCommitPromptController;
 @interface GBStageViewController : GBBaseChangesController
-
+{
+  BOOL alreadyCheckedUserNameAndEmail;
+}
 @property(retain) GBStage* stage;
 @property(retain) GBCommitPromptController* commitPromptController;
 
