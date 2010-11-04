@@ -1,13 +1,14 @@
 
 1.0:
 
-+ create a repo out of an empty folder
 - create a remote
 - create a remote branch
 - read ls-remotes when updated .git
 - fetch periodically
 - fetch in background should reset fetch interval when new commits are fetched
 - do ls-remote in background starting on unfocus (or not only in background)
++ create a repo out of an empty folder
++ when starting a gitbox should configure user's name and email if missing
 
 - linode server
 - dns config
@@ -114,7 +115,6 @@ Enhancements (works fine, but can be better):
 
 - remember activity window visibility
 - Menu item: "Fetch"
-- when starting a gitbox should configure user's name and email if missing
 - hitting space bar for staging/unstaging a change
 
 
@@ -153,6 +153,7 @@ Enhancements:
 + When the changed file is double-clicked, only the diff program is launched. If the file is untracked, added or deleted, diff is not launched.
 + Multiple repositories can be opened at once using an Open Panel.
 + New repository is now created without an initial commit.
++ Gitbox asks for your name and email before making a commit (default values are taken from the address book) and stores them in ~/.gitconfig.
 
 Bug fixes:
 + Fixed crashes related to clicking on changes in the stage view. 
