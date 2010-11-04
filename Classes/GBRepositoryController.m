@@ -664,7 +664,7 @@
   if (self.isSpinning == 0)
   {
     if ([self.delegate respondsToSelector:@selector(repositoryControllerDidChangeSpinningStatus:)]) { [self.delegate repositoryControllerDidChangeSpinningStatus:self]; }
-  }  
+  }
 }
 
 

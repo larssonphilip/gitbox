@@ -134,8 +134,7 @@
 {
   GBFileEditingController* fileEditor = [GBFileEditingController controller];
   fileEditor.title = @"~/.gitconfig";
-  NSLog(@".gitconfig: %@", [NSHomeDirectory() stringByAppendingPathComponent:@".gitconfig"]);
-  fileEditor.URL = [NSURL URLWithString:[NSHomeDirectory() stringByAppendingPathComponent:@".gitconfig"]];
+  fileEditor.URL = [NSURL fileURLWithPath:[NSHomeDirectory() stringByAppendingPathComponent:@".gitconfig"]];
   [fileEditor runSheetInWindow:[self window]];  
 }
 
