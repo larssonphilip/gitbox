@@ -38,8 +38,8 @@
 
 - (IBAction) onOK:(id)sender
 {
-  if (self.finishSelector) [self.target performSelector:self.finishSelector withObject:self];
   [self syncRemotesDictionariesWithRepository];
+  if (self.finishSelector) [self.target performSelector:self.finishSelector withObject:self];
 }
 
 - (IBAction) onCancel:(id)sender

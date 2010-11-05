@@ -6,22 +6,24 @@
 - fetch periodically
 - fetch in background should reset fetch interval when new commits are fetched
 - do ls-remote in background starting on unfocus (or not only in background)
-- bug: after adding a remote, the list of remote branches is fucked up
 - menu item: rename pull to merge and vice versa automatically
 - menu item: extract file
++ bug: after adding a remote, the list of remote branches is fucked up
 + create a repo out of an empty folder
 + when starting a gitbox should configure user's name and email if missing
 
 - linode server
 - dns config
-- ssl certificates
-- paypal button
-- paypal notifications IPN
+
 - nice screenshots
 - video
 - simpler definition and wording
 - revamped page design
 - revamped app icon
+
+- ssl certificates
+- paypal button
+- paypal notifications IPN
 
 
 1.1:
