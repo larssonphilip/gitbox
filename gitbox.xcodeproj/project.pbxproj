@@ -42,11 +42,9 @@
 		2035632F11D3B57800965765 /* GBHistoryScroller.m in Sources */ = {isa = PBXBuildFile; fileRef = 2035632E11D3B57800965765 /* GBHistoryScroller.m */; };
 		2035634E11D3BCB100965765 /* CGContext+OACGContextHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 2035634D11D3BCB100965765 /* CGContext+OACGContextHelpers.m */; };
 		2035639E11D3C14C00965765 /* GBHistoryScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2035639D11D3C14C00965765 /* GBHistoryScrollView.m */; };
-		2038F1B11193664D0087CE37 /* ObsoleteGBRepositoryController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58290DA1D0D100B32029 /* ObsoleteGBRepositoryController.xib */; };
 		2038F1B3119366660087CE37 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C1660FE840EACC02AAC07 /* InfoPlist.strings */; };
 		2038F1B7119366960087CE37 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD582B0DA1D0D100B32029 /* MainMenu.xib */; };
 		2038F1DF11936B060087CE37 /* GBAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2038F1DE11936B060087CE37 /* GBAppDelegate.m */; };
-		2038F21B11936FDE0087CE37 /* ObsoleteGBRepositoryController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2038F21A11936FDE0087CE37 /* ObsoleteGBRepositoryController.m */; };
 		2038F30C11952FCF0087CE37 /* GBRepository.m in Sources */ = {isa = PBXBuildFile; fileRef = 2038F30B11952FCF0087CE37 /* GBRepository.m */; };
 		2038F39711953CB60087CE37 /* GBRef.m in Sources */ = {isa = PBXBuildFile; fileRef = 2038F39611953CB60087CE37 /* GBRef.m */; };
 		2038F3E1119546E90087CE37 /* NSArray+OAArrayHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 2038F3E0119546E90087CE37 /* NSArray+OAArrayHelpers.m */; };
@@ -166,7 +164,6 @@
 		089C1660FE840EACC02AAC07 /* InfoPlist.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = InfoPlist.strings; sourceTree = "<group>"; };
 		1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		13E42FBA07B3F13500E4EEF1 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
-		1DDD58290DA1D0D100B32029 /* ObsoleteGBRepositoryController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ObsoleteGBRepositoryController.xib; sourceTree = "<group>"; };
 		1DDD582B0DA1D0D100B32029 /* MainMenu.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
 		2000325311FC75050069C70D /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
 		2002AC0A123CA1A20072075C /* OAFSEventStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAFSEventStream.h; sourceTree = "<group>"; };
@@ -212,8 +209,6 @@
 		2038F1DD11936B060087CE37 /* GBAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBAppDelegate.h; sourceTree = "<group>"; };
 		2038F1DE11936B060087CE37 /* GBAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBAppDelegate.m; sourceTree = "<group>"; };
 		2038F1EA11936CA50087CE37 /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
-		2038F21911936FDE0087CE37 /* ObsoleteGBRepositoryController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObsoleteGBRepositoryController.h; sourceTree = "<group>"; };
-		2038F21A11936FDE0087CE37 /* ObsoleteGBRepositoryController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ObsoleteGBRepositoryController.m; sourceTree = "<group>"; };
 		2038F30A11952FCF0087CE37 /* GBRepository.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBRepository.h; sourceTree = "<group>"; };
 		2038F30B11952FCF0087CE37 /* GBRepository.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBRepository.m; sourceTree = "<group>"; };
 		2038F39511953CB60087CE37 /* GBRef.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBRef.h; sourceTree = "<group>"; };
@@ -655,9 +650,6 @@
 		20BF19511282242100A30EE6 /* WIP */ = {
 			isa = PBXGroup;
 			children = (
-				2038F21911936FDE0087CE37 /* ObsoleteGBRepositoryController.h */,
-				2038F21A11936FDE0087CE37 /* ObsoleteGBRepositoryController.m */,
-				1DDD58290DA1D0D100B32029 /* ObsoleteGBRepositoryController.xib */,
 				2035623611D383D000965765 /* GBCommandsController.h */,
 				2035623711D383D000965765 /* GBCommandsController.m */,
 				2035623211D383BE00965765 /* GBCommandsController.xib */,
@@ -800,7 +792,6 @@
 			files = (
 				209A963E11BC630C006B0B5C /* default_gitignore in Resources */,
 				2038F1B3119366660087CE37 /* InfoPlist.strings in Resources */,
-				2038F1B11193664D0087CE37 /* ObsoleteGBRepositoryController.xib in Resources */,
 				2038F1B7119366960087CE37 /* MainMenu.xib in Resources */,
 				2058FA4811982F5100FB018D /* GBRemotesController.xib in Resources */,
 				20B8B83911A4A72A006D6442 /* GBPromptController.xib in Resources */,
@@ -870,7 +861,6 @@
 			files = (
 				8D15AC320486D014006FF6A4 /* main.m in Sources */,
 				2038F1DF11936B060087CE37 /* GBAppDelegate.m in Sources */,
-				2038F21B11936FDE0087CE37 /* ObsoleteGBRepositoryController.m in Sources */,
 				20B1621211944C0F00A709CF /* NSFileManager+OAFileManagerHelpers.m in Sources */,
 				2038F30C11952FCF0087CE37 /* GBRepository.m in Sources */,
 				2038F39711953CB60087CE37 /* GBRef.m in Sources */,
