@@ -1,11 +1,11 @@
 
 1.0:
 
-- read ls-remotes when updated .git
 - fetch periodically
 - fetch in background should reset fetch interval when new commits are fetched
 - do ls-remote in background starting on unfocus (or not only in background)
 - menu item: extract file
+- read ls-remotes when updated .git
 + create a remote branch
 + menu item: rename pull to merge and vice versa automatically
 + bug: after adding a remote, the list of remote branches is fucked up
