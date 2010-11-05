@@ -1,13 +1,11 @@
 
 1.0:
 
-- fetch periodically:
-  - repositories controller should fetch for every controller in a cycle
-  - reset fetch interval on user action
-- fetch in background should reset fetch interval when new commits are fetched
+- check that autofetch works when gitbox is restarted and the repo was never selected (should load branches anyway)
 - do ls-remote in background starting on unfocus (or not only in background)
 - menu item: extract file
 - read ls-remotes when updated .git
++ fetch periodically
 + create a remote branch
 + menu item: rename pull to merge and vice versa automatically
 + bug: after adding a remote, the list of remote branches is fucked up
