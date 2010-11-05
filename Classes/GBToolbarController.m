@@ -531,12 +531,28 @@
 - (BOOL) validateFetch:(id)_
 {
   GBRepositoryController* rc = self.repositoryController;
-  return rc.repository.currentRemoteBranch && !rc.isDisabled && !rc.isRemoteBranchesDisabled;
+  return rc.repository.currentRemoteBranch &&
+         [rc.repository.currentRemoteBranch isRemoteBranch] &&
+         !rc.isDisabled && 
+         !rc.isRemoteBranchesDisabled;
 }
 
-- (BOOL) validatePull:(id)_
+- (BOOL) validatePull:(id)sender
 {
   GBRepositoryController* rc = self.repositoryController;
+  if ([sender isKindOfClass:[NSMenuItem class]])
+  {
+    NSMenuItem* item = sender;
+    if (rc.repository.currentRemoteBranch && [rc.repository.currentRemoteBranch isLocalBranch])
+    {
+      [item setTitle:NSLocalizedString(@"Merge", @"Command")];
+    }
+    else
+    {
+      [item setTitle:NSLocalizedString(@"Pull", @"Command")];
+    }
+  }
+
   return rc.repository.currentLocalRef && rc.repository.currentRemoteBranch && !rc.isDisabled && !rc.isRemoteBranchesDisabled;
 }
 
