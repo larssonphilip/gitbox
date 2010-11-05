@@ -43,7 +43,7 @@
   {
     alphaDistanceMultiplier = (rect.origin.y - 3.0)/(threshold);
     if (alphaDistanceMultiplier < 0) alphaDistanceMultiplier = 0;
-    CGFloat limit = 0.2;
+    CGFloat limit = 0.0;
     alphaDistanceMultiplier = limit + (1-limit)*alphaDistanceMultiplier;
   }
   
@@ -77,9 +77,9 @@
   CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
   CGGradientRef gradient = CGGradientCreateWithColors(colorSpace, colors, NULL);
   
-  CGContextDrawLinearGradient(context, 
+  CGContextDrawLinearGradient(context,
                               gradient,
-                              rect.origin, 
+                              rect.origin,
                               CGPointMake(rect.origin.x + rect.size.width, rect.origin.y), 
                               0);
   
