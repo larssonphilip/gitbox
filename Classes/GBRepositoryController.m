@@ -33,9 +33,13 @@
 - (void) updateCurrentBranchesIfNeededWithBlock:(void(^)())block;
 - (void) updateLocalBranchesAndTags;
 - (void) updateBranchesForRemote:(GBRemote*)aRemote;
-- (void) resetBackgroundUpdateInterval;
+
 - (void) workingDirectoryStateDidChange;
 - (void) dotgitStateDidChange;
+
+- (void) resetAutoFetchInterval;
+- (void) scheduleAutoFetch;
+- (void) unscheduleAutoFetch;
 
 // Obsolete:
 //- (void) saveObject:(id)obj forKey:(NSString*)key;
@@ -149,11 +153,14 @@
     }
   }];
   [self.fsEventStream start];
+  
+  [self resetAutoFetchInterval];
+  [self scheduleAutoFetch];
 }
 
 - (void) stop
 {
-  //[self endBackgroundUpdate];
+  [self unscheduleAutoFetch];
   [self.fsEventStream stop];
 }
 
@@ -295,6 +302,7 @@
 
 - (void) checkoutRef:(GBRef*)ref
 {
+  [self resetAutoFetchInterval];
   [self checkoutHelper:^(void(^block)()){
     [self.repository checkoutRef:ref withBlock:block];
   }];
@@ -302,6 +310,7 @@
 
 - (void) checkoutRef:(GBRef*)ref withNewName:(NSString*)name
 {
+  [self resetAutoFetchInterval];
   [self checkoutHelper:^(void(^block)()){
     [self.repository checkoutRef:ref withNewName:name block:block];
   }];
@@ -309,6 +318,7 @@
 
 - (void) checkoutNewBranchWithName:(NSString*)name
 {
+  [self resetAutoFetchInterval];
   [self checkoutHelper:^(void(^block)()){
     [self.repository checkoutNewBranchWithName:name block:block];
   }];
@@ -316,6 +326,7 @@
 
 - (void) selectRemoteBranch:(GBRef*) remoteBranch
 {
+  [self resetAutoFetchInterval];
   self.repository.currentRemoteBranch = remoteBranch;
   [self.repository configureTrackingRemoteBranch:remoteBranch 
                                    withLocalName:self.repository.currentLocalRef.name 
@@ -327,6 +338,7 @@
 
 - (void) createAndSelectRemoteBranchWithName:(NSString*)name remote:(GBRemote*)aRemote
 {
+  [self resetAutoFetchInterval];
   GBRef* remoteBranch = [[GBRef new] autorelease];
   remoteBranch.repository = self.repository;
   remoteBranch.name = name;
@@ -348,6 +360,10 @@
 
 - (void) dotgitStateDidChange
 {
+  // TODO: reset the interval only when the origin of this change was not the recent autoFetch.
+  //       Should add some smart logic to handle this.
+  // [self resetAutoFetchInterval];
+  
   GBRepository* repo = self.repository;
   
   [self pushDisabled];
@@ -367,6 +383,7 @@
 
 - (void) selectCommit:(GBCommit*)commit
 {
+  [self resetAutoFetchInterval];
   self.selectedCommit = commit;
   if (commit)
   {
@@ -511,18 +528,21 @@
 
 - (void) stageChanges:(NSArray*)changes
 {
+  [self resetAutoFetchInterval];
   [self stageChanges:changes withBlock:nil];
 }
 
 - (void) stageChanges:(NSArray*)changes withBlock:(void(^)())block
 {
+  [self resetAutoFetchInterval];
   [self stagingHelperForChanges:changes withBlock:^(NSArray* notBusyChanges, GBStage* stage, void(^helperBlock)()){
     [stage stageChanges:notBusyChanges withBlock:helperBlock];
-  } postStageBlock:block];  
+  } postStageBlock:block];
 }
 
 - (void) unstageChanges:(NSArray*)changes
 {
+  [self resetAutoFetchInterval];
   [self stagingHelperForChanges:changes withBlock:^(NSArray* notBusyChanges, GBStage* stage, void(^helperBlock)()){
     [stage unstageChanges:notBusyChanges withBlock:helperBlock];
   } postStageBlock:nil];
@@ -530,6 +550,7 @@
 
 - (void) revertChanges:(NSArray*)changes
 {
+  [self resetAutoFetchInterval];
   // Revert each file individually because added untracked file causes a total failure
   // in 'git checkout HEAD' command when mixed with tracked paths.
   for (GBChange* change in changes)
@@ -544,6 +565,7 @@
 
 - (void) deleteFilesInChanges:(NSArray*)changes
 {
+  [self resetAutoFetchInterval];
   [self stagingHelperForChanges:changes withBlock:^(NSArray* notBusyChanges, GBStage* stage, void(^block)()){
     [stage deleteFilesInChanges:notBusyChanges withBlock:block];
   } postStageBlock:nil];
@@ -557,6 +579,7 @@
 
 - (void) commitWithMessage:(NSString*)message
 {
+  [self resetAutoFetchInterval];
   if (self.isCommitting) return;
   self.isCommitting = YES;
   [self pushSpinning];
@@ -573,7 +596,7 @@
   }];
 }
 
-- (void) fetch
+- (void) fetchSilently
 {
   [self pushSpinning];
   [self pushDisabled];
@@ -581,11 +604,18 @@
     [self loadCommits];
     [self popDisabled];
     [self popSpinning];
-  }];  
+  }];
+}
+
+- (void) fetch
+{
+  [self resetAutoFetchInterval];
+  [self fetchSilently];
 }
 
 - (void) pull
 {
+  [self resetAutoFetchInterval];
   [self pushSpinning];
   [self pushDisabled];
   [self.repository pullOrMergeWithBlock:^{
@@ -597,6 +627,7 @@
 
 - (void) push
 {
+  [self resetAutoFetchInterval];
   [self pushSpinning];
   [self pushDisabled];
   [self.repository pushWithBlock:^{
@@ -714,7 +745,7 @@
       NSString* newTopCommitId = self.repository.topCommitId;
       if (newTopCommitId && ![oldTopCommitId isEqualToString:newTopCommitId])
       {
-        [self resetBackgroundUpdateInterval];
+        [self resetAutoFetchInterval];
       }
       if ([self.delegate respondsToSelector:@selector(repositoryControllerDidUpdateCommits:)]) { [self.delegate repositoryControllerDidUpdateCommits:self]; }
       //[self pushSpinning];
@@ -776,43 +807,40 @@
 
 
 
-#pragma mark Background Update
+#pragma mark Auto Fetch
 
 
-- (void) resetBackgroundUpdateInterval
+- (void) resetAutoFetchInterval
 {
-  backgroundUpdateInterval = 10.0 + 2*2*(0.5-drand48()); 
+  //NSLog(@"GBRepositoryController: resetAutoFetchInterval in %@ (was: %f)", [self url], autoFetchInterval);
+  autoFetchInterval = 30.0 + 2*(2*(0.5-drand48()));
+  [self scheduleAutoFetch];
 }
 
-//- (void) beginBackgroundUpdate
-//{
-//  [self endBackgroundUpdate];
-//  backgroundUpdateEnabled = YES;
-//  // randomness is added to make all opened windows fetch at different points of time
-//  [self resetBackgroundUpdateInterval];
-//  [self performSelector:@selector(fetchSilentlyDuringBackgroundUpdate) 
-//             withObject:nil 
-//             afterDelay:15.0];
-//}
-//
-//- (void) endBackgroundUpdate
-//{
-//  backgroundUpdateEnabled = NO;
-//  [NSObject cancelPreviousPerformRequestsWithTarget:self 
-//                                           selector:@selector(fetchSilentlyDuringBackgroundUpdate) 
-//                                             object:nil];
-//}
-//
-//- (void) fetchSilentlyDuringBackgroundUpdate
-//{
-//  if (!backgroundUpdateEnabled) return;
-//  backgroundUpdateInterval *= 1.3;
-//  [self performSelector:@selector(fetchSilentlyDuringBackgroundUpdate) 
-//             withObject:nil 
-//             afterDelay:backgroundUpdateInterval];
-//  [self fetchSilently];
-//}
-//
+- (void) scheduleAutoFetch
+{
+  [self unscheduleAutoFetch];
+  [self performSelector:@selector(autoFetch) 
+             withObject:nil
+             afterDelay:autoFetchInterval];
+}
+
+- (void) unscheduleAutoFetch
+{
+  [NSObject cancelPreviousPerformRequestsWithTarget:self 
+                                           selector:@selector(autoFetch)
+                                             object:nil];
+}
+
+- (void) autoFetch
+{
+  //NSLog(@"GBRepositoryController: autoFetch into %@ (delay: %f)", [self url], autoFetchInterval);
+  autoFetchInterval = autoFetchInterval*(1.5 + drand48()*0.5);
+  while (autoFetchInterval > 3600.0) autoFetchInterval -= 600.0;
+  [self scheduleAutoFetch];
+  [self fetchSilently];
+}
+
 
 
 @end

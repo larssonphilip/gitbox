@@ -20,8 +20,8 @@
   NSInteger isStaging; // maintains a count of number of staging tasks running
   NSInteger isLoadingChanges; // maintains a count of number of changes loading tasks running
   
-  BOOL backgroundUpdateEnabled;
-  NSTimeInterval backgroundUpdateInterval;
+  NSTimeInterval autoFetchInterval;
+  BOOL needsInitialFetch;
 }
 
 @property(retain) GBRepository* repository;

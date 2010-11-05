@@ -520,7 +520,7 @@
 {
   GBTask* task = [self task];
   task.arguments = [NSArray arrayWithObjects:@"merge", [aBranch nameWithRemoteAlias], nil];
-  [task launchWithBlock:^{
+  [self launchTask:task withBlock:^{
     if ([task isError])
     {
       [self alertWithMessage: @"Merge failed" description:[task.output UTF8String]];
@@ -545,7 +545,7 @@
                           aRemoteBranch.name, [aRemoteBranch nameWithRemoteAlias]],
                          nil];
   
-  [task launchWithBlock:^{
+  [self launchTask:task withBlock:^{
     if ([task isError])
     {
       [self alertWithMessage: @"Pull failed" description:[task.output UTF8String]];
@@ -570,7 +570,7 @@
                      aRemoteBranch.name, [aRemoteBranch nameWithRemoteAlias]],
                     nil];
   
-  [task launchWithBlock:^{
+  [self launchTask:task withBlock:^{
     if ([task isError])
     {
       [self alertWithMessage: @"Fetch failed" description:[task.output UTF8String]];
@@ -595,7 +595,7 @@
   GBTask* task = [self task];
   NSString* refspec = [NSString stringWithFormat:@"%@:%@", aLocalBranch.name, aRemoteBranch.name];
   task.arguments = [NSArray arrayWithObjects:@"push", @"--tags", aRemoteBranch.remoteAlias, refspec, nil];
-  [task launchWithBlock:^{
+  [self launchTask:task withBlock:^{
     if ([task isError])
     {
       [self alertWithMessage: @"Push failed" description:[task.output UTF8String]];

@@ -264,7 +264,6 @@
 
 - (void) applicationDidFinishLaunching:(NSNotification*) aNotification
 {
-  NSLog(@"applicationDidFinishLaunching");
   // Instantiate controllers
   self.repositoriesController = [[GBRepositoriesController new] autorelease];
   self.windowController = [[[GBMainWindowController alloc] initWithWindowNibName:@"GBMainWindowController"] autorelease];
