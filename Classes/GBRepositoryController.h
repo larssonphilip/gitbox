@@ -5,6 +5,7 @@
 
 @class GBRepository;
 @class GBRef;
+@class GBRemote;
 @class GBCommit;
 
 @class GBMainWindowController;
@@ -46,6 +47,7 @@
 - (void) checkoutRef:(GBRef*) ref withNewName:(NSString*)name;
 - (void) checkoutNewBranchWithName:(NSString*)name;
 - (void) selectRemoteBranch:(GBRef*) remoteBranch;
+- (void) createAndSelectRemoteBranchWithName:(NSString*)name remote:(GBRemote*)aRemote;
 
 - (void) selectCommit:(GBCommit*)commit;
 

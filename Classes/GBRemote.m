@@ -92,6 +92,19 @@
   return [self.branches arrayByAddingObjectsFromArray:self.newBranches];
 }
 
+- (void) updateNewBranches
+{
+  NSArray* names = [self.branches valueForKey:@"name"];
+  NSMutableArray* updatedNewBranches = [NSMutableArray array];
+  for (GBRef* aBranch in self.newBranches)
+  {
+    if (aBranch.name && ![names containsObject:aBranch.name])
+    {
+      [updatedNewBranches addObject:aBranch];
+    }
+  }
+  self.newBranches = updatedNewBranches;
+}
 
 
 #pragma mark Actions
@@ -111,6 +124,7 @@
   [task launchWithBlock:^{
     self.branches = task.branches;
     self.tags = task.tags;
+    [self updateNewBranches];
     block();
   }];
 }

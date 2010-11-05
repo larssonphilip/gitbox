@@ -46,6 +46,7 @@
           ref.commitId = commitId;
           ref.name = [refName substringFromIndex:[@"refs/heads/" length]];
           ref.remoteAlias = self.remote.alias;
+          ref.remote = self.remote;
           [theBranches addObject:ref];
         }
         else if ([refName hasPrefix:@"refs/tags/"])
@@ -55,6 +56,7 @@
           ref.commitId = commitId;
           ref.name = [refName substringFromIndex:[@"refs/tags/" length]];
           ref.remoteAlias = self.remote.alias;
+          ref.remote = self.remote;
           ref.isTag = YES;
           [theTags addObject:ref];
         }

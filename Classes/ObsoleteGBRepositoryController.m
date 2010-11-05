@@ -24,82 +24,9 @@
 @synthesize repositoryURL;
 @synthesize repository;
 
-@synthesize historyController;
-@synthesize changesViewController;
-@synthesize stageController;
-@synthesize commitController;
-@synthesize commitPromptController;
 @synthesize commandsController;
 
 @synthesize splitView;
-
-@synthesize currentBranchPopUpButton;
-@synthesize pullPushControl;
-@synthesize remoteBranchPopUpButton;
-
-
-#pragma mark Interrogation
-
-
-
-
-
-
-
-
-
-
-
-#pragma mark Git Actions
-
-
-
-
-- (IBAction) createNewRemoteBranch:(id)sender
-{
-  // Usually, new remote branch is created for the new local branch,
-  // so we should use local branch name as a default value.
-  GBRemote* remote = [sender representedObject];
-  NSString* defaultName = [self.repository.currentLocalRef.name 
-                           uniqueStringForStrings:[remote.branches valueForKey:@"name"]];
-
-  GBPromptController* ctrl = [GBPromptController controller];
-  
-  ctrl.title = NSLocalizedString(@"New Remote Branch", @"");
-  ctrl.promptText = NSLocalizedString(@"Branch Name:", @"");
-  ctrl.buttonText = NSLocalizedString(@"OK", @"");
-  ctrl.requireStripWhitespace = YES;
-  ctrl.value = defaultName;
-  
-//  ctrl.target = self;
-//  ctrl.finishSelector = @selector(doneChoosingNameForNewRemoteBranch:);
-  
-//  ctrl.payload = [sender representedObject]; // GBRemote passed from menu item
-  [ctrl runSheetInWindow:[self window]];
-}
-
-  - (void) doneChoosingNameForNewRemoteBranch:(GBPromptController*)ctrl
-  {
-    GBRemote* remote = nil ; //ctrl.payload;
-    
-    GBRef* remoteBranch = [[GBRef new] autorelease];
-    remoteBranch.repository = self.repository;
-    remoteBranch.name = ctrl.value;
-    remoteBranch.remoteAlias = remote.alias;
-    remoteBranch.isNewRemoteBranch = YES;
-    [remote addBranch:remoteBranch];
-    
-//    [self.repository selectRemoteBranch:remoteBranch];
-    //[self updateBranchMenus];
-  }
-
-- (IBAction) createNewRemote:(id)sender
-{
-//  [self editRepositories:sender];
-}
-
-
-
 
 
 
@@ -166,12 +93,7 @@
       return YES;
     }
   }
-  
-  // FIXME: this should in fact be a bit smarter: should use nextResponder instead of hard-coded subviews,
-  //        also should return NO for the selectors which are not implemented
-  return [self dispatchUserInterfaceItemValidation:anItem] ||
-         [self.historyController validateUserInterfaceItem:anItem] ||
-         [self.changesViewController validateUserInterfaceItem:anItem];
+  return NO;
 }
 
 

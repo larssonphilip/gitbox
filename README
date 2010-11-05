@@ -1,12 +1,12 @@
 
 1.0:
 
-- create a remote branch
 - read ls-remotes when updated .git
 - fetch periodically
 - fetch in background should reset fetch interval when new commits are fetched
 - do ls-remote in background starting on unfocus (or not only in background)
 - menu item: extract file
++ create a remote branch
 + menu item: rename pull to merge and vice versa automatically
 + bug: after adding a remote, the list of remote branches is fucked up
 + create a repo out of an empty folder
@@ -42,6 +42,7 @@ Ongoing tasks:
 - read carefully: https://git.wiki.kernel.org/index.php/GitSurvey2010
 - reactions to macappstore: http://www.tuaw.com/2010/10/21/developer-reactions-to-the-mac-app-store/#continued
 
+- refactoring: keep new remote branches in a separate list so they are not lost when remote branches are reloaded
 - human message in case git cannot merge/pull when some files are modified (error: Untracked working tree file 'Patryst.xcodeproj/project.pbxproj' would be overwritten by merge.)
 - a block-based method for GBRepository to temporarily remember current error (name, description) for the use in the UI
 - changes: "reveal in finder" menu item should be enabled only when file exists in working directory and reveal the existing file

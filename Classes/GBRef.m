@@ -2,7 +2,7 @@
 #import "GBTask.h"
 #import "GBHistoryTask.h"
 #import "GBLocalRemoteAssociationTask.h"
-
+#import "GBRemote.h"
 
 @implementation GBRef
 @synthesize name;
@@ -13,6 +13,7 @@
 @synthesize isTag;
 @synthesize isNewRemoteBranch;
 @synthesize repository;
+@synthesize remote;
 
 - (void) dealloc
 {
@@ -26,6 +27,7 @@
 
 - (BOOL) isEqual:(id)object
 {
+  //NSLog(@"TODO: GBRef isEqual: check if we need this method!");
   if (self == object) return YES;
   if (![object isKindOfClass:[self class]]) return NO;
   GBRef* other = (GBRef*)object;

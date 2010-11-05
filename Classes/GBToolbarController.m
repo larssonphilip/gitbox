@@ -2,6 +2,7 @@
 #import "GBBaseRepositoryController.h"
 #import "GBRepositoryController.h"
 
+#import "GBMainWindowController.h"
 #import "GBToolbarController.h"
 #import "GBPromptController.h"
 
@@ -339,8 +340,8 @@
     for (GBRemote* remote in remotes)
     {
       NSMenu* remoteMenu = [[NSMenu new] autorelease];
-      BOOL addedBranch = NO;
-      for (GBRef* branch in remote.branches)
+      BOOL haveBranches = NO;
+      for (GBRef* branch in [remote pushedAndNewBranches])
       {
         NSMenuItem* item = [[NSMenuItem new] autorelease];
         [item setTitle:branch.name];
@@ -352,9 +353,9 @@
           [item setState:NSOnState];
         }
         [remoteMenu addItem:item];
-        addedBranch = YES;
+        haveBranches = YES;
       }
-      if (addedBranch) [remoteMenu addItem:[NSMenuItem separatorItem]];
+      if (haveBranches) [remoteMenu addItem:[NSMenuItem separatorItem]];
       
       NSMenuItem* newBranchItem = [NSMenuItem menuItemWithTitle:NSLocalizedString(@"New Remote Branch...", @"Command") submenu:nil];
       [newBranchItem setAction:@selector(createNewRemoteBranch:)];
@@ -374,7 +375,7 @@
     [remoteBranchesMenu addItem:item];
     
     GBRemote* remote = [remotes firstObject];
-    for (GBRef* branch in remote.branches)
+    for (GBRef* branch in [remote pushedAndNewBranches])
     {
       NSMenuItem* item = [[NSMenuItem new] autorelease];
       [item setTitle:[branch nameWithRemoteAlias]];
@@ -594,7 +595,7 @@
   
   ctrl.title = NSLocalizedString(@"New Branch", @"");
   ctrl.promptText = NSLocalizedString(@"Branch Name:", @"");
-  ctrl.buttonText = NSLocalizedString(@"Create", @"");
+  ctrl.buttonText = NSLocalizedString(@"OK", @"");
   ctrl.requireStripWhitespace = YES;
   ctrl.finishBlock = ^{
     [self.repositoryController checkoutNewBranchWithName:ctrl.value];
@@ -610,17 +611,28 @@
 
 - (IBAction) createNewRemoteBranch:(id)sender
 {
+  GBPromptController* ctrl = [GBPromptController controller];
+  
+  GBRemote* remote = [sender representedObject];
+  NSString* defaultName = [self.repositoryController.repository.currentLocalRef.name 
+                           uniqueStringForStrings:[[remote pushedAndNewBranches] valueForKey:@"name"]];
+  
+  ctrl.title = NSLocalizedString(@"New Remote Branch", @"");
+  ctrl.promptText = NSLocalizedString(@"Branch Name:", @"");
+  ctrl.buttonText = NSLocalizedString(@"OK", @"");
+  ctrl.requireStripWhitespace = YES;
+  ctrl.value = defaultName;
+  ctrl.finishBlock = ^{
+    [self.repositoryController createAndSelectRemoteBranchWithName:ctrl.value remote:remote];
+  };
+  [ctrl runSheetInWindow:[self window]];
   
 }
 
 - (IBAction) createNewRemote:(id)sender
 {
-  
+  [self.mainWindowController editRepositories:sender];
 }
 
-//- (IBAction) commit:(id)sender
-//{
-//  
-//}
 
 @end

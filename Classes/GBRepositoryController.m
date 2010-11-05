@@ -32,6 +32,7 @@
 - (void) loadChangesForCommit:(GBCommit*)commit;
 - (void) updateCurrentBranchesIfNeededWithBlock:(void(^)())block;
 - (void) updateLocalBranchesAndTags;
+- (void) updateBranchesForRemote:(GBRemote*)aRemote;
 - (void) resetBackgroundUpdateInterval;
 - (void) workingDirectoryStateDidChange;
 - (void) dotgitStateDidChange;
@@ -181,6 +182,20 @@
 
 
 
+- (void) updateBranchesForRemote:(GBRemote*)aRemote
+{
+  if (!aRemote) return;
+  // TODO: avoid disabling the branches, but push loading status for remote
+  [self pushSpinning];
+  [self pushRemoteBranchesDisabled];
+  [aRemote updateBranchesWithBlock:^{
+    if ([self.delegate respondsToSelector:@selector(repositoryControllerDidUpdateRemoteBranches:)]) { [self.delegate repositoryControllerDidUpdateRemoteBranches:self]; }
+    [self popSpinning];
+    [self popRemoteBranchesDisabled];
+  }];
+  
+}
+
 - (void) updateRepositoryIfNeeded
 {
   GBRepository* repo = self.repository;
@@ -198,15 +213,9 @@
       [self pushSpinning];
       [self pushRemoteBranchesDisabled];
       [repo updateRemotesWithBlock:^{
-        for (GBRemote* remote in repo.remotes)
+        for (GBRemote* aRemote in repo.remotes)
         {
-          [self pushSpinning];
-          [self pushRemoteBranchesDisabled];
-          [remote updateBranchesWithBlock:^{
-            if ([self.delegate respondsToSelector:@selector(repositoryControllerDidUpdateRemoteBranches:)]) { [self.delegate repositoryControllerDidUpdateRemoteBranches:self]; }
-            [self popSpinning];
-            [self popRemoteBranchesDisabled];
-          }];
+          [self updateBranchesForRemote:aRemote];
         }
         [self popSpinning];
         [self popRemoteBranchesDisabled];
@@ -315,6 +324,22 @@
                                              [self loadCommits];
                                            }];
 }
+
+- (void) createAndSelectRemoteBranchWithName:(NSString*)name remote:(GBRemote*)aRemote
+{
+  GBRef* remoteBranch = [[GBRef new] autorelease];
+  remoteBranch.repository = self.repository;
+  remoteBranch.name = name;
+  remoteBranch.remoteAlias = aRemote.alias;
+  remoteBranch.remote = aRemote;
+  remoteBranch.isNewRemoteBranch = YES;
+  [aRemote addBranch:remoteBranch];
+  [self selectRemoteBranch:remoteBranch];
+}
+
+
+
+
 
 - (void) workingDirectoryStateDidChange
 {
@@ -576,6 +601,7 @@
   [self pushDisabled];
   [self.repository pushWithBlock:^{
     [self loadCommits];
+    [self updateBranchesForRemote:self.repository.currentRemoteBranch.remote];
     [self popDisabled];
     [self popSpinning];
   }];

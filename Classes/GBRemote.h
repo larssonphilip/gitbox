@@ -14,7 +14,6 @@
 #pragma mark Interrogation
 
 - (GBRef*) defaultBranch;
-//- (NSArray*) guessedBranches;
 - (NSArray*) pushedAndNewBranches;
 
 
