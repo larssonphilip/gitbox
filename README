@@ -1,7 +1,9 @@
 
 1.0:
 
-- fetch periodically
+- fetch periodically:
+  - repositories controller should fetch for every controller in a cycle
+  - reset fetch interval on user action
 - fetch in background should reset fetch interval when new commits are fetched
 - do ls-remote in background starting on unfocus (or not only in background)
 - menu item: extract file
