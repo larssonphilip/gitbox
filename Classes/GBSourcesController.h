@@ -26,5 +26,7 @@
 - (IBAction) selectNextRepository:(id)_;
 
 - (IBAction) remove:(id)_;
+- (IBAction) openInTerminal:(id)_;
+- (IBAction) openInFinder:(id)_;
 
 @end

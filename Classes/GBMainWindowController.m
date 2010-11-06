@@ -158,14 +158,14 @@
   [as executeAndReturnError:nil];
 }
 
-- (IBAction) openInFinder:(id)_
-{
-  [[NSWorkspace sharedWorkspace] openFile:[[[self selectedRepositoryController] url] path]];
-}
-
 - (BOOL) validateOpenInTerminal:(id)_
 {
   return !![self selectedLocalRepositoryController];
+}
+
+- (IBAction) openInFinder:(id)_
+{
+  [[NSWorkspace sharedWorkspace] openFile:[[[self selectedRepositoryController] url] path]];
 }
 
 - (BOOL) validateOpenInFinder:(id)_

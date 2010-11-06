@@ -86,13 +86,46 @@
   if (item) [self.repositoriesController selectRepositoryController:item];
 }
 
-- (IBAction) remove:(id)_
+- (GBBaseRepositoryController*) currentRepositoryController
 {
   NSInteger row = [self.outlineView clickedRow];
   if (row >= 0)
   {
     id item = [self.outlineView itemAtRow:row];
-    [self.repositoriesController removeLocalRepositoryController:item];
+    return item;
+  }
+  return nil;
+}
+
+- (IBAction) remove:(id)_
+{
+  id ctrl = [self currentRepositoryController];
+  if (ctrl)
+  {
+    [self.repositoriesController removeLocalRepositoryController:ctrl];
+  }
+}
+
+- (IBAction) openInTerminal:(id)_
+{
+  GBBaseRepositoryController* ctrl = [self currentRepositoryController];
+  if (ctrl)
+  {    
+    NSString* path = [[ctrl url] path];
+    NSString* s = [NSString stringWithFormat:
+                   @"tell application \"Terminal\" to do script \"cd %@\"", path];
+    
+    NSAppleScript* as = [[[NSAppleScript alloc] initWithSource: s] autorelease];
+    [as executeAndReturnError:nil];
+  }
+}
+
+- (IBAction) openInFinder:(id)_
+{
+  GBBaseRepositoryController* ctrl = [self currentRepositoryController];
+  if (ctrl)
+  {        
+    [[NSWorkspace sharedWorkspace] openFile:[[ctrl url] path]];
   }
 }
 

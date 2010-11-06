@@ -110,6 +110,20 @@
 }
 - (BOOL) validateStageDoStageUnstage:(id)sender
 {
+  if ([sender isKindOfClass:[NSMenuItem class]])
+  {
+    NSMenuItem* item = sender;
+    NSArray* selChanges = [self selectedChanges];
+    if ([selChanges allAreTrue:@selector(staged)])
+    {
+      [item setTitle:NSLocalizedString(@"Unstage", @"Command")];
+    }
+    else
+    {
+      [item setTitle:NSLocalizedString(@"Stage", @"Command")];
+    }
+  }
+  
   NSArray* selChanges = [self selectedChanges];
   if ([selChanges count] < 1) return NO;
   return YES;
