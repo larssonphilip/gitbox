@@ -1,3 +1,5 @@
+#define OATASK_DEBUG 0
+
 #import "OATask.h"
 #import "OAActivity.h"
 
@@ -276,7 +278,7 @@ NSString* OATaskNotification = @"OATaskNotification";
     if (logIndentation > 11) logIndentation = 11;
     columns[logIndentation] = '1';
     
-    NSLog(@"%@%@!", [@"" stringByPaddingToLength:logIndentation*16 withString:@" " startingAtIndex:0], [self class]);
+    NSLog(@"%@%@ started [%@...]", [@"" stringByPaddingToLength:logIndentation*16 withString:@" " startingAtIndex:0], [self class], [[self command] substringToIndex:20]);
   #endif
   
   [self prepareTask];
@@ -296,7 +298,7 @@ NSString* OATaskNotification = @"OATaskNotification";
 
     dispatch_async(callerQueue, ^{
       #if OATASK_DEBUG
-        NSLog(@"%@%@.", [@"" stringByPaddingToLength:logIndentation*16 withString:@" " startingAtIndex:0], [self class]);
+        NSLog(@"%@%@ ended [%@...]", [@"" stringByPaddingToLength:logIndentation*16 withString:@" " startingAtIndex:0], [self class], [[self command] substringToIndex:20]);
         columns[logIndentation] = '0';
       #endif
       [self doFinish];
