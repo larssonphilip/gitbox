@@ -1,10 +1,10 @@
 
 1.0:
 
-- check that autofetch works when gitbox is restarted and the repo was never selected (should load branches anyway)
-- do ls-remote in background starting on unfocus (or not only in background)
 - menu item: extract file (dst or src)
+- do ls-remote in background starting on unfocus (or not only in background)
 - read ls-remotes when updated .git
++ check that autofetch works when gitbox is restarted and the repo was never selected (should load branches anyway)
 + fetch periodically
 + create a remote branch
 + menu item: rename pull to merge and vice versa automatically
