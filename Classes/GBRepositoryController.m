@@ -737,10 +737,10 @@
 
 - (void) loadCommits
 {
-  [self pushSpinning];
-  NSString* oldTopCommitId = self.repository.topCommitId;
   if (self.repository.currentLocalRef)
   {
+    [self pushSpinning];
+    NSString* oldTopCommitId = self.repository.topCommitId;
     [self.repository updateLocalBranchCommitsWithBlock:^{
       NSString* newTopCommitId = self.repository.topCommitId;
       if (newTopCommitId && ![oldTopCommitId isEqualToString:newTopCommitId])
@@ -839,7 +839,7 @@
   autoFetchInterval = autoFetchInterval*(1.5 + drand48()*0.5);
   while (autoFetchInterval > 3600.0) autoFetchInterval -= 600.0;
   [self scheduleAutoFetch];
-  //[self fetchSilently];
+  [self fetchSilently];
 }
 
 
