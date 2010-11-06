@@ -113,14 +113,11 @@
   if ([sender isKindOfClass:[NSMenuItem class]])
   {
     NSMenuItem* item = sender;
+    [item setTitle:NSLocalizedString(@"Stage", @"Command")];
     NSArray* selChanges = [self selectedChanges];
     if ([selChanges allAreTrue:@selector(staged)])
     {
       [item setTitle:NSLocalizedString(@"Unstage", @"Command")];
-    }
-    else
-    {
-      [item setTitle:NSLocalizedString(@"Stage", @"Command")];
     }
   }
   

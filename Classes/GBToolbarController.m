@@ -544,13 +544,10 @@
   if ([sender isKindOfClass:[NSMenuItem class]])
   {
     NSMenuItem* item = sender;
+    [item setTitle:NSLocalizedString(@"Pull", @"Command")];
     if (rc.repository.currentRemoteBranch && [rc.repository.currentRemoteBranch isLocalBranch])
     {
       [item setTitle:NSLocalizedString(@"Merge", @"Command")];
-    }
-    else
-    {
-      [item setTitle:NSLocalizedString(@"Pull", @"Command")];
     }
   }
 
