@@ -3,12 +3,12 @@
 	<data>
 		<int key="IBDocument.SystemTarget">1060</int>
 		<string key="IBDocument.SystemVersion">10F569</string>
-		<string key="IBDocument.InterfaceBuilderVersion">788</string>
+		<string key="IBDocument.InterfaceBuilderVersion">823</string>
 		<string key="IBDocument.AppKitVersion">1038.29</string>
 		<string key="IBDocument.HIToolboxVersion">461.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin</string>
-			<string key="NS.object.0">788</string>
+			<string key="NS.object.0">823</string>
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -352,14 +352,6 @@
 						<reference key="NSOnImage" ref="1044813253"/>
 						<reference key="NSMixedImage" ref="164999429"/>
 					</object>
-					<object class="NSMenuItem" id="762353186">
-						<reference key="NSMenu" ref="406243151"/>
-						<string key="NSTitle">Extract File...</string>
-						<string key="NSKeyEquiv"/>
-						<int key="NSMnemonicLoc">2147483647</int>
-						<reference key="NSOnImage" ref="1044813253"/>
-						<reference key="NSMixedImage" ref="164999429"/>
-					</object>
 					<object class="NSMenuItem" id="1009412407">
 						<reference key="NSMenu" ref="406243151"/>
 						<bool key="NSIsDisabled">YES</bool>
@@ -606,14 +598,6 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBActionConnection" key="connection">
-						<string key="label">stageExtractFile:</string>
-						<reference key="source" ref="1003"/>
-						<reference key="destination" ref="762353186"/>
-					</object>
-					<int key="connectionID">70</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
 						<string key="label">stageShowDifference:</string>
 						<reference key="source" ref="1003"/>
 						<reference key="destination" ref="895120728"/>
@@ -674,7 +658,6 @@
 							<reference ref="895120728"/>
 							<reference ref="1043954354"/>
 							<reference ref="932009263"/>
-							<reference ref="762353186"/>
 							<reference ref="298280379"/>
 							<reference ref="735007963"/>
 							<reference ref="267540823"/>
@@ -807,11 +790,6 @@
 						<reference key="object" ref="932009263"/>
 						<reference key="parent" ref="406243151"/>
 					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">65</int>
-						<reference key="object" ref="762353186"/>
-						<reference key="parent" ref="406243151"/>
-					</object>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="flattenedProperties">
@@ -845,7 +823,6 @@
 					<string>32.IBPluginDependency</string>
 					<string>33.IBPluginDependency</string>
 					<string>52.IBPluginDependency</string>
-					<string>65.IBPluginDependency</string>
 				</object>
 				<object class="NSMutableArray" key="dict.values">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -855,8 +832,7 @@
 					<string>{{217, 442}, {480, 272}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{530, 146}, {162, 183}}</string>
-					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>{{530, 166}, {162, 163}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>

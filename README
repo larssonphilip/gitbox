@@ -1,9 +1,9 @@
 
 1.0:
 
-- menu item: extract file (dst or src)
 - do ls-remote in background starting on unfocus (or not only in background)
 - read ls-remotes when updated .git
++ menu item: extract file (dst or src)
 + check that autofetch works when gitbox is restarted and the repo was never selected (should load branches anyway)
 + fetch periodically
 + create a remote branch

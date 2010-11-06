@@ -27,6 +27,7 @@
 
 #pragma mark GBBaseViewController
 
+
 - (void) loadView
 {
   [super loadView];
@@ -36,7 +37,8 @@
 
 
 
-#pragma mark Actions
+
+#pragma mark Update
 
 
 
@@ -125,6 +127,93 @@
     // Scroll to top
     [self.headerTextView scrollRangeToVisible:NSMakeRange(0, 1)];
     [self.headerScrollView reflectScrolledClipView:[self.headerScrollView contentView]];
+  }
+}
+
+
+
+
+
+
+#pragma mark Actions
+
+
+- (IBAction) stageExtractFile:_
+{
+  GBChange* change = [[[self selectedChanges] firstObject] nilIfBusy];
+  if (!change || ![change validateExtractFile]) return;
+  
+  NSSavePanel* panel = [NSSavePanel savePanel];
+  [panel setNameFieldLabel:NSLocalizedString(@"Save As:", @"Commit")];
+  [panel setNameFieldStringValue:[change defaultNameForExtractedFile]];
+  [panel setPrompt:NSLocalizedString(@"Save", @"Commit")];
+  [panel setDelegate:self];
+  [panel beginSheetModalForWindow:[self window] completionHandler:^(NSInteger result){
+    if (result == NSFileHandlingPanelOKButton)
+    {
+      [change extractFileWithTargetURL:[panel URL]];
+      NSString* path = [[panel URL] path];
+      dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 700000000), dispatch_get_main_queue(), ^{
+        [[NSWorkspace sharedWorkspace] selectFile:path inFileViewerRootedAtPath:nil];
+      });
+    }
+  }];
+  
+}
+
+- (BOOL) validateStageExtractFile:_
+{
+  if ([[self selectedChanges] count] != 1) return NO;
+  return [[[[self selectedChanges] firstObject] nilIfBusy] validateExtractFile];
+}
+
+
+
+
+
+
+#pragma mark NSOpenSavePanelDelegate
+
+
+- (BOOL)panel:(NSSavePanel*)aPanel validateURL:(NSURL*)url error:(NSError **)outError
+{
+  return ![[NSFileManager defaultManager] fileExistsAtPath:[url path]];
+}
+
+
+- (NSString*)panel:(NSSavePanel*)aPanel userEnteredFilename:(NSString*)filename confirmed:(BOOL)okFlag
+{
+  if (okFlag) // on 10.6 we are still not receiving okFlag == NO, so I don't want to have this feature untested.
+  {
+    if ([[NSFileManager defaultManager] fileExistsAtPath:[[aPanel URL] path]]) return nil;
+  }
+  return filename;
+}
+
+- (void)panel:(NSSavePanel*)aPanel didChangeToDirectoryURL:(NSURL *)aURL
+{
+  NSString* enteredName = [aPanel nameFieldStringValue];
+  NSString* uniqueName = enteredName;
+  NSString* extension = [enteredName pathExtension];
+  NSString* basename = [enteredName stringByDeletingPathExtension];
+  
+  if (aURL && enteredName && [enteredName length] > 0)
+  {
+    NSString* targetPath = [[aPanel directoryURL] path];
+    NSUInteger counter = 0;
+    while ([[NSFileManager defaultManager] fileExistsAtPath:[targetPath stringByAppendingPathComponent:uniqueName]])
+    {
+      counter++;
+      if (extension && ![extension isEqualToString:@""] && basename && ![basename isEqualToString:@""])
+      {
+        uniqueName = [[basename stringByAppendingFormat:@"%d", counter] stringByAppendingPathExtension:extension];
+      }
+      else
+      {
+        uniqueName = [enteredName stringByAppendingFormat:@"%d", counter];
+      }
+    }
+    [aPanel setNameFieldStringValue:uniqueName];
   }
 }
 

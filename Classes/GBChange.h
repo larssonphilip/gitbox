@@ -42,4 +42,9 @@
 - (void) revealInFinder;
 - (BOOL) validateRevealInFinder;
 
+
+- (BOOL) validateExtractFile;
+- (NSString*) defaultNameForExtractedFile;
+- (void) extractFileWithTargetURL:(NSURL*)aTargetURL;
+
 @end

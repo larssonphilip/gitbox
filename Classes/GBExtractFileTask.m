@@ -5,13 +5,13 @@
 
 @synthesize objectId;
 @synthesize originalURL;
-@synthesize temporaryURL;
+@synthesize targetURL;
 
 - (void) dealloc
 {
   self.objectId = nil;
   self.originalURL = nil;
-  self.temporaryURL = nil;
+  self.targetURL = nil;
   [super dealloc];
 }
 
@@ -41,19 +41,16 @@
   return self.objectId;
 }
 
-- (NSURL*) temporaryURL
+- (NSURL*) targetURL
 {
-  if (!temporaryURL)
+  if (!targetURL)
   {
     NSString* path = [[NSTemporaryDirectory() stringByAppendingPathComponent:@"gitbox-blobs"] 
                       stringByAppendingPathComponent:[self prettyFileName]];
     
-    // creates and intermediate folder and writes 0 bytes to the file
-    [[NSFileManager defaultManager] writeData:[NSData data] toPath:path];
-    
-    self.temporaryURL = [[[NSURL alloc] initFileURLWithPath:path] autorelease];
+    self.targetURL = [NSURL fileURLWithPath:path];
   }
-  return [[temporaryURL retain] autorelease];
+  return [[targetURL retain] autorelease];
 }
 
 
@@ -66,19 +63,23 @@
 {
   if (!self.standardOutput)
   {
-    if (self.temporaryURL)
+    if (self.targetURL)
     {
       NSError* outError;
-      NSFileHandle* handle = [NSFileHandle fileHandleForWritingToURL:self.temporaryURL error:&outError];
+      
+      // creates and intermediate folder and writes 0 bytes to the file
+      [[NSFileManager defaultManager] writeData:[NSData data] toPath:[self.targetURL path]];
+
+      NSFileHandle* handle = [NSFileHandle fileHandleForWritingToURL:self.targetURL error:&outError];
       if (handle)
       {
         self.standardOutput = handle;
       }
       else
       {
-        NSLog(@"ERROR: GBExtractFileTask: NSFileHandle couldn't open %@ for writing: %@", self.temporaryURL, [outError localizedDescription]);
+        NSLog(@"ERROR: GBExtractFileTask: NSFileHandle couldn't open %@ for writing: %@", self.targetURL, [outError localizedDescription]);
         // invalidate temp URL
-        self.temporaryURL = nil;
+        self.targetURL = nil;
       }
     }
   }

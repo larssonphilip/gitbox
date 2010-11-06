@@ -196,7 +196,7 @@
   task.objectId = objectId;
   task.originalURL = url;
   [self.repository launchTaskAndWait:task];
-  return task.temporaryURL;
+  return task.targetURL;
 }
 
 - (NSURL*) existingOrTemporaryFileURL
@@ -206,21 +206,21 @@
     return [self fileURL];
   }
   
-  NSString* commitId = [self.newRevision nonZeroCommitId];
+  NSString* objectId = [self.newRevision nonZeroCommitId];
   NSURL* targetURL = [self fileURL];
-  if (!commitId)
+  if (!objectId)
   {
-    commitId = [self.oldRevision nonZeroCommitId];
+    objectId = [self.oldRevision nonZeroCommitId];
     if (self.srcURL) targetURL = self.srcURL;
   }
   
-  if (commitId)
+  if (objectId)
   {
     if (!targetURL)
     {
-      NSLog(@"ERROR: GBChange openWithFinder: commitId is given, but all URLs are nil. id: %@", commitId);
+      NSLog(@"ERROR: GBChange openWithFinder: commitId is given, but all URLs are nil. id: %@", objectId);
     }
-    return [self temporaryURLForObjectId:commitId optionalURL:targetURL];
+    return [self temporaryURLForObjectId:objectId optionalURL:targetURL];
   }
   else
   {
@@ -350,6 +350,37 @@
   NSString* path = [[self fileURL] path];
   return path && [[NSFileManager defaultManager] isReadableFileAtPath:path];
 }
+
+
+- (BOOL) validateExtractFile
+{
+  return !!([self fileURL]);
+}
+
+- (NSString*) defaultNameForExtractedFile
+{
+  return [[[self fileURL] path] lastPathComponent];
+}
+
+- (void) extractFileWithTargetURL:(NSURL*)aTargetURL;
+{
+  NSString* objectId = [self.newRevision nonZeroCommitId];
+  if (!objectId)
+  {
+    objectId = [self.oldRevision nonZeroCommitId];
+  }
+  
+  if (objectId)
+  {
+    GBExtractFileTask* task = [GBExtractFileTask task];
+    task.repository = self.repository;
+    task.objectId = objectId;
+    task.originalURL = [self fileURL];
+    task.targetURL = aTargetURL;
+    [self.repository launchTaskAndWait:task];
+  }
+}
+
 
 
 @end

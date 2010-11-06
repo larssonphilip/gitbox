@@ -21,7 +21,5 @@
 
 - (IBAction) stageShowDifference:_;
 - (IBAction) stageRevealInFinder:_;
-- (IBAction) stageExtractFile:_;
-
 
 @end

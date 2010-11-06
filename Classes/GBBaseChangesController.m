@@ -104,17 +104,6 @@
   }
 
 
-- (IBAction) stageExtractFile:_
-{
-//  [[[[self selectedChanges] firstObject] nilIfBusy] openWithFinder];
-}
-  - (BOOL) validateStageExtractFile:_
-  {
-    if ([[self selectedChanges] count] != 1) return NO;
-    //return [[[[self selectedChanges] firstObject] nilIfBusy] validateOpenWithFinder];
-    return NO;
-  }
-
 
 
 
