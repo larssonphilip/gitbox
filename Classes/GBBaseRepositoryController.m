@@ -64,7 +64,6 @@
 
 - (void) didSelect
 {
-  [self updateRepositoryIfNeeded];
 }
 
 
