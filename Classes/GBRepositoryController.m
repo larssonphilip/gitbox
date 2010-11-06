@@ -141,14 +141,14 @@
     
     if ([self checkRepositoryExistance])
     {
-      NSLog(@"FSEvents: workingDirectoryStateDidChange");
+      NSLog(@"FSEvents: workingDirectoryStateDidChange %@", [self url]);
       [self workingDirectoryStateDidChange];
     }
   }];
   [self.fsEventStream addPath:[self.repository.dotGitURL path] withBlock:^(NSString* path){
     if ([self checkRepositoryExistance])
     {
-      NSLog(@"FSEvents: dotgitStateDidChange");
+      NSLog(@"FSEvents: dotgitStateDidChange %@", [self url]);
       [self dotgitStateDidChange];
     }
   }];
@@ -814,7 +814,7 @@
 - (void) resetAutoFetchInterval
 {
   //NSLog(@"GBRepositoryController: resetAutoFetchInterval in %@ (was: %f)", [self url], autoFetchInterval);
-  autoFetchInterval = 30.0 + 2*(2*(0.5-drand48()));
+  autoFetchInterval = 3.0 + 2*(2*(0.5-drand48()));
   [self scheduleAutoFetch];
 }
 
