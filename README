@@ -1,8 +1,6 @@
 
 1.0:
 
-- do ls-remote in background starting on unfocus (or not only in background)
-- read ls-remotes when updated .git
 + menu item: extract file (dst or src)
 + check that autofetch works when gitbox is restarted and the repo was never selected (should load branches anyway)
 + fetch periodically
@@ -44,6 +42,8 @@ To read:
 
 Ongoing tasks:
 
+- do ls-remote in background starting on unfocus (or not only in background)
+- read ls-remotes when updated .git
 - human message in case git cannot merge/pull when some files are modified (error: Untracked working tree file 'Patryst.xcodeproj/project.pbxproj' would be overwritten by merge.)
 - a block-based method for GBRepository to temporarily remember current error (name, description) for the use in the UI
 - changes: "extract file..." menu item should open a NSSavePanel to choose the destination
