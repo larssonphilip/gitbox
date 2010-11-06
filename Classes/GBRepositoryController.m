@@ -141,14 +141,14 @@
     
     if ([self checkRepositoryExistance])
     {
-      //NSLog(@"FSEvents: workingDirectoryStateDidChange");
+      NSLog(@"FSEvents: workingDirectoryStateDidChange");
       [self workingDirectoryStateDidChange];
     }
   }];
   [self.fsEventStream addPath:[self.repository.dotGitURL path] withBlock:^(NSString* path){
     if ([self checkRepositoryExistance])
     {
-      //NSLog(@"FSEvents: dotgitStateDidChange");
+      NSLog(@"FSEvents: dotgitStateDidChange");
       [self dotgitStateDidChange];
     }
   }];
@@ -748,15 +748,16 @@
         [self resetAutoFetchInterval];
       }
       if ([self.delegate respondsToSelector:@selector(repositoryControllerDidUpdateCommits:)]) { [self.delegate repositoryControllerDidUpdateCommits:self]; }
-      //[self pushSpinning];
+      
+      [self pushFSEventsPause];
       [self.repository updateUnmergedCommitsWithBlock:^{
         if ([self.delegate respondsToSelector:@selector(repositoryControllerDidUpdateCommits:)]) { [self.delegate repositoryControllerDidUpdateCommits:self]; }
-        //[self popSpinning];
+        [self popFSEventsPause];
       }];
-      //[self pushSpinning];
+      [self pushFSEventsPause];
       [self.repository updateUnpushedCommitsWithBlock:^{
         if ([self.delegate respondsToSelector:@selector(repositoryControllerDidUpdateCommits:)]) { [self.delegate repositoryControllerDidUpdateCommits:self]; }
-        //[self popSpinning];
+        [self popFSEventsPause];
       }];
       [self popSpinning];
     }];    
@@ -838,7 +839,7 @@
   autoFetchInterval = autoFetchInterval*(1.5 + drand48()*0.5);
   while (autoFetchInterval > 3600.0) autoFetchInterval -= 600.0;
   [self scheduleAutoFetch];
-  [self fetchSilently];
+  //[self fetchSilently];
 }
 
 
