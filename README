@@ -12,6 +12,8 @@
 
 + linode server
 
+- open a help page on gitboxapp.com/help from the menu
+
 - configure gitboxapp.com for primary IP
 - configure gitbox.pierlis.com for CNAME gitboxapp.com
 - remove git repo from bergere
@@ -19,7 +21,13 @@
 
 + apple: get certificate
 + apple: set the appstore target
-- apple: disable sparkle for appstore target
++ apple: disable sparkle for appstore target:
+  + extract preferences controller into separate nib
+  + add -DGITBOX_APP_STORE=1 preprocessor flag
+  + create SUUpdater from the AppDelegate if not on appstore
+  + remove the mainmenu "Check For Updates..." item if on app store
+  + duplicate preferences controller nib for appstore - remove updater controls
+- apple: install 10.6.6 for testing appstore
 - apple: add a receipt verification code
 
 - fastspring: add license key verification code

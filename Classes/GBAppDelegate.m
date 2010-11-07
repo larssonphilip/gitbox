@@ -55,7 +55,17 @@
 #pragma mark Actions
 
 
-- (IBAction) releaseNotes:(id)_
+- (IBAction) showPreferences:_
+{
+  [self.preferencesController showWindow:_];
+}
+
+- (IBAction) checkForUpdates:_
+{
+  [self.preferencesController.updater checkForUpdates:_];
+}
+
+- (IBAction) releaseNotes:_
 {
   NSString* releaseNotesURLString = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"GBReleaseNotesURL"];
   [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:releaseNotesURLString]];
@@ -165,7 +175,6 @@
 
 - (IBAction) showDiffToolPreferences:(id)_
 {
-  [self.preferencesController selectDiffToolTab];
   [self.preferencesController showWindow:nil];
 }
 
@@ -267,6 +276,13 @@
   // Instantiate controllers
   self.repositoriesController = [[GBRepositoriesController new] autorelease];
   self.windowController = [[[GBMainWindowController alloc] initWithWindowNibName:@"GBMainWindowController"] autorelease];
+  NSString* preferencesNibName = @"GBPreferencesController";
+#if GITBOX_APP_STORE
+  preferencesNibName = @"GBPreferencesController-appstore";
+  NSMenu* firstMenu = [[[NSApp mainMenu] itemWithTag:1] submenu];
+  [firstMenu removeItem:[firstMenu itemWithTag:103]];
+#endif
+  self.preferencesController = [[[GBPreferencesController alloc] initWithWindowNibName:preferencesNibName] autorelease];
   
   // Connect controllers
   self.windowController.repositoriesController = self.repositoriesController;

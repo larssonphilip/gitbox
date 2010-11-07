@@ -17,5 +17,6 @@
 - (IBAction) showActivityWindow:_;
 - (IBAction) releaseNotes:_;
 - (IBAction) showDiffToolPreferences:_;
-
+- (IBAction) checkForUpdates:_;
+- (IBAction) showPreferences:_;
 @end

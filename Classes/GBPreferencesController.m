@@ -1,27 +1,25 @@
 #import "GBPreferencesController.h"
 #import "GBModels.h"
 #import "OATask.h"
+#import <Sparkle/Sparkle.h>
 
 @implementation GBPreferencesController
 
 @synthesize tabView;
+@synthesize updater;
 @synthesize isKaleidoscopeAvailable;
 @synthesize isChangesAvailable;
 
 - (void) dealloc
 {
   self.tabView = nil;
+  self.updater = nil;
   [super dealloc];
 }
 
 - (NSArray*) diffTools
 {
   return [GBChange diffTools];
-}
-
-- (IBAction) selectDiffToolTab
-{
-  [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithUnsignedInteger:0] forKey:@"GBPreferencesTabIndex"];
 }
 
 - (IBAction) diffToolDidChange:(id)_

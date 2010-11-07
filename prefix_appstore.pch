@@ -3,3 +3,4 @@
   #import <Cocoa/Cocoa.h>
 #endif
 
+#define GITBOX_APP_STORE 1

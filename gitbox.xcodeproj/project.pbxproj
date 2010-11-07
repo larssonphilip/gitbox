@@ -198,6 +198,8 @@
 		20915F2C12874D2A005E0D82 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2000325311FC75050069C70D /* IOKit.framework */; };
 		20915F2D12874D2A005E0D82 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20BF19711282329A00A30EE6 /* AddressBook.framework */; };
 		20915F2F12874D2A005E0D82 /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 2057EF7511ABE5B5009EDF2F /* Sparkle.framework */; };
+		20915F8012875C92005E0D82 /* GBPreferencesController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 20915F7E12875C92005E0D82 /* GBPreferencesController.xib */; };
+		20915F8C12876062005E0D82 /* GBPreferencesController-appstore.xib in Resources */ = {isa = PBXBuildFile; fileRef = 20915F8B12876062005E0D82 /* GBPreferencesController-appstore.xib */; };
 		2093A7C811AF0E8300239185 /* GBBaseChangesController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2093A7C711AF0E8300239185 /* GBBaseChangesController.m */; };
 		2093A7CB11AF0EA300239185 /* GBStageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2093A7CA11AF0EA300239185 /* GBStageViewController.m */; };
 		2093A7CE11AF0EC800239185 /* GBCommitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2093A7CD11AF0EC800239185 /* GBCommitViewController.m */; };
@@ -406,6 +408,9 @@
 		2082B80F1266500800667A7F /* GBBaseRepositoryController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBBaseRepositoryController.h; sourceTree = "<group>"; };
 		2082B8101266500800667A7F /* GBBaseRepositoryController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBBaseRepositoryController.m; sourceTree = "<group>"; };
 		20915F3412874D2A005E0D82 /* Gitbox.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Gitbox.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		20915F7E12875C92005E0D82 /* GBPreferencesController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBPreferencesController.xib; sourceTree = "<group>"; };
+		20915F8712875FDA005E0D82 /* prefix_appstore.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = prefix_appstore.pch; sourceTree = "<group>"; };
+		20915F8B12876062005E0D82 /* GBPreferencesController-appstore.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "GBPreferencesController-appstore.xib"; sourceTree = "<group>"; };
 		2093A7C611AF0E8300239185 /* GBBaseChangesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBBaseChangesController.h; sourceTree = "<group>"; };
 		2093A7C711AF0E8300239185 /* GBBaseChangesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBBaseChangesController.m; sourceTree = "<group>"; };
 		2093A7C911AF0EA300239185 /* GBStageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBStageViewController.h; sourceTree = "<group>"; };
@@ -779,6 +784,8 @@
 				2057F10411ACF4C0009EDF2F /* GBActivityController.xib */,
 				2043A82F11C900A0001ED307 /* GBPreferencesController.h */,
 				2043A83011C900A0001ED307 /* GBPreferencesController.m */,
+				20915F7E12875C92005E0D82 /* GBPreferencesController.xib */,
+				20915F8B12876062005E0D82 /* GBPreferencesController-appstore.xib */,
 			);
 			name = "Prompts and aux window controllers";
 			sourceTree = "<group>";
@@ -837,6 +844,7 @@
 			isa = PBXGroup;
 			children = (
 				2564AD2C0F5327BB00F57823 /* prefix.pch */,
+				20915F8712875FDA005E0D82 /* prefix_appstore.pch */,
 				2A37F4B0FDCFA73011CA2CEA /* main.m */,
 			);
 			name = "Other Sources";
@@ -976,6 +984,7 @@
 				20915ED712874D2A005E0D82 /* GBCloneWindowController.xib in Resources */,
 				20915ED812874D2A005E0D82 /* GBCloneProcessViewController.xib in Resources */,
 				20915ED912874D2A005E0D82 /* GBUserNameEmailController.xib in Resources */,
+				20915F8C12876062005E0D82 /* GBPreferencesController-appstore.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1013,6 +1022,7 @@
 				20C3C30B125D9EA900ABEDE7 /* GBCloneWindowController.xib in Resources */,
 				2054FFE8125DE75800692C77 /* GBCloneProcessViewController.xib in Resources */,
 				20BF19571282258400A30EE6 /* GBUserNameEmailController.xib in Resources */,
+				20915F8012875C92005E0D82 /* GBPreferencesController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1276,7 +1286,7 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = prefix.pch;
+				GCC_PREFIX_HEADER = prefix_appstore.pch;
 				INFOPLIST_FILE = info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
 				PRODUCT_NAME = Gitbox;
@@ -1295,7 +1305,7 @@
 				);
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = prefix.pch;
+				GCC_PREFIX_HEADER = prefix_appstore.pch;
 				INFOPLIST_FILE = info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
 				PRODUCT_NAME = Gitbox;
