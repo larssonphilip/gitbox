@@ -17,8 +17,9 @@
 - remove git repo from bergere
 - remove gitbox site from bergere
 
-- apple: get certificate
-- apple: set the macappstore target
++ apple: get certificate
++ apple: set the appstore target
+- apple: disable sparkle for appstore target
 - apple: add a receipt verification code
 
 - fastspring: add license key verification code

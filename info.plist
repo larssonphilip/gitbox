@@ -13,14 +13,14 @@
 			</array>
 			<key>CFBundleTypeIconFile</key>
 			<string>folder</string>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
 			<key>CFBundleTypeName</key>
 			<string>public.directory</string>
 			<key>CFBundleTypeOSTypes</key>
 			<array>
 				<string>****</string>
 			</array>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
 		</dict>
 	</array>
 	<key>CFBundleExecutable</key>
@@ -41,6 +41,12 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>${APP_VERSION}</string>
+	<key>GBPurchaseURL</key>
+	<string>http://gitboxapp.com/purchase.html</string>
+	<key>GBReleaseNotesURL</key>
+	<string>http://gitboxapp.com/release-notes/${APP_VERSION}.html</string>
+	<key>LSApplicationCategoryType</key>
+	<string>public.app-category.developer-tools</string>
 	<key>LSMinimumSystemVersion</key>
 	<string>${MACOSX_DEPLOYMENT_TARGET}</string>
 	<key>NSHumanReadableCopyright</key>
@@ -49,10 +55,6 @@
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
-	<key>GBReleaseNotesURL</key>
-	<string>http://gitboxapp.com/release-notes/${APP_VERSION}.html</string>
-	<key>GBPurchaseURL</key>
-	<string>http://gitboxapp.com/purchase.html</string>
 	<key>SUFeedURL</key>
 	<string>http://gitboxapp.com/updates.xml</string>
 	<key>SUPublicDSAKeyFile</key>
