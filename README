@@ -10,18 +10,31 @@
 + create a repo out of an empty folder
 + when starting a gitbox should configure user's name and email if missing
 
-- linode server
-- dns config
++ linode server
+
+- configure gitboxapp.com for primary IP
+- configure gitbox.pierlis.com for CNAME gitboxapp.com
+- remove git repo from bergere
+- remove gitbox site from bergere
+- configure tumblr for blog.oleganza.com
+
+- apple: get certificate
+- apple: set the macappstore target
+- apple: add a receipt verification code
+
+- fastspring: add license key verification code
+- fastspring: write ruby key generator
+- fastspring: find how to customize shop appearance on fastspring
 
 - nice screenshots
-- video
-- simpler definition and wording
 - revamped page design
 - revamped app icon
+- simpler definition and wording
+- video
 
-- ssl certificates
-- paypal button
-- paypal notifications IPN
+//- ssl certificates
+//- paypal button
+//- paypal notifications IPN
 
 
 1.1:
