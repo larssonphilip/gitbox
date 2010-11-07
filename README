@@ -16,7 +16,6 @@
 - configure gitbox.pierlis.com for CNAME gitboxapp.com
 - remove git repo from bergere
 - remove gitbox site from bergere
-- configure tumblr for blog.oleganza.com
 
 - apple: get certificate
 - apple: set the macappstore target
@@ -59,8 +58,6 @@ Ongoing tasks:
 - read ls-remotes when updated .git
 - human message in case git cannot merge/pull when some files are modified (error: Untracked working tree file 'Patryst.xcodeproj/project.pbxproj' would be overwritten by merge.)
 - a block-based method for GBRepository to temporarily remember current error (name, description) for the use in the UI
-- changes: "extract file..." menu item should open a NSSavePanel to choose the destination
-- sidebar context menu: show in finder, open in terminal
 - GIT_ASKPASS/SSH_ASKPASS for interacting with ssh
 - Secondary windows are opened in sheets (Preferences, Open Repository etc.)
 - check for memory leaks
@@ -81,18 +78,14 @@ Bugs:
 - todo: think on the best and consistent way to terminate tasks
 - delete a repo from the list by pressing backspace
 - bug: terminal window opens behind the gitbox window (see http://www.wmdeveloper.com/2010/09/open-terminal-here.html)
-+ bug: index.lock issue when switching a branch in heavy repo like git.git (should queue some git operations)
-+ bug: when adding files to stage too quickly, git-add fails on .git/index.lock (should put all index modifying operations in a single serial dispatch queue)
-+ bug: for non-existent HEAD gitbox does not show a staged new file (should use git ls-files --stage/deleted/modified when HEAD does not exist yet)
-+ bug: 'open -a gitbox .' does not add repo to the list if gitbox was not already launched
-+ bug: show disabled "No branches" item for inaccessible remote
-+ bug: show "No branch yet" message in popdown in the new repo without commits (and disable the popdowns for both local and remote)
-+ bug: reload branches list when the did first commit (that is when list of branches was empty)
-+ bug: edit global gitconfig shows nothing
 
 
 Cool features:
 
+- undo for commit (like amend)
+- undo for pull
+- undo for ref checkout
+- undo for branch reset
 - conflict stage: highlight conflicted changes, allow to choose one of the versions 
 - delete local branch
 - delete remote branch
@@ -113,7 +106,9 @@ Cool features:
 - history: probably get rid of dates, and design it in a more cheesy fashion
 - history: navigate to the sha1
 - history: navigate back and forward (History main menu)
+- history: reset a branch to a selected commit
 - history: checkout a commit
+- history: extract commit into new folder
 - history: check out a branch from the commit item
 - history: add "load more" cell in the bottom of the log
 - show branch/tag names in history using "label" (+color in green/blue to connect with green/blue "pills")
@@ -162,16 +157,15 @@ Something to think about:
 -------------------------------------------------------------------------------
 
 
-0.9.8 (not released yet):
+1.0 (not released yet):
 
 Features:
 + Single window with a list of the repositories in the sidebar.
-+ Clone a local or remote repository
-+ Git binaries are bundled with application (see Gitbox / Legal Info...).
++ Clone a local or remote repository.
++ Git binaries are bundled with application (see also Gitbox / Legal Info).
 + Release notes window (Help / Release Notes).
-+ Reveal in Finder any file from the history
-+ New menu item to fetch the latest changes (without merging into the current repository)
-+ New menu item to extract a file from the history
++ Extract any file from the history.
++ New menu item to fetch the latest changes (without merging into the current repository).
 
 Enhancements:
 + Light scrollbar for the history view.
@@ -185,7 +179,7 @@ Enhancements:
 + Gitbox asks for your name and email before making a commit (default values are taken from the address book) and stores them in ~/.gitconfig.
 
 Bug fixes:
-+ Fixed crashes related to clicking on changes in the stage view. 
++ Fixed crashes related to clicking on changes in the stage view.
 + Fixed sorting order after updating changes list.
 + Fixed crashes and bugs when the repository is moved, renamed or deleted.
 + Fixed a crash when showing file paths with escaped characters (quote, double quote, backslash etc).
@@ -198,7 +192,7 @@ Bug fixes:
 + Preferences window was showing "Error: file not found" on the first run.
 + Brach tracking is handled only with the standard git-config mechanism.
 + Commit button is enabled only when there is something to commit.
-+ Fixed display of changes for the initial commit and the stage in a clean repository.
++ Fixed bugs with list of changes in a pristine repository.
 
 
 
