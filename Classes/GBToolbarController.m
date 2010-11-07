@@ -402,7 +402,7 @@
   
   if ([[remoteBranchesMenu itemArray] count] <= 1) // ignore dummy item
   {
-    NSMenuItem* newRemoteItem = [NSMenuItem menuItemWithTitle:NSLocalizedString(@"Add Remote...", @"Command") submenu:nil];
+    NSMenuItem* newRemoteItem = [NSMenuItem menuItemWithTitle:NSLocalizedString(@"Add Server...", @"Command") submenu:nil];
     [newRemoteItem setAction:@selector(editRepositories:)];
     [newRemoteItem setTarget:self.mainWindowController];
     [newRemoteItem setRepresentedObject:nil];
