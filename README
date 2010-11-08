@@ -34,6 +34,8 @@
 - fastspring: write ruby key generator
 - fastspring: find how to customize shop appearance on fastspring
 
+- submodules support: at least, graceful ui representation
+
 - nice screenshots
 - revamped page design
 - revamped app icon
