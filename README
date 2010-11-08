@@ -12,8 +12,6 @@
 
 + linode server
 
-- open a help page on gitboxapp.com/help from the menu
-
 + configure gitboxapp.com for primary IP
 + configure gitbox.pierlis.com for A record to gitboxapp.com
 + remove git repo from bergere
@@ -34,6 +32,7 @@
 - fastspring: write ruby key generator
 - fastspring: find how to customize shop appearance on fastspring
 
+- open a help page on gitboxapp.com/help from the menu
 - very slow startup when many repos present (like on gw machine)
 - submodules support: at least, graceful ui representation
 
