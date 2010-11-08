@@ -1289,6 +1289,7 @@
 				GCC_PREFIX_HEADER = prefix_appstore.pch;
 				INFOPLIST_FILE = info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
+				MACOSX_DEPLOYMENT_TARGET = 10.6.6;
 				PRODUCT_NAME = Gitbox;
 			};
 			name = Debug;
@@ -1308,6 +1309,7 @@
 				GCC_PREFIX_HEADER = prefix_appstore.pch;
 				INFOPLIST_FILE = info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
+				MACOSX_DEPLOYMENT_TARGET = 10.6.6;
 				PRODUCT_NAME = Gitbox;
 			};
 			name = Release;
