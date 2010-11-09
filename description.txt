@@ -1,0 +1,15 @@
+Gitbox is an elegant, powerful and a really fast app for managing file versions. No dependencies or setup required: download the app, open a folder and make a commit immediately. You will be delighted by the intuitive and clean interface. And if you are experienced with version control you will be amazed how the advanced features become easy to work with.
+
+With Gitbox you will not fear creating branches, you will finally make fine-grained commits with nice descriptive messages. Always up-to-date interface and smaller commits contribute to less merge conflicts and very pleasant history browsing.
+
+In a single window you will see branches, history and current directory status. Commit, sync and switch branches with a single click. Gitbox automatically fetches and highlights new commits which you can immediately merge into the local branch. When you switch the branch, it shows you the difference with the associated remote branch. You can even see the difference between two local branches and merge them.
+
+Gitbox beats the command line in speed: deleting a bunch of files, extracting a file from history, setting up remote branches — all with one click and with immediate visual feedback.
+ 
+Learn more at http://gitboxapp.com
+
+You can clone and pull using git, ssh and http protocols. Repositories and clones on the local and networking filesystems are also supported.
+
+To push to the remote repository SSH keys are required and the host should be added to known_hosts.
+
+Gitbox is powered by the non-modified build of Git 1.7 which is protected by GNU General Public License Version 2. Gitbox neither links (statically or dynamically) with Git nor uses specific APIs to work with Git. You can obtain Git source code at the following address: http://git-scm.com/
