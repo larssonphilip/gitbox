@@ -1,6 +1,8 @@
-Gitbox is an elegant, powerful and a really fast app for managing file versions. No dependencies or setup required: download the app, open a folder and make a commit immediately. You will be delighted by the intuitive and clean interface. And if you are experienced with version control you will be amazed how the advanced features become easy to work with.
+Gitbox is an elegant, yet powerful app for managing file versions. No setup required: download the app, open a folder and make a commit immediately. Gitbox stores the whole history inside that folder and you can later sync with a server of your choice.
 
-With Gitbox you will not fear creating branches, you will finally make fine-grained commits with nice descriptive messages. Always up-to-date interface and smaller commits contribute to less merge conflicts and very pleasant history browsing.
+You will be delighted by the intuitive and clean interface. And if you are experienced with version control you will be amazed how even the advanced features become easy to work with.
+
+With Gitbox you will not fear to create branches, you will finally make fine-grained commits with nice descriptive messages. Always up-to-date interface and smaller commits contribute to less merge conflicts and very pleasant history browsing.
 
 In a single window you will see branches, history and current directory status. Commit, sync and switch branches with a single click. Gitbox automatically fetches and highlights new commits which you can immediately merge into the local branch. When you switch the branch, it shows you the difference with the associated remote branch. You can even see the difference between two local branches and merge them.
 
