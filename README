@@ -42,6 +42,9 @@
 - simpler definition and wording
 - video
 
+$ sudo installer -store -pkg Desktop/gitbox.pkg -target /
+(installs to /Applications if gitbox.app removed from all the folders: Trash, Debug, Release and Archived Applications folders)
+
 //- ssl certificates
 //- paypal button
 //- paypal notifications IPN
