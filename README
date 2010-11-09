@@ -73,6 +73,8 @@ Ongoing tasks:
 - human message in case git cannot merge/pull when some files are modified (error: Untracked working tree file 'Patryst.xcodeproj/project.pbxproj' would be overwritten by merge.)
 - a block-based method for GBRepository to temporarily remember current error (name, description) for the use in the UI
 - GIT_ASKPASS/SSH_ASKPASS for interacting with ssh
+- Add common OS X to the global gitignore https://github.com/github/gitignore
+- Add "Edit Global Ignored Files..."  menu item to edit ~/.gitignore
 - Secondary windows are opened in sheets (Preferences, Open Repository etc.)
 - check for memory leaks
 - check behavior when opendiff is missing
