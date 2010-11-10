@@ -65,6 +65,12 @@ To read:
 - read carefully: https://git.wiki.kernel.org/index.php/GitSurvey2010
 - reactions to macappstore: http://www.tuaw.com/2010/10/21/developer-reactions-to-the-mac-app-store/#continued
 
+License check:
+
+- obfuscated verification: at some points in program, include an .h file with inline functions and run a macro which randomly triggers dispatch blocks with delays on concurrent queues. Terminate the app on another queue with another random delay.
+- license key check: license is a 20-byte hex number. First 8 bytes are random, each next byte is a XOR of a previous one + 1-byte key for that byte. First version checks only the first key and every type keygen is created, new key byte is unlocked.
+- non-appstore license is checked in a non-obfuscated way (+caching result) when paid feature is used.
+
 
 Ongoing tasks:
 
