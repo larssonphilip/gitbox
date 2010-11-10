@@ -1,4 +1,4 @@
-Gitbox is an elegant, yet powerful app for managing file versions. No setup required: download the app, open a folder and make a commit immediately. Gitbox stores the whole history inside that folder and you can later sync with a server of your choice.
+Gitbox is an elegant, yet powerful app for managing file versions. No configuration or server required: download the app, open a folder and make a commit immediately. Gitbox stores the whole compressed history inside that folder and you can later sync with a server of your choice.
 
 You will be delighted by the intuitive and clean interface. And if you are experienced with version control you will be amazed how even the advanced features become easy to work with.
 
