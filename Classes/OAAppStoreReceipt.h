@@ -145,6 +145,7 @@ NSDictionary* OADictionaryWithAppStoreReceipt(NSString* path)
   
 	// this code will come handy when the first real receipts arrive
 #if 1
+  #warning Logs enabled in the receipt verification code
 	unsigned long err = ERR_get_error();
 	if(err)
   {
