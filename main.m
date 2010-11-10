@@ -1,6 +1,8 @@
 #import <Cocoa/Cocoa.h>
 
-#define OA_APPSTORE_SAMPLE_RECEIPT 1
+#if GITBOX_APP_STORE
+  #define OA_APPSTORE_SAMPLE_RECEIPT 1
+#endif
 
 #import "OAAppStoreReceipt.h"
 

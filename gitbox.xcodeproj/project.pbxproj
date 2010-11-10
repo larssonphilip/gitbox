@@ -38,6 +38,9 @@
 		20265C1411D68F1300709F6B /* OAFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 20265C1311D68F1300709F6B /* OAFile.m */; };
 		20265E4B11E3EB9B00709F6B /* GBWelcomeController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 20265E4A11E3EB9B00709F6B /* GBWelcomeController.xib */; };
 		2030C44F128B5BA1005F751C /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2030C44E128B5BA1005F751C /* Security.framework */; };
+		2030C4DA128B60FA005F751C /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2030C44E128B5BA1005F751C /* Security.framework */; };
+		2030C608128B6107005F751C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2A37F4C5FDCFA73011CA2CEA /* Foundation.framework */; };
+		2030C609128B6108005F751C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2A37F4C5FDCFA73011CA2CEA /* Foundation.framework */; };
 		2035623311D383BE00965765 /* GBCommandsController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2035623211D383BE00965765 /* GBCommandsController.xib */; };
 		2035623811D383D000965765 /* GBCommandsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2035623711D383D000965765 /* GBCommandsController.m */; };
 		2035632F11D3B57800965765 /* GBHistoryScroller.m in Sources */ = {isa = PBXBuildFile; fileRef = 2035632E11D3B57800965765 /* GBHistoryScroller.m */; };
@@ -511,6 +514,8 @@
 				20915F2B12874D2A005E0D82 /* Sparkle.framework in Frameworks */,
 				20915F2C12874D2A005E0D82 /* IOKit.framework in Frameworks */,
 				20915F2D12874D2A005E0D82 /* AddressBook.framework in Frameworks */,
+				2030C4DA128B60FA005F751C /* Security.framework in Frameworks */,
+				2030C609128B6108005F751C /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -523,6 +528,7 @@
 				2000325411FC75050069C70D /* IOKit.framework in Frameworks */,
 				20BF19721282329A00A30EE6 /* AddressBook.framework in Frameworks */,
 				2030C44F128B5BA1005F751C /* Security.framework in Frameworks */,
+				2030C608128B6107005F751C /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
