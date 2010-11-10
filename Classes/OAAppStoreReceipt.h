@@ -1,8 +1,7 @@
 // Declare this define before including this file
 //#define OA_APPSTORE_SAMPLE_RECEIPT
 
-#import <Foundation/Foundation.h>
-
+// Use this method to validate the receipt at the given path:
 // BOOL OAValidateAppStoreReceiptAtPath(NSString * path);
 
 #import <IOKit/IOKitLib.h>
