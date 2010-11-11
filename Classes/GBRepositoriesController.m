@@ -102,7 +102,8 @@
   [self updateRepositoriesPresentation];
   [repoCtrl setNeedsUpdateEverything];
   [repoCtrl start];
-  [repoCtrl updateRepositoryIfNeeded];
+  // Updating immediately all repos altogether on the startup is heavy for the disk and CPU.
+  // [repoCtrl updateRepositoryIfNeeded];
   if ([self.delegate respondsToSelector:@selector(repositoriesController:didAddRepository:)]) { [self.delegate repositoriesController:self didAddRepository:repoCtrl]; }
 }
 
@@ -125,6 +126,7 @@
 {
   if ([self.delegate respondsToSelector:@selector(repositoriesController:willSelectRepository:)]) { [self.delegate repositoriesController:self willSelectRepository:repoCtrl]; }
   self.selectedRepositoryController = repoCtrl;
+  [repoCtrl updateRepositoryIfNeeded];
   if ([self.delegate respondsToSelector:@selector(repositoriesController:didSelectRepository:)]) { [self.delegate repositoriesController:self didSelectRepository:repoCtrl]; }
   [self.selectedRepositoryController didSelect];
 }
