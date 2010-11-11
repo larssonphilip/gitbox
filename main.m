@@ -13,10 +13,6 @@ int main(int argc, char *argv[])
     // a proper iTunes update (say, when she moves to another computer).
     // Obfuscated check happens elsewhere in the app after some period of time.
     NSString* receiptPath = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:@"Contents/_MASReceipt/receipt"];
-    // put the example receipt on the desktop (or change that path)
-    #if OA_APPSTORE_SAMPLE_RECEIPT
-      receiptPath = @"/Users/oleganza/Work/gitbox/app/appstore_receipt_tests/SampleReceipt";
-    #endif
     if (!OAValidateAppStoreReceiptAtPath(receiptPath))
     {
       NSLog(@"Gitbox main: receipt not found or not valid at path %@", receiptPath);

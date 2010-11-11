@@ -17,6 +17,7 @@
 
 #ifdef OA_APPSTORE_SAMPLE_RECEIPT
 #warning Using sample AppStore receipt (OA_APPSTORE_SAMPLE_RECEIPT defined elsewhere)
+#define OA_APPSTORE_SAMPLE_RECEIPT_PATH @"/Users/oleganza/Work/gitbox/app/appstore_receipt_tests/SampleReceipt"
 #endif
 
 
@@ -333,8 +334,11 @@ CFDataRef OACopyMACAddress(void)
 
 
 
-BOOL OAValidateAppStoreReceiptAtPath(NSString * path)
+BOOL OAValidateAppStoreReceiptAtPath(NSString* path)
 {
+#if OA_APPSTORE_SAMPLE_RECEIPT
+  path = OA_APPSTORE_SAMPLE_RECEIPT_PATH;
+#endif
 	NSDictionary* receipt = OADictionaryWithAppStoreReceipt(path);
 	
 	if (!receipt) return NO;

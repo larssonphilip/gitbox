@@ -328,6 +328,7 @@
 		20265E4A11E3EB9B00709F6B /* GBWelcomeController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBWelcomeController.xib; sourceTree = "<group>"; };
 		2030C445128B5B6E005F751C /* OAAppStoreReceipt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAAppStoreReceipt.h; sourceTree = "<group>"; };
 		2030C44E128B5BA1005F751C /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		2030C65B128C98C9005F751C /* OAObfuscatedLicenseCheck.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAObfuscatedLicenseCheck.h; sourceTree = "<group>"; };
 		2035623211D383BE00965765 /* GBCommandsController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBCommandsController.xib; sourceTree = "<group>"; };
 		2035623611D383D000965765 /* GBCommandsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBCommandsController.h; sourceTree = "<group>"; };
 		2035623711D383D000965765 /* GBCommandsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBCommandsController.m; sourceTree = "<group>"; };
@@ -578,6 +579,7 @@
 				201E02F611EA231D007E4420 /* GBLicenseController.xib */,
 				201E030111EE083D007E4420 /* GBCertificateUpdateController.xib */,
 				2030C445128B5B6E005F751C /* OAAppStoreReceipt.h */,
+				2030C65B128C98C9005F751C /* OAObfuscatedLicenseCheck.h */,
 			);
 			name = License;
 			sourceTree = "<group>";
