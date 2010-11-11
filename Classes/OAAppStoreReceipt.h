@@ -144,7 +144,7 @@ NSDictionary* OADictionaryWithAppStoreReceipt(NSString* path)
 	int verifyReturnValue = PKCS7_verify(p7,NULL,store,NULL,payload,0);
   
 	// this code will come handy when the first real receipts arrive
-#if 1
+#if 0
   #warning Logs enabled in the receipt verification code
 	unsigned long err = ERR_get_error();
 	if(err)
@@ -156,6 +156,8 @@ NSDictionary* OADictionaryWithAppStoreReceipt(NSString* path)
 		STACK_OF(X509) *stack = PKCS7_get0_signers(p7, NULL, 0);
 		for(NSUInteger i = 0; i < sk_num(stack); i++) {
 			const X509 *signer = (X509*)sk_value(stack, i);
+      // For the sample receipt from Apple this yields:
+      //      OAAppStoreReceipt: name = /C=US/O=Apple Inc./OU=Apple FairPlay/CN=MacAppStore.3333AF101014AF0001AF000001
 			NSLog(@"OAAppStoreReceipt: name = %s", signer->name);
 		}
 	}
