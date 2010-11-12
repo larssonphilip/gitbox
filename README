@@ -28,8 +28,8 @@
 + apple: install 10.6.6 for testing appstore
 + apple: add a receipt verification code
 
++ very slow startup when many repos present (like on gw machine) - disabled all autoupdate on stratup
 - open a help page on gitboxapp.com/help from the menu
-- very slow startup when many repos present (like on gw machine)
 - submodules support: at least, graceful ui representation
 
 - fastspring: add license key verification code
