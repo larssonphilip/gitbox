@@ -32,13 +32,16 @@
 - open a help page on gitboxapp.com/help from the menu
 - submodules support: at least, graceful ui representation
 
+---> send to appstore for review
+
 - fastspring: add license key verification code
 - fastspring: write ruby key generator
 - fastspring: find how to customize shop appearance on fastspring
 
-- nice screenshots
++ revamped app icon
+
 - revamped page design
-- revamped app icon
+- nice screenshots
 - simpler definition and wording
 - video
 
