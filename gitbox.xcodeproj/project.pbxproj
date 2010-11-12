@@ -687,12 +687,12 @@
 				2057964111ADD3AA004715FE /* GBCommitCell.m */,
 				2057979911ADEEEE004715FE /* GBStageCell.h */,
 				2057979A11ADEEEE004715FE /* GBStageCell.m */,
+				20BF176F127EF68800A30EE6 /* GBRepositoryCell.h */,
+				20BF1770127EF68800A30EE6 /* GBRepositoryCell.m */,
 				2035632D11D3B57800965765 /* GBHistoryScroller.h */,
 				2035632E11D3B57800965765 /* GBHistoryScroller.m */,
 				2035639C11D3C14C00965765 /* GBHistoryScrollView.h */,
 				2035639D11D3C14C00965765 /* GBHistoryScrollView.m */,
-				20BF176F127EF68800A30EE6 /* GBRepositoryCell.h */,
-				20BF1770127EF68800A30EE6 /* GBRepositoryCell.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";

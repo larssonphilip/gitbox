@@ -42,6 +42,14 @@
                                            paragraphStyle, NSParagraphStyleAttributeName,
                                            nil] autorelease];
   
+  if ([self isHighlighted] && self.isFocused)
+  {
+    NSShadow* s = [[[NSShadow alloc] init] autorelease];
+    [s setShadowOffset:NSMakeSize(0, 1)];
+    [s setShadowColor:[NSColor colorWithCalibratedWhite:0.0 alpha:0.2]];
+    [titleAttributes setObject:s forKey:NSShadowAttributeName];
+  }
+  
   
   // Calculate heights
   NSRect innerRect = NSInsetRect(cellFrame, 19.0, 1.0);
