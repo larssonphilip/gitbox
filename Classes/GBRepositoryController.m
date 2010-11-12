@@ -141,14 +141,14 @@
     
     if ([self checkRepositoryExistance])
     {
-      NSLog(@"FSEvents: workingDirectoryStateDidChange %@", [self url]);
+      //NSLog(@"FSEvents: workingDirectoryStateDidChange %@", [self url]);
       [self workingDirectoryStateDidChange];
     }
   }];
   [self.fsEventStream addPath:[self.repository.dotGitURL path] withBlock:^(NSString* path){
     if ([self checkRepositoryExistance])
     {
-      NSLog(@"FSEvents: dotgitStateDidChange %@", [self url]);
+      //NSLog(@"FSEvents: dotgitStateDidChange %@", [self url]);
       [self dotgitStateDidChange];
     }
   }];
