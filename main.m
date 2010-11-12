@@ -15,9 +15,13 @@ int main(int argc, char *argv[])
     NSString* receiptPath = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:@"Contents/_MASReceipt/receipt"];
     if (!OAValidateAppStoreReceiptAtPath(receiptPath))
     {
-      NSLog(@"Gitbox main: receipt not found or not valid at path %@", receiptPath);
+      NSLog(@"Gitbox main: AppStore receipt not found or not valid at path %@", receiptPath);
       exit(173);
       return 173;
+    }
+    else
+    {
+      //NSLog(@"Gitbox main: AppStore receipt is valid. [%@]", receiptPath);
     }
   #endif
   
