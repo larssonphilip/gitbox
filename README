@@ -26,15 +26,15 @@
   + remove the mainmenu "Check For Updates..." item if on app store
   + duplicate preferences controller nib for appstore - remove updater controls
 + apple: install 10.6.6 for testing appstore
-- apple: add a receipt verification code
-
-- fastspring: add license key verification code
-- fastspring: write ruby key generator
-- fastspring: find how to customize shop appearance on fastspring
++ apple: add a receipt verification code
 
 - open a help page on gitboxapp.com/help from the menu
 - very slow startup when many repos present (like on gw machine)
 - submodules support: at least, graceful ui representation
+
+- fastspring: add license key verification code
+- fastspring: write ruby key generator
+- fastspring: find how to customize shop appearance on fastspring
 
 - nice screenshots
 - revamped page design
@@ -52,6 +52,7 @@ $ sudo installer -store -pkg Desktop/gitbox.pkg -target /
 
 1.1:
 
+- obfuscated license check
 - drag and drop for sources (see the SourceView sample code for handling the drag and drop)
 - drag and drop for changes
 - find in commits
@@ -59,6 +60,7 @@ $ sudo installer -store -pkg Desktop/gitbox.pkg -target /
 - badges for sidebar
 - tag and branch badges in history
 - create a new tag (need a tag badge)
+
 
 
 To read:
