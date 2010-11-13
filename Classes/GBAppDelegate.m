@@ -65,6 +65,12 @@
   [self.preferencesController.updater checkForUpdates:_];
 }
 
+- (IBAction) showHelp:_
+{
+  NSString* releaseNotesURLString = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"GBHelpURL"];
+  [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:releaseNotesURLString]];
+}
+
 - (IBAction) releaseNotes:_
 {
   NSString* releaseNotesURLString = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"GBReleaseNotesURL"];
