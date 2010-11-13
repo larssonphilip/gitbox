@@ -15,7 +15,7 @@
 - (IBAction) openDocument:_;
 - (IBAction) cloneRepository:_;
 - (IBAction) showActivityWindow:_;
-- (IBAction) showHelp:_;
+- (IBAction) showOnlineHelp:_;
 - (IBAction) releaseNotes:_;
 - (IBAction) showDiffToolPreferences:_;
 - (IBAction) checkForUpdates:_;

@@ -29,8 +29,9 @@
 + apple: add a receipt verification code
 
 + very slow startup when many repos present (like on gw machine) - disabled all autoupdate on stratup
-- open a help page on gitboxapp.com/help from the menu
++ open a help page on gitboxapp.com/help from the menu
 - submodules support: at least, graceful ui representation
+- check [NSURLConnection canHandleRequest:] before doing fetching in background
 
 ---> send to appstore for review
 
