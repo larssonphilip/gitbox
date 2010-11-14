@@ -1,3 +1,5 @@
+#import "GBErrors.h"
+
 @class GBRepository;
 @class GBRemote;
 
@@ -24,6 +26,7 @@ typedef void (^GBBlock)();
 @property(retain) NSArray* localBranchCommits;
 @property(retain) NSString* topCommitId;
 @property(nonatomic) dispatch_queue_t dispatchQueue;
+@property(retain) NSError* lastError;
 
 + (id) repository;
 + (id) repositoryWithURL:(NSURL*)url;
@@ -87,7 +90,10 @@ typedef void (^GBBlock)();
 - (void) dispatchBlock:(void (^)())block;
 - (id) launchTaskAndWait:(GBTask*)aTask;
 - (NSURL*) gitURLWithSuffix:(NSString*)suffix;
-
+- (NSError*) errorWithCode:(GBErrorCode)aCode
+               description:(NSString*)aDescription
+                    reason:(NSString*)aReason
+                suggestion:(NSString*)aSuggestion;
 
 
 @end

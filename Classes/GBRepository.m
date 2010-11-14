@@ -11,6 +11,14 @@
 
 #import "OAPropertyListController.h"
 
+@interface GBRepository ()
+
+- (void) captureErrorForTask:(OATask*)aTask withBlock:(NSError*(^)())block continuation:(void(^)())continuation;
+
+@end
+
+
+
 @implementation GBRepository
 
 @synthesize url;
@@ -24,6 +32,7 @@
 @synthesize localBranchCommits;
 @synthesize topCommitId;
 @synthesize dispatchQueue;
+@synthesize lastError;
 
 
 #pragma mark Init
@@ -571,11 +580,14 @@
                     nil];
   
   [self launchTask:task withBlock:^{
-    if ([task isError])
-    {
-      [self alertWithMessage: @"Fetch failed" description:[task.output UTF8String]];
-    }
-    block();
+    [self captureErrorForTask:task
+                    withBlock:^(){
+                      return [self errorWithCode:GBErrorCodeFetchFailed
+                                     description:[NSString stringWithFormat:NSLocalizedString(@"Failed to fetch from %@",@"Error"), aRemoteBranch.remoteAlias]
+                                          reason:[task.output UTF8String]
+                                      suggestion:NSLocalizedString(@"Please check the URL or network settings.",@"Error")];
+                                 }
+                 continuation:block];
   }];
 }
 
@@ -646,6 +658,28 @@
   return [self.dotGitURL URLByAppendingPathComponent:suffix];
 }
 
+- (NSError*) errorWithCode:(GBErrorCode)aCode
+               description:(NSString*)aDescription
+                    reason:(NSString*)aReason
+                suggestion:(NSString*)aSuggestion
+{
+  return [NSError errorWithDomain:GBErrorDomain
+                             code:aCode
+                         userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
+                                   aDescription, NSLocalizedDescriptionKey,
+                                   aReason, NSLocalizedFailureReasonErrorKey,
+                                   aSuggestion, NSLocalizedRecoverySuggestionErrorKey,
+                                   nil]];
+}
 
+- (void) captureErrorForTask:(OATask*)aTask withBlock:(NSError*(^)())block continuation:(void(^)())continuation
+{
+  if ([aTask isError])
+  {
+    self.lastError = block();
+  }
+  continuation();
+  self.lastError = nil;
+}
 
 @end
