@@ -30,13 +30,15 @@
 
 + very slow startup when many repos present (like on gw machine) - disabled all autoupdate on stratup
 + open a help page on gitboxapp.com/help from the menu
++ do not spit out autoFetch errors in offline
 - submodules support: at least, graceful ui representation
-- check [NSURLConnection canHandleRequest:] before doing fetching in background
+
 
 ---> send to appstore for review
 
 - fastspring: add license key verification code
 - fastspring: write ruby key generator
+- fastspring: setup banking info
 - fastspring: find how to customize shop appearance on fastspring
 
 + revamped app icon
@@ -45,6 +47,8 @@
 - nice screenshots
 - simpler definition and wording
 - video
+
+---> release on the website
 
 $ sudo installer -store -pkg Desktop/gitbox.pkg -target /
 (installs to /Applications if gitbox.app removed from all the folders: Trash, Debug, Release and Archived Applications folders)
@@ -56,6 +60,8 @@ $ sudo installer -store -pkg Desktop/gitbox.pkg -target /
 
 1.1:
 
+- do not require name and email for ~/.gitconfig
+- fix networking behaviour: try to load the remote branches and reload them when pull/fetch
 - obfuscated license check
 - drag and drop for sources (see the SourceView sample code for handling the drag and drop)
 - drag and drop for changes

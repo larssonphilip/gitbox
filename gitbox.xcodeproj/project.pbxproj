@@ -41,6 +41,8 @@
 		2030C4DA128B60FA005F751C /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2030C44E128B5BA1005F751C /* Security.framework */; };
 		2030C608128B6107005F751C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2A37F4C5FDCFA73011CA2CEA /* Foundation.framework */; };
 		2030C609128B6108005F751C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2A37F4C5FDCFA73011CA2CEA /* Foundation.framework */; };
+		2030C6F1128E55A0005F751C /* GBErrors.m in Sources */ = {isa = PBXBuildFile; fileRef = 2030C6F0128E55A0005F751C /* GBErrors.m */; };
+		2030C6F2128E55A0005F751C /* GBErrors.m in Sources */ = {isa = PBXBuildFile; fileRef = 2030C6F0128E55A0005F751C /* GBErrors.m */; };
 		2035623311D383BE00965765 /* GBCommandsController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2035623211D383BE00965765 /* GBCommandsController.xib */; };
 		2035623811D383D000965765 /* GBCommandsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2035623711D383D000965765 /* GBCommandsController.m */; };
 		2035632F11D3B57800965765 /* GBHistoryScroller.m in Sources */ = {isa = PBXBuildFile; fileRef = 2035632E11D3B57800965765 /* GBHistoryScroller.m */; };
@@ -217,6 +219,8 @@
 		209A935A11BA92B6006B0B5C /* GBFileEditingController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 209A935911BA92B6006B0B5C /* GBFileEditingController.xib */; };
 		209A935F11BA934C006B0B5C /* GBFileEditingController.m in Sources */ = {isa = PBXBuildFile; fileRef = 209A935E11BA934C006B0B5C /* GBFileEditingController.m */; };
 		209A963E11BC630C006B0B5C /* default_gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 209A960011BC60BC006B0B5C /* default_gitignore */; };
+		209C16571290636300B343A5 /* NSError+OAPresent.m in Sources */ = {isa = PBXBuildFile; fileRef = 209C16561290636300B343A5 /* NSError+OAPresent.m */; };
+		209C16581290636300B343A5 /* NSError+OAPresent.m in Sources */ = {isa = PBXBuildFile; fileRef = 209C16561290636300B343A5 /* NSError+OAPresent.m */; };
 		20A37BA6120DC1D90068AB8B /* GBSourcesController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20A37BA5120DC1D90068AB8B /* GBSourcesController.m */; };
 		20A37BA9120DC27B0068AB8B /* GBMainWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20A37BA8120DC27B0068AB8B /* GBMainWindowController.m */; };
 		20A37BAC120DC4510068AB8B /* GBToolbarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20A37BAB120DC4510068AB8B /* GBToolbarController.m */; };
@@ -329,6 +333,8 @@
 		2030C445128B5B6E005F751C /* OAAppStoreReceipt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAAppStoreReceipt.h; sourceTree = "<group>"; };
 		2030C44E128B5BA1005F751C /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		2030C65B128C98C9005F751C /* OAObfuscatedLicenseCheck.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAObfuscatedLicenseCheck.h; sourceTree = "<group>"; };
+		2030C6EF128E5555005F751C /* GBErrors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBErrors.h; sourceTree = "<group>"; };
+		2030C6F0128E55A0005F751C /* GBErrors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBErrors.m; sourceTree = "<group>"; };
 		2035623211D383BE00965765 /* GBCommandsController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBCommandsController.xib; sourceTree = "<group>"; };
 		2035623611D383D000965765 /* GBCommandsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBCommandsController.h; sourceTree = "<group>"; };
 		2035623711D383D000965765 /* GBCommandsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBCommandsController.m; sourceTree = "<group>"; };
@@ -439,6 +445,8 @@
 		209A935D11BA934C006B0B5C /* GBFileEditingController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBFileEditingController.h; sourceTree = "<group>"; };
 		209A935E11BA934C006B0B5C /* GBFileEditingController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBFileEditingController.m; sourceTree = "<group>"; };
 		209A960011BC60BC006B0B5C /* default_gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = default_gitignore; sourceTree = "<group>"; };
+		209C16551290636300B343A5 /* NSError+OAPresent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSError+OAPresent.h"; sourceTree = "<group>"; };
+		209C16561290636300B343A5 /* NSError+OAPresent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSError+OAPresent.m"; sourceTree = "<group>"; };
 		20A37BA4120DC1D90068AB8B /* GBSourcesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBSourcesController.h; sourceTree = "<group>"; };
 		20A37BA5120DC1D90068AB8B /* GBSourcesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBSourcesController.m; sourceTree = "<group>"; };
 		20A37BA7120DC27B0068AB8B /* GBMainWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBMainWindowController.h; sourceTree = "<group>"; };
@@ -601,6 +609,8 @@
 				2038F5F2119DB9CE0087CE37 /* GBChange.m */,
 				2038F67611A025AF0087CE37 /* GBRemote.h */,
 				2038F67711A025AF0087CE37 /* GBRemote.m */,
+				2030C6EF128E5555005F751C /* GBErrors.h */,
+				2030C6F0128E55A0005F751C /* GBErrors.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -763,6 +773,8 @@
 				20265C0211D68D3400709F6B /* OAPropertyListController.m */,
 				20265C1211D68F1300709F6B /* OAFile.h */,
 				20265C1311D68F1300709F6B /* OAFile.m */,
+				209C16551290636300B343A5 /* NSError+OAPresent.h */,
+				209C16561290636300B343A5 /* NSError+OAPresent.m */,
 			);
 			path = Libs;
 			sourceTree = "<group>";
@@ -1154,6 +1166,8 @@
 				20915F2612874D2A005E0D82 /* GBAllStagedFilesTask.m in Sources */,
 				20915F2712874D2A005E0D82 /* GBUserNameEmailController.m in Sources */,
 				20915F2812874D2A005E0D82 /* GBBasePromptController.m in Sources */,
+				2030C6F1128E55A0005F751C /* GBErrors.m in Sources */,
+				209C16581290636300B343A5 /* NSError+OAPresent.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1239,6 +1253,8 @@
 				20BF18701280C11C00A30EE6 /* GBAllStagedFilesTask.m in Sources */,
 				20BF1954128224E500A30EE6 /* GBUserNameEmailController.m in Sources */,
 				20BF195B12822C5800A30EE6 /* GBBasePromptController.m in Sources */,
+				2030C6F2128E55A0005F751C /* GBErrors.m in Sources */,
+				209C16571290636300B343A5 /* NSError+OAPresent.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
