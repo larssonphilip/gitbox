@@ -31,8 +31,6 @@
 + very slow startup when many repos present (like on gw machine) - disabled all autoupdate on stratup
 + open a help page on gitboxapp.com/help from the menu
 + do not spit out autoFetch errors in offline
-- submodules support: at least, graceful ui representation
-
 
 ---> send to appstore for review
 
@@ -60,6 +58,7 @@ $ sudo installer -store -pkg Desktop/gitbox.pkg -target /
 
 1.1:
 
+- submodules support: currently does not show the submodule in the stage
 - do not require name and email for ~/.gitconfig
 - fix networking behaviour: try to load the remote branches and reload them when pull/fetch
 - obfuscated license check
