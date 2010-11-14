@@ -12,6 +12,7 @@
 
 #import "OAFSEventStream.h"
 #import "NSString+OAStringHelpers.h"
+#import "NSError+OAPresent.h"
 
 @interface GBRepositoryController ()
 
@@ -41,9 +42,7 @@
 - (void) scheduleAutoFetch;
 - (void) unscheduleAutoFetch;
 
-// Obsolete:
-//- (void) saveObject:(id)obj forKey:(NSString*)key;
-//- (id) loadObjectForKey:(NSString*)key;
+- (BOOL) isConnectionAvailable;
 
 @end
 
@@ -610,7 +609,14 @@
 - (void) fetch
 {
   [self resetAutoFetchInterval];
-  [self fetchSilently];
+  [self pushSpinning];
+  [self pushDisabled];
+  [self.repository fetchWithBlock:^{
+    [self.repository.lastError present];
+    [self loadCommits];
+    [self popDisabled];
+    [self popSpinning];
+  }];
 }
 
 - (void) pull
@@ -839,9 +845,24 @@
   autoFetchInterval = autoFetchInterval*(1.5 + drand48()*0.5);
   while (autoFetchInterval > 3600.0) autoFetchInterval -= 600.0;
   [self scheduleAutoFetch];
-  [self fetchSilently];
+  
+  if ([self isConnectionAvailable])
+  {
+    [self fetchSilently];
+  }
+  else
+  {
+    NSLog(@"autoFetch: no connection available");
+    while (autoFetchInterval > 300) autoFetchInterval -= 100.0;
+  }
 }
 
+
+- (BOOL) isConnectionAvailable
+{
+  // FIXME: this does not work.
+  return [NSURLConnection canHandleRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://google.com/"]]];
+}
 
 
 @end
