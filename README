@@ -101,6 +101,7 @@ Ongoing tasks:
 
 Bugs:
 
+- bug: after adding files to .gitignore, the stage is not reloaded
 - bug: "Renamed" status should be "Moved" if the [[dstURL path] lastPathComponent] is the same
 - bug: when ssh server is not added to known_hosts, gitbox fails parsing the output
 - bug: when deselected all repos, the changes view remains visible
