@@ -28,18 +28,18 @@
 	<key>CFBundleIconFile</key>
 	<string>app.icns</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.oleganza.${PRODUCT_NAME:rfc1034identifier}</string>
+	<string>com.oleganza.gitbox</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
 	<string>${PRODUCT_NAME}</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
-	<key>CFBundleShortVersionString</key>
-	<string></string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
+	<string>${APP_VERSION}</string>
+	<key>CFBundleShortVersionString</key>
 	<string>${APP_VERSION}</string>
 	<key>GBPurchaseURL</key>
 	<string>http://gitboxapp.com/purchase.html</string>
