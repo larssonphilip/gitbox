@@ -420,6 +420,7 @@
 		2082B7C3126587CA00667A7F /* GBCloningRepositoryController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBCloningRepositoryController.m; sourceTree = "<group>"; };
 		2082B80F1266500800667A7F /* GBBaseRepositoryController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBBaseRepositoryController.h; sourceTree = "<group>"; };
 		2082B8101266500800667A7F /* GBBaseRepositoryController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBBaseRepositoryController.m; sourceTree = "<group>"; };
+		2084C75D1297425F009295C8 /* OALicenseNumberCheck.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OALicenseNumberCheck.h; sourceTree = "<group>"; };
 		20915F3412874D2A005E0D82 /* Gitbox.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Gitbox.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		20915F7E12875C92005E0D82 /* GBPreferencesController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBPreferencesController.xib; sourceTree = "<group>"; };
 		20915F8712875FDA005E0D82 /* prefix_appstore.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = prefix_appstore.pch; sourceTree = "<group>"; };
@@ -587,6 +588,7 @@
 				201E02F611EA231D007E4420 /* GBLicenseController.xib */,
 				201E030111EE083D007E4420 /* GBCertificateUpdateController.xib */,
 				2030C445128B5B6E005F751C /* OAAppStoreReceipt.h */,
+				2084C75D1297425F009295C8 /* OALicenseNumberCheck.h */,
 				2030C65B128C98C9005F751C /* OAObfuscatedLicenseCheck.h */,
 			);
 			name = License;
