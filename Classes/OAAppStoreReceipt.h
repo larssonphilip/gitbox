@@ -21,14 +21,14 @@
 #endif
 
 
-NSString *kReceiptBundleIdentifer = @"BundleIdentifier";
-NSString *kReceiptBundleIdentiferData = @"BundleIdentifierData";
-NSString *kReceiptVersion = @"Version";
-NSString *kReceiptOpaqueValue = @"OpaqueValue";
-NSString *kReceiptHash = @"Hash";
+#define kReceiptBundleIdentifer @"BundleIdentifier"
+#define kReceiptBundleIdentiferData  @"BundleIdentifierData"
+#define kReceiptVersion  @"Version"
+#define kReceiptOpaqueValue  @"OpaqueValue"
+#define kReceiptHash  @"Hash"
 
 
-NSData * OAAppleRootCert()
+static inline NSData * OAAppleRootCert()
 {
 	OSStatus status;
 	
@@ -92,7 +92,7 @@ NSData * OAAppleRootCert()
 }
 
 
-NSDictionary* OADictionaryWithAppStoreReceipt(NSString* path)
+static inline NSDictionary* OADictionaryWithAppStoreReceipt(NSString* path)
 {
 	NSData* rootCertData = OAAppleRootCert();
 	
@@ -283,7 +283,7 @@ NSDictionary* OADictionaryWithAppStoreReceipt(NSString* path)
 
 
 // Returns a CFData object, containing the machine's GUID.
-CFDataRef OACopyMACAddress(void)
+static inline CFDataRef OACopyMACAddress(void)
 {
   kern_return_t             kernResult;
   mach_port_t               master_port;
@@ -334,7 +334,7 @@ CFDataRef OACopyMACAddress(void)
 
 
 
-BOOL OAValidateAppStoreReceiptAtPath(NSString* path)
+static inline BOOL OAValidateAppStoreReceiptAtPath(NSString* path)
 {
 #if OA_APPSTORE_SAMPLE_RECEIPT
   path = OA_APPSTORE_SAMPLE_RECEIPT_PATH;

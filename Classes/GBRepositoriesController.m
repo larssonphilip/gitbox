@@ -5,6 +5,8 @@
 
 #import "NSFileManager+OAFileManagerHelpers.h"
 
+#import "OAObfuscatedLicenseCheck.h"
+
 @implementation GBRepositoriesController
 
 @synthesize selectedRepositoryController;
