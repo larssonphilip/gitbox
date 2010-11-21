@@ -36,9 +36,9 @@
 
 + fastspring: write ruby key generator
 + fastspring: add license key verification code
-- verify license key when opening more repos
-- show the dialog to enter the license key or purchase one
-- add license key to the prefs pane
++ verify license key when opening more repos
++ show the dialog to enter the license key or purchase one
++ add license key to the prefs pane
 - fastspring: setup banking info
 - fastspring: find how to customize shop appearance on fastspring
 - fastspring: generate 1000 serial numbers for the fastspring
