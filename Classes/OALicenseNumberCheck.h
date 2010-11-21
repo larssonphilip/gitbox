@@ -2,28 +2,6 @@
 #import <Security/Security.h>
 #import <CommonCrypto/CommonDigest.h>
 
-/*
- def genpartialchecksum(prefix, key, hexsize)
-	Digest::MD5.hexdigest(prefix + key)[0, hexsize].rjust(hexsize, '0')
- end
- 
- # this allows to check only a subset of keys to be able to grow further
- def checkserial(serial, n, m, keys, hexsize)
-	 required_size = n + m*hexsize
-	 serial.size == required_size or return false
-	 prefix = serial[0,n]
-	 fullchecksum = serial[n, required_size - n]
-	 partialchecksums = fullchecksum.scan(/.{#{hexsize}}/)
-	 keys.each do |key|
-		partialchecksum = partialchecksums.shift
-		partialchecksum == genpartialchecksum(prefix, key, hexsize) or return false
-	 end
-	 return true
- end
-
- 
- */
-
 static inline BOOL OAValidateLicenseNumber(NSString* licenseNumber)
 {
 	if (!licenseNumber) return NO;
@@ -35,14 +13,7 @@ static inline BOOL OAValidateLicenseNumber(NSString* licenseNumber)
 	NSUInteger requiredSize = N + M*H;
 	
 	if ([licenseNumber length] != requiredSize) return NO;
-	
-	NSString* prefix = [licenseNumber substringToIndex:N];
-	NSString* fullchecksum = [licenseNumber substringFromIndex:N];
-	
-	NSUInteger offset = 0;
-	NSString* checksum1 = [fullchecksum substringWithRange:NSMakeRange(offset, H)];
-	offset += H;
-	
+		
 	NSString* (^partialChecksum)(NSString*, NSString*, NSUInteger) = ^(NSString* prefix, NSString* key, NSUInteger hexsize) {
 		NSString*(^md5HexDigest)(NSString*) = NULL;
 		md5HexDigest = ^(NSString* input) {
@@ -61,18 +32,25 @@ static inline BOOL OAValidateLicenseNumber(NSString* licenseNumber)
 	
 	
 	/*
-	 2tb8e1irclkbhrsjsdne80kic6j513tdgh2ivuff012mstc544
-	 1fahqgk8mebj78i9srvdlje5jrhbrmn5p166kcu474q83ausr4
-	 plcmac8idko953ntbvsiun8u4cff3k5nf7nv7kr40vnt5g21ee
-	 lbq8o711gesd0s5b1m8g1o919cvfvrt7igjb05lvlkvn220v3g
-	 1ej44ifp9i1rsl5g8u11oh2rs54emupvfl0cgmgu5g9it91t3h
-	 17pgkrckcvd80rumvi5vbji6p8gmbth0hi1h1gmsv8hevc6fd8
-	 ig6dsbuvmg2gubu0e35bbrj95nd8sek7t3vp8o3varucgktcno
-	 1rjjdnjmv6gaefdocq20if3avrovdv92lheoaairmkviven63t
+   534271628253969666149
+   53868794303198114726
+   9491754476354925543641310243
+   3501320648431136786206865455
+   72578056688
+   18797547350062531
+   732462
+   745543651098770262381351052
 	 */
-	NSString* key1 = [NSString stringWithFormat:@"2tb8e1irclkbhrsjsdne80k%@", @"ic6j513tdgh2ivuff012mstc"];
+  
+  NSString* prefix = licenseNumber;
+  NSUInteger offset = requiredSize;
+  
+  offset = requiredSize - H;
+  prefix = [licenseNumber substringToIndex:offset];
+	NSString* c8 = [licenseNumber substringFromIndex:offset]; 
+	NSString* key8 = [NSString stringWithFormat:@"%@%d%@", @"745543651", 0, @"9877026238135105"];
 	
-	if (![checksum1 isEqualToString:partialChecksum(prefix, [key1 stringByAppendingFormat:@"%d", 544], H)]) return NO;
+	if (![c8 isEqualToString:partialChecksum(prefix, [key8 stringByAppendingFormat:@"%d", 2], H)]) return NO;
 	
 	// TODO: add more keys later
 	

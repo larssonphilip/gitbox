@@ -28,15 +28,19 @@ int main(int argc, char *argv[])
   #else
 
     #if 0
-	#warning Testing license validation in main.m
-	if (!OAValidateLicenseNumber(@"")) NSLog(@"OK 1");
-	if (!OAValidateLicenseNumber(@"1")) NSLog(@"OK 2");
-	if (!OAValidateLicenseNumber(@"4a522efb6f17fc5-8378ba790890b1a3442ef0414f1d")) NSLog(@"OK 3");
-	if (!OAValidateLicenseNumber(@"4a522efb6f17fc558378ba790890b1a3442ef0414f1d6347509458934598347")) NSLog(@"OK 4");
-	
-	if (OAValidateLicenseNumber(@"51e58c29d98c0c92f06862198edf07d4945923ec8bcd")) NSLog(@"OK 5");
-	if (OAValidateLicenseNumber(@"4a522efb6f17fc558378ba790890b1a3442ef0414f1d")) NSLog(@"OK 6");
-	if (OAValidateLicenseNumber(@"3fe7b7c0e4119d2d9b6a26e7876acc0e84e2a9bbb969")) NSLog(@"OK 7");
+      #warning Testing license validation in main.m
+      if (!OAValidateLicenseNumber(@"")) NSLog(@"OK 1");
+      if (!OAValidateLicenseNumber(@"1")) NSLog(@"OK 2");
+      if (!OAValidateLicenseNumber(@"X990f4706a9482a67416629cb036dde1b3f6deac5c2c")) NSLog(@"OK 3");
+      if (!OAValidateLicenseNumber(@"5990f4706a9482a67416629cb03Xdde1b3f6deac5c2c")) NSLog(@"OK 4");
+      if (!OAValidateLicenseNumber(@"5990f4706a9482a67416629cb036dde1b3f6deac5c2cX")) NSLog(@"OK 5");
+
+      if (OAValidateLicenseNumber(@"5990f4706a9482a67416629cb036dde1b3f6deac5c2c")) NSLog(@"OK 6");
+      if (OAValidateLicenseNumber(@"1892a8e355c763065a1926a41a675ed55a177e4e069e")) NSLog(@"OK 7");
+      if (OAValidateLicenseNumber(@"4edb88e33ac74494f983aa13e7eeeee844d6f23e30d8")) NSLog(@"OK 8");
+
+      exit(1);
+      return 1;
     #endif
 	
   #endif
