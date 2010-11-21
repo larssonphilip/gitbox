@@ -50,6 +50,9 @@
 - nice screenshots
 - simpler definition and wording
 
+- url: http://sites.fastspring.com/oleganza/product/gitbox
+
+<form method="POST" action="http://sites.fastspring.com/oleganza/product/gitbox?action=order" target="_top"><input type="submit" value="Purchase" /></form>
 ---> release on the website
 
 - icon: fix white pixel on the sides, add a shadow to make less flat
