@@ -417,6 +417,10 @@
 		2082B80F1266500800667A7F /* GBBaseRepositoryController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBBaseRepositoryController.h; sourceTree = "<group>"; };
 		2082B8101266500800667A7F /* GBBaseRepositoryController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBBaseRepositoryController.m; sourceTree = "<group>"; };
 		2084C75D1297425F009295C8 /* OALicenseNumberCheck.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OALicenseNumberCheck.h; sourceTree = "<group>"; };
+		2084C8671299A078009295C8 /* calc_hard_links.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = calc_hard_links.rb; sourceTree = "<group>"; };
+		2084C8681299A078009295C8 /* git-remove-hardlinks.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = "git-remove-hardlinks.rb"; sourceTree = "<group>"; };
+		2084C8691299A078009295C8 /* keygen.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = keygen.rb; sourceTree = "<group>"; };
+		2084C86A1299A078009295C8 /* license_generator.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = license_generator.rb; sourceTree = "<group>"; };
 		20915F3412874D2A005E0D82 /* Gitbox.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Gitbox.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		20915F7E12875C92005E0D82 /* GBPreferencesController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBPreferencesController.xib; sourceTree = "<group>"; };
 		20915F8712875FDA005E0D82 /* prefix_appstore.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = prefix_appstore.pch; sourceTree = "<group>"; };
@@ -723,6 +727,17 @@
 			name = "Model Controllers";
 			sourceTree = "<group>";
 		};
+		2084C8661299A05A009295C8 /* Scripts */ = {
+			isa = PBXGroup;
+			children = (
+				2084C8671299A078009295C8 /* calc_hard_links.rb */,
+				2084C8681299A078009295C8 /* git-remove-hardlinks.rb */,
+				2084C8691299A078009295C8 /* keygen.rb */,
+				2084C86A1299A078009295C8 /* license_generator.rb */,
+			);
+			name = Scripts;
+			sourceTree = "<group>";
+		};
 		20B1620D11944B6900A709CF /* Libs */ = {
 			isa = PBXGroup;
 			children = (
@@ -839,6 +854,7 @@
 			children = (
 				2A37F4ABFDCFA73011CA2CEA /* Classes */,
 				2A37F4AFFDCFA73011CA2CEA /* Other Sources */,
+				2084C8661299A05A009295C8 /* Scripts */,
 				2A37F4B8FDCFA73011CA2CEA /* Resources */,
 				2A37F4C3FDCFA73011CA2CEA /* Frameworks */,
 				19C28FB0FE9D524F11CA2CBB /* Products */,
