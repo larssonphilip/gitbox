@@ -11,7 +11,7 @@
 #import "GBPreferencesController.h"
 #import "GBCloneWindowController.h"
 #import "GBPromptController.h"
-#import "GBLicenseCheck.h"
+#import "GBLicenseController.h"
 
 #import "GBRepository.h"
 #import "GBStage.h"
@@ -23,7 +23,7 @@
 #import "NSData+OADataHelpers.h"
 #import "NSWindowController+OAWindowControllerHelpers.h"
 
-#import "OAPrimaryMACAddress.h"
+#import "OALicenseNumberCheck.h"
 
 
 @interface GBAppDelegate ()
@@ -69,6 +69,14 @@
 {
   NSString* urlString = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"GBHelpURL"];
   [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:urlString]];
+}
+
+- (IBAction) showLicense:_
+{
+  GBLicenseController* ctrl = [[[GBLicenseController alloc] initWithWindowNibName:@"GBLicenseController"] autorelease];
+  [ctrl retain];
+  [NSApp runModalForWindow:[ctrl window]];
+  [ctrl release];
 }
 
 - (IBAction) releaseNotes:_
@@ -143,6 +151,28 @@
     [self.URLsToOpenAfterLaunch addObject:url];
     return;
   }
+  
+#if GITBOX_APP_STORE
+#else
+  if ([self.repositoriesController.localRepositoryControllers count] >= 2)
+  {
+    NSString* license = [[NSUserDefaults standardUserDefaults] objectForKey:@"license"];
+    if (!OAValidateLicenseNumber(license))
+    {
+      GBLicenseController* ctrl = [[[GBLicenseController alloc] initWithWindowNibName:@"GBLicenseController"] autorelease];
+      [ctrl retain];
+      [NSApp runModalForWindow:[ctrl window]];
+      [ctrl release];
+      
+      NSString* license = [[NSUserDefaults standardUserDefaults] objectForKey:@"license"];
+      if (!OAValidateLicenseNumber(license))
+      {
+        return;
+      }
+    }
+  }
+#endif
+  
   GBBaseRepositoryController* repoCtrl = [self.repositoriesController repositoryControllerWithURL:url];
   if (!repoCtrl)
   {
@@ -186,14 +216,6 @@
 
 
 
-#pragma mark License
-
-
-- (void) askForLicense
-{
-  //
-  
-}
 
 
 
@@ -286,7 +308,8 @@
 #if GITBOX_APP_STORE
   preferencesNibName = @"GBPreferencesController-appstore";
   NSMenu* firstMenu = [[[NSApp mainMenu] itemWithTag:1] submenu];
-  [firstMenu removeItem:[firstMenu itemWithTag:103]];
+  [firstMenu removeItem:[firstMenu itemWithTag:103]]; // License...
+  [firstMenu removeItem:[firstMenu itemWithTag:104]]; // Check For Updates...
 #endif
   self.preferencesController = [[[GBPreferencesController alloc] initWithWindowNibName:preferencesNibName] autorelease];
   
