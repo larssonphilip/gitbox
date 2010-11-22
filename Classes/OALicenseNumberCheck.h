@@ -6,6 +6,8 @@ static inline BOOL OAValidateLicenseNumber(NSString* licenseNumber)
 {
 	if (!licenseNumber) return NO;
 	
+  licenseNumber = [licenseNumber stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+  
 	NSUInteger N = 12;
 	NSUInteger M = 8;
 	NSUInteger H = 4;
