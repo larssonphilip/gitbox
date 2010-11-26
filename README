@@ -53,11 +53,11 @@
 + bug: after a clone error, clone view is not reset with a non-error message
 + buy button in the sidebar
 + test: page in firefox/opera
-- test: download speed
-- test: autoupdate from 0.9.7 version
-- test: userdefaults migration from 0.9.7
-- test: adding more repos in free version
-- test: purchasing and activating
++ test: download speed
++ test: autoupdate from 0.9.7 version
++ test: userdefaults migration from 0.9.7
++ test: adding more repos in free version
++ test: purchasing and activating
 - free license for @Dative for pointing out incorrect statement about Changes.app
 
 $ sudo installer -store -pkg Desktop/gitbox.pkg -target /
