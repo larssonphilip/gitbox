@@ -42,7 +42,7 @@
 	<key>CFBundleShortVersionString</key>
 	<string>${APP_VERSION}</string>
 	<key>GBPurchaseURL</key>
-	<string>http://gitboxapp.com/purchase.html</string>
+	<string>http://gitboxapp.com/buy.html</string>
 	<key>GBHelpURL</key>
 	<string>http://gitboxapp.com/help.html</string>
 	<key>GBReleaseNotesURL</key>

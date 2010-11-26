@@ -95,7 +95,6 @@
 							<int key="NSvFlags">266</int>
 							<string key="NSFrame">{{20, 102}, {399, 22}}</string>
 							<reference key="NSSuperview" ref="1006"/>
-							<reference key="NSNextKeyView"/>
 							<int key="NSViewLayerContentsRedrawPolicy">2</int>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSTextFieldCell" key="NSCell" id="203367967">
@@ -168,14 +167,14 @@
 						<object class="NSButton" id="244513620">
 							<reference key="NSNextResponder" ref="1006"/>
 							<int key="NSvFlags">289</int>
-							<string key="NSFrame">{{233, 12}, {96, 32}}</string>
+							<string key="NSFrame">{{224, 12}, {105, 32}}</string>
 							<reference key="NSSuperview" ref="1006"/>
 							<int key="NSViewLayerContentsRedrawPolicy">2</int>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSButtonCell" key="NSCell" id="930702237">
 								<int key="NSCellFlags">67239424</int>
 								<int key="NSCellFlags2">134217728</int>
-								<string key="NSContents">Buy</string>
+								<string key="NSContents">Buy Now</string>
 								<reference key="NSSupport" ref="974457964"/>
 								<reference key="NSControlView" ref="244513620"/>
 								<int key="NSButtonFlags">-2038284033</int>
@@ -196,7 +195,7 @@
 							<object class="NSTextFieldCell" key="NSCell" id="1034828423">
 								<int key="NSCellFlags">69336577</int>
 								<int key="NSCellFlags2">272760832</int>
-								<string key="NSContents">You can use all features for free with up to 2 opened repositories. Please buy a license if you wish to work with more repositories.</string>
+								<string key="NSContents">You can use all features for free with one opened repository. Please buy a license if you wish to work with more repositories.</string>
 								<object class="NSFont" key="NSSupport">
 									<string key="NSName">LucidaGrande</string>
 									<double key="NSSize">11</double>
@@ -217,10 +216,6 @@
 				<string key="NSMaxSize">{1.79769e+308, 1.79769e+308}</string>
 			</object>
 			<object class="NSUserDefaultsController" id="848471818">
-				<object class="NSMutableArray" key="NSDeclaredKeys">
-					<bool key="EncodedWithXMLCoder">YES</bool>
-					<string>license</string>
-				</object>
 				<bool key="NSSharedInstance">YES</bool>
 			</object>
 		</object>

@@ -154,7 +154,7 @@
   
 #if GITBOX_APP_STORE
 #else
-  if ([self.repositoriesController.localRepositoryControllers count] >= 2)
+  if ([self.repositoriesController.localRepositoryControllers count] >= 1)
   {
     NSString* license = [[NSUserDefaults standardUserDefaults] objectForKey:@"license"];
     if (!OAValidateLicenseNumber(license))
