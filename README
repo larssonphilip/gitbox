@@ -51,18 +51,17 @@
 
 + revamped page design
 + bug: after a clone error, clone view is not reset with a non-error message
-- buy button in the sidebar
-- url: http://sites.fastspring.com/oleganza/product/gitbox
-
-<form method="POST" action="http://sites.fastspring.com/oleganza/product/gitbox?action=order" target="_top"><input type="submit" value="Purchase" /></form>
----> release on the website
-
++ buy button in the sidebar
+- test: download speed
+- test: autoupdate from 0.9.7 version
+- test: userdefaults migration from 0.9.7
+- test: adding more repos in free version
+- test: purchasing and activating
+- free license for @Dative for pointing out incorrect statement about Changes.app
 
 $ sudo installer -store -pkg Desktop/gitbox.pkg -target /
 (installs to /Applications if gitbox.app removed from all the folders: Trash, Debug, Release and Archived Applications folders)
 
-
-- free license for @Dative for pointing out incorrect statement about Changes.app
 
 1.1:
 
