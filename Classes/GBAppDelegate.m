@@ -77,6 +77,9 @@
   [ctrl retain];
   [NSApp runModalForWindow:[ctrl window]];
   [ctrl release];
+  
+  // update buy button status
+  [self.windowController.sourcesController update];
 }
 
 - (IBAction) releaseNotes:_
@@ -159,10 +162,7 @@
     NSString* license = [[NSUserDefaults standardUserDefaults] objectForKey:@"license"];
     if (!OAValidateLicenseNumber(license))
     {
-      GBLicenseController* ctrl = [[[GBLicenseController alloc] initWithWindowNibName:@"GBLicenseController"] autorelease];
-      [ctrl retain];
-      [NSApp runModalForWindow:[ctrl window]];
-      [ctrl release];
+      [self showLicense:self];
       
       NSString* license = [[NSUserDefaults standardUserDefaults] objectForKey:@"license"];
       if (!OAValidateLicenseNumber(license))

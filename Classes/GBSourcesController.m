@@ -8,17 +8,21 @@
 #import "NSTableView+OATableViewHelpers.h"
 #import "NSObject+OADispatchItemValidation.h"
 
+#import "OALicenseNumberCheck.h"
+
 @implementation GBSourcesController
 
 @synthesize sections;
 @synthesize outlineView;
 @synthesize repositoriesController;
+@synthesize buyButton;
 
 - (void) dealloc
 {
   self.sections = nil;
   self.outlineView = nil;
   self.repositoriesController = nil;
+  self.buyButton = nil;
   [super dealloc];
 }
 
@@ -174,6 +178,14 @@
 
 - (void) update
 {
+#if GITBOX_APP_STORE
+#else
+  
+  NSString* license = [[NSUserDefaults standardUserDefaults] objectForKey:@"license"];
+  [self.buyButton setHidden:OAValidateLicenseNumber(license)];
+  
+#endif
+  
   [self saveExpandedState];
   ignoreSelectionChange++;
   [self.outlineView reloadData];

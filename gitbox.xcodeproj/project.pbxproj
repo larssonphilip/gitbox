@@ -584,9 +584,9 @@
 			children = (
 				201E030911EE2CBD007E4420 /* GBLicenseController.h */,
 				201E030A11EE2CBD007E4420 /* GBLicenseController.m */,
+				201E02F611EA231D007E4420 /* GBLicenseController.xib */,
 				201E030411EE09D7007E4420 /* GBCertificateUpdateController.h */,
 				201E030511EE09D7007E4420 /* GBCertificateUpdateController.m */,
-				201E02F611EA231D007E4420 /* GBLicenseController.xib */,
 				201E030111EE083D007E4420 /* GBCertificateUpdateController.xib */,
 				2030C445128B5B6E005F751C /* OAAppStoreReceipt.h */,
 				2084C75D1297425F009295C8 /* OALicenseNumberCheck.h */,

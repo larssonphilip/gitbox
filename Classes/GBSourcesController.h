@@ -14,6 +14,7 @@
 
 @property(nonatomic,retain) NSMutableArray* sections;
 @property(retain) IBOutlet NSOutlineView* outlineView;
+@property(retain) IBOutlet NSButton* buyButton;
 
 - (void) saveState;
 - (void) loadState;
