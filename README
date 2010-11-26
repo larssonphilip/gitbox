@@ -52,6 +52,7 @@
 + revamped page design
 + bug: after a clone error, clone view is not reset with a non-error message
 + buy button in the sidebar
+- test: page in firefox/opera
 - test: download speed
 - test: autoupdate from 0.9.7 version
 - test: userdefaults migration from 0.9.7
