@@ -448,6 +448,9 @@
 		209A960011BC60BC006B0B5C /* default_gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = default_gitignore; sourceTree = "<group>"; };
 		209C16551290636300B343A5 /* NSError+OAPresent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSError+OAPresent.h"; sourceTree = "<group>"; };
 		209C16561290636300B343A5 /* NSError+OAPresent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSError+OAPresent.m"; sourceTree = "<group>"; };
+		20A09D67129F8F3900294730 /* fastspring-1-1000-licenses.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "fastspring-1-1000-licenses.txt"; sourceTree = "<group>"; };
+		20A09D68129F8F3900294730 /* fastspring-1001-2000-licenses.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "fastspring-1001-2000-licenses.txt"; sourceTree = "<group>"; };
+		20A09D69129F8F3900294730 /* free-promo-1-100-licenses.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "free-promo-1-100-licenses.txt"; sourceTree = "<group>"; };
 		20A37BA4120DC1D90068AB8B /* GBSourcesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBSourcesController.h; sourceTree = "<group>"; };
 		20A37BA5120DC1D90068AB8B /* GBSourcesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBSourcesController.m; sourceTree = "<group>"; };
 		20A37BA7120DC27B0068AB8B /* GBMainWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBMainWindowController.h; sourceTree = "<group>"; };
@@ -738,6 +741,20 @@
 			name = Scripts;
 			sourceTree = "<group>";
 		};
+		20A09D65129F8EF800294730 /* Documents */ = {
+			isa = PBXGroup;
+			children = (
+				20A09D67129F8F3900294730 /* fastspring-1-1000-licenses.txt */,
+				20A09D68129F8F3900294730 /* fastspring-1001-2000-licenses.txt */,
+				20A09D69129F8F3900294730 /* free-promo-1-100-licenses.txt */,
+				2038F1EA11936CA50087CE37 /* README */,
+				20C716BB120EF7E6002B594F /* DESIGN_NOTES */,
+				2009871711C4597800F35630 /* PAYMENT */,
+				206CAB38122A771D009284FE /* ARCHITECTURE */,
+			);
+			name = Documents;
+			sourceTree = "<group>";
+		};
 		20B1620D11944B6900A709CF /* Libs */ = {
 			isa = PBXGroup;
 			children = (
@@ -855,6 +872,7 @@
 				2A37F4ABFDCFA73011CA2CEA /* Classes */,
 				2A37F4AFFDCFA73011CA2CEA /* Other Sources */,
 				2084C8661299A05A009295C8 /* Scripts */,
+				20A09D65129F8EF800294730 /* Documents */,
 				2A37F4B8FDCFA73011CA2CEA /* Resources */,
 				2A37F4C3FDCFA73011CA2CEA /* Frameworks */,
 				19C28FB0FE9D524F11CA2CBB /* Products */,
@@ -896,10 +914,6 @@
 				20FAA18F123F831400E8FA0E /* git.bundle */,
 				20F8058711C1B35A00ADDADA /* commit-header-template.rtf */,
 				2010732E11A7E9C300EFDE56 /* app.icns */,
-				2038F1EA11936CA50087CE37 /* README */,
-				20C716BB120EF7E6002B594F /* DESIGN_NOTES */,
-				2009871711C4597800F35630 /* PAYMENT */,
-				206CAB38122A771D009284FE /* ARCHITECTURE */,
 				8D15AC360486D014006FF6A4 /* info.plist */,
 				089C1660FE840EACC02AAC07 /* InfoPlist.strings */,
 				2057F0D611ACF075009EDF2F /* sparkle_dsa_pub.pem */,

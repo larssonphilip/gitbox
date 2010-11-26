@@ -51,6 +51,7 @@
 
 + revamped page design
 - bug: after a clone error, clone view is not reset with a non-error message
+- buy button in the sidebar
 - url: http://sites.fastspring.com/oleganza/product/gitbox
 
 <form method="POST" action="http://sites.fastspring.com/oleganza/product/gitbox?action=order" target="_top"><input type="submit" value="Purchase" /></form>
