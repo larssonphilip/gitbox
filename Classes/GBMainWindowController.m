@@ -454,6 +454,7 @@
   [self.toolbarController update];
   [self.historyController update];
   self.cloneProcessViewController.repositoryController = repoCtrl;
+  [self.cloneProcessViewController update];
   [self.cloneProcessViewController loadInView:[[self.splitView subviews] objectAtIndex:1]];
 }
 
@@ -474,11 +475,13 @@
 - (void) cloningRepositoryControllerDidFail:(GBCloningRepositoryController*)repoCtrl
 {
   [self.cloneProcessViewController update];
+  [self.toolbarController update];
 }
 
 - (void) cloningRepositoryControllerDidCancel:(GBCloningRepositoryController*)repoCtrl
 {
   [self.repositoriesController removeLocalRepositoryController:repoCtrl];
+  [self.toolbarController update];
 }
 
 
