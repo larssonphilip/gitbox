@@ -58,7 +58,15 @@
 + test: userdefaults migration from 0.9.7
 + test: adding more repos in free version
 + test: purchasing and activating
-- free license for @Dative for pointing out incorrect statement about Changes.app
++ free license for @Dative for pointing out incorrect statement about Changes.app
+
++ note about coupon on the site
++ note about 64bit build in release notes
++ blog post
+
+- guide
+- video
+- testimonials
 
 $ sudo installer -store -pkg Desktop/gitbox.pkg -target /
 (installs to /Applications if gitbox.app removed from all the folders: Trash, Debug, Release and Archived Applications folders)
@@ -109,6 +117,11 @@ Ongoing tasks:
 
 Bugs:
 
+- bug: git repo in dropbox causes gitbox to refresh frequently [Tom Martin <tom@devart.org>]
+- bug: software updates are off by default [Tom Martin <tom@devart.org>]
+- bug: paypal payment option does not allow coupon? [Luis Martins <luis.martins@multiweb.pt>]
+- bug: add a repo, quit, start Gitbox, click cancel on license prompt. Gitbox doesn't reload your repo. (@mqt)
+
 - bug: branches with "/" in the name are processed incorrectly (reported by Christian van der Leeden <christian.vanderleeden@googlemail.com>)
 - bug: after adding files to .gitignore, the stage is not reloaded
 - bug: "Renamed" status should be "Moved" if the [[dstURL path] lastPathComponent] is the same
@@ -126,6 +139,7 @@ Bugs:
 
 Cool features:
 
+- integrate Araxis Merge: http://www.araxis.com/merge_mac/scm_integration.html#Git
 - undo for commit (like amend)
 - undo for pull
 - undo for ref checkout
@@ -175,6 +189,7 @@ Cool features:
 
 Enhancements (works fine, but can be better):
 
+- choose a custom name for a repo? or use an image?
 - nice screen for the commit: bigger line height, variable height message, no awful table header, segmented switch for sorting
 - gravatar image in the commit window
 - snap sidebar
