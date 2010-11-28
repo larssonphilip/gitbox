@@ -311,8 +311,10 @@
   [firstMenu removeItem:[firstMenu itemWithTag:103]]; // License...
   [firstMenu removeItem:[firstMenu itemWithTag:104]]; // Check For Updates...
 #endif
+
   self.preferencesController = [[[GBPreferencesController alloc] initWithWindowNibName:preferencesNibName] autorelease];
-  
+  [self.preferencesController loadWindow]; // force load Updater 
+
   // Connect controllers
   self.windowController.repositoriesController = self.repositoriesController;
   self.repositoriesController.delegate = self.windowController;

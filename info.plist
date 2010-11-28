@@ -61,5 +61,7 @@
 	<string>http://gitboxapp.com/updates.xml</string>
 	<key>SUPublicDSAKeyFile</key>
 	<string>sparkle_dsa_pub.pem</string>
+	<key>SUEnableAutomaticChecks</key>
+	<true/>
 </dict>
 </plist>
