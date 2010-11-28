@@ -139,6 +139,7 @@ Bugs:
 
 Cool features:
 
+- diff: support for BBEdit or the free twin TextWrangler from http://barebones.com
 - integrate Araxis Merge: http://www.araxis.com/merge_mac/scm_integration.html#Git
 - undo for commit (like amend)
 - undo for pull
