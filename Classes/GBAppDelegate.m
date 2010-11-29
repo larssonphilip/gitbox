@@ -154,28 +154,28 @@
     [self.URLsToOpenAfterLaunch addObject:url];
     return;
   }
-  
-#if GITBOX_APP_STORE
-#else
-  if ([self.repositoriesController.localRepositoryControllers count] >= 1)
-  {
-    NSString* license = [[NSUserDefaults standardUserDefaults] objectForKey:@"license"];
-    if (!OAValidateLicenseNumber(license))
-    {
-      [self showLicense:self];
-      
-      NSString* license = [[NSUserDefaults standardUserDefaults] objectForKey:@"license"];
-      if (!OAValidateLicenseNumber(license))
-      {
-        return;
-      }
-    }
-  }
-#endif
-  
+    
   GBBaseRepositoryController* repoCtrl = [self.repositoriesController repositoryControllerWithURL:url];
   if (!repoCtrl)
   {
+#if GITBOX_APP_STORE
+#else
+    if ([self.repositoriesController.localRepositoryControllers count] >= 1)
+    {
+      NSString* license = [[NSUserDefaults standardUserDefaults] objectForKey:@"license"];
+      if (!OAValidateLicenseNumber(license))
+      {
+        [self showLicense:self];
+        
+        NSString* license = [[NSUserDefaults standardUserDefaults] objectForKey:@"license"];
+        if (!OAValidateLicenseNumber(license))
+        {
+          return;
+        }
+      }
+    }
+#endif
+    
     repoCtrl = [GBRepositoryController repositoryControllerWithURL:url];
     [self.repositoriesController addLocalRepositoryController:repoCtrl];
     [[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:url];

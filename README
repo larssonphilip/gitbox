@@ -64,6 +64,7 @@
 + note about 64bit build in release notes
 + blog post
 
+- help
 - guide
 - video
 - testimonials
@@ -72,7 +73,7 @@ $ sudo installer -store -pkg Desktop/gitbox.pkg -target /
 (installs to /Applications if gitbox.app removed from all the folders: Trash, Debug, Release and Archived Applications folders)
 
 
-1.1:
+Next:
 
 - submodules support: currently does not show the submodule in the stage
 - do not require name and email for ~/.gitconfig
@@ -116,7 +117,6 @@ Ongoing tasks:
 
 Bugs:
 
-- bug: add a repo, quit, start Gitbox, click cancel on license prompt. Gitbox doesn't reload your repo. (@mqt)
 - bug: git repo in dropbox causes gitbox to refresh frequently [Tom Martin <tom@devart.org>]
 - bug: paypal payment option does not allow coupon? [Luis Martins <luis.martins@multiweb.pt>]
 - bug: when ssh server is not added to known_hosts, gitbox fails parsing the output
@@ -228,7 +228,7 @@ Enhancements:
 
 Bug fixes:
 + bug: software updates are off by default [Tom Martin <tom@devart.org>]
-
++ bug: add a repo, quit, start Gitbox, click cancel on license prompt. Gitbox doesn't reload your repo. [@mqt]
 
 
 
