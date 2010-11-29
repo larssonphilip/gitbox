@@ -562,6 +562,9 @@ NSString* OATaskNotification = @"OATaskNotification";
   if (!path) path = binPath;
   else path = [path stringByAppendingFormat:@":%@", binPath];
   [environment setObject:path forKey:@"PATH"];
+  [environment setObject:[[NSBundle mainBundle] pathForResource:@"askpass" ofType:@"sh"] forKey:@"SSH_ASKPASS"];
+  [environment setObject:@":0" forKey:@"DISPLAY"];
+  
   //NSLog(@"set env: %@", environment);
   [self.nstask setEnvironment:environment];
   

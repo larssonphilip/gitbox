@@ -219,6 +219,8 @@
 		209A963E11BC630C006B0B5C /* default_gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 209A960011BC60BC006B0B5C /* default_gitignore */; };
 		209C16571290636300B343A5 /* NSError+OAPresent.m in Sources */ = {isa = PBXBuildFile; fileRef = 209C16561290636300B343A5 /* NSError+OAPresent.m */; };
 		209C16581290636300B343A5 /* NSError+OAPresent.m in Sources */ = {isa = PBXBuildFile; fileRef = 209C16561290636300B343A5 /* NSError+OAPresent.m */; };
+		20A09F3712A3875200294730 /* askpass.sh in Resources */ = {isa = PBXBuildFile; fileRef = 20A09F3612A3875200294730 /* askpass.sh */; };
+		20A09F3812A3875800294730 /* askpass.sh in Resources */ = {isa = PBXBuildFile; fileRef = 20A09F3612A3875200294730 /* askpass.sh */; };
 		20A37BA6120DC1D90068AB8B /* GBSourcesController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20A37BA5120DC1D90068AB8B /* GBSourcesController.m */; };
 		20A37BA9120DC27B0068AB8B /* GBMainWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20A37BA8120DC27B0068AB8B /* GBMainWindowController.m */; };
 		20A37BAC120DC4510068AB8B /* GBToolbarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20A37BAB120DC4510068AB8B /* GBToolbarController.m */; };
@@ -452,6 +454,7 @@
 		20A09D68129F8F3900294730 /* fastspring-1001-2000-licenses.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "fastspring-1001-2000-licenses.txt"; sourceTree = "<group>"; };
 		20A09D69129F8F3900294730 /* free-promo-1-100-licenses.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "free-promo-1-100-licenses.txt"; sourceTree = "<group>"; };
 		20A09DDF12A121FD00294730 /* Quotes.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Quotes.txt; sourceTree = "<group>"; };
+		20A09F3612A3875200294730 /* askpass.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = askpass.sh; sourceTree = "<group>"; };
 		20A37BA4120DC1D90068AB8B /* GBSourcesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBSourcesController.h; sourceTree = "<group>"; };
 		20A37BA5120DC1D90068AB8B /* GBSourcesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBSourcesController.m; sourceTree = "<group>"; };
 		20A37BA7120DC27B0068AB8B /* GBMainWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBMainWindowController.h; sourceTree = "<group>"; };
@@ -920,6 +923,7 @@
 				089C1660FE840EACC02AAC07 /* InfoPlist.strings */,
 				2057F0D611ACF075009EDF2F /* sparkle_dsa_pub.pem */,
 				209A960011BC60BC006B0B5C /* default_gitignore */,
+				20A09F3612A3875200294730 /* askpass.sh */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1039,6 +1043,7 @@
 				20915ED812874D2A005E0D82 /* GBCloneProcessViewController.xib in Resources */,
 				20915ED912874D2A005E0D82 /* GBUserNameEmailController.xib in Resources */,
 				20915F8C12876062005E0D82 /* GBPreferencesController-appstore.xib in Resources */,
+				20A09F3812A3875800294730 /* askpass.sh in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1077,6 +1082,7 @@
 				2054FFE8125DE75800692C77 /* GBCloneProcessViewController.xib in Resources */,
 				20BF19571282258400A30EE6 /* GBUserNameEmailController.xib in Resources */,
 				20915F8012875C92005E0D82 /* GBPreferencesController.xib in Resources */,
+				20A09F3712A3875200294730 /* askpass.sh in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
