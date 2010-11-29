@@ -73,17 +73,23 @@ $ sudo installer -store -pkg Desktop/gitbox.pkg -target /
 (installs to /Applications if gitbox.app removed from all the folders: Trash, Debug, Release and Archived Applications folders)
 
 
+For 1.1:
+- TODO: find how to parse the prompt and show the yes/no window instead of a password dialog
+- GIT_ASKPASS/SSH_ASKPASS for interacting with ssh
+- bug: when ssh server is not added to known_hosts, gitbox fails parsing the output
+- badges for sidebar
+- drag and drop for sources (see the SourceView sample code for handling the drag and drop)
+- drag and drop for changes
+
+
 Next:
 
 - submodules support: currently does not show the submodule in the stage
 - do not require name and email for ~/.gitconfig
 - fix networking behaviour: try to load the remote branches and reload them when pull/fetch
 - obfuscated license check
-- drag and drop for sources (see the SourceView sample code for handling the drag and drop)
-- drag and drop for changes
 - find in commits
 - quicklook in changes
-- badges for sidebar
 - tag and branch badges in history
 - create a new tag (need a tag badge)
 
@@ -93,11 +99,6 @@ To read:
 - read carefully: https://git.wiki.kernel.org/index.php/GitSurvey2010
 - reactions to macappstore: http://www.tuaw.com/2010/10/21/developer-reactions-to-the-mac-app-store/#continued
 
-License check:
-
-- obfuscated verification: at some points in program, include an .h file with inline functions and run a macro which randomly triggers dispatch blocks with delays on concurrent queues. Terminate the app on another queue with another random delay.
-- license key check: license is a 20-byte hex number. First 8 bytes are random, each next byte is a XOR of a previous one + 1-byte key for that byte. First version checks only the first key and every type keygen is created, new key byte is unlocked.
-- non-appstore license is checked in a non-obfuscated way (+caching result) when paid feature is used.
 
 
 Ongoing tasks:
@@ -106,7 +107,6 @@ Ongoing tasks:
 - read ls-remotes when updated .git
 - human message in case git cannot merge/pull when some files are modified (error: Untracked working tree file 'Patryst.xcodeproj/project.pbxproj' would be overwritten by merge.)
 - a block-based method for GBRepository to temporarily remember current error (name, description) for the use in the UI
-- GIT_ASKPASS/SSH_ASKPASS for interacting with ssh
 - Add common OS X to the global gitignore https://github.com/github/gitignore
 - Add "Edit Global Ignored Files..."  menu item to edit ~/.gitignore
 - Secondary windows are opened in sheets (Preferences, Open Repository etc.)
@@ -119,7 +119,6 @@ Bugs:
 
 - bug: git repo in dropbox causes gitbox to refresh frequently [Tom Martin <tom@devart.org>]
 - bug: paypal payment option does not allow coupon? [Luis Martins <luis.martins@multiweb.pt>]
-- bug: when ssh server is not added to known_hosts, gitbox fails parsing the output
 
 - bug: custom path to diff tool sometimes does not work immediately [Sam Bauer <sam.bauer@mac.com>]
 - bug: branches with "/" in the name are processed incorrectly [Christian van der Leeden <christian.vanderleeden@googlemail.com>]
