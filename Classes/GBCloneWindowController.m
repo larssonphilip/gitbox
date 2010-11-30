@@ -41,6 +41,7 @@
       return [NSURL fileURLWithPath:urlString];
     }
     urlString = [urlString stringByReplacingOccurrencesOfString:@":" withString:@"/"]; // git@github.com:oleganza/path => git@github.com/oleganza/path
+    urlString = [urlString stringByReplacingOccurrencesOfString:@"//" withString:@"/"]; // needs a fix if it was domain:/root/path
     urlString = [NSString stringWithFormat:@"ssh://%@", urlString];
   }
   NSURL* url = [NSURL URLWithString:urlString];
