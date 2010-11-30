@@ -1,4 +1,4 @@
-#! /bin/sh  
+#!/bin/sh
 #
 # Author: Joseph Mocker, Sun Microsystems
 # http://blogs.sun.com/mock/entry/and_now_chicken_of_the
@@ -6,7 +6,7 @@
 # To use this script:
 #     setenv SSH_ASKPASS "macos-askpass"
 #     setenv DISPLAY ":0"
-#  
+#
 
 TITLE=${MACOS_ASKPASS_TITLE:-"SSH"}  
 

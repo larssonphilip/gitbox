@@ -117,6 +117,7 @@ Ongoing tasks:
 
 Bugs:
 
+- bug: when connecting over https (and maybe http), gitbox locks on password prompt. [Nicolai Schulten <nicolai.schulten@byte-garden.de>]
 - bug: git repo in dropbox causes gitbox to refresh frequently [Tom Martin <tom@devart.org>]
 - bug: paypal payment option does not allow coupon? [Luis Martins <luis.martins@multiweb.pt>]
 

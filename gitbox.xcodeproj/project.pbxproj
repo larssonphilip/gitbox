@@ -64,6 +64,8 @@
 		2038F76D11A04A290087CE37 /* NSString+OAGitHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 2038F76C11A04A290087CE37 /* NSString+OAGitHelpers.m */; };
 		203976651251A63700770D13 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 203976631251A63700770D13 /* Credits.rtf */; };
 		203977E71252815000770D13 /* NSTableView+OATableViewHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 203977E61252815000770D13 /* NSTableView+OATableViewHelpers.m */; };
+		203F717712A4E04700BE1A55 /* askpass.rb in Resources */ = {isa = PBXBuildFile; fileRef = 203F717612A4E04700BE1A55 /* askpass.rb */; };
+		203F717812A4E04700BE1A55 /* askpass.rb in Resources */ = {isa = PBXBuildFile; fileRef = 203F717612A4E04700BE1A55 /* askpass.rb */; };
 		2043A83111C900A0001ED307 /* GBPreferencesController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2043A83011C900A0001ED307 /* GBPreferencesController.m */; };
 		2054FFE8125DE75800692C77 /* GBCloneProcessViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2054FFE7125DE75800692C77 /* GBCloneProcessViewController.xib */; };
 		2054FFF0125DE9D200692C77 /* GBCloneProcessViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2054FFEF125DE9D200692C77 /* GBCloneProcessViewController.m */; };
@@ -372,6 +374,7 @@
 		203976641251A63700770D13 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
 		203977E51252815000770D13 /* NSTableView+OATableViewHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSTableView+OATableViewHelpers.h"; sourceTree = "<group>"; };
 		203977E61252815000770D13 /* NSTableView+OATableViewHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSTableView+OATableViewHelpers.m"; sourceTree = "<group>"; };
+		203F717612A4E04700BE1A55 /* askpass.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = askpass.rb; sourceTree = "<group>"; };
 		2043A82F11C900A0001ED307 /* GBPreferencesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBPreferencesController.h; sourceTree = "<group>"; };
 		2043A83011C900A0001ED307 /* GBPreferencesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBPreferencesController.m; sourceTree = "<group>"; };
 		2054FFE7125DE75800692C77 /* GBCloneProcessViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBCloneProcessViewController.xib; sourceTree = "<group>"; };
@@ -924,6 +927,7 @@
 				2057F0D611ACF075009EDF2F /* sparkle_dsa_pub.pem */,
 				209A960011BC60BC006B0B5C /* default_gitignore */,
 				20A09F3612A3875200294730 /* askpass.sh */,
+				203F717612A4E04700BE1A55 /* askpass.rb */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1044,6 +1048,7 @@
 				20915ED912874D2A005E0D82 /* GBUserNameEmailController.xib in Resources */,
 				20915F8C12876062005E0D82 /* GBPreferencesController-appstore.xib in Resources */,
 				20A09F3812A3875800294730 /* askpass.sh in Resources */,
+				203F717812A4E04700BE1A55 /* askpass.rb in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1083,6 +1088,7 @@
 				20BF19571282258400A30EE6 /* GBUserNameEmailController.xib in Resources */,
 				20915F8012875C92005E0D82 /* GBPreferencesController.xib in Resources */,
 				20A09F3712A3875200294730 /* askpass.sh in Resources */,
+				203F717712A4E04700BE1A55 /* askpass.rb in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
