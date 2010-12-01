@@ -16,7 +16,7 @@
 
 + (CGFloat) cellHeight
 {
-  return 34.0;
+  return 35.0;
 }
 
 - (id)init
@@ -67,7 +67,14 @@
   
   // Title & subtitle
   
+  
+  NSString* badgeLabel = [[self repositoryController] badgeLabel];
+  if (badgeLabel && [badgeLabel length] > 0)
+  {
+    NSRect badgeFrame;
     
+  }
+  
   NSRect titleFrame;
   NSRect subtitleFrame;
   
@@ -77,7 +84,7 @@
 //  [NSBezierPath fillRect:titleFrame];
 //  [[NSColor redColor] set];
 //  [NSBezierPath fillRect:subtitleFrame];
-
+  
   [self drawTitleInFrame:titleFrame];
   [self drawSubtitleInFrame:subtitleFrame];
   
@@ -118,7 +125,7 @@
 
 - (void) drawSubtitleInFrame:(NSRect)frame
 {
-  NSColor* textColor = [NSColor colorWithCalibratedWhite:0.0 alpha:0.5];
+  NSColor* textColor = [NSColor colorWithCalibratedWhite:0.5 alpha:1.0];
   
   if ([self isHighlighted])
   {
@@ -128,7 +135,7 @@
   NSMutableParagraphStyle* paragraphStyle = [[NSMutableParagraphStyle new] autorelease];
   [paragraphStyle setLineBreakMode:NSLineBreakByTruncatingTail];
   
-  NSFont* font = [NSFont systemFontOfSize:11.0];
+  NSFont* font = [NSFont systemFontOfSize:10.0];
   
 	NSMutableDictionary* attributes = [[[NSMutableDictionary alloc] initWithObjectsAndKeys:
                                       textColor, NSForegroundColorAttributeName,

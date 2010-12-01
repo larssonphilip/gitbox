@@ -15,6 +15,7 @@
 - (NSString*) titleForSourceList;
 - (NSString*) subtitleForSourceList;
 - (NSString*) parentFolderName;
+- (NSString*) badgeLabel;
 - (NSString*) windowTitle;
 - (NSURL*) windowRepresentedURL;
 

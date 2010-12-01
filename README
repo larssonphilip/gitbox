@@ -202,16 +202,15 @@ Enhancements (works fine, but can be better):
 
 Something to think about:
 
-- allow switching to a system-provided git in preferences
-- browse the server with SSH and select a repository
-- log: mark as read/unread + automatic mark as read
-- compare office files using some office app: cooperate with Kaleidoscope
+- svn support ('git svn clone', 'git svn rebase' and 'git svn dcommit')
 - compare image files in an double-pane image viewer
 - built-in diff view for better UTF8 support (FileMerge is stupid)
 - mercurial support
-- svn support ('git svn rebase' and 'git svn dcommit')
+- compare office files using some office app: cooperate with Kaleidoscope
+- browse the server with SSH and select a repository
+- allow switching to a system-provided git in preferences
+- log: mark as read/unread + automatic mark as read
 - csv support
-
 
 
 -------------------------------------------------------------------------------

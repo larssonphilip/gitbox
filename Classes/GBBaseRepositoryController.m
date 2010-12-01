@@ -52,6 +52,11 @@
   return [[[[self url] path] stringByDeletingLastPathComponent] lastPathComponent];
 }
 
+- (NSString*) badgeLabel
+{
+  return nil;
+}
+
 - (NSString*) windowTitle
 {
   return [[[self url] path] twoLastPathComponentsWithDash];
