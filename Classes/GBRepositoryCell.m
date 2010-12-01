@@ -5,12 +5,6 @@
 
 #define kIconImageWidth		16.0
 
-#define kImageOriginXOffset 3
-#define kImageOriginYOffset 1
-
-#define kTextOriginXOffset	2
-#define kTextOriginYOffset	2
-#define kTextHeightAdjust	4
 
 
 + (CGFloat) cellHeight
@@ -38,23 +32,23 @@
   
   NSDivideRect(cellFrame, &imageFrame, &cellFrame, 3 + imageSize.width, NSMinXEdge);
   
-  imageFrame.origin.x += kImageOriginXOffset;
+  imageFrame.origin.x += 0;
   imageFrame.size = imageSize;
   
   if ([theControlView isFlipped])
   {
-    imageFrame.origin.y += cellFrame.size.height - imageFrame.size.height + kImageOriginYOffset;
+    imageFrame.origin.y += cellFrame.size.height - imageFrame.size.height + 2;
   }
   else
   {
-    imageFrame.origin.y += kImageOriginYOffset;
+    imageFrame.origin.y += 1;
   }
   [image compositeToPoint:imageFrame.origin operation:NSCompositeSourceOver];
   
   NSRect newCellFrame = cellFrame;
-  newCellFrame.origin.x += kTextOriginXOffset;
-  newCellFrame.origin.y += kTextOriginYOffset;
-  newCellFrame.size.height -= kTextHeightAdjust;
+  newCellFrame.origin.x += 1;
+  newCellFrame.origin.y += 3;
+  newCellFrame.size.height -= 4;
   
   [super drawInteriorWithFrame:newCellFrame inView:theControlView];
 }
