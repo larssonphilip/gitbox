@@ -2,7 +2,7 @@
 #import <Security/Security.h>
 #import <CommonCrypto/CommonDigest.h>
 
-static inline BOOL OAValidateLicenseNumber(NSString* licenseNumber)
+NS_INLINE BOOL OAValidateLicenseNumber(NSString* licenseNumber)
 {
 	if (!licenseNumber) return NO;
 	

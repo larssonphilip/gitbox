@@ -28,7 +28,7 @@
 #define kReceiptHash  @"Hash"
 
 
-static inline NSData * OAAppleRootCert()
+NS_INLINE NSData * OAAppleRootCert()
 {
 	OSStatus status;
 	
@@ -92,7 +92,7 @@ static inline NSData * OAAppleRootCert()
 }
 
 
-static inline NSDictionary* OADictionaryWithAppStoreReceipt(NSString* path)
+NS_INLINE NSDictionary* OADictionaryWithAppStoreReceipt(NSString* path)
 {
 	NSData* rootCertData = OAAppleRootCert();
 	
@@ -283,7 +283,7 @@ static inline NSDictionary* OADictionaryWithAppStoreReceipt(NSString* path)
 
 
 // Returns a CFData object, containing the machine's GUID.
-static inline CFDataRef OACopyMACAddress(void)
+NS_INLINE CFDataRef OACopyMACAddress(void)
 {
   kern_return_t             kernResult;
   mach_port_t               master_port;
@@ -334,7 +334,7 @@ static inline CFDataRef OACopyMACAddress(void)
 
 
 
-static inline BOOL OAValidateAppStoreReceiptAtPath(NSString* path)
+NS_INLINE BOOL OAValidateAppStoreReceiptAtPath(NSString* path)
 {
 #if OA_APPSTORE_SAMPLE_RECEIPT
   path = OA_APPSTORE_SAMPLE_RECEIPT_PATH;
