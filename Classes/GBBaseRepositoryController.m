@@ -37,6 +37,16 @@
   return [[[self url] path] twoLastPathComponentsWithSlash];
 }
 
+- (NSString*) titleForSourceList
+{
+  return [[[self url] path] lastPathComponent];
+}
+
+- (NSString*) subtitleForSourceList
+{
+  return [self parentFolderName];
+}
+
 - (NSString*) parentFolderName
 {
   return [[[[self url] path] stringByDeletingLastPathComponent] lastPathComponent];

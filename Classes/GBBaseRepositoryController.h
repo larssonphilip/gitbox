@@ -12,6 +12,8 @@
 - (NSString*) nameForSourceList;
 - (NSString*) shortNameForSourceList;
 - (NSString*) longNameForSourceList;
+- (NSString*) titleForSourceList;
+- (NSString*) subtitleForSourceList;
 - (NSString*) parentFolderName;
 - (NSString*) windowTitle;
 - (NSURL*) windowRepresentedURL;
