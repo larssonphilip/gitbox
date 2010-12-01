@@ -74,9 +74,9 @@ $ sudo installer -store -pkg Desktop/gitbox.pkg -target /
 
 
 For 1.1:
-- TODO: find how to parse the prompt and show the yes/no window instead of a password dialog
-- GIT_ASKPASS/SSH_ASKPASS for interacting with ssh
-- bug: when ssh server is not added to known_hosts, gitbox fails parsing the output
++ TODO: find how to parse the prompt and show the yes/no window instead of a password dialog
++ GIT_ASKPASS/SSH_ASKPASS for interacting with ssh
++ bug: when ssh server is not added to known_hosts, gitbox fails parsing the output
 - badges for sidebar
 - drag and drop for sources (see the SourceView sample code for handling the drag and drop)
 - drag and drop for changes
@@ -224,7 +224,7 @@ Features:
 
 
 Enhancements:
-
++ full SSH support: hosts are not required to be in known_hosts, passwords and passphrase-protected keys are supported
 
 Bug fixes:
 + bug: software updates are off by default [Tom Martin <tom@devart.org>]
