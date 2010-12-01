@@ -26,7 +26,7 @@
   if (self.repositoryController.error)
   {
     [self.messageLabel setStringValue:NSLocalizedString(@"Clone Error", @"Clone")];
-    [self.errorLabel setStringValue:NSLocalizedString(@"Check the URL or the network connection. Gitbox needs key without passphrase for SSH connection. The host should be in known_hosts.", @"Clone")];
+    [self.errorLabel setStringValue:NSLocalizedString(@"Check the URL or the network connection.", @"Clone")];
     [self.cancelButton setTitle:NSLocalizedString(@"Close", @"")];
   }
 }
