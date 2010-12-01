@@ -225,8 +225,10 @@
 							<object class="NSScroller" id="778863844">
 								<reference key="NSNextResponder" ref="591551192"/>
 								<int key="NSvFlags">-2147483392</int>
-								<string key="NSFrame">{{309, 0}, {15, 262}}</string>
+								<string key="NSFrame">{{309, 0}, {11, 262}}</string>
 								<reference key="NSSuperview" ref="591551192"/>
+								<int key="NSsFlags">256</int>
+								<int key="NSArrowsLoc">2</int>
 								<reference key="NSTarget" ref="591551192"/>
 								<string key="NSAction">_doScroller:</string>
 								<double key="NSPercent">0.94584837545126355</double>
