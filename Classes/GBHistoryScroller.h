@@ -1,5 +1,0 @@
-@interface GBHistoryScroller : NSScroller
-{
-}
-
-@end

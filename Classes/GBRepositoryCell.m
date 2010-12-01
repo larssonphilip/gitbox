@@ -16,7 +16,7 @@
 
 + (CGFloat) cellHeight
 {
-  return 37.0;
+  return 34.0;
 }
 
 - (id)init
@@ -71,7 +71,7 @@
   NSRect titleFrame;
   NSRect subtitleFrame;
   
-  NSDivideRect(textualFrame, &titleFrame, &subtitleFrame, 15.0, NSMinYEdge);
+  NSDivideRect(textualFrame, &titleFrame, &subtitleFrame, 14.0, NSMinYEdge);
   
 //  [[NSColor blueColor] set];
 //  [NSBezierPath fillRect:titleFrame];
@@ -118,11 +118,11 @@
 
 - (void) drawSubtitleInFrame:(NSRect)frame
 {
-  NSColor* textColor = [NSColor colorWithCalibratedWhite:0.0 alpha:0.4];
+  NSColor* textColor = [NSColor colorWithCalibratedWhite:0.0 alpha:0.5];
   
   if ([self isHighlighted])
   {
-    textColor = [NSColor colorWithCalibratedWhite:1.0 alpha:0.6];
+    textColor = [NSColor colorWithCalibratedWhite:1.0 alpha:0.5];
   }
   
   NSMutableParagraphStyle* paragraphStyle = [[NSMutableParagraphStyle new] autorelease];

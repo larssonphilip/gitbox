@@ -1,6 +1,6 @@
-#import "GBHistoryScrollView.h"
+#import "GBLightScrollView.h"
 
-@implementation GBHistoryScrollView
+@implementation GBLightScrollView
 
 - (void) tile
 {

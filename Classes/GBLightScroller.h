@@ -1,0 +1,2 @@
+@interface GBLightScroller : NSScroller
+@end

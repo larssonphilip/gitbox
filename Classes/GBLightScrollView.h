@@ -1,0 +1,2 @@
+@interface GBLightScrollView : NSScrollView
+@end

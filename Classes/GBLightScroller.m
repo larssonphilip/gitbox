@@ -1,8 +1,8 @@
-#import "GBHistoryScroller.h"
+#import "GBLightScroller.h"
 
 #import "CGContext+OACGContextHelpers.h"
 
-@implementation GBHistoryScroller
+@implementation GBLightScroller
 
 
 - (BOOL) isOpaque
@@ -41,7 +41,7 @@
   CGFloat threshold = fminf(rect.size.height/2.0, 30.0);
   if (rect.origin.y < threshold)
   {
-    alphaDistanceMultiplier = (rect.origin.y - 3.0)/(threshold);
+    alphaDistanceMultiplier = (rect.origin.y - 4.0)/(threshold);
     if (alphaDistanceMultiplier < 0) alphaDistanceMultiplier = 0;
     CGFloat limit = 0.0;
     alphaDistanceMultiplier = limit + (1-limit)*alphaDistanceMultiplier;
