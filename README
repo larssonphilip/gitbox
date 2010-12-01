@@ -78,6 +78,7 @@ For 1.1:
 + GIT_ASKPASS/SSH_ASKPASS for interacting with ssh
 + bug: when ssh server is not added to known_hosts, gitbox fails parsing the output
 - badges for sidebar
+- pack git.bundle to .tar.gz and unpack when needed
 - drag and drop for sources (see the SourceView sample code for handling the drag and drop)
 - drag and drop for changes
 

@@ -3,6 +3,7 @@
 
 #import "GBSourcesController.h"
 #import "GBRepository.h"
+#import "GBRepositoryCell.h"
 
 #import "NSFileManager+OAFileManagerHelpers.h"
 #import "NSTableView+OATableViewHelpers.h"
@@ -359,7 +360,15 @@
   return [tableColumn dataCell];
 }
 
-
+- (CGFloat)outlineView:(NSOutlineView *)outlineView heightOfRowByItem:(id)item
+{
+  if ([item isKindOfClass:[GBBaseRepositoryController class]])
+  {
+    GBBaseRepositoryController* repoCtrl = (GBBaseRepositoryController*)item;
+    return [[repoCtrl cellClass] cellHeight];
+  }
+  return 20.0;
+}
 
 
 @end

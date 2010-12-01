@@ -13,6 +13,11 @@
 #define kTextHeightAdjust	4
 
 
++ (CGFloat) cellHeight
+{
+  return 32.0;
+}
+
 - (id)init
 {
   self = [super init];
@@ -34,13 +39,16 @@
   NSDivideRect(cellFrame, &imageFrame, &cellFrame, 3 + imageSize.width, NSMinXEdge);
   
   imageFrame.origin.x += kImageOriginXOffset;
-  imageFrame.origin.y -= kImageOriginYOffset;
   imageFrame.size = imageSize;
   
   if ([theControlView isFlipped])
-    imageFrame.origin.y += ceil((cellFrame.size.height + imageFrame.size.height) / 2);
+  {
+    imageFrame.origin.y += cellFrame.size.height - imageFrame.size.height + kImageOriginYOffset;
+  }
   else
-    imageFrame.origin.y += ceil((cellFrame.size.height - imageFrame.size.height) / 2);
+  {
+    imageFrame.origin.y += kImageOriginYOffset;
+  }
   [image compositeToPoint:imageFrame.origin operation:NSCompositeSourceOver];
   
   NSRect newCellFrame = cellFrame;

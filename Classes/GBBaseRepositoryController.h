@@ -28,5 +28,6 @@
 - (void) didSelect;
 
 - (NSCell*) cell;
+- (Class) cellClass;
 
 @end

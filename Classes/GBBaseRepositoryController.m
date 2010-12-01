@@ -69,9 +69,14 @@
 
 - (NSCell*) cell
 {
-  GBRepositoryCell* cell = [[GBRepositoryCell new] autorelease];
+  NSCell* cell = [[[self cellClass] new] autorelease];
   [cell setRepresentedObject:self];
   return cell;
+}
+
+- (Class) cellClass
+{
+  return [GBRepositoryCell class];
 }
 
 @end
