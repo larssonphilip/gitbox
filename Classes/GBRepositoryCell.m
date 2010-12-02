@@ -1,6 +1,7 @@
 #import "GBRepositoryCell.h"
 #import "GBBaseRepositoryController.h"
 #import "CGContext+OACGContextHelpers.h"
+#import "GBLightScroller.h"
 
 @interface GBRepositoryCell ()
 - (NSRect) drawBadge:(NSString*)badge inTitleFrame:(NSRect)frame;
@@ -18,6 +19,7 @@
 
 + (CGFloat) cellHeight
 {
+  return 22.0;
   return 35.0;
 }
 
@@ -63,7 +65,7 @@
   textualFrame.origin.x += 3;
   textualFrame.origin.y += 4;
   textualFrame.size.height -= 4;
-  textualFrame.size.width -= 10; // make some room for scrollbar
+  textualFrame.size.width -= [GBLightScroller width] + 1; // make some room for scrollbar
   
   
   
@@ -93,6 +95,12 @@
   
 //  [super drawInteriorWithFrame:textualFrame inView:theControlView];
 }
+
+
+
+
+
+
 
 
 - (NSRect) drawBadge:(NSString*)badge inTitleFrame:(NSRect)frame
@@ -171,6 +179,15 @@
   return badgeRect;
 }
 
+
+
+
+
+
+
+
+
+
 - (void) drawTitleInFrame:(NSRect)frame
 {
   BOOL isHighlighted = [self isHighlighted];
@@ -185,7 +202,8 @@
   NSMutableParagraphStyle* paragraphStyle = [[NSMutableParagraphStyle new] autorelease];
   [paragraphStyle setLineBreakMode:NSLineBreakByTruncatingTail];
   
-  NSFont* font = isHighlighted ? [NSFont boldSystemFontOfSize:11.0] : [NSFont systemFontOfSize:11.0];
+  static CGFloat fontSize = 11.0; // 12.0
+  NSFont* font = isHighlighted ? [NSFont boldSystemFontOfSize:fontSize] : [NSFont systemFontOfSize:fontSize];
   
 	NSMutableDictionary* attributes = [[[NSMutableDictionary alloc] initWithObjectsAndKeys:
                                            textColor, NSForegroundColorAttributeName,
@@ -201,11 +219,25 @@
     [attributes setObject:s forKey:NSShadowAttributeName];
   }
   
-  [[[self repositoryController] titleForSourceList] drawInRect:frame withAttributes:attributes];
+  static CGFloat offset = 0; //-2;
+  //if ([self isFlipped]) offset = -offset;
+  frame.origin.y += offset;
+  frame.size.height += fabs(offset);
+  
+ // NSString* title = [[self repositoryController] titleForSourceList];
+  NSString* title = [[self repositoryController] longNameForSourceList];
+  [title drawInRect:frame withAttributes:attributes];
 }
+
+
+
+
+
+
 
 - (void) drawSubtitleInFrame:(NSRect)frame
 {
+  return;
   NSColor* textColor = [NSColor colorWithCalibratedWhite:0.5 alpha:1.0];
   
   if ([self isHighlighted])
@@ -234,6 +266,13 @@
   
   [[[self repositoryController] subtitleForSourceList] drawInRect:frame withAttributes:attributes];  
 }
+
+
+
+
+
+
+
 
 
 - (id) copyWithZone:(NSZone *)zone

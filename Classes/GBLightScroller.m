@@ -4,6 +4,10 @@
 
 @implementation GBLightScroller
 
++ (CGFloat) width
+{
+  return 9.0;
+}
 
 - (BOOL) isOpaque
 {
