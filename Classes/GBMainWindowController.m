@@ -326,6 +326,7 @@
 
   [self updateWindowTitleWithRepositoryController:repoCtrl];
   [self.sourcesController updateSelectedRow];
+  [self.sourcesController updateBadges];
 }
 
 
@@ -352,6 +353,7 @@
   [self.toolbarController update];
   [self.historyController update];
   [self.historyController loadInView:[[self.splitView subviews] objectAtIndex:1]];
+  [self.sourcesController updateBadges];
 }
 
 - (void) repositoryControllerDidChangeDisabledStatus:(GBRepositoryController*)repoCtrl
@@ -363,13 +365,14 @@
 - (void) repositoryControllerDidChangeSpinningStatus:(GBRepositoryController*)repoCtrl
 {
   if (![self isSelectedRepositoryController:repoCtrl]) return;
-  [self.toolbarController updateSpinner]; 
+  [self.toolbarController updateSpinner];
 }
 
 - (void) repositoryControllerDidUpdateCommits:(GBRepositoryController*)repoCtrl
 {
   if (![self isSelectedRepositoryController:repoCtrl]) return;
   self.historyController.commits = [repoCtrl commits];
+  [self.sourcesController updateBadges];
 }
 
 - (void) repositoryControllerDidUpdateLocalBranches:(GBRepositoryController*)repoCtrl
@@ -377,24 +380,28 @@
   if (![self isSelectedRepositoryController:repoCtrl]) return;
   [self.toolbarController updateBranchMenus];
   [self.toolbarController updateDisabledState];
+  [self.sourcesController updateBadges];
 }
 
 - (void) repositoryControllerDidUpdateRemoteBranches:(GBRepositoryController*)repoCtrl
 {
   if (![self isSelectedRepositoryController:repoCtrl]) return;
   [self.toolbarController updateBranchMenus];
+  [self.sourcesController updateBadges];
 }
 
 - (void) repositoryControllerDidCheckoutBranch:(GBRepositoryController*)repoCtrl
 {
   if (![self isSelectedRepositoryController:repoCtrl]) return;
   [self.toolbarController updateBranchMenus];
+  [self.sourcesController updateBadges];
 }
 
 - (void) repositoryControllerDidChangeRemoteBranch:(GBRepositoryController*)repoCtrl
 {
   if (![self isSelectedRepositoryController:repoCtrl]) return;
   [self.toolbarController updateBranchMenus];
+  [self.sourcesController updateBadges];
 }
 
 - (void) repositoryControllerDidSelectCommit:(GBRepositoryController*)repoCtrl
@@ -402,6 +409,7 @@
   if (![self isSelectedRepositoryController:repoCtrl]) return;
   [self.toolbarController updateCommitButton];
   [self.historyController update];
+  [self.sourcesController updateBadges];
 }
 
 - (void) repositoryControllerDidUpdateCommitChanges:(GBRepositoryController*)repoCtrl
@@ -410,18 +418,21 @@
   [self.toolbarController updateCommitButton];
   [self.historyController refreshChangesController];
   [self.historyController updateStage];
+  [self.sourcesController updateBadges];
 }
 
 - (void) repositoryControllerDidUpdateCommitableChanges:(GBRepositoryController*)repoCtrl
 {
   if (![self isSelectedRepositoryController:repoCtrl]) return;
   [self.toolbarController updateCommitButton];
+  [self.sourcesController updateBadges];
 }
 
 - (void) repositoryControllerDidCommit:(GBRepositoryController*)repoCtrl
 {
   if (![self isSelectedRepositoryController:repoCtrl]) return;
   [self.toolbarController updateCommitButton];
+  [self.sourcesController updateBadges];
 }
 
 - (void) repositoryController:(GBRepositoryController*)repoCtrl didMoveToURL:(NSURL*)newURL
