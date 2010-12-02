@@ -100,6 +100,19 @@
   return [self url];
 }
 
+- (NSString*) badgeLabel
+{
+  return [NSString stringWithFormat:@"%d", [[self longNameForSourceList] length]];
+  return @"1";
+  return @"5";
+  return @"11";
+  return @"42";
+  return @"128";
+  return @"999";
+  return @"1234";
+  return @"12345";
+}
+
 
 - (NSArray*) commits
 {
