@@ -20,6 +20,7 @@
 - (void) loadState;
 
 - (void) update;
+- (void) updateBadges;
 - (void) updateSelectedRow;
 - (void) expandLocalRepositories;
 
