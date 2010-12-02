@@ -21,7 +21,6 @@
   NSInteger isLoadingChanges; // maintains a count of number of changes loading tasks running
   
   NSTimeInterval autoFetchInterval;
-  BOOL needsInitialFetch;
 }
 
 @property(retain) GBRepository* repository;
