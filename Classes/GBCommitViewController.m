@@ -6,6 +6,7 @@
 #import "NSObject+OAKeyValueObserving.h"
 #import "NSString+OAStringHelpers.h"
 #import "NSView+OAViewHelpers.h"
+#import "NSObject+OAPerformBlockAfterDelay.h"
 
 @implementation GBCommitViewController
 
@@ -153,9 +154,13 @@
     {
       [change extractFileWithTargetURL:[panel URL]];
       NSString* path = [[panel URL] path];
-      dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 700000000), dispatch_get_main_queue(), ^{
+      [NSObject performBlock:^{
         [[NSWorkspace sharedWorkspace] selectFile:path inFileViewerRootedAtPath:nil];
-      });
+      } afterDelay:0.7];
+      
+//      dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 700000000), dispatch_get_main_queue(), ^{
+//        [[NSWorkspace sharedWorkspace] selectFile:path inFileViewerRootedAtPath:nil];  
+//      });
     }
   }];
   
