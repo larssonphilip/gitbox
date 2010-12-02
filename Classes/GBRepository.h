@@ -52,7 +52,7 @@ typedef void (^GBBlock)();
 - (NSString*) path;
 - (NSArray*) stageAndCommits;
 - (GBRef*) loadCurrentLocalRef;
-
+- (NSUInteger) totalPendingChanges;
 
 
 #pragma mark Update

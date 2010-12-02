@@ -18,4 +18,6 @@
 - (void) revertChanges:(NSArray*)theChanges withBlock:(void(^)())block;
 - (void) deleteFilesInChanges:(NSArray*)theChanges withBlock:(void(^)())block;
 
+- (NSUInteger) totalPendingChanges;
+
 @end

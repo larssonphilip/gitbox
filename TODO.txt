@@ -1,91 +1,25 @@
 
-1.0:
+1.1
 
-+ menu item: extract file (dst or src)
-+ check that autofetch works when gitbox is restarted and the repo was never selected (should load branches anyway)
-+ fetch periodically
-+ create a remote branch
-+ menu item: rename pull to merge and vice versa automatically
-+ bug: after adding a remote, the list of remote branches is fucked up
-+ create a repo out of an empty folder
-+ when starting a gitbox should configure user's name and email if missing
++ TODO: find how to parse the prompt and show the yes/no window instead of a password dialog
++ GIT_ASKPASS/SSH_ASKPASS for interacting with ssh
++ bug: when ssh server is not added to known_hosts, gitbox fails parsing the output
+- refresh badges when repo is updated
+- refresh all repos on startup
+- queue all autofetch commands in a global serial queue
+- calculate badge value for pending commits
 
-+ linode server
-
-+ configure gitboxapp.com for primary IP
-+ configure gitbox.pierlis.com for A record to gitboxapp.com
-+ remove git repo from bergere
-+ remove gitbox site from bergere
-
-+ apple: get certificate
-+ apple: set the appstore target
-+ apple: disable sparkle for appstore target:
-  + extract preferences controller into separate nib
-  + add -DGITBOX_APP_STORE=1 preprocessor flag
-  + create SUUpdater from the AppDelegate if not on appstore
-  + remove the mainmenu "Check For Updates..." item if on app store
-  + duplicate preferences controller nib for appstore - remove updater controls
-+ apple: install 10.6.6 for testing appstore
-+ apple: add a receipt verification code
-
-+ very slow startup when many repos present (like on gw machine) - disabled all autoupdate on stratup
-+ open a help page on gitboxapp.com/help from the menu
-+ do not spit out autoFetch errors in offline
-
-+ send to appstore for review
-
-+ fastspring: write ruby key generator
-+ fastspring: add license key verification code
-+ verify license key when opening more repos
-+ show the dialog to enter the license key or purchase one
-+ add license key to the prefs pane
-+ fastspring: setup banking info
-+ fastspring: generate 1000 serial numbers for the fastspring
-+ fastspring: generate 100 serial numbers for promotions
-+ fastspring: find how to customize shop appearance on fastspring
-
-+ revamped app icon
-+ fastspring: icon and description
-+ nice screenshots
-+ simpler definition and wording
-
-+ revamped page design
-+ bug: after a clone error, clone view is not reset with a non-error message
-+ buy button in the sidebar
-+ test: page in firefox/opera
-+ test: download speed
-+ test: autoupdate from 0.9.7 version
-+ test: userdefaults migration from 0.9.7
-+ test: adding more repos in free version
-+ test: purchasing and activating
-+ free license for @Dative for pointing out incorrect statement about Changes.app
-
-+ note about coupon on the site
-+ note about 64bit build in release notes
-+ blog post
+- pack git.bundle to .tar.gz and unpack on first run
+- drag and drop for sources (see the SourceView sample code for handling the drag and drop)
 
 - help
 - guide
 - video
 - testimonials
 
-$ sudo installer -store -pkg Desktop/gitbox.pkg -target /
-(installs to /Applications if gitbox.app removed from all the folders: Trash, Debug, Release and Archived Applications folders)
-
-
-For 1.1:
-+ TODO: find how to parse the prompt and show the yes/no window instead of a password dialog
-+ GIT_ASKPASS/SSH_ASKPASS for interacting with ssh
-+ bug: when ssh server is not added to known_hosts, gitbox fails parsing the output
-- badges for sidebar
-- pack git.bundle to .tar.gz and unpack when needed
-- drag and drop for sources (see the SourceView sample code for handling the drag and drop)
-- drag and drop for changes
-
-
 Next:
 
-- submodules support: currently does not show the submodule in the stage
+- submodules support: currently does not show the submodule in the stage (think how to add/init/update a submodule)
 - do not require name and email for ~/.gitconfig
 - fix networking behaviour: try to load the remote branches and reload them when pull/fetch
 - obfuscated license check
@@ -118,7 +52,8 @@ Ongoing tasks:
 
 Bugs:
 
-- bug: when connecting over https (and maybe http), gitbox locks on password prompt. [Nicolai Schulten <nicolai.schulten@byte-garden.de>]
+- bug: push over https (Github now supports pushing by HTTPS)
+- bug: when connecting over https (and maybe http), gitbox locks on password prompt.  [Nicolai Schulten <nicolai.schulten@byte-garden.de>]
 - bug: git repo in dropbox causes gitbox to refresh frequently [Tom Martin <tom@devart.org>]
 - bug: paypal payment option does not allow coupon? [Luis Martins <luis.martins@multiweb.pt>]
 
@@ -234,6 +169,72 @@ Bug fixes:
 
 1.0:
 
+WIP:
+
++ menu item: extract file (dst or src)
++ check that autofetch works when gitbox is restarted and the repo was never selected (should load branches anyway)
++ fetch periodically
++ create a remote branch
++ menu item: rename pull to merge and vice versa automatically
++ bug: after adding a remote, the list of remote branches is fucked up
++ create a repo out of an empty folder
++ when starting a gitbox should configure user's name and email if missing
+
++ linode server
+
++ configure gitboxapp.com for primary IP
++ configure gitbox.pierlis.com for A record to gitboxapp.com
++ remove git repo from bergere
++ remove gitbox site from bergere
+
++ apple: get certificate
++ apple: set the appstore target
++ apple: disable sparkle for appstore target:
+  + extract preferences controller into separate nib
+  + add -DGITBOX_APP_STORE=1 preprocessor flag
+  + create SUUpdater from the AppDelegate if not on appstore
+  + remove the mainmenu "Check For Updates..." item if on app store
+  + duplicate preferences controller nib for appstore - remove updater controls
++ apple: install 10.6.6 for testing appstore
++ apple: add a receipt verification code
+
++ very slow startup when many repos present (like on gw machine) - disabled all autoupdate on stratup
++ open a help page on gitboxapp.com/help from the menu
++ do not spit out autoFetch errors in offline
+
++ send to appstore for review
+
++ fastspring: write ruby key generator
++ fastspring: add license key verification code
++ verify license key when opening more repos
++ show the dialog to enter the license key or purchase one
++ add license key to the prefs pane
++ fastspring: setup banking info
++ fastspring: generate 1000 serial numbers for the fastspring
++ fastspring: generate 100 serial numbers for promotions
++ fastspring: find how to customize shop appearance on fastspring
+
++ revamped app icon
++ fastspring: icon and description
++ nice screenshots
++ simpler definition and wording
+
++ revamped page design
++ bug: after a clone error, clone view is not reset with a non-error message
++ buy button in the sidebar
++ test: page in firefox/opera
++ test: download speed
++ test: autoupdate from 0.9.7 version
++ test: userdefaults migration from 0.9.7
++ test: adding more repos in free version
++ test: purchasing and activating
++ free license for @Dative for pointing out incorrect statement about Changes.app
+
++ note about coupon on the site
++ note about 64bit build in release notes
++ blog post
+
+
 Features:
 + Single window with a list of the repositories in the sidebar.
 + Clone a local or remote repository.
@@ -270,6 +271,7 @@ Bug fixes:
 + Fixed bugs with list of changes in a pristine repository.
 
 + make preferences a single view with all options
+
 
 
 
@@ -403,3 +405,5 @@ $ man git-diff-tree:
        git-diff-files [<pattern>...]
            compares the index and the files on the filesystem.
 
+$ sudo installer -store -pkg Desktop/gitbox.pkg -target /
+(installs to /Applications if gitbox.app removed from all the folders: Trash, Debug, Release and Archived Applications folders)

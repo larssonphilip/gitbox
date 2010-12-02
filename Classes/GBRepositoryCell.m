@@ -1,7 +1,9 @@
 #import "GBRepositoryCell.h"
 #import "GBBaseRepositoryController.h"
+#import "CGContext+OACGContextHelpers.h"
 
 @interface GBRepositoryCell ()
+- (NSRect) drawBadge:(NSString*)badge inTitleFrame:(NSRect)frame;
 - (void) drawTitleInFrame:(NSRect)frame;
 - (void) drawSubtitleInFrame:(NSRect)frame;
 @end
@@ -61,7 +63,7 @@
   textualFrame.origin.x += 3;
   textualFrame.origin.y += 4;
   textualFrame.size.height -= 4;
-  
+  textualFrame.size.width -= 10; // make some room for scrollbar
   
   
   
@@ -71,8 +73,8 @@
   NSString* badgeLabel = [[self repositoryController] badgeLabel];
   if (badgeLabel && [badgeLabel length] > 0)
   {
-    NSRect badgeFrame;
-    
+    NSRect badgeFrame = [self drawBadge:badgeLabel inTitleFrame:textualFrame];
+    textualFrame.size.width = badgeFrame.origin.x - textualFrame.origin.x - 2.0;
   }
   
   NSRect titleFrame;
@@ -92,11 +94,90 @@
 //  [super drawInteriorWithFrame:textualFrame inView:theControlView];
 }
 
-- (void) drawTitleInFrame:(NSRect)frame
+
+- (NSRect) drawBadge:(NSString*)badge inTitleFrame:(NSRect)frame
 {
-  NSColor* textColor = [NSColor blackColor];
+  NSStringDrawingOptions drawingOptions = NSStringDrawingDisableScreenFontSubstitution;
+  
+  NSMutableParagraphStyle* paragraphStyle = [[NSMutableParagraphStyle new] autorelease];
+  [paragraphStyle setLineBreakMode:NSLineBreakByTruncatingTail];
+  
+//  NSFontDescriptor* descriptor = [NSFontDescriptor]
+  
+  NSFont* font = [NSFont boldSystemFontOfSize:11.0];
+  NSColor* textColor = [NSColor whiteColor];
   
   if ([self isHighlighted])
+  {
+    textColor = [NSColor colorWithCalibratedHue:217.0/360.0 saturation:0.40 brightness:0.70 alpha:1.0];
+  }
+  
+	NSMutableDictionary* attributes = [[[NSMutableDictionary alloc] initWithObjectsAndKeys:
+                                      textColor, NSForegroundColorAttributeName,
+                                      font, NSFontAttributeName,
+                                      paragraphStyle, NSParagraphStyleAttributeName,
+                                      nil] autorelease];
+  
+  NSRect labelRect = [badge boundingRectWithSize:NSMakeSize(64.0, 20.0)
+                                         options:drawingOptions
+                                      attributes:attributes];
+  
+  labelRect.origin = frame.origin;
+  
+  static CGFloat minBadgeWidth = 20.0;
+  static CGFloat cornerRadius = 8.0;
+  static CGFloat padding = 4.0;
+  
+  CGFloat badgeWidth = labelRect.size.width + padding*2;
+  
+  if (badgeWidth < minBadgeWidth) badgeWidth = minBadgeWidth;
+  
+  labelRect.origin.x += (frame.size.width - badgeWidth) + round((badgeWidth - labelRect.size.width)/2);
+  
+  NSRect badgeRect = labelRect;
+  badgeRect.size.width = badgeWidth;
+  badgeRect.origin.x = frame.origin.x + (frame.size.width - badgeRect.size.width);
+  
+  
+  NSColor* fillColor = nil;
+  if ([self isHighlighted])
+  {
+    fillColor = [NSColor whiteColor];
+  }
+  else
+  {
+//    if ([self isFocused])
+    {
+      fillColor = [NSColor colorWithCalibratedHue:217.0/360.0 saturation:0.27 brightness:0.79 alpha:1.0];
+    }
+//    else
+//    {
+//      fillColor = [NSColor colorWithCalibratedHue:0 saturation:0 brightness:0.67 alpha:1.0];
+//    }
+  }
+  
+  CGContextRef context = CGContextCurrentContext();
+  CGContextSaveGState(context);
+  CGContextAddRoundRect(context, NSRectToCGRect(badgeRect), cornerRadius);
+  CGColorRef fillColorRef = CGColorCreateFromNSColor(fillColor);
+  [fillColor set];
+  CGColorRelease(fillColorRef);
+  CGContextFillPath(context);
+  CGContextRestoreGState(context);
+  
+ // [NSBezierPath fillRect:badgeRect];
+  [badge drawInRect:labelRect withAttributes:attributes];
+  
+  return badgeRect;
+}
+
+- (void) drawTitleInFrame:(NSRect)frame
+{
+  BOOL isHighlighted = [self isHighlighted];
+  
+  NSColor* textColor = [NSColor blackColor];
+  
+  if (isHighlighted)
   {
     textColor = [NSColor alternateSelectedControlTextColor];
   }
@@ -104,7 +185,7 @@
   NSMutableParagraphStyle* paragraphStyle = [[NSMutableParagraphStyle new] autorelease];
   [paragraphStyle setLineBreakMode:NSLineBreakByTruncatingTail];
   
-  NSFont* font = [NSFont systemFontOfSize:11.0];
+  NSFont* font = isHighlighted ? [NSFont boldSystemFontOfSize:11.0] : [NSFont systemFontOfSize:11.0];
   
 	NSMutableDictionary* attributes = [[[NSMutableDictionary alloc] initWithObjectsAndKeys:
                                            textColor, NSForegroundColorAttributeName,
@@ -112,7 +193,7 @@
                                            paragraphStyle, NSParagraphStyleAttributeName,
                                            nil] autorelease];
   
-  if ([self isHighlighted])
+  if (isHighlighted)
   {
     NSShadow* s = [[[NSShadow alloc] init] autorelease];
     [s setShadowOffset:NSMakeSize(0, 1)];

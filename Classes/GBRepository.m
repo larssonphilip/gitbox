@@ -245,7 +245,12 @@
   return list;
 }
 
-
+- (NSUInteger) totalPendingChanges
+{
+  NSUInteger changes = [self.stage totalPendingChanges];
+  NSUInteger commits = 0; // TODO: find number of pending commits
+  return commits + changes;
+}
 
 
 

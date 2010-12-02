@@ -354,4 +354,11 @@
   return [titles componentsJoinedByString:@", "];
 }
 
+- (NSUInteger) totalPendingChanges
+{
+  NSUInteger modifications = [self.stagedChanges count] + [self.unstagedChanges count];
+  NSUInteger newFiles = [self.untrackedChanges count];
+  return modifications + newFiles;
+}
+
 @end
