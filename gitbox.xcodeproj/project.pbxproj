@@ -348,7 +348,7 @@
 		2035639D11D3C14C00965765 /* GBLightScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBLightScrollView.m; sourceTree = "<group>"; };
 		2038F1DD11936B060087CE37 /* GBAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBAppDelegate.h; sourceTree = "<group>"; };
 		2038F1DE11936B060087CE37 /* GBAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBAppDelegate.m; sourceTree = "<group>"; };
-		2038F1EA11936CA50087CE37 /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
+		2038F1EA11936CA50087CE37 /* TODO.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TODO.txt; sourceTree = "<group>"; };
 		2038F30A11952FCF0087CE37 /* GBRepository.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBRepository.h; sourceTree = "<group>"; };
 		2038F30B11952FCF0087CE37 /* GBRepository.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBRepository.m; sourceTree = "<group>"; };
 		2038F39511953CB60087CE37 /* GBRef.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBRef.h; sourceTree = "<group>"; };
@@ -760,7 +760,7 @@
 				20A09D67129F8F3900294730 /* fastspring-1-1000-licenses.txt */,
 				20A09D68129F8F3900294730 /* fastspring-1001-2000-licenses.txt */,
 				20A09D69129F8F3900294730 /* free-promo-1-100-licenses.txt */,
-				2038F1EA11936CA50087CE37 /* README */,
+				2038F1EA11936CA50087CE37 /* TODO.txt */,
 				20C716BB120EF7E6002B594F /* DESIGN_NOTES */,
 				2009871711C4597800F35630 /* PAYMENT */,
 				206CAB38122A771D009284FE /* ARCHITECTURE */,
