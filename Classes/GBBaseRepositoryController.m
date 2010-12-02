@@ -69,7 +69,8 @@
 
 
 - (void) setNeedsUpdateEverything {}
-- (void) updateRepositoryIfNeeded {}
+- (void) updateRepositoryIfNeeded { [self updateRepositoryIfNeededWithBlock:nil]; }
+- (void) updateRepositoryIfNeededWithBlock:(void(^)())block { if (block) block(); }
 
 - (void) beginBackgroundUpdate {}
 - (void) endBackgroundUpdate {}

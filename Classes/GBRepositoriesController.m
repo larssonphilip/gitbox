@@ -6,21 +6,32 @@
 #import "NSFileManager+OAFileManagerHelpers.h"
 
 #import "OAObfuscatedLicenseCheck.h"
+#import "OABlockQueue.h"
 
 @implementation GBRepositoriesController
 
 @synthesize selectedRepositoryController;
 @synthesize localRepositoryControllers;
-
+@synthesize localRepositoriesUpdatesQueue;
 @synthesize delegate;
 
 - (void) dealloc
 {
   self.selectedRepositoryController = nil;
   self.localRepositoryControllers = nil;
+  self.localRepositoriesUpdatesQueue = nil;
   [super dealloc];
 }
 
+- (id) init
+{
+  if ((self = [super init]))
+  {
+    self.localRepositoriesUpdatesQueue = [[OABlockQueue new] autorelease];
+    self.localRepositoriesUpdatesQueue.maxConcurrentOperationCount = 2;
+  }
+  return self;
+}
 
 
 
@@ -104,8 +115,13 @@
   [self updateRepositoriesPresentation];
   [repoCtrl setNeedsUpdateEverything];
   [repoCtrl start];
-  // Updating immediately all repos altogether on the startup is heavy for the disk and CPU.
-  // [repoCtrl updateRepositoryIfNeeded];
+
+  [self.localRepositoriesUpdatesQueue addBlock:^{
+    [repoCtrl updateRepositoryIfNeededWithBlock:^{
+      [self.localRepositoriesUpdatesQueue endBlock];
+    }];
+  }];
+
   if ([self.delegate respondsToSelector:@selector(repositoriesController:didAddRepository:)]) { [self.delegate repositoriesController:self didAddRepository:repoCtrl]; }
 }
 

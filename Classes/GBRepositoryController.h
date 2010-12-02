@@ -40,7 +40,7 @@
 - (NSArray*) commits;
 
 - (void) setNeedsUpdateEverything;
-- (void) updateRepositoryIfNeeded;
+- (void) updateRepositoryIfNeededWithBlock:(void(^)())block;
 
 - (void) checkoutRef:(GBRef*) ref;
 - (void) checkoutRef:(GBRef*) ref withNewName:(NSString*)name;

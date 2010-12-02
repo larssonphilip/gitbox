@@ -21,6 +21,7 @@
 
 - (void) setNeedsUpdateEverything;
 - (void) updateRepositoryIfNeeded;
+- (void) updateRepositoryIfNeededWithBlock:(void(^)())block;
 
 - (void) beginBackgroundUpdate;
 - (void) endBackgroundUpdate;

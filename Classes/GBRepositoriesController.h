@@ -3,11 +3,13 @@
 @class GBBaseRepositoryController;
 @class GBRepositoryController;
 @class GBCloningRepositoryController;
+@class OABlockQueue;
 
 @interface GBRepositoriesController : NSObject
 
-@property(retain) GBBaseRepositoryController* selectedRepositoryController;
+@property(nonatomic,retain) GBBaseRepositoryController* selectedRepositoryController;
 @property(nonatomic,retain) NSMutableArray* localRepositoryControllers;
+@property(nonatomic,retain) OABlockQueue* localRepositoriesUpdatesQueue;
 
 @property(assign) id<GBRepositoriesControllerDelegate> delegate;
 

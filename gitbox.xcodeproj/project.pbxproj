@@ -44,6 +44,10 @@
 		2030C6F2128E55A0005F751C /* GBErrors.m in Sources */ = {isa = PBXBuildFile; fileRef = 2030C6F0128E55A0005F751C /* GBErrors.m */; };
 		2031BB2F12A83B1D008CC337 /* NSObject+OAPerformBlockAfterDelay.m in Sources */ = {isa = PBXBuildFile; fileRef = 2031BB2E12A83B1D008CC337 /* NSObject+OAPerformBlockAfterDelay.m */; };
 		2031BB3012A83B1D008CC337 /* NSObject+OAPerformBlockAfterDelay.m in Sources */ = {isa = PBXBuildFile; fileRef = 2031BB2E12A83B1D008CC337 /* NSObject+OAPerformBlockAfterDelay.m */; };
+		2031BB9812A85456008CC337 /* OABlockGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 2031BB9712A85456008CC337 /* OABlockGroup.m */; };
+		2031BB9912A85456008CC337 /* OABlockGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 2031BB9712A85456008CC337 /* OABlockGroup.m */; };
+		2031BB9E12A85646008CC337 /* OABlockQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 2031BB9D12A85646008CC337 /* OABlockQueue.m */; };
+		2031BB9F12A85646008CC337 /* OABlockQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 2031BB9D12A85646008CC337 /* OABlockQueue.m */; };
 		2035623311D383BE00965765 /* GBCommandsController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2035623211D383BE00965765 /* GBCommandsController.xib */; };
 		2035623811D383D000965765 /* GBCommandsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2035623711D383D000965765 /* GBCommandsController.m */; };
 		2035632F11D3B57800965765 /* GBLightScroller.m in Sources */ = {isa = PBXBuildFile; fileRef = 2035632E11D3B57800965765 /* GBLightScroller.m */; };
@@ -341,6 +345,10 @@
 		2030C6F0128E55A0005F751C /* GBErrors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBErrors.m; sourceTree = "<group>"; };
 		2031BB2D12A83B1D008CC337 /* NSObject+OAPerformBlockAfterDelay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+OAPerformBlockAfterDelay.h"; sourceTree = "<group>"; };
 		2031BB2E12A83B1D008CC337 /* NSObject+OAPerformBlockAfterDelay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+OAPerformBlockAfterDelay.m"; sourceTree = "<group>"; };
+		2031BB9612A85456008CC337 /* OABlockGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OABlockGroup.h; sourceTree = "<group>"; };
+		2031BB9712A85456008CC337 /* OABlockGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OABlockGroup.m; sourceTree = "<group>"; };
+		2031BB9C12A85646008CC337 /* OABlockQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OABlockQueue.h; sourceTree = "<group>"; };
+		2031BB9D12A85646008CC337 /* OABlockQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OABlockQueue.m; sourceTree = "<group>"; };
 		2035623211D383BE00965765 /* GBCommandsController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBCommandsController.xib; sourceTree = "<group>"; };
 		2035623611D383D000965765 /* GBCommandsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBCommandsController.h; sourceTree = "<group>"; };
 		2035623711D383D000965765 /* GBCommandsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBCommandsController.m; sourceTree = "<group>"; };
@@ -823,6 +831,10 @@
 				209C16561290636300B343A5 /* NSError+OAPresent.m */,
 				2031BB2D12A83B1D008CC337 /* NSObject+OAPerformBlockAfterDelay.h */,
 				2031BB2E12A83B1D008CC337 /* NSObject+OAPerformBlockAfterDelay.m */,
+				2031BB9612A85456008CC337 /* OABlockGroup.h */,
+				2031BB9712A85456008CC337 /* OABlockGroup.m */,
+				2031BB9C12A85646008CC337 /* OABlockQueue.h */,
+				2031BB9D12A85646008CC337 /* OABlockQueue.m */,
 			);
 			path = Libs;
 			sourceTree = "<group>";
@@ -1221,6 +1233,8 @@
 				209C16581290636300B343A5 /* NSError+OAPresent.m in Sources */,
 				203F729B12A62E0200BE1A55 /* GBCell.m in Sources */,
 				2031BB3012A83B1D008CC337 /* NSObject+OAPerformBlockAfterDelay.m in Sources */,
+				2031BB9912A85456008CC337 /* OABlockGroup.m in Sources */,
+				2031BB9F12A85646008CC337 /* OABlockQueue.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1309,6 +1323,8 @@
 				209C16571290636300B343A5 /* NSError+OAPresent.m in Sources */,
 				203F729C12A62E0200BE1A55 /* GBCell.m in Sources */,
 				2031BB2F12A83B1D008CC337 /* NSObject+OAPerformBlockAfterDelay.m in Sources */,
+				2031BB9812A85456008CC337 /* OABlockGroup.m in Sources */,
+				2031BB9E12A85646008CC337 /* OABlockQueue.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

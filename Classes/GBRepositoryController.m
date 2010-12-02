@@ -13,6 +13,8 @@
 #import "OAFSEventStream.h"
 #import "NSString+OAStringHelpers.h"
 #import "NSError+OAPresent.h"
+#import "OABlockGroup.h"
+
 
 @interface GBRepositoryController ()
 
@@ -29,6 +31,7 @@
 - (void) popFSEventsPause;
 
 - (void) loadCommits;
+- (void) loadCommitsWithBlock:(void(^)())block;
 - (void) loadStageChanges;
 - (void) loadChangesForCommit:(GBCommit*)commit;
 - (void) updateCurrentBranchesIfNeededWithBlock:(void(^)())block;
@@ -216,7 +219,7 @@
   
 }
 
-- (void) updateRepositoryIfNeeded
+- (void) updateRepositoryIfNeededWithBlock:(void(^)())block
 {
   GBRepository* repo = self.repository;
   
@@ -244,7 +247,7 @@
     if (needsCommitsUpdate)
     {
       needsCommitsUpdate = NO;
-      [self loadCommits];
+      [self loadCommitsWithBlock:block];
     }
     [self popSpinning];
   }];
@@ -757,6 +760,11 @@
 
 - (void) loadCommits
 {
+  [self loadCommitsWithBlock:nil];
+}
+
+- (void) loadCommitsWithBlock:(void(^)())block
+{
   if (self.repository.currentLocalRef)
   {
     [self pushSpinning];
@@ -769,16 +777,24 @@
       }
       if ([self.delegate respondsToSelector:@selector(repositoryControllerDidUpdateCommits:)]) { [self.delegate repositoryControllerDidUpdateCommits:self]; }
       
+      OABlockGroup* blockGroup = [OABlockGroup groupWithBlock:block];
+      
+      [blockGroup enter];
       [self pushFSEventsPause];
       [self.repository updateUnmergedCommitsWithBlock:^{
         if ([self.delegate respondsToSelector:@selector(repositoryControllerDidUpdateCommits:)]) { [self.delegate repositoryControllerDidUpdateCommits:self]; }
         [self popFSEventsPause];
+        [blockGroup leave];
       }];
+      
+      [blockGroup enter];
       [self pushFSEventsPause];
       [self.repository updateUnpushedCommitsWithBlock:^{
         if ([self.delegate respondsToSelector:@selector(repositoryControllerDidUpdateCommits:)]) { [self.delegate repositoryControllerDidUpdateCommits:self]; }
         [self popFSEventsPause];
+        [blockGroup leave];
       }];
+      
       [self popSpinning];
     }];    
   }
