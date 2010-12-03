@@ -53,6 +53,12 @@ Ongoing tasks:
 - check behavior when opendiff is missing
 - check that opendiff is selected by default on new start + it is not selected if it is missing
 
+Error messages translation to English:
+- failed pull: need commit first: "error: Your local changes to 'TODO.txt' would be overwritten by merge.  Aborting. Please, commit your changes or stash them before you can merge. Updating c3c800f..87bc4f4"
+- failed merge
+- failed push (actually, should prevent from pushing when some commits are fetched)
+
+
 Bugs:
 
 - bug: push over https (Github now supports pushing by HTTPS)
@@ -158,13 +164,19 @@ Tweet: Pls click "Check for Updates" from within Preferences window.
 
 Features:
 
++ Numeric badges in the sidebar show total number of non-committed changes, non-pushed and non-merged commits for the current branch.
 
 Enhancements:
-+ full SSH support: hosts are not required to be in known_hosts, passwords and passphrase-protected keys are supported
++ Full SSH support: hosts are added to known_hosts after confirmation, passwords and keys prtected by passphrases are supported.
++ List of changes now displays "Moved" status when the file was moved to another folder.
++ Reduced the size of an app to download from 60 Mb to 9 Mb.
 
 Bug fixes:
-+ bug: software updates are off by default [Tom Martin <tom@devart.org>]
-+ bug: add a repo, quit, start Gitbox, click cancel on license prompt. Gitbox doesn't reload your repo. [@mqt]
++ Fixed software updates: menu button was not always working. Reported by Tom Martin.
++ Fixed appearance of the license panel on startup and issue with refreshing the repo. Reported by @mqt.
++ Fixed bug with regular fetching: now all repos will be up to date regularly.
++ Fixed stage appearance when all repositories are deselected.
+
 
 
 
