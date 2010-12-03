@@ -15,18 +15,21 @@ typedef void (^GBBlock)();
 
 @interface GBRepository : NSObject
 
-@property(retain) NSURL* url;
+@property(nonatomic,retain) NSURL* url;
 @property(nonatomic,retain) NSURL* dotGitURL;
 @property(nonatomic,retain) NSArray* localBranches;
 @property(nonatomic,retain) NSArray* remotes;
 @property(nonatomic,retain) NSArray* tags;
 @property(nonatomic,retain) GBStage* stage;
-@property(retain) GBRef* currentLocalRef;
-@property(retain) GBRef* currentRemoteBranch;
-@property(retain) NSArray* localBranchCommits;
-@property(retain) NSString* topCommitId;
-@property(nonatomic) dispatch_queue_t dispatchQueue;
-@property(retain) NSError* lastError;
+@property(nonatomic,retain) GBRef* currentLocalRef;
+@property(nonatomic,retain) GBRef* currentRemoteBranch;
+@property(nonatomic,retain) NSArray* localBranchCommits;
+@property(nonatomic,retain) NSString* topCommitId;
+@property(nonatomic,retain) NSError* lastError;
+@property(nonatomic,assign) dispatch_queue_t dispatchQueue;
+
+@property(nonatomic,assign) NSUInteger unmergedCommitsCount;
+@property(nonatomic,assign) NSUInteger unpushedCommitsCount;
 
 + (id) repository;
 + (id) repositoryWithURL:(NSURL*)url;

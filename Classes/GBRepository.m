@@ -33,6 +33,8 @@
 @synthesize topCommitId;
 @synthesize dispatchQueue;
 @synthesize lastError;
+@synthesize unmergedCommitsCount;
+@synthesize unpushedCommitsCount;
 
 
 #pragma mark Init
@@ -248,7 +250,7 @@
 - (NSUInteger) totalPendingChanges
 {
   NSUInteger changes = [self.stage totalPendingChanges];
-  NSUInteger commits = 0; // TODO: find number of pending commits
+  NSUInteger commits = self.unpushedCommitsCount + self.unmergedCommitsCount;
   return commits + changes;
 }
 
@@ -359,6 +361,7 @@
   task.substructedBranch = self.currentLocalRef;
   [task launchWithBlock:^{
     NSArray* allCommits = self.localBranchCommits;
+    self.unmergedCommitsCount = [task.commits count];
     for (GBCommit* commit in task.commits)
     {
       NSUInteger index = [allCommits indexOfObject:commit];
@@ -377,6 +380,7 @@
   task.substructedBranch = self.currentRemoteBranch;
   [task launchWithBlock:^{
     NSArray* allCommits = self.localBranchCommits;
+    self.unpushedCommitsCount = [task.commits count];
     for (GBCommit* commit in task.commits)
     {
       NSUInteger index = [allCommits indexOfObject:commit];
