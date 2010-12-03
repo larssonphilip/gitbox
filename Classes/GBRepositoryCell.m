@@ -11,6 +11,7 @@
 
 @implementation GBRepositoryCell
 
+@synthesize isForeground;
 @synthesize isFocused;
 
 #define kIconImageWidth		16.0
@@ -37,6 +38,7 @@
   NSWindow* window = [theControlView window];
   self.isFocused = ([window firstResponder] && [window firstResponder] == theControlView && 
                     [window isMainWindow] && [window isKeyWindow]);
+  self.isForeground = [window isMainWindow];
 
   NSImage* image = [[NSWorkspace sharedWorkspace] iconForFile:[[[self repositoryController] url] path]];
   
@@ -118,6 +120,10 @@
   if ([self isHighlighted])
   {
     textColor = [NSColor colorWithCalibratedHue:217.0/360.0 saturation:0.40 brightness:0.70 alpha:1.0];
+    if (!self.isForeground)
+    {
+      textColor = [NSColor grayColor];
+    }
   }
   
 	NSMutableDictionary* attributes = [[[NSMutableDictionary alloc] initWithObjectsAndKeys:
@@ -154,14 +160,14 @@
   }
   else
   {
-//    if ([self isFocused])
+    if (self.isForeground)
     {
       fillColor = [NSColor colorWithCalibratedHue:217.0/360.0 saturation:0.27 brightness:0.79 alpha:1.0];
     }
-//    else
-//    {
-//      fillColor = [NSColor colorWithCalibratedHue:0 saturation:0 brightness:0.67 alpha:1.0];
-//    }
+    else
+    {
+      fillColor = [NSColor colorWithCalibratedHue:0 saturation:0 brightness:0.67 alpha:1.0];
+    }
   }
   
   CGContextRef context = CGContextCurrentContext();
