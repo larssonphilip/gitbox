@@ -325,6 +325,7 @@
   self.toolbarController.repositoryController = nil;
 
   [self updateWindowTitleWithRepositoryController:repoCtrl];
+  [self.historyController update];
   [self.sourcesController updateSelectedRow];
   [self.sourcesController updateBadges];
 }
