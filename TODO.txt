@@ -64,9 +64,6 @@ Error messages translation to English:
 Bugs:
 
 - bug: when removing a single server, remote branch remains and log is clean
-- bug: in commit prompt "Message:" label is cropped when the prompt is narrow
-+ bug: green dots are displayed when no remote branch is selected
-+ bug: badge displays number of green dots when no remote branch is selected
 - bug: push over https (Github now supports pushing by HTTPS)
 - bug: when connecting over https (and maybe http), gitbox locks on password prompt.  [Nicolai Schulten <nicolai.schulten@byte-garden.de>]
 - bug: git repo in dropbox causes gitbox to refresh frequently [Tom Martin <tom@devart.org>]
@@ -87,8 +84,6 @@ Bugs:
 
 Cool features:
 
-- diff: support for BBEdit or the free twin TextWrangler from http://barebones.com
-- integrate Araxis Merge: http://www.araxis.com/merge_mac/scm_integration.html#Git
 - undo for commit (like amend)
 - undo for pull
 - undo for ref checkout
@@ -171,6 +166,7 @@ Tweet: Pls click "Check for Updates" from within Preferences window.
 Features:
 
 + Numeric badges in the sidebar show total number of non-committed changes, non-pushed and non-merged commits for the current branch.
++ More diff tools: BBEdit, TextWrangler, Araxis Merge.
 
 Enhancements:
 + Full SSH support: hosts are added to known_hosts after confirmation, passwords and keys prtected by passphrases are supported.
@@ -182,7 +178,8 @@ Bug fixes:
 + Fixed appearance of the license panel on startup and issue with refreshing the repo. Reported by @mqt.
 + Fixed bug with regular fetching: now all repos will be up to date regularly.
 + Fixed stage appearance when all repositories are deselected.
-
++ Commits are not marked as non-pushed when there is not remote branch or server
++ Fixed display of message label in a commit prompt.
 
 
 

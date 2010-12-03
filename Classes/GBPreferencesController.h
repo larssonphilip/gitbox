@@ -4,8 +4,12 @@
 @property(retain) IBOutlet NSTabView* tabView;
 @property(retain) IBOutlet SUUpdater* updater;
 
+@property(assign) BOOL isFileMergeAvailable;
 @property(assign) BOOL isKaleidoscopeAvailable;
 @property(assign) BOOL isChangesAvailable;
+@property(assign) BOOL isTextWranglerAvailable;
+@property(assign) BOOL isBBEditAvailable;
+@property(assign) BOOL isAraxisAvailable;
 
 - (NSArray*) diffTools;
 

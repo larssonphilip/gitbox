@@ -7,8 +7,14 @@
 
 @synthesize tabView;
 @synthesize updater;
+
+@synthesize isFileMergeAvailable;
 @synthesize isKaleidoscopeAvailable;
 @synthesize isChangesAvailable;
+@synthesize isTextWranglerAvailable;
+@synthesize isBBEditAvailable;
+@synthesize isAraxisAvailable;
+
 
 - (void) dealloc
 {
@@ -35,8 +41,22 @@
 
 - (void) windowDidBecomeKey:(NSNotification *)notification
 {
-  self.isKaleidoscopeAvailable = !![OATask systemPathForExecutable:@"ksdiff"];
-  self.isChangesAvailable = !![OATask systemPathForExecutable:@"chdiff"];
+  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+    BOOL fm = !![OATask systemPathForExecutable:@"opendiff"];
+    BOOL ks = !![OATask systemPathForExecutable:@"ksdiff"];
+    BOOL ch = !![OATask systemPathForExecutable:@"chdiff"];
+    BOOL tw = !![OATask systemPathForExecutable:@"twdiff"];
+    BOOL bb = !![OATask systemPathForExecutable:@"bbdiff"];
+    BOOL ax = !![OATask systemPathForExecutable:@"araxis"];
+    dispatch_async(dispatch_get_main_queue(), ^{
+      self.isFileMergeAvailable = fm;
+      self.isKaleidoscopeAvailable = ks;
+      self.isChangesAvailable = ch;
+      self.isTextWranglerAvailable = tw;
+      self.isBBEditAvailable = bb;
+      self.isAraxisAvailable = ax;
+    });
+  });
 }
 
 - (void) windowDidResignKey:(NSNotification *)notification

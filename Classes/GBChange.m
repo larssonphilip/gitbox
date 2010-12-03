@@ -64,8 +64,14 @@
 
 + (NSArray*) diffTools
 {
-  return [NSArray arrayWithObjects:@"FileMerge", @"Kaleidoscope", @"Changes", 
-          NSLocalizedString(@"Other (full path to executable):", @"Change"), nil];
+  return [NSArray arrayWithObjects:@"FileMerge", 
+          @"Kaleidoscope",
+          @"Changes", 
+          @"Araxis Merge",
+          @"BBEdit", 
+          @"TextWrangler", 
+          //NSLocalizedString(@"Other (full path to executable):", @"Change"), 
+          nil];
 }
 
 - (NSURL*) fileURL
@@ -302,9 +308,29 @@
   {
     task.executableName = @"chdiff";
   }
-  else if (diffToolLaunchPath && [[NSFileManager defaultManager] isExecutableFileAtPath:diffToolLaunchPath])
+  else if ([diffTool isEqualToString:@"TextWrangler"])
   {
-    task.launchPath = diffToolLaunchPath;
+    task.executableName = @"twdiff";
+  }
+  else if ([diffTool isEqualToString:@"BBEdit"])
+  {
+    task.executableName = @"bbdiff";
+  }
+  else if ([diffTool isEqualToString:@"Araxis Merge"])
+  {
+    task.executableName = @"araxis";
+  }
+  else if (diffToolLaunchPath)
+  {
+    if ([[NSFileManager defaultManager] isExecutableFileAtPath:diffToolLaunchPath])
+    {
+      task.launchPath = diffToolLaunchPath;      
+    }
+    else
+    {
+      NSLog(@"ERROR: custom path to diff does not exist: %@; falling back to opendiff.", diffToolLaunchPath); 
+      task.executableName = @"opendiff";
+    }
   }
   else
   {
