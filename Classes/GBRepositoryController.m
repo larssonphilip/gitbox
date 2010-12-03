@@ -853,7 +853,7 @@
 - (void) resetAutoFetchInterval
 {
   //NSLog(@"GBRepositoryController: resetAutoFetchInterval in %@ (was: %f)", [self url], autoFetchInterval);
-  autoFetchInterval = 30.0;
+  autoFetchInterval = 30.0 + 2*(2*(0.5-drand48()));
   [self scheduleAutoFetch];
 }
 
@@ -878,8 +878,9 @@
 - (void) autoFetch
 {
   //NSLog(@"GBRepositoryController: autoFetch into %@ (delay: %f)", [self url], autoFetchInterval);
-  autoFetchInterval = autoFetchInterval*1.5;
-  while (autoFetchInterval > 3600.0) autoFetchInterval -= 600.0;
+  while (autoFetchInterval > 600.0) autoFetchInterval -= 100.0;
+  autoFetchInterval = autoFetchInterval*(1.5 + drand48()*0.5);
+  
   [self scheduleAutoFetch];
   
   if ([self isConnectionAvailable])
@@ -896,13 +897,13 @@
   else
   {
     NSLog(@"AutoFetch: no connection available for repo %@", self.repository.url);
-    while (autoFetchInterval > 300) autoFetchInterval -= 100.0;
   }
 }
 
 
 - (BOOL) isConnectionAvailable
 {
+  return YES;
   // FIXME: this does not work.
   return [NSURLConnection canHandleRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://google.com/"]]];
 }
