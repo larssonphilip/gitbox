@@ -199,7 +199,7 @@
 - (void) updateBadges
 {
   [self.outlineView setNeedsDisplay];
-//  [self.outlineView displayIfNeeded];
+  [self.outlineView displayIfNeeded];
 }
 
 - (void) updateSelectedRow
