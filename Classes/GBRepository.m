@@ -365,8 +365,11 @@
     for (GBCommit* commit in task.commits)
     {
       NSUInteger index = [allCommits indexOfObject:commit];
-      commit = [allCommits objectAtIndex:index];
-      commit.syncStatus = GBCommitSyncStatusUnmerged;
+      if (index !=  NSNotFound)
+      {
+        commit = [allCommits objectAtIndex:index];
+        commit.syncStatus = GBCommitSyncStatusUnmerged;
+      }
     }
     block();
   }];  
@@ -384,8 +387,11 @@
     for (GBCommit* commit in task.commits)
     {
       NSUInteger index = [allCommits indexOfObject:commit];
-      commit = [allCommits objectAtIndex:index];
-      commit.syncStatus = GBCommitSyncStatusUnpushed;
+      if (index !=  NSNotFound)
+      {
+        commit = [allCommits objectAtIndex:index];
+        commit.syncStatus = GBCommitSyncStatusUnpushed;
+      }
     }
     block();
   }];
