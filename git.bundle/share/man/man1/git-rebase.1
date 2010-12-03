@@ -2,12 +2,12 @@
 .\"     Title: git-rebase
 .\"    Author: [see the "Authors" section]
 .\" Generator: DocBook XSL Stylesheets v1.75.2 <http://docbook.sf.net/>
-.\"      Date: 04/24/2010
+.\"      Date: 10/22/2010
 .\"    Manual: Git Manual
-.\"    Source: Git 1.7.1
+.\"    Source: Git 1.7.3.2
 .\"  Language: English
 .\"
-.TH "GIT\-REBASE" "1" "04/24/2010" "Git 1\&.7\&.1" "Git Manual"
+.TH "GIT\-REBASE" "1" "10/22/2010" "Git 1\&.7\&.3\&.2" "Git Manual"
 .\" -----------------------------------------------------------------
 .\" * set default formatting
 .\" -----------------------------------------------------------------
@@ -295,11 +295,20 @@ rebase\&.stat
 .RS 4
 Whether to show a diffstat of what changed upstream since the last rebase\&. False by default\&.
 .RE
+.PP
+rebase\&.autosquash
+.RS 4
+If set to true enable
+\fI\-\-autosquash\fR
+option by default\&.
+.RE
 .SH "OPTIONS"
 .PP
 <newbase>
 .RS 4
 Starting point at which to create the new commits\&. If the \-\-onto option is not specified, the starting point is <upstream>\&. May be any valid commit, and not just an existing branch name\&.
+.sp
+As a special case, you may use "A\&.\&.\&.B" as a shortcut for the merge base of A and B if there is exactly one merge base\&. You can leave out at most one of A and B, in which case it defaults to HEAD\&.
 .RE
 .PP
 <upstream>
@@ -351,6 +360,20 @@ Because
 replays each commit from the working branch on top of the <upstream> branch using the given strategy, using the
 \fIours\fR
 strategy simply discards all patches from the <branch>, which makes little sense\&.
+.RE
+.PP
+\-X <strategy\-option>, \-\-strategy\-option=<strategy\-option>
+.RS 4
+Pass the <strategy\-option> through to the merge strategy\&. This implies
+\-\-merge
+and, if no strategy has been specified,
+\-s recursive\&. Note the reversal of
+\fIours\fR
+and
+\fItheirs\fR
+as noted in above for the
+\-m
+option\&.
 .RE
 .PP
 \-q, \-\-quiet
@@ -406,7 +429,7 @@ program (see
 These flags are passed to
 \fIgit am\fR
 to easily change the dates of the rebased commits (see
-\fBgit-am\fR(1))\&.
+\fBgit-am\fR(1))\&. Incompatible with the \-\-interactive option\&.
 .RE
 .PP
 \-i, \-\-interactive
@@ -417,6 +440,12 @@ Make a list of the commits which are about to be rebased\&. Let the user edit th
 \-p, \-\-preserve\-merges
 .RS 4
 Instead of ignoring merges, try to recreate them\&.
+.sp
+This uses the
+\-\-interactive
+machinery internally, but combining it with the
+\-\-interactive
+option explicitly is generally not a good idea unless you know what you are doing (see BUGS below)\&.
 .RE
 .PP
 \-\-root
@@ -426,7 +455,7 @@ Rebase all commits reachable from <branch>, instead of limiting them with an <up
 root commits will be rewritten to have <newbase> as parent instead\&.
 .RE
 .PP
-\-\-autosquash
+\-\-autosquash, \-\-no\-autosquash
 .RS 4
 When the commit log message begins with "squash! \&..." (or "fixup! \&..."), and there is a commit whose title begins with the same \&..., automatically modify the todo list of rebase \-i so that the commit marked for squashing comes right after the commit to be modified, and change the action of the moved commit from
 pick
@@ -438,6 +467,11 @@ fixup)\&.
 This option is only valid when the
 \fI\-\-interactive\fR
 option is used\&.
+.sp
+If the
+\fI\-\-autosquash\fR
+option is enabled by default using the configuration variable
+rebase\&.autosquash, this option can be used to override and disable this setting\&.
 .RE
 .PP
 \-\-no\-ff
@@ -486,7 +520,23 @@ This is opposite of
 \fIours\fR\&.
 .RE
 .PP
-subtree[=path]
+renormalize
+.RS 4
+This runs a virtual check\-out and check\-in of all three stages of a file when resolving a three\-way merge\&. This option is meant to be used when merging branches with different clean filters or end\-of\-line normalization rules\&. See "Merging branches with differing checkin/checkout attributes" in
+\fBgitattributes\fR(5)
+for details\&.
+.RE
+.PP
+no\-renormalize
+.RS 4
+Disables the
+renormalize
+option\&. This overrides the
+merge\&.renormalize
+configuration variable\&.
+.RE
+.PP
+subtree[=<path>]
 .RS 4
 This option is a more advanced form of
 \fIsubtree\fR
@@ -729,6 +779,29 @@ $ git rebase \-i \-p \-\-onto Q O
 .RE
 .\}
 .sp
+.sp
+Reordering and editing commits usually creates untested intermediate steps\&. You may want to check that your history editing did not break anything by running a test, or at least recompiling at intermediate points in history by using the "exec" command (shortcut "x")\&. You may do so by creating a todo list like this one:
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+pick deadbee Implement feature XXX
+fixup f1a5c00 Fix to feature XXX
+exec make
+pick c0ffeee The oneline of the next commit
+edit deadbab The oneline of the commit after
+exec cd subdir; make test
+\&.\&.\&.
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+.sp
+The interactive rebase will stop when a command fails (i\&.e\&. exits with non\-0 status) to give you an opportunity to fix the problem\&. You can continue with git rebase \-\-continue\&.
+.sp
+The "exec" command launches the command in a shell (the one specified in $SHELL, or the default shell if $SHELL is not set), so you can use shell features (like "cd", ">", ";" \&...)\&. The command is run from the root of the working tree\&.
 .SH "SPLITTING COMMITS"
 .sp
 In interactive mode, you can mark commits with the action "edit"\&. However, this does not necessarily mean that \fIgit rebase\fR expects the result of this edit to be exactly one commit\&. Indeed, you can undo the commit, or you can add other commits\&. This can be used to split a commit into two:
@@ -999,6 +1072,50 @@ You can then transplant the old subsystem\&.\&.topic to the new tip by saying (f
 .sp
 .sp
 The ripple effect of a "hard case" recovery is especially bad: \fIeveryone\fR downstream from \fItopic\fR will now have to perform a "hard case" recovery too!
+.SH "BUGS"
+.sp
+The todo list presented by \-\-preserve\-merges \-\-interactive does not represent the topology of the revision graph\&. Editing commits and rewording their commit messages should work fine, but attempts to reorder commits tend to produce counterintuitive results\&.
+.sp
+For example, an attempt to rearrange
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+1 \-\-\- 2 \-\-\- 3 \-\-\- 4 \-\-\- 5
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+.sp
+to
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+1 \-\-\- 2 \-\-\- 4 \-\-\- 3 \-\-\- 5
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+.sp
+by moving the "pick 4" line will result in the following history:
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+        3
+       /
+1 \-\-\- 2 \-\-\- 4 \-\-\- 5
+.fi
+.if n \{\
+.RE
+.\}
+.sp
 .SH "AUTHORS"
 .sp
 Written by Junio C Hamano <gitster@pobox\&.com> and Johannes E\&. Schindelin <johannes\&.schindelin@gmx\&.de>

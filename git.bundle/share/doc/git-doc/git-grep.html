@@ -326,6 +326,7 @@ git-grep(1) Manual Page
            [-E | --extended-regexp] [-G | --basic-regexp]
            [-F | --fixed-strings] [-n]
            [-l | --files-with-matches] [-L | --files-without-match]
+           [(-O | --open-files-in-pager) [&lt;pager&gt;]]
            [-z | --null]
            [-c | --count] [--all-match] [-q | --quiet]
            [--max-depth &lt;depth&gt;]
@@ -513,6 +514,20 @@ registered in the index file, or blobs in given tree objects.</p></div>
 </p>
 </dd>
 <dt>
+-O [&lt;pager&gt;]
+</dt>
+<dt>
+--open-files-in-pager [&lt;pager&gt;]
+</dt>
+<dd>
+<p>
+        Open the matching files in the pager (not the output of <em>grep</em>).
+        If the pager happens to be "less" or "vi", and the user
+        specified only one pattern, the first file is positioned at
+        the first match automatically.
+</p>
+</dd>
+<dt>
 -z
 </dt>
 <dt>
@@ -683,7 +698,7 @@ registered in the index file, or blobs in given tree objects.</p></div>
 <div class="sectionbody">
 <div class="vlist"><dl>
 <dt>
-git grep <em>time_t</em> &#8212; <em>*.[ch]</em>
+git grep &#39;time_t&#39; -- &#39;*.[ch]&#39;
 </dt>
 <dd>
 <p>
@@ -692,7 +707,7 @@ git grep <em>time_t</em> &#8212; <em>*.[ch]</em>
 </p>
 </dd>
 <dt>
-git grep -e '#define' --and \( -e MAX_PATH -e PATH_MAX \)
+git grep -e &#39;#define&#39; --and \( -e MAX_PATH -e PATH_MAX \)
 </dt>
 <dd>
 <p>
@@ -726,7 +741,7 @@ revamped by Junio C Hamano.</p></div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2010-04-24 02:40:40 UTC
+Last updated 2010-10-22 03:51:23 UTC
 </div>
 </div>
 </body>

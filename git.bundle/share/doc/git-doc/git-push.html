@@ -360,7 +360,7 @@ documentation for <a href="git-receive-pack.html">git-receive-pack(1)</a>.</p></
 </p>
 <div class="para"><p>The &lt;src&gt; is often the name of the branch you would want to push, but
 it can be any arbitrary "SHA-1 expression", such as <tt>master~4</tt> or
-<tt>HEAD</tt> (see <a href="git-rev-parse.html">git-rev-parse(1)</a>).</p></div>
+<tt>HEAD</tt> (see <a href="gitrevisions.html">gitrevisions(7)</a>).</p></div>
 <div class="para"><p>The &lt;dst&gt; tells which ref on the remote side is updated with this
 push. Arbitrary expressions cannot be used here, an actual ref must
 be named. If <tt>:</tt>&lt;dst&gt; is omitted, the same ref as &lt;src&gt; will be
@@ -622,7 +622,7 @@ git://host.xz&#91;:port&#93;/~&#91;user&#93;/path/to/repo.git/
 </p>
 </li>
 </ul></div>
-<div class="para"><p>For local respositories, also supported by git natively, the following
+<div class="para"><p>For local repositories, also supported by git natively, the following
 syntaxes may be used:</p></div>
 <div class="ilist"><ul>
 <li>
@@ -857,17 +857,44 @@ summary
         For a successfully pushed ref, the summary shows the old and new
         values of the ref in a form suitable for using as an argument to
         <tt>git log</tt> (this is <tt>&lt;old&gt;..&lt;new&gt;</tt> in most cases, and
-        <tt>&lt;old&gt;&#8230;&lt;new&gt;</tt> for forced non-fast-forward updates). For a
-        failed update, more details are given for the failure.
-        The string <tt>rejected</tt> indicates that git did not try to send the
-        ref at all (typically because it is not a fast-forward). The
-        string <tt>remote rejected</tt> indicates that the remote end refused
-        the update; this rejection is typically caused by a hook on the
-        remote side. The string <tt>remote failure</tt> indicates that the
-        remote end did not report the successful update of the ref
-        (perhaps because of a temporary error on the remote side, a
-        break in the network connection, or other transient error).
+        <tt>&lt;old&gt;...&lt;new&gt;</tt> for forced non-fast-forward updates).
 </p>
+<div class="para"><p>For a failed update, more details are given:</p></div>
+<div class="vlist"><dl>
+<dt>
+rejected
+</dt>
+<dd>
+<p>
+        Git did not try to send the ref at all, typically because it
+        is not a fast-forward and you did not force the update.
+</p>
+</dd>
+<dt>
+remote rejected
+</dt>
+<dd>
+<p>
+        The remote end refused the update.  Usually caused by a hook
+        on the remote side, or because the remote repository has one
+        of the following safety options in effect:
+        <tt>receive.denyCurrentBranch</tt> (for pushes to the checked out
+        branch), <tt>receive.denyNonFastForwards</tt> (for forced
+        non-fast-forward updates), <tt>receive.denyDeletes</tt> or
+        <tt>receive.denyDeleteCurrent</tt>.  See <a href="git-config.html">git-config(1)</a>.
+</p>
+</dd>
+<dt>
+remote failure
+</dt>
+<dd>
+<p>
+        The remote end did not report the successful update of the ref,
+        perhaps because of a temporary error on the remote side, a
+        break in the network connection, or other transient error.
+</p>
+</dd>
+</dl></div>
 </dd>
 <dt>
 from
@@ -1117,7 +1144,7 @@ by Linus Torvalds &lt;torvalds@osdl.org&gt;</p></div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2010-04-24 02:40:55 UTC
+Last updated 2010-10-22 03:51:37 UTC
 </div>
 </div>
 </body>

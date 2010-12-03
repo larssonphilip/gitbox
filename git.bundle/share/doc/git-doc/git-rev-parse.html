@@ -446,7 +446,7 @@ distinguish between them.</p></div>
         properly quoted for consumption by shell.  Useful when
         you expect your parameter to contain whitespaces and
         newlines (e.g. when using pickaxe <tt>-S</tt> with
-        <em>git diff-*</em>). In contrast to the <tt>--sq-quote</tt> option,
+        <em>git diff-&#42;</em>). In contrast to the <tt>--sq-quote</tt> option,
         the command input is still interpreted as usual.
 </p>
 </dd>
@@ -484,7 +484,7 @@ distinguish between them.</p></div>
 </p>
 </dd>
 <dt>
---abbrev-ref[={strict|loose}]
+--abbrev-ref[=(strict|loose)]
 </dt>
 <dd>
 <p>
@@ -518,7 +518,8 @@ distinguish between them.</p></div>
 </p>
 <div class="para"><p>If a <tt>pattern</tt> is given, only refs matching the given shell glob are
 shown.  If the pattern does not contain a globbing character (<tt>?</tt>,
-<tt>*</tt>, or <tt>[</tt>), it is turned into a prefix match by appending <tt>/*</tt>.</p></div>
+<tt>&#42;</tt>, or <tt>[</tt>), it is turned into a prefix match by
+appending <tt>/&#42;</tt>.</p></div>
 </dd>
 <dt>
 --glob=pattern
@@ -528,8 +529,8 @@ shown.  If the pattern does not contain a globbing character (<tt>?</tt>,
         Show all refs matching the shell glob pattern <tt>pattern</tt>. If
         the pattern does not start with <tt>refs/</tt>, this is automatically
         prepended.  If the pattern does not contain a globbing
-        character (<tt>?</tt>, <tt>*</tt>, or <tt>[</tt>), it is turned into a prefix
-        match by appending <tt>/*</tt>.
+        character (<tt>?</tt>, <tt>&#42;</tt>, or <tt>[</tt>), it is turned into a prefix
+        match by appending <tt>/&#42;</tt>.
 </p>
 </dd>
 <dt>
@@ -777,7 +778,7 @@ The suffix <em>@{upstream}</em> to a ref (short form <em>ref@{u}</em>) refers to
 </li>
 <li>
 <p>
-A suffix <em>&#94;</em> to a revision parameter means the first parent of
+A suffix <em>&#94;</em> to a revision parameter (e.g. <em>HEAD&#94;</em>) means the first parent of
   that commit object.  <em>&#94;&lt;n&gt;</em> means the &lt;n&gt;th parent (i.e.
   <em>rev&#94;</em>
   is equivalent to <em>rev&#94;1</em>).  As a special rule,
@@ -815,27 +816,32 @@ A suffix <em>&#94;</em> followed by an empty brace pair
 </li>
 <li>
 <p>
-A colon, followed by a slash, followed by a text: this names
-  a commit whose commit message starts with the specified text.
+A colon, followed by a slash, followed by a text (e.g. <tt>:/fix nasty bug</tt>): this names
+  a commit whose commit message matches the specified regular expression.
   This name returns the youngest matching commit which is
   reachable from any ref.  If the commit message starts with a
   <em>!</em>, you have to repeat that;  the special sequence <em>:/!</em>,
   followed by something else than <em>!</em> is reserved for now.
+  The regular expression can match any part of the commit message. To
+  match messages starting with a string, one can use e.g. <tt>:/^foo</tt>.
 </p>
 </li>
 <li>
 <p>
-A suffix <em>:</em> followed by a path; this names the blob or tree
+A suffix <em>:</em> followed by a path (e.g. <tt>HEAD:README</tt>); this names the blob or tree
   at the given path in the tree-ish object named by the part
   before the colon.
+  <em>:path</em> (with an empty part before the colon, e.g. <tt>:README</tt>)
+  is a special case of the syntax described next: content
+  recorded in the index at the given path.
 </p>
 </li>
 <li>
 <p>
 A colon, optionally followed by a stage number (0 to 3) and a
-  colon, followed by a path; this names a blob object in the
-  index at the given path.  Missing stage number (and the colon
-  that follows it) names a stage 0 entry. During a merge, stage
+  colon, followed by a path (e.g. <tt>:0:README</tt>); this names a blob object in the
+  index at the given path. Missing stage number (and the colon
+  that follows it, e.g. <tt>:README</tt>) names a stage 0 entry. During a merge, stage
   1 is the common ancestor, stage 2 is the target branch's version
   (typically the current branch), and stage 3 is the version from
   the branch being merged.
@@ -915,9 +921,11 @@ F^! D            G H D F</tt></pre>
 scripts the same facilities C builtins have. It works as an option normalizer
 (e.g. splits single switches aggregate values), a bit like <tt>getopt(1)</tt> does.</p></div>
 <div class="para"><p>It takes on the standard input the specification of the options to parse and
-understand, and echoes on the standard output a line suitable for <tt>sh(1)</tt> <tt>eval</tt>
+understand, and echoes on the standard output a string suitable for <tt>sh(1)</tt> <tt>eval</tt>
 to replace the arguments with normalized ones.  In case of error, it outputs
 usage on the standard error stream, and exits with code 129.</p></div>
+<div class="para"><p>Note: Make sure you quote the result when passing it to <tt>eval</tt>.  See
+below for an example.</p></div>
 <h3 id="_input_format">Input Format</h3><div style="clear:left"></div>
 <div class="para"><p><em>git rev-parse --parseopt</em> input format is fully text based. It has two parts,
 separated by a line that contains only <tt>--</tt>. The lines before the separator
@@ -994,7 +1002,7 @@ bar=      some cool option --bar with an argument
   An option group Header
 C?        option C with an optional argument"
 
-eval `echo "$OPTS_SPEC" | git rev-parse --parseopt -- "$@" || echo exit $?`</tt></pre>
+eval "$(echo "$OPTS_SPEC" | git rev-parse --parseopt -- "$@" || echo exit $?)"</tt></pre>
 </div></div>
 </div>
 <h2 id="_sq_quote">SQ-QUOTE</h2>
@@ -1069,7 +1077,7 @@ Junio C Hamano &lt;gitster@pobox.com&gt; and Pierre Habouzit &lt;madcoder@debian
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2010-04-24 02:41:02 UTC
+Last updated 2010-10-22 03:51:44 UTC
 </div>
 </div>
 </body>

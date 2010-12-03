@@ -322,14 +322,14 @@ git-ls-files(1) Manual Page
 <div class="sectionbody">
 <div class="verseblock">
 <div class="content"><em>git ls-files</em> [-z] [-t] [-v]
-                (--[cached|deleted|others|ignored|stage|unmerged|killed|modified])*
-                (-[c|d|o|i|s|u|k|m])*
+                (--[cached|deleted|others|ignored|stage|unmerged|killed|modified])<strong>
+                (-[c|d|o|i|s|u|k|m])</strong>
                 [-x &lt;pattern&gt;|--exclude=&lt;pattern&gt;]
                 [-X &lt;file&gt;|--exclude-from=&lt;file&gt;]
                 [--exclude-per-directory=&lt;file&gt;]
                 [--exclude-standard]
                 [--error-unmatch] [--with-tree=&lt;tree-ish&gt;]
-                [--full-name] [--abbrev] [--] [&lt;file&gt;]*</div></div>
+                [--full-name] [--abbrev] [--] [&lt;file&gt;&#8230;]</div></div>
 </div>
 <h2 id="_description">DESCRIPTION</h2>
 <div class="sectionbody">
@@ -468,8 +468,9 @@ shown:</p></div>
 </dt>
 <dd>
 <p>
-        Skips files matching pattern.
-        Note that pattern is a shell wildcard pattern.
+        Skip untracked files matching pattern.
+        Note that pattern is a shell wildcard pattern. See EXCLUDE PATTERNS
+        below for more information.
 </p>
 </dd>
 <dt>
@@ -480,7 +481,7 @@ shown:</p></div>
 </dt>
 <dd>
 <p>
-        exclude patterns are read from &lt;file&gt;; 1 per line.
+        Read exclude patterns from &lt;file&gt;; 1 per line.
 </p>
 </dd>
 <dt>
@@ -488,7 +489,7 @@ shown:</p></div>
 </dt>
 <dd>
 <p>
-        read additional exclude patterns that apply only to the
+        Read additional exclude patterns that apply only to the
         directory and its subdirectories in &lt;file&gt;.
 </p>
 </dd>
@@ -527,9 +528,15 @@ shown:</p></div>
 </dt>
 <dd>
 <p>
-        Identify the file status with the following tags (followed by
-        a space) at the start of each line:
+        This feature is semi-deprecated. For scripting purpose,
+        <a href="git-status.html">git-status(1)</a> <tt>--porcelain</tt> and
+        <a href="git-diff-files.html">git-diff-files(1)</a> <tt>--name-status</tt> are almost always
+        superior alternatives, and users should look at
+        <a href="git-status.html">git-status(1)</a> <tt>--short</tt> or <a href="git-diff.html">git-diff(1)</a>
+        <tt>--name-status</tt> for more user-friendly alternatives.
 </p>
+<div class="para"><p>This option identifies the file status with the following tags (followed by
+a space) at the start of each line:</p></div>
 <div class="hlist"><table>
 <tr>
 <td class="hlist1">
@@ -621,6 +628,17 @@ other
 </p>
 </dd>
 <dt>
+--debug
+</dt>
+<dd>
+<p>
+        After each line that describes a file, add more data about its
+        cache entry.  This is intended to show as much information as
+        possible for manual inspection; the exact format may change at
+        any time.
+</p>
+</dd>
+<dt>
 --
 </dt>
 <dd>
@@ -682,7 +700,7 @@ The command line flag --exclude-from=&lt;file&gt; specifies a
 </li>
 <li>
 <p>
-command line flag --exclude-per-directory=&lt;name&gt; specifies
+The command line flag --exclude-per-directory=&lt;name&gt; specifies
      a name of the file in each directory <em>git ls-files</em>
      examines, normally <tt>.gitignore</tt>.  Files in deeper
      directories take precedence.  Patterns are ordered in the
@@ -714,7 +732,7 @@ pattern file appears in.</p></div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2010-04-24 02:40:46 UTC
+Last updated 2010-10-22 03:51:29 UTC
 </div>
 </div>
 </body>

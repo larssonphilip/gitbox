@@ -2,12 +2,12 @@
 .\"     Title: git-rev-list
 .\"    Author: [see the "Author" section]
 .\" Generator: DocBook XSL Stylesheets v1.75.2 <http://docbook.sf.net/>
-.\"      Date: 04/24/2010
+.\"      Date: 10/22/2010
 .\"    Manual: Git Manual
-.\"    Source: Git 1.7.1
+.\"    Source: Git 1.7.3.2
 .\"  Language: English
 .\"
-.TH "GIT\-REV\-LIST" "1" "04/24/2010" "Git 1\&.7\&.1" "Git Manual"
+.TH "GIT\-REV\-LIST" "1" "10/22/2010" "Git 1\&.7\&.3\&.2" "Git Manual"
 .\" -----------------------------------------------------------------
 .\" * set default formatting
 .\" -----------------------------------------------------------------
@@ -23,10 +23,10 @@ git-rev-list \- Lists commit objects in reverse chronological order
 .SH "SYNOPSIS"
 .sp
 .nf
-\fIgit rev\-list\fR [ \-\-max\-count=number ]
-             [ \-\-skip=number ]
-             [ \-\-max\-age=timestamp ]
-             [ \-\-min\-age=timestamp ]
+\fIgit rev\-list\fR [ \-\-max\-count=<number> ]
+             [ \-\-skip=<number> ]
+             [ \-\-max\-age=<timestamp> ]
+             [ \-\-min\-age=<timestamp> ]
              [ \-\-sparse ]
              [ \-\-merges ]
              [ \-\-no\-merges ]
@@ -35,10 +35,10 @@ git-rev-list \- Lists commit objects in reverse chronological order
              [ \-\-full\-history ]
              [ \-\-not ]
              [ \-\-all ]
-             [ \-\-branches[=pattern] ]
-             [ \-\-tags[=pattern] ]
-             [ \-\-remotes[=pattern] ]
-             [ \-\-glob=glob\-pattern ]
+             [ \-\-branches[=<pattern>] ]
+             [ \-\-tags[=<pattern>] ]
+             [ \-\-remotes[=<pattern>] ]
+             [ \-\-glob=<glob\-pattern> ]
              [ \-\-stdin ]
              [ \-\-quiet ]
              [ \-\-topo\-order ]
@@ -51,7 +51,7 @@ git-rev-list \- Lists commit objects in reverse chronological order
              [ \-\-regexp\-ignore\-case | \-i ]
              [ \-\-extended\-regexp | \-E ]
              [ \-\-fixed\-strings | \-F ]
-             [ \-\-date={local|relative|default|iso|rfc|short} ]
+             [ \-\-date=(local|relative|default|iso|rfc|short) ]
              [ [\-\-objects | \-\-objects\-edge] [ \-\-unpacked ] ]
              [ \-\-pretty | \-\-header ]
              [ \-\-bisect ]
@@ -119,7 +119,7 @@ Another special notation is "\fI<commit1>\fR\&...\fI<commit2>\fR" which is usefu
 .sp
 Using these options, \fBgit-rev-list\fR(1) will act similar to the more specialized family of commit log tools: \fBgit-log\fR(1), \fBgit-show\fR(1), and \fBgit-whatchanged\fR(1)
 .PP
-\-\-pretty[=\fI<format>\fR], \-\-format[=\fI<format>\fR]
+\-\-pretty[=<format>], \-\-format=<format>
 .RS 4
 Pretty\-print the contents of the commit logs in a given format, where
 \fI<format>\fR
@@ -132,7 +132,7 @@ can be one of
 \fIemail\fR,
 \fIraw\fR
 and
-\fIformat:<string>\fR\&. When omitted, the format defaults to
+\fIformat:<string>\fR\&. See the "PRETTY FORMATS" section for some additional details for each format\&. When omitted, the format defaults to
 \fImedium\fR\&.
 .sp
 Note: you can specify the default pretty format in the repository configuration (see
@@ -192,7 +192,7 @@ Synonym for
 \-\-date=relative\&.
 .RE
 .PP
-\-\-date={relative,local,default,iso,rfc,short,raw}
+\-\-date=(relative|local|default|iso|rfc|short|raw)
 .RS 4
 Only takes effect for dates shown in human\-readable format, such as when using "\-\-pretty"\&.
 log\&.date
@@ -233,14 +233,14 @@ Print the contents of the commit in raw\-format; each record is separated with a
 .PP
 \-\-parents
 .RS 4
-Print the parents of the commit\&. Also enables parent rewriting, see
+Print also the parents of the commit (in the form "commit parent\&...")\&. Also enables parent rewriting, see
 \fIHistory Simplification\fR
 below\&.
 .RE
 .PP
 \-\-children
 .RS 4
-Print the children of the commit\&. Also enables parent rewriting, see
+Print also the children of the commit (in the form "commit child\&...")\&. Also enables parent rewriting, see
 \fIHistory Simplification\fR
 below\&.
 .RE
@@ -305,6 +305,12 @@ This implies the
 option by default, but the
 \fI\-\-date\-order\fR
 option may also be specified\&.
+.RE
+.PP
+\-\-count
+.RS 4
+Print a number stating how many commits would have been listed, and suppress all other output\&. When used together with
+\fI\-\-left\-right\fR, instead print the counts for left and right commits, separated by a tab\&.
 .RE
 .SS "Commit Limiting"
 .sp
@@ -403,47 +409,49 @@ are listed on the command line as
 \fI<commit>\fR\&.
 .RE
 .PP
-\-\-branches[=pattern]
+\-\-branches[=<pattern>]
 .RS 4
 Pretend as if all the refs in
 refs/heads
 are listed on the command line as
 \fI<commit>\fR\&. If
-pattern
+\fI<pattern>\fR
 is given, limit branches to ones matching given shell glob\&. If pattern lacks
 \fI?\fR,
 \fI\fR\fI, or \fR\fI\fI[\fR\fR\fI, \fR\fI\fI/\fR\fR
 at the end is implied\&.
 .RE
 .PP
-\-\-tags[=pattern]
+\-\-tags[=<pattern>]
 .RS 4
 Pretend as if all the refs in
 refs/tags
 are listed on the command line as
 \fI<commit>\fR\&. If
-pattern
+\fI<pattern>\fR
 is given, limit tags to ones matching given shell glob\&. If pattern lacks
 \fI?\fR,
 \fI\fR\fI, or \fR\fI\fI[\fR\fR\fI, \fR\fI\fI/\fR\fR
 at the end is implied\&.
 .RE
 .PP
-\-\-remotes[=pattern]
+\-\-remotes[=<pattern>]
 .RS 4
 Pretend as if all the refs in
 refs/remotes
 are listed on the command line as
-\fI<commit>\fR\&. If `pattern`is given, limit remote tracking branches to ones matching given shell glob\&. If pattern lacks
+\fI<commit>\fR\&. If
+\fI<pattern>\fR
+is given, limit remote tracking branches to ones matching given shell glob\&. If pattern lacks
 \fI?\fR,
 \fI\fR\fI, or \fR\fI\fI[\fR\fR\fI, \fR\fI\fI/\fR\fR
 at the end is implied\&.
 .RE
 .PP
-\-\-glob=glob\-pattern
+\-\-glob=<glob\-pattern>
 .RS 4
 Pretend as if all the refs matching shell glob
-glob\-pattern
+\fI<glob\-pattern>\fR
 are listed on the command line as
 \fI<commit>\fR\&. Leading
 \fIrefs/\fR, is automatically prepended if missing\&. If pattern lacks
@@ -480,7 +488,7 @@ B, a usual way to list all commits on only one side of them is with
 Instead of walking the commit ancestry chain, walk reflog entries from the most recent one to older ones\&. When this option is used you cannot specify commits to exclude (that is,
 \fI^commit\fR,
 \fIcommit1\&.\&.commit2\fR, nor
-\fIcommit1\&...commit2\fR
+\fIcommit1\&.\&.\&.commit2\fR
 notations cannot be used)\&. With
 \fI\-\-pretty\fR
 format other than oneline (for obvious reasons), this causes the output to have two extra lines of information taken from the reflog\&. By default,
@@ -548,6 +556,19 @@ All commits in the simplified history are shown\&.
 Additional option to
 \fI\-\-full\-history\fR
 to remove some needless merges from the resulting history, as there are no selected commits contributing to this merge\&.
+.RE
+.PP
+\-\-ancestry\-path
+.RS 4
+When given a range of commits to display (e\&.g\&.
+\fIcommit1\&.\&.commit2\fR
+or
+\fIcommit2 ^commit1\fR), only display commits that exist directly on the ancestry chain between the
+\fIcommit1\fR
+and
+\fIcommit2\fR, i\&.e\&. commits that are both descendants of
+\fIcommit1\fR, and ancestors of
+\fIcommit2\fR\&.
 .RE
 .sp
 A more detailed explanation follows\&.
@@ -693,7 +714,7 @@ This results in:
 .\}
 .nf
           \&.\-A\-\-\-N\-\-\-O
-         /         /
+         /     /   /
         I\-\-\-\-\-\-\-\-\-D
 .fi
 .if n \{\
@@ -791,8 +812,6 @@ All commits that are walked are included\&.
 Note that without
 \fI\-\-full\-history\fR, this still simplifies merges: if one of the parents is TREESAME, we follow only that one, so the other sides of the merge are never walked\&.
 .RE
-.sp
-Finally, there is a fourth simplification mode available:
 .PP
 \-\-simplify\-merges
 .RS 4
@@ -906,6 +925,78 @@ removed\&.
 P
 was then removed completely, because it had one parent and is TREESAME\&.
 .RE
+.RE
+.sp
+Finally, there is a fifth simplification mode available:
+.PP
+\-\-ancestry\-path
+.RS 4
+Limit the displayed commits to those directly on the ancestry chain between the "from" and "to" commits in the given commit range\&. I\&.e\&. only display commits that are ancestor of the "to" commit, and descendants of the "from" commit\&.
+.sp
+As an example use case, consider the following commit history:
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+            D\-\-\-E\-\-\-\-\-\-\-F
+           /     \e       \e
+          B\-\-\-C\-\-\-G\-\-\-H\-\-\-I\-\-\-J
+         /                     \e
+        A\-\-\-\-\-\-\-K\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-L\-\-M
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+A regular
+\fID\&.\&.M\fR
+computes the set of commits that are ancestors of
+M, but excludes the ones that are ancestors of
+D\&. This is useful to see what happened to the history leading to
+M
+since
+D, in the sense that "what does
+M
+have that did not exist in
+D"\&. The result in this example would be all the commits, except
+A
+and
+B
+(and
+D
+itself, of course)\&.
+.sp
+When we want to find out what commits in
+M
+are contaminated with the bug introduced by
+D
+and need fixing, however, we might want to view only the subset of
+\fID\&.\&.M\fR
+that are actually descendants of
+D, i\&.e\&. excluding
+C
+and
+K\&. This is exactly what the
+\fI\-\-ancestry\-path\fR
+option does\&. Applied to the
+\fID\&.\&.M\fR
+range, it results in:
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+                E\-\-\-\-\-\-\-F
+                 \e       \e
+                  G\-\-\-H\-\-\-I\-\-\-J
+                               \e
+                                L\-\-M
+.fi
+.if n \{\
+.RE
+.\}
+.sp
 .RE
 .sp
 The \fI\-\-simplify\-by\-decoration\fR option allows you to view only the big picture of the topology of the history, by omitting commits that are not referenced by tags\&. Commits are marked as !TREESAME (in other words, kept after history simplification rules described above) if (1) they are referenced by tags, or (2) they change the contents of the paths given on the command line\&. All other commits are marked as TREESAME (subject to be simplified away)\&.
@@ -1042,7 +1133,7 @@ Overrides a previous \-\-no\-walk\&.
 .sp
 If the commit is a merge, and if the pretty\-format is not \fIoneline\fR, \fIemail\fR or \fIraw\fR, an additional line is inserted before the \fIAuthor:\fR line\&. This line begins with "Merge: " and the sha1s of ancestral commits are printed, separated by spaces\&. Note that the listed commits may not necessarily be the list of the \fBdirect\fR parent commits if you have limited your view of history: for example, if you are only interested in changes related to a certain directory or file\&.
 .sp
-Here are some additional details for each format:
+There are several built\-in formats, and you can define additional formats by setting a pretty\&.<name> config option to either another format name, or a \fIformat:\fR string, as described below (see \fBgit-config\fR(1))\&. Here are the details of the built\-in formats:
 .sp
 .RS 4
 .ie n \{\
@@ -1297,10 +1388,10 @@ information show the true parent commits, without taking grafts nor history simp
 .IP \(bu 2.3
 .\}
 
-\fIformat:\fR
+\fIformat:<string>\fR
 .sp
 The
-\fIformat:\fR
+\fIformat:<string>\fR
 format allows you to specify which information you want to show\&. It works a little bit like printf format, with the notable exception that you get a newline with
 \fI%n\fR
 instead of
@@ -1693,6 +1784,18 @@ or
 .IP \(bu 2.3
 .\}
 
+\fI%B\fR: raw body (unwrapped subject and body)
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+
 \fI%N\fR: commit notes
 .RE
 .sp
@@ -1876,6 +1979,8 @@ Some placeholders may depend on other options given to the revision traversal en
 If you add a + (plus sign) after \fI%\fR of a placeholder, a line\-feed is inserted immediately before the expansion if and only if the placeholder expands to a non\-empty string\&.
 .sp
 If you add a \- (minus sign) after \fI%\fR of a placeholder, line\-feeds that immediately precede the expansion are deleted if and only if the placeholder expands to an empty string\&.
+.sp
+If you add a (space) after \fI%\fR of a placeholder, a space is inserted immediately before the expansion if and only if the placeholder expands to a non\-empty string\&.
 .sp
 .RS 4
 .ie n \{\

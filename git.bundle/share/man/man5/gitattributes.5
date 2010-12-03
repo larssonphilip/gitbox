@@ -2,12 +2,12 @@
 .\"     Title: gitattributes
 .\"    Author: [FIXME: author] [see http://docbook.sf.net/el/author]
 .\" Generator: DocBook XSL Stylesheets v1.75.2 <http://docbook.sf.net/>
-.\"      Date: 04/24/2010
+.\"      Date: 10/22/2010
 .\"    Manual: Git Manual
-.\"    Source: Git 1.7.1
+.\"    Source: Git 1.7.3.2
 .\"  Language: English
 .\"
-.TH "GITATTRIBUTES" "5" "04/24/2010" "Git 1\&.7\&.1" "Git Manual"
+.TH "GITATTRIBUTES" "5" "10/22/2010" "Git 1\&.7\&.3\&.2" "Git Manual"
 .\" -----------------------------------------------------------------
 .\" * set default formatting
 .\" -----------------------------------------------------------------
@@ -86,47 +86,42 @@ These attributes affect how the contents stored in the repository are copied to 
 .nr an-break-flag 1
 .br
 .ps +1
-\fBcrlf\fR
+\fBtext\fR
 .RS 4
 .sp
-This attribute controls the line\-ending convention\&.
+This attribute enables and controls end\-of\-line normalization\&. When a text file is normalized, its line endings are converted to LF in the repository\&. To control what line ending style is used in the working directory, use the eol attribute for a single file and the core\&.eol configuration variable for all text files\&.
 .PP
 Set
 .RS 4
 Setting the
-crlf
-attribute on a path is meant to mark the path as a "text" file\&.
-\fIcore\&.autocrlf\fR
-conversion takes place without guessing the content type by inspection\&.
+text
+attribute on a path enables end\-of\-line normalization and marks the path as a text file\&. End\-of\-line conversion takes place without guessing the content type\&.
 .RE
 .PP
 Unset
 .RS 4
 Unsetting the
-crlf
+text
 attribute on a path tells git not to attempt any end\-of\-line conversion upon checkin or checkout\&.
 .RE
 .PP
-Unspecified
+Set to string value "auto"
 .RS 4
-Unspecified
-crlf
-attribute tells git to apply the
-core\&.autocrlf
-conversion when the file content looks like text\&.
+When
+text
+is set to "auto", the path is marked for automatic end\-of\-line normalization\&. If git decides that the content is text, its line endings are normalized to LF on checkin\&.
 .RE
 .PP
-Set to string value "input"
+Unspecified
 .RS 4
-This is similar to setting the attribute to
-true, but also forces git to act as if
+If the
+text
+attribute is unspecified, git uses the
 core\&.autocrlf
-is set to
-input
-for the path\&.
+configuration variable to determine if the file should be converted\&.
 .RE
 .sp
-Any other value set to crlf attribute is ignored and git acts as if the attribute is left unspecified\&.
+Any other value causes git to act as if text has been left unspecified\&.
 .RE
 .sp
 .it 1 an-trap
@@ -134,14 +129,163 @@ Any other value set to crlf attribute is ignored and git acts as if the attribut
 .nr an-break-flag 1
 .br
 .ps +1
-\fBThe core.autocrlf conversion\fR
+\fBeol\fR
 .RS 4
 .sp
-If the configuration variable core\&.autocrlf is false, no conversion is done\&.
+This attribute sets a specific line\-ending style to be used in the working directory\&. It enables end\-of\-line normalization without any content checks, effectively setting the text attribute\&.
+.PP
+Set to string value "crlf"
+.RS 4
+This setting forces git to normalize line endings for this file on checkin and convert them to CRLF when the file is checked out\&.
+.RE
+.PP
+Set to string value "lf"
+.RS 4
+This setting forces git to normalize line endings to LF on checkin and prevents conversion to CRLF when the file is checked out\&.
+.RE
+.RE
 .sp
-When core\&.autocrlf is true, it means that the platform wants CRLF line endings for files in the working tree, and you want to convert them back to the normal LF line endings when checking in to the repository\&.
+.it 1 an-trap
+.nr an-no-space-flag 1
+.nr an-break-flag 1
+.br
+.ps +1
+\fBBackwards compatibility with crlf attribute\fR
+.RS 4
 .sp
-When core\&.autocrlf is set to "input", line endings are converted to LF upon checkin, but there is no conversion done upon checkout\&.
+For backwards compatibility, the crlf attribute is interpreted as follows:
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+crlf            text
+\-crlf           \-text
+crlf=input      eol=lf
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+.RE
+.sp
+.it 1 an-trap
+.nr an-no-space-flag 1
+.nr an-break-flag 1
+.br
+.ps +1
+\fBEnd-of-line conversion\fR
+.RS 4
+.sp
+While git normally leaves file contents alone, it can be configured to normalize line endings to LF in the repository and, optionally, to convert them to CRLF when files are checked out\&.
+.sp
+Here is an example that will make git normalize \&.txt, \&.vcproj and \&.sh files, ensure that \&.vcproj files have CRLF and \&.sh files have LF in the working directory, and prevent \&.jpg files from being normalized regardless of their content\&.
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+*\&.txt           text
+*\&.vcproj        eol=crlf
+*\&.sh            eol=lf
+*\&.jpg           \-text
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+.sp
+Other source code management systems normalize all text files in their repositories, and there are two ways to enable similar automatic normalization in git\&.
+.sp
+If you simply want to have CRLF line endings in your working directory regardless of the repository you are working with, you can set the config variable "core\&.autocrlf" without changing any attributes\&.
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+[core]
+        autocrlf = true
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+.sp
+This does not force normalization of all text files, but does ensure that text files that you introduce to the repository have their line endings normalized to LF when they are added, and that files that are already normalized in the repository stay normalized\&.
+.sp
+If you want to interoperate with a source code management system that enforces end\-of\-line normalization, or you simply want all text files in your repository to be normalized, you should instead set the text attribute to "auto" for _all_ files\&.
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+*       text=auto
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+.sp
+This ensures that all files that git considers to be text will have normalized (LF) line endings in the repository\&. The core\&.eol configuration variable controls which line endings git will use for normalized files in your working directory; the default is to use the native line ending for your platform, or CRLF if core\&.autocrlf is set\&.
+.if n \{\
+.sp
+.\}
+.RS 4
+.it 1 an-trap
+.nr an-no-space-flag 1
+.nr an-break-flag 1
+.br
+.ps +1
+\fBNote\fR
+.ps -1
+.br
+.sp
+When text=auto normalization is enabled in an existing repository, any text files containing CRLFs should be normalized\&. If they are not they will be normalized the next time someone tries to change them, causing unfortunate misattribution\&. From a clean working directory:
+.sp .5v
+.RE
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+$ echo "* text=auto" >>\&.gitattributes
+$ rm \&.git/index     # Remove the index to force git to
+$ git reset         # re\-scan the working directory
+$ git status        # Show files that will be normalized
+$ git add \-u
+$ git add \&.gitattributes
+$ git commit \-m "Introduce end\-of\-line normalization"
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+.sp
+If any files that should not be normalized show up in \fIgit status\fR, unset their text attribute before running \fIgit add \-u\fR\&.
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+manual\&.pdf      \-text
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+.sp
+Conversely, text files that git does not detect can have normalization enabled manually\&.
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+weirdchars\&.txt  text
+.fi
+.if n \{\
+.RE
+.\}
+.sp
 .sp
 If core\&.safecrlf is set to "true" or "warn", git verifies if the conversion is reversible for the current setting of core\&.autocrlf\&. For "true", git rejects irreversible conversions; for "warn", git only prints a warning but accepts an irreversible conversion\&. The safety triggers to prevent such a conversion done to the files in the work tree, but there are a few exceptions\&. Even though\&...
 .sp
@@ -240,6 +384,10 @@ Then you would define a "filter\&.indent\&.clean" and "filter\&.indent\&.smudge"
 .RE
 .\}
 .sp
+.sp
+For best results, clean should not alter its output further if it is run twice ("clean\->clean" should be equivalent to "clean"), and multiple smudge commands should not alter clean\(aqs output ("smudge\->smudge\->clean" should be equivalent to "clean")\&. See the section on merging below\&.
+.sp
+The "indent" filter is well\-behaved in this regard: it will not modify input that is already correctly indented\&. In this case, the lack of a smudge filter means that the clean filter _must_ accept its own output without modifying it\&.
 .RE
 .sp
 .it 1 an-trap
@@ -250,9 +398,24 @@ Then you would define a "filter\&.indent\&.clean" and "filter\&.indent\&.smudge"
 \fBInteraction between checkin/checkout attributes\fR
 .RS 4
 .sp
-In the check\-in codepath, the worktree file is first converted with filter driver (if specified and corresponding driver defined), then the result is processed with ident (if specified), and then finally with crlf (again, if specified and applicable)\&.
+In the check\-in codepath, the worktree file is first converted with filter driver (if specified and corresponding driver defined), then the result is processed with ident (if specified), and then finally with text (again, if specified and applicable)\&.
 .sp
-In the check\-out codepath, the blob content is first converted with crlf, and then ident and fed to filter\&.
+In the check\-out codepath, the blob content is first converted with text, and then ident and fed to filter\&.
+.RE
+.sp
+.it 1 an-trap
+.nr an-no-space-flag 1
+.nr an-break-flag 1
+.br
+.ps +1
+\fBMerging branches with differing checkin/checkout attributes\fR
+.RS 4
+.sp
+If you have added attributes to a file that cause the canonical repository format for that file to change, such as adding a clean/smudge filter or text/eol/ident attributes, merging anything where the attribute is not in place would normally cause merge conflicts\&.
+.sp
+To prevent these unnecessary merge conflicts, git can be told to run a virtual check\-out and check\-in of all three stages of a file when resolving a three\-way merge by setting the merge\&.renormalize configuration variable\&. This prevents changes caused by check\-in conversion from causing spurious merge conflicts when a converted file is merged with an unconverted file\&.
+.sp
+As long as a "smudge\->clean" results in the same output as a "clean" even on files that are already smudged, this strategy will automatically resolve all filter\-related conflicts\&. Filters that do not act in this way may cause additional merge conflicts that must be resolved manually\&.
 .RE
 .SS "Generating diff text"
 .sp
@@ -411,6 +574,19 @@ suitable for source code in the C and C++ languages\&.
 .IP \(bu 2.3
 .\}
 
+csharp
+suitable for source code in the C# language\&.
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+
 html
 suitable for HTML/XHTML documents\&.
 .RE
@@ -515,7 +691,7 @@ suitable for source code for LaTeX documents\&.
 \fBCustomizing word diff\fR
 .RS 4
 .sp
-You can customize the rules that git diff \-\-color\-words uses to split words in a line, by specifying an appropriate regular expression in the "diff\&.*\&.wordRegex" configuration variable\&. For example, in TeX a backslash followed by a sequence of letters forms a command, but several such commands can be run together without intervening whitespace\&. To separate them, use a regular expression in your $GIT_DIR/config file (or $HOME/\&.gitconfig file) like this:
+You can customize the rules that git diff \-\-word\-diff uses to split words in a line, by specifying an appropriate regular expression in the "diff\&.*\&.wordRegex" configuration variable\&. For example, in TeX a backslash followed by a sequence of letters forms a command, but several such commands can be run together without intervening whitespace\&. To separate them, use a regular expression in your $GIT_DIR/config file (or $HOME/\&.gitconfig file) like this:
 .sp
 .if n \{\
 .RS 4
@@ -573,6 +749,23 @@ For example, to show the diff of the exif information of a file instead of the b
 The text conversion is generally a one\-way conversion; in this example, we lose the actual image contents and focus just on the text data\&. This means that diffs generated by textconv are _not_ suitable for applying\&. For this reason, only git diff and the git log family of commands (i\&.e\&., log, whatchanged, show) will perform text conversion\&. git format\-patch will never generate this output\&. If you want to send somebody a text\-converted diff of a binary file (e\&.g\&., because it quickly conveys the changes you have made), you should generate it separately and send it as a comment _in addition to_ the usual binary diff that you might send\&.
 .sp .5v
 .RE
+.sp
+Because text conversion can be slow, especially when doing a large number of them with git log \-p, git provides a mechanism to cache the output and use it in future diffs\&. To enable caching, set the "cachetextconv" variable in your diff driver\(aqs config\&. For example:
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+[diff "jpg"]
+        textconv = exif
+        cachetextconv = true
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+.sp
+This will cache the result of running "exif" on each blob indefinitely\&. If you change the textconv config variable for a diff driver, git will automatically invalidate the cache entries and re\-run the textconv filter\&. If you want to invalidate the cache manually (e\&.g\&., because your version of "exif" was updated and now produces better output), you can remove the cache manually with git update\-ref \-d refs/notes/textconv/jpg (where "jpg" is the name of the diff driver, as in the example above)\&.
 .RE
 .SS "Performing a three\-way merge"
 .sp
@@ -802,7 +995,7 @@ You do not want any end\-of\-line conversions applied to, nor textual diffs prod
 .RS 4
 .\}
 .nf
-*\&.jpg \-crlf \-diff
+*\&.jpg \-text \-diff
 .fi
 .if n \{\
 .RE
@@ -822,7 +1015,7 @@ but that may become cumbersome, when you have many attributes\&. Using attribute
 .\}
 .sp
 .sp
-which is equivalent to the above\&. Note that the attribute macros can only be "Set" (see the above example that sets "binary" macro as if it were an ordinary attribute \-\-\- setting it in turn unsets "crlf" and "diff")\&.
+which is equivalent to the above\&. Note that the attribute macros can only be "Set" (see the above example that sets "binary" macro as if it were an ordinary attribute \-\-\- setting it in turn unsets "text" and "diff")\&.
 .SH "DEFINING ATTRIBUTE MACROS"
 .sp
 Custom attribute macros can be defined only in the \&.gitattributes file at the toplevel (i\&.e\&. not in any subdirectory)\&. The built\-in attribute macro "binary" is equivalent to:
@@ -831,7 +1024,7 @@ Custom attribute macros can be defined only in the \&.gitattributes file at the 
 .RS 4
 .\}
 .nf
-[attr]binary \-diff \-crlf
+[attr]binary \-diff \-text
 .fi
 .if n \{\
 .RE

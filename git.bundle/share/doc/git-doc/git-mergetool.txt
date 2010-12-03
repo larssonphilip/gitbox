@@ -7,7 +7,7 @@ git-mergetool - Run merge conflict resolution tools to resolve merge conflicts
 
 SYNOPSIS
 --------
-'git mergetool' [--tool=<tool>] [-y|--no-prompt|--prompt] [<file>]...
+'git mergetool' [--tool=<tool>] [-y|--no-prompt|--prompt] [<file>...]
 
 DESCRIPTION
 -----------
@@ -71,6 +71,16 @@ success of the resolution after the custom tool has exited.
 	Prompt before each invocation of the merge resolution program.
 	This is the default behaviour; the option is provided to
 	override any configuration settings.
+
+TEMPORARY FILES
+---------------
+`git mergetool` creates `*.orig` backup files while resolving merges.
+These are safe to remove once a file has been merged and its
+`git mergetool` session has completed.
+
+Setting the `mergetool.keepBackup` configuration variable to `false`
+causes `git mergetool` to automatically remove the backup as files
+are successfully merged.
 
 Author
 ------

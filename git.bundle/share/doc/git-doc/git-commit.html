@@ -323,7 +323,7 @@ git-commit(1) Manual Page
 <div class="verseblock">
 <div class="content"><em>git commit</em> [-a | --interactive] [-s] [-v] [-u&lt;mode&gt;] [--amend] [--dry-run]
            [(-c | -C) &lt;commit&gt;] [-F &lt;file&gt; | -m &lt;msg&gt;] [--reset-author]
-           [--allow-empty] [--no-verify] [-e] [--author=&lt;author&gt;]
+           [--allow-empty] [--allow-empty-message] [--no-verify] [-e] [--author=&lt;author&gt;]
            [--date=&lt;date&gt;] [--cleanup=&lt;mode&gt;] [--status | --no-status] [--]
            [[-i | -o ]&lt;file&gt;&#8230;]</div></div>
 </div>
@@ -474,10 +474,11 @@ that, you can recover from it with <em>git reset</em>.</p></div>
 </dt>
 <dd>
 <p>
-        Override the author name used in the commit.  You can use the
-        standard <tt>A U Thor &lt;author@example.com&gt;</tt> format.  Otherwise,
-        an existing commit that matches the given string and its author
-        name is used.
+        Override the commit author. Specify an explicit author using the
+        standard <tt>A U Thor &lt;author@example.com&gt;</tt> format. Otherwise &lt;author&gt;
+        is assumed to be a pattern and is used to search for an existing
+        commit by that author (i.e. rev-list --all -i --author=&lt;author&gt;);
+        the commit author is then copied from the first such commit found.
 </p>
 </dd>
 <dt>
@@ -546,7 +547,18 @@ that, you can recover from it with <em>git reset</em>.</p></div>
         Usually recording a commit that has the exact same tree as its
         sole parent commit is a mistake, and the command prevents you
         from making such a commit.  This option bypasses the safety, and
-        is primarily for use by foreign scm interface scripts.
+        is primarily for use by foreign SCM interface scripts.
+</p>
+</dd>
+<dt>
+--allow-empty-message
+</dt>
+<dd>
+<p>
+       Like --allow-empty this command is primarily for use by foreign
+       SCM interface scripts. It allows you to create a commit with an
+       empty commit message without using plumbing commands like
+       <a href="git-commit-tree.html">git-commit-tree(1)</a>.
 </p>
 </dd>
 <dt>
@@ -994,7 +1006,7 @@ Junio C Hamano &lt;gitster@pobox.com&gt;</p></div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2010-04-24 02:40:26 UTC
+Last updated 2010-10-22 03:51:09 UTC
 </div>
 </div>
 </body>

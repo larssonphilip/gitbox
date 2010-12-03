@@ -924,7 +924,7 @@ commitBeforeMerge
 <dd>
 <p>
                 Advice shown when <a href="git-merge.html">git-merge(1)</a> refuses to
-                merge to avoid overwritting local changes.
+                merge to avoid overwriting local changes.
                 Default: true.
 </p>
 </dd>
@@ -1035,19 +1035,16 @@ core.quotepath
 </p>
 </dd>
 <dt>
-core.autocrlf
+core.eol
 </dt>
 <dd>
 <p>
-        If true, makes git convert <tt>CRLF</tt> at the end of lines in text files to
-        <tt>LF</tt> when reading from the work tree, and convert in reverse when
-        writing to the work tree.  The variable can be set to
-        <em>input</em>, in which case the conversion happens only while
-        reading from the work tree but files are written out to the work
-        tree with <tt>LF</tt> at the end of lines.  A file is considered
-        "text" (i.e. be subjected to the autocrlf mechanism) based on
-        the file's <tt>crlf</tt> attribute, or if <tt>crlf</tt> is unspecified,
-        based on the file's contents.  See <a href="gitattributes.html">gitattributes(5)</a>.
+        Sets the line ending type to use in the working directory for
+        files that have the <tt>text</tt> property set.  Alternatives are
+        <em>lf</em>, <em>crlf</em> and <em>native</em>, which uses the platform's native
+        line ending.  The default value is <tt>native</tt>.  See
+        <a href="gitattributes.html">gitattributes(5)</a> for more information on end-of-line
+        conversion.
 </p>
 </dd>
 <dt>
@@ -1055,8 +1052,8 @@ core.safecrlf
 </dt>
 <dd>
 <p>
-        If true, makes git check if converting <tt>CRLF</tt> as controlled by
-        <tt>core.autocrlf</tt> is reversible.  Git will verify if a command
+        If true, makes git check if converting <tt>CRLF</tt> is reversible when
+        end-of-line conversion is active.  Git will verify if a command
         modifies a file in the work tree either directly or indirectly.
         For example, committing a file followed by checking out the
         same file should yield the original file in the work tree.  If
@@ -1066,7 +1063,7 @@ core.safecrlf
         irreversible conversion but continue the operation.
 </p>
 <div class="para"><p>CRLF conversion bears a slight chance of corrupting data.
-autocrlf=true will convert CRLF to LF during commit and LF to
+When it is enabled, git will convert CRLF to LF during commit and LF to
 CRLF during checkout.  A file that contains a mixture of LF and
 CRLF before the commit cannot be recreated by git.  For text
 files this is the right thing to do: it corrects line endings
@@ -1087,14 +1084,29 @@ to do because CRLFs are line endings, while for binary files
 converting CRLFs corrupts data.</p></div>
 <div class="para"><p>Note, this safety check does not mean that a checkout will generate a
 file identical to the original file for a different setting of
-<tt>core.autocrlf</tt>, but only for the current one.  For example, a text
-file with <tt>LF</tt> would be accepted with <tt>core.autocrlf=input</tt> and could
-later be checked out with <tt>core.autocrlf=true</tt>, in which case the
+<tt>core.eol</tt> and <tt>core.autocrlf</tt>, but only for the current one.  For
+example, a text file with <tt>LF</tt> would be accepted with <tt>core.eol=lf</tt>
+and could later be checked out with <tt>core.eol=crlf</tt>, in which case the
 resulting file would contain <tt>CRLF</tt>, although the original file
 contained <tt>LF</tt>.  However, in both work trees the line endings would be
 consistent, that is either all <tt>LF</tt> or all <tt>CRLF</tt>, but never mixed.  A
 file with mixed line endings would be reported by the <tt>core.safecrlf</tt>
 mechanism.</p></div>
+</dd>
+<dt>
+core.autocrlf
+</dt>
+<dd>
+<p>
+        Setting this variable to "true" is almost the same as setting
+        the <tt>text</tt> attribute to "auto" on all files except that text
+        files are not guaranteed to be normalized: files that contain
+        <tt>CRLF</tt> in the repository will not be touched.  Use this
+        setting if you want to have <tt>CRLF</tt> line endings in your
+        working directory even though the repository does not have
+        normalized line endings.  This variable can be set to <em>input</em>,
+        in which case no output conversion is performed.
+</p>
 </dd>
 <dt>
 core.symlinks
@@ -1318,7 +1330,7 @@ core.deltaBaseCacheLimit
 <dd>
 <p>
         Maximum number of bytes to reserve for caching base objects
-        that multiple deltafied objects reference.  By storing the
+        that may be referenced by multiple deltified objects.  By storing the
         entire decompressed base objects in a cache Git is able
         to avoid unpacking and decompressing frequently used base
         objects multiple times.
@@ -1354,6 +1366,20 @@ core.excludesfile
         of files which are not meant to be tracked.  "&#126;/" is expanded
         to the value of <tt>$HOME</tt> and "&#126;user/" to the specified user's
         home directory.  See <a href="gitignore.html">gitignore(5)</a>.
+</p>
+</dd>
+<dt>
+core.askpass
+</dt>
+<dd>
+<p>
+        Some commands (e.g. svn and http interfaces) that interactively
+        ask for a password can be told to use an external program given
+        via the value of this variable. Can be overridden by the <em>GIT_ASKPASS</em>
+        environment variable. If not set, fall back to the value of the
+        <em>SSH_ASKPASS</em> environment variable or, failing that, a simple password
+        prompt. The external program shall be given a suitable prompt as
+        command line argument and write the password on its STDOUT.
 </p>
 </dd>
 <dt>
@@ -1423,6 +1449,12 @@ core.whitespace
 </li>
 <li>
 <p>
+<tt>tab-in-indent</tt> treats a tab character in the initial indent part of
+  the line as an error (not enabled by default).
+</p>
+</li>
+<li>
+<p>
 <tt>blank-at-eof</tt> treats blank lines added at the end of file as an error
   (enabled by default).
 </p>
@@ -1487,17 +1519,12 @@ core.notesRef
 <dd>
 <p>
         When showing commit messages, also show notes which are stored in
-        the given ref.  This ref is expected to contain files named
-        after the full SHA-1 of the commit they annotate.  The ref
-        must be fully qualified.
+        the given ref.  The ref must be fully qualified.  If the given
+        ref does not exist, it is not an error but means that no
+        notes should be printed.
 </p>
-<div class="para"><p>If such a file exists in the given ref, the referenced blob is read, and
-appended to the commit message, separated by a "Notes (&lt;refname&gt;):"
-line (shortened to "Notes:" in the case of "refs/notes/commits").  If the
-given ref itself does not exist, it is not an error, but means that no
-notes should be printed.</p></div>
-<div class="para"><p>This setting defaults to "refs/notes/commits", and can be overridden by
-the <tt>GIT_NOTES_REF</tt> environment variable.</p></div>
+<div class="para"><p>This setting defaults to "refs/notes/commits", and it can be overridden by
+the <em>GIT_NOTES_REF</em> environment variable.  See <a href="git-notes.html">git-notes(1)</a>.</p></div>
 </dd>
 <dt>
 core.sparseCheckout
@@ -1546,7 +1573,7 @@ am.keepcr
 <p>
         If true, git-am will call git-mailsplit for patches in mbox format
         with parameter <em>--keep-cr</em>. In this case git-mailsplit will
-        not remove <tt>\r</tt> from lines ending with <tt>\r\n</tt>. Can be overrriden
+        not remove <tt>\r</tt> from lines ending with <tt>\r\n</tt>. Can be overridden
         by giving <em>--no-keep-cr</em> from the command line.
         See <a href="git-am.html">git-am(1)</a>, <a href="git-mailsplit.html">git-mailsplit(1)</a>.
 </p>
@@ -1746,6 +1773,16 @@ color.diff.&lt;slot&gt;
         <tt>new</tt> (added lines), <tt>commit</tt> (commit headers), or <tt>whitespace</tt>
         (highlighting whitespace errors). The values of these variables may be
         specified as in color.branch.&lt;slot&gt;.
+</p>
+</dd>
+<dt>
+color.decorate.&lt;slot&gt;
+</dt>
+<dd>
+<p>
+        Use customized color for <em>git log --decorate</em> output.  <tt>&lt;slot&gt;</tt> is one
+        of <tt>branch</tt>, <tt>remoteBranch</tt>, <tt>tag</tt>, <tt>stash</tt> or <tt>HEAD</tt> for local
+        branches, remote tracking branches, tags, stash and HEAD, respectively.
 </p>
 </dd>
 <dt>
@@ -2011,6 +2048,14 @@ diff.mnemonicprefix
 </dl></div>
 </dd>
 <dt>
+diff.noprefix
+</dt>
+<dd>
+<p>
+        If set, <em>git diff</em> does not show any source or destination prefix.
+</p>
+</dd>
+<dt>
 diff.renameLimit
 </dt>
 <dd>
@@ -2027,6 +2072,17 @@ diff.renames
         Tells git to detect renames.  If set to any boolean value, it
         will enable basic rename detection.  If set to "copies" or
         "copy", it will detect copies, as well.
+</p>
+</dd>
+<dt>
+diff.ignoreSubmodules
+</dt>
+<dd>
+<p>
+        Sets the default value of --ignore-submodules. Note that this
+        affects only <em>git diff</em> Porcelain, and not lower level <em>diff</em>
+        commands such as <em>git diff-files</em>. <em>git checkout</em> also honors
+        this setting when reporting uncommitted changes.
 </p>
 </dd>
 <dt>
@@ -2140,12 +2196,16 @@ format.headers
 </p>
 </dd>
 <dt>
+format.to
+</dt>
+<dt>
 format.cc
 </dt>
 <dd>
 <p>
-        Additional "Cc:" headers to include in a patch to be submitted
-        by mail.  See the --cc option in <a href="git-format-patch.html">git-format-patch(1)</a>.
+        Additional recipients to include in a patch to be submitted
+        by mail.  See the --to and --cc options in
+        <a href="git-format-patch.html">git-format-patch(1)</a>.
 </p>
 </dd>
 <dt>
@@ -2155,6 +2215,17 @@ format.subjectprefix
 <p>
         The default for format-patch is to output files with the <em>[PATCH]</em>
         subject prefix. Use this variable to change that prefix.
+</p>
+</dd>
+<dt>
+format.signature
+</dt>
+<dd>
+<p>
+        The default for format-patch is to output a signature containing
+        the git version number. Use this variable to change that default.
+        Set this variable to the empty string ("") to suppress
+        signature generation.
 </p>
 </dd>
 <dt>
@@ -2264,20 +2335,30 @@ gc.pruneexpire
 <dt>
 gc.reflogexpire
 </dt>
+<dt>
+gc.&lt;pattern&gt;.reflogexpire
+</dt>
 <dd>
 <p>
         <em>git reflog expire</em> removes reflog entries older than
-        this time; defaults to 90 days.
+        this time; defaults to 90 days.  With "&lt;pattern&gt;" (e.g.
+        "refs/stash") in the middle the setting applies only to
+        the refs that match the &lt;pattern&gt;.
 </p>
 </dd>
 <dt>
 gc.reflogexpireunreachable
 </dt>
+<dt>
+gc.&lt;ref&gt;.reflogexpireunreachable
+</dt>
 <dd>
 <p>
         <em>git reflog expire</em> removes reflog entries older than
         this time and are not reachable from the current tip;
-        defaults to 30 days.
+        defaults to 30 days.  With "&lt;pattern&gt;" (e.g. "refs/stash")
+        in the middle, the setting applies only to the refs that
+        match the &lt;pattern&gt;.
 </p>
 </dd>
 <dt>
@@ -2332,13 +2413,15 @@ gitcvs.usecrlfattr
 </dt>
 <dd>
 <p>
-        If true, the server will look up the <tt>crlf</tt> attribute for
-        files to determine the <em>-k</em> modes to use. If <tt>crlf</tt> is set,
-        the <em>-k</em> mode will be left blank, so cvs clients will
-        treat it as text. If <tt>crlf</tt> is explicitly unset, the file
+        If true, the server will look up the end-of-line conversion
+        attributes for files to determine the <em>-k</em> modes to use. If
+        the attributes force git to treat a file as text,
+        the <em>-k</em> mode will be left blank so CVS clients will
+        treat it as text. If they suppress text conversion, the file
         will be set with <em>-kb</em> mode, which suppresses any newline munging
-        the client might otherwise do. If <tt>crlf</tt> is not specified,
-        then <em>gitcvs.allbinary</em> is used. See <a href="gitattributes.html">gitattributes(5)</a>.
+        the client might otherwise do. If the attributes do not allow
+        the file type to be determined, then <em>gitcvs.allbinary</em> is
+        used. See <a href="gitattributes.html">gitattributes(5)</a>.
 </p>
 </dd>
 <dt>
@@ -2782,6 +2865,20 @@ http.noEPSV
 </p>
 </dd>
 <dt>
+http.useragent
+</dt>
+<dd>
+<p>
+        The HTTP USER_AGENT string presented to an HTTP server.  The default
+        value represents the version of the client git such as git/1.7.1.
+        This option allows you to override this value to a more common value
+        such as Mozilla/4.0.  This may be necessary, for instance, if
+        connecting through a firewall that restricts HTTP connections to a set
+        of common USER_AGENT strings (but not including those like git/1.7.1).
+        Can be overridden by the <em>GIT_HTTP_USER_AGENT</em> environment variable.
+</p>
+</dd>
+<dt>
 i18n.commitEncoding
 </dt>
 <dd>
@@ -2852,7 +2949,9 @@ instaweb.modulepath
 </dt>
 <dd>
 <p>
-        The module path for an apache httpd used by <a href="git-instaweb.html">git-instaweb(1)</a>.
+        The default module path for <a href="git-instaweb.html">git-instaweb(1)</a> to use
+        instead of /usr/lib/apache2/modules.  Only used if httpd
+        is Apache.
 </p>
 </dd>
 <dt>
@@ -2881,10 +2980,23 @@ log.date
 </dt>
 <dd>
 <p>
-        Set default date-time mode for the log command. Setting log.date
-        value is similar to using <em>git log</em>'s --date option. The value is one of the
-        following alternatives: {relative,local,default,iso,rfc,short}.
-        See <a href="git-log.html">git-log(1)</a>.
+        Set the default date-time mode for the <em>log</em> command.
+        Setting a value for log.date is similar to using <em>git log</em>'s
+        <tt>--date</tt> option.  Possible values are <tt>relative</tt>, <tt>local</tt>,
+        <tt>default</tt>, <tt>iso</tt>, <tt>rfc</tt>, and <tt>short</tt>; see <a href="git-log.html">git-log(1)</a>
+        for details.
+</p>
+</dd>
+<dt>
+log.decorate
+</dt>
+<dd>
+<p>
+        Print out the ref names of any commits that are shown by the log
+        command. If <em>short</em> is specified, the ref name prefixes <em>refs/heads/</em>,
+        <em>refs/tags/</em> and <em>refs/remotes/</em> will not be printed. If <em>full</em> is
+        specified, the full ref name (including prefix) will be printed.
+        This is the same as the log commands <em>--decorate</em> option.
 </p>
 </dd>
 <dt>
@@ -2969,6 +3081,21 @@ merge.renameLimit
         The number of files to consider when performing rename detection
         during a merge; if not specified, defaults to the value of
         diff.renameLimit.
+</p>
+</dd>
+<dt>
+merge.renormalize
+</dt>
+<dd>
+<p>
+        Tell git that canonical representation of files in the
+        repository has changed over time (e.g. earlier commits record
+        text files with CRLF line endings, but recent ones use LF line
+        endings).  In such a repository, git can convert the data
+        recorded in commits to a canonical form before performing a
+        merge to reduce unnecessary conflicts.  For more information,
+        see section "Merging branches with differing checkin/checkout
+        attributes" in <a href="gitattributes.html">gitattributes(5)</a>.
 </p>
 </dd>
 <dt>
@@ -3134,9 +3261,6 @@ notes.rewrite.&lt;command&gt;
         rewritten commit.  Defaults to <tt>true</tt>, but see
         "notes.rewriteRef" below.
 </p>
-<div class="para"><p>This setting can be overridden with the <tt>GIT_NOTES_REWRITE_REF</tt>
-environment variable, which must be a colon separated list of refs or
-globs.</p></div>
 </dd>
 <dt>
 notes.rewriteMode
@@ -3164,6 +3288,9 @@ notes.rewriteRef
 </p>
 <div class="para"><p>Does not have a default value; you must configure this variable to
 enable note rewriting.</p></div>
+<div class="para"><p>This setting can be overridden with the <tt>GIT_NOTES_REWRITE_REF</tt>
+environment variable, which must be a colon separated list of refs or
+globs.</p></div>
 </dd>
 <dt>
 pack.window
@@ -3298,6 +3425,21 @@ pager.&lt;cmd&gt;
 </p>
 </dd>
 <dt>
+pretty.&lt;name&gt;
+</dt>
+<dd>
+<p>
+        Alias for a --pretty= format string, as specified in
+        <a href="git-log.html">git-log(1)</a>. Any aliases defined here can be used just
+        as the built-in pretty formats could. For example,
+        running <tt>git config pretty.changelog "format:&#42; %H %s"</tt>
+        would cause the invocation <tt>git log --pretty=changelog</tt>
+        to be equivalent to running <tt>git log "--pretty=format:&#42; %H %s"</tt>.
+        Note that an alias with the same name as a built-in format
+        will be silently ignored.
+</p>
+</dd>
+<dt>
 pull.octopus
 </dt>
 <dd>
@@ -3327,24 +3469,24 @@ push.default
 <div class="ilist"><ul>
 <li>
 <p>
-<tt>nothing</tt> do not push anything.
+<tt>nothing</tt> - do not push anything.
 </p>
 </li>
 <li>
 <p>
-<tt>matching</tt> push all matching branches.
+<tt>matching</tt> - push all matching branches.
   All branches having the same name in both ends are considered to be
   matching. This is the default.
 </p>
 </li>
 <li>
 <p>
-<tt>tracking</tt> push the current branch to its upstream branch.
+<tt>tracking</tt> - push the current branch to its upstream branch.
 </p>
 </li>
 <li>
 <p>
-<tt>current</tt> push the current branch to a branch of the same name.
+<tt>current</tt> - push the current branch to a branch of the same name.
 </p>
 </li>
 </ul></div>
@@ -3356,6 +3498,14 @@ rebase.stat
 <p>
         Whether to show a diffstat of what changed upstream since the last
         rebase. False by default.
+</p>
+</dd>
+<dt>
+rebase.autosquash
+</dt>
+<dd>
+<p>
+        If set to true enable <em>--autosquash</em> option by default.
 </p>
 </dd>
 <dt>
@@ -3404,11 +3554,20 @@ receive.denyDeletes
 </p>
 </dd>
 <dt>
+receive.denyDeleteCurrent
+</dt>
+<dd>
+<p>
+        If set to true, git-receive-pack will deny a ref update that
+        deletes the currently checked out branch of a non-bare repository.
+</p>
+</dd>
+<dt>
 receive.denyCurrentBranch
 </dt>
 <dd>
 <p>
-        If set to true or "refuse", receive-pack will deny a ref update
+        If set to true or "refuse", git-receive-pack will deny a ref update
         to the currently checked out branch of a non-bare repository.
         Such a push is potentially dangerous because it brings the HEAD
         out of sync with the index and working tree. If set to "warn",
@@ -3535,7 +3694,11 @@ remote.&lt;name&gt;.tagopt
 <dd>
 <p>
         Setting this value to --no-tags disables automatic tag following when
-        fetching from remote &lt;name&gt;
+        fetching from remote &lt;name&gt;. Setting it to --tags will fetch every
+        tag from remote &lt;name&gt;, even if they are not reachable from remote
+        branch heads. Passing these flags directly to <a href="git-fetch.html">git-fetch(1)</a> can
+        override this setting. See options --tags and --no-tags of
+        <a href="git-fetch.html">git-fetch(1)</a>.
 </p>
 </dd>
 <dt>
@@ -3676,6 +3839,9 @@ sendemail.suppressfrom
 sendemail.to
 </dt>
 <dt>
+sendemail.smtpdomain
+</dt>
+<dt>
 sendemail.smtpserver
 </dt>
 <dt>
@@ -3739,23 +3905,71 @@ status.showUntrackedFiles
 <div class="ilist"><ul>
 <li>
 <p>
-<em>no</em>     - Show no untracked files
+<tt>no</tt> - Show no untracked files.
 </p>
 </li>
 <li>
 <p>
-<em>normal</em> - Shows untracked files and directories
+<tt>normal</tt> - Show untracked files and directories.
 </p>
 </li>
 <li>
 <p>
-<em>all</em>    - Shows also individual files in untracked directories.
+<tt>all</tt> - Show also individual files in untracked directories.
 </p>
 </li>
 </ul></div>
 <div class="para"><p>If this variable is not specified, it defaults to <em>normal</em>.
 This variable can be overridden with the -u|--untracked-files option
 of <a href="git-status.html">git-status(1)</a> and <a href="git-commit.html">git-commit(1)</a>.</p></div>
+</dd>
+<dt>
+status.submodulesummary
+</dt>
+<dd>
+<p>
+        Defaults to false.
+        If this is set to a non zero number or true (identical to -1 or an
+        unlimited number), the submodule summary will be enabled and a
+        summary of commits for modified submodules will be shown (see
+        --summary-limit option of <a href="git-submodule.html">git-submodule(1)</a>).
+</p>
+</dd>
+<dt>
+submodule.&lt;name&gt;.path
+</dt>
+<dt>
+submodule.&lt;name&gt;.url
+</dt>
+<dt>
+submodule.&lt;name&gt;.update
+</dt>
+<dd>
+<p>
+        The path within this project, URL, and the updating strategy
+        for a submodule.  These variables are initially populated
+        by <em>git submodule init</em>; edit them to override the
+        URL and other values found in the <tt>.gitmodules</tt> file.  See
+        <a href="git-submodule.html">git-submodule(1)</a> and <a href="gitmodules.html">gitmodules(5)</a> for details.
+</p>
+</dd>
+<dt>
+submodule.&lt;name&gt;.ignore
+</dt>
+<dd>
+<p>
+        Defines under what circumstances "git status" and the diff family show
+        a submodule as modified. When set to "all", it will never be considered
+        modified, "dirty" will ignore all changes to the submodules work tree and
+        takes only differences between the HEAD of the submodule and the commit
+        recorded in the superproject into account. "untracked" will additionally
+        let submodules with modified tracked files in their work tree show up.
+        Using "none" (the default when this option is not set) also shows
+        submodules that have untracked files in their work tree as changed.
+        This setting overrides any setting made in .gitmodules for this submodule,
+        both settings can be overridden on the command line by using the
+        "--ignore-submodules" option.
+</p>
 </dd>
 <dt>
 tar.umask
@@ -3871,7 +4085,7 @@ web.browser
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2010-04-24 02:40:26 UTC
+Last updated 2010-10-22 03:51:09 UTC
 </div>
 </div>
 </body>

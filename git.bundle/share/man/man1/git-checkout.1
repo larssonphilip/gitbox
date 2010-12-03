@@ -2,12 +2,12 @@
 .\"     Title: git-checkout
 .\"    Author: [see the "Author" section]
 .\" Generator: DocBook XSL Stylesheets v1.75.2 <http://docbook.sf.net/>
-.\"      Date: 04/24/2010
+.\"      Date: 10/22/2010
 .\"    Manual: Git Manual
-.\"    Source: Git 1.7.1
+.\"    Source: Git 1.7.3.2
 .\"  Language: English
 .\"
-.TH "GIT\-CHECKOUT" "1" "04/24/2010" "Git 1\&.7\&.1" "Git Manual"
+.TH "GIT\-CHECKOUT" "1" "10/22/2010" "Git 1\&.7\&.3\&.2" "Git Manual"
 .\" -----------------------------------------------------------------
 .\" * set default formatting
 .\" -----------------------------------------------------------------
@@ -24,20 +24,76 @@ git-checkout \- Checkout a branch or paths to the working tree
 .sp
 .nf
 \fIgit checkout\fR [\-q] [\-f] [\-m] [<branch>]
-\fIgit checkout\fR [\-q] [\-f] [\-m] [\-b <new_branch>] [<start_point>]
+\fIgit checkout\fR [\-q] [\-f] [\-m] [[\-b|\-B|\-\-orphan] <new_branch>] [<start_point>]
 \fIgit checkout\fR [\-f|\-\-ours|\-\-theirs|\-m|\-\-conflict=<style>] [<tree\-ish>] [\-\-] <paths>\&...
 \fIgit checkout\fR \-\-patch [<tree\-ish>] [\-\-] [<paths>\&...]
 .fi
 .sp
 .SH "DESCRIPTION"
 .sp
-When <paths> are not given, this command switches branches by updating the index, working tree, and HEAD to reflect the specified branch\&.
+Updates files in the working tree to match the version in the index or the specified tree\&. If no paths are given, \fIgit checkout\fR will also update HEAD to set the specified branch as the current branch\&.
+.PP
+\fIgit checkout\fR [<branch>], \fIgit checkout\fR \-b|\-B <new_branch> [<start point>]
+.RS 4
+This form switches branches by updating the index, working tree, and HEAD to reflect the specified branch\&.
 .sp
-If \-b is given, a new branch is created and checked out, as if \fBgit-branch\fR(1) were called; in this case you can use the \-\-track or \-\-no\-track options, which will be passed to git branch\&. As a convenience, \-\-track without \-b implies branch creation; see the description of \-\-track below\&.
+If
+\-b
+is given, a new branch is created as if
+\fBgit-branch\fR(1)
+were called and then checked out; in this case you can use the
+\-\-track
+or
+\-\-no\-track
+options, which will be passed to
+\fIgit branch\fR\&. As a convenience,
+\-\-track
+without
+\-b
+implies branch creation; see the description of
+\-\-track
+below\&.
 .sp
-When <paths> or \-\-patch are given, this command does \fBnot\fR switch branches\&. It updates the named paths in the working tree from the index file, or from a named <tree\-ish> (most often a commit)\&. In this case, the \-b and \-\-track options are meaningless and giving either of them results in an error\&. The <tree\-ish> argument can be used to specify a specific tree\-ish (i\&.e\&. commit, tag or tree) to update the index for the given paths before updating the working tree\&.
+If
+\-B
+is given, <new_branch> is created if it doesn\(aqt exist; otherwise, it is reset\&. This is the transactional equivalent of
 .sp
-The index may contain unmerged entries after a failed merge\&. By default, if you try to check out such an entry from the index, the checkout operation will fail and nothing will be checked out\&. Using \-f will ignore these unmerged entries\&. The contents from a specific side of the merge can be checked out of the index by using \-\-ours or \-\-theirs\&. With \-m, changes made to the working tree file can be discarded to recreate the original conflicted merge result\&.
+.if n \{\
+.RS 4
+.\}
+.nf
+$ git branch \-f <branch> [<start point>]
+$ git checkout <branch>
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+that is to say, the branch is not reset/created unless "git checkout" is successful\&.
+.RE
+.PP
+\fIgit checkout\fR [\-\-patch] [<tree\-ish>] [\-\-] <pathspec>\&...
+.RS 4
+When <paths> or
+\-\-patch
+are given,
+\fIgit checkout\fR
+does
+\fBnot\fR
+switch branches\&. It updates the named paths in the working tree from the index file or from a named <tree\-ish> (most often a commit)\&. In this case, the
+\-b
+and
+\-\-track
+options are meaningless and giving either of them results in an error\&. The <tree\-ish> argument can be used to specify a specific tree\-ish (i\&.e\&. commit, tag or tree) to update the index for the given paths before updating the working tree\&.
+.sp
+The index may contain unmerged entries because of a previous failed merge\&. By default, if you try to check out such an entry from the index, the checkout operation will fail and nothing will be checked out\&. Using
+\-f
+will ignore these unmerged entries\&. The contents from a specific side of the merge can be checked out of the index by using
+\-\-ours
+or
+\-\-theirs\&. With
+\-m, changes made to the working tree file can be discarded to re\-create the original conflicted merge result\&.
+.RE
 .SH "OPTIONS"
 .PP
 \-q, \-\-quiet
@@ -60,6 +116,13 @@ When checking out paths from the index, check out stage #2 (\fIours\fR) or #3 (\
 \-b
 .RS 4
 Create a new branch named <new_branch> and start it at <start_point>; see
+\fBgit-branch\fR(1)
+for details\&.
+.RE
+.PP
+\-B
+.RS 4
+Creates the branch <new_branch> and start it at <start_point>; if it already exists, then reset it to <start_point>\&. This is equivalent to running "git branch" with "\-f"; see
 \fBgit-branch\fR(1)
 for details\&.
 .RE
@@ -87,6 +150,19 @@ Do not set up "upstream" configuration, even if the branch\&.autosetupmerge conf
 Create the new branch\(aqs reflog; see
 \fBgit-branch\fR(1)
 for details\&.
+.RE
+.PP
+\-\-orphan
+.RS 4
+Create a new
+\fIorphan\fR
+branch, named <new_branch>, started from <start_point> and switch to it\&. The first commit made on this new branch will have no parents and it will be the root of a new history totally disconnected from all the other branches and commits\&.
+.sp
+The index and the working tree are adjusted as if you had previously run "git checkout <start_point>"\&. This allows you to start a new history that records a set of paths similar to <start_point> by easily running "git commit \-a" to make the root commit\&.
+.sp
+This can be useful when you want to publish the tree from a commit without exposing its full history\&. You might want to do this to publish an open source branch of a project whose current tree is "clean", but whose full history contains proprietary or otherwise encumbered bits of code\&.
+.sp
+If you want to start a disconnected history that records a set of paths that is totally different from the one of <start_point>, then you should clear the index and the working tree right after creating the orphan branch by running "git rm \-rf \&." from the top level of the working tree\&. Afterwards you will be ready to prepare your new files, repopulating the working tree, by copying them from elsewhere, extracting a tarball, etc\&.
 .RE
 .PP
 \-m, \-\-merge
@@ -126,6 +202,18 @@ syntax for the N\-th last branch checks out the branch (instead of detaching)\&.
 \-
 which is synonymous with
 "@{\-1}"\&.
+.sp
+As a further special case, you may use
+"A\&.\&.\&.B"
+as a shortcut for the merge base of
+A
+and
+B
+if there is exactly one merge base\&. You can leave out at most one of
+A
+and
+B, in which case it defaults to
+HEAD\&.
 .RE
 .PP
 <new_branch>
@@ -253,7 +341,7 @@ However, your "wrong" branch and correct "mytopic" branch may differ in files th
 .\}
 .nf
 $ git checkout mytopic
-fatal: Entry \(aqfrotz\(aq not uptodate\&. Cannot merge\&.
+error: You have local changes to \(aqfrotz\(aq; not switching branches\&.
 .fi
 .if n \{\
 .RE

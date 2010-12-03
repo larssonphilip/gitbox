@@ -396,6 +396,8 @@ Subversion updated from git by the <em>dcommit</em> command.</p></div>
 <dd>
 <p>
         Set the <em>noMetadata</em> option in the [svn-remote] config.
+        This option is not recommended, please read the <em>svn.noMetadata</em>
+        section of this manpage before using this option.
 </p>
 </dd>
 <dt>
@@ -738,7 +740,7 @@ git config --get-all svn-remote.&lt;name&gt;.tags</tt></pre>
 <dd>
 <p>
         Specify the SVN username to perform the commit as.  This option overrides
-        configuration property <em>username</em>.
+        the <em>username</em> configuration property.
 </p>
 </dd>
 <dt>
@@ -1084,7 +1086,7 @@ future <em>dcommit</em>!</p></div>
 <div class="sectionbody">
 <div class="vlist"><dl>
 <dt>
---shared[={false|true|umask|group|all|world|everybody}]
+--shared[=(false|true|umask|group|all|world|everybody)]
 </dt>
 <dt>
 --template=&lt;template_directory&gt;
@@ -1337,12 +1339,20 @@ svn-remote.&lt;name&gt;.noMetadata
 <p>
         This gets rid of the <em>git-svn-id:</em> lines at the end of every commit.
 </p>
-<div class="para"><p>If you lose your .git/svn/git-svn/.rev_db file, <em>git svn</em> will not
-be able to rebuild it and you won't be able to fetch again,
-either.  This is fine for one-shot imports.</p></div>
+<div class="para"><p>This option can only be used for one-shot imports as <em>git svn</em>
+will not be able to fetch again without metadata. Additionally,
+if you lose your .git/svn/<strong>*/.rev_map.</strong> files, <em>git svn</em> will not
+be able to rebuild them.</p></div>
 <div class="para"><p>The <em>git svn log</em> command will not work on repositories using
 this, either.  Using this conflicts with the <em>useSvmProps</em>
 option for (hopefully) obvious reasons.</p></div>
+<div class="para"><p>This option is NOT recommended as it makes it difficult to track down
+old references to SVN revision numbers in existing documentation, bug
+reports and archives.  If you plan to eventually migrate from SVN to git
+and are certain about dropping SVN history, consider
+<a href="git-filter-branch.html">git-filter-branch(1)</a> instead.  filter-branch also allows
+reformating of metadata for ease-of-reading and rewriting authorship
+info for non-"svn.authorsFile" users.</p></div>
 </dd>
 <dt>
 svn.useSvmProps
@@ -1411,6 +1421,17 @@ svn.brokenSymlinkWorkaround
         while <em>git svn</em> is running and take effect on the next
         revision fetched.  If unset, <em>git svn</em> assumes this option to
         be "true".
+</p>
+</dd>
+<dt>
+svn.pathnameencoding
+</dt>
+<dd>
+<p>
+        This instructs git svn to recode pathnames to a given encoding.
+        It can be used by windows users and by those who work in non-utf8
+        locales to avoid corrupted file names with non-ASCII characters.
+        Valid encodings are the ones supported by Perl's Encode module.
 </p>
 </dd>
 </dl></div>
@@ -1619,7 +1640,7 @@ reset) branches-maxRev and/or tags-maxRev as appropriate.</p></div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2010-04-24 02:41:08 UTC
+Last updated 2010-10-22 03:51:49 UTC
 </div>
 </div>
 </body>

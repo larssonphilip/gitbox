@@ -321,10 +321,11 @@ git(1) Manual Page
 <h2>SYNOPSIS</h2>
 <div class="sectionbody">
 <div class="verseblock">
-<div class="content"><em>git</em> [--version] [--exec-path[=GIT_EXEC_PATH]] [--html-path]
+<div class="content"><em>git</em> [--version] [--exec-path[=&lt;path&gt;]] [--html-path]
     [-p|--paginate|--no-pager] [--no-replace-objects]
-    [--bare] [--git-dir=GIT_DIR] [--work-tree=GIT_WORK_TREE]
-    [--help] COMMAND [ARGS]</div></div>
+    [--bare] [--git-dir=&lt;path&gt;] [--work-tree=&lt;path&gt;]
+    [-c &lt;name&gt;=&lt;value&gt;]
+    [--help] &lt;command&gt; [&lt;args&gt;]</div></div>
 </div>
 <h2 id="_description">DESCRIPTION</h2>
 <div class="sectionbody">
@@ -337,7 +338,7 @@ and full access to internals.</p></div>
 also want to read <a href="gitcvs-migration.html">gitcvs-migration(7)</a>.  See
 the <a href="user-manual.html">Git User's Manual</a> for a more in-depth
 introduction.</p></div>
-<div class="para"><p>The COMMAND is either a name of a Git command (see below) or an alias
+<div class="para"><p>The <em>&lt;command&gt;</em> is either a name of a Git command (see below) or an alias
 as defined in the configuration file (see <a href="git-config.html">git-config(1)</a>).</p></div>
 <div class="para"><p>Formatted and hyperlinked version of the latest git
 documentation can be viewed at
@@ -370,7 +371,18 @@ because <tt>git --help &#8230;</tt> is converted internally into <tt>git
 help &#8230;</tt>.</p></div>
 </dd>
 <dt>
---exec-path
+-c &lt;name&gt;=&lt;value&gt;
+</dt>
+<dd>
+<p>
+        Pass a configuration parameter to the command. The value
+        given will override values from configuration files.
+        The &lt;name&gt; is expected in the same format as listed by
+        <em>git config</em> (subkeys separated by dots).
+</p>
+</dd>
+<dt>
+--exec-path[=&lt;path&gt;]
 </dt>
 <dd>
 <p>
@@ -545,7 +557,7 @@ ancillary user utilities.</p></div>
 </dt>
 <dd>
 <p>
-        Apply the change introduced by an existing commit.
+        Apply the changes introduced by some existing commits.
 </p>
 </dd>
 <dt>
@@ -673,7 +685,7 @@ ancillary user utilities.</p></div>
 </dt>
 <dd>
 <p>
-        Add/inspect object notes.
+        Add or inspect object notes.
 </p>
 </dd>
 <dt>
@@ -713,7 +725,7 @@ ancillary user utilities.</p></div>
 </dt>
 <dd>
 <p>
-        Revert an existing commit.
+        Revert some existing commits.
 </p>
 </dd>
 <dt>
@@ -1731,7 +1743,7 @@ HEAD
 </dd>
 </dl></div>
 <div class="para"><p>For a more complete list of ways to spell object names, see
-"SPECIFYING REVISIONS" section in <a href="git-rev-parse.html">git-rev-parse(1)</a>.</p></div>
+"SPECIFYING REVISIONS" section in <a href="gitrevisions.html">gitrevisions(7)</a>.</p></div>
 </div>
 <h2 id="_file_directory_structure">File/Directory Structure</h2>
 <div class="sectionbody">
@@ -1818,6 +1830,21 @@ git so take care if using Cogito etc.</p></div>
         It will not exclude the current working directory or
         a GIT_DIR set on the command line or in the environment.
         (Useful for excluding slow-loading network directories.)
+</p>
+</dd>
+<dt>
+<em>GIT_DISCOVERY_ACROSS_FILESYSTEM</em>
+</dt>
+<dd>
+<p>
+        When run in a directory that does not have ".git" repository
+        directory, git tries to find such a directory in the parent
+        directories to find the top of the working tree, but by default it
+        does not cross filesystem boundaries.  This environment variable
+        can be set to true to tell git not to stop at filesystem
+        boundaries.  Like <em>GIT_CEILING_DIRECTORIES</em>, this will not affect
+        an explicit repository directory set via <em>GIT_DIR</em> or on the
+        command line.
 </p>
 </dd>
 </dl></div>
@@ -1957,6 +1984,18 @@ personal <tt>.ssh/config</tt> file.  Please consult your ssh documentation
 for further details.</p></div>
 </dd>
 <dt>
+<em>GIT_ASKPASS</em>
+</dt>
+<dd>
+<p>
+        If this environment variable is set, then git commands which need to
+        acquire passwords or passphrases (e.g. for HTTP or IMAP authentication)
+        will call this program with a suitable prompt as command line argument
+        and read the password from its STDOUT. See also the <em>core.askpass</em>
+        option in <a href="git-config.html">git-config(1)</a>.
+</p>
+</dd>
+<dt>
 <em>GIT_FLUSH</em>
 </dt>
 <dd>
@@ -2067,6 +2106,12 @@ General upbringing is handled by the git-list &lt;git@vger.kernel.org&gt;.
 &lt;david@dgreaves.com&gt;, and later enhanced greatly by the
 contributors on the git-list &lt;git@vger.kernel.org&gt;.</p></div>
 </div>
+<h2 id="_reporting_bugs">Reporting Bugs</h2>
+<div class="sectionbody">
+<div class="para"><p>Report bugs to the Git mailing list &lt;git@vger.kernel.org&gt; where the
+development and maintenance is primarily done.  You do not have to be
+subscribed to the list to send a message there.</p></div>
+</div>
 <h2 id="_see_also">SEE ALSO</h2>
 <div class="sectionbody">
 <div class="para"><p><a href="gittutorial.html">gittutorial(7)</a>, <a href="gittutorial-2.html">gittutorial-2(7)</a>,
@@ -2081,7 +2126,7 @@ contributors on the git-list &lt;git@vger.kernel.org&gt;.</p></div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2010-04-24 02:41:15 UTC
+Last updated 2010-10-22 03:51:55 UTC
 </div>
 </div>
 </body>

@@ -322,7 +322,7 @@ git-fetch(1) Manual Page
 <div class="sectionbody">
 <div class="para"><p><em>git fetch</em> [&lt;options&gt;] [&lt;repository&gt; [&lt;refspec&gt;&#8230;]]</p></div>
 <div class="para"><p><em>git fetch</em> [&lt;options&gt;] &lt;group&gt;</p></div>
-<div class="para"><p><em>git fetch</em> --multiple [&lt;options&gt;] [&lt;repository&gt; | &lt;group&gt;]&#8230;</p></div>
+<div class="para"><p><em>git fetch</em> --multiple [&lt;options&gt;] [(&lt;repository&gt; | &lt;group&gt;)&#8230;]</p></div>
 <div class="para"><p><em>git fetch</em> --all [&lt;options&gt;]</p></div>
 </div>
 <h2 id="_description">DESCRIPTION</h2>
@@ -422,6 +422,9 @@ there is a remotes.&lt;group&gt; entry in the configuration file.
 </p>
 </dd>
 <dt>
+-p
+</dt>
+<dt>
 --prune
 </dt>
 <dd>
@@ -440,7 +443,9 @@ there is a remotes.&lt;group&gt; entry in the configuration file.
 <p>
         By default, tags that point at objects that are downloaded
         from the remote repository are fetched and stored locally.
-        This option disables this automatic tag following.
+        This option disables this automatic tag following. The default
+        behavior for a remote may be specified with the remote.&lt;name&gt;.tagopt
+        setting. See <a href="git-config.html">git-config(1)</a>.
 </p>
 </dd>
 <dt>
@@ -456,7 +461,9 @@ there is a remotes.&lt;group&gt; entry in the configuration file.
         objects reachable from the branch heads that are being
         tracked will not be fetched by this mechanism.  This
         flag lets all tags and their associated objects be
-        downloaded.
+        downloaded. The default behavior for a remote may be
+        specified with the remote.&lt;name&gt;.tagopt setting. See
+        <a href="git-config.html">git-config(1)</a>.
 </p>
 </dd>
 <dt>
@@ -693,7 +700,7 @@ git://host.xz&#91;:port&#93;/~&#91;user&#93;/path/to/repo.git/
 </p>
 </li>
 </ul></div>
-<div class="para"><p>For local respositories, also supported by git natively, the following
+<div class="para"><p>For local repositories, also supported by git natively, the following
 syntaxes may be used:</p></div>
 <div class="ilist"><ul>
 <li>
@@ -894,7 +901,7 @@ Junio C Hamano &lt;gitster@pobox.com&gt;</p></div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2010-04-24 02:40:37 UTC
+Last updated 2010-10-22 03:51:20 UTC
 </div>
 </div>
 </body>

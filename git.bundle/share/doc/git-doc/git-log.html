@@ -334,10 +334,106 @@ each commit introduces are shown.</p></div>
 <div class="sectionbody">
 <div class="vlist"><dl>
 <dt>
+-&lt;n&gt;
+</dt>
+<dd>
+<p>
+        Limits the number of commits to show.
+</p>
+</dd>
+<dt>
+&lt;since&gt;..&lt;until&gt;
+</dt>
+<dd>
+<p>
+        Show only commits between the named two commits.  When
+        either &lt;since&gt; or &lt;until&gt; is omitted, it defaults to
+        <tt>HEAD</tt>, i.e. the tip of the current branch.
+        For a more complete list of ways to spell &lt;since&gt;
+        and &lt;until&gt;, see <a href="gitrevisions.html">gitrevisions(7)</a>.
+</p>
+</dd>
+<dt>
+--follow
+</dt>
+<dd>
+<p>
+        Continue listing the history of a file beyond renames
+        (works only for a single file).
+</p>
+</dd>
+<dt>
+--no-decorate
+</dt>
+<dt>
+--decorate[=short|full|no]
+</dt>
+<dd>
+<p>
+        Print out the ref names of any commits that are shown. If <em>short</em> is
+        specified, the ref name prefixes <em>refs/heads/</em>, <em>refs/tags/</em> and
+        <em>refs/remotes/</em> will not be printed. If <em>full</em> is specified, the
+        full ref name (including prefix) will be printed. The default option
+        is <em>short</em>.
+</p>
+</dd>
+<dt>
+--source
+</dt>
+<dd>
+<p>
+        Print out the ref name given on the command line by which each
+        commit was reached.
+</p>
+</dd>
+<dt>
+--full-diff
+</dt>
+<dd>
+<p>
+        Without this flag, "git log -p &lt;path&gt;&#8230;" shows commits that
+        touch the specified paths, and diffs about the same specified
+        paths.  With this, the full diff is shown for commits that touch
+        the specified paths; this means that "&lt;path&gt;&#8230;" limits only
+        commits, and doesn't limit diff for those commits.
+</p>
+<div class="para"><p>Note that this affects all diff-based output types, e.g. those
+produced by --stat etc.</p></div>
+</dd>
+<dt>
+--log-size
+</dt>
+<dd>
+<p>
+        Before the log message print out its size in bytes. Intended
+        mainly for porcelain tools consumption. If git is unable to
+        produce a valid value size is set to zero.
+        Note that only message is considered, if also a diff is shown
+        its size is not included.
+</p>
+</dd>
+<dt>
+[--] &lt;path&gt;&#8230;
+</dt>
+<dd>
+<p>
+        Show only commits that affect any of the specified paths. To
+        prevent confusion with options and branch names, paths may need
+        to be prefixed with "-- " to separate them from options or
+        refnames.
+</p>
+</dd>
+</dl></div>
+<h3 id="_common_diff_options">Common diff options</h3><div style="clear:left"></div>
+<div class="vlist"><dl>
+<dt>
 -p
 </dt>
 <dt>
 -u
+</dt>
+<dt>
+--patch
 </dt>
 <dd>
 <p>
@@ -384,12 +480,12 @@ each commit introduces are shown.</p></div>
 </p>
 </dd>
 <dt>
---stat[=width[,name-width]]
+--stat[=&lt;width&gt;[,&lt;name-width&gt;]]
 </dt>
 <dd>
 <p>
         Generate a diffstat.  You can override the default
-        output width for 80-column terminal by <tt>--stat=width</tt>.
+        output width for 80-column terminal by <tt>--stat=&lt;width&gt;</tt>.
         The width of the filename part can be controlled by
         giving another width to it separated by a comma.
 </p>
@@ -417,19 +513,19 @@ each commit introduces are shown.</p></div>
 </p>
 </dd>
 <dt>
---dirstat[=limit]
+--dirstat[=&lt;limit&gt;]
 </dt>
 <dd>
 <p>
         Output the distribution of relative amount of changes (number of lines added or
         removed) for each sub-directory. Directories with changes below
         a cut-off percent (3% by default) are not shown. The cut-off percent
-        can be set with <tt>--dirstat=limit</tt>. Changes in a child directory is not
+        can be set with <tt>--dirstat=&lt;limit&gt;</tt>. Changes in a child directory are not
         counted for the parent directory, unless <tt>--cumulative</tt> is used.
 </p>
 </dd>
 <dt>
---dirstat-by-file[=limit]
+--dirstat-by-file[=&lt;limit&gt;]
 </dt>
 <dd>
 <p>
@@ -516,14 +612,69 @@ any of those replacements occurred.</p></div>
 </p>
 </dd>
 <dt>
---color-words[=&lt;regex&gt;]
+--word-diff[=&lt;mode&gt;]
 </dt>
 <dd>
 <p>
-        Show colored word diff, i.e., color words which have changed.
-        By default, words are separated by whitespace.
+        Show a word diff, using the &lt;mode&gt; to delimit changed words.
+        By default, words are delimited by whitespace; see
+        <tt>--word-diff-regex</tt> below.  The &lt;mode&gt; defaults to <em>plain</em>, and
+        must be one of:
 </p>
-<div class="para"><p>When a &lt;regex&gt; is specified, every non-overlapping match of the
+<div class="vlist"><dl>
+<dt>
+color
+</dt>
+<dd>
+<p>
+        Highlight changed words using only colors.  Implies <tt>--color</tt>.
+</p>
+</dd>
+<dt>
+plain
+</dt>
+<dd>
+<p>
+        Show words as <tt>[-removed-]</tt> and <tt>{+added+}</tt>.  Makes no
+        attempts to escape the delimiters if they appear in the input,
+        so the output may be ambiguous.
+</p>
+</dd>
+<dt>
+porcelain
+</dt>
+<dd>
+<p>
+        Use a special line-based format intended for script
+        consumption.  Added/removed/unchanged runs are printed in the
+        usual unified diff format, starting with a <tt>+</tt>/<tt>-</tt>/<tt> </tt>
+        character at the beginning of the line and extending to the
+        end of the line.  Newlines in the input are represented by a
+        tilde <tt>~</tt> on a line of its own.
+</p>
+</dd>
+<dt>
+none
+</dt>
+<dd>
+<p>
+        Disable word diff again.
+</p>
+</dd>
+</dl></div>
+<div class="para"><p>Note that despite the name of the first mode, color is used to
+highlight the changed parts in all modes if enabled.</p></div>
+</dd>
+<dt>
+--word-diff-regex=&lt;regex&gt;
+</dt>
+<dd>
+<p>
+        Use &lt;regex&gt; to decide what a word is, instead of considering
+        runs of non-whitespace to be a word.  Also implies
+        <tt>--word-diff</tt> unless it was already enabled.
+</p>
+<div class="para"><p>Every non-overlapping match of the
 &lt;regex&gt; is considered a word.  Anything between these matches is
 considered whitespace and ignored(!) for the purposes of finding
 differences.  You may want to append <tt>|[^[:space:]]</tt> to your regular
@@ -534,6 +685,15 @@ newline.</p></div>
 <a href="gitattributes.html">gitattributes(1)</a> or <a href="git-config.html">git-config(1)</a>.  Giving it explicitly
 overrides any diff driver or configuration setting.  Diff drivers
 override configuration settings.</p></div>
+</dd>
+<dt>
+--color-words[=&lt;regex&gt;]
+</dt>
+<dd>
+<p>
+        Equivalent to <tt>--word-diff=color</tt> plus (if a regex was
+        specified) <tt>--word-diff-regex=&lt;regex&gt;</tt>.
+</p>
 </dd>
 <dt>
 --no-renames
@@ -588,31 +748,56 @@ override configuration settings.</p></div>
 </p>
 </dd>
 <dt>
--B
+-B[&lt;n&gt;][/&lt;m&gt;]
 </dt>
 <dd>
 <p>
-        Break complete rewrite changes into pairs of delete and create.
+        Break complete rewrite changes into pairs of delete and
+        create. This serves two purposes:
 </p>
+<div class="para"><p>It affects the way a change that amounts to a total rewrite of a file
+not as a series of deletion and insertion mixed together with a very
+few lines that happen to match textually as the context, but as a
+single deletion of everything old followed by a single insertion of
+everything new, and the number <tt>m</tt> controls this aspect of the -B
+option (defaults to 60%). <tt>-B/70%</tt> specifies that less than 30% of the
+original should remain in the result for git to consider it a total
+rewrite (i.e. otherwise the resulting patch will be a series of
+deletion and insertion mixed together with context lines).</p></div>
+<div class="para"><p>When used with -M, a totally-rewritten file is also considered as the
+source of a rename (usually -M only considers a file that disappeared
+as the source of a rename), and the number <tt>n</tt> controls this aspect of
+the -B option (defaults to 50%). <tt>-B20%</tt> specifies that a change with
+addition and deletion compared to 20% or more of the file's size are
+eligible for being picked up as a possible source of a rename to
+another file.</p></div>
 </dd>
 <dt>
--M
+-M[&lt;n&gt;]
 </dt>
 <dd>
 <p>
-        Detect renames.
+        If generating diffs, detect and report renames for each commit.
+        For following files across renames while traversing history, see
+        <tt>--follow</tt>.
+        If <tt>n</tt> is specified, it is a is a threshold on the similarity
+        index (i.e. amount of addition/deletions compared to the
+        file's size). For example, <tt>-M90%</tt> means git should consider a
+        delete/add pair to be a rename if more than 90% of the file
+        hasn't changed.
 </p>
 </dd>
 <dt>
--C
+-C[&lt;n&gt;]
 </dt>
 <dd>
 <p>
         Detect copies as well as renames.  See also <tt>--find-copies-harder</tt>.
+        If <tt>n</tt> is specified, it has the same meaning as for <tt>-M&lt;n&gt;</tt>.
 </p>
 </dd>
 <dt>
---diff-filter=[ACDMRTUXB*]
+--diff-filter=[(A|C|D|M|R|T|U|X|B)&#8230;[*]]
 </dt>
 <dd>
 <p>
@@ -621,7 +806,7 @@ override configuration settings.</p></div>
         type (i.e. regular file, symlink, submodule, &#8230;) changed (<tt>T</tt>),
         are Unmerged (<tt>U</tt>), are
         Unknown (<tt>X</tt>), or have had their pairing Broken (<tt>B</tt>).
-        Any combination of the filter characters may be used.
+        Any combination of the filter characters (including none) can be used.
         When <tt>*</tt> (All-or-none) is added to the combination, all
         paths are selected if there is any file that matches
         other criteria in the comparison; if there is no file
@@ -806,11 +991,21 @@ override configuration settings.</p></div>
 </p>
 </dd>
 <dt>
---ignore-submodules
+--ignore-submodules[=&lt;when&gt;]
 </dt>
 <dd>
 <p>
-        Ignore changes to submodules in the diff generation.
+        Ignore changes to submodules in the diff generation. &lt;when&gt; can be
+        either "none", "untracked", "dirty" or "all", which is the default
+        Using "none" will consider the submodule modified when it either contains
+        untracked or modified files or its HEAD differs from the commit recorded
+        in the superproject and can be used to override any settings of the
+        <em>ignore</em> option in <a href="git-config.html">git-config(1)</a> or <a href="gitmodules.html">gitmodules(5)</a>. When
+        "untracked" is used submodules are not considered dirty when they only
+        contain untracked content (but they are still scanned for modified
+        content). Using "dirty" ignores all changes to the work tree of submodules,
+        only changes to the commits stored in the superproject are shown (this was
+        the behavior until 1.7.0). Using "all" hides all changes to submodules.
 </p>
 </dd>
 <dt>
@@ -840,107 +1035,21 @@ override configuration settings.</p></div>
 </dl></div>
 <div class="para"><p>For more detailed explanation on these common options, see also
 <a href="gitdiffcore.html">gitdiffcore(7)</a>.</p></div>
-<div class="vlist"><dl>
-<dt>
--&lt;n&gt;
-</dt>
-<dd>
-<p>
-        Limits the number of commits to show.
-</p>
-</dd>
-<dt>
-&lt;since&gt;..&lt;until&gt;
-</dt>
-<dd>
-<p>
-        Show only commits between the named two commits.  When
-        either &lt;since&gt; or &lt;until&gt; is omitted, it defaults to
-        <tt>HEAD</tt>, i.e. the tip of the current branch.
-        For a more complete list of ways to spell &lt;since&gt;
-        and &lt;until&gt;, see "SPECIFYING REVISIONS" section in
-        <a href="git-rev-parse.html">git-rev-parse(1)</a>.
-</p>
-</dd>
-<dt>
---decorate[=short|full]
-</dt>
-<dd>
-<p>
-        Print out the ref names of any commits that are shown. If <em>short</em> is
-        specified, the ref name prefixes <em>refs/heads/</em>, <em>refs/tags/</em> and
-        <em>refs/remotes/</em> will not be printed. If <em>full</em> is specified, the
-        full ref name (including prefix) will be printed. The default option
-        is <em>short</em>.
-</p>
-</dd>
-<dt>
---source
-</dt>
-<dd>
-<p>
-        Print out the ref name given on the command line by which each
-        commit was reached.
-</p>
-</dd>
-<dt>
---full-diff
-</dt>
-<dd>
-<p>
-        Without this flag, "git log -p &lt;path&gt;&#8230;" shows commits that
-        touch the specified paths, and diffs about the same specified
-        paths.  With this, the full diff is shown for commits that touch
-        the specified paths; this means that "&lt;path&gt;&#8230;" limits only
-        commits, and doesn't limit diff for those commits.
-</p>
-</dd>
-<dt>
---follow
-</dt>
-<dd>
-<p>
-        Continue listing the history of a file beyond renames.
-</p>
-</dd>
-<dt>
---log-size
-</dt>
-<dd>
-<p>
-        Before the log message print out its size in bytes. Intended
-        mainly for porcelain tools consumption. If git is unable to
-        produce a valid value size is set to zero.
-        Note that only message is considered, if also a diff is shown
-        its size is not included.
-</p>
-</dd>
-<dt>
-[--] &lt;path&gt;&#8230;
-</dt>
-<dd>
-<p>
-        Show only commits that affect any of the specified paths. To
-        prevent confusion with options and branch names, paths may need
-        to be prefixed with "-- " to separate them from options or
-        refnames.
-</p>
-</dd>
-</dl></div>
 <h3 id="_commit_formatting">Commit Formatting</h3><div style="clear:left"></div>
 <div class="vlist"><dl>
 <dt>
---pretty[=<em>&lt;format&gt;</em>]
+--pretty[=&lt;format&gt;]
 </dt>
 <dt>
---format[=<em>&lt;format&gt;</em>]
+--format=&lt;format&gt;
 </dt>
 <dd>
 <p>
         Pretty-print the contents of the commit logs in a given format,
         where <em>&lt;format&gt;</em> can be one of <em>oneline</em>, <em>short</em>, <em>medium</em>,
-        <em>full</em>, <em>fuller</em>, <em>email</em>, <em>raw</em> and <em>format:&lt;string&gt;</em>.
-        When omitted, the format defaults to <em>medium</em>.
+        <em>full</em>, <em>fuller</em>, <em>email</em>, <em>raw</em> and <em>format:&lt;string&gt;</em>.  See
+        the "PRETTY FORMATS" section for some additional details for each
+        format.  When omitted, the format defaults to <em>medium</em>.
 </p>
 <div class="para"><p>Note: you can specify the default pretty format in the repository
 configuration (see <a href="git-config.html">git-config(1)</a>).</p></div>
@@ -1016,7 +1125,7 @@ is taken to be in <tt>refs/notes/</tt> if it is not qualified.</p></div>
 </p>
 </dd>
 <dt>
---date={relative,local,default,iso,rfc,short,raw}
+--date=(relative|local|default|iso|rfc|short|raw)
 </dt>
 <dd>
 <p>
@@ -1040,8 +1149,8 @@ format, often found in E-mail messages.</p></div>
 </dt>
 <dd>
 <p>
-        Print the parents of the commit.  Also enables parent
-        rewriting, see <em>History Simplification</em> below.
+        Print also the parents of the commit (in the form "commit parent&#8230;").
+        Also enables parent rewriting, see <em>History Simplification</em> below.
 </p>
 </dd>
 <dt>
@@ -1049,8 +1158,8 @@ format, often found in E-mail messages.</p></div>
 </dt>
 <dd>
 <p>
-        Print the children of the commit.  Also enables parent
-        rewriting, see <em>History Simplification</em> below.
+        Print also the children of the commit (in the form "commit child&#8230;").
+        Also enables parent rewriting, see <em>History Simplification</em> below.
 </p>
 </dd>
 <dt>
@@ -1325,44 +1434,44 @@ limiting may be applied.</p></div>
 </p>
 </dd>
 <dt>
---branches[=pattern]
+--branches[=&lt;pattern&gt;]
 </dt>
 <dd>
 <p>
         Pretend as if all the refs in <tt>refs/heads</tt> are listed
-        on the command line as <em>&lt;commit&gt;</em>. If <tt>pattern</tt> is given, limit
+        on the command line as <em>&lt;commit&gt;</em>. If <em>&lt;pattern&gt;</em> is given, limit
         branches to ones matching given shell glob. If pattern lacks <em>?</em>,
         <em><strong></em>, or <em>[</em>, <em>/</strong></em> at the end is implied.
 </p>
 </dd>
 <dt>
---tags[=pattern]
+--tags[=&lt;pattern&gt;]
 </dt>
 <dd>
 <p>
         Pretend as if all the refs in <tt>refs/tags</tt> are listed
-        on the command line as <em>&lt;commit&gt;</em>. If <tt>pattern</tt> is given, limit
+        on the command line as <em>&lt;commit&gt;</em>. If <em>&lt;pattern&gt;</em> is given, limit
         tags to ones matching given shell glob. If pattern lacks <em>?</em>, <em><strong></em>,
         or <em>[</em>, <em>/</strong></em> at the end is implied.
 </p>
 </dd>
 <dt>
---remotes[=pattern]
+--remotes[=&lt;pattern&gt;]
 </dt>
 <dd>
 <p>
         Pretend as if all the refs in <tt>refs/remotes</tt> are listed
-        on the command line as <em>&lt;commit&gt;</em>. If `pattern`is given, limit
+        on the command line as <em>&lt;commit&gt;</em>. If <em>&lt;pattern&gt;</em> is given, limit
         remote tracking branches to ones matching given shell glob.
         If pattern lacks <em>?</em>, <em><strong></em>, or <em>[</em>, <em>/</strong></em> at the end is implied.
 </p>
 </dd>
 <dt>
---glob=glob-pattern
+--glob=&lt;glob-pattern&gt;
 </dt>
 <dd>
 <p>
-        Pretend as if all the refs matching shell glob <tt>glob-pattern</tt>
+        Pretend as if all the refs matching shell glob <em>&lt;glob-pattern&gt;</em>
         are listed on the command line as <em>&lt;commit&gt;</em>. Leading <em>refs/</em>,
         is automatically prepended if missing. If pattern lacks <em>?</em>, <em><strong></em>,
         or <em>[</em>, <em>/</strong></em> at the end is implied.
@@ -1419,7 +1528,7 @@ excluded from the output.
         reflog entries from the most recent one to older ones.
         When this option is used you cannot specify commits to
         exclude (that is, <em>&#94;commit</em>, <em>commit1..commit2</em>,
-        nor <em>commit1&#8230;commit2</em> notations cannot be used).<br />
+        nor <em>commit1...commit2</em> notations cannot be used).<br />
 With <em>--pretty</em> format other than oneline (for obvious reasons),
 this causes the output to have two extra lines of information
 taken from the reflog.  By default, <em>commit@{Nth}</em> notation is
@@ -1523,6 +1632,18 @@ Default mode
         commits contributing to this merge.
 </p>
 </dd>
+<dt>
+--ancestry-path
+</dt>
+<dd>
+<p>
+        When given a range of commits to display (e.g. <em>commit1..commit2</em>
+        or <em>commit2 &#94;commit1</em>), only display commits that exist
+        directly on the ancestry chain between the <em>commit1</em> and
+        <em>commit2</em>, i.e. commits that are both descendants of <em>commit1</em>,
+        and ancestors of <em>commit2</em>.
+</p>
+</dd>
 </dl></div>
 <div class="para"><p>A more detailed explanation follows.</p></div>
 <div class="para"><p>Suppose you specified <tt>foo</tt> as the &lt;paths&gt;.  We shall call commits
@@ -1601,7 +1722,7 @@ Default mode
 <div class="listingblock">
 <div class="content">
 <pre><tt>          .-A---N---O
-         /         /
+         /     /   /
         I---------D</tt></pre>
 </div></div>
 <div class="para"><p>Note how the rule to only follow the TREESAME parent, if one is
@@ -1682,9 +1803,6 @@ affects inclusion:</p></div>
 one of the parents is TREESAME, we follow only that one, so the other
 sides of the merge are never walked.</p></div>
 </dd>
-</dl></div>
-<div class="para"><p>Finally, there is a fourth simplification mode available:</p></div>
-<div class="vlist"><dl>
 <dt>
 --simplify-merges
 </dt>
@@ -1741,6 +1859,48 @@ If after this parent rewriting, <tt>C'</tt> is a root or merge commit (has
 </p>
 </li>
 </ul></div>
+</dd>
+</dl></div>
+<div class="para"><p>Finally, there is a fifth simplification mode available:</p></div>
+<div class="vlist"><dl>
+<dt>
+--ancestry-path
+</dt>
+<dd>
+<p>
+        Limit the displayed commits to those directly on the ancestry
+        chain between the "from" and "to" commits in the given commit
+        range. I.e. only display commits that are ancestor of the "to"
+        commit, and descendants of the "from" commit.
+</p>
+<div class="para"><p>As an example use case, consider the following commit history:</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><tt>            D---E-------F
+           /     \       \
+          B---C---G---H---I---J
+         /                     \
+        A-------K---------------L--M</tt></pre>
+</div></div>
+<div class="para"><p>A regular <em>D..M</em> computes the set of commits that are ancestors of <tt>M</tt>,
+but excludes the ones that are ancestors of <tt>D</tt>. This is useful to see
+what happened to the history leading to <tt>M</tt> since <tt>D</tt>, in the sense
+that "what does <tt>M</tt> have that did not exist in <tt>D</tt>". The result in this
+example would be all the commits, except <tt>A</tt> and <tt>B</tt> (and <tt>D</tt> itself,
+of course).</p></div>
+<div class="para"><p>When we want to find out what commits in <tt>M</tt> are contaminated with the
+bug introduced by <tt>D</tt> and need fixing, however, we might want to view
+only the subset of <em>D..M</em> that are actually descendants of <tt>D</tt>, i.e.
+excluding <tt>C</tt> and <tt>K</tt>. This is exactly what the <em>--ancestry-path</em>
+option does. Applied to the <em>D..M</em> range, it results in:</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><tt>                E-------F
+                 \       \
+                  G---H---I---J
+                               \
+                                L--M</tt></pre>
+</div></div>
 </dd>
 </dl></div>
 <div class="para"><p>The <em>--simplify-by-decoration</em> option allows you to view only the
@@ -1846,7 +2006,12 @@ necessarily be the list of the <strong>direct</strong> parent commits if you
 have limited your view of history: for example, if you are
 only interested in changes related to a certain directory or
 file.</p></div>
-<div class="para"><p>Here are some additional details for each format:</p></div>
+<div class="para"><p>There are several built-in formats, and you can define
+additional formats by setting a pretty.&lt;name&gt;
+config option to either another format name, or a
+<em>format:</em> string, as described below (see
+<a href="git-config.html">git-config(1)</a>). Here are the details of the
+built-in formats:</p></div>
 <div class="ilist"><ul>
 <li>
 <p>
@@ -1960,9 +2125,9 @@ simplification into account.</p></div>
 </li>
 <li>
 <p>
-<em>format:</em>
+<em>format:&lt;string&gt;</em>
 </p>
-<div class="para"><p>The <em>format:</em> format allows you to specify which information
+<div class="para"><p>The <em>format:&lt;string&gt;</em> format allows you to specify which information
 you want to show. It works a little bit like printf format,
 with the notable exception that you get a newline with <em>%n</em>
 instead of <em>\n</em>.</p></div>
@@ -2123,6 +2288,11 @@ The title was &gt;&gt;t4119: test autocomputing -p&lt;n&gt; for traditional diff
 </li>
 <li>
 <p>
+<em>%B</em>: raw body (unwrapped subject and body)
+</p>
+</li>
+<li>
+<p>
 <em>%N</em>: commit notes
 </p>
 </li>
@@ -2213,6 +2383,9 @@ placeholder expands to a non-empty string.</p></div>
 <div class="para"><p>If you add a <tt>-</tt> (minus sign) after <em>%</em> of a placeholder, line-feeds that
 immediately precede the expansion are deleted if and only if the
 placeholder expands to an empty string.</p></div>
+<div class="para"><p>If you add a <tt> </tt> (space) after <em>%</em> of a placeholder, a space
+is inserted immediately before the expansion if and only if the
+placeholder expands to a non-empty string.</p></div>
 <div class="ilist"><ul>
 <li>
 <p>
@@ -2257,12 +2430,11 @@ do not produce the output described above; instead they produce a
 patch file.  You can customize the creation of such patches via the
 GIT_EXTERNAL_DIFF and the GIT_DIFF_OPTS environment variables.</p></div>
 <div class="para"><p>What the -p option produces is slightly different from the traditional
-diff format.</p></div>
+diff format:</p></div>
 <div class="olist"><ol>
 <li>
 <p>
-It is preceded with a "git diff" header, that looks like
-     this:
+It is preceded with a "git diff" header that looks like this:
 </p>
 <div class="literalblock">
 <div class="content">
@@ -2270,7 +2442,7 @@ It is preceded with a "git diff" header, that looks like
 </div></div>
 <div class="para"><p>The <tt>a/</tt> and <tt>b/</tt> filenames are the same unless rename/copy is
 involved.  Especially, even for a creation or a deletion,
-<tt>/dev/null</tt> is _not_ used in place of <tt>a/</tt> or <tt>b/</tt> filenames.</p></div>
+<tt>/dev/null</tt> is _not_ used in place of the <tt>a/</tt> or <tt>b/</tt> filenames.</p></div>
 <div class="para"><p>When rename/copy is involved, <tt>file1</tt> and <tt>file2</tt> show the
 name of the source file of the rename/copy and the name of
 the file that rename/copy produces, respectively.</p></div>
@@ -2293,6 +2465,18 @@ similarity index &lt;number&gt;
 dissimilarity index &lt;number&gt;
 index &lt;hash&gt;..&lt;hash&gt; &lt;mode&gt;</tt></pre>
 </div></div>
+<div class="para"><p>File modes are printed as 6-digit octal numbers including the file type
+and file permission bits.</p></div>
+<div class="para"><p>Path names in extended headers do not include the <tt>a/</tt> and <tt>b/</tt> prefixes.</p></div>
+<div class="para"><p>The similarity index is the percentage of unchanged lines, and
+the dissimilarity index is the percentage of changed lines.  It
+is a rounded down integer, followed by a percent sign.  The
+similarity index value of 100% is thus reserved for two equal
+files, while 100% dissimilarity means that no line from the old
+file made it into the new one.</p></div>
+<div class="para"><p>The index line includes the SHA-1 checksum before and after the change.
+The &lt;mode&gt; is included if the file mode does not change; otherwise,
+separate lines indicate the old and the new mode.</p></div>
 </li>
 <li>
 <p>
@@ -2302,13 +2486,24 @@ TAB, LF, double quote and backslash characters in pathnames
     pathname is put in double quotes.
 </p>
 </li>
+<li>
+<p>
+All the <tt>file1</tt> files in the output refer to files before the
+    commit, and all the <tt>file2</tt> files refer to files after the commit.
+    It is incorrect to apply each change to each file sequentially.  For
+    example, this patch will swap a and b:
+</p>
+<div class="literalblock">
+<div class="content">
+<pre><tt>diff --git a/a b/b
+rename from a
+rename to b
+diff --git a/b b/a
+rename from b
+rename to a</tt></pre>
+</div></div>
+</li>
 </ol></div>
-<div class="para"><p>The similarity index is the percentage of unchanged lines, and
-the dissimilarity index is the percentage of changed lines.  It
-is a rounded down integer, followed by a percent sign.  The
-similarity index value of 100% is thus reserved for two equal
-files, while 100% dissimilarity means that no line from the old
-file made it into the new one.</p></div>
 </div>
 <h2 id="_combined_diff_format">combined diff format</h2>
 <div class="sectionbody">
@@ -2593,6 +2788,78 @@ message when a commit is made to force UTF-8 at the commit
 object level, because re-coding to UTF-8 is not necessarily a
 reversible operation.</p></div>
 </div>
+<h2 id="_configuration">Configuration</h2>
+<div class="sectionbody">
+<div class="para"><p>See <a href="git-config.html">git-config(1)</a> for core variables and <a href="git-diff.html">git-diff(1)</a>
+for settings related to diff generation.</p></div>
+<div class="vlist"><dl>
+<dt>
+format.pretty
+</dt>
+<dd>
+<p>
+        Default for the <tt>--format</tt> option.  (See "PRETTY FORMATS" above.)
+        Defaults to "medium".
+</p>
+</dd>
+<dt>
+i18n.logOutputEncoding
+</dt>
+<dd>
+<p>
+        Encoding to use when displaying logs.  (See "Discussion", above.)
+        Defaults to the value of <tt>i18n.commitEncoding</tt> if set, UTF-8
+        otherwise.
+</p>
+</dd>
+<dt>
+log.date
+</dt>
+<dd>
+<p>
+        Default format for human-readable dates.  (Compare the
+        <tt>--date</tt> option.)  Defaults to "default", which means to write
+        dates like <tt>Sat May 8 19:35:34 2010 -0500</tt>.
+</p>
+</dd>
+<dt>
+log.showroot
+</dt>
+<dd>
+<p>
+        If <tt>false</tt>, <em>git log</em> and related commands will not treat the
+        initial commit as a big creation event.  Any root commits in
+        <tt>git log -p</tt> output would be shown without a diff attached.
+        The default is <tt>true</tt>.
+</p>
+</dd>
+<dt>
+mailmap.file
+</dt>
+<dd>
+<p>
+        See <a href="git-shortlog.html">git-shortlog(1)</a>.
+</p>
+</dd>
+<dt>
+notes.displayRef
+</dt>
+<dd>
+<p>
+        Which refs, in addition to the default set by <tt>core.notesRef</tt>
+        or <em>GIT_NOTES_REF</em>, to read notes from when showing commit
+        messages with the <em>log</em> family of commands.  See
+        <a href="git-notes.html">git-notes(1)</a>.
+</p>
+<div class="para"><p>May be an unabbreviated ref name or a glob and may be specified
+multiple times.  A warning will be issued for refs that do not exist,
+but a glob that does not match any refs is silently ignored.</p></div>
+<div class="para"><p>This setting can be disabled by the <tt>--no-standard-notes</tt> option,
+overridden by the <em>GIT_NOTES_DISPLAY_REF</em> environment variable,
+and supplemented by the <tt>--show-notes</tt> option.</p></div>
+</dd>
+</dl></div>
+</div>
 <h2 id="_author">Author</h2>
 <div class="sectionbody">
 <div class="para"><p>Written by Linus Torvalds &lt;torvalds@osdl.org&gt;</p></div>
@@ -2607,7 +2874,7 @@ reversible operation.</p></div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2010-04-24 02:40:44 UTC
+Last updated 2010-10-22 03:51:27 UTC
 </div>
 </div>
 </body>

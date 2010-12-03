@@ -16,7 +16,8 @@ end
 
 def pack
     if !ENV['PROJECT_NAME'] || !ENV['BUILT_PRODUCTS_DIR']
-      resources_path = "."
+      puts "No PROJECT_NAME or BUILT_PRODUCTS_DIR given, skipping pack."
+      return
     else
       resources_path = "#{ENV['BUILT_PRODUCTS_DIR']}/#{ENV['PROJECT_NAME']}.app/Contents/Resources"
     end

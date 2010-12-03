@@ -1,5 +1,5 @@
-set gitexecdir {/usr/local/Cellar/git/1.7.1/libexec/git-core}
-set gitguilib  {/usr/local/Cellar/git/1.7.1/share/git-gui/lib}
+set gitexecdir {/usr/local/Cellar/git/1.7.3.2/libexec/git-core}
+set gitguilib  {/usr/local/Cellar/git/1.7.3.2/share/git-gui/lib}
 set env(PATH) "$gitexecdir:$env(PATH)"
 
 if {[string first -psn [lindex $argv 0]] == 0} {

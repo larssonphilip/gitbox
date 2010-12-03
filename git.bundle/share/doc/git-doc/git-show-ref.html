@@ -422,8 +422,8 @@ the <tt>.git</tt> directory.</p></div>
 <dd>
 <p>
         Make <em>git show-ref</em> act as a filter that reads refs from stdin of the
-        form "<sup>(?:&lt;anything&gt;\s)?&lt;refname&gt;(?:\</sup>{})?$" and performs the
-        following actions on each:
+        form "^(?:&lt;anything&gt;\s)?&lt;refname&gt;(?:&#92;&#94;{})?$"
+        and performs the following actions on each:
         (1) strip "^{}" at the end of line if any;
         (2) ignore if pattern is provided and does not head-match refname;
         (3) warn if refname is not a well-formed refname and skip;
@@ -436,7 +436,11 @@ the <tt>.git</tt> directory.</p></div>
 </dt>
 <dd>
 <p>
-        Show references matching one or more patterns.
+        Show references matching one or more patterns. Patterns are matched from
+        the end of the full name, and only complete parts are matched, e.g.
+        <em>master</em> matches <em>refs/heads/master</em>, <em>refs/remotes/origin/master</em>,
+        <em>refs/tags/jedi/master</em> but not <em>refs/heads/mymaster</em> nor
+        <em>refs/remotes/master/jedi</em>.
 </p>
 </dd>
 </dl></div>
@@ -506,9 +510,15 @@ flag, so you can do</p></div>
 </div></div>
 <div class="para"><p>to get a listing of all tags together with what they dereference.</p></div>
 </div>
+<h2 id="_files">FILES</h2>
+<div class="sectionbody">
+<div class="para"><p><tt>.git/refs/*</tt>, <tt>.git/packed-refs</tt></p></div>
+</div>
 <h2 id="_see_also">SEE ALSO</h2>
 <div class="sectionbody">
-<div class="para"><p><a href="git-ls-remote.html">git-ls-remote(1)</a></p></div>
+<div class="para"><p><a href="git-ls-remote.html">git-ls-remote(1)</a>,
+<a href="git-update-ref.html">git-update-ref(1)</a>,
+<a href="gitrepository-layout.html">gitrepository-layout(5)</a></p></div>
 </div>
 <h2 id="_authors">AUTHORS</h2>
 <div class="sectionbody">
@@ -521,7 +531,7 @@ Man page by Jonas Fonseca &lt;fonseca@diku.dk&gt;.</p></div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2010-04-24 02:41:05 UTC
+Last updated 2010-10-22 03:51:46 UTC
 </div>
 </div>
 </body>

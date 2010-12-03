@@ -355,7 +355,7 @@ repository.</p></div>
         The HTTP daemon command-line that will be executed.
         Command-line options may be specified here, and the
         configuration file will be added at the end of the command-line.
-        Currently apache2, lighttpd, mongoose and webrick are supported.
+        Currently apache2, lighttpd, mongoose, plackup and webrick are supported.
         (Default: lighttpd)
 </p>
 </dd>
@@ -391,12 +391,15 @@ repository.</p></div>
 <dd>
 <p>
         The web browser that should be used to view the gitweb
-        page. This will be passed to the <em>git web--browse</em> helper
+        page. This will be passed to the <em>git web&#45;&#45;browse</em> helper
         script along with the URL of the gitweb instance. See
-        <a href="git-web--browse.html">git-web--browse(1)</a> for more information about this. If
+        <a href="git-web&#45;&#45;browse.html">git-web&#45;&#45;browse(1)</a> for more information about this. If
         the script fails, the URL will be printed to stdout.
 </p>
 </dd>
+<dt>
+start
+</dt>
 <dt>
 --start
 </dt>
@@ -407,6 +410,9 @@ repository.</p></div>
 </p>
 </dd>
 <dt>
+stop
+</dt>
+<dt>
 --stop
 </dt>
 <dd>
@@ -416,6 +422,9 @@ repository.</p></div>
         nor does it close the browser.
 </p>
 </dd>
+<dt>
+restart
+</dt>
 <dt>
 --restart
 </dt>
@@ -442,7 +451,7 @@ repository.</p></div>
 </div></div>
 <div class="para"><p>If the configuration variable <em>instaweb.browser</em> is not set,
 <em>web.browser</em> will be used instead if it is defined. See
-<a href="git-web--browse.html">git-web--browse(1)</a> for more information about this.</p></div>
+<a href="git-web&#45;&#45;browse.html">git-web&#45;&#45;browse(1)</a> for more information about this.</p></div>
 </div>
 <h2 id="_author">Author</h2>
 <div class="sectionbody">
@@ -458,7 +467,7 @@ repository.</p></div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2010-04-24 02:40:44 UTC
+Last updated 2010-10-22 03:51:27 UTC
 </div>
 </div>
 </body>

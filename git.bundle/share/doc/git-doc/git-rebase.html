@@ -498,6 +498,14 @@ rebase.stat
         rebase. False by default.
 </p>
 </dd>
+<dt>
+rebase.autosquash
+</dt>
+<dd>
+<p>
+        If set to true enable <em>--autosquash</em> option by default.
+</p>
+</dd>
 </dl></div>
 </div>
 <h2 id="_options">OPTIONS</h2>
@@ -513,6 +521,9 @@ rebase.stat
         &lt;upstream&gt;.  May be any valid commit, and not just an
         existing branch name.
 </p>
+<div class="para"><p>As a special case, you may use "A...B" as a shortcut for the
+merge base of A and B if there is exactly one merge base. You can
+leave out at most one of A and B, in which case it defaults to HEAD.</p></div>
 </dd>
 <dt>
 &lt;upstream&gt;
@@ -589,6 +600,20 @@ other words, the sides are swapped.</p></div>
 on top of the &lt;upstream&gt; branch using the given strategy, using
 the <em>ours</em> strategy simply discards all patches from the &lt;branch&gt;,
 which makes little sense.</p></div>
+</dd>
+<dt>
+-X &lt;strategy-option&gt;
+</dt>
+<dt>
+--strategy-option=&lt;strategy-option&gt;
+</dt>
+<dd>
+<p>
+        Pass the &lt;strategy-option&gt; through to the merge strategy.
+        This implies <tt>--merge</tt> and, if no strategy has been
+        specified, <tt>-s recursive</tt>.  Note the reversal of <em>ours</em> and
+        <em>theirs</em> as noted in above for the <tt>-m</tt> option.
+</p>
 </dd>
 <dt>
 -q
@@ -694,6 +719,7 @@ the reversion" (see the
 <p>
         These flags are passed to <em>git am</em> to easily change the dates
         of the rebased commits (see <a href="git-am.html">git-am(1)</a>).
+        Incompatible with the --interactive option.
 </p>
 </dd>
 <dt>
@@ -719,6 +745,9 @@ the reversion" (see the
 <p>
         Instead of ignoring merges, try to recreate them.
 </p>
+<div class="para"><p>This uses the <tt>--interactive</tt> machinery internally, but combining it
+with the <tt>--interactive</tt> option explicitly is generally not a good
+idea unless you know what you are doing (see BUGS below).</p></div>
 </dd>
 <dt>
 --root
@@ -737,6 +766,9 @@ the reversion" (see the
 <dt>
 --autosquash
 </dt>
+<dt>
+--no-autosquash
+</dt>
 <dd>
 <p>
         When the commit log message begins with "squash! &#8230;" (or
@@ -747,6 +779,9 @@ the reversion" (see the
         commit from <tt>pick</tt> to <tt>squash</tt> (or <tt>fixup</tt>).
 </p>
 <div class="para"><p>This option is only valid when the <em>--interactive</em> option is used.</p></div>
+<div class="para"><p>If the <em>--autosquash</em> option is enabled by default using the
+configuration variable <tt>rebase.autosquash</tt>, this option can be
+used to override and disable this setting.</p></div>
 </dd>
 <dt>
 --no-ff
@@ -825,7 +860,29 @@ theirs
 </p>
 </dd>
 <dt>
-subtree[=path]
+renormalize
+</dt>
+<dd>
+<p>
+        This runs a virtual check-out and check-in of all three stages
+        of a file when resolving a three-way merge.  This option is
+        meant to be used when merging branches with different clean
+        filters or end-of-line normalization rules.  See "Merging
+        branches with differing checkin/checkout attributes" in
+        <a href="gitattributes.html">gitattributes(5)</a> for details.
+</p>
+</dd>
+<dt>
+no-renormalize
+</dt>
+<dd>
+<p>
+        Disables the <tt>renormalize</tt> option.  This overrides the
+        <tt>merge.renormalize</tt> configuration variable.
+</p>
+</dd>
+<dt>
+subtree[=&lt;path&gt;]
 </dt>
 <dd>
 <p>
@@ -1020,6 +1077,28 @@ sure that the current HEAD is "B", and call</p></div>
 <div class="content">
 <pre><tt>$ git rebase -i -p --onto Q O</tt></pre>
 </div></div>
+<div class="para"><p>Reordering and editing commits usually creates untested intermediate
+steps.  You may want to check that your history editing did not break
+anything by running a test, or at least recompiling at intermediate
+points in history by using the "exec" command (shortcut "x").  You may
+do so by creating a todo list like this one:</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><tt>pick deadbee Implement feature XXX
+fixup f1a5c00 Fix to feature XXX
+exec make
+pick c0ffeee The oneline of the next commit
+edit deadbab The oneline of the commit after
+exec cd subdir; make test
+...</tt></pre>
+</div></div>
+<div class="para"><p>The interactive rebase will stop when a command fails (i.e. exits with
+non-0 status) to give you an opportunity to fix the problem. You can
+continue with <tt>git rebase --continue</tt>.</p></div>
+<div class="para"><p>The "exec" command launches the command in a shell (the one specified
+in <tt>$SHELL</tt>, or the default shell if <tt>$SHELL</tt> is not set), so you can
+use shell features (like "cd", "&gt;", ";" &#8230;). The command is run from
+the root of the working tree.</p></div>
 </div>
 <h2 id="_splitting_commits">SPLITTING COMMITS</h2>
 <div class="sectionbody">
@@ -1205,6 +1284,30 @@ saying (for the reflog case, and assuming you are on <em>topic</em> already):</p
 <em>everyone</em> downstream from <em>topic</em> will now have to perform a "hard
 case" recovery too!</p></div>
 </div>
+<h2 id="_bugs">BUGS</h2>
+<div class="sectionbody">
+<div class="para"><p>The todo list presented by <tt>--preserve-merges --interactive</tt> does not
+represent the topology of the revision graph.  Editing commits and
+rewording their commit messages should work fine, but attempts to
+reorder commits tend to produce counterintuitive results.</p></div>
+<div class="para"><p>For example, an attempt to rearrange</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><tt>1 --- 2 --- 3 --- 4 --- 5</tt></pre>
+</div></div>
+<div class="para"><p>to</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><tt>1 --- 2 --- 4 --- 3 --- 5</tt></pre>
+</div></div>
+<div class="para"><p>by moving the "pick 4" line will result in the following history:</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><tt>        3
+       /
+1 --- 2 --- 4 --- 5</tt></pre>
+</div></div>
+</div>
 <h2 id="_authors">Authors</h2>
 <div class="sectionbody">
 <div class="para"><p>Written by Junio C Hamano &lt;gitster@pobox.com&gt; and
@@ -1220,7 +1323,7 @@ Johannes E. Schindelin &lt;johannes.schindelin@gmx.de&gt;</p></div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2010-04-24 02:40:56 UTC
+Last updated 2010-10-22 03:51:38 UTC
 </div>
 </div>
 </body>

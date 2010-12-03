@@ -3,15 +3,15 @@
  if test "z$*" = zversion \
  || test "z$*" = z--version; \
  then \
-	echo 'git-gui version 0.12.0.64.g89d6'; \
+	echo 'git-gui version 0.13.0'; \
 	exit; \
  fi; \
  argv0=$0; \
  exec 'wish' "$argv0" -- "$@"
 
-set appvers {0.12.0.64.g89d6}
-set copyright [encoding convertfrom utf-8 {
-Copyright © 2006, 2007 Shawn Pearce, et. al.
+set appvers {0.13.0}
+set copyright [string map [list (c) \u00a9] {
+Copyright (c) 2006-2010 Shawn Pearce, et. al.
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -38,7 +38,7 @@ if {[catch {package require Tcl 8.4} err]
 	tk_messageBox \
 		-icon error \
 		-type ok \
-		-title [mc "git-gui: fatal error"] \
+		-title "git-gui: fatal error" \
 		-message $err
 	exit 1
 }
@@ -49,7 +49,7 @@ catch {rename send {}} ; # What an evil concept...
 ##
 ## locate our library
 
-set oguilib {/usr/local/Cellar/git/1.7.1/share/git-gui/lib}
+set oguilib {/usr/local/Cellar/git/1.7.3.2/share/git-gui/lib}
 set oguirel {}
 if {$oguirel eq {1}} {
 	set oguilib [file dirname [file normalize $argv0]]
@@ -128,6 +128,7 @@ set _githtmldir {}
 set _reponame {}
 set _iscygwin {}
 set _search_path {}
+set _shellpath {/bin/sh}
 
 set _trace [lsearch -exact $argv --trace]
 if {$_trace >= 0} {
@@ -135,6 +136,18 @@ if {$_trace >= 0} {
 	set _trace 1
 } else {
 	set _trace 0
+}
+
+proc shellpath {} {
+	global _shellpath env
+	if {[string match @@* $_shellpath]} {
+		if {[info exists env(SHELL)]} {
+			return $env(SHELL)
+		} else {
+			return /bin/sh
+		}
+	}
+	return $_shellpath
 }
 
 proc appname {} {
@@ -269,6 +282,17 @@ proc is_config_true {name} {
 	}
 }
 
+proc is_config_false {name} {
+	global repo_config
+	if {[catch {set v $repo_config($name)}]} {
+		return 0
+	} elseif {$v eq {false} || $v eq {0} || $v eq {no}} {
+		return 1
+	} else {
+		return 0
+	}
+}
+
 proc get_config {name} {
 	global repo_config
 	if {[catch {set v $repo_config($name)}]} {
@@ -322,6 +346,8 @@ proc _trace_exec {cmd} {
 	}
 	puts stderr $d
 }
+
+#'"  fix poor old emacs font-lock mode
 
 proc _git_cmd {name} {
 	global _git_cmd_path
@@ -416,6 +442,9 @@ proc _lappend_nice {cmd_var} {
 
 	if {![info exists _nice]} {
 		set _nice [_which nice]
+		if {[catch {exec $_nice git version}]} {
+			set _nice {}
+		}
 	}
 	if {$_nice ne {}} {
 		lappend cmd $_nice
@@ -634,6 +663,7 @@ proc rmsel_tag {text} {
 	return $text
 }
 
+wm withdraw .
 set root_exists 0
 bind . <Visibility> {
 	bind . <Visibility> {}
@@ -782,6 +812,7 @@ set default_config(user.email) {}
 
 set default_config(gui.encoding) [encoding system]
 set default_config(gui.matchtrackingbranch) false
+set default_config(gui.textconv) true
 set default_config(gui.pruneduringfetch) false
 set default_config(gui.trustmtime) false
 set default_config(gui.fastcopyblame) false
@@ -1155,6 +1186,9 @@ apply_config
 # try to set work tree from environment, falling back to core.worktree
 if {[catch { set _gitworktree $env(GIT_WORK_TREE) }]} {
 	set _gitworktree [get_config core.worktree]
+	if {$_gitworktree eq ""} {
+		set _gitworktree [file dirname [file normalize $_gitdir]]
+	}
 }
 if {$_prefix ne {}} {
 	if {$_gitworktree eq {}} {
@@ -2098,7 +2132,7 @@ proc do_explore {} {
 		# freedesktop.org-conforming system is our best shot
 		set explorer "xdg-open"
 	}
-	eval exec $explorer $_gitworktree &
+	eval exec $explorer [list [file nativename $_gitworktree]] &
 }
 
 set is_quitting 0
@@ -2824,7 +2858,13 @@ bind all <$M1B-Key-W> {destroy [winfo toplevel %W]}
 
 set subcommand_args {}
 proc usage {} {
-	puts stderr "usage: $::argv0 $::subcommand $::subcommand_args"
+	set s "usage: $::argv0 $::subcommand $::subcommand_args"
+	if {[tk windowingsystem] eq "win32"} {
+		wm withdraw .
+		tk_messageBox -icon info -title "Usage" -message $s
+	} else {
+		puts stderr $s
+	}
 	exit 1
 }
 
@@ -2901,6 +2941,7 @@ blame {
 		set current_branch $head
 	}
 
+	wm deiconify .
 	switch -- $subcommand {
 	browser {
 		if {$jump_spec ne {}} usage
@@ -2916,7 +2957,12 @@ blame {
 	}
 	blame   {
 		if {$head eq {} && ![file exists $path]} {
-			puts stderr [mc "fatal: cannot stat path %s: No such file or directory" $path]
+			catch {wm withdraw .}
+			tk_messageBox \
+				-icon error \
+				-type ok \
+				-title [mc "git-gui: fatal error"] \
+				-message [mc "fatal: cannot stat path %s: No such file or directory" $path]
 			exit 1
 		}
 		blame::new $head $path $jump_spec
@@ -3405,6 +3451,19 @@ lappend diff_actions [list $ctxmsm entryconf [$ctxmsm index last] -state]
 $ctxmsm add separator
 create_common_diff_popup $ctxmsm
 
+proc has_textconv {path} {
+	if {[is_config_false gui.textconv]} {
+		return 0
+	}
+	set filter [gitattr $path diff set]
+	set textconv [get_config [join [list diff $filter textconv] .]]
+	if {$filter ne {set} && $textconv ne {}} {
+		return 1
+	} else {
+		return 0
+	}
+}
+
 proc popup_diff_menu {ctxm ctxmmg ctxmsm x y X Y} {
 	global current_diff_path file_states
 	set ::cursorX $x
@@ -3440,7 +3499,8 @@ proc popup_diff_menu {ctxm ctxmmg ctxmsm x y X Y} {
 			|| {__} eq $state
 			|| {_O} eq $state
 			|| {_T} eq $state
-			|| {T_} eq $state} {
+			|| {T_} eq $state
+			|| [has_textconv $current_diff_path]} {
 			set s disabled
 		} else {
 			set s normal
@@ -3460,29 +3520,44 @@ $main_status show [mc "Initializing..."]
 
 # -- Load geometry
 #
-catch {
-set gm $repo_config(gui.geometry)
-wm geometry . [lindex $gm 0]
-if {$use_ttk} {
-	.vpane sashpos 0 [lindex $gm 1]
-	.vpane.files sashpos 0 [lindex $gm 2]
-} else {
-	.vpane sash place 0 \
-		[lindex $gm 1] \
-		[lindex [.vpane sash coord 0] 1]
-	.vpane.files sash place 0 \
-		[lindex [.vpane.files sash coord 0] 0] \
-		[lindex $gm 2]
+proc on_ttk_pane_mapped {w pane pos} {
+	bind $w <Map> {}
+	after 0 [list after idle [list $w sashpos $pane $pos]]
 }
-unset gm
+proc on_tk_pane_mapped {w pane x y} {
+	bind $w <Map> {}
+	after 0 [list after idle [list $w sash place $pane $x $y]]
+}
+proc on_application_mapped {} {
+	global repo_config use_ttk
+	bind . <Map> {}
+	set gm $repo_config(gui.geometry)
+	if {$use_ttk} {
+		bind .vpane <Map> \
+		    [list on_ttk_pane_mapped %W 0 [lindex $gm 1]]
+		bind .vpane.files <Map> \
+		    [list on_ttk_pane_mapped %W 0 [lindex $gm 2]]
+	} else {
+		bind .vpane <Map> \
+		    [list on_tk_pane_mapped %W 0 \
+			 [lindex $gm 1] \
+			 [lindex [.vpane sash coord 0] 1]]
+		bind .vpane.files <Map> \
+		    [list on_tk_pane_mapped %W 0 \
+			 [lindex [.vpane.files sash coord 0] 0] \
+			 [lindex $gm 2]]
+	}
+	wm geometry . [lindex $gm 0]
+}
+if {[info exists repo_config(gui.geometry)]} {
+	bind . <Map> [list on_application_mapped]
+	wm geometry . [lindex $repo_config(gui.geometry) 0]
 }
 
 # -- Load window state
 #
-catch {
-set gws $repo_config(gui.wmstate)
-wm state . $gws
-unset gws
+if {[info exists repo_config(gui.wmstate)]} {
+	catch {wm state . $repo_config(gui.wmstate)}
 }
 
 # -- Key Bindings

@@ -1,10 +1,10 @@
-=head2 Mon Jun 14 11:00:57 2010: C<Module> L<Git|Git>
+=head2 Fri Dec  3 23:16:30 2010: C<Module> L<Git|Git>
 
 =over 4
 
 =item *
 
-C<installed into: /usr/local/Cellar/git/1.7.1/lib/perl5/site_perl>
+C<installed into: /usr/local/Cellar/git/1.7.3.2/lib/perl5/site_perl>
 
 =item *
 

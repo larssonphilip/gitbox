@@ -324,7 +324,7 @@ git-update-index(1) Manual Page
 <div class="content"><em>git update-index</em>
              [--add] [--remove | --force-remove] [--replace]
              [--refresh] [-q] [--unmerged] [--ignore-missing]
-             [--cacheinfo &lt;mode&gt; &lt;object&gt; &lt;file&gt;]*
+             [(--cacheinfo &lt;mode&gt; &lt;object&gt; &lt;file&gt;)&#8230;]
              [--chmod=(+|-)x]
              [--assume-unchanged | --no-assume-unchanged]
              [--skip-worktree | --no-skip-worktree]
@@ -333,7 +333,7 @@ git-update-index(1) Manual Page
              [--info-only] [--index-info]
              [-z] [--stdin]
              [--verbose]
-             [--] [&lt;file&gt;]*</div></div>
+             [--] [&lt;file&gt;&#8230;]</div></div>
 </div>
 <h2 id="_description">DESCRIPTION</h2>
 <div class="sectionbody">
@@ -460,8 +460,6 @@ using the various options:</p></div>
 <div class="para"><p>This option can be also used as a coarse file-level mechanism
 to ignore uncommitted changes in tracked files (akin to what
 <tt>.gitignore</tt> does for untracked files).
-You should remember that an explicit <em>git add</em> operation will
-still cause the file to be refreshed from the working tree.
 Git will fail (gracefully) in case it needs to modify this file
 in the index e.g. when merging in a commit;
 thus, in case the assumed-untracked file is changed upstream,
@@ -566,8 +564,8 @@ you will need to handle the situation manually.</p></div>
 </dt>
 <dd>
 <p>
-        Only meaningful with <tt>--stdin</tt>; paths are separated with
-        NUL character instead of LF.
+        Only meaningful with <tt>--stdin</tt> or <tt>--index-info</tt>; paths are
+        separated with NUL character instead of LF.
 </p>
 </dd>
 <dt>
@@ -839,7 +837,7 @@ ctime for marking files processed) (see <a href="git-config.html">git-config(1)<
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2010-04-24 02:41:11 UTC
+Last updated 2010-10-22 03:51:52 UTC
 </div>
 </div>
 </body>

@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-use lib (split(/:/, $ENV{GITPERLLIB} || "/usr/local/Cellar/git/1.7.1/lib/perl5/site_perl"));
+use lib (split(/:/, $ENV{GITPERLLIB} || "/usr/local/Cellar/git/1.7.3.2/lib/perl5/site_perl"));
 # Copyright (c) 2009, 2010 David Aguilar
 #
 # This is a wrapper around the GIT_EXTERNAL_DIFF-compatible

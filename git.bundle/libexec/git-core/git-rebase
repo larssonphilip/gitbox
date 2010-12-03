@@ -3,7 +3,7 @@
 # Copyright (c) 2005 Junio C Hamano.
 #
 
-USAGE='[--interactive | -i] [-v] [--force-rebase | -f] [--no-ff] [--onto <newbase>] [<upstream>|--root] [<branch>] [--quiet | -q]'
+USAGE='[--interactive | -i] [-v] [--force-rebase | -f] [--no-ff] [--onto <newbase>] (<upstream>|--root) [<branch>] [--quiet | -q]'
 LONG_USAGE='git-rebase replaces <branch> with a new branch of the
 same name.  When the --onto option is provided the new branch starts
 out with a HEAD equal to <newbase>, otherwise it is equal to <upstream>
@@ -44,6 +44,7 @@ To restore the original branch and stop rebasing run \"git rebase --abort\".
 "
 unset newbase
 strategy=recursive
+strategy_opts=
 do_merge=
 dotest="$GIT_DIR"/rebase-merge
 prec=4
@@ -110,9 +111,9 @@ call_merge () {
 	export GITHEAD_$cmt GITHEAD_$hd
 	if test -n "$GIT_QUIET"
 	then
-		export GIT_MERGE_VERBOSITY=1
+		GIT_MERGE_VERBOSITY=1 && export GIT_MERGE_VERBOSITY
 	fi
-	git-merge-$strategy "$cmt^" -- "$hd" "$cmt"
+	eval 'git-merge-$strategy' $strategy_opts '"$cmt^" -- "$hd" "$cmt"'
 	rv=$?
 	case "$rv" in
 	0)
@@ -198,14 +199,6 @@ test -f "$GIT_DIR"/rebase-apply/applying &&
 
 is_interactive "$@" && exec git-rebase--interactive "$@"
 
-if test $# -eq 0
-then
-	test -d "$dotest" -o -d "$GIT_DIR"/rebase-apply || usage
-	test -d "$dotest" -o -f "$GIT_DIR"/rebase-apply/rebasing &&
-		die 'A rebase is in progress, try --continue, --skip or --abort.'
-	die "No arguments given and $GIT_DIR/rebase-apply already exists."
-fi
-
 while test $# != 0
 do
 	case "$1" in
@@ -216,6 +209,7 @@ do
 		test -d "$dotest" -o -d "$GIT_DIR"/rebase-apply ||
 			die "No rebase in progress?"
 
+		git update-index --ignore-submodules --refresh &&
 		git diff-files --quiet --ignore-submodules || {
 			echo "You must edit all merge conflicts and then"
 			echo "mark them as resolved using git add"
@@ -301,6 +295,27 @@ do
 	-M|-m|--m|--me|--mer|--merg|--merge)
 		do_merge=t
 		;;
+	-X*|--strategy-option*)
+		case "$#,$1" in
+		1,-X|1,--strategy-option)
+			usage ;;
+		*,-X|*,--strategy-option)
+			newopt="$2"
+			shift ;;
+		*,--strategy-option=*)
+			newopt="$(expr " $1" : ' --strategy-option=\(.*\)')" ;;
+		*,-X*)
+			newopt="$(expr " $1" : ' -X\(.*\)')" ;;
+		1,*)
+			usage ;;
+		esac
+		strategy_opts="$strategy_opts $(git rev-parse --sq-quote "--$newopt")"
+		do_merge=t
+		if test -n "$strategy"
+		then
+			strategy=recursive
+		fi
+		;;
 	-s=*|--s=*|--st=*|--str=*|--stra=*|--strat=*|--strate=*|\
 		--strateg=*|--strategy=*|\
 	-s|--s|--st|--str|--stra|--strat|--strate|--strateg|--strategy)
@@ -353,7 +368,7 @@ do
 	--root)
 		rebase_root=t
 		;;
-	-f|--f|--fo|--for|--forc|force|--force-r|--force-re|--force-reb|--force-reba|--force-rebas|--force-rebase|--no-ff)
+	-f|--f|--fo|--for|--forc|--force|--force-r|--force-re|--force-reb|--force-reba|--force-rebas|--force-rebase|--no-ff)
 		force_rebase=t
 		;;
 	--rerere-autoupdate|--no-rerere-autoupdate)
@@ -369,6 +384,13 @@ do
 	shift
 done
 test $# -gt 2 && usage
+
+if test $# -eq 0 && test -z "$rebase_root"
+then
+	test -d "$dotest" -o -d "$GIT_DIR"/rebase-apply || usage
+	test -d "$dotest" -o -f "$GIT_DIR"/rebase-apply/rebasing &&
+		die 'A rebase is in progress, try --continue, --skip or --abort.'
+fi
 
 # Make sure we do not have $GIT_DIR/rebase-apply
 if test -z "$do_merge"
@@ -544,7 +566,8 @@ fi
 if test -z "$do_merge"
 then
 	git format-patch -k --stdout --full-index --ignore-if-in-upstream \
-		$root_flag "$revisions" |
+		--src-prefix=a/ --dst-prefix=b/ \
+		--no-renames $root_flag "$revisions" |
 	git am $git_am_opt --rebasing --resolvemsg="$RESOLVEMSG" &&
 	move_to_original_branch
 	ret=$?
