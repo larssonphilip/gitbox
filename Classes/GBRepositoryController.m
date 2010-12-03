@@ -14,7 +14,8 @@
 #import "NSString+OAStringHelpers.h"
 #import "NSError+OAPresent.h"
 #import "OABlockGroup.h"
-
+#import "OABlockQueue.h"
+#import "NSObject+OAPerformBlockAfterDelay.h"
 
 @interface GBRepositoryController ()
 
@@ -612,12 +613,14 @@
   }];
 }
 
-- (void) fetchSilently
+- (void) fetchSilentlyWithBlock:(void(^)())block
 {
+  if (!self.repository) return block();
+  
   [self pushSpinning];
   [self pushDisabled];
   [self.repository fetchWithBlock:^{
-    [self loadCommits];
+    [self loadCommitsWithBlock:block];
     [self popDisabled];
     [self popSpinning];
   }];
@@ -850,13 +853,15 @@
 - (void) resetAutoFetchInterval
 {
   //NSLog(@"GBRepositoryController: resetAutoFetchInterval in %@ (was: %f)", [self url], autoFetchInterval);
-  autoFetchInterval = 30.0 + 2*(2*(0.5-drand48()));
+  autoFetchInterval = 30.0;
   [self scheduleAutoFetch];
 }
 
 - (void) scheduleAutoFetch
 {
-  [self unscheduleAutoFetch];
+  [NSObject cancelPreviousPerformRequestsWithTarget:self 
+                                           selector:@selector(autoFetch)
+                                             object:nil];  
   [self performSelector:@selector(autoFetch) 
              withObject:nil
              afterDelay:autoFetchInterval];
@@ -864,6 +869,7 @@
 
 - (void) unscheduleAutoFetch
 {
+  //NSLog(@"AutoFetch: cancel for %@", self.repository.url);
   [NSObject cancelPreviousPerformRequestsWithTarget:self 
                                            selector:@selector(autoFetch)
                                              object:nil];
@@ -872,17 +878,24 @@
 - (void) autoFetch
 {
   //NSLog(@"GBRepositoryController: autoFetch into %@ (delay: %f)", [self url], autoFetchInterval);
-  autoFetchInterval = autoFetchInterval*(1.5 + drand48()*0.5);
+  autoFetchInterval = autoFetchInterval*1.5;
   while (autoFetchInterval > 3600.0) autoFetchInterval -= 600.0;
   [self scheduleAutoFetch];
   
   if ([self isConnectionAvailable])
   {
-    [self fetchSilently];
+//    NSLog(@"self.updatesQueue = %@ [%@]", self.updatesQueue, self.repository.url);
+    [self.updatesQueue addBlock:^{
+//      NSLog(@"AutoFetch: start %@", self.repository.url);
+      [self fetchSilentlyWithBlock:^{
+//        NSLog(@"AutoFetch: end %@", self.repository.url);
+        [self.updatesQueue endBlock];
+      }];
+    }];
   }
   else
   {
-    NSLog(@"autoFetch: no connection available");
+    NSLog(@"AutoFetch: no connection available for repo %@", self.repository.url);
     while (autoFetchInterval > 300) autoFetchInterval -= 100.0;
   }
 }
