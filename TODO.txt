@@ -172,6 +172,7 @@ Enhancements:
 + Full SSH support: hosts are added to known_hosts after confirmation, passwords and keys prtected by passphrases are supported.
 + List of changes now displays "Moved" status when the file was moved to another folder.
 + Reduced the size of an app to download from 60 Mb to 9 Mb.
++ Bundled Git version updated to 1.7.3.2 (the latest release)
 
 Bug fixes:
 + Fixed software updates: menu button was not always working. Reported by Tom Martin.
