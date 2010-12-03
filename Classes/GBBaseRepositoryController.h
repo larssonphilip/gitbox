@@ -1,11 +1,14 @@
 #import "GBBaseRepositoryControllerDelegate.h"
+#import "OABlockQueue.h"
 
 @interface GBBaseRepositoryController : NSObject
 
-@property(assign) BOOL displaysTwoPathComponents;
-@property(assign) NSInteger isDisabled;
-@property(assign) NSInteger isSpinning;
-@property(assign) id<GBBaseRepositoryControllerDelegate> delegate;
+@property(nonatomic,retain) OABlockQueue* updatesQueue;
+
+@property(nonatomic,assign) BOOL displaysTwoPathComponents;
+@property(nonatomic,assign) NSInteger isDisabled;
+@property(nonatomic,assign) NSInteger isSpinning;
+@property(nonatomic,assign) id<GBBaseRepositoryControllerDelegate> delegate;
 
 
 - (NSURL*) url;

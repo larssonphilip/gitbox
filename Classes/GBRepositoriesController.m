@@ -113,6 +113,9 @@
   if ([self.delegate respondsToSelector:@selector(repositoriesController:willAddRepository:)]) { [self.delegate repositoriesController:self willAddRepository:repoCtrl]; }
   [self.localRepositoryControllers addObject:repoCtrl];
   [self updateRepositoriesPresentation];
+  
+  repoCtrl.updatesQueue = self.localRepositoriesUpdatesQueue;
+  
   [repoCtrl setNeedsUpdateEverything];
   [repoCtrl start];
 

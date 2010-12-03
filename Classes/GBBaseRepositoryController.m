@@ -4,10 +4,18 @@
 
 @implementation GBBaseRepositoryController
 
+@synthesize updatesQueue;
+
 @synthesize displaysTwoPathComponents;
 @synthesize isDisabled;
 @synthesize isSpinning;
 @synthesize delegate;
+
+- (void) dealloc
+{
+  self.updatesQueue = nil;
+  [super dealloc];
+}
 
 - (NSURL*) url
 {

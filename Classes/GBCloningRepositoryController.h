@@ -4,12 +4,12 @@
 @class GBCloneTask;
 @interface GBCloningRepositoryController : GBBaseRepositoryController
 
-@property(retain) NSURL* sourceURL;
-@property(retain) NSURL* targetURL;
-@property(retain) GBCloneTask* cloneTask;
-@property(retain) NSError* error;
+@property(nonatomic,retain) NSURL* sourceURL;
+@property(nonatomic,retain) NSURL* targetURL;
+@property(nonatomic,retain) GBCloneTask* cloneTask;
+@property(nonatomic,retain) NSError* error;
 
-@property(assign) id<GBCloningRepositoryControllerDelegate> delegate;
+@property(nonatomic,assign) id<GBCloningRepositoryControllerDelegate> delegate;
 
 - (void) cancelCloning;
 

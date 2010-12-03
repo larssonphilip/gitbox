@@ -23,17 +23,17 @@
   NSTimeInterval autoFetchInterval;
 }
 
-@property(retain) GBRepository* repository;
-@property(retain) GBCommit* selectedCommit;
-@property(retain) OAFSEventStream* fsEventStream;
-@property(retain) NSString* lastCommitBranchName;
-@property(retain) NSString* cancelledCommitMessage;
+@property(nonatomic,retain) GBRepository* repository;
+@property(nonatomic,retain) GBCommit* selectedCommit;
+@property(nonatomic,retain) OAFSEventStream* fsEventStream;
+@property(nonatomic,retain) NSString* lastCommitBranchName;
+@property(nonatomic,retain) NSString* cancelledCommitMessage;
 @property(nonatomic,retain) NSMutableArray* commitMessageHistory;
-@property(retain) NSData* urlBookmarkData;
+@property(nonatomic,retain) NSData* urlBookmarkData;
 
-@property(assign) NSInteger isRemoteBranchesDisabled;
-@property(assign) BOOL isCommitting;
-@property(assign) id<GBRepositoryControllerDelegate> delegate;
+@property(nonatomic,assign) NSInteger isRemoteBranchesDisabled;
+@property(nonatomic,assign) BOOL isCommitting;
+@property(nonatomic,assign) id<GBRepositoryControllerDelegate> delegate;
 
 + (id) repositoryControllerWithURL:(NSURL*)url;
 
