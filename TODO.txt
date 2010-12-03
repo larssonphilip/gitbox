@@ -4,11 +4,14 @@
 + TODO: find how to parse the prompt and show the yes/no window instead of a password dialog
 + GIT_ASKPASS/SSH_ASKPASS for interacting with ssh
 + bug: when ssh server is not added to known_hosts, gitbox fails parsing the output
-- refresh badges when repo is updated
-- refresh all repos on startup
-- queue all autofetch commands in a global serial queue
-- calculate badge value for pending commits
++ refresh badges when repo is updated
++ refresh all repos on startup
++ queue all autofetch commands in a global serial queue
++ calculate badge value for pending commits
 
++ bug: "Renamed" status should be "Moved" if the [[dstURL path] lastPathComponent] is the same
+- bug: when deselected all repos, the changes view remains visible
+- bug: slow when scrubbing through repos
 - pack git.bundle to .tar.gz and unpack on first run
 - drag and drop for sources (see the SourceView sample code for handling the drag and drop)
 
@@ -60,8 +63,6 @@ Bugs:
 - bug: custom path to diff tool sometimes does not work immediately [Sam Bauer <sam.bauer@mac.com>]
 - bug: branches with "/" in the name are processed incorrectly [Christian van der Leeden <christian.vanderleeden@googlemail.com>]
 - bug: after adding files to .gitignore, the stage is not reloaded
-- bug: "Renamed" status should be "Moved" if the [[dstURL path] lastPathComponent] is the same
-- bug: when deselected all repos, the changes view remains visible
 - when a long process modifies the working directory, the FSEvents wait till the very end, but should refresh each 2 seconds or so.
 - bug: bare repository is not recognized as such: should provide read-only access
 - maybe a bug: if the stage view is not selected, commit: action is not available
