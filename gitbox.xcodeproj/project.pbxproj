@@ -48,6 +48,8 @@
 		2031BB9912A85456008CC337 /* OABlockGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 2031BB9712A85456008CC337 /* OABlockGroup.m */; };
 		2031BB9E12A85646008CC337 /* OABlockQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 2031BB9D12A85646008CC337 /* OABlockQueue.m */; };
 		2031BB9F12A85646008CC337 /* OABlockQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 2031BB9D12A85646008CC337 /* OABlockQueue.m */; };
+		2031BD6D12A8DC61008CC337 /* git-placeholder.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 2031BD6C12A8DC61008CC337 /* git-placeholder.bundle */; };
+		2031BD6E12A8DC61008CC337 /* git-placeholder.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 2031BD6C12A8DC61008CC337 /* git-placeholder.bundle */; };
 		2035623311D383BE00965765 /* GBCommandsController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2035623211D383BE00965765 /* GBCommandsController.xib */; };
 		2035623811D383D000965765 /* GBCommandsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2035623711D383D000965765 /* GBCommandsController.m */; };
 		2035632F11D3B57800965765 /* GBLightScroller.m in Sources */ = {isa = PBXBuildFile; fileRef = 2035632E11D3B57800965765 /* GBLightScroller.m */; };
@@ -350,6 +352,7 @@
 		2031BB9C12A85646008CC337 /* OABlockQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OABlockQueue.h; sourceTree = "<group>"; };
 		2031BB9D12A85646008CC337 /* OABlockQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OABlockQueue.m; sourceTree = "<group>"; };
 		2031BD0012A8CECD008CC337 /* make_hard_links.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = make_hard_links.rb; sourceTree = "<group>"; };
+		2031BD6C12A8DC61008CC337 /* git-placeholder.bundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "git-placeholder.bundle"; sourceTree = "<group>"; };
 		2035623211D383BE00965765 /* GBCommandsController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBCommandsController.xib; sourceTree = "<group>"; };
 		2035623611D383D000965765 /* GBCommandsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBCommandsController.h; sourceTree = "<group>"; };
 		2035623711D383D000965765 /* GBCommandsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBCommandsController.m; sourceTree = "<group>"; };
@@ -945,6 +948,7 @@
 				203976631251A63700770D13 /* Credits.rtf */,
 				20FAA18F123F831400E8FA0E /* git.bundle */,
 				20F8058711C1B35A00ADDADA /* commit-header-template.rtf */,
+				2031BD6C12A8DC61008CC337 /* git-placeholder.bundle */,
 				2010732E11A7E9C300EFDE56 /* app.icns */,
 				8D15AC360486D014006FF6A4 /* info.plist */,
 				089C1660FE840EACC02AAC07 /* InfoPlist.strings */,
@@ -1073,6 +1077,7 @@
 				20915F8C12876062005E0D82 /* GBPreferencesController-appstore.xib in Resources */,
 				20A09F3812A3875800294730 /* askpass.sh in Resources */,
 				203F717812A4E04700BE1A55 /* askpass.rb in Resources */,
+				2031BD6E12A8DC61008CC337 /* git-placeholder.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1113,6 +1118,7 @@
 				20915F8012875C92005E0D82 /* GBPreferencesController.xib in Resources */,
 				20A09F3712A3875200294730 /* askpass.sh in Resources */,
 				203F717712A4E04700BE1A55 /* askpass.rb in Resources */,
+				2031BD6D12A8DC61008CC337 /* git-placeholder.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

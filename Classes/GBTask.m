@@ -17,8 +17,14 @@
 
 + (NSString*) pathToBundledBinary:(NSString*)name
 {
+  NSString* pathToPlaceholder = [[NSBundle mainBundle] pathForResource:@"git-placeholder" ofType:@"bundle"];
+  NSAssert(!!pathToPlaceholder, @"ERROR: pathToPlaceholder is nil!");
   
-  NSString* pathToBundle = [[NSBundle mainBundle] pathForResource:@"git" ofType:@"bundle"];
+  NSString* pathToBundle = [pathToPlaceholder stringByReplacingOccurrencesOfString:@"-placeholder" withString:@""];
+  if (![[NSFileManager defaultManager] fileExistsAtPath:pathToBundle])
+  {
+    pathToBundle = nil;
+  }
   if (!pathToBundle)
   {
     NSString* pathToTar = [[NSBundle mainBundle] pathForResource:@"git.bundle" ofType:@"tar"];
@@ -37,8 +43,9 @@
     
     [[NSFileManager defaultManager] removeItemAtPath:pathToTar error:NULL];
     
-    // FIXME: asking nsbundle for the path again won't work: needs some time
-    pathToBundle = [[NSBundle mainBundle] pathForResource:@"git" ofType:@"bundle"];
+    // Note: asking nsbundle for the path again won't work: needs some time
+    //pathToBundle = [[NSBundle mainBundle] pathForResource:@"git" ofType:@"bundle"];
+    pathToBundle = [pathToPlaceholder stringByReplacingOccurrencesOfString:@"-placeholder" withString:@""];
   }
   if (!pathToBundle)
   {
