@@ -377,6 +377,13 @@
 
 - (void) updateUnpushedCommitsWithBlock:(GBBlock)block
 {
+  if (!self.currentRemoteBranch)
+  {
+    self.unpushedCommitsCount = 0;
+    block();
+    return;
+  }
+  
   GBHistoryTask* task = [GBHistoryTask task];
   task.repository = self;
   task.branch = self.currentLocalRef;
