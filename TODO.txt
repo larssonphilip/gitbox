@@ -57,6 +57,7 @@ Ongoing tasks:
 
 Bugs:
 
+- bug: in commit prompt "Message:" label is cropped when the prompt is narrow
 - bug: green dots are displayed when no remote branch is selected
 - bug: badge displays number of green dots when no remote branch is selected
 - bug: push over https (Github now supports pushing by HTTPS)
