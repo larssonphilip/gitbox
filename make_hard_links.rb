@@ -1,13 +1,28 @@
 #!/usr/bin/env ruby
 
 def hardlink_binaries(bins)
-    resources_path = "#{ENV['BUILT_PRODUCTS_DIR']}/#{ENV['PROJECT_NAME']}.app/Contents/Resources"
+    if !ENV['PROJECT_NAME'] || !ENV['BUILT_PRODUCTS_DIR']
+      resources_path = "."
+    else
+      resources_path = "#{ENV['BUILT_PRODUCTS_DIR']}/#{ENV['PROJECT_NAME']}.app/Contents/Resources"
+    end
     prefix = "#{resources_path}/git.bundle/libexec/git-core"
 
     bins.each do |bin|
         system(%{rm #{prefix}/#{bin}})
         system(%{ln #{prefix}/git #{prefix}/#{bin}})
     end
+end
+
+def pack
+    if !ENV['PROJECT_NAME'] || !ENV['BUILT_PRODUCTS_DIR']
+      resources_path = "."
+    else
+      resources_path = "#{ENV['BUILT_PRODUCTS_DIR']}/#{ENV['PROJECT_NAME']}.app/Contents/Resources"
+    end
+    Dir.chdir(resources_path)
+    system("tar -cf git.bundle.tar git.bundle")
+    system("rm -rf git.bundle")
 end
     
 hardlink_binaries(%w[git-add
@@ -114,6 +129,6 @@ hardlink_binaries(%w[git-add
     git-whatchanged
     git-write-tree])
     
-    
+pack    
 
     
