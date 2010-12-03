@@ -266,6 +266,8 @@
 		20C3C234125C4DB600ABEDE7 /* GBWelcomeController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20C3C233125C4DB600ABEDE7 /* GBWelcomeController.m */; };
 		20C3C30B125D9EA900ABEDE7 /* GBCloneWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 20C3C30A125D9EA900ABEDE7 /* GBCloneWindowController.xib */; };
 		20C3C312125DA0BC00ABEDE7 /* GBCloneWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20C3C311125DA0BC00ABEDE7 /* GBCloneWindowController.m */; };
+		20C83E7C12A9ACB900769F47 /* OAFastJumpController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20C83E7B12A9ACB900769F47 /* OAFastJumpController.m */; };
+		20C83E7D12A9ACB900769F47 /* OAFastJumpController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20C83E7B12A9ACB900769F47 /* OAFastJumpController.m */; };
 		20F8058811C1B35A00ADDADA /* commit-header-template.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 20F8058711C1B35A00ADDADA /* commit-header-template.rtf */; };
 		20FAA190123F831400E8FA0E /* git.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 20FAA18F123F831400E8FA0E /* git.bundle */; };
 		8D15AC320486D014006FF6A4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A37F4B0FDCFA73011CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
@@ -533,6 +535,8 @@
 		20C3C310125DA0BC00ABEDE7 /* GBCloneWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBCloneWindowController.h; sourceTree = "<group>"; };
 		20C3C311125DA0BC00ABEDE7 /* GBCloneWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBCloneWindowController.m; sourceTree = "<group>"; };
 		20C716BB120EF7E6002B594F /* DESIGN_NOTES */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = DESIGN_NOTES; sourceTree = "<group>"; };
+		20C83E7A12A9ACB900769F47 /* OAFastJumpController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAFastJumpController.h; sourceTree = "<group>"; };
+		20C83E7B12A9ACB900769F47 /* OAFastJumpController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAFastJumpController.m; sourceTree = "<group>"; };
 		20E59CE711A5C9EA00E7FB72 /* GBModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBModels.h; sourceTree = "<group>"; };
 		20F8058711C1B35A00ADDADA /* commit-header-template.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = "commit-header-template.rtf"; sourceTree = "<group>"; };
 		20FAA18F123F831400E8FA0E /* git.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = git.bundle; sourceTree = "<group>"; };
@@ -838,6 +842,8 @@
 				2031BB9712A85456008CC337 /* OABlockGroup.m */,
 				2031BB9C12A85646008CC337 /* OABlockQueue.h */,
 				2031BB9D12A85646008CC337 /* OABlockQueue.m */,
+				20C83E7A12A9ACB900769F47 /* OAFastJumpController.h */,
+				20C83E7B12A9ACB900769F47 /* OAFastJumpController.m */,
 			);
 			path = Libs;
 			sourceTree = "<group>";
@@ -1241,6 +1247,7 @@
 				2031BB3012A83B1D008CC337 /* NSObject+OAPerformBlockAfterDelay.m in Sources */,
 				2031BB9912A85456008CC337 /* OABlockGroup.m in Sources */,
 				2031BB9F12A85646008CC337 /* OABlockQueue.m in Sources */,
+				20C83E7D12A9ACB900769F47 /* OAFastJumpController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1331,6 +1338,7 @@
 				2031BB2F12A83B1D008CC337 /* NSObject+OAPerformBlockAfterDelay.m in Sources */,
 				2031BB9812A85456008CC337 /* OABlockGroup.m in Sources */,
 				2031BB9E12A85646008CC337 /* OABlockQueue.m in Sources */,
+				20C83E7C12A9ACB900769F47 /* OAFastJumpController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

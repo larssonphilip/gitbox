@@ -16,6 +16,8 @@
 #import "GBRemotesController.h"
 #import "GBFileEditingController.h"
 
+#import "OAFastJumpController.h"
+
 #import "NSWindowController+OAWindowControllerHelpers.h"
 #import "NSView+OAViewHelpers.h"
 #import "NSSplitView+OASplitViewHelpers.h"
@@ -23,6 +25,7 @@
 #import "NSObject+OADispatchItemValidation.h"
 
 @interface GBMainWindowController ()
+@property(nonatomic, retain) OAFastJumpController* jumpController;
 @end
 
 
@@ -35,6 +38,7 @@
 @synthesize historyController;
 @synthesize welcomeController;
 @synthesize cloneProcessViewController;
+@synthesize jumpController;
 
 @synthesize splitView;
 
@@ -47,6 +51,7 @@
   self.historyController = nil;
   self.welcomeController = nil;
   self.cloneProcessViewController = nil;
+  self.jumpController = nil;
   
   self.splitView = nil;
   
@@ -60,6 +65,8 @@
     self.sourcesController = [[[GBSourcesController alloc] initWithNibName:@"GBSourcesController" bundle:nil] autorelease];
     self.historyController = [[[GBHistoryViewController alloc] initWithNibName:@"GBHistoryViewController" bundle:nil] autorelease];
     self.cloneProcessViewController = [[[GBCloneProcessViewController alloc] initWithNibName:@"GBCloneProcessViewController" bundle:nil] autorelease];
+    
+    self.jumpController = [OAFastJumpController controller];
   }
   return self;
 }
@@ -325,9 +332,11 @@
   self.toolbarController.repositoryController = nil;
 
   [self updateWindowTitleWithRepositoryController:repoCtrl];
-  [self.historyController update];
-  [self.sourcesController updateSelectedRow];
-  [self.sourcesController updateBadges];
+  if (!repoCtrl) [self.historyController update];
+  [self.jumpController delayBlockIfNeeded:^{
+    [self.sourcesController updateSelectedRow];
+    [self.sourcesController updateBadges];
+  }];
 }
 
 
@@ -352,8 +361,12 @@
   self.historyController.repositoryController = repoCtrl;
   self.toolbarController.baseRepositoryController = repoCtrl;
   self.toolbarController.repositoryController = repoCtrl;
-  [self.toolbarController update];
-  [self.historyController update];
+  
+  [self.jumpController delayBlockIfNeeded:^{
+    [self.toolbarController update];
+    [self.historyController update];
+  }];
+  
   [self.historyController loadInView:[[self.splitView subviews] objectAtIndex:1]];
 }
 

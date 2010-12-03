@@ -45,7 +45,6 @@ Ongoing tasks:
 - read ls-remotes when updated .git
 - human message in case git cannot merge/pull when some files are modified (error: Untracked working tree file 'Patryst.xcodeproj/project.pbxproj' would be overwritten by merge.)
 - a block-based method for GBRepository to temporarily remember current error (name, description) for the use in the UI
-- slow when scrubbing through repos
 - Add common OS X to the global gitignore https://github.com/github/gitignore
 - Add "Edit Global Ignored Files..."  menu item to edit ~/.gitignore
 - Secondary windows are opened in sheets (Preferences, Open Repository etc.)
@@ -171,17 +170,18 @@ Features:
 Enhancements:
 + Full SSH support: hosts are added to known_hosts after confirmation, passwords and keys prtected by passphrases are supported.
 + List of changes now displays "Moved" status when the file was moved to another folder.
++ Improved performance of fast scrolling through the list of repositories and commit messages.
 + Reduced the size of an app to download from 60 Mb to 9 Mb.
 + Bundled Git version updated to 1.7.3.2 (the latest release)
 
 Bug fixes:
++ Fixed crashes, freezes and infinite spinning for some repositories when pulling
 + Fixed software updates: menu button was not always working. Reported by Tom Martin.
 + Fixed appearance of the license panel on startup and issue with refreshing the repo. Reported by @mqt.
 + Fixed bug with regular fetching: now all repos will be up to date regularly.
 + Fixed stage appearance when all repositories are deselected.
 + Commits are not marked as non-pushed when there is not remote branch or server
 + Fixed display of message label in a commit prompt.
-
 
 
 1.0:

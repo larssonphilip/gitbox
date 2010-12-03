@@ -8,11 +8,19 @@
 
 #import "GBCommitCell.h"
 
+#import "OAFastJumpController.h"
+
 #import "NSArray+OAArrayHelpers.h"
 #import "NSObject+OAKeyValueObserving.h"
 #import "NSObject+OADispatchItemValidation.h"
 #import "NSView+OAViewHelpers.h"
 #import "NSTableView+OATableViewHelpers.h"
+
+@interface GBHistoryViewController ()
+@property(nonatomic, retain) OAFastJumpController* jumpController;
+@end
+
+
 
 @implementation GBHistoryViewController
 
@@ -23,6 +31,7 @@
 @synthesize additionalView;
 @synthesize tableView;
 @synthesize logArrayController;
+@synthesize jumpController;
 
 
 #pragma mark Init
@@ -37,12 +46,14 @@
   self.additionalView = nil;
   self.tableView = nil;
   self.logArrayController = nil;
+  self.jumpController = nil;
   [super dealloc];
 }
 
 - (void) loadView
 {
   [super loadView];
+  if (!self.jumpController) self.jumpController = [OAFastJumpController controller];
   [self.tableView setIntercellSpacing:NSMakeSize(0.0, 0.0)]; // remove the awful paddings
 }
 
@@ -166,7 +177,9 @@
 
 - (void) tableViewSelectionDidChange:(NSNotification *)aNotification
 {
-  [self.repositoryController selectCommit:[self selectedCommit]];
+  [self.jumpController delayBlockIfNeeded:^{
+    [self.repositoryController selectCommit:[self selectedCommit]];
+  }];
 }
 
 - (NSCell*) tableView:(NSTableView*)aTableView 
