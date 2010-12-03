@@ -355,7 +355,7 @@
 
 - (BOOL) application:(NSApplication*)theApplication openFile:(NSString*)path
 {
-  NSLog(@"application:openFile: %@", path);
+  //NSLog(@"application:openFile: %@", path);
   if (![NSFileManager isWritableDirectoryAtPath:path])
   {
     [NSAlert message:NSLocalizedString(@"File is not a writable folder.", @"") description:path];
