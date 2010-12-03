@@ -11,7 +11,6 @@
 
 + bug: "Renamed" status should be "Moved" if the [[dstURL path] lastPathComponent] is the same
 + bug: when deselected all repos, the changes view remains visible
-- bug: slow when scrubbing through repos
 - pack git.bundle to .tar.gz and unpack on first run
 - drag and drop for sources (see the SourceView sample code for handling the drag and drop)
 
@@ -22,12 +21,12 @@
 
 Next:
 
+- quicklook in changes
 - submodules support: currently does not show the submodule in the stage (think how to add/init/update a submodule)
 - do not require name and email for ~/.gitconfig
 - fix networking behaviour: try to load the remote branches and reload them when pull/fetch
 - obfuscated license check
 - find in commits
-- quicklook in changes
 - tag and branch badges in history
 - create a new tag (need a tag badge)
 
@@ -45,13 +44,13 @@ Ongoing tasks:
 - read ls-remotes when updated .git
 - human message in case git cannot merge/pull when some files are modified (error: Untracked working tree file 'Patryst.xcodeproj/project.pbxproj' would be overwritten by merge.)
 - a block-based method for GBRepository to temporarily remember current error (name, description) for the use in the UI
+- slow when scrubbing through repos
 - Add common OS X to the global gitignore https://github.com/github/gitignore
 - Add "Edit Global Ignored Files..."  menu item to edit ~/.gitignore
 - Secondary windows are opened in sheets (Preferences, Open Repository etc.)
 - check for memory leaks
 - check behavior when opendiff is missing
 - check that opendiff is selected by default on new start + it is not selected if it is missing
-
 
 Bugs:
 
