@@ -129,10 +129,17 @@
   if (c == 'C') return NSLocalizedString(@"Copied", @"Change");
   if (c == 'D') return NSLocalizedString(@"Deleted", @"Change");
   if (c == 'M') return NSLocalizedString(@"Modified", @"Change");
-  if (c == 'R') return NSLocalizedString(@"Renamed", @"Change");
   if (c == 'T') return NSLocalizedString(@"Type changed", @"Change");
   if (c == 'U') return NSLocalizedString(@"Unmerged", @"Change");
   if (c == 'X') return NSLocalizedString(@"Unknown", @"Change");
+  if (c == 'R')
+  {
+    if (self.srcURL && self.dstURL && [[[self.srcURL path] lastPathComponent] isEqualToString:[[self.dstURL path] lastPathComponent]])
+    {
+      return NSLocalizedString(@"Moved", @"Change");
+    }
+    return NSLocalizedString(@"Renamed", @"Change");
+  }
   
   return aStatusCode;
 }
