@@ -333,10 +333,8 @@
 
   [self updateWindowTitleWithRepositoryController:repoCtrl];
   if (!repoCtrl) [self.historyController update];
-  [self.jumpController delayBlockIfNeeded:^{
-    [self.sourcesController updateSelectedRow];
-    [self.sourcesController updateBadges];
-  }];
+  [self.sourcesController updateSelectedRow];
+  [self.sourcesController updateBadges];
 }
 
 
