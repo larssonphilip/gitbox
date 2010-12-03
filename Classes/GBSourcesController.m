@@ -193,7 +193,6 @@
   ignoreSelectionChange--;
   [self loadExpandedState];
   [self updateSelectedRow];
-  [self updateBadges];
 }
 
 - (void) updateBadges
