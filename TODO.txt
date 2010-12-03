@@ -31,7 +31,7 @@ Next:
 - find in commits
 - tag and branch badges in history
 - create a new tag (need a tag badge)
-
+- left-right arrows navigation between panes
 
 
 To read:
