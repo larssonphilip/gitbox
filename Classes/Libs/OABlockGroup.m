@@ -10,6 +10,12 @@
   return group;
 }
 
+- (void) dealloc
+{
+  self.block = nil;
+  [super dealloc];
+}
+
 - (void) enter
 {
   counter++;
@@ -21,6 +27,7 @@
   if (counter <= 0)
   {
     if (self.block) self.block();
+    self.block = nil;
   }
 }
 

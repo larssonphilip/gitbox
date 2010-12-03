@@ -52,6 +52,8 @@ Ongoing tasks:
 - check for memory leaks
 - check behavior when opendiff is missing
 - check that opendiff is selected by default on new start + it is not selected if it is missing
+- put the help on how to install ksdiff/chdiff in prefs.
+- remove "path to diff" field since ppl put path to .app or something
 
 Error messages translation to English:
 - failed pull: need commit first: "error: Your local changes to 'TODO.txt' would be overwritten by merge.  Aborting. Please, commit your changes or stash them before you can merge. Updating c3c800f..87bc4f4"
@@ -61,6 +63,9 @@ Error messages translation to English:
 
 Bugs:
 
+- bug: in commit prompt "Message:" label is cropped when the prompt is narrow
+- bug: green dots are displayed when no remote branch is selected
+- bug: badge displays number of green dots when no remote branch is selected
 - bug: push over https (Github now supports pushing by HTTPS)
 - bug: when connecting over https (and maybe http), gitbox locks on password prompt.  [Nicolai Schulten <nicolai.schulten@byte-garden.de>]
 - bug: git repo in dropbox causes gitbox to refresh frequently [Tom Martin <tom@devart.org>]
