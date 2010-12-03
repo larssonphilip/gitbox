@@ -12,7 +12,8 @@
 + bug: "Renamed" status should be "Moved" if the [[dstURL path] lastPathComponent] is the same
 + bug: when deselected all repos, the changes view remains visible
 + pack git.bundle to .tar.gz and unpack on first run
-- upgrade git version
++ upgrade git version
+- https check
 - drag and drop for sources (see the SourceView sample code for handling the drag and drop)
 
 - help
