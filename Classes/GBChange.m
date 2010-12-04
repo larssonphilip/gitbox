@@ -1,5 +1,8 @@
 #import "GBModels.h"
 #import "GBExtractFileTask.h"
+
+#import "GBChangeCell.h"
+
 #import "OATask.h"
 
 #import "NSString+OAGitHelpers.h"
@@ -180,6 +183,12 @@
   return (![self.oldRevision nonZeroCommitId] && ![self.newRevision nonZeroCommitId]);
 }
 
+- (BOOL) isMovedOrRenamedFile
+{
+  return [self.statusCode isEqualToString:@"R"];
+}
+
+
 - (NSComparisonResult) compareByPath:(GBChange*) other
 {
   return [self.srcURL.relativePath compare:other.srcURL.relativePath];
@@ -196,6 +205,19 @@
   return self;
 }
 
+- (Class) cellClass
+{
+  return [GBChangeCell class];
+}
+
+- (GBChangeCell*) cell
+{
+  GBChangeCell* cell = [[self cellClass] cell];
+  [cell setRepresentedObject:self];
+  [cell setEnabled:YES];
+  [cell setSelectable:YES];
+  return cell;
+}
 
 
 

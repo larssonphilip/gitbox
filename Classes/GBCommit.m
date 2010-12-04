@@ -79,7 +79,7 @@
 
 - (GBCommitCell*) cell
 {
-  GBCommitCell* cell = [[[self cellClass] new] autorelease];
+  GBCommitCell* cell = [[self cellClass] cell];
   [cell setRepresentedObject:self];
   return cell;
 }

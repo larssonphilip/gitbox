@@ -268,6 +268,8 @@
 		20C3C312125DA0BC00ABEDE7 /* GBCloneWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20C3C311125DA0BC00ABEDE7 /* GBCloneWindowController.m */; };
 		20C83E7C12A9ACB900769F47 /* OAFastJumpController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20C83E7B12A9ACB900769F47 /* OAFastJumpController.m */; };
 		20C83E7D12A9ACB900769F47 /* OAFastJumpController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20C83E7B12A9ACB900769F47 /* OAFastJumpController.m */; };
+		20C83F6D12AA1BBB00769F47 /* GBChangeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 20C83F6C12AA1BBB00769F47 /* GBChangeCell.m */; };
+		20C83F6E12AA1BBB00769F47 /* GBChangeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 20C83F6C12AA1BBB00769F47 /* GBChangeCell.m */; };
 		20F8058811C1B35A00ADDADA /* commit-header-template.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 20F8058711C1B35A00ADDADA /* commit-header-template.rtf */; };
 		20FAA190123F831400E8FA0E /* git.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 20FAA18F123F831400E8FA0E /* git.bundle */; };
 		8D15AC320486D014006FF6A4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A37F4B0FDCFA73011CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
@@ -537,6 +539,8 @@
 		20C716BB120EF7E6002B594F /* DESIGN_NOTES */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = DESIGN_NOTES; sourceTree = "<group>"; };
 		20C83E7A12A9ACB900769F47 /* OAFastJumpController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAFastJumpController.h; sourceTree = "<group>"; };
 		20C83E7B12A9ACB900769F47 /* OAFastJumpController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAFastJumpController.m; sourceTree = "<group>"; };
+		20C83F6B12AA1BBB00769F47 /* GBChangeCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBChangeCell.h; sourceTree = "<group>"; };
+		20C83F6C12AA1BBB00769F47 /* GBChangeCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBChangeCell.m; sourceTree = "<group>"; };
 		20E59CE711A5C9EA00E7FB72 /* GBModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBModels.h; sourceTree = "<group>"; };
 		20F8058711C1B35A00ADDADA /* commit-header-template.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = "commit-header-template.rtf"; sourceTree = "<group>"; };
 		20FAA18F123F831400E8FA0E /* git.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = git.bundle; sourceTree = "<group>"; };
@@ -728,12 +732,14 @@
 			children = (
 				203F729912A62E0200BE1A55 /* GBCell.h */,
 				203F729A12A62E0200BE1A55 /* GBCell.m */,
+				20BF176F127EF68800A30EE6 /* GBRepositoryCell.h */,
+				20BF1770127EF68800A30EE6 /* GBRepositoryCell.m */,
 				2057964011ADD3AA004715FE /* GBCommitCell.h */,
 				2057964111ADD3AA004715FE /* GBCommitCell.m */,
 				2057979911ADEEEE004715FE /* GBStageCell.h */,
 				2057979A11ADEEEE004715FE /* GBStageCell.m */,
-				20BF176F127EF68800A30EE6 /* GBRepositoryCell.h */,
-				20BF1770127EF68800A30EE6 /* GBRepositoryCell.m */,
+				20C83F6B12AA1BBB00769F47 /* GBChangeCell.h */,
+				20C83F6C12AA1BBB00769F47 /* GBChangeCell.m */,
 				2035632D11D3B57800965765 /* GBLightScroller.h */,
 				2035632E11D3B57800965765 /* GBLightScroller.m */,
 				2035639C11D3C14C00965765 /* GBLightScrollView.h */,
@@ -1248,6 +1254,7 @@
 				2031BB9912A85456008CC337 /* OABlockGroup.m in Sources */,
 				2031BB9F12A85646008CC337 /* OABlockQueue.m in Sources */,
 				20C83E7D12A9ACB900769F47 /* OAFastJumpController.m in Sources */,
+				20C83F6E12AA1BBB00769F47 /* GBChangeCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1339,6 +1346,7 @@
 				2031BB9812A85456008CC337 /* OABlockGroup.m in Sources */,
 				2031BB9E12A85646008CC337 /* OABlockQueue.m in Sources */,
 				20C83E7C12A9ACB900769F47 /* OAFastJumpController.m in Sources */,
+				20C83F6D12AA1BBB00769F47 /* GBChangeCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

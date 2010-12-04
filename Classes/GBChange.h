@@ -1,5 +1,5 @@
 #import "GBChangeDelegate.h"
-
+@class GBChangeCell;
 @class GBRepository;
 @interface GBChange : NSObject
 
@@ -24,6 +24,7 @@
 - (BOOL) isAddedFile;
 - (BOOL) isDeletedFile;
 - (BOOL) isUntrackedFile;
+- (BOOL) isMovedOrRenamedFile;
 - (NSComparisonResult) compareByPath:(id) other;
 - (NSString*) pathForIgnore;
 - (GBChange*) nilIfBusy;
@@ -32,6 +33,10 @@
 - (void) update;
 
 - (NSURL*) existingOrTemporaryFileURL;
+
+- (Class) cellClass;
+- (GBChangeCell*) cell;
+
 
 #pragma mark Actions
 

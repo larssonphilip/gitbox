@@ -1,6 +1,6 @@
 @class GBCommit;
 
-@interface GBCommitCell : NSCell
+@interface GBCommitCell : NSTextFieldCell
 {
   BOOL isFocused;
 }
@@ -8,6 +8,7 @@
 @property(readonly) GBCommit* commit;
 
 + (CGFloat) cellHeight;
++ (GBCommitCell*) cell;
 - (NSRect) innerRectForFrame:(NSRect)cellFrame;
 - (void) drawSyncStatusIconInRect:(NSRect)cellFrame;
 

@@ -3,6 +3,10 @@
 #import "CGContext+OACGContextHelpers.h"
 #import "GBLightScroller.h"
 
+
+#define kIconImageWidth		16.0
+
+
 @interface GBRepositoryCell ()
 - (NSRect) drawBadge:(NSString*)badge inTitleFrame:(NSRect)frame;
 - (void) drawTitleInFrame:(NSRect)frame;
@@ -14,14 +18,10 @@
 @synthesize isForeground;
 @synthesize isFocused;
 
-#define kIconImageWidth		16.0
-
-
-
 + (CGFloat) cellHeight
 {
   return 22.0;
-  return 35.0;
+//  return 35.0;
 }
 
 - (id)init

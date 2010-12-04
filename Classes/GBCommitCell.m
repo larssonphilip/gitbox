@@ -17,6 +17,11 @@
   return 40.0;
 }
 
++ (GBCommitCell*) cell
+{
+  return [[[self alloc] initTextCell:@""] autorelease];
+}
+
 - (NSString*) tooltipString
 {
   GBCommitSyncStatus st = self.commit.syncStatus;

@@ -7,6 +7,10 @@
   return NSLocalizedString(@"Working directory and stage status", @"");
 }
 
++ (GBStageCell*) cell
+{
+  return [[[self alloc] initTextCell:@""] autorelease];
+}
 
 - (void) drawContentInFrame:(NSRect)cellFrame
 {

@@ -1,6 +1,7 @@
 #import "GBCommit.h"
 @class GBTask;
 @class GBChange;
+
 @interface GBStage : GBCommit
 
 @property(retain) NSArray* stagedChanges;
