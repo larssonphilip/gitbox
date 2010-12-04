@@ -542,7 +542,7 @@
   [self.historyController loadAdditionalControllers];
   
   [self.sourcesController.outlineView setNextKeyView:self.historyController.tableView];
-  
+  [[self window] makeFirstResponder:self.sourcesController.outlineView];
   [self.toolbarController update];
   [self.historyController update];
 }
