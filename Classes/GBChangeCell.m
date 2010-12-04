@@ -160,14 +160,18 @@
     
     NSSize size = [status sizeWithAttributes:attributes];
     
-    if (size.width / currentFrame.size.width > 0.5) size.width = round(currentFrame.size.width / 0.5);
+    if ((size.width / currentFrame.size.width) > 0.5) size.width = round(currentFrame.size.width*0.5);
     
     NSRect statusFrame;
+    static CGFloat paddingLeft = 2;
+    static CGFloat paddingRight = 2;
     statusFrame.size = size;
-    statusFrame.origin.x = currentFrame.origin.x + (currentFrame.size.width - size.width);
+    statusFrame.origin.x = currentFrame.origin.x + (currentFrame.size.width - size.width) - paddingRight;
     statusFrame.origin.y = currentFrame.origin.y;
     
     if (isFlipped) statusFrame.origin.y += 1;
+    
+    currentFrame.size.width -= statusFrame.size.width - paddingRight - paddingLeft;
     
     [status drawInRect:statusFrame withAttributes:attributes];
   }
