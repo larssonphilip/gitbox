@@ -1,5 +1,15 @@
 #!/usr/bin/env ruby
 
+if ENV['PROJECT_NAME'] && ENV['BUILT_PRODUCTS_DIR']
+  resources_path = "#{ENV['BUILT_PRODUCTS_DIR']}/#{ENV['PROJECT_NAME']}.app/Contents/Resources"
+  Dir.chdir(resources_path)
+  if File.exists?("git.bundle.tar")
+    puts "git.bundle.tar exists, skipping."
+    exit 0
+  end
+end
+
+
 def hardlink_binaries(bins)
     if !ENV['PROJECT_NAME'] || !ENV['BUILT_PRODUCTS_DIR']
       resources_path = "."

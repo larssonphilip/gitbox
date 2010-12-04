@@ -41,8 +41,11 @@
     unpackTask.currentDirectoryPath = [pathToTar stringByDeletingLastPathComponent];
     [unpackTask launchAndWait];
     
+#if DEBUG
+    // Do not remove tar to avoid creation of it again on every run
+#else
     [[NSFileManager defaultManager] removeItemAtPath:pathToTar error:NULL];
-    
+#endif
     // Note: asking nsbundle for the path again won't work: needs some time
     //pathToBundle = [[NSBundle mainBundle] pathForResource:@"git" ofType:@"bundle"];
     pathToBundle = [pathToPlaceholder stringByReplacingOccurrencesOfString:@"-placeholder" withString:@""];
