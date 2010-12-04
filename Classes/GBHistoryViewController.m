@@ -93,6 +93,7 @@
 
 - (IBAction) selectRightPane:_
 {
+  [self.jumpController flush]; // force the next view to appear before jumping into it
   [[self.tableView window] selectKeyViewFollowingView:self.tableView];
   GBCommit* commit = self.repositoryController.selectedCommit;
   if (!commit || [commit isStage])
