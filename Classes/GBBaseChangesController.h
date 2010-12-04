@@ -19,7 +19,8 @@
 
 #pragma mark Actions
 
+- (IBAction) selectFirstLineIfNeeded:_;
 - (IBAction) stageShowDifference:_;
 - (IBAction) stageRevealInFinder:_;
-
+- (IBAction) selectLeftPane:_;
 @end

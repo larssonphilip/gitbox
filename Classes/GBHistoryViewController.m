@@ -33,7 +33,6 @@
 @synthesize logArrayController;
 @synthesize jumpController;
 
-
 #pragma mark Init
 
 
@@ -78,6 +77,33 @@
 - (GBCommit*) selectedCommit
 {
   return (GBCommit*)[[self.logArrayController selectedObjects] firstObject];
+}
+
+
+
+
+
+#pragma mark Actions
+
+
+- (IBAction) selectLeftPane:_
+{
+  [[self.tableView window] selectKeyViewPrecedingView:self.tableView];
+}
+
+- (IBAction) selectRightPane:_
+{
+  [[self.tableView window] selectKeyViewFollowingView:self.tableView];
+  GBCommit* commit = self.repositoryController.selectedCommit;
+  if (!commit || [commit isStage])
+  {
+    [self.stageController selectFirstLineIfNeeded:_];
+  }
+  else
+  {
+    [self.commitController selectFirstLineIfNeeded:_];
+  }
+  
 }
 
 

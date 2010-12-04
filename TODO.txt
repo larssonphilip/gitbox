@@ -31,7 +31,7 @@ Next:
 - find in commits
 - tag and branch badges in history
 - create a new tag (need a tag badge)
-- left-right arrows navigation between panes
+
 
 
 To read:
@@ -167,6 +167,7 @@ Features:
 
 + Numeric badges in the sidebar show total number of non-committed changes, non-pushed and non-merged commits for the current branch.
 + More diff tools: BBEdit, TextWrangler, Araxis Merge.
++ Navigation between columns with left and right arrows.
 
 Enhancements:
 + Full SSH support: hosts are added to known_hosts after confirmation, passwords and keys prtected by passphrases are supported.

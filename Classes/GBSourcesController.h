@@ -10,11 +10,11 @@
   NSUInteger ignoreSelectionChange;
 }
 
-@property(retain) GBRepositoriesController* repositoriesController;
+@property(nonatomic,retain) GBRepositoriesController* repositoriesController;
 
 @property(nonatomic,retain) NSMutableArray* sections;
-@property(retain) IBOutlet NSOutlineView* outlineView;
-@property(retain) IBOutlet NSButton* buyButton;
+@property(nonatomic,retain) IBOutlet NSOutlineView* outlineView;
+@property(nonatomic,retain) IBOutlet NSButton* buyButton;
 
 - (void) saveState;
 - (void) loadState;
@@ -30,5 +30,7 @@
 - (IBAction) remove:(id)_;
 - (IBAction) openInTerminal:(id)_;
 - (IBAction) openInFinder:(id)_;
+
+- (IBAction) selectRightPane:_;
 
 @end

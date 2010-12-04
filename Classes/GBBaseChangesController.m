@@ -6,7 +6,7 @@
 @implementation GBBaseChangesController
 
 @synthesize tableView;
-@synthesize statusArrayController; 
+@synthesize statusArrayController;
 @synthesize repositoryController;
 @synthesize changes;
 
@@ -104,6 +104,18 @@
   }
 
 
+- (IBAction) selectLeftPane:_
+{
+  [[self.tableView window] selectKeyViewPrecedingView:self.tableView];
+}
+
+- (IBAction) selectFirstLineIfNeeded:_
+{
+  if (![[self selectedChanges] firstObject])
+  {
+    [self.statusArrayController selectNext:_];
+  }
+}
 
 
 

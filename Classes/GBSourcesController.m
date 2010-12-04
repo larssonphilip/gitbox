@@ -63,6 +63,7 @@
 
 - (IBAction) selectPreviousRepository:(id)_
 {
+  [[self.outlineView window] makeFirstResponder:self.outlineView];
   NSInteger index = [self.outlineView rowForItem:self.repositoriesController.selectedRepositoryController];
   GBBaseRepositoryController* item = nil;
   if (index < 0)
@@ -78,6 +79,7 @@
 
 - (IBAction) selectNextRepository:(id)_
 {
+  [[self.outlineView window] makeFirstResponder:self.outlineView];
   NSInteger index = [self.outlineView rowForItem:self.repositoriesController.selectedRepositoryController];
   GBBaseRepositoryController* item = nil;
   if (index < 0)
@@ -132,6 +134,11 @@
   {        
     [[NSWorkspace sharedWorkspace] openFile:[[ctrl url] path]];
   }
+}
+
+- (IBAction) selectRightPane:_
+{
+  [[self.outlineView window] selectKeyViewFollowingView:self.outlineView];
 }
 
 
