@@ -53,7 +53,7 @@
 										<array class="NSMutableArray" key="NSTableColumns">
 											<object class="NSTableColumn" id="348828196">
 												<string key="NSIdentifier">pathStatus</string>
-												<double key="NSWidth">452</double>
+												<double key="NSWidth">454</double>
 												<double key="NSMinWidth">10</double>
 												<double key="NSMaxWidth">3000</double>
 												<object class="NSTableHeaderCell" key="NSHeaderCell">
@@ -112,9 +112,9 @@
 											</object>
 											<object class="NSTableColumn" id="120666121">
 												<string key="NSIdentifier">staged</string>
-												<double key="NSWidth">22</double>
+												<double key="NSWidth">20</double>
 												<double key="NSMinWidth">18</double>
-												<double key="NSMaxWidth">22</double>
+												<double key="NSMaxWidth">20</double>
 												<object class="NSTableHeaderCell" key="NSHeaderCell">
 													<int key="NSCellFlags">75628096</int>
 													<int key="NSCellFlags2">2048</int>
@@ -189,6 +189,7 @@
 								<int key="NSvFlags">-2147483392</int>
 								<string key="NSFrame">{{259, 17}, {15, 381}}</string>
 								<reference key="NSSuperview" ref="468974511"/>
+								<int key="NSArrowsLoc">2</int>
 								<reference key="NSTarget" ref="468974511"/>
 								<string key="NSAction">_doScroller:</string>
 								<double key="NSPercent">0.94485294117647056</double>
@@ -694,10 +695,11 @@
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
-				<string key="1.IBEditorWindowLastContentRect">{{278, 98}, {480, 272}}</string>
+				<string key="1.IBEditorWindowLastContentRect">{{489, 162}, {480, 272}}</string>
 				<string key="1.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="1.WindowOrigin">{628, 654}</string>
 				<string key="1.editorWindowContentRectSynchronizationRect">{{217, 442}, {480, 272}}</string>
+				<string key="13.CustomClassName">GBLightScrollView</string>
 				<string key="13.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<object class="NSAffineTransform" key="13.IBViewBoundsToFrameTransform">
 					<bytes key="NSTransformStruct">P4AAAL+AAAAAAAAAw4cAAA</bytes>
@@ -713,6 +715,7 @@
 				<string key="21.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="22.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="23.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="25.CustomClassName">GBLightScroller</string>
 				<string key="25.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="26.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="27.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -774,6 +777,22 @@
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">Classes/GBBaseChangesController.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">GBLightScrollView</string>
+					<string key="superclassName">NSScrollView</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">Classes/GBLightScrollView.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">GBLightScroller</string>
+					<string key="superclassName">NSScroller</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">Classes/GBLightScroller.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">

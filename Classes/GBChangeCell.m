@@ -166,7 +166,7 @@
     
     NSRect statusFrame;
     static CGFloat paddingLeft = 4;
-    static CGFloat paddingRight = 7;
+    static CGFloat paddingRight = 5;
     statusFrame.size = size;
     statusFrame.origin.x = currentFrame.origin.x + (currentFrame.size.width - size.width) - paddingRight;
     statusFrame.origin.y = currentFrame.origin.y;
