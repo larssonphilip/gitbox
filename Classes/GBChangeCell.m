@@ -80,26 +80,25 @@
   
   GBChange* aChange = [self change];
   
-  NSString* srcPath = [aChange.srcURL path];
-  if (!srcPath) srcPath = [aChange.dstURL path];
+  NSURL* srcURL = aChange.srcURL;
+  if (!srcURL) srcURL = aChange.dstURL;
   
-  NSString* dstPath = [aChange.dstURL path];
+  NSURL* dstURL = aChange.dstURL;
   
   NSImage* srcImage = nil;
-  NSImage* dstImage = nil;
   
   // NSFileTypeForHFSTypeCode(UTGetOSTypeFromString((CFStringRef*)@"..."))
   // 
   
-  if (srcPath)
+  if (srcURL)
   {
-    if ([[NSFileManager defaultManager]  fileExistsAtPath:srcPath])
+    if ([[NSFileManager defaultManager]  fileExistsAtPath:[srcURL path]])
     {
-      srcImage = [[NSWorkspace sharedWorkspace] iconForFile:srcPath];
+      srcImage = [[NSWorkspace sharedWorkspace] iconForFile:[srcURL path]];
     }
     else
     {
-      NSString* ext = [srcPath pathExtension];
+      NSString* ext = [[srcURL path] pathExtension];
       srcImage =  [[NSWorkspace sharedWorkspace] iconForFileType:ext];
     }
   }
@@ -109,10 +108,12 @@
   
   [srcImage setSize:imageSize];
   
+  static CGFloat leftOffsetLikeInFinder = 5;
+  currentFrame.origin.x += leftOffsetLikeInFinder;
+  currentFrame.size.width -= leftOffsetLikeInFinder;
+  
   NSRect srcImageRect = currentFrame;
   srcImageRect.size = imageSize;
-  
-  
   
   if (isFlipped)
   {
@@ -125,7 +126,7 @@
   
   // Adjust the currentFrame for the text
   
-  CGFloat offset = srcImageRect.size.width + 2;
+  CGFloat offset = srcImageRect.size.width + 6;
   currentFrame.origin.x += offset;
   currentFrame.size.width -= offset;
   
@@ -137,11 +138,11 @@
     
     if ([aChange isAddedFile] || [aChange isUntrackedFile])
     {
-      textColor = [NSColor colorWithCalibratedRed:0.1 green:0.5 blue:0.0 alpha:1.0];
+      textColor = [NSColor colorWithCalibratedWhite:0.3 alpha:1.0]; //[NSColor colorWithCalibratedRed:0.1 green:0.5 blue:0.0 alpha:1.0];
     }
     else if ([aChange isDeletedFile])
     {
-      textColor = [NSColor colorWithCalibratedRed:0.6 green:0.1 blue:0.0 alpha:1.0];
+      textColor = [NSColor colorWithCalibratedWhite:0.0 alpha:1.0]; //[NSColor colorWithCalibratedRed:0.6 green:0.1 blue:0.0 alpha:1.0];
     }
       
     if ([self isHighlighted] && self.isFocused)
@@ -154,6 +155,7 @@
     NSMutableDictionary* attributes = [[[NSMutableDictionary alloc] initWithObjectsAndKeys:
                                              textColor, NSForegroundColorAttributeName,
                                              font, NSFontAttributeName,
+                                             self.truncatingParagraphStyle, NSParagraphStyleAttributeName,
                                              nil] autorelease];
     
     NSString* status = [aChange.status lowercaseString];
@@ -163,15 +165,15 @@
     if ((size.width / currentFrame.size.width) > 0.5) size.width = round(currentFrame.size.width*0.5);
     
     NSRect statusFrame;
-    static CGFloat paddingLeft = 2;
-    static CGFloat paddingRight = 2;
+    static CGFloat paddingLeft = 4;
+    static CGFloat paddingRight = 7;
     statusFrame.size = size;
     statusFrame.origin.x = currentFrame.origin.x + (currentFrame.size.width - size.width) - paddingRight;
     statusFrame.origin.y = currentFrame.origin.y;
     
-    if (isFlipped) statusFrame.origin.y += 1;
+    if (isFlipped) statusFrame.origin.y += 2;
     
-    currentFrame.size.width -= statusFrame.size.width - paddingRight - paddingLeft;
+    currentFrame.size.width -= statusFrame.size.width + paddingRight + paddingLeft;
     
     [status drawInRect:statusFrame withAttributes:attributes];
   }
@@ -191,20 +193,22 @@
     
     NSFont* font = [NSFont systemFontOfSize:12.0];
     
-    NSMutableDictionary* titleAttributes = [[[NSMutableDictionary alloc] initWithObjectsAndKeys:
+    NSMutableDictionary* attributes = [[[NSMutableDictionary alloc] initWithObjectsAndKeys:
                                              textColor, NSForegroundColorAttributeName,
                                              font, NSFontAttributeName,
                                              self.truncatingParagraphStyle, NSParagraphStyleAttributeName,
                                              nil] autorelease];
     
-    // If moved, we'll display first the 
+    // If moved, we'll display the first path, then arrow and icon+relative path for the second one
     if ([aChange isMovedOrRenamedFile])
     {
+      // FIXME:
       
+      [[srcURL relativePath] drawInRect:currentFrame withAttributes:attributes];
     }
     else
     {
-      
+      [[srcURL relativePath] drawInRect:currentFrame withAttributes:attributes];
     }
         
   }

@@ -367,7 +367,7 @@
   {
     NSURL* url = [NSURL fileURLWithPath:repoPath];
     [self openLocalRepositoryAtURL:url];
-    [self saveRepositories];
+    //[self saveRepositories]; <- this breaks autoupdate of all repos on startup
     return YES;
   }
   else
@@ -378,7 +378,7 @@
       NSURL* url = [NSURL fileURLWithPath:path];
       [GBRepository initRepositoryAtURL:url];
       [self openLocalRepositoryAtURL:url];
-      [self saveRepositories];
+      //[self saveRepositories]; <- this breaks autoupdate of all repos on startup
     }
   }
   return NO;

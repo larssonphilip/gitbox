@@ -24,6 +24,8 @@
     cellFrame.origin.y -= 2;
   }
   
+  cellFrame.origin.x -= 2;
+  
   [super drawInteriorWithFrame:cellFrame inView:theControlView];
 }
 
