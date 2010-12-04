@@ -367,6 +367,7 @@
   {
     NSURL* url = [NSURL fileURLWithPath:repoPath];
     [self openLocalRepositoryAtURL:url];
+    [self saveRepositories];
     return YES;
   }
   else
@@ -377,6 +378,7 @@
       NSURL* url = [NSURL fileURLWithPath:path];
       [GBRepository initRepositoryAtURL:url];
       [self openLocalRepositoryAtURL:url];
+      [self saveRepositories];
     }
   }
   return NO;
