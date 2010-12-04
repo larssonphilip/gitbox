@@ -27,6 +27,8 @@
 		200B08B511B6E359004C09A8 /* GBLocalRemoteAssociationTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 200B08B411B6E359004C09A8 /* GBLocalRemoteAssociationTask.m */; };
 		2010732F11A7E9C300EFDE56 /* app.icns in Resources */ = {isa = PBXBuildFile; fileRef = 2010732E11A7E9C300EFDE56 /* app.icns */; };
 		201073B611A80A4600EFDE56 /* GBRemotesTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 201073B511A80A4600EFDE56 /* GBRemotesTask.m */; };
+		20177F8512AAA229006362D1 /* GBChangeCheckboxCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 20177F8412AAA228006362D1 /* GBChangeCheckboxCell.m */; };
+		20177F8612AAA229006362D1 /* GBChangeCheckboxCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 20177F8412AAA228006362D1 /* GBChangeCheckboxCell.m */; };
 		201E02F711EA231D007E4420 /* GBLicenseController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 201E02F611EA231D007E4420 /* GBLicenseController.xib */; };
 		201E030211EE083D007E4420 /* GBCertificateUpdateController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 201E030111EE083D007E4420 /* GBCertificateUpdateController.xib */; };
 		201E030611EE09D7007E4420 /* GBCertificateUpdateController.m in Sources */ = {isa = PBXBuildFile; fileRef = 201E030511EE09D7007E4420 /* GBCertificateUpdateController.m */; };
@@ -328,6 +330,8 @@
 		2010732E11A7E9C300EFDE56 /* app.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = app.icns; sourceTree = "<group>"; };
 		201073B411A80A4600EFDE56 /* GBRemotesTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBRemotesTask.h; sourceTree = "<group>"; };
 		201073B511A80A4600EFDE56 /* GBRemotesTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBRemotesTask.m; sourceTree = "<group>"; };
+		20177F8312AAA228006362D1 /* GBChangeCheckboxCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBChangeCheckboxCell.h; sourceTree = "<group>"; };
+		20177F8412AAA228006362D1 /* GBChangeCheckboxCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBChangeCheckboxCell.m; sourceTree = "<group>"; };
 		201E02F611EA231D007E4420 /* GBLicenseController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBLicenseController.xib; sourceTree = "<group>"; };
 		201E030111EE083D007E4420 /* GBCertificateUpdateController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBCertificateUpdateController.xib; sourceTree = "<group>"; };
 		201E030411EE09D7007E4420 /* GBCertificateUpdateController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBCertificateUpdateController.h; sourceTree = "<group>"; };
@@ -740,6 +744,8 @@
 				2057979A11ADEEEE004715FE /* GBStageCell.m */,
 				20C83F6B12AA1BBB00769F47 /* GBChangeCell.h */,
 				20C83F6C12AA1BBB00769F47 /* GBChangeCell.m */,
+				20177F8312AAA228006362D1 /* GBChangeCheckboxCell.h */,
+				20177F8412AAA228006362D1 /* GBChangeCheckboxCell.m */,
 				2035632D11D3B57800965765 /* GBLightScroller.h */,
 				2035632E11D3B57800965765 /* GBLightScroller.m */,
 				2035639C11D3C14C00965765 /* GBLightScrollView.h */,
@@ -1255,6 +1261,7 @@
 				2031BB9F12A85646008CC337 /* OABlockQueue.m in Sources */,
 				20C83E7D12A9ACB900769F47 /* OAFastJumpController.m in Sources */,
 				20C83F6E12AA1BBB00769F47 /* GBChangeCell.m in Sources */,
+				20177F8612AAA229006362D1 /* GBChangeCheckboxCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1347,6 +1354,7 @@
 				2031BB9E12A85646008CC337 /* OABlockQueue.m in Sources */,
 				20C83E7C12A9ACB900769F47 /* OAFastJumpController.m in Sources */,
 				20C83F6D12AA1BBB00769F47 /* GBChangeCell.m in Sources */,
+				20177F8512AAA229006362D1 /* GBChangeCheckboxCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

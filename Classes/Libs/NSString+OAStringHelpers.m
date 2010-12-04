@@ -75,6 +75,37 @@
   return [NSString pathWithComponents:commonComponents];
 }
 
+
+- (NSString*) relativePathToDirectoryPath:(NSString *)baseDirPath
+{
+  NSString *thePath = [self stringByStandardizingPath];
+  NSString *theBasePath = [baseDirPath stringByStandardizingPath];
+  
+  NSMutableArray *pathComponents1 = [NSMutableArray arrayWithArray:[thePath pathComponents]];
+  NSMutableArray *pathComponents2 = [NSMutableArray arrayWithArray:[theBasePath pathComponents]];
+  
+  // Remove same path components
+  while ([pathComponents1 count] > 0 && [pathComponents2 count] > 0) {
+    NSString *topComponent1 = [pathComponents1 objectAtIndex:0];
+    NSString *topComponent2 = [pathComponents2 objectAtIndex:0];
+    if (![topComponent1 isEqualToString:topComponent2]) {
+      break;
+    }
+    [pathComponents1 removeObjectAtIndex:0];
+    [pathComponents2 removeObjectAtIndex:0];
+  }
+  
+  // Create result path
+  for (int i = 0; i < [pathComponents2 count]; i++) {
+    [pathComponents1 insertObject:@".." atIndex:0];
+  }
+  if ([pathComponents1 count] == 0) {
+    return @".";
+  }
+  return [NSString pathWithComponents:pathComponents1];
+}
+
+
 @end
 
 @implementation NSMutableString (OAStringHelpers)

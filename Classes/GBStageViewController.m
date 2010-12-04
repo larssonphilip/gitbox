@@ -284,7 +284,7 @@
   return YES;
 }
 
-// This avoid changing selection when checkbox is clicked.
+// This avoids changing selection when checkbox is clicked.
 - (BOOL)tableView:(NSTableView *)aTableView shouldSelectRow:(NSInteger)rowIndex
 {
   NSEvent *currentEvent = [[aTableView window] currentEvent];
@@ -292,7 +292,16 @@
   // you may also check for the NSLeftMouseDragged event
   // (changing the selection by holding down the mouse button and moving the mouse over another row)
   int columnIndex = [aTableView columnAtPoint:[aTableView convertPoint:[currentEvent locationInWindow] fromView:nil]];
-  return !(columnIndex == 0);
+  if (columnIndex < 0) return NO;
+  
+  if (columnIndex < [[aTableView tableColumns] count])
+  {
+    if ([[[[aTableView tableColumns] objectAtIndex:columnIndex] identifier] isEqual:@"staged"])
+    {
+      return NO;
+    }
+  }
+  return YES;
 }
 
 - (void)tableViewSelectionDidChange:(NSNotification *)aNotification

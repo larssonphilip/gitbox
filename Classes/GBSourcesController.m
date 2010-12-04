@@ -383,5 +383,14 @@
   return 20.0;
 }
 
+- (NSString *)outlineView:(NSOutlineView *)outlineView
+           toolTipForCell:(NSCell *)cell
+                     rect:(NSRectPointer)rect
+              tableColumn:(NSTableColumn *)tc
+                     item:(id)item
+            mouseLocation:(NSPoint)mouseLocation
+{
+  return nil; // surpresses ugly automatic tooltips
+}
 
 @end

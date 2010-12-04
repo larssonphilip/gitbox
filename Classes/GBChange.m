@@ -120,7 +120,7 @@
 //    }
 //    else
     {
-      return NSLocalizedString(@"Untracked", @"Change");
+      return NSLocalizedString(@"New file", @"Change");
     }
   }
   

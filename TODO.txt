@@ -42,6 +42,7 @@ To read:
 
 Ongoing tasks:
 
+- maybe have 5 repos for free so ppl who don't want to pay just now may start actually using without searching for keygen?
 - do ls-remote origin in background to: refresh list of branches and find out if needs fetching; do not fetch regularly so not to block the ui
 - read ls-remotes when updated .git
 - human message in case git cannot merge/pull when some files are modified (error: Untracked working tree file 'Patryst.xcodeproj/project.pbxproj' would be overwritten by merge.)

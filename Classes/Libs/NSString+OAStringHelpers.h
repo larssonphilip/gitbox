@@ -16,6 +16,8 @@
 // similar to commonPrefixWithString:, but converts both strings to standardized paths and takes care of path separators
 - (NSString*) commonPrefixWithPath:(NSString*)path;
 
+- (NSString*) relativePathToDirectoryPath:(NSString *)baseDirPath;
+
 @end
 
 

@@ -1,6 +1,8 @@
 #import "GBModels.h"
 #import "GBChangeCell.h"
+#import "GBChangeCheckboxCell.h"
 #import "GBBaseChangesController.h"
+
 #import "NSObject+OADispatchItemValidation.h"
 #import "NSArray+OAArrayHelpers.h"
 
@@ -74,18 +76,7 @@
 
 
 
-- (BOOL)tableView:(NSTableView *)aTableView shouldSelectRow:(NSInteger)rowIndex
-{
-  // TODO: change this to 1 when use an embedded view
-  if (rowIndex >= 0)
-  {
-    NSLog(@"shouldSelectRow: %d", rowIndex);
-    return YES;
-  }
-  return NO;
-}
-
-- (NSCell*) xtableView:(NSTableView*)aTableView 
+- (NSCell*) tableView:(NSTableView*)aTableView 
 dataCellForTableColumn:(NSTableColumn*)aTableColumn
                   row:(NSInteger)rowIndex
 {
@@ -96,15 +87,11 @@ dataCellForTableColumn:(NSTableColumn*)aTableColumn
   
   if ([aTableColumn.identifier isEqualToString:@"pathStatus"])
   {
-    NSTextFieldCell* cell = [[[NSTextFieldCell alloc] initTextCell:@"Blah!"] autorelease];
-    return cell;
     return [change cell];
   }
   else if ([aTableColumn.identifier isEqualToString:@"staged"])
   {
-    NSButtonCell* checkBoxCell = [[[NSButtonCell alloc] initTextCell:@""] autorelease];
-    [checkBoxCell setBezelStyle:NSRoundedBezelStyle];
-    [checkBoxCell setButtonType:NSSwitchButton];
+    GBChangeCheckboxCell* checkBoxCell = [GBChangeCheckboxCell checkboxCell];
     [checkBoxCell setRepresentedObject:change];
     return checkBoxCell;
   }
@@ -115,10 +102,7 @@ dataCellForTableColumn:(NSTableColumn*)aTableColumn
 
 - (CGFloat)tableView:(NSTableView *)tableView heightOfRow:(NSInteger)row
 {
-  // TODO: add another row with a details view
-  return 18.0;
-//  GBChange* change = [self.changes objectAtIndex:row];
-//  return [[commit cellClass] cellHeight];
+  return [GBChangeCell cellHeight];
 }
 
 - (NSString*) tableView:(NSTableView*)aTableView

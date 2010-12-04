@@ -53,7 +53,7 @@
 										<array class="NSMutableArray" key="NSTableColumns">
 											<object class="NSTableColumn" id="348828196">
 												<string key="NSIdentifier">pathStatus</string>
-												<double key="NSWidth">456</double>
+												<double key="NSWidth">458</double>
 												<double key="NSMinWidth">10</double>
 												<double key="NSMaxWidth">3000</double>
 												<object class="NSTableHeaderCell" key="NSHeaderCell">
@@ -85,14 +85,10 @@
 													</object>
 												</object>
 												<object class="NSTextFieldCell" key="NSDataCell" id="1028013805">
-													<int key="NSCellFlags">69336641</int>
-													<int key="NSCellFlags2">272630784</int>
+													<int key="NSCellFlags">69860929</int>
+													<int key="NSCellFlags2">302123008</int>
 													<string key="NSContents">Text</string>
-													<object class="NSFont" key="NSSupport" id="783476924">
-														<string key="NSName">LucidaGrande</string>
-														<double key="NSSize">13</double>
-														<int key="NSfFlags">1044</int>
-													</object>
+													<reference key="NSSupport" ref="26"/>
 													<reference key="NSControlView" ref="129701580"/>
 													<object class="NSColor" key="NSBackgroundColor">
 														<int key="NSColorSpace">6</int>
@@ -116,13 +112,13 @@
 											</object>
 											<object class="NSTableColumn" id="120666121">
 												<string key="NSIdentifier">staged</string>
-												<double key="NSWidth">18</double>
-												<double key="NSMinWidth">18</double>
+												<double key="NSWidth">16</double>
+												<double key="NSMinWidth">16</double>
 												<double key="NSMaxWidth">18</double>
 												<object class="NSTableHeaderCell" key="NSHeaderCell">
 													<int key="NSCellFlags">75628096</int>
 													<int key="NSCellFlags2">2048</int>
-													<string key="NSContents"/>
+													<string key="NSContents">Staged</string>
 													<reference key="NSSupport" ref="26"/>
 													<object class="NSColor" key="NSBackgroundColor">
 														<int key="NSColorSpace">3</int>
@@ -132,9 +128,9 @@
 												</object>
 												<object class="NSButtonCell" key="NSDataCell" id="736512336">
 													<int key="NSCellFlags">67239424</int>
-													<int key="NSCellFlags2">0</int>
+													<int key="NSCellFlags2">167903232</int>
 													<string key="NSContents"/>
-													<reference key="NSSupport" ref="783476924"/>
+													<reference key="NSSupport" ref="26"/>
 													<reference key="NSControlView" ref="129701580"/>
 													<int key="NSButtonFlags">1211912703</int>
 													<int key="NSButtonFlags2">2</int>
@@ -171,11 +167,10 @@
 											</object>
 										</object>
 										<double key="NSRowHeight">18</double>
-										<int key="NSTvFlags">1530920960</int>
+										<int key="NSTvFlags">440401920</int>
 										<reference key="NSDelegate"/>
 										<reference key="NSDataSource"/>
-										<string key="NSAutosaveName">StageTableViewColumns</string>
-										<int key="NSColumnAutoresizingStyle">4</int>
+										<int key="NSColumnAutoresizingStyle">5</int>
 										<int key="NSDraggingSourceMaskForLocal">15</int>
 										<int key="NSDraggingSourceMaskForNonLocal">0</int>
 										<bool key="NSAllowsTypeSelect">NO</bool>
@@ -196,7 +191,7 @@
 								<reference key="NSSuperview" ref="468974511"/>
 								<reference key="NSTarget" ref="468974511"/>
 								<string key="NSAction">_doScroller:</string>
-								<double key="NSPercent">0.99633699633699635</double>
+								<double key="NSPercent">0.94485294117647056</double>
 							</object>
 							<object class="NSScroller" id="179463748">
 								<reference key="NSNextResponder" ref="468974511"/>
@@ -356,26 +351,6 @@
 						<reference key="destination" ref="406243151"/>
 					</object>
 					<int key="connectionID">36</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: arrangedObjects.pathStatus</string>
-						<reference key="source" ref="348828196"/>
-						<reference key="destination" ref="665104064"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="348828196"/>
-							<reference key="NSDestination" ref="665104064"/>
-							<string key="NSLabel">value: arrangedObjects.pathStatus</string>
-							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">arrangedObjects.pathStatus</string>
-							<object class="NSDictionary" key="NSOptions">
-								<string key="NS.key.0">NSConditionallySetsEditable</string>
-								<boolean value="YES" key="NS.object.0"/>
-							</object>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">37</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
@@ -540,6 +515,22 @@
 						</object>
 					</object>
 					<int key="connectionID">74</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: arrangedObjects.pathStatus</string>
+						<reference key="source" ref="348828196"/>
+						<reference key="destination" ref="665104064"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="348828196"/>
+							<reference key="NSDestination" ref="665104064"/>
+							<string key="NSLabel">value: arrangedObjects.pathStatus</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">arrangedObjects.pathStatus</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">78</int>
 				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -734,7 +725,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">76</int>
+			<int key="maxID">78</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
