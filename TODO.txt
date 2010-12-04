@@ -84,6 +84,7 @@ Bugs:
 
 Cool features:
 
+- outline view for changes so we can group multiple changes in a folder. Expanded by default.
 - undo for commit (like amend)
 - undo for pull
 - undo for ref checkout
