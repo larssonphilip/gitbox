@@ -6,5 +6,6 @@
 
 + (id) controller;
 - (void) delayBlockIfNeeded:(void(^)())aBlock;
-- (void) cancel;
+- (void) cancel; // discard delayed block and reset state
+- (void) flush; // call delayed block and reset state
 @end

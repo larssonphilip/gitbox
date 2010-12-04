@@ -46,6 +46,15 @@
   [NSObject cancelPreviousPerformRequestsWithTarget:self];
 }
 
+- (void) flush
+{
+  void(^aBlock)() = self.delayedBlock;
+  [[aBlock retain] autorelease];
+  self.delayedBlock = nil;  
+  [self cancel];
+  if (aBlock) aBlock();
+}
+
 - (void) delayedCheck
 {
   self.isJumping = NO;
