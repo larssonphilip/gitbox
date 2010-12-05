@@ -87,6 +87,7 @@ dataCellForTableColumn:(NSTableColumn*)aTableColumn
   
   if ([aTableColumn.identifier isEqualToString:@"pathStatus"])
   {
+    //return [[[NSTextFieldCell alloc] initTextCell:[[change fileURL] relativePath]] autorelease];
     return [change cell];
   }
   else if ([aTableColumn.identifier isEqualToString:@"staged"])
