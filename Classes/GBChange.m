@@ -535,7 +535,10 @@
     {
       if ([self isDeletedFile])
       {
-        return nil;
+        NSString* objectId = [self.oldRevision nonZeroCommitId];
+        if (!objectId) return nil;
+        NSURL* aURL  = [self temporaryURLForObjectId:objectId optionalURL:[self fileURL]];
+        return [[aURL absoluteURL] pasteboardPropertyListForType:type];
       }
       else
       {
