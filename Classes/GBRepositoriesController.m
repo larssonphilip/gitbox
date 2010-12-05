@@ -102,7 +102,7 @@
     ([allParentNames countForObject:[ctrl parentFolderName]] > 1);
   }
   [self.localRepositoryControllers sortUsingComparator:^(GBRepositoryController* a,GBRepositoryController* b){
-    return [[a nameForSourceList] compare:[b nameForSourceList]];
+    return [[a nameForSourceList] localizedCaseInsensitiveCompare:[b nameForSourceList]];
     //return [[[a url] path] compare:[[b url] path]];
   }];
 }
