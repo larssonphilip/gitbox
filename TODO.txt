@@ -14,8 +14,6 @@
 + pack git.bundle to .tar.gz and unpack on first run
 + upgrade git version
 + https check: doesn't work
-- drag and drop for sources (see the SourceView sample code for handling the drag and drop)
-- drag and drop for changes
 
 - help
 - guide
@@ -131,9 +129,6 @@ Cool features:
 - changes view: 2 tabs: changes & tree (tree should show a status as usual)
 - Option/Alt key lets to fetch instead of pull
 - Shift key lets force push
-
-+ drop a folder to the source list
-+ drag GBChange to open in application or copy to finder
 
 
 
