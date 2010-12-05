@@ -17,6 +17,7 @@
 @synthesize status;
 @synthesize oldRevision;
 @synthesize newRevision;
+@synthesize commitId;
 
 @synthesize staged;
 @synthesize delegate;
@@ -31,6 +32,7 @@
   self.status = nil;
   self.oldRevision = nil;
   self.newRevision = nil;
+  self.commitId = nil;
   [super dealloc];
 }
 
@@ -419,7 +421,13 @@
 
 - (void) extractFileWithTargetURL:(NSURL*)aTargetURL;
 {
-  NSString* objectId = [self.newRevision nonZeroCommitId];
+  NSString* objectId = self.commitId;
+  
+  if (!objectId)
+  {
+    objectId = [self.newRevision nonZeroCommitId];
+  }
+  
   if (!objectId)
   {
     objectId = [self.oldRevision nonZeroCommitId];

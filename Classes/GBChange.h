@@ -1,20 +1,23 @@
 #import "GBChangeDelegate.h"
 @class GBChangeCell;
 @class GBRepository;
+@class GBCommit;
 @interface GBChange : NSObject
 
-@property(retain) NSURL* srcURL;
-@property(retain) NSURL* dstURL;
-@property(retain) NSString* statusCode;
-@property(retain) NSString* status;
-@property(retain) NSString* oldRevision;
-@property(retain) NSString* newRevision;
+@property(nonatomic,retain) NSURL* srcURL;
+@property(nonatomic,retain) NSURL* dstURL;
+@property(nonatomic,retain) NSString* statusCode;
+@property(nonatomic,retain) NSString* status;
+@property(nonatomic,retain) NSString* oldRevision;
+@property(nonatomic,retain) NSString* newRevision;
+@property(nonatomic,copy)   NSString* commitId;
 
 // Important: staged property & delegate are only used for checkbox binding in UI.
 @property(nonatomic,assign) BOOL staged;
-@property(assign) id<GBChangeDelegate> delegate;
-@property(assign) BOOL busy;
-@property(assign) GBRepository* repository;
+@property(nonatomic,assign) id<GBChangeDelegate> delegate;
+@property(nonatomic,assign) BOOL busy;
+@property(nonatomic,assign) GBRepository* repository;
+
 
 #pragma mark Interrogation
 

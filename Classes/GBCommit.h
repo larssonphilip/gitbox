@@ -11,19 +11,19 @@ typedef enum {
 
 @interface GBCommit : NSObject
 
-@property(retain) NSString* commitId;
-@property(retain) NSString* treeId;
-@property(retain) NSString* authorName;
-@property(retain) NSString* authorEmail;
-@property(retain) NSString* committerName;
-@property(retain) NSString* committerEmail;
-@property(retain) NSDate* date;
-@property(retain) NSString* message;
-@property(retain) NSArray* parentIds;
-@property(retain) NSArray* changes;
+@property(nonatomic,retain) NSString* commitId;
+@property(nonatomic,retain) NSString* treeId;
+@property(nonatomic,retain) NSString* authorName;
+@property(nonatomic,retain) NSString* authorEmail;
+@property(nonatomic,retain) NSString* committerName;
+@property(nonatomic,retain) NSString* committerEmail;
+@property(nonatomic,retain) NSDate* date;
+@property(nonatomic,retain) NSString* message;
+@property(nonatomic,retain) NSArray* parentIds;
+@property(nonatomic,retain) NSArray* changes;
 
-@property(assign) GBCommitSyncStatus syncStatus;
-@property(assign) GBRepository* repository;
+@property(nonatomic,assign) GBCommitSyncStatus syncStatus;
+@property(nonatomic,assign) GBRepository* repository;
 
 
 #pragma mark Interrogation
