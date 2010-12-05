@@ -171,8 +171,9 @@ Tweet: Pls click "Check for Updates" from within Preferences window.
 Features:
 
 + Numeric badges in the sidebar show total number of non-committed changes, non-pushed and non-merged commits for the current branch.
-+ Drag and drop for sidebar.
++ Drag and drop for sidebar and stage.
 + Drag and drop files from history.
++ Drag a copy of a deleted file from stage.
 + More diff tools: BBEdit, TextWrangler, Araxis Merge.
 + Navigation between columns with left and right arrows.
 
