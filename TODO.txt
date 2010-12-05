@@ -89,6 +89,7 @@ Cool features:
 
 - outline view for changes so we can group multiple changes in a folder. Expanded by default. Cannot show renames properly, though.
 - undo for commit (like amend)
+- amend latest commit if it is not pushed yet
 - undo for pull
 - undo for ref checkout
 - undo for branch reset
@@ -100,14 +101,11 @@ Cool features:
 - bonjour publishing and cloning (see http://github.com/chad/gitjour; NSNetService)
 - github integration: handling other repos/branches, pull requests and initial setup commands
 - show number of pending changes in the sidebar (like in Mail.app)
-- drop a folder to the source list
 - user-sortable list of repositories
-- drag GBChange to open in application or copy to finder
 - find/nav bar sliding down in the history:
   - filters commits by sha-1, modified filenames and text
   - back/forward buttons allow undo/redo commit selection (clicking on parents)
 - maybe: easy/hidden rebase to keep history clean? (actually, need a "rebase continue" and "cancel")
-- amend latest commit if it is not pushed yet
 - find-as-you-type search in stage
 - history: probably get rid of dates, and design it in a more cheesy fashion
 - history: navigate to the sha1
@@ -134,6 +132,10 @@ Cool features:
 - Option/Alt key lets to fetch instead of pull
 - Shift key lets force push
 
++ drop a folder to the source list
++ drag GBChange to open in application or copy to finder
+
+
 
 Enhancements (works fine, but can be better):
 
@@ -144,7 +146,6 @@ Enhancements (works fine, but can be better):
 - do not resize sidebar when resizing a window
 - do not load stuff for the commit immediately while scrolling - have a delay
 - remember activity window visibility
-- hitting space bar for staging/unstaging a change
 
 
 Something to think about:
@@ -171,6 +172,7 @@ Features:
 
 + Numeric badges in the sidebar show total number of non-committed changes, non-pushed and non-merged commits for the current branch.
 + Drag and drop for sidebar.
++ Drag and drop files from history.
 + More diff tools: BBEdit, TextWrangler, Araxis Merge.
 + Navigation between columns with left and right arrows.
 
