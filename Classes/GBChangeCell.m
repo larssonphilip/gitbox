@@ -7,6 +7,7 @@
 @interface GBChangeCell ()
 
 @property(nonatomic, copy) NSParagraphStyle* truncatingParagraphStyle;
+@property(nonatomic, assign) BOOL isDragging;
 - (NSImage*) iconForPath:(NSString*)path;
 @end
 
@@ -17,6 +18,7 @@
 @synthesize truncatingParagraphStyle;
 
 @synthesize isFocused;
+@synthesize isDragging;
 @dynamic change;
 
 - (void) dealloc
@@ -113,10 +115,10 @@
   currentFrame.origin.x += offsetAfterIcon;
   currentFrame.size.width -= offsetAfterIcon;
   
-  
   // Draw the status
   
-  {    
+  if (!self.isDragging)
+  {
     NSColor* textColor = [NSColor colorWithCalibratedWhite:0.3 alpha:1.0];
     
     if ([aChange isAddedFile] || [aChange isUntrackedFile])
@@ -156,8 +158,7 @@
     
     if (isFlipped) statusFrame.origin.y += 2;
     
-    currentFrame.size.width -= statusFrame.size.width + paddingRight + paddingLeft;
-    
+    currentFrame.size.width -= round(statusFrame.size.width + paddingRight + paddingLeft);
     [status drawInRect:statusFrame withAttributes:attributes];
   }
   
@@ -181,7 +182,7 @@
                                              font, NSFontAttributeName,
                                              self.truncatingParagraphStyle, NSParagraphStyleAttributeName,
                                              nil] autorelease];
-    
+
     // If moved, we'll display the first path, then arrow and icon+relative path for the second one
     if ([aChange isMovedOrRenamedFile] && dstURL)
     {
@@ -206,7 +207,7 @@
       
       if (srcSize.width + dstSize.width > remainingWidth)
       {
-        CGFloat maxDstWidth = MAX(0.65*remainingWidth, remainingWidth - srcSize.width);
+        CGFloat maxDstWidth = round(MAX(0.65*remainingWidth, remainingWidth - srcSize.width));
         if (dstSize.width > maxDstWidth)
         {
           dstSize.width = maxDstWidth;
@@ -214,26 +215,31 @@
         srcSize.width = remainingWidth - dstSize.width;
       }
       
+      srcSize.width = round(srcSize.width);
+      dstSize.width = round(dstSize.width);
+      
+      
       // Draw src
       
       NSRect srcRect = currentFrame;
       srcRect.size = srcSize;
-      
+
       currentFrame.origin.x += srcSize.width;
       currentFrame.size.width -= srcSize.width;
       
       // TODO: shrink the path in a smart way
       [srcPath drawInRect:srcRect withAttributes:attributes];
       
-      
+
       // Draw arrow
 
       currentFrame.origin.x += arrowLeftPadding;
       currentFrame.size.width -= arrowLeftPadding;
       
+      
       NSRect arrowRect = currentFrame;
       arrowRect.size.width = arrowWidth;
-      
+
       [@"→" drawInRect:arrowRect withAttributes:attributes];
       
       currentFrame.origin.x += arrowRightPadding + arrowWidth;
@@ -241,7 +247,7 @@
       
       
       // Draw icon
-      
+
       NSImage* dstIcon = srcIcon;
       if (![[srcPath pathExtension] isEqualToString:[dstPath pathExtension]])
       {
@@ -298,6 +304,19 @@
 {
   return NO;
 }
+
+//- (BOOL)startTrackingAt:(NSPoint)startPoint inView:(NSView *)controlView
+//{
+//  self.isDragging = YES;
+//  return [super startTrackingAt:startPoint inView:controlView];
+//}
+//
+//- (void)stopTracking:(NSPoint)lastPoint at:(NSPoint)stopPoint inView:(NSView *)controlView mouseIsUp:(BOOL)flag
+//{
+//  self.isDragging = NO;
+//  [super stopTracking:lastPoint at:stopPoint inView:controlView mouseIsUp:flag];
+//}
+
 
 
 @end
