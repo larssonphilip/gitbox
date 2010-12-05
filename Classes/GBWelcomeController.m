@@ -8,13 +8,13 @@
 - (IBAction) clone:_
 {
   [self endSheet];
-  [NSApp tryToPerform:@selector(cloneRepository:) with:self];
+  [NSApp tryToPerform:@selector(cloneRepository:) with:_];
 }
 
 - (IBAction) open:_
 {
   [self endSheet];
-  [NSApp tryToPerform:@selector(openDocument:) with:self];
+  [NSApp tryToPerform:@selector(openDocument:) with:_];
 }
 
 - (IBAction) cancel:_
