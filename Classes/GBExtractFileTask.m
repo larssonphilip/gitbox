@@ -1,15 +1,18 @@
 #import "GBExtractFileTask.h"
 #import "NSFileManager+OAFileManagerHelpers.h"
+#import "NSString+OAStringHelpers.h"
 
 @implementation GBExtractFileTask
 
 @synthesize objectId;
+@synthesize commitId;
 @synthesize originalURL;
 @synthesize targetURL;
 
 - (void) dealloc
 {
   self.objectId = nil;
+  self.commitId = nil;
   self.originalURL = nil;
   self.targetURL = nil;
   [super dealloc];
@@ -31,11 +34,12 @@
   if (self.originalURL)
   {
     NSString* fileName = [[self.originalURL path] lastPathComponent];
-    NSString* ext = [fileName pathExtension];
-    fileName = [[fileName stringByDeletingPathExtension] 
-                stringByAppendingFormat:@"-%@", [self.objectId substringToIndex:8]];
-    if (ext && [ext length] > 0) fileName = [fileName stringByAppendingPathExtension:ext];
-    return fileName;
+    NSString* suffix = self.commitId;
+    if (!suffix)
+    {
+      suffix = self.objectId;
+    }
+    return [fileName pathWithSuffix:[NSString stringWithFormat:@"-%@", [suffix substringToIndex:8]]];
   }
   
   return self.objectId;
