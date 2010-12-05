@@ -10,6 +10,7 @@
 #import "NSObject+OADispatchItemValidation.h"
 
 #import "OALicenseNumberCheck.h"
+#import "NSObject+OAPerformBlockAfterDelay.h"
 
 
 #define kGBSourcesControllerPasteboardType @"GBSourcesControllerPasteboardType"
@@ -425,12 +426,22 @@
   {
     NSPasteboard* pasteboard = [draggingInfo draggingPasteboard];
     NSArray* filenames = [pasteboard propertyListForType:NSFilenamesPboardType];
-    NSLog(@"dropped filenames: %@", filenames);
-    if (filenames && [filenames count] > 0)
+    BOOL atLeastOneIsValid = NO;
+    if (filenames && [filenames isKindOfClass:[NSArray class]] && [filenames count] > 0)
     {
-      
+      for (NSString* aPath in filenames)
+      {
+        BOOL isDirectory = NO;
+        if ([[NSFileManager defaultManager] fileExistsAtPath:aPath isDirectory:&isDirectory])
+        {
+          atLeastOneIsValid = atLeastOneIsValid || isDirectory;
+        }
+      }
     }
-    result = NSDragOperationGeneric;
+    if (atLeastOneIsValid)
+    {
+      result = NSDragOperationGeneric;
+    }
     
     // We are going to accept the drop, but we want to retarget the drop item to be "on" the entire outlineView
     [self.outlineView setDropItem:nil dropChildIndex:NSOutlineViewDropOnItemIndex];
@@ -441,92 +452,35 @@
 
 
 - (BOOL)outlineView:(NSOutlineView *)anOutlineView
-         acceptDrop:(id <NSDraggingInfo>)info
+         acceptDrop:(id <NSDraggingInfo>)draggingInfo
                item:(id)item
          childIndex:(NSInteger)childIndex
 {
   
-  /*
-  NSArray *oldSelectedNodes = [self selectedNodes];
-  NSTreeNode *targetNode = item;
-  // A target of "nil" means we are on the main root tree
-  if (targetNode == nil) {
-    targetNode = rootTreeNode;
-  }
-  SimpleNodeData *nodeData = [targetNode representedObject];
-  
-  // Determine the parent to insert into and the child index to insert at.
-  if (!nodeData.container) {
-    // If our target is a leaf, and we are dropping on it
-    if (childIndex == NSOutlineViewDropOnItemIndex) {
-      // If we are dropping on a leaf, we will have to turn it into a container node
-      nodeData.container = YES;
-      nodeData.expandable = YES;
-      childIndex = 0;
-    } else {
-      // We will be dropping on the item's parent at the target index of this child, plus one
-      NSTreeNode *oldTargetNode = targetNode;
-      targetNode = [targetNode parentNode];
-      childIndex = [[targetNode childNodes] indexOfObject:oldTargetNode] + 1;
-    }
-  } else {            
-    if (childIndex == NSOutlineViewDropOnItemIndex) {
-      // Insert it at the start, if we were dropping on it
-      childIndex = 0;
-    }
-  }
-  
-  NSArray *currentDraggedNodes = nil;
-  // If the source was ourselves, we use our dragged nodes.
-  if ([info draggingSource] == outlineView && [[info draggingPasteboard] availableTypeFromArray:[NSArray arrayWithObject:SIMPLE_BPOARD_TYPE]] != nil) {
-    // Yup, the drag is originating from ourselves. See if the appropriate drag information is available on the pasteboard
-    currentDraggedNodes = draggedNodes;
-  } else {
-    // We create a new model item for the dropped data, and wrap it in an NSTreeNode
-    NSString *string = [[info draggingPasteboard] stringForType:NSStringPboardType];
-    if (string == nil) {
-      // Try the filename -- it is an array of filenames, so we just grab one.
-      NSString *filename = [[[info draggingPasteboard] propertyListForType:NSFilenamesPboardType] lastObject];
-      string = [filename lastPathComponent];
-    }
-    if (string == nil) {
-      string = @"Unknown data dragged";
-    }
-    SimpleNodeData *newNodeData = [SimpleNodeData nodeDataWithName:string];
-    NSTreeNode *treeNode = [NSTreeNode treeNodeWithRepresentedObject:newNodeData];
-    newNodeData.container = NO;
-    // Finally, add it to the array of dragged items to insert
-    currentDraggedNodes = [NSArray arrayWithObject:treeNode];
-  }
-  
-  NSMutableArray *childNodeArray = [targetNode mutableChildNodes];
-  // Go ahead and move things. 
-  for (NSTreeNode *treeNode in currentDraggedNodes) {
-    // Remove the node from its old location
-    NSInteger oldIndex = [childNodeArray indexOfObject:treeNode];
-    NSInteger newIndex = childIndex;
-    if (oldIndex != NSNotFound) {
-      [childNodeArray removeObjectAtIndex:oldIndex];
-      if (childIndex > oldIndex) {
-        newIndex--; // account for the remove
+  NSPasteboard* pasteboard = [draggingInfo draggingPasteboard];
+  NSArray* filenames = [pasteboard propertyListForType:NSFilenamesPboardType];
+  NSMutableArray* URLs = [NSMutableArray array];
+  if (filenames && [filenames isKindOfClass:[NSArray class]] && [filenames count] > 0)
+  {
+    for (NSString* aPath in filenames)
+    {
+      if ([[NSFileManager defaultManager] fileExistsAtPath:aPath isDirectory:NULL])
+      {
+        [URLs addObject:[NSURL fileURLWithPath:aPath]];
       }
-    } else {
-      // Remove it from the old parent
-      [[[treeNode parentNode] mutableChildNodes] removeObject:treeNode];
     }
-    [childNodeArray insertObject:treeNode atIndex:newIndex];
-    newIndex++;
+  }
+  if ([URLs count] > 0)
+  {
+    [NSObject performBlock:^{
+      for (NSURL* aURL in URLs)
+      {
+        [self.repositoriesController tryOpenLocalRepositoryAtURL:aURL];
+      }
+    } afterDelay:0.0];
+    return YES;
   }
   
-  [outlineView reloadData];
-  // Make sure the target is expanded
-  [outlineView expandItem:targetNode];
-  // Reselect old items.
-  [outlineView setSelectedItems:oldSelectedNodes];
-   */  
-  
-  
-  // Return YES to indicate we were successful with the drop. Otherwise, it would slide back the drag image.
   return NO;
 }
 
