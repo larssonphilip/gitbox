@@ -29,6 +29,16 @@
   [super dealloc];
 }
 
+- (void) loadView
+{
+  [super loadView];
+  [self update];
+  
+  [self.tableView registerForDraggedTypes:[NSArray arrayWithObjects:(NSString *)kUTTypeFileURL, NSStringPboardType, NSFilenamesPboardType, nil]];
+  [self.tableView setDraggingSourceOperationMask:NSDragOperationNone forLocal:YES];
+  [self.tableView setDraggingSourceOperationMask:NSDragOperationEvery forLocal:NO];
+  [self.tableView setVerticalMotionCanBeginDrag:YES];
+}
 
 - (void) update
 {
@@ -309,7 +319,14 @@
   [self.repositoryController selectCommitableChanges:[self selectedChanges]];
 }
 
-
+- (BOOL)tableView:(NSTableView *)aTableView
+writeRowsWithIndexes:(NSIndexSet *)indexSet
+     toPasteboard:(NSPasteboard *)pasteboard
+{
+  NSArray* items = [[self.changes objectsAtIndexes:indexSet] valueForKey:@"pasteboardItem"];
+  [pasteboard writeObjects:items];
+  return YES;
+}
 
 
 

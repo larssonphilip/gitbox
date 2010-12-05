@@ -521,13 +521,27 @@
   
   if ([type isEqualToString:(NSString *)kUTTypeFileURL])
   {
-    NSString* objectId = [self.newRevision nonZeroCommitId];
-    if (!objectId)
+    if (self.commitId)
     {
-      objectId = [self.oldRevision nonZeroCommitId];
+      NSString* objectId = [self.newRevision nonZeroCommitId];
+      if (!objectId)
+      {
+        objectId = [self.oldRevision nonZeroCommitId];
+      }
+      NSURL* aURL  = [self temporaryURLForObjectId:objectId optionalURL:[self fileURL]];
+      return [[aURL absoluteURL] pasteboardPropertyListForType:type];
     }
-    NSURL* aURL  = [self temporaryURLForObjectId:objectId optionalURL:[self fileURL]];
-    return [aURL pasteboardPropertyListForType:type];
+    else // not commited change: on stage
+    {
+      if ([self isDeletedFile])
+      {
+        return nil;
+      }
+      else
+      {
+        return [[[self fileURL] absoluteURL] pasteboardPropertyListForType:type];
+      }
+    }
   }
   
   if ([type isEqualToString:NSPasteboardTypeString])

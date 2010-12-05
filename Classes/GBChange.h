@@ -64,6 +64,6 @@
 - (void) extractFileWithTargetURL:(NSURL*)aTargetURL;
 
 
-- (NSString*) nameForExtractedFileAtDestination:(NSURL*)url;
+//- (NSString*) nameForExtractedFileAtDestination:(NSURL*)url;
 
 @end
