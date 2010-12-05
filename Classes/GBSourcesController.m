@@ -31,8 +31,10 @@
   [super dealloc];
 }
 
-- (void) viewDidLoad
+- (void) loadView
 {
+  [super loadView];
+  
   [self.outlineView registerForDraggedTypes:[NSArray arrayWithObjects:kGBSourcesControllerPasteboardType, NSFilenamesPboardType, nil]];
   [self.outlineView setDraggingSourceOperationMask:NSDragOperationEvery forLocal:YES];
   [self.outlineView setDraggingSourceOperationMask:NSDragOperationEvery forLocal:NO];
