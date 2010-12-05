@@ -37,7 +37,11 @@
     [targetView addSubview:controllerView];
     [controllerView setNextResponder:aViewController];
     [aViewController setNextResponder:targetView];
-  }  
+    if ([self respondsToSelector:@selector(viewDidLoad)])
+    {
+      [self performSelector:@selector(viewDidLoad)];
+    }
+  }
   return self;
 }
 
