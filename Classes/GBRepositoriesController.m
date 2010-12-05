@@ -5,8 +5,10 @@
 
 #import "NSFileManager+OAFileManagerHelpers.h"
 
+#import "OALicenseNumberCheck.h"
 #import "OAObfuscatedLicenseCheck.h"
 #import "OABlockQueue.h"
+#import "NSAlert+OAAlertHelpers.h"
 
 @implementation GBRepositoriesController
 
@@ -82,7 +84,102 @@
 }
 
 
+
+
+
+
+
 #pragma mark Actions
+
+
+- (BOOL) tryOpenLocalRepositoryAtURL:(NSURL*)aURL
+{
+  NSString* aPath = [aURL path];
+
+  BOOL isDirectory = NO;
+  if (![[NSFileManager defaultManager] fileExistsAtPath:aPath isDirectory:&isDirectory])
+  {
+    [NSAlert message:NSLocalizedString(@"File not found.", @"") description:aPath];
+    return NO; 
+  }
+  
+  if (!isDirectory)
+  {
+    while (![NSFileManager isReadableDirectoryAtPath:[aPath stringByAppendingPathComponent:@".git"]])
+    {
+      if (!aPath || [aPath isEqualToString:@"/"] || [aPath isEqualToString:@""])
+      {
+        return NO;
+      }
+      aPath = [aPath stringByDeletingLastPathComponent];
+      if (!aPath || [aPath isEqualToString:@""] || [aPath isEqualToString:@"/"])
+      {
+        return NO;
+      }
+    }
+    aURL = [NSURL fileURLWithPath:aPath];
+  }
+  
+  NSString* validPath = [GBRepository validRepositoryPathForPath:aPath];
+  
+  if (validPath)
+  {
+    [self openLocalRepositoryAtURL:[NSURL fileURLWithPath:validPath]];
+    return YES;
+  }
+  
+  if (![NSFileManager isWritableDirectoryAtPath:aPath])
+  {
+    [NSAlert message:NSLocalizedString(@"No write access to the folder.", @"") description:aPath];
+    return NO;
+  }
+  
+  if ([NSAlert prompt:NSLocalizedString(@"The folder is not a git repository.\nMake it a repository?", @"App")
+          description:aPath])
+  {
+    [GBRepository initRepositoryAtURL:aURL];
+    [self openLocalRepositoryAtURL:aURL];
+    return YES;
+  }
+  
+  return NO;
+}
+
+
+
+- (void) openLocalRepositoryAtURL:(NSURL*)url
+{
+  GBBaseRepositoryController* repoCtrl = [self repositoryControllerWithURL:url];
+  if (!repoCtrl)
+  {
+#if GITBOX_APP_STORE
+#else
+    if ([self.localRepositoryControllers count] >= 1)
+    {
+      NSString* license = [[NSUserDefaults standardUserDefaults] objectForKey:@"license"];
+      if (!OAValidateLicenseNumber(license))
+      {
+        [NSApp tryToPerform:@selector(showLicense:) with:self];
+        
+        NSString* license = [[NSUserDefaults standardUserDefaults] objectForKey:@"license"];
+        if (!OAValidateLicenseNumber(license))
+        {
+          return;
+        }
+      }
+    }
+#endif
+    
+    repoCtrl = [GBRepositoryController repositoryControllerWithURL:url];
+    [self addLocalRepositoryController:repoCtrl];
+    [[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:url];
+  }
+  [self selectRepositoryController:repoCtrl];
+}
+
+
+
+
 
 
 

@@ -231,7 +231,7 @@
   frame.size.height += fabs(offset);
   
  // NSString* title = [[self repositoryController] titleForSourceList];
-  NSString* title = [[self repositoryController] longNameForSourceList];
+  NSString* title = [[self repositoryController] nameForSourceList];
   [title drawInRect:frame withAttributes:attributes];
 }
 

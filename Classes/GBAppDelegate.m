@@ -105,6 +105,22 @@
     }
   }];
 }
+  // NSOpenSavePanelDelegate for openDocument: action
+
+  - (BOOL) panel:(id)sender validateURL:(NSURL*)url error:(NSError **)outError
+  {
+    if ([url isFileURL] && [NSFileManager isWritableDirectoryAtPath:[url path]])
+    {
+      return YES;
+    }
+    if (outError != NULL)
+    {
+      *outError = [NSError errorWithDomain:NSOSStatusErrorDomain code:unimpErr userInfo:NULL];
+    }
+    return NO;  
+  }
+
+
 
 - (IBAction) cloneRepository:_
 {
@@ -142,153 +158,11 @@
   [[GBActivityController sharedActivityController] showWindow:sender];
 }
 
-
-
-
-
-- (void) openLocalRepositoryAtURL:(NSURL*)url
-{
-  if (!self.repositoriesController) // not yet initialized
-  {
-    if (!self.URLsToOpenAfterLaunch) self.URLsToOpenAfterLaunch = [NSMutableArray array];
-    [self.URLsToOpenAfterLaunch addObject:url];
-    return;
-  }
-    
-  GBBaseRepositoryController* repoCtrl = [self.repositoriesController repositoryControllerWithURL:url];
-  if (!repoCtrl)
-  {
-#if GITBOX_APP_STORE
-#else
-    if ([self.repositoriesController.localRepositoryControllers count] >= 1)
-    {
-      NSString* license = [[NSUserDefaults standardUserDefaults] objectForKey:@"license"];
-      if (!OAValidateLicenseNumber(license))
-      {
-        [self showLicense:self];
-        
-        NSString* license = [[NSUserDefaults standardUserDefaults] objectForKey:@"license"];
-        if (!OAValidateLicenseNumber(license))
-        {
-          return;
-        }
-      }
-    }
-#endif
-    
-    repoCtrl = [GBRepositoryController repositoryControllerWithURL:url];
-    [self.repositoriesController addLocalRepositoryController:repoCtrl];
-    [[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:url];
-  }
-  [self.repositoriesController selectRepositoryController:repoCtrl];
-}
-
-//- (BOOL) checkGitVersion
-//{
-//  NSString* gitVersion = [GBRepository gitVersion];
-//  if (!gitVersion)
-//  {
-//    [NSAlert message:NSLocalizedString(@"Please locate git", @"App")
-//         description:[NSString stringWithFormat:NSLocalizedString(@"The Gitbox requires git version %@ or later. Please install git or set its path in Preferences.", @"App"), 
-//                      [GBRepository supportedGitVersion]]
-//         buttonTitle:NSLocalizedString(@"Open Preferences",@"App")];
-//    [self.preferencesController showWindow:nil];
-//    return NO;
-//  }
-//  else if (![GBRepository isSupportedGitVersion:gitVersion])
-//  {
-//    [NSAlert message:NSLocalizedString(@"Please locate git", @"App")
-//         description:[NSString stringWithFormat:NSLocalizedString(@"The Gitbox works with the version %@ or later. Your git version is %@.\n\nPath to git executable: %@", @"App"), 
-//                      [GBRepository supportedGitVersion], 
-//                      gitVersion,
-//                      [OATask systemPathForExecutable:@"git"]]
-//         buttonTitle:NSLocalizedString(@"Open Preferences",@"App")];
-//    [self.preferencesController showWindow:nil];
-//    return NO;
-//  }
-//  return YES;
-//}
-
 - (IBAction) showDiffToolPreferences:(id)_
 {
   [self.preferencesController showWindow:nil];
 }
 
-
-
-
-
-
-
-#pragma mark Loading model state
-
-
-- (void) loadRepositories
-{
-  NSArray* bookmarks = [[NSUserDefaults standardUserDefaults] objectForKey:@"GBRepositoriesController_localRepositories"];
-  NSData* selectedLocalRepoData = [[NSUserDefaults standardUserDefaults] objectForKey:@"GBRepositoriesController_selectedLocalRepository"];
-  if (bookmarks && [bookmarks isKindOfClass:[NSArray class]])
-  {
-    for (NSData* bookmarkData in bookmarks)
-    {
-      NSURL* url = [NSURL URLByResolvingBookmarkData:bookmarkData 
-                                             options:NSURLBookmarkResolutionWithoutUI | 
-                    NSURLBookmarkResolutionWithoutMounting
-                                       relativeToURL:nil 
-                                 bookmarkDataIsStale:NO 
-                                               error:NULL];
-      NSString* path = [url path];
-      if ([NSFileManager isWritableDirectoryAtPath:path] &&
-          [GBRepository validRepositoryPathForPath:path])
-      {
-        GBRepositoryController* repoCtrl = [GBRepositoryController repositoryControllerWithURL:url];
-        [self.repositoriesController addLocalRepositoryController:repoCtrl];
-      } // if path is valid repo
-    } // for
-  } // if paths
-  
-  if (selectedLocalRepoData && [selectedLocalRepoData isKindOfClass:[NSData class]])
-  {
-    NSURL* url = [NSURL URLByResolvingBookmarkData:selectedLocalRepoData 
-                                           options:NSURLBookmarkResolutionWithoutUI | 
-                  NSURLBookmarkResolutionWithoutMounting
-                                     relativeToURL:nil 
-                               bookmarkDataIsStale:NO 
-                                             error:NULL];
-    if (url) [self openLocalRepositoryAtURL:url];
-  }
-}
-
-- (void) saveRepositories
-{
-  NSMutableArray* bookmarks = [NSMutableArray array];
-  NSData* selectedLocalRepoData = nil;
-  for (GBRepositoryController* repoCtrl in self.repositoriesController.localRepositoryControllers)
-  {
-    NSData* bookmarkData = [[repoCtrl url] bookmarkDataWithOptions:NSURLBookmarkCreationMinimalBookmark
-                                  includingResourceValuesForKeys:nil
-                                                   relativeToURL:nil
-                                                           error:NULL];
-    if (bookmarkData)
-    {
-      [bookmarks addObject:bookmarkData];
-      if (repoCtrl == self.repositoriesController.selectedRepositoryController)
-      {
-        selectedLocalRepoData = bookmarkData;
-      }
-    }
-  }
-  [[NSUserDefaults standardUserDefaults] setObject:bookmarks forKey:@"GBRepositoriesController_localRepositories"];
-  if (selectedLocalRepoData)
-  {
-    [[NSUserDefaults standardUserDefaults] setObject:selectedLocalRepoData 
-                                              forKey:@"GBRepositoriesController_selectedLocalRepository"];
-  }
-  else
-  {
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"GBRepositoriesController_selectedLocalRepository"];
-  }
-}
 
 
 
@@ -330,7 +204,7 @@
     self.URLsToOpenAfterLaunch = nil;
     for (NSURL* url in urls)
     {
-      [self openLocalRepositoryAtURL:url];
+      [self.repositoriesController tryOpenLocalRepositoryAtURL:url];
     }
     
     if (![[NSUserDefaults standardUserDefaults] objectForKey:@"WelcomeWasDisplayed"])
@@ -353,35 +227,16 @@
   return NO;
 }
 
-- (BOOL) application:(NSApplication*)theApplication openFile:(NSString*)path
+- (BOOL) application:(NSApplication*)theApplication openFile:(NSString*)aPath
 {
-  //NSLog(@"application:openFile: %@", path);
-  if (![NSFileManager isWritableDirectoryAtPath:path])
+  NSURL* aURL = [NSURL fileURLWithPath:aPath];
+  if (!self.repositoriesController) // not yet initialized
   {
-    [NSAlert message:NSLocalizedString(@"File is not a writable folder.", @"") description:path];
-    return NO;
-  }
-  
-  NSString* repoPath = [GBRepository validRepositoryPathForPath:path];
-  if (repoPath)
-  {
-    NSURL* url = [NSURL fileURLWithPath:repoPath];
-    [self openLocalRepositoryAtURL:url];
-    //[self saveRepositories]; <- this breaks autoupdate of all repos on startup
+    if (!self.URLsToOpenAfterLaunch) self.URLsToOpenAfterLaunch = [NSMutableArray array];
+    [self.URLsToOpenAfterLaunch addObject:aURL];
     return YES;
   }
-  else
-  {
-    if ([NSAlert prompt:NSLocalizedString(@"The folder is not a git repository.\nMake it a repository?", @"App")
-                  description:path])
-    {
-      NSURL* url = [NSURL fileURLWithPath:path];
-      [GBRepository initRepositoryAtURL:url];
-      [self openLocalRepositoryAtURL:url];
-      //[self saveRepositories]; <- this breaks autoupdate of all repos on startup
-    }
-  }
-  return NO;
+  return [self.repositoriesController tryOpenLocalRepositoryAtURL:aURL];
 }
 
 - (void)applicationDidBecomeActive:(NSNotification *)aNotification
@@ -396,22 +251,111 @@
 
 
 
-#pragma mark NSOpenSavePanelDelegate
 
 
-- (BOOL) panel:(id)sender validateURL:(NSURL*)url error:(NSError **)outError
+
+
+
+
+#pragma mark Loading model state
+
+
+- (void) loadRepositories
 {
-  if ([url isFileURL] && [NSFileManager isWritableDirectoryAtPath:[url path]])
+  NSArray* bookmarks = [[NSUserDefaults standardUserDefaults] objectForKey:@"GBRepositoriesController_localRepositories"];
+  NSData* selectedLocalRepoData = [[NSUserDefaults standardUserDefaults] objectForKey:@"GBRepositoriesController_selectedLocalRepository"];
+  if (bookmarks && [bookmarks isKindOfClass:[NSArray class]])
   {
-    return YES;
-  }
-  if (outError != NULL)
+    for (NSData* bookmarkData in bookmarks)
+    {
+      NSURL* aURL = [NSURL URLByResolvingBookmarkData:bookmarkData 
+                                             options:NSURLBookmarkResolutionWithoutUI | 
+                    NSURLBookmarkResolutionWithoutMounting
+                                       relativeToURL:nil 
+                                 bookmarkDataIsStale:NO 
+                                               error:NULL];
+      NSString* path = [aURL path];
+      if ([NSFileManager isWritableDirectoryAtPath:path] &&
+          [GBRepository validRepositoryPathForPath:path])
+      {
+        GBRepositoryController* repoCtrl = [GBRepositoryController repositoryControllerWithURL:aURL];
+        [self.repositoriesController addLocalRepositoryController:repoCtrl];
+      } // if path is valid repo
+    } // for
+  } // if paths
+  
+  if (selectedLocalRepoData && [selectedLocalRepoData isKindOfClass:[NSData class]])
   {
-    *outError = [NSError errorWithDomain:NSOSStatusErrorDomain code:unimpErr userInfo:NULL];
+    NSURL* aURL = [NSURL URLByResolvingBookmarkData:selectedLocalRepoData 
+                                           options:NSURLBookmarkResolutionWithoutUI | 
+                  NSURLBookmarkResolutionWithoutMounting
+                                     relativeToURL:nil 
+                               bookmarkDataIsStale:NO 
+                                             error:NULL];
+    if (aURL) [self.repositoriesController openLocalRepositoryAtURL:aURL];
   }
-  return NO;  
 }
 
+- (void) saveRepositories
+{
+  NSMutableArray* bookmarks = [NSMutableArray array];
+  NSData* selectedLocalRepoData = nil;
+  for (GBRepositoryController* repoCtrl in self.repositoriesController.localRepositoryControllers)
+  {
+    NSData* bookmarkData = [[repoCtrl url] bookmarkDataWithOptions:NSURLBookmarkCreationMinimalBookmark
+                                    includingResourceValuesForKeys:nil
+                                                     relativeToURL:nil
+                                                             error:NULL];
+    if (bookmarkData)
+    {
+      [bookmarks addObject:bookmarkData];
+      if (repoCtrl == self.repositoriesController.selectedRepositoryController)
+      {
+        selectedLocalRepoData = bookmarkData;
+      }
+    }
+  }
+  [[NSUserDefaults standardUserDefaults] setObject:bookmarks forKey:@"GBRepositoriesController_localRepositories"];
+  if (selectedLocalRepoData)
+  {
+    [[NSUserDefaults standardUserDefaults] setObject:selectedLocalRepoData 
+                                              forKey:@"GBRepositoriesController_selectedLocalRepository"];
+  }
+  else
+  {
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"GBRepositoriesController_selectedLocalRepository"];
+  }
+}
+
+
+
+
+
+//- (BOOL) checkGitVersion
+//{
+//  NSString* gitVersion = [GBRepository gitVersion];
+//  if (!gitVersion)
+//  {
+//    [NSAlert message:NSLocalizedString(@"Please locate git", @"App")
+//         description:[NSString stringWithFormat:NSLocalizedString(@"The Gitbox requires git version %@ or later. Please install git or set its path in Preferences.", @"App"), 
+//                      [GBRepository supportedGitVersion]]
+//         buttonTitle:NSLocalizedString(@"Open Preferences",@"App")];
+//    [self.preferencesController showWindow:nil];
+//    return NO;
+//  }
+//  else if (![GBRepository isSupportedGitVersion:gitVersion])
+//  {
+//    [NSAlert message:NSLocalizedString(@"Please locate git", @"App")
+//         description:[NSString stringWithFormat:NSLocalizedString(@"The Gitbox works with the version %@ or later. Your git version is %@.\n\nPath to git executable: %@", @"App"), 
+//                      [GBRepository supportedGitVersion], 
+//                      gitVersion,
+//                      [OATask systemPathForExecutable:@"git"]]
+//         buttonTitle:NSLocalizedString(@"Open Preferences",@"App")];
+//    [self.preferencesController showWindow:nil];
+//    return NO;
+//  }
+//  return YES;
+//}
 
 
 @end

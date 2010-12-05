@@ -19,6 +19,10 @@
 - (GBRepositoryController*) selectedLocalRepositoryController;
 - (GBCloningRepositoryController*) selectedCloningRepositoryController;
 
+- (BOOL) tryOpenLocalRepositoryAtURL:(NSURL*)url;
+- (void) openLocalRepositoryAtURL:(NSURL*)url;
+
+
 - (void) addLocalRepositoryController:(GBBaseRepositoryController*)repoCtrl;
 - (void) removeLocalRepositoryController:(GBBaseRepositoryController*)repoCtrl;
 - (void) selectRepositoryController:(GBBaseRepositoryController*) repoCtrl;

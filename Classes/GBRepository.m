@@ -127,13 +127,16 @@
 {
   if (!aPath) return nil;
   if ([aPath rangeOfString:@"/.Trash/"].location != NSNotFound) return nil;
-  while (![NSFileManager isWritableDirectoryAtPath:[aPath stringByAppendingPathComponent:@".git"]])
+  
+  BOOL isDirectory = NO;
+  if ([[NSFileManager defaultManager] fileExistsAtPath:[aPath stringByAppendingPathComponent:@".git"] isDirectory:&isDirectory])
   {
-    if ([aPath isEqualToString:@"/"] || [aPath isEqualToString:@""]) return nil;
-    aPath = [aPath stringByDeletingLastPathComponent];
-    if (!aPath) return nil;
+    if (isDirectory)
+    {
+      return aPath;
+    }
   }
-  return aPath;
+  return nil;
 }
 
 

@@ -214,8 +214,7 @@
 
 - (void) updateBadges
 {
-  [self.outlineView setNeedsDisplay];
-  [self.outlineView displayIfNeeded];
+  [self.outlineView setNeedsDisplay:YES];
 }
 
 - (void) updateSelectedRow
