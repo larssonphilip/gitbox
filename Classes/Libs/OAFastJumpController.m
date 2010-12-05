@@ -3,12 +3,14 @@
 @interface OAFastJumpController ()
 @property(nonatomic,copy) void(^delayedBlock)();
 @property(nonatomic,assign) BOOL isJumping;
+- (void) callBlockAndClear;
 @end
 
 @implementation OAFastJumpController
 
 @synthesize delayedBlock;
 @synthesize isJumping;
+@synthesize flushInterval;
 
 - (void) dealloc
 {
@@ -28,7 +30,9 @@
   if (!self.isJumping)
   {
     self.isJumping = YES;
-    [self performSelector:@selector(delayedCheck) withObject:nil afterDelay:delay];
+    
+    if (self.flushInterval > 0) [self performSelector:@selector(delayedCheck) withObject:nil afterDelay:self.flushInterval];
+    [self performSelector:@selector(regularCheck) withObject:nil afterDelay:delay];
     aBlock();
   }
   else
@@ -48,20 +52,32 @@
 
 - (void) flush
 {
-  void(^aBlock)() = self.delayedBlock;
-  [[aBlock retain] autorelease];
-  self.delayedBlock = nil;  
+  [self callBlockAndClear];
   [self cancel];
-  if (aBlock) aBlock();
 }
 
 - (void) delayedCheck
 {
   self.isJumping = NO;
+  [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(regularCheck) object:nil];
+  [self callBlockAndClear];
+}
+
+- (void) regularCheck
+{
+  [self callBlockAndClear];
+  if (self.isJumping && self.flushInterval > 0)
+  {
+    [self performSelector:_cmd withObject:nil afterDelay:self.flushInterval];
+  }
+}
+
+- (void) callBlockAndClear
+{
   void(^aBlock)() = self.delayedBlock;
   [[aBlock retain] autorelease];
   self.delayedBlock = nil;
-  if (aBlock) aBlock();
+  if (aBlock) aBlock();  
 }
 
 

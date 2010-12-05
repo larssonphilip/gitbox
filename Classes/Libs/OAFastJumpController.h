@@ -4,6 +4,8 @@
 
 @interface OAFastJumpController : NSObject
 
+@property(nonatomic,assign) NSTimeInterval flushInterval;
+
 + (id) controller;
 - (void) delayBlockIfNeeded:(void(^)())aBlock;
 - (void) cancel; // discard delayed block and reset state
