@@ -417,6 +417,13 @@
        toPasteboard:(NSPasteboard *)pasteboard
 {
   // Outer drag only for now.
+  // Later: review this code to not assume only local repos, but also groups, githubs etc.
+  
+  if ([items count] != 1) return NO;
+  
+  GBRepositoryController* repo = [items objectAtIndex:0];
+  
+  if (![repo isKindOfClass:[GBBaseRepositoryController class]]) return NO;
   
   NSArray* paths = [items valueForKeyPath:@"url.path"];
   
