@@ -120,7 +120,9 @@
   [repoCtrl start];
 
   [self.localRepositoriesUpdatesQueue addBlock:^{
+    //NSLog(@"Updating repo %@", [repoCtrl nameForSourceList]);
     [repoCtrl updateRepositoryIfNeededWithBlock:^{
+      //NSLog(@"End updating repo %@", [repoCtrl nameForSourceList]);
       [self.localRepositoriesUpdatesQueue endBlock];
     }];
   }];

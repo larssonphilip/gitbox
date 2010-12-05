@@ -36,7 +36,7 @@
     return;
   }
   
-  if (!self.queue) self.queue = [NSMutableArray arrayWithCapacity:10];
+  if (!self.queue) self.queue = [NSMutableArray array];
   [self.queue addObject:[[aBlock copy] autorelease]];
   [self proceed];
 }
@@ -53,8 +53,10 @@
 
 - (void) proceed
 {
+//  NSLog(@"OABlockQueue: operationCount = %d, limit = %d", self.operationCount, self.maxConcurrentOperationCount);
   if (self.operationCount < self.maxConcurrentOperationCount)
   {
+//    NSLog(@"OABlockQueue: queue count = %d", [self.queue count]);
     if (self.queue && [self.queue count] > 0)
     {
       void(^aBlock)() = [self.queue objectAtIndex:0];

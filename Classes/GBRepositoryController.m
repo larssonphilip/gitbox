@@ -250,6 +250,10 @@
       needsCommitsUpdate = NO;
       [self loadCommitsWithBlock:block];
     }
+    else
+    {
+      if (block) block();
+    }
     [self popSpinning];
   }];
   
