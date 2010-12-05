@@ -18,6 +18,8 @@
 
 - (NSString*) relativePathToDirectoryPath:(NSString *)baseDirPath;
 
+- (NSString*) pathWithSuffix:(NSString*)suffix;
+
 @end
 
 

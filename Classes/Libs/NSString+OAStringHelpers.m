@@ -107,6 +107,16 @@
   return [NSString pathWithComponents:pathComponents1];
 }
 
+// returns a path with suffix inserted in the last component before the extension
+- (NSString*) pathWithSuffix:(NSString*)suffix
+{
+  NSString* ext = [self pathExtension];
+  NSString* string2 = [[self stringByDeletingPathExtension] stringByAppendingString:suffix];
+  if (ext && [ext length] > 0) return [string2 stringByAppendingPathExtension:ext];
+  return string2;
+}
+
+
 
 @end
 
