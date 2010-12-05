@@ -7,7 +7,7 @@
 @interface GBChangeCell ()
 
 @property(nonatomic, copy) NSParagraphStyle* truncatingParagraphStyle;
-
+- (NSImage*) iconForPath:(NSString*)path;
 @end
 
 
@@ -73,7 +73,7 @@
                     [window isMainWindow] && [window isKeyWindow]);
   
   //NSLog(@"%@ isFocused: %d [firstResponder: %@]", [self class], (int)self.isFocused, [window firstResponder]);
-  NSLog(@"%@ isHighlighted: %d", [self class], (int)[self isHighlighted]);
+  //NSLog(@"%@ isHighlighted: %d", [self class], (int)[self isHighlighted]);
   
   BOOL isFlipped = [theControlView isFlipped];
   
@@ -85,50 +85,33 @@
   
   NSURL* dstURL = aChange.dstURL;
   
-  NSImage* srcImage = nil;
+  NSImage* srcIcon = [self iconForPath:[srcURL path]];
+    
+  NSSize iconSize = NSMakeSize(kIconImageWidth, kIconImageWidth);
   
-  // NSFileTypeForHFSTypeCode(UTGetOSTypeFromString((CFStringRef*)@"..."))
-  // 
-  
-  if (srcURL)
-  {
-    if ([[NSFileManager defaultManager]  fileExistsAtPath:[srcURL path]])
-    {
-      srcImage = [[NSWorkspace sharedWorkspace] iconForFile:[srcURL path]];
-    }
-    else
-    {
-      NSString* ext = [[srcURL path] pathExtension];
-      srcImage =  [[NSWorkspace sharedWorkspace] iconForFileType:ext];
-    }
-  }
-  
-  
-  NSSize imageSize = NSMakeSize(kIconImageWidth, kIconImageWidth);
-  
-  [srcImage setSize:imageSize];
+  [srcIcon setSize:iconSize];
   
   static CGFloat leftOffsetLikeInFinder = 5;
   currentFrame.origin.x += leftOffsetLikeInFinder;
   currentFrame.size.width -= leftOffsetLikeInFinder;
   
-  NSRect srcImageRect = currentFrame;
-  srcImageRect.size = imageSize;
+  NSRect srcIconRect = currentFrame;
+  srcIconRect.size = iconSize;
   
   if (isFlipped)
   {
-    srcImageRect.origin.y += srcImageRect.size.height;
+    srcIconRect.origin.y += srcIconRect.size.height;
   }
   
-  [srcImage compositeToPoint:srcImageRect.origin operation:NSCompositeSourceOver];
+  [srcIcon compositeToPoint:srcIconRect.origin operation:NSCompositeSourceOver];
   
   
   
   // Adjust the currentFrame for the text
   
-  CGFloat offset = srcImageRect.size.width + 6;
-  currentFrame.origin.x += offset;
-  currentFrame.size.width -= offset;
+  CGFloat offsetAfterIcon = srcIconRect.size.width + 6;
+  currentFrame.origin.x += offsetAfterIcon;
+  currentFrame.size.width -= offsetAfterIcon;
   
   
   // Draw the status
@@ -200,11 +183,85 @@
                                              nil] autorelease];
     
     // If moved, we'll display the first path, then arrow and icon+relative path for the second one
-    if ([aChange isMovedOrRenamedFile])
+    if ([aChange isMovedOrRenamedFile] && dstURL)
     {
       // FIXME:
+      // - Calculate how much space is needed for icon and arrow
+      // - Calculate sizes for texts
+      // - If the remaining space is enough for both names, draw them in full
+      // - If not, try to give more space to dstURL, but not more than max(0.65*width, width - srcWidth) and adjust both sizes
+      // - Draw.
+      static CGFloat arrowLeftPadding = 4.0;
+      static CGFloat arrowRightPadding = 4.0;
+      static CGFloat iconRightPadding = 6.0;
+      CGFloat arrowWidth = [@"→" sizeWithAttributes:attributes].width;
       
-      [[srcURL relativePath] drawInRect:currentFrame withAttributes:attributes];
+      NSString* srcPath = [srcURL relativePath];
+      NSString* dstPath = [[dstURL relativePath] relativePathToDirectoryPath:[srcPath stringByDeletingLastPathComponent]];
+      
+      NSSize srcSize = [srcPath sizeWithAttributes:attributes];
+      NSSize dstSize = [dstPath sizeWithAttributes:attributes];
+      
+      CGFloat remainingWidth = currentFrame.size.width - (arrowLeftPadding + arrowWidth + arrowRightPadding + iconSize.width + iconRightPadding);
+      
+      if (srcSize.width + dstSize.width > remainingWidth)
+      {
+        CGFloat maxDstWidth = MAX(0.65*remainingWidth, remainingWidth - srcSize.width);
+        if (dstSize.width > maxDstWidth)
+        {
+          dstSize.width = maxDstWidth;
+        }
+        srcSize.width = remainingWidth - dstSize.width;
+      }
+      
+      // Draw src
+      
+      NSRect srcRect = currentFrame;
+      srcRect.size = srcSize;
+      
+      currentFrame.origin.x += srcSize.width;
+      currentFrame.size.width -= srcSize.width;
+      
+      // TODO: shrink the path in a smart way
+      [srcPath drawInRect:srcRect withAttributes:attributes];
+      
+      
+      // Draw arrow
+
+      currentFrame.origin.x += arrowLeftPadding;
+      currentFrame.size.width -= arrowLeftPadding;
+      
+      NSRect arrowRect = currentFrame;
+      arrowRect.size.width = arrowWidth;
+      
+      [@"→" drawInRect:arrowRect withAttributes:attributes];
+      
+      currentFrame.origin.x += arrowRightPadding + arrowWidth;
+      currentFrame.size.width -= arrowRightPadding + arrowWidth;
+      
+      
+      // Draw icon
+      
+      NSImage* dstIcon = srcIcon;
+      if (![[srcPath pathExtension] isEqualToString:[dstPath pathExtension]])
+      {
+        dstIcon = [self iconForPath:[dstURL path]]; // not using dstPath because need absolute path
+        [dstIcon setSize:iconSize];
+      }
+      
+      NSRect dstIconRect = srcIconRect;
+      dstIconRect.origin.x = currentFrame.origin.x;
+      
+      [dstIcon compositeToPoint:dstIconRect.origin operation:NSCompositeSourceOver];
+      
+      currentFrame.origin.x += offsetAfterIcon;
+      currentFrame.size.width -= offsetAfterIcon;
+      
+      
+      // Draw dst
+      
+      // TODO: shrink the path in a smart way
+      [dstPath drawInRect:currentFrame withAttributes:attributes];
     }
     else
     {
@@ -214,6 +271,23 @@
   }
   
 //  [super drawInteriorWithFrame:cellFrame inView:theControlView];
+}
+
+
+- (NSImage*) iconForPath:(NSString*)path
+{
+  // Memo: NSFileTypeForHFSTypeCode(UTGetOSTypeFromString((CFStringRef*)@"..."))
+  if (path)
+  {
+    if ([[NSFileManager defaultManager] fileExistsAtPath:path])
+    {
+      return [[NSWorkspace sharedWorkspace] iconForFile:path];
+    }
+    
+    NSString* ext = [path pathExtension];
+    return [[NSWorkspace sharedWorkspace] iconForFileType:ext];
+  }
+  return nil;
 }
 
 
