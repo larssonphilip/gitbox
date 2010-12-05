@@ -78,6 +78,8 @@
 
 - (NSString*) relativePathToDirectoryPath:(NSString *)baseDirPath
 {
+  if (!baseDirPath) return self;
+  
   NSString *thePath = [self stringByStandardizingPath];
   NSString *theBasePath = [baseDirPath stringByStandardizingPath];
   
