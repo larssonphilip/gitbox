@@ -11,7 +11,7 @@
 			<string key="NS.object.0">823</string>
 		</object>
 		<array class="NSMutableArray" key="IBDocument.EditedObjectIDs">
-			<integer value="27"/>
+			<integer value="1"/>
 		</array>
 		<array key="IBDocument.PluginDependencies">
 			<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -199,7 +199,6 @@
 								<int key="NSvFlags">-2147483392</int>
 								<string key="NSFrame">{{0, 398}, {274, 15}}</string>
 								<reference key="NSSuperview" ref="468974511"/>
-								<bool key="NSEnabled">YES</bool>
 								<int key="NSsFlags">1</int>
 								<reference key="NSTarget" ref="468974511"/>
 								<string key="NSAction">_doScroller:</string>
@@ -209,7 +208,7 @@
 						<string key="NSFrameSize">{480, 272}</string>
 						<reference key="NSSuperview" ref="1005"/>
 						<reference key="NSNextKeyView" ref="294998217"/>
-						<int key="NSsFlags">688</int>
+						<int key="NSsFlags">560</int>
 						<reference key="NSVScroller" ref="40730209"/>
 						<reference key="NSHScroller" ref="179463748"/>
 						<reference key="NSContentView" ref="294998217"/>
@@ -534,6 +533,14 @@
 					</object>
 					<int key="connectionID">78</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">dataSource</string>
+						<reference key="source" ref="129701580"/>
+						<reference key="destination" ref="1001"/>
+					</object>
+					<int key="connectionID">79</int>
+				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<array key="orderedObjects">
@@ -695,8 +702,9 @@
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
-				<string key="1.IBEditorWindowLastContentRect">{{489, 162}, {480, 272}}</string>
+				<string key="1.IBEditorWindowLastContentRect">{{435, 162}, {480, 272}}</string>
 				<string key="1.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<object class="NSAffineTransform" key="1.IBViewBoundsToFrameTransform"/>
 				<string key="1.WindowOrigin">{628, 654}</string>
 				<string key="1.editorWindowContentRectSynchronizationRect">{{217, 442}, {480, 272}}</string>
 				<string key="13.CustomClassName">GBLightScrollView</string>
@@ -729,7 +737,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">78</int>
+			<int key="maxID">79</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
