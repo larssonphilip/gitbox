@@ -6,6 +6,7 @@
 #import "OATask.h"
 
 #import "NSString+OAGitHelpers.h"
+#import "NSString+OAStringHelpers.h"
 #import "NSAlert+OAAlertHelpers.h"
 #import "NSFileManager+OAFileManagerHelpers.h"
 
@@ -230,6 +231,7 @@
 {
   GBExtractFileTask* task = [GBExtractFileTask task];
   task.repository = self.repository;
+  task.commitId = self.commitId;
   task.objectId = objectId;
   task.originalURL = url;
   [self.repository launchTaskAndWait:task];
@@ -419,14 +421,40 @@
   return [[[self fileURL] path] lastPathComponent];
 }
 
+- (NSString*) uniqueSuffix
+{
+  NSString* suffix = self.commitId;
+  if (!suffix)
+  {
+    suffix = [self.newRevision nonZeroCommitId];
+  }
+  if (!suffix)
+  {
+    suffix = [self.oldRevision nonZeroCommitId];
+  }
+  
+  if (!suffix) return nil;
+  
+  suffix = [suffix substringToIndex:8];
+  
+  return [NSString stringWithFormat:@"-%@", suffix];
+}
+
+- (NSString*) nameForExtractedFileWithSuffix
+{
+  NSString* suffix = [self uniqueSuffix];
+  
+  if (!suffix)
+  {
+    return nil;
+  }
+  
+  return [[self defaultNameForExtractedFile] pathWithSuffix:suffix];
+}
+
 - (void) extractFileWithTargetURL:(NSURL*)aTargetURL;
 {
-  NSString* objectId = self.commitId;
-  
-  if (!objectId)
-  {
-    objectId = [self.newRevision nonZeroCommitId];
-  }
+  NSString* objectId = [self.newRevision nonZeroCommitId];
   
   if (!objectId)
   {
@@ -437,12 +465,101 @@
   {
     GBExtractFileTask* task = [GBExtractFileTask task];
     task.repository = self.repository;
+    task.commitId = self.commitId;
     task.objectId = objectId;
     task.originalURL = [self fileURL];
     task.targetURL = aTargetURL;
     [self.repository launchTaskAndWait:task];
   }
 }
+
+//- (NSString*) nameForExtractedFileAtDestination:(NSURL*)folderURL
+//{
+//  NSLog(@"GBChange: nameForExtractedFileAtDestination:%@", folderURL);
+//  
+//  if (![self fileURL]) return nil;
+//  
+//  NSString* name = [[[self fileURL] path] lastPathComponent];
+//  
+//  if (!name) return nil;
+//  
+//  NSString* folderPath = [folderURL path];
+//  NSString* fullPath = [folderPath stringByAppendingPathComponent:name];
+//  
+//  if ([[NSFileManager defaultManager] fileExistsAtPath:fullPath isDirectory:NULL])
+//  {
+//    NSString* sfx = [self uniqueSuffix];
+//    if (!sfx)
+//    {
+//      return nil;
+//    }
+//    fullPath = [fullPath pathWithSuffix:sfx];
+//  }
+//  
+//  NSLog(@"GBChange: extracting file: %@", fullPath);
+//  
+//  [self extractFileWithTargetURL:[NSURL fileURLWithPath:fullPath]];
+//  
+//  return [fullPath lastPathComponent];
+//}
+
+
+
+
+#pragma mark NSPasteboardWriting
+
+
+
+- (NSObject<NSPasteboardWriting>*) pasteboardItem // for now, respond to pasteboard API by ourselves
+{
+  return [[self retain] autorelease];
+}
+
+- (id)pasteboardPropertyListForType:(NSString *)type
+{
+  //NSLog(@"GBChange: pasteboardPropertyListForType:%@", type);
+  
+  if ([type isEqualToString:(NSString *)kUTTypeFileURL])
+  {
+    NSString* objectId = [self.newRevision nonZeroCommitId];
+    if (!objectId)
+    {
+      objectId = [self.oldRevision nonZeroCommitId];
+    }
+    NSURL* aURL  = [self temporaryURLForObjectId:objectId optionalURL:[self fileURL]];
+    return [aURL pasteboardPropertyListForType:type];
+  }
+  
+  if ([type isEqualToString:NSPasteboardTypeString])
+  {
+    return [[self fileURL] absoluteString];
+  }
+  
+  return nil;
+}
+
+- (NSArray*) writableTypesForPasteboard:(NSPasteboard *)pasteboard
+{
+  NSString* UTI = [((NSString *)UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension,
+                                                                     (CFStringRef)[[[self fileURL] path] pathExtension], 
+                                                                     NULL)) autorelease];
+  NSArray* types = [NSArray arrayWithObjects:
+          UTI,
+          kUTTypeFileURL,
+          NSPasteboardTypeString,
+          nil];
+  
+  //NSLog(@"GBChange: writableTypesForPasteboard: %@", types);
+  
+  return types;
+}
+
+- (NSPasteboardWritingOptions) writingOptionsForType:(NSString *)type pasteboard:(NSPasteboard *)pasteboard
+{
+  //NSLog(@"GBChange: returning NSPasteboardWritingPromised for type %@", type);
+  return NSPasteboardWritingPromised;
+}
+
 
 
 

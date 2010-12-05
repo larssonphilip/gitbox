@@ -2,7 +2,7 @@
 @class GBChangeCell;
 @class GBRepository;
 @class GBCommit;
-@interface GBChange : NSObject
+@interface GBChange : NSObject<NSPasteboardWriting>
 
 @property(nonatomic,retain) NSURL* srcURL;
 @property(nonatomic,retain) NSURL* dstURL;
@@ -19,9 +19,16 @@
 @property(nonatomic,assign) GBRepository* repository;
 
 
-#pragma mark Interrogation
 
 + (NSArray*) diffTools;
+
+
+
+#pragma mark Interrogation
+
+- (NSString*) defaultNameForExtractedFile;
+- (NSString*) nameForExtractedFileWithSuffix;
+
 - (NSURL*) fileURL;
 - (NSString*) pathStatus;
 - (BOOL) isAddedFile;
@@ -40,6 +47,8 @@
 - (Class) cellClass;
 - (GBChangeCell*) cell;
 
+- (NSObject<NSPasteboardWriting>*) pasteboardItem;
+
 
 #pragma mark Actions
 
@@ -52,7 +61,9 @@
 
 
 - (BOOL) validateExtractFile;
-- (NSString*) defaultNameForExtractedFile;
 - (void) extractFileWithTargetURL:(NSURL*)aTargetURL;
+
+
+- (NSString*) nameForExtractedFileAtDestination:(NSURL*)url;
 
 @end
