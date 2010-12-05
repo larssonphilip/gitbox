@@ -65,6 +65,7 @@ Error messages translation to English:
 
 Bugs:
 
+- bug: maybe after cloning and adding some stuff to the repo error happens: "file outside of directory"
 - bug: when removing a single server, remote branch remains and log is clean
 - bug: push over https (Github now supports pushing by HTTPS)
 - bug: when connecting over https (and maybe http), gitbox locks on password prompt.  [Nicolai Schulten <nicolai.schulten@byte-garden.de>]
