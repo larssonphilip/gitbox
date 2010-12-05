@@ -13,8 +13,9 @@
 + bug: when deselected all repos, the changes view remains visible
 + pack git.bundle to .tar.gz and unpack on first run
 + upgrade git version
-- https check
++ https check: doesn't work
 - drag and drop for sources (see the SourceView sample code for handling the drag and drop)
+- drag and drop for changes
 
 - help
 - guide
