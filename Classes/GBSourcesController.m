@@ -412,6 +412,23 @@
 
 
 
+- (BOOL)outlineView:(NSOutlineView *)anOutlineView
+         writeItems:(NSArray *)items
+       toPasteboard:(NSPasteboard *)pasteboard
+{
+  // Outer drag only for now.
+  
+  NSArray* paths = [items valueForKeyPath:@"url.path"];
+  
+  [pasteboard declareTypes:[NSArray arrayWithObjects:NSFilenamesPboardType, nil] owner:self];
+  [pasteboard setPropertyList:paths forType:NSFilenamesPboardType];
+  
+  return YES;
+}
+
+
+
+
 - (NSDragOperation)outlineView:(NSOutlineView *)anOutlineView
                   validateDrop:(id <NSDraggingInfo>)draggingInfo
                   proposedItem:(id)item
