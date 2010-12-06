@@ -264,10 +264,36 @@
 {
   NSArray* bookmarks = [[NSUserDefaults standardUserDefaults] objectForKey:@"GBRepositoriesController_localRepositories"];
   NSData* selectedLocalRepoData = [[NSUserDefaults standardUserDefaults] objectForKey:@"GBRepositoriesController_selectedLocalRepository"];
+  NSString* license = [[NSUserDefaults standardUserDefaults] objectForKey:@"license"];
+
+  int lim = 1;
+  int i = 0;
+  
+  NSURL* selectedURL = nil;
+  if (selectedLocalRepoData && [selectedLocalRepoData isKindOfClass:[NSData class]])
+  {
+    NSURL* aURL = [NSURL URLByResolvingBookmarkData:selectedLocalRepoData 
+                                            options:NSURLBookmarkResolutionWithoutUI | 
+                   NSURLBookmarkResolutionWithoutMounting
+                                      relativeToURL:nil 
+                                bookmarkDataIsStale:NO 
+                                              error:NULL];
+    if (aURL)
+    {
+      selectedURL = aURL;
+      [self.repositoriesController openLocalRepositoryAtURL:aURL];
+    }
+    i++;
+  }
+  
   if (bookmarks && [bookmarks isKindOfClass:[NSArray class]])
   {
     for (NSData* bookmarkData in bookmarks)
     {
+      if (i >= lim && !OAValidateLicenseNumber(license))
+      {
+        break;
+      }
       NSURL* aURL = [NSURL URLByResolvingBookmarkData:bookmarkData 
                                              options:NSURLBookmarkResolutionWithoutUI | 
                     NSURLBookmarkResolutionWithoutMounting
@@ -276,24 +302,14 @@
                                                error:NULL];
       NSString* path = [aURL path];
       if ([NSFileManager isWritableDirectoryAtPath:path] &&
-          [GBRepository validRepositoryPathForPath:path])
+          [GBRepository validRepositoryPathForPath:path] && (!selectedURL || ![selectedURL isEqual:aURL]))
       {
         GBRepositoryController* repoCtrl = [GBRepositoryController repositoryControllerWithURL:aURL];
         [self.repositoriesController addLocalRepositoryController:repoCtrl];
+        i++;
       } // if path is valid repo
     } // for
   } // if paths
-  
-  if (selectedLocalRepoData && [selectedLocalRepoData isKindOfClass:[NSData class]])
-  {
-    NSURL* aURL = [NSURL URLByResolvingBookmarkData:selectedLocalRepoData 
-                                           options:NSURLBookmarkResolutionWithoutUI | 
-                  NSURLBookmarkResolutionWithoutMounting
-                                     relativeToURL:nil 
-                               bookmarkDataIsStale:NO 
-                                             error:NULL];
-    if (aURL) [self.repositoriesController openLocalRepositoryAtURL:aURL];
-  }
 }
 
 - (void) saveRepositories

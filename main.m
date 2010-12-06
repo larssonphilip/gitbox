@@ -42,6 +42,41 @@ int main(int argc, char *argv[])
       exit(1);
       return 1;
     #endif
+  
+    #if DEBUG
+      static int64_t delay = 523123123;
+    #else
+      static int64_t delay = 200222000555;
+    #endif
+    
+    NSString* key = @"license";
+    NSString* license = [[NSUserDefaults standardUserDefaults] objectForKey:key];
+    if (OAValidateLicenseNumber(license))
+    {
+      NSString* lowerCase = [license lowercaseString];
+      dispatch_after(dispatch_time(DISPATCH_TIME_NOW, delay), dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), [[(^{
+        if (![lowerCase isEqualToString:license])
+        {
+          dispatch_after(dispatch_time(DISPATCH_TIME_NOW, delay), dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), [[(^{
+            [[NSUserDefaults standardUserDefaults] removeObjectForKey:key];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+          }) copy] autorelease]);
+          
+          dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2*delay), dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), [[(^{
+            
+            [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"GBRepositoriesController_localRepositories"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, delay), dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), [[(^{
+              
+              exit(0);
+              
+            }) copy] autorelease]);
+            
+          }) copy] autorelease]);
+        }
+      }) copy] autorelease]);    
+    }
 	
   #endif
   

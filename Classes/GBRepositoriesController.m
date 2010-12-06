@@ -207,6 +207,7 @@
 - (void) addLocalRepositoryController:(GBBaseRepositoryController*)repoCtrl
 {
   if (!repoCtrl) return;
+  if ([self.localRepositoryControllers containsObject:repoCtrl]) return;
   if ([self.delegate respondsToSelector:@selector(repositoriesController:willAddRepository:)]) { [self.delegate repositoriesController:self willAddRepository:repoCtrl]; }
   [self.localRepositoryControllers addObject:repoCtrl];
   [self updateRepositoriesPresentation];

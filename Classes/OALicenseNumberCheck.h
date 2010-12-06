@@ -56,7 +56,7 @@ NS_INLINE BOOL OAValidateLicenseNumber(NSString* licenseNumber)
 	
 	// TODO: add more keys later
 	
+  
 	return YES;
 }
-
 
