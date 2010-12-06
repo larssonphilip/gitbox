@@ -30,7 +30,12 @@ Next:
 - find in commits
 - tag and branch badges in history
 - create a new tag (need a tag badge)
-
+- [+] button for adding a repo
+- rename File->Open to File->Add Repository... or Open Repository...
+- stick the sidebar while resizing
+- embedded textarea in stage will solve the problem when ppl accidentally commit selected line when using UI Commit button
+- polish the icon
+- the built-in diff
 
 
 To read:
@@ -63,6 +68,7 @@ Error messages translation to English:
 
 Bugs:
 
+- bug: when remote branch is pushed from elsewhere, ls-remote updates the list, but the branch is not fetched and when you try to check out this remote branch, checkout fails.
 - bug: maybe after cloning and adding some stuff to the repo error happens: "file outside of directory"
 - bug: when removing a single server, remote branch remains and log is clean
 - bug: push over https (Github now supports pushing by HTTPS)
