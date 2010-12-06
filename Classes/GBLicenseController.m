@@ -31,7 +31,7 @@
 - (IBAction) ok:_
 {
   NSString* key = @"license";
-  NSString* license = [[NSUserDefaults standardUserDefaults] objectForKey:key];
+  NSString* license = [[[NSUserDefaults standardUserDefaults] objectForKey:key] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
   if (!OAValidateLicenseNumber(license))
   {
     [self.progressLabel setStringValue:@"The license key is invalid."];
