@@ -2,7 +2,7 @@
 
 def hardlink_binaries(bins)
   resources_path = "#{ENV['BUILT_PRODUCTS_DIR']}/#{ENV['PROJECT_NAME']}.app/Contents/Resources"
-  prefix = "#{resources_path}/git-1.7.1.bundle/libexec/git-core"
+  prefix = "#{resources_path}/git-1.7.3.2.bundle/libexec/git-core"
   
   bins.each do |bin|
     system(%{ln #{prefix}/#{git} #{prefix}/#{bin}})
