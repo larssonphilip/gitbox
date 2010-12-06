@@ -270,6 +270,7 @@ NSString* OATaskNotification = @"OATaskNotification";
 
 - (void) launchInQueue:(dispatch_queue_t)aQueue withBlock:(void(^)())block
 {
+  block = [[block copy] autorelease];
   #if OATASK_DEBUG
     static char columns[13] = "000000000000\0";
     char* c = columns;

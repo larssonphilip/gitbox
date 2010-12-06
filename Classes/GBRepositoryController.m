@@ -222,6 +222,7 @@
 
 - (void) updateRepositoryIfNeededWithBlock:(void(^)())block
 {
+  block = OABlockOnHeap(block);
   GBRepository* repo = self.repository;
   
   [self pushSpinning];
@@ -266,6 +267,7 @@
 
 - (void) updateCurrentBranchesIfNeededWithBlock:(void(^)())block
 {
+  block = OABlockOnHeap(block);
   GBRepository* repo = self.repository;
   
   if (!repo.currentLocalRef)
@@ -299,6 +301,7 @@
 
 - (void) checkoutHelper:(void(^)(void(^)()))checkoutBlock
 {
+  checkoutBlock = OABlockOnHeap(checkoutBlock);
   GBRepository* repo = self.repository;
   
   [self pushDisabled];
@@ -509,6 +512,9 @@
                        withBlock:(void(^)(NSArray*, GBStage*, void(^)()))block
                   postStageBlock:(void(^)())postStageBlock
 {
+  block = OABlockOnHeap(block);
+  postStageBlock = OABlockOnHeap(postStageBlock);
+  
   GBStage* stage = self.repository.stage;
   if (!stage)
   {
@@ -620,6 +626,8 @@
 - (void) fetchSilentlyWithBlock:(void(^)())block
 {
   if (!self.repository) return block();
+  
+  block = OABlockOnHeap(block);
   
   [self pushSpinning];
   [self pushDisabled];

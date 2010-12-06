@@ -3,5 +3,7 @@
   #import <Cocoa/Cocoa.h>
 #endif
 
+#import "OABlockOnHeap.h"
+
 #define GITBOX_APP_STORE 1
 //#define OA_APPSTORE_SAMPLE_RECEIPT 1
