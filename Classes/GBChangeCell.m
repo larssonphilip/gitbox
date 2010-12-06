@@ -158,7 +158,8 @@
     
     if (isFlipped) statusFrame.origin.y += 2;
     
-    currentFrame.size.width -= round(statusFrame.size.width + paddingRight + paddingLeft);
+    static CGFloat minStatusColumnSizeToMakeItPretty = 56; // we could use NSParagraphStyle to set alignment, but this way it is simpler for now
+    currentFrame.size.width -= round(MAX(statusFrame.size.width, minStatusColumnSizeToMakeItPretty) + paddingRight + paddingLeft);
     [status drawInRect:statusFrame withAttributes:attributes];
   }
   

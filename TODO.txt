@@ -15,9 +15,10 @@
 + upgrade git version
 + https check: doesn't work
 
++ make the status label of a fixed, column-like width
+
 - fix clone+stage "outside of repo" error bug
 - fix the sidebar position while resizing
-- make the status label of a fixed, column-like width
 - fetch remote branches when added a remote server or a branch was pushed: otherwise, couldn't checkout remote branch and when selecting it, it's empty.
 - when clicked checkbox and want to drag out, it does not undo the action.
 
