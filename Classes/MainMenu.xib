@@ -12,7 +12,7 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="24"/>
+			<integer value="81"/>
 			<integer value="913"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
@@ -217,7 +217,7 @@
 								<bool key="EncodedWithXMLCoder">YES</bool>
 								<object class="NSMenuItem" id="416980668">
 									<reference key="NSMenu" ref="720053764"/>
-									<string key="NSTitle">Clone...</string>
+									<string key="NSTitle">Clone Repository...</string>
 									<string key="NSKeyEquiv">n</string>
 									<int key="NSKeyEquivModMask">1048576</int>
 									<int key="NSMnemonicLoc">2147483647</int>
@@ -236,7 +236,7 @@
 								</object>
 								<object class="NSMenuItem" id="722745758">
 									<reference key="NSMenu" ref="720053764"/>
-									<string key="NSTitle">Open…</string>
+									<string key="NSTitle">Open Repository…</string>
 									<string key="NSKeyEquiv">o</string>
 									<int key="NSKeyEquivModMask">1048576</int>
 									<int key="NSMnemonicLoc">2147483647</int>
@@ -971,7 +971,7 @@
 										<object class="NSTextView" id="713596817">
 											<reference key="NSNextResponder" ref="561993810"/>
 											<int key="NSvFlags">2322</int>
-											<string key="NSFrame">{{0, 602}, {448, 4676}}</string>
+											<string key="NSFrame">{{0, 882}, {448, 4396}}</string>
 											<reference key="NSSuperview" ref="561993810"/>
 											<object class="NSTextContainer" key="NSTextContainer" id="2642329">
 												<object class="NSLayoutManager" key="NSLayoutManager">
@@ -3045,7 +3045,7 @@ ciBHZW5lcmFsClB1YmxpYyBMaWNlbnNlIGluc3RlYWQgb2YgdGhpcyBMaWNlbnNlLgo</bytes>
 					<integer value="1"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{167, 616}, {164, 103}}</string>
+					<string>{{167, 616}, {206, 103}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="1"/>
 					<string>{{155, 774}, {199, 203}}</string>
