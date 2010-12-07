@@ -74,7 +74,7 @@ Error messages translation to English:
 Bugs:
 
 - bug: when remote branch is pushed from elsewhere, ls-remote updates the list, but the branch is not fetched and when you try to check out this remote branch, checkout fails.
-- bug: after adding files to .gitignore, the stage is not reloaded
++ bug: after adding files to .gitignore, the stage is not reloaded
 + bug: maybe after cloning and adding some stuff to the repo error happens: "file outside of directory"
 - bug: when removing a single server, remote branch remains and log is clean
 - bug: push over https (Github now supports pushing by HTTPS)
@@ -201,7 +201,7 @@ Bug fixes:
 + Fixed a bug with "file is outside of directory" when working with a recently cloned repository.
 + Fixed a bug with opening a trashed repo after restarting Gitbox.
 + Sidebar width now remains fixed while resizing the window.
-
++ Fixed: after editing .gitignore, the stage was not updated immediately.
 
 1.0:
 
