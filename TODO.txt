@@ -73,6 +73,8 @@ Error messages translation to English:
 
 Bugs:
 
+- bug: branch association fails when branch name has a dot (like v1.5) [Falk Hoppe <falk.hoppe@innoq.com>]
+- bug: fails to do something with a branch with slash in a name. See mailbox.
 - bug: when remote branch is pushed from elsewhere, ls-remote updates the list, but the branch is not fetched and when you try to check out this remote branch, checkout fails. The same issue leads to missing blue pills when you switch from another branch.
 + bug: after adding files to .gitignore, the stage is not reloaded
 + bug: maybe after cloning and adding some stuff to the repo error happens: "file outside of directory"
