@@ -74,7 +74,8 @@ Error messages translation to English:
 Bugs:
 
 - bug: when remote branch is pushed from elsewhere, ls-remote updates the list, but the branch is not fetched and when you try to check out this remote branch, checkout fails.
-- bug: maybe after cloning and adding some stuff to the repo error happens: "file outside of directory"
+- bug: after adding files to .gitignore, the stage is not reloaded
++ bug: maybe after cloning and adding some stuff to the repo error happens: "file outside of directory"
 - bug: when removing a single server, remote branch remains and log is clean
 - bug: push over https (Github now supports pushing by HTTPS)
 - bug: when connecting over https (and maybe http), gitbox locks on password prompt.  [Nicolai Schulten <nicolai.schulten@byte-garden.de>]
@@ -83,7 +84,6 @@ Bugs:
 
 - bug: custom path to diff tool sometimes does not work immediately [Sam Bauer <sam.bauer@mac.com>]
 - bug: branches with "/" in the name are processed incorrectly [Christian van der Leeden <christian.vanderleeden@googlemail.com>]
-- bug: after adding files to .gitignore, the stage is not reloaded
 - when a long process modifies the working directory, the FSEvents wait till the very end, but should refresh each 2 seconds or so.
 - bug: bare repository is not recognized as such: should provide read-only access
 - maybe a bug: if the stage view is not selected, commit: action is not available
@@ -198,7 +198,7 @@ Bug fixes:
 + Fixed stage appearance when all repositories are deselected.
 + Commits are not marked as non-pushed when there is no remote branch.
 + Fixed display of message label in a commit prompt.
-+ Fixed a bug with "file is outside of repository" when working with a recently cloned repository.
++ Fixed a bug with "file is outside of directory" when working with a recently cloned repository.
 + Fixed a bug with opening a trashed repo after restarting Gitbox.
 + Sidebar width now remains fixed while resizing the window.
 
