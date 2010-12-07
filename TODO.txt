@@ -15,11 +15,8 @@
 + upgrade git version
 + https check: doesn't work
 
-+ make the status label of a fixed, column-like width
-
-- fix clone+stage "outside of repo" error bug
-- fix the sidebar position while resizing
 - fetch remote branches when added a remote server or a branch was pushed: otherwise, couldn't checkout remote branch and when selecting it, it's empty.
+- fix the sidebar position while resizing
 - when clicked checkbox and want to drag out, it does not undo the action.
 
 - help
@@ -187,7 +184,7 @@ Features:
 
 Enhancements:
 + Full SSH support: hosts are added to known_hosts after confirmation, passwords and keys prtected by passphrases are supported.
-+ Redesigned list of changes: added icons, better font size.
++ Redesigned list of changes: file icons, better font size.
 + Improved performance of jumping through the list of repositories and commit messages.
 + Reduced the size of an archived app from 60 Mb to 9 Mb.
 + Bundled Git version updated to 1.7.3.2 (the latest release)
@@ -198,8 +195,11 @@ Bug fixes:
 + Fixed appearance of the license panel on startup and issue with refreshing the repo. Reported by @mqt.
 + Fixed bug with regular fetching: now all repos will be up to date regularly.
 + Fixed stage appearance when all repositories are deselected.
-+ Commits are not marked as non-pushed when there is not remote branch or server
++ Commits are not marked as non-pushed when there is no remote branch.
 + Fixed display of message label in a commit prompt.
++ Fixed a bug with "file is outside of repository" when working with a recently cloned repository.
++ Fixed a bug with opening a trashed repo after restarting Gitbox.
+
 
 
 1.0:

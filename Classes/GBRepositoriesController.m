@@ -171,8 +171,11 @@
 #endif
     
     repoCtrl = [GBRepositoryController repositoryControllerWithURL:url];
-    [self addLocalRepositoryController:repoCtrl];
-    [[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:url];
+    if (repoCtrl)
+    {
+      [self addLocalRepositoryController:repoCtrl];
+      [[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:url];
+    }
   }
   [self selectRepositoryController:repoCtrl];
 }

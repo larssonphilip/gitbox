@@ -281,9 +281,12 @@
     if (aURL)
     {
       selectedURL = aURL;
-      [self.repositoriesController openLocalRepositoryAtURL:aURL];
+      if ([GBRepository validRepositoryPathForPath:[aURL path]])
+      {
+        [self.repositoriesController openLocalRepositoryAtURL:aURL];
+        i++;
+      }
     }
-    i++;
   }
   
   if (bookmarks && [bookmarks isKindOfClass:[NSArray class]])
