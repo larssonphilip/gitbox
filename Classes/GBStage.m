@@ -69,6 +69,7 @@
 
 - (void) loadChangesWithBlock:(void(^)())block
 {
+  block = [[block copy] autorelease];
   GBTask* refreshIndexTask = [GBRefreshIndexTask taskWithRepository:self.repository];
   [refreshIndexTask launchInQueue:self.repository.dispatchQueue withBlock:^{
     
@@ -154,11 +155,11 @@
     [aChange setStagedSilently:YES];
     if ([aChange isDeletedFile])
     {
-      [pathsToDelete addObject:aChange.srcURL.path];
+      [pathsToDelete addObject:[aChange.srcURL path]];
     }
     else
     {
-      [pathsToAdd addObject:aChange.fileURL.path];
+      [pathsToAdd addObject:[aChange.fileURL path]];
     }
   }
   
