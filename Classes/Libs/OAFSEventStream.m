@@ -78,7 +78,7 @@ void OAFSEventStreamCallback( ConstFSEventStreamRef streamRef,
                                kFSEventStreamEventIdSinceNow, /* Or a previous event ID */
                                latency,
                                  kFSEventStreamCreateFlagUseCFTypes|
-                                 kFSEventStreamCreateFlagIgnoreSelf|
+                                // kFSEventStreamCreateFlagIgnoreSelf| <- since we are shelling out anyway and have a custom mechanism to handle self updates, we should listen for ours updates here by default.
                                  kFSEventStreamCreateFlagWatchRoot
                                );
   FSEventStreamScheduleWithRunLoop(streamRef, CFRunLoopGetCurrent(), kCFRunLoopDefaultMode);
