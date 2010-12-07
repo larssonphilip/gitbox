@@ -594,10 +594,44 @@
 //  return [[[self window] contentView] bounds].size.width / 2.0;
 //}
 
-//- (void) splitView:(NSSplitView*)aSplitView resizeSubviewsWithOldSize:(NSSize)oldSize
-//{
-//  [aSplitView resizeSubviewsWithOldSize:oldSize firstViewSizeLimit:120.0];
-//}
+- (void) splitView:(NSSplitView*)aSplitView resizeSubviewsWithOldSize:(NSSize)oldSize
+{
+  //[aSplitView resizeSubviewsWithOldSize:oldSize firstViewSizeLimit:120.0];    
+  if ([splitView subviews].count != 3)
+  {
+    NSLog(@"WARNING: for some reason, the split view does not contain exactly 3 subviews. Disabling autoresizing.");
+    return;
+  }
+  
+  NSSize splitViewSize = splitView.frame.size;
+  
+  NSView* sourceView = [[splitView subviews] objectAtIndex:0];
+  NSSize sourceViewSize = sourceView.frame.size;
+  sourceViewSize.height = splitViewSize.height;
+  [sourceView setFrameSize:sourceViewSize];
+  
+  NSSize flexibleSize = NSZeroSize;
+  flexibleSize.height = splitViewSize.height;
+  flexibleSize.width = splitViewSize.width - [splitView dividerThickness] - sourceViewSize.width;
+  
+  NSView* historyView = [[splitView subviews] objectAtIndex:1];
+  NSView* changesView = [[splitView subviews] objectAtIndex:2];
+  
+  NSSize historySize = [historyView frame].size;
+  NSSize changesSize = [changesView frame].size;
+  
+ // NSLog(@"Previous sizes: [%f, %f]", historySize.width, changesSize.width);
+
+//  CGFloat ratio = (changesSize.width >= 1) ? (historySize.width / (historySize.width + changesSize.width)) : 10;
+  
+  historySize.height = splitViewSize.height;
+  changesSize.height = splitViewSize.height;
+
+  changesSize.width = flexibleSize.width - [splitView dividerThickness] - historySize.width;
+  
+  [historyView setFrameSize:historySize];
+  [changesView setFrameSize:changesSize];
+}
 
 - (BOOL)splitView:(NSSplitView *)splitView canCollapseSubview:(NSView *)subview
 {// DOES NOT WORK
