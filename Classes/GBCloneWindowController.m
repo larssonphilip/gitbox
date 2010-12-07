@@ -86,7 +86,8 @@
       if (result == NSFileHandlingPanelOKButton)
       {
         self.targetDirectoryURL = [panel directoryURL];
-        self.targetURL = [panel URL];
+        self.targetURL = [panel URL]; // this URL is interpreted as a file URL and breaks later
+        self.targetURL = [NSURL fileURLWithPath:[self.targetURL path] isDirectory:YES]; // make it directory url explicitly
         
         if (self.targetDirectoryURL && self.targetURL)
         {
