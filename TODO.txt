@@ -15,8 +15,9 @@
 + upgrade git version
 + https check: doesn't work
 
++ fix the sidebar position while resizing
 - fetch remote branches when added a remote server or a branch was pushed: otherwise, couldn't checkout remote branch and when selecting it, it's empty.
-- fix the sidebar position while resizing
+
 - when clicked checkbox and want to drag out, it does not undo the action.
 
 - help
@@ -199,7 +200,7 @@ Bug fixes:
 + Fixed display of message label in a commit prompt.
 + Fixed a bug with "file is outside of repository" when working with a recently cloned repository.
 + Fixed a bug with opening a trashed repo after restarting Gitbox.
-
++ Sidebar width now remains fixed while resizing the window.
 
 
 1.0:

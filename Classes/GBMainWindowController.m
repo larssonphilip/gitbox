@@ -589,10 +589,23 @@
   }
 }
 
-//- (CGFloat)splitView:(NSSplitView*) aSplitView constrainMaxCoordinate:(CGFloat)proposedMax ofSubviewAt:(NSInteger)dividerIndex
-//{
-//  return [[[self window] contentView] bounds].size.width / 2.0;
-//}
+- (CGFloat)splitView:(NSSplitView*) aSplitView constrainMaxCoordinate:(CGFloat)proposedMax ofSubviewAt:(NSInteger)dividerIndex
+{
+  //NSLog(@"constrainMaxCoordinate: %f, index: %d", proposedMax, dividerIndex);
+  if ([splitView subviews].count == 3)
+  {
+    CGFloat totalWidth = splitView.frame.size.width;
+    if (dividerIndex == 0)
+    {
+      return round(MIN(300, 0.4*totalWidth));
+    }
+    else if (dividerIndex == 1)
+    {
+      return round(0.85*totalWidth);
+    }
+  }
+  return proposedMax;
+}
 
 - (void) splitView:(NSSplitView*)aSplitView resizeSubviewsWithOldSize:(NSSize)oldSize
 {
@@ -620,17 +633,28 @@
   NSSize historySize = [historyView frame].size;
   NSSize changesSize = [changesView frame].size;
   
- // NSLog(@"Previous sizes: [%f, %f]", historySize.width, changesSize.width);
 
-//  CGFloat ratio = (changesSize.width >= 1) ? (historySize.width / (historySize.width + changesSize.width)) : 10;
+  CGFloat ratio = (changesSize.width >= 1) ? (historySize.width / (historySize.width + changesSize.width)) : 10;
+  // round ratio a bit so it is stable for series of recalculations
+  static CGFloat roundingBase = 100.0;
+  ratio = round(roundingBase*ratio)/roundingBase;
+  
+  //NSLog(@"Previous sizes: [%f, %f] ratio: %f", historySize.width, changesSize.width, ratio);
   
   historySize.height = splitViewSize.height;
   changesSize.height = splitViewSize.height;
-
+  
+  historySize.width = round(ratio*flexibleSize.width);
   changesSize.width = flexibleSize.width - [splitView dividerThickness] - historySize.width;
   
+  //NSLog(@"New sizes: [%f, %f] + divider: %f", historySize.width, changesSize.width, [splitView dividerThickness]);
+  
   [historyView setFrameSize:historySize];
-  [changesView setFrameSize:changesSize];
+  
+  NSRect changesFrame = [changesView frame];
+  changesFrame.size = changesSize;
+  changesFrame.origin.x = [historyView frame].origin.x + historySize.width + [splitView dividerThickness];
+  [changesView setFrame:changesFrame];
 }
 
 - (BOOL)splitView:(NSSplitView *)splitView canCollapseSubview:(NSView *)subview
