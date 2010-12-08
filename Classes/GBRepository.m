@@ -8,7 +8,7 @@
 #import "NSFileManager+OAFileManagerHelpers.h"
 #import "NSData+OADataHelpers.h"
 #import "NSArray+OAArrayHelpers.h"
-
+#import "NSString+OAGitHelpers.h"
 #import "OAPropertyListController.h"
 
 @interface GBRepository ()
@@ -425,14 +425,14 @@
   
   GBTask* task1 = [self task];
   task1.arguments = [NSArray arrayWithObjects:@"config", 
-                     [NSString stringWithFormat:@"branch.%@.remote", name], 
+                     [NSString stringWithFormat:@"branch.%@.remote", [name stringQuotedForShell]], 
                      ref.remoteAlias, 
                      nil];
   [self launchTask:task1 withBlock:^{
   }];
   GBTask* task2 = [self task];
   task2.arguments = [NSArray arrayWithObjects:@"config", 
-                     [NSString stringWithFormat:@"branch.%@.merge", name],
+                     [NSString stringWithFormat:@"branch.%@.merge", [name stringQuotedForShell]],
                      [NSString stringWithFormat:@"refs/heads/%@", ref.name],
                      nil];
   [self launchTask:task2 withBlock:^{

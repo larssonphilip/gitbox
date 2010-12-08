@@ -25,11 +25,7 @@
 
 - (NSString*) prettyFileName
 {
-  if (!self.objectId)
-  {
-    NSLog(@"ERROR: GBExtractFileTask: self.objectId is nil");
-    return nil;
-  }
+  NSAssert(self.objectId, @"GBExtractFileTask: self.objectId is nil");
   
   if (self.originalURL)
   {
@@ -51,7 +47,6 @@
   {
     NSString* path = [[NSTemporaryDirectory() stringByAppendingPathComponent:@"gitbox-blobs"] 
                       stringByAppendingPathComponent:[self prettyFileName]];
-    
     self.targetURL = [NSURL fileURLWithPath:path];
   }
   return [[targetURL retain] autorelease];

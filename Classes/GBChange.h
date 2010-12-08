@@ -42,8 +42,6 @@
 - (void) setStagedSilently:(BOOL) flag;
 - (void) update;
 
-- (NSURL*) existingOrTemporaryFileURL;
-
 - (Class) cellClass;
 - (GBChangeCell*) cell;
 

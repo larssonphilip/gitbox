@@ -9,4 +9,6 @@
 // Returns nil if commit is 0{40}
 - (NSString*) nonZeroCommitId;
 
+- (NSString*) stringQuotedForShell;
+
 @end

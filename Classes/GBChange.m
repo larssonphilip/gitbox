@@ -227,49 +227,16 @@
 #pragma mark Actions
 
 
-- (NSURL*) temporaryURLForObjectId:(NSString*)objectId optionalURL:(NSURL*)url
+- (NSURL*) temporaryURLForObjectId:(NSString*)objectId optionalURL:(NSURL*)url commitId:(NSString*)aCommitId
 {
   GBExtractFileTask* task = [GBExtractFileTask task];
   task.repository = self.repository;
-  task.commitId = self.commitId;
+  task.commitId = aCommitId;
   task.objectId = objectId;
   task.originalURL = url;
   [self.repository launchTaskAndWait:task];
   return task.targetURL;
 }
-
-- (NSURL*) existingOrTemporaryFileURL
-{
-  if ([self isUntrackedFile])
-  {
-    return [self fileURL];
-  }
-  
-  NSString* objectId = [self.newRevision nonZeroCommitId];
-  NSURL* targetURL = [self fileURL];
-  if (!objectId)
-  {
-    objectId = [self.oldRevision nonZeroCommitId];
-    if (self.srcURL) targetURL = self.srcURL;
-  }
-  
-  if (objectId)
-  {
-    if (!targetURL)
-    {
-      NSLog(@"ERROR: GBChange openWithFinder: commitId is given, but all URLs are nil. id: %@", objectId);
-    }
-    return [self temporaryURLForObjectId:objectId optionalURL:targetURL];
-  }
-  else
-  {
-    NSLog(@"ERROR: GBChange openWithFinder: the change is not untracked, but no commit is valid. fileURL: %@", [self fileURL]);
-  }
-  return nil;
-}
-
-
-
 
 
 
@@ -300,8 +267,8 @@
     return;
   }
   
-  NSURL* leftURL  = [self temporaryURLForObjectId:leftCommitId optionalURL:self.srcURL];
-  NSURL* rightURL = (rightCommitId ? [self temporaryURLForObjectId:rightCommitId optionalURL:self.dstURL] : [self fileURL]);
+  NSURL* leftURL  = [self temporaryURLForObjectId:leftCommitId optionalURL:self.srcURL commitId:nil];
+  NSURL* rightURL = (rightCommitId ? [self temporaryURLForObjectId:rightCommitId optionalURL:[self fileURL] commitId:nil] : [self fileURL]);
   
   if (!leftURL)
   {
@@ -380,9 +347,7 @@
 //      [NSApp sendAction:@selector(showDiffToolPreferences:) to:nil from:self];
 //    }
 //  };
-  [task launchWithBlock:^{
-    block();
-  }];
+  [task launchWithBlock:block];
 }
 
 - (BOOL) validateShowDifference
@@ -528,7 +493,7 @@
       {
         objectId = [self.oldRevision nonZeroCommitId];
       }
-      NSURL* aURL  = [self temporaryURLForObjectId:objectId optionalURL:[self fileURL]];
+      NSURL* aURL  = [self temporaryURLForObjectId:objectId optionalURL:[self fileURL] commitId:self.commitId];
       return [[aURL absoluteURL] pasteboardPropertyListForType:type];
     }
     else // not commited change: on stage
@@ -537,7 +502,7 @@
       {
         NSString* objectId = [self.oldRevision nonZeroCommitId];
         if (!objectId) return nil;
-        NSURL* aURL  = [self temporaryURLForObjectId:objectId optionalURL:[self fileURL]];
+        NSURL* aURL  = [self temporaryURLForObjectId:objectId optionalURL:[self fileURL] commitId:self.commitId];
         return [[aURL absoluteURL] pasteboardPropertyListForType:type];
       }
       else

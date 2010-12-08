@@ -2,6 +2,7 @@
 #import "GBRef.h"
 
 #import "NSData+OADataHelpers.h"
+#import "NSString+OAGitHelpers.h"
 
 @implementation GBLocalRemoteAssociationTask
 
@@ -21,7 +22,7 @@
 
 - (NSArray*) arguments
 {
-  return [[NSString stringWithFormat:@"config --get-regexp branch.%@.*", self.localBranchName] componentsSeparatedByString:@" "];
+  return [[NSString stringWithFormat:@"config --get-regexp branch.%@.*", [self.localBranchName stringQuotedForShell]] componentsSeparatedByString:@" "];
 }
 
 - (void) didFinish

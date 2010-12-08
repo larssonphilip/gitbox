@@ -20,14 +20,24 @@
   if (length < 1) return self;
   if ([self rangeOfString:@"\""].location == 0 & length > 2) // if in double quotes, it is escaped
   {
-    NSMutableString* unescapedString = [[[self substringWithRange:NSMakeRange(1, length - 2)] mutableCopy] autorelease];
-    [unescapedString replaceOccurrencesOfString:@"\\t" withString:@"\t" options:0 range:NSMakeRange(0, unescapedString.length)];
-    [unescapedString replaceOccurrencesOfString:@"\\n" withString:@"\n" options:0 range:NSMakeRange(0, unescapedString.length)];
-    [unescapedString replaceOccurrencesOfString:@"\\\"" withString:@"\"" options:0 range:NSMakeRange(0, unescapedString.length)];
-    [unescapedString replaceOccurrencesOfString:@"\\\\" withString:@"\\" options:0 range:NSMakeRange(0, unescapedString.length)];
-    return unescapedString;
+    NSMutableString* result = [[[self substringWithRange:NSMakeRange(1, length - 2)] mutableCopy] autorelease];
+    [result replaceOccurrencesOfString:@"\\t" withString:@"\t" options:0 range:NSMakeRange(0, result.length)];
+    [result replaceOccurrencesOfString:@"\\n" withString:@"\n" options:0 range:NSMakeRange(0, result.length)];
+    [result replaceOccurrencesOfString:@"\\\"" withString:@"\"" options:0 range:NSMakeRange(0, result.length)];
+    [result replaceOccurrencesOfString:@"\\\\" withString:@"\\" options:0 range:NSMakeRange(0, result.length)];
+    return [[result copy] autorelease];
   }
   return self;
+}
+
+- (NSString*) stringQuotedForShell
+{
+	NSUInteger length = [self length];
+	if (length < 1) return self;
+	NSMutableString* result = [[self mutableCopy] autorelease];
+	[result replaceOccurrencesOfString:@"\\" withString:@"\\\\" options:0 range:NSMakeRange(0, result.length)];
+	[result replaceOccurrencesOfString:@"\"" withString:@"\\\"" options:0 range:NSMakeRange(0, result.length)];
+	return [NSString stringWithFormat:@"\"%@\"", result];
 }
 
 - (NSString*) nonZeroCommitId
