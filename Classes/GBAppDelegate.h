@@ -3,14 +3,15 @@
 @class GBMainWindowController;
 @class GBPreferencesController;
 @class GBCloneWindowController;
+@class GBLicenseController;
 
 @interface GBAppDelegate : NSObject <NSApplicationDelegate, NSOpenSavePanelDelegate>
 
-@property(retain) IBOutlet GBRepositoriesController* repositoriesController;
-@property(retain) IBOutlet GBMainWindowController* windowController;
-@property(retain) IBOutlet GBPreferencesController* preferencesController;
-@property(retain) IBOutlet GBCloneWindowController* cloneWindowController;
-@property(retain) NSMutableArray* URLsToOpenAfterLaunch;
+@property(nonatomic,retain) IBOutlet GBRepositoriesController* repositoriesController;
+@property(nonatomic,retain) IBOutlet GBMainWindowController* windowController;
+@property(nonatomic,retain) IBOutlet GBPreferencesController* preferencesController;
+@property(nonatomic,retain) IBOutlet GBCloneWindowController* cloneWindowController;
+@property(nonatomic,retain) NSMutableArray* URLsToOpenAfterLaunch;
 
 - (IBAction) openDocument:_;
 - (IBAction) cloneRepository:_;

@@ -27,6 +27,9 @@
 
 
 @interface GBAppDelegate ()
+
+@property(nonatomic,retain) GBLicenseController* licenseController;
+
 - (void) loadRepositories;
 - (void) saveRepositories;
 @end
@@ -37,6 +40,7 @@
 @synthesize windowController;
 @synthesize preferencesController;
 @synthesize cloneWindowController;
+@synthesize licenseController;
 @synthesize URLsToOpenAfterLaunch;
 
 - (void) dealloc
@@ -45,6 +49,7 @@
   self.windowController = nil;
   self.preferencesController = nil;
   self.cloneWindowController = nil;
+  self.licenseController = nil;
   self.URLsToOpenAfterLaunch = nil;
   [super dealloc];
 }
@@ -73,10 +78,11 @@
 
 - (IBAction) showLicense:_
 {
-  GBLicenseController* ctrl = [[[GBLicenseController alloc] initWithWindowNibName:@"GBLicenseController"] autorelease];
-  [ctrl retain];
-  [NSApp runModalForWindow:[ctrl window]];
-  [ctrl release];
+  if (self.licenseController) return; // avoid entering the modal mode twice if user hits License... menu again.
+  
+  self.licenseController = [[[GBLicenseController alloc] initWithWindowNibName:@"GBLicenseController"] autorelease];
+  [NSApp runModalForWindow:[self.licenseController window]];
+  self.licenseController = nil;
   
   // update buy button status
   [self.windowController.sourcesController update];

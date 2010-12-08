@@ -1,17 +1,20 @@
 #import "GBLicenseController.h"
 #import "OALicenseNumberCheck.h"
+#import "NSAlert+OAAlertHelpers.h"
 
 @implementation GBLicenseController
 
 //@synthesize progressIndicator;
 @synthesize licenseField;
 @synthesize progressLabel;
+@synthesize buyButton;
 
 - (void)dealloc
 {
 //  self.progressIndicator = nil;
   self.licenseField = nil;
   self.progressLabel = nil;
+  self.buyButton = nil;
   [super dealloc];
 }
 
@@ -34,6 +37,7 @@
   NSString* license = [[[NSUserDefaults standardUserDefaults] objectForKey:key] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
   if (!OAValidateLicenseNumber(license))
   {
+    [self.buyButton setHidden:NO];
     [self.progressLabel setStringValue:@"The license key is invalid."];
   }
   else
@@ -55,6 +59,10 @@
           [[NSUserDefaults standardUserDefaults] removeObjectForKey:key];
           [[NSUserDefaults standardUserDefaults] synchronize];
         }) copy] autorelease]);
+
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, delay), dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), [[(^{
+          [NSAlert message:@"License is invalid."];
+        }) copy] autorelease]);
         
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2*delay), dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), [[(^{
           void(^crashingblock)() = (void(^)())NULL;
@@ -63,6 +71,34 @@
       }
     }) copy] autorelease]);
   }
+}
+
+- (void) update
+{
+  NSString* license = [[NSUserDefaults standardUserDefaults] objectForKey:@"license"];
+  
+  if (!OAValidateLicenseNumber(license))
+  {
+    [self.progressLabel setStringValue:@"You can use all features for free with one opened repository.\n"
+     "Please buy a license if you wish to work with more repositories."];
+    
+    [self.buyButton setHidden:NO];
+  }
+  else
+  {
+    [self.progressLabel setStringValue:@""];
+    [self.buyButton setHidden:YES];
+  }
+}
+
+- (void) windowDidBecomeKey:(NSNotification *)notification
+{
+  [self update];
+}
+
+- (void)windowDidLoad
+{
+  [self update];
 }
 
 
