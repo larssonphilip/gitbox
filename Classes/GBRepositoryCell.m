@@ -220,8 +220,8 @@
   if (isHighlighted)
   {
     NSShadow* s = [[[NSShadow alloc] init] autorelease];
-    [s setShadowOffset:NSMakeSize(0, 1)];
-    [s setShadowColor:[NSColor colorWithCalibratedWhite:0.0 alpha:0.2]];
+    [s setShadowOffset:NSMakeSize(0, -1)];
+    [s setShadowColor:[NSColor colorWithCalibratedWhite:0.0 alpha:0.3]];
     [attributes setObject:s forKey:NSShadowAttributeName];
   }
   

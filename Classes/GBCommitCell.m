@@ -197,8 +197,8 @@
   if ([self isHighlighted] && self.isFocused)
   {
     NSShadow* s = [[[NSShadow alloc] init] autorelease];
-    [s setShadowOffset:NSMakeSize(0, 1)];
-    [s setShadowColor:[NSColor colorWithCalibratedWhite:0.0 alpha:0.2]];
+    [s setShadowOffset:NSMakeSize(0, -1)];
+    [s setShadowColor:[NSColor colorWithCalibratedWhite:0.0 alpha:0.1]];
     [titleAttributes setObject:s forKey:NSShadowAttributeName];
     [dateAttributes setObject:s forKey:NSShadowAttributeName];
     [messageAttributes setObject:s forKey:NSShadowAttributeName];
