@@ -12,7 +12,7 @@ Bug fixes:
 + Terminal window is now opened in front. Path with spaces are handled correctly.
 + buy button should disappear when license is correct
 + multiple license panels
-- min size for history
++ min size for history
 - .gitignore spacings in the end of the file should be preserved
 - command-up should jump through the history
 - maybe have 3 repos for free so ppl who don't want to pay just now may start actually using without searching for keygen?

@@ -581,14 +581,20 @@
 
 - (CGFloat)splitView:(NSSplitView*) aSplitView constrainMinCoordinate:(CGFloat)proposedMin ofSubviewAt:(NSInteger)dividerIndex
 {
+  static CGFloat sidebarMinWidth = 120.0;
+  static CGFloat historyMinWidth = 120.0;
+  
   if (dividerIndex == 0)
   {
-    return 120.0;
+    return sidebarMinWidth;
   }
-  else
+  
+  if (dividerIndex == 1)
   {
-    return 100.0;
+    return [[[aSplitView subviews] objectAtIndex:0] frame].size.width + [aSplitView dividerThickness] + historyMinWidth;
   }
+  
+  return 0;
 }
 
 - (CGFloat)splitView:(NSSplitView*) aSplitView constrainMaxCoordinate:(CGFloat)proposedMax ofSubviewAt:(NSInteger)dividerIndex
