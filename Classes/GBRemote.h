@@ -8,6 +8,9 @@
 @property(nonatomic,retain) NSArray* newBranches;
 @property(nonatomic,retain) NSArray* tags;
 
+@property(nonatomic,retain) NSArray* branchesToFetch;
+@property(nonatomic,retain) NSArray* tagsToFetch;
+
 @property(nonatomic,assign) GBRepository* repository;
 
 
@@ -19,7 +22,7 @@
 
 #pragma mark Actions
 
-- (void) addBranch:(GBRef*)branch;
+- (void) addNewBranch:(GBRef*)branch;
 - (void) updateBranchesWithBlock:(void(^)())block;
 
 @end

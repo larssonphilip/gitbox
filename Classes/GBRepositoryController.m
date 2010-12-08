@@ -210,12 +210,12 @@
 {
   if (!aRemote) return;
   // TODO: avoid disabling the branches, but push loading status for remote
-  [self pushSpinning];
-  [self pushRemoteBranchesDisabled];
+//  [self pushSpinning];
+//  [self pushRemoteBranchesDisabled];
   [aRemote updateBranchesWithBlock:^{
     if ([self.delegate respondsToSelector:@selector(repositoryControllerDidUpdateRemoteBranches:)]) { [self.delegate repositoryControllerDidUpdateRemoteBranches:self]; }
-    [self popSpinning];
-    [self popRemoteBranchesDisabled];
+//    [self popSpinning];
+//    [self popRemoteBranchesDisabled];
   }];
   
 }
@@ -369,7 +369,7 @@
   remoteBranch.remoteAlias = aRemote.alias;
   remoteBranch.remote = aRemote;
   remoteBranch.isNewRemoteBranch = YES;
-  [aRemote addBranch:remoteBranch];
+  [aRemote addNewBranch:remoteBranch];
   [self selectRemoteBranch:remoteBranch];
 }
 

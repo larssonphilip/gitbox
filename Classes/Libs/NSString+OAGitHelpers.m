@@ -30,14 +30,14 @@
   return self;
 }
 
-- (NSString*) stringQuotedForShell
+- (NSString*) stringWithEscapedDoubleQuotes
 {
 	NSUInteger length = [self length];
 	if (length < 1) return self;
 	NSMutableString* result = [[self mutableCopy] autorelease];
 	[result replaceOccurrencesOfString:@"\\" withString:@"\\\\" options:0 range:NSMakeRange(0, result.length)];
 	[result replaceOccurrencesOfString:@"\"" withString:@"\\\"" options:0 range:NSMakeRange(0, result.length)];
-	return [NSString stringWithFormat:@"\"%@\"", result];
+	return [[result copy] autorelease];
 }
 
 - (NSString*) nonZeroCommitId

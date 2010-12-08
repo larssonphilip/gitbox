@@ -425,14 +425,14 @@
   
   GBTask* task1 = [self task];
   task1.arguments = [NSArray arrayWithObjects:@"config", 
-                     [NSString stringWithFormat:@"branch.%@.remote", [name stringQuotedForShell]], 
+                     [NSString stringWithFormat:@"branch.%@.remote", name], 
                      ref.remoteAlias, 
                      nil];
   [self launchTask:task1 withBlock:^{
   }];
   GBTask* task2 = [self task];
   task2.arguments = [NSArray arrayWithObjects:@"config", 
-                     [NSString stringWithFormat:@"branch.%@.merge", [name stringQuotedForShell]],
+                     [NSString stringWithFormat:@"branch.%@.merge", name],
                      [NSString stringWithFormat:@"refs/heads/%@", ref.name],
                      nil];
   [self launchTask:task2 withBlock:^{

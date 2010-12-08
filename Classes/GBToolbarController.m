@@ -202,7 +202,7 @@
     [item setAction:@selector(checkoutBranch:)];
     [item setTarget:self];
     [item setRepresentedObject:localBranch];
-    if ([localBranch isEqual:repo.currentLocalRef])
+    if ([localBranch.name isEqual:repo.currentLocalRef.name])
     {
       [item setState:NSOnState];
     }
@@ -221,7 +221,7 @@
     [item setAction:@selector(checkoutBranch:)];
     [item setTarget:self];
     [item setRepresentedObject:tag];
-    if ([tag isEqual:repo.currentLocalRef])
+    if ([tag.name isEqual:repo.currentLocalRef.name] && repo.currentLocalRef.isTag)
     {
       [item setState:NSOnState];
     }

@@ -24,12 +24,13 @@
   [super dealloc];
 }
 
-
+// tries to satisfy name equality.
 - (BOOL) isEqual:(id)object
 {
   //NSLog(@"TODO: GBRef isEqual: check if we need this method!");
   if (self == object) return YES;
   if (![object isKindOfClass:[self class]]) return NO;
+  
   GBRef* other = (GBRef*)object;
   if (self.name && [self.name isEqualToString:other.name])
   {

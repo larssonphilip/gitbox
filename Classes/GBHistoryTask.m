@@ -49,6 +49,10 @@
     [args addObject:@"--not"];
     [args addObject:[self.substructedBranch commitish]];
   }
+  
+   // adding explicit path argument to allow branch names with slashes
+  [args addObject:@"--"];
+  [args addObject:@"."];
   return args;
 }
 

@@ -22,7 +22,9 @@
 
 - (NSArray*) arguments
 {
-  return [[NSString stringWithFormat:@"config --get-regexp branch.%@.*", [self.localBranchName stringQuotedForShell]] componentsSeparatedByString:@" "];
+  return [NSArray arrayWithObjects:@"config", 
+          @"--get-regexp", 
+          [NSString stringWithFormat:@"branch.%@.*", self.localBranchName], nil];
 }
 
 - (void) didFinish
@@ -47,10 +49,15 @@
           {
             self.remoteAlias = value;
           }
-          else if ([key isEqualToString:@"merge"] && !self.remoteBranchName)
+          else if ([key isEqualToString:@"merge"] && !self.remoteBranchName) // refs/heads/branchname
           {
             NSArray* components = [value componentsSeparatedByString:@"/"];
-            self.remoteBranchName = [components lastObject];
+            NSString* name = [components lastObject];
+            if ([components count] > 3)
+            {
+              name = [[components subarrayWithRange:NSMakeRange(2, [components count]-2)] componentsJoinedByString:@"/"];
+            }
+            self.remoteBranchName = name;
           }
         }
         else

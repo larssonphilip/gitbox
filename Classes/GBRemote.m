@@ -4,6 +4,12 @@
 #import "NSFileManager+OAFileManagerHelpers.h"
 #import "NSArray+OAArrayHelpers.h"
 
+
+@interface GBRemote ()
+@property(nonatomic,assign) BOOL isUpdatingRemoteBranches;
+- (void) calculateDifferenceWithNewBranches:(NSArray*)theBranches andTags:(NSArray*)theTags;
+@end
+
 @implementation GBRemote
 
 @synthesize alias;
@@ -13,6 +19,7 @@
 @synthesize tags;
 
 @synthesize repository;
+@synthesize isUpdatingRemoteBranches;
 
 
 
@@ -110,23 +117,37 @@
 #pragma mark Actions
 
 
-- (void) addBranch:(GBRef*)branch
+- (void) addNewBranch:(GBRef*)branch
 {
   self.newBranches = [self.newBranches arrayByAddingObject:branch];
 }
 
 - (void) updateBranchesWithBlock:(void(^)())block;
 {
+  if (self.isUpdatingRemoteBranches) return;
+  
+  block = [[block copy] autorelease];
+  
+  self.isUpdatingRemoteBranches = YES;
   GBRemoteBranchesTask* task = [GBRemoteBranchesTask task];
   task.remote = self;
   task.repository = self.repository;
   
   [task launchWithBlock:^{
+    self.isUpdatingRemoteBranches = NO;
+    
+    [self calculateDifferenceWithNewBranches:task.branches andTags:task.tags];
+    
     self.branches = task.branches;
     self.tags = task.tags;
     [self updateNewBranches];
     block();
   }];
+}
+
+- (void) calculateDifferenceWithNewBranches:(NSArray*)theBranches andTags:(NSArray*)theTags
+{
+  
 }
 
 
