@@ -126,29 +126,6 @@
   }
 }
 
-- (IBAction) openInTerminal:(id)_
-{
-  GBBaseRepositoryController* ctrl = [self currentRepositoryController];
-  if (ctrl)
-  {    
-    NSString* path = [[ctrl url] path];
-    NSString* s = [NSString stringWithFormat:
-                   @"tell application \"Terminal\" to do script \"cd %@\"", path];
-    
-    NSAppleScript* as = [[[NSAppleScript alloc] initWithSource: s] autorelease];
-    [as executeAndReturnError:nil];
-  }
-}
-
-- (IBAction) openInFinder:(id)_
-{
-  GBBaseRepositoryController* ctrl = [self currentRepositoryController];
-  if (ctrl)
-  {        
-    [[NSWorkspace sharedWorkspace] openFile:[[ctrl url] path]];
-  }
-}
-
 - (IBAction) selectRightPane:_
 {
   [[self.outlineView window] selectKeyViewFollowingView:self.outlineView];

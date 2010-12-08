@@ -155,11 +155,13 @@
   return !![self selectedLocalRepositoryController];
 }
 
-- (IBAction) openInTerminal:(id)sender
+- (IBAction) openInTerminal:(id)_
 { 
   NSString* path = [[[self selectedLocalRepositoryController] url] path];
+  NSString* escapedPath = [[path stringByReplacingOccurrencesOfString:@"\\" withString:@"\\\\"] stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""];
   NSString* s = [NSString stringWithFormat:
-                 @"tell application \"Terminal\" to do script \"cd %@\"", path];
+                 @"tell application \"Terminal\" to do script \"cd \" & quoted form of \"%@\"\n"
+                  "tell application \"Terminal\" to activate", escapedPath];
   
   NSAppleScript* as = [[[NSAppleScript alloc] initWithSource: s] autorelease];
   [as executeAndReturnError:nil];
