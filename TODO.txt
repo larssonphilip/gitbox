@@ -13,7 +13,7 @@ Bug fixes:
 + buy button should disappear when license is correct
 + multiple license panels
 + min size for history
-- .gitignore spacings in the end of the file should be preserved
++ .gitignore spacings in the end of the file should be preserved
 - command-up should jump through the history
 - maybe have 3 repos for free so ppl who don't want to pay just now may start actually using without searching for keygen?
 - do ls-remote origin in background to: refresh list of branches and find out if needs fetching; do not fetch regularly so not to block the ui

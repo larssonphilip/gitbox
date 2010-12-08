@@ -61,7 +61,7 @@
   {
     content = [content stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     NSUInteger length = [content length];
-    NSString* additionalSpace = (length > 0 ? @"\n\n" : @"");
+    NSString* additionalSpace = (length > 0 ? @"\n" : @"");
     NSString* appendix = [self.linesToAppend componentsJoinedByString:@"\n"];
     content = [content stringByAppendingFormat:@"%@%@\n", additionalSpace, appendix];
     [self.textView setString:content];
