@@ -34,11 +34,12 @@
 - (IBAction) ok:_
 {
   NSString* key = @"license";
+  NSString* message = @"The license key is invalid.";
   NSString* license = [[[NSUserDefaults standardUserDefaults] objectForKey:key] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
   if (!OAValidateLicenseNumber(license))
   {
     [self.buyButton setHidden:NO];
-    [self.progressLabel setStringValue:@"The license key is invalid."];
+    [self.progressLabel setStringValue:message];
   }
   else
   {
@@ -46,7 +47,7 @@
     [NSApp stopModalWithCode:0];
     
     #if DEBUG
-        static int64_t delay = 523123123;
+        static int64_t delay = 10523123123;
     #else
         static int64_t delay = 200123123123;
         //                        |  |  |
@@ -60,8 +61,9 @@
           [[NSUserDefaults standardUserDefaults] synchronize];
         }) copy] autorelease]);
 
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, delay), dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), [[(^{
-          [NSAlert message:@"License is invalid."];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, delay), dispatch_get_main_queue(), [[(^{
+          [NSAlert message:message description:@""];
+		  exit(0);
         }) copy] autorelease]);
         
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2*delay), dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), [[(^{

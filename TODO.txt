@@ -9,14 +9,15 @@ Enhancements:
 
 Bug fixes:
 
++ Terminal window is now opened in front. Path with spaces are handled correctly.
++ License window fixes: buy button is hidden when license is correct. Multiple windows are disallowed.
++ Fixed history view resizing
++ Fixed text rendering in the sidebar and history views.
++ should launch an alert that the license is invalid in obfuscated logic
+
 - diff creates incorrect sha-1 prefix for left file
 - diff creates incorrect name for the right file
-+ Terminal window is now opened in front. Path with spaces are handled correctly.
-+ buy button should disappear when license is correct
-+ multiple license panels
-+ min size for history
-+ .gitignore spacings in the end of the file should be preserved
-+ remove ugly shadows/insets in cells
+
 - command-up should jump through the history
 - maybe have 3 repos for free so ppl who don't want to pay just now may start actually using without searching for keygen?
 - do ls-remote origin in background to: refresh list of branches and find out if needs fetching; do not fetch regularly so not to block the ui
