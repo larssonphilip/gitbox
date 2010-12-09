@@ -29,6 +29,7 @@ Bug fixes:
 - maybe have 3 repos for free so ppl who don't want to pay just now may start actually using without searching for keygen?
 - bug: when clicked checkbox and want to drag out, it does not undo the action.
 
+- bug: android repo checked out on a commit has branch menus disabled.
 - find in commits
 - find/nav bar sliding down in the history:
   - filters commits by sha-1, modified filenames and text
