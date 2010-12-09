@@ -217,6 +217,9 @@
   [aRemote updateBranchesWithBlock:^{
     if (aRemote.needsFetch)
     {
+      // Current command: git fetch --tags --force origin search:refs/remotes/origin/search
+      // Need: git fetch --multiple 
+      NSLog(@"TODO: fetch every branch needed to fetch individually, otherwise it doesn't work")
       [self fetchSilentlyWithBlock:nil];
     }
     if (block) block();
