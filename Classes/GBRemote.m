@@ -141,7 +141,7 @@
     self.branches = task.branches;
     self.tags = task.tags;
     [self updateNewBranches];
-    block();
+    if (block) block();
     self.needsFetch = NO; // reset the status after the callback
   }];
 }

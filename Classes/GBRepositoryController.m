@@ -35,9 +35,13 @@
 - (void) loadCommitsWithBlock:(void(^)())block;
 - (void) loadStageChanges;
 - (void) loadChangesForCommit:(GBCommit*)commit;
+
 - (void) updateCurrentBranchesIfNeededWithBlock:(void(^)())block;
 - (void) updateLocalBranchesAndTags;
-- (void) updateBranchesForRemote:(GBRemote*)aRemote;
+- (void) updateBranchesForRemote:(GBRemote*)aRemote withBlock:(void(^)())block;
+- (void) updateRemoteBranchesWithBlock:(void(^)())block;
+
+- (void) fetchSilentlyWithBlock:(void(^)())block;
 
 - (void) workingDirectoryStateDidChange;
 - (void) dotgitStateDidChange;
@@ -206,22 +210,31 @@
 
 
 
-- (void) updateBranchesForRemote:(GBRemote*)aRemote
+- (void) updateBranchesForRemote:(GBRemote*)aRemote withBlock:(void(^)())block
 {
+  block = [[block copy] autorelease];
   if (!aRemote) return;
-  // TODO: avoid disabling the branches, but push loading status for remote
-//  [self pushSpinning];
-//  [self pushRemoteBranchesDisabled];
   [aRemote updateBranchesWithBlock:^{
     if (aRemote.needsFetch)
-	{
-		
-	}
+    {
+      [self fetchSilentlyWithBlock:nil];
+    }
+    if (block) block();
     if ([self.delegate respondsToSelector:@selector(repositoryControllerDidUpdateRemoteBranches:)]) { [self.delegate repositoryControllerDidUpdateRemoteBranches:self]; }
-//    [self popSpinning];
-//    [self popRemoteBranchesDisabled];
   }];
   
+}
+
+- (void) updateRemoteBranchesWithBlock:(void(^)())block
+{
+  OABlockGroup* blockGroup = [OABlockGroup groupWithBlock:block];
+  for (GBRemote* aRemote in self.repository.remotes)
+  {
+    [blockGroup enter];
+    [self updateBranchesForRemote:aRemote withBlock:^{
+      [blockGroup leave];
+    }];
+  }
 }
 
 - (void) updateRepositoryIfNeededWithBlock:(void(^)())block
@@ -244,7 +257,7 @@
       [repo updateRemotesWithBlock:^{
         for (GBRemote* aRemote in repo.remotes)
         {
-          [self updateBranchesForRemote:aRemote];
+          [self updateBranchesForRemote:aRemote withBlock:nil];
         }
         [self popSpinning];
         [self popRemoteBranchesDisabled];
@@ -403,6 +416,7 @@
     [self updateLocalBranchesAndTags];
     [self loadCommits];
     [self loadChangesForCommit:repo.stage];
+    [self updateRemoteBranchesWithBlock:nil];
     [self popDisabled];
     [self popSpinning];
   }];
@@ -662,6 +676,7 @@
   [self pushDisabled];
   [self.repository pullOrMergeWithBlock:^{
     [self loadCommits];
+    [self updateBranchesForRemote:self.repository.currentRemoteBranch.remote withBlock:nil];
     [self popDisabled];
     [self popSpinning];
   }];
@@ -674,7 +689,7 @@
   [self pushDisabled];
   [self.repository pushWithBlock:^{
     [self loadCommits];
-    [self updateBranchesForRemote:self.repository.currentRemoteBranch.remote];
+    [self updateBranchesForRemote:self.repository.currentRemoteBranch.remote withBlock:nil];
     [self popDisabled];
     [self popSpinning];
   }];
@@ -784,6 +799,7 @@
 
 - (void) loadCommitsWithBlock:(void(^)())block
 {
+  block = [[block copy] autorelease];
   if (self.repository.currentLocalRef)
   {
     [self pushSpinning];
