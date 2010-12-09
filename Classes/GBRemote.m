@@ -153,19 +153,37 @@
   // 2. The branch exists, but commitId differ
   // 3. The tag does not exists
   
-  NSMutableArray* newNames = [[[theBranches valueForKey:@"name"] mutableCopy] autorelease];
-  [newNames removeObjectsInArray:[self.branches valueForKey:@"name"]];
+  // This code is not optimal, but if you don't have thousands of branches, this should be enough.
+  for (GBRef* updatedRef in theBranches)
+  {
+    BOOL foundAnExistingBranch = NO;
+    for (GBRef* existingRef in self.branches)
+    {
+      if (updatedRef.name && existingRef.name && [updatedRef.name isEqualTo:existingRef.name])
+      {
+        foundAnExistingBranch = YES;
+        if (![updatedRef.commitId isEqualTo:existingRef.commitId])
+        {
+          self.needsFetch = YES;
+          return;
+        }
+      }
+    }
+    if (!foundAnExistingBranch)
+    {
+      self.needsFetch = YES;
+      return;
+    }
+  }
   
-  if ([newNames count] > 0)
+  NSMutableArray* newTagNames = [[[theTags valueForKey:@"name"] mutableCopy] autorelease];
+  [newTagNames removeObjectsInArray:[self.tags valueForKey:@"name"]];
+  
+  if ([newTagNames count] > 0)
   {
     self.needsFetch = YES;
     return;
   }
-  
-  
-  
-  // Uses [GBRef isEqual:]
-//  [theBranches co]
   
 }
 
