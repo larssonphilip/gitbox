@@ -154,6 +154,7 @@
   // 3. The tag does not exists
   
   // This code is not optimal, but if you don't have thousands of branches, this should be enough.
+	
   for (GBRef* updatedRef in theBranches)
   {
     BOOL foundAnExistingBranch = NO;
