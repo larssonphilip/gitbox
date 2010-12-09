@@ -41,14 +41,13 @@
         NSString* key = [keyAndValue objectAtIndex:0];
         NSString* value = [keyAndValue objectAtIndex:1];
         
-#warning FIXME: honor a dot in branch name!
         // branch.v.1.6.remote origin
         // branch.v.1.6.merge refs/heads/master
 
         NSArray* keyParts = [key componentsSeparatedByString:@"."];
         if (keyParts && [keyParts count] >= 3)
         {
-          key = [keyParts objectAtIndex:2]; // "remote" or "merge"
+          key = [keyParts objectAtIndex:[keyParts count]-1];  // last part: "remote" or "merge"
           
           if ([key isEqualToString:@"remote"] && !self.remoteAlias)
           {

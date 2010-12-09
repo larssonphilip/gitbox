@@ -16,7 +16,7 @@ Bug fixes:
 + Fixed the temporary file names when opening a diff tool.
 
 + bug: branches with "/" in the name are processed incorrectly [Christian van der Leeden <christian.vanderleeden@googlemail.com>]
-- bug: branch association fails when branch name has a dot (like v1.5) [Falk Hoppe <falk.hoppe@innoq.com>]
++ bug: branch association fails when branch name has a dot (like v1.5) [Falk Hoppe <falk.hoppe@innoq.com>]
   git config --get-regexp branch."v1.5".*
   (still needs ls-remotes fixes, see below)
 
