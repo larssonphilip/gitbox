@@ -213,6 +213,10 @@
 //  [self pushSpinning];
 //  [self pushRemoteBranchesDisabled];
   [aRemote updateBranchesWithBlock:^{
+    if (aRemote.needsFetch)
+	{
+		
+	}
     if ([self.delegate respondsToSelector:@selector(repositoryControllerDidUpdateRemoteBranches:)]) { [self.delegate repositoryControllerDidUpdateRemoteBranches:self]; }
 //    [self popSpinning];
 //    [self popRemoteBranchesDisabled];
