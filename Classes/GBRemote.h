@@ -8,8 +8,9 @@
 @property(nonatomic,retain) NSArray* newBranches;
 @property(nonatomic,retain) NSArray* tags;
 
-@property(nonatomic,retain) NSArray* branchesToFetch;
-@property(nonatomic,retain) NSArray* tagsToFetch;
+@property(nonatomic,assign) BOOL needsFetch;
+//@property(nonatomic,retain) NSArray* branchesToFetch;
+//@property(nonatomic,retain) NSArray* tagsToFetch;
 
 @property(nonatomic,assign) GBRepository* repository;
 

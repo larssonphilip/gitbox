@@ -20,7 +20,7 @@
 
 @synthesize repository;
 @synthesize isUpdatingRemoteBranches;
-
+@synthesize needsFetch;
 
 
 #pragma mark Init
@@ -142,11 +142,30 @@
     self.tags = task.tags;
     [self updateNewBranches];
     block();
+    self.needsFetch = NO; // reset the status after the callback
   }];
 }
 
 - (void) calculateDifferenceWithNewBranches:(NSArray*)theBranches andTags:(NSArray*)theTags
 {
+  // TODO: set needsFetch = YES if one of the following is true:
+  // 1. There's a new branch
+  // 2. The branch exists, but commitId differ
+  // 3. The tag does not exists
+  
+  NSMutableArray* newNames = [[[theBranches valueForKey:@"name"] mutableCopy] autorelease];
+  [newNames removeObjectsInArray:[self.branches valueForKey:@"name"]];
+  
+  if ([newNames count] > 0)
+  {
+    self.needsFetch = YES;
+    return;
+  }
+  
+  
+  
+  // Uses [GBRef isEqual:]
+//  [theBranches co]
   
 }
 
