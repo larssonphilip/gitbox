@@ -19,12 +19,13 @@ Bug fixes:
 + bug: branch association fails when branch name has a dot (like v1.5) [Falk Hoppe <falk.hoppe@innoq.com>]
   git config --get-regexp branch."v1.5".*
   (still needs ls-remotes fixes, see below)
++ do ls-remote origin in background to: refresh list of branches and find out if needs fetching; do not fetch regularly so not to block the ui
++ bug: fetch remote branches when added a remote server or a branch was pushed: otherwise, couldn't checkout remote branch and when selecting it, it's empty.
++ bug: when remote branch is pushed from elsewhere, ls-remote updates the list, but the branch is not fetched and when you try to check out this remote branch, checkout fails. The same issue leads to missing blue pills when you switch from another branch.
++ read ls-remotes when updated .git (makes sense when pushed a branch from the terminal)
 
 
-- do ls-remote origin in background to: refresh list of branches and find out if needs fetching; do not fetch regularly so not to block the ui
-- bug: fetch remote branches when added a remote server or a branch was pushed: otherwise, couldn't checkout remote branch and when selecting it, it's empty.
-- bug: when remote branch is pushed from elsewhere, ls-remote updates the list, but the branch is not fetched and when you try to check out this remote branch, checkout fails. The same issue leads to missing blue pills when you switch from another branch.
-- read ls-remotes when updated .git (makes sense when pushed a branch from the terminal)
+- bug: when creating a new remote branch, GBHistoryTask fails to ignore it and fails on git level => empty commits list instead of green-pilled list
 
 - maybe have 3 repos for free so ppl who don't want to pay just now may start actually using without searching for keygen?
 - bug: when clicked checkbox and want to drag out, it does not undo the action.

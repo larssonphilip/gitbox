@@ -30,7 +30,7 @@
   if ((self = [super init]))
   {
     self.localRepositoriesUpdatesQueue = [[OABlockQueue new] autorelease];
-    self.localRepositoriesUpdatesQueue.maxConcurrentOperationCount = 1;
+    self.localRepositoriesUpdatesQueue.maxConcurrentOperationCount = 2;
   }
   return self;
 }

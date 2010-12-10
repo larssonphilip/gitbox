@@ -41,7 +41,8 @@
 - (void) updateBranchesForRemote:(GBRemote*)aRemote withBlock:(void(^)())block;
 - (void) updateRemoteBranchesWithBlock:(void(^)())block;
 
-- (void) fetchSilentlyWithBlock:(void(^)())block;
+- (void) fetchAllWithBlock:(void(^)())block;
+- (void) fetchRemote:(GBRemote*)aRemote withBlock:(void(^)())block;
 
 - (void) workingDirectoryStateDidChange;
 - (void) dotgitStateDidChange;
@@ -213,16 +214,25 @@
 - (void) updateBranchesForRemote:(GBRemote*)aRemote withBlock:(void(^)())block
 {
   block = [[block copy] autorelease];
-  if (!aRemote) return;
+  
+  if (!aRemote)
+  {
+    if (block) block();
+    return;
+  }
+  
+  //NSLog(@"%@: updating branches for remote %@...", [self class], aRemote.alias);
   [aRemote updateBranchesWithBlock:^{
     if (aRemote.needsFetch)
     {
-      // Current command: git fetch --tags --force origin search:refs/remotes/origin/search
-      // Need: git fetch --multiple 
-      NSLog(@"TODO: fetch every branch needed to fetch individually, otherwise it doesn't work")
-      [self fetchSilentlyWithBlock:nil];
+      //NSLog(@"%@: updated branches for remote %@; needs fetch! %@", [self class], aRemote.alias, [self longNameForSourceList]);
+      [self fetchRemote:aRemote withBlock:block];
     }
-    if (block) block();
+    else
+    {
+      //NSLog(@"%@: updated branches for remote %@; no changes.", [self class], aRemote.alias);
+      if (block) block();
+    }
     if ([self.delegate respondsToSelector:@selector(repositoryControllerDidUpdateRemoteBranches:)]) { [self.delegate repositoryControllerDidUpdateRemoteBranches:self]; }
   }];
   
@@ -242,7 +252,7 @@
 
 - (void) updateRepositoryIfNeededWithBlock:(void(^)())block
 {
-  block = OABlockOnHeap(block);
+  block = [[block copy] autorelease];
   GBRepository* repo = self.repository;
   
   [self pushSpinning];
@@ -287,7 +297,7 @@
 
 - (void) updateCurrentBranchesIfNeededWithBlock:(void(^)())block
 {
-  block = OABlockOnHeap(block);
+  block = [[block copy] autorelease];
   GBRepository* repo = self.repository;
   
   if (!repo.currentLocalRef)
@@ -321,7 +331,7 @@
 
 - (void) checkoutHelper:(void(^)(void(^)()))checkoutBlock
 {
-  checkoutBlock = OABlockOnHeap(checkoutBlock);
+  checkoutBlock = [[checkoutBlock copy] autorelease];
   GBRepository* repo = self.repository;
   
   [self pushDisabled];
@@ -337,6 +347,7 @@
     [self updateCurrentBranchesIfNeededWithBlock:^{
       if ([self.delegate respondsToSelector:@selector(repositoryControllerDidCheckoutBranch:)]) { [self.delegate repositoryControllerDidCheckoutBranch:self]; }
       [self updateLocalBranchesAndTags];
+      [self updateRemoteBranchesWithBlock:nil];
       [self loadCommits];
       [self popDisabled];
       [self popSpinning];
@@ -533,8 +544,8 @@
                        withBlock:(void(^)(NSArray*, GBStage*, void(^)()))block
                   postStageBlock:(void(^)())postStageBlock
 {
-  block = OABlockOnHeap(block);
-  postStageBlock = OABlockOnHeap(postStageBlock);
+  block = [[block copy] autorelease];
+  postStageBlock = [[postStageBlock copy] autorelease];
   
   GBStage* stage = self.repository.stage;
   if (!stage)
@@ -644,15 +655,30 @@
   }];
 }
 
-- (void) fetchSilentlyWithBlock:(void(^)())block
+- (void) fetchRemote:(GBRemote*)aRemote withBlock:(void(^)())block
 {
   if (!self.repository) return block();
   
-  block = OABlockOnHeap(block);
+  block = [[block copy] autorelease];
   
   [self pushSpinning];
   [self pushDisabled];
-  [self.repository fetchWithBlock:^{
+  [self.repository fetchRemote:aRemote withBlock:^{
+    [self loadCommitsWithBlock:block];
+    [self popDisabled];
+    [self popSpinning];
+  }];
+}
+
+- (void) fetchAllWithBlock:(void(^)())block
+{
+  if (!self.repository) return block();
+  
+  block = [[block copy] autorelease];
+  
+  [self pushSpinning];
+  [self pushDisabled];
+  [self.repository fetchRemotes:self.repository.remotes withBlock:^{
     [self loadCommitsWithBlock:block];
     [self popDisabled];
     [self popSpinning];
@@ -664,9 +690,10 @@
   [self resetAutoFetchInterval];
   [self pushSpinning];
   [self pushDisabled];
-  [self.repository fetchWithBlock:^{
+  [self.repository fetchCurrentBranchWithBlock:^{
     [self.repository.lastError present];
     [self loadCommits];
+    [self updateRemoteBranchesWithBlock:nil];
     [self popDisabled];
     [self popSpinning];
   }];
@@ -679,7 +706,7 @@
   [self pushDisabled];
   [self.repository pullOrMergeWithBlock:^{
     [self loadCommits];
-    [self updateBranchesForRemote:self.repository.currentRemoteBranch.remote withBlock:nil];
+    [self updateRemoteBranchesWithBlock:nil];
     [self popDisabled];
     [self popSpinning];
   }];
@@ -692,7 +719,7 @@
   [self pushDisabled];
   [self.repository pushWithBlock:^{
     [self loadCommits];
-    [self updateBranchesForRemote:self.repository.currentRemoteBranch.remote withBlock:nil];
+    [self updateRemoteBranchesWithBlock:nil];
     [self popDisabled];
     [self popSpinning];
   }];
@@ -882,13 +909,21 @@
 
 
 
+
+
+
+
+
 #pragma mark Auto Fetch
+
+
 
 
 - (void) resetAutoFetchInterval
 {
   //NSLog(@"GBRepositoryController: resetAutoFetchInterval in %@ (was: %f)", [self url], autoFetchInterval);
-  autoFetchInterval = 30.0 + 2*(2*(0.5-drand48()));
+  NSTimeInterval plusMinusOne = (2*(0.5-drand48()));
+  autoFetchInterval = 5.0 + 2*plusMinusOne;
   [self scheduleAutoFetch];
 }
 
@@ -913,18 +948,18 @@
 - (void) autoFetch
 {
   //NSLog(@"GBRepositoryController: autoFetch into %@ (delay: %f)", [self url], autoFetchInterval);
-  while (autoFetchInterval > 600.0) autoFetchInterval -= 100.0;
-  autoFetchInterval = autoFetchInterval*(1.5 + drand48()*0.5);
+  while (autoFetchInterval > 300.0) autoFetchInterval -= 100.0;
+  autoFetchInterval = autoFetchInterval*(1.3 + drand48()*0.5);
   
   [self scheduleAutoFetch];
   
   if ([self isConnectionAvailable])
   {
-//    NSLog(@"self.updatesQueue = %@ [%@]", self.updatesQueue, self.repository.url);
+    //NSLog(@"self.updatesQueue = %d / %d", (int)self.updatesQueue.operationCount, (int)[self.updatesQueue.queue count]);
     [self.updatesQueue addBlock:^{
-//      NSLog(@"AutoFetch: start %@", self.repository.url);
-      [self fetchSilentlyWithBlock:^{
-//        NSLog(@"AutoFetch: end %@", self.repository.url);
+      //NSLog(@"AutoFetch: start %@", self.repository.url);      
+      [self updateRemoteBranchesWithBlock:^{
+        //NSLog(@"AutoFetch: end %@", self.repository.url);
         [self.updatesQueue endBlock];
       }];
     }];

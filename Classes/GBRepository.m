@@ -346,6 +346,7 @@
   task.repository = self;
   task.branch = self.currentLocalRef;
   task.joinedBranch = self.currentRemoteBranch;
+
   [task launchWithBlock:^{
     
     NSString* newTopCommitId = [[task.commits objectAtIndex:0 or:nil] commitId];
@@ -519,7 +520,7 @@
   //[self performSelector:@selector(slideAlert:) withObject:alert afterDelay:0.1];
 }
 
-- (void) fetchWithBlock:(GBBlock)block
+- (void) fetchCurrentBranchWithBlock:(GBBlock)block
 {
   if (self.currentRemoteBranch && [self.currentRemoteBranch isRemoteBranch])
   {
@@ -565,6 +566,7 @@
 
 - (void) pullBranch:(GBRef*)aRemoteBranch withBlock:(GBBlock)block
 {
+  block = [[block copy] autorelease];
   if (!aRemoteBranch)
   {
     block();
@@ -588,8 +590,48 @@
   }];
 }
 
+- (void) fetchRemote:(GBRemote*)aRemote withBlock:(GBBlock)block
+{
+  if (!aRemote)
+  {
+    block();
+    return;
+  }
+  [self fetchRemotes:[NSArray arrayWithObject:aRemote] withBlock:block];
+}
+
+- (void) fetchRemotes:(NSArray*)aRemotes withBlock:(GBBlock)block
+{
+  block = [[block copy] autorelease];
+  if (!aRemotes)
+  {
+    block();
+    return;
+  }
+  GBTask* task = [self task];
+  task.arguments = [[NSArray arrayWithObjects:@"fetch", 
+                    @"--multiple",
+                    @"--tags", 
+                    @"--force", 
+                    @"--prune", 
+                    nil] arrayByAddingObjectsFromArray:[aRemotes valueForKey:@"alias"]];
+  
+  [self launchTask:task withBlock:^{
+    [self captureErrorForTask:task
+                    withBlock:^(){
+                      return [self errorWithCode:GBErrorCodeFetchFailed
+                                     description:[NSString stringWithFormat:NSLocalizedString(@"Failed to fetch from %@",@"Error"), [[aRemotes valueForKey:@"alias"] componentsJoinedByString:@", "]]
+                                          reason:[task.output UTF8String]
+                                      suggestion:NSLocalizedString(@"Please check the URL or network settings.",@"Error")];
+                      
+                    }
+                 continuation:block];
+  }];
+}
+
 - (void) fetchBranch:(GBRef*)aRemoteBranch withBlock:(GBBlock)block
 {
+  block = [[block copy] autorelease];
   if (!aRemoteBranch)
   {
     block();
@@ -623,6 +665,7 @@
 
 - (void) pushBranch:(GBRef*)aLocalBranch toRemoteBranch:(GBRef*)aRemoteBranch withBlock:(GBBlock)block
 {
+  block = [[block copy] autorelease];
   if (!aLocalBranch || !aRemoteBranch)
   {
     block();

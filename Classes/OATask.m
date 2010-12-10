@@ -501,11 +501,11 @@ NSString* OATaskNotification = @"OATaskNotification";
   {
     if (!self.ignoreFailure)
     {
-      //NSLog(@"OATask failed: %@ [%d]", [self command], self.terminationStatus);
+      NSLog(@"OATask failed: %@ [%d]", [self command], self.terminationStatus);
       NSString* stringOutput = [self.output UTF8String];
       if (stringOutput)
       {
-        //NSLog(@"OUTPUT: %@", stringOutput);
+        NSLog(@"OATask output: %@", stringOutput);
       }
     }
   }

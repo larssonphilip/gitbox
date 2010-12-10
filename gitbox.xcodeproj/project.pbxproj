@@ -363,7 +363,6 @@
 		2035634D11D3BCB100965765 /* CGContext+OACGContextHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CGContext+OACGContextHelpers.m"; sourceTree = "<group>"; };
 		2035639C11D3C14C00965765 /* GBLightScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBLightScrollView.h; sourceTree = "<group>"; };
 		2035639D11D3C14C00965765 /* GBLightScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBLightScrollView.m; sourceTree = "<group>"; };
-		2038B45D12AD9341001B3A0E /* OABlockOnHeap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OABlockOnHeap.h; sourceTree = "<group>"; };
 		2038F1DD11936B060087CE37 /* GBAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBAppDelegate.h; sourceTree = "<group>"; };
 		2038F1DE11936B060087CE37 /* GBAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBAppDelegate.m; sourceTree = "<group>"; };
 		2038F1EA11936CA50087CE37 /* TODO.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TODO.txt; sourceTree = "<group>"; };
@@ -850,7 +849,6 @@
 				2031BB9D12A85646008CC337 /* OABlockQueue.m */,
 				20C83E7A12A9ACB900769F47 /* OAFastJumpController.h */,
 				20C83E7B12A9ACB900769F47 /* OAFastJumpController.m */,
-				2038B45D12AD9341001B3A0E /* OABlockOnHeap.h */,
 			);
 			path = Libs;
 			sourceTree = "<group>";

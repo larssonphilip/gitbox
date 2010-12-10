@@ -9,5 +9,6 @@
 
 - (void) enter;
 - (void) leave;
+- (void) verify;
 
 @end

@@ -12,6 +12,7 @@
 
 - (void) dealloc
 {
+  [self verify];
   self.block = nil;
   [super dealloc];
 }
@@ -24,6 +25,15 @@
 - (void) leave
 {
   counter--;
+  if (counter <= 0)
+  {
+    if (self.block) self.block();
+    self.block = nil;
+  }
+}
+
+- (void) verify
+{
   if (counter <= 0)
   {
     if (self.block) self.block();
