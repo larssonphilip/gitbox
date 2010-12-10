@@ -7,27 +7,26 @@ Features:
 Enhancements:
 
 
++ Improved performance of autofetching. Now remote branches are checked more frequently and without UI blocking and fetch is performed from all branches when needed.
+
 Bug fixes:
 
 + Terminal window is now opened in front. Path with spaces are handled correctly.
 + License window fixes: buy button is hidden when license is correct. Multiple windows are disallowed.
-+ Fixed history view resizing
++ Fixed history view resizing.
 + Fixed text rendering in the sidebar and history views.
 + Fixed the temporary file names when opening a diff tool.
++ Fixed behavior of branches with slashes (e.g. "oleg/feature1") and dots (e.g. "v1.2") [reported by Christian van der Leeden, Falk Hoppe]
++ Fixed various bugs with fetching remote branches.
 
-+ bug: branches with "/" in the name are processed incorrectly [Christian van der Leeden <christian.vanderleeden@googlemail.com>]
-+ bug: branch association fails when branch name has a dot (like v1.5) [Falk Hoppe <falk.hoppe@innoq.com>]
-  git config --get-regexp branch."v1.5".*
-  (still needs ls-remotes fixes, see below)
-+ do ls-remote origin in background to: refresh list of branches and find out if needs fetching; do not fetch regularly so not to block the ui
-+ bug: fetch remote branches when added a remote server or a branch was pushed: otherwise, couldn't checkout remote branch and when selecting it, it's empty.
-+ bug: when remote branch is pushed from elsewhere, ls-remote updates the list, but the branch is not fetched and when you try to check out this remote branch, checkout fails. The same issue leads to missing blue pills when you switch from another branch.
-+ read ls-remotes when updated .git (makes sense when pushed a branch from the terminal)
+
+WIP:
+
+- bug: when creating a new remote branch, GBHistoryTask fails to ignore it and fails on git level => empty commits list instead of green-pilled list
 
 - bug: when commit is checked out, the remote branch is reset (+ it reset on occasional branch updates)
 - bug: seems like after the push, branch update invokes fetch. Should update the pushed ref properly to avoid that.
 - bug: sometimes some duplicate branch name appears in popdown menus
-- bug: when creating a new remote branch, GBHistoryTask fails to ignore it and fails on git level => empty commits list instead of green-pilled list
 
 - feature: checkout a commit from local branch menu
 - feature: checkout a commit from history context menu
@@ -50,6 +49,17 @@ Bug fixes:
 
 
 - "git submodule init" after clone or pull to add .gitmodules info to .git/config
+
+
++ bug: branches with "/" in the name are processed incorrectly [Christian van der Leeden <christian.vanderleeden@googlemail.com>]
++ bug: branch association fails when branch name has a dot (like v1.5) [Falk Hoppe <falk.hoppe@innoq.com>]
+  git config --get-regexp branch."v1.5".*
+  (still needs ls-remotes fixes, see below)
++ do ls-remote origin in background to: refresh list of branches and find out if needs fetching; do not fetch regularly so not to block the ui
++ bug: fetch remote branches when added a remote server or a branch was pushed: otherwise, couldn't checkout remote branch and when selecting it, it's empty.
++ bug: when remote branch is pushed from elsewhere, ls-remote updates the list, but the branch is not fetched and when you try to check out this remote branch, checkout fails. The same issue leads to missing blue pills when you switch from another branch.
++ read ls-remotes when updated .git (makes sense when pushed a branch from the terminal)
+
 
 1.3 WIP:
 
