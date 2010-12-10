@@ -10,6 +10,7 @@
 #import "NSArray+OAArrayHelpers.h"
 #import "NSString+OAGitHelpers.h"
 #import "OAPropertyListController.h"
+#import "OABlockGroup.h"
 
 @interface GBRepository ()
 
@@ -321,27 +322,30 @@
 
 - (void) updateLocalBranchesAndTagsWithBlock:(GBBlock)block
 {
+  block = [[block copy] autorelease];
   GBLocalBranchesTask* task = [GBLocalBranchesTask task];
   task.repository = self;
   [task launchWithBlock:^{
     self.localBranches = task.branches;
     self.tags = task.tags;
-    block();
+    if (block) block();
   }];
 }
 
 - (void) updateRemotesWithBlock:(GBBlock)block
 {
+  block = [[block copy] autorelease];
   GBRemotesTask* task = [GBRemotesTask task];
   task.repository = self;
   [task launchWithBlock:^{
     self.remotes = task.remotes;
-    block();
+    if (block) block();
   }];
 }
 
 - (void) updateLocalBranchCommitsWithBlock:(GBBlock)block
 {
+  block = [[block copy] autorelease];
   GBHistoryTask* task = [GBHistoryTask task];
   task.repository = self;
   task.branch = self.currentLocalRef;
@@ -353,12 +357,13 @@
     self.topCommitId = newTopCommitId;
     self.localBranchCommits = task.commits;
     
-    block();
+    if (block) block();
   }];
 }
 
 - (void) updateUnmergedCommitsWithBlock:(GBBlock)block
 {
+  block = [[block copy] autorelease];
   GBHistoryTask* task = [GBHistoryTask task];
   task.repository = self;
   task.branch = self.currentRemoteBranch;
@@ -375,16 +380,17 @@
         commit.syncStatus = GBCommitSyncStatusUnmerged;
       }
     }
-    block();
+    if (block) block();
   }];  
 }
 
 - (void) updateUnpushedCommitsWithBlock:(GBBlock)block
 {
+  block = [[block copy] autorelease];
   if (!self.currentRemoteBranch)
   {
     self.unpushedCommitsCount = 0;
-    block();
+    if (block) block();
     return;
   }
   
@@ -404,7 +410,7 @@
         commit.syncStatus = GBCommitSyncStatusUnpushed;
       }
     }
-    block();
+    if (block) block();
   }];
 }
 
@@ -418,43 +424,51 @@
 
 - (void) configureTrackingRemoteBranch:(GBRef*)ref withLocalName:(NSString*)name block:(GBBlock)block
 {
+  block = [[block copy] autorelease];
+  
   if (!ref || ![ref isRemoteBranch] || !name)
   {
-    block();
+    if (block) block();
     return;
   }
+  OABlockGroup* blockGroup = [OABlockGroup groupWithBlock:block];
   
   GBTask* task1 = [self task];
   task1.arguments = [NSArray arrayWithObjects:@"config", 
                      [NSString stringWithFormat:@"branch.%@.remote", name], 
                      ref.remoteAlias, 
                      nil];
+  [blockGroup enter];
   [self launchTask:task1 withBlock:^{
+    [blockGroup leave];
   }];
   GBTask* task2 = [self task];
   task2.arguments = [NSArray arrayWithObjects:@"config", 
                      [NSString stringWithFormat:@"branch.%@.merge", name],
                      [NSString stringWithFormat:@"refs/heads/%@", ref.name],
                      nil];
+  [blockGroup enter];
   [self launchTask:task2 withBlock:^{
     [task2 showErrorIfNeeded];
+    [blockGroup leave];
   }];
-  [self dispatchBlock:block];
 }
 
 
 - (void) checkoutRef:(GBRef*)ref withBlock:(GBBlock)block
 {
+  block = [[block copy] autorelease];
   GBTask* task = [self task];
   task.arguments = [NSArray arrayWithObjects:@"checkout", [ref commitish], nil];
   [self launchTask:task withBlock:^{
     [task showErrorIfNeeded];
-    block();
+    if (block) block();
   }];
 }
 
 - (void) checkoutRef:(GBRef*)ref withNewName:(NSString*)name block:(GBBlock)block
 {
+  block = [[block copy] autorelease];
   if ([ref isRemoteBranch])
   {
     GBTask* checkoutTask = [self task];
@@ -466,12 +480,13 @@
   }
   else
   {
-    block();
+    if (block) block();
   }
 }
 
 - (void) checkoutNewBranchWithName:(NSString*)name block:(GBBlock)block
 {
+  block = [[block copy] autorelease];
   GBTask* checkoutTask = [self task];
   checkoutTask.arguments = [NSArray arrayWithObjects:@"checkout", @"-b", name, nil];
   [checkoutTask launchWithBlock:^{
@@ -482,18 +497,19 @@
 
 - (void) commitWithMessage:(NSString*) message block:(void(^)())block
 {
+  block = [[block copy] autorelease];
   if (message && [message length] > 0)
   {
     GBTask* task = [self task];
     task.arguments = [NSArray arrayWithObjects:@"commit", @"-m", message, nil];
     [task launchWithBlock:^{
       [task showErrorIfNeeded];
-      block();
+      if (block) block();
     }];
   }
   else
   {
-    block();
+    if (block) block();
   }
 }
 
@@ -522,18 +538,20 @@
 
 - (void) fetchCurrentBranchWithBlock:(GBBlock)block
 {
+  block = [[block copy] autorelease];
   if (self.currentRemoteBranch && [self.currentRemoteBranch isRemoteBranch])
   {
     [self fetchBranch:self.currentRemoteBranch withBlock:block];
   }
   else
   {
-    block();
+    if (block) block();
   }  
 }
 
 - (void) pullOrMergeWithBlock:(GBBlock)block
 {
+  block = [[block copy] autorelease];
   if (self.currentRemoteBranch)
   {
     if ([self.currentRemoteBranch isLocalBranch])
@@ -547,12 +565,13 @@
   }
   else
   {
-    block();
+    if (block) block();
   }
 }
 
 - (void) mergeBranch:(GBRef*)aBranch withBlock:(GBBlock)block
 {
+  block = [[block copy] autorelease];
   GBTask* task = [self task];
   task.arguments = [NSArray arrayWithObjects:@"merge", [aBranch nameWithRemoteAlias], nil];
   [self launchTask:task withBlock:^{
@@ -560,7 +579,7 @@
     {
       [self alertWithMessage: @"Merge failed" description:[task.output UTF8String]];
     }
-    block();
+    if (block) block();
   }];
 }
 
@@ -586,7 +605,7 @@
     {
       [self alertWithMessage: @"Pull failed" description:[task.output UTF8String]];
     }
-    block();
+    if (block) block();
   }];
 }
 
@@ -594,7 +613,7 @@
 {
   if (!aRemote)
   {
-    block();
+    if (block) block();
     return;
   }
   [self fetchRemotes:[NSArray arrayWithObject:aRemote] withBlock:block];
@@ -605,7 +624,7 @@
   block = [[block copy] autorelease];
   if (!aRemotes)
   {
-    block();
+    if (block) block();
     return;
   }
   GBTask* task = [self task];
@@ -634,7 +653,7 @@
   block = [[block copy] autorelease];
   if (!aRemoteBranch)
   {
-    block();
+    if (block) block();
     return;
   }
   GBTask* task = [self task];
@@ -668,7 +687,7 @@
   block = [[block copy] autorelease];
   if (!aLocalBranch || !aRemoteBranch)
   {
-    block();
+    if (block) block();
     return;
   }
   
@@ -682,7 +701,7 @@
     }
 
     aRemoteBranch.isNewRemoteBranch = NO;
-    block();
+    if (block) block();
   }];   
 }
 
@@ -709,6 +728,7 @@
 
 - (void) dispatchBlock:(void(^)())block
 {
+  block = [[block copy] autorelease];
   dispatch_async(self.dispatchQueue, ^{
     dispatch_async(dispatch_get_main_queue(), block);
   });
@@ -744,9 +764,9 @@
 {
   if ([aTask isError])
   {
-    self.lastError = block();
+    self.lastError = block ? block() : nil;
   }
-  continuation();
+  if (continuation) continuation();
   self.lastError = nil;
 }
 
