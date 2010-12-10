@@ -25,6 +25,8 @@ Bug fixes:
 + read ls-remotes when updated .git (makes sense when pushed a branch from the terminal)
 
 
+- bug: seems like after the push, branch update invokes fetch. Should update the pushed ref properly to avoid that.
+- bug: sometimes some duplicate branch name appears in popdown menus
 - bug: when creating a new remote branch, GBHistoryTask fails to ignore it and fails on git level => empty commits list instead of green-pilled list
 
 - maybe have 3 repos for free so ppl who don't want to pay just now may start actually using without searching for keygen?
