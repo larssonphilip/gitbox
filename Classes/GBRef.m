@@ -82,6 +82,11 @@
   return nil;
 }
 
+- (NSString*) description
+{
+  return [NSString stringWithFormat:@"<%@:%p name:%@ commit:%@%@>", [self class], self, [self nameWithRemoteAlias], self.commitId, [self isNewRemoteBranch] ? @" new remote branch" : @""];
+}
+
 
 - (void) loadConfiguredRemoteBranchWithBlock:(void(^)())block
 {
