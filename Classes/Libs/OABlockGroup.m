@@ -6,13 +6,15 @@
 + (OABlockGroup*) groupWithBlock:(void(^)())block
 {
   OABlockGroup* group = [[self new] autorelease];
-  group.block = block;
+  group.block = [[block copy] autorelease];
   return group;
 }
 
 - (void) dealloc
 {
-  [self verify];
+  // This call will help to call the block when nothing entered/leaved the block (imagine a loop over an empty array).
+  // This theoretically might not be always safe, so it's better to wrap all async calls with enter/leave pair of messages.
+  [self verify]; 
   self.block = nil;
   [super dealloc];
 }
@@ -25,11 +27,7 @@
 - (void) leave
 {
   counter--;
-  if (counter <= 0)
-  {
-    if (self.block) self.block();
-    self.block = nil;
-  }
+  [self verify];
 }
 
 - (void) verify
