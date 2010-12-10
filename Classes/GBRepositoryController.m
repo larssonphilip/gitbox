@@ -949,17 +949,17 @@
 {
   //NSLog(@"GBRepositoryController: autoFetch into %@ (delay: %f)", [self url], autoFetchInterval);
   while (autoFetchInterval > 300.0) autoFetchInterval -= 100.0;
-  autoFetchInterval = autoFetchInterval*(1.3 + drand48()*0.5);
+  autoFetchInterval = autoFetchInterval*(1.5 + drand48()*0.5);
   
   [self scheduleAutoFetch];
   
   if ([self isConnectionAvailable])
   {
-    //NSLog(@"self.updatesQueue = %d / %d", (int)self.updatesQueue.operationCount, (int)[self.updatesQueue.queue count]);
+    //NSLog(@"autoFetch: self.updatesQueue = %d / %d [%@]", (int)self.updatesQueue.operationCount, (int)[self.updatesQueue.queue count], [self nameForSourceList]);
     [self.updatesQueue addBlock:^{
       //NSLog(@"AutoFetch: start %@", self.repository.url);      
       [self updateRemoteBranchesWithBlock:^{
-        //NSLog(@"AutoFetch: end %@", self.repository.url);
+        //NSLog(@"AutoFetch: end %@", [self nameForSourceList]);
         [self.updatesQueue endBlock];
       }];
     }];
