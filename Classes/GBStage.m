@@ -76,7 +76,7 @@
     GBStagedChangesTask* stagedChangesTask = [GBStagedChangesTask taskWithRepository:self.repository];
     [stagedChangesTask launchWithBlock:^{
       
-      GBBlock unstagedTasksBlock = ^{
+      void(^unstagedTasksBlock)() = ^{
         GBUnstagedChangesTask* unstagedChangesTask = [GBUnstagedChangesTask taskWithRepository:self.repository];
         [unstagedChangesTask launchWithBlock:^{
           self.unstagedChanges = unstagedChangesTask.changes;

@@ -11,25 +11,24 @@
 @class GBTask;
 @class OATask;
 
-typedef void (^GBBlock)();
-
 @interface GBRepository : NSObject
 
-@property(nonatomic,retain) NSURL* url;
-@property(nonatomic,retain) NSURL* dotGitURL;
-@property(nonatomic,retain) NSArray* localBranches;
-@property(nonatomic,retain) NSArray* remotes;
-@property(nonatomic,retain) NSArray* tags;
-@property(nonatomic,retain) GBStage* stage;
-@property(nonatomic,retain) GBRef* currentLocalRef;
-@property(nonatomic,retain) GBRef* currentRemoteBranch;
-@property(nonatomic,retain) NSArray* localBranchCommits;
-@property(nonatomic,retain) NSString* topCommitId;
-@property(nonatomic,retain) NSError* lastError;
-@property(nonatomic,assign) dispatch_queue_t dispatchQueue;
+@property(nonatomic, retain) NSURL* url;
+@property(nonatomic, retain) NSURL* dotGitURL;
+@property(nonatomic, retain) NSArray* localBranches;
+@property(nonatomic, retain) NSArray* remotes;
+@property(nonatomic, retain) NSArray* tags;
+@property(nonatomic, retain) GBStage* stage;
+@property(nonatomic, retain) GBRef* currentLocalRef;
+@property(nonatomic, retain) GBRef* currentRemoteBranch;
+@property(nonatomic, retain) NSArray* localBranchCommits;
+@property(nonatomic, retain) NSString* topCommitId;
+@property(nonatomic, retain) NSError* lastError;
+@property(nonatomic, assign) dispatch_queue_t dispatchQueue;
 
-@property(nonatomic,assign) NSUInteger unmergedCommitsCount;
-@property(nonatomic,assign) NSUInteger unpushedCommitsCount;
+@property(nonatomic, assign) BOOL needsReloadLocalCommits;
+@property(nonatomic, assign) NSUInteger unmergedCommitsCount;
+@property(nonatomic, assign) NSUInteger unpushedCommitsCount;
 
 + (id) repository;
 + (id) repositoryWithURL:(NSURL*)url;
@@ -41,11 +40,11 @@ typedef void (^GBBlock)();
 + (NSString*) validRepositoryPathForPath:(NSString*)aPath;
 
 + (void) initRepositoryAtURL:(NSURL*)url;
-+ (void) configureUTF8WithBlock:(GBBlock)block;
++ (void) configureUTF8WithBlock:(void(^)())block;
 
 + (NSString*) configValueForKey:(NSString*)key;
 + (void) setConfigValue:(NSString*)value forKey:(NSString*)key;
-+ (void) configureName:(NSString*)name email:(NSString*)email withBlock:(GBBlock)block;
++ (void) configureName:(NSString*)name email:(NSString*)email withBlock:(void(^)())block;
 + (NSString*) globalConfiguredName;
 + (NSString*) globalConfiguredEmail;
 
@@ -54,38 +53,36 @@ typedef void (^GBBlock)();
 
 - (NSString*) path;
 - (NSArray*) stageAndCommits;
-- (GBRef*) loadCurrentLocalRef;
 - (NSUInteger) totalPendingChanges;
 
 
 #pragma mark Update
 
-- (void) updateLocalBranchesAndTagsWithBlock:(GBBlock)block;
-- (void) updateRemotesWithBlock:(GBBlock)block;
-- (void) updateLocalBranchCommitsWithBlock:(GBBlock)block;
-- (void) updateUnmergedCommitsWithBlock:(GBBlock)block;
-- (void) updateUnpushedCommitsWithBlock:(GBBlock)block;
+- (void) updateLocalRefsWithBlock:(void(^)())block;
+- (void) updateLocalBranchCommitsWithBlock:(void(^)())block;
+- (void) updateUnmergedCommitsWithBlock:(void(^)())block;
+- (void) updateUnpushedCommitsWithBlock:(void(^)())block;
 
 
 
 #pragma mark Mutation
 
-- (void) configureTrackingRemoteBranch:(GBRef*)ref withLocalName:(NSString*)name block:(GBBlock)block;
-- (void) checkoutRef:(GBRef*)ref withBlock:(GBBlock)block;
-- (void) checkoutRef:(GBRef*)ref withNewName:(NSString*)name block:(GBBlock)block;
-- (void) checkoutNewBranchWithName:(NSString*)name block:(GBBlock)block;
+- (void) configureTrackingRemoteBranch:(GBRef*)ref withLocalName:(NSString*)name block:(void(^)())block;
+- (void) checkoutRef:(GBRef*)ref withBlock:(void(^)())block;
+- (void) checkoutRef:(GBRef*)ref withNewName:(NSString*)name block:(void(^)())block;
+- (void) checkoutNewBranchWithName:(NSString*)name block:(void(^)())block;
 
 - (void) commitWithMessage:(NSString*) message block:(void(^)())block;
 
-- (void) pullOrMergeWithBlock:(GBBlock)block;
-- (void) fetchRemote:(GBRemote*)aRemote withBlock:(GBBlock)block;
-- (void) fetchRemotes:(NSArray*)aRemotes withBlock:(GBBlock)block;
-- (void) fetchCurrentBranchWithBlock:(GBBlock)block;
-- (void) mergeBranch:(GBRef*)aBranch withBlock:(GBBlock)block;
-- (void) pullBranch:(GBRef*)aRemoteBranch withBlock:(GBBlock)block;
-- (void) fetchBranch:(GBRef*)aRemoteBranch withBlock:(GBBlock)block;
-- (void) pushWithBlock:(GBBlock)block;
-- (void) pushBranch:(GBRef*)aLocalBranch toRemoteBranch:(GBRef*)aRemoteBranch withBlock:(GBBlock)block;
+- (void) pullOrMergeWithBlock:(void(^)())block;
+- (void) fetchRemote:(GBRemote*)aRemote withBlock:(void(^)())block;
+- (void) fetchRemotes:(NSArray*)aRemotes withBlock:(void(^)())block;
+- (void) fetchCurrentBranchWithBlock:(void(^)())block;
+- (void) mergeBranch:(GBRef*)aBranch withBlock:(void(^)())block;
+- (void) pullBranch:(GBRef*)aRemoteBranch withBlock:(void(^)())block;
+- (void) fetchBranch:(GBRef*)aRemoteBranch withBlock:(void(^)())block;
+- (void) pushWithBlock:(void(^)())block;
+- (void) pushBranch:(GBRef*)aLocalBranch toRemoteBranch:(GBRef*)aRemoteBranch withBlock:(void(^)())block;
 
 
 #pragma mark Util

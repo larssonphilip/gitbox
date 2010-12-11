@@ -16,6 +16,11 @@
 
 - (void) captureErrorForTask:(OATask*)aTask withBlock:(NSError*(^)())block continuation:(void(^)())continuation;
 
+- (GBRef*) loadCurrentLocalRef;
+- (void) updateLocalBranchesAndTagsWithBlock:(void(^)())block;
+- (void) updateRemotesWithBlock:(void(^)())block;
+
+
 @end
 
 
@@ -34,6 +39,8 @@
 @synthesize topCommitId;
 @synthesize dispatchQueue;
 @synthesize lastError;
+
+@synthesize needsReloadLocalCommits;
 @synthesize unmergedCommitsCount;
 @synthesize unpushedCommitsCount;
 
@@ -153,7 +160,7 @@
                                            error:NULL];
 }
 
-+ (void) configureUTF8WithBlock:(GBBlock)block
++ (void) configureUTF8WithBlock:(void(^)())block
 {
   OATask* task = [OATask task];
   task.launchPath = [GBTask pathToBundledBinary:@"git"];
@@ -178,7 +185,7 @@
   [task launchAndWait];
 }
 
-+ (void) configureName:(NSString*)name email:(NSString*)email withBlock:(GBBlock)block
++ (void) configureName:(NSString*)name email:(NSString*)email withBlock:(void(^)())block
 {
   // git config --global user.name "Joey Joejoe"
   // git config --global user.email "joey@joejoe.com"
@@ -270,6 +277,31 @@
 
 
 
+- (NSString*) path
+{
+  return [url path];
+}
+
+- (NSArray*) stageAndCommits
+{
+  NSArray* list = [NSArray arrayWithObject:self.stage];
+  if (self.localBranchCommits)
+  {
+    list = [list arrayByAddingObjectsFromArray:self.localBranchCommits];
+  }
+  return list;
+}
+
+
+
+
+
+
+#pragma mark Update
+
+
+
+
 
 - (GBRef*) loadCurrentLocalRef
 {
@@ -296,31 +328,8 @@
   return ref;
 }
 
-- (NSString*) path
-{
-  return [url path];
-}
 
-- (NSArray*) stageAndCommits
-{
-  NSArray* list = [NSArray arrayWithObject:self.stage];
-  if (self.localBranchCommits)
-  {
-    list = [list arrayByAddingObjectsFromArray:self.localBranchCommits];
-  }
-  return list;
-}
-
-
-
-
-
-
-#pragma mark Update
-
-
-
-- (void) updateLocalBranchesAndTagsWithBlock:(GBBlock)block
+- (void) updateLocalBranchesAndTagsWithBlock:(void(^)())block
 {
   block = [[block copy] autorelease];
   GBLocalRefsTask* task = [GBLocalRefsTask task];
@@ -332,7 +341,7 @@
   }];
 }
 
-- (void) updateRemotesWithBlock:(GBBlock)block
+- (void) updateRemotesWithBlock:(void(^)())block
 {
   block = [[block copy] autorelease];
   GBRemotesTask* task = [GBRemotesTask task];
@@ -343,7 +352,7 @@
   }];
 }
 
-- (void) updateLocalBranchCommitsWithBlock:(GBBlock)block
+- (void) updateLocalBranchCommitsWithBlock:(void(^)())block
 {
   block = [[block copy] autorelease];
   GBHistoryTask* task = [GBHistoryTask task];
@@ -361,7 +370,7 @@
   }];
 }
 
-- (void) updateUnmergedCommitsWithBlock:(GBBlock)block
+- (void) updateUnmergedCommitsWithBlock:(void(^)())block
 {
   block = [[block copy] autorelease];
   GBHistoryTask* task = [GBHistoryTask task];
@@ -384,7 +393,7 @@
   }];  
 }
 
-- (void) updateUnpushedCommitsWithBlock:(GBBlock)block
+- (void) updateUnpushedCommitsWithBlock:(void(^)())block
 {
   block = [[block copy] autorelease];
   if (!self.currentRemoteBranch)
@@ -422,7 +431,7 @@
 #pragma mark Mutation methods
 
 
-- (void) configureTrackingRemoteBranch:(GBRef*)ref withLocalName:(NSString*)name block:(GBBlock)block
+- (void) configureTrackingRemoteBranch:(GBRef*)ref withLocalName:(NSString*)name block:(void(^)())block
 {
   block = [[block copy] autorelease];
   
@@ -455,7 +464,7 @@
 }
 
 
-- (void) checkoutRef:(GBRef*)ref withBlock:(GBBlock)block
+- (void) checkoutRef:(GBRef*)ref withBlock:(void(^)())block
 {
   block = [[block copy] autorelease];
   GBTask* task = [self task];
@@ -466,7 +475,7 @@
   }];
 }
 
-- (void) checkoutRef:(GBRef*)ref withNewName:(NSString*)name block:(GBBlock)block
+- (void) checkoutRef:(GBRef*)ref withNewName:(NSString*)name block:(void(^)())block
 {
   block = [[block copy] autorelease];
   if ([ref isRemoteBranch])
@@ -484,7 +493,7 @@
   }
 }
 
-- (void) checkoutNewBranchWithName:(NSString*)name block:(GBBlock)block
+- (void) checkoutNewBranchWithName:(NSString*)name block:(void(^)())block
 {
   block = [[block copy] autorelease];
   GBTask* checkoutTask = [self task];
@@ -536,7 +545,7 @@
   //[self performSelector:@selector(slideAlert:) withObject:alert afterDelay:0.1];
 }
 
-- (void) fetchCurrentBranchWithBlock:(GBBlock)block
+- (void) fetchCurrentBranchWithBlock:(void(^)())block
 {
   block = [[block copy] autorelease];
   if (self.currentRemoteBranch && [self.currentRemoteBranch isRemoteBranch])
@@ -549,7 +558,7 @@
   }  
 }
 
-- (void) pullOrMergeWithBlock:(GBBlock)block
+- (void) pullOrMergeWithBlock:(void(^)())block
 {
   block = [[block copy] autorelease];
   if (self.currentRemoteBranch)
@@ -569,7 +578,7 @@
   }
 }
 
-- (void) mergeBranch:(GBRef*)aBranch withBlock:(GBBlock)block
+- (void) mergeBranch:(GBRef*)aBranch withBlock:(void(^)())block
 {
   block = [[block copy] autorelease];
   GBTask* task = [self task];
@@ -583,7 +592,7 @@
   }];
 }
 
-- (void) pullBranch:(GBRef*)aRemoteBranch withBlock:(GBBlock)block
+- (void) pullBranch:(GBRef*)aRemoteBranch withBlock:(void(^)())block
 {
   block = [[block copy] autorelease];
   if (!aRemoteBranch)
@@ -609,7 +618,7 @@
   }];
 }
 
-- (void) fetchRemote:(GBRemote*)aRemote withBlock:(GBBlock)block
+- (void) fetchRemote:(GBRemote*)aRemote withBlock:(void(^)())block
 {
   if (!aRemote)
   {
@@ -619,7 +628,7 @@
   [self fetchRemotes:[NSArray arrayWithObject:aRemote] withBlock:block];
 }
 
-- (void) fetchRemotes:(NSArray*)aRemotes withBlock:(GBBlock)block
+- (void) fetchRemotes:(NSArray*)aRemotes withBlock:(void(^)())block
 {
   block = [[block copy] autorelease];
   if (!aRemotes)
@@ -648,7 +657,7 @@
   }];
 }
 
-- (void) fetchBranch:(GBRef*)aRemoteBranch withBlock:(GBBlock)block
+- (void) fetchBranch:(GBRef*)aRemoteBranch withBlock:(void(^)())block
 {
   block = [[block copy] autorelease];
   if (!aRemoteBranch)
@@ -677,12 +686,12 @@
   }];
 }
 
-- (void) pushWithBlock:(GBBlock)block
+- (void) pushWithBlock:(void(^)())block
 {
   [self pushBranch:self.currentLocalRef toRemoteBranch:self.currentRemoteBranch withBlock:block];
 }
 
-- (void) pushBranch:(GBRef*)aLocalBranch toRemoteBranch:(GBRef*)aRemoteBranch withBlock:(GBBlock)block
+- (void) pushBranch:(GBRef*)aLocalBranch toRemoteBranch:(GBRef*)aRemoteBranch withBlock:(void(^)())block
 {
   block = [[block copy] autorelease];
   if (!aLocalBranch || !aRemoteBranch)
