@@ -58,6 +58,19 @@
          self.name;
 }
 
+- (void) setNameWithRemoteAlias:(NSString*)nameWithAlias // origin/some/branch/name
+{
+  NSRange slashRange = [nameWithAlias rangeOfString:@"/"];
+  if (slashRange.length <= 0 || slashRange.location <= 0 || slashRange.location > [nameWithAlias length] - 2)
+  {
+    [NSException raise:@"GBRef: setNameWithRemoteAlias expects name in a form <alias>/<branch name>" format:@""];
+    return;
+  }
+  
+  self.name = [nameWithAlias substringFromIndex:slashRange.location + 1];
+  self.remoteAlias = [nameWithAlias substringToIndex:slashRange.location];
+}
+
 - (BOOL) isLocalBranch
 {
   return !isTag && !self.remoteAlias;

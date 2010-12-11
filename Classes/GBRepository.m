@@ -3,7 +3,7 @@
 #import "GBTask.h"
 #import "GBRemotesTask.h"
 #import "GBHistoryTask.h"
-#import "GBLocalBranchesTask.h"
+#import "GBLocalRefsTask.h"
 
 #import "NSFileManager+OAFileManagerHelpers.h"
 #import "NSData+OADataHelpers.h"
@@ -323,7 +323,7 @@
 - (void) updateLocalBranchesAndTagsWithBlock:(GBBlock)block
 {
   block = [[block copy] autorelease];
-  GBLocalBranchesTask* task = [GBLocalBranchesTask task];
+  GBLocalRefsTask* task = [GBLocalRefsTask task];
   task.repository = self;
   [task launchWithBlock:^{
     self.localBranches = task.branches;

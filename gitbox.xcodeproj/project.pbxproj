@@ -177,8 +177,7 @@
 		20915F0612874D2A005E0D82 /* NSSplitView+OASplitViewHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 2093AAA911B15E1500239185 /* NSSplitView+OASplitViewHelpers.m */; };
 		20915F0712874D2A005E0D82 /* GBCommitPromptController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2093AC8611B2EB9100239185 /* GBCommitPromptController.m */; };
 		20915F0812874D2A005E0D82 /* GBLocalRemoteAssociationTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 200B08B411B6E359004C09A8 /* GBLocalRemoteAssociationTask.m */; };
-		20915F0912874D2A005E0D82 /* GBBranchesBaseTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B399F411B7F28900D6A3C4 /* GBBranchesBaseTask.m */; };
-		20915F0A12874D2A005E0D82 /* GBLocalBranchesTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B399F911B7F30600D6A3C4 /* GBLocalBranchesTask.m */; };
+		20915F0A12874D2A005E0D82 /* GBLocalRefsTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B399F911B7F30600D6A3C4 /* GBLocalRefsTask.m */; };
 		20915F0B12874D2A005E0D82 /* GBFileEditingController.m in Sources */ = {isa = PBXBuildFile; fileRef = 209A935E11BA934C006B0B5C /* GBFileEditingController.m */; };
 		20915F0C12874D2A005E0D82 /* NSAttributedString+OAAttributedStringHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 2025D3B911BF1F2D004715FA /* NSAttributedString+OAAttributedStringHelpers.m */; };
 		20915F0D12874D2A005E0D82 /* GBPreferencesController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2043A83011C900A0001ED307 /* GBPreferencesController.m */; };
@@ -237,8 +236,7 @@
 		20A37BB6120DC7640068AB8B /* GBSourcesController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 20A37BB5120DC7640068AB8B /* GBSourcesController.xib */; };
 		20A37BBE120DDBA60068AB8B /* GBMainWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 20A37BBD120DDBA60068AB8B /* GBMainWindowController.xib */; };
 		20B1621211944C0F00A709CF /* NSFileManager+OAFileManagerHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B1621111944C0F00A709CF /* NSFileManager+OAFileManagerHelpers.m */; };
-		20B399F511B7F28900D6A3C4 /* GBBranchesBaseTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B399F411B7F28900D6A3C4 /* GBBranchesBaseTask.m */; };
-		20B399FA11B7F30600D6A3C4 /* GBLocalBranchesTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B399F911B7F30600D6A3C4 /* GBLocalBranchesTask.m */; };
+		20B399FA11B7F30600D6A3C4 /* GBLocalRefsTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B399F911B7F30600D6A3C4 /* GBLocalRefsTask.m */; };
 		20B8B70C11A489F1006D6442 /* GBChangesBaseTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B8B70B11A489F1006D6442 /* GBChangesBaseTask.m */; };
 		20B8B70F11A48BF1006D6442 /* GBStagedChangesTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B8B70E11A48BF1006D6442 /* GBStagedChangesTask.m */; };
 		20B8B71211A48E3E006D6442 /* GBUnstagedChangesTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B8B71111A48E3E006D6442 /* GBUnstagedChangesTask.m */; };
@@ -488,10 +486,8 @@
 		20A37BBD120DDBA60068AB8B /* GBMainWindowController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBMainWindowController.xib; sourceTree = "<group>"; };
 		20B1621011944C0F00A709CF /* NSFileManager+OAFileManagerHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSFileManager+OAFileManagerHelpers.h"; sourceTree = "<group>"; };
 		20B1621111944C0F00A709CF /* NSFileManager+OAFileManagerHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSFileManager+OAFileManagerHelpers.m"; sourceTree = "<group>"; };
-		20B399F311B7F28900D6A3C4 /* GBBranchesBaseTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBBranchesBaseTask.h; sourceTree = "<group>"; };
-		20B399F411B7F28900D6A3C4 /* GBBranchesBaseTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBBranchesBaseTask.m; sourceTree = "<group>"; };
-		20B399F811B7F30600D6A3C4 /* GBLocalBranchesTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBLocalBranchesTask.h; sourceTree = "<group>"; };
-		20B399F911B7F30600D6A3C4 /* GBLocalBranchesTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBLocalBranchesTask.m; sourceTree = "<group>"; };
+		20B399F811B7F30600D6A3C4 /* GBLocalRefsTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBLocalRefsTask.h; sourceTree = "<group>"; };
+		20B399F911B7F30600D6A3C4 /* GBLocalRefsTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBLocalRefsTask.m; sourceTree = "<group>"; };
 		20B8B70A11A489F1006D6442 /* GBChangesBaseTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBChangesBaseTask.h; sourceTree = "<group>"; };
 		20B8B70B11A489F1006D6442 /* GBChangesBaseTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBChangesBaseTask.m; sourceTree = "<group>"; };
 		20B8B70D11A48BF1006D6442 /* GBStagedChangesTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBStagedChangesTask.h; sourceTree = "<group>"; };
@@ -706,12 +702,10 @@
 				2059792111A877A500E11A56 /* GBExtractFileTask.m */,
 				201073B411A80A4600EFDE56 /* GBRemotesTask.h */,
 				201073B511A80A4600EFDE56 /* GBRemotesTask.m */,
-				20B399F311B7F28900D6A3C4 /* GBBranchesBaseTask.h */,
-				20B399F411B7F28900D6A3C4 /* GBBranchesBaseTask.m */,
 				2057EF0C11A9B00F009EDF2F /* GBRemoteBranchesTask.h */,
 				2057EF0D11A9B00F009EDF2F /* GBRemoteBranchesTask.m */,
-				20B399F811B7F30600D6A3C4 /* GBLocalBranchesTask.h */,
-				20B399F911B7F30600D6A3C4 /* GBLocalBranchesTask.m */,
+				20B399F811B7F30600D6A3C4 /* GBLocalRefsTask.h */,
+				20B399F911B7F30600D6A3C4 /* GBLocalRefsTask.m */,
 				2059E6CF11AACB5C00E4CF0B /* GBHistoryTask.h */,
 				2059E6D011AACB5C00E4CF0B /* GBHistoryTask.m */,
 				2057EF6211ABDCCE009EDF2F /* GBRefreshIndexTask.h */,
@@ -1202,8 +1196,7 @@
 				20915F0612874D2A005E0D82 /* NSSplitView+OASplitViewHelpers.m in Sources */,
 				20915F0712874D2A005E0D82 /* GBCommitPromptController.m in Sources */,
 				20915F0812874D2A005E0D82 /* GBLocalRemoteAssociationTask.m in Sources */,
-				20915F0912874D2A005E0D82 /* GBBranchesBaseTask.m in Sources */,
-				20915F0A12874D2A005E0D82 /* GBLocalBranchesTask.m in Sources */,
+				20915F0A12874D2A005E0D82 /* GBLocalRefsTask.m in Sources */,
 				20915F0B12874D2A005E0D82 /* GBFileEditingController.m in Sources */,
 				20915F0C12874D2A005E0D82 /* NSAttributedString+OAAttributedStringHelpers.m in Sources */,
 				20915F0D12874D2A005E0D82 /* GBPreferencesController.m in Sources */,
@@ -1294,8 +1287,7 @@
 				2093AAAA11B15E1500239185 /* NSSplitView+OASplitViewHelpers.m in Sources */,
 				2093AC8711B2EB9100239185 /* GBCommitPromptController.m in Sources */,
 				200B08B511B6E359004C09A8 /* GBLocalRemoteAssociationTask.m in Sources */,
-				20B399F511B7F28900D6A3C4 /* GBBranchesBaseTask.m in Sources */,
-				20B399FA11B7F30600D6A3C4 /* GBLocalBranchesTask.m in Sources */,
+				20B399FA11B7F30600D6A3C4 /* GBLocalRefsTask.m in Sources */,
 				209A935F11BA934C006B0B5C /* GBFileEditingController.m in Sources */,
 				2025D3BA11BF1F2D004715FA /* NSAttributedString+OAAttributedStringHelpers.m in Sources */,
 				2043A83111C900A0001ED307 /* GBPreferencesController.m in Sources */,

@@ -2,17 +2,19 @@
 @class GBRemote;
 @interface GBRef : NSObject
 
-@property(retain) NSString* name;
-@property(retain) NSString* commitId;
-@property(retain) NSString* remoteAlias;
-@property(retain) GBRef* configuredRemoteBranch;
+@property(nonatomic, copy) NSString* name;
+@property(nonatomic, copy) NSString* commitId;
+@property(nonatomic, copy) NSString* remoteAlias;
+@property(nonatomic, retain) GBRef* configuredRemoteBranch;
 
-@property(assign) BOOL isTag;
-@property(assign) BOOL isNewRemoteBranch;
-@property(assign) GBRepository* repository;
-@property(assign) GBRemote* remote;
+@property(nonatomic, assign) BOOL isTag;
+@property(nonatomic, assign) BOOL isNewRemoteBranch;
+@property(nonatomic, assign) GBRepository* repository;
+@property(nonatomic, assign) GBRemote* remote;
 
 - (NSString*) nameWithRemoteAlias;
+- (void) setNameWithRemoteAlias:(NSString*)nameWithAlias; // origin/some/branch/name
+
 - (BOOL) isLocalBranch;
 - (BOOL) isRemoteBranch;
 - (NSString*) displayName;

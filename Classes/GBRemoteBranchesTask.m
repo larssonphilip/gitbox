@@ -4,10 +4,14 @@
 
 @implementation GBRemoteBranchesTask
 
+@synthesize branches;
+@synthesize tags;
 @synthesize remote;
 
 - (void) dealloc
 {
+  self.branches = nil;
+  self.tags = nil;
   self.remote = nil;
   [super dealloc];
 }
