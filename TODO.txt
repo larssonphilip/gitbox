@@ -22,6 +22,11 @@ Bug fixes:
 
 WIP:
 
+- build local and remote branches out of git show-ref results, not from ls-remote. 
+- compare ls-remote with show-ref to know whether to fetch or not
+- if configured branch is not found in show-ref, then consider a new branch, get rid of isNewRemoteBranch flag.
+- bug: push/popFSEventsPause when fetching and other .git-modifying tasks
+- bug: when selected all changes and hit "revert", one change is not reverted
 - bug: when creating a new remote branch, GBHistoryTask fails to ignore it and fails on git level => empty commits list instead of green-pilled list
 
 - bug: when commit is checked out, the remote branch is reset (+ it reset on occasional branch updates)
