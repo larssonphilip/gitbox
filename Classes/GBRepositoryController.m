@@ -311,13 +311,13 @@
     [repo.currentLocalRef loadConfiguredRemoteBranchWithBlock:^{
       repo.currentRemoteBranch = repo.currentLocalRef.configuredRemoteBranch;
       if ([self.delegate respondsToSelector:@selector(repositoryControllerDidUpdateRemoteBranches:)]) { [self.delegate repositoryControllerDidUpdateRemoteBranches:self]; }
-      block();
+      if (block) block();
       [self popSpinning];
     }];
   }
   else
   {
-    block();
+    if (block) block();
   }
 }
 
@@ -830,39 +830,43 @@
 - (void) loadCommitsWithBlock:(void(^)())block
 {
   block = [[block copy] autorelease];
-  if (self.repository.currentLocalRef)
+  
+  if (!self.repository.currentLocalRef)
   {
-    [self pushSpinning];
-    NSString* oldTopCommitId = self.repository.topCommitId;
-    [self.repository updateLocalBranchCommitsWithBlock:^{
-      NSString* newTopCommitId = self.repository.topCommitId;
-      if (newTopCommitId && ![oldTopCommitId isEqualToString:newTopCommitId])
-      {
-        [self resetAutoFetchInterval];
-      }
-      if ([self.delegate respondsToSelector:@selector(repositoryControllerDidUpdateCommits:)]) { [self.delegate repositoryControllerDidUpdateCommits:self]; }
-      
-      OABlockGroup* blockGroup = [OABlockGroup groupWithBlock:block];
-      
-      [blockGroup enter];
-      [self pushFSEventsPause];
-      [self.repository updateUnmergedCommitsWithBlock:^{
-        if ([self.delegate respondsToSelector:@selector(repositoryControllerDidUpdateCommits:)]) { [self.delegate repositoryControllerDidUpdateCommits:self]; }
-        [self popFSEventsPause];
-        [blockGroup leave];
-      }];
-      
-      [blockGroup enter];
-      [self pushFSEventsPause];
-      [self.repository updateUnpushedCommitsWithBlock:^{
-        if ([self.delegate respondsToSelector:@selector(repositoryControllerDidUpdateCommits:)]) { [self.delegate repositoryControllerDidUpdateCommits:self]; }
-        [self popFSEventsPause];
-        [blockGroup leave];
-      }];
-      
-      [self popSpinning];
-    }];    
+    if (block) block();
+    return;
   }
+  
+  [self pushSpinning];
+  NSString* oldTopCommitId = self.repository.topCommitId;
+  [self.repository updateLocalBranchCommitsWithBlock:^{
+    NSString* newTopCommitId = self.repository.topCommitId;
+    if (newTopCommitId && ![oldTopCommitId isEqualToString:newTopCommitId])
+    {
+      [self resetAutoFetchInterval];
+    }
+    if ([self.delegate respondsToSelector:@selector(repositoryControllerDidUpdateCommits:)]) { [self.delegate repositoryControllerDidUpdateCommits:self]; }
+    
+    OABlockGroup* blockGroup = [OABlockGroup groupWithBlock:block];
+    
+    [blockGroup enter];
+    [self pushFSEventsPause];
+    [self.repository updateUnmergedCommitsWithBlock:^{
+      if ([self.delegate respondsToSelector:@selector(repositoryControllerDidUpdateCommits:)]) { [self.delegate repositoryControllerDidUpdateCommits:self]; }
+      [self popFSEventsPause];
+      [blockGroup leave];
+    }];
+    
+    [blockGroup enter];
+    [self pushFSEventsPause];
+    [self.repository updateUnpushedCommitsWithBlock:^{
+      if ([self.delegate respondsToSelector:@selector(repositoryControllerDidUpdateCommits:)]) { [self.delegate repositoryControllerDidUpdateCommits:self]; }
+      [self popFSEventsPause];
+      [blockGroup leave];
+    }];
+    
+    [self popSpinning];
+  }];
 }
 
 - (void) loadStageChanges
@@ -952,6 +956,9 @@
   autoFetchInterval = autoFetchInterval*(1.5 + drand48()*0.5);
   
   [self scheduleAutoFetch];
+  
+  //#warning AutoFetch disabled!
+  //return;
   
   if ([self isConnectionAvailable])
   {
