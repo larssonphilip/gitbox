@@ -40,6 +40,11 @@
           [self.branch commitish],
           nil];
   
+  NSLog(@"%@ rev-list arguments:", [self class]);
+  NSLog(@"branch: %@", self.branch);
+  NSLog(@"joinedBranch: %@", self.joinedBranch);
+  NSLog(@"substructedBranch: %@", self.substructedBranch);
+  
   if (self.joinedBranch && !self.joinedBranch.isNewRemoteBranch)
   {
     [args addObject:[self.joinedBranch commitish]];
@@ -53,6 +58,9 @@
    // adding explicit path argument to allow branch names with slashes
   [args addObject:@"--"];
   [args addObject:@"."];
+  
+  NSLog(@"arguments: %@", [[args subarrayWithRange:NSMakeRange(4, [args count] - 4)] componentsJoinedByString:@" "]);
+  NSLog(@"--");
   return args;
 }
 
