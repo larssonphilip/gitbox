@@ -2,10 +2,10 @@
 
 @property(retain) IBOutlet NSTextField* textField;
 
-@property(retain) NSString* title;
-@property(retain) NSString* promptText;
-@property(retain) NSString* buttonText;
-@property(retain) NSString* value;
+@property(copy) NSString* title;
+@property(copy) NSString* promptText;
+@property(copy) NSString* buttonText;
+@property(copy) NSString* value;
 @property(copy) void (^finishBlock)();
 @property(copy) void (^cancelBlock)();
 

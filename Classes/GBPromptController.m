@@ -100,6 +100,15 @@
 - (void) runSheetInWindow:(NSWindow*)window
 {
   self.windowHoldingSheet = window;
+  if (self.requireSingleLine)
+  {
+    NSWindow* win = [self window];
+    NSSize minSize = [win contentMinSize];
+    NSSize maxSize = [win contentMaxSize];
+    maxSize.height = minSize.height;
+    [win setContentMaxSize:maxSize];
+    [[self.textField cell] setUsesSingleLineMode:YES];
+  }
   [window beginSheetForController:self];
   [self.textField setStringValue:self.value];
 }

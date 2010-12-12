@@ -191,7 +191,7 @@
   {
     [button setMenu:newMenu];
     [button setEnabled:NO];
-    [button setTitle:NSLocalizedString(@"No branch yet", @"Toolbar")];
+    [button setTitle:NSLocalizedString(@"", @"Toolbar")];
     return;    
   }
   
@@ -462,7 +462,7 @@
   }
   else
   {
-    [button setTitle:NSLocalizedString(@"No branch", @"Toolbar")];
+    [button setTitle:NSLocalizedString(@"", @"Toolbar")];
   }
 }
 
@@ -579,6 +579,7 @@
   ctrl.promptText = NSLocalizedString(@"Branch Name:", @"");
   ctrl.buttonText = NSLocalizedString(@"Checkout", @"");
   ctrl.value = defaultName;
+  ctrl.requireSingleLine = YES;
   ctrl.requireStripWhitespace = YES;
   ctrl.finishBlock = ^{
     [self.repositoryController checkoutRef:remoteBranch withNewName:ctrl.value];
@@ -593,6 +594,7 @@
   ctrl.title = NSLocalizedString(@"New Branch", @"");
   ctrl.promptText = NSLocalizedString(@"Branch Name:", @"");
   ctrl.buttonText = NSLocalizedString(@"OK", @"");
+  ctrl.requireSingleLine = YES;
   ctrl.requireStripWhitespace = YES;
   ctrl.finishBlock = ^{
     [self.repositoryController checkoutNewBranchWithName:ctrl.value];
@@ -617,6 +619,7 @@
   ctrl.title = NSLocalizedString(@"New Remote Branch", @"");
   ctrl.promptText = NSLocalizedString(@"Branch Name:", @"");
   ctrl.buttonText = NSLocalizedString(@"OK", @"");
+  ctrl.requireSingleLine = YES;
   ctrl.requireStripWhitespace = YES;
   ctrl.value = defaultName;
   ctrl.finishBlock = ^{
