@@ -36,9 +36,6 @@
 - (void) loadStageChanges;
 - (void) loadChangesForCommit:(GBCommit*)commit;
 
-//- (void) updateCurrentBranchesIfNeededWithBlock:(void(^)())block;
-//- (void) updateLocalBranchesAndTags;
-
 - (void) updateLocalRefsWithBlock:(void(^)())block;
 - (void) updateRemoteRefsWithBlock:(void(^)())block;
 - (void) updateBranchesForRemote:(GBRemote*)aRemote withBlock:(void(^)())block;
@@ -292,74 +289,7 @@
     [self loadStageChanges];
   }
   
-//  block = [[block copy] autorelease];
-//  GBRepository* repo = self.repository;
-//  
-//  [self pushSpinning];
-//  [self updateCurrentBranchesIfNeededWithBlock:^{
-//    if (needsLocalBranchesUpdate)
-//    {
-//      needsLocalBranchesUpdate = NO;
-//      [self updateLocalBranchesAndTags];
-//    }
-//    if (needsRemotesUpdate)
-//    {
-//      needsRemotesUpdate = NO;
-//      [self pushSpinning];
-//      [self pushRemoteBranchesDisabled];
-//      [repo loadRemotesWithBlock:^{
-//        for (GBRemote* aRemote in repo.remotes)
-//        {
-//          [self updateBranchesForRemote:aRemote withBlock:nil];
-//        }
-//        [self popSpinning];
-//        [self popRemoteBranchesDisabled];
-//      }];
-//    }
-//    if (needsCommitsUpdate)
-//    {
-//      needsCommitsUpdate = NO;
-//      [self loadCommitsWithBlock:block];
-//    }
-//    else
-//    {
-//      if (block) block();
-//    }
-//    [self popSpinning];
-//  }];
-//  
-//  if (!self.selectedCommit && self.repository.stage)
-//  {
-//    [self selectCommit:self.repository.stage];
-//  }
 }
-
-
-//- (void) updateCurrentBranchesIfNeededWithBlock:(void(^)())block
-//{
-//  block = [[block copy] autorelease];
-//  GBRepository* repo = self.repository;
-//  
-//  if (!repo.currentLocalRef)
-//  {
-//    repo.currentLocalRef = [repo loadCurrentLocalRef];
-//  }
-//  
-//  if (repo.currentLocalRef && !repo.currentLocalRef.configuredRemoteBranch)
-//  {
-//    [self pushSpinning];
-//    [repo.currentLocalRef loadConfiguredRemoteBranchWithBlock:^{
-//      repo.currentRemoteBranch = repo.currentLocalRef.configuredRemoteBranch;
-//      if ([self.delegate respondsToSelector:@selector(repositoryControllerDidUpdateRemoteBranches:)]) { [self.delegate repositoryControllerDidUpdateRemoteBranches:self]; }
-//      if (block) block();
-//      [self popSpinning];
-//    }];
-//  }
-//  else
-//  {
-//    if (block) block();
-//  }
-//}
 
 
 
@@ -458,28 +388,12 @@
 
 - (void) dotgitStateDidChange
 {
-  // TODO: reset the interval only when the origin of this change was not the recent autoFetch.
-  //       Should add some smart logic to handle this.
-  // [self resetAutoFetchInterval];
   //NSLog(@"%@ %@ (%@)", [self class], NSStringFromSelector(_cmd), [self nameForSourceList]);
   
   GBRepository* repo = self.repository;
   
   if (!repo) return;
   
-//  [self pushDisabled];
-//  repo.currentLocalRef = nil;
-//  repo.currentRemoteBranch = nil;
-//  [self updateCurrentBranchesIfNeededWithBlock:^{
-//    [self updateLocalBranchesAndTags];
-//    [self loadCommits];
-//    [self loadStageChanges];
-//    [self updateRemoteBranchesWithBlock:nil];
-//    [self popDisabled];
-//    [self popSpinning];
-//  }];
-  
-  //[self pushDisabled];
   [self pushFSEventsPause];
   [self loadStageChanges];
   [self updateLocalRefsWithBlock:^{
@@ -874,13 +788,6 @@
 
 
 
-//- (void) updateLocalBranchesAndTags
-//{
-//  [self.repository loadLocalRefsWithBlock:^{
-//    if ([self.delegate respondsToSelector:@selector(repositoryControllerDidUpdateLocalBranches:)]) { [self.delegate repositoryControllerDidUpdateLocalBranches:self]; }
-//  }];  
-//}
-//
 
 - (void) loadCommits
 {
@@ -967,7 +874,6 @@
 
 
 
-// FIXME: change this to per-path pauses to allow other repos update  
 - (void) pushFSEventsPause
 {
   [self.fsEventStream pushPause];
@@ -1048,7 +954,7 @@
 - (BOOL) isConnectionAvailable
 {
   return YES;
-  // FIXME: this does not work.
+  // FIXME: this network availability check does not work.
   return [NSURLConnection canHandleRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://google.com/"]]];
 }
 

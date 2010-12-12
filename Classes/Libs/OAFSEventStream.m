@@ -130,18 +130,6 @@ void OAFSEventStreamCallback( ConstFSEventStreamRef streamRef,
   }
 }
 
-- (void) pushPauseForPath:(NSString*)aPath
-{
-  // FIXME: wip
-  [self pushPause];
-}
-
-- (void) popPauseForPath:(NSString*)aPath
-{
-  // FIXME: wip
-  [self popPause];
-}
-
 
 - (void) delayCallbackForPath:(NSString*)watchedPath
 {

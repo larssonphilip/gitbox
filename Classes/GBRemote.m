@@ -139,7 +139,7 @@
 
 - (void) calculateDifferenceWithNewBranches:(NSArray*)theBranches andTags:(NSArray*)theTags
 {
-  // TODO: set needsFetch = YES if one of the following is true:
+  // Set needsFetch = YES if one of the following is true:
   // 1. There's a new branch
   // 2. The branch exists, but commitId differ
   // 3. The tag does not exists

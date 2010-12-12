@@ -187,7 +187,6 @@
     // If moved, we'll display the first path, then arrow and icon+relative path for the second one
     if ([aChange isMovedOrRenamedFile] && dstURL)
     {
-      // FIXME:
       // - Calculate how much space is needed for icon and arrow
       // - Calculate sizes for texts
       // - If the remaining space is enough for both names, draw them in full

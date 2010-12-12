@@ -495,7 +495,6 @@ NSString* OATaskNotification = @"OATaskNotification";
 {
   [self endAllCallbacks];
   
-  // TODO: wrap into DEBUG macro
   // Subclasses may override it to do some data processing.
   if (self.terminationStatus != 0)
   {

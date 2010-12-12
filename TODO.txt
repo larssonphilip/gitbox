@@ -29,9 +29,9 @@ WIP:
 + compare ls-remote with show-ref to know whether to fetch or not
 + if configured branch is not found in show-ref, then consider a new branch, get rid of isNewRemoteBranch flag.
 + bug: push/popFSEventsPause when fetching and other .git-modifying tasks
++ bug: when creating a new remote branch, GBHistoryTask fails to ignore it and fails on git level => empty commits list instead of green-pilled list
 
 - bug: when selected all changes and hit "revert", one change is not reverted
-- bug: when creating a new remote branch, GBHistoryTask fails to ignore it and fails on git level => empty commits list instead of green-pilled list
 
 - bug: when commit is checked out, the remote branch is reset (+ it reset on occasional branch updates)
 - bug: seems like after the push, branch update invokes fetch. Should update the pushed ref properly to avoid that.
