@@ -25,17 +25,7 @@ Bug fixes:
 
 WIP:
 
-+ doing [OABlockGroup verify] in dealloc is a bad idea: should wrap with [OABlockGroup groupBlock:^{} continuation:^{}]
-+ build local and remote branches out of git show-ref results, not from ls-remote.
-+ bug in 1.0, 1.1: when non-remote branch is selected on the right
-+ compare ls-remote with show-ref to know whether to fetch or not
-+ if configured branch is not found in show-ref, then consider a new branch, get rid of isNewRemoteBranch flag.
-+ bug: push/popFSEventsPause when fetching and other .git-modifying tasks
-+ bug: when creating a new remote branch, GBHistoryTask fails to ignore it and fails on git level => empty commits list instead of green-pilled list
-+ bug: when commit is checked out, the remote branch is reset (+ it reset on occasional branch updates)
-+ bug: seems like after the push, branch update invokes fetch. Should update the pushed ref properly to avoid that.
-+ feature: checkout a commit from local branch menu (prefilled with currently selected commit)
-
+- bug: when opening git.git repo, gitbox fetches, and fetches, and fetches...
 - bug: sometimes some duplicate branch name appears in popdown menus
 - bug: when selected all changes and hit "revert", one change is not reverted
 
@@ -61,6 +51,18 @@ WIP:
 
 - "git submodule init" after clone or pull to add .gitmodules info to .git/config
 
+
+
++ doing [OABlockGroup verify] in dealloc is a bad idea: should wrap with [OABlockGroup groupBlock:^{} continuation:^{}]
++ build local and remote branches out of git show-ref results, not from ls-remote.
++ bug in 1.0, 1.1: when non-remote branch is selected on the right
++ compare ls-remote with show-ref to know whether to fetch or not
++ if configured branch is not found in show-ref, then consider a new branch, get rid of isNewRemoteBranch flag.
++ bug: push/popFSEventsPause when fetching and other .git-modifying tasks
++ bug: when creating a new remote branch, GBHistoryTask fails to ignore it and fails on git level => empty commits list instead of green-pilled list
++ bug: when commit is checked out, the remote branch is reset (+ it reset on occasional branch updates)
++ bug: seems like after the push, branch update invokes fetch. Should update the pushed ref properly to avoid that.
++ feature: checkout a commit from local branch menu (prefilled with currently selected commit)
 
 + bug: branches with "/" in the name are processed incorrectly [Christian van der Leeden <christian.vanderleeden@googlemail.com>]
 + bug: branch association fails when branch name has a dot (like v1.5) [Falk Hoppe <falk.hoppe@innoq.com>]
