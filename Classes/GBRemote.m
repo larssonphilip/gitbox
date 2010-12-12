@@ -16,11 +16,21 @@
 @synthesize URLString;
 @synthesize branches;
 @synthesize newBranches;
-@synthesize tags;
+//@synthesize tags;
 
 @synthesize repository;
 @synthesize isUpdatingRemoteBranches;
 @synthesize needsFetch;
+
+- (void) dealloc
+{
+  self.alias = nil;
+  self.URLString = nil;
+  self.branches = nil;
+  self.newBranches = nil;
+  //  self.tags = nil;
+  [super dealloc];
+}
 
 
 #pragma mark Init
@@ -38,21 +48,13 @@
   return [[newBranches retain] autorelease];
 }
 
-- (NSArray*) tags
-{
-  if (!tags) self.tags = [NSArray array];
-  return [[tags retain] autorelease];
-}
+//- (NSArray*) tags
+//{
+//  if (!tags) self.tags = [NSArray array];
+//  return [[tags retain] autorelease];
+//}
 
-- (void) dealloc
-{
-  self.alias = nil;
-  self.URLString = nil;
-  self.branches = nil;
-  self.newBranches = nil;
-  self.tags = nil;
-  [super dealloc];
-}
+
 
 
 
@@ -68,31 +70,6 @@
   }
   return [self.branches firstObject];
 }
-
-//- (NSArray*) guessedBranches
-//{
-//  NSMutableArray* list = [NSMutableArray array];
-//  NSURL* aurl = [self.repository gitURLWithSuffix:[@"refs/remotes" stringByAppendingPathComponent:self.alias]];
-//  if ([[NSFileManager defaultManager] isReadableDirectoryAtPath:aurl.path])
-//  {
-//    for (NSURL* aURL in [NSFileManager contentsOfDirectoryAtURL:aurl])
-//    {
-//      if ([[NSFileManager defaultManager] isReadableFileAtPath:aURL.path])
-//      {
-//        NSString* name = [[aURL pathComponents] lastObject];
-//        if (![name isEqualToString:@"HEAD"])
-//        {
-//          GBRef* ref = [[GBRef new] autorelease];
-//          ref.repository = self.repository;
-//          ref.name = name;
-//          ref.remoteAlias = self.alias;
-//          [list addObject:ref];
-//        }
-//      }
-//    }    
-//  }
-//  return list;  
-//}
 
 - (NSArray*) pushedAndNewBranches
 {
@@ -112,6 +89,20 @@
   }
   self.newBranches = updatedNewBranches;
 }
+
+- (BOOL) copyInterestingDataFromRemoteIfApplicable:(GBRemote*)otherRemote
+{
+  if (self.alias && [otherRemote.alias isEqualToString:self.alias])
+  {
+    self.newBranches = otherRemote.newBranches;
+    [self updateNewBranches];
+    return YES;
+  }
+  return NO;
+}
+
+
+
 
 
 #pragma mark Actions
@@ -139,7 +130,7 @@
     [self calculateDifferenceWithNewBranches:task.branches andTags:task.tags];
     
     self.branches = task.branches;
-    self.tags = task.tags;
+    //self.tags = task.tags;
     [self updateNewBranches];
     if (block) block();
     self.needsFetch = NO; // reset the status after the callback
@@ -178,7 +169,7 @@
   }
   
   NSMutableArray* newTagNames = [[[theTags valueForKey:@"name"] mutableCopy] autorelease];
-  [newTagNames removeObjectsInArray:[self.tags valueForKey:@"name"]];
+  [newTagNames removeObjectsInArray:[self.repository.tags valueForKey:@"name"]];
   
   if ([newTagNames count] > 0)
   {

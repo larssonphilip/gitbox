@@ -5,7 +5,7 @@
 #import "GBAllStagedFilesTask.h"
 #import "GBUnstagedChangesTask.h"
 #import "GBUntrackedChangesTask.h"
-
+#import "OABlockGroup.h"
 #import "NSData+OADataHelpers.h"
 
 @implementation GBStage
@@ -75,8 +75,28 @@
     
     GBStagedChangesTask* stagedChangesTask = [GBStagedChangesTask taskWithRepository:self.repository];
     [stagedChangesTask launchWithBlock:^{
-      
-      void(^unstagedTasksBlock)() = ^{
+            
+      [OABlockGroup groupBlock:^(OABlockGroup* blockGroup){
+        
+        if ([stagedChangesTask terminationStatus] == 0)
+        {
+          self.stagedChanges = stagedChangesTask.changes;
+          [self update];
+        }
+        else
+        {
+          // diff-tree failed: we don't have a HEAD commit, try another task
+          GBAllStagedFilesTask* stagedChangesTask2 = [GBAllStagedFilesTask taskWithRepository:self.repository];
+          [blockGroup enter];
+          [stagedChangesTask2 launchWithBlock:^{
+            self.stagedChanges = stagedChangesTask2.changes;
+            [self update];
+            [blockGroup leave];
+          }];
+        }
+        
+      } continuation: ^{
+        
         GBUnstagedChangesTask* unstagedChangesTask = [GBUnstagedChangesTask taskWithRepository:self.repository];
         [unstagedChangesTask launchWithBlock:^{
           self.unstagedChanges = unstagedChangesTask.changes;
@@ -86,27 +106,11 @@
           [untrackedChangesTask launchWithBlock:^{
             self.untrackedChanges = untrackedChangesTask.changes;
             [self update];
-            block();
+            if (block) block();
           }]; // untracked
-        }]; // unstaged        
-      };
-      
-      if ([stagedChangesTask terminationStatus] == 0)
-      {
-        self.stagedChanges = stagedChangesTask.changes;
-        [self update];
-        unstagedTasksBlock();
-      }
-      else
-      {
-        // diff-tree failed: we don't have a HEAD commit, try another task
-        GBAllStagedFilesTask* stagedChangesTask2 = [GBAllStagedFilesTask taskWithRepository:self.repository];
-        [stagedChangesTask2 launchWithBlock:^{
-          self.stagedChanges = stagedChangesTask2.changes;
-          [self update];
-          unstagedTasksBlock();
-        }];
-      }
+        }]; // unstaged
+        
+      }];
 
     }]; // staged
   }]; // refresh-index
@@ -116,9 +120,11 @@
 
 - (void) stageDeletedPaths:(NSArray*)pathsToDelete withBlock:(void(^)())block
 {
+  block = [[block copy] autorelease];
+  
   if ([pathsToDelete count] <= 0)
   {
-    block();
+    if (block) block();
     return;
   }
   
@@ -126,15 +132,17 @@
   task.arguments = [[NSArray arrayWithObjects:@"update-index", @"--remove", nil] arrayByAddingObjectsFromArray:pathsToDelete];
   [task launchWithBlock:^{
     [task showErrorIfNeeded];
-    block();
+    if (block) block();
   }];
 }
 
 - (void) stageAddedPaths:(NSArray*)pathsToAdd withBlock:(void(^)())block
 {
+  block = [[block copy] autorelease];
+  
   if ([pathsToAdd count] <= 0)
   {
-    block();
+    if (block) block();
     return;
   }
   
@@ -142,7 +150,7 @@
   task.arguments = [[NSArray arrayWithObjects:@"add", nil] arrayByAddingObjectsFromArray:pathsToAdd];
   [task launchWithBlock:^{
     [task showErrorIfNeeded];
-    block();
+    if (block) block();
   }];
 }
 
@@ -170,9 +178,10 @@
 
 - (void) unstageChanges:(NSArray*)theChanges withBlock:(void(^)())block
 {
+  block = [[block copy] autorelease];
   if ([theChanges count] <= 0)
   {
-    block();
+    if (block) block();
     return;
   }
   NSMutableArray* addedPaths = [NSMutableArray array];
@@ -195,27 +204,28 @@
   //       do not run if paths list is empty
   //       use a single common queue to make it easier to order the tasks
   //       "git rm --cached" is needed in case when HEAD does not yet exist
-  
-  if ([otherPaths count] > 0)
-  {
-    GBTask* resetTask = [self.repository task];
-    resetTask.arguments = [[NSArray arrayWithObjects:@"reset", @"--", nil] arrayByAddingObjectsFromArray:otherPaths];
-    [self.repository launchTask:resetTask withBlock:^{
-      // Commented out because git spits out error code even if the unstage is successful.
-      // [task showErrorIfNeeded];
-    }];
-  }
-  
-  if ([addedPaths count] > 0)
-  {
-    GBTask* rmTask = [self.repository task];
-    rmTask.arguments = [[NSArray arrayWithObjects:@"rm", @"--cached", nil] arrayByAddingObjectsFromArray:addedPaths];
-    [self.repository launchTask:rmTask withBlock:^{
-      // Commented out because git spits out error code even if the unstage is successful.
-      // [task showErrorIfNeeded];
-    }];    
-  }
-  [self.repository dispatchBlock:block];
+  [OABlockGroup groupBlock:^(OABlockGroup* blockGroup){
+    
+    if ([otherPaths count] > 0)
+    {
+      GBTask* resetTask = [self.repository task];
+      resetTask.arguments = [[NSArray arrayWithObjects:@"reset", @"--", nil] arrayByAddingObjectsFromArray:otherPaths];
+      [self.repository launchTask:resetTask withBlock:^{
+        // Commented out because git spits out error code even if the unstage is successful.
+        // [task showErrorIfNeeded];
+      }];
+    }
+    
+    if ([addedPaths count] > 0)
+    {
+      GBTask* rmTask = [self.repository task];
+      rmTask.arguments = [[NSArray arrayWithObjects:@"rm", @"--cached", nil] arrayByAddingObjectsFromArray:addedPaths];
+      [self.repository launchTask:rmTask withBlock:^{
+        // Commented out because git spits out error code even if the unstage is successful.
+        // [task showErrorIfNeeded];
+      }];    
+    }
+  } continuation: block];
 }
 
 - (void) stageAllWithBlock:(void(^)())block

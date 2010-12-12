@@ -40,16 +40,16 @@
           [self.branch commitish],
           nil];
   
-  NSLog(@"%@ rev-list arguments:", [self class]);
-  NSLog(@"branch: %@", self.branch);
-  NSLog(@"joinedBranch: %@", self.joinedBranch);
-  NSLog(@"substructedBranch: %@", self.substructedBranch);
+//  NSLog(@"%@ rev-list arguments:", [self class]);
+//  NSLog(@"branch: %@", self.branch);
+//  NSLog(@"joinedBranch: %@", self.joinedBranch);
+//  NSLog(@"substructedBranch: %@", self.substructedBranch);
   
-  if (self.joinedBranch && !self.joinedBranch.isNewRemoteBranch)
+  if (self.joinedBranch)
   {
     [args addObject:[self.joinedBranch commitish]];
   }
-  if (self.substructedBranch && !self.substructedBranch.isNewRemoteBranch)
+  if (self.substructedBranch)
   {
     [args addObject:@"--not"];
     [args addObject:[self.substructedBranch commitish]];
@@ -59,8 +59,8 @@
   [args addObject:@"--"];
   [args addObject:@"."];
   
-  NSLog(@"arguments: %@", [[args subarrayWithRange:NSMakeRange(4, [args count] - 4)] componentsJoinedByString:@" "]);
-  NSLog(@"--");
+//  NSLog(@"arguments: %@", [[args subarrayWithRange:NSMakeRange(4, [args count] - 4)] componentsJoinedByString:@" "]);
+//  NSLog(@"--");
   return args;
 }
 

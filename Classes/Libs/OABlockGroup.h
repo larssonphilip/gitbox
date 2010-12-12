@@ -1,14 +1,8 @@
 @interface OABlockGroup : NSObject
-{
-  int counter;
-}
 
-@property(nonatomic, copy) void(^block)();
-
-+ (OABlockGroup*) groupWithBlock:(void(^)())block;
++ (void) groupBlock:(void(^)(OABlockGroup*))groupBlock continuation:(void(^)())continuationBlock;
 
 - (void) enter;
 - (void) leave;
-- (void) verify;
 
 @end

@@ -36,12 +36,13 @@
 - (void) loadStageChanges;
 - (void) loadChangesForCommit:(GBCommit*)commit;
 
-- (void) updateCurrentBranchesIfNeededWithBlock:(void(^)())block;
-- (void) updateLocalBranchesAndTags;
-- (void) updateBranchesForRemote:(GBRemote*)aRemote withBlock:(void(^)())block;
-- (void) updateRemoteBranchesWithBlock:(void(^)())block;
+//- (void) updateCurrentBranchesIfNeededWithBlock:(void(^)())block;
+//- (void) updateLocalBranchesAndTags;
 
-- (void) fetchAllWithBlock:(void(^)())block;
+- (void) updateLocalRefsWithBlock:(void(^)())block;
+- (void) updateRemoteRefsWithBlock:(void(^)())block;
+- (void) updateBranchesForRemote:(GBRemote*)aRemote withBlock:(void(^)())block;
+
 - (void) fetchRemote:(GBRemote*)aRemote withBlock:(void(^)())block;
 
 - (void) workingDirectoryStateDidChange;
@@ -196,20 +197,53 @@
 
 
 
-- (void) setNeedsUpdateEverything
-{
-  needsLocalBranchesUpdate = YES;
-  needsRemotesUpdate = YES;
-  needsCommitsUpdate = YES;
-}
-
-
-
 
 
 #pragma mark Updates
 
 
+
+
+
+- (void) updateLocalRefsWithBlock:(void(^)())block
+{
+  if (!self.repository)
+  {
+    if (block) block();
+    return;
+  }
+  
+  block = [[block copy] autorelease];
+  
+  [self pushFSEventsPause];
+  [self.repository updateLocalRefsWithBlock:^{
+    
+    if ((!self.repository.currentRemoteBranch || [self.repository.currentRemoteBranch isRemoteBranch]) && 
+        [self.repository.currentLocalRef isLocalBranch])
+    {
+      self.repository.currentRemoteBranch = self.repository.currentLocalRef.configuredRemoteBranch;
+    }
+    
+    if (block) block();
+    
+    [self popFSEventsPause];
+    
+    if ([self.delegate respondsToSelector:@selector(repositoryControllerDidUpdateRefs:)]) { [self.delegate repositoryControllerDidUpdateRefs:self]; }
+  }];  
+}
+
+- (void) updateRemoteRefsWithBlock:(void(^)())block
+{
+  [OABlockGroup groupBlock:^(OABlockGroup* blockGroup){
+    for (GBRemote* aRemote in self.repository.remotes)
+    {
+      [blockGroup enter];
+      [self updateBranchesForRemote:aRemote withBlock:^{
+        [blockGroup leave];
+      }];
+    }
+  } continuation:block];
+}
 
 - (void) updateBranchesForRemote:(GBRemote*)aRemote withBlock:(void(^)())block
 {
@@ -233,93 +267,99 @@
       //NSLog(@"%@: updated branches for remote %@; no changes.", [self class], aRemote.alias);
       if (block) block();
     }
-    if ([self.delegate respondsToSelector:@selector(repositoryControllerDidUpdateRemoteBranches:)]) { [self.delegate repositoryControllerDidUpdateRemoteBranches:self]; }
   }];
   
 }
 
-- (void) updateRemoteBranchesWithBlock:(void(^)())block
-{
-  OABlockGroup* blockGroup = [OABlockGroup groupWithBlock:block];
-  for (GBRemote* aRemote in self.repository.remotes)
-  {
-    [blockGroup enter];
-    [self updateBranchesForRemote:aRemote withBlock:^{
-      [blockGroup leave];
-    }];
-  }
-}
 
-- (void) updateRepositoryIfNeededWithBlock:(void(^)())block
+- (void) updateWithBlock:(void(^)())block
 {
   block = [[block copy] autorelease];
-  GBRepository* repo = self.repository;
   
-  [self pushSpinning];
-  [self updateCurrentBranchesIfNeededWithBlock:^{
-    if (needsLocalBranchesUpdate)
-    {
-      needsLocalBranchesUpdate = NO;
-      [self updateLocalBranchesAndTags];
-    }
-    if (needsRemotesUpdate)
-    {
-      needsRemotesUpdate = NO;
-      [self pushSpinning];
-      [self pushRemoteBranchesDisabled];
-      [repo updateRemotesWithBlock:^{
-        for (GBRemote* aRemote in repo.remotes)
-        {
-          [self updateBranchesForRemote:aRemote withBlock:nil];
-        }
-        [self popSpinning];
-        [self popRemoteBranchesDisabled];
-      }];
-    }
-    if (needsCommitsUpdate)
-    {
-      needsCommitsUpdate = NO;
-      [self loadCommitsWithBlock:block];
-    }
-    else
-    {
-      if (block) block();
-    }
-    [self popSpinning];
+  [self pushFSEventsPause];
+  [self updateLocalRefsWithBlock:^{
+    [self loadCommits];
+    [self updateRemoteRefsWithBlock:block];
+    [self popFSEventsPause];
   }];
   
   if (!self.selectedCommit && self.repository.stage)
   {
     [self selectCommit:self.repository.stage];
   }
-}
-
-
-- (void) updateCurrentBranchesIfNeededWithBlock:(void(^)())block
-{
-  block = [[block copy] autorelease];
-  GBRepository* repo = self.repository;
-  
-  if (!repo.currentLocalRef)
-  {
-    repo.currentLocalRef = [repo loadCurrentLocalRef];
-  }
-  
-  if (repo.currentLocalRef && !repo.currentLocalRef.configuredRemoteBranch)
-  {
-    [self pushSpinning];
-    [repo.currentLocalRef loadConfiguredRemoteBranchWithBlock:^{
-      repo.currentRemoteBranch = repo.currentLocalRef.configuredRemoteBranch;
-      if ([self.delegate respondsToSelector:@selector(repositoryControllerDidUpdateRemoteBranches:)]) { [self.delegate repositoryControllerDidUpdateRemoteBranches:self]; }
-      if (block) block();
-      [self popSpinning];
-    }];
-  }
   else
   {
-    if (block) block();
+    [self loadStageChanges];
   }
+  
+//  block = [[block copy] autorelease];
+//  GBRepository* repo = self.repository;
+//  
+//  [self pushSpinning];
+//  [self updateCurrentBranchesIfNeededWithBlock:^{
+//    if (needsLocalBranchesUpdate)
+//    {
+//      needsLocalBranchesUpdate = NO;
+//      [self updateLocalBranchesAndTags];
+//    }
+//    if (needsRemotesUpdate)
+//    {
+//      needsRemotesUpdate = NO;
+//      [self pushSpinning];
+//      [self pushRemoteBranchesDisabled];
+//      [repo loadRemotesWithBlock:^{
+//        for (GBRemote* aRemote in repo.remotes)
+//        {
+//          [self updateBranchesForRemote:aRemote withBlock:nil];
+//        }
+//        [self popSpinning];
+//        [self popRemoteBranchesDisabled];
+//      }];
+//    }
+//    if (needsCommitsUpdate)
+//    {
+//      needsCommitsUpdate = NO;
+//      [self loadCommitsWithBlock:block];
+//    }
+//    else
+//    {
+//      if (block) block();
+//    }
+//    [self popSpinning];
+//  }];
+//  
+//  if (!self.selectedCommit && self.repository.stage)
+//  {
+//    [self selectCommit:self.repository.stage];
+//  }
 }
+
+
+//- (void) updateCurrentBranchesIfNeededWithBlock:(void(^)())block
+//{
+//  block = [[block copy] autorelease];
+//  GBRepository* repo = self.repository;
+//  
+//  if (!repo.currentLocalRef)
+//  {
+//    repo.currentLocalRef = [repo loadCurrentLocalRef];
+//  }
+//  
+//  if (repo.currentLocalRef && !repo.currentLocalRef.configuredRemoteBranch)
+//  {
+//    [self pushSpinning];
+//    [repo.currentLocalRef loadConfiguredRemoteBranchWithBlock:^{
+//      repo.currentRemoteBranch = repo.currentLocalRef.configuredRemoteBranch;
+//      if ([self.delegate respondsToSelector:@selector(repositoryControllerDidUpdateRemoteBranches:)]) { [self.delegate repositoryControllerDidUpdateRemoteBranches:self]; }
+//      if (block) block();
+//      [self popSpinning];
+//    }];
+//  }
+//  else
+//  {
+//    if (block) block();
+//  }
+//}
 
 
 
@@ -336,22 +376,25 @@
   
   [self pushDisabled];
   [self pushSpinning];
+  [self pushFSEventsPause];
   
+  // clear existing commits before switching
   repo.localBranchCommits = nil;
-  
   if ([self.delegate respondsToSelector:@selector(repositoryControllerDidUpdateCommits:)]) [self.delegate repositoryControllerDidUpdateCommits:self];
+  
   checkoutBlock(^{
     
-    repo.currentLocalRef = nil;
-    repo.currentRemoteBranch = nil;
-    [self updateCurrentBranchesIfNeededWithBlock:^{
+    [self loadStageChanges];
+    [self updateLocalRefsWithBlock:^{
       if ([self.delegate respondsToSelector:@selector(repositoryControllerDidCheckoutBranch:)]) { [self.delegate repositoryControllerDidCheckoutBranch:self]; }
-      [self updateLocalBranchesAndTags];
-      [self updateRemoteBranchesWithBlock:nil];
+
       [self loadCommits];
+      
       [self popDisabled];
       [self popSpinning];
+      [self popFSEventsPause];
     }];
+    
   });
 }
 
@@ -384,11 +427,12 @@
   [self resetAutoFetchInterval];
   self.repository.currentRemoteBranch = remoteBranch;
   [self.repository configureTrackingRemoteBranch:remoteBranch 
-                                   withLocalName:self.repository.currentLocalRef.name 
-                                           block:^{
-                                             if ([self.delegate respondsToSelector:@selector(repositoryControllerDidChangeRemoteBranch:)]) { [self.delegate repositoryControllerDidChangeRemoteBranch:self]; }
-                                             [self loadCommits];
-                                           }];
+    withLocalName:self.repository.currentLocalRef.name 
+    block:^{
+      if ([self.delegate respondsToSelector:@selector(repositoryControllerDidChangeRemoteBranch:)]) { [self.delegate repositoryControllerDidChangeRemoteBranch:self]; }
+      [self loadCommits];
+      [self updateRemoteRefsWithBlock:nil];
+    }];
 }
 
 - (void) createAndSelectRemoteBranchWithName:(NSString*)name remote:(GBRemote*)aRemote
@@ -399,7 +443,6 @@
   remoteBranch.name = name;
   remoteBranch.remoteAlias = aRemote.alias;
   remoteBranch.remote = aRemote;
-  remoteBranch.isNewRemoteBranch = YES;
   [aRemote addNewBranch:remoteBranch];
   [self selectRemoteBranch:remoteBranch];
 }
@@ -410,7 +453,7 @@
 
 - (void) workingDirectoryStateDidChange
 {
-  [self loadChangesForCommit:self.repository.stage];
+  [self loadStageChanges];
 }
 
 - (void) dotgitStateDidChange
@@ -418,22 +461,34 @@
   // TODO: reset the interval only when the origin of this change was not the recent autoFetch.
   //       Should add some smart logic to handle this.
   // [self resetAutoFetchInterval];
+  //NSLog(@"%@ %@ (%@)", [self class], NSStringFromSelector(_cmd), [self nameForSourceList]);
   
   GBRepository* repo = self.repository;
   
-  [self pushDisabled];
-  [self pushSpinning];
+  if (!repo) return;
   
-  repo.currentLocalRef = nil;
-  repo.currentRemoteBranch = nil;
-  [self updateCurrentBranchesIfNeededWithBlock:^{
-    [self updateLocalBranchesAndTags];
+//  [self pushDisabled];
+//  repo.currentLocalRef = nil;
+//  repo.currentRemoteBranch = nil;
+//  [self updateCurrentBranchesIfNeededWithBlock:^{
+//    [self updateLocalBranchesAndTags];
+//    [self loadCommits];
+//    [self loadStageChanges];
+//    [self updateRemoteBranchesWithBlock:nil];
+//    [self popDisabled];
+//    [self popSpinning];
+//  }];
+  
+  //[self pushDisabled];
+  [self pushFSEventsPause];
+  [self loadStageChanges];
+  [self updateLocalRefsWithBlock:^{
     [self loadCommits];
-    [self loadChangesForCommit:repo.stage];
-    [self updateRemoteBranchesWithBlock:nil];
-    [self popDisabled];
-    [self popSpinning];
+    [self updateRemoteRefsWithBlock:^{
+    }];
+    [self popFSEventsPause];
   }];
+  
 }
 
 
@@ -570,6 +625,7 @@
   }
   
   [self pushSpinning];
+  [self pushFSEventsPause];
   isStaging++;
   block(notBusyChanges, stage, ^{
     isStaging--;
@@ -580,6 +636,7 @@
       [self loadStageChanges];
     }
     [self popSpinning];
+    [self popFSEventsPause];
   });
 }
 
@@ -642,15 +699,17 @@
   if (self.isCommitting) return;
   self.isCommitting = YES;
   [self pushSpinning];
+  [self pushFSEventsPause];
   [self.repository commitWithMessage:message block:^{
     self.isCommitting = NO;
+    
     [self loadStageChanges];
-    [self loadCommits];
-    if ([self.repository.localBranches count] < 1)
-    {
-      [self updateLocalBranchesAndTags];
-    }
+    [self updateLocalRefsWithBlock:^{
+      [self loadCommits];
+    }];
+    
     [self popSpinning];
+    [self popFSEventsPause];
     if ([self.delegate respondsToSelector:@selector(repositoryControllerDidCommit:)]) { [self.delegate repositoryControllerDidCommit:self]; }
   }];
 }
@@ -663,23 +722,13 @@
   
   [self pushSpinning];
   [self pushDisabled];
+  [self pushFSEventsPause];
   [self.repository fetchRemote:aRemote withBlock:^{
-    [self loadCommitsWithBlock:block];
-    [self popDisabled];
-    [self popSpinning];
-  }];
-}
-
-- (void) fetchAllWithBlock:(void(^)())block
-{
-  if (!self.repository) return block();
-  
-  block = [[block copy] autorelease];
-  
-  [self pushSpinning];
-  [self pushDisabled];
-  [self.repository fetchRemotes:self.repository.remotes withBlock:^{
-    [self loadCommitsWithBlock:block];
+    [self updateLocalRefsWithBlock:^{
+      [self loadCommitsWithBlock:block];
+      [self updateRemoteRefsWithBlock:nil];
+      [self popFSEventsPause];
+    }];    
     [self popDisabled];
     [self popSpinning];
   }];
@@ -690,10 +739,14 @@
   [self resetAutoFetchInterval];
   [self pushSpinning];
   [self pushDisabled];
+  [self pushFSEventsPause];
   [self.repository fetchCurrentBranchWithBlock:^{
     [self.repository.lastError present];
-    [self loadCommits];
-    [self updateRemoteBranchesWithBlock:nil];
+    [self updateLocalRefsWithBlock:^{
+      [self loadCommits];
+      [self updateRemoteRefsWithBlock:nil];
+      [self popFSEventsPause];
+    }];
     [self popDisabled];
     [self popSpinning];
   }];
@@ -704,9 +757,14 @@
   [self resetAutoFetchInterval];
   [self pushSpinning];
   [self pushDisabled];
+  [self pushFSEventsPause];
   [self.repository pullOrMergeWithBlock:^{
-    [self loadCommits];
-    [self updateRemoteBranchesWithBlock:nil];
+    [self loadStageChanges];
+    [self updateLocalRefsWithBlock:^{
+      [self loadCommits];
+      [self updateRemoteRefsWithBlock:nil];
+      [self popFSEventsPause];
+    }];
     [self popDisabled];
     [self popSpinning];
   }];
@@ -717,11 +775,15 @@
   [self resetAutoFetchInterval];
   [self pushSpinning];
   [self pushDisabled];
+  [self pushFSEventsPause];
   [self.repository pushWithBlock:^{
-    [self loadCommits];
-    [self updateRemoteBranchesWithBlock:nil];
-    [self popDisabled];
+    [self updateLocalRefsWithBlock:^{
+      [self loadCommits];
+      [self updateRemoteRefsWithBlock:nil];
+      [self popFSEventsPause];
+    }];
     [self popSpinning];
+    [self popDisabled];
   }];
 }
 
@@ -793,7 +855,6 @@
 
 - (void) pushSpinning
 {
-  [self pushFSEventsPause];
   self.isSpinning++;
   if (self.isSpinning == 1) 
   {
@@ -803,7 +864,6 @@
 
 - (void) popSpinning
 {
-  [self popFSEventsPause];
   self.isSpinning--;
   if (self.isSpinning == 0)
   {
@@ -814,13 +874,13 @@
 
 
 
-- (void) updateLocalBranchesAndTags
-{
-  [self.repository updateLocalBranchesAndTagsWithBlock:^{
-    if ([self.delegate respondsToSelector:@selector(repositoryControllerDidUpdateLocalBranches:)]) { [self.delegate repositoryControllerDidUpdateLocalBranches:self]; }
-  }];  
-}
-
+//- (void) updateLocalBranchesAndTags
+//{
+//  [self.repository loadLocalRefsWithBlock:^{
+//    if ([self.delegate respondsToSelector:@selector(repositoryControllerDidUpdateLocalBranches:)]) { [self.delegate repositoryControllerDidUpdateLocalBranches:self]; }
+//  }];  
+//}
+//
 
 - (void) loadCommits
 {
@@ -837,7 +897,7 @@
     return;
   }
   
-  [self pushSpinning];
+  //[self pushSpinning];
   NSString* oldTopCommitId = self.repository.topCommitId;
   [self.repository updateLocalBranchCommitsWithBlock:^{
     NSString* newTopCommitId = self.repository.topCommitId;
@@ -847,25 +907,27 @@
     }
     if ([self.delegate respondsToSelector:@selector(repositoryControllerDidUpdateCommits:)]) { [self.delegate repositoryControllerDidUpdateCommits:self]; }
     
-    OABlockGroup* blockGroup = [OABlockGroup groupWithBlock:block];
+    [OABlockGroup groupBlock:^(OABlockGroup* blockGroup){
+      
+      [blockGroup enter];
+      [self pushFSEventsPause];
+      [self.repository updateUnmergedCommitsWithBlock:^{
+        if ([self.delegate respondsToSelector:@selector(repositoryControllerDidUpdateCommits:)]) { [self.delegate repositoryControllerDidUpdateCommits:self]; }
+        [self popFSEventsPause];
+        [blockGroup leave];
+      }];
+      
+      [blockGroup enter];
+      [self pushFSEventsPause];
+      [self.repository updateUnpushedCommitsWithBlock:^{
+        if ([self.delegate respondsToSelector:@selector(repositoryControllerDidUpdateCommits:)]) { [self.delegate repositoryControllerDidUpdateCommits:self]; }
+        [self popFSEventsPause];
+        [blockGroup leave];
+      }];
+      
+    } continuation: block];
     
-    [blockGroup enter];
-    [self pushFSEventsPause];
-    [self.repository updateUnmergedCommitsWithBlock:^{
-      if ([self.delegate respondsToSelector:@selector(repositoryControllerDidUpdateCommits:)]) { [self.delegate repositoryControllerDidUpdateCommits:self]; }
-      [self popFSEventsPause];
-      [blockGroup leave];
-    }];
-    
-    [blockGroup enter];
-    [self pushFSEventsPause];
-    [self.repository updateUnpushedCommitsWithBlock:^{
-      if ([self.delegate respondsToSelector:@selector(repositoryControllerDidUpdateCommits:)]) { [self.delegate repositoryControllerDidUpdateCommits:self]; }
-      [self popFSEventsPause];
-      [blockGroup leave];
-    }];
-    
-    [self popSpinning];
+    //[self popSpinning];
   }];
 }
 
@@ -890,6 +952,11 @@
 - (void) loadChangesForCommit:(GBCommit*)commit
 {
   if (!commit) return;
+  if (commit == self.repository.stage)
+  {
+    [self loadStageChanges];
+    return;
+  }
   [self pushFSEventsPause];
   [commit loadChangesWithBlock:^{
     if ([self.delegate respondsToSelector:@selector(repositoryControllerDidUpdateCommitChanges:)]) { [self.delegate repositoryControllerDidUpdateCommitChanges:self]; }
@@ -953,7 +1020,7 @@
 {
   //NSLog(@"GBRepositoryController: autoFetch into %@ (delay: %f)", [self url], autoFetchInterval);
   while (autoFetchInterval > 300.0) autoFetchInterval -= 100.0;
-  autoFetchInterval = autoFetchInterval*(1.5 + drand48()*0.5);
+  autoFetchInterval = autoFetchInterval*(1.3 + drand48()*0.5);
   
   [self scheduleAutoFetch];
   
@@ -962,10 +1029,10 @@
   
   if ([self isConnectionAvailable])
   {
-    //NSLog(@"autoFetch: self.updatesQueue = %d / %d [%@]", (int)self.updatesQueue.operationCount, (int)[self.updatesQueue.queue count], [self nameForSourceList]);
+    //NSLog(@"AutoFetch: self.updatesQueue = %d / %d [%@]", (int)self.updatesQueue.operationCount, (int)[self.updatesQueue.queue count], [self nameForSourceList]);
     [self.updatesQueue addBlock:^{
-      //NSLog(@"AutoFetch: start %@", self.repository.url);      
-      [self updateRemoteBranchesWithBlock:^{
+      //NSLog(@"AutoFetch: start %@", [self nameForSourceList]);
+      [self updateRemoteRefsWithBlock:^{
         //NSLog(@"AutoFetch: end %@", [self nameForSourceList]);
         [self.updatesQueue endBlock];
       }];

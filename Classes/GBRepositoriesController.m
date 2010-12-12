@@ -217,12 +217,11 @@
   
   repoCtrl.updatesQueue = self.localRepositoriesUpdatesQueue;
   
-  [repoCtrl setNeedsUpdateEverything];
   [repoCtrl start];
 
   [self.localRepositoriesUpdatesQueue addBlock:^{
     //NSLog(@"Updating repo %@", [repoCtrl nameForSourceList]);
-    [repoCtrl updateRepositoryIfNeededWithBlock:^{
+    [repoCtrl updateWithBlock:^{
       //NSLog(@"End updating repo %@", [repoCtrl nameForSourceList]);
       [self.localRepositoriesUpdatesQueue endBlock];
     }];
@@ -250,17 +249,9 @@
 {
   if ([self.delegate respondsToSelector:@selector(repositoriesController:willSelectRepository:)]) { [self.delegate repositoriesController:self willSelectRepository:repoCtrl]; }
   self.selectedRepositoryController = repoCtrl;
-  [repoCtrl updateRepositoryIfNeeded];
+  
   if ([self.delegate respondsToSelector:@selector(repositoriesController:didSelectRepository:)]) { [self.delegate repositoriesController:self didSelectRepository:repoCtrl]; }
   [self.selectedRepositoryController didSelect];
-}
-
-- (void) setNeedsUpdateEverything
-{
-  for (GBBaseRepositoryController* repoCtrl in self.localRepositoryControllers)
-  {
-    [repoCtrl setNeedsUpdateEverything];
-  }
 }
 
 - (void) beginBackgroundUpdate

@@ -22,9 +22,7 @@
 - (NSString*) windowTitle;
 - (NSURL*) windowRepresentedURL;
 
-- (void) setNeedsUpdateEverything;
-- (void) updateRepositoryIfNeeded;
-- (void) updateRepositoryIfNeededWithBlock:(void(^)())block;
+- (void) updateWithBlock:(void(^)())block;
 
 - (void) beginBackgroundUpdate;
 - (void) endBackgroundUpdate;

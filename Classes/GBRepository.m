@@ -16,10 +16,9 @@
 
 - (void) captureErrorForTask:(OATask*)aTask withBlock:(NSError*(^)())block continuation:(void(^)())continuation;
 
-- (GBRef*) loadCurrentLocalRef;
-- (void) updateLocalBranchesAndTagsWithBlock:(void(^)())block;
-- (void) updateRemotesWithBlock:(void(^)())block;
-
+- (void) loadCurrentLocalRefWithBlock:(void(^)())block;
+- (void) loadLocalRefsWithBlock:(void(^)())block;
+- (void) loadRemotesWithBlock:(void(^)())block;
 
 @end
 
@@ -40,7 +39,6 @@
 @synthesize dispatchQueue;
 @synthesize lastError;
 
-@synthesize needsReloadLocalCommits;
 @synthesize unmergedCommitsCount;
 @synthesize unpushedCommitsCount;
 
@@ -292,6 +290,26 @@
   return list;
 }
 
+- (BOOL) doesRefExist:(GBRef*)ref
+{
+  // For now, the only case when ref can be created in UI, but does not have any commit id is a new remote branch.
+  // This method will return NO only if the ref is a remote branch and not found in currently loaded remote branches.
+  
+  if (!ref) return NO;
+  if (![ref isRemoteBranch]) return YES;
+  if (!ref.name)
+  {
+    NSLog(@"WARNING: %@ %@ ref %@ is expected to have a name", [self class], NSStringFromSelector(_cmd), ref);
+    return NO;
+  }
+  
+  // Note: don't use ref.remote to avoid stale data (just in case)
+  GBRemote* remote = [self.remotes objectWithValue:ref.remoteAlias forKey:@"alias"];
+  
+  if (!remote) return NO;
+  
+  return [[remote.branches valueForKey:@"name"] containsObject:ref.name];
+}
 
 
 
@@ -302,8 +320,65 @@
 
 
 
+- (void) updateLocalRefsWithBlock:(void(^)())block
+{
+  block = [[block copy] autorelease];
+  
+  [self loadRemotesWithBlock:^{
+    [self loadLocalRefsWithBlock:^{
+      [self loadCurrentLocalRefWithBlock:^{
+        [self.currentLocalRef loadConfiguredRemoteBranchWithBlock:^{
+          if (block) block();
+        }];
+      }];
+    }];
+  }];
+  
+}
 
-- (GBRef*) loadCurrentLocalRef
+
+- (void) loadRemotesWithBlock:(void(^)())block
+{
+  block = [[block copy] autorelease];
+  GBRemotesTask* task = [GBRemotesTask task];
+  task.repository = self;
+  [task launchWithBlock:^{
+    
+    for (GBRemote* newRemote in task.remotes)
+    {
+      for (GBRemote* oldRemote in self.remotes)
+      {
+        [newRemote copyInterestingDataFromRemoteIfApplicable:oldRemote];
+      }
+    }
+    
+    self.remotes = task.remotes;
+    if (block) block();
+  }];
+}
+
+
+- (void) loadLocalRefsWithBlock:(void(^)())block
+{
+  block = [[block copy] autorelease];
+  GBLocalRefsTask* task = [GBLocalRefsTask task];
+  task.repository = self;
+  [task launchWithBlock:^{
+    self.localBranches = task.branches;
+    self.tags = task.tags;
+    
+    for (NSString* remoteAlias in task.remoteBranchesByRemoteAlias)
+    {
+      GBRemote* aRemote = [self.remotes objectWithValue:remoteAlias forKey:@"alias"];
+      aRemote.branches = [task.remoteBranchesByRemoteAlias objectForKey:remoteAlias];
+    }
+    
+    if (block) block();
+  }];
+}
+
+
+- (void) loadCurrentLocalRefWithBlock:(void(^)())block
 {
   NSError* outError = nil;
   NSString* HEAD = [NSString stringWithContentsOfURL:[self gitURLWithSuffix:@"HEAD"]
@@ -311,7 +386,7 @@
                                                error:&outError];
   if (!HEAD)
   {
-    NSLog(@"GBRepository: loadcurrentLocalRef error: %@", outError);
+    NSLog(@"%@ %@ error: %@", [self class], NSStringFromSelector(_cmd), outError);
   }
   HEAD = [HEAD stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
   NSString* refprefix = @"ref: refs/heads/";
@@ -325,32 +400,64 @@
   {
     ref.commitId = HEAD;
   }
-  return ref;
+  
+  if (ref.name)
+  {
+    // try to find an existing ref in the list
+    NSArray* refsList = self.localBranches;
+    if ([ref isTag]) refsList = self.tags;
+    GBRef* existingRef = [refsList objectWithValue:ref.name forKey:@"name"];
+    if (existingRef)
+    {
+      ref = existingRef;
+    }
+    else
+    {
+      NSLog(@"WARNING: %@ %@: cannot find head ref %@ in local branches or tags.", [self class], NSStringFromSelector(_cmd), ref);
+    }
+  }
+  self.currentLocalRef = ref;
+  if (block) block();
 }
 
 
-- (void) updateLocalBranchesAndTagsWithBlock:(void(^)())block
-{
-  block = [[block copy] autorelease];
-  GBLocalRefsTask* task = [GBLocalRefsTask task];
-  task.repository = self;
-  [task launchWithBlock:^{
-    self.localBranches = task.branches;
-    self.tags = task.tags;
-    if (block) block();
-  }];
-}
 
-- (void) updateRemotesWithBlock:(void(^)())block
-{
-  block = [[block copy] autorelease];
-  GBRemotesTask* task = [GBRemotesTask task];
-  task.repository = self;
-  [task launchWithBlock:^{
-    self.remotes = task.remotes;
-    if (block) block();
-  }];
-}
+//#warning Deprecated method loadCurrentLocalRef
+//- (GBRef*) loadCurrentLocalRef
+//{
+//  NSError* outError = nil;
+//  NSString* HEAD = [NSString stringWithContentsOfURL:[self gitURLWithSuffix:@"HEAD"]
+//                                            encoding:NSUTF8StringEncoding 
+//                                               error:&outError];
+//  if (!HEAD)
+//  {
+//    NSLog(@"GBRepository: loadcurrentLocalRef error: %@", outError);
+//  }
+//  HEAD = [HEAD stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+//  NSString* refprefix = @"ref: refs/heads/";
+//  GBRef* ref = [[GBRef new] autorelease];
+//  ref.repository = self;
+//  if ([HEAD hasPrefix:refprefix])
+//  {
+//    ref.name = [HEAD substringFromIndex:[refprefix length]];
+//  }
+//  else // assuming SHA1 ref
+//  {
+//    ref.commitId = HEAD;
+//  }
+//  
+//  return ref;
+//}
+
+
+
+
+
+
+
+
+
+
 
 - (void) updateLocalBranchCommitsWithBlock:(void(^)())block
 {
@@ -358,7 +465,10 @@
   GBHistoryTask* task = [GBHistoryTask task];
   task.repository = self;
   task.branch = self.currentLocalRef;
-  task.joinedBranch = self.currentRemoteBranch;
+  if ([self doesRefExist:self.currentRemoteBranch])
+  {
+    task.joinedBranch = self.currentRemoteBranch;
+  }
 
   [task launchWithBlock:^{
     
@@ -372,6 +482,12 @@
 
 - (void) updateUnmergedCommitsWithBlock:(void(^)())block
 {
+  if (![self doesRefExist:self.currentRemoteBranch]) // no commits to be unmerged, returning now
+  {
+    if (block) block();
+    return;
+  }
+  
   block = [[block copy] autorelease];
   GBHistoryTask* task = [GBHistoryTask task];
   task.repository = self;
@@ -406,7 +522,11 @@
   GBHistoryTask* task = [GBHistoryTask task];
   task.repository = self;
   task.branch = self.currentLocalRef;
-  task.substructedBranch = self.currentRemoteBranch;
+  if ([self doesRefExist:self.currentRemoteBranch])
+  {
+    task.substructedBranch = self.currentRemoteBranch;
+  }
+  
   [task launchWithBlock:^{
     NSArray* allCommits = self.localBranchCommits;
     self.unpushedCommitsCount = [task.commits count];
@@ -440,27 +560,28 @@
     if (block) block();
     return;
   }
-  OABlockGroup* blockGroup = [OABlockGroup groupWithBlock:block];
   
-  GBTask* task1 = [self task];
-  task1.arguments = [NSArray arrayWithObjects:@"config", 
-                     [NSString stringWithFormat:@"branch.%@.remote", name], 
-                     ref.remoteAlias, 
-                     nil];
-  [blockGroup enter];
-  [self launchTask:task1 withBlock:^{
-    [blockGroup leave];
-  }];
-  GBTask* task2 = [self task];
-  task2.arguments = [NSArray arrayWithObjects:@"config", 
-                     [NSString stringWithFormat:@"branch.%@.merge", name],
-                     [NSString stringWithFormat:@"refs/heads/%@", ref.name],
-                     nil];
-  [blockGroup enter];
-  [self launchTask:task2 withBlock:^{
-    [task2 showErrorIfNeeded];
-    [blockGroup leave];
-  }];
+  [OABlockGroup groupBlock:^(OABlockGroup* blockGroup){
+    GBTask* task1 = [self task];
+    task1.arguments = [NSArray arrayWithObjects:@"config", 
+                       [NSString stringWithFormat:@"branch.%@.remote", name], 
+                       ref.remoteAlias, 
+                       nil];
+    [blockGroup enter];
+    [self launchTask:task1 withBlock:^{
+      [blockGroup leave];
+    }];
+    GBTask* task2 = [self task];
+    task2.arguments = [NSArray arrayWithObjects:@"config", 
+                       [NSString stringWithFormat:@"branch.%@.merge", name],
+                       [NSString stringWithFormat:@"refs/heads/%@", ref.name],
+                       nil];
+    [blockGroup enter];
+    [self launchTask:task2 withBlock:^{
+      [task2 showErrorIfNeeded];
+      [blockGroup leave];
+    }];
+  } continuation:block];
 }
 
 
@@ -709,7 +830,6 @@
       [self alertWithMessage: @"Push failed" description:[task.output UTF8String]];
     }
 
-    aRemoteBranch.isNewRemoteBranch = NO;
     if (block) block();
   }];   
 }
@@ -733,14 +853,6 @@
 - (void) launchTask:(OATask*)aTask withBlock:(void(^)())block
 {
   [aTask launchInQueue:self.dispatchQueue withBlock:block];
-}
-
-- (void) dispatchBlock:(void(^)())block
-{
-  block = [[block copy] autorelease];
-  dispatch_async(self.dispatchQueue, ^{
-    dispatch_async(dispatch_get_main_queue(), block);
-  });
 }
 
 - (id) launchTaskAndWait:(GBTask*)aTask

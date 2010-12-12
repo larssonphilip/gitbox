@@ -105,8 +105,9 @@
 
 - (void) doneEditRepositories:(GBRemotesController*)remotesController
 {
-  [[self selectedRepositoryController] setNeedsUpdateEverything];
-  [[self selectedRepositoryController] updateRepositoryIfNeeded];
+  // Should be replaced by FSEvents update
+//  [[self selectedRepositoryController] setNeedsUpdateEverything];
+//  [[self selectedRepositoryController] updateRepositoryIfNeeded];
   [self endSheetForController:remotesController];
 }
 
@@ -389,19 +390,12 @@
   self.historyController.commits = [repoCtrl commits];
 }
 
-- (void) repositoryControllerDidUpdateLocalBranches:(GBRepositoryController*)repoCtrl
+- (void) repositoryControllerDidUpdateRefs:(GBRepositoryController*)repoCtrl
 {
   [self.sourcesController updateBadges];
   if (![self isSelectedRepositoryController:repoCtrl]) return;
   [self.toolbarController updateBranchMenus];
   [self.toolbarController updateDisabledState];
-}
-
-- (void) repositoryControllerDidUpdateRemoteBranches:(GBRepositoryController*)repoCtrl
-{
-  [self.sourcesController updateBadges];
-  if (![self isSelectedRepositoryController:repoCtrl]) return;
-  [self.toolbarController updateBranchMenus];
 }
 
 - (void) repositoryControllerDidCheckoutBranch:(GBRepositoryController*)repoCtrl

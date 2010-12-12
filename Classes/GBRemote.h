@@ -6,12 +6,9 @@
 @property(nonatomic,retain) NSString* URLString;
 @property(nonatomic,retain) NSArray* branches;
 @property(nonatomic,retain) NSArray* newBranches;
-@property(nonatomic,retain) NSArray* tags;
+//@property(nonatomic,retain) NSArray* tags;
 
 @property(nonatomic,assign) BOOL needsFetch;
-//@property(nonatomic,retain) NSArray* branchesToFetch;
-//@property(nonatomic,retain) NSArray* tagsToFetch;
-
 @property(nonatomic,assign) GBRepository* repository;
 
 
@@ -19,6 +16,7 @@
 
 - (GBRef*) defaultBranch;
 - (NSArray*) pushedAndNewBranches;
+- (BOOL) copyInterestingDataFromRemoteIfApplicable:(GBRemote*)otherRemote;
 
 
 #pragma mark Actions

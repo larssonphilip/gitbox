@@ -11,7 +11,6 @@
 @synthesize configuredRemoteBranch;
 
 @synthesize isTag;
-@synthesize isNewRemoteBranch;
 @synthesize repository;
 @synthesize remote;
 
@@ -27,7 +26,6 @@
 // tries to satisfy name equality.
 - (BOOL) isEqual:(id)object
 {
-  //NSLog(@"TODO: GBRef isEqual: check if we need this method!");
   if (self == object) return YES;
   if (![object isKindOfClass:[self class]]) return NO;
   
@@ -97,18 +95,20 @@
 
 - (NSString*) description
 {
-  return [NSString stringWithFormat:@"<%@:%p name:%@ commit:%@%@>", [self class], self, [self nameWithRemoteAlias], self.commitId, [self isNewRemoteBranch] ? @" new remote branch" : @""];
+  return [NSString stringWithFormat:@"<%@:%p name:%@ commit:%@>", [self class], self, [self nameWithRemoteAlias], self.commitId];
 }
 
 
 - (void) loadConfiguredRemoteBranchWithBlock:(void(^)())block
 {
+  block = [[block copy] autorelease];
   GBLocalRemoteAssociationTask* task = [GBLocalRemoteAssociationTask task];
   task.localBranchName = self.name;
   task.repository = self.repository;
   [task launchWithBlock:^{
+    //NSLog(@"%@ %@ loaded configured branch: %@", [self class], NSStringFromSelector(_cmd), task.remoteBranch);
     self.configuredRemoteBranch = task.remoteBranch;
-    block();
+    if (block) block();
   }];
 }
 

@@ -26,7 +26,6 @@
 - (void) addLocalRepositoryController:(GBBaseRepositoryController*)repoCtrl;
 - (void) removeLocalRepositoryController:(GBBaseRepositoryController*)repoCtrl;
 - (void) selectRepositoryController:(GBBaseRepositoryController*) repoCtrl;
-- (void) setNeedsUpdateEverything;
 - (void) beginBackgroundUpdate;
 - (void) endBackgroundUpdate;
 

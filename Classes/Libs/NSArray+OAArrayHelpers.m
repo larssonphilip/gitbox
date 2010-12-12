@@ -44,6 +44,30 @@
   return YES;
 }
 
+- (id) objectWithValue:(id)value forKey:(NSString*)key
+{
+  for (id obj in self)
+  {
+    if ([[obj valueForKey:key] isEqual:value])
+    {
+      return obj;
+    }
+  }
+  return nil;
+}
+
+- (id) objectWithValue:(id)value forKeyPath:(NSString*)keyPath
+{
+  for (id obj in self)
+  {
+    if ([[obj valueForKeyPath:keyPath] isEqual:value])
+    {
+      return obj;
+    }
+  }
+  return nil;
+}
+
 @end
 
 

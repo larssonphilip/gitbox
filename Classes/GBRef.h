@@ -8,7 +8,6 @@
 @property(nonatomic, retain) GBRef* configuredRemoteBranch;
 
 @property(nonatomic, assign) BOOL isTag;
-@property(nonatomic, assign) BOOL isNewRemoteBranch;
 @property(nonatomic, assign) GBRepository* repository;
 @property(nonatomic, assign) GBRemote* remote;
 

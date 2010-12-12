@@ -7,8 +7,9 @@
 - (void) repositoryControllerDidChangeDisabledStatus:(GBRepositoryController*)repoCtrl;
 - (void) repositoryControllerDidChangeSpinningStatus:(GBRepositoryController*)repoCtrl;
 - (void) repositoryControllerDidUpdateCommits:(GBRepositoryController*)repoCtrl;
-- (void) repositoryControllerDidUpdateLocalBranches:(GBRepositoryController*)repoCtrl;
-- (void) repositoryControllerDidUpdateRemoteBranches:(GBRepositoryController*)repoCtrl;
+
+- (void) repositoryControllerDidUpdateRefs:(GBRepositoryController*)repoCtrl;
+
 - (void) repositoryControllerDidCheckoutBranch:(GBRepositoryController*)repoCtrl;
 - (void) repositoryControllerDidChangeRemoteBranch:(GBRepositoryController*)repoCtrl;
 - (void) repositoryControllerDidSelectCommit:(GBRepositoryController*)repoCtrl;

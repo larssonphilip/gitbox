@@ -68,7 +68,7 @@ void OAFSEventStreamCallback( ConstFSEventStreamRef streamRef,
   streamContext.release = NULL;
   streamContext.copyDescription = NULL;
   
-  CFAbsoluteTime latency = 0.2; /* seconds */
+  CFAbsoluteTime latency = 0.1; /* seconds */
   
   /* Create the stream, passing in a callback */
   streamRef = FSEventStreamCreate(NULL,
@@ -151,7 +151,7 @@ void OAFSEventStreamCallback( ConstFSEventStreamRef streamRef,
                                              object:watchedPath];
   [self performSelector:@selector(delayedCallbackForPath:)
              withObject:watchedPath
-             afterDelay:0.7];
+             afterDelay:0.3];
 }
 
 - (void) delayedCallbackForPath:(NSString*)watchedPath

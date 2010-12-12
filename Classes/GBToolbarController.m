@@ -245,7 +245,7 @@
         NSMenu* remoteMenu = [[NSMenu new] autorelease];
         for (GBRef* branch in remote.branches)
         {
-          if (!branch.isNewRemoteBranch)
+          if ([repo doesRefExist:branch])
           {
             NSMenuItem* item = [[NSMenuItem new] autorelease];
             [item setTitle:branch.name];
@@ -263,7 +263,7 @@
   {
     for (GBRef* branch in [[repo.remotes firstObject] branches])
     {
-      if (!branch.isNewRemoteBranch)
+      if ([repo doesRefExist:branch])
       {
         NSMenuItem* item = [[NSMenuItem new] autorelease];
         [item setTitle:[branch nameWithRemoteAlias]];

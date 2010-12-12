@@ -1,38 +1,42 @@
 #import "OABlockGroup.h"
 
+@interface OABlockGroup ()
+@property(nonatomic, copy) void(^block)();
+@property(nonatomic, assign) BOOL isWrapped;
+@property(nonatomic, assign) int counter;
+@end
+
 @implementation OABlockGroup
 @synthesize block;
+@synthesize isWrapped;
+@synthesize counter;
 
-+ (OABlockGroup*) groupWithBlock:(void(^)())block
++ (void) groupBlock:(void(^)(OABlockGroup*))groupBlock continuation:(void(^)())continuationBlock
 {
   OABlockGroup* group = [[self new] autorelease];
-  group.block = [[block copy] autorelease];
-  return group;
+  group.block = continuationBlock;
+  group.isWrapped = YES;
+  [group enter];
+  groupBlock(group);
+  [group leave];
 }
 
 - (void) dealloc
 {
-  // This call will help to call the block when nothing entered/leaved the block (imagine a loop over an empty array).
-  // This theoretically might not be always safe, so it's better to wrap all async calls with enter/leave pair of messages.
-  [self verify]; 
   self.block = nil;
   [super dealloc];
 }
 
 - (void) enter
 {
+  NSAssert(isWrapped, @"OABlockGroup: enter called without wrapping a block");
   counter++;
 }
 
 - (void) leave
 {
   counter--;
-  [self verify];
-}
-
-- (void) verify
-{
-  if (counter <= 0)
+  if (counter == 0)
   {
     if (self.block) self.block();
     self.block = nil;

@@ -26,7 +26,6 @@
 @property(nonatomic, retain) NSError* lastError;
 @property(nonatomic, assign) dispatch_queue_t dispatchQueue;
 
-@property(nonatomic, assign) BOOL needsReloadLocalCommits;
 @property(nonatomic, assign) NSUInteger unmergedCommitsCount;
 @property(nonatomic, assign) NSUInteger unpushedCommitsCount;
 
@@ -54,11 +53,13 @@
 - (NSString*) path;
 - (NSArray*) stageAndCommits;
 - (NSUInteger) totalPendingChanges;
+- (BOOL) doesRefExist:(GBRef*) ref;
 
 
 #pragma mark Update
 
 - (void) updateLocalRefsWithBlock:(void(^)())block;
+
 - (void) updateLocalBranchCommitsWithBlock:(void(^)())block;
 - (void) updateUnmergedCommitsWithBlock:(void(^)())block;
 - (void) updateUnpushedCommitsWithBlock:(void(^)())block;
@@ -89,7 +90,6 @@
 
 - (id) task;
 - (void) launchTask:(OATask*)aTask withBlock:(void(^)())block;
-- (void) dispatchBlock:(void (^)())block;
 - (id) launchTaskAndWait:(GBTask*)aTask;
 - (NSURL*) gitURLWithSuffix:(NSString*)suffix;
 - (NSError*) errorWithCode:(GBErrorCode)aCode

@@ -8,6 +8,9 @@
 - (id) objectAtIndex:(NSUInteger)index or:(id)defaultObject;
 - (BOOL) anyIsTrue:(SEL)selector;
 - (BOOL) allAreTrue:(SEL)selector;
+- (id) objectWithValue:(id)value forKey:(NSString*)key;
+- (id) objectWithValue:(id)value forKeyPath:(NSString*)keyPath;
+
 
 @end
 

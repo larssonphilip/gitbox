@@ -12,11 +12,7 @@
 @class OAFSEventStream;
 
 @interface GBRepositoryController : GBBaseRepositoryController<GBChangeDelegate>
-{
-  BOOL needsLocalBranchesUpdate;
-  BOOL needsRemotesUpdate;
-  BOOL needsCommitsUpdate;
-  
+{  
   NSInteger isStaging; // maintains a count of number of staging tasks running
   NSInteger isLoadingChanges; // maintains a count of number of changes loading tasks running
   
@@ -38,9 +34,6 @@
 + (id) repositoryControllerWithURL:(NSURL*)url;
 
 - (NSArray*) commits;
-
-- (void) setNeedsUpdateEverything;
-- (void) updateRepositoryIfNeededWithBlock:(void(^)())block;
 
 - (void) checkoutRef:(GBRef*) ref;
 - (void) checkoutRef:(GBRef*) ref withNewName:(NSString*)name;
