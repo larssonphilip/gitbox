@@ -40,7 +40,6 @@ WIP:
 - bug: when selected all changes and hit "revert", one change is not reverted
 
 
-
 - feature: checkout a commit from history context menu
 - maybe have 3 repos for free so ppl who don't want to pay just now may start actually using without searching for keygen?
 - bug: when clicked checkbox and want to drag out, it does not undo the action.

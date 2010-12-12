@@ -80,7 +80,7 @@
 dataCellForTableColumn:(NSTableColumn*)aTableColumn
                   row:(NSInteger)rowIndex
 {
-  // according to the documentation, tableView may ask for a tableView separator cell giving a nil table column, so odd...
+  // according to the documentation, tableView may ask for a tableView separator cell giving a nil table column to return a group separator cell
   if (!aTableColumn) return nil;
   
   GBChange* change = [self.changes objectAtIndex:rowIndex];
