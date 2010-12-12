@@ -19,6 +19,9 @@
 
 @interface GBRepositoryController ()
 
+@property(nonatomic,assign) BOOL isCommitting;
+@property(nonatomic,assign) BOOL isUpdatingRemoteRefs;
+
 - (void) pushDisabled;
 - (void) popDisabled;
 
@@ -66,7 +69,9 @@
 
 @synthesize isRemoteBranchesDisabled;
 @synthesize isCommitting;
+@synthesize isUpdatingRemoteRefs;
 @synthesize delegate;
+
 
 - (void) dealloc
 {
@@ -231,6 +236,14 @@
 
 - (void) updateRemoteRefsWithBlock:(void(^)())block
 {
+//  if (self.isUpdatingRemoteRefs)
+//  {
+//    if (block) block();
+//  }
+  self.isUpdatingRemoteRefs = YES;
+  
+  block = [[block copy] autorelease];
+  
   [OABlockGroup groupBlock:^(OABlockGroup* blockGroup){
     for (GBRemote* aRemote in self.repository.remotes)
     {
@@ -239,7 +252,10 @@
         [blockGroup leave];
       }];
     }
-  } continuation:block];
+  } continuation:^{
+    self.isUpdatingRemoteRefs = NO;
+    if (block) block();
+  }];
 }
 
 - (void) updateBranchesForRemote:(GBRemote*)aRemote withBlock:(void(^)())block
@@ -252,11 +268,11 @@
     return;
   }
   
-  //NSLog(@"%@: updating branches for remote %@...", [self class], aRemote.alias);
+  NSLog(@"%@: updating branches for remote %@...", [self class], aRemote.alias);
   [aRemote updateBranchesWithBlock:^{
     if (aRemote.needsFetch)
     {
-      //NSLog(@"%@: updated branches for remote %@; needs fetch! %@", [self class], aRemote.alias, [self longNameForSourceList]);
+      NSLog(@"%@: updated branches for remote %@; needs fetch! %@", [self class], aRemote.alias, [self longNameForSourceList]);
       [self fetchRemote:aRemote withBlock:block];
     }
     else
@@ -388,7 +404,7 @@
 
 - (void) dotgitStateDidChange
 {
-  //NSLog(@"%@ %@ (%@)", [self class], NSStringFromSelector(_cmd), [self nameForSourceList]);
+  NSLog(@"%@ %@ changed .git in %@", [self class], NSStringFromSelector(_cmd), [self nameForSourceList]);
   
   GBRepository* repo = self.repository;
   

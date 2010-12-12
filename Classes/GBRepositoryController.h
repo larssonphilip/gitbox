@@ -28,7 +28,6 @@
 @property(nonatomic,retain) NSData* urlBookmarkData;
 
 @property(nonatomic,assign) NSInteger isRemoteBranchesDisabled;
-@property(nonatomic,assign) BOOL isCommitting;
 @property(nonatomic,assign) id<GBRepositoryControllerDelegate> delegate;
 
 + (id) repositoryControllerWithURL:(NSURL*)url;

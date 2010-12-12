@@ -1,5 +1,5 @@
 #import "GBModels.h"
-#import "GBRemoteBranchesTask.h"
+#import "GBRemoteRefsTask.h"
 
 #import "NSFileManager+OAFileManagerHelpers.h"
 #import "NSArray+OAArrayHelpers.h"
@@ -7,7 +7,7 @@
 
 @interface GBRemote ()
 @property(nonatomic,assign) BOOL isUpdatingRemoteBranches;
-- (void) calculateDifferenceWithNewBranches:(NSArray*)theBranches andTags:(NSArray*)theTags;
+- (BOOL) doesNeedFetchNewBranches:(NSArray*)theBranches andTags:(NSArray*)theTags;
 @end
 
 @implementation GBRemote
@@ -120,24 +120,29 @@
   block = [[block copy] autorelease];
   
   self.isUpdatingRemoteBranches = YES;
-  GBRemoteBranchesTask* task = [GBRemoteBranchesTask task];
+  GBRemoteRefsTask* task = [GBRemoteRefsTask task];
   task.remote = self;
   task.repository = self.repository;
   
   [task launchWithBlock:^{
     self.isUpdatingRemoteBranches = NO;
-    
-    [self calculateDifferenceWithNewBranches:task.branches andTags:task.tags];
-    
-    self.branches = task.branches;
-    //self.tags = task.tags;
-    [self updateNewBranches];
-    if (block) block();
-    self.needsFetch = NO; // reset the status after the callback
+    if (![task isError])
+    {
+      // Do not update branches and tags, but simply tell the caller that it needs to fetch tags and branches for real.
+      self.needsFetch = [self doesNeedFetchNewBranches:task.branches andTags:task.tags];
+      
+      if (block) block();
+      
+      self.needsFetch = NO; // reset the status after the callback
+    }
+    else
+    {
+      if (block) block();
+    }
   }];
 }
 
-- (void) calculateDifferenceWithNewBranches:(NSArray*)theBranches andTags:(NSArray*)theTags
+- (BOOL) doesNeedFetchNewBranches:(NSArray*)theBranches andTags:(NSArray*)theTags
 {
   // Set needsFetch = YES if one of the following is true:
   // 1. There's a new branch
@@ -156,15 +161,13 @@
         foundAnExistingBranch = YES;
         if (![updatedRef.commitId isEqualTo:existingRef.commitId])
         {
-          self.needsFetch = YES;
-          return;
+          return YES;
         }
       }
     }
     if (!foundAnExistingBranch)
     {
-      self.needsFetch = YES;
-      return;
+      return YES;
     }
   }
   
@@ -173,10 +176,10 @@
   
   if ([newTagNames count] > 0)
   {
-    self.needsFetch = YES;
-    return;
+    return YES;
   }
   
+  return NO;
 }
 
 

@@ -1,8 +1,8 @@
-#import "GBRemoteBranchesTask.h"
+#import "GBRemoteRefsTask.h"
 #import "GBModels.h"
 #import "NSData+OADataHelpers.h"
 
-@implementation GBRemoteBranchesTask
+@implementation GBRemoteRefsTask
 
 @synthesize branches;
 @synthesize tags;
@@ -43,7 +43,14 @@
         NSString* commitId = [commitAndRef objectAtIndex:0];
         NSString* refName = [commitAndRef objectAtIndex:1];
         
-        if ([refName hasPrefix:@"refs/heads/"])
+        //Fix the ugly git ref from ls-remote like that: refs/tags/v1.7.0.2^{} 
+        if ([refName rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"~^{}"]].length > 0)
+        {
+          //NSLog(@"WARNING: %@ skipping remote ref %@ because it does not look like a valid local ref and will cause continuous fetch.", [self class], refName);
+          
+          // skip
+        }
+        else if ([refName hasPrefix:@"refs/heads/"])
         {
           GBRef* ref = [[GBRef new] autorelease];
           ref.repository = self.repository;
