@@ -71,12 +71,12 @@
 
 - (BOOL) isLocalBranch
 {
-  return !isTag && !self.remoteAlias;
+  return !isTag && !self.remoteAlias && self.name;
 }
 
 - (BOOL) isRemoteBranch
 {
-  return !isTag && self.remoteAlias;
+  return !isTag && self.remoteAlias && self.name;
 }
 
 - (NSString*) displayName

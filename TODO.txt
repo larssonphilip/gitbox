@@ -30,14 +30,15 @@ WIP:
 + if configured branch is not found in show-ref, then consider a new branch, get rid of isNewRemoteBranch flag.
 + bug: push/popFSEventsPause when fetching and other .git-modifying tasks
 + bug: when creating a new remote branch, GBHistoryTask fails to ignore it and fails on git level => empty commits list instead of green-pilled list
++ bug: when commit is checked out, the remote branch is reset (+ it reset on occasional branch updates)
++ bug: seems like after the push, branch update invokes fetch. Should update the pushed ref properly to avoid that.
 
+
+- bug: sometimes some duplicate branch name appears in popdown menus
 - bug: when selected all changes and hit "revert", one change is not reverted
 
-- bug: when commit is checked out, the remote branch is reset (+ it reset on occasional branch updates)
-- bug: seems like after the push, branch update invokes fetch. Should update the pushed ref properly to avoid that.
-- bug: sometimes some duplicate branch name appears in popdown menus
 
-- feature: checkout a commit from local branch menu
+- feature: checkout a commit from local branch menu (prefilled with )
 - feature: checkout a commit from history context menu
 - maybe have 3 repos for free so ppl who don't want to pay just now may start actually using without searching for keygen?
 - bug: when clicked checkbox and want to drag out, it does not undo the action.
