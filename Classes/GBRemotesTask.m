@@ -31,12 +31,17 @@
       {
         NSString* key = [keyAndAddress objectAtIndex:0];
         NSString* address = [keyAndAddress objectAtIndex:1];
-        NSArray* keyParts = [key componentsSeparatedByString:@"."];
-        if (keyParts && [keyParts count] >= 3)
+        
+        NSRange r1 = [key rangeOfString:@"remote."];
+        NSRange r2 = [key rangeOfString:@".url"];
+        
+        if (r1.location == 0 && 
+            r2.length > 0 && 
+            (r2.location + r2.length) == [key length])
         {
           GBRemote* remote = [[GBRemote new] autorelease];
           remote.URLString = address;
-          remote.alias = [keyParts objectAtIndex:1];
+          remote.alias = [key substringWithRange:NSMakeRange(r1.length, [key length] - r1.length - r2.length)];
           remote.repository = self.repository;
           [list addObject:remote];
         }

@@ -27,8 +27,9 @@ WIP:
 
 + todo: test that commented out self.branches = task.branches still makes remote branches to be updated after fetch
 - bug: when opening git.git repo, gitbox fetches, and fetches, and fetches...
-  - bug: seems like remote alias kernel.org is cut into "kernel"
-  - bug: seems like invalid remote server yield infinite reloading
+  - something different (maybe multiple remotes) causes infinite update
+  + bug: seems like invalid remote server yield infinite reloading
+  + bug: seems like remote alias kernel.org is cut into "kernel"
   + bug: seems like tag from ls-remote "refs/tags/v1.7.0.2^{}" makes needsFetch
 - bug: sometimes some duplicate branch name appears in popdown menus
 - bug: when selected all changes and hit "revert", one change is not reverted
