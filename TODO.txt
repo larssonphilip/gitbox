@@ -24,33 +24,12 @@ Bug fixes:
 WIP:
 
 + doing [OABlockGroup verify] in dealloc is a bad idea: should wrap with [OABlockGroup groupBlock:^{} continuation:^{}]
-+ build local and remote branches out of git show-ref results, not from ls-remote. 
-  
-  Refresh local refs when:
-  + .git changes
-  + commit
-  + push
-  + pull
-  + fetch
-  + new local branch
-  
-  How to check for remote update?
-  - ls-remote remote branches and tags
-  - compare with local branches and tags
-  - do not assign, leave as is and set needsFetch
-  - after fetch --prune, refresh local state
-  - important: local state refresh should not make any networking check
-  
-  Refresh ls-remotes when:
-  + .git changes
-  + push
-  + pull
-  + fetch
-  
-- bug in 1.0, 1.1: when non-remote branch is selected on the 
++ build local and remote branches out of git show-ref results, not from ls-remote.
++ bug in 1.0, 1.1: when non-remote branch is selected on the right
 + compare ls-remote with show-ref to know whether to fetch or not
 + if configured branch is not found in show-ref, then consider a new branch, get rid of isNewRemoteBranch flag.
-- bug: push/popFSEventsPause when fetching and other .git-modifying tasks
++ bug: push/popFSEventsPause when fetching and other .git-modifying tasks
+
 - bug: when selected all changes and hit "revert", one change is not reverted
 - bug: when creating a new remote branch, GBHistoryTask fails to ignore it and fails on git level => empty commits list instead of green-pilled list
 
