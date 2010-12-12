@@ -812,6 +812,7 @@
     {
       [self resetAutoFetchInterval];
     }
+    
     if ([self.delegate respondsToSelector:@selector(repositoryControllerDidUpdateCommits:)]) { [self.delegate repositoryControllerDidUpdateCommits:self]; }
     
     [OABlockGroup groupBlock:^(OABlockGroup* blockGroup){

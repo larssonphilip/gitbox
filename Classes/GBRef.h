@@ -11,6 +11,8 @@
 @property(nonatomic, assign) GBRepository* repository;
 @property(nonatomic, assign) GBRemote* remote;
 
++ (GBRef*) refWithCommitId:(NSString*)commitId;
+
 - (NSString*) nameWithRemoteAlias;
 - (void) setNameWithRemoteAlias:(NSString*)nameWithAlias; // origin/some/branch/name
 

@@ -279,6 +279,21 @@
     [newMenu addItem:[NSMenuItem menuItemWithTitle:NSLocalizedString(@"Checkout Remote Branch", @"Command") submenu:remoteBranchesMenu]];
   }
   
+  
+  
+  // Checkout Commit
+  
+  {
+    NSMenuItem* item = [[NSMenuItem new] autorelease];
+    [item setTitle:NSLocalizedString(@"Checkout Commit...", @"Command")];
+    [item setAction:@selector(checkoutCommit:)];
+    [item setTarget:self];
+    
+    [newMenu addItem:item];
+  }
+  
+  
+  
   // Checkout New Branch
   
   NSMenuItem* checkoutNewBranchItem = [[NSMenuItem new] autorelease];
@@ -551,13 +566,13 @@
     }
   }
 
-  return rc.repository.currentLocalRef && rc.repository.currentRemoteBranch && !rc.isDisabled && !rc.isRemoteBranchesDisabled;
+  return [rc.repository.currentLocalRef isLocalBranch] && rc.repository.currentRemoteBranch && !rc.isDisabled && !rc.isRemoteBranchesDisabled;
 }
 
 - (BOOL) validatePush:(id)_
 {
   GBRepositoryController* rc = self.repositoryController;
-  return rc.repository.currentRemoteBranch && !rc.isDisabled && !rc.isRemoteBranchesDisabled && ![rc.repository.currentRemoteBranch isLocalBranch];
+  return [rc.repository.currentLocalRef isLocalBranch] && rc.repository.currentRemoteBranch && !rc.isDisabled && !rc.isRemoteBranchesDisabled && ![rc.repository.currentRemoteBranch isLocalBranch];
 }
 
 
@@ -601,6 +616,29 @@
   };
   [ctrl runSheetInWindow:[self window]];
 }
+
+- (IBAction) checkoutCommit:(id)sender
+{
+  GBPromptController* ctrl = [GBPromptController controller];
+  
+  ctrl.title = NSLocalizedString(@"Checkout Commit", @"");
+  
+  GBCommit* aCommit = self.repositoryController.selectedCommit;
+  if (aCommit.commitId)
+  {
+    ctrl.value = aCommit.commitId;
+  }
+  
+  ctrl.promptText = NSLocalizedString(@"Commit ID:", @"");
+  ctrl.buttonText = NSLocalizedString(@"OK", @"");
+  ctrl.requireSingleLine = YES;
+  ctrl.requireStripWhitespace = YES;
+  ctrl.finishBlock = ^{
+    [self.repositoryController checkoutRef:[GBRef refWithCommitId:ctrl.value]];
+  };
+  [ctrl runSheetInWindow:[self window]];
+}
+
 
 - (IBAction) selectRemoteBranch:(id)sender
 {

@@ -14,6 +14,13 @@
 @synthesize repository;
 @synthesize remote;
 
++ (GBRef*) refWithCommitId:(NSString*)commitId
+{
+  GBRef* ref = [[self new] autorelease];
+  ref.commitId = commitId;
+  return ref;
+}
+
 - (void) dealloc
 {
   self.name = nil;
