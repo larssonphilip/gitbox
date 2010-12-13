@@ -12,6 +12,8 @@
 @synthesize statusArrayController;
 @synthesize repositoryController;
 @synthesize changes;
+@synthesize changesWithHeaderForBindings;
+
 
 #pragma mark Init
 
@@ -22,6 +24,7 @@
   self.statusArrayController = nil;
   self.repositoryController = nil;
   self.changes = nil;
+  self.changesWithHeaderForBindings = nil;
   [super dealloc];
 }
 
@@ -66,7 +69,21 @@
   {
     [change update];
   }
+  self.changesWithHeaderForBindings = [[NSArray arrayWithObject:[GBChange dummy]] arrayByAddingObjectsFromArray:self.changes];
 }
+
+// override in subclass
+- (NSCell*) headerCell
+{
+  return [[[NSTextFieldCell alloc] initTextCell:[NSString stringWithFormat:@"%@: headerCell should be implemented!", [self class]]] autorelease];
+}
+
+// override in subclass
+- (CGFloat) headerHeight
+{
+  return 100.0;
+}
+
 
 
 
@@ -80,8 +97,21 @@
 dataCellForTableColumn:(NSTableColumn*)aTableColumn
                   row:(NSInteger)rowIndex
 {
-  // according to the documentation, tableView may ask for a tableView separator cell giving a nil table column to return a group separator cell
+  if (rowIndex == 0)
+  {
+    if (!aTableColumn) // return a cell spanning all the columns
+    {
+      return [self headerCell];
+    }
+    else
+    {
+      return nil;
+    }
+  }
+  
   if (!aTableColumn) return nil;
+  
+  rowIndex--; // adjust index for natural list of changes.
   
   GBChange* change = [self.changes objectAtIndex:rowIndex];
   
@@ -101,8 +131,13 @@ dataCellForTableColumn:(NSTableColumn*)aTableColumn
   return nil;
 }
 
-- (CGFloat)tableView:(NSTableView *)tableView heightOfRow:(NSInteger)row
+- (CGFloat)tableView:(NSTableView *)tableView heightOfRow:(NSInteger)rowIndex
 {
+  if (rowIndex == 0)
+  {
+    return [self headerHeight];
+  }
+  rowIndex--;
   return [GBChangeCell cellHeight];
 }
 

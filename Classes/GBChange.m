@@ -25,6 +25,11 @@
 @synthesize busy;
 @synthesize repository;
 
++ (GBChange*) dummy
+{
+  return [[self new] autorelease];
+}
+
 - (void) dealloc
 {
   self.srcURL = nil;

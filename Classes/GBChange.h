@@ -19,7 +19,7 @@
 @property(nonatomic,assign) GBRepository* repository;
 
 
-
++ (GBChange*) dummy; // for bindings in right view
 + (NSArray*) diffTools;
 
 

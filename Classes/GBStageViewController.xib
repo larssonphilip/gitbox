@@ -419,22 +419,6 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
-						<string key="label">contentArray: changes</string>
-						<reference key="source" ref="665104064"/>
-						<reference key="destination" ref="1001"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="665104064"/>
-							<reference key="NSDestination" ref="1001"/>
-							<string key="NSLabel">contentArray: changes</string>
-							<string key="NSBinding">contentArray</string>
-							<string key="NSKeyPath">changes</string>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">56</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
 						<string key="label">enabled: arrangedObjects.busy</string>
 						<reference key="source" ref="120666121"/>
 						<reference key="destination" ref="665104064"/>
@@ -540,6 +524,22 @@
 						<reference key="destination" ref="1001"/>
 					</object>
 					<int key="connectionID">79</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">contentArray: self.changesWithHeaderForBindings</string>
+						<reference key="source" ref="665104064"/>
+						<reference key="destination" ref="1001"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="665104064"/>
+							<reference key="NSDestination" ref="1001"/>
+							<string key="NSLabel">contentArray: self.changesWithHeaderForBindings</string>
+							<string key="NSBinding">contentArray</string>
+							<string key="NSKeyPath">self.changesWithHeaderForBindings</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">81</int>
 				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -702,7 +702,7 @@
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
-				<string key="1.IBEditorWindowLastContentRect">{{435, 162}, {480, 272}}</string>
+				<string key="1.IBEditorWindowLastContentRect">{{243, 137}, {480, 272}}</string>
 				<string key="1.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<object class="NSAffineTransform" key="1.IBViewBoundsToFrameTransform"/>
 				<string key="1.WindowOrigin">{628, 654}</string>
@@ -737,7 +737,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">79</int>
+			<int key="maxID">81</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">

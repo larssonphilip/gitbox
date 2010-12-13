@@ -4,12 +4,15 @@
 @property(retain) IBOutlet NSTableView* tableView;
 @property(retain) IBOutlet NSArrayController* statusArrayController; 
 @property(retain) GBRepositoryController* repositoryController;
-@property(retain) NSArray* changes; // bound to statusArrayController
+@property(retain) NSArray* changes;
+@property(retain) NSArray* changesWithHeaderForBindings; // bound to statusArrayController
 
 #pragma mark Interrogation
 
 - (NSArray*) selectedChanges;
 - (NSWindow*) window;
+- (NSCell*) headerCell;
+- (CGFloat) headerHeight;
 
 
 #pragma mark Update

@@ -520,22 +520,6 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
-						<string key="label">contentArray: changes</string>
-						<reference key="source" ref="678840269"/>
-						<reference key="destination" ref="1001"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="678840269"/>
-							<reference key="NSDestination" ref="1001"/>
-							<string key="NSLabel">contentArray: changes</string>
-							<string key="NSBinding">contentArray</string>
-							<string key="NSKeyPath">changes</string>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">100</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
 						<string key="label">doubleClickTarget: selection</string>
 						<reference key="source" ref="998955717"/>
 						<reference key="destination" ref="678840269"/>
@@ -585,6 +569,22 @@
 						<reference key="destination" ref="1001"/>
 					</object>
 					<int key="connectionID">108</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">contentArray: self.changesWithHeaderForBindings</string>
+						<reference key="source" ref="678840269"/>
+						<reference key="destination" ref="1001"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="678840269"/>
+							<reference key="NSDestination" ref="1001"/>
+							<string key="NSLabel">contentArray: self.changesWithHeaderForBindings</string>
+							<string key="NSBinding">contentArray</string>
+							<string key="NSKeyPath">self.changesWithHeaderForBindings</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">109</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -841,7 +841,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">108</int>
+			<int key="maxID">109</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
