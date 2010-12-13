@@ -13,6 +13,9 @@ Enhancements:
 
 Bug fixes:
 
+
+- autofetch sometimes does not work: maybe because of the already fetched stuff 
+
 + Terminal window is now opened in front. Path with spaces are handled correctly.
 + License window fixes: buy button is hidden when license is correct. Multiple windows are disallowed.
 + Fixed history view resizing.
