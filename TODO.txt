@@ -25,6 +25,7 @@ Bug fixes:
 
 WIP:
 
+- bug: when pushed a new remote branch, two copies are present in the menu
 
 - bug: sometimes some duplicate branch name appears in popdown menus
 - bug: when selected all changes and hit "revert", one change is not reverted
@@ -51,7 +52,7 @@ WIP:
 
 - "git submodule init" after clone or pull to add .gitmodules info to .git/config
 
-
++ bug: sidebar badge: 1000 -> 999+
 + todo: test that commented out self.branches = task.branches still makes remote branches to be updated after fetch
 + bug: when opening git.git repo, gitbox fetches, and fetches, and fetches...
   + something different (maybe multiple remotes) causes infinite update:

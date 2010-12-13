@@ -115,7 +115,12 @@
 - (NSString*) badgeLabel
 {
   NSUInteger total = [self.repository totalPendingChanges];
-    
+  
+  if (total > 999) 
+  {
+    return @"999+";
+  }
+  
   if (total > 0)
   {
     return [NSString stringWithFormat:@"%d", total];
