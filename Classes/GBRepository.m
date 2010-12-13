@@ -350,6 +350,7 @@
       {
         [newRemote copyInterestingDataFromRemoteIfApplicable:oldRemote];
       }
+      [newRemote updateNewBranches];
     }
     
     self.remotes = task.remotes;
@@ -371,6 +372,7 @@
     {
       GBRemote* aRemote = [self.remotes objectWithValue:remoteAlias forKey:@"alias"];
       aRemote.branches = [task.remoteBranchesByRemoteAlias objectForKey:remoteAlias];
+      [aRemote updateNewBranches];
     }
     
     if (block) block();

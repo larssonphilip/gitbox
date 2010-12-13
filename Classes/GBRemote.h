@@ -19,7 +19,7 @@
 - (BOOL) copyInterestingDataFromRemoteIfApplicable:(GBRemote*)otherRemote;
 - (BOOL) isConfiguredToFetchToTheDefaultLocation;
 - (NSString*) defaultFetchRefspec;
-
+- (void) updateNewBranches;
 
 #pragma mark Actions
 

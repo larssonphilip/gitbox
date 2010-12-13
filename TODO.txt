@@ -25,8 +25,6 @@ Bug fixes:
 
 WIP:
 
-- bug: when pushed a new remote branch, two copies are present in the menu
-
 - bug: sometimes some duplicate branch name appears in popdown menus
 - bug: when selected all changes and hit "revert", one change is not reverted
 
