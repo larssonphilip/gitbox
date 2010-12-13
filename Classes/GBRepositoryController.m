@@ -272,6 +272,7 @@
   [aRemote updateBranchesWithBlock:^{
     if (aRemote.needsFetch)
     {
+      [self resetAutoFetchInterval];
       //NSLog(@"%@: updated branches for remote %@; needs fetch! %@", [self class], aRemote.alias, [self longNameForSourceList]);
       [self fetchRemote:aRemote withBlock:block];
     }
@@ -821,13 +822,7 @@
   }
   
   //[self pushSpinning];
-  NSString* oldTopCommitId = self.repository.topCommitId;
   [self.repository updateLocalBranchCommitsWithBlock:^{
-    NSString* newTopCommitId = self.repository.topCommitId;
-    if (newTopCommitId && ![oldTopCommitId isEqualToString:newTopCommitId])
-    {
-      [self resetAutoFetchInterval];
-    }
     
     if ([self.delegate respondsToSelector:@selector(repositoryControllerDidUpdateCommits:)]) { [self.delegate repositoryControllerDidUpdateCommits:self]; }
     
@@ -917,7 +912,7 @@
 {
   //NSLog(@"GBRepositoryController: resetAutoFetchInterval in %@ (was: %f)", [self url], autoFetchInterval);
   NSTimeInterval plusMinusOne = (2*(0.5-drand48()));
-  autoFetchInterval = 5.0 + 2*plusMinusOne;
+  autoFetchInterval = 3.0 + plusMinusOne;
   [self scheduleAutoFetch];
 }
 
@@ -943,7 +938,7 @@
 {
   //NSLog(@"GBRepositoryController: autoFetch into %@ (delay: %f)", [self url], autoFetchInterval);
   while (autoFetchInterval > 300.0) autoFetchInterval -= 100.0;
-  autoFetchInterval = autoFetchInterval*(1.3 + drand48()*0.5);
+  autoFetchInterval = autoFetchInterval*(1.4142 + drand48()*0.5);
   
   [self scheduleAutoFetch];
   
