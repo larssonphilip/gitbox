@@ -2,11 +2,11 @@
 @class GBRepository;
 @interface GBRemote : NSObject
 
-@property(nonatomic,retain) NSString* alias;
-@property(nonatomic,retain) NSString* URLString;
+@property(nonatomic,copy) NSString* alias;
+@property(nonatomic,copy) NSString* URLString;
+@property(nonatomic,copy) NSString* fetchRefspec;
 @property(nonatomic,retain) NSArray* branches;
 @property(nonatomic,retain) NSArray* newBranches;
-//@property(nonatomic,retain) NSArray* tags;
 
 @property(nonatomic,assign) BOOL needsFetch;
 @property(nonatomic,assign) GBRepository* repository;
@@ -17,6 +17,8 @@
 - (GBRef*) defaultBranch;
 - (NSArray*) pushedAndNewBranches;
 - (BOOL) copyInterestingDataFromRemoteIfApplicable:(GBRemote*)otherRemote;
+- (BOOL) isConfiguredToFetchToTheDefaultLocation;
+- (NSString*) defaultFetchRefspec;
 
 
 #pragma mark Actions

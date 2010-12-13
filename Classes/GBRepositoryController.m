@@ -236,10 +236,10 @@
 
 - (void) updateRemoteRefsWithBlock:(void(^)())block
 {
-//  if (self.isUpdatingRemoteRefs)
-//  {
-//    if (block) block();
-//  }
+  if (self.isUpdatingRemoteRefs)
+  {
+    if (block) block();
+  }
   self.isUpdatingRemoteRefs = YES;
   
   block = [[block copy] autorelease];
@@ -268,11 +268,11 @@
     return;
   }
   
-  NSLog(@"%@: updating branches for remote %@...", [self class], aRemote.alias);
+  //NSLog(@"%@: updating branches for remote %@...", [self class], aRemote.alias);
   [aRemote updateBranchesWithBlock:^{
     if (aRemote.needsFetch)
     {
-      NSLog(@"%@: updated branches for remote %@; needs fetch! %@", [self class], aRemote.alias, [self longNameForSourceList]);
+      //NSLog(@"%@: updated branches for remote %@; needs fetch! %@", [self class], aRemote.alias, [self longNameForSourceList]);
       [self fetchRemote:aRemote withBlock:block];
     }
     else

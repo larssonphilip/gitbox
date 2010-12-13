@@ -14,9 +14,9 @@
 
 @synthesize alias;
 @synthesize URLString;
+@synthesize fetchRefspec;
 @synthesize branches;
 @synthesize newBranches;
-//@synthesize tags;
 
 @synthesize repository;
 @synthesize isUpdatingRemoteBranches;
@@ -26,9 +26,9 @@
 {
   self.alias = nil;
   self.URLString = nil;
+  self.fetchRefspec = nil;
   self.branches = nil;
   self.newBranches = nil;
-  //  self.tags = nil;
   [super dealloc];
 }
 
@@ -47,13 +47,6 @@
   if (!newBranches) self.newBranches = [NSArray array];
   return [[newBranches retain] autorelease];
 }
-
-//- (NSArray*) tags
-//{
-//  if (!tags) self.tags = [NSArray array];
-//  return [[tags retain] autorelease];
-//}
-
 
 
 
@@ -101,6 +94,16 @@
   return NO;
 }
 
+- (BOOL) isConfiguredToFetchToTheDefaultLocation
+{
+  if (!self.fetchRefspec) return NO;
+  return [self.fetchRefspec rangeOfString:[NSString stringWithFormat:@"refs/heads/*:refs/remotes/%@/*", self.alias]].length > 0;
+}
+
+- (NSString*) defaultFetchRefspec
+{
+  return [NSString stringWithFormat:@"+refs/heads/*:refs/remotes/%@/*", self.alias];
+}
 
 
 
@@ -161,12 +164,14 @@
         foundAnExistingBranch = YES;
         if (![updatedRef.commitId isEqualTo:existingRef.commitId])
         {
+          //NSLog(@"NEEDS FETCH? refs are different: %@ -> %@ [%@]", existingRef, updatedRef, self.alias);
           return YES;
         }
       }
     }
     if (!foundAnExistingBranch)
     {
+      //NSLog(@"NEEDS FETCH? did not find an existing ref for %@ [%@]", updatedRef, self.alias);
       return YES;
     }
   }
@@ -176,6 +181,7 @@
   
   if ([newTagNames count] > 0)
   {
+    //NSLog(@"NEEDS FETCH? new tag names found: %@ [%@]", [newTagNames componentsJoinedByString:@", "], self.alias);
     return YES;
   }
   

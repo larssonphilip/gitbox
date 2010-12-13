@@ -77,7 +77,6 @@
 
 - (void) pullOrMergeWithBlock:(void(^)())block;
 - (void) fetchRemote:(GBRemote*)aRemote withBlock:(void(^)())block;
-- (void) fetchRemotes:(NSArray*)aRemotes withBlock:(void(^)())block;
 - (void) fetchCurrentBranchWithBlock:(void(^)())block;
 - (void) mergeBranch:(GBRef*)aBranch withBlock:(void(^)())block;
 - (void) pullBranch:(GBRef*)aRemoteBranch withBlock:(void(^)())block;

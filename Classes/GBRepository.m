@@ -746,37 +746,28 @@
     if (block) block();
     return;
   }
-  [self fetchRemotes:[NSArray arrayWithObject:aRemote] withBlock:block];
-}
-
-- (void) fetchRemotes:(NSArray*)aRemotes withBlock:(void(^)())block
-{
-  block = [[block copy] autorelease];
-  if (!aRemotes)
-  {
-    if (block) block();
-    return;
-  }
   GBTask* task = [self task];
-  task.arguments = [[NSArray arrayWithObjects:@"fetch", 
-                    @"--multiple",
-                    @"--tags", 
-                    @"--force", 
-                    @"--prune", 
-                    nil] arrayByAddingObjectsFromArray:[aRemotes valueForKey:@"alias"]];
+  task.arguments = [NSArray arrayWithObjects:@"fetch", 
+                     @"--tags",
+                     @"--force",
+                     @"--prune",
+                     aRemote.alias,
+                     [aRemote defaultFetchRefspec], // Declaring a proper refspec is necessary to make autofetch expectations about remote alias to work. git show-ref should always return refs for alias XYZ.
+                     nil];
   
   [self launchTask:task withBlock:^{
     [self captureErrorForTask:task
                     withBlock:^(){
                       return [self errorWithCode:GBErrorCodeFetchFailed
-                                     description:[NSString stringWithFormat:NSLocalizedString(@"Failed to fetch from %@",@"Error"), [[aRemotes valueForKey:@"alias"] componentsJoinedByString:@", "]]
+                                     description:[NSString stringWithFormat:NSLocalizedString(@"Failed to fetch from %@",@"Error"), aRemote.alias]
                                           reason:[task.output UTF8String]
                                       suggestion:NSLocalizedString(@"Please check the URL or network settings.",@"Error")];
                       
                     }
                  continuation:block];
-  }];
+  }];  
 }
+
 
 - (void) fetchBranch:(GBRef*)aRemoteBranch withBlock:(void(^)())block
 {

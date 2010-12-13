@@ -25,16 +25,11 @@ Bug fixes:
 
 WIP:
 
-+ todo: test that commented out self.branches = task.branches still makes remote branches to be updated after fetch
-- bug: when opening git.git repo, gitbox fetches, and fetches, and fetches...
-  - something different (maybe multiple remotes) causes infinite update
-  + bug: seems like invalid remote server yield infinite reloading
-  + bug: seems like remote alias kernel.org is cut into "kernel"
-  + bug: seems like tag from ls-remote "refs/tags/v1.7.0.2^{}" makes needsFetch
+
 - bug: sometimes some duplicate branch name appears in popdown menus
 - bug: when selected all changes and hit "revert", one change is not reverted
 
-
+- bug: while fetching some remote, commits list is refreshed with wrong commits
 - feature: checkout a commit from history context menu
 - maybe have 3 repos for free so ppl who don't want to pay just now may start actually using without searching for keygen?
 - bug: when clicked checkbox and want to drag out, it does not undo the action.
@@ -57,7 +52,15 @@ WIP:
 - "git submodule init" after clone or pull to add .gitmodules info to .git/config
 
 
-
++ todo: test that commented out self.branches = task.branches still makes remote branches to be updated after fetch
++ bug: when opening git.git repo, gitbox fetches, and fetches, and fetches...
+  + something different (maybe multiple remotes) causes infinite update:
+    two remotes are declared with different names, but with the same refspec to fetch. Thus, one of them is not shown in show-ref.
+    Need to make double fetch if refspec is not default: first for the .git/config refspec, second for the 
+  + always fetch with explicit refspec
+  + bug: seems like invalid remote server yield infinite reloading
+  + bug: seems like remote alias kernel.org is cut into "kernel"
+  + bug: seems like tag from ls-remote "refs/tags/v1.7.0.2^{}" makes needsFetch
 + doing [OABlockGroup verify] in dealloc is a bad idea: should wrap with [OABlockGroup groupBlock:^{} continuation:^{}]
 + build local and remote branches out of git show-ref results, not from ls-remote.
 + bug in 1.0, 1.1: when non-remote branch is selected on the right
