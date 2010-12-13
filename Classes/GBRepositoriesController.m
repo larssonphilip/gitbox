@@ -219,13 +219,7 @@
   
   [repoCtrl start];
 
-  [self.localRepositoriesUpdatesQueue addBlock:^{
-    //NSLog(@"Updating repo %@", [repoCtrl nameForSourceList]);
-    [repoCtrl updateWithBlock:^{
-      //NSLog(@"End updating repo %@", [repoCtrl nameForSourceList]);
-      [self.localRepositoriesUpdatesQueue endBlock];
-    }];
-  }];
+  [repoCtrl updateQueued];
 
   if ([self.delegate respondsToSelector:@selector(repositoriesController:didAddRepository:)]) { [self.delegate repositoriesController:self didAddRepository:repoCtrl]; }
 }

@@ -23,6 +23,7 @@
 - (NSURL*) windowRepresentedURL;
 
 - (void) updateWithBlock:(void(^)())block;
+- (void) updateQueued;
 
 - (void) beginBackgroundUpdate;
 - (void) endBackgroundUpdate;

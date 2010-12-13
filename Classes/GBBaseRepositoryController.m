@@ -77,6 +77,16 @@
 
 - (void) updateWithBlock:(void(^)())block { if (block) block(); }
 
+- (void) updateQueued
+{
+	[self.updatesQueue addBlock:^{
+		[self updateWithBlock:^{
+			[self.updatesQueue endBlock];
+		}];
+	}];
+}
+
+
 - (void) beginBackgroundUpdate {}
 - (void) endBackgroundUpdate {}
 
