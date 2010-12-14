@@ -228,6 +228,8 @@
 		209A963E11BC630C006B0B5C /* default_gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 209A960011BC60BC006B0B5C /* default_gitignore */; };
 		209C16571290636300B343A5 /* NSError+OAPresent.m in Sources */ = {isa = PBXBuildFile; fileRef = 209C16561290636300B343A5 /* NSError+OAPresent.m */; };
 		209C16581290636300B343A5 /* NSError+OAPresent.m in Sources */ = {isa = PBXBuildFile; fileRef = 209C16561290636300B343A5 /* NSError+OAPresent.m */; };
+		209C192412B802C900F56A54 /* GBCellWithView.m in Sources */ = {isa = PBXBuildFile; fileRef = 209C192312B802C900F56A54 /* GBCellWithView.m */; };
+		209C192512B802C900F56A54 /* GBCellWithView.m in Sources */ = {isa = PBXBuildFile; fileRef = 209C192312B802C900F56A54 /* GBCellWithView.m */; };
 		20A09F3712A3875200294730 /* askpass.sh in Resources */ = {isa = PBXBuildFile; fileRef = 20A09F3612A3875200294730 /* askpass.sh */; };
 		20A09F3812A3875800294730 /* askpass.sh in Resources */ = {isa = PBXBuildFile; fileRef = 20A09F3612A3875200294730 /* askpass.sh */; };
 		20A37BA6120DC1D90068AB8B /* GBSourcesController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20A37BA5120DC1D90068AB8B /* GBSourcesController.m */; };
@@ -471,6 +473,8 @@
 		209A960011BC60BC006B0B5C /* default_gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = default_gitignore; sourceTree = "<group>"; };
 		209C16551290636300B343A5 /* NSError+OAPresent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSError+OAPresent.h"; sourceTree = "<group>"; };
 		209C16561290636300B343A5 /* NSError+OAPresent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSError+OAPresent.m"; sourceTree = "<group>"; };
+		209C192212B802C900F56A54 /* GBCellWithView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBCellWithView.h; sourceTree = "<group>"; };
+		209C192312B802C900F56A54 /* GBCellWithView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBCellWithView.m; sourceTree = "<group>"; };
 		20A09D67129F8F3900294730 /* fastspring-1-1000-licenses.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "fastspring-1-1000-licenses.txt"; sourceTree = "<group>"; };
 		20A09D68129F8F3900294730 /* fastspring-1001-2000-licenses.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "fastspring-1001-2000-licenses.txt"; sourceTree = "<group>"; };
 		20A09D69129F8F3900294730 /* free-promo-1-100-licenses.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "free-promo-1-100-licenses.txt"; sourceTree = "<group>"; };
@@ -737,6 +741,8 @@
 				2035632E11D3B57800965765 /* GBLightScroller.m */,
 				2035639C11D3C14C00965765 /* GBLightScrollView.h */,
 				2035639D11D3C14C00965765 /* GBLightScrollView.m */,
+				209C192212B802C900F56A54 /* GBCellWithView.h */,
+				209C192312B802C900F56A54 /* GBCellWithView.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -1234,6 +1240,7 @@
 				20C83E7D12A9ACB900769F47 /* OAFastJumpController.m in Sources */,
 				20C83F6E12AA1BBB00769F47 /* GBChangeCell.m in Sources */,
 				20177F8612AAA229006362D1 /* GBChangeCheckboxCell.m in Sources */,
+				209C192512B802C900F56A54 /* GBCellWithView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1325,6 +1332,7 @@
 				20C83E7C12A9ACB900769F47 /* OAFastJumpController.m in Sources */,
 				20C83F6D12AA1BBB00769F47 /* GBChangeCell.m in Sources */,
 				20177F8512AAA229006362D1 /* GBChangeCheckboxCell.m in Sources */,
+				209C192412B802C900F56A54 /* GBCellWithView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
