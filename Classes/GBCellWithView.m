@@ -25,7 +25,11 @@
   // don't draw anything to keep cell transparent
   // [super drawWithFrame: cellFrame inView: controlView];
   
-  [self.view setFrame:cellFrame];
+  NSRect viewFrame = [self.view frame];
+  viewFrame.size.width = cellFrame.size.width;
+  viewFrame.origin = cellFrame.origin;
+  
+  [self.view setFrame:viewFrame];
   
   if ([self.view superview] != controlView)
   {

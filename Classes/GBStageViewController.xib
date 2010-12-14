@@ -69,7 +69,7 @@
 														<int key="NSColorSpace">6</int>
 														<string key="NSCatalogName">System</string>
 														<string key="NSColorName">headerColor</string>
-														<object class="NSColor" key="NSColor" id="390576985">
+														<object class="NSColor" key="NSColor" id="173755476">
 															<int key="NSColorSpace">3</int>
 															<bytes key="NSWhite">MQA</bytes>
 														</object>
@@ -319,17 +319,17 @@
 					</object>
 				</array>
 			</object>
-			<object class="NSCustomView" id="392916705">
+			<object class="NSCustomView" id="180439244">
 				<reference key="NSNextResponder"/>
-				<int key="NSvFlags">274</int>
+				<int key="NSvFlags">268</int>
 				<array class="NSMutableArray" key="NSSubviews">
-					<object class="NSTextField" id="745479842">
-						<reference key="NSNextResponder" ref="392916705"/>
+					<object class="NSTextField" id="811970956">
+						<reference key="NSNextResponder" ref="180439244"/>
 						<int key="NSvFlags">274</int>
 						<string key="NSFrame">{{9, 8}, {381, 23}}</string>
-						<reference key="NSSuperview" ref="392916705"/>
+						<reference key="NSSuperview" ref="180439244"/>
 						<bool key="NSEnabled">YES</bool>
-						<object class="NSTextFieldCell" key="NSCell" id="288764993">
+						<object class="NSTextFieldCell" key="NSCell" id="234928751">
 							<int key="NSCellFlags">-1805517311</int>
 							<int key="NSCellFlags2">272629760</int>
 							<string key="NSContents"/>
@@ -339,13 +339,13 @@
 								<int key="NSfFlags">1044</int>
 							</object>
 							<string key="NSPlaceholderString">Commit Message...</string>
-							<reference key="NSControlView" ref="745479842"/>
+							<reference key="NSControlView" ref="811970956"/>
 							<bool key="NSDrawsBackground">YES</bool>
-							<object class="NSColor" key="NSBackgroundColor" id="55011243">
+							<object class="NSColor" key="NSBackgroundColor" id="43060847">
 								<int key="NSColorSpace">6</int>
 								<string key="NSCatalogName">System</string>
 								<string key="NSColorName">textBackgroundColor</string>
-								<reference key="NSColor" ref="390576985"/>
+								<reference key="NSColor" ref="173755476"/>
 							</object>
 							<object class="NSColor" key="NSTextColor">
 								<int key="NSColorSpace">6</int>
@@ -355,32 +355,32 @@
 							</object>
 						</object>
 					</object>
-					<object class="NSBox" id="92007971">
-						<reference key="NSNextResponder" ref="392916705"/>
+					<object class="NSBox" id="729508224">
+						<reference key="NSNextResponder" ref="180439244"/>
 						<int key="NSvFlags">18</int>
 						<array class="NSMutableArray" key="NSSubviews">
-							<object class="NSView" id="995338190">
-								<reference key="NSNextResponder" ref="92007971"/>
+							<object class="NSView" id="765511487">
+								<reference key="NSNextResponder" ref="729508224"/>
 								<int key="NSvFlags">256</int>
 								<string key="NSFrame">{{1, 1}, {400, 38}}</string>
-								<reference key="NSSuperview" ref="92007971"/>
+								<reference key="NSSuperview" ref="729508224"/>
 							</object>
 						</array>
 						<string key="NSFrame">{{-1, 0}, {402, 40}}</string>
-						<reference key="NSSuperview" ref="392916705"/>
+						<reference key="NSSuperview" ref="180439244"/>
 						<string key="NSOffsets">{0, 0}</string>
 						<object class="NSTextFieldCell" key="NSTitleCell">
 							<int key="NSCellFlags">67239424</int>
 							<int key="NSCellFlags2">0</int>
 							<string key="NSContents"/>
 							<reference key="NSSupport" ref="26"/>
-							<reference key="NSBackgroundColor" ref="55011243"/>
+							<reference key="NSBackgroundColor" ref="43060847"/>
 							<object class="NSColor" key="NSTextColor">
 								<int key="NSColorSpace">3</int>
 								<bytes key="NSWhite">MCAwLjgwMDAwMDAxMTkAA</bytes>
 							</object>
 						</object>
-						<reference key="NSContentView" ref="995338190"/>
+						<reference key="NSContentView" ref="765511487"/>
 						<int key="NSBorderType">1</int>
 						<int key="NSBoxType">4</int>
 						<int key="NSTitlePosition">2</int>
@@ -622,7 +622,7 @@
 					<object class="IBOutletConnection" key="connection">
 						<string key="label">headerView</string>
 						<reference key="source" ref="1001"/>
-						<reference key="destination" ref="392916705"/>
+						<reference key="destination" ref="180439244"/>
 					</object>
 					<int key="connectionID">83</int>
 				</object>
@@ -786,30 +786,30 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">82</int>
-						<reference key="object" ref="392916705"/>
+						<reference key="object" ref="180439244"/>
 						<array class="NSMutableArray" key="children">
-							<reference ref="745479842"/>
-							<reference ref="92007971"/>
+							<reference ref="811970956"/>
+							<reference ref="729508224"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">84</int>
-						<reference key="object" ref="745479842"/>
+						<reference key="object" ref="811970956"/>
 						<array class="NSMutableArray" key="children">
-							<reference ref="288764993"/>
+							<reference ref="234928751"/>
 						</array>
-						<reference key="parent" ref="392916705"/>
+						<reference key="parent" ref="180439244"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">85</int>
-						<reference key="object" ref="288764993"/>
-						<reference key="parent" ref="745479842"/>
+						<reference key="object" ref="234928751"/>
+						<reference key="parent" ref="811970956"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">86</int>
-						<reference key="object" ref="92007971"/>
-						<reference key="parent" ref="392916705"/>
+						<reference key="object" ref="729508224"/>
+						<reference key="parent" ref="180439244"/>
 					</object>
 				</array>
 			</object>
