@@ -291,14 +291,30 @@
 }
 
 
+- (void) updateQueued
+{
+	[self pushSpinning];
+	[self.updatesQueue addBlock:^{
+		[self updateWithBlock:^{
+			[self.updatesQueue endBlock];
+		}];
+		[self popSpinning];
+	}];
+}
+
 - (void) updateWithBlock:(void(^)())block
 {
   block = [[block copy] autorelease];
   
   [self pushFSEventsPause];
+  [self pushSpinning];
   [self updateLocalRefsWithBlock:^{
-    [self loadCommits];
+    [self pushSpinning];
+    [self loadCommitsWithBlock:^{
+      [self popSpinning];
+	}];
     [self updateRemoteRefsWithBlock:block];
+    [self popSpinning];
     [self popFSEventsPause];
   }];
   
