@@ -49,8 +49,34 @@ WIP:
 - toolbar alignment
 - [+] button for adding a repo
 
-
 - "git submodule init" after clone or pull to add .gitmodules info to .git/config
+
+
+- Dependencies:
+  - quicklook -> n/a
+  - history search -> n/a
+  - custom textual diff -> n/a
+  - custom image diff -> n/a
+  - merging -> custom textual diff, custom image diff
+  - blame -> custom textual diff, custom image diff
+  - new toolbar -> unified right pane for stage and commit
+  - gear button on the left -> new toolbar
+  - add repo button -> new toolbar
+  - grouping -> add repo button
+  - settings view -> gear button on the left
+  - bonjour sharing -> settings view
+  - github -> settings view, add repo button
+  - branch deletion -> settings view
+  - wide-area sharing -> bonjour sharing
+  
+  
+
+- submodules:
+  - case 1: user clones a repo which has some submodules => needs init and pull
+  - case 2: user pulls a repo which has some submodules updated => needs pull
+  - case 3: user pulls a repo which has some submodules updated, but his submodule itself is checked out on some branch => needs fetch, not pull
+  - case 4: user clones the repo inside the repo => needs to display as a non-tracked submodule which can be tracked
+  - case 5: user tries to commit a submodule which has the HEAD non-pushed (or dirty directory) - show warning or ask to push manually; show button "show module"
 
 + bug: sidebar badge: 1000 -> 999+
 + todo: test that commented out self.branches = task.branches still makes remote branches to be updated after fetch
