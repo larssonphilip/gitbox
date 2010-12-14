@@ -8,13 +8,10 @@ Features:
 
 Enhancements:
 
-
 + Improved performance of autofetching. Now remote branches are checked more frequently and without UI blocking and fetch is performed from all branches when needed.
 
+
 Bug fixes:
-
-
-- autofetch sometimes does not work: maybe because of the already fetched stuff 
 
 + Terminal window is now opened in front. Path with spaces are handled correctly.
 + License window fixes: buy button is hidden when license is correct. Multiple windows are disallowed.
@@ -28,6 +25,7 @@ Bug fixes:
 
 WIP:
 
+- bug: autofetch sometimes does not work: maybe some crap is returned from ls-remote when communicating with a remote server; test with bergere
 - bug: sometimes some duplicate branch name appears in popdown menus
 - bug: when selected all changes and hit "revert", one change is not reverted
 
