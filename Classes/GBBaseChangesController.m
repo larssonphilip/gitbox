@@ -2,6 +2,7 @@
 #import "GBChangeCell.h"
 #import "GBChangeCheckboxCell.h"
 #import "GBBaseChangesController.h"
+#import "GBCellWithView.h"
 
 #import "NSObject+OADispatchItemValidation.h"
 #import "NSArray+OAArrayHelpers.h"
@@ -10,6 +11,7 @@
 
 @synthesize tableView;
 @synthesize statusArrayController;
+@synthesize headerView;
 @synthesize repositoryController;
 @synthesize changes;
 @synthesize changesWithHeaderForBindings;
@@ -22,6 +24,7 @@
   [NSObject cancelPreviousPerformRequestsWithTarget:self];
   self.tableView = nil;
   self.statusArrayController = nil;
+  self.headerView = nil;
   self.repositoryController = nil;
   self.changes = nil;
   self.changesWithHeaderForBindings = nil;
@@ -72,16 +75,17 @@
   self.changesWithHeaderForBindings = [[NSArray arrayWithObject:[GBChange dummy]] arrayByAddingObjectsFromArray:self.changes];
 }
 
-// override in subclass
+// override in subclass (optional)
 - (NSCell*) headerCell
 {
-  return [[[NSTextFieldCell alloc] initTextCell:[NSString stringWithFormat:@"%@: headerCell should be implemented!", [self class]]] autorelease];
+  return [GBCellWithView cellWithView:self.headerView];
 }
 
-// override in subclass
+// override in subclass (optional)
 - (CGFloat) headerHeight
 {
-  return 100.0;
+  if (!self.headerView) return 100.0;
+  return [self.headerView frame].size.height;
 }
 
 
@@ -155,8 +159,12 @@ dataCellForTableColumn:(NSTableColumn*)aTableColumn
   return nil;
 }
 
-
-
+- (NSIndexSet *)tableView:(NSTableView *)tableView selectionIndexesForProposedSelection:(NSIndexSet *)proposedSelectionIndexes
+{
+  return [proposedSelectionIndexes indexesPassingTest:^(NSUInteger index, BOOL* stop){
+    return (BOOL)(index != 0);
+  }];
+}
 
 
 

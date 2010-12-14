@@ -3,6 +3,7 @@
 
 @property(retain) IBOutlet NSTableView* tableView;
 @property(retain) IBOutlet NSArrayController* statusArrayController; 
+@property(retain) IBOutlet NSView* headerView; 
 @property(retain) GBRepositoryController* repositoryController;
 @property(retain) NSArray* changes;
 @property(retain) NSArray* changesWithHeaderForBindings; // bound to statusArrayController
