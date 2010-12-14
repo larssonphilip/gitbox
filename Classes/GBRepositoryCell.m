@@ -33,6 +33,19 @@
   return self;
 }
 
+- (id) copyWithZone:(NSZone *)zone
+{
+  GBRepositoryCell* c = [super copyWithZone:zone];
+  [c setRepresentedObject:[self representedObject]];
+  return c;
+}
+
+- (GBBaseRepositoryController*) repositoryController
+{
+  return (GBBaseRepositoryController*)[self representedObject];
+}
+
+
 - (void) drawInteriorWithFrame:(NSRect)cellFrame inView:(NSView*)theControlView
 {
   NSWindow* window = [theControlView window];
@@ -274,23 +287,5 @@
 }
 
 
-
-
-
-
-
-
-
-- (id) copyWithZone:(NSZone *)zone
-{
-  GBRepositoryCell* c = [super copyWithZone:zone];
-  [c setRepresentedObject:[self representedObject]];
-  return c;
-}
-
-- (GBBaseRepositoryController*) repositoryController
-{
-  return (GBBaseRepositoryController*)[self representedObject];
-}
 
 @end
