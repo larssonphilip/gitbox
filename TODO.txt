@@ -25,7 +25,7 @@ Bug fixes:
 
 WIP:
 
-- bug: autofetch sometimes does not work: maybe some crap is returned from ls-remote when communicating with a remote server; test with bergere
+- bug: autofetch sometimes does not work: maybe some crap is returned from ls-remote when communicating with a remote server; test with burger; seems like it stops working after some time or after gitbox restart.
 - bug: sometimes some duplicate branch name appears in popdown menus
 - bug: when selected all changes and hit "revert", one change is not reverted
 - bug: when pushing and switching branches, gitbox tries to fetch immediately which blocks the interaction. Should add a delay to perform fetch only after user is done doing what he was doing
