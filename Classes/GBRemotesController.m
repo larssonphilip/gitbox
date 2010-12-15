@@ -88,11 +88,11 @@
   NSMutableArray* addedAliases = [[newAliases mutableCopy] autorelease];
   [addedAliases removeObjectsInArray:oldAliases];
   
-  BOOL dirtyFlag = NO;
+  //BOOL dirtyFlag = NO;
   
   for (NSString* alias in removedAliases)
   {
-    dirtyFlag = YES;
+    //dirtyFlag = YES;
     GBTask* task = [self.repository task];
     task.arguments = [NSArray arrayWithObjects:@"config", 
                       @"--remove-section", 
@@ -114,7 +114,7 @@
     
     if (URLString && [URLString length] > 0)
     {
-      dirtyFlag = YES;
+      //dirtyFlag = YES;
       GBTask* task = [self.repository task];
       task.arguments = [NSArray arrayWithObjects:@"config", 
                         [NSString stringWithFormat:@"remote.%@.fetch", alias], 
@@ -151,7 +151,7 @@
     NSString* newURLString = [updatedDict objectForKey:@"URLString"];
     if (newURLString && [newURLString length] > 0 && ![newURLString isEqualToString:remote.URLString])
     {
-      dirtyFlag = YES;
+      //dirtyFlag = YES;
       GBTask* task = [self.repository task];
       task.arguments = [NSArray arrayWithObjects:@"config", 
                         [NSString stringWithFormat:@"remote.%@.url", remote.alias], 
