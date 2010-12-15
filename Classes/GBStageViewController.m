@@ -10,6 +10,9 @@
 #import "NSArray+OAArrayHelpers.h"
 
 @interface GBStageViewController ()
+@property(nonatomic, retain) GBCommitPromptController* commitPromptController;
+@property(nonatomic, retain) NSIndexSet* rememberedSelectionIndexes;
+@property(nonatomic, assign) BOOL alreadyCheckedUserNameAndEmail;
 - (void) checkUserNameAndEmailIfNeededWithBlock:(void(^)())block;
 @end
 
@@ -18,14 +21,22 @@
 @implementation GBStageViewController
 
 @synthesize stage;
+//@synthesize messageTextField;
+@synthesize messageTextView;
 @synthesize commitPromptController;
+@synthesize rememberedSelectionIndexes;
+
+@synthesize alreadyCheckedUserNameAndEmail;
 
 #pragma mark Init
 
 - (void) dealloc
 {
   self.stage = nil;
+  //self.messageTextField = nil;
+  self.messageTextView = nil;
   self.commitPromptController = nil;
+  self.rememberedSelectionIndexes = nil;
   [super dealloc];
 }
 
@@ -38,6 +49,9 @@
   [self.tableView setDraggingSourceOperationMask:NSDragOperationNone forLocal:YES];
   [self.tableView setDraggingSourceOperationMask:NSDragOperationEvery forLocal:NO];
   [self.tableView setVerticalMotionCanBeginDrag:YES];
+  
+  [self.messageTextView setTextContainerInset:NSMakeSize(0.0, 3.0)];
+  //[self.messageTextView setTextContainerInset:NSMakeSize(2.0, 2.0)];
 }
 
 - (void) update
@@ -280,6 +294,83 @@
 
 
 
+
+
+
+
+
+#pragma mark NSTextFieldDelegate
+
+/*
+// Since the textfield resigns first responder as soon as it becomes it, 
+// we don't rely on any resign notification from it. 
+// Instead, we will do appropriate updates when something else becomes first responder.
+- (void) textField:(NSTextField*)aTextField willBecomeFirstResponder:(BOOL)result
+{
+  //NSLog(@"become first responder: %@; message: %@", aTextField, self.messageTextField);
+  self.rememberedSelectionIndexes = [self.statusArrayController selectionIndexes];
+  [self.statusArrayController setSelectionIndexes:[NSIndexSet indexSet]];
+}
+
+- (void) textField:(NSTextField*)aTextField didCancel:(id)sender
+{
+  //NSLog(@"Cancel hit at %@", sender);
+  if (self.rememberedSelectionIndexes)
+  {
+    [self.statusArrayController setSelectionIndexes:self.rememberedSelectionIndexes];
+  }
+  [[self.tableView window] makeFirstResponder:self.tableView];
+}
+
+- (BOOL)control:(NSControl *)control textShouldBeginEditing:(NSText *)fieldEditor
+{
+  NSLog(@"editing...");
+  return YES;
+}
+*/
+
+
+
+
+
+#pragma mark NSTextViewDelegate
+
+
+- (void) textView:(NSTextView*)aTextView willBecomeFirstResponder:(BOOL)result
+{
+  if (!result) return;
+  self.rememberedSelectionIndexes = [self.statusArrayController selectionIndexes];
+  [self.statusArrayController setSelectionIndexes:[NSIndexSet indexSet]];
+  
+  NSLog(@"TODO: animate to the ready state");
+}
+
+- (void) textView:(NSTextView*)aTextView willResignFirstResponder:(BOOL)result
+{
+  if (!result) return;
+  NSLog(@"TODO: if the message is not empty, adjust layout back to the idle state");
+}
+
+- (void) textView:(NSTextView*)aTextView didCancel:(id)sender
+{
+  if (self.rememberedSelectionIndexes)
+  {
+    [self.statusArrayController setSelectionIndexes:self.rememberedSelectionIndexes];
+  }
+  [[self.tableView window] makeFirstResponder:self.tableView];
+}
+
+- (void)textDidChange:(NSNotification *)aNotification
+{
+  NSLog(@"TODO: check the message size and adjust layout");
+}
+
+
+
+
+
+
+
 #pragma mark NSTableViewDelegate
 
 
@@ -335,7 +426,7 @@ writeRowsWithIndexes:(NSIndexSet *)indexSet
 
 - (void) checkUserNameAndEmailIfNeededWithBlock:(void(^)())block
 {
-  if (alreadyCheckedUserNameAndEmail)
+  if (self.alreadyCheckedUserNameAndEmail)
   {
     block();
     return;
@@ -345,7 +436,7 @@ writeRowsWithIndexes:(NSIndexSet *)indexSet
   
   if (email && [email length] > 3)
   {
-    alreadyCheckedUserNameAndEmail = YES;
+    self.alreadyCheckedUserNameAndEmail = YES;
     block();
     return;
   }
@@ -353,7 +444,7 @@ writeRowsWithIndexes:(NSIndexSet *)indexSet
   GBUserNameEmailController* ctrl = [[[GBUserNameEmailController alloc] initWithWindowNibName:@"GBUserNameEmailController"] autorelease];
   [ctrl fillWithAddressBookData];
   ctrl.finishBlock = ^{
-    alreadyCheckedUserNameAndEmail = YES;
+    self.alreadyCheckedUserNameAndEmail = YES;
     [GBRepository configureName:ctrl.userName email:ctrl.userEmail withBlock:block];
   };
   [ctrl runSheetInWindow:[self window]];

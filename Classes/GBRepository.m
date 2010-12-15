@@ -415,7 +415,7 @@
     }
     else
     {
-      NSLog(@"WARNING: %@ %@: cannot find head ref %@ in local branches or tags.", [self class], NSStringFromSelector(_cmd), ref);
+      //NSLog(@"WARNING: %@ %@ cannot find head ref %@ in local branches or tags.", [self class], NSStringFromSelector(_cmd), ref);
     }
   }
   self.currentLocalRef = ref;

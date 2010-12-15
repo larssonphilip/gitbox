@@ -426,7 +426,7 @@
 
 - (void) dotgitStateDidChange
 {
-  NSLog(@"%@ %@ changed .git in %@", [self class], NSStringFromSelector(_cmd), [self nameForSourceList]);
+  //NSLog(@"%@ %@ changed .git in %@", [self class], NSStringFromSelector(_cmd), [self nameForSourceList]);
   
   GBRepository* repo = self.repository;
   

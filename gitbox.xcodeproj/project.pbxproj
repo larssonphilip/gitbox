@@ -268,6 +268,8 @@
 		20C83E7D12A9ACB900769F47 /* OAFastJumpController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20C83E7B12A9ACB900769F47 /* OAFastJumpController.m */; };
 		20C83F6D12AA1BBB00769F47 /* GBChangeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 20C83F6C12AA1BBB00769F47 /* GBChangeCell.m */; };
 		20C83F6E12AA1BBB00769F47 /* GBChangeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 20C83F6C12AA1BBB00769F47 /* GBChangeCell.m */; };
+		20C8972212B89BC2002F600F /* OATextFieldAndView.m in Sources */ = {isa = PBXBuildFile; fileRef = 20C8972112B89BC2002F600F /* OATextFieldAndView.m */; };
+		20C8972312B89BC2002F600F /* OATextFieldAndView.m in Sources */ = {isa = PBXBuildFile; fileRef = 20C8972112B89BC2002F600F /* OATextFieldAndView.m */; };
 		20F8058811C1B35A00ADDADA /* commit-header-template.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 20F8058711C1B35A00ADDADA /* commit-header-template.rtf */; };
 		20FAA190123F831400E8FA0E /* git.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 20FAA18F123F831400E8FA0E /* git.bundle */; };
 		8D15AC320486D014006FF6A4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A37F4B0FDCFA73011CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
@@ -538,6 +540,8 @@
 		20C83E7B12A9ACB900769F47 /* OAFastJumpController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAFastJumpController.m; sourceTree = "<group>"; };
 		20C83F6B12AA1BBB00769F47 /* GBChangeCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBChangeCell.h; sourceTree = "<group>"; };
 		20C83F6C12AA1BBB00769F47 /* GBChangeCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBChangeCell.m; sourceTree = "<group>"; };
+		20C8972012B89BC2002F600F /* OATextFieldAndView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OATextFieldAndView.h; sourceTree = "<group>"; };
+		20C8972112B89BC2002F600F /* OATextFieldAndView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OATextFieldAndView.m; sourceTree = "<group>"; };
 		20E59CE711A5C9EA00E7FB72 /* GBModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBModels.h; sourceTree = "<group>"; };
 		20F8058711C1B35A00ADDADA /* commit-header-template.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = "commit-header-template.rtf"; sourceTree = "<group>"; };
 		20FAA18F123F831400E8FA0E /* git.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = git.bundle; sourceTree = "<group>"; };
@@ -743,6 +747,8 @@
 				2035639D11D3C14C00965765 /* GBLightScrollView.m */,
 				209C192212B802C900F56A54 /* GBCellWithView.h */,
 				209C192312B802C900F56A54 /* GBCellWithView.m */,
+				20C8972012B89BC2002F600F /* OATextFieldAndView.h */,
+				20C8972112B89BC2002F600F /* OATextFieldAndView.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -1241,6 +1247,7 @@
 				20C83F6E12AA1BBB00769F47 /* GBChangeCell.m in Sources */,
 				20177F8612AAA229006362D1 /* GBChangeCheckboxCell.m in Sources */,
 				209C192512B802C900F56A54 /* GBCellWithView.m in Sources */,
+				20C8972312B89BC2002F600F /* OATextFieldAndView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1333,6 +1340,7 @@
 				20C83F6D12AA1BBB00769F47 /* GBChangeCell.m in Sources */,
 				20177F8512AAA229006362D1 /* GBChangeCheckboxCell.m in Sources */,
 				209C192412B802C900F56A54 /* GBCellWithView.m in Sources */,
+				20C8972212B89BC2002F600F /* OATextFieldAndView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

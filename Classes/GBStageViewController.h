@@ -2,12 +2,11 @@
 
 @class GBStage;
 @class GBCommitPromptController;
-@interface GBStageViewController : GBBaseChangesController
-{
-  BOOL alreadyCheckedUserNameAndEmail;
-}
-@property(retain) GBStage* stage;
-@property(retain) GBCommitPromptController* commitPromptController;
+@interface GBStageViewController : GBBaseChangesController<NSTextFieldDelegate, NSTextViewDelegate>
+
+@property(nonatomic,retain) GBStage* stage;
+//@property(nonatomic,retain) IBOutlet NSTextField* messageTextField;
+@property(nonatomic,retain) IBOutlet NSTextView* messageTextView;
 
 - (void) updateWithChanges:(NSArray*)newChanges;
 
@@ -19,6 +18,5 @@
 - (IBAction) stageDeleteFile:(id)sender;
 
 - (IBAction) commit:(id)sender;
-
 
 @end
