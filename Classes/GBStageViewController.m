@@ -50,6 +50,8 @@
   [self.tableView setDraggingSourceOperationMask:NSDragOperationEvery forLocal:NO];
   [self.tableView setVerticalMotionCanBeginDrag:YES];
   
+  
+  //[self.messageTextView setC]
   [self.messageTextView setTextContainerInset:NSMakeSize(0.0, 3.0)];
   //[self.messageTextView setTextContainerInset:NSMakeSize(2.0, 2.0)];
 }
@@ -239,45 +241,50 @@
 }
 
 
+- (void) commitWithSheet:(id)sender
+{
+  
+  if (!self.commitPromptController)
+  {
+    self.commitPromptController = [[[GBCommitPromptController alloc] initWithWindowNibName:@"GBCommitPromptController"] autorelease];
+  }
+  
+  GBCommitPromptController* prompt = self.commitPromptController;
+  GBRepositoryController* repoCtrl = self.repositoryController;
+  
+  prompt.messageHistory = self.repositoryController.commitMessageHistory;
+  prompt.value = repoCtrl.cancelledCommitMessage ? repoCtrl.cancelledCommitMessage : @"";
+  prompt.branchName = nil;
+  
+  [prompt updateWindow];
+  
+  NSString* currentBranchName = self.repositoryController.repository.currentLocalRef.name;
+  
+  if (currentBranchName && 
+      repoCtrl.lastCommitBranchName && 
+      ![repoCtrl.lastCommitBranchName isEqualToString:currentBranchName])
+  {
+    prompt.branchName = currentBranchName;
+  }
+  
+  prompt.finishBlock = ^{
+    repoCtrl.cancelledCommitMessage = @"";
+    repoCtrl.lastCommitBranchName = currentBranchName;
+    [repoCtrl commitWithMessage:prompt.value];
+  };
+  prompt.cancelBlock = ^{
+    repoCtrl.cancelledCommitMessage = prompt.value;
+  };
+  
+  [prompt runSheetInWindow:[self window]];
+}
+
 
 - (IBAction) commit:(id)sender
 {
   [self checkUserNameAndEmailIfNeededWithBlock:^{
     [self.repositoryController stageChanges:[self selectedChanges] withBlock:^{
-      
-      if (!self.commitPromptController)
-      {
-        self.commitPromptController = [[[GBCommitPromptController alloc] initWithWindowNibName:@"GBCommitPromptController"] autorelease];
-      }
-      
-      GBCommitPromptController* prompt = self.commitPromptController;
-      GBRepositoryController* repoCtrl = self.repositoryController;
-      
-      prompt.messageHistory = self.repositoryController.commitMessageHistory;
-      prompt.value = repoCtrl.cancelledCommitMessage ? repoCtrl.cancelledCommitMessage : @"";
-      prompt.branchName = nil;
-      
-      [prompt updateWindow];
-      
-      NSString* currentBranchName = self.repositoryController.repository.currentLocalRef.name;
-      
-      if (currentBranchName && 
-          repoCtrl.lastCommitBranchName && 
-          ![repoCtrl.lastCommitBranchName isEqualToString:currentBranchName])
-      {
-        prompt.branchName = currentBranchName;
-      }
-      
-      prompt.finishBlock = ^{
-        repoCtrl.cancelledCommitMessage = @"";
-        repoCtrl.lastCommitBranchName = currentBranchName;
-        [repoCtrl commitWithMessage:prompt.value];
-      };
-      prompt.cancelBlock = ^{
-        repoCtrl.cancelledCommitMessage = prompt.value;
-      };
-      
-      [prompt runSheetInWindow:[self window]];
+      [self commitWithSheet:sender];
     }];
   }];
 }

@@ -206,7 +206,7 @@ dataCellForTableColumn:(NSTableColumn*)aTableColumn
 {
   if (![[self selectedChanges] firstObject])
   {
-    [self.statusArrayController selectNext:_];
+    [self.statusArrayController setSelectionIndex:1];
   }
 }
 
