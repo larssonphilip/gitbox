@@ -210,6 +210,10 @@ dataCellForTableColumn:(NSTableColumn*)aTableColumn
   }
 }
 
+- (BOOL) validateSelectLeftPane:_
+{
+  return YES;
+}
 
 
 #pragma mark Actions Validation

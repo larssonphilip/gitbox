@@ -13,6 +13,8 @@
 @synthesize stagedChanges;
 @synthesize unstagedChanges;
 @synthesize untrackedChanges;
+@synthesize currentCommitMessage;
+
 @synthesize hasStagedChanges;
 @synthesize hasSelectedChanges;
 
@@ -23,7 +25,7 @@
   self.stagedChanges = nil;
   self.unstagedChanges = nil;
   self.untrackedChanges = nil;
-  
+  self.currentCommitMessage = nil;
   [super dealloc];
 }
 

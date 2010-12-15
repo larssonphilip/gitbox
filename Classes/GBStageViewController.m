@@ -14,6 +14,13 @@
 @property(nonatomic, retain) NSIndexSet* rememberedSelectionIndexes;
 @property(nonatomic, assign) BOOL alreadyCheckedUserNameAndEmail;
 - (void) checkUserNameAndEmailIfNeededWithBlock:(void(^)())block;
+- (void) updateHeader;
+- (void) updateHeaderSize;
+- (void) syncHeaderAfterLeaving;
+- (BOOL) validateCommit:(id)sender;
+- (BOOL) validateReallyCommit:(id)sender;
+- (BOOL) isEditingCommitMessage;
+- (NSString*) validCommitMessage;
 @end
 
 
@@ -22,7 +29,9 @@
 
 @synthesize stage;
 //@synthesize messageTextField;
+@synthesize messageTextScrollView;
 @synthesize messageTextView;
+@synthesize commitButton;
 @synthesize commitPromptController;
 @synthesize rememberedSelectionIndexes;
 
@@ -34,7 +43,9 @@
 {
   self.stage = nil;
   //self.messageTextField = nil;
+  self.messageTextScrollView = nil;
   self.messageTextView = nil;
+  self.commitButton = nil;
   self.commitPromptController = nil;
   self.rememberedSelectionIndexes = nil;
   [super dealloc];
@@ -64,6 +75,7 @@
     change.delegate = self.repositoryController;
   }
   [self.statusArrayController arrangeObjects:self.changes];
+  [self updateHeader];
 }
 
 - (void) updateWithChanges:(NSArray*)newChanges
@@ -90,6 +102,11 @@
   
   [self.statusArrayController setSelectedObjects: newSelectedChanges];
 }
+
+
+
+
+
 
 
 
@@ -279,15 +296,24 @@
   [prompt runSheetInWindow:[self window]];
 }
 
-
 - (IBAction) commit:(id)sender
 {
-  [self checkUserNameAndEmailIfNeededWithBlock:^{
-    [self.repositoryController stageChanges:[self selectedChanges] withBlock:^{
-      //[self commitWithSheet:sender];
-      [[self.messageTextView window] makeFirstResponder:self.messageTextView];
+  if ([self isEditingCommitMessage])
+  {
+    if ([self validateReallyCommit:sender])
+    {
+      [self reallyCommit:sender];
+    }
+  }
+  else
+  {
+    [self checkUserNameAndEmailIfNeededWithBlock:^{
+      [self.repositoryController stageChanges:[self selectedChanges] withBlock:^{
+        //[self commitWithSheet:sender];
+        [[self.messageTextView window] makeFirstResponder:self.messageTextView];
+      }];
     }];
-  }];
+  }
 }
 
 
@@ -296,11 +322,31 @@
   return [self.stage isCommitable];
 }
 
+- (IBAction) reallyCommit:(id)sender
+{
+  NSString* msg = [self validCommitMessage];
+  if (!msg) return;
+  [self.repositoryController commitWithMessage:msg];
+  [self.messageTextView setString:@""];
+  self.stage.currentCommitMessage = @"";
+  [[self.view window] makeFirstResponder:self.tableView];
+}
 
+- (BOOL) validateReallyCommit:(id)sender
+{
+  return [self validateCommit:sender] && [self validCommitMessage];
+}
 
-
-
-
+- (NSString*) validCommitMessage
+{
+  NSString* msg = [[[self.messageTextView string] copy] autorelease];
+  msg = [msg stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+  if ([msg length] < 1)
+  {
+    msg = nil;
+  }
+  return msg;
+}
 
 
 
@@ -350,13 +396,26 @@
   self.rememberedSelectionIndexes = [self.statusArrayController selectionIndexes];
   [self.statusArrayController setSelectionIndexes:[NSIndexSet indexSet]];
   
+  if (!self.stage.currentCommitMessage)
+  {
+    [self.messageTextView setString:@""];
+  }
+  
+  self.stage.currentCommitMessage = [[[self.messageTextView string] copy] autorelease];
+  if (!self.stage.currentCommitMessage)
+  {
+    self.stage.currentCommitMessage = @"";
+  }
+  [self updateHeaderSize];
+  
   NSLog(@"TODO: animate to the ready state");
 }
 
 - (void) textView:(NSTextView*)aTextView willResignFirstResponder:(BOOL)result
 {
   if (!result) return;
-  NSLog(@"TODO: if the message is not empty, adjust layout back to the idle state");
+  //NSLog(@"TODO: if the message is not empty, adjust layout back to the idle state");
+  [self syncHeaderAfterLeaving];
 }
 
 - (void) textView:(NSTextView*)aTextView didCancel:(id)sender
@@ -365,12 +424,82 @@
   {
     [self.statusArrayController setSelectionIndexes:self.rememberedSelectionIndexes];
   }
-  [[self.tableView window] makeFirstResponder:self.tableView];
+  [[self.view window] makeFirstResponder:self.tableView];
 }
 
 - (void)textDidChange:(NSNotification *)aNotification
 {
-  NSLog(@"TODO: check the message size and adjust layout");
+  self.stage.currentCommitMessage = [[[self.messageTextView string] copy] autorelease];
+  [self updateHeaderSize];
+}
+
+- (void) syncHeaderAfterLeaving
+{
+  NSString* msg = [self validCommitMessage];
+  self.stage.currentCommitMessage = msg;
+  // This toggling hack helps to reset cursor blinking when message view resigned first responder.
+  [self.messageTextView setHidden:YES];
+  [self.messageTextView setHidden:NO];
+  [self updateHeaderSize];
+}
+
+- (void) updateHeader
+{
+  NSString* msg = [[self.stage.currentCommitMessage copy] autorelease];
+  if (!msg) msg = @"";
+  [self.messageTextView setString:msg];
+  [self updateHeaderSize];
+}
+
+- (void) updateHeaderSize
+{
+  static CGFloat idleTextHeight = 14.0;
+  static CGFloat idleTextScrollViewHeight = 23.0;
+  static CGFloat idleHeaderViewHeight = 39.0;
+  static CGFloat bonusLineHeight = 11.0;
+  static CGFloat bottomButtonSpaceHeight = 24.0;
+  static CGFloat topPadding = 7.0;
+
+  
+  NSRect headerFrame = self.headerView.frame;
+  NSRect textScrollViewFrame = self.messageTextScrollView.frame;
+  
+  CGFloat textHeight = [[self.messageTextView layoutManager] usedRectForTextContainer:[self.messageTextView textContainer]].size.height;
+  
+  if (!self.stage.currentCommitMessage)
+  {
+    // idle mode: button hidden, textview has a single-line appearance
+    headerFrame.size.height = textHeight + (idleHeaderViewHeight - idleTextHeight);
+    textScrollViewFrame.size.height = idleTextScrollViewHeight;
+    [self.commitButton setHidden:YES];
+    [self.messageTextView setString:NSLocalizedString(@"Commit Message...", @"Commit")];
+    [self.messageTextView setTextColor:[NSColor disabledControlTextColor]];
+  }
+  else
+  {
+    // editing mode: textview has an additional line, button is visible
+    headerFrame.size.height = textHeight + (idleHeaderViewHeight - idleTextHeight) + bonusLineHeight + bottomButtonSpaceHeight;
+    textScrollViewFrame.size.height = headerFrame.size.height - (idleHeaderViewHeight - idleTextScrollViewHeight) - bottomButtonSpaceHeight;
+    [self.commitButton setHidden:NO];
+    [self.messageTextView setTextColor:[NSColor blackColor]];
+  }
+  
+  textScrollViewFrame.origin.y = headerFrame.size.height - textScrollViewFrame.size.height - topPadding;
+  
+  self.headerView.frame = headerFrame;
+  self.messageTextScrollView.frame = textScrollViewFrame;
+  [self.tableView noteHeightOfRowsWithIndexesChanged:[NSIndexSet indexSetWithIndex:0]];
+}
+
+
+- (BOOL) validateSelectLeftPane:(id)sender
+{
+  return ![self isEditingCommitMessage] && [super validateSelectLeftPane:sender];
+}
+
+- (BOOL) isEditingCommitMessage
+{
+  return ([[self.view window] firstResponder] == self.messageTextView);
 }
 
 

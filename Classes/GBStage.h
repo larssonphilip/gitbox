@@ -4,11 +4,13 @@
 
 @interface GBStage : GBCommit
 
-@property(retain) NSArray* stagedChanges;
-@property(retain) NSArray* unstagedChanges;
-@property(retain) NSArray* untrackedChanges;
-@property(assign) BOOL hasStagedChanges;
-@property(assign) BOOL hasSelectedChanges;
+@property(nonatomic, retain) NSArray* stagedChanges;
+@property(nonatomic, retain) NSArray* unstagedChanges;
+@property(nonatomic, retain) NSArray* untrackedChanges;
+@property(nonatomic, copy) NSString* currentCommitMessage;
+
+@property(nonatomic, assign) BOOL hasStagedChanges;
+@property(nonatomic, assign) BOOL hasSelectedChanges;
 
 - (BOOL) isDirty;
 - (BOOL) isCommitable;
