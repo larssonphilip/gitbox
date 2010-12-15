@@ -330,6 +330,17 @@
   [self.messageTextView setString:@""];
   self.stage.currentCommitMessage = @"";
   [[self.view window] makeFirstResponder:self.tableView];
+  if (self.rememberedSelectionIndexes)
+  {
+    NSUInteger firstIndex = [self.rememberedSelectionIndexes firstIndex];
+    if (firstIndex == NSNotFound) firstIndex = 0;
+    [self.statusArrayController setSelectionIndex:firstIndex];
+  }
+  else
+  {
+    [self.statusArrayController setSelectionIndex:0];
+  }
+
 }
 
 - (BOOL) validateReallyCommit:(id)sender
