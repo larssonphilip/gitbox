@@ -5,7 +5,6 @@
 @interface GBStageViewController : GBBaseChangesController<NSTextFieldDelegate, NSTextViewDelegate>
 
 @property(nonatomic,retain) GBStage* stage;
-//@property(nonatomic,retain) IBOutlet NSTextField* messageTextField;
 @property(nonatomic,retain) IBOutlet NSScrollView* messageTextScrollView;
 @property(nonatomic,retain) IBOutlet NSTextView* messageTextView;
 @property(nonatomic,retain) IBOutlet NSButton* commitButton;

@@ -16,6 +16,7 @@
 - (void) checkUserNameAndEmailIfNeededWithBlock:(void(^)())block;
 - (void) updateHeader;
 - (void) updateHeaderSize;
+- (void) updateCommitButtonEnabledState;
 - (void) syncHeaderAfterLeaving;
 - (BOOL) validateCommit:(id)sender;
 - (BOOL) validateReallyCommit:(id)sender;
@@ -28,7 +29,6 @@
 @implementation GBStageViewController
 
 @synthesize stage;
-//@synthesize messageTextField;
 @synthesize messageTextScrollView;
 @synthesize messageTextView;
 @synthesize commitButton;
@@ -42,7 +42,6 @@
 - (void) dealloc
 {
   self.stage = nil;
-  //self.messageTextField = nil;
   self.messageTextScrollView = nil;
   self.messageTextView = nil;
   self.commitButton = nil;
@@ -76,6 +75,7 @@
   }
   [self.statusArrayController arrangeObjects:self.changes];
   [self updateHeader];
+  [self.tableView setNextKeyView:self.messageTextView];
 }
 
 - (void) updateWithChanges:(NSArray*)newChanges
@@ -333,14 +333,14 @@
   if (self.rememberedSelectionIndexes)
   {
     NSUInteger firstIndex = [self.rememberedSelectionIndexes firstIndex];
-    if (firstIndex == NSNotFound) firstIndex = 0;
+    if (firstIndex == NSNotFound) firstIndex = 1;
     [self.statusArrayController setSelectionIndex:firstIndex];
   }
   else
   {
-    [self.statusArrayController setSelectionIndex:0];
+    [self.statusArrayController setSelectionIndex:1];
   }
-
+  [self updateCommitButtonEnabledState];
 }
 
 - (BOOL) validateReallyCommit:(id)sender
@@ -361,38 +361,6 @@
 
 
 
-
-
-
-#pragma mark NSTextFieldDelegate
-
-/*
-// Since the textfield resigns first responder as soon as it becomes it, 
-// we don't rely on any resign notification from it. 
-// Instead, we will do appropriate updates when something else becomes first responder.
-- (void) textField:(NSTextField*)aTextField willBecomeFirstResponder:(BOOL)result
-{
-  //NSLog(@"become first responder: %@; message: %@", aTextField, self.messageTextField);
-  self.rememberedSelectionIndexes = [self.statusArrayController selectionIndexes];
-  [self.statusArrayController setSelectionIndexes:[NSIndexSet indexSet]];
-}
-
-- (void) textField:(NSTextField*)aTextField didCancel:(id)sender
-{
-  //NSLog(@"Cancel hit at %@", sender);
-  if (self.rememberedSelectionIndexes)
-  {
-    [self.statusArrayController setSelectionIndexes:self.rememberedSelectionIndexes];
-  }
-  [[self.tableView window] makeFirstResponder:self.tableView];
-}
-
-- (BOOL)control:(NSControl *)control textShouldBeginEditing:(NSText *)fieldEditor
-{
-  NSLog(@"editing...");
-  return YES;
-}
-*/
 
 
 
@@ -495,6 +463,8 @@
     [self.messageTextView setTextColor:[NSColor blackColor]];
   }
   
+  [self updateCommitButtonEnabledState];
+  
   textScrollViewFrame.origin.y = headerFrame.size.height - textScrollViewFrame.size.height - topPadding;
   
   self.headerView.frame = headerFrame;
@@ -512,6 +482,12 @@
 {
   return ([[self.view window] firstResponder] == self.messageTextView);
 }
+
+- (void) updateCommitButtonEnabledState
+{
+  [self.commitButton setEnabled:[self validateReallyCommit:nil]];
+}
+
 
 
 
