@@ -284,7 +284,8 @@
 {
   [self checkUserNameAndEmailIfNeededWithBlock:^{
     [self.repositoryController stageChanges:[self selectedChanges] withBlock:^{
-      [self commitWithSheet:sender];
+      //[self commitWithSheet:sender];
+      [[self.messageTextView window] makeFirstResponder:self.messageTextView];
     }];
   }];
 }
