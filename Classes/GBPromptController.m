@@ -28,7 +28,7 @@
 
 - (id) initWithWindow:(NSWindow*)window
 {
-  if (self = [super initWithWindow:window])
+  if ((self = [super initWithWindow:window]))
   {
     self.value = @"";
     self.title = NSLocalizedString(@"Prompt",@"");

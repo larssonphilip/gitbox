@@ -60,7 +60,7 @@
 
 - (id)initWithWindow:(NSWindow*)aWindow
 {
-  if (self = [super initWithWindow:aWindow])
+  if ((self = [super initWithWindow:aWindow]))
   {
     self.sourcesController = [[[GBSourcesController alloc] initWithNibName:@"GBSourcesController" bundle:nil] autorelease];
     self.historyController = [[[GBHistoryViewController alloc] initWithNibName:@"GBHistoryViewController" bundle:nil] autorelease];

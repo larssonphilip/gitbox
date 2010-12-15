@@ -70,7 +70,7 @@
 
 - (id) init
 {
-  if (self = [super init])
+  if ((self = [super init]))
   {
     self.dispatchQueue = dispatch_queue_create("com.oleganza.gitbox.repository_queue", NULL);
   }
