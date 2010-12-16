@@ -11,7 +11,12 @@
 
 @class GBStageViewController;
 @interface GBStageHeaderAnimation : NSAnimation
+@property(nonatomic, copy) NSString* message;
 @property(nonatomic, assign) GBStageViewController* controller;
+@property(nonatomic, assign) NSRect headerFrame;
+@property(nonatomic, assign) NSRect textScrollViewFrame;
+@property(nonatomic, assign) CGFloat buttonAlpha;
+
 + (GBStageHeaderAnimation*) animationWithController:(GBStageViewController*)ctrl;
 @end
 
@@ -395,16 +400,12 @@
     self.stage.currentCommitMessage = @"";
   }
   [self updateHeaderSizeAnimating:YES];
-  
   [self.tableView scrollToBeginningOfDocument:nil];
-  
-  NSLog(@"TODO: animate to the ready state");
 }
 
 - (void) textView:(NSTextView*)aTextView willResignFirstResponder:(BOOL)result
 {
   if (!result) return;
-  NSLog(@"TODO: if the message is not empty, adjust layout back to the idle state");
   [self syncHeaderAfterLeaving];
 }
 
@@ -420,7 +421,7 @@
 - (void)textDidChange:(NSNotification *)aNotification
 {
   self.stage.currentCommitMessage = [[[self.messageTextView string] copy] autorelease];
-  [self updateHeaderSizeAnimating:YES];
+  [self updateHeaderSizeAnimating:NO];
 }
 
 - (void) syncHeaderAfterLeaving
@@ -438,10 +439,10 @@
   NSString* msg = [[self.stage.currentCommitMessage copy] autorelease];
   if (!msg) msg = @"";
   [self.messageTextView setString:msg];
-  [self updateHeaderSizeAnimating:YES];
+  [self updateHeaderSizeAnimating:NO];
 }
 
-- (void) updateHeaderSizeAnimating:(BOOL)isAnimating
+- (void) updateHeaderSizeAnimating:(BOOL)animating
 {
   static CGFloat idleTextHeight = 14.0;
   static CGFloat idleTextScrollViewHeight = 23.0;
@@ -450,46 +451,60 @@
   static CGFloat bottomButtonSpaceHeight = 24.0;
   static CGFloat topPadding = 7.0;
   
-  if (!self.headerAnimation)
+  if (self.headerAnimation)
   {
-    self.headerAnimation = [GBStageHeaderAnimation animationWithController:self];
-    [self.headerAnimation setDelegate:self];
+    [self.headerAnimation stopAnimation];
+    self.headerAnimation.controller = nil; // make sure animation does not touch us.
+    self.headerAnimation = nil;
   }
-  else
-  {
-    NSLog(@"TODO: stop headerAnimation, start a new one");
-  }
-  
-  NSRect headerFrame = self.headerView.frame;
-  NSRect textScrollViewFrame = self.messageTextScrollView.frame;
-  
+    
+  NSRect newHeaderFrame = self.headerView.frame;
+  NSRect newTextScrollViewFrame = self.messageTextScrollView.frame;
   CGFloat textHeight = [[self.messageTextView layoutManager] usedRectForTextContainer:[self.messageTextView textContainer]].size.height;
+  CGFloat newButtonAlpha = 0.0;
+  NSString* newMessage = nil;
   
   if (!self.stage.currentCommitMessage)
   {
     // idle mode: button hidden, textview has a single-line appearance
-    headerFrame.size.height = textHeight + (idleHeaderViewHeight - idleTextHeight);
-    textScrollViewFrame.size.height = idleTextScrollViewHeight;
-    [self.commitButton setHidden:YES];
-    [self.messageTextView setString:NSLocalizedString(@"Commit Message...", @"Commit")];
+    newHeaderFrame.size.height = textHeight + (idleHeaderViewHeight - idleTextHeight);
+    newTextScrollViewFrame.size.height = idleTextScrollViewHeight;
+    newButtonAlpha = 0.0;
+    newMessage = NSLocalizedString(@"Commit Message...", @"Commit");
+    [self.messageTextView setString:@""];
     [self.messageTextView setTextColor:[NSColor disabledControlTextColor]];
   }
   else
   {
     // editing mode: textview has an additional line, button is visible
-    headerFrame.size.height = textHeight + (idleHeaderViewHeight - idleTextHeight) + bonusLineHeight + bottomButtonSpaceHeight;
-    textScrollViewFrame.size.height = headerFrame.size.height - (idleHeaderViewHeight - idleTextScrollViewHeight) - bottomButtonSpaceHeight;
-    [self.commitButton setHidden:NO];
+    newHeaderFrame.size.height = textHeight + (idleHeaderViewHeight - idleTextHeight) + bonusLineHeight + bottomButtonSpaceHeight;
+    newTextScrollViewFrame.size.height = newHeaderFrame.size.height - (idleHeaderViewHeight - idleTextScrollViewHeight) - bottomButtonSpaceHeight;
+    newButtonAlpha = 1.0;
     [self.messageTextView setTextColor:[NSColor blackColor]];
   }
   
+  newTextScrollViewFrame.origin.y = newHeaderFrame.size.height - newTextScrollViewFrame.size.height - topPadding;
+  
+  if (!animating)
+  {
+    self.headerView.frame = newHeaderFrame;
+    self.messageTextScrollView.frame = newTextScrollViewFrame;
+    if (newMessage) [self.messageTextView setString:newMessage];
+    [self.commitButton setHidden:newButtonAlpha < 0.5];
+    [self.tableView noteHeightOfRowsWithIndexesChanged:[NSIndexSet indexSetWithIndex:0]];
+  }
+  else
+  {
+    self.headerAnimation = [GBStageHeaderAnimation animationWithController:self];
+   // [self.headerAnimation setDelegate:self];
+    self.headerAnimation.headerFrame = newHeaderFrame;
+    self.headerAnimation.textScrollViewFrame = newTextScrollViewFrame;
+    self.headerAnimation.buttonAlpha = newButtonAlpha;
+    self.headerAnimation.message = newMessage;
+    [self.headerAnimation performSelector:@selector(startAnimation) withObject:nil afterDelay:0.0];
+  }
+  
   [self updateCommitButtonEnabledState];
-  
-  textScrollViewFrame.origin.y = headerFrame.size.height - textScrollViewFrame.size.height - topPadding;
-  
-  self.headerView.frame = headerFrame;
-  self.messageTextScrollView.frame = textScrollViewFrame;
-  [self.tableView noteHeightOfRowsWithIndexesChanged:[NSIndexSet indexSetWithIndex:0]];
 }
 
 
@@ -604,17 +619,42 @@ writeRowsWithIndexes:(NSIndexSet *)indexSet
 
 
 
-
+@interface GBStageHeaderAnimation ()
+@property(nonatomic, assign) CGFloat topPadding;
+@property(nonatomic, assign) NSRect headerFrameInitial;
+@property(nonatomic, assign) NSRect textScrollViewFrameInitial;
+@property(nonatomic, assign) CGFloat buttonAlphaInitial;
+@property(nonatomic, assign) CGFloat topPaddingInitial;
+@end
 
 @implementation GBStageHeaderAnimation
 
+@synthesize message;
 @synthesize controller;
+@synthesize headerFrame;
+@synthesize headerFrameInitial;
+@synthesize textScrollViewFrame;
+@synthesize textScrollViewFrameInitial;
+@synthesize buttonAlpha;
+@synthesize buttonAlphaInitial;
+@synthesize topPadding;
+@synthesize topPaddingInitial;
+
+- (void) dealloc
+{
+  self.message = nil;
+  [NSObject cancelPreviousPerformRequestsWithTarget:self];
+  [super dealloc];
+}
 
 + (GBStageHeaderAnimation*) animationWithController:(GBStageViewController*)ctrl
 {
-  GBStageHeaderAnimation* animation = [[[self alloc] initWithDuration:1.0 animationCurve:NSAnimationEaseIn] autorelease];
+  static float duration = 0.07;
+  static float frames = 10.0;
+  GBStageHeaderAnimation* animation = [[[self alloc] initWithDuration:duration animationCurve:NSAnimationEaseIn] autorelease];
   animation.controller = ctrl;
   [animation setAnimationBlockingMode:NSAnimationNonblocking];
+  [animation setFrameRate:MAX(frames/duration, 30.0)];
   return animation;
 }
 
@@ -628,16 +668,63 @@ writeRowsWithIndexes:(NSIndexSet *)indexSet
   // Call super to update the progress value.
   [super setCurrentProgress:progress];
   
-  // TODO: animate headerView
-  // TODO: animate scrollView with textview
-  // TODO: animate button visibility
-  // TODO: notify table view
+  float p = [self currentValue];
+  
+  //NSLog(@"t = %f; p = %f", (double)progress, (double)p);
+  
+  //NSInteger currentFrame = (NSInteger)round(progress*[self frameRate]*[self duration]);
+  
+  NSRect newHeaderFrame = self.headerFrame;
+  NSRect newTextScrollViewFrame = self.textScrollViewFrame;
+  CGFloat newButtonAlpha = self.buttonAlpha;
+  
+  if (progress < 0.99) // otherwise there will be just final frame sizes
+  {
+    newHeaderFrame.size.height = round(p*newHeaderFrame.size.height + (1.0-p)*self.headerFrameInitial.size.height);
+    newTextScrollViewFrame.size.height = round(p*newTextScrollViewFrame.size.height + (1.0-p)*self.textScrollViewFrameInitial.size.height);
+    CGFloat currentTopPadding = round(p*self.topPadding + (1-p)*self.topPaddingInitial);
+    newTextScrollViewFrame.origin.y = newHeaderFrame.size.height - newTextScrollViewFrame.size.height - currentTopPadding;
+    newButtonAlpha = p*newButtonAlpha + (1-p)*self.buttonAlphaInitial;
+  }
+  else
+  {
+    if (self.message)
+    {
+      [self.controller.messageTextView setString:self.message];
+    }
+  }
+
+
+  self.controller.headerView.frame = newHeaderFrame;
+  self.controller.messageTextScrollView.frame = newTextScrollViewFrame;
+  //[self.controller.commitButton setAlphaValue:newButtonAlpha];
+  
+  if (newButtonAlpha > 0.5)
+  {
+    [self.controller.commitButton setHidden:NO];
+  }
+  else
+  {
+    [self.controller.commitButton setHidden:YES];
+  }
+  
+  //if (progress > 0.99 || (currentFrame % 2) == 0)
+  {
+    [self.controller.tableView noteHeightOfRowsWithIndexesChanged:[NSIndexSet indexSetWithIndex:0]];
+  }
 }
 
 - (void)startAnimation
 {
-  // Capture current state of the views
+  self.headerFrameInitial = self.controller.headerView.frame;
+  self.textScrollViewFrameInitial = self.controller.messageTextScrollView.frame;
   
+  self.topPaddingInitial = self.headerFrameInitial.size.height - self.textScrollViewFrameInitial.origin.y - self.textScrollViewFrameInitial.size.height;
+  self.topPadding = self.headerFrame.size.height - self.textScrollViewFrame.origin.y - self.textScrollViewFrame.size.height;
+  
+  self.buttonAlphaInitial = [self.controller.commitButton isHidden] ? 0.0 : 1.0;
+  
+  [super startAnimation];
 }
 
 @end
