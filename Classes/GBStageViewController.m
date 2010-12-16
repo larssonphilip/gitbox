@@ -396,6 +396,8 @@
   }
   [self updateHeaderSizeAnimating:YES];
   
+  [self.tableView scrollToBeginningOfDocument:nil];
+  
   NSLog(@"TODO: animate to the ready state");
 }
 
