@@ -2,7 +2,7 @@
 
 @class GBStage;
 @class GBCommitPromptController;
-@interface GBStageViewController : GBBaseChangesController<NSTextFieldDelegate, NSTextViewDelegate>
+@interface GBStageViewController : GBBaseChangesController<NSTextFieldDelegate, NSTextViewDelegate, NSAnimationDelegate>
 
 @property(nonatomic,retain) GBStage* stage;
 @property(nonatomic,retain) IBOutlet NSScrollView* messageTextScrollView;

@@ -9,13 +9,20 @@
 #import "NSObject+OAKeyValueObserving.h"
 #import "NSArray+OAArrayHelpers.h"
 
+@class GBStageViewController;
+@interface GBStageHeaderAnimation : NSAnimation
+@property(nonatomic, assign) GBStageViewController* controller;
++ (GBStageHeaderAnimation*) animationWithController:(GBStageViewController*)ctrl;
+@end
+
 @interface GBStageViewController ()
 @property(nonatomic, retain) GBCommitPromptController* commitPromptController;
 @property(nonatomic, retain) NSIndexSet* rememberedSelectionIndexes;
+@property(nonatomic, retain) GBStageHeaderAnimation* headerAnimation;
 @property(nonatomic, assign) BOOL alreadyCheckedUserNameAndEmail;
 - (void) checkUserNameAndEmailIfNeededWithBlock:(void(^)())block;
 - (void) updateHeader;
-- (void) updateHeaderSize;
+- (void) updateHeaderSizeAnimating:(BOOL)animating;
 - (void) updateCommitButtonEnabledState;
 - (void) syncHeaderAfterLeaving;
 - (BOOL) validateCommit:(id)sender;
@@ -34,6 +41,7 @@
 @synthesize commitButton;
 @synthesize commitPromptController;
 @synthesize rememberedSelectionIndexes;
+@synthesize headerAnimation;
 
 @synthesize alreadyCheckedUserNameAndEmail;
 
@@ -47,6 +55,7 @@
   self.commitButton = nil;
   self.commitPromptController = nil;
   self.rememberedSelectionIndexes = nil;
+  self.headerAnimation = nil;
   [super dealloc];
 }
 
@@ -328,7 +337,7 @@
   if (!msg) return;
   [self.repositoryController commitWithMessage:msg];
   [self.messageTextView setString:@""];
-  self.stage.currentCommitMessage = @"";
+  self.stage.currentCommitMessage = nil;
   [[self.view window] makeFirstResponder:self.tableView];
   if (self.rememberedSelectionIndexes)
   {
@@ -385,7 +394,7 @@
   {
     self.stage.currentCommitMessage = @"";
   }
-  [self updateHeaderSize];
+  [self updateHeaderSizeAnimating:YES];
   
   NSLog(@"TODO: animate to the ready state");
 }
@@ -393,7 +402,7 @@
 - (void) textView:(NSTextView*)aTextView willResignFirstResponder:(BOOL)result
 {
   if (!result) return;
-  //NSLog(@"TODO: if the message is not empty, adjust layout back to the idle state");
+  NSLog(@"TODO: if the message is not empty, adjust layout back to the idle state");
   [self syncHeaderAfterLeaving];
 }
 
@@ -409,7 +418,7 @@
 - (void)textDidChange:(NSNotification *)aNotification
 {
   self.stage.currentCommitMessage = [[[self.messageTextView string] copy] autorelease];
-  [self updateHeaderSize];
+  [self updateHeaderSizeAnimating:YES];
 }
 
 - (void) syncHeaderAfterLeaving
@@ -419,7 +428,7 @@
   // This toggling hack helps to reset cursor blinking when message view resigned first responder.
   [self.messageTextView setHidden:YES];
   [self.messageTextView setHidden:NO];
-  [self updateHeaderSize];
+  [self updateHeaderSizeAnimating:YES];
 }
 
 - (void) updateHeader
@@ -427,10 +436,10 @@
   NSString* msg = [[self.stage.currentCommitMessage copy] autorelease];
   if (!msg) msg = @"";
   [self.messageTextView setString:msg];
-  [self updateHeaderSize];
+  [self updateHeaderSizeAnimating:YES];
 }
 
-- (void) updateHeaderSize
+- (void) updateHeaderSizeAnimating:(BOOL)isAnimating
 {
   static CGFloat idleTextHeight = 14.0;
   static CGFloat idleTextScrollViewHeight = 23.0;
@@ -438,7 +447,16 @@
   static CGFloat bonusLineHeight = 11.0;
   static CGFloat bottomButtonSpaceHeight = 24.0;
   static CGFloat topPadding = 7.0;
-
+  
+  if (!self.headerAnimation)
+  {
+    self.headerAnimation = [GBStageHeaderAnimation animationWithController:self];
+    [self.headerAnimation setDelegate:self];
+  }
+  else
+  {
+    NSLog(@"TODO: stop headerAnimation, start a new one");
+  }
   
   NSRect headerFrame = self.headerView.frame;
   NSRect textScrollViewFrame = self.messageTextScrollView.frame;
@@ -576,3 +594,54 @@ writeRowsWithIndexes:(NSIndexSet *)indexSet
 
 
 @end
+
+
+
+
+
+
+
+
+
+
+@implementation GBStageHeaderAnimation
+
+@synthesize controller;
+
++ (GBStageHeaderAnimation*) animationWithController:(GBStageViewController*)ctrl
+{
+  GBStageHeaderAnimation* animation = [[[self alloc] initWithDuration:1.0 animationCurve:NSAnimationEaseIn] autorelease];
+  animation.controller = ctrl;
+  [animation setAnimationBlockingMode:NSAnimationNonblocking];
+  return animation;
+}
+
+- (NSArray*) runLoopModesForAnimating
+{
+  return [NSArray arrayWithObject:NSRunLoopCommonModes];
+}
+
+- (void)setCurrentProgress:(NSAnimationProgress)progress // 0.0 .. 1.0
+{
+  // Call super to update the progress value.
+  [super setCurrentProgress:progress];
+  
+  // TODO: animate headerView
+  // TODO: animate scrollView with textview
+  // TODO: animate button visibility
+  // TODO: notify table view
+}
+
+- (void)startAnimation
+{
+  // Capture current state of the views
+  
+}
+
+@end
+
+
+
+
+
+
