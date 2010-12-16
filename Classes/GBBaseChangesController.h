@@ -14,7 +14,7 @@
 - (NSWindow*) window;
 - (NSCell*) headerCell;
 - (CGFloat) headerHeight;
-
+- (NSIndexSet*) changesIndexesForTableIndexes:(NSIndexSet*)indexSet;
 
 #pragma mark Update
 

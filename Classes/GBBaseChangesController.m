@@ -36,7 +36,7 @@
 
 - (NSArray*) selectedChanges
 {
-  NSInteger clickedRow = [self.tableView clickedRow];
+  NSInteger clickedRow = [self.tableView clickedRow] - 1; // compensate for header view
   if (clickedRow < 0)
   {
     return [self.statusArrayController selectedObjects];
@@ -60,6 +60,15 @@
 - (NSWindow*) window
 {
   return [[self view] window];
+}
+
+- (NSIndexSet*) changesIndexesForTableIndexes:(NSIndexSet*)indexSet
+{
+  NSMutableIndexSet* newIndexSet = [NSMutableIndexSet indexSet];
+  [indexSet enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop){
+    if (idx > 0) [newIndexSet addIndex:idx - 1];
+  }];
+  return newIndexSet;
 }
 
 

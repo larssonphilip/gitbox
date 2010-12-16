@@ -190,40 +190,10 @@
 writeRowsWithIndexes:(NSIndexSet *)indexSet
      toPasteboard:(NSPasteboard *)pasteboard
 {
-  NSArray* items = [[self.changes objectsAtIndexes:indexSet] valueForKey:@"pasteboardItem"];
+  NSArray* items = [[self.changes objectsAtIndexes:[self changesIndexesForTableIndexes:indexSet]] valueForKey:@"pasteboardItem"];
   [pasteboard writeObjects:items];
   return YES;
 }
-
-//- (NSArray *)tableView:(NSTableView *)aTableView
-//namesOfPromisedFilesDroppedAtDestination:(NSURL *)dropDestination
-//forDraggedRowsWithIndexes:(NSIndexSet *)indexSet
-//{
-//  NSLog(@"GBCommitViewController: making promise: %@", indexSet);
-//  NSArray* droppedChanges = [self.changes objectsAtIndexes:indexSet];
-//  
-//  NSMutableArray* names = [NSMutableArray array];
-//  
-//  for (GBChange* change in droppedChanges)
-//  {
-//    NSString* name = [change nameForExtractedFileAtDestination:dropDestination];
-//    if (name) [names addObject:name];
-//  }
-//  
-//  return names;
-//}
-
-//- (NSDragOperation)tableView:(NSTableView *)aTableView validateDrop:(id < NSDraggingInfo >)info proposedRow:(NSInteger)row proposedDropOperation:(NSTableViewDropOperation)operation
-//{
-//  return NSDragOperationNone;
-//}
-//
-//- (BOOL)tableView:(NSTableView *)aTableView acceptDrop:(id < NSDraggingInfo >)info row:(NSInteger)row dropOperation:(NSTableViewDropOperation)operation
-//{
-//  return NO;
-//}
-
-
 
 
 

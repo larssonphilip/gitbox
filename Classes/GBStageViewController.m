@@ -573,7 +573,7 @@
 writeRowsWithIndexes:(NSIndexSet *)indexSet
      toPasteboard:(NSPasteboard *)pasteboard
 {
-  NSArray* items = [[self.changes objectsAtIndexes:indexSet] valueForKey:@"pasteboardItem"];
+  NSArray* items = [[self.changes objectsAtIndexes:[self changesIndexesForTableIndexes:indexSet]] valueForKey:@"pasteboardItem"];
   [pasteboard writeObjects:items];
   return YES;
 }
@@ -708,7 +708,7 @@ writeRowsWithIndexes:(NSIndexSet *)indexSet
     [self.controller.commitButton setHidden:YES];
   }
   
-  //if (progress > 0.99 || (currentFrame % 2) == 0)
+  //if (progress > 0.99) // || (currentFrame % 2) == 0)
   {
     [self.controller.tableView noteHeightOfRowsWithIndexesChanged:[NSIndexSet indexSetWithIndex:0]];
   }
