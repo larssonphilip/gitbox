@@ -1,12 +1,12 @@
 @class GBRepositoryController;
 @interface GBBaseChangesController : NSViewController<NSTableViewDelegate, NSUserInterfaceValidations>
 
-@property(retain) IBOutlet NSTableView* tableView;
-@property(retain) IBOutlet NSArrayController* statusArrayController; 
-@property(retain) IBOutlet NSView* headerView; 
-@property(retain) GBRepositoryController* repositoryController;
-@property(retain) NSArray* changes;
-@property(retain) NSArray* changesWithHeaderForBindings; // bound to statusArrayController
+@property(nonatomic, retain) IBOutlet NSTableView* tableView;
+@property(nonatomic, retain) IBOutlet NSArrayController* statusArrayController; 
+@property(nonatomic, retain) IBOutlet NSView* headerView; 
+@property(nonatomic, retain) GBRepositoryController* repositoryController;
+@property(nonatomic, retain) NSArray* changes;
+@property(nonatomic, retain) NSArray* changesWithHeaderForBindings; // bound to statusArrayController
 
 #pragma mark Interrogation
 
@@ -15,6 +15,7 @@
 - (NSCell*) headerCell;
 - (CGFloat) headerHeight;
 - (NSIndexSet*) changesIndexesForTableIndexes:(NSIndexSet*)indexSet;
+
 
 #pragma mark Update
 

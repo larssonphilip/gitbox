@@ -4,10 +4,9 @@
 @class GBCommitPromptController;
 @interface GBStageViewController : GBBaseChangesController<NSTextFieldDelegate, NSTextViewDelegate, NSAnimationDelegate>
 
-@property(nonatomic,retain) GBStage* stage;
-@property(nonatomic,retain) IBOutlet NSScrollView* messageTextScrollView;
-@property(nonatomic,retain) IBOutlet NSTextView* messageTextView;
-@property(nonatomic,retain) IBOutlet NSButton* commitButton;
+@property(nonatomic, retain) GBStage* stage;
+@property(nonatomic, retain) IBOutlet NSTextView* messageTextView;
+@property(nonatomic, retain) IBOutlet NSButton* commitButton;
 
 - (void) updateWithChanges:(NSArray*)newChanges;
 

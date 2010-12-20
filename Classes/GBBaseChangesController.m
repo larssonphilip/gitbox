@@ -16,7 +16,6 @@
 @synthesize changes;
 @synthesize changesWithHeaderForBindings;
 
-
 #pragma mark Init
 
 - (void) dealloc
@@ -72,6 +71,12 @@
 }
 
 
+
+
+
+
+
+
 #pragma mark Update
 
 
@@ -87,7 +92,9 @@
 // override in subclass (optional)
 - (NSCell*) headerCell
 {
-  return [GBCellWithView cellWithView:self.headerView];
+  GBCellWithView* cell = [GBCellWithView cellWithView:self.headerView];
+  cell.verticalOffset = -[self.tableView intercellSpacing].height;
+  return cell;
 }
 
 // override in subclass (optional)

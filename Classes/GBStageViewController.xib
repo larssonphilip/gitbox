@@ -808,14 +808,6 @@
 					<int key="connectionID">105</int>
 				</object>
 				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">messageTextScrollView</string>
-						<reference key="source" ref="1001"/>
-						<reference key="destination" ref="628185343"/>
-					</object>
-					<int key="connectionID">106</int>
-				</object>
-				<object class="IBConnectionRecord">
 					<object class="IBActionConnection" key="connection">
 						<string key="label">reallyCommit:</string>
 						<reference key="source" ref="1001"/>
