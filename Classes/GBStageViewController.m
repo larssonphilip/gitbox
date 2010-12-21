@@ -1,3 +1,9 @@
+
+
+
+#define StageHeaderAnimationDebug 1
+
+
 #import "GBModels.h"
 
 #import "GBRepositoryController.h"
@@ -506,12 +512,15 @@
   
   if (!animating)
   {
+    self.overridenHeaderHeight = 0;
     self.headerView.frame = newHeaderFrame;
     //NSLog(@"%d: headerView frame = %@", __LINE__, NSStringFromRect(self.headerView.frame));
     [self.messageTextView enclosingScrollView].frame = newTextScrollViewFrame;
     if (newMessage) [self.messageTextView setString:newMessage];
     [self.commitButton setHidden:newButtonAlpha < 0.5];
     [self.tableView noteHeightOfRowsWithIndexesChanged:[NSIndexSet indexSetWithIndex:0]];
+    [[self.tableView enclosingScrollView] setFrame:[self.view bounds]];
+    //[[self.controller.tableView enclosingScrollView] adjustScroll:self.tableViewFrameInitial];
   }
   else
   {
@@ -521,9 +530,7 @@
     self.headerAnimation.textScrollViewFrame = newTextScrollViewFrame;
     self.headerAnimation.buttonAlpha = newButtonAlpha;
     self.headerAnimation.message = newMessage;
-    [self.headerAnimation prepareAnimation];
-    [self.headerAnimation startAnimation];
-    //[self.headerAnimation performSelector:@selector(startAnimation) withObject:nil afterDelay:0.0];
+    [self.headerAnimation performSelector:@selector(startAnimation) withObject:nil afterDelay:0.01];
   }
   
   [self updateCommitButtonEnabledState];
@@ -676,17 +683,22 @@ writeRowsWithIndexes:(NSIndexSet *)indexSet
 }
 
 + (GBStageHeaderAnimation*) animationWithController:(GBStageViewController*)ctrl
-{
+{  
+#if !StageHeaderAnimationDebug
+  static float duration = 1.3; // debug!
+  static float frames = 5.0; // debug!
+#else
   static float duration = 0.2;
   static float frames = 12.0;
-//  static float duration = 1.3; // debug!
-//  static float frames = 5.0; // debug!
-
+#endif
+  
   GBStageHeaderAnimation* animation = [[[self alloc] initWithDuration:duration animationCurve:NSAnimationEaseIn] autorelease];
   animation.controller = ctrl;
   [animation setAnimationBlockingMode:NSAnimationNonblocking];
   [animation setFrameRate:MAX(frames/duration, 30.0)];
-//  [animation setFrameRate:frames/duration]; // debug!
+#if StageHeaderAnimationDebug
+  [animation setFrameRate:frames/duration]; // debug!
+#endif
   return animation;
 }
 
@@ -732,7 +744,7 @@ writeRowsWithIndexes:(NSIndexSet *)indexSet
   
   // alpha animation sucks? [self.controller.commitButton setAlphaValue:newButtonAlpha];
   
-  if (newButtonAlpha > 0.5)
+  if (newButtonAlpha > 0.6)
   {
     [self.controller.commitButton setHidden:NO];
   }
@@ -743,6 +755,7 @@ writeRowsWithIndexes:(NSIndexSet *)indexSet
   
   if (progress > 0.99)
   {
+    self.controller.overridenHeaderHeight = 0;
     if (self.message)
     {
       [self.controller.messageTextView setString:self.message];
@@ -750,6 +763,7 @@ writeRowsWithIndexes:(NSIndexSet *)indexSet
     self.controller.headerCell.isViewManagementDisabled = NO;
     [[self.controller.tableView enclosingScrollView] setFrame:[self.controller.view bounds]];
     [self.controller.tableView noteHeightOfRowsWithIndexesChanged:[NSIndexSet indexSetWithIndex:0]];
+    self.controller.headerAnimation = nil;
     self.controller = nil; // detach controller so we don't modify it accidentally
     //NSLog(@"%d: headerView frame = %@", __LINE__, NSStringFromRect(self.controller.headerView.frame));
   }
@@ -774,7 +788,7 @@ writeRowsWithIndexes:(NSIndexSet *)indexSet
   
   CGFloat headerHeightDelta = self.headerFrame.size.height - self.headerFrameInitial.size.height;
   
-  NSLog(@"headerHeightDelta = %f", headerHeightDelta);
+//  NSLog(@"headerHeightDelta = %f", headerHeightDelta);
   
   // Case 1: Expanding header
   if (headerHeightDelta > 0)
@@ -785,6 +799,7 @@ writeRowsWithIndexes:(NSIndexSet *)indexSet
     // 4. Prepare initial and final frame for the header for animation
     
     self.controller.overridenHeaderHeight = self.headerFrame.size.height;
+    
     self.tableViewFrame = [[self.controller view] bounds];
     
     {
@@ -809,12 +824,17 @@ writeRowsWithIndexes:(NSIndexSet *)indexSet
     // 3. Prepare initial and final frame for the header for animation
     // 4. After animation, resize first row and whole frame to the correct position.
     
+    self.controller.overridenHeaderHeight = self.headerFrameInitial.size.height;
+    
     self.tableViewFrame = [[self.controller view] bounds];
+    
+    // I go out of my mind if this delta is negative. Let's keep it simple even if someone will tell me it's not mathematically pure. Fuck that.
+    headerHeightDelta = -headerHeightDelta;
     
     {
       NSRect f = self.tableViewFrame;
-      f.size.height -= headerHeightDelta; // pushing table view beyond bottom (non-flipped coordinates)
-      f.origin.y += headerHeightDelta;
+      f.size.height += headerHeightDelta; // pushing table view beyond bottom (non-flipped coordinates)
+      f.origin.y -= headerHeightDelta;
       self.tableViewFrameInitial = f;
       
       f.origin.y = 0;
@@ -826,14 +846,14 @@ writeRowsWithIndexes:(NSIndexSet *)indexSet
       f.origin.y = 0;
       self.headerFrameInitial = f;
       f = self.headerFrame;
-      f.origin.y = -headerHeightDelta;
+      f.origin.y = headerHeightDelta;
       self.headerFrame = f;
     }
   }
 
-//  NSLog(@"before prepareAnimation: headerView.frame = %@", NSStringFromRect([self.controller.headerView frame]));
-//  NSLog(@"before prepareAnimation: scrollView.frame = %@", NSStringFromRect([[self.controller.tableView enclosingScrollView] frame]));
-//  NSLog(@"before prepareAnimation: tableView.frame = %@", NSStringFromRect([self.controller.tableView frame]));
+  NSLog(@"before prepareAnimation: headerView.frame = %@", NSStringFromRect([self.controller.headerView frame]));
+  NSLog(@"before prepareAnimation: scrollView.frame = %@", NSStringFromRect([[self.controller.tableView enclosingScrollView] frame]));
+  NSLog(@"before prepareAnimation: tableView.frame = %@", NSStringFromRect([self.controller.tableView frame]));
     
   self.controller.headerCell.isViewManagementDisabled = YES;
     
@@ -842,7 +862,7 @@ writeRowsWithIndexes:(NSIndexSet *)indexSet
 
   [[self.controller.tableView enclosingScrollView] setFrame:self.tableViewFrameInitial];
   [self.controller.tableView noteHeightOfRowsWithIndexesChanged:[NSIndexSet indexSetWithIndex:0]];
-  //[[self.controller.tableView enclosingScrollView] adjustScroll:self.tableViewFrameInitial];
+  [[self.controller.tableView enclosingScrollView] adjustScroll:self.tableViewFrameInitial];
  
   if (![self.controller.headerView superview])
   {
@@ -850,11 +870,11 @@ writeRowsWithIndexes:(NSIndexSet *)indexSet
   }
   [self.controller.headerView setFrame:self.headerFrameInitial];
   
-  NSLog(@"in prepareAnimation: headerView.frame = %@", NSStringFromRect([self.controller.headerView frame]));
+//  NSLog(@"in prepareAnimation: headerView.frame = %@", NSStringFromRect([self.controller.headerView frame]));
   
-//  NSLog(@"after prepareAnimation: headerView.frame = %@", NSStringFromRect([self.controller.headerView frame]));
-//  NSLog(@"after prepareAnimation: scrollView.frame = %@", NSStringFromRect([[self.controller.tableView enclosingScrollView] frame]));
-//  NSLog(@"after prepareAnimation: tableView.frame = %@", NSStringFromRect([self.controller.tableView frame]));
+  NSLog(@"after prepareAnimation: headerView.frame = %@", NSStringFromRect([self.controller.headerView frame]));
+  NSLog(@"after prepareAnimation: scrollView.frame = %@", NSStringFromRect([[self.controller.tableView enclosingScrollView] frame]));
+  NSLog(@"after prepareAnimation: tableView.frame = %@", NSStringFromRect([self.controller.tableView frame]));
   
 //  [self.controller.tableView setNeedsDisplay:YES];
 //  [[self.controller.tableView enclosingScrollView] setNeedsDisplay:YES];
@@ -862,10 +882,22 @@ writeRowsWithIndexes:(NSIndexSet *)indexSet
 //  [[self.controller.tableView enclosingScrollView] displayIfNeeded];
 }
 
+- (void) startAnimation
+{
+  [self prepareAnimation];
+#if StageHeaderAnimationDebug
+  //[super performSelector:@selector(startAnimation) withObject:nil afterDelay:0.9];
+  [super startAnimation];
+#else
+  [super startAnimation];
+#endif  
+}
+
 - (void) stopAnimation
 {
+  [NSObject cancelPreviousPerformRequestsWithTarget:self];
   self.controller.headerCell.isViewManagementDisabled = NO;
-  NSLog(@"%d: headerView frame = %@", __LINE__, NSStringFromRect(self.controller.headerView.frame));
+//  NSLog(@"%d: headerView frame = %@", __LINE__, NSStringFromRect(self.controller.headerView.frame));
   [super stopAnimation];
 }
 
