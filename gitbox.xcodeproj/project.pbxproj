@@ -207,7 +207,6 @@
 		20915F2712874D2A005E0D82 /* GBUserNameEmailController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20BF1953128224E500A30EE6 /* GBUserNameEmailController.m */; };
 		20915F2812874D2A005E0D82 /* GBBasePromptController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20BF195A12822C5800A30EE6 /* GBBasePromptController.m */; };
 		20915F2A12874D2A005E0D82 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */; };
-		20915F2B12874D2A005E0D82 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2057EF7511ABE5B5009EDF2F /* Sparkle.framework */; };
 		20915F2C12874D2A005E0D82 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2000325311FC75050069C70D /* IOKit.framework */; };
 		20915F2D12874D2A005E0D82 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20BF19711282329A00A30EE6 /* AddressBook.framework */; };
 		20915F8012875C92005E0D82 /* GBPreferencesController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 20915F7E12875C92005E0D82 /* GBPreferencesController.xib */; };
@@ -549,7 +548,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				20915F2A12874D2A005E0D82 /* Cocoa.framework in Frameworks */,
-				20915F2B12874D2A005E0D82 /* Sparkle.framework in Frameworks */,
 				20915F2C12874D2A005E0D82 /* IOKit.framework in Frameworks */,
 				20915F2D12874D2A005E0D82 /* AddressBook.framework in Frameworks */,
 				2030C4DA128B60FA005F751C /* Security.framework in Frameworks */,
