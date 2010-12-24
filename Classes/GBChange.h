@@ -47,6 +47,11 @@
 
 - (NSObject<NSPasteboardWriting>*) pasteboardItem;
 
+- (NSImage*) icon;
+- (NSImage*) srcIconOrDstIcon;
+- (NSImage*) srcIcon;
+- (NSImage*) dstIcon;
+
 
 #pragma mark Actions
 

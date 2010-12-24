@@ -10,6 +10,14 @@
 #import "NSAlert+OAAlertHelpers.h"
 #import "NSFileManager+OAFileManagerHelpers.h"
 
+@interface GBChange ()
+@property(nonatomic, retain) NSImage* cachedSrcIcon;
+@property(nonatomic, retain) NSImage* cachedDstIcon;
+- (NSImage*) iconForPath:(NSString*)path;
+@end
+
+
+
 @implementation GBChange
 
 @synthesize srcURL;
@@ -19,6 +27,9 @@
 @synthesize oldRevision;
 @synthesize newRevision;
 @synthesize commitId;
+@synthesize cachedSrcIcon;
+@synthesize cachedDstIcon;
+
 
 @synthesize staged;
 @synthesize delegate;
@@ -39,6 +50,9 @@
   self.oldRevision = nil;
   self.newRevision = nil;
   self.commitId = nil;
+  self.cachedSrcIcon = nil;
+  self.cachedDstIcon = nil;
+
   [super dealloc];
 }
 
@@ -89,6 +103,51 @@
 {
   if (self.dstURL) return self.dstURL;
   return self.srcURL;
+}
+
+- (NSImage*) icon
+{
+  if (self.dstURL) return [self dstIcon];
+  return [self srcIcon];
+}
+
+- (NSImage*) srcIconOrDstIcon
+{
+  if (self.srcURL) return [self srcIcon];
+  return [self dstIcon];
+}
+
+- (NSImage*) iconForPath:(NSString*)path
+{
+  NSImage* icon = nil;
+  if (!self.commitId && [[NSFileManager defaultManager] fileExistsAtPath:path])
+  {
+    icon = [[NSWorkspace sharedWorkspace] iconForFile:path];
+  }
+  if (!icon)
+  {
+    NSString* ext = [path pathExtension];
+    icon = [[NSWorkspace sharedWorkspace] iconForFileType:ext];      
+  }
+  return icon;
+}
+
+- (NSImage*) srcIcon
+{
+  if (!self.cachedSrcIcon)
+  {
+    self.cachedSrcIcon = [self iconForPath:[self.srcURL path]];
+  }
+  return self.cachedSrcIcon;
+}
+
+- (NSImage*) dstIcon
+{
+  if (!self.cachedDstIcon)
+  {
+    self.cachedDstIcon = [self iconForPath:[self.dstURL path]];
+  }
+  return self.cachedDstIcon;  
 }
 
 

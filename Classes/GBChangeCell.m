@@ -8,7 +8,6 @@
 
 @property(nonatomic, copy) NSParagraphStyle* truncatingParagraphStyle;
 @property(nonatomic, assign) BOOL isDragging;
-- (NSImage*) iconForPath:(NSString*)path;
 @end
 
 
@@ -87,7 +86,7 @@
   
   NSURL* dstURL = aChange.dstURL;
   
-  NSImage* srcIcon = [self iconForPath:[srcURL path]];
+  NSImage* srcIcon = [aChange srcIconOrDstIcon];
     
   NSSize iconSize = NSMakeSize(kIconImageWidth, kIconImageWidth);
   
@@ -251,7 +250,7 @@
       NSImage* dstIcon = srcIcon;
       if (![[srcPath pathExtension] isEqualToString:[dstPath pathExtension]])
       {
-        dstIcon = [self iconForPath:[dstURL path]]; // not using dstPath because need absolute path
+        dstIcon = [aChange dstIcon];
         [dstIcon setSize:iconSize];
       }
       
@@ -279,22 +278,6 @@
 //  [super drawInteriorWithFrame:cellFrame inView:theControlView];
 }
 
-
-- (NSImage*) iconForPath:(NSString*)path
-{
-  // Memo: NSFileTypeForHFSTypeCode(UTGetOSTypeFromString((CFStringRef*)@"..."))
-  if (path)
-  {
-    if ([[NSFileManager defaultManager] fileExistsAtPath:path])
-    {
-      return [[NSWorkspace sharedWorkspace] iconForFile:path];
-    }
-    
-    NSString* ext = [path pathExtension];
-    return [[NSWorkspace sharedWorkspace] iconForFileType:ext];
-  }
-  return nil;
-}
 
 
 
