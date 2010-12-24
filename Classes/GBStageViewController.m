@@ -86,9 +86,8 @@
   [self.tableView setDraggingSourceOperationMask:NSDragOperationEvery forLocal:NO];
   [self.tableView setVerticalMotionCanBeginDrag:YES];
   
-  //[self.messageTextView setC]
   [self.messageTextView setTextContainerInset:NSMakeSize(0.0, 3.0)];
-  //[self.messageTextView setTextContainerInset:NSMakeSize(2.0, 2.0)];
+  [self.messageTextView setFont:[NSFont systemFontOfSize:12.0]];
   
   self.headerCell = [GBCellWithView cellWithView:self.headerView];
   self.headerCell.verticalOffset = -1;
