@@ -1,7 +1,7 @@
 
 
 
-#define StageHeaderAnimationDebug 1
+#define StageHeaderAnimationDebug 0
 
 
 #import "GBModels.h"
@@ -684,12 +684,12 @@ writeRowsWithIndexes:(NSIndexSet *)indexSet
 
 + (GBStageHeaderAnimation*) animationWithController:(GBStageViewController*)ctrl
 {  
-#if !StageHeaderAnimationDebug
+#if StageHeaderAnimationDebug
   static float duration = 1.3; // debug!
   static float frames = 5.0; // debug!
 #else
-  static float duration = 0.2;
-  static float frames = 12.0;
+  static float duration = 0.1;
+  static float frames = 5.0;
 #endif
   
   GBStageHeaderAnimation* animation = [[[self alloc] initWithDuration:duration animationCurve:NSAnimationEaseIn] autorelease];
@@ -744,7 +744,7 @@ writeRowsWithIndexes:(NSIndexSet *)indexSet
   
   // alpha animation sucks? [self.controller.commitButton setAlphaValue:newButtonAlpha];
   
-  if (newButtonAlpha > 0.6)
+  if (newButtonAlpha > 0.4)
   {
     [self.controller.commitButton setHidden:NO];
   }
