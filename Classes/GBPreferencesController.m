@@ -1,7 +1,6 @@
 #import "GBPreferencesController.h"
 #import "GBModels.h"
 #import "OATask.h"
-#import <Sparkle/Sparkle.h>
 
 @implementation GBPreferencesController
 
