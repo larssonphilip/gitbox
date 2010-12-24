@@ -466,7 +466,7 @@
 {
   static CGFloat idleTextHeight = 14.0;
   static CGFloat idleTextScrollViewHeight = 23.0;
-  static CGFloat idleHeaderViewHeight = 40.0;
+  static CGFloat idleHeaderViewHeight = 39.0;
   static CGFloat bonusLineHeight = 11.0;
   static CGFloat bottomButtonSpaceHeight = 24.0;
   static CGFloat topPadding = 8.0;
