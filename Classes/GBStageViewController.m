@@ -58,6 +58,7 @@
 @synthesize rememberedSelectionIndexes;
 @synthesize headerAnimation;
 @synthesize headerCell;
+@synthesize shortcutHintLabel;
 
 @synthesize alreadyCheckedUserNameAndEmail;
 @synthesize overridenHeaderHeight;
@@ -73,6 +74,7 @@
   self.rememberedSelectionIndexes = nil;
   self.headerAnimation = nil;
   self.headerCell = nil;
+  self.shortcutHintLabel = nil;
   [super dealloc];
 }
 
@@ -336,16 +338,16 @@
   {
     if ([self validateReallyCommit:sender])
     {
-      [self reallyCommit:sender];
+      [self checkUserNameAndEmailIfNeededWithBlock:^{
+        [self reallyCommit:sender];
+      }];
     }
   }
   else
   {
-    [self checkUserNameAndEmailIfNeededWithBlock:^{
-      [self.repositoryController stageChanges:[self selectedChanges] withBlock:^{
-        //[self commitWithSheet:sender];
-        [[self.messageTextView window] makeFirstResponder:self.messageTextView];
-      }];
+    [self.repositoryController stageChanges:[self selectedChanges] withBlock:^{
+      //[self commitWithSheet:sender];
+      [[self.messageTextView window] makeFirstResponder:self.messageTextView];
     }];
   }
 }
@@ -481,7 +483,7 @@
   
   self.overridenHeaderHeight = 0.0;
   self.headerCell.isViewManagementDisabled = NO;
-    
+  
   NSRect newHeaderFrame = self.headerView.frame;
   NSRect newTextScrollViewFrame = [self.messageTextView enclosingScrollView].frame;
   CGFloat textHeight = [[self.messageTextView layoutManager] usedRectForTextContainer:[self.messageTextView textContainer]].size.height;
@@ -627,7 +629,7 @@ writeRowsWithIndexes:(NSIndexSet *)indexSet
     block();
     return;
   }
-  
+
   GBUserNameEmailController* ctrl = [[[GBUserNameEmailController alloc] initWithWindowNibName:@"GBUserNameEmailController"] autorelease];
   [ctrl fillWithAddressBookData];
   ctrl.finishBlock = ^{

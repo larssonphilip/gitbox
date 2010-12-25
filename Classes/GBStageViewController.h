@@ -7,6 +7,7 @@
 @property(nonatomic, retain) GBStage* stage;
 @property(nonatomic, retain) IBOutlet NSTextView* messageTextView;
 @property(nonatomic, retain) IBOutlet NSButton* commitButton;
+@property(nonatomic, retain) IBOutlet NSTextField* shortcutHintLabel;
 
 - (void) updateWithChanges:(NSArray*)newChanges;
 
