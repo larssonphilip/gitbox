@@ -1,6 +1,6 @@
-#import "GBNonScrollingScrollView.h"
+#import "OANonScrollingScrollView.h"
 
-@implementation GBNonScrollingScrollView
+@implementation OANonScrollingScrollView
 
 - (void)scrollWheel:(NSEvent *)theEvent
 {

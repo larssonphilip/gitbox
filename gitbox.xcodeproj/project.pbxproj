@@ -268,8 +268,8 @@
 		20C83F6E12AA1BBB00769F47 /* GBChangeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 20C83F6C12AA1BBB00769F47 /* GBChangeCell.m */; };
 		20C8972212B89BC2002F600F /* OATextFieldAndView.m in Sources */ = {isa = PBXBuildFile; fileRef = 20C8972112B89BC2002F600F /* OATextFieldAndView.m */; };
 		20C8972312B89BC2002F600F /* OATextFieldAndView.m in Sources */ = {isa = PBXBuildFile; fileRef = 20C8972112B89BC2002F600F /* OATextFieldAndView.m */; };
-		20C899B612B95DDF002F600F /* GBNonScrollingScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 20C899B512B95DDF002F600F /* GBNonScrollingScrollView.m */; };
-		20C899B712B95DDF002F600F /* GBNonScrollingScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 20C899B512B95DDF002F600F /* GBNonScrollingScrollView.m */; };
+		20C899B612B95DDF002F600F /* OANonScrollingScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 20C899B512B95DDF002F600F /* OANonScrollingScrollView.m */; };
+		20C899B712B95DDF002F600F /* OANonScrollingScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 20C899B512B95DDF002F600F /* OANonScrollingScrollView.m */; };
 		20F8058811C1B35A00ADDADA /* commit-header-template.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 20F8058711C1B35A00ADDADA /* commit-header-template.rtf */; };
 		20FAA190123F831400E8FA0E /* git.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 20FAA18F123F831400E8FA0E /* git.bundle */; };
 		8D15AC320486D014006FF6A4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A37F4B0FDCFA73011CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
@@ -541,8 +541,8 @@
 		20C83F6C12AA1BBB00769F47 /* GBChangeCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBChangeCell.m; sourceTree = "<group>"; };
 		20C8972012B89BC2002F600F /* OATextFieldAndView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OATextFieldAndView.h; path = ../OATextFieldAndView.h; sourceTree = "<group>"; };
 		20C8972112B89BC2002F600F /* OATextFieldAndView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = OATextFieldAndView.m; path = ../OATextFieldAndView.m; sourceTree = "<group>"; };
-		20C899B412B95DDF002F600F /* GBNonScrollingScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GBNonScrollingScrollView.h; path = ../GBNonScrollingScrollView.h; sourceTree = "<group>"; };
-		20C899B512B95DDF002F600F /* GBNonScrollingScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GBNonScrollingScrollView.m; path = ../GBNonScrollingScrollView.m; sourceTree = "<group>"; };
+		20C899B412B95DDF002F600F /* OANonScrollingScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OANonScrollingScrollView.h; path = ../OANonScrollingScrollView.h; sourceTree = "<group>"; };
+		20C899B512B95DDF002F600F /* OANonScrollingScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = OANonScrollingScrollView.m; path = ../OANonScrollingScrollView.m; sourceTree = "<group>"; };
 		20E59CE711A5C9EA00E7FB72 /* GBModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBModels.h; sourceTree = "<group>"; };
 		20F8058711C1B35A00ADDADA /* commit-header-template.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = "commit-header-template.rtf"; sourceTree = "<group>"; };
 		20FAA18F123F831400E8FA0E /* git.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = git.bundle; sourceTree = "<group>"; };
@@ -840,30 +840,34 @@
 			name = "Committed changes";
 			sourceTree = "<group>";
 		};
-		20B1620D11944B6900A709CF /* Libs */ = {
+		20A9716412C6CD1F00E2B7B9 /* Foundation Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				20C899B412B95DDF002F600F /* GBNonScrollingScrollView.h */,
-				20C899B512B95DDF002F600F /* GBNonScrollingScrollView.m */,
-				20C8972012B89BC2002F600F /* OATextFieldAndView.h */,
-				20C8972112B89BC2002F600F /* OATextFieldAndView.m */,
-				2002AC0A123CA1A20072075C /* OAFSEventStream.h */,
-				2002AC0B123CA1A20072075C /* OAFSEventStream.m */,
-				2002AE09124A9BAB0072075C /* OAOptionalDelegateMessage.h */,
-				20C3B71D125BCDC100ABEDE7 /* OAPrimaryMACAddress.h */,
-				20C3B71E125BCDC100ABEDE7 /* OAPrimaryMACAddress.m */,
 				20B1621011944C0F00A709CF /* NSFileManager+OAFileManagerHelpers.h */,
 				20B1621111944C0F00A709CF /* NSFileManager+OAFileManagerHelpers.m */,
 				2038F3DF119546E90087CE37 /* NSArray+OAArrayHelpers.h */,
 				2038F3E0119546E90087CE37 /* NSArray+OAArrayHelpers.m */,
-				2038F41B11954E000087CE37 /* NSAlert+OAAlertHelpers.h */,
-				2038F41C11954E000087CE37 /* NSAlert+OAAlertHelpers.m */,
 				2038F556119751150087CE37 /* NSData+OADataHelpers.h */,
 				2038F557119751150087CE37 /* NSData+OADataHelpers.m */,
 				20B8B84611A4AAF2006D6442 /* NSString+OAStringHelpers.h */,
 				20B8B84711A4AAF2006D6442 /* NSString+OAStringHelpers.m */,
 				2038F76B11A04A290087CE37 /* NSString+OAGitHelpers.h */,
 				2038F76C11A04A290087CE37 /* NSString+OAGitHelpers.m */,
+				201E5F6611AA71E00061EFD6 /* NSObject+OAKeyValueObserving.h */,
+				201E5F6711AA71E00061EFD6 /* NSObject+OAKeyValueObserving.m */,
+			);
+			name = "Foundation Extensions";
+			sourceTree = "<group>";
+		};
+		20A9716B12C6CD4B00E2B7B9 /* AppKit Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				20C899B412B95DDF002F600F /* OANonScrollingScrollView.h */,
+				20C899B512B95DDF002F600F /* OANonScrollingScrollView.m */,
+				20C8972012B89BC2002F600F /* OATextFieldAndView.h */,
+				20C8972112B89BC2002F600F /* OATextFieldAndView.m */,
+				2038F41B11954E000087CE37 /* NSAlert+OAAlertHelpers.h */,
+				2038F41C11954E000087CE37 /* NSAlert+OAAlertHelpers.m */,
 				20B8B7C011A49975006D6442 /* NSMenu+OAMenuHelpers.h */,
 				20B8B7C111A49975006D6442 /* NSMenu+OAMenuHelpers.m */,
 				20B8B81111A49E8D006D6442 /* NSWindowController+OAWindowControllerHelpers.h */,
@@ -872,34 +876,70 @@
 				203977E61252815000770D13 /* NSTableView+OATableViewHelpers.m */,
 				2058EA0611AEEE3200F2853F /* NSView+OAViewHelpers.h */,
 				2058EA0711AEEE3200F2853F /* NSView+OAViewHelpers.m */,
-				206A088511A7AB36003BB9E3 /* OAActivityIndicator.h */,
-				206A088611A7AB36003BB9E3 /* OAActivityIndicator.m */,
-				201E5F6611AA71E00061EFD6 /* NSObject+OAKeyValueObserving.h */,
-				201E5F6711AA71E00061EFD6 /* NSObject+OAKeyValueObserving.m */,
 				2093A80511AF20D100239185 /* NSObject+OADispatchItemValidation.h */,
 				2093A80611AF20D100239185 /* NSObject+OADispatchItemValidation.m */,
-				2093A85C11AF33B500239185 /* WhiteNSView.h */,
-				2093A85D11AF33B500239185 /* WhiteNSView.m */,
 				2093AAA811B15E1500239185 /* NSSplitView+OASplitViewHelpers.h */,
 				2093AAA911B15E1500239185 /* NSSplitView+OASplitViewHelpers.m */,
-				2025D3B811BF1F2D004715FA /* NSAttributedString+OAAttributedStringHelpers.h */,
-				2025D3B911BF1F2D004715FA /* NSAttributedString+OAAttributedStringHelpers.m */,
-				2035634C11D3BCB100965765 /* CGContext+OACGContextHelpers.h */,
-				2035634D11D3BCB100965765 /* CGContext+OACGContextHelpers.m */,
-				20265C0111D68D3400709F6B /* OAPropertyListController.h */,
-				20265C0211D68D3400709F6B /* OAPropertyListController.m */,
-				20265C1211D68F1300709F6B /* OAFile.h */,
-				20265C1311D68F1300709F6B /* OAFile.m */,
 				209C16551290636300B343A5 /* NSError+OAPresent.h */,
 				209C16561290636300B343A5 /* NSError+OAPresent.m */,
-				2031BB2D12A83B1D008CC337 /* NSObject+OAPerformBlockAfterDelay.h */,
-				2031BB2E12A83B1D008CC337 /* NSObject+OAPerformBlockAfterDelay.m */,
+			);
+			name = "AppKit Extensions";
+			sourceTree = "<group>";
+		};
+		20A9716D12C6CD6A00E2B7B9 /* Unused for the good reason */ = {
+			isa = PBXGroup;
+			children = (
+				2002AE09124A9BAB0072075C /* OAOptionalDelegateMessage.h */,
+				2093A85C11AF33B500239185 /* WhiteNSView.h */,
+				2093A85D11AF33B500239185 /* WhiteNSView.m */,
+			);
+			name = "Unused for the good reason";
+			sourceTree = "<group>";
+		};
+		20A9718112C6CDFE00E2B7B9 /* Concurrency Helpers */ = {
+			isa = PBXGroup;
+			children = (
 				2031BB9612A85456008CC337 /* OABlockGroup.h */,
 				2031BB9712A85456008CC337 /* OABlockGroup.m */,
 				2031BB9C12A85646008CC337 /* OABlockQueue.h */,
 				2031BB9D12A85646008CC337 /* OABlockQueue.m */,
+			);
+			name = "Concurrency Helpers";
+			sourceTree = "<group>";
+		};
+		20A9718212C6CE1500E2B7B9 /* UI Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				206A088511A7AB36003BB9E3 /* OAActivityIndicator.h */,
+				206A088611A7AB36003BB9E3 /* OAActivityIndicator.m */,
+				2035634C11D3BCB100965765 /* CGContext+OACGContextHelpers.h */,
+				2035634D11D3BCB100965765 /* CGContext+OACGContextHelpers.m */,
 				20C83E7A12A9ACB900769F47 /* OAFastJumpController.h */,
 				20C83E7B12A9ACB900769F47 /* OAFastJumpController.m */,
+			);
+			name = "UI Helpers";
+			sourceTree = "<group>";
+		};
+		20B1620D11944B6900A709CF /* Libs */ = {
+			isa = PBXGroup;
+			children = (
+				20A9718212C6CE1500E2B7B9 /* UI Helpers */,
+				20A9716D12C6CD6A00E2B7B9 /* Unused for the good reason */,
+				20A9716412C6CD1F00E2B7B9 /* Foundation Extensions */,
+				20A9716B12C6CD4B00E2B7B9 /* AppKit Extensions */,
+				20A9718112C6CDFE00E2B7B9 /* Concurrency Helpers */,
+				2002AC0A123CA1A20072075C /* OAFSEventStream.h */,
+				2002AC0B123CA1A20072075C /* OAFSEventStream.m */,
+				20C3B71D125BCDC100ABEDE7 /* OAPrimaryMACAddress.h */,
+				20C3B71E125BCDC100ABEDE7 /* OAPrimaryMACAddress.m */,
+				2025D3B811BF1F2D004715FA /* NSAttributedString+OAAttributedStringHelpers.h */,
+				2025D3B911BF1F2D004715FA /* NSAttributedString+OAAttributedStringHelpers.m */,
+				20265C0111D68D3400709F6B /* OAPropertyListController.h */,
+				20265C0211D68D3400709F6B /* OAPropertyListController.m */,
+				20265C1211D68F1300709F6B /* OAFile.h */,
+				20265C1311D68F1300709F6B /* OAFile.m */,
+				2031BB2D12A83B1D008CC337 /* NSObject+OAPerformBlockAfterDelay.h */,
+				2031BB2E12A83B1D008CC337 /* NSObject+OAPerformBlockAfterDelay.m */,
 			);
 			path = Libs;
 			sourceTree = "<group>";
@@ -1290,7 +1330,7 @@
 				20177F8612AAA229006362D1 /* GBChangeCheckboxCell.m in Sources */,
 				209C192512B802C900F56A54 /* GBCellWithView.m in Sources */,
 				20C8972312B89BC2002F600F /* OATextFieldAndView.m in Sources */,
-				20C899B712B95DDF002F600F /* GBNonScrollingScrollView.m in Sources */,
+				20C899B712B95DDF002F600F /* OANonScrollingScrollView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1384,7 +1424,7 @@
 				20177F8512AAA229006362D1 /* GBChangeCheckboxCell.m in Sources */,
 				209C192412B802C900F56A54 /* GBCellWithView.m in Sources */,
 				20C8972212B89BC2002F600F /* OATextFieldAndView.m in Sources */,
-				20C899B612B95DDF002F600F /* GBNonScrollingScrollView.m in Sources */,
+				20C899B612B95DDF002F600F /* OANonScrollingScrollView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
