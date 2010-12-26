@@ -36,9 +36,9 @@
 @property(nonatomic, retain) GBStageHeaderAnimation* headerAnimation;
 @property(nonatomic, retain) GBCellWithView* headerCell;
 @property(nonatomic, retain) GBStageShortcutHintDetector* shortcutHintDetector;
-@property(nonatomic, assign) BOOL alreadyCheckedUserNameAndEmail;
+@property(nonatomic, assign) BOOL alreadyValidatedUserNameAndEmail;
 @property(nonatomic, assign) CGFloat overridenHeaderHeight;
-- (void) checkUserNameAndEmailIfNeededWithBlock:(void(^)())block;
+- (void) validateUserNameAndEmailIfNeededWithBlock:(void(^)())block;
 - (void) updateHeader;
 - (void) updateHeaderSizeAnimating:(BOOL)animating;
 - (void) updateCommitButtonEnabledState;
@@ -63,7 +63,7 @@
 @synthesize shortcutHintLabel;
 @synthesize shortcutHintDetector;
 
-@synthesize alreadyCheckedUserNameAndEmail;
+@synthesize alreadyValidatedUserNameAndEmail;
 @synthesize overridenHeaderHeight;
 
 #pragma mark Init
@@ -347,7 +347,7 @@
     if ([self validateReallyCommit:sender])
     {
       [self.shortcutHintDetector reset];
-      [self checkUserNameAndEmailIfNeededWithBlock:^{
+      [self validateUserNameAndEmailIfNeededWithBlock:^{
         [self reallyCommit:sender];
       }];
     }
@@ -618,9 +618,7 @@
   [self.repositoryController selectCommitableChanges:[self selectedChanges]];
 }
 
-- (BOOL)tableView:(NSTableView *)aTableView
-writeRowsWithIndexes:(NSIndexSet *)indexSet
-     toPasteboard:(NSPasteboard *)pasteboard
+- (BOOL) tableView:(NSTableView*)aTableView writeRowsWithIndexes:(NSIndexSet*)indexSet toPasteboard:(NSPasteboard*)pasteboard
 {
   NSArray* items = [[self.changes objectsAtIndexes:[self changesIndexesForTableIndexes:indexSet]] valueForKey:@"pasteboardItem"];
   [pasteboard writeObjects:items];
@@ -629,14 +627,18 @@ writeRowsWithIndexes:(NSIndexSet *)indexSet
 
 
 
+
+
+
+
 #pragma mark User name and email
 
 
-- (void) checkUserNameAndEmailIfNeededWithBlock:(void(^)())block
+- (void) validateUserNameAndEmailIfNeededWithBlock:(void(^)())block
 {
-  if (self.alreadyCheckedUserNameAndEmail)
+  if (self.alreadyValidatedUserNameAndEmail)
   {
-    block();
+    if (block) block();
     return;
   }
   
@@ -644,15 +646,17 @@ writeRowsWithIndexes:(NSIndexSet *)indexSet
   
   if (email && [email length] > 3)
   {
-    self.alreadyCheckedUserNameAndEmail = YES;
-    block();
+    self.alreadyValidatedUserNameAndEmail = YES;
+    if (block) block();
     return;
   }
+  
+  block = [[block copy] autorelease];
 
   GBUserNameEmailController* ctrl = [[[GBUserNameEmailController alloc] initWithWindowNibName:@"GBUserNameEmailController"] autorelease];
   [ctrl fillWithAddressBookData];
   ctrl.finishBlock = ^{
-    self.alreadyCheckedUserNameAndEmail = YES;
+    self.alreadyValidatedUserNameAndEmail = YES;
     [GBRepository configureName:ctrl.userName email:ctrl.userEmail withBlock:block];
   };
   [ctrl runSheetInWindow:[self window]];
