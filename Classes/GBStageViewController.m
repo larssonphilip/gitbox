@@ -11,6 +11,7 @@
 #import "GBFileEditingController.h"
 #import "GBCommitPromptController.h"
 #import "GBUserNameEmailController.h"
+#import "GBStageShortcutHintDetector.h"
 
 #import "GBCellWithView.h"
 
@@ -34,6 +35,7 @@
 @property(nonatomic, retain) NSIndexSet* rememberedSelectionIndexes;
 @property(nonatomic, retain) GBStageHeaderAnimation* headerAnimation;
 @property(nonatomic, retain) GBCellWithView* headerCell;
+@property(nonatomic, retain) GBStageShortcutHintDetector* shortcutHintDetector;
 @property(nonatomic, assign) BOOL alreadyCheckedUserNameAndEmail;
 @property(nonatomic, assign) CGFloat overridenHeaderHeight;
 - (void) checkUserNameAndEmailIfNeededWithBlock:(void(^)())block;
@@ -59,6 +61,7 @@
 @synthesize headerAnimation;
 @synthesize headerCell;
 @synthesize shortcutHintLabel;
+@synthesize shortcutHintDetector;
 
 @synthesize alreadyCheckedUserNameAndEmail;
 @synthesize overridenHeaderHeight;
@@ -75,6 +78,9 @@
   self.headerAnimation = nil;
   self.headerCell = nil;
   self.shortcutHintLabel = nil;
+  [self.shortcutHintDetector reset];
+  self.shortcutHintDetector.view = nil;
+  self.shortcutHintDetector = nil;
   [super dealloc];
 }
 
@@ -93,6 +99,8 @@
   
   self.headerCell = [GBCellWithView cellWithView:self.headerView];
   self.headerCell.verticalOffset = -1;
+  
+  self.shortcutHintDetector = [GBStageShortcutHintDetector detectorWithView:self.shortcutHintLabel];
 }
 
 - (void) update
@@ -338,6 +346,7 @@
   {
     if ([self validateReallyCommit:sender])
     {
+      [self.shortcutHintDetector reset];
       [self checkUserNameAndEmailIfNeededWithBlock:^{
         [self reallyCommit:sender];
       }];
@@ -446,9 +455,19 @@
   [self updateHeaderSizeAnimating:NO];
 }
 
+- (BOOL)textView:(NSTextView *)aTextView shouldChangeTextInRange:(NSRange)affectedCharRange replacementString:(NSString *)replacementString
+{
+  [self.shortcutHintDetector textView:aTextView didChangeTextInRange:affectedCharRange replacementString:replacementString];
+  return YES;
+}
+
 - (void) syncHeaderAfterLeaving
 {
   NSString* msg = [self validCommitMessage];
+  if (!msg) 
+  {
+    [self.shortcutHintDetector reset];
+  }
   self.stage.currentCommitMessage = msg;
   // This toggling hack helps to reset cursor blinking when message view resigned first responder.
   [self.messageTextView setHidden:YES];
