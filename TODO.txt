@@ -9,7 +9,8 @@ Features:
 Enhancements:
 
 + Improved performance of autofetching. Now remote branches are checked more frequently and without UI blocking and fetch is performed from all branches when needed.
-
++ New commit dialog (built in to the list of changes) which solves several usability issues.
++ Cmd+Up and Cmd+Down in commit dialog now go through the entire git history instead of the recently entered messages.
 
 Bug fixes:
 
@@ -25,11 +26,7 @@ Bug fixes:
 
 WIP:
 
-+ should disable commit button when not applicable
-+ should animate resizing
-- should display a cmd+return hint when hit return+delay
 - should display a branch hint if the different branch is selected
-- should display a history of your commits by cmd+up/down
 - bug: remove commit button from toolbar
 - bug: when editing an empty commit message and clicking on a row in tableview, the resizing happens before selection and the wrong row is selected.
 - bug: when commited by clicking a button while focused on tableview, textview did not send resignFirstResponder and did not resize itself.
@@ -86,6 +83,10 @@ WIP:
   - case 4: user clones the repo inside the repo => needs to display as a non-tracked submodule which can be tracked
   - case 5: user tries to commit a submodule which has the HEAD non-pushed (or dirty directory) - show warning or ask to push manually; show button "show module"
 
++ should disable commit button when not applicable
++ should animate resizing
++ should display a cmd+return hint when hit return+delay
++ should display a history of your commits by cmd+up/down
 + bug: sidebar badge: 1000 -> 999+
 + todo: test that commented out self.branches = task.branches still makes remote branches to be updated after fetch
 + bug: when opening git.git repo, gitbox fetches, and fetches, and fetches...
