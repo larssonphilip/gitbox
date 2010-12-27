@@ -539,7 +539,7 @@
 					<array class="NSMutableArray" key="NSSubviews">
 						<object class="NSBox" id="831883882">
 							<reference key="NSNextResponder" ref="568628114"/>
-							<int key="NSvFlags">12</int>
+							<int key="NSvFlags">18</int>
 							<array class="NSMutableArray" key="NSSubviews">
 								<object class="NSView" id="440544023">
 									<reference key="NSNextResponder" ref="831883882"/>
