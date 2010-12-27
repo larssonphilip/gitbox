@@ -52,6 +52,7 @@
 
 - (NSString*) path;
 - (NSArray*) stageAndCommits;
+- (NSArray*) commits;
 - (NSUInteger) totalPendingChanges;
 - (BOOL) doesRefExist:(GBRef*) ref;
 

@@ -290,6 +290,11 @@
   return list;
 }
 
+- (NSArray*) commits
+{
+  return self.localBranchCommits;
+}
+
 - (BOOL) doesRefExist:(GBRef*)ref
 {
   // For now, the only case when ref can be created in UI, but does not have any commit id is a new remote branch.
