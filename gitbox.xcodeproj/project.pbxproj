@@ -237,8 +237,8 @@
 		20A37BBE120DDBA60068AB8B /* GBMainWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 20A37BBD120DDBA60068AB8B /* GBMainWindowController.xib */; };
 		20A9719112C7808F00E2B7B9 /* GBStageShortcutHintDetector.m in Sources */ = {isa = PBXBuildFile; fileRef = 20A9719012C7808F00E2B7B9 /* GBStageShortcutHintDetector.m */; };
 		20A9719212C7808F00E2B7B9 /* GBStageShortcutHintDetector.m in Sources */ = {isa = PBXBuildFile; fileRef = 20A9719012C7808F00E2B7B9 /* GBStageShortcutHintDetector.m */; };
-		20A971E012C7D0D500E2B7B9 /* GBStageMessageHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 20A971DF12C7D0D500E2B7B9 /* GBStageMessageHistory.m */; };
-		20A971E112C7D0D500E2B7B9 /* GBStageMessageHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 20A971DF12C7D0D500E2B7B9 /* GBStageMessageHistory.m */; };
+		20A971E012C7D0D500E2B7B9 /* GBStageMessageHistoryController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20A971DF12C7D0D500E2B7B9 /* GBStageMessageHistoryController.m */; };
+		20A971E112C7D0D500E2B7B9 /* GBStageMessageHistoryController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20A971DF12C7D0D500E2B7B9 /* GBStageMessageHistoryController.m */; };
 		20B1621211944C0F00A709CF /* NSFileManager+OAFileManagerHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B1621111944C0F00A709CF /* NSFileManager+OAFileManagerHelpers.m */; };
 		20B399FA11B7F30600D6A3C4 /* GBLocalRefsTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B399F911B7F30600D6A3C4 /* GBLocalRefsTask.m */; };
 		20B8B70C11A489F1006D6442 /* GBChangesBaseTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B8B70B11A489F1006D6442 /* GBChangesBaseTask.m */; };
@@ -495,8 +495,8 @@
 		20A37BBD120DDBA60068AB8B /* GBMainWindowController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBMainWindowController.xib; sourceTree = "<group>"; };
 		20A9718F12C7808F00E2B7B9 /* GBStageShortcutHintDetector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBStageShortcutHintDetector.h; sourceTree = "<group>"; };
 		20A9719012C7808F00E2B7B9 /* GBStageShortcutHintDetector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBStageShortcutHintDetector.m; sourceTree = "<group>"; };
-		20A971DE12C7D0D500E2B7B9 /* GBStageMessageHistory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBStageMessageHistory.h; sourceTree = "<group>"; };
-		20A971DF12C7D0D500E2B7B9 /* GBStageMessageHistory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBStageMessageHistory.m; sourceTree = "<group>"; };
+		20A971DE12C7D0D500E2B7B9 /* GBStageMessageHistoryController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBStageMessageHistoryController.h; sourceTree = "<group>"; };
+		20A971DF12C7D0D500E2B7B9 /* GBStageMessageHistoryController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBStageMessageHistoryController.m; sourceTree = "<group>"; };
 		20B1621011944C0F00A709CF /* NSFileManager+OAFileManagerHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSFileManager+OAFileManagerHelpers.h"; sourceTree = "<group>"; };
 		20B1621111944C0F00A709CF /* NSFileManager+OAFileManagerHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSFileManager+OAFileManagerHelpers.m"; sourceTree = "<group>"; };
 		20B399F811B7F30600D6A3C4 /* GBLocalRefsTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBLocalRefsTask.h; sourceTree = "<group>"; };
@@ -836,8 +836,8 @@
 				2093AC9011B2EBFF00239185 /* GBCommitPromptController.xib */,
 				20A9718F12C7808F00E2B7B9 /* GBStageShortcutHintDetector.h */,
 				20A9719012C7808F00E2B7B9 /* GBStageShortcutHintDetector.m */,
-				20A971DE12C7D0D500E2B7B9 /* GBStageMessageHistory.h */,
-				20A971DF12C7D0D500E2B7B9 /* GBStageMessageHistory.m */,
+				20A971DE12C7D0D500E2B7B9 /* GBStageMessageHistoryController.h */,
+				20A971DF12C7D0D500E2B7B9 /* GBStageMessageHistoryController.m */,
 			);
 			name = Stage;
 			sourceTree = "<group>";
@@ -1344,7 +1344,7 @@
 				20C8972312B89BC2002F600F /* OATextFieldAndView.m in Sources */,
 				20C899B712B95DDF002F600F /* OANonScrollingScrollView.m in Sources */,
 				20A9719212C7808F00E2B7B9 /* GBStageShortcutHintDetector.m in Sources */,
-				20A971E112C7D0D500E2B7B9 /* GBStageMessageHistory.m in Sources */,
+				20A971E112C7D0D500E2B7B9 /* GBStageMessageHistoryController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1440,7 +1440,7 @@
 				20C8972212B89BC2002F600F /* OATextFieldAndView.m in Sources */,
 				20C899B612B95DDF002F600F /* OANonScrollingScrollView.m in Sources */,
 				20A9719112C7808F00E2B7B9 /* GBStageShortcutHintDetector.m in Sources */,
-				20A971E012C7D0D500E2B7B9 /* GBStageMessageHistory.m in Sources */,
+				20A971E012C7D0D500E2B7B9 /* GBStageMessageHistoryController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

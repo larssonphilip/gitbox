@@ -12,6 +12,7 @@
 #import "GBCommitPromptController.h"
 #import "GBUserNameEmailController.h"
 #import "GBStageShortcutHintDetector.h"
+#import "GBStageMessageHistoryController.h"
 
 #import "GBCellWithView.h"
 
@@ -36,6 +37,7 @@
 @property(nonatomic, retain) GBStageHeaderAnimation* headerAnimation;
 @property(nonatomic, retain) GBCellWithView* headerCell;
 @property(nonatomic, retain) GBStageShortcutHintDetector* shortcutHintDetector;
+@property(nonatomic, retain) GBStageMessageHistoryController* messageHistoryController;
 @property(nonatomic, assign) BOOL alreadyValidatedUserNameAndEmail;
 @property(nonatomic, assign) CGFloat overridenHeaderHeight;
 - (void) validateUserNameAndEmailIfNeededWithBlock:(void(^)())block;
@@ -47,6 +49,7 @@
 - (BOOL) validateReallyCommit:(id)sender;
 - (BOOL) isEditingCommitMessage;
 - (NSString*) validCommitMessage;
+- (void) resetMessageHistory;
 @end
 
 
@@ -62,6 +65,7 @@
 @synthesize headerCell;
 @synthesize shortcutHintLabel;
 @synthesize shortcutHintDetector;
+@synthesize messageHistoryController;
 
 @synthesize alreadyValidatedUserNameAndEmail;
 @synthesize overridenHeaderHeight;
@@ -81,6 +85,7 @@
   [self.shortcutHintDetector reset];
   self.shortcutHintDetector.view = nil;
   self.shortcutHintDetector = nil;
+  self.messageHistoryController = nil;
   [super dealloc];
 }
 
@@ -114,6 +119,7 @@
   [self updateHeader];
   [self.tableView setNextKeyView:self.messageTextView];
   [[self.tableView enclosingScrollView] setFrame:[self.view bounds]];
+  [self resetMessageHistory];
 }
 
 - (void) updateWithChanges:(NSArray*)newChanges
@@ -349,6 +355,7 @@
       [self.shortcutHintDetector reset];
       [self validateUserNameAndEmailIfNeededWithBlock:^{
         [self reallyCommit:sender];
+        [self resetMessageHistory];
       }];
     }
   }
@@ -404,6 +411,25 @@
   return msg;
 }
 
+- (IBAction) previousMessage:(id)_
+{
+  NSString* message = [self.messageHistoryController previousMessage];
+  if (message)
+  {
+    [self.messageTextView setString:message];
+    [self.messageTextView selectAll:nil];
+  }
+}
+
+- (IBAction) nextMessage:(id)sender
+{
+  NSString* message = [self.messageHistoryController nextMessage];
+  if (message)
+  {
+    [self.messageTextView setString:message];
+    [self.messageTextView selectAll:nil];
+  }
+}
 
 
 
@@ -660,6 +686,21 @@
     [GBRepository configureName:ctrl.userName email:ctrl.userEmail withBlock:block];
   };
   [ctrl runSheetInWindow:[self window]];
+}
+
+
+
+
+#pragma mark Private
+
+
+- (void) resetMessageHistory
+{
+  self.messageHistoryController = [[GBStageMessageHistoryController new] autorelease];
+  
+  self.messageHistoryController.repository = self.repositoryController.repository;
+  self.messageHistoryController.textView = self.messageTextView;
+  self.messageHistoryController.email = [GBRepository globalConfiguredEmail];
 }
 
 
