@@ -125,6 +125,7 @@
 
 - (void) loadChangesWithBlock:(void(^)())block
 {
+  block = [[block copy] autorelease];
   GBCommittedChangesTask* task = [GBCommittedChangesTask task];
   task.commit = self;
   task.repository = self.repository;
@@ -133,7 +134,7 @@
       return [[[a fileURL] path] localizedCaseInsensitiveCompare:[[b fileURL] path]];
     }];
     self.changes = theChanges;
-    block();
+    if (block) block();
   }];
 }
 
