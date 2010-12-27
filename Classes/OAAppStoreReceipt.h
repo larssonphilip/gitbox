@@ -20,6 +20,11 @@
 #define OA_APPSTORE_SAMPLE_RECEIPT_PATH @"/Users/oleganza/Work/gitbox/app/appstore_receipt_tests/SampleReceipt"
 #endif
 
+#if OA_APPSTORE_IGNORE_RECEIPT
+#warning Ignoring AppStore receipt (OA_APPSTORE_IGNORE_RECEIPT defined elsewhere)
+#endif
+
+
 
 #define kReceiptBundleIdentifer @"BundleIdentifier"
 #define kReceiptBundleIdentiferData  @"BundleIdentifierData"
@@ -336,6 +341,10 @@ NS_INLINE CFDataRef OACopyMACAddress(void)
 
 NS_INLINE BOOL OAValidateAppStoreReceiptAtPath(NSString* path)
 {
+#if OA_APPSTORE_IGNORE_RECEIPT
+	return YES;
+#endif
+	
 #if OA_APPSTORE_SAMPLE_RECEIPT
   path = OA_APPSTORE_SAMPLE_RECEIPT_PATH;
 #endif
