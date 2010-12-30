@@ -27,6 +27,10 @@
 		200B08B511B6E359004C09A8 /* GBLocalRemoteAssociationTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 200B08B411B6E359004C09A8 /* GBLocalRemoteAssociationTask.m */; };
 		2010732F11A7E9C300EFDE56 /* app.icns in Resources */ = {isa = PBXBuildFile; fileRef = 2010732E11A7E9C300EFDE56 /* app.icns */; };
 		201073B611A80A4600EFDE56 /* GBRemotesTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 201073B511A80A4600EFDE56 /* GBRemotesTask.m */; };
+		2016439112CC0F35005C69DA /* author.png in Resources */ = {isa = PBXBuildFile; fileRef = 2016439012CC0F2E005C69DA /* author.png */; };
+		2016439212CC0F35005C69DA /* author.png in Resources */ = {isa = PBXBuildFile; fileRef = 2016439012CC0F2E005C69DA /* author.png */; };
+		201643AD12CC121B005C69DA /* GBCommitViewControllerHeader.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 201643AC12CC121B005C69DA /* GBCommitViewControllerHeader.rtf */; };
+		201643AE12CC121B005C69DA /* GBCommitViewControllerHeader.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 201643AC12CC121B005C69DA /* GBCommitViewControllerHeader.rtf */; };
 		20177F8512AAA229006362D1 /* GBChangeCheckboxCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 20177F8412AAA228006362D1 /* GBChangeCheckboxCell.m */; };
 		20177F8612AAA229006362D1 /* GBChangeCheckboxCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 20177F8412AAA228006362D1 /* GBChangeCheckboxCell.m */; };
 		201E02F711EA231D007E4420 /* GBLicenseController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 201E02F611EA231D007E4420 /* GBLicenseController.xib */; };
@@ -331,6 +335,8 @@
 		2010732E11A7E9C300EFDE56 /* app.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = app.icns; sourceTree = "<group>"; };
 		201073B411A80A4600EFDE56 /* GBRemotesTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBRemotesTask.h; sourceTree = "<group>"; };
 		201073B511A80A4600EFDE56 /* GBRemotesTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBRemotesTask.m; sourceTree = "<group>"; };
+		2016439012CC0F2E005C69DA /* author.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = author.png; sourceTree = "<group>"; };
+		201643AC12CC121B005C69DA /* GBCommitViewControllerHeader.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = GBCommitViewControllerHeader.rtf; sourceTree = "<group>"; };
 		20177F8312AAA228006362D1 /* GBChangeCheckboxCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBChangeCheckboxCell.h; sourceTree = "<group>"; };
 		20177F8412AAA228006362D1 /* GBChangeCheckboxCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBChangeCheckboxCell.m; sourceTree = "<group>"; };
 		201E02F611EA231D007E4420 /* GBLicenseController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBLicenseController.xib; sourceTree = "<group>"; };
@@ -1044,6 +1050,8 @@
 		2A37F4B8FDCFA73011CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				201643AC12CC121B005C69DA /* GBCommitViewControllerHeader.rtf */,
+				2016439012CC0F2E005C69DA /* author.png */,
 				20C3B700125BCC5B00ABEDE7 /* Images */,
 				203976631251A63700770D13 /* Credits.rtf */,
 				20FAA18F123F831400E8FA0E /* git.bundle */,
@@ -1177,6 +1185,8 @@
 				20A09F3812A3875800294730 /* askpass.sh in Resources */,
 				203F717812A4E04700BE1A55 /* askpass.rb in Resources */,
 				2031BD6E12A8DC61008CC337 /* git-placeholder.bundle in Resources */,
+				2016439212CC0F35005C69DA /* author.png in Resources */,
+				201643AE12CC121B005C69DA /* GBCommitViewControllerHeader.rtf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1217,6 +1227,8 @@
 				20A09F3712A3875200294730 /* askpass.sh in Resources */,
 				203F717712A4E04700BE1A55 /* askpass.rb in Resources */,
 				2031BD6D12A8DC61008CC337 /* git-placeholder.bundle in Resources */,
+				2016439112CC0F35005C69DA /* author.png in Resources */,
+				201643AD12CC121B005C69DA /* GBCommitViewControllerHeader.rtf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

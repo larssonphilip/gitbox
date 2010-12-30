@@ -12,14 +12,12 @@
 
 @synthesize commit;
 @synthesize headerRTFTemplate;
-@synthesize headerScrollView;
 @synthesize headerTextView;
 
 - (void) dealloc
 {
   self.commit = nil;
   self.headerRTFTemplate = nil;
-  self.headerScrollView = nil;
   self.headerTextView = nil;
   [super dealloc];
 }
@@ -60,7 +58,7 @@
   {
     // Load the template
     if (!self.headerRTFTemplate) 
-      self.headerRTFTemplate = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"commit-header-template" ofType:@"rtf"]];
+      self.headerRTFTemplate = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"GBCommitViewControllerHeader" ofType:@"rtf"]];
     NSTextStorage* storage = [self.headerTextView textStorage];
     [storage beginEditing];
     [storage readFromData:self.headerRTFTemplate options:nil documentAttributes:nil];
@@ -103,7 +101,7 @@
     
     if ([aCommit.authorName isEqualToString:aCommit.committerName])
     {
-      [string replaceOccurrencesOfString:@"	Committer: 	Committer Name <committer@email>\n"
+      [string replaceOccurrencesOfString:@"	 	Committed by Committer Name <committer@email>\n"
                               withString:@""];
     }
     else
@@ -132,7 +130,7 @@
     
     // Scroll to top
     [self.headerTextView scrollRangeToVisible:NSMakeRange(0, 1)];
-    [self.headerScrollView reflectScrolledClipView:[self.headerScrollView contentView]];
+    [[self.headerTextView enclosingScrollView] reflectScrolledClipView:[[self.headerTextView enclosingScrollView] contentView]];
   }
 }
 
@@ -243,30 +241,30 @@ writeRowsWithIndexes:(NSIndexSet *)indexSet
 }
 
 
-
-
-#pragma mark NSSplitViewDelegate
-
-
-
-- (CGFloat) minSplitViewHeaderHeight
-{
-  return 85.0;
-}
-
-- (CGFloat)splitView:(NSSplitView*) aSplitView constrainMinCoordinate:(CGFloat)proposedMin ofSubviewAt:(NSInteger)dividerIndex
-{
-  return [self minSplitViewHeaderHeight];
-}
-
-- (CGFloat)splitView:(NSSplitView*) aSplitView constrainMaxCoordinate:(CGFloat)proposedMax ofSubviewAt:(NSInteger)dividerIndex
-{
-  return [self view].bounds.size.height - 80.0; // 80 px for changes table height
-}
-
-- (void) splitView:(NSSplitView*)aSplitView resizeSubviewsWithOldSize:(NSSize)oldSize
-{
-  [aSplitView resizeSubviewsWithOldSize:oldSize firstViewSizeLimit:[self minSplitViewHeaderHeight]];
-}
+//
+//
+//#pragma mark NSSplitViewDelegate
+//
+//
+//
+//- (CGFloat) minSplitViewHeaderHeight
+//{
+//  return 85.0;
+//}
+//
+//- (CGFloat)splitView:(NSSplitView*) aSplitView constrainMinCoordinate:(CGFloat)proposedMin ofSubviewAt:(NSInteger)dividerIndex
+//{
+//  return [self minSplitViewHeaderHeight];
+//}
+//
+//- (CGFloat)splitView:(NSSplitView*) aSplitView constrainMaxCoordinate:(CGFloat)proposedMax ofSubviewAt:(NSInteger)dividerIndex
+//{
+//  return [self view].bounds.size.height - 80.0; // 80 px for changes table height
+//}
+//
+//- (void) splitView:(NSSplitView*)aSplitView resizeSubviewsWithOldSize:(NSSize)oldSize
+//{
+//  [aSplitView resizeSubviewsWithOldSize:oldSize firstViewSizeLimit:[self minSplitViewHeaderHeight]];
+//}
 
 @end

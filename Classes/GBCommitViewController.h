@@ -4,7 +4,6 @@
 
 @property(retain) GBCommit* commit;
 @property(retain) NSData* headerRTFTemplate;
-@property(retain) IBOutlet NSScrollView* headerScrollView;
 @property(retain) IBOutlet NSTextView* headerTextView;
 
 - (IBAction) stageExtractFile:_;
