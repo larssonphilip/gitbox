@@ -13,3 +13,26 @@
 }
 
 @end
+
+
+@implementation NSMutableAttributedString (OAAttributedStringHelpers)
+
+- (void) updateAttribute:(NSString*)attributeKey forSubstring:(NSString*)substring withBlock:(id(^)(id))aBlock
+{
+  if (!attributeKey) return;
+  if (!substring) return;
+  if (!aBlock) return;
+  
+  NSRange range = [[self string] rangeOfString:substring];
+  
+  if (range.length <= 0) return;
+  
+  id attribute = [self attribute:attributeKey atIndex:range.location effectiveRange:NULL];
+  id newAttribute = aBlock(attribute);
+  
+  if (!attribute) return;
+  
+  [self addAttribute:attributeKey value:newAttribute range:range];          
+}
+
+@end

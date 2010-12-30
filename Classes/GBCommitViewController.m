@@ -7,6 +7,7 @@
 #import "NSString+OAStringHelpers.h"
 #import "NSView+OAViewHelpers.h"
 #import "NSObject+OAPerformBlockAfterDelay.h"
+#import "NSAttributedString+OAAttributedStringHelpers.h"
 
 @implementation GBCommitViewController
 
@@ -57,8 +58,11 @@
   if (aCommit && ![aCommit isStage])
   {
     // Load the template
-    if (!self.headerRTFTemplate) 
+    if (!self.headerRTFTemplate)
+    {
       self.headerRTFTemplate = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"GBCommitViewControllerHeader" ofType:@"rtf"]];
+    }
+    
     NSTextStorage* storage = [self.headerTextView textStorage];
     [storage beginEditing];
     [storage readFromData:self.headerRTFTemplate options:nil documentAttributes:nil];
@@ -66,71 +70,65 @@
     // FIXME: this code is very brittle! Should either pre-create an RTF template with proper paragraph styles
     //        or run through a list of possible attributes in a range of text to update them with truncating paragraph style.
     
-    NSRange firstNewlineRange = [[storage string] rangeOfString:@"\n"];
-    if (firstNewlineRange.location != NSNotFound)
+    for (NSString* line in [NSArray arrayWithObjects:
+                            @"	Parent 1: 	$parentId1", 
+                            @"	Parent 2: 	$parentId2",
+                            @"	Commit: 	$commitId",
+                            @"	Date: 	$authorDate",
+                            @"	Author: 	$Author Name <$author@email>",
+                            nil])
     {
-      NSRange truncatingRange = NSMakeRange(0, firstNewlineRange.location);
-      if (truncatingRange.location != NSNotFound)
-      {
-        NSMutableParagraphStyle* paragraphStyle = [storage attribute:NSParagraphStyleAttributeName atIndex:0 effectiveRange:NULL];
-        if (!paragraphStyle)
+      [storage updateAttribute:NSParagraphStyleAttributeName forSubstring:line withBlock:^(NSParagraphStyle* style){
+        NSMutableParagraphStyle* mutableStyle = [[style mutableCopy] autorelease];
+        if (!mutableStyle)
         {
-          NSLog(@"WARNING: GBCommitViewController: no existing paragraph style.");
-          paragraphStyle = [[[NSMutableParagraphStyle alloc] init] autorelease];
+          mutableStyle = [[[NSMutableParagraphStyle alloc] init] autorelease];
         }
-        NSMutableParagraphStyle* truncatingParagraphStyle = [[paragraphStyle mutableCopy] autorelease];
-        [truncatingParagraphStyle setLineBreakMode:NSLineBreakByTruncatingTail];
-        [storage addAttribute:NSParagraphStyleAttributeName value:truncatingParagraphStyle range:truncatingRange];          
-      }
+        [mutableStyle setLineBreakMode:NSLineBreakByTruncatingTail];
+        return mutableStyle;
+      }];
     }
     
     // Replace placeholders
     NSMutableString* string = [storage mutableString];
-    
-    [string replaceOccurrencesOfString:@"commitId" 
+    NSLog(@"STRING: %@", string);
+    [string replaceOccurrencesOfString:@"$commitId" 
                             withString:aCommit.commitId];
     
-    [string replaceOccurrencesOfString:@"authorDate" 
+    [string replaceOccurrencesOfString:@"$authorDate" 
                             withString:[aCommit fullDateString]];
     
-    [string replaceOccurrencesOfString:@"Author Name" 
+    [string replaceOccurrencesOfString:@"$Author Name" 
                             withString:aCommit.authorName];
     
-    [string replaceOccurrencesOfString:@"author@email" 
+    [string replaceOccurrencesOfString:@"$author@email" 
                             withString:aCommit.authorEmail];
     
     if ([aCommit.authorName isEqualToString:aCommit.committerName])
     {
-      [string replaceOccurrencesOfString:@"	 	Committed by Committer Name <committer@email>\n"
+      [string replaceOccurrencesOfString:@"\n	 	Committed by $Committer Name <$committer@email>"
                               withString:@""];
     }
     else
     {
-      [string replaceOccurrencesOfString:@"Committer Name" 
+      [string replaceOccurrencesOfString:@"$Committer Name" 
                               withString:aCommit.committerName];
       
-      [string replaceOccurrencesOfString:@"committer@email" 
+      [string replaceOccurrencesOfString:@"$committer@email" 
                               withString:aCommit.committerEmail];      
     }
-
-    NSString* message = aCommit.message ? aCommit.message : @"";
-    NSArray* paragraphs = [message componentsSeparatedByString:@"\n"];
-    NSString* restOfTheMessage = @"";
-    if ([paragraphs count] > 1)
-    {
-      restOfTheMessage = [[paragraphs subarrayWithRange:NSMakeRange(1, [paragraphs count] - 1)] componentsJoinedByString:@"\n"];
-    }
-    
-    [string replaceOccurrencesOfString:@"Subject line" 
-                            withString:[paragraphs objectAtIndex:0]];
-    [string replaceOccurrencesOfString:@"Rest of the message" 
-                            withString:restOfTheMessage];
     
     [storage endEditing];
     
     // Scroll to top
     [self.headerTextView scrollRangeToVisible:NSMakeRange(0, 1)];
     [[self.headerTextView enclosingScrollView] reflectScrolledClipView:[[self.headerTextView enclosingScrollView] contentView]];
+    
+    // Update message text view:
+    
+    NSString* message = aCommit.message ? aCommit.message : @"";
+    // ...
+    
   }
 }
 

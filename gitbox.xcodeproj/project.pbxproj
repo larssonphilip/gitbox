@@ -873,6 +873,8 @@
 				2038F76C11A04A290087CE37 /* NSString+OAGitHelpers.m */,
 				201E5F6611AA71E00061EFD6 /* NSObject+OAKeyValueObserving.h */,
 				201E5F6711AA71E00061EFD6 /* NSObject+OAKeyValueObserving.m */,
+				2025D3B811BF1F2D004715FA /* NSAttributedString+OAAttributedStringHelpers.h */,
+				2025D3B911BF1F2D004715FA /* NSAttributedString+OAAttributedStringHelpers.m */,
 			);
 			name = "Foundation Extensions";
 			sourceTree = "<group>";
@@ -950,8 +952,6 @@
 				2002AC0B123CA1A20072075C /* OAFSEventStream.m */,
 				20C3B71D125BCDC100ABEDE7 /* OAPrimaryMACAddress.h */,
 				20C3B71E125BCDC100ABEDE7 /* OAPrimaryMACAddress.m */,
-				2025D3B811BF1F2D004715FA /* NSAttributedString+OAAttributedStringHelpers.h */,
-				2025D3B911BF1F2D004715FA /* NSAttributedString+OAAttributedStringHelpers.m */,
 				20265C0111D68D3400709F6B /* OAPropertyListController.h */,
 				20265C0211D68D3400709F6B /* OAPropertyListController.m */,
 				20265C1211D68F1300709F6B /* OAFile.h */,
