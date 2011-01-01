@@ -22,6 +22,8 @@
 @synthesize headerRTFTemplate;
 @synthesize headerTextView;
 @synthesize messageTextView;
+@synthesize horizontalLine;
+@synthesize authorImage;
 
 - (void) dealloc
 {
@@ -29,6 +31,8 @@
   self.headerRTFTemplate = nil;
   self.headerTextView = nil;
   self.messageTextView = nil;
+  self.horizontalLine = nil;
+  self.authorImage = nil;
   [super dealloc];
 }
 
@@ -90,16 +94,14 @@
 }
 
 - (void) updateTemplate:(NSTextStorage*)storage withCommit:(GBCommit*)aCommit
-{
-  // FIXME: this code is very brittle! Should either pre-create an RTF template with proper paragraph styles
-  //        or run through a list of possible attributes in a range of text to update them with truncating paragraph style.
-  
+{  
   for (NSString* line in [NSArray arrayWithObjects:
                           @"	Parent 1: 	$parentId1", 
                           @"	Parent 2: 	$parentId2",
                           @"	Commit: 	$commitId",
                           @"	Date: 	$authorDate",
                           @"	Author: 	$Author Name <$author@email>",
+                          @"	 	Committed by $Committer Name <$committer@email>",
                           nil])
   {
     [storage updateAttribute:NSParagraphStyleAttributeName forSubstring:line withBlock:^(NSParagraphStyle* style){
@@ -173,14 +175,114 @@
 
 - (void) updateHeaderSize
 {
-  CGFloat headerTVHeight = [[self.headerTextView layoutManager] usedRectForTextContainer:[self.headerTextView textContainer]].size.height;
-  CGFloat messageTVHeight = [[self.messageTextView layoutManager] usedRectForTextContainer:[self.messageTextView textContainer]].size.height;
+  //NSLog(@"COMMIT: updateHeaderSize ----------------- ");
   
-  // 
-  
-  // Scroll to top
-  [self.headerTextView scrollRangeToVisible:NSMakeRange(0, 1)];
+  [self.headerTextView scrollRangeToVisible:NSMakeRange(0, 0)];
   [[self.headerTextView enclosingScrollView] reflectScrolledClipView:[[self.headerTextView enclosingScrollView] contentView]];
+
+  [self.messageTextView scrollRangeToVisible:NSMakeRange(0, 0)];
+  [[self.messageTextView enclosingScrollView] reflectScrolledClipView:[[self.headerTextView enclosingScrollView] contentView]];
+
+  // Force layout
+  [[self.headerTextView layoutManager] glyphRangeForTextContainer:[self.headerTextView textContainer]];
+  [[self.messageTextView layoutManager] glyphRangeForTextContainer:[self.messageTextView textContainer]];
+  
+  NSRect headerTVRect  = [[self.headerTextView layoutManager] usedRectForTextContainer:[self.headerTextView textContainer]];
+  NSRect messageTVRect = [[self.messageTextView layoutManager] usedRectForTextContainer:[self.messageTextView textContainer]];
+
+//  NSLog(@"COMMIT: headerTVRect = %@ (textContainer: %@)", NSStringFromRect(headerTVRect), NSStringFromSize([[self.headerTextView textContainer] containerSize]));
+//  NSLog(@"COMMIT: messageTVRect = %@ (textContainer: %@)", NSStringFromRect(messageTVRect), NSStringFromSize([[self.messageTextView textContainer] containerSize]));
+  
+  CGFloat headerTVHeight = ceil(headerTVRect.size.height);
+  CGFloat messageTVHeight = ceil(messageTVRect.size.height);
+  
+//  NSLog(@"COMMIT: headerTVHeight = %f [img: %f], messageTVHeight = %f", headerTVHeight, [self.authorImage frame].size.height, messageTVHeight);
+  
+  headerTVHeight += 0.0;
+  messageTVHeight += 0.0;
+  
+  // From top to bottom:
+  // 1. header top padding
+  // 2. headerTextView height
+  // 3. header bottom padding
+  // 4. line NSBox height
+  // 5. message top padding
+  // 6. messageTextView height
+  // 7. message bottom padding
+  
+  CGFloat authorImagePadding = 10.0;
+  CGFloat headerTopPadding = 8.0;
+  CGFloat headerBottomPadding = 8.0;
+  CGFloat messageTopPadding = 8.0;
+  CGFloat messageBottomPadding = 8.0;
+  
+  headerTVHeight = MAX(headerTVHeight + 2*headerTopPadding, [self.authorImage frame].size.height + 2*authorImagePadding) - 2*headerTopPadding;
+  
+  CGFloat currentY = messageBottomPadding;
+  
+  {
+    NSRect fr = [[self.messageTextView enclosingScrollView] frame];
+    fr.size.height = messageTVHeight;
+    fr.origin.y = currentY;
+    [[self.messageTextView enclosingScrollView] setFrame:fr];
+    
+    //NSLog(@"COMMIT: messageTextView: %@", NSStringFromRect(fr));
+    
+    currentY += fr.size.height;
+  }
+  
+  currentY += messageTopPadding;
+  
+  {
+    NSRect fr = [self.horizontalLine frame];
+    fr.origin.y = currentY;
+    [self.horizontalLine setFrame:fr];
+    
+    //NSLog(@"COMMIT: horizontalLine: %@", NSStringFromRect(fr));
+    currentY += fr.size.height;
+  }
+  
+  currentY += headerBottomPadding;
+    
+  {
+    NSRect fr = [[self.headerTextView enclosingScrollView] frame];
+    fr.size.height = headerTVHeight;
+    fr.origin.y = currentY;
+    [[self.headerTextView enclosingScrollView] setFrame:fr];
+    
+    //NSLog(@"COMMIT: headerTextView: %@", NSStringFromRect(fr));
+    
+    currentY += fr.size.height;
+  }
+  
+  currentY += headerTopPadding;
+  
+  {
+    NSRect fr = [self.authorImage frame];
+    fr.origin.y = currentY - authorImagePadding - fr.size.height;
+    [self.authorImage setFrame:fr];
+  }
+  
+  {
+    NSRect fr = self.headerView.frame;
+    fr.size.height = headerTopPadding + 
+                     [self.headerTextView frame].size.height + 
+                     headerBottomPadding +
+                     [self.horizontalLine frame].size.height +
+                     messageTopPadding + 
+                     [self.messageTextView frame].size.height + 
+                     messageBottomPadding;
+    BOOL autoresizesSubviews = [self.headerView autoresizesSubviews];
+    [self.headerView setAutoresizesSubviews:NO];
+    [self.headerView setFrame:fr];
+    [self.headerView setAutoresizesSubviews:autoresizesSubviews];
+  }
+  
+//  // Scroll to top
+//  [self.headerTextView scrollRangeToVisible:NSMakeRange(0, 1)];
+//  [[self.headerTextView enclosingScrollView] reflectScrolledClipView:[[self.headerTextView enclosingScrollView] contentView]];
+  
+  [self.tableView noteHeightOfRowsWithIndexesChanged:[NSIndexSet indexSetWithIndex:0]];
 }
 
 

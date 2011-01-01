@@ -32,3 +32,9 @@ Nice Dribbble find! Been using Gitbox, @gitboxupdates. It's nice, and it's Cocoa
 I finally found a good looking Git GUI App (source code control for mac) http://gitbox.pierlis.com/ @gitboxupdates thanks!
 
 @mdo @cloudhead Version control outside the Terminal is usually a clusterfuck. Gitbox looks the most straightforward that I've seen thus far.
+
+@cyberpet 
+top Git-Client for Mac 
+
+@Cstep4 スティーブン カルバン
+[Gitbox isEqualTo:Awesome];

@@ -531,7 +531,7 @@
   
   NSRect newHeaderFrame = self.headerView.frame;
   NSRect newTextScrollViewFrame = [self.messageTextView enclosingScrollView].frame;
-  CGFloat textHeight = [[self.messageTextView layoutManager] usedRectForTextContainer:[self.messageTextView textContainer]].size.height;
+  CGFloat textHeight = ceil([[self.messageTextView layoutManager] usedRectForTextContainer:[self.messageTextView textContainer]].size.height);
   CGFloat newButtonAlpha = 0.0;
   NSString* newMessage = nil;
   
@@ -916,9 +916,9 @@
     }
   }
 
-  NSLog(@"before prepareAnimation: headerView.frame = %@", NSStringFromRect([self.controller.headerView frame]));
-  NSLog(@"before prepareAnimation: scrollView.frame = %@", NSStringFromRect([[self.controller.tableView enclosingScrollView] frame]));
-  NSLog(@"before prepareAnimation: tableView.frame = %@", NSStringFromRect([self.controller.tableView frame]));
+//  NSLog(@"before prepareAnimation: headerView.frame = %@", NSStringFromRect([self.controller.headerView frame]));
+//  NSLog(@"before prepareAnimation: scrollView.frame = %@", NSStringFromRect([[self.controller.tableView enclosingScrollView] frame]));
+//  NSLog(@"before prepareAnimation: tableView.frame = %@", NSStringFromRect([self.controller.tableView frame]));
     
   self.controller.headerCell.isViewManagementDisabled = YES;
     
@@ -937,9 +937,9 @@
   
 //  NSLog(@"in prepareAnimation: headerView.frame = %@", NSStringFromRect([self.controller.headerView frame]));
   
-  NSLog(@"after prepareAnimation: headerView.frame = %@", NSStringFromRect([self.controller.headerView frame]));
-  NSLog(@"after prepareAnimation: scrollView.frame = %@", NSStringFromRect([[self.controller.tableView enclosingScrollView] frame]));
-  NSLog(@"after prepareAnimation: tableView.frame = %@", NSStringFromRect([self.controller.tableView frame]));
+//  NSLog(@"after prepareAnimation: headerView.frame = %@", NSStringFromRect([self.controller.headerView frame]));
+//  NSLog(@"after prepareAnimation: scrollView.frame = %@", NSStringFromRect([[self.controller.tableView enclosingScrollView] frame]));
+//  NSLog(@"after prepareAnimation: tableView.frame = %@", NSStringFromRect([self.controller.tableView frame]));
   
 //  [self.controller.tableView setNeedsDisplay:YES];
 //  [[self.controller.tableView enclosingScrollView] setNeedsDisplay:YES];
