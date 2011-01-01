@@ -12,6 +12,8 @@
 
 @interface GBCommitViewController ()
 - (void) updateCommitHeader;
+- (void) updateTemplate:(NSTextStorage*)storage withCommit:(GBCommit*)aCommit;
+- (void) updateHeaderSize;
 @end
 
 @implementation GBCommitViewController
@@ -19,12 +21,14 @@
 @synthesize commit;
 @synthesize headerRTFTemplate;
 @synthesize headerTextView;
+@synthesize messageTextView;
 
 - (void) dealloc
 {
   self.commit = nil;
   self.headerRTFTemplate = nil;
   self.headerTextView = nil;
+  self.messageTextView = nil;
   [super dealloc];
 }
 
@@ -68,7 +72,6 @@
   if (!aCommit) return;
   if ([aCommit isStage]) return;
   
-  // Load the template
   if (!self.headerRTFTemplate)
   {
     self.headerRTFTemplate = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"GBCommitViewControllerHeader" ofType:@"rtf"]];
@@ -77,7 +80,17 @@
   NSTextStorage* storage = [self.headerTextView textStorage];
   [storage beginEditing];
   [storage readFromData:self.headerRTFTemplate options:nil documentAttributes:nil];
+  [self updateTemplate:storage withCommit:aCommit];
+  [storage endEditing];
   
+  NSString* message = aCommit.message ? aCommit.message : @"";
+  [self.messageTextView setString:message];
+  
+  [self updateHeaderSize];
+}
+
+- (void) updateTemplate:(NSTextStorage*)storage withCommit:(GBCommit*)aCommit
+{
   // FIXME: this code is very brittle! Should either pre-create an RTF template with proper paragraph styles
   //        or run through a list of possible attributes in a range of text to update them with truncating paragraph style.
   
@@ -102,7 +115,35 @@
   
   // Replace placeholders
   NSMutableString* string = [storage mutableString];
-  NSLog(@"STRING: %@", string);
+  
+  
+  NSString* parentId1 = [aCommit.parentIds objectAtIndex:0 or:nil];
+  NSString* parentId2 = [aCommit.parentIds objectAtIndex:1 or:nil];
+  
+  if (!parentId1 && !parentId2)
+  {
+    [string replaceOccurrencesOfString:@"	Parent 1: 	$parentId1\n" 
+                            withString:@""];
+    [string replaceOccurrencesOfString:@"	Parent 2: 	$parentId2\n" 
+                            withString:@""];
+  }
+  else if (parentId1 && !parentId2)
+  {
+    [string replaceOccurrencesOfString:@"Parent 1:" 
+                            withString:@"Parent:"];
+    [string replaceOccurrencesOfString:@"	Parent 2: 	$parentId2\n" 
+                            withString:@""];
+  }
+  
+  if (parentId1)
+  {
+    [string replaceOccurrencesOfString:@"$parentId1" withString:parentId1];
+  }
+  if (parentId2)
+  {
+    [string replaceOccurrencesOfString:@"$parentId2" withString:parentId2];
+  }
+  
   [string replaceOccurrencesOfString:@"$commitId" 
                           withString:aCommit.commitId];
   
@@ -128,19 +169,20 @@
     [string replaceOccurrencesOfString:@"$committer@email" 
                             withString:aCommit.committerEmail];      
   }
+}
+
+- (void) updateHeaderSize
+{
+  CGFloat headerTVHeight = [[self.headerTextView layoutManager] usedRectForTextContainer:[self.headerTextView textContainer]].size.height;
+  CGFloat messageTVHeight = [[self.messageTextView layoutManager] usedRectForTextContainer:[self.messageTextView textContainer]].size.height;
   
-  [storage endEditing];
+  // 
   
   // Scroll to top
   [self.headerTextView scrollRangeToVisible:NSMakeRange(0, 1)];
   [[self.headerTextView enclosingScrollView] reflectScrolledClipView:[[self.headerTextView enclosingScrollView] contentView]];
-  
-  // Update message text view:
-  
-  NSString* message = aCommit.message ? aCommit.message : @"";
-  // ...
-  
 }
+
 
 
 
