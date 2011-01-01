@@ -177,12 +177,6 @@
 {
   //NSLog(@"COMMIT: updateHeaderSize ----------------- ");
   
-  [self.headerTextView scrollRangeToVisible:NSMakeRange(0, 0)];
-  [[self.headerTextView enclosingScrollView] reflectScrolledClipView:[[self.headerTextView enclosingScrollView] contentView]];
-
-  [self.messageTextView scrollRangeToVisible:NSMakeRange(0, 0)];
-  [[self.messageTextView enclosingScrollView] reflectScrolledClipView:[[self.headerTextView enclosingScrollView] contentView]];
-
   // Force layout
   [[self.headerTextView layoutManager] glyphRangeForTextContainer:[self.headerTextView textContainer]];
   [[self.messageTextView layoutManager] glyphRangeForTextContainer:[self.messageTextView textContainer]];
@@ -283,6 +277,15 @@
 //  [[self.headerTextView enclosingScrollView] reflectScrolledClipView:[[self.headerTextView enclosingScrollView] contentView]];
   
   [self.tableView noteHeightOfRowsWithIndexesChanged:[NSIndexSet indexSetWithIndex:0]];
+  
+  [self.headerTextView scrollRangeToVisible:NSMakeRange(0, 0)];
+  [[self.headerTextView enclosingScrollView] reflectScrolledClipView:[[self.headerTextView enclosingScrollView] contentView]];
+  
+  [self.messageTextView scrollRangeToVisible:NSMakeRange(0, 0)];
+  [[self.messageTextView enclosingScrollView] reflectScrolledClipView:[[self.headerTextView enclosingScrollView] contentView]];
+  
+//  [[self.messageTextView enclosingScrollView] setNeedsDisplay:YES];
+//  [self.messageTextView setNeedsDisplay:YES];
 }
 
 
