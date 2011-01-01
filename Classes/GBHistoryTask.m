@@ -182,6 +182,10 @@ authorDate 2010-05-01 20:23:10 -0700
       if ([line hasPrefix:@"parents "])
       {
         commit.parentIds = [[line substringFromIndex:8] componentsSeparatedByString:@" "]; // 'parents ' skipped
+        if ([commit.parentIds count] == 1 && [[commit.parentIds objectAtIndex:0] isEqualToString:@""])
+        {
+          commit.parentIds = [NSArray array];
+        }
       }
       else HistoryScanError(@"Expected 'parents <sha1>[ <sha1>[...]]' line");
       
