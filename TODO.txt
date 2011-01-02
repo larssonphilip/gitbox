@@ -11,6 +11,8 @@ Enhancements:
 
 + Improved performance of autofetching. Now remote branches are checked more frequently and without UI blocking and fetch is performed from all branches when needed.
 + Cmd+Up and Cmd+Down in commit dialog now go through the entire git history instead of the recently entered messages.
++ Push button is enabled only when there are commits to push
+
 
 Bug fixes:
 
