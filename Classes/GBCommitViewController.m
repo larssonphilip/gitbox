@@ -263,7 +263,7 @@
   static CGFloat headerTopPadding = 8.0;
   static CGFloat headerBottomPadding = 8.0;
   static CGFloat messageTopPadding = 8.0;
-  static CGFloat messageBottomPadding = 5.0;
+  static CGFloat messageBottomPadding = 8.0;
   
   headerTVHeight = MAX(headerTVHeight + 2*headerTopPadding, [self.authorImage frame].size.height + 2*authorImagePadding) - 2*headerTopPadding;
   
