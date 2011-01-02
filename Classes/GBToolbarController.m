@@ -572,7 +572,12 @@
 - (BOOL) validatePush:(id)_
 {
   GBRepositoryController* rc = self.repositoryController;
-  return [rc.repository.currentLocalRef isLocalBranch] && rc.repository.currentRemoteBranch && !rc.isDisabled && !rc.isRemoteBranchesDisabled && ![rc.repository.currentRemoteBranch isLocalBranch];
+  return [rc.repository.currentLocalRef isLocalBranch] && 
+         rc.repository.currentRemoteBranch && 
+         !rc.isDisabled && 
+         !rc.isRemoteBranchesDisabled && 
+         ![rc.repository.currentRemoteBranch isLocalBranch] &&
+         rc.repository.unpushedCommitsCount > 0;
 }
 
 
