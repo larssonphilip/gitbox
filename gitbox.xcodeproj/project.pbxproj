@@ -31,6 +31,14 @@
 		2016439212CC0F35005C69DA /* author.png in Resources */ = {isa = PBXBuildFile; fileRef = 2016439012CC0F2E005C69DA /* author.png */; };
 		201643AD12CC121B005C69DA /* GBCommitViewControllerHeader.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 201643AC12CC121B005C69DA /* GBCommitViewControllerHeader.rtf */; };
 		201643AE12CC121B005C69DA /* GBCommitViewControllerHeader.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 201643AC12CC121B005C69DA /* GBCommitViewControllerHeader.rtf */; };
+		2016464E12D0C2F6005C69DA /* GBUserpicController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2016464D12D0C2F6005C69DA /* GBUserpicController.m */; };
+		2016464F12D0C2F6005C69DA /* GBUserpicController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2016464D12D0C2F6005C69DA /* GBUserpicController.m */; };
+		2016466012D0D0EC005C69DA /* OAHTTPDownload.m in Sources */ = {isa = PBXBuildFile; fileRef = 2016465A12D0D0EC005C69DA /* OAHTTPDownload.m */; };
+		2016466112D0D0EC005C69DA /* OAHTTPQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 2016465D12D0D0EC005C69DA /* OAHTTPQueue.m */; };
+		2016466212D0D0EC005C69DA /* OAXMLDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 2016465F12D0D0EC005C69DA /* OAXMLDecoder.m */; };
+		2016466312D0D0EC005C69DA /* OAHTTPDownload.m in Sources */ = {isa = PBXBuildFile; fileRef = 2016465A12D0D0EC005C69DA /* OAHTTPDownload.m */; };
+		2016466412D0D0EC005C69DA /* OAHTTPQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 2016465D12D0D0EC005C69DA /* OAHTTPQueue.m */; };
+		2016466512D0D0EC005C69DA /* OAXMLDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 2016465F12D0D0EC005C69DA /* OAXMLDecoder.m */; };
 		20177F8512AAA229006362D1 /* GBChangeCheckboxCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 20177F8412AAA228006362D1 /* GBChangeCheckboxCell.m */; };
 		20177F8612AAA229006362D1 /* GBChangeCheckboxCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 20177F8412AAA228006362D1 /* GBChangeCheckboxCell.m */; };
 		201E02F711EA231D007E4420 /* GBLicenseController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 201E02F611EA231D007E4420 /* GBLicenseController.xib */; };
@@ -337,6 +345,15 @@
 		201073B511A80A4600EFDE56 /* GBRemotesTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBRemotesTask.m; sourceTree = "<group>"; };
 		2016439012CC0F2E005C69DA /* author.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = author.png; sourceTree = "<group>"; };
 		201643AC12CC121B005C69DA /* GBCommitViewControllerHeader.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = GBCommitViewControllerHeader.rtf; sourceTree = "<group>"; };
+		2016464C12D0C2F6005C69DA /* GBUserpicController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBUserpicController.h; sourceTree = "<group>"; };
+		2016464D12D0C2F6005C69DA /* GBUserpicController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBUserpicController.m; sourceTree = "<group>"; };
+		2016465912D0D0EC005C69DA /* OAHTTPDownload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAHTTPDownload.h; sourceTree = "<group>"; };
+		2016465A12D0D0EC005C69DA /* OAHTTPDownload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAHTTPDownload.m; sourceTree = "<group>"; };
+		2016465B12D0D0EC005C69DA /* OAHTTPDownloadDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAHTTPDownloadDelegate.h; sourceTree = "<group>"; };
+		2016465C12D0D0EC005C69DA /* OAHTTPQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAHTTPQueue.h; sourceTree = "<group>"; };
+		2016465D12D0D0EC005C69DA /* OAHTTPQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAHTTPQueue.m; sourceTree = "<group>"; };
+		2016465E12D0D0EC005C69DA /* OAXMLDecoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAXMLDecoder.h; sourceTree = "<group>"; };
+		2016465F12D0D0EC005C69DA /* OAXMLDecoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAXMLDecoder.m; sourceTree = "<group>"; };
 		20177F8312AAA228006362D1 /* GBChangeCheckboxCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBChangeCheckboxCell.h; sourceTree = "<group>"; };
 		20177F8412AAA228006362D1 /* GBChangeCheckboxCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBChangeCheckboxCell.m; sourceTree = "<group>"; };
 		201E02F611EA231D007E4420 /* GBLicenseController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBLicenseController.xib; sourceTree = "<group>"; };
@@ -739,6 +756,8 @@
 				200409031274EBE400BE8957 /* GBCloningRepositoryControllerDelegate.h */,
 				2082B7C2126587CA00667A7F /* GBCloningRepositoryController.h */,
 				2082B7C3126587CA00667A7F /* GBCloningRepositoryController.m */,
+				2016464C12D0C2F6005C69DA /* GBUserpicController.h */,
+				2016464D12D0C2F6005C69DA /* GBUserpicController.m */,
 			);
 			name = "Model Controllers";
 			sourceTree = "<group>";
@@ -948,6 +967,13 @@
 				20A9716412C6CD1F00E2B7B9 /* Foundation Extensions */,
 				20A9716B12C6CD4B00E2B7B9 /* AppKit Extensions */,
 				20A9718112C6CDFE00E2B7B9 /* Concurrency Helpers */,
+				2016465912D0D0EC005C69DA /* OAHTTPDownload.h */,
+				2016465A12D0D0EC005C69DA /* OAHTTPDownload.m */,
+				2016465B12D0D0EC005C69DA /* OAHTTPDownloadDelegate.h */,
+				2016465C12D0D0EC005C69DA /* OAHTTPQueue.h */,
+				2016465D12D0D0EC005C69DA /* OAHTTPQueue.m */,
+				2016465E12D0D0EC005C69DA /* OAXMLDecoder.h */,
+				2016465F12D0D0EC005C69DA /* OAXMLDecoder.m */,
 				2002AC0A123CA1A20072075C /* OAFSEventStream.h */,
 				2002AC0B123CA1A20072075C /* OAFSEventStream.m */,
 				20C3B71D125BCDC100ABEDE7 /* OAPrimaryMACAddress.h */,
@@ -1357,6 +1383,10 @@
 				20C899B712B95DDF002F600F /* OANonScrollingScrollView.m in Sources */,
 				20A9719212C7808F00E2B7B9 /* GBStageShortcutHintDetector.m in Sources */,
 				20A971E112C7D0D500E2B7B9 /* GBStageMessageHistoryController.m in Sources */,
+				2016464F12D0C2F6005C69DA /* GBUserpicController.m in Sources */,
+				2016466312D0D0EC005C69DA /* OAHTTPDownload.m in Sources */,
+				2016466412D0D0EC005C69DA /* OAHTTPQueue.m in Sources */,
+				2016466512D0D0EC005C69DA /* OAXMLDecoder.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1453,6 +1483,10 @@
 				20C899B612B95DDF002F600F /* OANonScrollingScrollView.m in Sources */,
 				20A9719112C7808F00E2B7B9 /* GBStageShortcutHintDetector.m in Sources */,
 				20A971E012C7D0D500E2B7B9 /* GBStageMessageHistoryController.m in Sources */,
+				2016464E12D0C2F6005C69DA /* GBUserpicController.m in Sources */,
+				2016466012D0D0EC005C69DA /* OAHTTPDownload.m in Sources */,
+				2016466112D0D0EC005C69DA /* OAHTTPQueue.m in Sources */,
+				2016466212D0D0EC005C69DA /* OAXMLDecoder.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -20,6 +20,8 @@
 
 - (NSString*) pathWithSuffix:(NSString*)suffix;
 
+- (NSString*) md5hexdigest;
+
 @end
 
 

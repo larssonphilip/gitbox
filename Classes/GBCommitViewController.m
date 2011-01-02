@@ -1,5 +1,6 @@
 #import "GBModels.h"
 #import "GBCommitViewController.h"
+#import "GBUserpicController.h"
 
 #import "NSArray+OAArrayHelpers.h"
 #import "NSSplitView+OASplitViewHelpers.h"
@@ -11,6 +12,7 @@
 
 
 @interface GBCommitViewController ()
+@property(nonatomic,retain) GBUserpicController* userpicController;
 - (void) updateCommitHeader;
 - (void) updateTemplate:(NSTextStorage*)storage withCommit:(GBCommit*)aCommit;
 - (void) updateMessageStorage:(NSTextStorage*)storage;
@@ -26,6 +28,7 @@
 @synthesize messageTextView;
 @synthesize horizontalLine;
 @synthesize authorImage;
+@synthesize userpicController;
 
 - (void) dealloc
 {
@@ -39,6 +42,7 @@
   self.messageTextView = nil;
   self.horizontalLine = nil;
   self.authorImage = nil;
+  self.userpicController = nil;
   [super dealloc];
 }
 
@@ -51,6 +55,11 @@
 {
   [super loadView];
   [self update];
+  
+  if (!self.userpicController)
+  {
+    self.userpicController = [[GBUserpicController new] autorelease];
+  }
   
   [self.tableView registerForDraggedTypes:[NSArray arrayWithObjects:NSStringPboardType, NSFilenamesPboardType, nil]];
   [self.tableView setDraggingSourceOperationMask:NSDragOperationNone forLocal:YES];
@@ -115,6 +124,17 @@
     [self updateMessageStorage:storage];
     [storage endEditing];
   }
+  
+  NSString* email = aCommit.authorEmail;
+  
+  [self.userpicController loadImageForEmail:email withBlock:^{
+    if (email && [aCommit.authorEmail isEqualToString:email])
+    {
+      NSImage* image = [self.userpicController imageForEmail:email];
+      [self.authorImage setImage:image];
+      [self updateHeaderSize];
+    }
+  }];
   
   [self updateHeaderSize];
 }
