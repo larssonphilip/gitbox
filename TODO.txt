@@ -53,8 +53,8 @@ WIP:
   - case 4: user clones the repo inside the repo => needs to display as a non-tracked submodule which can be tracked
   - case 5: user tries to commit a submodule which has the HEAD non-pushed (or dirty directory) - show warning or ask to push manually; show button "show module"
 
-
-- linkify emails
+- disable push button if nothing to push
+- linkify emails in commit header
 - in the right branch menu should display the current local branch, but disable it (currently it is not displayed at all)
 - bug: autofetch sometimes does not work: maybe some crap is returned from ls-remote when communicating with a remote server; test with berger; seems like it stops working after some time or after gitbox restart. Also check that performSelector:withObject:afterDelay does not fail for big values.
 - bug: sometimes some duplicate branch name appears in popdown menus
