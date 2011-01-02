@@ -131,7 +131,7 @@
   }
   
   [control setEnabled:[self validatePull:nil] forSegment:0];
-  [control setEnabled:[self validatePush:nil] forSegment:1];
+  [control setEnabled:[self validatePush:nil] && repo.unpushedCommitsCount > 0 forSegment:1];
   [self.pullButton setEnabled:[self validatePull:nil]];
 }
 
@@ -576,8 +576,7 @@
          rc.repository.currentRemoteBranch && 
          !rc.isDisabled && 
          !rc.isRemoteBranchesDisabled && 
-         ![rc.repository.currentRemoteBranch isLocalBranch] &&
-         rc.repository.unpushedCommitsCount > 0;
+         ![rc.repository.currentRemoteBranch isLocalBranch];
 }
 
 
