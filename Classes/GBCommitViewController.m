@@ -54,12 +54,15 @@
 - (void) loadView
 {
   [super loadView];
-  [self update];
+  
+  [self.authorImage setImage:nil];
   
   if (!self.userpicController)
   {
     self.userpicController = [[GBUserpicController new] autorelease];
   }
+  
+  [self update];
   
   [self.tableView registerForDraggedTypes:[NSArray arrayWithObjects:NSStringPboardType, NSFilenamesPboardType, nil]];
   [self.tableView setDraggingSourceOperationMask:NSDragOperationNone forLocal:YES];
