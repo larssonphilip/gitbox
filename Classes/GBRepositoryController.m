@@ -464,7 +464,19 @@
 }
 
 
-
+- (void) selectCommitId:(NSString*)commitId
+{
+  if (!commitId) return;
+  NSArray* commits = [self.repository commits];
+  NSUInteger index = [commits indexOfObjectPassingTest:^(GBCommit* aCommit, NSUInteger idx, BOOL *stop){
+    return [aCommit.commitId isEqualToString:commitId];
+  }];
+  if (index == NSNotFound) return;
+  
+  GBCommit* aCommit = [commits objectAtIndex:index];
+  
+  [self selectCommit:aCommit];
+}
 
 
 /*

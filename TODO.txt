@@ -45,9 +45,6 @@ WIP:
   - filters commits by sha-1, modified filenames and text
   - back/forward buttons allow undo/redo commit selection (clicking on parents)
 - quicklook for the file on space in stage (QLPreviewPanel, sample code: QuickLookDownloader)
-- revamped changes header view
-- revamped stage header view
-- command-up should jump through the history
 - tag badges in history
 - create a tag + undo
 - toolbar alignment
@@ -82,6 +79,9 @@ WIP:
   - case 4: user clones the repo inside the repo => needs to display as a non-tracked submodule which can be tracked
   - case 5: user tries to commit a submodule which has the HEAD non-pushed (or dirty directory) - show warning or ask to push manually; show button "show module"
 
++ revamped changes header view
++ revamped stage header view
++ command-up should jump through the history
 + should load picture from addressbook
 + should load picture from gravatar
 + bug: when editing an empty commit message and clicking on a row in tableview, the resizing happens before selection and the wrong row is selected.

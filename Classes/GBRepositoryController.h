@@ -41,6 +41,7 @@
 - (void) createAndSelectRemoteBranchWithName:(NSString*)name remote:(GBRemote*)aRemote;
 
 - (void) selectCommit:(GBCommit*)commit;
+- (void) selectCommitId:(NSString*)commitId;
 
 - (void) stageChanges:(NSArray*)changes;
 - (void) stageChanges:(NSArray*)changes withBlock:(void(^)())block;

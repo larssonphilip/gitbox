@@ -1,6 +1,7 @@
 #import "GBModels.h"
 #import "GBCommitViewController.h"
 #import "GBUserpicController.h"
+#import "GBRepositoryController.h"
 
 #import "NSArray+OAArrayHelpers.h"
 #import "NSSplitView+OASplitViewHelpers.h"
@@ -68,6 +69,18 @@
   [self.tableView setDraggingSourceOperationMask:NSDragOperationNone forLocal:YES];
   [self.tableView setDraggingSourceOperationMask:NSDragOperationCopy forLocal:NO];
   [self.tableView setVerticalMotionCanBeginDrag:YES];
+  
+  [self.headerTextView setLinkTextAttributes:
+   [NSDictionary dictionaryWithObjectsAndKeys:                                              
+        [NSColor colorWithCalibratedRed:50.0/255.0 green:100.0/255.0 blue:220.0/255.0 alpha:1.0],
+        NSForegroundColorAttributeName,
+        
+        [NSNumber numberWithInt:NSUnderlineStyleNone],
+        NSUnderlineStyleAttributeName,
+    
+        [NSCursor pointingHandCursor],
+        NSCursorAttributeName,
+        nil]];
 }
 
 
@@ -149,7 +162,7 @@
 }
 
 - (void) updateTemplate:(NSTextStorage*)storage withCommit:(GBCommit*)aCommit
-{  
+{
   for (NSString* line in [NSArray arrayWithObjects:
                           @"	Parent 1: 	$parentId1", 
                           @"	Parent 2: 	$parentId2",
@@ -192,15 +205,18 @@
                             withString:@""];
   }
   
-  if (parentId1)
-  {
-    [string replaceOccurrencesOfString:@"$parentId1" withString:parentId1];
-  }
-  if (parentId2)
-  {
-    [string replaceOccurrencesOfString:@"$parentId2" withString:parentId2];
-  }
   
+  for (NSUInteger parentIndex = 0; parentIndex < [aCommit.parentIds count]; parentIndex++)
+  {
+    NSString* parentId = [aCommit.parentIds objectAtIndex:parentIndex];
+    NSString* placeholder = [NSString stringWithFormat:@"$parentId%d", (int)(parentIndex + 1)];
+    [storage addAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
+                            [NSURL URLWithString:[NSString stringWithFormat:@"gitbox://internal/commits/%@", parentId]],
+                            NSLinkAttributeName,
+                            nil] toSubstring:placeholder];
+    [string replaceOccurrencesOfString:placeholder withString:parentId];    
+  }
+    
   [string replaceOccurrencesOfString:@"$commitId" 
                           withString:aCommit.commitId];
   
@@ -387,6 +403,35 @@
   if ([[self selectedChanges] count] != 1) return NO;
   return [[[[self selectedChanges] firstObject] nilIfBusy] validateExtractFile];
 }
+
+
+
+
+
+
+#pragma mark NSTextViewDelegate
+
+
+- (BOOL)textView:(NSTextView *)aTextView clickedOnLink:(NSURL*)aURL atIndex:(NSUInteger)charIndex
+{
+  if ([[aURL host] isEqual:@"internal"])
+  {
+    NSString* path = [aURL path];
+    if ([path rangeOfString:@"/commits/"].location == 0)
+    {
+      NSString* commitId = [[path pathComponents] lastObject];
+      [self performSelector:@selector(selectCommitId:) withObject:commitId afterDelay:0.0];
+    }
+  }
+  return NO;
+}
+
+
+- (void) selectCommitId:(NSString*)aCommitId
+{
+  [self.repositoryController selectCommitId:aCommitId];
+}
+
 
 
 

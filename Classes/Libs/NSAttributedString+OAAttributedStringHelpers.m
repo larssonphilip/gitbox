@@ -44,4 +44,26 @@
   }
 }
 
+- (void) addAttributes:(NSDictionary*)attributesDict toSubstring:(NSString*)substring
+{
+  if (!substring) return;
+  if (!attributesDict) return;
+  
+  NSRange range = [[self string] rangeOfString:substring];
+  if (range.length <= 0) return;
+  
+  [self addAttributes:attributesDict range:range];
+}
+
+- (void) removeAttribute:(NSString*)attributeKey fromSubstring:(NSString*)substring
+{
+  if (!substring) return;
+  if (!attributeKey) return;
+  
+  NSRange range = [[self string] rangeOfString:substring];
+  if (range.length <= 0) return;
+  
+  [self removeAttribute:attributeKey range:range];
+}
+
 @end

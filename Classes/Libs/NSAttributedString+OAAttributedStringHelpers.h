@@ -10,5 +10,7 @@
 
 - (void) updateAttribute:(NSString*)attributeKey forSubstring:(NSString*)substring withBlock:(id(^)(id))aBlock;
 - (void) updateAttribute:(NSString*)attributeKey inRange:(NSRange)range withBlock:(id(^)(id))aBlock;
+- (void) addAttributes:(NSDictionary*)attributesDict toSubstring:(NSString*)substring;
+- (void) removeAttribute:(NSString*)attributeKey fromSubstring:(NSString*)substring;
 
 @end

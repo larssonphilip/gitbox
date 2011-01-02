@@ -145,7 +145,7 @@
   
   NSColor* textColor = [NSColor textColor];
   NSColor* titleColor = textColor;
-  NSColor* dateColor = [NSColor colorWithCalibratedRed:107.0/255.0 green:133.0/255.0 blue:200.0/255.0 alpha:1.0];
+  NSColor* dateColor = [NSColor colorWithCalibratedRed:50.0/255.0 green:100.0/255.0 blue:220.0/255.0 alpha:1.0];
   
   if ([self isHighlighted] && self.isFocused)
   {
