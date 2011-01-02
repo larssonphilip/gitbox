@@ -27,6 +27,7 @@
 
 - (void) dealloc
 {
+  [NSObject cancelPreviousPerformRequestsWithTarget:self];
   self.commit = nil;
   self.headerRTFTemplate = nil;
   self.headerTextView = nil;
@@ -204,11 +205,11 @@
   // 6. messageTextView height
   // 7. message bottom padding
   
-  CGFloat authorImagePadding = 10.0;
-  CGFloat headerTopPadding = 8.0;
-  CGFloat headerBottomPadding = 8.0;
-  CGFloat messageTopPadding = 8.0;
-  CGFloat messageBottomPadding = 8.0;
+  static CGFloat authorImagePadding = 10.0;
+  static CGFloat headerTopPadding = 8.0;
+  static CGFloat headerBottomPadding = 8.0;
+  static CGFloat messageTopPadding = 8.0;
+  static CGFloat messageBottomPadding = 5.0;
   
   headerTVHeight = MAX(headerTVHeight + 2*headerTopPadding, [self.authorImage frame].size.height + 2*authorImagePadding) - 2*headerTopPadding;
   
@@ -272,22 +273,27 @@
     [self.headerView setAutoresizesSubviews:autoresizesSubviews];
   }
   
-//  // Scroll to top
-//  [self.headerTextView scrollRangeToVisible:NSMakeRange(0, 1)];
-//  [[self.headerTextView enclosingScrollView] reflectScrolledClipView:[[self.headerTextView enclosingScrollView] contentView]];
-  
   [self.tableView noteHeightOfRowsWithIndexesChanged:[NSIndexSet indexSetWithIndex:0]];
   
-  [self.headerTextView scrollRangeToVisible:NSMakeRange(0, 0)];
+  [self.headerTextView scrollRangeToVisible:NSMakeRange(0, 1)];
   [[self.headerTextView enclosingScrollView] reflectScrolledClipView:[[self.headerTextView enclosingScrollView] contentView]];
   
-  [self.messageTextView scrollRangeToVisible:NSMakeRange(0, 0)];
-  [[self.messageTextView enclosingScrollView] reflectScrolledClipView:[[self.headerTextView enclosingScrollView] contentView]];
-  
+//  [self.messageTextView scrollRangeToVisible:NSMakeRange(0, 1)];
+//  [[self.messageTextView enclosingScrollView] reflectScrolledClipView:[[self.headerTextView enclosingScrollView] contentView]];
+//  
 //  [[self.messageTextView enclosingScrollView] setNeedsDisplay:YES];
 //  [self.messageTextView setNeedsDisplay:YES];
+  
+  [self performSelector:@selector(fixupRareGlitchWithTextView) withObject:nil afterDelay:0.0];
 }
 
+- (void) fixupRareGlitchWithTextView
+{
+  [self.messageTextView scrollRangeToVisible:NSMakeRange(0, 1)];
+  [[self.messageTextView enclosingScrollView] reflectScrolledClipView:[[self.headerTextView enclosingScrollView] contentView]];
+  [[self.messageTextView enclosingScrollView] setNeedsDisplay:YES];
+  [self.messageTextView setNeedsDisplay:YES];
+}
 
 
 
