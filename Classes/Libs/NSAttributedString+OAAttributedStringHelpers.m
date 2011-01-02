@@ -34,9 +34,14 @@
   id attribute = [self attribute:attributeKey atIndex:range.location effectiveRange:NULL];
   id newAttribute = aBlock(attribute);
   
-  if (!attribute) return;
-  
-  [self addAttribute:attributeKey value:newAttribute range:range];
+  if (!newAttribute)
+  {
+    [self removeAttribute:attributeKey range:range];
+  }
+  else
+  {
+    [self addAttribute:attributeKey value:newAttribute range:range];
+  }
 }
 
 @end
