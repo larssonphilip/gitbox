@@ -19,11 +19,15 @@
 
 - (void) updateAttribute:(NSString*)attributeKey forSubstring:(NSString*)substring withBlock:(id(^)(id))aBlock
 {
-  if (!attributeKey) return;
   if (!substring) return;
-  if (!aBlock) return;
-  
   NSRange range = [[self string] rangeOfString:substring];
+  [self updateAttribute:attributeKey inRange:range withBlock:aBlock];
+}
+
+- (void) updateAttribute:(NSString*)attributeKey inRange:(NSRange)range withBlock:(id(^)(id))aBlock
+{
+  if (!attributeKey) return;
+  if (!aBlock) return;
   
   if (range.length <= 0) return;
   
@@ -32,7 +36,7 @@
   
   if (!attribute) return;
   
-  [self addAttribute:attributeKey value:newAttribute range:range];          
+  [self addAttribute:attributeKey value:newAttribute range:range];
 }
 
 @end

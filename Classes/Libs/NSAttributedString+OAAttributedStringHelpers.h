@@ -8,6 +8,7 @@
 
 @interface NSMutableAttributedString (OAAttributedStringHelpers)
 
-- (void) updateAttribute:(NSString*)key forSubstring:(NSString*)substring withBlock:(id(^)(id))aBlock;
+- (void) updateAttribute:(NSString*)attributeKey forSubstring:(NSString*)substring withBlock:(id(^)(id))aBlock;
+- (void) updateAttribute:(NSString*)attributeKey inRange:(NSRange)range withBlock:(id(^)(id))aBlock;
 
 @end

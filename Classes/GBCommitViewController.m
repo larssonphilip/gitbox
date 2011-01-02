@@ -13,6 +13,7 @@
 @interface GBCommitViewController ()
 - (void) updateCommitHeader;
 - (void) updateTemplate:(NSTextStorage*)storage withCommit:(GBCommit*)aCommit;
+- (void) updateMessageStorage:(NSTextStorage*)storage;
 - (void) updateHeaderSize;
 @end
 
@@ -82,16 +83,30 @@
     self.headerRTFTemplate = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"GBCommitViewControllerHeader" ofType:@"rtf"]];
   }
   
-  NSTextStorage* storage = [self.headerTextView textStorage];
-  [storage beginEditing];
-  [storage readFromData:self.headerRTFTemplate options:nil documentAttributes:nil];
-  [self updateTemplate:storage withCommit:aCommit];
-  [storage endEditing];
+  {
+    NSTextStorage* storage = [self.headerTextView textStorage];
+    [storage beginEditing];
+    [storage readFromData:self.headerRTFTemplate options:nil documentAttributes:nil];
+    [self updateTemplate:storage withCommit:aCommit];
+    [storage endEditing];
+  }
   
   NSString* message = aCommit.message ? aCommit.message : @"";
   [self.messageTextView setString:message];
+
+  {
+    NSTextStorage* storage = [self.messageTextView textStorage];
+    [storage beginEditing];
+    [self updateMessageStorage:storage];
+    [storage endEditing];
+  }
   
   [self updateHeaderSize];
+}
+
+- (void) updateMessageStorage:(NSTextStorage*)storage
+{
+  // I had an idea to paint "Signed-off-by: ..." line in gray, but I have a better use of my time right now. [Oleg]
 }
 
 - (void) updateTemplate:(NSTextStorage*)storage withCommit:(GBCommit*)aCommit
