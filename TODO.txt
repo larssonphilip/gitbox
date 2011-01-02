@@ -26,9 +26,8 @@ Bug fixes:
 
 WIP:
 
-- linkify the parent ids and emails
-- bug: should resize commit header when window is resized
 - should load picture from addressbook
+- linkify the parent ids and emails
 - should load picture from gravatar
 - should remove image view and resize header view if not image is present
 - should display a branch hint if the different branch is selected
@@ -87,6 +86,7 @@ WIP:
   - case 4: user clones the repo inside the repo => needs to display as a non-tracked submodule which can be tracked
   - case 5: user tries to commit a submodule which has the HEAD non-pushed (or dirty directory) - show warning or ask to push manually; show button "show module"
 
++ bug: should resize commit header when window is resized
 + (ugly fix) bug: one-line merge commit message does not always show up (in commitviewcontroller)
 + should disable commit button when not applicable
 + should animate resizing

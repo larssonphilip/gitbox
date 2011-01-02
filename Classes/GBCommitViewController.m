@@ -15,6 +15,7 @@
 - (void) updateTemplate:(NSTextStorage*)storage withCommit:(GBCommit*)aCommit;
 - (void) updateMessageStorage:(NSTextStorage*)storage;
 - (void) updateHeaderSize;
+- (void) tableViewDidResize:(id)notification;
 @end
 
 @implementation GBCommitViewController
@@ -29,6 +30,9 @@
 - (void) dealloc
 {
   [NSObject cancelPreviousPerformRequestsWithTarget:self];
+  [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                  name:nil 
+                                                object:self.tableView];
   self.commit = nil;
   self.headerRTFTemplate = nil;
   self.headerTextView = nil;
@@ -64,11 +68,19 @@
 
 - (void) update
 {
+  [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                  name:NSViewFrameDidChangeNotification 
+                                                object:self.tableView];
+  
   [super update];
-  // Reset text view
-  [self.headerTextView setEditable:NO];
-  [self.headerTextView setString:@""];
   [self updateCommitHeader];
+  [self.tableView setPostsFrameChangedNotifications:YES];
+  
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(tableViewDidResize:)
+                                               name:NSViewFrameDidChangeNotification
+                                             object:self.tableView];
+  
 }
 
 - (void) updateCommitHeader
@@ -77,6 +89,9 @@
   
   if (!aCommit) return;
   if ([aCommit isStage]) return;
+
+  [self.headerTextView setEditable:NO];
+  [self.headerTextView setString:@""];
   
   if (!self.headerRTFTemplate)
   {
@@ -351,6 +366,21 @@
 
 
 
+
+#pragma mark Resizing
+
+
+- (void) tableViewDidResize:(id)notification
+{
+  if (![self.tableView inLiveResize]) return;
+  [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(tableViewDidLiveResizeDelayed) object:nil];
+  [self performSelector:@selector(tableViewDidLiveResizeDelayed) withObject:nil afterDelay:0.1];
+}
+
+- (void) tableViewDidLiveResizeDelayed
+{
+  [self updateHeaderSize];
+}
 
 
 
