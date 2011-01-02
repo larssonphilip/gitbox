@@ -37,7 +37,8 @@
 
 
 - (void) dealloc
-{  
+{
+  [NSObject cancelPreviousPerformRequestsWithTarget:self];
   self.repositoryController = nil;
   self.stageController = nil;
   self.commitController = nil;
@@ -122,6 +123,15 @@
   }
 }
 
+- (void) scrollToVisibleRow
+{
+  NSUInteger index = [self.logArrayController selectionIndex];
+  if (index != NSNotFound)
+  {
+    [self.tableView scrollRowToVisible:index];
+  }
+}
+
 - (void) updateCommits
 {
   [self.tableView reloadData];
@@ -133,7 +143,8 @@
     {
       [self.tableView withDelegate:nil doBlock:^{
         [self.tableView selectRowIndexes:[NSIndexSet indexSetWithIndex:index] byExtendingSelection:NO];
-      }];      
+        [self performSelector:@selector(scrollToVisibleRow) withObject:nil afterDelay:0.0];
+      }];
     }
   }
 }
