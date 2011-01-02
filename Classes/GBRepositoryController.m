@@ -452,6 +452,7 @@
   {
     if ([commit isStage])
     {
+      // ??? Unnecessary update; it only produces glitches in the selection. We have FS events anyway.
       [self loadStageChanges];
     }
     else if (!commit.changes)

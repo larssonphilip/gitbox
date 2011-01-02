@@ -26,12 +26,12 @@ Bug fixes:
 
 WIP:
 
-- should display a branch hint if the different branch is selected
 - linkify the parent ids and emails
 - bug: should resize commit header when window is resized
 - should load picture from addressbook
 - should load picture from gravatar
 - should remove image view and resize header view if not image is present
+- should display a branch hint if the different branch is selected
 - bug: when editing an empty commit message and clicking on a row in tableview, the resizing happens before selection and the wrong row is selected.
 - bug: when commited by clicking a button while focused on tableview, textview did not send resignFirstResponder and did not resize itself.
 - bug: autofetch sometimes does not work: maybe some crap is returned from ls-remote when communicating with a remote server; test with burger; seems like it stops working after some time or after gitbox restart.
