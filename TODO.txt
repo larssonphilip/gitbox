@@ -4,12 +4,12 @@
 Features:
 
 + Checkout arbitrary commit from history.
-
++ New right pane design with a user picture (fetched from Address Book or Gravatar), clickable parent commits' IDs and a non-clipped message scrollable with the list.
++ New commit dialog (built in to the list of changes) which solves several usability issues.
 
 Enhancements:
 
 + Improved performance of autofetching. Now remote branches are checked more frequently and without UI blocking and fetch is performed from all branches when needed.
-+ New commit dialog (built in to the list of changes) which solves several usability issues.
 + Cmd+Up and Cmd+Down in commit dialog now go through the entire git history instead of the recently entered messages.
 
 Bug fixes:
@@ -26,8 +26,36 @@ Bug fixes:
 
 WIP:
 
+
+- Dependencies:
+  - quicklook -> n/a
+  - history search -> n/a
+  - custom textual diff -> n/a
+  - custom image diff -> n/a
+  - merging -> custom textual diff, custom image diff
+  - blame -> custom textual diff, custom image diff
+  - new toolbar -> unified right pane for stage and commit
+  - gear button on the left -> new toolbar
+  - add repo button -> new toolbar
+  - grouping -> add repo button
+  - settings view -> gear button on the left
+  - bonjour sharing -> settings view
+  - github -> settings view, add repo button
+  - branch deletion -> settings view
+  - wide-area sharing -> bonjour sharing
+
+- "git submodule init" after clone or pull to add .gitmodules info to .git/config
+  
+- submodules:
+  - case 1: user clones a repo which has some submodules => needs init and pull
+  - case 2: user pulls a repo which has some submodules updated => needs pull
+  - case 3: user pulls a repo which has some submodules updated, but his submodule itself is checked out on some branch => needs fetch, not pull
+  - case 4: user clones the repo inside the repo => needs to display as a non-tracked submodule which can be tracked
+  - case 5: user tries to commit a submodule which has the HEAD non-pushed (or dirty directory) - show warning or ask to push manually; show button "show module"
+
+
+- linkify emails
 - in the right branch menu should display the current local branch, but disable it (currently it is not displayed at all)
-- bug: when clicking parent id should scroll to the selected commit
 - bug: autofetch sometimes does not work: maybe some crap is returned from ls-remote when communicating with a remote server; test with berger; seems like it stops working after some time or after gitbox restart. Also check that performSelector:withObject:afterDelay does not fail for big values.
 - bug: sometimes some duplicate branch name appears in popdown menus
 - bug: when selected all changes and hit "revert", one change is not reverted
@@ -52,35 +80,11 @@ WIP:
 - toolbar alignment
 - [+] button for adding a repo
 
-- "git submodule init" after clone or pull to add .gitmodules info to .git/config
 
+Done:
 
-- Dependencies:
-  - quicklook -> n/a
-  - history search -> n/a
-  - custom textual diff -> n/a
-  - custom image diff -> n/a
-  - merging -> custom textual diff, custom image diff
-  - blame -> custom textual diff, custom image diff
-  - new toolbar -> unified right pane for stage and commit
-  - gear button on the left -> new toolbar
-  - add repo button -> new toolbar
-  - grouping -> add repo button
-  - settings view -> gear button on the left
-  - bonjour sharing -> settings view
-  - github -> settings view, add repo button
-  - branch deletion -> settings view
-  - wide-area sharing -> bonjour sharing
-  
-  
-
-- submodules:
-  - case 1: user clones a repo which has some submodules => needs init and pull
-  - case 2: user pulls a repo which has some submodules updated => needs pull
-  - case 3: user pulls a repo which has some submodules updated, but his submodule itself is checked out on some branch => needs fetch, not pull
-  - case 4: user clones the repo inside the repo => needs to display as a non-tracked submodule which can be tracked
-  - case 5: user tries to commit a submodule which has the HEAD non-pushed (or dirty directory) - show warning or ask to push manually; show button "show module"
-
++ (not a bug) bug: when quickly clicking the parent id link, it gets selected.
++ bug: when clicking parent id should scroll to the selected commit
 + linkify the parent ids and emails
 + revamped changes header view
 + revamped stage header view
@@ -124,6 +128,7 @@ WIP:
 + bug: fetch remote branches when added a remote server or a branch was pushed: otherwise, couldn't checkout remote branch and when selecting it, it's empty.
 + bug: when remote branch is pushed from elsewhere, ls-remote updates the list, but the branch is not fetched and when you try to check out this remote branch, checkout fails. The same issue leads to missing blue pills when you switch from another branch.
 + read ls-remotes when updated .git (makes sense when pushed a branch from the terminal)
+
 
 
 1.3 WIP:
