@@ -130,6 +130,7 @@
   
   NSString* email = aCommit.authorEmail;
   
+  [self.authorImage setImage:nil];
   [self.userpicController loadImageForEmail:email withBlock:^{
     if (email && [aCommit.authorEmail isEqualToString:email])
     {

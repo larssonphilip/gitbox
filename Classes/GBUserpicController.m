@@ -99,11 +99,18 @@
     NSString* md5hexdigest = [email md5hexdigest];
     NSURL* imageURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://www.gravatar.com/avatar/%@?d=404", md5hexdigest]];
     
-    // TODO: add download to a queue
-    
+    OAHTTPDownload* aDownload = [OAHTTPDownload downloadWithURL:imageURL];
+    aDownload.block = ^{
+      if (!aDownload.error && aDownload.data)
+      {
+        NSData* imageData = aDownload.data;
+        NSImage* newImage = [[[NSImage alloc] initWithData:imageData] autorelease];
+        [self.cache setObject:newImage forKey:email cost:[imageData length]];
+        if (aBlock) aBlock();
+      }
+    };
+    [self.httpQueue addDownload:aDownload];
   }
-  
-  if (aBlock) aBlock();
 }
 
 - (void) cancel
