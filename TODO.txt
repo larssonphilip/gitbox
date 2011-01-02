@@ -32,8 +32,8 @@ WIP:
 - should remove image view and resize header view if not image is present
 - should display a branch hint if the different branch is selected (commit text field)
 + bug: when editing an empty commit message and clicking on a row in tableview, the resizing happens before selection and the wrong row is selected.
-- bug: when commited by clicking a button while focused on tableview, textview did not send resignFirstResponder and did not resize itself.
-- bug: autofetch sometimes does not work: maybe some crap is returned from ls-remote when communicating with a remote server; test with burger; seems like it stops working after some time or after gitbox restart.
++ bug: when commited by clicking a button while focused on tableview, textview did not send resignFirstResponder and did not resize itself.
+- bug: autofetch sometimes does not work: maybe some crap is returned from ls-remote when communicating with a remote server; test with berger; seems like it stops working after some time or after gitbox restart. Also check that performSelector:withObject:afterDelay does not fail for big values.
 - bug: sometimes some duplicate branch name appears in popdown menus
 - bug: when selected all changes and hit "revert", one change is not reverted
 - bug: when pushing and switching branches, gitbox tries to fetch immediately which blocks the interaction. Should add a delay to perform fetch only after user is done doing what he was doing
