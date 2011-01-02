@@ -26,9 +26,7 @@ Bug fixes:
 
 WIP:
 
-- linkify the parent ids and emails
-- should remove image view and resize header view if not image is present
-- should display a branch hint if the different branch is selected (commit text field)
+- bug: when clicking parent id should scroll to the selected commit
 - bug: autofetch sometimes does not work: maybe some crap is returned from ls-remote when communicating with a remote server; test with berger; seems like it stops working after some time or after gitbox restart. Also check that performSelector:withObject:afterDelay does not fail for big values.
 - bug: sometimes some duplicate branch name appears in popdown menus
 - bug: when selected all changes and hit "revert", one change is not reverted
@@ -36,6 +34,9 @@ WIP:
 
 - bug: while fetching some remote, commits list is refreshed with wrong commits
 - feature: checkout a commit from history context menu
+- should remove image view and resize header view if not image is present
+- should display a branch hint if the different branch is selected (commit text field)
+
 - maybe have 3 repos for free so ppl who don't want to pay just now may start actually using without searching for keygen?
 - bug: when clicked checkbox and want to drag out, it does not undo the action.
 - bug: when switching the branch or pulling/pushing, the list of commits flashes: should add a delay before reloading the commits
@@ -79,6 +80,7 @@ WIP:
   - case 4: user clones the repo inside the repo => needs to display as a non-tracked submodule which can be tracked
   - case 5: user tries to commit a submodule which has the HEAD non-pushed (or dirty directory) - show warning or ask to push manually; show button "show module"
 
++ linkify the parent ids and emails
 + revamped changes header view
 + revamped stage header view
 + command-up should jump through the history
