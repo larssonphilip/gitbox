@@ -216,7 +216,12 @@
                             nil] toSubstring:placeholder];
     [string replaceOccurrencesOfString:placeholder withString:parentId];    
   }
-    
+  
+  [storage addAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
+                          [NSString stringWithFormat:@"mailto:%@", [aCommit.authorEmail stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]],
+                          NSLinkAttributeName,
+                          nil] toSubstring:@"$author@email"];
+
   [string replaceOccurrencesOfString:@"$commitId" 
                           withString:aCommit.commitId];
   
@@ -236,6 +241,11 @@
   }
   else
   {
+    [storage addAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
+                            [NSString stringWithFormat:@"mailto:%@", aCommit.committerEmail],
+                            NSLinkAttributeName,
+                            nil] toSubstring:@"$committer@email"];
+    
     [string replaceOccurrencesOfString:@"$Committer Name" 
                             withString:aCommit.committerName];
     
@@ -412,17 +422,23 @@
 #pragma mark NSTextViewDelegate
 
 
-- (BOOL)textView:(NSTextView *)aTextView clickedOnLink:(NSURL*)aURL atIndex:(NSUInteger)charIndex
+- (BOOL)textView:(NSTextView *)aTextView clickedOnLink:(id)link atIndex:(NSUInteger)charIndex
 {
-  if ([[aURL host] isEqual:@"internal"])
+  if ([link isKindOfClass:[NSURL class]])
   {
-    NSString* path = [aURL path];
-    if ([path rangeOfString:@"/commits/"].location == 0)
+    NSURL* aURL = link;
+    if ([[aURL host] isEqual:@"internal"])
     {
-      NSString* commitId = [[path pathComponents] lastObject];
-      [self performSelector:@selector(selectCommitId:) withObject:commitId afterDelay:0.0];
+      NSString* path = [aURL path];
+      if ([path rangeOfString:@"/commits/"].location == 0)
+      {
+        NSString* commitId = [[path pathComponents] lastObject];
+        [self performSelector:@selector(selectCommitId:) withObject:commitId afterDelay:0.0];
+        return YES;
+      }
     }
   }
+  
   return NO;
 }
 
