@@ -159,7 +159,7 @@
 
 - (void) updateMessageStorage:(NSTextStorage*)storage
 {
-  // I had an idea to paint "Signed-off-by: ..." line in gray, but I have a better use of my time right now. [Oleg]
+  // I had an idea to paint "Signed-off-by: ..." line in grey, but I have a better use of my time right now. [Oleg]
 }
 
 - (void) updateTemplate:(NSTextStorage*)storage withCommit:(GBCommit*)aCommit
@@ -214,12 +214,19 @@
     [storage addAttribute:NSLinkAttributeName
                     value:[NSURL URLWithString:[NSString stringWithFormat:@"gitbox://internal/commits/%@", parentId]]
                 substring:placeholder];
+    [storage addAttribute:NSKernAttributeName
+                    value:[NSNumber numberWithDouble:0.1]
+                substring:placeholder];
     [string replaceOccurrencesOfString:placeholder withString:parentId];    
   }
   
   [storage addAttribute:NSLinkAttributeName
                   value:[self mailtoLinkForEmail:aCommit.authorEmail commit:aCommit]
               substring:@"$author@email"];
+
+  [storage addAttribute:NSKernAttributeName
+                  value:[NSNumber numberWithDouble:0.1]
+              substring:@"$commitId"];
 
   [string replaceOccurrencesOfString:@"$commitId" 
                           withString:aCommit.commitId];
