@@ -30,20 +30,22 @@ WIP:
 
 
 - Dependencies:
+  - new toolbar -> unified right pane for stage and commit (done)
+    - move spinner to the sidebar like in Mail.app
+    - move branch controls to the right and align with sidebar edge like in Mail.app
+  - add repo button -> new toolbar
+  - gear button on the left -> new toolbar
+  - grouping -> add repo button
+  - bonjour sharing -> settings view
+  - branch deletion -> settings view
   - quicklook -> n/a
   - history search -> n/a
+  - settings view -> gear button on the left
   - custom textual diff -> n/a
   - custom image diff -> n/a
   - merging -> custom textual diff, custom image diff
   - blame -> custom textual diff, custom image diff
-  - new toolbar -> unified right pane for stage and commit
-  - gear button on the left -> new toolbar
-  - add repo button -> new toolbar
-  - grouping -> add repo button
-  - settings view -> gear button on the left
-  - bonjour sharing -> settings view
   - github -> settings view, add repo button
-  - branch deletion -> settings view
   - wide-area sharing -> bonjour sharing
 
 - "git submodule init" after clone or pull to add .gitmodules info to .git/config
