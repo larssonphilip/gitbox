@@ -37,6 +37,8 @@ typedef enum {
 
 - (NSString*) fullDateString;
 - (NSString*) tooltipMessage;
+- (NSString*) subject; // first line of the commit message
+- (NSString*) subjectForReply; // composite subject for reply from Gitbox by email
 
 #pragma mark Mutation
 

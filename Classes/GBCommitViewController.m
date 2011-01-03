@@ -19,6 +19,7 @@
 - (void) updateMessageStorage:(NSTextStorage*)storage;
 - (void) updateHeaderSize;
 - (void) tableViewDidResize:(id)notification;
+- (NSString*) mailtoLinkForEmail:(NSString*)email commit:(GBCommit*)aCommit;
 @end
 
 @implementation GBCommitViewController
@@ -210,17 +211,15 @@
   {
     NSString* parentId = [aCommit.parentIds objectAtIndex:parentIndex];
     NSString* placeholder = [NSString stringWithFormat:@"$parentId%d", (int)(parentIndex + 1)];
-    [storage addAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
-                            [NSURL URLWithString:[NSString stringWithFormat:@"gitbox://internal/commits/%@", parentId]],
-                            NSLinkAttributeName,
-                            nil] toSubstring:placeholder];
+    [storage addAttribute:NSLinkAttributeName
+                    value:[NSURL URLWithString:[NSString stringWithFormat:@"gitbox://internal/commits/%@", parentId]]
+                substring:placeholder];
     [string replaceOccurrencesOfString:placeholder withString:parentId];    
   }
   
-  [storage addAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
-                          [NSString stringWithFormat:@"mailto:%@", [aCommit.authorEmail stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]],
-                          NSLinkAttributeName,
-                          nil] toSubstring:@"$author@email"];
+  [storage addAttribute:NSLinkAttributeName
+                  value:[self mailtoLinkForEmail:aCommit.authorEmail commit:aCommit]
+              substring:@"$author@email"];
 
   [string replaceOccurrencesOfString:@"$commitId" 
                           withString:aCommit.commitId];
@@ -241,10 +240,9 @@
   }
   else
   {
-    [storage addAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
-                            [NSString stringWithFormat:@"mailto:%@", aCommit.committerEmail],
-                            NSLinkAttributeName,
-                            nil] toSubstring:@"$committer@email"];
+    [storage addAttribute:NSLinkAttributeName
+                    value:[self mailtoLinkForEmail:aCommit.committerEmail commit:aCommit]
+                substring:@"$committer@email"];
     
     [string replaceOccurrencesOfString:@"$Committer Name" 
                             withString:aCommit.committerName];
@@ -252,6 +250,13 @@
     [string replaceOccurrencesOfString:@"$committer@email" 
                             withString:aCommit.committerEmail];      
   }
+}
+
+- (NSString*) mailtoLinkForEmail:(NSString*)email commit:(GBCommit*)aCommit
+{
+  return [NSString stringWithFormat:@"mailto:%@?subject=%@", 
+   [aCommit.authorEmail stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],
+   [[aCommit subjectForReply] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
 }
 
 - (void) updateHeaderSize

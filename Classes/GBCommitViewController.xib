@@ -12,7 +12,7 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="152"/>
+			<integer value="110"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -374,7 +374,7 @@
 								<double key="NSPercent">0.94565218687057495</double>
 							</object>
 						</object>
-						<string key="NSFrame">{{9, 71}, {402, 87}}</string>
+						<string key="NSFrame">{{6, 71}, {402, 87}}</string>
 						<reference key="NSSuperview" ref="856586987"/>
 						<reference key="NSNextKeyView" ref="398483504"/>
 						<int key="NSsFlags">0</int>
