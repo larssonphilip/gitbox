@@ -113,10 +113,21 @@
 
 - (NSString*) tooltipMessage
 {
-  return [NSString stringWithFormat:@"%@: %@", [[self commitId] substringToIndex:6], self.message];
+  return [NSString stringWithFormat:@"%@: %@", [self.commitId substringToIndex:6], self.message];
 }
 
+- (NSString*) subject
+{
+  if (!self.message) return nil;
+  NSRange range = [self.message rangeOfString:@"\n"];
+  if (range.length < 1) return self.message;
+  return [self.message substringToIndex:range.location];
+}
 
+- (NSString*) subjectForReply
+{
+  return [NSString stringWithFormat:@"%@ [commit %@]", [self subject], [self.commitId substringToIndex:8]];
+}
 
 
 

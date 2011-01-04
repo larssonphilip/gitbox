@@ -483,6 +483,13 @@
 
 - (BOOL)textView:(NSTextView *)aTextView shouldChangeTextInRange:(NSRange)affectedCharRange replacementString:(NSString *)replacementString
 {
+  if (affectedCharRange.location == [[aTextView string] length] && 
+      affectedCharRange.length == 0 && 
+      [replacementString isEqualToString:@"\t"])
+  {
+    [aTextView tryToPerform:@selector(cancel:) with:self];
+    return NO;
+  }
   [self.shortcutHintDetector textView:aTextView didChangeTextInRange:affectedCharRange replacementString:replacementString];
   return YES;
 }

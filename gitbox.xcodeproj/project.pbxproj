@@ -127,7 +127,6 @@
 		20915EC612874D2A005E0D82 /* GBCommitViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2093A7D111AF0F3200239185 /* GBCommitViewController.xib */; };
 		20915EC712874D2A005E0D82 /* GBCommitPromptController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2093AC9011B2EBFF00239185 /* GBCommitPromptController.xib */; };
 		20915EC812874D2A005E0D82 /* GBFileEditingController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 209A935911BA92B6006B0B5C /* GBFileEditingController.xib */; };
-		20915EC912874D2A005E0D82 /* commit-header-template.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 20F8058711C1B35A00ADDADA /* commit-header-template.rtf */; };
 		20915ECB12874D2A005E0D82 /* GBWelcomeController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 20265E4A11E3EB9B00709F6B /* GBWelcomeController.xib */; };
 		20915ECC12874D2A005E0D82 /* GBLicenseController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 201E02F611EA231D007E4420 /* GBLicenseController.xib */; };
 		20915ECD12874D2A005E0D82 /* GBCertificateUpdateController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 201E030111EE083D007E4420 /* GBCertificateUpdateController.xib */; };
@@ -286,7 +285,6 @@
 		20C8972312B89BC2002F600F /* OATextFieldAndView.m in Sources */ = {isa = PBXBuildFile; fileRef = 20C8972112B89BC2002F600F /* OATextFieldAndView.m */; };
 		20C899B612B95DDF002F600F /* OANonScrollingScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 20C899B512B95DDF002F600F /* OANonScrollingScrollView.m */; };
 		20C899B712B95DDF002F600F /* OANonScrollingScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 20C899B512B95DDF002F600F /* OANonScrollingScrollView.m */; };
-		20F8058811C1B35A00ADDADA /* commit-header-template.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 20F8058711C1B35A00ADDADA /* commit-header-template.rtf */; };
 		20FAA190123F831400E8FA0E /* git.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 20FAA18F123F831400E8FA0E /* git.bundle */; };
 		706C692F12D1183B0093C0CE /* GBSubmoduleInitTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 706C692E12D1183B0093C0CE /* GBSubmoduleInitTask.m */; };
 		70865D2B12D25F5F00033683 /* GBSubmodule.m in Sources */ = {isa = PBXBuildFile; fileRef = 70865D2A12D25F5F00033683 /* GBSubmodule.m */; };
@@ -577,7 +575,6 @@
 		20C899B412B95DDF002F600F /* OANonScrollingScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OANonScrollingScrollView.h; path = ../OANonScrollingScrollView.h; sourceTree = "<group>"; };
 		20C899B512B95DDF002F600F /* OANonScrollingScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = OANonScrollingScrollView.m; path = ../OANonScrollingScrollView.m; sourceTree = "<group>"; };
 		20E59CE711A5C9EA00E7FB72 /* GBModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBModels.h; sourceTree = "<group>"; };
-		20F8058711C1B35A00ADDADA /* commit-header-template.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = "commit-header-template.rtf"; sourceTree = "<group>"; };
 		20FAA18F123F831400E8FA0E /* git.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = git.bundle; sourceTree = "<group>"; };
 		2564AD2C0F5327BB00F57823 /* prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = prefix.pch; sourceTree = "<group>"; };
 		2A37F4B0FDCFA73011CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -1091,7 +1088,6 @@
 				20C3B700125BCC5B00ABEDE7 /* Images */,
 				203976631251A63700770D13 /* Credits.rtf */,
 				20FAA18F123F831400E8FA0E /* git.bundle */,
-				20F8058711C1B35A00ADDADA /* commit-header-template.rtf */,
 				2031BD6C12A8DC61008CC337 /* git-placeholder.bundle */,
 				2010732E11A7E9C300EFDE56 /* app.icns */,
 				8D15AC360486D014006FF6A4 /* info.plist */,
@@ -1201,7 +1197,6 @@
 				20915EC612874D2A005E0D82 /* GBCommitViewController.xib in Resources */,
 				20915EC712874D2A005E0D82 /* GBCommitPromptController.xib in Resources */,
 				20915EC812874D2A005E0D82 /* GBFileEditingController.xib in Resources */,
-				20915EC912874D2A005E0D82 /* commit-header-template.rtf in Resources */,
 				20915ECB12874D2A005E0D82 /* GBWelcomeController.xib in Resources */,
 				20915ECC12874D2A005E0D82 /* GBLicenseController.xib in Resources */,
 				20915ECD12874D2A005E0D82 /* GBCertificateUpdateController.xib in Resources */,
@@ -1243,7 +1238,6 @@
 				2093A7D211AF0F3200239185 /* GBCommitViewController.xib in Resources */,
 				2093AC9111B2EBFF00239185 /* GBCommitPromptController.xib in Resources */,
 				209A935A11BA92B6006B0B5C /* GBFileEditingController.xib in Resources */,
-				20F8058811C1B35A00ADDADA /* commit-header-template.rtf in Resources */,
 				20265E4B11E3EB9B00709F6B /* GBWelcomeController.xib in Resources */,
 				201E02F711EA231D007E4420 /* GBLicenseController.xib in Resources */,
 				201E030211EE083D007E4420 /* GBCertificateUpdateController.xib in Resources */,

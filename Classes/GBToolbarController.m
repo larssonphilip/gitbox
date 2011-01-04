@@ -131,7 +131,7 @@
   }
   
   [control setEnabled:[self validatePull:nil] forSegment:0];
-  [control setEnabled:[self validatePush:nil] forSegment:1];
+  [control setEnabled:[self validatePush:nil] /*&& repo.unpushedCommitsCount > 0*/ forSegment:1]; // commented out because it looks ugly
   [self.pullButton setEnabled:[self validatePull:nil]];
 }
 
@@ -572,7 +572,11 @@
 - (BOOL) validatePush:(id)_
 {
   GBRepositoryController* rc = self.repositoryController;
-  return [rc.repository.currentLocalRef isLocalBranch] && rc.repository.currentRemoteBranch && !rc.isDisabled && !rc.isRemoteBranchesDisabled && ![rc.repository.currentRemoteBranch isLocalBranch];
+  return [rc.repository.currentLocalRef isLocalBranch] && 
+         rc.repository.currentRemoteBranch && 
+         !rc.isDisabled && 
+         !rc.isRemoteBranchesDisabled && 
+         ![rc.repository.currentRemoteBranch isLocalBranch];
 }
 
 

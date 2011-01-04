@@ -19,6 +19,7 @@
 - (void) updateMessageStorage:(NSTextStorage*)storage;
 - (void) updateHeaderSize;
 - (void) tableViewDidResize:(id)notification;
+- (NSString*) mailtoLinkForEmail:(NSString*)email commit:(GBCommit*)aCommit;
 @end
 
 @implementation GBCommitViewController
@@ -158,7 +159,7 @@
 
 - (void) updateMessageStorage:(NSTextStorage*)storage
 {
-  // I had an idea to paint "Signed-off-by: ..." line in gray, but I have a better use of my time right now. [Oleg]
+  // I had an idea to paint "Signed-off-by: ..." line in grey, but I have a better use of my time right now. [Oleg]
 }
 
 - (void) updateTemplate:(NSTextStorage*)storage withCommit:(GBCommit*)aCommit
@@ -210,13 +211,23 @@
   {
     NSString* parentId = [aCommit.parentIds objectAtIndex:parentIndex];
     NSString* placeholder = [NSString stringWithFormat:@"$parentId%d", (int)(parentIndex + 1)];
-    [storage addAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
-                            [NSURL URLWithString:[NSString stringWithFormat:@"gitbox://internal/commits/%@", parentId]],
-                            NSLinkAttributeName,
-                            nil] toSubstring:placeholder];
+    [storage addAttribute:NSLinkAttributeName
+                    value:[NSURL URLWithString:[NSString stringWithFormat:@"gitbox://internal/commits/%@", parentId]]
+                substring:placeholder];
+    [storage addAttribute:NSKernAttributeName
+                    value:[NSNumber numberWithDouble:0.1]
+                substring:placeholder];
     [string replaceOccurrencesOfString:placeholder withString:parentId];    
   }
-    
+  
+  [storage addAttribute:NSLinkAttributeName
+                  value:[self mailtoLinkForEmail:aCommit.authorEmail commit:aCommit]
+              substring:@"<$author@email>"];
+
+  [storage addAttribute:NSKernAttributeName
+                  value:[NSNumber numberWithDouble:0.1]
+              substring:@"$commitId"];
+
   [string replaceOccurrencesOfString:@"$commitId" 
                           withString:aCommit.commitId];
   
@@ -236,12 +247,23 @@
   }
   else
   {
+    [storage addAttribute:NSLinkAttributeName
+                    value:[self mailtoLinkForEmail:aCommit.committerEmail commit:aCommit]
+                substring:@"<$committer@email>"];
+    
     [string replaceOccurrencesOfString:@"$Committer Name" 
                             withString:aCommit.committerName];
     
     [string replaceOccurrencesOfString:@"$committer@email" 
                             withString:aCommit.committerEmail];      
   }
+}
+
+- (NSString*) mailtoLinkForEmail:(NSString*)email commit:(GBCommit*)aCommit
+{
+  return [NSString stringWithFormat:@"mailto:%@?subject=%@", 
+   [email stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],
+   [[aCommit subjectForReply] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
 }
 
 - (void) updateHeaderSize
@@ -412,17 +434,23 @@
 #pragma mark NSTextViewDelegate
 
 
-- (BOOL)textView:(NSTextView *)aTextView clickedOnLink:(NSURL*)aURL atIndex:(NSUInteger)charIndex
+- (BOOL)textView:(NSTextView *)aTextView clickedOnLink:(id)link atIndex:(NSUInteger)charIndex
 {
-  if ([[aURL host] isEqual:@"internal"])
+  if ([link isKindOfClass:[NSURL class]])
   {
-    NSString* path = [aURL path];
-    if ([path rangeOfString:@"/commits/"].location == 0)
+    NSURL* aURL = link;
+    if ([[aURL host] isEqual:@"internal"])
     {
-      NSString* commitId = [[path pathComponents] lastObject];
-      [self performSelector:@selector(selectCommitId:) withObject:commitId afterDelay:0.0];
+      NSString* path = [aURL path];
+      if ([path rangeOfString:@"/commits/"].location == 0)
+      {
+        NSString* commitId = [[path pathComponents] lastObject];
+        [self performSelector:@selector(selectCommitId:) withObject:commitId afterDelay:0.0];
+        return YES;
+      }
     }
   }
+  
   return NO;
 }
 
