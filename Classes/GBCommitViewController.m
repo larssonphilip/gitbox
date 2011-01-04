@@ -222,7 +222,7 @@
   
   [storage addAttribute:NSLinkAttributeName
                   value:[self mailtoLinkForEmail:aCommit.authorEmail commit:aCommit]
-              substring:@"$author@email"];
+              substring:@"<$author@email>"];
 
   [storage addAttribute:NSKernAttributeName
                   value:[NSNumber numberWithDouble:0.1]
@@ -254,7 +254,7 @@
     [string replaceOccurrencesOfString:@"$Committer Name" 
                             withString:aCommit.committerName];
     
-    [string replaceOccurrencesOfString:@"$committer@email" 
+    [string replaceOccurrencesOfString:@"<$committer@email>" 
                             withString:aCommit.committerEmail];      
   }
 }

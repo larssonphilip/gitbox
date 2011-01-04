@@ -126,7 +126,7 @@
 
 - (NSString*) subjectForReply
 {
-  return [NSString stringWithFormat:@"%@ commit %@: %@", [[self.repository.url path] lastPathComponent], [self.commitId substringToIndex:6], [self subject]];
+  return [NSString stringWithFormat:@"%@ [commit %@]", [self subject], [self.commitId substringToIndex:8]];
 }
 
 
