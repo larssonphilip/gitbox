@@ -11,7 +11,7 @@
 			<string key="NS.object.0">823</string>
 		</object>
 		<array class="NSMutableArray" key="IBDocument.EditedObjectIDs">
-			<integer value="6"/>
+			<integer value="100021"/>
 		</array>
 		<array key="IBDocument.PluginDependencies">
 			<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -37,7 +37,7 @@
 				<int key="NSWindowStyleMask">15</int>
 				<int key="NSWindowBacking">2</int>
 				<string key="NSWindowRect">{{229, 212}, {799, 435}}</string>
-				<int key="NSWTFlags">1886912512</int>
+				<int key="NSWTFlags">1886913536</int>
 				<string key="NSWindowTitle">Window</string>
 				<string key="NSWindowClass">NSWindow</string>
 				<object class="NSToolbar" key="NSViewClass" id="959528133">
@@ -60,10 +60,11 @@
 							<string key="NSToolbarItemPaletteLabel">Activity Indicator</string>
 							<nil key="NSToolbarItemToolTip"/>
 							<object class="NSProgressIndicator" key="NSToolbarItemView" id="614430428">
-								<nil key="NSNextResponder"/>
+								<reference key="NSNextResponder"/>
 								<int key="NSvFlags">1292</int>
 								<object class="NSPSMatrix" key="NSDrawMatrix"/>
 								<string key="NSFrame">{{41, 14}, {16, 16}}</string>
+								<reference key="NSSuperview"/>
 								<int key="NSpiFlags">28938</int>
 								<double key="NSMaxValue">100</double>
 							</object>
@@ -86,9 +87,10 @@
 							<string key="NSToolbarItemPaletteLabel"/>
 							<nil key="NSToolbarItemToolTip"/>
 							<object class="NSButton" key="NSToolbarItemView" id="840289140">
-								<nil key="NSNextResponder"/>
+								<reference key="NSNextResponder"/>
 								<int key="NSvFlags">268</int>
 								<string key="NSFrame">{{0, 14}, {132, 25}}</string>
+								<reference key="NSSuperview"/>
 								<bool key="NSEnabled">YES</bool>
 								<object class="NSButtonCell" key="NSCell" id="180867585">
 									<int key="NSCellFlags">-2080244224</int>
@@ -127,9 +129,10 @@
 							<string key="NSToolbarItemPaletteLabel">Other Branch</string>
 							<nil key="NSToolbarItemToolTip"/>
 							<object class="NSPopUpButton" key="NSToolbarItemView" id="496183261">
-								<nil key="NSNextResponder"/>
+								<reference key="NSNextResponder"/>
 								<int key="NSvFlags">268</int>
 								<string key="NSFrame">{{0, 14}, {200, 25}}</string>
+								<reference key="NSSuperview"/>
 								<bool key="NSEnabled">YES</bool>
 								<object class="NSPopUpButtonCell" key="NSCell" id="547539069">
 									<int key="NSCellFlags">-2076049856</int>
@@ -230,9 +233,10 @@
 							<string key="NSToolbarItemPaletteLabel">Local Branch</string>
 							<nil key="NSToolbarItemToolTip"/>
 							<object class="NSPopUpButton" key="NSToolbarItemView" id="451021642">
-								<nil key="NSNextResponder"/>
+								<reference key="NSNextResponder"/>
 								<int key="NSvFlags">268</int>
 								<string key="NSFrame">{{0, 14}, {200, 25}}</string>
+								<reference key="NSSuperview"/>
 								<bool key="NSEnabled">YES</bool>
 								<object class="NSPopUpButtonCell" key="NSCell" id="603841213">
 									<int key="NSCellFlags">-2076049856</int>
@@ -351,9 +355,10 @@
 							<string key="NSToolbarItemPaletteLabel"/>
 							<nil key="NSToolbarItemToolTip"/>
 							<object class="NSSegmentedControl" key="NSToolbarItemView" id="723410101">
-								<nil key="NSNextResponder"/>
+								<reference key="NSNextResponder"/>
 								<int key="NSvFlags">268</int>
 								<string key="NSFrame">{{0, 14}, {132, 25}}</string>
+								<reference key="NSSuperview"/>
 								<bool key="NSEnabled">YES</bool>
 								<object class="NSSegmentedCell" key="NSCell" id="909504413">
 									<int key="NSCellFlags">-2080244224</int>
@@ -400,9 +405,10 @@
 							<string key="NSToolbarItemPaletteLabel"/>
 							<nil key="NSToolbarItemToolTip"/>
 							<object class="NSButton" key="NSToolbarItemView" id="1048878109">
-								<nil key="NSNextResponder"/>
+								<reference key="NSNextResponder"/>
 								<int key="NSvFlags">268</int>
 								<string key="NSFrame">{{0, 14}, {77, 25}}</string>
+								<reference key="NSSuperview"/>
 								<bool key="NSEnabled">YES</bool>
 								<object class="NSButtonCell" key="NSCell" id="441069746">
 									<int key="NSCellFlags">-2080244224</int>
@@ -511,7 +517,7 @@
 							</object>
 						</object>
 					</dictionary>
-					<array class="NSMutableArray" key="NSToolbarIBAllowedItems">
+					<array key="NSToolbarIBAllowedItems">
 						<reference ref="732156857"/>
 						<reference ref="456844793"/>
 						<reference ref="794321415"/>
@@ -1106,7 +1112,7 @@
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
 				<string key="-3.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-				<string key="100021.IBEditorWindowLastContentRect">{{199, 672}, {617, 0}}</string>
+				<string key="100021.IBEditorWindowLastContentRect">{{260, 289}, {617, 227}}</string>
 				<string key="100021.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="100021.designableToolbarIdentifier">toolbar</string>
 				<string key="100036.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -1152,9 +1158,9 @@
 				<string key="100399.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="100399.designableToolbarItemIdentifier">pull</string>
 				<string key="100404.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-				<string key="5.IBEditorWindowLastContentRect">{{83, 74}, {799, 435}}</string>
+				<string key="5.IBEditorWindowLastContentRect">{{169, 81}, {799, 435}}</string>
 				<string key="5.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-				<string key="5.IBWindowTemplateEditedContentRect">{{83, 74}, {799, 435}}</string>
+				<string key="5.IBWindowTemplateEditedContentRect">{{169, 81}, {799, 435}}</string>
 				<integer value="1" key="5.ImportedFromIB2"/>
 				<boolean value="YES" key="5.NSWindowTemplate.visibleAtLaunch"/>
 				<string key="5.editorWindowContentRectSynchronizationRect">{{201, 387}, {507, 413}}</string>
