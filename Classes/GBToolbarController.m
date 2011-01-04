@@ -29,6 +29,7 @@
 
 @synthesize window;
 @synthesize mainWindowController;
+@synthesize sidebarWidth;
 
 - (void) dealloc
 {
@@ -79,6 +80,7 @@
   [self updateDisabledState];
   [self updateSpinner];
   [self updateCommitButton];
+  [self updateAlignment];
 }
 
 - (void) updateDisabledState
@@ -110,6 +112,7 @@
 
 - (void) updateSyncButtons
 {
+  static NSInteger syncButtonIndex = 4;
   NSSegmentedControl* control = self.pullPushControl;
   GBRepository* repo = self.repositoryController.repository;
   
@@ -118,16 +121,16 @@
     [control setLabel:NSLocalizedString(@"← merge", @"Toolbar") forSegment:0];
     [control setLabel:@" " forSegment:1];
     [self.pullButton setTitle:NSLocalizedString(@"← merge   ", @"Toolbar")];
-    [self.toolbar removeItemAtIndex:1];
-    [self.toolbar insertItemWithItemIdentifier:@"pull" atIndex:1];
+    [self.toolbar removeItemAtIndex:syncButtonIndex];
+    [self.toolbar insertItemWithItemIdentifier:@"pull" atIndex:syncButtonIndex];
   }
   else
   {
     [control setLabel:NSLocalizedString(@"← pull", @"Toolbar") forSegment:0];
     [control setLabel:NSLocalizedString(@"push →", @"Toolbar") forSegment:1];
     [self.pullButton setTitle:NSLocalizedString(@"← pull   ", @"Toolbar")];
-    [self.toolbar removeItemAtIndex:1];
-    [self.toolbar insertItemWithItemIdentifier:@"pullpush" atIndex:1];
+    [self.toolbar removeItemAtIndex:syncButtonIndex];
+    [self.toolbar insertItemWithItemIdentifier:@"pullpush" atIndex:syncButtonIndex];
   }
   
   [control setEnabled:[self validatePull:nil] forSegment:0];
@@ -155,6 +158,21 @@
   }
 }
 
+
+
+- (void) updateAlignment
+{
+  static CGFloat paddingOffset = -11.0 - 76.0; // right spacing + "add" and "settings" buttons widths and their paddings
+  static NSInteger spaceItemIndex = 2;
+  
+  if ([[self.toolbar items] count] <= spaceItemIndex) return;
+  NSToolbarItem* spaceItem = [[self.toolbar items] objectAtIndex:spaceItemIndex];
+  
+  NSSize size = [spaceItem minSize];
+  size.width = self.sidebarWidth + paddingOffset;
+  [spaceItem setMaxSize:size];
+  [spaceItem setMinSize:size];
+}
 
 
 

@@ -26,6 +26,7 @@
 
 @interface GBMainWindowController ()
 @property(nonatomic, retain) OAFastJumpController* jumpController;
+- (void) updateToolbarAlignment;
 @end
 
 
@@ -541,6 +542,8 @@
   [[self window] makeFirstResponder:self.sourcesController.outlineView];
   [self.toolbarController update];
   [self.historyController update];
+  
+  [self updateToolbarAlignment];
 }
 
 
@@ -660,13 +663,33 @@
 }
 
 - (BOOL)splitView:(NSSplitView *)splitView canCollapseSubview:(NSView *)subview
-{// DOES NOT WORK
-  if (subview == self.sourcesController.view)
-  {
-    return YES;
-  }
+{
   return NO;
 }
+
+- (void)splitViewDidResizeSubviews:(NSNotification *)aNotification
+{
+  [self updateToolbarAlignment]; 
+}
+
+
+
+
+#pragma mark Private
+
+
+
+- (void) updateToolbarAlignment
+{
+  if ([[self.splitView subviews] count] < 1) return;
+  
+  NSView* sourceView = [[self.splitView subviews] objectAtIndex:0];
+  self.toolbarController.sidebarWidth = [sourceView frame].size.width;
+  [self.toolbarController updateAlignment];
+}
+
+
+
 
 
 @end
