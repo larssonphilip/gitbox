@@ -6,7 +6,6 @@
 @implementation GBSubmodule
 
 @synthesize remoteURL;
-@synthesize name;
 @synthesize path;
 @synthesize repository;
 @synthesize busy;

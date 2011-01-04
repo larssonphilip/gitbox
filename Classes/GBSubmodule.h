@@ -4,9 +4,6 @@
 
 @property(nonatomic, retain) NSURL* remoteURL;
 
-// Name and path are equal most of the time but
-// they don't have to. See gitmodules(5). MK.
-@property(nonatomic, retain) NSString* name;
 @property(nonatomic, retain) NSString* path;
 @property(nonatomic, assign) BOOL busy;
 @property(nonatomic, assign) GBRepository* repository;
