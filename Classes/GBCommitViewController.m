@@ -249,12 +249,12 @@
   {
     [storage addAttribute:NSLinkAttributeName
                     value:[self mailtoLinkForEmail:aCommit.committerEmail commit:aCommit]
-                substring:@"$committer@email"];
+                substring:@"<$committer@email>"];
     
     [string replaceOccurrencesOfString:@"$Committer Name" 
                             withString:aCommit.committerName];
     
-    [string replaceOccurrencesOfString:@"<$committer@email>" 
+    [string replaceOccurrencesOfString:@"$committer@email" 
                             withString:aCommit.committerEmail];      
   }
 }
@@ -262,7 +262,7 @@
 - (NSString*) mailtoLinkForEmail:(NSString*)email commit:(GBCommit*)aCommit
 {
   return [NSString stringWithFormat:@"mailto:%@?subject=%@", 
-   [aCommit.authorEmail stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],
+   [email stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],
    [[aCommit subjectForReply] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
 }
 
