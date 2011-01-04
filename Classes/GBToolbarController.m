@@ -131,7 +131,7 @@
   }
   
   [control setEnabled:[self validatePull:nil] forSegment:0];
-  [control setEnabled:[self validatePush:nil] && repo.unpushedCommitsCount > 0 forSegment:1];
+  [control setEnabled:[self validatePush:nil] /*&& repo.unpushedCommitsCount > 0*/ forSegment:1]; // commented out because it looks ugly
   [self.pullButton setEnabled:[self validatePull:nil]];
 }
 
