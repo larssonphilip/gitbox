@@ -120,14 +120,14 @@
   {
     NSColor* textColor = [NSColor colorWithCalibratedWhite:0.3 alpha:1.0];
     
-    if ([aChange isAddedFile] || [aChange isUntrackedFile])
-    {
-      textColor = [NSColor colorWithCalibratedWhite:0.0 alpha:1.0]; // [NSColor colorWithCalibratedWhite:0.3 alpha:1.0]; //[NSColor colorWithCalibratedRed:0.1 green:0.5 blue:0.0 alpha:1.0];
-    }
-    else if ([aChange isDeletedFile])
-    {
-      textColor = [NSColor colorWithCalibratedWhite:0.0 alpha:1.0]; //[NSColor colorWithCalibratedRed:0.6 green:0.1 blue:0.0 alpha:1.0];
-    }
+//    if ([aChange isAddedFile] || [aChange isUntrackedFile])
+//    {
+//      textColor = [NSColor colorWithCalibratedWhite:0.0 alpha:1.0]; // [NSColor colorWithCalibratedWhite:0.3 alpha:1.0]; //[NSColor colorWithCalibratedRed:0.1 green:0.5 blue:0.0 alpha:1.0];
+//    }
+//    else if ([aChange isDeletedFile])
+//    {
+//      textColor = [NSColor colorWithCalibratedWhite:0.0 alpha:1.0]; //[NSColor colorWithCalibratedRed:0.6 green:0.1 blue:0.0 alpha:1.0];
+//    }
       
     if ([self isHighlighted] && self.isFocused)
     {
