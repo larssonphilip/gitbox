@@ -56,6 +56,7 @@ WIP:
 - sidebar: drag and drop groups
 - sidebar: special case - if dragged several repos from the same folder, and there's no group with the same name as their folder, wrap them all in a new group automatically.
 
+- show confirmation prompt when trying to push branch "X" into "origin/Y" (that is when branch name differ)
 - in the right branch menu should display the current local branch, but disable it (currently it is not displayed at all)
 - bug: autofetch sometimes does not work: maybe some crap is returned from ls-remote when communicating with a remote server; test with berger; seems like it stops working after some time or after gitbox restart. Also check that performSelector:withObject:afterDelay does not fail for big values.
 - bug: sometimes some duplicate branch name appears in popdown menus
