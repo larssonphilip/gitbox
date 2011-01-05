@@ -4,6 +4,7 @@
 #import "GBRemotesTask.h"
 #import "GBHistoryTask.h"
 #import "GBLocalRefsTask.h"
+#import "GBSubmoduleInitTask.h"
 
 #import "NSFileManager+OAFileManagerHelpers.h"
 #import "NSData+OADataHelpers.h"
@@ -557,6 +558,25 @@
   }];
 }
 
+
+- (void) initSubmodules
+{
+  GBSubmoduleInitTask* task = [[GBSubmoduleInitTask new] autorelease];
+	task.targetURL = self.url;
+	
+	[task launchWithBlock:^{
+		if ([task isError]) {
+			[NSError errorWithDomain:@"Gitbox" code:1
+																	 userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
+																						 [task.output UTF8String], NSLocalizedDescriptionKey,
+																						 [NSNumber numberWithInt:[task terminationStatus]], @"terminationStatus",
+																						 [task command], @"command",
+																						 nil]];
+		} else {
+			NSLog(@"GBCloningRepositoryController: did finish submodule init at %@", [self path]);
+		}		
+	}];
+}
 
 
 
