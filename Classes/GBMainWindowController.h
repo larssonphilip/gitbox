@@ -26,6 +26,8 @@
 - (void) saveState;
 - (void) loadState;
 
+- (IBAction) addGroup:(id)_;
+
 - (IBAction) editRepositories:(id)_;
 - (IBAction) editGitIgnore:(id)_;
 - (IBAction) editGitConfig:(id)_;

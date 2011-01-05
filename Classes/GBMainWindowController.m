@@ -91,6 +91,11 @@
 }
 
 
+- (IBAction) addGroup:(id)_
+{
+  [self.sourcesController addGroup:_];
+}
+
 
 - (IBAction) editRepositories:(id)_
 {

@@ -24,6 +24,8 @@
 - (void) updateSelectedRow;
 - (void) expandLocalRepositories;
 
+- (IBAction) addGroup:(id)_;
+
 - (IBAction) selectPreviousRepository:(id)_;
 - (IBAction) selectNextRepository:(id)_;
 
