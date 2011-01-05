@@ -316,7 +316,14 @@
   return [[remote.branches valueForKey:@"name"] containsObject:ref.name];
 }
 
+- (BOOL) doesHaveSubmodules
+{
+  NSFileManager* fileManager   = [[[NSFileManager alloc] init] autorelease];
+  NSString* dotGitModulesPath = [[NSURL URLWithString:@".gitmodule" relativeToURL: [self url]] path];
 
+  return [fileManager fileExistsAtPath:dotGitModulesPath];
+  
+}
 
 
 
