@@ -30,12 +30,6 @@ WIP:
 
 
 - Dependencies:
-  - new toolbar -> unified right pane for stage and commit (done)
-    - move spinner to the sidebar like in Mail.app
-    - move branch controls to the right and align with sidebar edge like in Mail.app
-  - add repo button -> new toolbar
-  - gear button on the left -> new toolbar
-  - grouping -> add repo button
   - bonjour sharing -> settings view
   - branch deletion -> settings view
   - quicklook -> n/a
@@ -56,6 +50,11 @@ WIP:
   - case 3: user pulls a repo which has some submodules updated, but his submodule itself is checked out on some branch => needs fetch, not pull
   - case 4: user clones the repo inside the repo => needs to display as a non-tracked submodule which can be tracked
   - case 5: user tries to commit a submodule which has the HEAD non-pushed (or dirty directory) - show warning or ask to push manually; show button "show module"
+
+- sidebar: add spinners to each item (like in Mail.app)
+- sidebar: add groups
+- sidebar: drag and drop groups
+- sidebar: special case - if dragged several repos from the same folder, and there's no group with the same name as their folder, wrap them all in a new group automatically.
 
 - in the right branch menu should display the current local branch, but disable it (currently it is not displayed at all)
 - bug: autofetch sometimes does not work: maybe some crap is returned from ls-remote when communicating with a remote server; test with berger; seems like it stops working after some time or after gitbox restart. Also check that performSelector:withObject:afterDelay does not fail for big values.
