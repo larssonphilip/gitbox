@@ -15,6 +15,7 @@
 
 @property(assign) IBOutlet NSWindow* window;
 @property(assign) IBOutlet GBMainWindowController* mainWindowController;
+@property(assign) CGFloat sidebarWidth;
 
 - (void) windowDidLoad;
 - (void) windowDidUnload;
@@ -27,6 +28,7 @@
 - (void) updateRemoteBranchMenus;
 - (void) updateSyncButtons;
 - (void) updateCommitButton;
+- (void) updateAlignment;
 
 - (void) saveState;
 - (void) loadState;

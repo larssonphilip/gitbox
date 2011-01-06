@@ -4,6 +4,7 @@
 @interface GBBaseRepositoryController : NSObject
 
 @property(nonatomic,retain) OABlockQueue* updatesQueue;
+@property(nonatomic,retain) NSProgressIndicator* sidebarSpinner;
 
 @property(nonatomic,assign) BOOL displaysTwoPathComponents;
 @property(nonatomic,assign) NSInteger isDisabled;

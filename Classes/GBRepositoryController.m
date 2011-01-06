@@ -157,6 +157,7 @@
 
 - (void) start
 {
+  [super start];
   self.fsEventStream = [[OAFSEventStream new] autorelease];
 #if DEBUG
   self.fsEventStream.shouldLogEvents = NO;
@@ -192,6 +193,7 @@
 {
   [self unscheduleAutoFetch];
   [self.fsEventStream stop];
+  [super stop];
 }
 
 - (void) didSelect
@@ -859,14 +861,14 @@
   //[self pushSpinning];
   [self.repository updateLocalBranchCommitsWithBlock:^{
     
-    if ([self.delegate respondsToSelector:@selector(repositoryControllerDidUpdateCommits:)]) { [self.delegate repositoryControllerDidUpdateCommits:self]; }
+    //if ([self.delegate respondsToSelector:@selector(repositoryControllerDidUpdateCommits:)]) { [self.delegate repositoryControllerDidUpdateCommits:self]; }
     
     [OABlockGroup groupBlock:^(OABlockGroup* blockGroup){
       
       [blockGroup enter];
       [self pushFSEventsPause];
       [self.repository updateUnmergedCommitsWithBlock:^{
-        if ([self.delegate respondsToSelector:@selector(repositoryControllerDidUpdateCommits:)]) { [self.delegate repositoryControllerDidUpdateCommits:self]; }
+        //if ([self.delegate respondsToSelector:@selector(repositoryControllerDidUpdateCommits:)]) { [self.delegate repositoryControllerDidUpdateCommits:self]; }
         [self popFSEventsPause];
         [blockGroup leave];
       }];
@@ -874,12 +876,15 @@
       [blockGroup enter];
       [self pushFSEventsPause];
       [self.repository updateUnpushedCommitsWithBlock:^{
-        if ([self.delegate respondsToSelector:@selector(repositoryControllerDidUpdateCommits:)]) { [self.delegate repositoryControllerDidUpdateCommits:self]; }
+        //if ([self.delegate respondsToSelector:@selector(repositoryControllerDidUpdateCommits:)]) { [self.delegate repositoryControllerDidUpdateCommits:self]; }
         [self popFSEventsPause];
         [blockGroup leave];
       }];
       
-    } continuation: block];
+    } continuation: ^{
+      if ([self.delegate respondsToSelector:@selector(repositoryControllerDidUpdateCommits:)]) { [self.delegate repositoryControllerDidUpdateCommits:self]; }
+      if (block) block();
+    }];
     
     //[self popSpinning];
   }];

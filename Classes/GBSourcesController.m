@@ -59,6 +59,11 @@
 
 
 
+- (IBAction) addGroup:(id)_
+{
+  NSLog(@"TODO: add group to the outline view and enter editing mode");
+}
+
 - (id) firstNonGroupRowStartingAtRow:(NSInteger)row direction:(NSInteger)direction
 {
   if (direction != -1) direction = 1;
@@ -218,6 +223,15 @@
 {
   [self.outlineView expandItem:self.repositoriesController.localRepositoryControllers];
 }
+
+- (void) updateSpinnerForRepositoryController:(GBBaseRepositoryController*)repoCtrl
+{
+  // TODO: find the rect for the repoCtrl and redisplay it.
+  [self.outlineView reloadItem:repoCtrl];
+}
+
+
+
 
 
 

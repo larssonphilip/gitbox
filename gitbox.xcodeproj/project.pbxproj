@@ -39,6 +39,10 @@
 		2016466312D0D0EC005C69DA /* OAHTTPDownload.m in Sources */ = {isa = PBXBuildFile; fileRef = 2016465A12D0D0EC005C69DA /* OAHTTPDownload.m */; };
 		2016466412D0D0EC005C69DA /* OAHTTPQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 2016465D12D0D0EC005C69DA /* OAHTTPQueue.m */; };
 		2016466512D0D0EC005C69DA /* OAXMLDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 2016465F12D0D0EC005C69DA /* OAXMLDecoder.m */; };
+		20164A5212D3D8EA005C69DA /* GBToolbarGear.png in Resources */ = {isa = PBXBuildFile; fileRef = 20164A5112D3D8EA005C69DA /* GBToolbarGear.png */; };
+		20164A5312D3D8EA005C69DA /* GBToolbarGear.png in Resources */ = {isa = PBXBuildFile; fileRef = 20164A5112D3D8EA005C69DA /* GBToolbarGear.png */; };
+		20164ABF12D49BD7005C69DA /* GBToolbarPlus.png in Resources */ = {isa = PBXBuildFile; fileRef = 20164ABE12D49BD7005C69DA /* GBToolbarPlus.png */; };
+		20164AC012D49BD7005C69DA /* GBToolbarPlus.png in Resources */ = {isa = PBXBuildFile; fileRef = 20164ABE12D49BD7005C69DA /* GBToolbarPlus.png */; };
 		20177F8512AAA229006362D1 /* GBChangeCheckboxCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 20177F8412AAA228006362D1 /* GBChangeCheckboxCell.m */; };
 		20177F8612AAA229006362D1 /* GBChangeCheckboxCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 20177F8412AAA228006362D1 /* GBChangeCheckboxCell.m */; };
 		201E02F711EA231D007E4420 /* GBLicenseController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 201E02F611EA231D007E4420 /* GBLicenseController.xib */; };
@@ -354,6 +358,8 @@
 		2016465D12D0D0EC005C69DA /* OAHTTPQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAHTTPQueue.m; sourceTree = "<group>"; };
 		2016465E12D0D0EC005C69DA /* OAXMLDecoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAXMLDecoder.h; sourceTree = "<group>"; };
 		2016465F12D0D0EC005C69DA /* OAXMLDecoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAXMLDecoder.m; sourceTree = "<group>"; };
+		20164A5112D3D8EA005C69DA /* GBToolbarGear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GBToolbarGear.png; path = Images/GBToolbarGear.png; sourceTree = SOURCE_ROOT; };
+		20164ABE12D49BD7005C69DA /* GBToolbarPlus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GBToolbarPlus.png; path = ../Images/GBToolbarPlus.png; sourceTree = "<group>"; };
 		20177F8312AAA228006362D1 /* GBChangeCheckboxCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBChangeCheckboxCell.h; sourceTree = "<group>"; };
 		20177F8412AAA228006362D1 /* GBChangeCheckboxCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBChangeCheckboxCell.m; sourceTree = "<group>"; };
 		201E02F611EA231D007E4420 /* GBLicenseController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBLicenseController.xib; sourceTree = "<group>"; };
@@ -806,6 +812,8 @@
 				20A37BBD120DDBA60068AB8B /* GBMainWindowController.xib */,
 				20A37BAA120DC4510068AB8B /* GBToolbarController.h */,
 				20A37BAB120DC4510068AB8B /* GBToolbarController.m */,
+				20164ABE12D49BD7005C69DA /* GBToolbarPlus.png */,
+				20164A5112D3D8EA005C69DA /* GBToolbarGear.png */,
 			);
 			name = "Main UI";
 			sourceTree = "<group>";
@@ -1218,6 +1226,8 @@
 				2031BD6E12A8DC61008CC337 /* git-placeholder.bundle in Resources */,
 				2016439212CC0F35005C69DA /* author.png in Resources */,
 				201643AE12CC121B005C69DA /* GBCommitViewControllerHeader.rtf in Resources */,
+				20164A5312D3D8EA005C69DA /* GBToolbarGear.png in Resources */,
+				20164AC012D49BD7005C69DA /* GBToolbarPlus.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1259,6 +1269,8 @@
 				2031BD6D12A8DC61008CC337 /* git-placeholder.bundle in Resources */,
 				2016439112CC0F35005C69DA /* author.png in Resources */,
 				201643AD12CC121B005C69DA /* GBCommitViewControllerHeader.rtf in Resources */,
+				20164A5212D3D8EA005C69DA /* GBToolbarGear.png in Resources */,
+				20164ABF12D49BD7005C69DA /* GBToolbarPlus.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

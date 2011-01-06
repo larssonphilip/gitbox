@@ -5,6 +5,7 @@
 @implementation GBBaseRepositoryController
 
 @synthesize updatesQueue;
+@synthesize sidebarSpinner;
 
 @synthesize displaysTwoPathComponents;
 @synthesize isDisabled;
@@ -14,6 +15,7 @@
 - (void) dealloc
 {
   self.updatesQueue = nil;
+  self.sidebarSpinner = nil;
   [super dealloc];
 }
 
@@ -91,7 +93,10 @@
 - (void) endBackgroundUpdate {}
 
 - (void) start {}
-- (void) stop {}
+- (void) stop
+{
+  [self.sidebarSpinner removeFromSuperview];
+}
 
 - (void) didSelect
 {
