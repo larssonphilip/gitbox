@@ -1,5 +1,6 @@
 
 @class GBRepositoriesController;
+@class GBBaseRepositoryController;
 @class GBRepositoryController;
 @class GBRepository;
 @class GBHistoryViewController;
@@ -23,6 +24,7 @@
 - (void) updateBadges;
 - (void) updateSelectedRow;
 - (void) expandLocalRepositories;
+- (void) updateSpinnerForRepositoryController:(GBBaseRepositoryController*)repoCtrl;
 
 - (IBAction) addGroup:(id)_;
 

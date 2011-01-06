@@ -385,6 +385,7 @@
 
 - (void) repositoryControllerDidChangeSpinningStatus:(GBRepositoryController*)repoCtrl
 {
+  [self.sourcesController updateSpinnerForRepositoryController:repoCtrl];
   if (![self isSelectedRepositoryController:repoCtrl]) return;
   [self.toolbarController updateSpinner];
 }

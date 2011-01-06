@@ -224,6 +224,15 @@
   [self.outlineView expandItem:self.repositoriesController.localRepositoryControllers];
 }
 
+- (void) updateSpinnerForRepositoryController:(GBBaseRepositoryController*)repoCtrl
+{
+  // TODO: find the rect for the repoCtrl and redisplay it.
+  [self.outlineView reloadItem:repoCtrl];
+}
+
+
+
+
 
 
 #pragma mark State load/save
