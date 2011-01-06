@@ -112,7 +112,7 @@
 
 - (void) updateSyncButtons
 {
-  static NSInteger syncButtonIndex = 4;
+  static NSInteger syncButtonIndex = 3;
   NSSegmentedControl* control = self.pullPushControl;
   GBRepository* repo = self.repositoryController.repository;
   
@@ -162,8 +162,9 @@
 
 - (void) updateAlignment
 {
-  static CGFloat paddingOffset = -11.0 - 76.0; // right spacing + "add" and "settings" buttons widths and their paddings
-  static NSInteger spaceItemIndex = 2;
+  static CGFloat spaceForMissingSettingsButton = 38.0; // remove this when settings button will come back
+  CGFloat paddingOffset = -11.0 - 76.0 + spaceForMissingSettingsButton; // right spacing + "add" and "settings" buttons widths and their paddings
+  static NSInteger spaceItemIndex = 1;
   
   if ([[self.toolbar items] count] <= spaceItemIndex) return;
   NSToolbarItem* spaceItem = [[self.toolbar items] objectAtIndex:spaceItemIndex];
