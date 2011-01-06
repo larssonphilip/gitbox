@@ -10,13 +10,17 @@
 @interface GBRepositoryCell ()
 - (NSRect) drawBadge:(NSString*)badge inTitleFrame:(NSRect)frame;
 - (void) drawTitleInFrame:(NSRect)frame;
-- (void) drawSubtitleInFrame:(NSRect)frame;
 @end
 
 @implementation GBRepositoryCell
 
 @synthesize isForeground;
 @synthesize isFocused;
+
+- (void) dealloc
+{
+  [super dealloc];
+}
 
 + (CGFloat) cellHeight
 {
@@ -83,32 +87,71 @@
   textualFrame.size.width -= [GBLightScroller width] + 1; // make some room for scrollbar
   
   
+  // Spinner
+  
+  NSProgressIndicator* spinner = [self repositoryController].sidebarSpinner;
+  if ([self repositoryController].isSpinning)
+  {
+    if (!spinner)
+    {
+      spinner = [[[NSProgressIndicator alloc] initWithFrame:NSMakeRect(0, 0, 16.0, 16.0)] autorelease];
+      [spinner setStyle:NSProgressIndicatorSpinningStyle];
+      [spinner setIndeterminate:YES];
+      [spinner startAnimation:nil];
+      [spinner setControlSize:NSSmallControlSize];
+      [self repositoryController].sidebarSpinner = spinner;
+    }
+    [theControlView addSubview:spinner];
+  }
+  else
+  {
+    [spinner removeFromSuperview];
+    spinner = nil;
+  }
+  
   
   // Title & subtitle
   
-  
-  NSString* badgeLabel = [[self repositoryController] badgeLabel];
-  if (badgeLabel && [badgeLabel length] > 0)
+  if (spinner)
   {
-    NSRect badgeFrame = [self drawBadge:badgeLabel inTitleFrame:textualFrame];
-    textualFrame.size.width = badgeFrame.origin.x - textualFrame.origin.x - 2.0;
+    static CGFloat leftPadding = 2.0;
+    static CGFloat rightPadding = 2.0;
+    static CGFloat yOffset = 0.0;
+    NSRect spinnerFrame = [spinner frame];
+    spinnerFrame.origin.x = textualFrame.origin.x + (textualFrame.size.width - spinnerFrame.size.width - rightPadding);
+    spinnerFrame.origin.y = textualFrame.origin.y + yOffset;
+    [spinner setFrame:spinnerFrame];
+    
+    textualFrame.size.width = spinnerFrame.origin.x - textualFrame.origin.x - leftPadding;
   }
-  
+  else
+  {
+    static CGFloat leftPadding = 2.0;
+    NSString* badgeLabel = [[self repositoryController] badgeLabel];
+    if (badgeLabel && [badgeLabel length] > 0)
+    {
+      NSRect badgeFrame = [self drawBadge:badgeLabel inTitleFrame:textualFrame];
+      textualFrame.size.width = badgeFrame.origin.x - textualFrame.origin.x - leftPadding;
+    }
+  }
+    
   NSRect titleFrame;
   NSRect subtitleFrame;
   
   NSDivideRect(textualFrame, &titleFrame, &subtitleFrame, 14.0, NSMinYEdge);
-  
-//  [[NSColor blueColor] set];
-//  [NSBezierPath fillRect:titleFrame];
+
+//  if ([self repositoryController].isSpinning)
+//  {
+//    [[NSColor blueColor] set];
+//    [NSBezierPath fillRect:titleFrame];    
+//  }
 //  [[NSColor redColor] set];
 //  [NSBezierPath fillRect:subtitleFrame];
   
   [self drawTitleInFrame:titleFrame];
-  [self drawSubtitleInFrame:subtitleFrame];
-  
-  
-//  [super drawInteriorWithFrame:textualFrame inView:theControlView];
+
+  // Do not call super because we completely override text rendering.
+  //[super drawInteriorWithFrame:textualFrame inView:theControlView];
 }
 
 
@@ -250,41 +293,6 @@
 
 
 
-
-
-
-
-- (void) drawSubtitleInFrame:(NSRect)frame
-{
-  return;
-  NSColor* textColor = [NSColor colorWithCalibratedWhite:0.5 alpha:1.0];
-  
-  if ([self isHighlighted])
-  {
-    textColor = [NSColor colorWithCalibratedWhite:1.0 alpha:0.5];
-  }
-  
-  NSMutableParagraphStyle* paragraphStyle = [[NSMutableParagraphStyle new] autorelease];
-  [paragraphStyle setLineBreakMode:NSLineBreakByTruncatingTail];
-  
-  NSFont* font = [NSFont systemFontOfSize:10.0];
-  
-	NSMutableDictionary* attributes = [[[NSMutableDictionary alloc] initWithObjectsAndKeys:
-                                      textColor, NSForegroundColorAttributeName,
-                                      font, NSFontAttributeName,
-                                      paragraphStyle, NSParagraphStyleAttributeName,
-                                      nil] autorelease];
-  
-  if ([self isHighlighted])
-  {
-    NSShadow* s = [[[NSShadow alloc] init] autorelease];
-    [s setShadowOffset:NSMakeSize(0, 1)];
-    [s setShadowColor:[NSColor colorWithCalibratedWhite:0.0 alpha:0.1]];
-    [attributes setObject:s forKey:NSShadowAttributeName];
-  }
-  
-  [[[self repositoryController] subtitleForSourceList] drawInRect:frame withAttributes:attributes];  
-}
 
 
 
