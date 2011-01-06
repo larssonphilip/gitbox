@@ -157,6 +157,7 @@
 
 - (void) start
 {
+  [super start];
   self.fsEventStream = [[OAFSEventStream new] autorelease];
 #if DEBUG
   self.fsEventStream.shouldLogEvents = NO;
@@ -192,6 +193,7 @@
 {
   [self unscheduleAutoFetch];
   [self.fsEventStream stop];
+  [super stop];
 }
 
 - (void) didSelect

@@ -33,6 +33,7 @@
 
 - (void) start
 {
+  [super start];
   GBCloneTask* task = [[GBCloneTask new] autorelease];
   self.isDisabled++;
   self.isSpinning++;
@@ -84,6 +85,7 @@
     self.cloneTask = nil;
     [[NSFileManager defaultManager] removeItemAtURL:self.targetURL error:NULL];
   }
+  [super stop];
 }
 
 - (void) cancelCloning
