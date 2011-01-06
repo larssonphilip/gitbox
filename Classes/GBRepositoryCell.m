@@ -116,7 +116,7 @@
   {
     static CGFloat leftPadding = 2.0;
     static CGFloat rightPadding = 2.0;
-    static CGFloat yOffset = 0.0;
+    static CGFloat yOffset = -1.0;
     NSRect spinnerFrame = [spinner frame];
     spinnerFrame.origin.x = textualFrame.origin.x + (textualFrame.size.width - spinnerFrame.size.width - rightPadding);
     spinnerFrame.origin.y = textualFrame.origin.y + yOffset;
