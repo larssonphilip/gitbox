@@ -308,6 +308,7 @@
   
   [self pushFSEventsPause];
   [self pushSpinning];
+  [self.repository initSubmodules];
   [self updateLocalRefsWithBlock:^{
     [self pushSpinning];
     [self loadCommitsWithBlock:^{

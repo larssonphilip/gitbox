@@ -1,6 +1,5 @@
 #import "GBCloningRepositoryController.h"
 #import "GBCloneTask.h"
-#import "GBSubmoduleInitTask.h"
 #import "NSData+OADataHelpers.h"
 
 @implementation GBCloningRepositoryController
@@ -65,8 +64,6 @@
     else
     {
       NSLog(@"GBCloningRepositoryController: did finish clone at %@", self.targetURL);
-
-			[self afterSuccessfulClone];
 			
       if ([self.delegate respondsToSelector:@selector(cloningRepositoryControllerDidFinish:)]) {
         [self.delegate cloningRepositoryControllerDidFinish:self];
@@ -100,26 +97,6 @@
   if ([self.delegate respondsToSelector:@selector(cloningRepositoryControllerDidSelect:)]) { 
     [self.delegate cloningRepositoryControllerDidSelect:self];
   }
-}
-
-
-- (void) afterSuccessfulClone
-{
-	GBSubmoduleInitTask* task = [[GBSubmoduleInitTask new] autorelease];
-	task.targetURL = self.targetURL;
-	
-	[task launchWithBlock:^{
-		if ([task isError]) {
-			self.error = [NSError errorWithDomain:@"Gitbox" code:1
-																	 userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
-																						 [task.output UTF8String], NSLocalizedDescriptionKey,
-																						 [NSNumber numberWithInt:[task terminationStatus]], @"terminationStatus",
-																						 [task command], @"command",
-																						 nil]];
-		} else {
-			NSLog(@"GBCloningRepositoryController: did finish submodule init at %@", self.targetURL);
-		}		
-	}];
 }
 
 @end
