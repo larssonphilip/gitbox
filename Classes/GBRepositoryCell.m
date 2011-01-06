@@ -87,7 +87,7 @@
   textualFrame.size.width -= [GBLightScroller width] + 1; // make some room for scrollbar
   
   
-  // Spinner
+  // Displaying spinner or badge
   
   NSProgressIndicator* spinner = [self repositoryController].sidebarSpinner;
   if ([self repositoryController].isSpinning)
