@@ -42,7 +42,10 @@ Bug fixes:
   - sidebar: add a new group with default name to the end
   - sidebar: drag and drop groups
   - sidebar: special case - if dragged several repos from the same folder, and there's no group with the same name as their folder, wrap them all in a new group automatically.
-
+  - sidebar: remove a group with backspace
+  - sidebar: distinct menu for the group: remove and rename
+  - sidebar: revisit the code which checks the license and number of repos
+  
 - quicklook for changes
 
 Bugs:

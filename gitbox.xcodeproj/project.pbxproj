@@ -43,6 +43,10 @@
 		20164A5312D3D8EA005C69DA /* GBToolbarGear.png in Resources */ = {isa = PBXBuildFile; fileRef = 20164A5112D3D8EA005C69DA /* GBToolbarGear.png */; };
 		20164ABF12D49BD7005C69DA /* GBToolbarPlus.png in Resources */ = {isa = PBXBuildFile; fileRef = 20164ABE12D49BD7005C69DA /* GBToolbarPlus.png */; };
 		20164AC012D49BD7005C69DA /* GBToolbarPlus.png in Resources */ = {isa = PBXBuildFile; fileRef = 20164ABE12D49BD7005C69DA /* GBToolbarPlus.png */; };
+		20164BC312D5F43B005C69DA /* GBRepositoriesGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 20164BC212D5F43B005C69DA /* GBRepositoriesGroup.m */; };
+		20164BC412D5F43B005C69DA /* GBRepositoriesGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 20164BC212D5F43B005C69DA /* GBRepositoriesGroup.m */; };
+		20164BC712D5F46F005C69DA /* GBRepositoriesAndGroupsSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 20164BC612D5F46F005C69DA /* GBRepositoriesAndGroupsSerialization.m */; };
+		20164BC812D5F46F005C69DA /* GBRepositoriesAndGroupsSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 20164BC612D5F46F005C69DA /* GBRepositoriesAndGroupsSerialization.m */; };
 		20177F8512AAA229006362D1 /* GBChangeCheckboxCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 20177F8412AAA228006362D1 /* GBChangeCheckboxCell.m */; };
 		20177F8612AAA229006362D1 /* GBChangeCheckboxCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 20177F8412AAA228006362D1 /* GBChangeCheckboxCell.m */; };
 		201E02F711EA231D007E4420 /* GBLicenseController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 201E02F611EA231D007E4420 /* GBLicenseController.xib */; };
@@ -360,6 +364,10 @@
 		2016465F12D0D0EC005C69DA /* OAXMLDecoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAXMLDecoder.m; sourceTree = "<group>"; };
 		20164A5112D3D8EA005C69DA /* GBToolbarGear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GBToolbarGear.png; path = Images/GBToolbarGear.png; sourceTree = SOURCE_ROOT; };
 		20164ABE12D49BD7005C69DA /* GBToolbarPlus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GBToolbarPlus.png; path = ../Images/GBToolbarPlus.png; sourceTree = "<group>"; };
+		20164BC112D5F43B005C69DA /* GBRepositoriesGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBRepositoriesGroup.h; sourceTree = "<group>"; };
+		20164BC212D5F43B005C69DA /* GBRepositoriesGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBRepositoriesGroup.m; sourceTree = "<group>"; };
+		20164BC512D5F46F005C69DA /* GBRepositoriesAndGroupsSerialization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBRepositoriesAndGroupsSerialization.h; sourceTree = "<group>"; };
+		20164BC612D5F46F005C69DA /* GBRepositoriesAndGroupsSerialization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBRepositoriesAndGroupsSerialization.m; sourceTree = "<group>"; };
 		20177F8312AAA228006362D1 /* GBChangeCheckboxCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBChangeCheckboxCell.h; sourceTree = "<group>"; };
 		20177F8412AAA228006362D1 /* GBChangeCheckboxCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBChangeCheckboxCell.m; sourceTree = "<group>"; };
 		201E02F611EA231D007E4420 /* GBLicenseController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBLicenseController.xib; sourceTree = "<group>"; };
@@ -691,6 +699,10 @@
 				2038F67711A025AF0087CE37 /* GBRemote.m */,
 				2030C6EF128E5555005F751C /* GBErrors.h */,
 				2030C6F0128E55A0005F751C /* GBErrors.m */,
+				20164BC112D5F43B005C69DA /* GBRepositoriesGroup.h */,
+				20164BC212D5F43B005C69DA /* GBRepositoriesGroup.m */,
+				20164BC512D5F46F005C69DA /* GBRepositoriesAndGroupsSerialization.h */,
+				20164BC612D5F46F005C69DA /* GBRepositoriesAndGroupsSerialization.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -1403,6 +1415,8 @@
 				2016466312D0D0EC005C69DA /* OAHTTPDownload.m in Sources */,
 				2016466412D0D0EC005C69DA /* OAHTTPQueue.m in Sources */,
 				2016466512D0D0EC005C69DA /* OAXMLDecoder.m in Sources */,
+				20164BC412D5F43B005C69DA /* GBRepositoriesGroup.m in Sources */,
+				20164BC812D5F46F005C69DA /* GBRepositoriesAndGroupsSerialization.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1505,6 +1519,8 @@
 				2016466212D0D0EC005C69DA /* OAXMLDecoder.m in Sources */,
 				706C692F12D1183B0093C0CE /* GBSubmoduleInitTask.m in Sources */,
 				70865D2B12D25F5F00033683 /* GBSubmodule.m in Sources */,
+				20164BC312D5F43B005C69DA /* GBRepositoriesGroup.m in Sources */,
+				20164BC712D5F46F005C69DA /* GBRepositoriesAndGroupsSerialization.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
