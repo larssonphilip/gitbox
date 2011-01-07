@@ -1,0 +1,2 @@
+Local repositories are organized in nested groups and displayed in sidebar.
+
