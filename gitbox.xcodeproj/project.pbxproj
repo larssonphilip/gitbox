@@ -24,6 +24,7 @@
 /* Begin PBXBuildFile section */
 		2000325411FC75050069C70D /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2000325311FC75050069C70D /* IOKit.framework */; };
 		2002AC0C123CA1A20072075C /* OAFSEventStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 2002AC0B123CA1A20072075C /* OAFSEventStream.m */; };
+		2004322712D78D0600B045C0 /* GBSubmoduleInitTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 706C692E12D1183B0093C0CE /* GBSubmoduleInitTask.m */; };
 		200B08B511B6E359004C09A8 /* GBLocalRemoteAssociationTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 200B08B411B6E359004C09A8 /* GBLocalRemoteAssociationTask.m */; };
 		2010732F11A7E9C300EFDE56 /* app.icns in Resources */ = {isa = PBXBuildFile; fileRef = 2010732E11A7E9C300EFDE56 /* app.icns */; };
 		201073B611A80A4600EFDE56 /* GBRemotesTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 201073B511A80A4600EFDE56 /* GBRemotesTask.m */; };
@@ -1429,6 +1430,7 @@
 				2016466512D0D0EC005C69DA /* OAXMLDecoder.m in Sources */,
 				20164BC412D5F43B005C69DA /* GBRepositoriesGroup.m in Sources */,
 				20164BC812D5F46F005C69DA /* GBRepositoriesAndGroupsSerialization.m in Sources */,
+				2004322712D78D0600B045C0 /* GBSubmoduleInitTask.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
