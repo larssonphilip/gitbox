@@ -24,6 +24,7 @@
 /* Begin PBXBuildFile section */
 		2000325411FC75050069C70D /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2000325311FC75050069C70D /* IOKit.framework */; };
 		2002AC0C123CA1A20072075C /* OAFSEventStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 2002AC0B123CA1A20072075C /* OAFSEventStream.m */; };
+		2004322712D78D0600B045C0 /* GBSubmoduleInitTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 706C692E12D1183B0093C0CE /* GBSubmoduleInitTask.m */; };
 		200B08B511B6E359004C09A8 /* GBLocalRemoteAssociationTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 200B08B411B6E359004C09A8 /* GBLocalRemoteAssociationTask.m */; };
 		2010732F11A7E9C300EFDE56 /* app.icns in Resources */ = {isa = PBXBuildFile; fileRef = 2010732E11A7E9C300EFDE56 /* app.icns */; };
 		201073B611A80A4600EFDE56 /* GBRemotesTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 201073B511A80A4600EFDE56 /* GBRemotesTask.m */; };
@@ -43,6 +44,10 @@
 		20164A5312D3D8EA005C69DA /* GBToolbarGear.png in Resources */ = {isa = PBXBuildFile; fileRef = 20164A5112D3D8EA005C69DA /* GBToolbarGear.png */; };
 		20164ABF12D49BD7005C69DA /* GBToolbarPlus.png in Resources */ = {isa = PBXBuildFile; fileRef = 20164ABE12D49BD7005C69DA /* GBToolbarPlus.png */; };
 		20164AC012D49BD7005C69DA /* GBToolbarPlus.png in Resources */ = {isa = PBXBuildFile; fileRef = 20164ABE12D49BD7005C69DA /* GBToolbarPlus.png */; };
+		20164BC312D5F43B005C69DA /* GBRepositoriesGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 20164BC212D5F43B005C69DA /* GBRepositoriesGroup.m */; };
+		20164BC412D5F43B005C69DA /* GBRepositoriesGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 20164BC212D5F43B005C69DA /* GBRepositoriesGroup.m */; };
+		20164BC712D5F46F005C69DA /* GBRepositoriesAndGroupsSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 20164BC612D5F46F005C69DA /* GBRepositoriesAndGroupsSerialization.m */; };
+		20164BC812D5F46F005C69DA /* GBRepositoriesAndGroupsSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 20164BC612D5F46F005C69DA /* GBRepositoriesAndGroupsSerialization.m */; };
 		20177F8512AAA229006362D1 /* GBChangeCheckboxCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 20177F8412AAA228006362D1 /* GBChangeCheckboxCell.m */; };
 		20177F8612AAA229006362D1 /* GBChangeCheckboxCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 20177F8412AAA228006362D1 /* GBChangeCheckboxCell.m */; };
 		201E02F711EA231D007E4420 /* GBLicenseController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 201E02F611EA231D007E4420 /* GBLicenseController.xib */; };
@@ -93,6 +98,10 @@
 		203F729B12A62E0200BE1A55 /* GBCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 203F729A12A62E0200BE1A55 /* GBCell.m */; };
 		203F729C12A62E0200BE1A55 /* GBCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 203F729A12A62E0200BE1A55 /* GBCell.m */; };
 		2043A83111C900A0001ED307 /* GBPreferencesController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2043A83011C900A0001ED307 /* GBPreferencesController.m */; };
+		2049942312D6878A007ED992 /* SidebarGroups.txt in Resources */ = {isa = PBXBuildFile; fileRef = 2049942212D6878A007ED992 /* SidebarGroups.txt */; };
+		2049942412D6878A007ED992 /* SidebarGroups.txt in Resources */ = {isa = PBXBuildFile; fileRef = 2049942212D6878A007ED992 /* SidebarGroups.txt */; };
+		2049942612D687A8007ED992 /* Settings.txt in Resources */ = {isa = PBXBuildFile; fileRef = 2049942512D687A8007ED992 /* Settings.txt */; };
+		2049942712D687A8007ED992 /* Settings.txt in Resources */ = {isa = PBXBuildFile; fileRef = 2049942512D687A8007ED992 /* Settings.txt */; };
 		2054FFE8125DE75800692C77 /* GBCloneProcessViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2054FFE7125DE75800692C77 /* GBCloneProcessViewController.xib */; };
 		2054FFF0125DE9D200692C77 /* GBCloneProcessViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2054FFEF125DE9D200692C77 /* GBCloneProcessViewController.m */; };
 		2057964211ADD3AA004715FE /* GBCommitCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2057964111ADD3AA004715FE /* GBCommitCell.m */; };
@@ -360,6 +369,10 @@
 		2016465F12D0D0EC005C69DA /* OAXMLDecoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAXMLDecoder.m; sourceTree = "<group>"; };
 		20164A5112D3D8EA005C69DA /* GBToolbarGear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GBToolbarGear.png; path = Images/GBToolbarGear.png; sourceTree = SOURCE_ROOT; };
 		20164ABE12D49BD7005C69DA /* GBToolbarPlus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GBToolbarPlus.png; path = ../Images/GBToolbarPlus.png; sourceTree = "<group>"; };
+		20164BC112D5F43B005C69DA /* GBRepositoriesGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBRepositoriesGroup.h; sourceTree = "<group>"; };
+		20164BC212D5F43B005C69DA /* GBRepositoriesGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBRepositoriesGroup.m; sourceTree = "<group>"; };
+		20164BC512D5F46F005C69DA /* GBRepositoriesAndGroupsSerialization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBRepositoriesAndGroupsSerialization.h; sourceTree = "<group>"; };
+		20164BC612D5F46F005C69DA /* GBRepositoriesAndGroupsSerialization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBRepositoriesAndGroupsSerialization.m; sourceTree = "<group>"; };
 		20177F8312AAA228006362D1 /* GBChangeCheckboxCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBChangeCheckboxCell.h; sourceTree = "<group>"; };
 		20177F8412AAA228006362D1 /* GBChangeCheckboxCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBChangeCheckboxCell.m; sourceTree = "<group>"; };
 		201E02F611EA231D007E4420 /* GBLicenseController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBLicenseController.xib; sourceTree = "<group>"; };
@@ -432,6 +445,8 @@
 		203F729A12A62E0200BE1A55 /* GBCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBCell.m; sourceTree = "<group>"; };
 		2043A82F11C900A0001ED307 /* GBPreferencesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBPreferencesController.h; sourceTree = "<group>"; };
 		2043A83011C900A0001ED307 /* GBPreferencesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBPreferencesController.m; sourceTree = "<group>"; };
+		2049942212D6878A007ED992 /* SidebarGroups.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SidebarGroups.txt; sourceTree = "<group>"; };
+		2049942512D687A8007ED992 /* Settings.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Settings.txt; sourceTree = "<group>"; };
 		2054FFE7125DE75800692C77 /* GBCloneProcessViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBCloneProcessViewController.xib; sourceTree = "<group>"; };
 		2054FFEE125DE9D200692C77 /* GBCloneProcessViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBCloneProcessViewController.h; sourceTree = "<group>"; };
 		2054FFEF125DE9D200692C77 /* GBCloneProcessViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBCloneProcessViewController.m; sourceTree = "<group>"; };
@@ -691,6 +706,10 @@
 				2038F67711A025AF0087CE37 /* GBRemote.m */,
 				2030C6EF128E5555005F751C /* GBErrors.h */,
 				2030C6F0128E55A0005F751C /* GBErrors.m */,
+				20164BC112D5F43B005C69DA /* GBRepositoriesGroup.h */,
+				20164BC212D5F43B005C69DA /* GBRepositoriesGroup.m */,
+				20164BC512D5F46F005C69DA /* GBRepositoriesAndGroupsSerialization.h */,
+				20164BC612D5F46F005C69DA /* GBRepositoriesAndGroupsSerialization.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -797,6 +816,8 @@
 				2009871711C4597800F35630 /* PAYMENT */,
 				206CAB38122A771D009284FE /* ARCHITECTURE */,
 				20A09DDF12A121FD00294730 /* Quotes.txt */,
+				2049942212D6878A007ED992 /* SidebarGroups.txt */,
+				2049942512D687A8007ED992 /* Settings.txt */,
 			);
 			name = Documents;
 			sourceTree = "<group>";
@@ -1228,6 +1249,8 @@
 				201643AE12CC121B005C69DA /* GBCommitViewControllerHeader.rtf in Resources */,
 				20164A5312D3D8EA005C69DA /* GBToolbarGear.png in Resources */,
 				20164AC012D49BD7005C69DA /* GBToolbarPlus.png in Resources */,
+				2049942312D6878A007ED992 /* SidebarGroups.txt in Resources */,
+				2049942612D687A8007ED992 /* Settings.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1271,6 +1294,8 @@
 				201643AD12CC121B005C69DA /* GBCommitViewControllerHeader.rtf in Resources */,
 				20164A5212D3D8EA005C69DA /* GBToolbarGear.png in Resources */,
 				20164ABF12D49BD7005C69DA /* GBToolbarPlus.png in Resources */,
+				2049942412D6878A007ED992 /* SidebarGroups.txt in Resources */,
+				2049942712D687A8007ED992 /* Settings.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1403,6 +1428,9 @@
 				2016466312D0D0EC005C69DA /* OAHTTPDownload.m in Sources */,
 				2016466412D0D0EC005C69DA /* OAHTTPQueue.m in Sources */,
 				2016466512D0D0EC005C69DA /* OAXMLDecoder.m in Sources */,
+				20164BC412D5F43B005C69DA /* GBRepositoriesGroup.m in Sources */,
+				20164BC812D5F46F005C69DA /* GBRepositoriesAndGroupsSerialization.m in Sources */,
+				2004322712D78D0600B045C0 /* GBSubmoduleInitTask.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1505,6 +1533,8 @@
 				2016466212D0D0EC005C69DA /* OAXMLDecoder.m in Sources */,
 				706C692F12D1183B0093C0CE /* GBSubmoduleInitTask.m in Sources */,
 				70865D2B12D25F5F00033683 /* GBSubmodule.m in Sources */,
+				20164BC312D5F43B005C69DA /* GBRepositoriesGroup.m in Sources */,
+				20164BC712D5F46F005C69DA /* GBRepositoriesAndGroupsSerialization.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

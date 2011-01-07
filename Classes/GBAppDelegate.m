@@ -272,9 +272,12 @@
 {
   NSArray* bookmarks = [[NSUserDefaults standardUserDefaults] objectForKey:@"GBRepositoriesController_localRepositories"];
   NSData* selectedLocalRepoData = [[NSUserDefaults standardUserDefaults] objectForKey:@"GBRepositoriesController_selectedLocalRepository"];
+  
+#if GITBOX_APP_STORE
+#else
   NSString* license = [[NSUserDefaults standardUserDefaults] objectForKey:@"license"];
-
   int lim = 1;
+#endif
   int i = 0;
   
   NSURL* selectedURL = nil;
@@ -301,10 +304,13 @@
   {
     for (NSData* bookmarkData in bookmarks)
     {
+#if GITBOX_APP_STORE
+#else
       if (i >= lim && !OAValidateLicenseNumber(license))
       {
         break;
       }
+#endif
       NSURL* aURL = [NSURL URLByResolvingBookmarkData:bookmarkData 
                                              options:NSURLBookmarkResolutionWithoutUI | 
                     NSURLBookmarkResolutionWithoutMounting

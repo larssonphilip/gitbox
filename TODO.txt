@@ -1,5 +1,5 @@
 
-1.2 WIP:
+1.2 Release Notes (WIP):
 
 Features:
 
@@ -26,63 +26,60 @@ Bug fixes:
 + Fixed various bugs with fetching remote branches.
 + Fixed various bugs with updating local and remote branches.
 
+-----------------------------------------------------------
 
-WIP:
+1.2 WIP:
 
-
-- Dependencies:
-  - bonjour sharing -> settings view
-  - branch deletion -> settings view
-  - quicklook -> n/a
-  - history search -> n/a
-  - settings view -> gear button on the left
-  - custom textual diff -> n/a
-  - custom image diff -> n/a
-  - merging -> custom textual diff, custom image diff
-  - blame -> custom textual diff, custom image diff
-  - github -> settings view, add repo button
-  - wide-area sharing -> bonjour sharing
-
-- "git submodule init" after clone or pull to add .gitmodules info to .git/config
-  
+- submodules: init after clone or pull to add .gitmodules info to .git/config
 - submodules: case 1: user clones a repo which has some submodules => needs init, display "download" button for submodules in sidebar
 - submodules: case 2: user pulls a repo which has some submodules updated => needs pull
 - submodules: case 3: user pulls a repo which has some submodules updated, but his submodule itself is checked out on some branch => needs fetch, not pull
 - submodules: case 4: user clones the repo inside the repo => needs to display as a non-tracked submodule which can be tracked
 - submodules: case 5: user tries to commit a submodule which has the HEAD non-pushed (or dirty directory) - show warning or ask to push manually; show button "show module"
 
-- sidebar: add groups
-- sidebar: drag and drop groups
-- sidebar: special case - if dragged several repos from the same folder, and there's no group with the same name as their folder, wrap them all in a new group automatically.
+- sidebar groups:
+  - sidebar: fallback to the list of local repos from user defaults
+  - sidebar: add a new group with default name to the end
+  - sidebar: drag and drop groups
+  - sidebar: special case - if dragged several repos from the same folder, and there's no group with the same name as their folder, wrap them all in a new group automatically.
+  - sidebar: remove a group with backspace
+  - sidebar: distinct menu for the group: remove and rename
+  - sidebar: revisit the code which checks the license and number of repos
+  
+- quicklook for changes
+
+Bugs:
 
 - bug: multi-line commit messages are not displayed correctly [ticket 973]
-- show confirmation prompt when trying to push branch "X" into "origin/Y" (that is when branch name differ)
-- in the right branch menu should display the current local branch, but disable it (currently it is not displayed at all)
+- bug: in the right branch menu should display the current local branch, but disable it (currently it is not displayed at all)
 - bug: autofetch sometimes does not work: maybe some crap is returned from ls-remote when communicating with a remote server; test with berger; seems like it stops working after some time or after gitbox restart. Also check that performSelector:withObject:afterDelay does not fail for big values.
 - bug: sometimes some duplicate branch name appears in popdown menus
 - bug: when selected all changes and hit "revert", one change is not reverted; same thing for a single change also
 - bug: when pushing and switching branches, gitbox tries to fetch immediately which blocks the interaction. Should add a delay to perform fetch only after user is done doing what he was doing
 - bug: should stage selected changes when hit "Commit message..." box [ticket 974]
 - bug: while fetching some remote, commits list is refreshed with wrong commits
+- bug: bare repository is not recognized as such: should provide read-only access
+- bug: when removing a single server, remote branch remains and log is clean
+- bug: when clicked checkbox and want to drag out, it does not undo the action.
+- bug: when switching the branch or pulling/pushing, the list of commits flashes: should add a delay before reloading the commits
+- bug: android repo checked out on a commit has branch menus disabled.
 
+
+Enhancements:
+
+- show confirmation prompt when trying to push branch "X" into "origin/Y" (that is when branch name differ)
 - feature: checkout a commit from history context menu
 - should remove image view and resize header view if not image is present
 - should display a branch hint if the different branch is selected (commit text field)
 
-- maybe have 3 repos for free so ppl who don't want to pay just now may start actually using without searching for keygen?
-- bug: when clicked checkbox and want to drag out, it does not undo the action.
-- bug: when switching the branch or pulling/pushing, the list of commits flashes: should add a delay before reloading the commits
-- bug: android repo checked out on a commit has branch menus disabled.
+- allow 3 repos for free so ppl who don't want to pay just now may start actually using without searching for keygen?
 - find in commits
 - find/nav bar sliding down in the history:
   - filters commits by sha-1, modified filenames and text
   - back/forward buttons allow undo/redo commit selection (clicking on parents)
 - quicklook for the file on space in stage (QLPreviewPanel, sample code: QuickLookDownloader)
-- tag badges in history
-- create a tag + undo
 
-
-Done:
+Done for 1.2:
 
 + toolbar alignment
 + [+] button for adding a repo
@@ -142,16 +139,25 @@ Done:
 + do not load stuff for the commit immediately while scrolling - have a delay
 + Better terminal handling http://www.wmdeveloper.com/2010/09/open-terminal-here.html
 
-1.3 WIP:
+
+Next:
 
 - help
 - guide
 - video
 - testimonials
 
-Next:
+- history search -> n/a
+- bonjour sharing -> settings view
+- branch deletion -> settings view
+- settings view -> gear button on the left
+- custom textual diff -> n/a
+- custom image diff -> n/a
+- merging -> custom textual diff, custom image diff
+- blame -> custom textual diff, custom image diff
+- github -> settings view, add repo button
+- wide-area sharing -> bonjour sharing
 
-- submodules support: currently does not show the submodule in the stage (think how to add/init/update a submodule)
 - do not require name and email for ~/.gitconfig
 - fix networking behaviour: try to load the remote branches and reload them when pull/fetch
 - obfuscated license check
@@ -160,11 +166,13 @@ Next:
 - polish the icon
 - the built-in diff
 
+- tag badges in history
+- create a tag + undo
+
 
 To read:
 - read carefully: https://git.wiki.kernel.org/index.php/GitSurvey2010
 - reactions to macappstore: http://www.tuaw.com/2010/10/21/developer-reactions-to-the-mac-app-store/#continued
-
 
 
 Ongoing tasks:
@@ -186,13 +194,11 @@ Error messages translation to English:
 
 Bugs:
 
-- bug: when removing a single server, remote branch remains and log is clean
 - bug: push over https (Github now supports pushing by HTTPS)
 - bug: when connecting over https (and maybe http), gitbox locks on password prompt.  [Nicolai Schulten <nicolai.schulten@byte-garden.de>]
 - bug: git repo in dropbox causes gitbox to refresh frequently [Tom Martin <tom@devart.org>]
 - bug: paypal payment option does not allow coupon? [Luis Martins <luis.martins@multiweb.pt>]
 - when a long process modifies the working directory, the FSEvents wait till the very end, but should refresh each 2 seconds or so.
-- bug: bare repository is not recognized as such: should provide read-only access
 - maybe a bug: if the stage view is not selected, commit: action is not available
 - preferences: should select "Other" when typing
 - preferences: should focus text field when selected "Other"
@@ -200,10 +206,8 @@ Bugs:
 - delete a repo from the list by pressing backspace
 
 
-
 Cool features:
 
-- outline view for changes so we can group multiple changes in a folder. Expanded by default. Cannot show renames properly, though.
 - undo for commit (like amend)
 - amend latest commit if it is not pushed yet
 - undo for pull
@@ -215,8 +219,6 @@ Cool features:
 - force push a branch (when push fails, allow force push)
 - bonjour publishing and cloning (see http://github.com/chad/gitjour; NSNetService)
 - github integration: handling other repos/branches, pull requests and initial setup commands
-- show number of pending changes in the sidebar (like in Mail.app)
-- user-sortable list of repositories
 - maybe: easy/hidden rebase to keep history clean? (actually, need a "rebase continue" and "cancel")
 - find-as-you-type search in stage
 - history: probably get rid of dates, and design it in a more cheesy fashion
@@ -234,7 +236,6 @@ Cool features:
 - stash/apply stash from the menu, context menu
 - commit header: show parent ids using <a href="gitbox://git@sss.pierlis.com/repo.git#commits/sha1">...</a>
 - handling URL schema: gitbox://git@sss.pierlis.com/repo.git#commits/sha1
-- submodules UI
 - individual chunks commit
 - diff viewer: file history, diff and blame in one window
 - diff viewer: load blame info & history asynchronously

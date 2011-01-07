@@ -64,7 +64,9 @@
   NSLog(@"TODO: add group to the outline view and enter editing mode");
 }
 
-- (id) firstNonGroupRowStartingAtRow:(NSInteger)row direction:(NSInteger)direction
+
+// This helper is used only for prev/next navigation, should be rewritten to support groups
+- (id) firstNonSectionRowStartingAtRow:(NSInteger)row direction:(NSInteger)direction
 {
   if (direction != -1) direction = 1;
   while (row >= 0 && row < [self.outlineView numberOfRows])
@@ -86,11 +88,11 @@
   GBBaseRepositoryController* item = nil;
   if (index < 0)
   {
-    item = [self firstNonGroupRowStartingAtRow:0 direction:+1];
+    item = [self firstNonSectionRowStartingAtRow:0 direction:+1];
   }
   else
   {
-    item = [self firstNonGroupRowStartingAtRow:index-1 direction:-1];
+    item = [self firstNonSectionRowStartingAtRow:index-1 direction:-1];
   }
   if (item) [self.repositoriesController selectRepositoryController:item];
 }
@@ -102,11 +104,11 @@
   GBBaseRepositoryController* item = nil;
   if (index < 0)
   {
-    item = [self firstNonGroupRowStartingAtRow:0 direction:+1];
+    item = [self firstNonSectionRowStartingAtRow:0 direction:+1];
   }
   else
   {
-    item = [self firstNonGroupRowStartingAtRow:index+1 direction:+1];
+    item = [self firstNonSectionRowStartingAtRow:index+1 direction:+1];
   }
   if (item) [self.repositoriesController selectRepositoryController:item];
 }
