@@ -24,7 +24,6 @@
 /* Begin PBXBuildFile section */
 		2000325411FC75050069C70D /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2000325311FC75050069C70D /* IOKit.framework */; };
 		2002AC0C123CA1A20072075C /* OAFSEventStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 2002AC0B123CA1A20072075C /* OAFSEventStream.m */; };
-		2004322712D78D0600B045C0 /* GBSubmoduleInitTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 706C692E12D1183B0093C0CE /* GBSubmoduleInitTask.m */; };
 		200B08B511B6E359004C09A8 /* GBLocalRemoteAssociationTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 200B08B411B6E359004C09A8 /* GBLocalRemoteAssociationTask.m */; };
 		2010732F11A7E9C300EFDE56 /* app.icns in Resources */ = {isa = PBXBuildFile; fileRef = 2010732E11A7E9C300EFDE56 /* app.icns */; };
 		201073B611A80A4600EFDE56 /* GBRemotesTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 201073B511A80A4600EFDE56 /* GBRemotesTask.m */; };
@@ -291,7 +290,6 @@
 		20C899B612B95DDF002F600F /* OANonScrollingScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 20C899B512B95DDF002F600F /* OANonScrollingScrollView.m */; };
 		20C899B712B95DDF002F600F /* OANonScrollingScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 20C899B512B95DDF002F600F /* OANonScrollingScrollView.m */; };
 		20FAA190123F831400E8FA0E /* git.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 20FAA18F123F831400E8FA0E /* git.bundle */; };
-		706C692F12D1183B0093C0CE /* GBSubmoduleInitTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 706C692E12D1183B0093C0CE /* GBSubmoduleInitTask.m */; };
 		70865D2B12D25F5F00033683 /* GBSubmodule.m in Sources */ = {isa = PBXBuildFile; fileRef = 70865D2A12D25F5F00033683 /* GBSubmodule.m */; };
 		8D15AC320486D014006FF6A4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A37F4B0FDCFA73011CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D15AC340486D014006FF6A4 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */; };
@@ -591,8 +589,6 @@
 		2A37F4B0FDCFA73011CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		2A37F4C4FDCFA73011CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		2A37F4C5FDCFA73011CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
-		706C692D12D1183B0093C0CE /* GBSubmoduleInitTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBSubmoduleInitTask.h; sourceTree = "<group>"; };
-		706C692E12D1183B0093C0CE /* GBSubmoduleInitTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBSubmoduleInitTask.m; sourceTree = "<group>"; };
 		70865D2912D25F5F00033683 /* GBSubmodule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBSubmodule.h; sourceTree = "<group>"; };
 		70865D2A12D25F5F00033683 /* GBSubmodule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBSubmodule.m; sourceTree = "<group>"; };
 		8D15AC360486D014006FF6A4 /* info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = info.plist; sourceTree = "<group>"; };
@@ -741,8 +737,6 @@
 				200B08B411B6E359004C09A8 /* GBLocalRemoteAssociationTask.m */,
 				20BF14101279533900A30EE6 /* GBCloneTask.h */,
 				20BF14111279533900A30EE6 /* GBCloneTask.m */,
-				706C692D12D1183B0093C0CE /* GBSubmoduleInitTask.h */,
-				706C692E12D1183B0093C0CE /* GBSubmoduleInitTask.m */,
 			);
 			name = Tasks;
 			sourceTree = "<group>";
@@ -1402,7 +1396,6 @@
 				2016466512D0D0EC005C69DA /* OAXMLDecoder.m in Sources */,
 				20164BC412D5F43B005C69DA /* GBRepositoriesGroup.m in Sources */,
 				20164BC812D5F46F005C69DA /* GBRepositoriesAndGroupsSerialization.m in Sources */,
-				2004322712D78D0600B045C0 /* GBSubmoduleInitTask.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1503,7 +1496,6 @@
 				2016466012D0D0EC005C69DA /* OAHTTPDownload.m in Sources */,
 				2016466112D0D0EC005C69DA /* OAHTTPQueue.m in Sources */,
 				2016466212D0D0EC005C69DA /* OAXMLDecoder.m in Sources */,
-				706C692F12D1183B0093C0CE /* GBSubmoduleInitTask.m in Sources */,
 				70865D2B12D25F5F00033683 /* GBSubmodule.m in Sources */,
 				20164BC312D5F43B005C69DA /* GBRepositoriesGroup.m in Sources */,
 				20164BC712D5F46F005C69DA /* GBRepositoriesAndGroupsSerialization.m in Sources */,

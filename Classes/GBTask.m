@@ -74,7 +74,7 @@
 
 - (NSString*) currentDirectoryPath
 {
-  return self.repository.path;
+  return [self.repository.url path];
 }
 
 - (void) prepareTask

@@ -12,6 +12,5 @@
 @property(nonatomic,assign) id<GBCloningRepositoryControllerDelegate> delegate;
 
 - (void) cancelCloning;
-- (void) afterSuccessfulClone;
 
 @end
