@@ -267,10 +267,7 @@
 
 - (NSInteger)outlineView:(NSOutlineView*)anOutlineView numberOfChildrenOfItem:(id<GBSourcesControllerItem>)item
 {
-  if (item == nil)
-  {
-    return [self.sections count];
-  }
+  if (item == nil) item = self.sections;
   
   return [item numberOfChildrenInSidebar];
 }
@@ -278,16 +275,12 @@
 - (BOOL)outlineView:(NSOutlineView*)anOutlineView isItemExpandable:(id<GBSourcesControllerItem>)item
 {
   if (item == nil) return NO;
-  
   return [item isExpandableInSidebar];
 }
 
 - (id)outlineView:(NSOutlineView*)anOutlineView child:(NSInteger)index ofItem:(id<GBSourcesControllerItem>)item
 {
-  if (item == nil)
-  {
-    item = self.sections;
-  }
+  if (item == nil) item = self.sections;
   return [item childForIndexInSidebar:index];
 }
 
@@ -311,13 +304,14 @@
 
 - (BOOL)outlineView:(NSOutlineView*)anOutlineView isGroupItem:(id)item
 {
+  // Only sections should have "group" style.
   if (item && [self.sections containsObject:item]) return YES;
   return NO;
 }
 
 - (BOOL)outlineView:(NSOutlineView*)anOutlineView shouldSelectItem:(id)item
 {
-  if (item == nil) return NO;
+  if (item == nil) return NO; // do not select invisible root 
   if ([self.sections containsObject:item]) return NO; // do not select sections
   return YES;
 }
@@ -331,7 +325,7 @@
 {
   if (ignoreSelectionChange) return;
   NSInteger row = [self.outlineView selectedRow];
-  id item = nil;
+  id<GBSourcesControllerItem> item = nil;
   if (row >= 0 && row < [self.outlineView numberOfRows])
   {
     item = [self.outlineView itemAtRow:row];
