@@ -5,6 +5,8 @@
 #import "GBRepository.h"
 #import "GBRepositoryCell.h"
 
+#import "GBSourcesControllerItem.h"
+
 #import "NSFileManager+OAFileManagerHelpers.h"
 #import "NSTableView+OATableViewHelpers.h"
 #import "NSObject+OADispatchItemValidation.h"
@@ -263,59 +265,40 @@
 
 
 
-- (NSInteger)outlineView:(NSOutlineView*)anOutlineView numberOfChildrenOfItem:(id)item
+- (NSInteger)outlineView:(NSOutlineView*)anOutlineView numberOfChildrenOfItem:(id<GBSourcesControllerItem>)item
 {
   if (item == nil)
   {
     return [self.sections count];
   }
-  else if (item == self.repositoriesController.localRepositoryControllers)
-  {
-    return [self.repositoriesController.localRepositoryControllers count];
-  }
-  return 0;
+  
+  return [item numberOfChildrenInSidebar];
 }
 
-- (BOOL)outlineView:(NSOutlineView*)anOutlineView isItemExpandable:(id)item
+- (BOOL)outlineView:(NSOutlineView*)anOutlineView isItemExpandable:(id<GBSourcesControllerItem>)item
 {
-  if (item == self.repositoriesController.localRepositoryControllers)
-  {
-    return YES;
-  }
-  return NO;
+  if (item == nil) return NO;
+  
+  return [item isExpandableInSidebar];
 }
 
-- (id)outlineView:(NSOutlineView*)anOutlineView child:(NSInteger)index ofItem:(id)item
+- (id)outlineView:(NSOutlineView*)anOutlineView child:(NSInteger)index ofItem:(id<GBSourcesControllerItem>)item
 {
-  NSArray* children = nil;
   if (item == nil)
   {
-    children = self.sections;
-  } 
-  else if (item == self.repositoriesController.localRepositoryControllers)
-  {
-    children = self.repositoriesController.localRepositoryControllers;
+    item = self.sections;
   }
-  
-  return children ? [children objectAtIndex:index] : nil;
+  return [item childForIndexInSidebar:index];
 }
 
-- (id)outlineView:(NSOutlineView*)anOutlineView objectValueForTableColumn:(NSTableColumn*)tableColumn byItem:(id)item
+- (id)outlineView:(NSOutlineView*)anOutlineView objectValueForTableColumn:(NSTableColumn*)tableColumn byItem:(id<GBSourcesControllerItem>)item
 {
   if (item == self.repositoriesController.localRepositoryControllers)
   {
     return NSLocalizedString(@"REPOSITORIES", @"Sources");
   }
-  
-  if ([item isKindOfClass:[GBBaseRepositoryController class]])
-  {
-    GBBaseRepositoryController* repoCtrl = (GBBaseRepositoryController*)item;
-    return [repoCtrl nameForSourceList];
-  }
-  return nil;
+  return [item nameInSidebar];
 }
-
-
 
 
 

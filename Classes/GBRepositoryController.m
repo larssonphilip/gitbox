@@ -781,6 +781,26 @@
 
 
 
+
+
+
+#pragma mark GBSourcesControllerItem
+
+
+
+// TODO: override some methods to return submodules
+// Note: do not return instances of GBRepositoryController, but GBSubmodule instead. 
+//       Submodule will return repository controller when needed (when selected), 
+//       but will have its own UI ("download" button, right-click menu etc.)
+
+
+
+
+
+
+
+
+
 #pragma mark Private helpers
 
 

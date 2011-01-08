@@ -25,6 +25,8 @@
   return nil;
 }
 
+
+// <obsolete>
 - (NSString*) nameForSourceList
 {
   if (self.displaysTwoPathComponents)
@@ -61,6 +63,9 @@
 {
   return [[[[self url] path] stringByDeletingLastPathComponent] lastPathComponent];
 }
+// </obsolete>
+
+
 
 - (NSString*) badgeLabel
 {
@@ -114,5 +119,33 @@
 {
   return [GBRepositoryCell class];
 }
+
+
+
+
+
+#pragma mark GBSourcesControllerItem
+
+
+- (NSInteger) numberOfChildrenInSidebar
+{
+  return 0;
+}
+
+- (BOOL) isExpandableInSidebar
+{
+  return NO;
+}
+
+- (id<GBSourcesControllerItem>) childForIndexInSidebar:(NSInteger)index
+{
+  return nil;
+}
+
+- (NSString*) nameInSidebar
+{
+  return [[[self url] path] lastPathComponent];
+}
+
 
 @end

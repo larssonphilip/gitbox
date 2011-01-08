@@ -1,7 +1,8 @@
 #import "GBBaseRepositoryControllerDelegate.h"
+#import "GBSourcesControllerItem.h"
 #import "OABlockQueue.h"
 
-@interface GBBaseRepositoryController : NSObject
+@interface GBBaseRepositoryController : NSObject <GBSourcesControllerItem>
 
 @property(nonatomic,retain) OABlockQueue* updatesQueue;
 @property(nonatomic,retain) NSProgressIndicator* sidebarSpinner;
