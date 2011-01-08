@@ -1,2 +1,9 @@
-Local repositories are organized in nested groups and displayed in sidebar.
+Local repositories are organized in nested groups and displayed in the sidebar.
+
+GBRepositoriesController has a list of 
+
+Legacy format before 1.2:
+
+- GBRepositoriesController has an array of GBBaseRepositoryController instances.
+- GBAppDelegate stores and loads the list of URLs for these repos + URL for selected repo.
 

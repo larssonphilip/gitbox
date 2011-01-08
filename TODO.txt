@@ -63,7 +63,7 @@ Bugs:
 - bug: when clicked checkbox and want to drag out, it does not undo the action.
 - bug: when switching the branch or pulling/pushing, the list of commits flashes: should add a delay before reloading the commits
 - bug: android repo checked out on a commit has branch menus disabled.
-
+- bug: after cmd+W (while app is still in foreground), clicking on dock icon does not bring window back.
 
 Enhancements:
 
@@ -78,6 +78,7 @@ Enhancements:
   - filters commits by sha-1, modified filenames and text
   - back/forward buttons allow undo/redo commit selection (clicking on parents)
 - quicklook for the file on space in stage (QLPreviewPanel, sample code: QuickLookDownloader)
+
 
 Done for 1.2:
 

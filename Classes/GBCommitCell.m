@@ -66,12 +66,12 @@
     {
       if ([self isHighlighted] && self.isFocused)
       {
-        iconImage = [NSImage imageNamed:@"commit-marker-highlighted"];
+        iconImage = [NSImage imageNamed:@"GBCommitCellMarkerHighlighted"];
         //CGContextSetRGBFillColor(contextRef, 1.0, 1.0, 1.0, 0.6);
       }
       else
       {
-        iconImage = [NSImage imageNamed:@"commit-marker-unmerged"];
+        iconImage = [NSImage imageNamed:@"GBCommitCellMarkerUnmerged"];
         //CGContextSetRGBFillColor(contextRef, 104.0/255.0, 162.0/255.0, 252.0/255.0, 1.0);
         //CGContextSetRGBFillColor(contextRef, 100.0/255.0, 150.0/255.0, 252.0/255.0, 1.0);
       }
@@ -80,12 +80,12 @@
     {
       if ([self isHighlighted] && self.isFocused)
       {
-        iconImage = [NSImage imageNamed:@"commit-marker-highlighted"];
+        iconImage = [NSImage imageNamed:@"GBCommitCellMarkerHighlighted"];
         //CGContextSetRGBFillColor(contextRef, 1.0, 1.0, 1.0, 0.99);
       }
       else
       {
-        iconImage = [NSImage imageNamed:@"commit-marker-unpushed"];
+        iconImage = [NSImage imageNamed:@"GBCommitCellMarkerUnpushed"];
         //CGContextSetRGBFillColor(contextRef, 255.0/255.0, 125.0/255.0, 0.0/255.0, 1.0);
         //CGContextSetRGBFillColor(contextRef, 94.0/255.0, 220.0/255.0, 50.0/255.0, 1.0);
       }
