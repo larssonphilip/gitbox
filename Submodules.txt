@@ -4,6 +4,9 @@ Notes:
 - when repo with submodule is cloned, sidebar should display submodule with "download" button.
 - when submodule is cloned into repo, it should appear on stage as "new submodule" + on checkbox click should "git submodule add" using submodule's current branch url. If no url, issue an error and cancel. 
 - when submodule is added (staged), should call "git submodule status" and update both sidebar and stage area.
+- since we have different ways to load changes and sometimes have submodule in them, sometimes don't, we need to call "git submodule status" to get absolute truth on SM state and update list of changes accordingly (by updating existing changes or adding new ones).
+- git strange behaviour: when "git submodule add <url> <path>" is called within repo without remote, git complains. --force does not help.
+
 
 Later, revisit these cases:
 

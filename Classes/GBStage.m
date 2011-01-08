@@ -108,7 +108,17 @@
           [untrackedChangesTask launchWithBlock:^{
             self.untrackedChanges = untrackedChangesTask.changes;
             [self update];
-            if (block) block();
+            
+            
+            // GBSubmoduleStatusTask* submoduleStatusTask = ...
+            // TODO: parse changes as GBSubmoduleStatusChange (subclass of GBChange)
+            // TODO: remove GBChanges for submodule previously added by ls-files (GBAllStagedFilesTask) or other task.
+            // And sort by name (already done elsewhere)
+            {
+              if (block) block();
+            }
+            
+            
           }]; // untracked
         }]; // unstaged
         
