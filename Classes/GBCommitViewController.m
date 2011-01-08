@@ -214,9 +214,9 @@
     [storage addAttribute:NSLinkAttributeName
                     value:[NSURL URLWithString:[NSString stringWithFormat:@"gitbox://internal/commits/%@", parentId]]
                 substring:placeholder];
-    [storage addAttribute:NSKernAttributeName
-                    value:[NSNumber numberWithDouble:0.1]
-                substring:placeholder];
+//    [storage addAttribute:NSKernAttributeName
+//                    value:[NSNumber numberWithDouble:0.1]
+//                substring:placeholder];
     [string replaceOccurrencesOfString:placeholder withString:parentId];    
   }
   
@@ -224,9 +224,9 @@
                   value:[self mailtoLinkForEmail:aCommit.authorEmail commit:aCommit]
               substring:@"<$author@email>"];
 
-  [storage addAttribute:NSKernAttributeName
-                  value:[NSNumber numberWithDouble:0.1]
-              substring:@"$commitId"];
+//  [storage addAttribute:NSKernAttributeName
+//                  value:[NSNumber numberWithDouble:0.1]
+//              substring:@"$commitId"];
 
   [string replaceOccurrencesOfString:@"$commitId" 
                           withString:aCommit.commitId];
