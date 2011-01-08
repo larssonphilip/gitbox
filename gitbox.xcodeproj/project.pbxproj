@@ -147,11 +147,9 @@
 		20915ECF12874D2A005E0D82 /* GBMainWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 20A37BBD120DDBA60068AB8B /* GBMainWindowController.xib */; };
 		20915ED012874D2A005E0D82 /* git.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 20FAA18F123F831400E8FA0E /* git.bundle */; };
 		20915ED112874D2A005E0D82 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 203976631251A63700770D13 /* Credits.rtf */; };
-		20915ED212874D2A005E0D82 /* commit-marker-highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 20C3B70B125BCCC600ABEDE7 /* commit-marker-highlighted.png */; };
-		20915ED312874D2A005E0D82 /* commit-marker-unmerged-highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 20C3B70C125BCCC600ABEDE7 /* commit-marker-unmerged-highlighted.png */; };
-		20915ED412874D2A005E0D82 /* commit-marker-unmerged.png in Resources */ = {isa = PBXBuildFile; fileRef = 20C3B70D125BCCC600ABEDE7 /* commit-marker-unmerged.png */; };
-		20915ED512874D2A005E0D82 /* commit-marker-unpushed-highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 20C3B70E125BCCC600ABEDE7 /* commit-marker-unpushed-highlighted.png */; };
-		20915ED612874D2A005E0D82 /* commit-marker-unpushed.png in Resources */ = {isa = PBXBuildFile; fileRef = 20C3B70F125BCCC600ABEDE7 /* commit-marker-unpushed.png */; };
+		20915ED212874D2A005E0D82 /* GBCommitCellMarkerHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 20C3B70B125BCCC600ABEDE7 /* GBCommitCellMarkerHighlighted.png */; };
+		20915ED412874D2A005E0D82 /* GBCommitCellMarkerUnmerged.png in Resources */ = {isa = PBXBuildFile; fileRef = 20C3B70D125BCCC600ABEDE7 /* GBCommitCellMarkerUnmerged.png */; };
+		20915ED612874D2A005E0D82 /* GBCommitCellMarkerUnpushed.png in Resources */ = {isa = PBXBuildFile; fileRef = 20C3B70F125BCCC600ABEDE7 /* GBCommitCellMarkerUnpushed.png */; };
 		20915ED712874D2A005E0D82 /* GBCloneWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 20C3C30A125D9EA900ABEDE7 /* GBCloneWindowController.xib */; };
 		20915ED812874D2A005E0D82 /* GBCloneProcessViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2054FFE7125DE75800692C77 /* GBCloneProcessViewController.xib */; };
 		20915ED912874D2A005E0D82 /* GBUserNameEmailController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 20BF19561282258400A30EE6 /* GBUserNameEmailController.xib */; };
@@ -281,11 +279,9 @@
 		20BF19571282258400A30EE6 /* GBUserNameEmailController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 20BF19561282258400A30EE6 /* GBUserNameEmailController.xib */; };
 		20BF195B12822C5800A30EE6 /* GBBasePromptController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20BF195A12822C5800A30EE6 /* GBBasePromptController.m */; };
 		20BF19721282329A00A30EE6 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20BF19711282329A00A30EE6 /* AddressBook.framework */; };
-		20C3B710125BCCC600ABEDE7 /* commit-marker-highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 20C3B70B125BCCC600ABEDE7 /* commit-marker-highlighted.png */; };
-		20C3B711125BCCC600ABEDE7 /* commit-marker-unmerged-highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 20C3B70C125BCCC600ABEDE7 /* commit-marker-unmerged-highlighted.png */; };
-		20C3B712125BCCC600ABEDE7 /* commit-marker-unmerged.png in Resources */ = {isa = PBXBuildFile; fileRef = 20C3B70D125BCCC600ABEDE7 /* commit-marker-unmerged.png */; };
-		20C3B713125BCCC600ABEDE7 /* commit-marker-unpushed-highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 20C3B70E125BCCC600ABEDE7 /* commit-marker-unpushed-highlighted.png */; };
-		20C3B714125BCCC600ABEDE7 /* commit-marker-unpushed.png in Resources */ = {isa = PBXBuildFile; fileRef = 20C3B70F125BCCC600ABEDE7 /* commit-marker-unpushed.png */; };
+		20C3B710125BCCC600ABEDE7 /* GBCommitCellMarkerHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 20C3B70B125BCCC600ABEDE7 /* GBCommitCellMarkerHighlighted.png */; };
+		20C3B712125BCCC600ABEDE7 /* GBCommitCellMarkerUnmerged.png in Resources */ = {isa = PBXBuildFile; fileRef = 20C3B70D125BCCC600ABEDE7 /* GBCommitCellMarkerUnmerged.png */; };
+		20C3B714125BCCC600ABEDE7 /* GBCommitCellMarkerUnpushed.png in Resources */ = {isa = PBXBuildFile; fileRef = 20C3B70F125BCCC600ABEDE7 /* GBCommitCellMarkerUnpushed.png */; };
 		20C3B71F125BCDC100ABEDE7 /* OAPrimaryMACAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = 20C3B71E125BCDC100ABEDE7 /* OAPrimaryMACAddress.m */; };
 		20C3C234125C4DB600ABEDE7 /* GBWelcomeController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20C3C233125C4DB600ABEDE7 /* GBWelcomeController.m */; };
 		20C3C30B125D9EA900ABEDE7 /* GBCloneWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 20C3C30A125D9EA900ABEDE7 /* GBCloneWindowController.xib */; };
@@ -350,14 +346,14 @@
 		200408551274AB3800BE8957 /* GBRepositoriesControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBRepositoriesControllerDelegate.h; sourceTree = "<group>"; };
 		200408E01274E2BC00BE8957 /* GBBaseRepositoryControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBBaseRepositoryControllerDelegate.h; sourceTree = "<group>"; };
 		200409031274EBE400BE8957 /* GBCloningRepositoryControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBCloningRepositoryControllerDelegate.h; sourceTree = "<group>"; };
-		2009871711C4597800F35630 /* PAYMENT */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = PAYMENT; sourceTree = "<group>"; };
+		2009871711C4597800F35630 /* Payment.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Payment.txt; sourceTree = "<group>"; };
 		200B08B311B6E359004C09A8 /* GBLocalRemoteAssociationTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBLocalRemoteAssociationTask.h; sourceTree = "<group>"; };
 		200B08B411B6E359004C09A8 /* GBLocalRemoteAssociationTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBLocalRemoteAssociationTask.m; sourceTree = "<group>"; };
 		2010732E11A7E9C300EFDE56 /* app.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = app.icns; sourceTree = "<group>"; };
 		201073B411A80A4600EFDE56 /* GBRemotesTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBRemotesTask.h; sourceTree = "<group>"; };
 		201073B511A80A4600EFDE56 /* GBRemotesTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBRemotesTask.m; sourceTree = "<group>"; };
 		2016439012CC0F2E005C69DA /* author.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = author.png; sourceTree = "<group>"; };
-		201643AC12CC121B005C69DA /* GBCommitViewControllerHeader.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = GBCommitViewControllerHeader.rtf; sourceTree = "<group>"; };
+		201643AC12CC121B005C69DA /* GBCommitViewControllerHeader.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = GBCommitViewControllerHeader.rtf; path = ../GBCommitViewControllerHeader.rtf; sourceTree = "<group>"; };
 		2016464C12D0C2F6005C69DA /* GBUserpicController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBUserpicController.h; sourceTree = "<group>"; };
 		2016464D12D0C2F6005C69DA /* GBUserpicController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBUserpicController.m; sourceTree = "<group>"; };
 		2016465912D0D0EC005C69DA /* OAHTTPDownload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAHTTPDownload.h; sourceTree = "<group>"; };
@@ -481,7 +477,7 @@
 		206A07BD11A33519003BB9E3 /* OATask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OATask.m; sourceTree = "<group>"; };
 		206A088511A7AB36003BB9E3 /* OAActivityIndicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAActivityIndicator.h; sourceTree = "<group>"; };
 		206A088611A7AB36003BB9E3 /* OAActivityIndicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAActivityIndicator.m; sourceTree = "<group>"; };
-		206CAB38122A771D009284FE /* ARCHITECTURE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ARCHITECTURE; sourceTree = "<group>"; };
+		206CAB38122A771D009284FE /* Architecture.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Architecture.txt; sourceTree = "<group>"; };
 		206CAC6F122EB5F7009284FE /* GBRepositoryController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBRepositoryController.h; sourceTree = "<group>"; };
 		206CAC70122EB5F7009284FE /* GBRepositoryController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBRepositoryController.m; sourceTree = "<group>"; };
 		206CAC73122EBCAD009284FE /* GBRepositoriesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBRepositoriesController.h; sourceTree = "<group>"; };
@@ -574,11 +570,9 @@
 		20BF195912822C5800A30EE6 /* GBBasePromptController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBBasePromptController.h; sourceTree = "<group>"; };
 		20BF195A12822C5800A30EE6 /* GBBasePromptController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBBasePromptController.m; sourceTree = "<group>"; };
 		20BF19711282329A00A30EE6 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
-		20C3B70B125BCCC600ABEDE7 /* commit-marker-highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "commit-marker-highlighted.png"; sourceTree = "<group>"; };
-		20C3B70C125BCCC600ABEDE7 /* commit-marker-unmerged-highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "commit-marker-unmerged-highlighted.png"; sourceTree = "<group>"; };
-		20C3B70D125BCCC600ABEDE7 /* commit-marker-unmerged.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "commit-marker-unmerged.png"; sourceTree = "<group>"; };
-		20C3B70E125BCCC600ABEDE7 /* commit-marker-unpushed-highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "commit-marker-unpushed-highlighted.png"; sourceTree = "<group>"; };
-		20C3B70F125BCCC600ABEDE7 /* commit-marker-unpushed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "commit-marker-unpushed.png"; sourceTree = "<group>"; };
+		20C3B70B125BCCC600ABEDE7 /* GBCommitCellMarkerHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GBCommitCellMarkerHighlighted.png; path = ../Images/GBCommitCellMarkerHighlighted.png; sourceTree = "<group>"; };
+		20C3B70D125BCCC600ABEDE7 /* GBCommitCellMarkerUnmerged.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GBCommitCellMarkerUnmerged.png; path = ../Images/GBCommitCellMarkerUnmerged.png; sourceTree = "<group>"; };
+		20C3B70F125BCCC600ABEDE7 /* GBCommitCellMarkerUnpushed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GBCommitCellMarkerUnpushed.png; path = ../Images/GBCommitCellMarkerUnpushed.png; sourceTree = "<group>"; };
 		20C3B71D125BCDC100ABEDE7 /* OAPrimaryMACAddress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAPrimaryMACAddress.h; sourceTree = "<group>"; };
 		20C3B71E125BCDC100ABEDE7 /* OAPrimaryMACAddress.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAPrimaryMACAddress.m; sourceTree = "<group>"; };
 		20C3C232125C4DB600ABEDE7 /* GBWelcomeController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBWelcomeController.h; sourceTree = "<group>"; };
@@ -586,7 +580,6 @@
 		20C3C30A125D9EA900ABEDE7 /* GBCloneWindowController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBCloneWindowController.xib; sourceTree = "<group>"; };
 		20C3C310125DA0BC00ABEDE7 /* GBCloneWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBCloneWindowController.h; sourceTree = "<group>"; };
 		20C3C311125DA0BC00ABEDE7 /* GBCloneWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBCloneWindowController.m; sourceTree = "<group>"; };
-		20C716BB120EF7E6002B594F /* DESIGN_NOTES */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = DESIGN_NOTES; sourceTree = "<group>"; };
 		20C83E7A12A9ACB900769F47 /* OAFastJumpController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAFastJumpController.h; sourceTree = "<group>"; };
 		20C83E7B12A9ACB900769F47 /* OAFastJumpController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAFastJumpController.m; sourceTree = "<group>"; };
 		20C83F6B12AA1BBB00769F47 /* GBChangeCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBChangeCell.h; sourceTree = "<group>"; };
@@ -812,9 +805,8 @@
 				20A09D68129F8F3900294730 /* fastspring-1001-2000-licenses.txt */,
 				20A09D69129F8F3900294730 /* free-promo-1-100-licenses.txt */,
 				2038F1EA11936CA50087CE37 /* TODO.txt */,
-				20C716BB120EF7E6002B594F /* DESIGN_NOTES */,
-				2009871711C4597800F35630 /* PAYMENT */,
-				206CAB38122A771D009284FE /* ARCHITECTURE */,
+				2009871711C4597800F35630 /* Payment.txt */,
+				206CAB38122A771D009284FE /* Architecture.txt */,
 				20A09DDF12A121FD00294730 /* Quotes.txt */,
 				2049942212D6878A007ED992 /* SidebarGroups.txt */,
 				2049942512D687A8007ED992 /* Settings.txt */,
@@ -864,6 +856,9 @@
 				2057964111ADD3AA004715FE /* GBCommitCell.m */,
 				2057979911ADEEEE004715FE /* GBStageCell.h */,
 				2057979A11ADEEEE004715FE /* GBStageCell.m */,
+				20C3B70B125BCCC600ABEDE7 /* GBCommitCellMarkerHighlighted.png */,
+				20C3B70D125BCCC600ABEDE7 /* GBCommitCellMarkerUnmerged.png */,
+				20C3B70F125BCCC600ABEDE7 /* GBCommitCellMarkerUnpushed.png */,
 			);
 			name = "Central Pane";
 			sourceTree = "<group>";
@@ -909,6 +904,7 @@
 				2093A7CC11AF0EC800239185 /* GBCommitViewController.h */,
 				2093A7CD11AF0EC800239185 /* GBCommitViewController.m */,
 				2093A7D111AF0F3200239185 /* GBCommitViewController.xib */,
+				201643AC12CC121B005C69DA /* GBCommitViewControllerHeader.rtf */,
 			);
 			name = "Committed changes";
 			sourceTree = "<group>";
@@ -1055,18 +1051,6 @@
 			name = "Prompts and aux window controllers";
 			sourceTree = "<group>";
 		};
-		20C3B700125BCC5B00ABEDE7 /* Images */ = {
-			isa = PBXGroup;
-			children = (
-				20C3B70B125BCCC600ABEDE7 /* commit-marker-highlighted.png */,
-				20C3B70C125BCCC600ABEDE7 /* commit-marker-unmerged-highlighted.png */,
-				20C3B70D125BCCC600ABEDE7 /* commit-marker-unmerged.png */,
-				20C3B70E125BCCC600ABEDE7 /* commit-marker-unpushed-highlighted.png */,
-				20C3B70F125BCCC600ABEDE7 /* commit-marker-unpushed.png */,
-			);
-			path = Images;
-			sourceTree = "<group>";
-		};
 		2A37F4AAFDCFA73011CA2CEA /* gitbox */ = {
 			isa = PBXGroup;
 			children = (
@@ -1112,9 +1096,7 @@
 		2A37F4B8FDCFA73011CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				201643AC12CC121B005C69DA /* GBCommitViewControllerHeader.rtf */,
 				2016439012CC0F2E005C69DA /* author.png */,
-				20C3B700125BCC5B00ABEDE7 /* Images */,
 				203976631251A63700770D13 /* Credits.rtf */,
 				20FAA18F123F831400E8FA0E /* git.bundle */,
 				2031BD6C12A8DC61008CC337 /* git-placeholder.bundle */,
@@ -1233,11 +1215,9 @@
 				20915ECF12874D2A005E0D82 /* GBMainWindowController.xib in Resources */,
 				20915ED012874D2A005E0D82 /* git.bundle in Resources */,
 				20915ED112874D2A005E0D82 /* Credits.rtf in Resources */,
-				20915ED212874D2A005E0D82 /* commit-marker-highlighted.png in Resources */,
-				20915ED312874D2A005E0D82 /* commit-marker-unmerged-highlighted.png in Resources */,
-				20915ED412874D2A005E0D82 /* commit-marker-unmerged.png in Resources */,
-				20915ED512874D2A005E0D82 /* commit-marker-unpushed-highlighted.png in Resources */,
-				20915ED612874D2A005E0D82 /* commit-marker-unpushed.png in Resources */,
+				20915ED212874D2A005E0D82 /* GBCommitCellMarkerHighlighted.png in Resources */,
+				20915ED412874D2A005E0D82 /* GBCommitCellMarkerUnmerged.png in Resources */,
+				20915ED612874D2A005E0D82 /* GBCommitCellMarkerUnpushed.png in Resources */,
 				20915ED712874D2A005E0D82 /* GBCloneWindowController.xib in Resources */,
 				20915ED812874D2A005E0D82 /* GBCloneProcessViewController.xib in Resources */,
 				20915ED912874D2A005E0D82 /* GBUserNameEmailController.xib in Resources */,
@@ -1278,11 +1258,9 @@
 				20A37BBE120DDBA60068AB8B /* GBMainWindowController.xib in Resources */,
 				20FAA190123F831400E8FA0E /* git.bundle in Resources */,
 				203976651251A63700770D13 /* Credits.rtf in Resources */,
-				20C3B710125BCCC600ABEDE7 /* commit-marker-highlighted.png in Resources */,
-				20C3B711125BCCC600ABEDE7 /* commit-marker-unmerged-highlighted.png in Resources */,
-				20C3B712125BCCC600ABEDE7 /* commit-marker-unmerged.png in Resources */,
-				20C3B713125BCCC600ABEDE7 /* commit-marker-unpushed-highlighted.png in Resources */,
-				20C3B714125BCCC600ABEDE7 /* commit-marker-unpushed.png in Resources */,
+				20C3B710125BCCC600ABEDE7 /* GBCommitCellMarkerHighlighted.png in Resources */,
+				20C3B712125BCCC600ABEDE7 /* GBCommitCellMarkerUnmerged.png in Resources */,
+				20C3B714125BCCC600ABEDE7 /* GBCommitCellMarkerUnpushed.png in Resources */,
 				20C3C30B125D9EA900ABEDE7 /* GBCloneWindowController.xib in Resources */,
 				2054FFE8125DE75800692C77 /* GBCloneProcessViewController.xib in Resources */,
 				20BF19571282258400A30EE6 /* GBUserNameEmailController.xib in Resources */,
