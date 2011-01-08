@@ -30,7 +30,7 @@ Bug fixes:
 
 1.2 WIP:
 
-- submodules: init after clone or pull to add .gitmodules info to .git/config
++ submodules: init after clone or pull to add .gitmodules info to .git/config
 - submodules: case 1: user clones a repo which has some submodules => needs init, display "download" button for submodules in sidebar
 - submodules: case 2: user pulls a repo which has some submodules updated => needs pull
 - submodules: case 3: user pulls a repo which has some submodules updated, but his submodule itself is checked out on some branch => needs fetch, not pull

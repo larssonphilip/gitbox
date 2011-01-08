@@ -1,0 +1,24 @@
+
+Notes:
+- when submodule is added (via "git submodule add"), but not committed yet, it's not visible in right pane as staged.
+- when repo with submodule is cloned, sidebar should display submodule with "download" button.
+- when submodule is cloned into repo, it should appear on stage as "new submodule" + on checkbox click should "git submodule add" using submodule's current branch url. If no url, issue an error and cancel. 
+- when submodule is added (staged), should call "git submodule status" and update both sidebar and stage area.
+
+Later, revisit these cases:
+
+- submodules: case 1: user clones a repo which has some submodules => needs init, display "download" button for submodules in sidebar
+- submodules: case 2: user pulls a repo which has some submodules updated => needs pull
+- submodules: case 3: user pulls a repo which has some submodules updated, but his submodule itself is checked out on some branch => needs fetch, not pull
+- submodules: case 4: user clones the repo inside the repo => needs to display as a non-tracked submodule which can be tracked
+- submodules: case 5: user tries to commit a submodule which has the HEAD non-pushed (or dirty directory) - show warning or ask to push manually; show button "show module"
+
+
+
+Decision:
+
+we once wanted to only display a particular repo once in the whole sidebar. That is, if you have a library L
+and it is a submodule in application A, we wouldn't feature L repository twice. However, this is too broad of an assumption
+to make. Some people have .git in their home directory (not because they keep everything under version control, they may
+only keep .emacs or .zprofile or other dot files). This would result in EVERYTHING being treated as a submodule in that
+topmost repository.

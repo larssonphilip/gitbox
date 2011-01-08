@@ -720,13 +720,14 @@
   }];
 }
 
-- (void) pull
+- (void) pull // or merge
 {
   [self resetAutoFetchInterval];
   [self pushSpinning];
   [self pushDisabled];
   [self pushFSEventsPause];
   [self.repository pullOrMergeWithBlock:^{
+    [self.repository initSubmodules];
     [self loadStageChanges];
     [self updateLocalRefsWithBlock:^{
       [self loadCommits];
