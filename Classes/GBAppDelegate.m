@@ -6,7 +6,7 @@
 #import "GBCloningRepositoryController.h"
 
 #import "GBMainWindowController.h"
-#import "GBSourcesController.h"
+#import "GBSidebarController.h"
 #import "GBActivityController.h"
 #import "GBPreferencesController.h"
 #import "GBCloneWindowController.h"

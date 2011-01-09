@@ -4,7 +4,7 @@
 @class GBRepositoriesController;
 @class GBBaseRepositoryController;
 @class GBToolbarController;
-@class GBSourcesController;
+@class GBSidebarController;
 @class GBHistoryViewController;
 @class GBWelcomeController;
 @class GBCloneProcessViewController;
@@ -16,7 +16,7 @@
 @property(retain) GBBaseRepositoryController* repositoryController;
 
 @property(retain) IBOutlet GBToolbarController* toolbarController;
-@property(retain) GBSourcesController* sourcesController;
+@property(retain) GBSidebarController* sourcesController;
 @property(retain) GBHistoryViewController* historyController;
 @property(retain) GBWelcomeController* welcomeController;
 @property(retain) GBCloneProcessViewController* cloneProcessViewController;

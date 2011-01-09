@@ -8,7 +8,7 @@
 
 #import "GBMainWindowController.h"
 #import "GBToolbarController.h"
-#import "GBSourcesController.h"
+#import "GBSidebarController.h"
 #import "GBHistoryViewController.h"
 #import "GBWelcomeController.h"
 #import "GBCloneProcessViewController.h"
@@ -63,7 +63,7 @@
 {
   if ((self = [super initWithWindow:aWindow]))
   {
-    self.sourcesController = [[[GBSourcesController alloc] initWithNibName:@"GBSourcesController" bundle:nil] autorelease];
+    self.sourcesController = [[[GBSidebarController alloc] initWithNibName:@"GBSidebarController" bundle:nil] autorelease];
     self.historyController = [[[GBHistoryViewController alloc] initWithNibName:@"GBHistoryViewController" bundle:nil] autorelease];
     self.cloneProcessViewController = [[[GBCloneProcessViewController alloc] initWithNibName:@"GBCloneProcessViewController" bundle:nil] autorelease];
     

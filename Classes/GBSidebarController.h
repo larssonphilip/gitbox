@@ -5,7 +5,7 @@
 @class GBRepository;
 @class GBHistoryViewController;
 
-@interface GBSourcesController : NSViewController<NSOutlineViewDataSource,
+@interface GBSidebarController : NSViewController<NSOutlineViewDataSource,
                                                   NSOutlineViewDelegate>
 {
   NSUInteger ignoreSelectionChange;

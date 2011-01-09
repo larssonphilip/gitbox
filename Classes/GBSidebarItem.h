@@ -1,14 +1,14 @@
-@protocol GBSourcesControllerItem <NSObject>
+@protocol GBSidebarItem <NSObject>
 - (NSInteger) numberOfChildrenInSidebar;
 - (BOOL) isExpandableInSidebar;
-- (id<GBSourcesControllerItem>) childForIndexInSidebar:(NSInteger)index;
+- (id<GBSidebarItem>) childForIndexInSidebar:(NSInteger)index;
 - (NSString*) nameInSidebar;
 @end
 
-@interface NSArray (GBSourcesControllerItem) <GBSourcesControllerItem>
+@interface NSArray (GBSidebarItem) <GBSidebarItem>
 @end
 
-@implementation NSArray (GBSourcesControllerItem)
+@implementation NSArray (GBSidebarItem)
 
 - (NSInteger) numberOfChildrenInSidebar
 {
@@ -20,7 +20,7 @@
   return YES;
 }
 
-- (id<GBSourcesControllerItem>) childForIndexInSidebar:(NSInteger)index
+- (id<GBSidebarItem>) childForIndexInSidebar:(NSInteger)index
 {
   if (index < 0 || index >= [self count]) return nil;
   return [self objectAtIndex:(NSUInteger)index];

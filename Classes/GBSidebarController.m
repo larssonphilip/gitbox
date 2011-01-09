@@ -1,11 +1,11 @@
 #import "GBBaseRepositoryController.h"
 #import "GBRepositoriesController.h"
 
-#import "GBSourcesController.h"
+#import "GBSidebarController.h"
 #import "GBRepository.h"
 #import "GBRepositoryCell.h"
 
-#import "GBSourcesControllerItem.h"
+#import "GBSidebarItem.h"
 
 #import "NSFileManager+OAFileManagerHelpers.h"
 #import "NSTableView+OATableViewHelpers.h"
@@ -15,9 +15,9 @@
 #import "NSObject+OAPerformBlockAfterDelay.h"
 
 
-#define kGBSourcesControllerPasteboardType @"GBSourcesControllerPasteboardType"
+#define kGBSidebarControllerPasteboardType @"GBSidebarControllerPasteboardType"
 
-@implementation GBSourcesController
+@implementation GBSidebarController
 
 @synthesize sections;
 @synthesize outlineView;
@@ -37,7 +37,7 @@
 {
   [super loadView];
   
-  [self.outlineView registerForDraggedTypes:[NSArray arrayWithObjects:kGBSourcesControllerPasteboardType, NSFilenamesPboardType, nil]];
+  [self.outlineView registerForDraggedTypes:[NSArray arrayWithObjects:kGBSidebarControllerPasteboardType, NSFilenamesPboardType, nil]];
   [self.outlineView setDraggingSourceOperationMask:NSDragOperationEvery forLocal:YES];
   [self.outlineView setDraggingSourceOperationMask:NSDragOperationEvery forLocal:NO];
 }
@@ -169,12 +169,12 @@
   
   // TODO: repeat for other sections
   
-  [[NSUserDefaults standardUserDefaults] setObject:expandedSections forKey:@"GBSourcesController_expandedSections"];
+  [[NSUserDefaults standardUserDefaults] setObject:expandedSections forKey:@"GBSidebarController_expandedSections"];
 }
 
 - (void) loadExpandedState
 {
-  NSArray* expandedSections = [[NSUserDefaults standardUserDefaults] objectForKey:@"GBSourcesController_expandedSections"];
+  NSArray* expandedSections = [[NSUserDefaults standardUserDefaults] objectForKey:@"GBSidebarController_expandedSections"];
   
   if ([expandedSections containsObject:@"localRepositories"])
     [self.outlineView expandItem:self.repositoriesController.localRepositoryControllers];
@@ -265,26 +265,26 @@
 
 
 
-- (NSInteger)outlineView:(NSOutlineView*)anOutlineView numberOfChildrenOfItem:(id<GBSourcesControllerItem>)item
+- (NSInteger)outlineView:(NSOutlineView*)anOutlineView numberOfChildrenOfItem:(id<GBSidebarItem>)item
 {
   if (item == nil) item = self.sections;
   
   return [item numberOfChildrenInSidebar];
 }
 
-- (BOOL)outlineView:(NSOutlineView*)anOutlineView isItemExpandable:(id<GBSourcesControllerItem>)item
+- (BOOL)outlineView:(NSOutlineView*)anOutlineView isItemExpandable:(id<GBSidebarItem>)item
 {
   if (item == nil) return NO;
   return [item isExpandableInSidebar];
 }
 
-- (id)outlineView:(NSOutlineView*)anOutlineView child:(NSInteger)index ofItem:(id<GBSourcesControllerItem>)item
+- (id)outlineView:(NSOutlineView*)anOutlineView child:(NSInteger)index ofItem:(id<GBSidebarItem>)item
 {
   if (item == nil) item = self.sections;
   return [item childForIndexInSidebar:index];
 }
 
-- (id)outlineView:(NSOutlineView*)anOutlineView objectValueForTableColumn:(NSTableColumn*)tableColumn byItem:(id<GBSourcesControllerItem>)item
+- (id)outlineView:(NSOutlineView*)anOutlineView objectValueForTableColumn:(NSTableColumn*)tableColumn byItem:(id<GBSidebarItem>)item
 {
   if (item == self.repositoriesController.localRepositoryControllers)
   {
@@ -325,7 +325,7 @@
 {
   if (ignoreSelectionChange) return;
   NSInteger row = [self.outlineView selectedRow];
-  id<GBSourcesControllerItem> item = nil;
+  id<GBSidebarItem> item = nil;
   if (row >= 0 && row < [self.outlineView numberOfRows])
   {
     item = [self.outlineView itemAtRow:row];

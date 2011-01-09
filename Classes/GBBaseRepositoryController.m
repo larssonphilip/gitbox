@@ -124,7 +124,7 @@
 
 
 
-#pragma mark GBSourcesControllerItem
+#pragma mark GBSidebarItem
 
 
 - (NSInteger) numberOfChildrenInSidebar
@@ -137,7 +137,7 @@
   return NO;
 }
 
-- (id<GBSourcesControllerItem>) childForIndexInSidebar:(NSInteger)index
+- (id<GBSidebarItem>) childForIndexInSidebar:(NSInteger)index
 {
   return nil;
 }

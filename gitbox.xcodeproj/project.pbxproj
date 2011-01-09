@@ -138,7 +138,7 @@
 		20915ECB12874D2A005E0D82 /* GBWelcomeController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 20265E4A11E3EB9B00709F6B /* GBWelcomeController.xib */; };
 		20915ECC12874D2A005E0D82 /* GBLicenseController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 201E02F611EA231D007E4420 /* GBLicenseController.xib */; };
 		20915ECD12874D2A005E0D82 /* GBCertificateUpdateController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 201E030111EE083D007E4420 /* GBCertificateUpdateController.xib */; };
-		20915ECE12874D2A005E0D82 /* GBSourcesController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 20A37BB5120DC7640068AB8B /* GBSourcesController.xib */; };
+		20915ECE12874D2A005E0D82 /* GBSidebarController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 20A37BB5120DC7640068AB8B /* GBSidebarController.xib */; };
 		20915ECF12874D2A005E0D82 /* GBMainWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 20A37BBD120DDBA60068AB8B /* GBMainWindowController.xib */; };
 		20915ED012874D2A005E0D82 /* git.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 20FAA18F123F831400E8FA0E /* git.bundle */; };
 		20915ED112874D2A005E0D82 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 203976631251A63700770D13 /* Credits.rtf */; };
@@ -205,7 +205,7 @@
 		20915F1312874D2A005E0D82 /* OAFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 20265C1311D68F1300709F6B /* OAFile.m */; };
 		20915F1512874D2A005E0D82 /* GBCertificateUpdateController.m in Sources */ = {isa = PBXBuildFile; fileRef = 201E030511EE09D7007E4420 /* GBCertificateUpdateController.m */; };
 		20915F1612874D2A005E0D82 /* GBLicenseController.m in Sources */ = {isa = PBXBuildFile; fileRef = 201E030A11EE2CBD007E4420 /* GBLicenseController.m */; };
-		20915F1712874D2A005E0D82 /* GBSourcesController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20A37BA5120DC1D90068AB8B /* GBSourcesController.m */; };
+		20915F1712874D2A005E0D82 /* GBSidebarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20A37BA5120DC1D90068AB8B /* GBSidebarController.m */; };
 		20915F1812874D2A005E0D82 /* GBMainWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20A37BA8120DC27B0068AB8B /* GBMainWindowController.m */; };
 		20915F1912874D2A005E0D82 /* GBToolbarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20A37BAB120DC4510068AB8B /* GBToolbarController.m */; };
 		20915F1A12874D2A005E0D82 /* GBRepositoryController.m in Sources */ = {isa = PBXBuildFile; fileRef = 206CAC70122EB5F7009284FE /* GBRepositoryController.m */; };
@@ -247,10 +247,10 @@
 		209C192512B802C900F56A54 /* GBCellWithView.m in Sources */ = {isa = PBXBuildFile; fileRef = 209C192312B802C900F56A54 /* GBCellWithView.m */; };
 		20A09F3712A3875200294730 /* askpass.sh in Resources */ = {isa = PBXBuildFile; fileRef = 20A09F3612A3875200294730 /* askpass.sh */; };
 		20A09F3812A3875800294730 /* askpass.sh in Resources */ = {isa = PBXBuildFile; fileRef = 20A09F3612A3875200294730 /* askpass.sh */; };
-		20A37BA6120DC1D90068AB8B /* GBSourcesController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20A37BA5120DC1D90068AB8B /* GBSourcesController.m */; };
+		20A37BA6120DC1D90068AB8B /* GBSidebarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20A37BA5120DC1D90068AB8B /* GBSidebarController.m */; };
 		20A37BA9120DC27B0068AB8B /* GBMainWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20A37BA8120DC27B0068AB8B /* GBMainWindowController.m */; };
 		20A37BAC120DC4510068AB8B /* GBToolbarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20A37BAB120DC4510068AB8B /* GBToolbarController.m */; };
-		20A37BB6120DC7640068AB8B /* GBSourcesController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 20A37BB5120DC7640068AB8B /* GBSourcesController.xib */; };
+		20A37BB6120DC7640068AB8B /* GBSidebarController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 20A37BB5120DC7640068AB8B /* GBSidebarController.xib */; };
 		20A37BBE120DDBA60068AB8B /* GBMainWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 20A37BBD120DDBA60068AB8B /* GBMainWindowController.xib */; };
 		20A9719112C7808F00E2B7B9 /* GBStageShortcutHintDetector.m in Sources */ = {isa = PBXBuildFile; fileRef = 20A9719012C7808F00E2B7B9 /* GBStageShortcutHintDetector.m */; };
 		20A9719212C7808F00E2B7B9 /* GBStageShortcutHintDetector.m in Sources */ = {isa = PBXBuildFile; fileRef = 20A9719012C7808F00E2B7B9 /* GBStageShortcutHintDetector.m */; };
@@ -341,7 +341,7 @@
 		200408E01274E2BC00BE8957 /* GBBaseRepositoryControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBBaseRepositoryControllerDelegate.h; sourceTree = "<group>"; };
 		200409031274EBE400BE8957 /* GBCloningRepositoryControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBCloningRepositoryControllerDelegate.h; sourceTree = "<group>"; };
 		200432AE12D8A1AE00B045C0 /* Submodules.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Submodules.txt; sourceTree = "<group>"; };
-		2004330212D8B37F00B045C0 /* GBSourcesControllerItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBSourcesControllerItem.h; sourceTree = "<group>"; };
+		2004330212D8B37F00B045C0 /* GBSidebarItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBSidebarItem.h; sourceTree = "<group>"; };
 		2009871711C4597800F35630 /* Payment.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Payment.txt; sourceTree = "<group>"; };
 		200B08B311B6E359004C09A8 /* GBLocalRemoteAssociationTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBLocalRemoteAssociationTask.h; sourceTree = "<group>"; };
 		200B08B411B6E359004C09A8 /* GBLocalRemoteAssociationTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBLocalRemoteAssociationTask.m; sourceTree = "<group>"; };
@@ -521,13 +521,13 @@
 		20A09D69129F8F3900294730 /* free-promo-1-100-licenses.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "free-promo-1-100-licenses.txt"; sourceTree = "<group>"; };
 		20A09DDF12A121FD00294730 /* Quotes.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Quotes.txt; sourceTree = "<group>"; };
 		20A09F3612A3875200294730 /* askpass.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = askpass.sh; sourceTree = "<group>"; };
-		20A37BA4120DC1D90068AB8B /* GBSourcesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBSourcesController.h; sourceTree = "<group>"; };
-		20A37BA5120DC1D90068AB8B /* GBSourcesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBSourcesController.m; sourceTree = "<group>"; };
+		20A37BA4120DC1D90068AB8B /* GBSidebarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBSidebarController.h; sourceTree = "<group>"; };
+		20A37BA5120DC1D90068AB8B /* GBSidebarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBSidebarController.m; sourceTree = "<group>"; };
 		20A37BA7120DC27B0068AB8B /* GBMainWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBMainWindowController.h; sourceTree = "<group>"; };
 		20A37BA8120DC27B0068AB8B /* GBMainWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBMainWindowController.m; sourceTree = "<group>"; };
 		20A37BAA120DC4510068AB8B /* GBToolbarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBToolbarController.h; sourceTree = "<group>"; };
 		20A37BAB120DC4510068AB8B /* GBToolbarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBToolbarController.m; sourceTree = "<group>"; };
-		20A37BB5120DC7640068AB8B /* GBSourcesController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBSourcesController.xib; sourceTree = "<group>"; };
+		20A37BB5120DC7640068AB8B /* GBSidebarController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBSidebarController.xib; sourceTree = "<group>"; };
 		20A37BBD120DDBA60068AB8B /* GBMainWindowController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBMainWindowController.xib; sourceTree = "<group>"; };
 		20A9718F12C7808F00E2B7B9 /* GBStageShortcutHintDetector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBStageShortcutHintDetector.h; sourceTree = "<group>"; };
 		20A9719012C7808F00E2B7B9 /* GBStageShortcutHintDetector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBStageShortcutHintDetector.m; sourceTree = "<group>"; };
@@ -827,10 +827,10 @@
 		20A9713712C6C6CB00E2B7B9 /* Left Pane */ = {
 			isa = PBXGroup;
 			children = (
-				20A37BA4120DC1D90068AB8B /* GBSourcesController.h */,
-				20A37BA5120DC1D90068AB8B /* GBSourcesController.m */,
-				2004330212D8B37F00B045C0 /* GBSourcesControllerItem.h */,
-				20A37BB5120DC7640068AB8B /* GBSourcesController.xib */,
+				20A37BA4120DC1D90068AB8B /* GBSidebarController.h */,
+				20A37BA5120DC1D90068AB8B /* GBSidebarController.m */,
+				20A37BB5120DC7640068AB8B /* GBSidebarController.xib */,
+				2004330212D8B37F00B045C0 /* GBSidebarItem.h */,
 				20BF176F127EF68800A30EE6 /* GBRepositoryCell.h */,
 				20BF1770127EF68800A30EE6 /* GBRepositoryCell.m */,
 			);
@@ -1205,7 +1205,7 @@
 				20915ECB12874D2A005E0D82 /* GBWelcomeController.xib in Resources */,
 				20915ECC12874D2A005E0D82 /* GBLicenseController.xib in Resources */,
 				20915ECD12874D2A005E0D82 /* GBCertificateUpdateController.xib in Resources */,
-				20915ECE12874D2A005E0D82 /* GBSourcesController.xib in Resources */,
+				20915ECE12874D2A005E0D82 /* GBSidebarController.xib in Resources */,
 				20915ECF12874D2A005E0D82 /* GBMainWindowController.xib in Resources */,
 				20915ED012874D2A005E0D82 /* git.bundle in Resources */,
 				20915ED112874D2A005E0D82 /* Credits.rtf in Resources */,
@@ -1246,7 +1246,7 @@
 				20265E4B11E3EB9B00709F6B /* GBWelcomeController.xib in Resources */,
 				201E02F711EA231D007E4420 /* GBLicenseController.xib in Resources */,
 				201E030211EE083D007E4420 /* GBCertificateUpdateController.xib in Resources */,
-				20A37BB6120DC7640068AB8B /* GBSourcesController.xib in Resources */,
+				20A37BB6120DC7640068AB8B /* GBSidebarController.xib in Resources */,
 				20A37BBE120DDBA60068AB8B /* GBMainWindowController.xib in Resources */,
 				20FAA190123F831400E8FA0E /* git.bundle in Resources */,
 				203976651251A63700770D13 /* Credits.rtf in Resources */,
@@ -1360,7 +1360,7 @@
 				20915F1312874D2A005E0D82 /* OAFile.m in Sources */,
 				20915F1512874D2A005E0D82 /* GBCertificateUpdateController.m in Sources */,
 				20915F1612874D2A005E0D82 /* GBLicenseController.m in Sources */,
-				20915F1712874D2A005E0D82 /* GBSourcesController.m in Sources */,
+				20915F1712874D2A005E0D82 /* GBSidebarController.m in Sources */,
 				20915F1812874D2A005E0D82 /* GBMainWindowController.m in Sources */,
 				20915F1912874D2A005E0D82 /* GBToolbarController.m in Sources */,
 				20915F1A12874D2A005E0D82 /* GBRepositoryController.m in Sources */,
@@ -1462,7 +1462,7 @@
 				20265C1411D68F1300709F6B /* OAFile.m in Sources */,
 				201E030611EE09D7007E4420 /* GBCertificateUpdateController.m in Sources */,
 				201E030B11EE2CBD007E4420 /* GBLicenseController.m in Sources */,
-				20A37BA6120DC1D90068AB8B /* GBSourcesController.m in Sources */,
+				20A37BA6120DC1D90068AB8B /* GBSidebarController.m in Sources */,
 				20A37BA9120DC27B0068AB8B /* GBMainWindowController.m in Sources */,
 				20A37BAC120DC4510068AB8B /* GBToolbarController.m in Sources */,
 				206CAC71122EB5F7009284FE /* GBRepositoryController.m in Sources */,

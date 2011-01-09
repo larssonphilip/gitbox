@@ -1,12 +1,5 @@
 #import "GBModels.h"
 
-#import "GBMainWindowController.h"
-#import "GBToolbarController.h"
-#import "GBSourcesController.h"
-#import "GBHistoryViewController.h"
-#import "GBStageViewController.h"
-#import "GBCommitViewController.h"
-
 #import "GBRepositoriesController.h"
 #import "GBRepositoryController.h"
 
@@ -784,7 +777,7 @@
 
 
 
-#pragma mark GBSourcesControllerItem
+#pragma mark GBSidebarItem
 
 
 
