@@ -8,7 +8,6 @@
 @synthesize remoteURL;
 @synthesize path;
 @synthesize repository;
-@synthesize busy;
 
 
 #pragma mark Object lifecycle

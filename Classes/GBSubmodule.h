@@ -5,7 +5,6 @@
 @property(nonatomic, retain) NSURL* remoteURL;
 
 @property(nonatomic, retain) NSString* path;
-@property(nonatomic, assign) BOOL busy;
 @property(nonatomic, assign) GBRepository* repository;
 
 
