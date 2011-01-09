@@ -58,15 +58,15 @@ Bugs:
 - bug: when selected all changes and hit "revert", one change is not reverted; same thing for a single change also
 - bug: when pushing and switching branches, gitbox tries to fetch immediately which blocks the interaction. Should add a delay to perform fetch only after user is done doing what he was doing
 - bug: should stage selected changes when hit "Commit message..." box [ticket 974]
+- bug: after cmd+W (while app is still in foreground), clicking on dock icon does not bring window back.
+- bug: check that in appstore build there is a help message in the bottom of preferences panel. [Markus Fritze <my@sarnau.com>]
+- bug: when password changed after being remembered in keychain access, gitbox fails to authenticate. [Scott Snibbe <scott@snibbe.com>]
 - bug: while fetching some remote, commits list is refreshed with wrong commits
 - bug: bare repository is not recognized as such: should provide read-only access
 - bug: when removing a single server, remote branch remains and log is clean
 - bug: when clicked checkbox and want to drag out, it does not undo the action.
 - bug: when switching the branch or pulling/pushing, the list of commits flashes: should add a delay before reloading the commits
 - bug: android repo checked out on a commit has branch menus disabled.
-- bug: after cmd+W (while app is still in foreground), clicking on dock icon does not bring window back.
-- bug: check that in appstore build there is a help message in the bottom of preferences panel. [Markus Fritze <my@sarnau.com>]
-- bug: when password changed after being remembered in keychain access, gitbox fails to authenticate. [Scott Snibbe <scott@snibbe.com>]
 - bug: when /Developer is symlinked to another partition, opendiff cannot launch FileMerge: "exception raised trying to run FileMerge: launch path not accessible" [Jeff Snell <jeffsnell@mac.com>]
 
 Enhancements:
