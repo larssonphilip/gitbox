@@ -45,12 +45,4 @@ typedef enum {
 
 - (void) loadChangesWithBlock:(void(^)())block;
 
-//- (void) updateChanges;
-//- (void) reloadChanges;
-//
-//- (NSArray*) allChanges;
-//- (NSArray*) loadChanges;
-//
-//- (void) asyncTaskGotChanges:(NSArray*)theChanges;
-
 @end

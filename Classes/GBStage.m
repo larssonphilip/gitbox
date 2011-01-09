@@ -33,7 +33,7 @@
 #pragma mark Interrogation
 
 
-- (NSArray*) allChanges
+- (NSArray*) sortedChanges
 {
   NSMutableArray* allChanges = [NSMutableArray array];
   
@@ -66,7 +66,7 @@
 - (void) update
 {
   self.hasStagedChanges = (self.stagedChanges && [self.stagedChanges count] > 0);
-  self.changes = [self allChanges];
+  self.changes = [self sortedChanges];
 }
 
 - (void) loadChangesWithBlock:(void(^)())block
