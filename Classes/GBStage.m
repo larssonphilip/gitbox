@@ -109,15 +109,17 @@
             self.untrackedChanges = untrackedChangesTask.changes;
             [self update];
             
-            
-            // GBSubmoduleStatusTask* submoduleStatusTask = ...
+            /*
             // TODO: parse changes as GBSubmoduleStatusChange (subclass of GBChange)
-            // TODO: remove GBChanges for submodule previously added by ls-files (GBAllStagedFilesTask) or other task.
-            // And sort by name (already done elsewhere)
-            {
+            [self.repository updateSubmodulesWithBlock:^{
+              // TODO: remove GBChanges for submodule previously added by ls-files (GBAllStagedFilesTask) or other task.
+              // TODO: add GBChanges for submodules if needed (add later)
+              [self update];
               if (block) block();
-            }
-            
+            }];
+             */
+            // remove this line when updateSubmodulesWithBlock is uncommented.
+            if (block) block();
             
           }]; // untracked
         }]; // unstaged
