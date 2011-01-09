@@ -24,6 +24,8 @@
 /* Begin PBXBuildFile section */
 		2000325411FC75050069C70D /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2000325311FC75050069C70D /* IOKit.framework */; };
 		2002AC0C123CA1A20072075C /* OAFSEventStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 2002AC0B123CA1A20072075C /* OAFSEventStream.m */; };
+		200433A212DA02CF00B045C0 /* GBGreyGradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = 200433A112DA02CF00B045C0 /* GBGreyGradientView.m */; };
+		200433A312DA02CF00B045C0 /* GBGreyGradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = 200433A112DA02CF00B045C0 /* GBGreyGradientView.m */; };
 		200B08B511B6E359004C09A8 /* GBLocalRemoteAssociationTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 200B08B411B6E359004C09A8 /* GBLocalRemoteAssociationTask.m */; };
 		2010732F11A7E9C300EFDE56 /* app.icns in Resources */ = {isa = PBXBuildFile; fileRef = 2010732E11A7E9C300EFDE56 /* app.icns */; };
 		201073B611A80A4600EFDE56 /* GBRemotesTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 201073B511A80A4600EFDE56 /* GBRemotesTask.m */; };
@@ -342,6 +344,8 @@
 		200409031274EBE400BE8957 /* GBCloningRepositoryControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBCloningRepositoryControllerDelegate.h; sourceTree = "<group>"; };
 		200432AE12D8A1AE00B045C0 /* Submodules.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Submodules.txt; sourceTree = "<group>"; };
 		2004330212D8B37F00B045C0 /* GBSidebarItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBSidebarItem.h; sourceTree = "<group>"; };
+		200433A012DA02CF00B045C0 /* GBGreyGradientView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBGreyGradientView.h; sourceTree = "<group>"; };
+		200433A112DA02CF00B045C0 /* GBGreyGradientView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBGreyGradientView.m; sourceTree = "<group>"; };
 		2009871711C4597800F35630 /* Payment.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Payment.txt; sourceTree = "<group>"; };
 		200B08B311B6E359004C09A8 /* GBLocalRemoteAssociationTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBLocalRemoteAssociationTask.h; sourceTree = "<group>"; };
 		200B08B411B6E359004C09A8 /* GBLocalRemoteAssociationTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBLocalRemoteAssociationTask.m; sourceTree = "<group>"; };
@@ -753,6 +757,8 @@
 				2035639D11D3C14C00965765 /* GBLightScrollView.m */,
 				209C192212B802C900F56A54 /* GBCellWithView.h */,
 				209C192312B802C900F56A54 /* GBCellWithView.m */,
+				200433A012DA02CF00B045C0 /* GBGreyGradientView.h */,
+				200433A112DA02CF00B045C0 /* GBGreyGradientView.m */,
 			);
 			name = "Shared Views";
 			sourceTree = "<group>";
@@ -1398,6 +1404,7 @@
 				2016466512D0D0EC005C69DA /* OAXMLDecoder.m in Sources */,
 				20164BC412D5F43B005C69DA /* GBRepositoriesGroup.m in Sources */,
 				20164BC812D5F46F005C69DA /* GBRepositoriesAndGroupsSerialization.m in Sources */,
+				200433A312DA02CF00B045C0 /* GBGreyGradientView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1501,6 +1508,7 @@
 				70865D2B12D25F5F00033683 /* GBSubmodule.m in Sources */,
 				20164BC312D5F43B005C69DA /* GBRepositoriesGroup.m in Sources */,
 				20164BC712D5F46F005C69DA /* GBRepositoriesAndGroupsSerialization.m in Sources */,
+				200433A212DA02CF00B045C0 /* GBGreyGradientView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
