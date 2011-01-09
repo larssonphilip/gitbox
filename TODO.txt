@@ -37,7 +37,7 @@ Bug fixes:
 - submodules: case 4: user clones the repo inside the repo => needs to display as a non-tracked submodule which can be tracked
 - submodules: case 5: user tries to commit a submodule which has the HEAD non-pushed (or dirty directory) - show warning or ask to push manually; show button "show module"
 
-- sidebar: refactor to GBSourcesControllerItem
+- sidebar: refactor to GBSidebarItem
 - sidebar: fallback to the list of local repos from user defaults
 - sidebar: add a new group with default name to the end
 - sidebar: drag and drop groups
@@ -50,6 +50,7 @@ Bug fixes:
 
 Bugs:
 
+- bug: should change "araxis" for "compare"
 - bug: multi-line commit messages are not displayed correctly [ticket 973]
 - bug: in the right branch menu should display the current local branch, but disable it (currently it is not displayed at all)
 - bug: autofetch sometimes does not work: maybe some crap is returned from ls-remote when communicating with a remote server; test with berger; seems like it stops working after some time or after gitbox restart. Also check that performSelector:withObject:afterDelay does not fail for big values.
@@ -64,6 +65,9 @@ Bugs:
 - bug: when switching the branch or pulling/pushing, the list of commits flashes: should add a delay before reloading the commits
 - bug: android repo checked out on a commit has branch menus disabled.
 - bug: after cmd+W (while app is still in foreground), clicking on dock icon does not bring window back.
+- bug: check that in appstore build there is a help message in the bottom of preferences panel. [Markus Fritze <my@sarnau.com>]
+- bug: when password changed after being remembered in keychain access, gitbox fails to authenticate. [Scott Snibbe <scott@snibbe.com>]
+- bug: when /Developer is symlinked to another partition, opendiff cannot launch FileMerge: "exception raised trying to run FileMerge: launch path not accessible" [Jeff Snell <jeffsnell@mac.com>]
 
 Enhancements:
 
