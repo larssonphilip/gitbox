@@ -375,7 +375,7 @@
   }
   else if ([diffTool isEqualToString:@"Araxis Merge"])
   {
-    task.executableName = @"araxis";
+    task.executableName = @"compare";
   }
   else if (diffToolLaunchPath)
   {

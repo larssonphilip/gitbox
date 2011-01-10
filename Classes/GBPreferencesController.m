@@ -46,7 +46,7 @@
     BOOL ch = !![OATask systemPathForExecutable:@"chdiff"];
     BOOL tw = !![OATask systemPathForExecutable:@"twdiff"];
     BOOL bb = !![OATask systemPathForExecutable:@"bbdiff"];
-    BOOL ax = !![OATask systemPathForExecutable:@"araxis"];
+    BOOL ax = !![OATask systemPathForExecutable:@"compare"] || !![OATask systemPathForExecutable:@"araxis"];
     dispatch_async(dispatch_get_main_queue(), ^{
       self.isFileMergeAvailable = fm;
       self.isKaleidoscopeAvailable = ks;
