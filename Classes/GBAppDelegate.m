@@ -292,7 +292,7 @@
     if (aURL)
     {
       selectedURL = aURL;
-      if ([GBRepository validRepositoryPathForPath:[aURL path]])
+      if ([GBRepository isValidRepositoryPath:[aURL path]])
       {
         [self.repositoriesController openLocalRepositoryAtURL:aURL];
         i++;
@@ -319,7 +319,7 @@
                                                error:NULL];
       NSString* path = [aURL path];
       if ([NSFileManager isWritableDirectoryAtPath:path] &&
-          [GBRepository validRepositoryPathForPath:path] && (!selectedURL || ![selectedURL isEqual:aURL]))
+          [GBRepository isValidRepositoryPath:path] && (!selectedURL || ![selectedURL isEqual:aURL]))
       {
         GBRepositoryController* repoCtrl = [GBRepositoryController repositoryControllerWithURL:aURL];
         [self.repositoriesController addLocalRepositoryController:repoCtrl];
@@ -331,6 +331,9 @@
 
 - (void) saveRepositories
 {
+  // FIXME: change the code to properly serialize GBSidebarItems
+  return;
+  
   NSMutableArray* bookmarks = [NSMutableArray array];
   NSData* selectedLocalRepoData = nil;
   for (GBRepositoryController* repoCtrl in self.repositoriesController.localRepositoryControllers)

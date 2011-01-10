@@ -11,6 +11,7 @@
 #import "NSString+OAGitHelpers.h"
 #import "OAPropertyListController.h"
 #import "OABlockGroup.h"
+#import "NSAlert+OAAlertHelpers.h"
 
 @interface GBRepository ()
 
@@ -129,20 +130,90 @@
   return [version compare:[self supportedGitVersion]] != NSOrderedAscending;
 }
 
-+ (NSString*) validRepositoryPathForPath:(NSString*)aPath
+
++ (BOOL) isValidRepositoryPath:(NSString*)aPath
 {
-  if (!aPath) return nil;
-  if ([aPath rangeOfString:@"/.Trash/"].location != NSNotFound) return nil;
+  if (!aPath) return NO;
+  if ([aPath rangeOfString:@"/.Trash/"].location != NSNotFound) return NO;
   
   BOOL isDirectory = NO;
   if ([[NSFileManager defaultManager] fileExistsAtPath:[aPath stringByAppendingPathComponent:@".git"] isDirectory:&isDirectory])
   {
     if (isDirectory)
     {
-      return aPath;
+      return YES;
     }
   }
-  return nil;
+  
+  // Bare repository:
+  if ([[NSFileManager defaultManager] fileExistsAtPath:[aPath stringByAppendingPathComponent:@"HEAD"] isDirectory:&isDirectory])
+  {
+    if (isDirectory) return NO;
+    if ([[NSFileManager defaultManager] fileExistsAtPath:[aPath stringByAppendingPathComponent:@"objects"] isDirectory:&isDirectory])
+    {
+      if (!isDirectory) return NO;
+      if ([[NSFileManager defaultManager] fileExistsAtPath:[aPath stringByAppendingPathComponent:@"refs"] isDirectory:&isDirectory])
+      {
+        if (!isDirectory) return NO;
+        return YES;
+      } 
+    }      
+  }
+  return NO;
+}
+
++ (BOOL) isValidRepositoryPathOrFolder:(NSString*)aPath
+{
+  if (!aPath) return NO;
+  if ([aPath rangeOfString:@"/.Trash/"].location != NSNotFound) return NO;
+  
+  BOOL isDirectory = NO;
+  if ([[NSFileManager defaultManager] fileExistsAtPath:aPath isDirectory:&isDirectory])
+  {
+    if (isDirectory)
+    {
+      return YES;
+    }
+  }
+  return NO;
+}
+
++ (void) validateRepositoryURL:(NSURL*)aURL withBlock:(void(^)(BOOL isValid))aBlock
+{
+  NSString* aPath = [aURL path];
+  
+  if ([self isValidRepositoryPath:aPath])
+  {
+    return aBlock(YES);
+  }
+  
+  BOOL isDirectory;
+  if (![[NSFileManager defaultManager] fileExistsAtPath:aPath isDirectory:&isDirectory])
+  {
+    [NSAlert message:NSLocalizedString(@"Folder does not exist.", @"") description:aPath];
+    return aBlock(NO);
+  }
+  
+  if (!isDirectory)
+  {
+    [NSAlert message:NSLocalizedString(@"File is not a folder.", @"") description:aPath];
+    return aBlock(NO);
+  }
+  
+  if (![NSFileManager isWritableDirectoryAtPath:aPath])
+  {
+    [NSAlert message:NSLocalizedString(@"No write access to the folder.", @"") description:aPath];
+    return aBlock(NO);
+  }
+  
+  if ([NSAlert prompt:NSLocalizedString(@"The folder is not a git repository.\nMake it a repository?", @"App")
+          description:aPath])
+  {
+    [self initRepositoryAtURL:aURL];
+    return aBlock(YES);
+  }
+  
+  return aBlock(NO);
 }
 
 

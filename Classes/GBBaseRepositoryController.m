@@ -171,6 +171,15 @@
   return [GBRepositoryCell class];
 }
 
+- (BOOL) isDraggableInSidebar
+{
+  return YES;
+}
+
+
+#pragma mark NSPasteboardWriting
+
+
 - (NSArray*) writableTypesForPasteboard:(NSPasteboard *)pasteboard
 {
   return [[NSArray arrayWithObject:GBSidebarItemPasteboardType] 

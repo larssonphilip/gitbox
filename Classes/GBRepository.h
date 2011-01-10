@@ -36,7 +36,10 @@
 + (NSString*) gitVersionForLaunchPath:(NSString*) aLaunchPath;
 + (NSString*) supportedGitVersion;
 + (BOOL) isSupportedGitVersion:(NSString*)version;
-+ (NSString*) validRepositoryPathForPath:(NSString*)aPath;
+
++ (BOOL) isValidRepositoryPath:(NSString*)aPath;
++ (BOOL) isValidRepositoryPathOrFolder:(NSString*)aPath;
++ (void) validateRepositoryURL:(NSURL*)aURL withBlock:(void (^)(BOOL))aBlock;
 
 + (void) initRepositoryAtURL:(NSURL*)url;
 + (void) configureUTF8WithBlock:(void(^)())block;

@@ -52,7 +52,7 @@
 
 - (void) drawInteriorWithFrame:(NSRect)cellFrame inView:(NSView*)theControlView
 {
-  NSLog(@"GBRepositoryCell: drawing interior isDragged = %d", (int)self.isDragged);
+  //NSLog(@"GBRepositoryCell: drawing interior isDragged = %d", (int)self.isDragged);
   NSWindow* window = [theControlView window];
   self.isFocused = ([window firstResponder] && [window firstResponder] == theControlView && 
                     [window isMainWindow] && [window isKeyWindow]);

@@ -95,37 +95,24 @@
 - (BOOL) tryOpenLocalRepositoryAtURL:(NSURL*)aURL
 {
   NSString* aPath = [aURL path];
-
-  BOOL isDirectory = NO;
+  
+  if ([GBRepository isValidRepositoryPath:aPath])
+  {
+    [self openLocalRepositoryAtURL:aURL];
+    return YES;
+  }
+  
+  BOOL isDirectory;
   if (![[NSFileManager defaultManager] fileExistsAtPath:aPath isDirectory:&isDirectory])
   {
-    [NSAlert message:NSLocalizedString(@"File not found.", @"") description:aPath];
+    [NSAlert message:NSLocalizedString(@"Folder does not exist.", @"") description:aPath];
     return NO; 
   }
   
   if (!isDirectory)
   {
-    while (![NSFileManager isReadableDirectoryAtPath:[aPath stringByAppendingPathComponent:@".git"]])
-    {
-      if (!aPath || [aPath isEqualToString:@"/"] || [aPath isEqualToString:@""])
-      {
-        return NO;
-      }
-      aPath = [aPath stringByDeletingLastPathComponent];
-      if (!aPath || [aPath isEqualToString:@""] || [aPath isEqualToString:@"/"])
-      {
-        return NO;
-      }
-    }
-    aURL = [NSURL fileURLWithPath:aPath];
-  }
-  
-  NSString* validPath = [GBRepository validRepositoryPathForPath:aPath];
-  
-  if (validPath)
-  {
-    [self openLocalRepositoryAtURL:[NSURL fileURLWithPath:validPath]];
-    return YES;
+    [NSAlert message:NSLocalizedString(@"File is not a folder.", @"") description:aPath];
+    return NO; 
   }
   
   if (![NSFileManager isWritableDirectoryAtPath:aPath])
@@ -144,6 +131,8 @@
   
   return NO;
 }
+
+
 
 
 
@@ -203,7 +192,6 @@
   }
   [self.localRepositoryControllers sortUsingComparator:^(GBRepositoryController* a,GBRepositoryController* b){
     return [[a nameForSourceList] localizedCaseInsensitiveCompare:[b nameForSourceList]];
-    //return [[[a url] path] compare:[[b url] path]];
   }];
 }
 
@@ -213,7 +201,7 @@
   if ([self.localRepositoryControllers containsObject:repoCtrl]) return;
   if ([self.delegate respondsToSelector:@selector(repositoriesController:willAddRepository:)]) { [self.delegate repositoriesController:self willAddRepository:repoCtrl]; }
   [self.localRepositoryControllers addObject:repoCtrl];
-  [self updateRepositoriesPresentation];
+  //[self updateRepositoriesPresentation];
   
   repoCtrl.updatesQueue = self.localRepositoriesUpdatesQueue;
   
@@ -235,7 +223,7 @@
   if ([self.delegate respondsToSelector:@selector(repositoriesController:willRemoveRepository:)]) { [self.delegate repositoriesController:self willRemoveRepository:repoCtrl]; }
   [repoCtrl stop];
   [self.localRepositoryControllers removeObject:repoCtrl];
-  [self updateRepositoriesPresentation];
+  //[self updateRepositoriesPresentation];
   if ([self.delegate respondsToSelector:@selector(repositoriesController:didRemoveRepository:)]) { [self.delegate repositoriesController:self didRemoveRepository:repoCtrl]; }
 }
 

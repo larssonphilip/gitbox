@@ -80,6 +80,15 @@
   return nil;
 }
 
+- (BOOL) isDraggableInSidebar
+{
+  return NO;
+}
+
+
+
+#pragma mark NSPasteboardWriting
+
 - (id)pasteboardPropertyListForType:(NSString *)type
 {
   return nil;

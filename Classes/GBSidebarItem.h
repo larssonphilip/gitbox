@@ -1,5 +1,5 @@
 
-#define GBSidebarItemPasteboardType @"GBSidebarItemPasteboardType"
+#define GBSidebarItemPasteboardType @"com.oleganza.gitbox.GBSidebarItemPasteboardType"
 
 @class GBBaseRepositoryController;
 @protocol GBSidebarItem <NSObject, NSPasteboardWriting>
@@ -14,4 +14,5 @@
 - (BOOL) isSubmodule;
 - (NSCell*) sidebarCell;
 - (Class) sidebarCellClass;
+- (BOOL) isDraggableInSidebar;
 @end

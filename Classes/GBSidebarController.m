@@ -61,7 +61,10 @@
   return [[sections retain] autorelease];
 }
 
-
+- (GBSidebarSection*) localRepositoriesSection
+{
+  return [self.sections objectAtIndex:0];
+}
 
 
 
@@ -81,7 +84,7 @@
   if (direction != -1) direction = 1;
   while (row >= 0 && row < [self.outlineView numberOfRows])
   {
-    id item = [self.outlineView itemAtRow:row];
+    id<GBSidebarItem> item = [self.outlineView itemAtRow:row];
     if (![self outlineView:self.outlineView isGroupItem:item])
     {
       return item;
@@ -95,7 +98,7 @@
 {
   [[self.outlineView window] makeFirstResponder:self.outlineView];
   NSInteger index = [self.outlineView rowForItem:self.repositoriesController.selectedRepositoryController];
-  GBBaseRepositoryController* item = nil;
+  id<GBSidebarItem> item = nil;
   if (index < 0)
   {
     item = [self firstNonSectionRowStartingAtRow:0 direction:+1];
@@ -104,14 +107,14 @@
   {
     item = [self firstNonSectionRowStartingAtRow:index-1 direction:-1];
   }
-  if (item) [self.repositoriesController selectRepositoryController:item];
+  if (item) [self.repositoriesController selectRepositoryController:[item repositoryController]];
 }
 
 - (IBAction) selectNextRepository:(id)_
 {
   [[self.outlineView window] makeFirstResponder:self.outlineView];
   NSInteger index = [self.outlineView rowForItem:self.repositoriesController.selectedRepositoryController];
-  GBBaseRepositoryController* item = nil;
+  id<GBSidebarItem> item = nil;
   if (index < 0)
   {
     item = [self firstNonSectionRowStartingAtRow:0 direction:+1];
@@ -120,7 +123,7 @@
   {
     item = [self firstNonSectionRowStartingAtRow:index+1 direction:+1];
   }
-  if (item) [self.repositoriesController selectRepositoryController:item];
+  if (item) [self.repositoriesController selectRepositoryController:[item repositoryController]];
 }
 
 - (id<GBSidebarItem>) clickedOrSelectedSidebarItem
@@ -427,20 +430,19 @@
          writeItems:(NSArray *)items
        toPasteboard:(NSPasteboard *)pasteboard
 {
-  // Outer drag only for now.
-  // Later: review this code to not assume only local repos, but also groups, githubs etc.
-  NSLog(@"GBSidebarController: writing items to pasteboard.");
   if ([items count] != 1) return NO;
   
   id<GBSidebarItem> item = [items objectAtIndex:0];
+  
+  if (![item isDraggableInSidebar]) return NO;
   
   return [pasteboard writeObjects:[NSArray arrayWithObject:item]];
 }
 
 
 - (NSDragOperation)outlineView:(NSOutlineView *)anOutlineView
-                  validateDrop:(id <NSDraggingInfo>)draggingInfo
-                  proposedItem:(id)item
+                  validateDrop:(id<NSDraggingInfo>)draggingInfo
+                  proposedItem:(id<GBSidebarItem>)item
             proposedChildIndex:(NSInteger)childIndex
 {
   //To make it easier to see exactly what is called, uncomment the following line:
@@ -457,21 +459,27 @@
     {
       for (NSString* aPath in filenames)
       {
-        BOOL isDirectory = NO;
-        if ([[NSFileManager defaultManager] fileExistsAtPath:aPath isDirectory:&isDirectory])
-        {
-          atLeastOneIsValid = atLeastOneIsValid || isDirectory;
-        }
+        atLeastOneIsValid = atLeastOneIsValid || [GBRepository isValidRepositoryPathOrFolder:aPath];
       }
     }
     if (atLeastOneIsValid)
     {
-      result = NSDragOperationGeneric;
+      // Accept only groups and sections
+      if (item == [self localRepositoriesSection] || [item isRepositoriesGroup])
+      {
+        result = NSDragOperationGeneric;
+        // obsolete: We are going to accept the drop, but we want to retarget the drop item to be "on" the entire outlineView
+        //[self.outlineView setDropItem:nil dropChildIndex:NSOutlineViewDropOnItemIndex];
+      }
     }
-    
-    // We are going to accept the drop, but we want to retarget the drop item to be "on" the entire outlineView
-    [self.outlineView setDropItem:nil dropChildIndex:NSOutlineViewDropOnItemIndex];
   }
+  else
+  {
+    // inner dragging:
+    // Accept only groups and sections
+    
+  }
+
     
   return result;
 }
@@ -479,11 +487,14 @@
 
 - (BOOL)outlineView:(NSOutlineView *)anOutlineView
          acceptDrop:(id <NSDraggingInfo>)draggingInfo
-               item:(id)item
+               item:(id<GBSidebarItem>)targetItem
          childIndex:(NSInteger)childIndex
 {
   
   NSPasteboard* pasteboard = [draggingInfo draggingPasteboard];
+  id<GBSidebarItem> item = [pasteboard propertyListForType:GBSidebarItemPasteboardType];
+  NSLog(@"acceptDrop: item = %@", item);
+  
   NSArray* filenames = [pasteboard propertyListForType:NSFilenamesPboardType];
   NSMutableArray* URLs = [NSMutableArray array];
   if (filenames && [filenames isKindOfClass:[NSArray class]] && [filenames count] > 0)

@@ -88,6 +88,11 @@
 //}
 //
 
+- (BOOL) isDraggableInSidebar
+{
+  return YES;
+}
+
 - (NSArray*) writableTypesForPasteboard:(NSPasteboard *)pasteboard
 {
   return [NSArray arrayWithObject:GBSidebarItemPasteboardType];

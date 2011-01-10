@@ -123,6 +123,11 @@
   return nil;
 }
 
+- (BOOL) isDraggableInSidebar
+{
+  return YES;
+}
+
 - (NSArray*) writableTypesForPasteboard:(NSPasteboard *)pasteboard
 {
   return [[self localURL] writableTypesForPasteboard:pasteboard];
