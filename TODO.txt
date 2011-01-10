@@ -25,6 +25,8 @@ Bug fixes:
 + Fixed behavior of branches with slashes (e.g. "oleg/feature1") and dots (e.g. "v1.2") [reported by Christian van der Leeden, Falk Hoppe]
 + Fixed various bugs with fetching remote branches.
 + Fixed various bugs with updating local and remote branches.
++ Fixed tooltip rendering in sidebar
++ Fixed right-click menu target in sidebar
 
 -----------------------------------------------------------
 
