@@ -184,12 +184,16 @@
 - (void) saveExpandedState
 {
   NSMutableArray* collapsedSections = [NSMutableArray array];
-  if (![self.outlineView isItemExpanded:[self.sections objectAtIndex:0]])
+
+  int i = 0;
+  for (id<GBSidebarItem> section in self.sections)
   {
-    [collapsedSections addObject:@"section0"];
+    if (![self.outlineView isItemExpanded:section])
+    {
+      [collapsedSections addObject:[NSString stringWithFormat:@"section%d", i]];
+    }
+    i++;
   }
-  
-  // TODO: repeat for other sections
   
   [[NSUserDefaults standardUserDefaults] setObject:collapsedSections forKey:@"GBSidebarController_collapsedSections"];
 }
@@ -198,18 +202,19 @@
 {
   NSArray* collapsedSections = [[NSUserDefaults standardUserDefaults] objectForKey:@"GBSidebarController_collapsedSections"];
   
-  if (![collapsedSections containsObject:@"section0"])
+  int i = 0;
+  for (id<GBSidebarItem> section in self.sections)
   {
-    [self.outlineView expandItem:[self.sections objectAtIndex:0]];
+    if (![collapsedSections containsObject:[NSString stringWithFormat:@"section%d", i]])
+    {
+      [self.outlineView expandItem:section];
+    }
+    else
+    {
+      [self.outlineView collapseItem:section];
+    }
+    i++;
   }
-  else
-  {
-    [self.outlineView collapseItem:[self.sections objectAtIndex:0]];
-  }
-    
-  
-  // TODO: repeat for other sections
-  
 }
 
 - (void) update
