@@ -28,6 +28,8 @@
 		200433A312DA02CF00B045C0 /* GBGreyGradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = 200433A112DA02CF00B045C0 /* GBGreyGradientView.m */; };
 		2004343E12DB175B00B045C0 /* GBRepositoriesGroupCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2004343D12DB175B00B045C0 /* GBRepositoriesGroupCell.m */; };
 		2004343F12DB175B00B045C0 /* GBRepositoriesGroupCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2004343D12DB175B00B045C0 /* GBRepositoriesGroupCell.m */; };
+		200434C912DB363400B045C0 /* GBSidebarSection.m in Sources */ = {isa = PBXBuildFile; fileRef = 200434C812DB363400B045C0 /* GBSidebarSection.m */; };
+		200434CA12DB363400B045C0 /* GBSidebarSection.m in Sources */ = {isa = PBXBuildFile; fileRef = 200434C812DB363400B045C0 /* GBSidebarSection.m */; };
 		200B08B511B6E359004C09A8 /* GBLocalRemoteAssociationTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 200B08B411B6E359004C09A8 /* GBLocalRemoteAssociationTask.m */; };
 		2010732F11A7E9C300EFDE56 /* app.icns in Resources */ = {isa = PBXBuildFile; fileRef = 2010732E11A7E9C300EFDE56 /* app.icns */; };
 		201073B611A80A4600EFDE56 /* GBRemotesTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 201073B511A80A4600EFDE56 /* GBRemotesTask.m */; };
@@ -350,6 +352,8 @@
 		200433A112DA02CF00B045C0 /* GBGreyGradientView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBGreyGradientView.m; sourceTree = "<group>"; };
 		2004343C12DB175B00B045C0 /* GBRepositoriesGroupCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBRepositoriesGroupCell.h; sourceTree = "<group>"; };
 		2004343D12DB175B00B045C0 /* GBRepositoriesGroupCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBRepositoriesGroupCell.m; sourceTree = "<group>"; };
+		200434C712DB363400B045C0 /* GBSidebarSection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBSidebarSection.h; sourceTree = "<group>"; };
+		200434C812DB363400B045C0 /* GBSidebarSection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBSidebarSection.m; sourceTree = "<group>"; };
 		2009871711C4597800F35630 /* Payment.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Payment.txt; sourceTree = "<group>"; };
 		200B08B311B6E359004C09A8 /* GBLocalRemoteAssociationTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBLocalRemoteAssociationTask.h; sourceTree = "<group>"; };
 		200B08B411B6E359004C09A8 /* GBLocalRemoteAssociationTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBLocalRemoteAssociationTask.m; sourceTree = "<group>"; };
@@ -841,6 +845,8 @@
 				20A37BA5120DC1D90068AB8B /* GBSidebarController.m */,
 				20A37BB5120DC7640068AB8B /* GBSidebarController.xib */,
 				2004330212D8B37F00B045C0 /* GBSidebarItem.h */,
+				200434C712DB363400B045C0 /* GBSidebarSection.h */,
+				200434C812DB363400B045C0 /* GBSidebarSection.m */,
 				20BF176F127EF68800A30EE6 /* GBRepositoryCell.h */,
 				20BF1770127EF68800A30EE6 /* GBRepositoryCell.m */,
 				2004343C12DB175B00B045C0 /* GBRepositoriesGroupCell.h */,
@@ -1412,6 +1418,7 @@
 				20164BC812D5F46F005C69DA /* GBRepositoriesAndGroupsSerialization.m in Sources */,
 				200433A312DA02CF00B045C0 /* GBGreyGradientView.m in Sources */,
 				2004343F12DB175B00B045C0 /* GBRepositoriesGroupCell.m in Sources */,
+				200434CA12DB363400B045C0 /* GBSidebarSection.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1517,6 +1524,7 @@
 				20164BC712D5F46F005C69DA /* GBRepositoriesAndGroupsSerialization.m in Sources */,
 				200433A212DA02CF00B045C0 /* GBGreyGradientView.m in Sources */,
 				2004343E12DB175B00B045C0 /* GBRepositoriesGroupCell.m in Sources */,
+				200434C912DB363400B045C0 /* GBSidebarSection.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

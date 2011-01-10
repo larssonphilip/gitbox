@@ -35,7 +35,7 @@
 - (IBAction) selectNextRepository:(id)_;
 
 - (IBAction) remove:(id)_;
-
+- (IBAction) openInFinder:(id)_;
 - (IBAction) selectRightPane:_;
 
 @end

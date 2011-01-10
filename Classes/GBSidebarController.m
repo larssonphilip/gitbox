@@ -1,5 +1,6 @@
 #import "GBBaseRepositoryController.h"
 #import "GBRepositoriesController.h"
+#import "GBSidebarSection.h"
 
 #import "GBSidebarController.h"
 #import "GBRepository.h"
@@ -52,7 +53,9 @@
   if (!sections)
   {
     self.sections = [NSMutableArray arrayWithObjects:
-                     self.repositoriesController.localRepositoryControllers, 
+                     [GBSidebarSection sectionWithName:NSLocalizedString(@"REPOSITORIES", @"GBSidebarController") 
+                                                 items:self.repositoriesController.localRepositoryControllers],
+                     
                      nil];
   }
   return [[sections retain] autorelease];
@@ -120,13 +123,16 @@
   if (item) [self.repositoriesController selectRepositoryController:item];
 }
 
-- (GBBaseRepositoryController*) currentRepositoryController
+- (id<GBSidebarItem>) clickedOrSelectedSidebarItem
 {
   NSInteger row = [self.outlineView clickedRow];
+  if (row < 0)
+  {
+    row = [self.outlineView selectedRow];
+  }
   if (row >= 0)
   {
-    id<GBSidebarItem> item = [self.outlineView itemAtRow:row];
-    return [item repositoryController];
+    return [self.outlineView itemAtRow:row];
   }
   return nil;
 }
@@ -134,7 +140,7 @@
 - (IBAction) remove:(id)_
 {
   // FIXME: support removing groups as well as repos
-  id ctrl = [self currentRepositoryController];
+  id ctrl = [[self clickedOrSelectedSidebarItem] repositoryController];
   if (ctrl)
   {
     [self.repositoriesController removeLocalRepositoryController:ctrl];
@@ -146,6 +152,14 @@
   [[self.outlineView window] selectKeyViewFollowingView:self.outlineView];
 }
 
+- (IBAction) openInFinder:(id)_
+{
+  NSString* path = [[[[self clickedOrSelectedSidebarItem] repositoryController] url] path];
+  if (path)
+  {
+    [[NSWorkspace sharedWorkspace] openFile:path];
+  }
+}
 
 
 
@@ -169,21 +183,30 @@
 
 - (void) saveExpandedState
 {
-  NSMutableArray* expandedSections = [NSMutableArray array];
-  if ([self.outlineView isItemExpanded:self.repositoriesController.localRepositoryControllers])
-    [expandedSections addObject:@"localRepositories"];
+  NSMutableArray* collapsedSections = [NSMutableArray array];
+  if (![self.outlineView isItemExpanded:[self.sections objectAtIndex:0]])
+  {
+    [collapsedSections addObject:@"section0"];
+  }
   
   // TODO: repeat for other sections
   
-  [[NSUserDefaults standardUserDefaults] setObject:expandedSections forKey:@"GBSidebarController_expandedSections"];
+  [[NSUserDefaults standardUserDefaults] setObject:collapsedSections forKey:@"GBSidebarController_collapsedSections"];
 }
 
 - (void) loadExpandedState
 {
-  NSArray* expandedSections = [[NSUserDefaults standardUserDefaults] objectForKey:@"GBSidebarController_expandedSections"];
+  NSArray* collapsedSections = [[NSUserDefaults standardUserDefaults] objectForKey:@"GBSidebarController_collapsedSections"];
   
-  if ([expandedSections containsObject:@"localRepositories"])
-    [self.outlineView expandItem:self.repositoriesController.localRepositoryControllers];
+  if (![collapsedSections containsObject:@"section0"])
+  {
+    [self.outlineView expandItem:[self.sections objectAtIndex:0]];
+  }
+  else
+  {
+    [self.outlineView collapseItem:[self.sections objectAtIndex:0]];
+  }
+    
   
   // TODO: repeat for other sections
   
@@ -273,7 +296,7 @@
 
 - (NSInteger)outlineView:(NSOutlineView*)anOutlineView numberOfChildrenOfItem:(id<GBSidebarItem>)item
 {
-  if (item == nil) item = self.sections;
+  if (item == nil) return [self.sections count];
   
   return [item numberOfChildrenInSidebar];
 }
@@ -286,16 +309,12 @@
 
 - (id)outlineView:(NSOutlineView*)anOutlineView child:(NSInteger)index ofItem:(id<GBSidebarItem>)item
 {
-  if (item == nil) item = self.sections;
+  if (item == nil) return [self.sections objectAtIndex:index];
   return [item childForIndexInSidebar:index];
 }
 
 - (id)outlineView:(NSOutlineView*)anOutlineView objectValueForTableColumn:(NSTableColumn*)tableColumn byItem:(id<GBSidebarItem>)item
 {
-  if (item == self.repositoriesController.localRepositoryControllers)
-  {
-    return NSLocalizedString(@"REPOSITORIES", @"Sources");
-  }
   return [item nameInSidebar];
 }
 
