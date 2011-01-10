@@ -26,6 +26,8 @@
 		2002AC0C123CA1A20072075C /* OAFSEventStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 2002AC0B123CA1A20072075C /* OAFSEventStream.m */; };
 		200433A212DA02CF00B045C0 /* GBGreyGradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = 200433A112DA02CF00B045C0 /* GBGreyGradientView.m */; };
 		200433A312DA02CF00B045C0 /* GBGreyGradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = 200433A112DA02CF00B045C0 /* GBGreyGradientView.m */; };
+		2004343E12DB175B00B045C0 /* GBRepositoriesGroupCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2004343D12DB175B00B045C0 /* GBRepositoriesGroupCell.m */; };
+		2004343F12DB175B00B045C0 /* GBRepositoriesGroupCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2004343D12DB175B00B045C0 /* GBRepositoriesGroupCell.m */; };
 		200B08B511B6E359004C09A8 /* GBLocalRemoteAssociationTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 200B08B411B6E359004C09A8 /* GBLocalRemoteAssociationTask.m */; };
 		2010732F11A7E9C300EFDE56 /* app.icns in Resources */ = {isa = PBXBuildFile; fileRef = 2010732E11A7E9C300EFDE56 /* app.icns */; };
 		201073B611A80A4600EFDE56 /* GBRemotesTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 201073B511A80A4600EFDE56 /* GBRemotesTask.m */; };
@@ -346,6 +348,8 @@
 		2004330212D8B37F00B045C0 /* GBSidebarItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBSidebarItem.h; sourceTree = "<group>"; };
 		200433A012DA02CF00B045C0 /* GBGreyGradientView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBGreyGradientView.h; sourceTree = "<group>"; };
 		200433A112DA02CF00B045C0 /* GBGreyGradientView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBGreyGradientView.m; sourceTree = "<group>"; };
+		2004343C12DB175B00B045C0 /* GBRepositoriesGroupCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBRepositoriesGroupCell.h; sourceTree = "<group>"; };
+		2004343D12DB175B00B045C0 /* GBRepositoriesGroupCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBRepositoriesGroupCell.m; sourceTree = "<group>"; };
 		2009871711C4597800F35630 /* Payment.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Payment.txt; sourceTree = "<group>"; };
 		200B08B311B6E359004C09A8 /* GBLocalRemoteAssociationTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBLocalRemoteAssociationTask.h; sourceTree = "<group>"; };
 		200B08B411B6E359004C09A8 /* GBLocalRemoteAssociationTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBLocalRemoteAssociationTask.m; sourceTree = "<group>"; };
@@ -830,7 +834,7 @@
 			name = "Main UI";
 			sourceTree = "<group>";
 		};
-		20A9713712C6C6CB00E2B7B9 /* Left Pane */ = {
+		20A9713712C6C6CB00E2B7B9 /* Sidebar */ = {
 			isa = PBXGroup;
 			children = (
 				20A37BA4120DC1D90068AB8B /* GBSidebarController.h */,
@@ -839,8 +843,10 @@
 				2004330212D8B37F00B045C0 /* GBSidebarItem.h */,
 				20BF176F127EF68800A30EE6 /* GBRepositoryCell.h */,
 				20BF1770127EF68800A30EE6 /* GBRepositoryCell.m */,
+				2004343C12DB175B00B045C0 /* GBRepositoriesGroupCell.h */,
+				2004343D12DB175B00B045C0 /* GBRepositoriesGroupCell.m */,
 			);
-			name = "Left Pane";
+			name = Sidebar;
 			sourceTree = "<group>";
 		};
 		20A9713812C6C6D200E2B7B9 /* Central Pane */ = {
@@ -1073,7 +1079,7 @@
 				2038F30811952FAE0087CE37 /* Models */,
 				206CAC72122EB619009284FE /* Model Controllers */,
 				20A9713612C6C6B900E2B7B9 /* Main UI */,
-				20A9713712C6C6CB00E2B7B9 /* Left Pane */,
+				20A9713712C6C6CB00E2B7B9 /* Sidebar */,
 				20A9713812C6C6D200E2B7B9 /* Central Pane */,
 				20A9713912C6C6D800E2B7B9 /* Right Pane */,
 				20BF19341282238800A30EE6 /* Prompts and aux window controllers */,
@@ -1405,6 +1411,7 @@
 				20164BC412D5F43B005C69DA /* GBRepositoriesGroup.m in Sources */,
 				20164BC812D5F46F005C69DA /* GBRepositoriesAndGroupsSerialization.m in Sources */,
 				200433A312DA02CF00B045C0 /* GBGreyGradientView.m in Sources */,
+				2004343F12DB175B00B045C0 /* GBRepositoriesGroupCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1509,6 +1516,7 @@
 				20164BC312D5F43B005C69DA /* GBRepositoriesGroup.m in Sources */,
 				20164BC712D5F46F005C69DA /* GBRepositoriesAndGroupsSerialization.m in Sources */,
 				200433A212DA02CF00B045C0 /* GBGreyGradientView.m in Sources */,
+				2004343E12DB175B00B045C0 /* GBRepositoriesGroupCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

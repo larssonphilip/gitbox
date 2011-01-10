@@ -560,7 +560,7 @@
       NSURL* aURL  = [self temporaryURLForObjectId:objectId optionalURL:[self fileURL] commitId:self.commitId];
       return [[aURL absoluteURL] pasteboardPropertyListForType:type];
     }
-    else // not commited change: on stage
+    else // not committed change: on stage
     {
       if ([self isDeletedFile])
       {

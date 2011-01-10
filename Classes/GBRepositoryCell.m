@@ -16,6 +16,7 @@
 
 @synthesize isForeground;
 @synthesize isFocused;
+@synthesize isDragged;
 
 - (void) dealloc
 {
@@ -25,7 +26,6 @@
 + (CGFloat) cellHeight
 {
   return 22.0;
-//  return 35.0;
 }
 
 - (id)init
@@ -52,6 +52,7 @@
 
 - (void) drawInteriorWithFrame:(NSRect)cellFrame inView:(NSView*)theControlView
 {
+  NSLog(@"GBRepositoryCell: drawing interior isDragged = %d", (int)self.isDragged);
   NSWindow* window = [theControlView window];
   self.isFocused = ([window firstResponder] && [window firstResponder] == theControlView && 
                     [window isMainWindow] && [window isKeyWindow]);
@@ -128,7 +129,7 @@
   {
     static CGFloat leftPadding = 2.0;
     NSString* badgeLabel = [[self repositoryController] badgeLabel];
-    if (badgeLabel && [badgeLabel length] > 0)
+    if (badgeLabel && [badgeLabel length] > 0 && !self.isDragged)
     {
       NSRect badgeFrame = [self drawBadge:badgeLabel inTitleFrame:textualFrame];
       textualFrame.size.width = badgeFrame.origin.x - textualFrame.origin.x - leftPadding;

@@ -1,6 +1,8 @@
+#import "GBSidebarItem.h"
+
 @class GBRepository;
 
-@interface GBSubmodule : NSObject
+@interface GBSubmodule : NSObject<GBSidebarItem>
 
 @property(nonatomic, retain) NSURL* remoteURL;
 

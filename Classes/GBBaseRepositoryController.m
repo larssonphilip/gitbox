@@ -108,24 +108,16 @@
 }
 
 
-- (NSCell*) cell
-{
-  NSCell* cell = [[[self cellClass] new] autorelease];
-  [cell setRepresentedObject:self];
-  return cell;
-}
-
-- (Class) cellClass
-{
-  return [GBRepositoryCell class];
-}
-
-
 
 
 
 #pragma mark GBSidebarItem
 
+
+- (NSString*) sidebarItemIdentifier
+{
+  return [NSString stringWithFormat:@"GBBaseRepositoryController:%p", self];
+}
 
 - (NSInteger) numberOfChildrenInSidebar
 {
@@ -146,6 +138,54 @@
 {
   return [[[self url] path] lastPathComponent];
 }
+
+- (GBBaseRepositoryController*) repositoryController
+{
+  return self;
+}
+
+- (BOOL) isRepository
+{
+  return YES;
+}
+
+- (BOOL) isRepositoriesGroup
+{
+  return NO;
+}
+
+- (BOOL) isSubmodule
+{
+  return NO;
+}
+
+- (NSCell*) sidebarCell
+{
+  NSCell* cell = [[[self sidebarCellClass] new] autorelease];
+  [cell setRepresentedObject:self];
+  return cell;
+}
+
+- (Class) sidebarCellClass
+{
+  return [GBRepositoryCell class];
+}
+
+- (NSArray*) writableTypesForPasteboard:(NSPasteboard *)pasteboard
+{
+  return [[NSArray arrayWithObject:GBSidebarItemPasteboardType] 
+          arrayByAddingObjectsFromArray:[[self url] writableTypesForPasteboard:pasteboard]];
+}
+
+- (id)pasteboardPropertyListForType:(NSString *)type
+{
+  if ([type isEqual:GBSidebarItemPasteboardType])
+  {
+    return [self sidebarItemIdentifier];
+  }
+  return [[self url] pasteboardPropertyListForType:type];
+}
+
 
 
 @end

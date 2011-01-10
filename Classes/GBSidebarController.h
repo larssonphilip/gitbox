@@ -16,6 +16,9 @@
 @property(nonatomic,retain) NSMutableArray* sections;
 @property(nonatomic,retain) IBOutlet NSOutlineView* outlineView;
 @property(nonatomic,retain) IBOutlet NSButton* buyButton;
+@property(nonatomic,retain) IBOutlet NSMenu* localRepositoryMenu;
+@property(nonatomic,retain) IBOutlet NSMenu* repositoriesGroupMenu;
+@property(nonatomic,retain) IBOutlet NSMenu* submoduleMenu;
 
 - (void) saveState;
 - (void) loadState;

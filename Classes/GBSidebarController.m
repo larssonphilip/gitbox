@@ -15,14 +15,16 @@
 #import "NSObject+OAPerformBlockAfterDelay.h"
 
 
-#define kGBSidebarControllerPasteboardType @"GBSidebarControllerPasteboardType"
-
 @implementation GBSidebarController
 
 @synthesize sections;
 @synthesize outlineView;
 @synthesize repositoriesController;
 @synthesize buyButton;
+@synthesize localRepositoryMenu;
+@synthesize repositoriesGroupMenu;
+@synthesize submoduleMenu;
+
 
 - (void) dealloc
 {
@@ -30,6 +32,9 @@
   self.outlineView = nil;
   self.repositoriesController = nil;
   self.buyButton = nil;
+  self.localRepositoryMenu = nil;
+  self.repositoriesGroupMenu = nil;
+  self.submoduleMenu = nil;
   [super dealloc];
 }
 
@@ -37,7 +42,7 @@
 {
   [super loadView];
   
-  [self.outlineView registerForDraggedTypes:[NSArray arrayWithObjects:kGBSidebarControllerPasteboardType, NSFilenamesPboardType, nil]];
+  [self.outlineView registerForDraggedTypes:[NSArray arrayWithObjects:GBSidebarItemPasteboardType, NSFilenamesPboardType, nil]];
   [self.outlineView setDraggingSourceOperationMask:NSDragOperationEvery forLocal:YES];
   [self.outlineView setDraggingSourceOperationMask:NSDragOperationEvery forLocal:NO];
 }
@@ -120,14 +125,15 @@
   NSInteger row = [self.outlineView clickedRow];
   if (row >= 0)
   {
-    id item = [self.outlineView itemAtRow:row];
-    return item;
+    id<GBSidebarItem> item = [self.outlineView itemAtRow:row];
+    return [item repositoryController];
   }
   return nil;
 }
 
 - (IBAction) remove:(id)_
 {
+  // FIXME: support removing groups as well as repos
   id ctrl = [self currentRepositoryController];
   if (ctrl)
   {
@@ -302,21 +308,21 @@
 
 
 
-- (BOOL)outlineView:(NSOutlineView*)anOutlineView isGroupItem:(id)item
+- (BOOL)outlineView:(NSOutlineView*)anOutlineView isGroupItem:(id<GBSidebarItem>)item
 {
   // Only sections should have "group" style.
   if (item && [self.sections containsObject:item]) return YES;
   return NO;
 }
 
-- (BOOL)outlineView:(NSOutlineView*)anOutlineView shouldSelectItem:(id)item
+- (BOOL)outlineView:(NSOutlineView*)anOutlineView shouldSelectItem:(id<GBSidebarItem>)item
 {
   if (item == nil) return NO; // do not select invisible root 
   if ([self.sections containsObject:item]) return NO; // do not select sections
   return YES;
 }
 
-- (BOOL)outlineView:(NSOutlineView*)anOutlineView shouldEditTableColumn:(NSTableColumn*)tableColumn item:(id)item
+- (BOOL)outlineView:(NSOutlineView*)anOutlineView shouldEditTableColumn:(NSTableColumn*)tableColumn item:(id<GBSidebarItem>)item
 {
   return NO;
 }
@@ -330,37 +336,46 @@
   {
     item = [self.outlineView itemAtRow:row];
   }
-  [self.repositoriesController selectRepositoryController:item];
+  [self.repositoriesController selectRepositoryController:[item repositoryController]];
 }
 
-- (void)outlineView:(NSOutlineView*)anOutlineView willDisplayCell:(id)cell forTableColumn:(NSTableColumn*)tableColumn item:(id)item
+- (void)outlineView:(NSOutlineView*)anOutlineView willDisplayCell:(id)cell forTableColumn:(NSTableColumn*)tableColumn item:(id<GBSidebarItem>)item
 {
-  if (![item isKindOfClass:[GBBaseRepositoryController class]])
+  if ([item isRepository])
   {
-    [cell setMenu:nil];
+    [cell setMenu:self.localRepositoryMenu];
+  }
+  if ([item isRepositoriesGroup])
+  {
+    [cell setMenu:self.repositoriesGroupMenu];
+  }
+  if ([item isSubmodule])
+  {
+    [cell setMenu:self.submoduleMenu];
   }
 }
 
-- (NSCell *)outlineView:(NSOutlineView *)outlineView dataCellForTableColumn:(NSTableColumn *)tableColumn item:(id)item
+- (NSCell *)outlineView:(NSOutlineView *)outlineView dataCellForTableColumn:(NSTableColumn *)tableColumn item:(id<GBSidebarItem>)item
 {
   // tableColumn == nil means the outlineView needs a separator cell
   if (!tableColumn) return nil;
   
-  if ([item isKindOfClass:[GBBaseRepositoryController class]])
+  NSCell* cell = [item sidebarCell];
+  
+  if (!cell)
   {
-    GBBaseRepositoryController* repoCtrl = (GBBaseRepositoryController*)item;
-    return [repoCtrl cell];
+    cell = [tableColumn dataCell];
   }
   
-  return [tableColumn dataCell];
+  return cell;
 }
 
-- (CGFloat)outlineView:(NSOutlineView *)outlineView heightOfRowByItem:(id)item
+- (CGFloat)outlineView:(NSOutlineView *)outlineView heightOfRowByItem:(id<GBSidebarItem>)item
 {
-  if ([item isKindOfClass:[GBBaseRepositoryController class]])
+  Class cellClass = [item sidebarCellClass];
+  if (cellClass)
   {
-    GBBaseRepositoryController* repoCtrl = (GBBaseRepositoryController*)item;
-    return [[repoCtrl cellClass] cellHeight];
+    return [cellClass cellHeight];
   }
   return 20.0;
 }
@@ -369,10 +384,10 @@
            toolTipForCell:(NSCell *)cell
                      rect:(NSRectPointer)rect
               tableColumn:(NSTableColumn *)tc
-                     item:(id)item
+                     item:(id<GBSidebarItem>)item
             mouseLocation:(NSPoint)mouseLocation
 {
-  return nil; // surpresses ugly automatic tooltips
+  return [item nameInSidebar] ? [item nameInSidebar] : @"";
 }
 
 
@@ -390,22 +405,13 @@
 {
   // Outer drag only for now.
   // Later: review this code to not assume only local repos, but also groups, githubs etc.
-  
+  NSLog(@"GBSidebarController: writing items to pasteboard.");
   if ([items count] != 1) return NO;
   
-  GBRepositoryController* repo = [items objectAtIndex:0];
+  id<GBSidebarItem> item = [items objectAtIndex:0];
   
-  if (![repo isKindOfClass:[GBBaseRepositoryController class]]) return NO;
-  
-  NSArray* paths = [items valueForKeyPath:@"url.path"];
-  
-  [pasteboard declareTypes:[NSArray arrayWithObjects:NSFilenamesPboardType, nil] owner:self];
-  [pasteboard setPropertyList:paths forType:NSFilenamesPboardType];
-  
-  return YES;
+  return [pasteboard writeObjects:[NSArray arrayWithObject:item]];
 }
-
-
 
 
 - (NSDragOperation)outlineView:(NSOutlineView *)anOutlineView
