@@ -107,7 +107,17 @@
 }
 
 - (void) drawContentInFrame:(NSRect)cellFrame
-{  
+{
+  {
+//    NSGradient* gradient = [[NSGradient alloc]
+//                            initWithStartingColor:[NSColor colorWithCalibratedWhite:1.0 alpha:1.0]
+//                            endingColor:[NSColor colorWithCalibratedWhite:0.99 alpha:1.0]];
+//    if (![self isHighlighted])
+//    {
+//      [gradient drawInRect:cellFrame angle:90];
+//    }
+  }
+  
   NSRect innerRect = [self innerRectForFrame:cellFrame];
   
   [self drawSyncStatusIconInRect:innerRect];
