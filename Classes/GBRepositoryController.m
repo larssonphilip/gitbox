@@ -80,6 +80,7 @@
 
 + (id) repositoryControllerWithURL:(NSURL*)url
 {
+  if (!url) return nil;
   GBRepositoryController* ctrl = [[self new] autorelease];
   GBRepository* repo = [GBRepository repositoryWithURL:url];
   ctrl.repository = repo;

@@ -1,8 +1,10 @@
+#import "GBRepositoriesControllerLocalItem.h"
 #import "GBSidebarItem.h"
 
-@interface GBRepositoriesGroup : NSObject<GBSidebarItem>
+@interface GBRepositoriesGroup : NSObject<GBRepositoriesControllerLocalItem, GBSidebarItem>
+
 @property(nonatomic, copy) NSString* name;
-@property(nonatomic, retain) NSArray* items;
+@property(nonatomic, retain) NSMutableArray* items;
 
 - (NSString*) untitledGroupName;
 

@@ -54,7 +54,7 @@
   {
     self.sections = [NSMutableArray arrayWithObjects:
                      [GBSidebarSection sectionWithName:NSLocalizedString(@"REPOSITORIES", @"GBSidebarController") 
-                                                 items:self.repositoriesController.localRepositoryControllers],
+                                                 items:self.repositoriesController.localItems],
                      
                      nil];
   }
@@ -262,12 +262,11 @@
 
 - (void) expandLocalRepositories
 {
-  [self.outlineView expandItem:self.repositoriesController.localRepositoryControllers];
+  [self.outlineView expandItem:[self localRepositoriesSection]];
 }
 
 - (void) updateSpinnerForRepositoryController:(GBBaseRepositoryController*)repoCtrl
 {
-  // TODO: find the rect for the repoCtrl and redisplay it.
   [self.outlineView reloadItem:repoCtrl];
 }
 
@@ -517,12 +516,18 @@
       }
     }
   }
+  
+  NSLog(@"FIXME: update this code to support proper index of the drop");
+  
+  return NO;
+  
+  
   if ([URLs count] > 0)
   {
     [NSObject performBlock:^{
       for (NSURL* aURL in URLs)
       {
-        [self.repositoriesController tryOpenLocalRepositoryAtURL:aURL];
+        //[self.repositoriesController tryOpenLocalRepositoryAtURL:aURL];
       }
     } afterDelay:0.0];
     return YES;

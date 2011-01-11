@@ -39,7 +39,7 @@
 
 + (BOOL) isValidRepositoryPath:(NSString*)aPath;
 + (BOOL) isValidRepositoryPathOrFolder:(NSString*)aPath;
-+ (void) validateRepositoryURL:(NSURL*)aURL withBlock:(void (^)(BOOL))aBlock;
++ (BOOL) validateRepositoryURL:(NSURL*)aURL withBlock:(void (^)(BOOL isValid))aBlock;
 
 + (void) initRepositoryAtURL:(NSURL*)url;
 + (void) configureUTF8WithBlock:(void(^)())block;

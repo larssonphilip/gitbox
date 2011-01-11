@@ -1,6 +1,7 @@
 #import "GBBaseRepositoryController.h"
 #import "NSString+OAStringHelpers.h"
 #import "GBRepositoryCell.h"
+#import "OABlockQueue.h"
 
 @implementation GBBaseRepositoryController
 
@@ -108,6 +109,48 @@
 }
 
 
+
+#pragma mark GBRepositoriesControllerLocalItem
+
+
+- (void) enumerateRepositoriesWithBlock:(void(^)(GBBaseRepositoryController* repoCtrl))aBlock
+{
+  if (aBlock) aBlock(self);
+}
+
+- (GBBaseRepositoryController*) findRepositoryControllerWithURL:(NSURL*)aURL
+{
+  if ([[self url] isEqual:aURL]) return self;
+  // TODO: add check for submodules here
+  return nil;
+}
+
+- (NSUInteger) repositoriesCount
+{
+  return 1;
+}
+
+- (BOOL) hasRepositoryController:(GBBaseRepositoryController*)repoCtrl
+{
+  return (self == repoCtrl);
+}
+
+- (void) removeRepository:(GBBaseRepositoryController*)repoCtrl
+{
+  // no op
+}
+
+- (id) plistRepresentationForUserDefaults
+{
+  NSData* data = [[self url] bookmarkDataWithOptions:NSURLBookmarkCreationMinimalBookmark
+                          includingResourceValuesForKeys:nil
+                                           relativeToURL:nil
+                                                   error:NULL];
+  if (!data) return nil;
+  return [NSDictionary dictionaryWithObjectsAndKeys:
+          data, @"URL", 
+          nil];
+}
 
 
 

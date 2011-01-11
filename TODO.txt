@@ -70,6 +70,7 @@ Bugs:
 - bug: android repo checked out on a commit has branch menus disabled.
 - bug: when /Developer is symlinked to another partition, opendiff cannot launch FileMerge: "exception raised trying to run FileMerge: launch path not accessible" [Jeff Snell <jeffsnell@mac.com>]
 - bug: cannot commit a file with space in the path or something [Matthew Temple <matt@mattytemple.com>]
+- bug: sidebar: when collapsing a group, spinners remain spinning indefinitely
 
 
 Enhancements:
