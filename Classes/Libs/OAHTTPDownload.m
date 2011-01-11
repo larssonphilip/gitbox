@@ -352,7 +352,10 @@ NSString* const OAHTTPDownloadHTTPCodeErrorDomain = @"com.oleganza.OAHTTPDownloa
 
 - (void) didFailWithError:(NSError*)anError
 {
-	NSLog(@"%@ didFailWithError: %@", [self class], anError);
+  if ([anError code] != 404)
+  {
+    NSLog(@"%@ didFailWithError: %@", [self class], anError);
+  }
   self.error = anError;
 }
 
