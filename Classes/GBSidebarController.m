@@ -442,35 +442,45 @@
 
 - (NSDragOperation)outlineView:(NSOutlineView *)anOutlineView
                   validateDrop:(id<NSDraggingInfo>)draggingInfo
-                  proposedItem:(id<GBSidebarItem>)item
+                  proposedItem:(id<GBSidebarItem>)proposedItem
             proposedChildIndex:(NSInteger)childIndex
 {
   //To make it easier to see exactly what is called, uncomment the following line:
   //NSLog(@"outlineView:validateDrop:proposedItem:%@ proposedChildIndex:%ld", item, (long)childIndex);
-  
-  NSDragOperation result = NSDragOperationNone;
   
   if ([draggingInfo draggingSource] == nil)
   {
     NSPasteboard* pasteboard = [draggingInfo draggingPasteboard];
     NSArray* filenames = [pasteboard propertyListForType:NSFilenamesPboardType];
     BOOL atLeastOneIsValid = NO;
-    if (filenames && [filenames isKindOfClass:[NSArray class]] && [filenames count] > 0)
+    
+    if (!filenames) return NSDragOperationNone;
+    if (![filenames isKindOfClass:[NSArray class]]) return NSDragOperationNone;
+    if ([filenames count] <= 0) return NSDragOperationNone;
+    
+    for (NSString* aPath in filenames)
     {
-      for (NSString* aPath in filenames)
+      atLeastOneIsValid = atLeastOneIsValid || [GBRepository isValidRepositoryPathOrFolder:aPath];
+    }
+    
+    if (!atLeastOneIsValid) return NSDragOperationNone;
+
+    // If only one item is dragged and it is already here, simply retarget the drop item to be "on" the entire section
+    if ([filenames count] == 1)
+    {
+      NSURL* url = [NSURL fileURLWithPath:[filenames objectAtIndex:0]];
+      id<GBSidebarItem> existingItem = url ? [self.repositoriesController openedLocalRepositoryControllerWithURL:url] : nil;
+      if (existingItem)
       {
-        atLeastOneIsValid = atLeastOneIsValid || [GBRepository isValidRepositoryPathOrFolder:aPath];
+        [self.outlineView setDropItem:existingItem dropChildIndex:NSOutlineViewDropOnItemIndex];
+        return NSDragOperationGeneric;
       }
     }
-    if (atLeastOneIsValid)
+    
+    // Accept only groups and sections
+    if (proposedItem == [self localRepositoriesSection] || [proposedItem isRepositoriesGroup])
     {
-      // Accept only groups and sections
-      if (item == [self localRepositoriesSection] || [item isRepositoriesGroup])
-      {
-        result = NSDragOperationGeneric;
-        // obsolete: We are going to accept the drop, but we want to retarget the drop item to be "on" the entire outlineView
-        //[self.outlineView setDropItem:nil dropChildIndex:NSOutlineViewDropOnItemIndex];
-      }
+      return NSDragOperationGeneric;
     }
   }
   else
@@ -481,7 +491,7 @@
   }
 
     
-  return result;
+  return NSDragOperationNone;
 }
 
 

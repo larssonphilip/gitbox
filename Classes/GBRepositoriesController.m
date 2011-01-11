@@ -50,7 +50,7 @@
   return [[localRepositoryControllers retain] autorelease];
 }
 
-- (GBBaseRepositoryController*) repositoryControllerWithURL:(NSURL*)url
+- (GBBaseRepositoryController*) openedLocalRepositoryControllerWithURL:(NSURL*)url
 {
   for (GBBaseRepositoryController* repoCtrl in self.localRepositoryControllers)
   {
@@ -138,7 +138,7 @@
 
 - (void) openLocalRepositoryAtURL:(NSURL*)url
 {
-  GBBaseRepositoryController* repoCtrl = [self repositoryControllerWithURL:url];
+  GBBaseRepositoryController* repoCtrl = [self openedLocalRepositoryControllerWithURL:url];
   if (!repoCtrl)
   {
 #if GITBOX_APP_STORE

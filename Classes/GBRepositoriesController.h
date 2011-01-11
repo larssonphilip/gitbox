@@ -13,7 +13,7 @@
 
 @property(assign) id<GBRepositoriesControllerDelegate> delegate;
 
-- (GBBaseRepositoryController*) repositoryControllerWithURL:(NSURL*)url;
+- (GBBaseRepositoryController*) openedLocalRepositoryControllerWithURL:(NSURL*)url;
 - (BOOL) isEmpty;
 
 - (GBRepositoryController*) selectedLocalRepositoryController;
