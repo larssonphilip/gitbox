@@ -445,7 +445,7 @@
             proposedChildIndex:(NSInteger)childIndex
 {
   //To make it easier to see exactly what is called, uncomment the following line:
-  //NSLog(@"outlineView:validateDrop:proposedItem:%@ proposedChildIndex:%ld", item, (long)childIndex);
+  //NSLog(@"outlineView:validateDrop:proposedItem:%@ proposedChildIndex:%ld", proposedItem, (long)childIndex);
   
   if ([draggingInfo draggingSource] == nil)
   {
@@ -502,37 +502,49 @@
   
   NSPasteboard* pasteboard = [draggingInfo draggingPasteboard];
   id<GBSidebarItem> item = [pasteboard propertyListForType:GBSidebarItemPasteboardType];
-  NSLog(@"acceptDrop: item = %@", item);
   
-  NSArray* filenames = [pasteboard propertyListForType:NSFilenamesPboardType];
-  NSMutableArray* URLs = [NSMutableArray array];
-  if (filenames && [filenames isKindOfClass:[NSArray class]] && [filenames count] > 0)
+  if (item)
   {
+    // Handle local drag and drop
+    NSLog(@"TODO: Handle local drop");
+  }
+  else
+  {
+    // Handle external drop
+    
+    NSArray* filenames = [pasteboard propertyListForType:NSFilenamesPboardType];
+    
+    if (!filenames) return NO;
+    if ([filenames count] < 1) return NO;
+    
+    NSMutableArray* URLs = [NSMutableArray array];
+    
     for (NSString* aPath in filenames)
     {
-      if ([[NSFileManager defaultManager] fileExistsAtPath:aPath isDirectory:NULL])
-      {
-        [URLs addObject:[NSURL fileURLWithPath:aPath]];
-      }
+      NSURL* aURL = [NSURL fileURLWithPath:aPath];
+      [GBRepository validateRepositoryURL:aURL withBlock:^(BOOL isValid){
+        if (isValid)
+        {
+          [URLs addObject:aURL];
+        }
+      }];
     }
-  }
-  
-  NSLog(@"FIXME: update this code to support proper index of the drop");
-  
-  return NO;
-  
-  
-  if ([URLs count] > 0)
-  {
+    
+    NSLog(@"GBSidebar: Handling dropped URLs: %@", URLs);
+    
+    if ([URLs count] < 1) return NO;
+    
+    GBRepositoriesGroup* aGroup = [item isRepositoriesGroup] ? (GBRepositoriesGroup*)item : nil;
+    
     [NSObject performBlock:^{
       for (NSURL* aURL in URLs)
       {
-        //[self.repositoriesController tryOpenLocalRepositoryAtURL:aURL];
+        [self.repositoriesController openLocalRepositoryAtURL:aURL inGroup:aGroup atIndex:childIndex];
       }
     } afterDelay:0.0];
+    
     return YES;
   }
-  
   return NO;
 }
 

@@ -2,6 +2,7 @@
 #import "GBRepositoryController.h"
 #import "GBCloningRepositoryController.h"
 #import "GBModels.h"
+#import "GBRepositoriesGroup.h"
 
 #import "NSFileManager+OAFileManagerHelpers.h"
 
@@ -96,9 +97,18 @@
 
 - (void) openLocalRepositoryAtURL:(NSURL*)url
 {
+  [self openLocalRepositoryAtURL:url inGroup:nil atIndex:[self.localItems count]];
+}
+
+- (void) openLocalRepositoryAtURL:(NSURL*)url inGroup:(GBRepositoriesGroup*)aGroup atIndex:(NSInteger)anIndex
+{
   GBBaseRepositoryController* repoCtrl = [self openedLocalRepositoryControllerWithURL:url];
-  if (!repoCtrl)
+  if (repoCtrl)
   {
+    [self selectRepositoryController:repoCtrl];
+    return;
+  }
+  
 #if GITBOX_APP_STORE
 #else
     
@@ -124,16 +134,14 @@
     }
 #endif
     
-    repoCtrl = [GBRepositoryController repositoryControllerWithURL:url];
-    if (repoCtrl)
-    {
-      [self addLocalRepositoryController:repoCtrl];
-      [[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:url];
-    }
-  }
+  repoCtrl = [GBRepositoryController repositoryControllerWithURL:url];
+  if (!repoCtrl) return;
+  
+  [self addLocalRepositoryController:repoCtrl inGroup:aGroup atIndex:anIndex];
+  [[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:url];
+  
   [self selectRepositoryController:repoCtrl];
 }
-
 
 - (void) launchRepositoryController:(GBBaseRepositoryController*)repoCtrl
 {
@@ -146,6 +154,11 @@
 
 - (void) addLocalRepositoryController:(GBBaseRepositoryController*)repoCtrl
 {
+  [self addLocalRepositoryController:repoCtrl inGroup:nil atIndex:[self.localItems count]];
+}
+
+- (void) addLocalRepositoryController:(GBBaseRepositoryController*)repoCtrl inGroup:(GBRepositoriesGroup*)aGroup atIndex:(NSInteger)anIndex
+{
   if (!repoCtrl) return;
   
   for (id<GBRepositoriesControllerLocalItem> item in self.localItems)
@@ -155,7 +168,14 @@
   
   if ([self.delegate respondsToSelector:@selector(repositoriesController:willAddRepository:)]) { [self.delegate repositoriesController:self willAddRepository:repoCtrl]; }
   
-  [self.localItems addObject:repoCtrl];
+  NSMutableArray* targetList = aGroup ? aGroup.items : self.localItems;
+  if (anIndex == NSOutlineViewDropOnItemIndex)
+  {
+    anIndex = [targetList count];
+  }
+  if (anIndex > [targetList count]) anIndex = [targetList count];
+  if (anIndex < 0) anIndex = 0;
+  [targetList insertObject:repoCtrl atIndex:(NSUInteger)anIndex];
   
   [self launchRepositoryController:repoCtrl];
 

@@ -154,7 +154,6 @@
       
       [self.repositoriesController addLocalRepositoryController:cloneController];
       [self.repositoriesController selectRepositoryController:cloneController];
-      [[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:cloneController.url];
     }
   };
   

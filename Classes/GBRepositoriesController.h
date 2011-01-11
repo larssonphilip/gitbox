@@ -1,6 +1,7 @@
 #import "GBRepositoriesControllerDelegate.h"
 #import "GBRepositoriesControllerLocalItem.h"
 
+@class GBRepositoriesGroup;
 @class GBBaseRepositoryController;
 @class GBRepositoryController;
 @class GBCloningRepositoryController;
@@ -22,8 +23,11 @@
 - (GBCloningRepositoryController*) selectedCloningRepositoryController;
 
 - (void) openLocalRepositoryAtURL:(NSURL*)url;
+- (void) openLocalRepositoryAtURL:(NSURL*)url inGroup:(GBRepositoriesGroup*)aGroup atIndex:(NSInteger)anIndex;
 
 - (void) addLocalRepositoryController:(GBBaseRepositoryController*)repoCtrl;
+- (void) addLocalRepositoryController:(GBBaseRepositoryController*)repoCtrl inGroup:(GBRepositoriesGroup*)aGroup atIndex:(NSInteger)anIndex;
+
 - (void) removeLocalRepositoryController:(GBBaseRepositoryController*)repoCtrl;
 - (void) selectRepositoryController:(GBBaseRepositoryController*) repoCtrl;
 - (void) beginBackgroundUpdate;
