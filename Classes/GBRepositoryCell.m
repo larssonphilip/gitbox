@@ -2,6 +2,7 @@
 #import "GBBaseRepositoryController.h"
 #import "CGContext+OACGContextHelpers.h"
 #import "GBLightScroller.h"
+#import "GBSidebarOutlineView.h"
 
 
 #define kIconImageWidth		16.0
@@ -16,7 +17,6 @@
 
 @synthesize isForeground;
 @synthesize isFocused;
-@synthesize isDragged;
 
 - (void) dealloc
 {
@@ -50,9 +50,9 @@
 }
 
 
-- (void) drawInteriorWithFrame:(NSRect)cellFrame inView:(NSView*)theControlView
+- (void) drawInteriorWithFrame:(NSRect)cellFrame inView:(GBSidebarOutlineView*)theControlView
 {
-  //NSLog(@"GBRepositoryCell: drawing interior isDragged = %d", (int)self.isDragged);
+  BOOL isDragged = [theControlView preparesImageForDragging];
   NSWindow* window = [theControlView window];
   self.isFocused = ([window firstResponder] && [window firstResponder] == theControlView && 
                     [window isMainWindow] && [window isKeyWindow]);
@@ -129,7 +129,7 @@
   {
     static CGFloat leftPadding = 2.0;
     NSString* badgeLabel = [[self repositoryController] badgeLabel];
-    if (badgeLabel && [badgeLabel length] > 0 && !self.isDragged)
+    if (badgeLabel && [badgeLabel length] > 0 && !isDragged)
     {
       NSRect badgeFrame = [self drawBadge:badgeLabel inTitleFrame:textualFrame];
       textualFrame.size.width = badgeFrame.origin.x - textualFrame.origin.x - leftPadding;

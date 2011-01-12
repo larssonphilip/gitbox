@@ -530,8 +530,6 @@
       }];
     }
     
-    NSLog(@"GBSidebar: Handling dropped URLs: %@", URLs);
-    
     if ([URLs count] < 1) return NO;
     
     GBRepositoriesGroup* aGroup = [item isRepositoriesGroup] ? (GBRepositoriesGroup*)item : nil;
