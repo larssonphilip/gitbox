@@ -120,10 +120,33 @@
 
 - (void) moveLocalItem:(id<GBRepositoriesControllerLocalItem>)aLocalItem toGroup:(GBRepositoriesGroup*)aGroup atIndex:(NSInteger)anIndex
 {
-  [[aLocalItem retain] autorelease];
-#warning There is an issue when inserted in the same group after this item's position, should check that.
-  [self removeLocalItem:aLocalItem];
-  [self insertLocalItem:aLocalItem inGroup:aGroup atIndex:anIndex];
+  NSMutableArray* items = self.localItems;
+  
+  if (aGroup) items = aGroup.items;
+  
+  if ([items containsObject:aLocalItem])
+  {
+    NSUInteger insertionPosition = ((anIndex == NSOutlineViewDropOnItemIndex) ? [items count] : (NSUInteger)anIndex);
+    
+    [self insertLocalItem:aLocalItem inGroup:aGroup atIndex:anIndex];
+    NSIndexSet* indexes = [items indexesOfObjectsPassingTest:^(id obj, NSUInteger idx, BOOL *stop){
+      return (BOOL)(obj == aLocalItem && idx != insertionPosition);
+    }];
+    if ([indexes count] == 1)
+    {
+      [items removeObjectAtIndex:[indexes firstIndex]];
+    }
+    else
+    {
+      NSLog(@"ERROR: unexpected state! after insertion, item appears %d times.", (int)[indexes count]);
+      return;
+    }
+  }
+  else
+  {
+    [self removeLocalItem:[[aLocalItem retain] autorelease]];
+    [self insertLocalItem:aLocalItem inGroup:aGroup atIndex:anIndex];
+  }
   [self saveLocalRepositoriesAndGroups];
 }
 
