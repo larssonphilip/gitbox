@@ -703,7 +703,7 @@
 					<array class="NSMutableArray" key="NSToolbarIBSelectableItems"/>
 				</object>
 				<string key="NSWindowContentMaxSize">{1.79769e+308, 1.79769e+308}</string>
-				<string key="NSWindowContentMinSize">{400, 200}</string>
+				<string key="NSWindowContentMinSize">{515, 200}</string>
 				<object class="NSView" key="NSWindowView" id="568628114">
 					<nil key="NSNextResponder"/>
 					<int key="NSvFlags">256</int>
@@ -796,7 +796,7 @@
 					<reference key="NSNextKeyView" ref="50605990"/>
 				</object>
 				<string key="NSScreenRect">{{0, 0}, {1280, 778}}</string>
-				<string key="NSMinSize">{400, 255}</string>
+				<string key="NSMinSize">{515, 255}</string>
 				<string key="NSMaxSize">{1.79769e+308, 1.79769e+308}</string>
 				<string key="NSFrameAutosaveName">gitboxwindow</string>
 			</object>
@@ -1464,7 +1464,7 @@
 				<boolean value="YES" key="5.NSWindowTemplate.visibleAtLaunch"/>
 				<string key="5.editorWindowContentRectSynchronizationRect">{{201, 387}, {507, 413}}</string>
 				<boolean value="YES" key="5.windowTemplate.hasMinSize"/>
-				<string key="5.windowTemplate.minSize">{400, 200}</string>
+				<string key="5.windowTemplate.minSize">{515, 200}</string>
 				<string key="6.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<integer value="1" key="6.ImportedFromIB2"/>
 			</dictionary>
@@ -1715,6 +1715,7 @@
 					<string key="superclassName">NSViewController</string>
 					<dictionary class="NSMutableDictionary" key="actions">
 						<string key="addGroup:">id</string>
+						<string key="openInFinder:">id</string>
 						<string key="remove:">id</string>
 						<string key="selectNextRepository:">id</string>
 						<string key="selectPreviousRepository:">id</string>
@@ -1723,6 +1724,10 @@
 					<dictionary class="NSMutableDictionary" key="actionInfosByName">
 						<object class="IBActionInfo" key="addGroup:">
 							<string key="name">addGroup:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="openInFinder:">
+							<string key="name">openInFinder:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBActionInfo" key="remove:">
@@ -1744,18 +1749,41 @@
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="buyButton">NSButton</string>
+						<string key="localRepositoryMenu">NSMenu</string>
 						<string key="outlineView">NSOutlineView</string>
+						<string key="repositoriesGroupMenu">NSMenu</string>
+						<string key="submoduleMenu">NSMenu</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
 						<object class="IBToOneOutletInfo" key="buyButton">
 							<string key="name">buyButton</string>
 							<string key="candidateClassName">NSButton</string>
 						</object>
+						<object class="IBToOneOutletInfo" key="localRepositoryMenu">
+							<string key="name">localRepositoryMenu</string>
+							<string key="candidateClassName">NSMenu</string>
+						</object>
 						<object class="IBToOneOutletInfo" key="outlineView">
 							<string key="name">outlineView</string>
 							<string key="candidateClassName">NSOutlineView</string>
 						</object>
+						<object class="IBToOneOutletInfo" key="repositoriesGroupMenu">
+							<string key="name">repositoriesGroupMenu</string>
+							<string key="candidateClassName">NSMenu</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="submoduleMenu">
+							<string key="name">submoduleMenu</string>
+							<string key="candidateClassName">NSMenu</string>
+						</object>
 					</dictionary>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">Classes/GBSidebarController.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">GBSidebarController</string>
+					<string key="superclassName">NSViewController</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBUserSource</string>
 						<string key="minorKey"/>
