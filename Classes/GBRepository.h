@@ -67,6 +67,7 @@
 - (void) updateUnpushedCommitsWithBlock:(void(^)())block;
 
 - (void) initSubmodules;
+- (void) updateSubmodulesWithBlock:(void(^)())block;
 
 
 #pragma mark Mutation
