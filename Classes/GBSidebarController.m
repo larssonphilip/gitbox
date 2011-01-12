@@ -413,6 +413,10 @@
                      item:(id<GBSidebarItem>)item
             mouseLocation:(NSPoint)mouseLocation
 {
+  if (item && [self.sections containsObject:item])
+  {
+    return @"";
+  }  
   return [item nameInSidebar] ? [item nameInSidebar] : @"";
 }
 
