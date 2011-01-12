@@ -546,35 +546,6 @@
 
 
 
-//#warning Deprecated method loadCurrentLocalRef
-//- (GBRef*) loadCurrentLocalRef
-//{
-//  NSError* outError = nil;
-//  NSString* HEAD = [NSString stringWithContentsOfURL:[self gitURLWithSuffix:@"HEAD"]
-//                                            encoding:NSUTF8StringEncoding 
-//                                               error:&outError];
-//  if (!HEAD)
-//  {
-//    NSLog(@"GBRepository: loadcurrentLocalRef error: %@", outError);
-//  }
-//  HEAD = [HEAD stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-//  NSString* refprefix = @"ref: refs/heads/";
-//  GBRef* ref = [[GBRef new] autorelease];
-//  ref.repository = self;
-//  if ([HEAD hasPrefix:refprefix])
-//  {
-//    ref.name = [HEAD substringFromIndex:[refprefix length]];
-//  }
-//  else // assuming SHA1 ref
-//  {
-//    ref.commitId = HEAD;
-//  }
-//  
-//  return ref;
-//}
-
-
-
 
 
 
