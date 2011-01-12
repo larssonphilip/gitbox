@@ -248,7 +248,15 @@
   [task launchWithBlock:block];
 }
 
-+ (NSString*) configValueForKey:(NSString*)key
+
+
+
+
+# pragma mark git-config(1) interface
+
+
+
++ (NSString*) globalConfigValueForKey:(NSString*)key
 {
   OATask* task = [OATask task];
   task.launchPath = [GBTask pathToBundledBinary:@"git"];
@@ -257,7 +265,7 @@
   return [[task.output UTF8String] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 }
 
-+ (void) setConfigValue:(NSString*)value forKey:(NSString*)key
++ (void) setGlobalConfigValue:(NSString*)value forKey:(NSString*)key
 {
   OATask* task = [OATask task];
   task.launchPath = [GBTask pathToBundledBinary:@"git"];
@@ -265,24 +273,44 @@
   [task launchAndWait];
 }
 
+
++ (NSString*) configValueForKey:(NSString*)key
+{
+  OATask* task = [OATask task];
+  task.launchPath = [GBTask pathToBundledBinary:@"git"];
+  task.arguments = [NSArray arrayWithObjects:@"config", key,  nil];
+  [task launchAndWait];
+  return [[task.output UTF8String] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+}
+
++ (void) setConfigValue:(NSString*)value forKey:(NSString*)key
+{
+  OATask* task = [OATask task];
+  task.launchPath = [GBTask pathToBundledBinary:@"git"];
+  task.arguments = [NSArray arrayWithObjects:@"config",key, value,  nil];
+  [task launchAndWait];
+}
+
+
+
 + (void) configureName:(NSString*)name email:(NSString*)email withBlock:(void(^)())block
 {
   // git config --global user.name "Joey Joejoe"
   // git config --global user.email "joey@joejoe.com"
   
-  [self setConfigValue:name forKey:@"user.name"];
-  [self setConfigValue:email forKey:@"user.email"];
+  [self setGlobalConfigValue:name forKey:@"user.name"];
+  [self setGlobalConfigValue:email forKey:@"user.email"];
   block();
 }
 
 + (NSString*) globalConfiguredName
 {
-  return [self configValueForKey:@"user.name"];
+  return [self globalConfigValueForKey:@"user.name"];
 }
 
 + (NSString*) globalConfiguredEmail
 {
-  return [self configValueForKey:@"user.email"];
+  return [self globalConfigValueForKey:@"user.email"];
 }
 
 
