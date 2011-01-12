@@ -1,0 +1,73 @@
+
+USE CASES:
+
+- group: perform the block once all other blocks are finished or were not called at all (OABlockGroup).
+
+  task 1:       |---->|
+  task 2:       |------->|
+  task 3:       |-->|
+  group block:           |---->|
+
+- queue: perform at most N blocks at once, proceed with other submitted blocks as the running operations yield (OABlockQueue)
+
+  Queue with concurrency = 2
+  task 1:   |--->|
+  task 2:   |------->|
+  task 3:        |----------->|
+  task 4:            |-->|
+  task 5:                |-->|
+  task 6:                    |--->|
+  task 7:                     |------>|
+
+- coalesced task: if task is already running, attach block to its callback; otherwise start a new task or call back immediately.
+
+  Case 1: second callback is attached to a running task
+  
+  call 1:  |-------->Callback
+  call 2:       |....Callback
+  
+  Case 2: second callback is called immediately when task has already finished ("run once" task):
+  
+  call 1:  |-------->Callback
+  call 2:                      |Callback
+  
+  Case 3: task is started again if not already running:
+  
+  call 1:  |-------->Callback
+  call 2:                      |------->Callback
+  
+
+SNIPPETS:
+
+
+
+Async w/o coalescing:
+
+[self doSomething:block];
+
+Async with coalescing:
+
+[coalescer performOnce:^{
+  [self doSomething:^{
+    [coalescer flush];
+  }];
+} continuation:block];
+
+
+
+[[OACoalescer sharedInstance] performOnce:^{
+  [self doSomething:^{
+    [coalescer flush];
+  }];
+} continuation:block];
+
+
+[[OACoalescer sharedInstance] performOnceForKey:@"MySpecificOperation" block:^{
+  [self doSomething:^{
+    [coalescer flush];
+  }];
+} continuation:block];
+
+
+
+

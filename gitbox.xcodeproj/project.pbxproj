@@ -529,6 +529,7 @@
 		2097EB2E12DDF4680070AE89 /* GBSidebarOutlineView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBSidebarOutlineView.m; sourceTree = "<group>"; };
 		2097EB5912DDF7D30070AE89 /* GBChangesTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBChangesTableView.h; sourceTree = "<group>"; };
 		2097EB5A12DDF7D30070AE89 /* GBChangesTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBChangesTableView.m; sourceTree = "<group>"; };
+		2097EB8312DDFAA00070AE89 /* AsyncPatterns.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AsyncPatterns.txt; sourceTree = "<group>"; };
 		209A935911BA92B6006B0B5C /* GBFileEditingController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBFileEditingController.xib; sourceTree = "<group>"; };
 		209A935D11BA934C006B0B5C /* GBFileEditingController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBFileEditingController.h; sourceTree = "<group>"; };
 		209A935E11BA934C006B0B5C /* GBFileEditingController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBFileEditingController.m; sourceTree = "<group>"; };
@@ -827,6 +828,7 @@
 				2049942212D6878A007ED992 /* SidebarGroups.txt */,
 				2049942512D687A8007ED992 /* Settings.txt */,
 				200432AE12D8A1AE00B045C0 /* Submodules.txt */,
+				2097EB8312DDFAA00070AE89 /* AsyncPatterns.txt */,
 			);
 			name = Documents;
 			sourceTree = "<group>";
