@@ -210,6 +210,11 @@
     return NO;
   }
   
+  if (![NSApp isActive])
+  {
+    [NSApp activateIgnoringOtherApps:YES];
+  }
+  
   if ([NSAlert prompt:NSLocalizedString(@"The folder is not a git repository.\nMake it a repository?", @"App")
           description:aPath])
   {
