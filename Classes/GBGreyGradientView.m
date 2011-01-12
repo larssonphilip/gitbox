@@ -2,20 +2,17 @@
 
 @interface GBGreyGradientView ()
 @property(nonatomic,retain) NSGradient* gradient;
-@property(nonatomic,retain) NSBezierPath* bezierPath;
 @property(nonatomic,retain) NSColor* lineColor;
 @end
 
 @implementation GBGreyGradientView
 
 @synthesize gradient;
-@synthesize bezierPath;
 @synthesize lineColor;
 
 - (void) dealloc
 {
   self.gradient = nil;
-  self.bezierPath = nil;
   self.lineColor = nil;
   [super dealloc];
 }
@@ -31,12 +28,6 @@
   
   [self.gradient drawInRect:self.bounds angle:270];
   
-  if (!self.bezierPath)
-  {
-    self.bezierPath = [NSBezierPath bezierPath];
-    [self.bezierPath moveToPoint:NSMakePoint(NSMinX(self.bounds), NSMinY(self.bounds))];
-    [self.bezierPath lineToPoint:NSMakePoint(NSMaxX(self.bounds), NSMinY(self.bounds))];
-  }
 
   if (!self.lineColor)
   {
@@ -44,7 +35,12 @@
   }
   
   [self.lineColor set];
-  [self.bezierPath stroke];
+  {
+    NSBezierPath* bezierPath = [NSBezierPath bezierPath];
+    [bezierPath moveToPoint:NSMakePoint(NSMinX(self.bounds), NSMinY(self.bounds))];
+    [bezierPath lineToPoint:NSMakePoint(NSMaxX(self.bounds), NSMinY(self.bounds))];
+    [bezierPath stroke];
+  }
 }
 
 @end

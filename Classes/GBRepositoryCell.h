@@ -1,8 +1,8 @@
 @class GBBaseRepositoryController;
 @interface GBRepositoryCell : NSTextFieldCell
 
-@property(assign) BOOL isForeground;
-@property(assign) BOOL isFocused;
+@property(nonatomic,assign) BOOL isForeground;
+@property(nonatomic,assign) BOOL isFocused;
 
 + (CGFloat) cellHeight;
 - (GBBaseRepositoryController*) repositoryController;

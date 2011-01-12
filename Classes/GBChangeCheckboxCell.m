@@ -1,3 +1,4 @@
+#import "GBChangesTableView.h"
 #import "GBChangeCheckboxCell.h"
 
 @implementation GBChangeCheckboxCell
@@ -11,8 +12,14 @@
   return cell;
 }
 
-- (void) drawInteriorWithFrame:(NSRect)cellFrame inView:(NSView*)theControlView
+- (void) drawInteriorWithFrame:(NSRect)cellFrame inView:(GBChangesTableView*)theControlView
 {
+  if (theControlView.preparesImageForDragging)
+  {
+    // do not draw checkbox if dragging
+    return;
+  }
+  
   // Adjust the position:
   
   if ([theControlView isFlipped])

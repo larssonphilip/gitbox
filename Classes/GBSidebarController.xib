@@ -12,6 +12,9 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
+			<integer value="2"/>
+			<integer value="34"/>
+			<integer value="15"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -63,9 +66,51 @@
 						<reference key="NSOnImage" ref="691557078"/>
 						<reference key="NSMixedImage" ref="25276299"/>
 					</object>
+					<object class="NSMenuItem" id="505857977">
+						<reference key="NSMenu" ref="248300724"/>
+						<bool key="NSIsDisabled">YES</bool>
+						<bool key="NSIsSeparator">YES</bool>
+						<string key="NSTitle"/>
+						<string key="NSKeyEquiv"/>
+						<int key="NSMnemonicLoc">2147483647</int>
+						<reference key="NSOnImage" ref="691557078"/>
+						<reference key="NSMixedImage" ref="25276299"/>
+					</object>
 					<object class="NSMenuItem" id="172606606">
 						<reference key="NSMenu" ref="248300724"/>
-						<string key="NSTitle">Remove</string>
+						<string key="NSTitle">Remove from Sidebar</string>
+						<string key="NSKeyEquiv"/>
+						<int key="NSMnemonicLoc">2147483647</int>
+						<reference key="NSOnImage" ref="691557078"/>
+						<reference key="NSMixedImage" ref="25276299"/>
+					</object>
+				</object>
+			</object>
+			<object class="NSMenu" id="825718441">
+				<string key="NSTitle"/>
+				<object class="NSMutableArray" key="NSMenuItems">
+					<bool key="EncodedWithXMLCoder">YES</bool>
+					<object class="NSMenuItem" id="672391778">
+						<reference key="NSMenu" ref="825718441"/>
+						<string key="NSTitle">Rename</string>
+						<string key="NSKeyEquiv"/>
+						<int key="NSMnemonicLoc">2147483647</int>
+						<reference key="NSOnImage" ref="691557078"/>
+						<reference key="NSMixedImage" ref="25276299"/>
+					</object>
+					<object class="NSMenuItem" id="167472772">
+						<reference key="NSMenu" ref="825718441"/>
+						<bool key="NSIsDisabled">YES</bool>
+						<bool key="NSIsSeparator">YES</bool>
+						<string key="NSTitle"/>
+						<string key="NSKeyEquiv"/>
+						<int key="NSMnemonicLoc">2147483647</int>
+						<reference key="NSOnImage" ref="691557078"/>
+						<reference key="NSMixedImage" ref="25276299"/>
+					</object>
+					<object class="NSMenuItem" id="916694320">
+						<reference key="NSMenu" ref="825718441"/>
+						<string key="NSTitle">Remove from Sidebar</string>
 						<string key="NSKeyEquiv"/>
 						<int key="NSMnemonicLoc">2147483647</int>
 						<reference key="NSOnImage" ref="691557078"/>
@@ -74,7 +119,7 @@
 				</object>
 			</object>
 			<object class="NSCustomView" id="161528521">
-				<nil key="NSNextResponder"/>
+				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">274</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -254,6 +299,7 @@
 					</object>
 				</object>
 				<string key="NSFrameSize">{261, 351}</string>
+				<reference key="NSSuperview"/>
 				<string key="NSClassName">NSView</string>
 			</object>
 		</object>
@@ -291,14 +337,6 @@
 						<reference key="destination" ref="172606606"/>
 					</object>
 					<int key="connectionID">19</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">menu</string>
-						<reference key="source" ref="269951935"/>
-						<reference key="destination" ref="248300724"/>
-					</object>
-					<int key="connectionID">20</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
@@ -340,6 +378,30 @@
 					</object>
 					<int key="connectionID">32</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">localRepositoryMenu</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="248300724"/>
+					</object>
+					<int key="connectionID">33</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">remove:</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="916694320"/>
+					</object>
+					<int key="connectionID">39</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">repositoriesGroupMenu</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="825718441"/>
+					</object>
+					<int key="connectionID">41</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -376,8 +438,10 @@
 							<reference ref="172606606"/>
 							<reference ref="787537598"/>
 							<reference ref="236467433"/>
+							<reference ref="505857977"/>
 						</object>
 						<reference key="parent" ref="0"/>
+						<string key="objectName">Local Repository Menu</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">16</int>
@@ -462,6 +526,38 @@
 						<reference key="object" ref="160238440"/>
 						<reference key="parent" ref="356035476"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">34</int>
+						<reference key="object" ref="825718441"/>
+						<object class="NSMutableArray" key="children">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<reference ref="916694320"/>
+							<reference ref="167472772"/>
+							<reference ref="672391778"/>
+						</object>
+						<reference key="parent" ref="0"/>
+						<string key="objectName">Repositories Group Menu</string>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">37</int>
+						<reference key="object" ref="916694320"/>
+						<reference key="parent" ref="825718441"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">42</int>
+						<reference key="object" ref="505857977"/>
+						<reference key="parent" ref="248300724"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">43</int>
+						<reference key="object" ref="167472772"/>
+						<reference key="parent" ref="825718441"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">44</int>
+						<reference key="object" ref="672391778"/>
+						<reference key="parent" ref="825718441"/>
+					</object>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="flattenedProperties">
@@ -485,21 +581,28 @@
 					<string>28.IBPluginDependency</string>
 					<string>3.CustomClassName</string>
 					<string>3.IBPluginDependency</string>
+					<string>34.IBEditorWindowLastContentRect</string>
+					<string>34.IBPluginDependency</string>
+					<string>37.IBPluginDependency</string>
 					<string>4.IBPluginDependency</string>
+					<string>42.IBPluginDependency</string>
+					<string>43.IBPluginDependency</string>
+					<string>44.IBPluginDependency</string>
+					<string>5.CustomClassName</string>
 					<string>5.IBPluginDependency</string>
 					<string>7.IBPluginDependency</string>
 				</object>
 				<object class="NSMutableArray" key="dict.values">
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{102, 569}, {170, 63}}</string>
+					<string>{{217, 603}, {198, 73}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>GBLightScrollView</string>
 					<string>{{191, 222}, {227, 312}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<object class="NSAffineTransform">
-						<bytes key="NSTransformStruct">P4AAAL+AAADCLAAAw74AAA</bytes>
+						<bytes key="NSTransformStruct">P4AAAL+AAAAAAAAAw66AAA</bytes>
 					</object>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -512,7 +615,14 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>GBLightScroller</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>{{197, 403}, {198, 53}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>GBSidebarOutlineView</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 				</object>
@@ -533,7 +643,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">32</int>
+			<int key="maxID">44</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -768,6 +878,7 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>addGroup:</string>
 							<string>editGitConfig:</string>
 							<string>editGitIgnore:</string>
 							<string>editGlobalGitConfig:</string>
@@ -780,6 +891,7 @@
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>
@@ -795,6 +907,7 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>addGroup:</string>
 							<string>editGitConfig:</string>
 							<string>editGitIgnore:</string>
 							<string>editGlobalGitConfig:</string>
@@ -807,6 +920,10 @@
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<object class="IBActionInfo">
+								<string key="name">addGroup:</string>
+								<string key="candidateClassName">id</string>
+							</object>
 							<object class="IBActionInfo">
 								<string key="name">editGitConfig:</string>
 								<string key="candidateClassName">id</string>
@@ -948,6 +1065,7 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>addGroup:</string>
 							<string>openInFinder:</string>
 							<string>remove:</string>
 							<string>selectNextRepository:</string>
@@ -956,6 +1074,7 @@
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>
@@ -967,6 +1086,7 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>addGroup:</string>
 							<string>openInFinder:</string>
 							<string>remove:</string>
 							<string>selectNextRepository:</string>
@@ -975,6 +1095,10 @@
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<object class="IBActionInfo">
+								<string key="name">addGroup:</string>
+								<string key="candidateClassName">id</string>
+							</object>
 							<object class="IBActionInfo">
 								<string key="name">openInFinder:</string>
 								<string key="candidateClassName">id</string>
@@ -1002,12 +1126,18 @@
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>buyButton</string>
+							<string>localRepositoryMenu</string>
 							<string>outlineView</string>
+							<string>repositoriesGroupMenu</string>
+							<string>submoduleMenu</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>NSButton</string>
+							<string>NSMenu</string>
 							<string>NSOutlineView</string>
+							<string>NSMenu</string>
+							<string>NSMenu</string>
 						</object>
 					</object>
 					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
@@ -1015,7 +1145,10 @@
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>buyButton</string>
+							<string>localRepositoryMenu</string>
 							<string>outlineView</string>
+							<string>repositoriesGroupMenu</string>
+							<string>submoduleMenu</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
@@ -1024,14 +1157,42 @@
 								<string key="candidateClassName">NSButton</string>
 							</object>
 							<object class="IBToOneOutletInfo">
+								<string key="name">localRepositoryMenu</string>
+								<string key="candidateClassName">NSMenu</string>
+							</object>
+							<object class="IBToOneOutletInfo">
 								<string key="name">outlineView</string>
 								<string key="candidateClassName">NSOutlineView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">repositoriesGroupMenu</string>
+								<string key="candidateClassName">NSMenu</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">submoduleMenu</string>
+								<string key="candidateClassName">NSMenu</string>
 							</object>
 						</object>
 					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">Classes/GBSidebarController.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">GBSidebarController</string>
+					<string key="superclassName">NSViewController</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBUserSource</string>
 						<string key="minorKey"/>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">GBSidebarOutlineView</string>
+					<string key="superclassName">NSOutlineView</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">Classes/GBSidebarOutlineView.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">

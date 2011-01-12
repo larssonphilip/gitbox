@@ -1,6 +1,7 @@
 #import "GBBaseRepositoryController.h"
 #import "NSString+OAStringHelpers.h"
 #import "GBRepositoryCell.h"
+#import "OABlockQueue.h"
 
 @implementation GBBaseRepositoryController
 
@@ -108,24 +109,58 @@
 }
 
 
-- (NSCell*) cell
+
+#pragma mark GBRepositoriesControllerLocalItem
+
+
+- (void) enumerateRepositoriesWithBlock:(void(^)(GBBaseRepositoryController* repoCtrl))aBlock
 {
-  NSCell* cell = [[[self cellClass] new] autorelease];
-  [cell setRepresentedObject:self];
-  return cell;
+  if (aBlock) aBlock(self);
 }
 
-- (Class) cellClass
+- (GBBaseRepositoryController*) findRepositoryControllerWithURL:(NSURL*)aURL
 {
-  return [GBRepositoryCell class];
+  if ([[self url] isEqual:aURL]) return self;
+  // TODO: add check for submodules here
+  return nil;
 }
 
+- (NSUInteger) repositoriesCount
+{
+  return 1;
+}
 
+- (BOOL) hasRepositoryController:(GBBaseRepositoryController*)repoCtrl
+{
+  return (self == repoCtrl);
+}
+
+- (void) removeLocalItem:(id<GBRepositoriesControllerLocalItem>)aLocalItem
+{
+  // no op
+}
+
+- (id) plistRepresentationForUserDefaults
+{
+  NSData* data = [[self url] bookmarkDataWithOptions:NSURLBookmarkCreationMinimalBookmark
+                          includingResourceValuesForKeys:nil
+                                           relativeToURL:nil
+                                                   error:NULL];
+  if (!data) return nil;
+  return [NSDictionary dictionaryWithObjectsAndKeys:
+          data, @"URL", 
+          nil];
+}
 
 
 
 #pragma mark GBSidebarItem
 
+
+- (NSString*) sidebarItemIdentifier
+{
+  return [NSString stringWithFormat:@"GBBaseRepositoryController:%p", self];
+}
 
 - (NSInteger) numberOfChildrenInSidebar
 {
@@ -142,10 +177,74 @@
   return nil;
 }
 
+- (id<GBSidebarItem>) findItemWithIndentifier:(NSString*)identifier
+{
+  if (!identifier) return nil;
+  if ([[self sidebarItemIdentifier] isEqual:identifier]) return self;
+  return nil;
+}
+
 - (NSString*) nameInSidebar
 {
   return [[[self url] path] lastPathComponent];
 }
+
+- (GBBaseRepositoryController*) repositoryController
+{
+  return self;
+}
+
+- (BOOL) isRepository
+{
+  return YES;
+}
+
+- (BOOL) isRepositoriesGroup
+{
+  return NO;
+}
+
+- (BOOL) isSubmodule
+{
+  return NO;
+}
+
+- (NSCell*) sidebarCell
+{
+  NSCell* cell = [[[self sidebarCellClass] new] autorelease];
+  [cell setRepresentedObject:self];
+  return cell;
+}
+
+- (Class) sidebarCellClass
+{
+  return [GBRepositoryCell class];
+}
+
+- (BOOL) isDraggableInSidebar
+{
+  return YES;
+}
+
+
+#pragma mark NSPasteboardWriting
+
+
+- (NSArray*) writableTypesForPasteboard:(NSPasteboard *)pasteboard
+{
+  return [[NSArray arrayWithObject:GBSidebarItemPasteboardType] 
+          arrayByAddingObjectsFromArray:[[self url] writableTypesForPasteboard:pasteboard]];
+}
+
+- (id)pasteboardPropertyListForType:(NSString *)type
+{
+  if ([type isEqual:GBSidebarItemPasteboardType])
+  {
+    return [self sidebarItemIdentifier];
+  }
+  return [[self url] pasteboardPropertyListForType:type];
+}
+
 
 
 @end

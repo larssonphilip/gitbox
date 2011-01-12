@@ -1,34 +1,19 @@
-@protocol GBSidebarItem <NSObject>
+
+#define GBSidebarItemPasteboardType @"com.oleganza.gitbox.GBSidebarItemPasteboardType"
+
+@class GBBaseRepositoryController;
+@protocol GBSidebarItem <NSObject, NSPasteboardWriting>
+- (NSString*) sidebarItemIdentifier;
 - (NSInteger) numberOfChildrenInSidebar;
 - (BOOL) isExpandableInSidebar;
 - (id<GBSidebarItem>) childForIndexInSidebar:(NSInteger)index;
+- (id<GBSidebarItem>) findItemWithIndentifier:(NSString*)identifier;
 - (NSString*) nameInSidebar;
-@end
-
-@interface NSArray (GBSidebarItem) <GBSidebarItem>
-@end
-
-@implementation NSArray (GBSidebarItem)
-
-- (NSInteger) numberOfChildrenInSidebar
-{
-  return (NSInteger)[self count];
-}
-
-- (BOOL) isExpandableInSidebar
-{
-  return YES;
-}
-
-- (id<GBSidebarItem>) childForIndexInSidebar:(NSInteger)index
-{
-  if (index < 0 || index >= [self count]) return nil;
-  return [self objectAtIndex:(NSUInteger)index];
-}
-
-- (NSString*) nameInSidebar
-{
-  return nil;
-}
-
+- (GBBaseRepositoryController*) repositoryController;
+- (BOOL) isRepository;
+- (BOOL) isRepositoriesGroup;
+- (BOOL) isSubmodule;
+- (NSCell*) sidebarCell;
+- (Class) sidebarCellClass;
+- (BOOL) isDraggableInSidebar;
 @end

@@ -4,7 +4,7 @@
 Features:
 
 + Checkout arbitrary commit from history.
-+ New right pane design with a user picture (fetched from Address Book or Gravatar), clickable parent commits' IDs and a non-clipped message scrollable with the list.
++ New right pane design with a user picture (fetched from Address Book or Gravatar).
 + New commit dialog (built in to the list of changes) which solves several usability issues.
 
 Enhancements:
@@ -13,7 +13,6 @@ Enhancements:
 + Improved performance of autofetching. Now remote branches are checked more frequently and without UI blocking and fetch is performed from all branches when needed.
 + Cmd+Up and Cmd+Down in commit dialog now go through the entire git history instead of the recently entered messages.
 + Push button is enabled only when there are commits to push
-
 
 Bug fixes:
 
@@ -25,6 +24,9 @@ Bug fixes:
 + Fixed behavior of branches with slashes (e.g. "oleg/feature1") and dots (e.g. "v1.2") [reported by Christian van der Leeden, Falk Hoppe]
 + Fixed various bugs with fetching remote branches.
 + Fixed various bugs with updating local and remote branches.
++ Fixed tooltip rendering in sidebar
++ Fixed right-click menu target in sidebar
++ Fixed Araxis binary name (araxis -> compare)
 
 -----------------------------------------------------------
 
@@ -50,7 +52,7 @@ Bug fixes:
 
 Bugs:
 
-- bug: should change "araxis" for "compare"
+- bug: when cloning repo is gragged to some position, finished repo ctrl is not inserted in its place
 - bug: multi-line commit messages are not displayed correctly [ticket 973]
 - bug: in the right branch menu should display the current local branch, but disable it (currently it is not displayed at all)
 - bug: autofetch sometimes does not work: maybe some crap is returned from ls-remote when communicating with a remote server; test with berger; seems like it stops working after some time or after gitbox restart. Also check that performSelector:withObject:afterDelay does not fail for big values.
@@ -68,6 +70,9 @@ Bugs:
 - bug: when switching the branch or pulling/pushing, the list of commits flashes: should add a delay before reloading the commits
 - bug: android repo checked out on a commit has branch menus disabled.
 - bug: when /Developer is symlinked to another partition, opendiff cannot launch FileMerge: "exception raised trying to run FileMerge: launch path not accessible" [Jeff Snell <jeffsnell@mac.com>]
+- bug: cannot commit a file with space in the path or something [Matthew Temple <matt@mattytemple.com>]
+- bug: sidebar: when collapsing a group, spinners remain spinning indefinitely
+
 
 Enhancements:
 
@@ -86,6 +91,7 @@ Enhancements:
 
 Done for 1.2:
 
++ bug: should change "araxis" for "compare"
 + toolbar alignment
 + [+] button for adding a repo
 + sidebar: add spinners to each item (like in Mail.app)

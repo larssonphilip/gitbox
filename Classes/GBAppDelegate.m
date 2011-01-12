@@ -154,7 +154,6 @@
       
       [self.repositoriesController addLocalRepositoryController:cloneController];
       [self.repositoriesController selectRepositoryController:cloneController];
-      [[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:cloneController.url];
     }
   };
   
@@ -210,9 +209,11 @@
     
     NSArray* urls = [[self.URLsToOpenAfterLaunch retain] autorelease];
     self.URLsToOpenAfterLaunch = nil;
-    for (NSURL* url in urls)
+    for (NSURL* aURL in urls)
     {
-      [self.repositoriesController tryOpenLocalRepositoryAtURL:url];
+      [GBRepository validateRepositoryURL:aURL withBlock:^(BOOL isValid){
+        if (isValid) [self.repositoriesController openLocalRepositoryAtURL:aURL];
+      }];
     }
     
     if (![[NSUserDefaults standardUserDefaults] objectForKey:@"WelcomeWasDisplayed"])
@@ -244,7 +245,9 @@
     [self.URLsToOpenAfterLaunch addObject:aURL];
     return YES;
   }
-  return [self.repositoriesController tryOpenLocalRepositoryAtURL:aURL];
+  return [GBRepository validateRepositoryURL:aURL withBlock:^(BOOL isValid){
+    if (isValid) [self.repositoriesController openLocalRepositoryAtURL:aURL];
+  }];
 }
 
 - (void)applicationDidBecomeActive:(NSNotification *)aNotification
@@ -270,94 +273,12 @@
 
 - (void) loadRepositories
 {
-  NSArray* bookmarks = [[NSUserDefaults standardUserDefaults] objectForKey:@"GBRepositoriesController_localRepositories"];
-  NSData* selectedLocalRepoData = [[NSUserDefaults standardUserDefaults] objectForKey:@"GBRepositoriesController_selectedLocalRepository"];
-  
-#if GITBOX_APP_STORE
-#else
-  NSString* license = [[NSUserDefaults standardUserDefaults] objectForKey:@"license"];
-  int lim = 1;
-#endif
-  int i = 0;
-  
-  NSURL* selectedURL = nil;
-  if (selectedLocalRepoData && [selectedLocalRepoData isKindOfClass:[NSData class]])
-  {
-    NSURL* aURL = [NSURL URLByResolvingBookmarkData:selectedLocalRepoData 
-                                            options:NSURLBookmarkResolutionWithoutUI | 
-                   NSURLBookmarkResolutionWithoutMounting
-                                      relativeToURL:nil 
-                                bookmarkDataIsStale:NO 
-                                              error:NULL];
-    if (aURL)
-    {
-      selectedURL = aURL;
-      if ([GBRepository validRepositoryPathForPath:[aURL path]])
-      {
-        [self.repositoriesController openLocalRepositoryAtURL:aURL];
-        i++;
-      }
-    }
-  }
-  
-  if (bookmarks && [bookmarks isKindOfClass:[NSArray class]])
-  {
-    for (NSData* bookmarkData in bookmarks)
-    {
-#if GITBOX_APP_STORE
-#else
-      if (i >= lim && !OAValidateLicenseNumber(license))
-      {
-        break;
-      }
-#endif
-      NSURL* aURL = [NSURL URLByResolvingBookmarkData:bookmarkData 
-                                             options:NSURLBookmarkResolutionWithoutUI | 
-                    NSURLBookmarkResolutionWithoutMounting
-                                       relativeToURL:nil 
-                                 bookmarkDataIsStale:NO 
-                                               error:NULL];
-      NSString* path = [aURL path];
-      if ([NSFileManager isWritableDirectoryAtPath:path] &&
-          [GBRepository validRepositoryPathForPath:path] && (!selectedURL || ![selectedURL isEqual:aURL]))
-      {
-        GBRepositoryController* repoCtrl = [GBRepositoryController repositoryControllerWithURL:aURL];
-        [self.repositoriesController addLocalRepositoryController:repoCtrl];
-        i++;
-      } // if path is valid repo
-    } // for
-  } // if paths
+  [self.repositoriesController loadLocalRepositoriesAndGroups];
 }
 
 - (void) saveRepositories
 {
-  NSMutableArray* bookmarks = [NSMutableArray array];
-  NSData* selectedLocalRepoData = nil;
-  for (GBRepositoryController* repoCtrl in self.repositoriesController.localRepositoryControllers)
-  {
-    NSData* bookmarkData = [[repoCtrl url] bookmarkDataWithOptions:NSURLBookmarkCreationMinimalBookmark
-                                    includingResourceValuesForKeys:nil
-                                                     relativeToURL:nil
-                                                             error:NULL];
-    if (bookmarkData)
-    {
-      [bookmarks addObject:bookmarkData];
-      if (repoCtrl == self.repositoriesController.selectedRepositoryController)
-      {
-        selectedLocalRepoData = bookmarkData;
-      }
-    }
-  }
-  [[NSUserDefaults standardUserDefaults] setObject:bookmarks forKey:@"GBRepositoriesController_localRepositories"];
-  if (selectedLocalRepoData)
-  {
-    [[NSUserDefaults standardUserDefaults] setObject:selectedLocalRepoData 
-                                              forKey:@"GBRepositoriesController_selectedLocalRepository"];
-  }
-  else
-  {
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"GBRepositoriesController_selectedLocalRepository"];
-  }
+  [self.repositoriesController saveLocalRepositoriesAndGroups];
 }
 
 

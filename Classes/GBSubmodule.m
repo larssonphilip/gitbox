@@ -60,4 +60,89 @@
   [task launchWithBlock:block];
 }
 
+
+
+#pragma mark GBSidebarItem
+
+- (NSString*) sidebarItemIdentifier
+{
+  return [NSString stringWithFormat:@"GBSubmodule:%p", self];
+}
+
+- (NSInteger) numberOfChildrenInSidebar
+{
+  return 0;
+}
+
+- (BOOL) isExpandableInSidebar
+{
+  return NO;
+}
+
+- (id<GBSidebarItem>) childForIndexInSidebar:(NSInteger)index
+{
+  return nil;
+}
+
+- (id<GBSidebarItem>) findItemWithIndentifier:(NSString*)identifier
+{
+  if (!identifier) return nil;
+  if ([[self sidebarItemIdentifier] isEqual:identifier]) return self;
+  return nil;
+}
+
+- (NSString*) nameInSidebar
+{
+  return [[[self.repository url] path] lastPathComponent];
+}
+
+- (GBBaseRepositoryController*) repositoryController
+{
+  // TODO: return self.repositoryController
+  return nil;
+}
+
+- (BOOL) isRepository
+{
+  return NO;
+}
+
+- (BOOL) isRepositoriesGroup
+{
+  return NO;
+}
+
+- (BOOL) isSubmodule
+{
+  return YES;
+}
+
+- (NSCell*) sidebarCell
+{
+  NSCell* cell = [[[self sidebarCellClass] new] autorelease];
+  [cell setRepresentedObject:self];
+  return cell;
+}
+
+- (Class) sidebarCellClass
+{
+  // TODO; return [GBSubmoduleCell class];
+  return nil;
+}
+
+- (BOOL) isDraggableInSidebar
+{
+  return YES;
+}
+
+- (NSArray*) writableTypesForPasteboard:(NSPasteboard *)pasteboard
+{
+  return [[self localURL] writableTypesForPasteboard:pasteboard];
+}
+
+- (id)pasteboardPropertyListForType:(NSString *)type
+{
+  return [[self localURL] pasteboardPropertyListForType:type];
+}
+
 @end

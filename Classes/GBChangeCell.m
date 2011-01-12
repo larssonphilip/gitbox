@@ -1,5 +1,6 @@
 #import "GBChange.h"
 #import "GBChangeCell.h"
+#import "GBChangesTableView.h"
 #import "NSString+OAStringHelpers.h"
 
 #define kIconImageWidth		16.0
@@ -7,7 +8,6 @@
 @interface GBChangeCell ()
 
 @property(nonatomic, copy) NSParagraphStyle* truncatingParagraphStyle;
-@property(nonatomic, assign) BOOL isDragging;
 @end
 
 
@@ -17,7 +17,6 @@
 @synthesize truncatingParagraphStyle;
 
 @synthesize isFocused;
-@synthesize isDragging;
 @dynamic change;
 
 - (void) dealloc
@@ -64,8 +63,10 @@
   return [self representedObject];
 }
 
-- (void) drawInteriorWithFrame:(NSRect)cellFrame inView:(NSView*)theControlView
+- (void) drawInteriorWithFrame:(NSRect)cellFrame inView:(GBChangesTableView*)theControlView
 {
+  BOOL isDragging = theControlView.preparesImageForDragging;
+  
   NSRect currentFrame = cellFrame; // this will shrink as we draw stuff from left to right
   
   NSWindow* window = [theControlView window];
@@ -116,7 +117,7 @@
   
   // Draw the status
   
-  if (!self.isDragging)
+  if (!isDragging)
   {
     NSColor* textColor = [NSColor colorWithCalibratedWhite:0.3 alpha:1.0];
     
@@ -184,7 +185,7 @@
                                              nil] autorelease];
 
     // If moved, we'll display the first path, then arrow and icon+relative path for the second one
-    if ([aChange isMovedOrRenamedFile] && dstURL)
+    if ([aChange isMovedOrRenamedFile] && dstURL && !isDragging)
     {
       // - Calculate how much space is needed for icon and arrow
       // - Calculate sizes for texts
@@ -270,7 +271,13 @@
     }
     else
     {
-      [[srcURL relativePath] drawInRect:currentFrame withAttributes:attributes];
+      NSURL* url = srcURL;
+      if (dstURL && isDragging)
+      {
+        url = dstURL;
+      }
+      
+      [[url relativePath] drawInRect:currentFrame withAttributes:attributes];
     }
         
   }
@@ -287,18 +294,6 @@
 {
   return NO;
 }
-
-//- (BOOL)startTrackingAt:(NSPoint)startPoint inView:(NSView *)controlView
-//{
-//  self.isDragging = YES;
-//  return [super startTrackingAt:startPoint inView:controlView];
-//}
-//
-//- (void)stopTracking:(NSPoint)lastPoint at:(NSPoint)stopPoint inView:(NSView *)controlView mouseIsUp:(BOOL)flag
-//{
-//  self.isDragging = NO;
-//  [super stopTracking:lastPoint at:stopPoint inView:controlView mouseIsUp:flag];
-//}
 
 
 

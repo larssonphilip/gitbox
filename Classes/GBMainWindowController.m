@@ -310,6 +310,15 @@
 #pragma mark GBRepositoriesControllerDelegate
 
 
+- (void) repositoriesControllerDidLoadLocalRepositoriesAndGroups:(GBRepositoriesController*)reposCtrl
+{
+  [reposCtrl enumerateLocalRepositoriesWithBlock:^(GBBaseRepositoryController* repoCtrl){
+    repoCtrl.delegate = self;
+  }];
+  [self.sourcesController expandLocalRepositories];
+  [self.sourcesController update];
+  [self.toolbarController update];
+}
 
 - (void) repositoriesController:(GBRepositoriesController*)reposCtrl didAddRepository:(GBBaseRepositoryController*)repoCtrl
 {
