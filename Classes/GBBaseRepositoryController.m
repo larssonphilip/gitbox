@@ -135,7 +135,7 @@
   return (self == repoCtrl);
 }
 
-- (void) removeRepository:(GBBaseRepositoryController*)repoCtrl
+- (void) removeLocalItem:(id<GBRepositoriesControllerLocalItem>)aLocalItem
 {
   // no op
 }
@@ -174,6 +174,13 @@
 
 - (id<GBSidebarItem>) childForIndexInSidebar:(NSInteger)index
 {
+  return nil;
+}
+
+- (id<GBSidebarItem>) findItemWithIndentifier:(NSString*)identifier
+{
+  if (!identifier) return nil;
+  if ([[self sidebarItemIdentifier] isEqual:identifier]) return self;
   return nil;
 }
 

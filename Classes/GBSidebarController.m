@@ -486,10 +486,11 @@
   {
     // inner dragging:
     // Accept only groups and sections
-    
+    if (proposedItem == [self localRepositoriesSection] || [proposedItem isRepositoriesGroup])
+    {
+      return NSDragOperationGeneric;
+    }
   }
-
-    
   return NSDragOperationNone;
 }
 
@@ -501,12 +502,24 @@
 {
   
   NSPasteboard* pasteboard = [draggingInfo draggingPasteboard];
-  id<GBSidebarItem> item = [pasteboard propertyListForType:GBSidebarItemPasteboardType];
+  NSString* itemIdentifier  = [pasteboard propertyListForType:GBSidebarItemPasteboardType];
   
-  if (item)
+  if (itemIdentifier)
   {
     // Handle local drag and drop
     NSLog(@"TODO: Handle local drop");
+    
+    id<GBSidebarItem> draggedItem = [[self localRepositoriesSection] findItemWithIndentifier:itemIdentifier];
+    
+    if (!draggedItem) return NO;
+    
+    GBRepositoriesGroup* aGroup = [targetItem isRepositoriesGroup] ? (GBRepositoriesGroup*)targetItem : nil;
+    
+    [self.repositoriesController moveLocalItem:(id<GBRepositoriesControllerLocalItem>)draggedItem toGroup:aGroup atIndex:childIndex];
+    
+    [self update];
+    
+    return YES;
   }
   else
   {
@@ -532,7 +545,7 @@
     
     if ([URLs count] < 1) return NO;
     
-    GBRepositoriesGroup* aGroup = [item isRepositoriesGroup] ? (GBRepositoriesGroup*)item : nil;
+    GBRepositoriesGroup* aGroup = [targetItem isRepositoriesGroup] ? (GBRepositoriesGroup*)targetItem : nil;
     
     [NSObject performBlock:^{
       for (NSURL* aURL in URLs)

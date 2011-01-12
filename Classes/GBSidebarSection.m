@@ -45,6 +45,18 @@
   return [self.items objectAtIndex:(NSUInteger)index];
 }
 
+- (id<GBSidebarItem>) findItemWithIndentifier:(NSString*)identifier
+{
+  if (!identifier) return nil;
+  if ([[self sidebarItemIdentifier] isEqual:identifier]) return self;
+  for (id<GBSidebarItem> item in self.items)
+  {
+    id i = [item findItemWithIndentifier:identifier];
+    if (i) return i;
+  }
+  return nil;
+}
+
 - (NSString*) nameInSidebar
 {
   return self.name;

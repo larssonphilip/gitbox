@@ -22,6 +22,10 @@
 - (GBRepositoryController*) selectedLocalRepositoryController;
 - (GBCloningRepositoryController*) selectedCloningRepositoryController;
 
+- (void) insertLocalItem:(id<GBRepositoriesControllerLocalItem>)aLocalItem inGroup:(GBRepositoriesGroup*)aGroup atIndex:(NSInteger)anIndex;
+- (void) removeLocalItem:(id<GBRepositoriesControllerLocalItem>)aLocalItem;
+- (void) moveLocalItem:(id<GBRepositoriesControllerLocalItem>)aLocalItem toGroup:(GBRepositoriesGroup*)aGroup atIndex:(NSInteger)anIndex;
+
 - (void) openLocalRepositoryAtURL:(NSURL*)url;
 - (void) openLocalRepositoryAtURL:(NSURL*)url inGroup:(GBRepositoriesGroup*)aGroup atIndex:(NSInteger)anIndex;
 

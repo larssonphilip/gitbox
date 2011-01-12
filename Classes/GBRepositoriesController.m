@@ -95,6 +95,42 @@
 
 
 
+- (void) insertLocalItem:(id<GBRepositoriesControllerLocalItem>)aLocalItem inGroup:(GBRepositoriesGroup*)aGroup atIndex:(NSInteger)anIndex
+{
+  if (!aLocalItem) return;
+  
+  NSMutableArray* targetList = aGroup ? aGroup.items : self.localItems;
+  if (anIndex == NSOutlineViewDropOnItemIndex)
+  {
+    anIndex = [targetList count];
+  }
+  if (anIndex > [targetList count]) anIndex = [targetList count];
+  if (anIndex < 0) anIndex = 0;
+  [targetList insertObject:aLocalItem atIndex:(NSUInteger)anIndex];
+}
+
+- (void) removeLocalItem:(id<GBRepositoriesControllerLocalItem>)aLocalItem
+{
+  [self.localItems removeObject:aLocalItem];
+  for (id<GBRepositoriesControllerLocalItem> item in self.localItems)
+  {
+    [item removeLocalItem:aLocalItem];
+  }
+}
+
+- (void) moveLocalItem:(id<GBRepositoriesControllerLocalItem>)aLocalItem toGroup:(GBRepositoriesGroup*)aGroup atIndex:(NSInteger)anIndex
+{
+  [[aLocalItem retain] autorelease];
+#warning There is an issue when inserted in the same group after this item's position, should check that.
+  [self removeLocalItem:aLocalItem];
+  [self insertLocalItem:aLocalItem inGroup:aGroup atIndex:anIndex];
+  [self saveLocalRepositoriesAndGroups];
+}
+
+
+
+
+
 - (void) openLocalRepositoryAtURL:(NSURL*)url
 {
   [self openLocalRepositoryAtURL:url inGroup:nil atIndex:[self.localItems count]];
@@ -168,21 +204,14 @@
   
   if ([self.delegate respondsToSelector:@selector(repositoriesController:willAddRepository:)]) { [self.delegate repositoriesController:self willAddRepository:repoCtrl]; }
   
-  NSMutableArray* targetList = aGroup ? aGroup.items : self.localItems;
-  if (anIndex == NSOutlineViewDropOnItemIndex)
-  {
-    anIndex = [targetList count];
-  }
-  if (anIndex > [targetList count]) anIndex = [targetList count];
-  if (anIndex < 0) anIndex = 0;
-  [targetList insertObject:repoCtrl atIndex:(NSUInteger)anIndex];
-  
+  [self insertLocalItem:repoCtrl inGroup:aGroup atIndex:anIndex];
   [self launchRepositoryController:repoCtrl];
 
   if ([self.delegate respondsToSelector:@selector(repositoriesController:didAddRepository:)]) { [self.delegate repositoriesController:self didAddRepository:repoCtrl]; }
   
   [self saveLocalRepositoriesAndGroups];
 }
+
 
 - (void) removeLocalRepositoryController:(GBBaseRepositoryController*)repoCtrl
 {
@@ -196,11 +225,7 @@
   if ([self.delegate respondsToSelector:@selector(repositoriesController:willRemoveRepository:)]) { [self.delegate repositoriesController:self willRemoveRepository:repoCtrl]; }
   [repoCtrl stop];
   
-  [self.localItems removeObject:repoCtrl];
-  for (id<GBRepositoriesControllerLocalItem> item in self.localItems)
-  {
-    [item removeRepository:repoCtrl];
-  }
+  [self removeLocalItem:repoCtrl];
   
   if ([self.delegate respondsToSelector:@selector(repositoriesController:didRemoveRepository:)]) { [self.delegate repositoriesController:self didRemoveRepository:repoCtrl]; }
   

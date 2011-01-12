@@ -7,6 +7,7 @@
 - (NSInteger) numberOfChildrenInSidebar;
 - (BOOL) isExpandableInSidebar;
 - (id<GBSidebarItem>) childForIndexInSidebar:(NSInteger)index;
+- (id<GBSidebarItem>) findItemWithIndentifier:(NSString*)identifier;
 - (NSString*) nameInSidebar;
 - (GBBaseRepositoryController*) repositoryController;
 - (BOOL) isRepository;

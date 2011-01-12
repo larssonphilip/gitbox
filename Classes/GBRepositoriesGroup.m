@@ -71,14 +71,14 @@
   return NO;
 }
 
-- (void) removeRepository:(GBBaseRepositoryController*)repoCtrl
+- (void) removeLocalItem:(id<GBRepositoriesControllerLocalItem>)aLocalItem
 {
-  if (!repoCtrl) return;
-  [self.items removeObject:repoCtrl];
+  if (!aLocalItem) return;
+  [self.items removeObject:aLocalItem];
   for (id<GBRepositoriesControllerLocalItem> item in self.items)
   {
-    [item removeRepository:repoCtrl];
-  }  
+    [item removeLocalItem:aLocalItem];
+  }
 }
 
 - (id) plistRepresentationForUserDefaults
@@ -125,6 +125,18 @@
 {
   if (index < 0 || index >= [self.items count]) return nil;
   return [self.items objectAtIndex:(NSUInteger)index];
+}
+
+- (id<GBSidebarItem>) findItemWithIndentifier:(NSString*)identifier
+{
+  if (!identifier) return nil;
+  if ([[self sidebarItemIdentifier] isEqual:identifier]) return self;
+  for (id<GBSidebarItem> item in self.items)
+  {
+    id i = [item findItemWithIndentifier:identifier];
+    if (i) return i;
+  }
+  return nil;
 }
 
 - (NSString*) nameInSidebar

@@ -84,6 +84,13 @@
   return nil;
 }
 
+- (id<GBSidebarItem>) findItemWithIndentifier:(NSString*)identifier
+{
+  if (!identifier) return nil;
+  if ([[self sidebarItemIdentifier] isEqual:identifier]) return self;
+  return nil;
+}
+
 - (NSString*) nameInSidebar
 {
   return [[[self.repository url] path] lastPathComponent];
