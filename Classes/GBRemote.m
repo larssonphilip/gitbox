@@ -1,4 +1,6 @@
-#import "GBModels.h"
+#import "GBRemote.h"
+#import "GBRepository.h"
+#import "GBRef.h"
 #import "GBRemoteRefsTask.h"
 
 #import "NSFileManager+OAFileManagerHelpers.h"

@@ -1,4 +1,4 @@
-#import "GBModels.h"
+#import "GBChange.h"
 #import "GBChangeCell.h"
 #import "GBChangeCheckboxCell.h"
 #import "GBBaseChangesController.h"

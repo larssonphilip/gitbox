@@ -1,6 +1,6 @@
 #import "GBCommitPromptController.h"
 
-#import "GBModels.h"
+#import "GBCommit.h"
 
 #import "NSArray+OAArrayHelpers.h"
 #import "NSString+OAStringHelpers.h"

@@ -1,5 +1,6 @@
 #import "GBRemoteRefsTask.h"
-#import "GBModels.h"
+#import "GBRemote.h"
+#import "GBRef.h"
 #import "NSData+OADataHelpers.h"
 
 @implementation GBRemoteRefsTask

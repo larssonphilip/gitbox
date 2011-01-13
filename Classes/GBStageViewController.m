@@ -3,8 +3,10 @@
 
 #define StageHeaderAnimationDebug 0
 
-
-#import "GBModels.h"
+#import "GBRepository.h"
+#import "GBRef.h"
+#import "GBStage.h"
+#import "GBChange.h"
 
 #import "GBRepositoryController.h"
 #import "GBStageViewController.h"

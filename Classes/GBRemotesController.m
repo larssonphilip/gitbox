@@ -1,5 +1,6 @@
 #import "GBRemotesController.h"
-#import "GBModels.h"
+#import "GBRemote.h"
+#import "GBRepository.h"
 #import "GBTask.h"
 
 

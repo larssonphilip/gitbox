@@ -1,5 +1,5 @@
 #import "GBLocalRefsTask.h"
-#import "GBModels.h"
+#import "GBRef.h"
 
 #import "NSData+OADataHelpers.h"
 
