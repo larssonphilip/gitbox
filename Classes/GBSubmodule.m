@@ -16,6 +16,8 @@
 {
   self.remoteURL = nil;
   self.path      = nil;
+
+  [super dealloc];
 }
 
 
