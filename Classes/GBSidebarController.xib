@@ -13,6 +13,7 @@
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
 			<integer value="2"/>
+			<integer value="34"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -400,6 +401,14 @@
 					</object>
 					<int key="connectionID">41</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">rename:</string>
+						<reference key="source" ref="1003"/>
+						<reference key="destination" ref="672391778"/>
+					</object>
+					<int key="connectionID">45</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -641,7 +650,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">44</int>
+			<int key="maxID">45</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -1065,12 +1074,14 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>openInFinder:</string>
 							<string>remove:</string>
+							<string>rename:</string>
 							<string>selectNextRepository:</string>
 							<string>selectPreviousRepository:</string>
 							<string>selectRightPane:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>
@@ -1084,6 +1095,7 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>openInFinder:</string>
 							<string>remove:</string>
+							<string>rename:</string>
 							<string>selectNextRepository:</string>
 							<string>selectPreviousRepository:</string>
 							<string>selectRightPane:</string>
@@ -1096,6 +1108,10 @@
 							</object>
 							<object class="IBActionInfo">
 								<string key="name">remove:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">rename:</string>
 								<string key="candidateClassName">id</string>
 							</object>
 							<object class="IBActionInfo">

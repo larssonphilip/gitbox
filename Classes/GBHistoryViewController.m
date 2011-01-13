@@ -110,7 +110,8 @@
 
 - (BOOL) validateSelectRightPane:_
 {
-  return ([self.repositoryController.repository.stage.changes count] > 0);
+  // Note: first condition is for case when changes are not loaded yet and user quickly jumps to the next pane
+  return !self.repositoryController.selectedCommit.changes  || ([self.repositoryController.selectedCommit.changes count] > 0);
 }
 
 

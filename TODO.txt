@@ -40,14 +40,15 @@ Bug fixes:
 - submodules: case 4: user clones the repo inside the repo => needs to display as a non-tracked submodule which can be tracked
 - submodules: case 5: user tries to commit a submodule which has the HEAD non-pushed (or dirty directory) - show warning or ask to push manually; show button "show module"
 
-+ sidebar: fallback to the list of local repos from user defaults
 - sidebar: refactor to use GBRepositoriesGroup instead of GBSidebarSection and many checks like (targetItem == nil) or (aGroup == nil)
-- sidebar: add a new group with default name to the end
-- sidebar: drag and drop groups
+- sidebar: check not to drag a group in itself
 - sidebar: special case - if dragged several repos from the same folder, and there's no group with the same name as their folder, wrap them all in a new group automatically.
 - sidebar: remove a group with backspace
-- sidebar: distinct menu for the group: remove and rename
 - sidebar: revisit the code which checks the license and number of repos
++ sidebar: fallback to the list of local repos from user defaults
++ sidebar: add a new group with default name to the end
++ sidebar: drag and drop groups
++ sidebar: distinct menu for the group: remove and rename
   
 - quicklook for changes
 
