@@ -111,6 +111,7 @@
 
 - (void) removeLocalItem:(id<GBRepositoriesControllerLocalItem>)aLocalItem
 {
+  if (!aLocalItem) return;
   [self.localItems removeObject:aLocalItem];
   for (id<GBRepositoriesControllerLocalItem> item in self.localItems)
   {

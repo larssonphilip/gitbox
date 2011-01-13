@@ -149,13 +149,31 @@
 
 - (IBAction) remove:(id)_
 {
-  // FIXME: support removing groups as well as repos
-  id ctrl = [[self clickedOrSelectedSidebarItem] repositoryController];
-  if (ctrl)
-  {
-    [self.repositoriesController removeLocalRepositoryController:ctrl];
-  }
+  // FIXME: should refactor repositories controller so it can remove any item with delegate notification
+  // need to call some conversion method like "asRepositoriesLocalItem"
+  [self.repositoriesController removeLocalItem:[self clickedOrSelectedSidebarItem]];
+  [self update];
 }
+
+- (IBAction) rename:(id)_
+{
+  id<GBSidebarItem> item = [self clickedOrSelectedSidebarItem];
+  if (!item) return;
+  if (![item isEditableInSidebar]) return;
+  NSInteger rowIndex = [self.outlineView rowForItem:item];
+  if (rowIndex < 0) return;
+  [self.outlineView selectRowIndexes:[NSIndexSet indexSetWithIndex:rowIndex] byExtendingSelection:NO];
+  [self.outlineView editColumn:0 row:rowIndex withEvent:nil select:YES];
+}
+
+- (BOOL) validateRename:(id)_
+{
+  id<GBSidebarItem> item = [self clickedOrSelectedSidebarItem];
+  if (!item) return NO;
+  if (![item isEditableInSidebar]) return NO;
+  return YES;
+}
+
 
 - (IBAction) selectRightPane:_
 {
@@ -292,13 +310,7 @@
   NSInteger rowIndex = [self.outlineView rowForItem:aGroup];
   
   if (rowIndex < 0) return;
- 
-  // editColumn:row:... method requires row to be selected
-//  [self.outlineView withDelegate:nil doBlock:^{
-      [self.outlineView selectRowIndexes:[NSIndexSet indexSetWithIndex:rowIndex] 
-                    byExtendingSelection:NO];
-//  }];
-  
+  [self.outlineView selectRowIndexes:[NSIndexSet indexSetWithIndex:rowIndex] byExtendingSelection:NO];
   [self.outlineView editColumn:0 row:rowIndex withEvent:nil select:YES];
 }
 
