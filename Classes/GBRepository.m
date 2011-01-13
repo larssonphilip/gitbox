@@ -274,16 +274,22 @@
   [task launchAndWait];
 }
 
-- (NSString*) configValueForKey:(NSString*)key
+
++ (NSString*) configValueForKey:(NSString*)key in:(GBRepository*)repository
 {
   OATask* task              = [OATask task];
-  task.currentDirectoryPath = [self path];
+  task.currentDirectoryPath = [repository path];
   task.launchPath           = [GBTask pathToBundledBinary:@"git"];
-
+  
   task.arguments = [NSArray arrayWithObjects:@"config", key,  nil];
   [task launchAndWait];
-
+  
   return [[task.output UTF8String] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+}
+
+- (NSString*) configValueForKey:(NSString*)key
+{
+  return [GBRepository configValueForKey:key in:self];
 }
 
 - (void) setConfigValue:(NSString*)value forKey:(NSString*)key
