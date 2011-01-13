@@ -1,10 +1,7 @@
+#import "GBSidebarCell.h"
 @class GBBaseRepositoryController;
-@interface GBRepositoryCell : NSTextFieldCell
+@interface GBRepositoryCell : GBSidebarCell
 
-@property(nonatomic,assign) BOOL isForeground;
-@property(nonatomic,assign) BOOL isFocused;
-
-+ (CGFloat) cellHeight;
 - (GBBaseRepositoryController*) repositoryController;
 
 @end

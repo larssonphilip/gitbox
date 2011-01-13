@@ -1,6 +1,8 @@
 #import "GBBaseRepositoryController.h"
 #import "GBRepositoriesController.h"
-#import "GBSidebarSection.h"
+#import "GBRepositoriesGroup.h"
+
+#import "GBSidebarSection.h" // FIXME: get rid of this class in favor of GBRepositoriesGroup
 
 #import "GBSidebarController.h"
 #import "GBRepository.h"
@@ -72,11 +74,6 @@
 
 
 
-- (IBAction) addGroup:(id)_
-{
-  NSLog(@"TODO: add group to the outline view and enter editing mode");
-}
-
 
 // This helper is used only for prev/next navigation, should be rewritten to support groups
 - (id) firstNonSectionRowStartingAtRow:(NSInteger)row direction:(NSInteger)direction
@@ -140,6 +137,16 @@
   return nil;
 }
 
+- (id<GBSidebarItem>) selectedSidebarItem
+{
+  NSInteger row = [self.outlineView selectedRow];
+  if (row >= 0)
+  {
+    return [self.outlineView itemAtRow:row];
+  }
+  return nil;
+}
+
 - (IBAction) remove:(id)_
 {
   // FIXME: support removing groups as well as repos
@@ -153,6 +160,16 @@
 - (IBAction) selectRightPane:_
 {
   [[self.outlineView window] selectKeyViewFollowingView:self.outlineView];
+}
+
+- (BOOL) isEditing
+{
+  return [[[self.view window] firstResponder] isKindOfClass:[NSText class]];
+}
+
+- (BOOL) validateSelectRightPane:(id)sender
+{
+  return ![self isEditing] && ![[self selectedSidebarItem] isRepositoriesGroup];
 }
 
 - (IBAction) openInFinder:(id)_
@@ -270,6 +287,21 @@
   [self.outlineView reloadItem:repoCtrl];
 }
 
+- (void) editGroup:(GBRepositoriesGroup*)aGroup
+{
+  NSInteger rowIndex = [self.outlineView rowForItem:aGroup];
+  
+  if (rowIndex < 0) return;
+ 
+  // editColumn:row:... method requires row to be selected
+//  [self.outlineView withDelegate:nil doBlock:^{
+      [self.outlineView selectRowIndexes:[NSIndexSet indexSetWithIndex:rowIndex] 
+                    byExtendingSelection:NO];
+//  }];
+  
+  [self.outlineView editColumn:0 row:rowIndex withEvent:nil select:YES];
+}
+
 
 
 
@@ -325,7 +357,16 @@
   return [item nameInSidebar];
 }
 
-
+- (void)outlineView:(NSOutlineView *)anOutlineView setObjectValue:(id)object forTableColumn:(NSTableColumn *)tableColumn byItem:(id<GBSidebarItem>)item
+{
+  if ([item isRepositoriesGroup])
+  {
+    GBRepositoriesGroup* aGroup = (GBRepositoriesGroup*)item;
+    if ([object respondsToSelector:@selector(string)]) object = [object string];
+    aGroup.name = [NSString stringWithFormat:@"%@", object];
+    [self.repositoriesController saveLocalRepositoriesAndGroups];
+  }
+}
 
 
 
@@ -333,6 +374,18 @@
 #pragma mark NSOutlineViewDelegate
 
 
+
+//- (BOOL)control:(NSControl *)control textShouldBeginEditing:(NSText *)fieldEditor {
+//  return YES;
+//}
+//- (BOOL)control:(NSControl *)control textShouldEndEditing:(NSText *)fieldEditor {
+//  if ([[fieldEditor string] length] == 0) {
+//    // don't allow empty node names
+//    return NO;
+//  } else {
+//    return YES;
+//  }
+//}
 
 - (BOOL)outlineView:(NSOutlineView*)anOutlineView isGroupItem:(id<GBSidebarItem>)item
 {
@@ -350,7 +403,7 @@
 
 - (BOOL)outlineView:(NSOutlineView*)anOutlineView shouldEditTableColumn:(NSTableColumn*)tableColumn item:(id<GBSidebarItem>)item
 {
-  return NO;
+  return [item isEditableInSidebar];
 }
 
 - (void)outlineViewSelectionDidChange:(NSNotification*)notification

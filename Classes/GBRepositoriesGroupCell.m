@@ -2,9 +2,9 @@
 
 @implementation GBRepositoriesGroupCell
 
-+ (CGFloat) cellHeight
+- (NSImage*) icon
 {
-  return 22.0;
+  return [NSImage imageNamed:@"GBSidebarGroupIcon"];
 }
 
 @end

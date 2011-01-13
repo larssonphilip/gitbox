@@ -34,10 +34,13 @@
 
 - (void) removeLocalRepositoryController:(GBBaseRepositoryController*)repoCtrl;
 - (void) selectRepositoryController:(GBBaseRepositoryController*) repoCtrl;
-- (void) beginBackgroundUpdate;
-- (void) endBackgroundUpdate;
+
+- (void) addGroup:(GBRepositoriesGroup*)aGroup;
 
 - (void) loadLocalRepositoriesAndGroups;
 - (void) saveLocalRepositoriesAndGroups;
+
+- (void) beginBackgroundUpdate;
+- (void) endBackgroundUpdate;
 
 @end

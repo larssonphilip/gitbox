@@ -135,6 +135,11 @@
   return YES;
 }
 
+- (BOOL) isEditableInSidebar
+{
+  return NO;
+}
+
 - (NSArray*) writableTypesForPasteboard:(NSPasteboard *)pasteboard
 {
   return [[self localURL] writableTypesForPasteboard:pasteboard];

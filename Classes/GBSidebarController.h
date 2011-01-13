@@ -4,6 +4,7 @@
 @class GBRepositoryController;
 @class GBRepository;
 @class GBHistoryViewController;
+@class GBRepositoriesGroup;
 
 @interface GBSidebarController : NSViewController<NSOutlineViewDataSource,
                                                   NSOutlineViewDelegate>
@@ -29,7 +30,7 @@
 - (void) expandLocalRepositories;
 - (void) updateSpinnerForRepositoryController:(GBBaseRepositoryController*)repoCtrl;
 
-- (IBAction) addGroup:(id)_;
+- (void) editGroup:(GBRepositoriesGroup*)aGroup;
 
 - (IBAction) selectPreviousRepository:(id)_;
 - (IBAction) selectNextRepository:(id)_;

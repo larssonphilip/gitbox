@@ -1,3 +1,4 @@
+@class GBRepositoriesGroup;
 @class GBRepositoriesController;
 @class GBBaseRepositoryController;
 @protocol GBRepositoriesControllerDelegate<NSObject>
@@ -9,4 +10,6 @@
 - (void) repositoriesController:(GBRepositoriesController*)reposCtrl didRemoveRepository: (GBBaseRepositoryController*)repoCtrl;
 - (void) repositoriesController:(GBRepositoriesController*)reposCtrl willSelectRepository:(GBBaseRepositoryController*)repoCtrl;
 - (void) repositoriesController:(GBRepositoriesController*)reposCtrl didSelectRepository: (GBBaseRepositoryController*)repoCtrl;
+- (void) repositoriesController:(GBRepositoriesController*)reposCtrl willAddGroup:        (GBRepositoriesGroup*)aGroup;
+- (void) repositoriesController:(GBRepositoriesController*)reposCtrl didAddGroup:         (GBRepositoriesGroup*)aGroup;
 @end

@@ -1,8 +1,5 @@
+#import "GBSidebarCell.h"
 
-@interface GBRepositoriesGroupCell : NSTextFieldCell
-{
-}
-
-+ (CGFloat) cellHeight;
+@interface GBRepositoriesGroupCell : GBSidebarCell
 
 @end

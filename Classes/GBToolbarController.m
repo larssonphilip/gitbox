@@ -1,4 +1,7 @@
-#import "GBModels.h"
+#import "GBRepository.h"
+#import "GBRef.h"
+#import "GBStage.h"
+#import "GBRemote.h"
 #import "GBBaseRepositoryController.h"
 #import "GBRepositoryController.h"
 

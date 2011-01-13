@@ -23,6 +23,13 @@
   return self;
 }
 
++ (GBRepositoriesGroup*) untitledGroup
+{
+  GBRepositoriesGroup* g = [[[self alloc] init] autorelease];
+  g.name = [g untitledGroupName];
+  return g;
+}
+
 - (NSString*) untitledGroupName
 {
   return NSLocalizedString(@"untitled group", @"GBRepositoriesGroup");
@@ -186,6 +193,11 @@
 //
 
 - (BOOL) isDraggableInSidebar
+{
+  return YES;
+}
+
+- (BOOL) isEditableInSidebar
 {
   return YES;
 }

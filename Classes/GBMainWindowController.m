@@ -1,5 +1,6 @@
 #import "GBRepository.h"
 #import "GBCommit.h"
+#import "GBRepositoriesGroup.h"
 
 #import "GBRepositoriesController.h"
 #import "GBRepositoryController.h"
@@ -93,7 +94,7 @@
 
 - (IBAction) addGroup:(id)_
 {
-  [self.sourcesController addGroup:_];
+  [self.repositoriesController addGroup:[GBRepositoriesGroup untitledGroup]];
 }
 
 
@@ -350,9 +351,22 @@
   self.toolbarController.repositoryController = nil;
 
   [self updateWindowTitleWithRepositoryController:repoCtrl];
-  if (!repoCtrl) [self.historyController update];
   [self.sourcesController updateSelectedRow];
   [self.sourcesController updateBadges];
+  
+  // typically toolbar and history are updated in another callback: repositoryControllerDidSelect:, 
+  // but it won't get called if ctrl is nil, so we update here in this case.
+  if (!repoCtrl) 
+  {
+    [self.toolbarController update];
+    [self.historyController update];
+  }
+}
+
+- (void) repositoriesController:(GBRepositoriesController*)reposCtrl didAddGroup:(GBRepositoriesGroup*)aGroup
+{
+  [self.sourcesController update];
+  [self.sourcesController editGroup:aGroup];
 }
 
 

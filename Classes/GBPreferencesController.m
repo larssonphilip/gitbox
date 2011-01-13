@@ -1,5 +1,5 @@
 #import "GBPreferencesController.h"
-#import "GBModels.h"
+#import "GBChange.h"
 #import "OATask.h"
 
 @implementation GBPreferencesController

@@ -226,6 +226,11 @@
   return YES;
 }
 
+- (BOOL) isEditableInSidebar
+{
+  return NO;
+}
+
 
 #pragma mark NSPasteboardWriting
 

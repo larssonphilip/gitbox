@@ -248,6 +248,10 @@
 		2097EB3012DDF4680070AE89 /* GBSidebarOutlineView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2097EB2E12DDF4680070AE89 /* GBSidebarOutlineView.m */; };
 		2097EB5B12DDF7D30070AE89 /* GBChangesTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2097EB5A12DDF7D30070AE89 /* GBChangesTableView.m */; };
 		2097EB5C12DDF7D30070AE89 /* GBChangesTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2097EB5A12DDF7D30070AE89 /* GBChangesTableView.m */; };
+		2097EC6C12DE6B450070AE89 /* GBSidebarCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2097EC6B12DE6B450070AE89 /* GBSidebarCell.m */; };
+		2097EC6D12DE6B450070AE89 /* GBSidebarCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2097EC6B12DE6B450070AE89 /* GBSidebarCell.m */; };
+		2097EE2412DF2B4A0070AE89 /* GBSidebarGroupIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 2097EE2312DF2B4A0070AE89 /* GBSidebarGroupIcon.png */; };
+		2097EE2512DF2B4A0070AE89 /* GBSidebarGroupIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 2097EE2312DF2B4A0070AE89 /* GBSidebarGroupIcon.png */; };
 		209A935A11BA92B6006B0B5C /* GBFileEditingController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 209A935911BA92B6006B0B5C /* GBFileEditingController.xib */; };
 		209A935F11BA934C006B0B5C /* GBFileEditingController.m in Sources */ = {isa = PBXBuildFile; fileRef = 209A935E11BA934C006B0B5C /* GBFileEditingController.m */; };
 		209A963E11BC630C006B0B5C /* default_gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 209A960011BC60BC006B0B5C /* default_gitignore */; };
@@ -530,6 +534,9 @@
 		2097EB5912DDF7D30070AE89 /* GBChangesTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBChangesTableView.h; sourceTree = "<group>"; };
 		2097EB5A12DDF7D30070AE89 /* GBChangesTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBChangesTableView.m; sourceTree = "<group>"; };
 		2097EB8312DDFAA00070AE89 /* AsyncPatterns.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AsyncPatterns.txt; sourceTree = "<group>"; };
+		2097EC6A12DE6B450070AE89 /* GBSidebarCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBSidebarCell.h; sourceTree = "<group>"; };
+		2097EC6B12DE6B450070AE89 /* GBSidebarCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBSidebarCell.m; sourceTree = "<group>"; };
+		2097EE2312DF2B4A0070AE89 /* GBSidebarGroupIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GBSidebarGroupIcon.png; path = Images/GBSidebarGroupIcon.png; sourceTree = SOURCE_ROOT; };
 		209A935911BA92B6006B0B5C /* GBFileEditingController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBFileEditingController.xib; sourceTree = "<group>"; };
 		209A935D11BA934C006B0B5C /* GBFileEditingController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBFileEditingController.h; sourceTree = "<group>"; };
 		209A935E11BA934C006B0B5C /* GBFileEditingController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBFileEditingController.m; sourceTree = "<group>"; };
@@ -861,10 +868,13 @@
 				2004330212D8B37F00B045C0 /* GBSidebarItem.h */,
 				200434C712DB363400B045C0 /* GBSidebarSection.h */,
 				200434C812DB363400B045C0 /* GBSidebarSection.m */,
+				2097EC6A12DE6B450070AE89 /* GBSidebarCell.h */,
+				2097EC6B12DE6B450070AE89 /* GBSidebarCell.m */,
 				20BF176F127EF68800A30EE6 /* GBRepositoryCell.h */,
 				20BF1770127EF68800A30EE6 /* GBRepositoryCell.m */,
 				2004343C12DB175B00B045C0 /* GBRepositoriesGroupCell.h */,
 				2004343D12DB175B00B045C0 /* GBRepositoriesGroupCell.m */,
+				2097EE2312DF2B4A0070AE89 /* GBSidebarGroupIcon.png */,
 			);
 			name = Sidebar;
 			sourceTree = "<group>";
@@ -1257,6 +1267,7 @@
 				201643AE12CC121B005C69DA /* GBCommitViewControllerHeader.rtf in Resources */,
 				20164A5312D3D8EA005C69DA /* GBToolbarGear.png in Resources */,
 				20164AC012D49BD7005C69DA /* GBToolbarPlus.png in Resources */,
+				2097EE2512DF2B4A0070AE89 /* GBSidebarGroupIcon.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1298,6 +1309,7 @@
 				201643AD12CC121B005C69DA /* GBCommitViewControllerHeader.rtf in Resources */,
 				20164A5212D3D8EA005C69DA /* GBToolbarGear.png in Resources */,
 				20164ABF12D49BD7005C69DA /* GBToolbarPlus.png in Resources */,
+				2097EE2412DF2B4A0070AE89 /* GBSidebarGroupIcon.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1437,6 +1449,7 @@
 				200434CA12DB363400B045C0 /* GBSidebarSection.m in Sources */,
 				2097EB3012DDF4680070AE89 /* GBSidebarOutlineView.m in Sources */,
 				2097EB5B12DDF7D30070AE89 /* GBChangesTableView.m in Sources */,
+				2097EC6D12DE6B450070AE89 /* GBSidebarCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1545,6 +1558,7 @@
 				200434C912DB363400B045C0 /* GBSidebarSection.m in Sources */,
 				2097EB2F12DDF4680070AE89 /* GBSidebarOutlineView.m in Sources */,
 				2097EB5C12DDF7D30070AE89 /* GBChangesTableView.m in Sources */,
+				2097EC6C12DE6B450070AE89 /* GBSidebarCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

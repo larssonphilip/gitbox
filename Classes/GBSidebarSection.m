@@ -97,6 +97,10 @@
   return NO;
 }
 
+- (BOOL) isEditableInSidebar
+{
+  return NO;
+}
 
 
 #pragma mark NSPasteboardWriting

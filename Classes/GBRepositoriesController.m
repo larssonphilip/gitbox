@@ -264,15 +264,6 @@
   [self.selectedRepositoryController didSelect];
 }
 
-- (void) beginBackgroundUpdate
-{
-  
-}
-
-- (void) endBackgroundUpdate
-{
-  
-}
 
 
 
@@ -428,5 +419,32 @@
 }
 
 
+- (void) addGroup:(GBRepositoriesGroup*)aGroup
+{
+  if ([self.delegate respondsToSelector:@selector(repositoriesController:willAddGroup:)]) { [self.delegate repositoriesController:self willAddGroup:aGroup]; }
+  
+  [self.localItems addObject:aGroup];
+  
+  if ([self.delegate respondsToSelector:@selector(repositoriesController:didAddGroup:)]) { [self.delegate repositoriesController:self didAddGroup:aGroup]; }
+}
+
+
+
+
+
+
+#pragma mark Background Update
+
+
+
+- (void) beginBackgroundUpdate
+{
+  
+}
+
+- (void) endBackgroundUpdate
+{
+  
+}
 
 @end
