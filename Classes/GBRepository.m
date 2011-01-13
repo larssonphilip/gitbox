@@ -254,8 +254,6 @@
 
 # pragma mark git-config(1) interface
 
-
-
 + (NSString*) globalConfigValueForKey:(NSString*)key
 {
   OATask* task = [OATask task];
@@ -267,26 +265,31 @@
 
 + (void) setGlobalConfigValue:(NSString*)value forKey:(NSString*)key
 {
-  OATask* task = [OATask task];
-  task.launchPath = [GBTask pathToBundledBinary:@"git"];
+  OATask* task              = [OATask task];
+  task.launchPath           = [GBTask pathToBundledBinary:@"git"];
+
   task.arguments = [NSArray arrayWithObjects:@"config", @"--global", key, value,  nil];
   [task launchAndWait];
 }
 
-
-+ (NSString*) configValueForKey:(NSString*)key
+- (NSString*) configValueForKey:(NSString*)key
 {
-  OATask* task = [OATask task];
-  task.launchPath = [GBTask pathToBundledBinary:@"git"];
+  OATask* task              = [OATask task];
+  task.currentDirectoryPath = [self path];
+  task.launchPath           = [GBTask pathToBundledBinary:@"git"];
+
   task.arguments = [NSArray arrayWithObjects:@"config", key,  nil];
   [task launchAndWait];
+
   return [[task.output UTF8String] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 }
 
-+ (void) setConfigValue:(NSString*)value forKey:(NSString*)key
+- (void) setConfigValue:(NSString*)value forKey:(NSString*)key
 {
-  OATask* task = [OATask task];
-  task.launchPath = [GBTask pathToBundledBinary:@"git"];
+  OATask* task              = [OATask task];
+  task.currentDirectoryPath = [self path];
+  task.launchPath           = [GBTask pathToBundledBinary:@"git"];
+
   task.arguments = [NSArray arrayWithObjects:@"config",key, value,  nil];
   [task launchAndWait];
 }
@@ -710,6 +713,8 @@
     NSScanner* scanner = [NSScanner scannerWithString:[[statusTask output] UTF8String]];
     [scanner setCharactersToBeSkipped:[NSCharacterSet characterSetWithCharactersInString:@""]];
 
+    NSMutableArray *ary = [NSMutableArray array];
+
     while ([scanner isAtEnd] == NO)
     {
       [scanner scanString:@" " intoString:NULL];
@@ -742,7 +747,9 @@
       [scanner scanUpToString:@"\n" intoString:NULL];
       [scanner scanString:@"\n" intoString:NULL];
 
-      NSLog(@"Repository = %@, leading char = %@, submoduleRef = %@, submodulePath = %@", [self.url path], leadingChar, submoduleRef, submodulePath);
+      NSString *key          = [NSString stringWithFormat:@"%@.%@.%@", @"submodule", submodulePath, @"url"];
+      NSString *submoduleURL = [self configValueForKey:key];
+      NSLog(@"R = %@, leading char = %@, ref = %@, path = %@, config key = %@, URL = %@", [self.url path], leadingChar, submoduleRef, submodulePath, key, submoduleURL);
       // TODO      
     }
 
