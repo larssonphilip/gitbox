@@ -32,6 +32,8 @@
 @synthesize localBranches;
 @synthesize remotes;
 @synthesize tags;
+@synthesize submodules;
+
 @synthesize stage;
 @synthesize currentLocalRef;
 @synthesize currentRemoteBranch;
@@ -750,9 +752,16 @@
       NSString *key          = [NSString stringWithFormat:@"%@.%@.%@", @"submodule", submodulePath, @"url"];
       NSString *submoduleURL = [self configValueForKey:key];
       NSLog(@"R = %@, leading char = %@, ref = %@, path = %@, config key = %@, URL = %@", [self.url path], leadingChar, submoduleRef, submodulePath, key, submoduleURL);
-      // TODO      
+
+      GBSubmodule *submodule = [[GBSubmodule new] autorelease];
+      submodule.path         = submodulePath;
+      submodule.remoteURL    = [NSURL URLWithString:submoduleURL];
+      submodule.repository   = self;
+
+      [ary addObject:submodule];      
     }
 
+    self.submodules = ary;
     if (block) block();
   }];
 }

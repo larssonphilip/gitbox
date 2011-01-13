@@ -18,6 +18,8 @@
 @property(nonatomic, retain) NSArray* localBranches;
 @property(nonatomic, retain) NSArray* remotes;
 @property(nonatomic, retain) NSArray* tags;
+@property(nonatomic, retain) NSArray* submodules;
+
 @property(nonatomic, retain) GBStage* stage;
 @property(nonatomic, retain) GBRef* currentLocalRef;
 @property(nonatomic, retain) GBRef* currentRemoteBranch;
