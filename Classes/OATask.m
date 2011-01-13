@@ -138,45 +138,6 @@ NSString* OATaskNotification = @"OATaskNotification";
   return [[self new] autorelease];
 }
 
-//- (NSString*) launchPathByAskingUserToLocateExecutable:(NSString*)executable
-//{
-//  NSString* cannotFindPathString = [NSString stringWithFormat:NSLocalizedString(@"Cannot find path to %@.", @""), executable];
-//  NSString* doYouWantToLocateString = NSLocalizedString(@"Do you want to locate it on disk?\n(Use ⌘⇧G to enter the path.)", @"Task");
-//  
-//  if ([NSAlert prompt:cannotFindPathString
-//               description:doYouWantToLocateString])
-//  {
-//    while (1)
-//    {
-//      NSOpenPanel* openPanel = [NSOpenPanel openPanel];
-//      openPanel.delegate = nil;
-//      openPanel.allowsMultipleSelection = NO;
-//      openPanel.canChooseFiles = YES;
-//      openPanel.canChooseDirectories = NO;
-//      if ([openPanel runModal] == NSFileHandlingPanelOKButton)
-//      {
-//        NSString* aPath = [[[openPanel URLs] firstObject] path];
-//        if ([[NSFileManager defaultManager] isExecutableFileAtPath:aPath])
-//        {
-//          return aPath;
-//        }
-//        else if (aPath)
-//        {
-//          [NSAlert message:NSLocalizedString(@"Selected file is not an executable. Please try again.", @"Task") description:aPath];
-//        }
-//        else
-//        {
-//          return nil;
-//        }
-//      }
-//      else
-//      {
-//        return nil;
-//      } // if OK clicked
-//    } // while(1)
-//  } // if locating on disk
-//  return nil;
-//}
 
 - (NSString*) launchPath
 {
