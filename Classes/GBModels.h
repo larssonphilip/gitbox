@@ -6,5 +6,6 @@
 #import "GBChange.h"
 #import "GBRemote.h"
 #import "GBRepositoriesGroup.h"
+#import "GBSubmodule.h"
 
 #import "GBErrors.h"
