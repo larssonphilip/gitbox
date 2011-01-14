@@ -80,7 +80,7 @@
 - (void) updateUnmergedCommitsWithBlock:(void(^)())block;
 - (void) updateUnpushedCommitsWithBlock:(void(^)())block;
 
-- (void) initSubmodules;
+- (void) initSubmodulesWithBlock:(void(^)())block;
 - (void) updateSubmodulesWithBlock:(void(^)())block;
 
 

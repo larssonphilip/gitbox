@@ -647,35 +647,37 @@
 }
 
 
-- (void) initSubmodules
+- (void) initSubmodulesWithBlock:(void(^)())block
 {
+  block = [[block copy] autorelease];
   GBTask* task = [self task];
   task.arguments = [NSArray arrayWithObjects:@"submodule", @"init",  nil];
 	[task launchWithBlock:^{
 		if ([task isError])
     {
-			[NSError errorWithDomain:@"Gitbox" code:1
+			self.lastError = [NSError errorWithDomain:@"Gitbox" code:1
 																	 userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
 																						 [task.output UTF8String], NSLocalizedDescriptionKey,
 																						 [NSNumber numberWithInt:[task terminationStatus]], @"terminationStatus",
 																						 [task command], @"command",
 																						 nil]];
+      if (block) block();
+      return;
 		}
-    else
-    {
-			//NSLog(@"GBCloningRepositoryController: did finish submodule init at %@", [self path]);
-		}		
+    //NSLog(@"GBCloningRepositoryController: did finish submodule init at %@", [self path]);
+    // Update submodule when init did finish.
+    [self updateSubmodulesWithBlock:block];
 	}];
-  [self updateSubmodulesWithBlock:NULL];
 }
 
 
-/* Updates list of submodules (NOT what git submodule update does!) for this repository. DOES NOT pull actual submodules or
- * change their refs in any way. MK.
- */
+// Updates list of submodules (NOT what 'git submodule update' does!) for this repository. 
+// DOES NOT pull actual submodules or change their refs in any way. MK.
+
 - (void) updateSubmodulesWithBlock:(void (^)())block
 {
-  // 1
+  block = [[block copy] autorelease];
+
   GBUpdateSubmodulesTask* updateSubmodulesTask = [GBUpdateSubmodulesTask taskWithRepository:self];
 
   [updateSubmodulesTask launchWithBlock:^{
