@@ -82,6 +82,7 @@ Bugs:
 
 Enhancements:
 
+- commit+push is ugly: it spins, then it stops spinning, then it changes the badge number and then spins again.
 - when starting an app, sidebar appears to be collapsed at first and then repos appear. Should be more smooth.
 - show confirmation prompt when trying to push branch "X" into "origin/Y" (that is when branch name differ)
 - feature: checkout a commit from history context menu
