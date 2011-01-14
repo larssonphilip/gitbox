@@ -103,7 +103,7 @@ void OAFSEventStreamCallback( ConstFSEventStreamRef streamRef,
   self.coalescedPathsByPaths = nil;
   FSEventStreamUnscheduleFromRunLoop(streamRef, CFRunLoopGetCurrent(), kCFRunLoopDefaultMode);
   FSEventStreamStop(streamRef);
-  FSEventStreamInvalidate(streamRef);
+//  FSEventStreamInvalidate(streamRef);
   FSEventStreamRelease(streamRef);
 }
 
