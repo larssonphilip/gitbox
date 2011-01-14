@@ -42,9 +42,12 @@ Bug fixes:
 
 - sidebar: refactor to use GBRepositoriesGroup instead of GBSidebarSection and many checks like (targetItem == nil) or (aGroup == nil)
 - sidebar: check not to drag a group in itself
-- sidebar: special case - if dragged several repos from the same folder, and there's no group with the same name as their folder, wrap them all in a new group automatically.
+- sidebar: save state of groups as well
 - sidebar: remove a group with backspace
+- sidebar: special case - if dragged several repos from the same folder, and there's no group with the same name as their folder, wrap them all in a new group automatically.
 - sidebar: revisit the code which checks the license and number of repos
+- sidebar: when dragged in a group, should expand it
+- sidebar: when removing a group, should properly terminate nested repository controllers
 + sidebar: fallback to the list of local repos from user defaults
 + sidebar: add a new group with default name to the end
 + sidebar: drag and drop groups
@@ -79,6 +82,7 @@ Bugs:
 
 Enhancements:
 
+- when starting an app, sidebar appears to be collapsed at first and then repos appear. Should be more smooth.
 - show confirmation prompt when trying to push branch "X" into "origin/Y" (that is when branch name differ)
 - feature: checkout a commit from history context menu
 - should remove image view and resize header view if not image is present
