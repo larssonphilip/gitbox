@@ -3,12 +3,14 @@
 
 Features:
 
-+ Checkout arbitrary commit from history.
++ Create groups and reorder repositories in sidebar.
 + New right pane design with a user picture (fetched from Address Book or Gravatar).
 + New commit dialog (built in to the list of changes) which solves several usability issues.
++ Checkout arbitrary commit from history.
 
 Enhancements:
 
++ New toolbar button for adding new groups and repositories.
 + Activity spinner is now displayed in sidebar.
 + Improved performance of autofetching. Now remote branches are checked more frequently and without UI blocking and fetch is performed from all branches when needed.
 + Cmd+Up and Cmd+Down in commit dialog now go through the entire git history instead of the recently entered messages.
@@ -28,6 +30,7 @@ Bug fixes:
 + Fixed right-click menu target in sidebar.
 + Fixed Araxis binary name (araxis -> compare).
 + Fixed keyboard navigation: do not jump to stage pane when it is empty.
++ Fixed presentation of repostories and files while dragging.
 
 -----------------------------------------------------------
 
@@ -40,24 +43,11 @@ Bug fixes:
 - submodules: case 4: user clones the repo inside the repo => needs to display as a non-tracked submodule which can be tracked
 - submodules: case 5: user tries to commit a submodule which has the HEAD non-pushed (or dirty directory) - show warning or ask to push manually; show button "show module"
 
-- sidebar: remove a group with backspace
-- sidebar: when dragged external folder inside a group, should expand that group
-- sidebar: special case - if dragged several repos from the same folder, and there's no group with the same name as their folder, wrap them all in a new group automatically.
-- sidebar: revisit the code which checks the license and number of repos
-+ sidebar: save expanded state in defaults
-+ sidebar: check not to drag a group in itself
-+ sidebar: when removing a group, should properly terminate nested repository controllers
-+ sidebar: refactor to use GBRepositoriesGroup instead of GBSidebarSection and many checks like (targetItem == nil) or (aGroup == nil)
-+ sidebar: save state of groups as well
-+ sidebar: fallback to the list of local repos from user defaults
-+ sidebar: add a new group with default name to the end
-+ sidebar: drag and drop groups
-+ sidebar: distinct menu for the group: remove and rename
-  
 - quicklook for changes
 
 Bugs:
 
+- bug: sidebar: when dragged external folder inside a group, should expand that group
 - bug: when cloning repo is dragged to some position, finished repo ctrl is not inserted in its place
 - bug: multi-line commit messages are not displayed correctly [ticket 973]
 - bug: in the right branch menu should display the current local branch, but disable it (currently it is not displayed at all)
@@ -79,6 +69,7 @@ Bugs:
 - bug: cannot commit a file with space in the path or something [Matthew Temple <matt@mattytemple.com>]
 - bug: sidebar: when collapsing a group, spinners remain spinning indefinitely
 - bug: stage: refuse first responder when stage is empty
+- bug: quickly jumping through repos in sidebar is slow: avoid unnecessary updates and shell-outs when repo is selected.
 
 
 Enhancements:
@@ -97,9 +88,22 @@ Enhancements:
   - back/forward buttons allow undo/redo commit selection (clicking on parents)
 - quicklook for the file on space in stage (QLPreviewPanel, sample code: QuickLookDownloader)
 
+- sidebar: special case - if dragged several repos from the same folder, and there's no group with the same name as their folder, wrap them all in a new group automatically.
+
 
 Done for 1.2:
 
+x sidebar: revisit the code which checks the license and number of repos (not really needed)
+x sidebar: remove a group with backspace (not really needed)
++ sidebar: save expanded state in defaults
++ sidebar: check not to drag a group in itself
++ sidebar: when removing a group, should properly terminate nested repository controllers
++ sidebar: refactor to use GBRepositoriesGroup instead of GBSidebarSection and many checks like (targetItem == nil) or (aGroup == nil)
++ sidebar: save state of groups as well
++ sidebar: fallback to the list of local repos from user defaults
++ sidebar: add a new group with default name to the end
++ sidebar: drag and drop groups
++ sidebar: distinct menu for the group: remove and rename
 + bug: when stage area is empty, disable keyboard "->" jump to it
 + bug: should change "araxis" for "compare"
 + toolbar alignment
