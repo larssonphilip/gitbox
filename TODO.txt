@@ -68,7 +68,7 @@ Bugs:
 - bug: history: while fetching some remote, commits list is refreshed with wrong commits.
 - bug: history: when switching the branch or pulling/pushing, the list of commits flashes: should add a delay before reloading the commits.
 
-- bug: changes: when selected all changes and hit "revert", one change is not reverted; same thing for a single change also.
++ bug: changes: when selected all changes and hit "revert", one change is not reverted; same thing for a single change also.
 - bug: changes: when clicked checkbox and want to drag out, it does not undo the action.
 - bug: changes: cannot commit a file with space in the path or something [Matthew Temple <matt@mattytemple.com>].
 

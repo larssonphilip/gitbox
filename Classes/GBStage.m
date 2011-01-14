@@ -146,7 +146,7 @@
   
   GBTask* task = [self.repository task];
   task.arguments = [[NSArray arrayWithObjects:@"update-index", @"--remove", nil] arrayByAddingObjectsFromArray:pathsToDelete];
-  [task launchWithBlock:^{
+  [self.repository launchTask:task withBlock:^{
     [task showErrorIfNeeded];
     if (block) block();
   }];
@@ -164,7 +164,7 @@
   
   GBTask* task = [self.repository task];
   task.arguments = [[NSArray arrayWithObjects:@"add", nil] arrayByAddingObjectsFromArray:pathsToAdd];
-  [task launchWithBlock:^{
+  [self.repository launchTask:task withBlock:^{
     [task showErrorIfNeeded];
     if (block) block();
   }];
@@ -251,7 +251,7 @@
   block = [[block copy] autorelease];
   GBTask* task = [self.repository task];
   task.arguments = [NSArray arrayWithObjects:@"add", @".", nil];
-  [task launchWithBlock:^{
+  [self.repository launchTask:task withBlock:^{
     [task showErrorIfNeeded];
     if (block) block();
   }];
@@ -274,7 +274,7 @@
   }
   GBTask* task = [self.repository task];
   task.arguments = [[NSArray arrayWithObjects:@"checkout", @"HEAD", @"--", nil] arrayByAddingObjectsFromArray:paths];
-  [task launchWithBlock:^{
+  [self.repository launchTask:task withBlock:^{
     if (block) block();
   }];
 }
@@ -322,7 +322,7 @@
     GBTask* task = [self.repository task];
     task.arguments = [[NSArray arrayWithObjects:@"rm", nil] arrayByAddingObjectsFromArray:pathsToGitRm];
     trashingBlock = [[trashingBlock copy] autorelease];
-    [task launchWithBlock:^{
+    [self.repository launchTask:task withBlock:^{
       trashingBlock();
     }];
   }
