@@ -60,9 +60,10 @@ Bugs:
 - bug: toolbar: when removing a single server, remote branch remains and log is clean.
 - bug: toolbar: android repo checked out on a commit has branch menus disabled.
 
+- bug: sidebar: when collapsing a group, it should display a badge with sum of all nested badges
 - bug: sidebar: when collapsing a group, spinners remain spinning indefinitely
 - bug: sidebar: quickly jumping through repos in sidebar is slow: avoid unnecessary updates and shell-outs when repo is selected.
-- bug: sidebar: when cloning finsihed, selection is changing quickly - ugly.
+- bug: sidebar: when cloning finished, selection is changing quickly - ugly.
 
 - bug: history: while fetching some remote, commits list is refreshed with wrong commits.
 - bug: history: when switching the branch or pulling/pushing, the list of commits flashes: should add a delay before reloading the commits.
@@ -77,6 +78,7 @@ Bugs:
 Enhancements:
 
 - toolbar: show confirmation prompt when trying to push branch "X" into "origin/Y" (that is when branch name differ)
+- toolbar: think on how to checkout a branch into a different folder. Make it useful as a default.
 
 - sidebar: commit+push is ugly: it spins, then it stops spinning, then it changes the badge number and then spins again.
 - sidebar: when starting an app, sidebar appears to be collapsed at first and then repos appear. Should be more smooth.
