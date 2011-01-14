@@ -127,6 +127,19 @@
           nil];
 }
 
+- (GBRepositoriesGroup*) groupContainingLocalItem:(id<GBRepositoriesControllerLocalItem>)aLocalItem
+{
+  if ([self.items containsObject:aLocalItem])
+  {
+    return self;
+  }
+  for (id<GBRepositoriesControllerLocalItem> subitem in self.items)
+  {
+    GBRepositoriesGroup* group = [subitem groupContainingLocalItem:aLocalItem];
+    if (group) return group;
+  }
+  return nil;
+}
 
 
 

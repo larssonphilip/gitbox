@@ -153,6 +153,10 @@
           nil];
 }
 
+- (GBRepositoriesGroup*) groupContainingLocalItem:(id<GBRepositoriesControllerLocalItem>)aLocalItem
+{
+  return nil;
+}
 
 
 #pragma mark GBSidebarItem

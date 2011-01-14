@@ -509,12 +509,21 @@
 
 - (void) cloningRepositoryControllerDidFinish:(GBCloningRepositoryController*)repoCtrl
 {
+  // Cloning finished: 
+  // 1. should find out where is located cloning repo ctrl
+  // 2. remove it
+  // 3. insert working ctrl in its place
+  
+  GBRepositoriesGroup* aGroup = [self.repositoriesController.localRepositoriesGroup groupContainingLocalItem:repoCtrl];
+  if (!aGroup) aGroup = self.repositoriesController.localRepositoriesGroup; // should never happen, but just in case
+  NSUInteger indexInGroup = [aGroup.items indexOfObject:repoCtrl];
+  if (indexInGroup == NSNotFound) indexInGroup = 0; // should never happen, but be safe just in case
+  
   BOOL shouldSelectNewRepo = [self isSelectedRepositoryController:repoCtrl];
   [self.repositoriesController removeLocalRepositoryController:repoCtrl];
   GBRepositoryController* newRepoCtrl = [GBRepositoryController repositoryControllerWithURL:repoCtrl.targetURL];
-  [self.repositoriesController addLocalRepositoryController:newRepoCtrl];
+  [self.repositoriesController addLocalRepositoryController:newRepoCtrl inGroup:aGroup atIndex:indexInGroup];
   [[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:repoCtrl.targetURL];
-  
   if (shouldSelectNewRepo)
   {
     [self.repositoriesController selectRepositoryController:newRepoCtrl];
