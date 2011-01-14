@@ -477,18 +477,16 @@
 {
   BOOL shouldSelectNewRepo = [self isSelectedRepositoryController:repoCtrl];
   [self.repositoriesController removeLocalRepositoryController:repoCtrl];
-  if (newURL)
+  if (!newURL) return;
+  
+  if ([[newURL absoluteString] rangeOfString:@"/.Trash/"].length > 0) return;
+  
+  GBRepositoryController* newRepoCtrl = [GBRepositoryController repositoryControllerWithURL:newURL];
+  [self.repositoriesController addLocalRepositoryController:newRepoCtrl];
+  [[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:newURL];
+  if (shouldSelectNewRepo)
   {
-    if ([[newURL absoluteString] rangeOfString:@"/.Trash/"].location == NSNotFound)
-    {
-      GBRepositoryController* newRepoCtrl = [GBRepositoryController repositoryControllerWithURL:newURL];
-      [self.repositoriesController addLocalRepositoryController:newRepoCtrl];
-      [[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:newURL];
-      if (shouldSelectNewRepo)
-      {
-        [self.repositoriesController selectRepositoryController:newRepoCtrl];
-      }
-    }
+    [self.repositoriesController selectRepositoryController:newRepoCtrl];
   }
 }
 
