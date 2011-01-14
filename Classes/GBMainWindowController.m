@@ -482,6 +482,8 @@
   if ([[newURL absoluteString] rangeOfString:@"/.Trash/"].length > 0) return;
   
   GBRepositoryController* newRepoCtrl = [GBRepositoryController repositoryControllerWithURL:newURL];
+  NSLog(@"Adding repo ctrl after moving: %@", newURL);
+#warning TODO: should insert the newRepoCtrl in the place of the old instance
   [self.repositoriesController addLocalRepositoryController:newRepoCtrl];
   [[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:newURL];
   if (shouldSelectNewRepo)
