@@ -92,7 +92,7 @@
 + (id) repositoryWithURL:(NSURL*)url
 {
   GBRepository* r = [self repository];
-  r.url = url;
+  r.url = [[[NSURL alloc] initFileURLWithPath:[url path] isDirectory:YES] autorelease]; // force ending slash "/" if needed
   return r;
 }
 

@@ -142,6 +142,7 @@
                                      relativeToURL:nil 
                                bookmarkDataIsStale:NO 
                                              error:NULL];
+    url = [[[NSURL alloc] initFileURLWithPath:[url path] isDirectory:YES] autorelease];
     [self.delegate repositoryController:self didMoveToURL:url];
     return NO;
   }
