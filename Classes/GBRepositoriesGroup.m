@@ -3,9 +3,16 @@
 #import "GBRepositoriesGroup.h"
 #import "GBRepositoriesGroupCell.h"
 
+@interface GBRepositoriesGroup ()
+@property(nonatomic, assign) BOOL isExpanded;
+@end
+
+
 @implementation GBRepositoriesGroup
 @synthesize name;
 @synthesize items;
+
+@synthesize isExpanded;
 
 - (void) dealloc
 {
@@ -116,6 +123,7 @@
   return [NSDictionary dictionaryWithObjectsAndKeys:
           itemsPlist, @"items",
           self.name, @"name",
+          [NSNumber numberWithBool:self.isExpanded], @"isExpanded",
           nil];
 }
 
@@ -219,6 +227,16 @@
 - (BOOL) isEditableInSidebar
 {
   return YES;
+}
+
+- (BOOL) isExpandedInSidebar
+{
+  return self.isExpanded;
+}
+
+- (void) setExpandedInSidebar:(BOOL)expanded
+{
+  self.isExpanded = expanded;
 }
 
 - (NSArray*) writableTypesForPasteboard:(NSPasteboard *)pasteboard

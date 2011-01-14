@@ -237,6 +237,18 @@
   return NO;
 }
 
+- (BOOL) isExpandedInSidebar
+{
+  // TODO: return expanded state for submodules list
+  return YES;
+}
+
+- (void) setExpandedInSidebar:(BOOL)expanded
+{
+  // TODO: save expanded state for submodules list
+}
+
+
 
 #pragma mark NSPasteboardWriting
 

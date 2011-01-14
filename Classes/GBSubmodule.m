@@ -147,6 +147,16 @@
   return NO;
 }
 
+- (BOOL) isExpandedInSidebar
+{
+  return YES; // no op
+}
+
+- (void) setExpandedInSidebar:(BOOL)expanded
+{
+  // no op
+}
+
 - (NSArray*) writableTypesForPasteboard:(NSPasteboard *)pasteboard
 {
   return [[self localURL] writableTypesForPasteboard:pasteboard];

@@ -25,4 +25,7 @@
 - (BOOL) isDraggableInSidebar;
 - (BOOL) isEditableInSidebar;
 
+- (BOOL) isExpandedInSidebar;
+- (void) setExpandedInSidebar:(BOOL)expanded;
+
 @end

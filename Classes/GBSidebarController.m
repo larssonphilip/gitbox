@@ -407,6 +407,20 @@
 //  }
 //}
 
+- (void) outlineViewItemDidExpand:(NSNotification *)notification
+{
+  id<GBSidebarItem> item = [[notification userInfo] objectForKey:@"NSObject"];
+  [item setExpandedInSidebar:YES];
+  // if saving here, sidebar becomes empty (??) [self.repositoriesController saveLocalRepositoriesAndGroups];
+}
+
+- (void) outlineViewItemDidCollapse:(NSNotification *)notification
+{
+  id<GBSidebarItem> item = [[notification userInfo] objectForKey:@"NSObject"];
+  [item setExpandedInSidebar:NO];
+  // if saving here, sidebar becomes empty (??) [self.repositoriesController saveLocalRepositoriesAndGroups];
+}
+
 - (BOOL)outlineView:(NSOutlineView*)anOutlineView isGroupItem:(id<GBSidebarItem>)item
 {
   // Only sections should have "group" style.
@@ -536,10 +550,10 @@
 {
   //To make it easier to see exactly what is called, uncomment the following line:
   //NSLog(@"outlineView:validateDrop:proposedItem:%@ proposedChildIndex:%ld", proposedItem, (long)childIndex);
+  NSPasteboard* pasteboard = [draggingInfo draggingPasteboard];
   
   if ([draggingInfo draggingSource] == nil)
   {
-    NSPasteboard* pasteboard = [draggingInfo draggingPasteboard];
     NSArray* filenames = [pasteboard propertyListForType:NSFilenamesPboardType];
     BOOL atLeastOneIsValid = NO;
     
@@ -574,6 +588,17 @@
   }
   else
   {
+    NSString* draggedItemIdentifier = [pasteboard propertyListForType:GBSidebarItemPasteboardType];
+    if (!draggedItemIdentifier) return NSDragOperationNone;
+    id<GBSidebarItem> draggedItem = [[self localRepositoriesSection] findItemWithIndentifier:draggedItemIdentifier];
+    if (!draggedItem) return NSDragOperationNone;
+    
+    // Avoid dragging inside itself
+    if ([draggedItem findItemWithIndentifier:[proposedItem sidebarItemIdentifier]])
+    {
+      return NSDragOperationNone;
+    }
+    
     // inner dragging:
     // Accept only groups and sections
     if (proposedItem == [self localRepositoriesSection] || [proposedItem isRepositoriesGroup])
@@ -597,18 +622,13 @@
   if (itemIdentifier)
   {
     // Handle local drag and drop
-    NSLog(@"TODO: Handle local drop");
     
     id<GBSidebarItem> draggedItem = [[self localRepositoriesSection] findItemWithIndentifier:itemIdentifier];
-    
     if (!draggedItem) return NO;
     
     GBRepositoriesGroup* aGroup = [targetItem isRepositoriesGroup] ? (GBRepositoriesGroup*)targetItem : nil;
-    
     [self.repositoriesController moveLocalItem:(id<GBRepositoriesControllerLocalItem>)draggedItem toGroup:aGroup atIndex:childIndex];
-    
     [self update];
-    
     return YES;
   }
   else

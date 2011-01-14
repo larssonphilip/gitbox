@@ -316,6 +316,7 @@
   
   NSString* groupName = [plist objectForKey:@"name"];
   NSArray* groupItems = [plist objectForKey:@"items"];
+  NSNumber* groupIsExpanded = [plist objectForKey:@"isExpanded"];
   
   if (!groupName) return nil;
   if (![groupName isKindOfClass:[NSString class]]) return nil;
@@ -326,6 +327,7 @@
   GBRepositoriesGroup* aGroup = [[[GBRepositoriesGroup alloc] init] autorelease];
   
   aGroup.name = groupName;
+  [aGroup setExpandedInSidebar:(groupIsExpanded ? [groupIsExpanded boolValue] : NO)];
   
   for (id subitemPlist in groupItems)
   {
