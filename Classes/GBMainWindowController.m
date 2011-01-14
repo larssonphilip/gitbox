@@ -318,7 +318,6 @@
   }];
   [self.sourcesController update];
   [self.sourcesController updateExpandedState];
-  [self.sourcesController expandLocalRepositories];
   [self.toolbarController update];
 }
 

@@ -47,7 +47,6 @@ Bug fixes:
 
 Bugs:
 
-- bug: sidebar: when dragged external folder inside a group, should expand that group
 - bug: when cloning repo is dragged to some position, finished repo ctrl is not inserted in its place
 - bug: multi-line commit messages are not displayed correctly [ticket 973]
 - bug: in the right branch menu should display the current local branch, but disable it (currently it is not displayed at all)
@@ -93,6 +92,7 @@ Enhancements:
 
 Done for 1.2:
 
++ bug: sidebar: when dragged external folder inside a group, should expand that group
 x sidebar: revisit the code which checks the license and number of repos (not really needed)
 x sidebar: remove a group with backspace (not really needed)
 + sidebar: save expanded state in defaults

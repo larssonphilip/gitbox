@@ -653,6 +653,7 @@
     GBRepositoriesGroup* aGroup = [targetItem isRepositoriesGroup] ? (GBRepositoriesGroup*)targetItem : nil;
     [self.repositoriesController moveLocalItem:(id<GBRepositoriesControllerLocalItem>)draggedItem toGroup:aGroup atIndex:childIndex];
     [self update];
+    [anOutlineView expandItem:targetItem]; // in some cases when outline view does not expand automatically
     return YES;
   }
   else
@@ -688,6 +689,7 @@
       }
     } afterDelay:0.0];
     
+    [anOutlineView expandItem:targetItem]; // in some cases when outline view does not expand automatically
     return YES;
   }
   return NO;
