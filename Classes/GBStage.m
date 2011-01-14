@@ -172,6 +172,8 @@
 
 - (void) stageChanges:(NSArray*)theChanges withBlock:(void(^)())block
 {
+  block = [[block copy] autorelease];
+  
   NSMutableArray* pathsToDelete = [NSMutableArray array];
   NSMutableArray* pathsToAdd = [NSMutableArray array];
   for (GBChange* aChange in theChanges)
@@ -246,36 +248,41 @@
 
 - (void) stageAllWithBlock:(void(^)())block
 {
+  block = [[block copy] autorelease];
   GBTask* task = [self.repository task];
   task.arguments = [NSArray arrayWithObjects:@"add", @".", nil];
   [task launchWithBlock:^{
     [task showErrorIfNeeded];
-    block();
+    if (block) block();
   }];
 }
 
 - (void) revertChanges:(NSArray*)theChanges withBlock:(void(^)())block
 {
+  if ([theChanges count] <= 0)
+  {
+    if (block) block();
+    return;
+  }
+  
+  block = [[block copy] autorelease];
   NSMutableArray* paths = [NSMutableArray array];
   for (GBChange* aChange in theChanges)
   {
     [aChange setStagedSilently:NO];
     [paths addObject:aChange.fileURL.path];
   }
-  if ([paths count] <= 0)
-  {
-    block();
-    return;
-  }
   GBTask* task = [self.repository task];
   task.arguments = [[NSArray arrayWithObjects:@"checkout", @"HEAD", @"--", nil] arrayByAddingObjectsFromArray:paths];
   [task launchWithBlock:^{
-    block();
+    if (block) block();
   }];
 }
 
 - (void) deleteFilesInChanges:(NSArray*)theChanges withBlock:(void(^)())block
 {
+  block = [[block copy] autorelease];
+  
   NSMutableArray* URLsToTrash = [NSMutableArray array];
   NSMutableArray* pathsToGitRm = [NSMutableArray array];
   
@@ -314,6 +321,7 @@
   {
     GBTask* task = [self.repository task];
     task.arguments = [[NSArray arrayWithObjects:@"rm", nil] arrayByAddingObjectsFromArray:pathsToGitRm];
+    trashingBlock = [[trashingBlock copy] autorelease];
     [task launchWithBlock:^{
       trashingBlock();
     }];
