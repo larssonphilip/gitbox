@@ -304,7 +304,7 @@
   
   [self pushFSEventsPause];
   [self pushSpinning];
-  [self.repository initSubmodules];
+  [self.repository initSubmodulesWithBlock:nil];
   [self updateLocalRefsWithBlock:^{
     [self pushSpinning];
     [self loadCommitsWithBlock:^{
@@ -721,7 +721,7 @@
   [self pushDisabled];
   [self pushFSEventsPause];
   [self.repository pullOrMergeWithBlock:^{
-    [self.repository initSubmodules];
+    [self.repository initSubmodulesWithBlock:nil];
     [self loadStageChanges];
     [self updateLocalRefsWithBlock:^{
       [self loadCommits];
