@@ -31,6 +31,7 @@ Bug fixes:
 + Fixed Araxis binary name (araxis -> compare).
 + Fixed keyboard navigation: do not jump to stage pane when it is empty.
 + Fixed presentation of repostories and files while dragging.
++ Right branch menu now displays current local branch and renders it as disabled.
 
 -----------------------------------------------------------
 
@@ -47,15 +48,14 @@ Bug fixes:
 
 Bugs:
 
+- bug: general: when password changed after being remembered in keychain access, gitbox fails to authenticate. [Scott Snibbe <scott@snibbe.com>]
 - bug: general: autofetch sometimes does not work: maybe some crap is returned from ls-remote when communicating with a remote server; test with berger; seems like it stops working after some time or after gitbox restart. Also check that performSelector:withObject:afterDelay does not fail for big values.
 - bug: general: when pushing and switching branches, gitbox tries to fetch immediately which blocks the interaction. Should add a delay to perform fetch only after user is done doing what he was doing
-- bug: general: after cmd+W (while app is still in foreground), clicking on dock icon does not bring window back.
+- bug: general: after cmd+W (while app is still in foreground), clicking on dock icon does not bring window back. (Standard docs are not helpful: should google more)
 - bug: general: check that in appstore build there is a help message in the bottom of preferences panel. [Markus Fritze <my@sarnau.com>]
-- bug: general: when password changed after being remembered in keychain access, gitbox fails to authenticate. [Scott Snibbe <scott@snibbe.com>]
 - bug: general: bare repository is not recognized as such: should provide read-only access
 - bug: general: when /Developer is symlinked to another partition, opendiff cannot launch FileMerge: "exception raised trying to run FileMerge: launch path not accessible" [Jeff Snell <jeffsnell@mac.com>]
 
-- bug: toolbar: in the right branch menu should display the current local branch, but disable it (currently it is not displayed at all)
 - bug: toolbar: sometimes some duplicate branch name appears in popdown menus.
 - bug: toolbar: when removing a single server, remote branch remains and log is clean.
 - bug: toolbar: android repo checked out on a commit has branch menus disabled.
@@ -99,6 +99,7 @@ Enhancements:
 
 Done for 1.2:
 
++ bug: toolbar: in the right branch menu should display the current local branch, but disable it (currently it is not displayed at all)
 x bug: multi-line commit messages are not displayed correctly [ticket 973] [not a bug: this is done to support hardwrapping done by hardcore hackers; maybe I should insert additional line for each linebreak in the Gitbox text view]
 + bug: when cloning repo is dragged to some position, finished repo ctrl is not inserted in its place
 + bug: sidebar: when dragged external folder inside a group, should expand that group

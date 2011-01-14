@@ -364,12 +364,10 @@
     [remoteBranchesMenu addItem:[NSMenuItem menuItemWithTitle:@"" submenu:nil]];
   }
   
-  NSMenuItem* addNewRemoteBranchItemInTheBottom = nil;
-  
   if ([remotes count] > 1) // display submenus for each remote
   {
     NSMenuItem* item = [[NSMenuItem new] autorelease];
-    [item setTitle:NSLocalizedString(@"Remote Branches", @"Toolbar")];
+    [item setTitle:NSLocalizedString(@"Remote Branches:", @"Toolbar")];
     [item setAction:@selector(thisItemIsActuallyDisabled)];
     [item setEnabled:NO];
     [remoteBranchesMenu addItem:item];
@@ -400,13 +398,15 @@
       [newBranchItem setRepresentedObject:remote];
       [remoteMenu addItem:newBranchItem];
       
-      [remoteBranchesMenu addItem:[NSMenuItem menuItemWithTitle:remote.alias submenu:remoteMenu]];
+      NSMenuItem* item = [NSMenuItem menuItemWithTitle:remote.alias submenu:remoteMenu];
+      //[item setIndentationLevel:1];
+      [remoteBranchesMenu addItem:item];
     }
   }
   else if ([remotes count] == 1) // display a flat list of "origin/master"-like titles
   {
     NSMenuItem* item = [[NSMenuItem new] autorelease];
-    [item setTitle:NSLocalizedString(@"Remote Branches", @"Toolbar")];
+    [item setTitle:NSLocalizedString(@"Remote Branches:", @"Toolbar")];
     [item setAction:@selector(thisItemIsActuallyDisabled)];
     [item setEnabled:NO];
     [remoteBranchesMenu addItem:item];
@@ -415,6 +415,7 @@
     for (GBRef* branch in [remote pushedAndNewBranches])
     {
       NSMenuItem* item = [[NSMenuItem new] autorelease];
+      //[item setIndentationLevel:1];
       [item setTitle:[branch nameWithRemoteAlias]];
       [item setAction:@selector(selectRemoteBranch:)];
       [item setTarget:self];
@@ -432,7 +433,9 @@
     [newBranchItem setAction:@selector(createNewRemoteBranch:)];
     [newBranchItem setTarget:self];
     [newBranchItem setRepresentedObject:remote];
-    addNewRemoteBranchItemInTheBottom = newBranchItem;
+    
+    [remoteBranchesMenu addItem:[NSMenuItem separatorItem]];
+    [remoteBranchesMenu addItem:newBranchItem];
   }
   
   // Add new remote
@@ -457,35 +460,34 @@
     }
     
     NSMenuItem* item = [[NSMenuItem new] autorelease];
-    [item setTitle:NSLocalizedString(@"Local Branches", @"Toolbar")];
+    [item setTitle:NSLocalizedString(@"Local Branches:", @"Toolbar")];
     [item setAction:@selector(thisItemIsActuallyDisabled)];
     [item setEnabled:NO];
     [remoteBranchesMenu addItem:item];
     
     for (GBRef* localBranch in repo.localBranches)
     {
-      if (![localBranch isEqual:repo.currentLocalRef])
+      NSMenuItem* item = [[NSMenuItem new] autorelease];
+      //[item setIndentationLevel:1];
+      [item setTitle:localBranch.name];
+      [item setAction:@selector(selectRemoteBranch:)];
+      [item setTarget:self];
+      [item setRepresentedObject:localBranch];
+      if ([localBranch isEqual:repo.currentRemoteBranch])
       {
-        NSMenuItem* item = [[NSMenuItem new] autorelease];
-        [item setTitle:localBranch.name];
-        [item setAction:@selector(selectRemoteBranch:)];
-        [item setTarget:self];
-        [item setRepresentedObject:localBranch];
-        if ([localBranch isEqual:repo.currentRemoteBranch])
-        {
-          [item setState:NSOnState];
-        }
-        [remoteBranchesMenu addItem:item];
+        [item setState:NSOnState];
       }
+      if ([localBranch isEqual:repo.currentLocalRef])
+      {
+        [item setEnabled:NO];
+        [item setAction:@selector(thisItemIsActuallyDisabled)];
+        [item setTarget:nil];
+        [item setRepresentedObject:nil];
+      }      
+      [remoteBranchesMenu addItem:item];
     }
   } // if > 1 local branches
-  
-  
-  if (addNewRemoteBranchItemInTheBottom)
-  {
-    [remoteBranchesMenu addItem:[NSMenuItem separatorItem]];
-    [remoteBranchesMenu addItem:addNewRemoteBranchItemInTheBottom];
-  }
+
   
   
   // Finish with a button for the menu
