@@ -53,8 +53,8 @@
 + (NSString*) globalConfigValueForKey:(NSString*)key;
 + (void) setGlobalConfigValue:(NSString*)value forKey:(NSString*)key;
 
-+ (NSString*) globalConfigValueForKey:(NSString*)key;
-+ (void) setGlobalConfigValue:(NSString*)value forKey:(NSString*)key;
+- (NSString*) configValueForKey:(NSString*)key;
+- (void) setConfigValue:(NSString*)value forKey:(NSString*)key;
 
 + (void) configureName:(NSString*)name email:(NSString*)email withBlock:(void(^)())block;
 
