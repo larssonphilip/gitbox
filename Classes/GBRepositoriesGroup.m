@@ -35,6 +35,20 @@
   return NSLocalizedString(@"untitled group", @"GBRepositoriesGroup");
 }
 
+- (void) insertLocalItem:(id<GBRepositoriesControllerLocalItem>)aLocalItem atIndex:(NSInteger)anIndex;
+{
+  if (!aLocalItem) return;
+  
+  if (anIndex == NSOutlineViewDropOnItemIndex) anIndex = [self.items count];
+  if (anIndex > [self.items count]) anIndex = [self.items count];
+  if (anIndex < 0) anIndex = 0;
+  
+  [self.items insertObject:aLocalItem atIndex:(NSUInteger)anIndex];
+}
+
+
+
+
 
 
 #pragma mark GBRepositoriesControllerLocalItem
@@ -118,6 +132,16 @@
   return [NSString stringWithFormat:@"GBRepositoriesGroup:%p", self];
 }
 
+- (NSString*) nameInSidebar
+{
+  return self.name;
+}
+
+- (NSString*) tooltipInSidebar
+{
+  return self.name;
+}
+
 - (NSInteger) numberOfChildrenInSidebar
 {
   return (NSInteger)[self.items count];
@@ -144,11 +168,6 @@
     if (i) return i;
   }
   return nil;
-}
-
-- (NSString*) nameInSidebar
-{
-  return self.name;
 }
 
 - (GBBaseRepositoryController*) repositoryController

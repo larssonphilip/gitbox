@@ -313,7 +313,7 @@
 
 - (void) repositoriesControllerDidLoadLocalRepositoriesAndGroups:(GBRepositoriesController*)reposCtrl
 {
-  [reposCtrl enumerateLocalRepositoriesWithBlock:^(GBBaseRepositoryController* repoCtrl){
+  [reposCtrl.localRepositoriesGroup enumerateRepositoriesWithBlock:^(GBBaseRepositoryController* repoCtrl){
     repoCtrl.delegate = self;
   }];
   [self.sourcesController expandLocalRepositories];

@@ -115,6 +115,7 @@
 
 - (void) enumerateRepositoriesWithBlock:(void(^)(GBBaseRepositoryController* repoCtrl))aBlock
 {
+  // TODO: enumerate also all submodules' controllers.
   if (aBlock) aBlock(self);
 }
 
@@ -162,6 +163,16 @@
   return [NSString stringWithFormat:@"GBBaseRepositoryController:%p", self];
 }
 
+- (NSString*) nameInSidebar
+{
+  return [[[self url] path] lastPathComponent];
+}
+
+- (NSString*) tooltipInSidebar
+{
+  return [[self url] path];
+}
+
 - (NSInteger) numberOfChildrenInSidebar
 {
   return 0;
@@ -182,11 +193,6 @@
   if (!identifier) return nil;
   if ([[self sidebarItemIdentifier] isEqual:identifier]) return self;
   return nil;
-}
-
-- (NSString*) nameInSidebar
-{
-  return [[[self url] path] lastPathComponent];
 }
 
 - (GBBaseRepositoryController*) repositoryController

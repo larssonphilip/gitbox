@@ -95,7 +95,12 @@
 
 - (NSString*) nameInSidebar
 {
-  return [[[self.repository url] path] lastPathComponent];
+  return [[[self localURL] path] lastPathComponent];
+}
+
+- (NSString*) tooltipInSidebar
+{
+  return [[self localURL] path];
 }
 
 - (GBBaseRepositoryController*) repositoryController

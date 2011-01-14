@@ -6,6 +6,7 @@
 
 - (NSString*) sidebarItemIdentifier;
 - (NSString*) nameInSidebar;
+- (NSString*) tooltipInSidebar;
 
 - (NSInteger) numberOfChildrenInSidebar;
 - (id<GBSidebarItem>) childForIndexInSidebar:(NSInteger)index;

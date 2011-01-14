@@ -2,8 +2,6 @@
 #import "GBRepositoriesController.h"
 #import "GBRepositoriesGroup.h"
 
-#import "GBSidebarSection.h" // FIXME: get rid of this class in favor of GBRepositoriesGroup
-
 #import "GBSidebarController.h"
 #import "GBRepository.h"
 #import "GBRepositoryCell.h"
@@ -55,19 +53,16 @@
   if (!sections)
   {
     self.sections = [NSMutableArray arrayWithObjects:
-                     [GBSidebarSection sectionWithName:NSLocalizedString(@"REPOSITORIES", @"GBSidebarController") 
-                                                 items:self.repositoriesController.localItems],
-                     
+                     self.repositoriesController.localRepositoriesGroup,
                      nil];
   }
   return [[sections retain] autorelease];
 }
 
-- (GBSidebarSection*) localRepositoriesSection
+- (id<GBSidebarItem>) localRepositoriesSection
 {
-  return [self.sections objectAtIndex:0];
+  return self.repositoriesController.localRepositoriesGroup;
 }
-
 
 
 #pragma mark IBActions
@@ -151,7 +146,16 @@
 {
   // FIXME: should refactor repositories controller so it can remove any item with delegate notification
   // need to call some conversion method like "asRepositoriesLocalItem"
-  [self.repositoriesController removeLocalItem:[self clickedOrSelectedSidebarItem]];
+  id<GBSidebarItem> item = [self clickedOrSelectedSidebarItem];
+  
+  if ([item isRepository])
+  {
+    [self.repositoriesController removeLocalRepositoryController:[item repositoryController]];
+  }
+  else if ([item isRepositoriesGroup])
+  {
+    [self.repositoriesController removeLocalRepositoriesGroup:(GBRepositoriesGroup*)item];
+  }
   [self update];
 }
 
@@ -366,6 +370,10 @@
 
 - (id)outlineView:(NSOutlineView*)anOutlineView objectValueForTableColumn:(NSTableColumn*)tableColumn byItem:(id<GBSidebarItem>)item
 {
+  if (item == [self localRepositoriesSection])
+  {
+    return NSLocalizedString(@"REPOSITORIES", @"GBSidebar");
+  }
   return [item nameInSidebar];
 }
 
@@ -415,6 +423,7 @@
 
 - (BOOL)outlineView:(NSOutlineView*)anOutlineView shouldEditTableColumn:(NSTableColumn*)tableColumn item:(id<GBSidebarItem>)item
 {
+  if ([self.sections containsObject:item]) return NO; // do not edit sections
   return [item isEditableInSidebar];
 }
 
@@ -432,6 +441,9 @@
 
 - (void)outlineView:(NSOutlineView*)anOutlineView willDisplayCell:(id)cell forTableColumn:(NSTableColumn*)tableColumn item:(id<GBSidebarItem>)item
 {
+  if (item == nil) return;
+  if ([self.sections containsObject:item]) return;
+  
   if ([item isRepository])
   {
     [cell setMenu:self.localRepositoryMenu];
@@ -451,7 +463,12 @@
   // tableColumn == nil means the outlineView needs a separator cell
   if (!tableColumn) return nil;
   
-  NSCell* cell = [item sidebarCell];
+  NSCell* cell = nil;
+  
+  if (item && ![self.sections containsObject:item])
+  {
+    cell = [item sidebarCell];
+  }
   
   if (!cell)
   {
@@ -463,10 +480,13 @@
 
 - (CGFloat)outlineView:(NSOutlineView *)outlineView heightOfRowByItem:(id<GBSidebarItem>)item
 {
-  Class cellClass = [item sidebarCellClass];
-  if (cellClass)
+  if (item && ![self.sections containsObject:item])
   {
-    return [cellClass cellHeight];
+    Class cellClass = [item sidebarCellClass];
+    if (cellClass)
+    {
+      return [cellClass cellHeight];
+    }
   }
   return 20.0;
 }
@@ -481,8 +501,9 @@
   if (item && [self.sections containsObject:item])
   {
     return @"";
-  }  
-  return [item nameInSidebar] ? [item nameInSidebar] : @"";
+  }
+  NSString* string = [item tooltipInSidebar];
+  return string ? string : @"";
 }
 
 

@@ -9,4 +9,6 @@
 + (GBRepositoriesGroup*) untitledGroup;
 - (NSString*) untitledGroupName;
 
+- (void) insertLocalItem:(id<GBRepositoriesControllerLocalItem>)aLocalItem atIndex:(NSInteger)anIndex;
+
 @end
