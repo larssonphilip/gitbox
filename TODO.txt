@@ -43,7 +43,7 @@ Bug fixes:
 - submodules: case 4: user clones the repo inside the repo => needs to display as a non-tracked submodule which can be tracked
 - submodules: case 5: user tries to commit a submodule which has the HEAD non-pushed (or dirty directory) - show warning or ask to push manually; show button "show module"
 
-- quicklook for changes
+- changes: quicklook for changes
 
 Bugs:
 
@@ -72,19 +72,21 @@ Bugs:
 
 Enhancements:
 
-- commit+push is ugly: it spins, then it stops spinning, then it changes the badge number and then spins again.
-- when starting an app, sidebar appears to be collapsed at first and then repos appear. Should be more smooth.
-- show confirmation prompt when trying to push branch "X" into "origin/Y" (that is when branch name differ)
-- feature: checkout a commit from history context menu
-- should remove image view and resize header view if not image is present
-- should display a branch hint if the different branch is selected (commit text field)
+- sidebar: commit+push is ugly: it spins, then it stops spinning, then it changes the badge number and then spins again.
+- toolbar: show confirmation prompt when trying to push branch "X" into "origin/Y" (that is when branch name differ)
+- history: feature: checkout a commit from history context menu
+- changes: should remove image view and resize header view if not image is present
+- stage: should display a branch hint if the different branch is selected (commit text field)
+- sidebar: when starting an app, sidebar appears to be collapsed at first and then repos appear. Should be more smooth.
+- sidebar: add contextual menu with "add repo", "clone repo", "new group" to the folder
+- sidebar: add contextual menu with "+" button menu to the root whole outline view
 
-- allow 3 repos for free so ppl who don't want to pay just now may start actually using without searching for keygen?
-- find in commits
-- find/nav bar sliding down in the history:
+- sidebar: allow 3 repos for free so ppl who don't want to pay just now may start actually using without searching for keygen?
+- history: find in commits
+- history: find/nav bar sliding down in the history:
   - filters commits by sha-1, modified filenames and text
   - back/forward buttons allow undo/redo commit selection (clicking on parents)
-- quicklook for the file on space in stage (QLPreviewPanel, sample code: QuickLookDownloader)
+- changes: quicklook for the file on space in stage (QLPreviewPanel, sample code: QuickLookDownloader)
 
 - sidebar: special case - if dragged several repos from the same folder, and there's no group with the same name as their folder, wrap them all in a new group automatically.
 
