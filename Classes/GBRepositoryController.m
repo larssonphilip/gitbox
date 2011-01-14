@@ -12,6 +12,7 @@
 
 @interface GBRepositoryController ()
 
+@property(nonatomic,assign) BOOL isDisappearedFromFileSystem;
 @property(nonatomic,assign) BOOL isCommitting;
 @property(nonatomic,assign) BOOL isUpdatingRemoteRefs;
 
@@ -63,6 +64,7 @@
 @synthesize isRemoteBranchesDisabled;
 @synthesize isCommitting;
 @synthesize isUpdatingRemoteRefs;
+@synthesize isDisappearedFromFileSystem;
 @synthesize delegate;
 
 
@@ -133,8 +135,11 @@
 
 - (BOOL) checkRepositoryExistance
 {
+  if (self.isDisappearedFromFileSystem) return NO; // avoid multiple callbacks
   if (![[NSFileManager defaultManager] fileExistsAtPath:[self.repository path]])
   {
+    self.isDisappearedFromFileSystem = YES;
+    
     NSLog(@"GBRepositoryController: repo does not exist at path %@", [self.repository path]);
     NSURL* url = [NSURL URLByResolvingBookmarkData:self.urlBookmarkData 
                                            options:NSURLBookmarkResolutionWithoutUI | 
@@ -142,7 +147,10 @@
                                      relativeToURL:nil 
                                bookmarkDataIsStale:NO 
                                              error:NULL];
-    url = [[[NSURL alloc] initFileURLWithPath:[url path] isDirectory:YES] autorelease];
+    if (url)
+    {
+      url = [[[NSURL alloc] initFileURLWithPath:[url path] isDirectory:YES] autorelease];
+    }
     [self.delegate repositoryController:self didMoveToURL:url];
     return NO;
   }
@@ -1004,6 +1012,8 @@
 
 - (void) autoFetch
 {
+  if (![self checkRepositoryExistance]) return;
+  
   //NSLog(@"GBRepositoryController: autoFetch into %@ (delay: %f)", [self url], autoFetchInterval);
   while (autoFetchInterval > 300.0) autoFetchInterval -= 100.0;
   autoFetchInterval = autoFetchInterval*(1.4142 + drand48()*0.5);

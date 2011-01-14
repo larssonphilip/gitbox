@@ -92,7 +92,7 @@ NSString* OATaskNotification = @"OATaskNotification";
 
 + (NSString*) pathForExecutableUsingBruteForce:(NSString*)executable
 {
-  NSFileManager* fm = [NSFileManager defaultManager];
+  NSFileManager* fm = [[NSFileManager new] autorelease];
   NSArray* binPaths = [NSArray arrayWithObjects:
                        @"~/bin",
                        @"/usr/local/git/bin",
@@ -244,6 +244,19 @@ NSString* OATaskNotification = @"OATaskNotification";
   #endif
   
   [self prepareTask];
+  
+  NSFileManager* fm = [[[NSFileManager alloc] init] autorelease];
+  
+  NSString* cwd = [self currentDirectoryPath];
+  if (![fm fileExistsAtPath:cwd])
+  {
+    NSAssert(0, ([NSString stringWithFormat:@"Current directory does not exists: %@", cwd]));
+    return;
+    NSException* exception = [NSException exceptionWithName:@"OATaskCurrentDirectoryDoesNotExist"
+                                                     reason:[NSString stringWithFormat:@"OATask: Current directory path does not exist: %@", cwd] userInfo:nil];
+    @throw exception;
+    return;
+  }
   
   dispatch_queue_t callerQueue = dispatch_get_current_queue();
   dispatch_retain(callerQueue);

@@ -17,13 +17,22 @@ void OAFSEventStreamCallback( ConstFSEventStreamRef streamRef,
 }
 
 
+@interface OAFSEventStream ()
+@property(nonatomic, assign) BOOL isStarted;
+@property(nonatomic, assign) BOOL isStopped;
+@end
+
 @implementation OAFSEventStream
 @synthesize blocksByPaths;
 @synthesize coalescedPathsByPaths;
 @synthesize shouldLogEvents;
 
+@synthesize isStarted;
+@synthesize isStopped;
+
 - (void) dealloc
 {
+  NSAssert(self.isStopped, @"OAFSEventStream: deallocated before being stopped!");
   self.blocksByPaths = nil;
   self.coalescedPathsByPaths = nil;
   [super dealloc];
@@ -60,6 +69,9 @@ void OAFSEventStreamCallback( ConstFSEventStreamRef streamRef,
 
 - (void) start
 {
+  if (self.isStarted) return;
+  self.isStarted = YES;
+  
   CFArrayRef pathsToWatch = (CFArrayRef)[self.blocksByPaths allKeys];
   
   streamContext.version = 0;
@@ -99,6 +111,9 @@ void OAFSEventStreamCallback( ConstFSEventStreamRef streamRef,
 
 - (void) stop
 {
+  if (self.isStopped) return;
+  self.isStopped = YES;
+  
   [NSObject cancelPreviousPerformRequestsWithTarget:self];
   self.coalescedPathsByPaths = nil;
   FSEventStreamUnscheduleFromRunLoop(streamRef, CFRunLoopGetCurrent(), kCFRunLoopDefaultMode);
