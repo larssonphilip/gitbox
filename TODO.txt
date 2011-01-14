@@ -71,7 +71,6 @@ Bugs:
 - bug: changes: when clicked checkbox and want to drag out, it does not undo the action.
 - bug: changes: cannot commit a file with space in the path or something [Matthew Temple <matt@mattytemple.com>].
 
-- bug: stage: should stage selected changes when hit "Commit message..." box [ticket 974].
 - bug: stage: refuse first responder when stage is empty/
 
 
@@ -99,6 +98,7 @@ Enhancements:
 
 Done for 1.2:
 
++ bug: stage: should stage selected changes when hit "Commit message..." box [ticket 974].
 + bug: toolbar: in the right branch menu should display the current local branch, but disable it (currently it is not displayed at all)
 x bug: multi-line commit messages are not displayed correctly [ticket 973] [not a bug: this is done to support hardwrapping done by hardcore hackers; maybe I should insert additional line for each linebreak in the Gitbox text view]
 + bug: when cloning repo is dragged to some position, finished repo ctrl is not inserted in its place

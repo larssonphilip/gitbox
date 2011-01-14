@@ -363,10 +363,12 @@
   }
   else
   {
-    [self.repositoryController stageChanges:[self selectedChanges] withBlock:^{
-      //[self commitWithSheet:sender];
-      [[self.messageTextView window] makeFirstResponder:self.messageTextView];
-    }];
+    [[self.messageTextView window] makeFirstResponder:self.messageTextView];
+// will stage when textfield is focused
+//    [self.repositoryController stageChanges:[self selectedChanges] withBlock:^{
+//      //[self commitWithSheet:sender];
+//      [[self.messageTextView window] makeFirstResponder:self.messageTextView];
+//    }];
   }
 }
 
@@ -446,20 +448,22 @@
 {
   if (!result) return;
   self.rememberedSelectionIndexes = [self.statusArrayController selectionIndexes];
-  [self.statusArrayController setSelectionIndexes:[NSIndexSet indexSet]];
-  
-  if (!self.stage.currentCommitMessage)
-  {
-    [self.messageTextView setString:@""];
-  }
-  
-  self.stage.currentCommitMessage = [[[self.messageTextView string] copy] autorelease];
-  if (!self.stage.currentCommitMessage)
-  {
-    self.stage.currentCommitMessage = @"";
-  }
-  [self updateHeaderSizeAnimating:YES];
-  [self.tableView scrollToBeginningOfDocument:nil];
+  [self.repositoryController stageChanges:[self selectedChanges] withBlock:^{
+    [self.statusArrayController setSelectionIndexes:[NSIndexSet indexSet]];
+    
+    if (!self.stage.currentCommitMessage)
+    {
+      [self.messageTextView setString:@""];
+    }
+    
+    self.stage.currentCommitMessage = [[[self.messageTextView string] copy] autorelease];
+    if (!self.stage.currentCommitMessage)
+    {
+      self.stage.currentCommitMessage = @"";
+    }
+    [self updateHeaderSizeAnimating:YES];
+    [self.tableView scrollToBeginningOfDocument:nil];      
+  }];
 }
 
 - (void) textView:(NSTextView*)aTextView willResignFirstResponder:(BOOL)result

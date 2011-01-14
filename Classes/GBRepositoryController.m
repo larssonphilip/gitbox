@@ -613,6 +613,11 @@
 - (void) stageChanges:(NSArray*)changes withBlock:(void(^)())block
 {
   [self resetAutoFetchInterval];
+  if ([changes count] <= 0)
+  {
+    if (block) block();
+    return;
+  }
   [self stagingHelperForChanges:changes withBlock:^(NSArray* notBusyChanges, GBStage* stage, void(^helperBlock)()){
     [stage stageChanges:notBusyChanges withBlock:helperBlock];
   } postStageBlock:block];
@@ -621,6 +626,10 @@
 - (void) unstageChanges:(NSArray*)changes
 {
   [self resetAutoFetchInterval];
+  if ([changes count] <= 0)
+  {
+    return;
+  }
   [self stagingHelperForChanges:changes withBlock:^(NSArray* notBusyChanges, GBStage* stage, void(^helperBlock)()){
     [stage unstageChanges:notBusyChanges withBlock:helperBlock];
   } postStageBlock:nil];
@@ -633,11 +642,14 @@
   // in 'git checkout HEAD' command when mixed with tracked paths.
   for (GBChange* change in changes)
   {
+    //[self pushFSEventsPause];
     [self stagingHelperForChanges:[NSArray arrayWithObject:change] withBlock:^(NSArray* notBusyChanges, GBStage* stage, void(^block)()){
       [stage unstageChanges:notBusyChanges withBlock:^{
         [stage revertChanges:notBusyChanges withBlock:block];
       }];
-    } postStageBlock:nil];
+    } postStageBlock:^{
+      //[self popFSEventsPause];
+    }];
   }
 }
 
