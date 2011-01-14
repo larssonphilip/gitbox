@@ -97,15 +97,16 @@ static GBActivityController* sharedGBActivityController;
   {
     [self.activities addObject:activity];
   }
-  
-  if (self.tableView)
-  {
-    NSInteger numberOfRows = [self.tableView numberOfRows];
-    if (numberOfRows > 0)
-    {
-      [self.tableView scrollRowToVisible:numberOfRows - 1];
-    }
-  }
+
+  // For now simply do not scroll to the end. Should be smarter later.
+//  if (self.tableView)
+//  {
+//    NSInteger numberOfRows = [self.tableView numberOfRows];
+//    if (numberOfRows > 0)
+//    {
+//      [self.tableView scrollRowToVisible:numberOfRows - 1];
+//    }
+//  }
 }
 
 
