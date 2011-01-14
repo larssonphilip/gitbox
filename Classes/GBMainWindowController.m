@@ -316,8 +316,9 @@
   [reposCtrl.localRepositoriesGroup enumerateRepositoriesWithBlock:^(GBBaseRepositoryController* repoCtrl){
     repoCtrl.delegate = self;
   }];
-  [self.sourcesController expandLocalRepositories];
   [self.sourcesController update];
+  [self.sourcesController updateExpandedState];
+  [self.sourcesController expandLocalRepositories];
   [self.toolbarController update];
 }
 

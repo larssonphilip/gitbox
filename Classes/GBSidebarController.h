@@ -28,6 +28,9 @@
 - (void) updateBadges;
 - (void) updateSelectedRow;
 - (void) expandLocalRepositories;
+- (void) updateExpandedState;
+- (void) updateExpandedStateForItem:(id<GBSidebarItem>)item;
+
 - (void) updateSpinnerForRepositoryController:(GBBaseRepositoryController*)repoCtrl;
 
 - (void) editGroup:(GBRepositoriesGroup*)aGroup;

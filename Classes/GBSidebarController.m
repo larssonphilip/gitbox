@@ -318,6 +318,30 @@
   [self.outlineView editColumn:0 row:rowIndex withEvent:nil select:YES];
 }
 
+- (void) updateExpandedState
+{
+  [self updateExpandedStateForItem:[self localRepositoriesSection]];
+}
+
+- (void) updateExpandedStateForItem:(id<GBSidebarItem>)item
+{
+  if ([item isExpandableInSidebar])
+  {
+    if ([item isExpandedInSidebar])
+    {
+      [self.outlineView expandItem:item];
+    }
+    else
+    {
+      [self.outlineView collapseItem:item];
+    }
+  }
+  for (NSUInteger index = 0; index < [item numberOfChildrenInSidebar]; index++)
+  {
+    [self updateExpandedStateForItem:[item childForIndexInSidebar:index]];
+  }
+}
+
 
 
 
