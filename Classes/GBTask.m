@@ -8,12 +8,20 @@
 
 @synthesize repository;
 
+
+# pragma mark Init
+
 + (id) taskWithRepository:(GBRepository*)repo
 {
   GBTask* task = [self task];
   task.repository = repo;
   return task;
 }
+
+
+
+# pragma mark Executables
+
 
 + (NSString*) pathToBundledBinary:(NSString*)name
 {
@@ -67,6 +75,10 @@
   return @"git";
 }
 
+
+
+# pragma mark Execution environment
+
 - (NSString*) launchPath
 {
   return [GBTask pathToBundledBinary:@"git"];
@@ -76,6 +88,10 @@
 {
   return [self.repository.url path];
 }
+
+
+
+#pragma mark Helpers
 
 - (void) prepareTask
 {
