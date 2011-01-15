@@ -1,11 +1,5 @@
 @class OAActivity;
 @interface GBActivityController : NSWindowController <NSTableViewDelegate, NSWindowDelegate>
-{
-  NSMutableArray* activities;
-  IBOutlet NSTextView* outputTextView;
-  IBOutlet NSTableView* tableView;
-  IBOutlet NSArrayController* arrayController;
-}
 
 @property(nonatomic,retain) NSMutableArray* activities;
 @property(nonatomic,retain) IBOutlet NSTextView* outputTextView;

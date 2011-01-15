@@ -82,20 +82,19 @@ static GBActivityController* sharedGBActivityController;
 
 - (void) addActivity:(OAActivity*)activity
 {
-  NSUInteger maxNumberOfActivities = 1000;
+  static NSUInteger maxNumberOfActivities = 1000;  
+  
   if ([self.activities count] > maxNumberOfActivities + 20) // 20 is a little overlap to avoid refreshing the array too often
   {
     self.activities = [[[self.activities subarrayWithRange:NSMakeRange([self.activities count] - maxNumberOfActivities, maxNumberOfActivities)] mutableCopy] autorelease];
   }
   
+  [self.activities addObject:activity];
+  
   if (self.arrayController)
   {
-    [self.arrayController addObject:activity];
-    [self syncActivityOutput];  
-  }
-  else // nib is not loaded yet
-  {
-    [self.activities addObject:activity];
+    [self.arrayController rearrangeObjects];
+    [self syncActivityOutput];
   }
 
   // For now simply do not scroll to the end. Should be smarter later.
