@@ -21,6 +21,10 @@
 - (BOOL) isConfiguredToFetchToTheDefaultLocation;
 - (NSString*) defaultFetchRefspec;
 - (void) updateNewBranches;
+- (void) updateBranches;
+
++ (NSString*) keychainPasswordNameForURLString:(NSString*)urlString;
+- (NSString*) keychainPasswordName;
 
 #pragma mark Actions
 

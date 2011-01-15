@@ -46,7 +46,6 @@
 //    urlString = [NSString stringWithFormat:@"ssh://%@", urlString];
   }
   NSURL* url = [NSURL URLWithString:urlString];
-  NSLog(@"GBCloneWindowController: url = %@", url);
   return url;
 }
 

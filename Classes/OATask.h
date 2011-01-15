@@ -17,6 +17,7 @@ typedef void (^OATaskBlock)();
 @property(nonatomic,retain) id standardError;
 @property(nonatomic,retain) OAActivity* activity;
 @property(nonatomic,copy) OATaskBlock callbackBlock;
+@property(nonatomic,copy) NSString* keychainPasswordName;
 
 @property(nonatomic,assign) BOOL skipKeychainPassword;
 @property(nonatomic,assign) BOOL ignoreFailure;
@@ -60,5 +61,7 @@ typedef void (^OATaskBlock)();
 #pragma mark API for subclasses
 
 - (void) didFinish;
+- (NSMutableDictionary*) configureEnvironment:(NSMutableDictionary*)dict;
+
 
 @end

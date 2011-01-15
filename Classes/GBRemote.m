@@ -86,13 +86,22 @@
   self.newBranches = updatedNewBranches;
 }
 
+- (void) updateBranches
+{
+  [self updateNewBranches];
+  for (GBRef* branch in [self pushedAndNewBranches])
+  {
+    branch.remote = self;
+  }
+}
+
 - (BOOL) copyInterestingDataFromRemoteIfApplicable:(GBRemote*)otherRemote
 {
   if (self.alias && [otherRemote.alias isEqualToString:self.alias])
   {
     self.newBranches = otherRemote.newBranches;
     self.failedCommunication = otherRemote.failedCommunication;
-    [self updateNewBranches];
+    [self updateBranches];
     return YES;
   }
   return NO;
@@ -109,6 +118,15 @@
   return [NSString stringWithFormat:@"+refs/heads/*:refs/remotes/%@/*", self.alias];
 }
 
++ (NSString*) keychainPasswordNameForURLString:(NSString*)urlString
+{
+  return [NSString stringWithFormat:@"Gitbox password for %@", urlString];
+}
+
+- (NSString*) keychainPasswordName
+{
+  return [GBRemote keychainPasswordNameForURLString:self.URLString];
+}
 
 
 

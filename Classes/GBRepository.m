@@ -413,6 +413,19 @@
   return self.localBranchCommits;
 }
 
+- (GBRemote*) remoteForAlias:(NSString*)remoteAlias
+{
+  if (!remoteAlias) return nil;
+  for (GBRemote* aRemote in self.remotes)
+  {
+    if ([aRemote.alias isEqual:remoteAlias])
+    {
+      return aRemote;
+    }
+  }
+  return nil;
+}
+
 - (BOOL) doesRefExist:(GBRef*)ref
 {
   // For now, the only case when ref can be created in UI, but does not have any commit id is a new remote branch.
@@ -480,7 +493,7 @@
       {
         [newRemote copyInterestingDataFromRemoteIfApplicable:oldRemote];
       }
-      [newRemote updateNewBranches];
+      [newRemote updateBranches];
     }
     
     self.remotes = task.remotes;
@@ -502,7 +515,7 @@
     {
       GBRemote* aRemote = [self.remotes objectWithValue:remoteAlias forKey:@"alias"];
       aRemote.branches = [task.remoteBranchesByRemoteAlias objectForKey:remoteAlias];
-      [aRemote updateNewBranches];
+      [aRemote updateBranches];
     }
     
     if (block) block();
@@ -876,7 +889,8 @@
                          [NSString stringWithFormat:@"%@:refs/remotes/%@", 
                           aRemoteBranch.name, [aRemoteBranch nameWithRemoteAlias]],
                          nil];
-  
+  task.keychainPasswordName = [aRemoteBranch.remote keychainPasswordName];
+  NSLog(@"DEBUG: pulling: %@", task.keychainPasswordName);
   [self launchTask:task withBlock:^{
     aRemoteBranch.remote.failedCommunication = [task isError];
     if ([task isError])
@@ -903,6 +917,7 @@
                      aRemote.alias,
                      [aRemote defaultFetchRefspec], // Declaring a proper refspec is necessary to make autofetch expectations about remote alias to work. git show-ref should always return refs for alias XYZ.
                      nil];
+  task.keychainPasswordName = [aRemote keychainPasswordName];
   
   [self launchTask:task withBlock:^{
     aRemote.failedCommunication = [task isError];
@@ -935,7 +950,7 @@
                     [NSString stringWithFormat:@"%@:refs/remotes/%@", 
                      aRemoteBranch.name, [aRemoteBranch nameWithRemoteAlias]],
                     nil];
-  
+  task.keychainPasswordName = [aRemoteBranch.remote keychainPasswordName];
   [self launchTask:task withBlock:^{
     aRemoteBranch.remote.failedCommunication = [task isError];
     if ([task isError])
@@ -967,6 +982,7 @@
   GBTask* task = [self task];
   NSString* refspec = [NSString stringWithFormat:@"%@:%@", aLocalBranch.name, aRemoteBranch.name];
   task.arguments = [NSArray arrayWithObjects:@"push", @"--tags", aRemoteBranch.remoteAlias, refspec, nil];
+  task.keychainPasswordName = [aRemoteBranch.remote keychainPasswordName];
   [self launchTask:task withBlock:^{
     aRemoteBranch.remote.failedCommunication = [task isError];
     if ([task isError])

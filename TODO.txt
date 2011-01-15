@@ -36,7 +36,7 @@ Bug fixes:
 + Fixed bug with repository path which prevented from adding changes to stage in some scenarios.
 + Fixed potential issues with updating repository when it was moved or renamed.
 + Fixed issue with filtering in Activity window (cmd+0).
-+ Fixed bug with remembering SSH password: now if password is incorrect, Gitbox asks again instead of using remembered on (in Keychain)
++ Fixed bug with Keychain passwords: now if password is incorrect, Gitbox asks again instead of using saved value. Passwords are saved under with URL-specific names.
 + Fixed issue with cloning using local network URL (e.g. "oleg.local:myproject/repo.git")
 
 
@@ -56,7 +56,6 @@ Bug fixes:
 Bugs:
 
 - bug: stage: when jumping though history, should resize text view according to the new text
-- bug: general: password is remembered under generic "Gitbox SSH", should supply repo URL to askpass.rb
 - bug: history: after cloning https://github.com/ruby-amqp/amqp.git, it does not show history.
 - bug: general: autofetch sometimes does not work: maybe some crap is returned from ls-remote when communicating with a remote server; test with berger; seems like it stops working after some time or after gitbox restart. Also check that performSelector:withObject:afterDelay does not fail for big values.
 - bug: general: when pushing and switching branches, gitbox tries to fetch immediately which blocks the interaction. Should add a delay to perform fetch only after user is done doing what he was doing
@@ -110,6 +109,7 @@ Enhancements:
 
 Done for 1.2:
 
++ bug: general: password is remembered under generic "Gitbox SSH", should supply repo URL to askpass.rb
 + bug: general: cannot clone from olegbook.local: gitbox cuts ".local" from the URL. (in fact, was incorrectly replacing "host:test.git" with "host/test.git")
 + bug: general: when password changed after being remembered in keychain access, gitbox fails to authenticate. [Scott Snibbe <scott@snibbe.com>]
 + bug: sidebar: when moving repo around, it is duplicated in the sidebar

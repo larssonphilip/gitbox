@@ -34,6 +34,7 @@ NSString* OATaskNotification = @"OATaskNotification";
 @synthesize standardError;
 @synthesize activity;
 @synthesize callbackBlock;
+@synthesize keychainPasswordName;
 
 @synthesize skipKeychainPassword;
 @synthesize ignoreFailure;
@@ -66,6 +67,7 @@ NSString* OATaskNotification = @"OATaskNotification";
   self.standardError = nil;
   self.activity.task = nil;
   self.activity = nil;
+  self.keychainPasswordName = nil;
   [super dealloc];
 }
 
@@ -524,6 +526,12 @@ NSString* OATaskNotification = @"OATaskNotification";
 #pragma mark Helpers
 
 
+// override in subclasses
+- (NSMutableDictionary*) configureEnvironment:(NSMutableDictionary*)dict
+{
+  return dict;
+}
+
 - (void) prepareTask
 {
   NSPipe* defaultPipe = nil;
@@ -546,9 +554,13 @@ NSString* OATaskNotification = @"OATaskNotification";
     [environment setObject:@"1" forKey:@"GITBOX_USE_KEYCHAIN_PASSWORD"];
   }
   
-  //NSLog(@"set env: %@", environment);
-  [self.nstask setEnvironment:environment];
+  if (self.keychainPasswordName)
+  {
+    [environment setObject:self.keychainPasswordName forKey:@"GITBOX_KEYCHAIN_NAME"];
+  }
   
+  environment = [self configureEnvironment:environment];
+    
   if (!self.standardOutput)
   {
     defaultPipe = (defaultPipe ? defaultPipe : [NSPipe pipe]);

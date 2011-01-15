@@ -68,6 +68,7 @@
 - (NSArray*) stageAndCommits;
 - (NSArray*) commits;
 - (NSUInteger) totalPendingChanges;
+- (GBRemote*) remoteForAlias:(NSString*)remoteAlias;
 - (BOOL) doesRefExist:(GBRef*) ref;
 - (BOOL) doesHaveSubmodules;
 

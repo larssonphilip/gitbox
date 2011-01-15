@@ -1,5 +1,6 @@
 #import "GBCloneTask.h"
 #import "GBTask.h"
+#import "GBRemote.h"
 
 @implementation GBCloneTask
 
@@ -21,6 +22,11 @@
 - (NSString*) currentDirectoryPath
 {
   return [[self.targetURL path] stringByDeletingLastPathComponent];
+}
+
+- (NSString*) keychainPasswordName
+{
+  return [GBRemote keychainPasswordNameForURLString:[self.sourceURL absoluteString]];
 }
 
 - (void) prepareTask

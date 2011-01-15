@@ -1,5 +1,6 @@
 #import "GBLocalRemoteAssociationTask.h"
 #import "GBRef.h"
+#import "GBRepository.h"
 
 #import "NSData+OADataHelpers.h"
 #import "NSString+OAGitHelpers.h"
@@ -87,6 +88,11 @@
     }
     ref.remoteAlias = self.remoteAlias;
     ref.name = self.remoteBranchName;
+    GBRemote* remote = [self.repository remoteForAlias:ref.remoteAlias];
+    if (remote)
+    {
+      ref.remote = remote;
+    }
     self.remoteBranch = ref;
   }  
   

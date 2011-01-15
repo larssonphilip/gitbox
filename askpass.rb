@@ -14,6 +14,11 @@ def main
   end
   message = ARGV.join(" ").to_s.strip
   
+  keychain_name = ENV["GITBOX_KEYCHAIN_NAME"]
+  if keychain_name.to_s.strip == ""
+    keychain_name = keychain_service_name_for_string(title)
+  end
+  
   read_from_keychain = (ENV["GITBOX_USE_KEYCHAIN_PASSWORD"].to_s != "")
 
   if DEBUG
@@ -31,7 +36,7 @@ def main
     message = message.gsub(/\s*\(?yes\/no\)?\??/, "?")
     result = yes_no_prompt(title, message)
   else
-    result = password_prompt(title, message, :read_from_keychain => read_from_keychain, :write_to_keychain => true)
+    result = password_prompt(title, keychain_name, message, :read_from_keychain => read_from_keychain, :write_to_keychain => true)
   end
   
   if result == ""
@@ -42,13 +47,11 @@ def main
   end
 end
 
-def password_prompt(title, message, options = {})
+def password_prompt(title, keychain_name, message, options = {})
   dialog = %{display dialog #{double_quote(message)} default answer "" with title #{double_quote(title)}  with icon note with hidden answer} 
   
-  keychain = keychain_service_name_for_string(title.to_s)
-  
   if options[:read_from_keychain]
-    password = password_from_keychain(keychain)
+    password = password_from_keychain(keychain_name)
     if password.to_s != ""
       return password
     end
@@ -63,7 +66,7 @@ def password_prompt(title, message, options = {})
   
   if options[:write_to_keychain]
     if password != ""
-      store_password_in_keychain(password, keychain)
+      store_password_in_keychain(password, keychain_name)
     end
   end
   
