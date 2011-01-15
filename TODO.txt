@@ -63,6 +63,7 @@ Bugs:
 - bug: toolbar: when removing a single server, remote branch remains and log is clean.
 - bug: toolbar: android repo checked out on a commit has branch menus disabled.
 
+- bug: sidebar: when launched the app, all repos start spinning together.
 - bug: sidebar: when collapsing a group, it should display a badge with sum of all nested badges
 - bug: sidebar: when collapsing a group, spinners remain spinning indefinitely
 - bug: sidebar: quickly jumping through repos in sidebar is slow: avoid unnecessary updates and shell-outs when repo is selected.
