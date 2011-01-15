@@ -422,6 +422,7 @@
   {
     [self.messageTextView setString:message];
     [self.messageTextView selectAll:nil];
+    [self textDidChange:nil];
   }
 }
 
@@ -432,6 +433,7 @@
   {
     [self.messageTextView setString:message];
     [self.messageTextView selectAll:nil];
+    [self textDidChange:nil];
   }
 }
 
