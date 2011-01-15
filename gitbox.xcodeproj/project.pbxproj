@@ -611,6 +611,7 @@
 		20C899B412B95DDF002F600F /* OANonScrollingScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OANonScrollingScrollView.h; path = ../OANonScrollingScrollView.h; sourceTree = "<group>"; };
 		20C899B512B95DDF002F600F /* OANonScrollingScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = OANonScrollingScrollView.m; path = ../OANonScrollingScrollView.m; sourceTree = "<group>"; };
 		20E59CE711A5C9EA00E7FB72 /* GBModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBModels.h; sourceTree = "<group>"; };
+		20EF861412E217B900F3438A /* Authentication.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Authentication.txt; sourceTree = "<group>"; };
 		20FAA18F123F831400E8FA0E /* git.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = git.bundle; sourceTree = "<group>"; };
 		2564AD2C0F5327BB00F57823 /* prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = prefix.pch; sourceTree = "<group>"; };
 		2A37F4B0FDCFA73011CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -830,13 +831,14 @@
 				20A09D68129F8F3900294730 /* fastspring-1001-2000-licenses.txt */,
 				20A09D69129F8F3900294730 /* free-promo-1-100-licenses.txt */,
 				2038F1EA11936CA50087CE37 /* TODO.txt */,
-				2009871711C4597800F35630 /* Payment.txt */,
 				206CAB38122A771D009284FE /* Architecture.txt */,
-				20A09DDF12A121FD00294730 /* Quotes.txt */,
-				2049942212D6878A007ED992 /* SidebarGroups.txt */,
-				2049942512D687A8007ED992 /* Settings.txt */,
-				200432AE12D8A1AE00B045C0 /* Submodules.txt */,
 				2097EB8312DDFAA00070AE89 /* AsyncPatterns.txt */,
+				20EF861412E217B900F3438A /* Authentication.txt */,
+				2009871711C4597800F35630 /* Payment.txt */,
+				20A09DDF12A121FD00294730 /* Quotes.txt */,
+				2049942512D687A8007ED992 /* Settings.txt */,
+				2049942212D6878A007ED992 /* SidebarGroups.txt */,
+				200432AE12D8A1AE00B045C0 /* Submodules.txt */,
 			);
 			name = Documents;
 			sourceTree = "<group>";
