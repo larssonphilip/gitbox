@@ -40,11 +40,13 @@
     {
       return [NSURL fileURLWithPath:urlString];
     }
-    urlString = [urlString stringByReplacingOccurrencesOfString:@":" withString:@"/"]; // git@github.com:oleganza/path => git@github.com/oleganza/path
-    urlString = [urlString stringByReplacingOccurrencesOfString:@"//" withString:@"/"]; // needs a fix if it was domain:/root/path
-    urlString = [NSString stringWithFormat:@"ssh://%@", urlString];
+//    urlString = [urlString stringByReplacingOccurrencesOfString:@":/" withString:@"/"]; // git@github.com:/oleganza/path => git@github.com/oleganza/
+//    urlString = [urlString stringByReplacingOccurrencesOfString:@":" withString:@"/~/"]; // git@github.com:oleganza/path => git@github.com/~/oleganza/path
+//    urlString = [urlString stringByReplacingOccurrencesOfString:@"//" withString:@"/"]; // needs a fix if it was domain:/root/path
+//    urlString = [NSString stringWithFormat:@"ssh://%@", urlString];
   }
   NSURL* url = [NSURL URLWithString:urlString];
+  NSLog(@"GBCloneWindowController: url = %@", url);
   return url;
 }
 
@@ -67,6 +69,7 @@
     if (self.windowHoldingSheet) [self.windowHoldingSheet endSheetForController:self];
     
     NSString* suggestedName = [[self.sourceURL absoluteString] lastPathComponent];
+    suggestedName = [[suggestedName componentsSeparatedByString:@":"] lastObject]; // handle the case of "oleg.local:test.git"
     if (!suggestedName) suggestedName = @"";
     NSInteger dotgitlocation = 0;
     if (suggestedName && 
