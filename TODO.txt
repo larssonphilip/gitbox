@@ -51,6 +51,9 @@ Bug fixes:
 
 Bugs:
 
+- bug: general: cannot clone from olegbook.local: gitbox cuts ".local" from the URL.
+- bug: general: password is remembered under generic "Gitbox SSH", should supply repo URL to askpass.rb
+- bug: history: after cloning https://github.com/ruby-amqp/amqp.git, it does not show history.
 - bug: general: when password changed after being remembered in keychain access, gitbox fails to authenticate. [Scott Snibbe <scott@snibbe.com>]
 - bug: general: autofetch sometimes does not work: maybe some crap is returned from ls-remote when communicating with a remote server; test with berger; seems like it stops working after some time or after gitbox restart. Also check that performSelector:withObject:afterDelay does not fail for big values.
 - bug: general: when pushing and switching branches, gitbox tries to fetch immediately which blocks the interaction. Should add a delay to perform fetch only after user is done doing what he was doing
