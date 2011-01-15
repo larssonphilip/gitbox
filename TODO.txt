@@ -99,6 +99,8 @@ Enhancements:
 - changes: should remove image view and resize header view if not image is present
 - stage: should display a branch hint if the different branch is selected (commit text field)
 
+- why mercurial: http://www.ninthdivision.com/blog/2011/01/why-mercurial/
+
 
 Done for 1.2:
 
