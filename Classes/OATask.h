@@ -18,6 +18,7 @@ typedef void (^OATaskBlock)();
 @property(nonatomic,retain) OAActivity* activity;
 @property(nonatomic,copy) OATaskBlock callbackBlock;
 
+@property(nonatomic,assign) BOOL skipKeychainPassword;
 @property(nonatomic,assign) BOOL ignoreFailure;
 @property(nonatomic,assign) BOOL isTerminated;
 @property(nonatomic,assign) NSTimeInterval terminateTimeout;

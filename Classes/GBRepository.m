@@ -878,6 +878,7 @@
                          nil];
   
   [self launchTask:task withBlock:^{
+    aRemoteBranch.remote.failedCommunication = [task isError];
     if ([task isError])
     {
       [self alertWithMessage: @"Pull failed" description:[task.output UTF8String]];
@@ -888,6 +889,7 @@
 
 - (void) fetchRemote:(GBRemote*)aRemote withBlock:(void(^)())block
 {
+  block = [[block copy] autorelease];
   if (!aRemote)
   {
     if (block) block();
@@ -903,15 +905,16 @@
                      nil];
   
   [self launchTask:task withBlock:^{
-    [self captureErrorForTask:task
-                    withBlock:^(){
-                      return [self errorWithCode:GBErrorCodeFetchFailed
-                                     description:[NSString stringWithFormat:NSLocalizedString(@"Failed to fetch from %@",@"Error"), aRemote.alias]
-                                          reason:[task.output UTF8String]
-                                      suggestion:NSLocalizedString(@"Please check the URL or network settings.",@"Error")];
-                      
-                    }
-                 continuation:block];
+    aRemote.failedCommunication = [task isError];
+    if ([task isError])
+    {
+      self.lastError = [self errorWithCode:GBErrorCodeFetchFailed
+                               description:[NSString stringWithFormat:NSLocalizedString(@"Failed to fetch from %@",@"Error"), aRemote.alias]
+                                    reason:[task.output UTF8String]
+                                suggestion:NSLocalizedString(@"Please check the URL or network settings.",@"Error")];
+    }
+    if (block) block();
+    self.lastError = nil;
   }];  
 }
 
@@ -934,14 +937,16 @@
                     nil];
   
   [self launchTask:task withBlock:^{
-    [self captureErrorForTask:task
-                    withBlock:^(){
-                      return [self errorWithCode:GBErrorCodeFetchFailed
-                                     description:[NSString stringWithFormat:NSLocalizedString(@"Failed to fetch from %@",@"Error"), aRemoteBranch.remoteAlias]
-                                          reason:[task.output UTF8String]
-                                      suggestion:NSLocalizedString(@"Please check the URL or network settings.",@"Error")];
-                                 }
-                 continuation:block];
+    aRemoteBranch.remote.failedCommunication = [task isError];
+    if ([task isError])
+    {
+      self.lastError = [self errorWithCode:GBErrorCodeFetchFailed
+                               description:[NSString stringWithFormat:NSLocalizedString(@"Failed to fetch from %@",@"Error"), aRemoteBranch.remoteAlias]
+                                    reason:[task.output UTF8String]
+                                suggestion:NSLocalizedString(@"Please check the URL or network settings.",@"Error")];
+    }
+    if (block) block();
+    self.lastError = nil;
   }];
 }
 
@@ -963,11 +968,11 @@
   NSString* refspec = [NSString stringWithFormat:@"%@:%@", aLocalBranch.name, aRemoteBranch.name];
   task.arguments = [NSArray arrayWithObjects:@"push", @"--tags", aRemoteBranch.remoteAlias, refspec, nil];
   [self launchTask:task withBlock:^{
+    aRemoteBranch.remote.failedCommunication = [task isError];
     if ([task isError])
     {
       [self alertWithMessage: @"Push failed" description:[task.output UTF8String]];
     }
-
     if (block) block();
   }];   
 }

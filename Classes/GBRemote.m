@@ -23,6 +23,7 @@
 @synthesize repository;
 @synthesize isUpdatingRemoteBranches;
 @synthesize needsFetch;
+@synthesize failedCommunication;
 
 - (void) dealloc
 {
@@ -90,6 +91,7 @@
   if (self.alias && [otherRemote.alias isEqualToString:self.alias])
   {
     self.newBranches = otherRemote.newBranches;
+    self.failedCommunication = otherRemote.failedCommunication;
     [self updateNewBranches];
     return YES;
   }
@@ -126,6 +128,7 @@
   
   self.isUpdatingRemoteBranches = YES;
   GBRemoteRefsTask* task = [GBRemoteRefsTask task];
+  task.skipKeychainPassword = self.failedCommunication;
   task.remote = self;
   task.repository = self.repository;
   
@@ -133,6 +136,7 @@
     self.isUpdatingRemoteBranches = NO;
     if (![task isError])
     {
+      self.failedCommunication = NO;
       // Do not update branches and tags, but simply tell the caller that it needs to fetch tags and branches for real.
       self.needsFetch = [self doesNeedFetchNewBranches:task.branches andTags:task.tags];
       
@@ -142,6 +146,7 @@
     }
     else
     {
+      self.failedCommunication = YES;
       if (block) block();
     }
   }];

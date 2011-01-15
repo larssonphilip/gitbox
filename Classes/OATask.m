@@ -35,6 +35,7 @@ NSString* OATaskNotification = @"OATaskNotification";
 @synthesize activity;
 @synthesize callbackBlock;
 
+@synthesize skipKeychainPassword;
 @synthesize ignoreFailure;
 @synthesize isTerminated;
 @synthesize terminateTimeout;
@@ -540,6 +541,10 @@ NSString* OATaskNotification = @"OATaskNotification";
   [environment setObject:askPass forKey:@"SSH_ASKPASS"];
   [environment setObject:askPass forKey:@"GIT_ASKPASS"];
   [environment setObject:@":0" forKey:@"DISPLAY"];
+  if (!self.skipKeychainPassword)
+  {
+    [environment setObject:@"1" forKey:@"GITBOX_USE_KEYCHAIN_PASSWORD"];
+  }
   
   //NSLog(@"set env: %@", environment);
   [self.nstask setEnvironment:environment];
