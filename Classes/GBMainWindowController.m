@@ -475,6 +475,12 @@
 
 - (void) repositoryController:(GBRepositoryController*)repoCtrl didMoveToURL:(NSURL*)newURL
 {
+  GBRepositoriesGroup* aGroup = [self.repositoriesController.localRepositoriesGroup groupContainingLocalItem:repoCtrl];
+  if (!aGroup) aGroup = self.repositoriesController.localRepositoriesGroup; // should never happen, but just in case
+  NSUInteger indexInGroup = [aGroup.items indexOfObject:repoCtrl];
+  if (indexInGroup == NSNotFound) indexInGroup = 0; // should never happen, but be safe just in case
+
+  
   BOOL shouldSelectNewRepo = [self isSelectedRepositoryController:repoCtrl];
   [self.repositoriesController removeLocalRepositoryController:repoCtrl];
   if (!newURL) return;
@@ -482,9 +488,8 @@
   if ([[newURL absoluteString] rangeOfString:@"/.Trash/"].length > 0) return;
   
   GBRepositoryController* newRepoCtrl = [GBRepositoryController repositoryControllerWithURL:newURL];
-  NSLog(@"Adding repo ctrl after moving: %@", newURL);
-#warning TODO: should insert the newRepoCtrl in the place of the old instance
-  [self.repositoriesController addLocalRepositoryController:newRepoCtrl];
+
+  [self.repositoriesController addLocalRepositoryController:newRepoCtrl inGroup:aGroup atIndex:indexInGroup];
   [[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:newURL];
   if (shouldSelectNewRepo)
   {

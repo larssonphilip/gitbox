@@ -34,6 +34,7 @@ Bug fixes:
 + Right branch menu now displays current local branch and renders it as disabled.
 + Fixed "Revert..." command in the stage panel.
 + Fixed bug with repository path which prevented from adding changes to stage in some scenarios.
++ Fixed potential issues with updating repository when it was moved or renamed.
 
 -----------------------------------------------------------
 
@@ -62,8 +63,6 @@ Bugs:
 - bug: toolbar: when removing a single server, remote branch remains and log is clean.
 - bug: toolbar: android repo checked out on a commit has branch menus disabled.
 
-- bug: sidebar: when moving repo around, it is duplicated in the sidebar
-- bug: sidebar: when repo is renamed, it is not added where it was located before.
 - bug: sidebar: when collapsing a group, it should display a badge with sum of all nested badges
 - bug: sidebar: when collapsing a group, spinners remain spinning indefinitely
 - bug: sidebar: quickly jumping through repos in sidebar is slow: avoid unnecessary updates and shell-outs when repo is selected.
@@ -74,7 +73,7 @@ Bugs:
 
 - bug: changes: when clicked checkbox and want to drag out, it does not undo the action.
 
-- bug: stage: refuse first responder when stage is empty/
+- bug: stage: refuse first responder when stage is empty.
 
 
 Enhancements:
@@ -104,6 +103,8 @@ Enhancements:
 
 Done for 1.2:
 
++ bug: sidebar: when moving repo around, it is duplicated in the sidebar
++ bug: sidebar: when repo is renamed, it is not added where it was located before.
 + bug: changes: cannot commit a file with space in the path or something [Matthew Temple <matt@mattytemple.com>]. It was because of ending "/" which was sometimes missing.
 + bug: changes: when selected all changes and hit "revert", one change is not reverted; same thing for a single change also.
 + bug: stage: should stage selected changes when hit "Commit message..." box [ticket 974].
