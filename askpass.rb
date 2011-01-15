@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 #!/usr/bin/env ruby
 
-DEBUG = 0
+DEBUG = false
 
 if DEBUG
   Log = File.open("/Users/oleganza/Desktop/gitbox-askpass.log", "a")
