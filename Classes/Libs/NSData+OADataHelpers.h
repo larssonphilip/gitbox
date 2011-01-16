@@ -5,4 +5,7 @@
 
 - (NSString*) UTF8String;
 
+// Replaces all broken sequences by � character and returns NSData with valid UTF-8 bytes.
+- (NSData*) dataByHealingUTF8Stream;
+
 @end
