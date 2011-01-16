@@ -58,7 +58,6 @@ Blocking bugs:
 
 
 - bug: general: autofetch sometimes does not work: maybe some crap is returned from ls-remote when communicating with a remote server; test with berger; seems like it stops working after some time or after gitbox restart. Also check that performSelector:withObject:afterDelay does not fail for big values.
-- bug: general: check that in appstore build there is a help message in the bottom of preferences panel. [Markus Fritze <my@sarnau.com>]
 - bug: general: when repo is inside dropbox folder, strange things happen (see mailbox: sometimes cannot commit or stage is blinking)
 
 Other bugs:
@@ -112,6 +111,7 @@ Enhancements:
 
 Done for 1.2:
 
++ bug: general: check that in appstore build there is a help message in the bottom of preferences panel. [Markus Fritze <my@sarnau.com>]
 + changes: quicklook for the file on space in stage (QLPreviewPanel, sample code: QuickLookDownloader)
 + changes: should remove image view and resize header view if no image is present
 + bug: history: after cloning https://github.com/ruby-amqp/amqp.git, it does not show history. Done: healing broken bytes in UTF-8 NSData.
