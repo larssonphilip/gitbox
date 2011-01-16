@@ -610,6 +610,11 @@
     }
   }
   
+  if (![[NSFileManager defaultManager] fileExistsAtPath:[self.quicklookItemURL path]])
+  {
+    self.quicklookItemURL = nil;
+  }
+  
   if (self.quicklookItemURL)
   {
     if (aBlock) aBlock(NO);
