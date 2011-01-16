@@ -1,5 +1,8 @@
+#import <Quartz/Quartz.h>
+#import <QuickLook/QuickLook.h>
+
 @class GBRepositoryController;
-@interface GBBaseChangesController : NSViewController<NSTableViewDelegate, NSUserInterfaceValidations>
+@interface GBBaseChangesController : NSViewController<NSTableViewDelegate, NSUserInterfaceValidations, QLPreviewPanelDataSource, QLPreviewPanelDelegate>
 
 @property(nonatomic, retain) IBOutlet NSTableView* tableView;
 @property(nonatomic, retain) IBOutlet NSArrayController* statusArrayController; 

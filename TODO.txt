@@ -3,6 +3,7 @@
 
 Features:
 
++ Quick Look preview for files on stage and in the history.
 + Create groups and reorder repositories in sidebar.
 + New right pane design with a user picture (fetched from Address Book or Gravatar).
 + New commit dialog (built in to the list of changes) which solves several usability issues.
@@ -51,7 +52,6 @@ Bug fixes:
 - submodules: case 4: user clones the repo inside the repo => needs to display as a non-tracked submodule which can be tracked
 - submodules: case 5: user tries to commit a submodule which has the HEAD non-pushed (or dirty directory) - show warning or ask to push manually; show button "show module"
 
-- changes: quicklook for changes
 
 
 Blocking bugs:

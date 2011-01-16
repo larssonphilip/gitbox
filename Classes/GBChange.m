@@ -14,7 +14,9 @@
 @interface GBChange ()
 @property(nonatomic, retain) NSImage* cachedSrcIcon;
 @property(nonatomic, retain) NSImage* cachedDstIcon;
+@property(nonatomic, retain) NSURL* quicklookItemURL;
 - (NSImage*) iconForPath:(NSString*)path;
+- (NSURL*) temporaryURLForObjectId:(NSString*)objectId optionalURL:(NSURL*)url commitId:(NSString*)aCommitId;
 @end
 
 
@@ -30,7 +32,7 @@
 @synthesize commitId;
 @synthesize cachedSrcIcon;
 @synthesize cachedDstIcon;
-
+@synthesize quicklookItemURL;
 
 @synthesize staged;
 @synthesize delegate;
@@ -53,7 +55,7 @@
   self.commitId = nil;
   self.cachedSrcIcon = nil;
   self.cachedDstIcon = nil;
-
+  self.quicklookItemURL = nil;
   [super dealloc];
 }
 
@@ -289,19 +291,8 @@
 
 
 
+
 #pragma mark Actions
-
-
-- (NSURL*) temporaryURLForObjectId:(NSString*)objectId optionalURL:(NSURL*)url commitId:(NSString*)aCommitId
-{
-  GBExtractFileTask* task = [GBExtractFileTask task];
-  task.repository = self.repository;
-  task.commitId = aCommitId;
-  task.objectId = objectId;
-  task.originalURL = url;
-  [self.repository launchTaskAndWait:task];
-  return task.targetURL;
-}
 
 
 
@@ -536,6 +527,8 @@
 
 
 
+
+
 #pragma mark NSPasteboardWriting
 
 
@@ -608,6 +601,91 @@
 }
 
 
+
+
+
+
+
+#pragma mark QLPreviewItem
+
+
+- (id<QLPreviewItem>) QLPreviewItem
+{
+  return self; // for now, respond to quicklook preview protocol by ourselves
+}
+
+- (void) prepareQuicklookItemWithBlock:(void(^)(BOOL didExtractFile))aBlock
+{
+  aBlock = [[aBlock copy] autorelease];
+  
+  NSString* objectId = nil;
+  
+  if (self.commitId)
+  {
+    objectId = [self.newRevision nonZeroCommitId];
+    if (!objectId)
+    {
+      objectId = [self.oldRevision nonZeroCommitId];
+    }
+  }
+  else // not committed change: on stage
+  {
+    if ([self isDeletedFile])
+    {
+      objectId = [self.oldRevision nonZeroCommitId];
+    }
+    else
+    {
+      self.quicklookItemURL = [self fileURL];
+    }
+  }
+  
+  if (self.quicklookItemURL)
+  {
+    if (aBlock) aBlock(NO);
+    return;
+  }
+  
+  GBExtractFileTask* task = [GBExtractFileTask task];
+  task.folder = @"QuickLook";
+  task.repository = self.repository;
+  task.objectId = objectId;
+  task.originalURL = [self fileURL];
+  [task launchWithBlock:^{
+    self.quicklookItemURL = task.targetURL;
+    if (aBlock) aBlock(YES);
+  }];
+}
+
+- (NSURL*) previewItemURL
+{
+  return self.quicklookItemURL;
+}
+
+- (NSString*) previewItemTitle
+{
+  return [[[self fileURL] absoluteString] lastPathComponent];
+}
+
+
+
+
+
+
+#pragma mark Private
+
+
+
+- (NSURL*) temporaryURLForObjectId:(NSString*)objectId optionalURL:(NSURL*)url commitId:(NSString*)aCommitId
+{
+  GBExtractFileTask* task = [GBExtractFileTask task];
+  task.repository = self.repository;
+  task.commitId = aCommitId;
+  task.objectId = objectId;
+  task.originalURL = url;
+  [self.repository launchTaskAndWait:task];
+  return task.targetURL;
+}
 
 
 @end

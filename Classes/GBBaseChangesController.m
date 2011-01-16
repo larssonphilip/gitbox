@@ -7,6 +7,10 @@
 #import "NSObject+OADispatchItemValidation.h"
 #import "NSArray+OAArrayHelpers.h"
 
+@interface GBBaseChangesController ()
+@property(nonatomic, retain) QLPreviewPanel* quicklookPanel;
+@end
+
 @implementation GBBaseChangesController
 
 @synthesize tableView;
@@ -15,6 +19,7 @@
 @synthesize repositoryController;
 @synthesize changes;
 @synthesize changesWithHeaderForBindings;
+@synthesize quicklookPanel;
 
 #pragma mark Init
 
@@ -27,6 +32,7 @@
   self.repositoryController = nil;
   self.changes = nil;
   self.changesWithHeaderForBindings = nil;
+  self.quicklookPanel = nil;
   [super dealloc];
 }
 
@@ -182,11 +188,15 @@ dataCellForTableColumn:(NSTableColumn*)aTableColumn
   }];
 }
 
+- (void)tableViewSelectionDidChange:(NSNotification *)aNotification
+{
+  [self.quicklookPanel reloadData];
+}
+
+
 
 
 #pragma mark Actions
-
-// TODO: modify to work with multiple changes
 
 
 - (IBAction) stageShowDifference:_
@@ -232,6 +242,8 @@ dataCellForTableColumn:(NSTableColumn*)aTableColumn
 }
 
 
+
+
 #pragma mark Actions Validation
 
 
@@ -242,6 +254,129 @@ dataCellForTableColumn:(NSTableColumn*)aTableColumn
   return [self dispatchUserInterfaceItemValidation:anItem];
 }
 
+
+
+
+
+#pragma mark QLPreviewPanelController Protocol
+
+
+
+- (BOOL)acceptsPreviewPanelControl:(QLPreviewPanel *)panel;
+{
+  return YES;
+}
+
+- (void)beginPreviewPanelControl:(QLPreviewPanel *)panel
+{
+  // This document is now responsible of the preview panel
+  // It is allowed to set the delegate, data source and refresh panel.
+  self.quicklookPanel = panel;
+  panel.delegate = self;
+  panel.dataSource = self;
+}
+
+- (void)endPreviewPanelControl:(QLPreviewPanel *)panel
+{
+  // This document loses its responsisibility on the preview panel
+  // Until the next call to -beginPreviewPanelControl: it must not
+  // change the panel's delegate, data source or refresh it.
+  self.quicklookPanel = nil;
+  if (panel.delegate == self)
+  {
+    panel.delegate = nil;
+    panel.dataSource = nil;
+  }
+}
+
+
+
+
+
+
+#pragma mark QLPreviewPanelDataSource
+
+
+- (NSInteger)numberOfPreviewItemsInPreviewPanel:(QLPreviewPanel *)panel
+{
+  return [[self selectedChanges] count];
+}
+
+- (id<QLPreviewItem>)previewPanel:(QLPreviewPanel *)panel previewItemAtIndex:(NSInteger)index
+{
+  GBChange* change = [[self selectedChanges] objectAtIndex:index];
+  id<QLPreviewItem> item = [change QLPreviewItem];
+  if (![item previewItemURL])
+  {
+    [change prepareQuicklookItemWithBlock:^(BOOL didExtractFile){
+      if (didExtractFile)
+      {
+        //NSLog(@"RELOADING QUICKLOOK WITH URL: %@", [item previewItemURL]);
+        [self.quicklookPanel refreshCurrentPreviewItem];
+      }
+    }];
+  }
+  //NSLog(@"RETURNING URL FOR QUICKLOOK: %@", [item previewItemURL]);
+  return item;
+}
+
+
+
+
+#pragma mark QLPreviewPanelDelegate
+
+
+
+
+
+- (BOOL)previewPanel:(QLPreviewPanel *)panel handleEvent:(NSEvent *)event
+{
+  // redirect all key down events to the table view
+  if ([event type] == NSKeyDown)
+  {
+    [self.tableView keyDown:event];
+    return YES;
+  }
+  return NO;
+}
+
+// This delegate method provides the rect on screen from which the panel will zoom.
+- (NSRect)previewPanel:(QLPreviewPanel *)panel sourceFrameOnScreenForPreviewItem:(id <QLPreviewItem>)item
+{
+  NSUInteger index = [[self changes] indexOfObject:item];
+  
+  if (index == NSNotFound)
+  {
+    return NSZeroRect;
+  }
+  
+  NSRect rowRect = [self.tableView frameOfCellAtColumn:0 row:(index + 1)]; // +1 for the embedded header
+  
+  // check that the icon rect is visible on screen
+  NSRect visibleRect = [self.tableView visibleRect];
+  
+  if (!NSIntersectsRect(visibleRect, rowRect))
+  {
+    return NSZeroRect;
+  }
+  
+  // convert icon rect to screen coordinates
+  rowRect = [self.tableView convertRectToBase:rowRect];
+  rowRect.origin = [[self.tableView window] convertBaseToScreen:rowRect.origin];
+  
+  NSRect imageRect = rowRect;
+  imageRect.size.width = 16.0;
+  imageRect.origin.x += 4.0;
+  
+  return imageRect;
+}
+
+// This delegate method provides a transition image between the table view and the preview panel
+- (id)previewPanel:(QLPreviewPanel *)panel transitionImageForPreviewItem:(id <QLPreviewItem>)item contentRect:(NSRect *)contentRect
+{
+  GBChange* aChange = (GBChange*)item;
+  return [aChange icon];
+}
 
 
 @end

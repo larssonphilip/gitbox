@@ -6,6 +6,7 @@
 
 @synthesize objectId;
 @synthesize commitId;
+@synthesize folder;
 @synthesize originalURL;
 @synthesize targetURL;
 
@@ -13,6 +14,7 @@
 {
   self.objectId = nil;
   self.commitId = nil;
+  self.folder = nil;
   self.originalURL = nil;
   self.targetURL = nil;
   [super dealloc];
@@ -45,8 +47,12 @@
 {
   if (!targetURL)
   {
-    NSString* path = [[NSTemporaryDirectory() stringByAppendingPathComponent:@"gitbox-blobs"] 
-                      stringByAppendingPathComponent:[self prettyFileName]];
+    NSString* path = [NSTemporaryDirectory() stringByAppendingPathComponent:@"com.oleganza.gitbox"];
+    if (self.folder)
+    {
+      path = [path stringByAppendingPathComponent:self.folder];
+    }
+    path = [path stringByAppendingPathComponent:[self prettyFileName]];
     self.targetURL = [NSURL fileURLWithPath:path];
   }
   return [[targetURL retain] autorelease];

@@ -656,6 +656,7 @@
 
 - (void)tableViewSelectionDidChange:(NSNotification *)aNotification
 {
+  [super tableViewSelectionDidChange:aNotification];
   [self.repositoryController selectCommitableChanges:[self selectedChanges]];
 }
 

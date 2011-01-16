@@ -1,8 +1,10 @@
+#import <Quartz/Quartz.h>
 #import "GBChangeDelegate.h"
+
 @class GBChangeCell;
 @class GBRepository;
 @class GBCommit;
-@interface GBChange : NSObject<NSPasteboardWriting>
+@interface GBChange : NSObject<NSPasteboardWriting, QLPreviewItem>
 
 @property(nonatomic,retain) NSURL* srcURL;
 @property(nonatomic,retain) NSURL* dstURL;
@@ -46,6 +48,8 @@
 - (GBChangeCell*) cell;
 
 - (NSObject<NSPasteboardWriting>*) pasteboardItem;
+- (id<QLPreviewItem>) QLPreviewItem;
+- (void) prepareQuicklookItemWithBlock:(void(^)(BOOL didExtractFile))aBlock;
 
 - (NSImage*) icon;
 - (NSImage*) srcIconOrDstIcon;
