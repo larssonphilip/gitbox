@@ -71,6 +71,4 @@
 - (void) extractFileWithTargetURL:(NSURL*)aTargetURL;
 
 
-//- (NSString*) nameForExtractedFileAtDestination:(NSURL*)url;
-
 @end

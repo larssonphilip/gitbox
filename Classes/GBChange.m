@@ -494,36 +494,6 @@
   }
 }
 
-//- (NSString*) nameForExtractedFileAtDestination:(NSURL*)folderURL
-//{
-//  NSLog(@"GBChange: nameForExtractedFileAtDestination:%@", folderURL);
-//  
-//  if (![self fileURL]) return nil;
-//  
-//  NSString* name = [[[self fileURL] path] lastPathComponent];
-//  
-//  if (!name) return nil;
-//  
-//  NSString* folderPath = [folderURL path];
-//  NSString* fullPath = [folderPath stringByAppendingPathComponent:name];
-//  
-//  if ([[NSFileManager defaultManager] fileExistsAtPath:fullPath isDirectory:NULL])
-//  {
-//    NSString* sfx = [self uniqueSuffix];
-//    if (!sfx)
-//    {
-//      return nil;
-//    }
-//    fullPath = [fullPath pathWithSuffix:sfx];
-//  }
-//  
-//  NSLog(@"GBChange: extracting file: %@", fullPath);
-//  
-//  [self extractFileWithTargetURL:[NSURL fileURLWithPath:fullPath]];
-//  
-//  return [fullPath lastPathComponent];
-//}
-
 
 
 
