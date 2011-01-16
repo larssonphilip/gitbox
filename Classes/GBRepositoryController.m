@@ -1015,8 +1015,8 @@
   if (![self checkRepositoryExistance]) return;
   
   //NSLog(@"GBRepositoryController: autoFetch into %@ (delay: %f)", [self url], autoFetchInterval);
-  while (autoFetchInterval > 300.0) autoFetchInterval -= 100.0;
-  autoFetchInterval = autoFetchInterval*(1.4142 + drand48()*0.5);
+  while (autoFetchInterval > 100.0) autoFetchInterval -= 10.0;
+  autoFetchInterval = autoFetchInterval*(1.4142 + drand48()*0.2);
   
   [self scheduleAutoFetch];
   
@@ -1025,11 +1025,11 @@
   
   if ([self isConnectionAvailable])
   {
-    //NSLog(@"AutoFetch: self.updatesQueue = %d / %d [%@]", (int)self.updatesQueue.operationCount, (int)[self.updatesQueue.queue count], [self nameForSourceList]);
+    NSLog(@"AutoFetch: self.updatesQueue = %d / %d [%@]", (int)self.updatesQueue.operationCount, (int)[self.updatesQueue.queue count], [self nameInSidebar]);
     [self.updatesQueue addBlock:^{
-      //NSLog(@"AutoFetch: start %@", [self nameForSourceList]);
+      NSLog(@"AutoFetch: start %@", [self nameInSidebar]);
       [self updateRemoteRefsWithBlock:^{
-        //NSLog(@"AutoFetch: end %@", [self nameForSourceList]);
+        NSLog(@"AutoFetch: end %@", [self nameInSidebar]);
         [self.updatesQueue endBlock];
       }];
     }];
