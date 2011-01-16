@@ -38,7 +38,7 @@ Bug fixes:
 + Fixed issue with filtering in Activity window (cmd+0).
 + Fixed bug with Keychain passwords: now if password is incorrect, Gitbox asks again instead of using saved value. Passwords are saved under with URL-specific names.
 + Fixed issue with cloning using local network URL (e.g. "oleg.local:myproject/repo.git")
-
++ Fixed an issue with history: when commit message contains invalid UTF-8 sequence, it is replaced by a special character � instead of failing.
 
 -----------------------------------------------------------
 
@@ -56,7 +56,7 @@ Bug fixes:
 
 Blocking bugs:
 
-- bug: history: after cloning https://github.com/ruby-amqp/amqp.git, it does not show history.
+
 - bug: general: autofetch sometimes does not work: maybe some crap is returned from ls-remote when communicating with a remote server; test with berger; seems like it stops working after some time or after gitbox restart. Also check that performSelector:withObject:afterDelay does not fail for big values.
 - bug: general: check that in appstore build there is a help message in the bottom of preferences panel. [Markus Fritze <my@sarnau.com>]
 - bug: general: when repo is inside dropbox folder, strange things happen (see mailbox: sometimes cannot commit or stage is blinking)
@@ -114,6 +114,7 @@ Enhancements:
 
 Done for 1.2:
 
++ bug: history: after cloning https://github.com/ruby-amqp/amqp.git, it does not show history. Done: healing broken bytes in UTF-8 NSData.
 + bug: stage: when jumping though history, should resize text view according to the new text
 + bug: general: password is remembered under generic "Gitbox SSH", should supply repo URL to askpass.rb
 + bug: general: cannot clone from olegbook.local: gitbox cuts ".local" from the URL. (in fact, was incorrectly replacing "host:test.git" with "host/test.git")
