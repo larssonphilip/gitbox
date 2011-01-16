@@ -991,10 +991,22 @@
     else
     {
       // update remote branch commit id to avoid autofetching immediately after push.
-      if (aLocalBranch.commitId)
+      if (aLocalBranch.commitId && aRemoteBranch.name)
       {
         NSLog(@"pushed from %@ to %@", aRemoteBranch.commitId, aLocalBranch.commitId);
         aRemoteBranch.commitId = aLocalBranch.commitId;
+        GBRemote* remote = aRemoteBranch.remote;
+        if (remote)
+        {
+          NSLog(@"syncing remote's branch as well");
+          for (GBRef* ref in [remote pushedAndNewBranches])
+          {
+            if (ref.name && aRemoteBranch.name && [ref.name isEqualToString:aRemoteBranch.name])
+            {
+              ref.commitId = aLocalBranch.commitId;
+            }
+          }
+        }
       }
     }
     if (block) block();
