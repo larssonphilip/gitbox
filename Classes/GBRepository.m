@@ -978,7 +978,6 @@
     if (block) block();
     return;
   }
-  
   GBTask* task = [self task];
   NSString* refspec = [NSString stringWithFormat:@"%@:%@", aLocalBranch.name, aRemoteBranch.name];
   task.arguments = [NSArray arrayWithObjects:@"push", @"--tags", aRemoteBranch.remoteAlias, refspec, nil];
@@ -988,6 +987,15 @@
     if ([task isError])
     {
       [self alertWithMessage: @"Push failed" description:[task.output UTF8String]];
+    }
+    else
+    {
+      // update remote branch commit id to avoid autofetching immediately after push.
+      if (aLocalBranch.commitId)
+      {
+        NSLog(@"pushed from %@ to %@", aRemoteBranch.commitId, aLocalBranch.commitId);
+        aRemoteBranch.commitId = aLocalBranch.commitId;
+      }
     }
     if (block) block();
   }];   
