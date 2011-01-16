@@ -147,7 +147,7 @@
   
   [self.authorImage setImage:nil];
   [self.userpicController loadImageForEmail:email withBlock:^{
-    if (email && [aCommit.authorEmail isEqualToString:email])
+    if (email && [aCommit.authorEmail isEqualToString:email]) // make sure we are still displaying the email we've asked for
     {
       NSImage* image = [self.userpicController imageForEmail:email];
       [self.authorImage setImage:image];
@@ -269,7 +269,16 @@
 
 - (void) updateHeaderSize
 {
-  //NSLog(@"COMMIT: updateHeaderSize ----------------- ");
+  // First, adjust the width of the header text view depending on what image do we have.
+  CGFloat widthOffsetForPicture = 12.0;
+  if ([self.authorImage image])
+  {
+    widthOffsetForPicture = 88.0;
+  }
+ 
+  NSSize size = [[self.headerTextView enclosingScrollView] frame].size;
+  size.width = [self.headerView frame].size.width - widthOffsetForPicture;
+  [[self.headerTextView enclosingScrollView] setFrameSize:size];
   
   // Force layout
   [[self.headerTextView layoutManager] glyphRangeForTextContainer:[self.headerTextView textContainer]];

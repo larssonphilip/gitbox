@@ -105,8 +105,6 @@ Enhancements:
   - filters commits by sha-1, modified filenames and text
   - back/forward buttons allow undo/redo commit selection (clicking on parents)
 
-- changes: quicklook for the file on space in stage (QLPreviewPanel, sample code: QuickLookDownloader)
-- changes: should remove image view and resize header view if not image is present
 - stage: should display a branch hint if the different branch is selected (commit text field)
 
 - why mercurial: http://www.ninthdivision.com/blog/2011/01/why-mercurial/
@@ -114,6 +112,8 @@ Enhancements:
 
 Done for 1.2:
 
++ changes: quicklook for the file on space in stage (QLPreviewPanel, sample code: QuickLookDownloader)
++ changes: should remove image view and resize header view if no image is present
 + bug: history: after cloning https://github.com/ruby-amqp/amqp.git, it does not show history. Done: healing broken bytes in UTF-8 NSData.
 + bug: stage: when jumping though history, should resize text view according to the new text
 + bug: general: password is remembered under generic "Gitbox SSH", should supply repo URL to askpass.rb
