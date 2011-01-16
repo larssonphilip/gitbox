@@ -1,45 +1,44 @@
 
 1.2 Release Notes (WIP):
 
-Features:
+New features:
 
-+ Quick Look preview for files on stage and in the history.
-+ Create groups and reorder repositories in sidebar.
-+ New right pane design with a user picture (fetched from Address Book or Gravatar).
-+ New commit dialog (built in to the list of changes) which solves several usability issues.
-+ Checkout arbitrary commit from history.
+✓ Quick Look for files on stage and in the history.
+✓ Reordering and groups sidebar.
+✓ New right pane design with a person picture.
+✓ New commit dialog.
+✓ Checkout arbitrary commit from history.
 
 Enhancements:
 
-+ New toolbar button for adding new groups and repositories.
-+ Activity spinner is now displayed in sidebar.
-+ Improved performance of autofetching. Now remote branches are checked more frequently and without UI blocking and fetch is performed from all branches when needed.
-+ Cmd+Up and Cmd+Down in commit dialog now go through the entire git history instead of the recently entered messages.
-+ Push button is enabled only when there are commits to push
+✓ New toolbar button for adding new groups and repositories.
+✓ Activity spinner is now displayed in sidebar.
+✓ More robust and less obtrusive autofetch.
+✓ Cmd+Up and Cmd+Down in commit dialog now go through the entire git history instead of the recently entered messages.
 
 Bug fixes:
 
-+ Terminal window is now opened in front. Path with spaces are handled correctly.
-+ License window fixes: buy button is hidden when license is correct. Multiple windows are disallowed.
-+ Fixed history view resizing.
-+ Fixed text rendering in the sidebar and history views.
-+ Fixed the temporary file names when opening a diff tool.
-+ Fixed behavior of branches with slashes (e.g. "oleg/feature1") and dots (e.g. "v1.2") [reported by Christian van der Leeden, Falk Hoppe]
-+ Fixed various bugs with fetching remote branches.
-+ Fixed various bugs with updating local and remote branches.
-+ Fixed tooltip rendering in sidebar.
-+ Fixed right-click menu target in sidebar.
-+ Fixed Araxis binary name (araxis -> compare).
-+ Fixed keyboard navigation: do not jump to stage pane when it is empty.
-+ Fixed presentation of repostories and files while dragging.
-+ Right branch menu now displays current local branch and renders it as disabled.
-+ Fixed "Revert..." command in the stage panel.
-+ Fixed bug with repository path which prevented from adding changes to stage in some scenarios.
-+ Fixed potential issues with updating repository when it was moved or renamed.
-+ Fixed issue with filtering in Activity window (cmd+0).
-+ Fixed bug with Keychain passwords: now if password is incorrect, Gitbox asks again instead of using saved value. Passwords are saved under with URL-specific names.
-+ Fixed issue with cloning using local network URL (e.g. "oleg.local:myproject/repo.git")
-+ Fixed an issue with history: when commit message contains invalid UTF-8 sequence, it is replaced by a special character � instead of failing.
+✓ Terminal window is now opened in front. Path with spaces are handled correctly.
+✓ License window fixes: buy button is hidden when license is correct. Multiple windows are disallowed.
+✓ Fixed history view resizing.
+✓ Fixed text rendering in the sidebar and history views.
+✓ Fixed the temporary file names when opening a diff tool.
+✓ Fixed behavior of branches with slashes (e.g. "oleg/feature1") and dots (e.g. "v1.2") [reported by Christian van der Leeden, Falk Hoppe]
+✓ Fixed various bugs with fetching remote branches.
+✓ Fixed various bugs with updating local and remote branches.
+✓ Fixed tooltip rendering in sidebar.
+✓ Fixed right-click menu target in sidebar.
+✓ Fixed Araxis binary name (araxis -> compare).
+✓ Fixed keyboard navigation: do not jump to stage pane when it is empty.
+✓ Fixed presentation of repostories and files while dragging.
+✓ Right branch menu now displays current local branch and renders it as disabled.
+✓ Fixed "Revert..." command in the stage panel.
+✓ Fixed bug with repository path which prevented from adding changes to stage in some scenarios.
+✓ Fixed potential issues with updating repository when it was moved or renamed.
+✓ Fixed issue with filtering in Activity window (cmd+0).
+✓ Fixed bug with Keychain passwords: now if password is incorrect, Gitbox asks again instead of using saved value. Passwords are saved under with URL-specific names.
+✓ Fixed issue with cloning using local network URL (e.g. "oleg.local:myproject/repo.git")
+✓ Fixed an issue with history: when commit message contains invalid UTF-8 sequence, it is replaced by a special character � instead of failing.
 
 -----------------------------------------------------------
 
