@@ -890,7 +890,7 @@
                           aRemoteBranch.name, [aRemoteBranch nameWithRemoteAlias]],
                          nil];
   task.keychainPasswordName = [aRemoteBranch.remote keychainPasswordName];
-  NSLog(@"DEBUG: pulling: %@", task.keychainPasswordName);
+  
   [self launchTask:task withBlock:^{
     aRemoteBranch.remote.failedCommunication = [task isError];
     if ([task isError])
