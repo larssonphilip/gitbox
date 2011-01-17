@@ -56,7 +56,7 @@ Bug fixes:
 Blocking bugs:
 
 
-- bug: general: autofetch sometimes does not work: maybe some crap is returned from ls-remote when communicating with a remote server; test with berger; seems like it stops working after some time or after gitbox restart. Also check that performSelector:withObject:afterDelay does not fail for big values.
+- bug: general: autofetch does not work after extended period of time: updateQueue grows indefinitely
 - bug: general: when repo is inside dropbox folder, strange things happen (see mailbox: sometimes cannot commit or stage is blinking)
 
 Other bugs:
