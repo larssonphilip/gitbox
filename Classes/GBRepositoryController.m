@@ -1026,11 +1026,11 @@
   
   if ([self isConnectionAvailable])
   {
-    //NSLog(@"AutoFetch: self.updatesQueue = %d / %d [%@]", (int)self.updatesQueue.operationCount, (int)[self.updatesQueue.queue count], [self nameInSidebar]);
+    NSLog(@"AutoFetch: self.updatesQueue = %d / %d [%@]", (int)self.updatesQueue.operationCount, (int)[self.updatesQueue.queue count], [self nameInSidebar]);
     [self.updatesQueue addBlock:^{
-      //NSLog(@"AutoFetch: start %@", [self nameInSidebar]);
+      NSLog(@"AutoFetch: start %@", [self nameInSidebar]);
       [self updateRemoteRefsWithBlock:^{
-        //NSLog(@"AutoFetch: end %@", [self nameInSidebar]);
+        NSLog(@"AutoFetch: end %@", [self nameInSidebar]);
         [self.updatesQueue endBlock];
       }];
     }];
