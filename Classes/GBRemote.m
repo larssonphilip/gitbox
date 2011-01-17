@@ -140,9 +140,13 @@
 
 - (void) updateBranchesWithBlock:(void(^)())block;
 {
-  if (self.isUpdatingRemoteBranches) return;
-  
   block = [[block copy] autorelease];
+  
+  if (self.isUpdatingRemoteBranches)
+  {
+    if (block) block();
+    return;
+  }
   
   self.isUpdatingRemoteBranches = YES;
   GBRemoteRefsTask* task = [GBRemoteRefsTask task];

@@ -249,6 +249,7 @@
   if (self.isUpdatingRemoteRefs)
   {
     if (block) block();
+    return;
   }
   self.isUpdatingRemoteRefs = YES;
   
