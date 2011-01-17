@@ -18,27 +18,28 @@ Enhancements:
 
 Bug fixes:
 
-✓ Terminal window is now opened in front. Path with spaces are handled correctly.
-✓ License window fixes: buy button is hidden when license is correct. Multiple windows are disallowed.
+✓ Fixed bug with autofetch: autofetching was stopping after several hours of running app.
+✓ Fixed behavior of branches with slashes (e.g. "oleg/feature1") and dots (e.g. "v1.2") [reported by Christian van der Leeden, Falk Hoppe]
 ✓ Fixed history view resizing.
 ✓ Fixed text rendering in the sidebar and history views.
 ✓ Fixed the temporary file names when opening a diff tool.
-✓ Fixed behavior of branches with slashes (e.g. "oleg/feature1") and dots (e.g. "v1.2") [reported by Christian van der Leeden, Falk Hoppe]
-✓ Fixed various bugs with fetching remote branches.
-✓ Fixed various bugs with updating local and remote branches.
+✓ Fixed various bugs with fetching and updating locale and remote branches.
 ✓ Fixed tooltip rendering in sidebar.
 ✓ Fixed right-click menu target in sidebar.
 ✓ Fixed Araxis binary name (araxis -> compare).
 ✓ Fixed keyboard navigation: do not jump to stage pane when it is empty.
 ✓ Fixed presentation of repostories and files while dragging.
-✓ Right branch menu now displays current local branch and renders it as disabled.
 ✓ Fixed "Revert..." command in the stage panel.
 ✓ Fixed bug with repository path which prevented from adding changes to stage in some scenarios.
 ✓ Fixed potential issues with updating repository when it was moved or renamed.
 ✓ Fixed issue with filtering in Activity window (cmd+0).
-✓ Fixed bug with Keychain passwords: now if password is incorrect, Gitbox asks again instead of using saved value. Passwords are saved under with URL-specific names.
 ✓ Fixed issue with cloning using local network URL (e.g. "oleg.local:myproject/repo.git")
 ✓ Fixed an issue with history: when commit message contains invalid UTF-8 sequence, it is replaced by a special character � instead of failing.
+✓ Fixed bug with storing password in Keychain: now if password is incorrect, Gitbox asks again instead of using saved value.
+✓ Passwords are saved in Keychain with URL-specific names.
+✓ Terminal window is now opened in front. Path with spaces are handled correctly.
+✓ License window fixes: buy button is hidden when license is correct. Multiple windows are disallowed.
+✓ Right branch menu now displays current local branch and renders it as disabled.
 
 -----------------------------------------------------------
 
@@ -54,7 +55,6 @@ Bug fixes:
 
 1.2 bug fixes:
 
-- bug: general: autofetch does not work after extended period of time: updateQueue grows indefinitely
 - bug: sidebar: when collapsing a group, spinners remain spinning indefinitely
 - bug: sidebar: when collapsing a group, it should display a badge with sum of all nested badges
 - bug: sidebar: when adding new group or repo, should use currently selected group and item to insert after

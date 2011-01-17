@@ -53,10 +53,17 @@
 
 - (void) proceed
 {
-//  NSLog(@"OABlockQueue: operationCount = %d, limit = %d", self.operationCount, self.maxConcurrentOperationCount);
+  BOOL shouldLog = ([self.queue count] > 50);
+  if (shouldLog)
+  {
+    NSLog(@"OABlockQueue: operationCount = %d, limit = %d", (int)self.operationCount, (int)self.maxConcurrentOperationCount);
+  }  
   if (self.operationCount < self.maxConcurrentOperationCount)
   {
-//    NSLog(@"OABlockQueue: queue count = %d", [self.queue count]);
+    if (shouldLog)
+    {
+      NSLog(@"OABlockQueue: queue count = %d", (int)[self.queue count]);
+    }
     if (self.queue && [self.queue count] > 0)
     {
       void(^aBlock)() = [self.queue objectAtIndex:0];
