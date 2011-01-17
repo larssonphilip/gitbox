@@ -34,6 +34,7 @@ Bug fixes:
 ✓ Fixed potential issues with updating repository when it was moved or renamed.
 ✓ Fixed issue with filtering in Activity window (cmd+0).
 ✓ Fixed issue with cloning using local network URL (e.g. "oleg.local:myproject/repo.git")
+✓ Fixed bug with dragging files and folders to Terminal: now drops a full path instead of file:// URL
 ✓ Fixed an issue with history: when commit message contains invalid UTF-8 sequence, it is replaced by a special character � instead of failing.
 ✓ Fixed bug with storing password in Keychain: now if password is incorrect, Gitbox asks again instead of using saved value.
 ✓ Passwords are saved in Keychain with URL-specific names.
@@ -55,10 +56,10 @@ Bug fixes:
 
 1.2 bug fixes:
 
+- enhancement: sidebar: handle multiple selection in sidebar for easier organization of items
 - bug: sidebar: when collapsing a group, spinners remain spinning indefinitely
 - bug: sidebar: when collapsing a group, it should display a badge with sum of all nested badges
 - bug: sidebar: when adding new group or repo, should use currently selected group and item to insert after
-
 
 Bugs:
 
@@ -109,6 +110,7 @@ Enhancements:
 
 Done for 1.2:
 
++ bug: sidebar: when dragged repository or change ro Terminal, it yields URL, not a path.
 + bug: general: check that in appstore build there is a help message in the bottom of preferences panel. [Markus Fritze <my@sarnau.com>]
 + changes: quicklook for the file on space in stage (QLPreviewPanel, sample code: QuickLookDownloader)
 + changes: should remove image view and resize header view if no image is present

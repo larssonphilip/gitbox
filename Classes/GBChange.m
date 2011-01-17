@@ -542,7 +542,7 @@
   
   if ([type isEqualToString:NSPasteboardTypeString])
   {
-    return [[self fileURL] absoluteString];
+    return [[self fileURL] path];
   }
   
   return nil;
@@ -554,10 +554,10 @@
                                                                      (CFStringRef)[[[self fileURL] path] pathExtension], 
                                                                      NULL)) autorelease];
   NSArray* types = [NSArray arrayWithObjects:
-          UTI,
-          kUTTypeFileURL,
-          NSPasteboardTypeString,
-          nil];
+                    UTI,
+                    kUTTypeFileURL,
+                    NSPasteboardTypeString,
+                    nil];
   
   //NSLog(@"GBChange: writableTypesForPasteboard: %@", types);
   

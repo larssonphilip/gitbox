@@ -259,7 +259,7 @@
 
 - (NSArray*) writableTypesForPasteboard:(NSPasteboard *)pasteboard
 {
-  return [[NSArray arrayWithObject:GBSidebarItemPasteboardType] 
+  return [[NSArray arrayWithObjects:GBSidebarItemPasteboardType, NSPasteboardTypeString, (NSString*)kUTTypeFileURL, nil] 
           arrayByAddingObjectsFromArray:[[self url] writableTypesForPasteboard:pasteboard]];
 }
 
@@ -268,6 +268,14 @@
   if ([type isEqual:GBSidebarItemPasteboardType])
   {
     return [self sidebarItemIdentifier];
+  }
+  if ([type isEqualToString:(NSString*)kUTTypeFileURL])
+  {
+    return [[self url] absoluteURL];
+  }
+  if ([type isEqualToString:NSPasteboardTypeString])
+  {
+    return [[self url] path];
   }
   return [[self url] pasteboardPropertyListForType:type];
 }
