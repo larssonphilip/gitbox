@@ -286,6 +286,20 @@
 {
   GBBaseRepositoryController* repoCtrl = self.repositoriesController.selectedRepositoryController;
   //NSLog(@"updateSelectedRow: repoCtrl = %@", repoCtrl);
+  
+  // First, check that the selection contains the selected repo already. 
+  // Then preserve whatever selection we have.
+  NSInteger row = [self.outlineView rowForItem:repoCtrl];
+  if (row >= 0)
+  {
+    if ([[self.outlineView selectedRowIndexes] containsIndex:(NSUInteger)row] ||
+        [self.outlineView clickedRow] == row)
+    {
+      return;
+    }
+  }
+  
+  // Current selection does not contain selectedRepositoryController, so we update it.
   [self.outlineView withDelegate:nil doBlock:^{
     if (!repoCtrl)
     {
@@ -526,7 +540,7 @@
       return [cellClass cellHeight];
     }
   }
-  return 20.0;
+  return 21.0;
 }
 
 - (NSString *)outlineView:(NSOutlineView *)outlineView
@@ -557,13 +571,19 @@
          writeItems:(NSArray *)items
        toPasteboard:(NSPasteboard *)pasteboard
 {
-  if ([items count] != 1) return NO;
+  NSMutableArray* draggableItems = [NSMutableArray arrayWithCapacity:[items count]];
   
-  id<GBSidebarItem> item = [items objectAtIndex:0];
+  for (id<GBSidebarItem> item in items)
+  {
+    if ([item isDraggableInSidebar])
+    {
+      [draggableItems addObject:item];
+    }
+  }
   
-  if (![item isDraggableInSidebar]) return NO;
-  
-  return [pasteboard writeObjects:[NSArray arrayWithObject:item]];
+  if ([draggableItems count] <= 0) return NO;
+    
+  return [pasteboard writeObjects:draggableItems];
 }
 
 
@@ -612,15 +632,24 @@
   }
   else
   {
-    NSString* draggedItemIdentifier = [pasteboard propertyListForType:GBSidebarItemPasteboardType];
-    if (!draggedItemIdentifier) return NSDragOperationNone;
-    id<GBSidebarItem> draggedItem = [[self localRepositoriesSection] findItemWithIndentifier:draggedItemIdentifier];
-    if (!draggedItem) return NSDragOperationNone;
+    NSArray* pasteboardItems = [pasteboard pasteboardItems];
     
-    // Avoid dragging inside itself
-    if ([draggedItem findItemWithIndentifier:[proposedItem sidebarItemIdentifier]])
+    if ([pasteboardItems count] <= 0) return NSDragOperationNone;
+    
+    for (NSPasteboardItem* pasteboardItem in pasteboardItems)
     {
-      return NSDragOperationNone;
+      NSString* draggedItemIdentifier = [pasteboardItem stringForType:GBSidebarItemPasteboardType];
+      
+      if (!draggedItemIdentifier) return NSDragOperationNone;
+      
+      id<GBSidebarItem> draggedItem = [[self localRepositoriesSection] findItemWithIndentifier:draggedItemIdentifier];
+      if (!draggedItem) return NSDragOperationNone;
+      
+      // Avoid dragging inside itself
+      if ([draggedItem findItemWithIndentifier:[proposedItem sidebarItemIdentifier]])
+      {
+        return NSDragOperationNone;
+      }      
     }
     
     // inner dragging:
@@ -641,22 +670,8 @@
 {
   
   NSPasteboard* pasteboard = [draggingInfo draggingPasteboard];
-  NSString* itemIdentifier  = [pasteboard propertyListForType:GBSidebarItemPasteboardType];
   
-  if (itemIdentifier)
-  {
-    // Handle local drag and drop
-    
-    id<GBSidebarItem> draggedItem = [[self localRepositoriesSection] findItemWithIndentifier:itemIdentifier];
-    if (!draggedItem) return NO;
-    
-    GBRepositoriesGroup* aGroup = [targetItem isRepositoriesGroup] ? (GBRepositoriesGroup*)targetItem : nil;
-    [self.repositoriesController moveLocalItem:(id<GBRepositoriesControllerLocalItem>)draggedItem toGroup:aGroup atIndex:childIndex];
-    [self update];
-    [anOutlineView expandItem:targetItem]; // in some cases when outline view does not expand automatically
-    return YES;
-  }
-  else
+  if ([draggingInfo draggingSource] == nil)
   {
     // Handle external drop
     
@@ -691,6 +706,65 @@
     
     [anOutlineView expandItem:targetItem]; // in some cases when outline view does not expand automatically
     return YES;
+  }
+  else // local drop
+  {
+    BOOL movedSomething = NO;
+    
+    // Remember what was selected to restore after drop
+    NSMutableArray* selectedItems = [NSMutableArray array];
+    [[anOutlineView selectedRowIndexes] enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL* stop){
+      id item = [anOutlineView itemAtRow:idx];
+      if (item) [selectedItems addObject:item];
+    }];
+    
+    for (NSPasteboardItem* pasteboardItem in [pasteboard pasteboardItems])
+    {
+      NSString* itemIdentifier  = [pasteboardItem stringForType:GBSidebarItemPasteboardType];
+      
+      if (itemIdentifier)
+      {
+        id<GBSidebarItem> draggedItem = [[self localRepositoriesSection] findItemWithIndentifier:itemIdentifier];
+        if (draggedItem)
+        {
+          movedSomething = YES;
+          GBRepositoriesGroup* aGroup = [targetItem isRepositoriesGroup] ? (GBRepositoriesGroup*)targetItem : nil;
+          [self.repositoriesController moveLocalItem:(id<GBRepositoriesControllerLocalItem>)draggedItem toGroup:aGroup atIndex:childIndex];
+          NSUInteger index = [aGroup.items indexOfObject:draggedItem];
+          if (index == NSNotFound)
+          {
+            childIndex = [aGroup.items count];
+          }
+          else
+          {
+            childIndex = index + 1;
+          }
+        }
+      }
+    }
+    
+    if (movedSomething)
+    {
+      [self update];
+      
+      // Collect current indexes for the selected items and selected them.
+      NSMutableIndexSet* indexesOfMovedItems = [NSMutableIndexSet indexSet];
+      for (id item in selectedItems)
+      {
+        NSInteger idx = [anOutlineView rowForItem:item];
+        if (idx >= 0)
+        {
+          [indexesOfMovedItems addIndex:(NSUInteger)idx];
+        }
+      }
+      
+      [anOutlineView expandItem:targetItem]; // in some cases when outline view does not expand automatically
+      
+      [anOutlineView withDelegate:nil doBlock:^{
+        [anOutlineView selectRowIndexes:indexesOfMovedItems byExtendingSelection:NO];
+      }];
+      return YES;
+    }
   }
   return NO;
 }

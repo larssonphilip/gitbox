@@ -180,7 +180,7 @@
     }
     else
     {
-      NSLog(@"ERROR: unexpected state! after insertion, item appears %d times.", (int)[indexes count]);
+      NSLog(@"ERROR: unexpected state! after insertion, item appears %d times. [anIndex = %d]", (int)[indexes count], (int)anIndex);
       return;
     }
   }

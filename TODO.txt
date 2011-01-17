@@ -3,11 +3,11 @@
 
 New features:
 
-✓ Quick Look for files on stage and in the history.
-✓ Reordering and groups sidebar.
-✓ New right pane design with a person picture.
-✓ New commit dialog.
-✓ Checkout arbitrary commit from history.
+✓ Reordering and groups in sidebar. 
+✓ Quick Look for files on stage and in the history. 
+✓ New right pane design with a person picture. 
+✓ New commit dialog. 
+✓ Checkout arbitrary commit from history. 
 
 Enhancements:
 
@@ -56,7 +56,6 @@ Bug fixes:
 
 1.2 bug fixes:
 
-- enhancement: sidebar: handle multiple selection in sidebar for easier organization of items
 - bug: sidebar: when collapsing a group, spinners remain spinning indefinitely
 - bug: sidebar: when collapsing a group, it should display a badge with sum of all nested badges
 - bug: sidebar: when adding new group or repo, should use currently selected group and item to insert after
@@ -110,6 +109,7 @@ Enhancements:
 
 Done for 1.2:
 
++ enhancement: sidebar: handle multiple selection in sidebar for easier organization of items
 + bug: sidebar: when dragged repository or change ro Terminal, it yields URL, not a path.
 + bug: general: check that in appstore build there is a help message in the bottom of preferences panel. [Markus Fritze <my@sarnau.com>]
 + changes: quicklook for the file on space in stage (QLPreviewPanel, sample code: QuickLookDownloader)
