@@ -52,15 +52,17 @@ Bug fixes:
 - submodules: case 5: user tries to commit a submodule which has the HEAD non-pushed (or dirty directory) - show warning or ask to push manually; show button "show module"
 
 
-
-Blocking bugs:
-
+1.2 bug fixes:
 
 - bug: general: autofetch does not work after extended period of time: updateQueue grows indefinitely
+- bug: sidebar: when collapsing a group, spinners remain spinning indefinitely
+- bug: sidebar: when collapsing a group, it should display a badge with sum of all nested badges
+- bug: sidebar: when adding new group or repo, should use currently selected group and item to insert after
+
+
+Bugs:
+
 - bug: general: when repo is inside dropbox folder, strange things happen (see mailbox: sometimes cannot commit or stage is blinking)
-
-Other bugs:
-
 - bug: general: when pushing and switching branches, gitbox tries to fetch immediately which blocks the interaction. Should add a delay to perform fetch only after user is done doing what he was doing
 - bug: general: after cmd+W (while app is still in foreground), clicking on dock icon does not bring window back. (Standard docs are not helpful: should google more)
 - bug: general: bare repository is not recognized as such: should provide read-only access
@@ -70,9 +72,6 @@ Other bugs:
 - bug: toolbar: when removing a single server, remote branch remains and log is clean.
 - bug: toolbar: android repo checked out on a commit has branch menus disabled.
 
-- bug: sidebar: when collapsing a group, spinners remain spinning indefinitely
-- bug: sidebar: when collapsing a group, it should display a badge with sum of all nested badges
-- bug: sidebar: when adding new group or repo, should use currently selected group and item to insert after
 - bug: sidebar: when launched the app, all repos start spinning together.
 - bug: sidebar: quickly jumping through repos in sidebar is slow: avoid unnecessary updates and shell-outs when repo is selected.
 - bug: sidebar: when cloning finished, selection is changing quickly - ugly.
