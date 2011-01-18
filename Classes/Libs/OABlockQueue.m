@@ -28,6 +28,7 @@
 
 - (void) addBlock:(void(^)())aBlock
 {
+  if (!aBlock) return;
   // Optimization: call the block immediately without touching the queue
   if (self.operationCount < self.maxConcurrentOperationCount)
   {
@@ -56,14 +57,10 @@
   BOOL shouldLog = ([self.queue count] > 50);
   if (shouldLog)
   {
-    NSLog(@"OABlockQueue: operationCount = %d, limit = %d", (int)self.operationCount, (int)self.maxConcurrentOperationCount);
+    NSLog(@"OABlockQueue: operationCount = %d, limit = %d, total = %d", (int)self.operationCount, (int)self.maxConcurrentOperationCount, (int)[self.queue count]);
   }  
   if (self.operationCount < self.maxConcurrentOperationCount)
   {
-    if (shouldLog)
-    {
-      NSLog(@"OABlockQueue: queue count = %d", (int)[self.queue count]);
-    }
     if (self.queue && [self.queue count] > 0)
     {
       void(^aBlock)() = [self.queue objectAtIndex:0];
