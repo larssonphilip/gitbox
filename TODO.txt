@@ -62,6 +62,7 @@ Bug fixes:
 
 Bugs:
 
+- bug: sidebar: right-click menu works for a single item when have multiple selection
 - bug: general: when repo is inside dropbox folder, strange things happen (see mailbox: sometimes cannot commit or stage is blinking)
 - bug: general: when pushing and switching branches, gitbox tries to fetch immediately which blocks the interaction. Should add a delay to perform fetch only after user is done doing what he was doing
 - bug: general: after cmd+W (while app is still in foreground), clicking on dock icon does not bring window back. (Standard docs are not helpful: should google more)
