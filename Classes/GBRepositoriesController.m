@@ -253,11 +253,12 @@
   [self.selectedRepositoryController didSelect];
 }
 
-- (void) addGroup:(GBRepositoriesGroup*)aGroup
+- (void) addGroup:(GBRepositoriesGroup*)aGroup inGroup:(GBRepositoriesGroup*)aTargetGroup atIndex:(NSInteger)anIndex
 {
   if ([self.delegate respondsToSelector:@selector(repositoriesController:willAddGroup:)]) { [self.delegate repositoriesController:self willAddGroup:aGroup]; }
   
-  [self.localRepositoriesGroup.items addObject:aGroup];
+  if (!aTargetGroup) aTargetGroup = self.localRepositoriesGroup;
+  [aTargetGroup insertLocalItem:aGroup atIndex:anIndex];
   
   if ([self.delegate respondsToSelector:@selector(repositoriesController:didAddGroup:)]) { [self.delegate repositoriesController:self didAddGroup:aGroup]; }
 }

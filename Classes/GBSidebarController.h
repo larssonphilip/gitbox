@@ -40,6 +40,7 @@
 
 - (IBAction) remove:(id)_;
 - (IBAction) rename:(id)_;
+- (IBAction) addGroup:(id)_;
 - (IBAction) openInFinder:(id)_;
 - (IBAction) selectRightPane:_;
 

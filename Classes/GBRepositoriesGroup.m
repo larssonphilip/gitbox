@@ -129,6 +129,7 @@
 
 - (GBRepositoriesGroup*) groupContainingLocalItem:(id<GBRepositoriesControllerLocalItem>)aLocalItem
 {
+  if (!aLocalItem) return nil;
   if ([self.items containsObject:aLocalItem])
   {
     return self;

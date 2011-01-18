@@ -94,7 +94,7 @@
 
 - (IBAction) addGroup:(id)_
 {
-  [self.repositoriesController addGroup:[GBRepositoriesGroup untitledGroup]];
+  [self.sourcesController addGroup:_];
 }
 
 

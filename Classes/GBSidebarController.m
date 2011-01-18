@@ -157,6 +157,30 @@
     [self.repositoriesController removeLocalRepositoriesGroup:(GBRepositoriesGroup*)item];
   }
   [self update];
+  
+  [self.repositoriesController selectRepositoryController:[[self selectedSidebarItem] repositoryController]];
+}
+
+- (IBAction) addGroup:(id)_
+{
+  id<GBSidebarItem> selectedItem = [self selectedSidebarItem];
+  GBRepositoriesGroup* aGroup = [self.repositoriesController.localRepositoriesGroup groupContainingLocalItem:(id)selectedItem];
+  if (!aGroup) aGroup = self.repositoriesController.localRepositoriesGroup; // should never happen, but just in case
+  NSUInteger indexInGroup = [aGroup.items indexOfObject:selectedItem];
+  if (indexInGroup == NSNotFound)
+  {
+    indexInGroup = [aGroup.items count]; // should never happen, but be safe just in case
+  }
+  else
+  {
+    indexInGroup++;// insert after the item, not before
+  }
+  if ([selectedItem isRepositoriesGroup]) // in case, the group is select, insert inside it
+  {
+    aGroup = (GBRepositoriesGroup*)selectedItem;
+    indexInGroup = 0;
+  }
+  [self.repositoriesController addGroup:[GBRepositoriesGroup untitledGroup] inGroup:aGroup atIndex:indexInGroup];
 }
 
 - (IBAction) rename:(id)_

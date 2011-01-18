@@ -32,7 +32,7 @@
 - (void) removeLocalRepositoryController:(GBBaseRepositoryController*)repoCtrl;
 - (void) selectRepositoryController:(GBBaseRepositoryController*) repoCtrl;
 
-- (void) addGroup:(GBRepositoriesGroup*)aGroup;
+- (void) addGroup:(GBRepositoriesGroup*)aGroup inGroup:(GBRepositoriesGroup*)aGroup atIndex:(NSInteger)anIndex;
 
 - (void) loadLocalRepositoriesAndGroups;
 - (void) saveLocalRepositoriesAndGroups;
