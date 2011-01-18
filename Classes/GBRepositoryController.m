@@ -305,12 +305,10 @@
 
 - (void) updateQueued
 {
-	[self pushSpinning];
 	[self.updatesQueue addBlock:^{
 		[self updateWithBlock:^{
 			[self.updatesQueue endBlock];
 		}];
-		[self popSpinning];
 	}];
 }
 
@@ -324,9 +322,10 @@
   [self updateLocalRefsWithBlock:^{
     [self pushSpinning];
     [self loadCommitsWithBlock:^{
+      if (block) block();
       [self popSpinning];
 	}];
-    [self updateRemoteRefsWithBlock:block];
+    // avoid this on startup: [self updateRemoteRefsWithBlock:block];
     [self popSpinning];
     [self popFSEventsPause];
   }];
@@ -901,17 +900,13 @@
     return;
   }
   
-  //[self pushSpinning];
   [self.repository updateLocalBranchCommitsWithBlock:^{
-    
-    //if ([self.delegate respondsToSelector:@selector(repositoryControllerDidUpdateCommits:)]) { [self.delegate repositoryControllerDidUpdateCommits:self]; }
     
     [OABlockGroup groupBlock:^(OABlockGroup* blockGroup){
       
       [blockGroup enter];
       [self pushFSEventsPause];
       [self.repository updateUnmergedCommitsWithBlock:^{
-        //if ([self.delegate respondsToSelector:@selector(repositoryControllerDidUpdateCommits:)]) { [self.delegate repositoryControllerDidUpdateCommits:self]; }
         [self popFSEventsPause];
         [blockGroup leave];
       }];
@@ -919,7 +914,6 @@
       [blockGroup enter];
       [self pushFSEventsPause];
       [self.repository updateUnpushedCommitsWithBlock:^{
-        //if ([self.delegate respondsToSelector:@selector(repositoryControllerDidUpdateCommits:)]) { [self.delegate repositoryControllerDidUpdateCommits:self]; }
         [self popFSEventsPause];
         [blockGroup leave];
       }];
@@ -928,8 +922,6 @@
       if ([self.delegate respondsToSelector:@selector(repositoryControllerDidUpdateCommits:)]) { [self.delegate repositoryControllerDidUpdateCommits:self]; }
       if (block) block();
     }];
-    
-    //[self popSpinning];
   }];
 }
 
@@ -1022,6 +1014,7 @@
   if (![self checkRepositoryExistance]) return;
   
   //NSLog(@"GBRepositoryController: autoFetch into %@ (delay: %f)", [self url], autoFetchInterval);
+  while (autoFetchInterval < 10.0)  autoFetchInterval += 1.0;
   while (autoFetchInterval > 100.0) autoFetchInterval -= 10.0;
   autoFetchInterval = autoFetchInterval*(1.4142 + drand48()*0.2);
   
@@ -1032,7 +1025,7 @@
   
   if ([self isConnectionAvailable])
   {
-    //NSLog(@"AutoFetch: self.updatesQueue = %d / %d [%@]", (int)self.updatesQueue.operationCount, (int)[self.updatesQueue.queue count], [self nameInSidebar]);
+    NSLog(@"AutoFetch: self.updatesQueue = %d / %d [%@]", (int)self.updatesQueue.operationCount, (int)[self.updatesQueue.queue count], [self nameInSidebar]);
     [self.updatesQueue addBlock:^{
       //NSLog(@"AutoFetch: start %@", [self nameInSidebar]);
       [self updateRemoteRefsWithBlock:^{

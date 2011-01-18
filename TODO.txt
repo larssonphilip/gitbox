@@ -61,6 +61,7 @@ Bug fixes:
 
 Bugs:
 
+- bug: sidebar: autofetch fills updateQueue very much. Should not schedule new update if the previous one didn't fire yet.
 - bug: sidebar: right-click menu works for a single item when have multiple selection
 - bug: general: when repo is inside dropbox folder, strange things happen (see mailbox: sometimes cannot commit or stage is blinking)
 - bug: general: when pushing and switching branches, gitbox tries to fetch immediately which blocks the interaction. Should add a delay to perform fetch only after user is done doing what he was doing
@@ -72,7 +73,7 @@ Bugs:
 - bug: toolbar: when removing a single server, remote branch remains and log is clean.
 - bug: toolbar: android repo checked out on a commit has branch menus disabled.
 
-- bug: sidebar: when launched the app, all repos start spinning together.
+- bug: sidebar: when launched the app, all repos start spinning together: should use two separate queues for disk tasks and networking
 - bug: sidebar: quickly jumping through repos in sidebar is slow: avoid unnecessary updates and shell-outs when repo is selected.
 - bug: sidebar: when cloning finished, selection is changing quickly - ugly.
 
