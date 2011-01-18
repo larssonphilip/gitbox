@@ -296,7 +296,7 @@
 		}
 		else
 		{
-			fillColor = [NSColor colorWithCalibratedHue:0 saturation:0 brightness:0.67 alpha:0.7];
+			fillColor = [NSColor colorWithCalibratedHue:0 saturation:0 brightness:0.67 alpha:0.8];
 		}
 	}
 	
