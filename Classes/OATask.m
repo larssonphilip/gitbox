@@ -602,11 +602,20 @@ NSString* OATaskNotification = @"OATaskNotification";
   //NSLog(@"BLOCKING: %@", [self command]);
   [self.nstask launch];
   NSFileHandle* pipeFileHandle = [self fileHandleForReading];
-  if (pipeFileHandle)
+  @try
   {
-    [self.output appendData:[pipeFileHandle readDataToEndOfFile]];
+	  if (pipeFileHandle)
+	  {
+		  [self.output appendData:[pipeFileHandle readDataToEndOfFile]];
+	  }
+	  [self.nstask waitUntilExit];
   }
-  [self.nstask waitUntilExit];
+  @catch (NSException* e)
+  {
+	  NSLog(@"OATask: pipe seems to be broken: caught exception: %@", e);
+	  [self.nstask terminate];
+	  self.output = [NSMutableData data];
+  }
   [self doFinish];
   [[GBActivityController sharedActivityController] addActivity:self.activity];
 }
