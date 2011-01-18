@@ -163,6 +163,17 @@
   // no op
 }
 
+- (NSInteger) badgeValue
+{
+	return 0; // TODO: return badgeValue for the repositoryController
+}
+
+- (NSInteger) accumulatedBadgeValue
+{
+	return [self badgeValue]; // TODO: return accumulatedBadgeValue for the repositoryController
+}
+
+
 - (NSArray*) writableTypesForPasteboard:(NSPasteboard *)pasteboard
 {
   return [[self localURL] writableTypesForPasteboard:pasteboard];

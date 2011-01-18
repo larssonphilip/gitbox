@@ -257,6 +257,17 @@
   // TODO: save expanded state for submodules list
 }
 
+- (NSInteger) badgeValue
+{
+	return 0;
+}
+
+- (NSInteger) accumulatedBadgeValue
+{
+	// TODO: add badge values for the submodules
+	return [self badgeValue];
+}
+
 
 
 #pragma mark NSPasteboardWriting

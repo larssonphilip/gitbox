@@ -30,4 +30,7 @@
 - (BOOL) isExpandedInSidebar;
 - (void) setExpandedInSidebar:(BOOL)expanded;
 
+- (NSInteger) badgeValue;
+- (NSInteger) accumulatedBadgeValue;
+
 @end

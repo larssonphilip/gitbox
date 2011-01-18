@@ -127,6 +127,12 @@
   }
 }
 
+- (NSInteger) badgeValue
+{
+	return [self.repository totalPendingChanges];
+}
+
+
 
 - (NSArray*) commits
 {

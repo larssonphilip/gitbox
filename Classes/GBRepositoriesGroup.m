@@ -258,6 +258,22 @@
   self.isExpanded = expanded;
 }
 
+- (NSInteger) badgeValue
+{
+	return 0;
+}
+
+- (NSInteger) accumulatedBadgeValue
+{
+	NSInteger sum = [self badgeValue];
+	for (id<GBSidebarItem> item in self.items)
+	{
+		sum += [item accumulatedBadgeValue];
+	}
+	return sum;
+}
+
+
 - (NSArray*) writableTypesForPasteboard:(NSPasteboard *)pasteboard
 {
   return [NSArray arrayWithObject:GBSidebarItemPasteboardType];
