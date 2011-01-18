@@ -197,6 +197,11 @@
   return nil;
 }
 
+- (id<GBRepositoriesControllerLocalItem>) repositoriesControllerLocalItem
+{
+  return self;
+}
+
 - (BOOL) isRepository
 {
   return NO;

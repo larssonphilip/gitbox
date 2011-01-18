@@ -152,7 +152,9 @@
       
       NSLog(@"TODO: change for the cloning-specific API here (i.e. addCloningRepositoryController:)");
       
-      [self.repositoriesController addLocalRepositoryController:cloneController];
+      [self.repositoriesController doWithSelectedGroupAtIndex:^(GBRepositoriesGroup* aGroup, NSInteger anIndex){
+        [self.repositoriesController addLocalRepositoryController:cloneController inGroup:aGroup atIndex:anIndex];
+      }];
       [self.repositoriesController selectRepositoryController:cloneController];
     }
   };

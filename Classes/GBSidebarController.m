@@ -163,24 +163,10 @@
 
 - (IBAction) addGroup:(id)_
 {
-  id<GBSidebarItem> selectedItem = [self selectedSidebarItem];
-  GBRepositoriesGroup* aGroup = [self.repositoriesController.localRepositoriesGroup groupContainingLocalItem:(id)selectedItem];
-  if (!aGroup) aGroup = self.repositoriesController.localRepositoriesGroup; // should never happen, but just in case
-  NSUInteger indexInGroup = [aGroup.items indexOfObject:selectedItem];
-  if (indexInGroup == NSNotFound)
-  {
-    indexInGroup = [aGroup.items count]; // should never happen, but be safe just in case
-  }
-  else
-  {
-    indexInGroup++;// insert after the item, not before
-  }
-  if ([selectedItem isRepositoriesGroup]) // in case, the group is select, insert inside it
-  {
-    aGroup = (GBRepositoriesGroup*)selectedItem;
-    indexInGroup = 0;
-  }
-  [self.repositoriesController addGroup:[GBRepositoriesGroup untitledGroup] inGroup:aGroup atIndex:indexInGroup];
+  [self.repositoriesController doWithSelectedGroupAtIndex:^(GBRepositoriesGroup* aGroup, NSInteger anIndex){
+    [self.repositoriesController addGroup:[GBRepositoriesGroup untitledGroup] inGroup:aGroup atIndex:anIndex];
+    [self.outlineView expandItem:aGroup];
+  }];
 }
 
 - (IBAction) rename:(id)_
@@ -513,6 +499,7 @@
     item = [self.outlineView itemAtRow:row];
   }
   [self.repositoriesController selectRepositoryController:[item repositoryController]];
+  [self.repositoriesController selectLocalItem:[item repositoriesControllerLocalItem]];
 }
 
 - (void)outlineView:(NSOutlineView*)anOutlineView willDisplayCell:(id)cell forTableColumn:(NSTableColumn*)tableColumn item:(id<GBSidebarItem>)item

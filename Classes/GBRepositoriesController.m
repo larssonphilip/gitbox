@@ -16,6 +16,8 @@
 @synthesize selectedRepositoryController;
 @synthesize localRepositoriesGroup;
 @synthesize localRepositoriesUpdatesQueue;
+@synthesize selectedLocalItem;
+
 @synthesize delegate;
 
 - (void) dealloc
@@ -23,6 +25,7 @@
   self.selectedRepositoryController = nil;
   self.localRepositoriesGroup = nil;
   self.localRepositoriesUpdatesQueue = nil;
+  self.selectedLocalItem = nil;
   [super dealloc];
 }
 
@@ -85,7 +88,9 @@
 
 - (void) openLocalRepositoryAtURL:(NSURL*)url
 {
-  [self openLocalRepositoryAtURL:url inGroup:self.localRepositoriesGroup atIndex:NSOutlineViewDropOnItemIndex];
+  [self doWithSelectedGroupAtIndex:^(GBRepositoriesGroup* aGroup, NSInteger anIndex){
+    [self openLocalRepositoryAtURL:url inGroup:aGroup atIndex:anIndex];
+  }];
 }
 
 
@@ -247,10 +252,16 @@
   if ([self.delegate respondsToSelector:@selector(repositoriesController:willSelectRepository:)]) { [self.delegate repositoriesController:self willSelectRepository:repoCtrl]; }
   
   self.selectedRepositoryController = repoCtrl;
+  self.selectedLocalItem = repoCtrl;
   
   if ([self.delegate respondsToSelector:@selector(repositoriesController:didSelectRepository:)]) { [self.delegate repositoriesController:self didSelectRepository:repoCtrl]; }
   
   [self.selectedRepositoryController didSelect];
+}
+
+- (void) selectLocalItem:(id<GBRepositoriesControllerLocalItem>) aLocalItem
+{
+  self.selectedLocalItem = aLocalItem;
 }
 
 - (void) addGroup:(GBRepositoriesGroup*)aGroup inGroup:(GBRepositoriesGroup*)aTargetGroup atIndex:(NSInteger)anIndex
@@ -444,6 +455,28 @@
 - (void) endBackgroundUpdate
 {
   
+}
+
+
+- (void) doWithSelectedGroupAtIndex:(void(^)(GBRepositoriesGroup* aGroup, NSInteger anIndex))aBlock
+{
+  GBRepositoriesGroup* aGroup = [self.localRepositoriesGroup groupContainingLocalItem:self.selectedLocalItem];
+  if (!aGroup) aGroup = self.localRepositoriesGroup;
+  NSUInteger indexInGroup = [aGroup.items indexOfObject:self.selectedLocalItem];
+  if (indexInGroup == NSNotFound)
+  {
+    indexInGroup = [aGroup.items count];
+  }
+  else
+  {
+    indexInGroup++;// insert after the item, not before
+  }
+  if ([self.selectedLocalItem isRepositoriesGroup]) // in case, the group is selected, insert inside it
+  {
+    aGroup = (GBRepositoriesGroup*)self.selectedLocalItem;
+    indexInGroup = 0;
+  }
+  aBlock(aGroup, indexInGroup);
 }
 
 @end

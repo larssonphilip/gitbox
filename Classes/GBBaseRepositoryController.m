@@ -204,6 +204,11 @@
   return self;
 }
 
+- (id<GBRepositoriesControllerLocalItem>) repositoriesControllerLocalItem
+{
+  return self;
+}
+
 - (BOOL) isRepository
 {
   return YES;

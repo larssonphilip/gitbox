@@ -2,6 +2,7 @@
 #define GBSidebarItemPasteboardType @"com.oleganza.gitbox.GBSidebarItemPasteboardType"
 
 @class GBBaseRepositoryController;
+@protocol GBRepositoriesControllerLocalItem;
 @protocol GBSidebarItem <NSObject, NSPasteboardWriting>
 
 - (NSString*) sidebarItemIdentifier;
@@ -13,6 +14,7 @@
 - (id<GBSidebarItem>) findItemWithIndentifier:(NSString*)identifier;
 
 - (GBBaseRepositoryController*) repositoryController;
+- (id<GBRepositoriesControllerLocalItem>) repositoriesControllerLocalItem;
 
 - (BOOL) isRepository;
 - (BOOL) isRepositoriesGroup;

@@ -109,6 +109,12 @@
   return nil;
 }
 
+- (id<GBRepositoriesControllerLocalItem>) repositoriesControllerLocalItem
+{
+  // TODO: should probably return its parent repositoryController, but only that which is not inside the submodule itself
+  return nil;
+}
+
 - (BOOL) isRepository
 {
   return NO;

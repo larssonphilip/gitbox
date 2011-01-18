@@ -12,6 +12,7 @@
 @property(nonatomic,retain) GBBaseRepositoryController* selectedRepositoryController;
 @property(nonatomic,retain) GBRepositoriesGroup* localRepositoriesGroup;
 @property(nonatomic,retain) OABlockQueue* localRepositoriesUpdatesQueue;
+@property(nonatomic,retain) id<GBRepositoriesControllerLocalItem> selectedLocalItem;
 
 @property(assign) id<GBRepositoriesControllerDelegate> delegate;
 
@@ -31,6 +32,7 @@
 - (void) removeLocalRepositoriesGroup:(GBRepositoriesGroup*)aGroup;
 - (void) removeLocalRepositoryController:(GBBaseRepositoryController*)repoCtrl;
 - (void) selectRepositoryController:(GBBaseRepositoryController*) repoCtrl;
+- (void) selectLocalItem:(id<GBRepositoriesControllerLocalItem>) aLocalItem;
 
 - (void) addGroup:(GBRepositoriesGroup*)aGroup inGroup:(GBRepositoriesGroup*)aGroup atIndex:(NSInteger)anIndex;
 
@@ -39,5 +41,7 @@
 
 - (void) beginBackgroundUpdate;
 - (void) endBackgroundUpdate;
+
+- (void) doWithSelectedGroupAtIndex:(void(^)(GBRepositoriesGroup* aGroup, NSInteger anIndex))aBlock;
 
 @end
