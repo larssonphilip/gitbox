@@ -11,6 +11,7 @@
 @implementation GBRepositoriesGroup
 @synthesize name;
 @synthesize items;
+@synthesize sidebarSpinner;
 
 @synthesize isExpanded;
 
@@ -18,6 +19,7 @@
 {
   self.name = nil;
   self.items = nil;
+  self.sidebarSpinner = nil;
   [super dealloc];
 }
 
@@ -256,6 +258,10 @@
 - (void) setExpandedInSidebar:(BOOL)expanded
 {
   self.isExpanded = expanded;
+  if (!expanded)
+  {
+    [self hideAllSpinnersInSidebar];
+  }
 }
 
 - (NSInteger) badgeValue
@@ -272,6 +278,32 @@
 	}
 	return sum;
 }
+
+- (BOOL) isSpinningInSidebar
+{
+  return NO;
+}
+
+- (BOOL) isAccumulatedSpinningInSidebar
+{
+  if ([self isSpinningInSidebar]) return YES;
+	for (id<GBSidebarItem> item in self.items)
+	{
+		if ([item isAccumulatedSpinningInSidebar]) return YES;
+	}
+	return NO;
+}
+
+- (void) hideAllSpinnersInSidebar
+{
+  [self.sidebarSpinner setHidden:YES];
+	for (id<GBSidebarItem> item in self.items)
+	{
+		[item hideAllSpinnersInSidebar];
+	}
+}
+
+
 
 
 - (NSArray*) writableTypesForPasteboard:(NSPasteboard *)pasteboard

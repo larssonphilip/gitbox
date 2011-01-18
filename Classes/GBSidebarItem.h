@@ -30,6 +30,12 @@
 - (BOOL) isExpandedInSidebar;
 - (void) setExpandedInSidebar:(BOOL)expanded;
 
+- (BOOL) isSpinningInSidebar;
+- (BOOL) isAccumulatedSpinningInSidebar;
+- (NSProgressIndicator*) sidebarSpinner;
+- (void) setSidebarSpinner:(NSProgressIndicator*)spinnerView;
+- (void) hideAllSpinnersInSidebar;
+
 - (NSInteger) badgeValue;
 - (NSInteger) accumulatedBadgeValue;
 

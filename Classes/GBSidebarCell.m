@@ -35,28 +35,15 @@
 
 - (NSRect) drawExtraFeaturesAndReturnRemainingRect:(NSRect)rect
 {
-	static CGFloat leftPadding = 2.0;
-	NSInteger badgeValue = [[self sidebarItem] badgeValue];
-	if (![[self sidebarItem] isExpandedInSidebar])
-	{
-		badgeValue = [[self sidebarItem] accumulatedBadgeValue];
-	}
-	
-	if (badgeValue > 0)
-	{
-		NSString* badgeLabel = [NSString stringWithFormat:@"%d", badgeValue];
-		if (badgeValue > 999)
-		{
-			badgeLabel = @"999+";
-		}
-		if (badgeLabel && [badgeLabel length] > 0 && !self.isDragged)
-		{
-			NSRect badgeFrame = [self drawBadge:badgeLabel inRect:rect];
-			rect.size.width = badgeFrame.origin.x - rect.origin.x - leftPadding;
-		}
-	}
-	
-	return rect;
+  // Displaying spinner or badge
+  
+  NSRect rect2 = [self drawSpinnerIfNeededInRectAndReturnRemainingRect:rect];
+  
+  if (rect2.size.width == rect.size.width && rect2.size.height == rect.size.height)
+  {
+    rect2 = [self drawBadgeIfNeededInRectAndReturnRemainingRect:rect];
+  }
+  return rect2;
 }
 
 
@@ -235,7 +222,78 @@
 }
 
 
-- (NSRect) drawBadge:(NSString*)badge inRect:(NSRect)frame
+- (NSRect) drawSpinnerIfNeededInRectAndReturnRemainingRect:(NSRect)rect
+{
+  NSProgressIndicator* spinner = [[self sidebarItem] sidebarSpinner];
+  BOOL isSpinning = [[self sidebarItem] isSpinningInSidebar];
+  if (![[self sidebarItem] isExpandedInSidebar])
+  {
+    isSpinning = [[self sidebarItem] isAccumulatedSpinningInSidebar];
+  }
+  
+  if (!isSpinning)
+  {
+    [spinner removeFromSuperview];
+    return rect;
+  }
+  
+  if (!spinner)
+  {
+    spinner = [[[NSProgressIndicator alloc] initWithFrame:NSMakeRect(0, 0, 16.0, 16.0)] autorelease];
+    [spinner setStyle:NSProgressIndicatorSpinningStyle];
+    [spinner setControlSize:NSSmallControlSize];
+    [[self sidebarItem] setSidebarSpinner:spinner];
+    spinner = [[self sidebarItem] sidebarSpinner];
+    if (!spinner) return rect;
+  }
+  
+  [spinner setIndeterminate:YES];
+  [spinner startAnimation:nil];
+  [spinner setHidden:NO];
+  [self.outlineView addSubview:spinner];
+
+  static CGFloat leftPadding = 2.0;
+  static CGFloat rightPadding = 2.0;
+  static CGFloat yOffset = -1.0;
+  NSRect spinnerFrame = [spinner frame];
+  spinnerFrame.origin.x = rect.origin.x + (rect.size.width - spinnerFrame.size.width - rightPadding);
+  spinnerFrame.origin.y = rect.origin.y + yOffset;
+  [spinner setFrame:spinnerFrame];
+  
+  rect.size.width = spinnerFrame.origin.x - rect.origin.x - leftPadding;
+  
+  return rect;
+}
+
+
+- (NSRect) drawBadgeIfNeededInRectAndReturnRemainingRect:(NSRect)rect
+{
+  static CGFloat leftPadding = 2.0;
+	NSInteger badgeValue = [[self sidebarItem] badgeValue];
+	if (![[self sidebarItem] isExpandedInSidebar])
+	{
+		badgeValue = [[self sidebarItem] accumulatedBadgeValue];
+	}
+	
+	if (badgeValue > 0)
+	{
+		NSString* badgeLabel = [NSString stringWithFormat:@"%d", badgeValue];
+		if (badgeValue > 999)
+		{
+			badgeLabel = @"999+";
+		}
+		if (badgeLabel && [badgeLabel length] > 0 && !self.isDragged)
+		{
+			NSRect badgeFrame = [self drawBadge:badgeLabel inRect:rect];
+			rect.size.width = badgeFrame.origin.x - rect.origin.x - leftPadding;
+		}
+	}
+    
+  return rect;
+}
+
+
+- (NSRect) drawBadge:(NSString*)badge inRect:(NSRect)rect
 {
 	NSStringDrawingOptions drawingOptions = NSStringDrawingDisableScreenFontSubstitution;
 	
@@ -266,7 +324,7 @@
 										   options:drawingOptions
 										attributes:attributes];
 	
-	labelRect.origin = frame.origin;
+	labelRect.origin = rect.origin;
 	
 	static CGFloat minBadgeWidth = 20.0;
 	static CGFloat cornerRadius = 8.0;
@@ -276,11 +334,11 @@
 	
 	if (badgeWidth < minBadgeWidth) badgeWidth = minBadgeWidth;
 	
-	labelRect.origin.x += (frame.size.width - badgeWidth) + round((badgeWidth - labelRect.size.width)/2);
+	labelRect.origin.x += (rect.size.width - badgeWidth) + round((badgeWidth - labelRect.size.width)/2);
 	
 	NSRect badgeRect = labelRect;
 	badgeRect.size.width = badgeWidth;
-	badgeRect.origin.x = frame.origin.x + (frame.size.width - badgeRect.size.width);
+	badgeRect.origin.x = rect.origin.x + (rect.size.width - badgeRect.size.width);
 	
 	
 	NSColor* fillColor = nil;

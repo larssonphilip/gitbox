@@ -56,8 +56,6 @@ Bug fixes:
 
 1.2 bug fixes:
 
-- bug: sidebar: when collapsing a group, spinners remain spinning indefinitely
-- bug: sidebar: when collapsing a group, it should display a badge with sum of all nested badges
 
 Bugs:
 
@@ -110,6 +108,8 @@ Enhancements:
 
 Done for 1.2:
 
++ bug: sidebar: when collapsing a group, spinners remain spinning indefinitely
++ bug: sidebar: when collapsing a group, it should display a badge with sum of all nested badges
 + bug: sidebar: when adding new group or repo, should use currently selected group and item to insert after
 + enhancement: sidebar: handle multiple selection in sidebar for easier organization of items
 + bug: sidebar: when dragged repository or change ro Terminal, it yields URL, not a path.

@@ -255,6 +255,10 @@
 - (void) setExpandedInSidebar:(BOOL)expanded
 {
   // TODO: save expanded state for submodules list
+  if (!expanded)
+  {
+    [self hideAllSpinnersInSidebar];
+  }
 }
 
 - (NSInteger) badgeValue
@@ -267,6 +271,24 @@
 	// TODO: add badge values for the submodules
 	return [self badgeValue];
 }
+
+- (BOOL) isSpinningInSidebar
+{
+  return self.isSpinning;
+}
+
+- (BOOL) isAccumulatedSpinningInSidebar
+{
+  // TODO: OR with values from submodules
+  return [self isSpinningInSidebar];
+}
+
+- (void) hideAllSpinnersInSidebar
+{
+  // TODO: call for each submodule
+  [self.sidebarSpinner setHidden:YES];
+}
+
 
 
 

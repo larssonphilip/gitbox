@@ -12,7 +12,8 @@
 - (NSImage*) icon;
 - (NSRect) drawExtraFeaturesAndReturnRemainingRect:(NSRect)rect;
 - (void) drawTextInRect:(NSRect)rect;
-- (NSRect) drawBadge:(NSString*)badge inRect:(NSRect)frame;
-
+- (NSRect) drawBadge:(NSString*)badge inRect:(NSRect)rect;
+- (NSRect) drawSpinnerIfNeededInRectAndReturnRemainingRect:(NSRect)rect;
+- (NSRect) drawBadgeIfNeededInRectAndReturnRemainingRect:(NSRect)rect;
 @end
 

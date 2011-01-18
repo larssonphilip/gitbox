@@ -155,12 +155,12 @@
 
 - (BOOL) isExpandedInSidebar
 {
-  return YES; // no op
+  return [[self repositoryController] isExpandedInSidebar];
 }
 
 - (void) setExpandedInSidebar:(BOOL)expanded
 {
-  // no op
+  [[self repositoryController] setExpandedInSidebar:expanded];
 }
 
 - (NSInteger) badgeValue
@@ -173,6 +173,30 @@
 	return [self badgeValue]; // TODO: return accumulatedBadgeValue for the repositoryController
 }
 
+- (BOOL) isSpinningInSidebar
+{
+  return [[self repositoryController] isSpinningInSidebar];
+}
+
+- (BOOL) isAccumulatedSpinningInSidebar
+{
+  return [[self repositoryController] isAccumulatedSpinningInSidebar];
+}
+
+- (NSProgressIndicator*) sidebarSpinner
+{
+  return [[self repositoryController] sidebarSpinner];
+}
+
+- (void) setSidebarSpinner:(NSProgressIndicator*)spinnerView
+{
+  [[self repositoryController] setSidebarSpinner:spinnerView];
+}
+
+- (void) hideAllSpinnersInSidebar
+{
+  [[self repositoryController] hideAllSpinnersInSidebar];
+}
 
 - (NSArray*) writableTypesForPasteboard:(NSPasteboard *)pasteboard
 {

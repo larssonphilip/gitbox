@@ -5,13 +5,13 @@
 @class OABlockQueue;
 @interface GBBaseRepositoryController : NSObject <GBRepositoriesControllerLocalItem, GBSidebarItem>
 
-@property(nonatomic,retain) OABlockQueue* updatesQueue;
-@property(nonatomic,retain) NSProgressIndicator* sidebarSpinner;
+@property(nonatomic, retain) OABlockQueue* updatesQueue;
+@property(nonatomic, retain) NSProgressIndicator* sidebarSpinner;
 
-@property(nonatomic,assign) BOOL displaysTwoPathComponents;
-@property(nonatomic,assign) NSInteger isDisabled;
-@property(nonatomic,assign) NSInteger isSpinning;
-@property(nonatomic,assign) id<GBBaseRepositoryControllerDelegate> delegate;
+@property(nonatomic, assign) BOOL displaysTwoPathComponents;
+@property(nonatomic, assign) NSInteger isDisabled;
+@property(nonatomic, assign) NSInteger isSpinning;
+@property(nonatomic, assign) id<GBBaseRepositoryControllerDelegate> delegate;
 
 
 - (NSURL*) url;

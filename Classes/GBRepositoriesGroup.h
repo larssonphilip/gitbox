@@ -5,6 +5,7 @@
 
 @property(nonatomic, copy) NSString* name;
 @property(nonatomic, retain) NSMutableArray* items;
+@property(nonatomic, retain) NSProgressIndicator* sidebarSpinner;
 
 + (GBRepositoriesGroup*) untitledGroup;
 - (NSString*) untitledGroupName;
