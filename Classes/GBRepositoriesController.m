@@ -34,7 +34,7 @@
   if ((self = [super init]))
   {
     self.localRepositoriesUpdatesQueue = [[OABlockQueue new] autorelease];
-    self.localRepositoriesUpdatesQueue.maxConcurrentOperationCount = 1;
+    self.localRepositoriesUpdatesQueue.maxConcurrentOperationCount = 2;
     self.localRepositoriesGroup = [[[GBRepositoriesGroup alloc] init] autorelease];
     self.localRepositoriesGroup.name = @"localRepositoriesGroup"; // name for debugging only, won't be visible in UI
   }

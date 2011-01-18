@@ -15,6 +15,7 @@
 @property(nonatomic,assign) BOOL isDisappearedFromFileSystem;
 @property(nonatomic,assign) BOOL isCommitting;
 @property(nonatomic,assign) BOOL isUpdatingRemoteRefs;
+@property(nonatomic,assign) BOOL isWaitingForAutofetch;
 
 - (void) pushDisabled;
 - (void) popDisabled;
@@ -65,6 +66,7 @@
 @synthesize isCommitting;
 @synthesize isUpdatingRemoteRefs;
 @synthesize isDisappearedFromFileSystem;
+@synthesize isWaitingForAutofetch;
 @synthesize delegate;
 
 
@@ -1014,7 +1016,7 @@
   if (![self checkRepositoryExistance]) return;
   
   //NSLog(@"GBRepositoryController: autoFetch into %@ (delay: %f)", [self url], autoFetchInterval);
-  while (autoFetchInterval < 10.0)  autoFetchInterval += 1.0;
+  //while (autoFetchInterval < 10.0)  autoFetchInterval += 1.0;
   while (autoFetchInterval > 100.0) autoFetchInterval -= 10.0;
   autoFetchInterval = autoFetchInterval*(1.4142 + drand48()*0.2);
   
@@ -1023,20 +1025,18 @@
   //#warning AutoFetch disabled!
   //return;
   
-  if ([self isConnectionAvailable])
+  if (!self.isWaitingForAutofetch)
   {
-    NSLog(@"AutoFetch: self.updatesQueue = %d / %d [%@]", (int)self.updatesQueue.operationCount, (int)[self.updatesQueue.queue count], [self nameInSidebar]);
+    //NSLog(@"AutoFetch: self.updatesQueue = %d / %d [%@]", (int)self.updatesQueue.operationCount, (int)[self.updatesQueue.queue count], [self nameInSidebar]);
+    self.isWaitingForAutofetch = YES;
     [self.updatesQueue addBlock:^{
+      self.isWaitingForAutofetch = NO;
       //NSLog(@"AutoFetch: start %@", [self nameInSidebar]);
       [self updateRemoteRefsWithBlock:^{
         //NSLog(@"AutoFetch: end %@", [self nameInSidebar]);
         [self.updatesQueue endBlock];
       }];
     }];
-  }
-  else
-  {
-    NSLog(@"AutoFetch: no connection available for repo %@", self.repository.url);
   }
 }
 
