@@ -303,6 +303,10 @@
 		20C899B712B95DDF002F600F /* OANonScrollingScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 20C899B512B95DDF002F600F /* OANonScrollingScrollView.m */; };
 		20EF88D712E34F9300F3438A /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20EF88D612E34F9300F3438A /* Quartz.framework */; };
 		20EF88D912E34F9300F3438A /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20EF88D812E34F9300F3438A /* QuickLook.framework */; };
+		20EF8BEB12E6602D00F3438A /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20EF88D812E34F9300F3438A /* QuickLook.framework */; };
+		20EF8BED12E6603600F3438A /* GBUpdateSubmodulesTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 70EEC8CF12DFE33E00DD1555 /* GBUpdateSubmodulesTask.m */; };
+		20EF8BF012E6605100F3438A /* GBSubmodule.m in Sources */ = {isa = PBXBuildFile; fileRef = 70865D2A12D25F5F00033683 /* GBSubmodule.m */; };
+		20EF8C4812E6605D00F3438A /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20EF88D612E34F9300F3438A /* Quartz.framework */; };
 		20FAA190123F831400E8FA0E /* git.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 20FAA18F123F831400E8FA0E /* git.bundle */; };
 		70865D2B12D25F5F00033683 /* GBSubmodule.m in Sources */ = {isa = PBXBuildFile; fileRef = 70865D2A12D25F5F00033683 /* GBSubmodule.m */; };
 		70EEC8D012DFE33E00DD1555 /* GBUpdateSubmodulesTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 70EEC8CF12DFE33E00DD1555 /* GBUpdateSubmodulesTask.m */; };
@@ -639,6 +643,8 @@
 				20915F2D12874D2A005E0D82 /* AddressBook.framework in Frameworks */,
 				2030C4DA128B60FA005F751C /* Security.framework in Frameworks */,
 				2030C609128B6108005F751C /* Foundation.framework in Frameworks */,
+				20EF8BEB12E6602D00F3438A /* QuickLook.framework in Frameworks */,
+				20EF8C4812E6605D00F3438A /* Quartz.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1458,6 +1464,8 @@
 				2097EB3012DDF4680070AE89 /* GBSidebarOutlineView.m in Sources */,
 				2097EB5B12DDF7D30070AE89 /* GBChangesTableView.m in Sources */,
 				2097EC6D12DE6B450070AE89 /* GBSidebarCell.m in Sources */,
+				20EF8BED12E6603600F3438A /* GBUpdateSubmodulesTask.m in Sources */,
+				20EF8BF012E6605100F3438A /* GBSubmodule.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1700,7 +1708,7 @@
 		C05733CC08A9546B00998B17 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				APP_VERSION = 1.1.2;
+				APP_VERSION = 1.2;
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_OPTIMIZATION_LEVEL = 0;
