@@ -36,5 +36,9 @@
   [super drawInteriorWithFrame:cellFrame inView:theControlView];
 }
 
+- (BOOL) refusesFirstResponder
+{
+  return YES;
+}
 
 @end
