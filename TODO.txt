@@ -90,7 +90,7 @@ Enhancements:
   - back/forward buttons allow undo/redo commit selection (clicking on parents)
 
 - stage: should display a branch hint if the different branch is selected (commit text field)
-
+- stage: autocomplete file names when TAB pressed.
 
 
 

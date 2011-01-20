@@ -93,6 +93,7 @@
     [change update];
   }
   self.changesWithHeaderForBindings = [[NSArray arrayWithObject:[GBChange dummy]] arrayByAddingObjectsFromArray:self.changes];
+  [self.tableView setRefusesFirstResponder:[self.changes count] < 1];
 }
 
 // override in subclass (optional)
