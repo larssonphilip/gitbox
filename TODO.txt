@@ -31,6 +31,8 @@ Features:
 
 Bugs:
 
+- IMPORTANT: should test all leaks of blocks, NSTasks and related file handles!
+
 - bug: when selected all commits and clicked the text view, it does not immediately erase contents of the text view
 - bug: crash with broken file descriptor after a night of running app
 + bug: sidebar: autofetch fills updateQueue very much. Should not schedule new update if the previous one didn't fire yet.
