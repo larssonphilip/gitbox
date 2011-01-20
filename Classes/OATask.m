@@ -243,7 +243,9 @@ NSString* OATaskNotification = @"OATaskNotification";
     if (logIndentation > 11) logIndentation = 11;
     columns[logIndentation] = '1';
     
-    NSLog(@"%@%@ started [%@...]", [@"" stringByPaddingToLength:logIndentation*16 withString:@" " startingAtIndex:0], [self class], [[self command] substringToIndex:20]);
+  NSString* cmd = [self command];
+  if ([cmd length] > 20) cmd = [cmd substringToIndex:20];
+    NSLog(@"%@%@ started [%@...]", [@"" stringByPaddingToLength:logIndentation*16 withString:@" " startingAtIndex:0], [self class], cmd);
   #endif
   
   [self prepareTask];
@@ -253,7 +255,7 @@ NSString* OATaskNotification = @"OATaskNotification";
   NSString* cwd = [self currentDirectoryPath];
   if (![fm fileExistsAtPath:cwd])
   {
-    NSAssert(0, ([NSString stringWithFormat:@"Current directory does not exists: %@", cwd]));
+    NSAssert(0, ([NSString stringWithFormat:@"Current directory does not exist: %@", cwd]));
     return;
     NSException* exception = [NSException exceptionWithName:@"OATaskCurrentDirectoryDoesNotExist"
                                                      reason:[NSString stringWithFormat:@"OATask: Current directory path does not exist: %@", cwd] userInfo:nil];
@@ -276,7 +278,7 @@ NSString* OATaskNotification = @"OATaskNotification";
 
     dispatch_async(callerQueue, ^{
       #if OATASK_DEBUG
-        NSLog(@"%@%@ ended [%@...]", [@"" stringByPaddingToLength:logIndentation*16 withString:@" " startingAtIndex:0], [self class], [[self command] substringToIndex:20]);
+        NSLog(@"%@%@ ended [%@...]", [@"" stringByPaddingToLength:logIndentation*16 withString:@" " startingAtIndex:0], [self class], cmd);
         columns[logIndentation] = '0';
       #endif
       [self doFinish];
