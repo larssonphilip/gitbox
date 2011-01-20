@@ -17,9 +17,13 @@ Bug fixes:
 
 misc items done:
 
++ clone: remember last cloned URL and prefill clone dialog
++ sidebar: add contextual menu with "add repo", "clone repo", "new group" to the folder
 + bug: when selected all commits and clicked the text view, it does not immediately erase contents of the text view
 + bug: sidebar: autofetch fills updateQueue very much. Should not schedule new update if the previous one didn't fire yet.
 + bug: sidebar: when launched the app, all repos start spinning together: should use two separate queues for disk tasks and networking
++ sidebar: add contextual menu with "+" button menu to the root whole outline view
++ sidebar: allow 3 repos for free so ppl who don't want to pay just now may start actually using without searching for keygen?
 
 
 -----------------------------------------------------------
@@ -49,6 +53,7 @@ Bugs:
 - bug: general: when pushing and switching branches, gitbox tries to fetch immediately which blocks the interaction. Should add a delay to perform fetch only after user is done doing what he was doing
 - bug: general: after cmd+W (while app is still in foreground), clicking on dock icon does not bring window back. (Standard docs are not helpful: should google more)
 - bug: general: bare repository is not recognized as such: should provide read-only access
+- bug: general: remember last cloned URL
 - bug: general: when /Developer is symlinked to another partition, opendiff cannot launch FileMerge: "exception raised trying to run FileMerge: launch path not accessible" [Jeff Snell <jeffsnell@mac.com>]
 
 - bug: toolbar: sometimes some duplicate branch name appears in popdown menus.
@@ -77,10 +82,6 @@ Enhancements:
 
 - sidebar: commit+push is ugly: it spins, then it stops spinning, then it changes the badge number and then spins again.
 - sidebar: when starting an app, sidebar appears to be collapsed at first and then repos appear. Should be more smooth.
-- sidebar: add contextual menu with "add repo", "clone repo", "new group" to the folder
-- sidebar: add contextual menu with "+" button menu to the root whole outline view
-- sidebar: allow 3 repos for free so ppl who don't want to pay just now may start actually using without searching for keygen?
-- sidebar: special case - if dragged several repos from the same folder, and there's no group with the same name as their folder, wrap them all in a new group automatically.
 
 - history: feature: checkout a commit from history context menu
 - history: find in commits

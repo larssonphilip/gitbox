@@ -25,6 +25,7 @@
 @synthesize localRepositoryMenu;
 @synthesize repositoriesGroupMenu;
 @synthesize submoduleMenu;
+@synthesize defaultMenu;
 
 
 - (void) dealloc
@@ -36,6 +37,7 @@
   self.localRepositoryMenu = nil;
   self.repositoriesGroupMenu = nil;
   self.submoduleMenu = nil;
+  self.defaultMenu = nil;
   [super dealloc];
 }
 
@@ -504,9 +506,7 @@
 
 - (void)outlineView:(NSOutlineView*)anOutlineView willDisplayCell:(id)cell forTableColumn:(NSTableColumn*)tableColumn item:(id<GBSidebarItem>)item
 {
-  if (item == nil) return;
-  if ([self.sections containsObject:item]) return;
-  
+  if ([self.sections containsObject:item]) return;  
   if ([item isRepository])
   {
     [cell setMenu:self.localRepositoryMenu];

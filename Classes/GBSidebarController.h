@@ -20,6 +20,7 @@
 @property(nonatomic,retain) IBOutlet NSMenu* localRepositoryMenu;
 @property(nonatomic,retain) IBOutlet NSMenu* repositoriesGroupMenu;
 @property(nonatomic,retain) IBOutlet NSMenu* submoduleMenu;
+@property(nonatomic,retain) IBOutlet NSMenu* defaultMenu;
 
 - (void) saveState;
 - (void) loadState;
