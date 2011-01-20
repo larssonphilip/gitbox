@@ -1,0 +1,8 @@
+Subversion support:
+
+- in the Clone... dialog should display dropdown button with menu: "Git", "Subversion"
+- if the user didn't yet selected something by hand in that menu, should try to guess repo type from URL.
+- when cloning subversion repo, should import with git-svn and then setup all branches properly with svn2git (ruby gem)
+- update the UI to enable pushing to the SVN branch
+- handle bizarre rebasing issues when committing to SVN
+

@@ -302,6 +302,7 @@
 		20C8972312B89BC2002F600F /* OATextFieldAndView.m in Sources */ = {isa = PBXBuildFile; fileRef = 20C8972112B89BC2002F600F /* OATextFieldAndView.m */; };
 		20C899B612B95DDF002F600F /* OANonScrollingScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 20C899B512B95DDF002F600F /* OANonScrollingScrollView.m */; };
 		20C899B712B95DDF002F600F /* OANonScrollingScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 20C899B512B95DDF002F600F /* OANonScrollingScrollView.m */; };
+		20C9A55E12E85E0800DBA3E1 /* Subversion.txt in Resources */ = {isa = PBXBuildFile; fileRef = 20C9A55D12E85E0800DBA3E1 /* Subversion.txt */; };
 		20EF88D712E34F9300F3438A /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20EF88D612E34F9300F3438A /* Quartz.framework */; };
 		20EF88D912E34F9300F3438A /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20EF88D812E34F9300F3438A /* QuickLook.framework */; };
 		20EF8BEB12E6602D00F3438A /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20EF88D812E34F9300F3438A /* QuickLook.framework */; };
@@ -618,6 +619,8 @@
 		20C8972112B89BC2002F600F /* OATextFieldAndView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = OATextFieldAndView.m; path = ../OATextFieldAndView.m; sourceTree = "<group>"; };
 		20C899B412B95DDF002F600F /* OANonScrollingScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OANonScrollingScrollView.h; path = ../OANonScrollingScrollView.h; sourceTree = "<group>"; };
 		20C899B512B95DDF002F600F /* OANonScrollingScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = OANonScrollingScrollView.m; path = ../OANonScrollingScrollView.m; sourceTree = "<group>"; };
+		20C9A55D12E85E0800DBA3E1 /* Subversion.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Subversion.txt; sourceTree = "<group>"; };
+		20C9A55F12E85ED100DBA3E1 /* Mercurial.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Mercurial.txt; sourceTree = "<group>"; };
 		20E59CE711A5C9EA00E7FB72 /* GBModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBModels.h; sourceTree = "<group>"; };
 		20EF861412E217B900F3438A /* Authentication.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Authentication.txt; sourceTree = "<group>"; };
 		20EF88D612E34F9300F3438A /* Quartz.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quartz.framework; path = System/Library/Frameworks/Quartz.framework; sourceTree = SDKROOT; };
@@ -856,6 +859,8 @@
 				2049942512D687A8007ED992 /* Settings.txt */,
 				2049942212D6878A007ED992 /* SidebarGroups.txt */,
 				200432AE12D8A1AE00B045C0 /* Submodules.txt */,
+				20C9A55D12E85E0800DBA3E1 /* Subversion.txt */,
+				20C9A55F12E85ED100DBA3E1 /* Mercurial.txt */,
 			);
 			name = Documents;
 			sourceTree = "<group>";
@@ -1329,6 +1334,7 @@
 				20164ABF12D49BD7005C69DA /* GBToolbarPlus.png in Resources */,
 				2097EE2412DF2B4A0070AE89 /* GBSidebarGroupIcon.png in Resources */,
 				200A3FBF12E7AD6E004DF940 /* Search.txt in Resources */,
+				20C9A55E12E85E0800DBA3E1 /* Subversion.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

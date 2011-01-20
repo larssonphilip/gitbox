@@ -1,0 +1,16 @@
+Mercurial
+
+Wouldn't it be great if you could use Gitbox with Mercurial repos?
+
+IMPORTANT: do only after git-svn support, because it will already reveal some conceptual issues and let us refactor the code.
+
+We have two options:
+
+1. Native support
+2. Git->Hg adapter (similar to Git->SVN)
+
+I'm not sure how much modifications would it take to abstract away all git-specific methods. 
+
+Second option is to use adapter https://github.com/offbytwo/git-hg
+
+But adapter will still require some refactoring and code abstraction. Maybe it's better to go all native in the long run.
