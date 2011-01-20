@@ -63,6 +63,12 @@
 {
   self.sourceURL = [self urlFromTextField];
   
+  if ([self.urlField stringValue])
+  {
+    [[NSUserDefaults standardUserDefaults] setObject:[[[self.urlField stringValue] copy] autorelease] forKey:@"GBCloneWindowController-lastURL"];
+  }
+  
+  
   if (self.sourceURL)
   {
     if (self.windowHoldingSheet) [self.windowHoldingSheet endSheetForController:self];
@@ -120,6 +126,12 @@
 {
   self.windowHoldingSheet = aWindow;
   [aWindow beginSheetForController:self];
+  NSString* lastURLString = [[NSUserDefaults standardUserDefaults] objectForKey:@"GBCloneWindowController-lastURL"];
+  if (lastURLString)
+  {
+    [self.urlField setStringValue:lastURLString];
+    [self.urlField selectText:nil];
+  }
   [self update];
 }
 
