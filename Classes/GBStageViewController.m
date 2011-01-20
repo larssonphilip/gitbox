@@ -414,6 +414,10 @@
 
 - (IBAction) previousMessage:(id)_
 {
+  if (!self.messageHistoryController.email)
+  {
+    self.messageHistoryController.email = [GBRepository globalConfiguredEmail];
+  }
   NSString* message = [self.messageHistoryController previousMessage];
   if (message)
   {
@@ -425,6 +429,10 @@
 
 - (IBAction) nextMessage:(id)sender
 {
+  if (!self.messageHistoryController.email)
+  {
+    self.messageHistoryController.email = [GBRepository globalConfiguredEmail];
+  }
   NSString* message = [self.messageHistoryController nextMessage];
   if (message)
   {
@@ -711,7 +719,7 @@
   
   self.messageHistoryController.repository = self.repositoryController.repository;
   self.messageHistoryController.textView = self.messageTextView;
-  self.messageHistoryController.email = [GBRepository globalConfiguredEmail];
+  self.messageHistoryController.email = nil;
 }
 
 

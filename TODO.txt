@@ -24,7 +24,8 @@ misc items done:
 + bug: sidebar: when launched the app, all repos start spinning together: should use two separate queues for disk tasks and networking
 + sidebar: add contextual menu with "+" button menu to the root whole outline view
 + sidebar: allow 3 repos for free so ppl who don't want to pay just now may start actually using without searching for keygen?
-
++ bug: stage: refuse first responder when stage is empty.
++ bug: sidebar: quickly jumping through repos in sidebar is slow: avoid unnecessary updates and shell-outs when repo is selected.
 
 -----------------------------------------------------------
 
@@ -60,7 +61,6 @@ Bugs:
 - bug: toolbar: when removing a single server, remote branch remains and log is clean.
 - bug: toolbar: android repo checked out on a commit has branch menus disabled.
 
-- bug: sidebar: quickly jumping through repos in sidebar is slow: avoid unnecessary updates and shell-outs when repo is selected.
 - bug: sidebar: when cloning finished, selection is changing quickly - ugly.
 
 - bug: history: while fetching some remote, commits list is refreshed with wrong commits.
@@ -68,7 +68,6 @@ Bugs:
 
 - bug: changes: when clicked checkbox and want to drag out, it does not undo the action.
 
-- bug: stage: refuse first responder when stage is empty.
 
 
 Enhancements:
