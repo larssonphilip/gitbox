@@ -10,17 +10,14 @@ GitBox finally a glorious Gui Mac app for managing git repositories http://gitbo
 http://news.ycombinator.com/user?id=makeramen:
 holy crap. this might actually get me to finally make the jump from hg to git.
 
-
 @mickael
 Trying Gitbox 1.0. Will it save my soul and sanity ?
 
 @ejeklint
 Just bought Gitbox. Missed the coupon and 30% off due to trigger happy fingers, but what the heck, @oleganza is worth a tip. :)
 
-
 @olivierlacan 
 A great license model by @oleganza for his new Gitbox 1.0. http://blog.oleganza.com/post//gitbox-1-0-released
-
 
 @FGRibreau
 Gitbox rocks my world!
@@ -38,3 +35,6 @@ top Git-Client for Mac
 
 @Cstep4 スティーブン カルバン
 [Gitbox isEqualTo:Awesome];
+
+@tcha_tcho
+GitBox its a piece of art @oleganza. Thankyou!

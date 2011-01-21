@@ -846,7 +846,6 @@
 		20A09D65129F8EF800294730 /* Documents */ = {
 			isa = PBXGroup;
 			children = (
-				200A3FBE12E7AD6E004DF940 /* Search.txt */,
 				20A09D67129F8F3900294730 /* fastspring-1-1000-licenses.txt */,
 				20A09D68129F8F3900294730 /* fastspring-1001-2000-licenses.txt */,
 				20A09D69129F8F3900294730 /* free-promo-1-100-licenses.txt */,
@@ -854,13 +853,14 @@
 				206CAB38122A771D009284FE /* Architecture.txt */,
 				2097EB8312DDFAA00070AE89 /* AsyncPatterns.txt */,
 				20EF861412E217B900F3438A /* Authentication.txt */,
+				20C9A55F12E85ED100DBA3E1 /* Mercurial.txt */,
 				2009871711C4597800F35630 /* Payment.txt */,
 				20A09DDF12A121FD00294730 /* Quotes.txt */,
+				200A3FBE12E7AD6E004DF940 /* Search.txt */,
 				2049942512D687A8007ED992 /* Settings.txt */,
 				2049942212D6878A007ED992 /* SidebarGroups.txt */,
 				200432AE12D8A1AE00B045C0 /* Submodules.txt */,
 				20C9A55D12E85E0800DBA3E1 /* Subversion.txt */,
-				20C9A55F12E85ED100DBA3E1 /* Mercurial.txt */,
 			);
 			name = Documents;
 			sourceTree = "<group>";
