@@ -176,7 +176,7 @@ Bugs:
 
 - IMPORTANT: should test all leaks of blocks, NSTasks and related file handles!
 
-- bug: crash with broken file descriptor after a night of running app
+- bug: crash with broken file descriptor after a night of running app: not fixed for [OATask launchInQueue:withBlock:]
 - bug: sidebar: right-click menu works for a single item when have multiple selection
 - bug: general: when repo is inside dropbox folder, strange things happen (see mailbox: sometimes cannot commit or stage is blinking)
 - bug: general: when pushing and switching branches, gitbox tries to fetch immediately which blocks the interaction. Should add a delay to perform fetch only after user is done doing what he was doing
@@ -189,6 +189,7 @@ Bugs:
 - bug: toolbar: when removing a single server, remote branch remains and log is clean.
 - bug: toolbar: android repo checked out on a commit has branch menus disabled.
 
+- bug: sidebar: when adding a repo through a right-click, it does not respect clicked row or selected group.
 - bug: sidebar: when cloning finished, selection is changing quickly - ugly.
 
 - bug: history: while fetching some remote, commits list is refreshed with wrong commits.
