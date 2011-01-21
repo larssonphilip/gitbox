@@ -48,32 +48,33 @@ Gitbox 1.3 Bug fixes:
 
 
 
+--
+
 Features:
 
 - general: svn support ('git svn clone', 'git svn rebase' and 'git svn dcommit')
 - general: mercurial support
 - general: browse the server with SSH and select a repository
 - general: csv import support
-
-- history: maintain selection of the commit when switching branches/tags etc.
-- history: bisect is basically not needed if you can checkout any commit and see all the other commits on the remote branch
-
-- changes: compare image files in an double-pane image viewer
-- changes: built-in diff view for better UTF8 support (FileMerge is stupid)
-- changes: compare office files using some office app: cooperate with Kaleidoscope
-- changes: rerere - for recording how the conflict was resolved
-
-
 - general: gitosis integration
 - general: shell command to open gitbox
 - general: bonjour publishing and cloning (see http://github.com/chad/gitjour; NSNetService)
 - general: github integration: handling other repos/branches, pull requests and initial setup commands
 - general: handling URL schema: gitbox://git@sss.pierlis.com/repo.git#commits/sha1
+- general: fix networking behaviour: try to load the remote branches and reload them when pull/fetch
+- general: obfuscated license check
+- general: polish the icon
 
 - toolbar: force push a branch (when push fails, allow force push)
 - toolbar: Option/Alt key lets to fetch instead of pull
 - toolbar: Shift key lets force push
 
+- sidebar: bonjour sharing
+- sidebar: wide-area bonjour sharing (dyndns? my dns server?)
+- sidebar: github
+
+- history: maintain selection of the commit when switching branches/tags etc.
+- history: bisect is basically not needed if you can checkout any commit and see all the other commits on the remote branch
 - history: undo for pull
 - history: undo for ref checkout
 - history: undo for branch reset
@@ -88,20 +89,31 @@ Features:
 - history: check out a branch from the commit item
 - history: add "load more" cell in the bottom of the log
 - history: show branch/tag names in history using "label" (+color in green/blue to connect with green/blue "pills")
+- history: tag and branch badges in history
+- history: tag badges in history
+- history: create a tag + undo
 
-- changes: stash list: as a local branch menu item?
-- changes: stash/apply stash from the menu, context menu
+- changes: compare image files in an double-pane image viewer
+- changes: built-in diff view for better UTF8 support (FileMerge is stupid)
+- changes: compare office files using some office app: cooperate with Kaleidoscope
 - changes: diff viewer: file history, diff and blame in one window
 - changes: diff viewer: load blame info & history asynchronously
 - changes: diff viewer: switch to hide history
 - changes: diff viewer: button to go to a folder at this commit 
-- changes: maybe 2 tabs: changes & tree (tree should show a status as usual)
+- changes: custom textual diff in a quicklook-like panel
+- changes: custom image diff in a quicklook-like panel
+- changes: blame in the same quicklook-like panel
+- changes: merging in the same quicklook-like panel
+- changes: rerere - for recording how the conflict was resolved
+- changes: stash list: as a local branch menu item?
+- changes: stash/apply stash from the menu, context menu
 
 - stage: individual chunks commit
 - stage: undo for commit (like amend)
 - stage: amend latest commit if it is not pushed yet
 - stage: conflict stage: highlight conflicted changes, allow to choose one of the versions 
 
+- settings: add gear button on the left
 - settings: delete local branch
 - settings: delete remote branch
 
@@ -110,39 +122,18 @@ Features:
 - site: video
 - site: testimonials
 
-- history search -> n/a
-- settings view -> gear button on the left
-- bonjour sharing -> settings view
-- branch deletion -> settings view
-- custom textual diff -> n/a
-- custom image diff -> n/a
-- merging -> custom textual diff, custom image diff
-- blame -> custom textual diff, custom image diff
-- github -> settings view, add repo button
-- wide-area sharing -> bonjour sharing
-
-
-- general: fix networking behaviour: try to load the remote branches and reload them when pull/fetch
-- general: obfuscated license check
-- general: polish the icon
-
-- history: tag and branch badges in history
-- history: tag badges in history
-- history: create a tag + undo
-
-- changes: the built-in diff
-
-
 
 Enhancements:
-
-- sidebar: choose a custom name for a repo? or use an image?
-- general: remember activity window visibility
 
 - general: human message in case git cannot merge/pull when some files are modified (error: Untracked working tree file 'Patryst.xcodeproj/project.pbxproj' would be overwritten by merge.)
 - general: Add common OS X to the global gitignore https://github.com/github/gitignore
 - general: check behavior when opendiff is missing
 - general: check that opendiff is selected by default on new start + it is not selected if it is missing
+- general: unpack git.bundle into Application Support/Gitbox/gitbox-{APP_VERSION}-git.bundle
+- general: on start, touch a file inside gitbox-{APP_VERSION}-git.bundle and remove all bundles where such file is more than 1 month old.
+- general: if git.bundle.tar is not found inside .app, present the UI to download it from gitboxapp.com (in anticipation to FSF's fight with Apple)
+- general: think on the best and consistent way to terminate tasks
+- general: remember activity window visibility
 
 - settings: Add "Edit Global Ignored Files..."  menu item to edit ~/.gitignore
 
@@ -151,15 +142,12 @@ Error messages translation to English:
 - failed merge
 - failed push (actually, should prevent from pushing when some commits are fetched)
 
-- general: unpack git.bundle into Application Support/Gitbox/gitbox-{APP_VERSION}-git.bundle
-- general: on start, touch a file inside gitbox-{APP_VERSION}-git.bundle and remove all bundles where such file is more than 1 month old.
-- general: if git.bundle.tar is not found inside .app, present the UI to download it from gitboxapp.com (in anticipation to FSF's fight with Apple)
-
 - toolbar: show confirmation prompt when trying to push branch "X" into "origin/Y" (that is when branch name differ)
 - toolbar: think on how to checkout a branch into a different folder. Make it useful as a default.
 
 - sidebar: commit+push is ugly: it spins, then it stops spinning, then it changes the badge number and then spins again.
 - sidebar: when starting an app, sidebar appears to be collapsed at first and then repos appear. Should be more smooth.
+- sidebar: choose a custom name for a repo? or use an image?
 
 - history: feature: checkout a commit from history context menu
 - history: find in commits
@@ -171,20 +159,21 @@ Error messages translation to English:
 - stage: autocomplete file names when TAB pressed.
 
 
-
 Bugs:
 
-- IMPORTANT: sometimes, when dropped the repo to the sidebar, it does not update the history. Maybe the updateQueue is flooded.
-- IMPORTANT: should test all leaks of blocks, NSTasks and related file handles!
+- IMPORTANT: bug: sidebar: sometimes, when dropped the repo to the sidebar, it does not update the history. Maybe the updateQueue is flooded.
+- IMPORTANT: bug: general: should test all leaks of blocks, NSTasks and related file handles!
 
-- bug: crash with broken file descriptor after a night of running app: not fixed for [OATask launchInQueue:withBlock:]
-- bug: sidebar: right-click menu works for a single item when have multiple selection
+- bug: general: crash with broken file descriptor after a night of running app: not fixed for [OATask launchInQueue:withBlock:]
 - bug: general: when repo is inside dropbox folder, strange things happen (see mailbox: sometimes cannot commit or stage is blinking)
 - bug: general: when pushing and switching branches, gitbox tries to fetch immediately which blocks the interaction. Should add a delay to perform fetch only after user is done doing what he was doing
 - bug: general: after cmd+W (while app is still in foreground), clicking on dock icon does not bring window back. (Standard docs are not helpful: should google more)
 - bug: general: bare repository is not recognized as such: should provide read-only access
 - bug: general: remember last cloned URL
 - bug: general: when /Developer is symlinked to another partition, opendiff cannot launch FileMerge: "exception raised trying to run FileMerge: launch path not accessible" [Jeff Snell <jeffsnell@mac.com>]
+- bug: general: push over https (Github now supports pushing by HTTPS)
+- bug: general: when connecting over https (and maybe http), gitbox locks on password prompt.  [Nicolai Schulten <nicolai.schulten@byte-garden.de>]
+- bug: general: git repo in dropbox causes gitbox to refresh frequently [Tom Martin <tom@devart.org>]
 
 - bug: toolbar: sometimes some duplicate branch name appears in popdown menus.
 - bug: toolbar: when removing a single server, remote branch remains and log is clean.
@@ -192,19 +181,17 @@ Bugs:
 
 - bug: sidebar: when adding a repo through a right-click, it does not respect clicked row or selected group.
 - bug: sidebar: when cloning finished, selection is changing quickly - ugly.
+- bug: sidebar: right-click menu works for a single item when have multiple selection
 
 - bug: history: while fetching some remote, commits list is refreshed with wrong commits.
 - bug: history: when switching the branch or pulling/pushing, the list of commits flashes: should add a delay before reloading the commits.
 
 - bug: changes: when clicked checkbox and want to drag out, it does not undo the action.
+- bug: changes: when quickly hitting "->" while changes haven't not load yet, right pane refuses first responder and user appears on the toolbar.
 
-- bug: general: push over https (Github now supports pushing by HTTPS)
-- bug: general: when connecting over https (and maybe http), gitbox locks on password prompt.  [Nicolai Schulten <nicolai.schulten@byte-garden.de>]
-- bug: general: git repo in dropbox causes gitbox to refresh frequently [Tom Martin <tom@devart.org>]
-- bug: external: paypal payment option does not allow coupon? [Luis Martins <luis.martins@multiweb.pt>]
-- general: when a long process modifies the working directory, the FSEvents wait till the very end, but should refresh each 2 seconds or so.
-- stage: maybe a bug: if the stage view is not selected, commit: action is not available
-- general: todo: think on the best and consistent way to terminate tasks
+- bug: site: paypal payment option does not allow coupon? [Luis Martins <luis.martins@multiweb.pt>]
+- bug: general: when a long process modifies the working directory, the FSEvents wait till the very end, but should refresh each 2 seconds or so.
+- maybe a bug: stage: if the stage view is not selected, commit: action is not available
 
 
 Some thoughts (possibly stupid):
@@ -213,14 +200,13 @@ Some thoughts (possibly stupid):
 - general: allow switching to a system-provided git in preferences
 - history: mark as read/unread + automatic mark as read
 - history: flag interesting commits
-
+- changes: maybe 2 tabs: changes & tree (tree should show a status as usual)
 
 To read:
 
 - read carefully: https://git.wiki.kernel.org/index.php/GitSurvey2010
 - reactions to macappstore: http://www.tuaw.com/2010/10/21/developer-reactions-to-the-mac-app-store/#continued
 - why mercurial: http://www.ninthdivision.com/blog/2011/01/why-mercurial/
-
 
 
 
