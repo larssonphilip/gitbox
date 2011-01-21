@@ -174,6 +174,7 @@ Error messages translation to English:
 
 Bugs:
 
+- IMPORTANT: sometimes, when dropped the repo to the sidebar, it does not update the history. Maybe the updateQueue is flooded.
 - IMPORTANT: should test all leaks of blocks, NSTasks and related file handles!
 
 - bug: crash with broken file descriptor after a night of running app: not fixed for [OATask launchInQueue:withBlock:]
