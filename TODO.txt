@@ -117,10 +117,30 @@ Features:
 - settings: delete local branch
 - settings: delete remote branch
 
+- site: new header
+- site: link to App Store
+- site: student discount info
+- site: new description (like on appstore)
+- site: testimonials on the right to the description
+- site: tabbed screenshots
+- site: 8 features with smaller icons on the side
+- site: partial FAQ with a link to the full
+
 - site: help
+- screencasts:
+  Need to display certain features:
+  - clone
+  - autofetch
+  - pull
+  - commit, push
+  - repo creation and pushing to github
+  - browse commits
+  - diff viewing
+  - quicklook and restoring the file
+  - branches, merging, diffing branches
+  
+  
 - site: guide
-- site: video
-- site: testimonials
 
 
 Enhancements:
