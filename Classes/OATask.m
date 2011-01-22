@@ -551,6 +551,17 @@ NSString* OATaskNotification = @"OATaskNotification";
   [environment setObject:askPass forKey:@"SSH_ASKPASS"];
   [environment setObject:askPass forKey:@"GIT_ASKPASS"];
   [environment setObject:@":0" forKey:@"DISPLAY"];
+
+  NSString* locale = @"en_US.UTF-8";
+  [environment setObject:locale forKey:@"LANG"];
+  [environment setObject:locale forKey:@"LC_COLLATE"];
+  [environment setObject:locale forKey:@"LC_CTYPE"];
+  [environment setObject:locale forKey:@"LC_MESSAGES"];
+  [environment setObject:locale forKey:@"LC_MONETARY"];
+  [environment setObject:locale forKey:@"LC_NUMERIC"];
+  [environment setObject:locale forKey:@"LC_TIME"];
+  [environment setObject:locale forKey:@"LC_ALL"];
+  
   if (!self.skipKeychainPassword)
   {
     [environment setObject:@"1" forKey:@"GITBOX_USE_KEYCHAIN_PASSWORD"];
