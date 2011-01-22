@@ -16,8 +16,6 @@
 
 @interface GBRepository ()
 
-- (void) captureErrorForTask:(OATask*)aTask withBlock:(NSError*(^)())block continuation:(void(^)())continuation;
-
 - (void) loadCurrentLocalRefWithBlock:(void(^)())block;
 - (void) loadLocalRefsWithBlock:(void(^)())block;
 - (void) loadRemotesWithBlock:(void(^)())block;
@@ -723,27 +721,23 @@
     return;
   }
   
-  [OABlockGroup groupBlock:^(OABlockGroup* blockGroup){
-    GBTask* task1 = [self task];
-    task1.arguments = [NSArray arrayWithObjects:@"config", 
-                       [NSString stringWithFormat:@"branch.%@.remote", name], 
-                       ref.remoteAlias, 
-                       nil];
-    [blockGroup enter];
-    [self launchTask:task1 withBlock:^{
-      [blockGroup leave];
-    }];
+  GBTask* task1 = [self task];
+  task1.arguments = [NSArray arrayWithObjects:@"config", 
+                     [NSString stringWithFormat:@"branch.%@.remote", name], 
+                     ref.remoteAlias, 
+                     nil];
+  [self launchTask:task1 withBlock:^{
     GBTask* task2 = [self task];
     task2.arguments = [NSArray arrayWithObjects:@"config", 
                        [NSString stringWithFormat:@"branch.%@.merge", name],
                        [NSString stringWithFormat:@"refs/heads/%@", ref.name],
                        nil];
-    [blockGroup enter];
     [self launchTask:task2 withBlock:^{
       [task2 showErrorIfNeeded];
-      [blockGroup leave];
+      if (block) block();
     }];
-  } continuation:block];
+  }];
+
 }
 
 
@@ -1059,16 +1053,6 @@
                                    aReason, NSLocalizedFailureReasonErrorKey,
                                    aSuggestion, NSLocalizedRecoverySuggestionErrorKey,
                                    nil]];
-}
-
-- (void) captureErrorForTask:(OATask*)aTask withBlock:(NSError*(^)())block continuation:(void(^)())continuation
-{
-  if ([aTask isError])
-  {
-    self.lastError = block ? block() : nil;
-  }
-  if (continuation) continuation();
-  self.lastError = nil;
 }
 
 @end

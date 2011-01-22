@@ -75,7 +75,7 @@
 {
   block = [[block copy] autorelease];
   GBTask* refreshIndexTask = [GBRefreshIndexTask taskWithRepository:self.repository];
-  [refreshIndexTask launchInQueue:self.repository.dispatchQueue withBlock:^{
+  [self.repository launchTask:refreshIndexTask withBlock:^{
     
     GBStagedChangesTask* stagedChangesTask = [GBStagedChangesTask taskWithRepository:self.repository];
     [self.repository launchTask:stagedChangesTask withBlock:^{
@@ -308,12 +308,12 @@
     {
       [[NSWorkspace sharedWorkspace] recycleURLs:URLsToTrash 
                                completionHandler:^(NSDictionary *newURLs, NSError *error){
-                                 block();
+                                 if (block) block();
                                }];    
     }
     else
     {
-      block();
+      if (block) block();
     }
   };
   

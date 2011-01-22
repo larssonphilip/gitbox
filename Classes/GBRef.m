@@ -1,4 +1,5 @@
 #import "GBRef.h"
+#import "GBRepository.h"
 #import "GBTask.h"
 #import "GBHistoryTask.h"
 #import "GBLocalRemoteAssociationTask.h"
@@ -112,7 +113,7 @@
   GBLocalRemoteAssociationTask* task = [GBLocalRemoteAssociationTask task];
   task.localBranchName = self.name;
   task.repository = self.repository;
-  [task launchWithBlock:^{
+  [self.repository launchTask:task withBlock:^{
     //NSLog(@"%@ %@ loaded configured branch: %@", [self class], NSStringFromSelector(_cmd), task.remoteBranch);
     self.configuredRemoteBranch = task.remoteBranch;
     if (block) block();

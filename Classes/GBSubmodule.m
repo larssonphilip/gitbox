@@ -24,9 +24,11 @@
 
 #pragma mark Interrogation
 
+
+
 - (NSURL*) localURL
 {
-  return [NSURL URLWithString:[self path] relativeToURL:[[self repository] url]];
+  return [NSURL URLWithString:[self path] relativeToURL:[self.repository url]];
 }
 
 - (NSString*) localPath
@@ -46,25 +48,24 @@
 
 
 
+
 #pragma mark Mutation
+
 
 - (void) pullWithBlock:(void(^)())block
 {
-  OATask* task = [OATask task];
-
-  task.currentDirectoryPath = [self repositoryPath];
-
-  task.launchPath = [GBTask pathToBundledBinary:@"git"];
-  
-  
+  GBTask* task = [self.repository task];
   task.arguments = [NSArray arrayWithObjects:@"submodule", @"update", @"--init", @"--", [self localPath], nil];
-  
-  [task launchWithBlock:block];
+  [self.repository launchTask:task withBlock:block];
 }
 
 
 
+
+
 #pragma mark GBSidebarItem
+
+
 
 - (NSString*) sidebarItemIdentifier
 {
