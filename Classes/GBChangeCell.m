@@ -65,6 +65,7 @@
 
 - (void) drawInteriorWithFrame:(NSRect)cellFrame inView:(GBChangesTableView*)theControlView
 {
+  if (![theControlView isKindOfClass:[GBChangesTableView class]]) return;
   BOOL isDragging = theControlView.preparesImageForDragging;
   
   NSRect currentFrame = cellFrame; // this will shrink as we draw stuff from left to right
