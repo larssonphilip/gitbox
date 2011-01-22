@@ -316,7 +316,7 @@
     [self loadCommitsWithBlock:^{
       if (block) block();
       [self popSpinning];
-	}];
+    }];
     // avoid this on startup: [self updateRemoteRefsWithBlock:block];
     [self popSpinning];
     [self popFSEventsPause];

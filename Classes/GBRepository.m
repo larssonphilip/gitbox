@@ -243,12 +243,15 @@
                                            error:NULL];
 }
 
+// todo change for an instance method
 + (void) configureUTF8WithBlock:(void(^)())block
 {
+  block = [[block copy] autorelease];
   OATask* task = [OATask task];
   task.launchPath = [GBTask pathToBundledBinary:@"git"];
   task.arguments = [NSArray arrayWithObjects:@"config", @"--global", @"core.quotepath", @"false",  nil];
   [task launchWithBlock:block];
+  //[self launchTask:task withBlock:block];
 }
 
 
@@ -453,7 +456,6 @@
   NSString* dotGitModulesPath = [[NSURL URLWithString:@".gitmodule" relativeToURL: [self url]] path];
 
   return [fileManager fileExistsAtPath:dotGitModulesPath];
-  
 }
 
 
@@ -485,7 +487,7 @@
   block = [[block copy] autorelease];
   GBRemotesTask* task = [GBRemotesTask task];
   task.repository = self;
-  [task launchWithBlock:^{
+  [self launchTask:task withBlock:^{
     
     for (GBRemote* newRemote in task.remotes)
     {
@@ -507,7 +509,7 @@
   block = [[block copy] autorelease];
   GBLocalRefsTask* task = [GBLocalRefsTask task];
   task.repository = self;
-  [task launchWithBlock:^{
+  [self launchTask:task withBlock:^{
     self.localBranches = task.branches;
     self.tags = task.tags;
     
@@ -586,7 +588,7 @@
     task.joinedBranch = self.currentRemoteBranch;
   }
 
-  [task launchWithBlock:^{
+  [self launchTask:task withBlock:^{
     
     NSString* newTopCommitId = [[task.commits objectAtIndex:0 or:nil] commitId];
     self.topCommitId = newTopCommitId;
@@ -609,7 +611,7 @@
   task.repository = self;
   task.branch = self.currentRemoteBranch;
   task.substructedBranch = self.currentLocalRef;
-  [task launchWithBlock:^{
+  [self launchTask:task withBlock:^{
     NSArray* allCommits = self.localBranchCommits;
     self.unmergedCommitsCount = [task.commits count];
     for (GBCommit* commit in task.commits)
@@ -643,7 +645,7 @@
     task.substructedBranch = self.currentRemoteBranch;
   }
   
-  [task launchWithBlock:^{
+  [self launchTask:task withBlock:^{
     NSArray* allCommits = self.localBranchCommits;
     self.unpushedCommitsCount = [task.commits count];
     for (GBCommit* commit in task.commits)
@@ -665,7 +667,7 @@
   block = [[block copy] autorelease];
   GBTask* task = [self task];
   task.arguments = [NSArray arrayWithObjects:@"submodule", @"init",  nil];
-	[task launchWithBlock:^{
+	[self launchTask:task withBlock:^{
 		if ([task isError])
     {
 			self.lastError = [NSError errorWithDomain:@"Gitbox" code:1
@@ -691,11 +693,11 @@
 {
   block = [[block copy] autorelease];
 
-  GBUpdateSubmodulesTask* updateSubmodulesTask = [GBUpdateSubmodulesTask taskWithRepository:self];
+  GBUpdateSubmodulesTask* task = [GBUpdateSubmodulesTask taskWithRepository:self];
 
-  [updateSubmodulesTask launchWithBlock:^{
+  [self launchTask:task withBlock:^{
 
-    self.submodules = updateSubmodulesTask.submodules;
+    self.submodules = task.submodules;
     
     // TODO
 
@@ -763,7 +765,7 @@
   {
     GBTask* checkoutTask = [self task];
     checkoutTask.arguments = [NSArray arrayWithObjects:@"checkout", @"-b", name, [ref commitish], nil];
-    [checkoutTask launchWithBlock:^{
+    [self launchTask:checkoutTask withBlock:^{
       [checkoutTask showErrorIfNeeded];
       [self configureTrackingRemoteBranch:ref withLocalName:name block:block];
     }];
@@ -779,7 +781,7 @@
   block = [[block copy] autorelease];
   GBTask* checkoutTask = [self task];
   checkoutTask.arguments = [NSArray arrayWithObjects:@"checkout", @"-b", name, nil];
-  [checkoutTask launchWithBlock:^{
+  [self launchTask:checkoutTask withBlock:^{
     [checkoutTask showErrorIfNeeded];
     [self configureTrackingRemoteBranch:self.currentRemoteBranch withLocalName:name block:block];
   }];
@@ -792,7 +794,7 @@
   {
     GBTask* task = [self task];
     task.arguments = [NSArray arrayWithObjects:@"commit", @"-m", message, nil];
-    [task launchWithBlock:^{
+    [self launchTask:task withBlock:^{
       [task showErrorIfNeeded];
       if (block) block();
     }];

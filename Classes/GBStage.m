@@ -78,7 +78,7 @@
   [refreshIndexTask launchInQueue:self.repository.dispatchQueue withBlock:^{
     
     GBStagedChangesTask* stagedChangesTask = [GBStagedChangesTask taskWithRepository:self.repository];
-    [stagedChangesTask launchWithBlock:^{
+    [self.repository launchTask:stagedChangesTask withBlock:^{
             
       [OABlockGroup groupBlock:^(OABlockGroup* blockGroup){
         
@@ -92,7 +92,7 @@
           // diff-tree failed: we don't have a HEAD commit, try another task
           GBAllStagedFilesTask* stagedChangesTask2 = [GBAllStagedFilesTask taskWithRepository:self.repository];
           [blockGroup enter];
-          [stagedChangesTask2 launchWithBlock:^{
+          [self.repository launchTask:stagedChangesTask2 withBlock:^{
             self.stagedChanges = stagedChangesTask2.changes;
             [self update];
             [blockGroup leave];
@@ -102,12 +102,12 @@
       } continuation: ^{
         
         GBUnstagedChangesTask* unstagedChangesTask = [GBUnstagedChangesTask taskWithRepository:self.repository];
-        [unstagedChangesTask launchWithBlock:^{
+        [self.repository launchTask:unstagedChangesTask withBlock:^{
           self.unstagedChanges = unstagedChangesTask.changes;
           [self update];
           
           GBUntrackedChangesTask* untrackedChangesTask = [GBUntrackedChangesTask taskWithRepository:self.repository];
-          [untrackedChangesTask launchWithBlock:^{
+          [self.repository launchTask:untrackedChangesTask withBlock:^{
             self.untrackedChanges = untrackedChangesTask.changes;
             [self update];
             

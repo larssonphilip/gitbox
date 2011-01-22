@@ -1,4 +1,5 @@
 #import "GBCommit.h"
+#import "GBRepository.h"
 #import "GBCommittedChangesTask.h"
 
 #import "NSData+OADataHelpers.h"
@@ -140,7 +141,7 @@
   GBCommittedChangesTask* task = [GBCommittedChangesTask task];
   task.commit = self;
   task.repository = self.repository;
-  [task launchWithBlock:^{
+  [self.repository launchTask:task withBlock:^{
     NSArray* theChanges = [task.changes sortedArrayUsingComparator:^(GBChange* a,GBChange* b){
       return [[[a fileURL] path] localizedCaseInsensitiveCompare:[[b fileURL] path]];
     }];
