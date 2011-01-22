@@ -83,17 +83,7 @@
   return nil;
 }
 
-- (void) updateWithBlock:(void(^)())block { if (block) block(); }
-
-- (void) updateQueued
-{
-	[self.updatesQueue addBlock:^{
-		[self updateWithBlock:^{
-			[self.updatesQueue endBlock];
-		}];
-	}];
-}
-
+- (void) initialUpdateWithBlock:(void(^)())block { if (block) block(); }
 
 - (void) beginBackgroundUpdate {}
 - (void) endBackgroundUpdate {}

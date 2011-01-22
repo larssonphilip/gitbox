@@ -304,17 +304,7 @@
   
 }
 
-
-- (void) updateQueued
-{
-	[self.updatesQueue addBlock:^{
-		[self updateWithBlock:^{
-			[self.updatesQueue endBlock];
-		}];
-	}];
-}
-
-- (void) updateWithBlock:(void(^)())block
+- (void) initialUpdateWithBlock:(void(^)())block
 {
   block = [[block copy] autorelease];
   

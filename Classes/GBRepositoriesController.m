@@ -132,12 +132,23 @@
 }
 
 
-- (void) launchRepositoryController:(GBBaseRepositoryController*)repoCtrl
+- (void) launchRepositoryController:(GBBaseRepositoryController*)repoCtrl queued:(BOOL)queued
 {
   if (!repoCtrl) return;
   repoCtrl.updatesQueue = self.localRepositoriesUpdatesQueue;
   [repoCtrl start];
-  [repoCtrl updateQueued];  
+  if (!queued)
+  {
+    [repoCtrl initialUpdateWithBlock:^{}];
+  }
+  else
+  {
+    [self.localRepositoriesUpdatesQueue addBlock:^{
+      [repoCtrl initialUpdateWithBlock:^{
+        [self.localRepositoriesUpdatesQueue endBlock];
+      }];
+    }];
+  }
 }
 
 
@@ -156,7 +167,7 @@
   if ([self.delegate respondsToSelector:@selector(repositoriesController:willAddRepository:)]) { [self.delegate repositoriesController:self willAddRepository:repoCtrl]; }
   
   [aGroup insertLocalItem:repoCtrl atIndex:anIndex];
-  [self launchRepositoryController:repoCtrl];
+  [self launchRepositoryController:repoCtrl queued:NO];
 
   if ([self.delegate respondsToSelector:@selector(repositoriesController:didAddRepository:)]) { [self.delegate repositoriesController:self didAddRepository:repoCtrl]; }
   
@@ -386,7 +397,7 @@
   __block GBBaseRepositoryController* firstRepoCtrl = nil;
   [self.localRepositoriesGroup enumerateRepositoriesWithBlock:^(GBBaseRepositoryController* repoCtrl){
     if (!firstRepoCtrl) firstRepoCtrl = repoCtrl;
-    [self launchRepositoryController:repoCtrl];
+    [self launchRepositoryController:repoCtrl queued:YES];
   }];
   
   NSData* selectedLocalRepoBoomarkData = [[NSUserDefaults standardUserDefaults] objectForKey:@"GBRepositoriesController_selectedLocalRepository"];

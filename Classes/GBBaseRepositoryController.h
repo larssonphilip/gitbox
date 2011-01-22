@@ -25,8 +25,7 @@
 - (NSString*) windowTitle;
 - (NSURL*) windowRepresentedURL;
 
-- (void) updateWithBlock:(void(^)())block;
-- (void) updateQueued;
+- (void) initialUpdateWithBlock:(void(^)())block;
 
 - (void) beginBackgroundUpdate;
 - (void) endBackgroundUpdate;
