@@ -47,26 +47,18 @@ Async w/o coalescing:
 
 Async with coalescing:
 
-[coalescer performOnce:^{
+[self.jobManager performIfNotRunningForKey:@"MySpecificOperation" block:^{
   [self doSomething:^{
-    [coalescer flush];
+    [self.jobManager didFinishKey:@"MySpecificOperation"];
   }];
-} continuation:block];
+} completionHandler:block];
 
-
-
-[[OACoalescer sharedInstance] performOnce:^{
+[self.jobManager performOnceForKey:@"MySpecificOperation" block:^{
   [self doSomething:^{
-    [coalescer flush];
+    [self.jobManager didFinishKey:@"MySpecificOperation"];
   }];
-} continuation:block];
+} completionHandler:block];
 
-
-[[OACoalescer sharedInstance] performOnceForKey:@"MySpecificOperation" block:^{
-  [self doSomething:^{
-    [coalescer flush];
-  }];
-} continuation:block];
 
 
 
