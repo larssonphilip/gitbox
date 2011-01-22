@@ -1718,7 +1718,7 @@
 		C05733CC08A9546B00998B17 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				APP_VERSION = 1.2;
+				APP_VERSION = 1.2.1;
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -1741,7 +1741,7 @@
 		C05733CD08A9546B00998B17 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				APP_VERSION = 1.2;
+				APP_VERSION = 1.2.1;
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
