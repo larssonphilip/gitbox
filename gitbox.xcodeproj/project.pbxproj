@@ -621,7 +621,6 @@
 		20C899B512B95DDF002F600F /* OANonScrollingScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = OANonScrollingScrollView.m; path = ../OANonScrollingScrollView.m; sourceTree = "<group>"; };
 		20C9A55D12E85E0800DBA3E1 /* Subversion.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Subversion.txt; sourceTree = "<group>"; };
 		20C9A55F12E85ED100DBA3E1 /* Mercurial.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Mercurial.txt; sourceTree = "<group>"; };
-		20E59CE711A5C9EA00E7FB72 /* GBModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBModels.h; sourceTree = "<group>"; };
 		20EF861412E217B900F3438A /* Authentication.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Authentication.txt; sourceTree = "<group>"; };
 		20EF88D612E34F9300F3438A /* Quartz.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quartz.framework; path = System/Library/Frameworks/Quartz.framework; sourceTree = SDKROOT; };
 		20EF88D812E34F9300F3438A /* QuickLook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickLook.framework; path = System/Library/Frameworks/QuickLook.framework; sourceTree = SDKROOT; };
@@ -723,7 +722,6 @@
 		2038F30811952FAE0087CE37 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				20E59CE711A5C9EA00E7FB72 /* GBModels.h */,
 				2038F30A11952FCF0087CE37 /* GBRepository.h */,
 				2038F30B11952FCF0087CE37 /* GBRepository.m */,
 				70865D2912D25F5F00033683 /* GBSubmodule.h */,

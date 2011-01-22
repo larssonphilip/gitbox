@@ -1,7 +1,7 @@
 #import "GBRepositoriesController.h"
 #import "GBRepositoryController.h"
 #import "GBCloningRepositoryController.h"
-#import "GBModels.h"
+#import "GBRepository.h"
 #import "GBRepositoriesGroup.h"
 
 #import "NSFileManager+OAFileManagerHelpers.h"

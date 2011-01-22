@@ -1,4 +1,4 @@
-#import "GBModels.h"
+#import "GBCommit.h"
 
 #import "GBRepositoryController.h"
 #import "GBToolbarController.h"

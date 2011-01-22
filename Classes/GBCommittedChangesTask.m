@@ -1,4 +1,5 @@
-#import "GBModels.h"
+#import "GBCommit.h"
+#import "GBChange.h"
 #import "GBCommittedChangesTask.h"
 
 @implementation GBCommittedChangesTask

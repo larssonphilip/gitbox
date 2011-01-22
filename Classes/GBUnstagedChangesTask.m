@@ -1,4 +1,3 @@
-#import "GBModels.h"
 #import "GBUnstagedChangesTask.h"
 
 @implementation GBUnstagedChangesTask

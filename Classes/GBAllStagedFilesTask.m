@@ -1,4 +1,5 @@
-#import "GBModels.h"
+#import "GBRepository.h"
+#import "GBChange.h"
 #import "GBAllStagedFilesTask.h"
 
 #import "NSData+OADataHelpers.h"
