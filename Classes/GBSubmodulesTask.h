@@ -1,7 +1,7 @@
 #import "GBTask.h"
 
 
-@interface GBUpdateSubmodulesTask : GBTask
+@interface GBSubmodulesTask : GBTask
 
 @property(retain) NSArray* submodules;
 

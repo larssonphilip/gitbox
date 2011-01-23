@@ -314,12 +314,12 @@
 		20EF88D712E34F9300F3438A /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20EF88D612E34F9300F3438A /* Quartz.framework */; };
 		20EF88D912E34F9300F3438A /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20EF88D812E34F9300F3438A /* QuickLook.framework */; };
 		20EF8BEB12E6602D00F3438A /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20EF88D812E34F9300F3438A /* QuickLook.framework */; };
-		20EF8BED12E6603600F3438A /* GBUpdateSubmodulesTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 70EEC8CF12DFE33E00DD1555 /* GBUpdateSubmodulesTask.m */; };
+		20EF8BED12E6603600F3438A /* GBSubmodulesTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 70EEC8CF12DFE33E00DD1555 /* GBSubmodulesTask.m */; };
 		20EF8BF012E6605100F3438A /* GBSubmodule.m in Sources */ = {isa = PBXBuildFile; fileRef = 70865D2A12D25F5F00033683 /* GBSubmodule.m */; };
 		20EF8C4812E6605D00F3438A /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20EF88D612E34F9300F3438A /* Quartz.framework */; };
 		20FAA190123F831400E8FA0E /* git.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 20FAA18F123F831400E8FA0E /* git.bundle */; };
 		70865D2B12D25F5F00033683 /* GBSubmodule.m in Sources */ = {isa = PBXBuildFile; fileRef = 70865D2A12D25F5F00033683 /* GBSubmodule.m */; };
-		70EEC8D012DFE33E00DD1555 /* GBUpdateSubmodulesTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 70EEC8CF12DFE33E00DD1555 /* GBUpdateSubmodulesTask.m */; };
+		70EEC8D012DFE33E00DD1555 /* GBSubmodulesTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 70EEC8CF12DFE33E00DD1555 /* GBSubmodulesTask.m */; };
 		8D15AC320486D014006FF6A4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A37F4B0FDCFA73011CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D15AC340486D014006FF6A4 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */; };
 /* End PBXBuildFile section */
@@ -648,8 +648,8 @@
 		2A37F4C5FDCFA73011CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		70865D2912D25F5F00033683 /* GBSubmodule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBSubmodule.h; sourceTree = "<group>"; };
 		70865D2A12D25F5F00033683 /* GBSubmodule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBSubmodule.m; sourceTree = "<group>"; };
-		70EEC8CE12DFE33E00DD1555 /* GBUpdateSubmodulesTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBUpdateSubmodulesTask.h; sourceTree = "<group>"; };
-		70EEC8CF12DFE33E00DD1555 /* GBUpdateSubmodulesTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBUpdateSubmodulesTask.m; sourceTree = "<group>"; };
+		70EEC8CE12DFE33E00DD1555 /* GBSubmodulesTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBSubmodulesTask.h; sourceTree = "<group>"; };
+		70EEC8CF12DFE33E00DD1555 /* GBSubmodulesTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBSubmodulesTask.m; sourceTree = "<group>"; };
 		8D15AC360486D014006FF6A4 /* info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = info.plist; sourceTree = "<group>"; };
 		8D15AC370486D014006FF6A4 /* Gitbox.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Gitbox.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -803,8 +803,8 @@
 				200B08B411B6E359004C09A8 /* GBLocalRemoteAssociationTask.m */,
 				20BF14101279533900A30EE6 /* GBCloneTask.h */,
 				20BF14111279533900A30EE6 /* GBCloneTask.m */,
-				70EEC8CE12DFE33E00DD1555 /* GBUpdateSubmodulesTask.h */,
-				70EEC8CF12DFE33E00DD1555 /* GBUpdateSubmodulesTask.m */,
+				70EEC8CE12DFE33E00DD1555 /* GBSubmodulesTask.h */,
+				70EEC8CF12DFE33E00DD1555 /* GBSubmodulesTask.m */,
 			);
 			name = Tasks;
 			sourceTree = "<group>";
@@ -1498,7 +1498,7 @@
 				2097EB3012DDF4680070AE89 /* GBSidebarOutlineView.m in Sources */,
 				2097EB5B12DDF7D30070AE89 /* GBChangesTableView.m in Sources */,
 				2097EC6D12DE6B450070AE89 /* GBSidebarCell.m in Sources */,
-				20EF8BED12E6603600F3438A /* GBUpdateSubmodulesTask.m in Sources */,
+				20EF8BED12E6603600F3438A /* GBSubmodulesTask.m in Sources */,
 				20EF8BF012E6605100F3438A /* GBSubmodule.m in Sources */,
 				200A41B212EB91B0004DF940 /* OABlockMerger.m in Sources */,
 				200A41CA12EB9B14004DF940 /* GBGitConfig.m in Sources */,
@@ -1612,7 +1612,7 @@
 				2097EB2F12DDF4680070AE89 /* GBSidebarOutlineView.m in Sources */,
 				2097EB5C12DDF7D30070AE89 /* GBChangesTableView.m in Sources */,
 				2097EC6C12DE6B450070AE89 /* GBSidebarCell.m in Sources */,
-				70EEC8D012DFE33E00DD1555 /* GBUpdateSubmodulesTask.m in Sources */,
+				70EEC8D012DFE33E00DD1555 /* GBSubmodulesTask.m in Sources */,
 				200A41B112EB91B0004DF940 /* OABlockMerger.m in Sources */,
 				200A41C912EB9B14004DF940 /* GBGitConfig.m in Sources */,
 				200A43E912EC2507004DF940 /* GBSubmoduleCell.m in Sources */,
