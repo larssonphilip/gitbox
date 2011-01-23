@@ -1,9 +1,9 @@
 #import "GBBaseRepositoryControllerDelegate.h"
-@class GBCloningRepositoryController;
+@class GBRepositoryCloningController;
 @protocol GBCloningRepositoryControllerDelegate<GBBaseRepositoryControllerDelegate>
 @optional
-- (void) cloningRepositoryControllerDidSelect:(GBCloningRepositoryController*)repoCtrl;
-- (void) cloningRepositoryControllerDidFinish:(GBCloningRepositoryController*)repoCtrl;
-- (void) cloningRepositoryControllerDidFail:(GBCloningRepositoryController*)repoCtrl;
-- (void) cloningRepositoryControllerDidCancel:(GBCloningRepositoryController*)repoCtrl;
+- (void) cloningRepositoryControllerDidSelect:(GBRepositoryCloningController*)repoCtrl;
+- (void) cloningRepositoryControllerDidFinish:(GBRepositoryCloningController*)repoCtrl;
+- (void) cloningRepositoryControllerDidFail:(GBRepositoryCloningController*)repoCtrl;
+- (void) cloningRepositoryControllerDidCancel:(GBRepositoryCloningController*)repoCtrl;
 @end

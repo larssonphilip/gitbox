@@ -4,7 +4,7 @@
 @class GBRepositoriesGroup;
 @class GBBaseRepositoryController;
 @class GBRepositoryController;
-@class GBCloningRepositoryController;
+@class GBRepositoryCloningController;
 @class OABlockQueue;
 
 @interface GBRepositoriesController : NSObject
@@ -19,7 +19,7 @@
 - (GBBaseRepositoryController*) openedLocalRepositoryControllerWithURL:(NSURL*)url;
 
 - (GBRepositoryController*) selectedLocalRepositoryController;
-- (GBCloningRepositoryController*) selectedCloningRepositoryController;
+- (GBRepositoryCloningController*) selectedCloningRepositoryController;
 
 - (void) moveLocalItem:(id<GBRepositoriesControllerLocalItem>)aLocalItem toGroup:(GBRepositoriesGroup*)aGroup atIndex:(NSInteger)anIndex;
 

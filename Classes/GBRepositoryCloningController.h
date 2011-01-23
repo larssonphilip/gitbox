@@ -1,7 +1,7 @@
 #import "GBBaseRepositoryController.h"
 #import "GBCloningRepositoryControllerDelegate.h"
 
-@interface GBCloningRepositoryController : GBBaseRepositoryController
+@interface GBRepositoryCloningController : GBBaseRepositoryController
 
 @property(nonatomic,retain) NSURL* sourceURL;
 @property(nonatomic,retain) NSURL* targetURL;

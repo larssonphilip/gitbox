@@ -523,7 +523,7 @@
 		206CAC73122EBCAD009284FE /* GBRepositoriesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBRepositoriesController.h; sourceTree = "<group>"; };
 		206CAC74122EBCAD009284FE /* GBRepositoriesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBRepositoriesController.m; sourceTree = "<group>"; };
 		2080DC2912567B0800D05B33 /* GBChangeDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBChangeDelegate.h; sourceTree = "<group>"; };
-		2082B7C2126587CA00667A7F /* GBCloningRepositoryController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBCloningRepositoryController.h; sourceTree = "<group>"; };
+		2082B7C2126587CA00667A7F /* GBRepositoryCloningController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBRepositoryCloningController.h; sourceTree = "<group>"; };
 		2082B7C3126587CA00667A7F /* GBCloningRepositoryController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBCloningRepositoryController.m; sourceTree = "<group>"; };
 		2082B80F1266500800667A7F /* GBBaseRepositoryController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBBaseRepositoryController.h; sourceTree = "<group>"; };
 		2082B8101266500800667A7F /* GBBaseRepositoryController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBBaseRepositoryController.m; sourceTree = "<group>"; };
@@ -841,7 +841,7 @@
 				206CAC6F122EB5F7009284FE /* GBRepositoryController.h */,
 				206CAC70122EB5F7009284FE /* GBRepositoryController.m */,
 				200409031274EBE400BE8957 /* GBCloningRepositoryControllerDelegate.h */,
-				2082B7C2126587CA00667A7F /* GBCloningRepositoryController.h */,
+				2082B7C2126587CA00667A7F /* GBRepositoryCloningController.h */,
 				2082B7C3126587CA00667A7F /* GBCloningRepositoryController.m */,
 				200A445112EC2FB8004DF940 /* GBSubmoduleCloningControllerDelegate.h */,
 				200A444912EC2DCE004DF940 /* GBSubmoduleCloningController.h */,
