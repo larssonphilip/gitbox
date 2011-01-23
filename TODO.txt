@@ -27,6 +27,7 @@ Misc items done:
 + sidebar: allow 3 repos for free so ppl who don't want to pay just now may start actually using without searching for keygen?
 + bug: stage: refuse first responder when stage is empty.
 + bug: sidebar: quickly jumping through repos in sidebar is slow: avoid unnecessary updates and shell-outs when repo is selected.
++ general: fix networking behaviour: try to load the remote branches and reload them when pull/fetch (was done in 1.2)
 
 -----------------------------------------------------------
 
@@ -61,7 +62,6 @@ Features:
 - general: bonjour publishing and cloning (see http://github.com/chad/gitjour; NSNetService)
 - general: github integration: handling other repos/branches, pull requests and initial setup commands
 - general: handling URL schema: gitbox://git@sss.pierlis.com/repo.git#commits/sha1
-- general: fix networking behaviour: try to load the remote branches and reload them when pull/fetch
 - general: obfuscated license check
 - general: polish the icon
 
@@ -139,7 +139,6 @@ Features:
   - quicklook and restoring the file
   - branches, merging, diffing branches
   
-  
 - site: guide
 
 
@@ -165,7 +164,7 @@ Error messages translation to English:
 - toolbar: show confirmation prompt when trying to push branch "X" into "origin/Y" (that is when branch name differ)
 - toolbar: think on how to checkout a branch into a different folder. Make it useful as a default.
 
-- sidebar: commit+push is ugly: it spins, then it stops spinning, then it changes the badge number and then spins again.
+- sidebar: commit+push is ugly: it spins, then it stops spinning, then it changes the badge number and then spins again. (last spinning is fixed)
 - sidebar: when starting an app, sidebar appears to be collapsed at first and then repos appear. Should be more smooth.
 - sidebar: choose a custom name for a repo? or use an image?
 
@@ -181,7 +180,6 @@ Error messages translation to English:
 
 Bugs:
 
-- check once again branches with dots and slashes 
 - IMPORTANT: bug: sidebar: sometimes, when dropped the repo to the sidebar, it does not update the history. Maybe the updateQueue is flooded.
 - IMPORTANT: bug: general: should test all leaks of blocks, NSTasks and related file handles!
 
