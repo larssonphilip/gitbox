@@ -334,9 +334,9 @@
   [self.outlineView expandItem:[self localRepositoriesSection]];
 }
 
-- (void) updateSpinnerForRepositoryController:(GBBaseRepositoryController*)repoCtrl
+- (void) updateSpinnerForSidebarItem:(id<GBSidebarItem>)item
 {
-  [self.outlineView reloadItem:repoCtrl];
+  [self.outlineView reloadItem:item];
 }
 
 - (void) editGroup:(GBRepositoriesGroup*)aGroup

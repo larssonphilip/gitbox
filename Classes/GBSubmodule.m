@@ -88,21 +88,22 @@ NSString* const GBSubmoduleStatusNotUpToDate = @"GBSubmoduleStatusNotUpToDate";
 
 - (NSInteger) numberOfChildrenInSidebar
 {
-  return 0;
+  return [[self repositoryController] numberOfChildrenInSidebar];
 }
 
 - (BOOL) isExpandableInSidebar
 {
-  return NO;
+  return [[self repositoryController] isExpandableInSidebar];
 }
 
 - (id<GBSidebarItem>) childForIndexInSidebar:(NSInteger)index
 {
-  return nil;
+  return [[self repositoryController] childForIndexInSidebar:index];
 }
 
 - (id<GBSidebarItem>) findItemWithIndentifier:(NSString*)identifier
 {
+  // TODO: test drag and drop and rewrite this code
   if (!identifier) return nil;
   if ([[self sidebarItemIdentifier] isEqual:identifier]) return self;
   return nil;
@@ -155,7 +156,7 @@ NSString* const GBSubmoduleStatusNotUpToDate = @"GBSubmoduleStatusNotUpToDate";
 
 - (BOOL) isDraggableInSidebar
 {
-  return YES;
+  return NO;
 }
 
 - (BOOL) isEditableInSidebar
@@ -175,12 +176,12 @@ NSString* const GBSubmoduleStatusNotUpToDate = @"GBSubmoduleStatusNotUpToDate";
 
 - (NSInteger) badgeValue
 {
-	return 0; // TODO: return badgeValue for the repositoryController
+	return [[self repositoryController] badgeValue]; // TODO: return badgeValue for the repositoryController
 }
 
 - (NSInteger) accumulatedBadgeValue
 {
-	return [self badgeValue]; // TODO: return accumulatedBadgeValue for the repositoryController
+	return [[self repositoryController] accumulatedBadgeValue]; // TODO: return accumulatedBadgeValue for the repositoryController
 }
 
 - (BOOL) isSpinningInSidebar

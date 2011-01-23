@@ -32,7 +32,7 @@
 - (void) updateExpandedState;
 - (void) updateExpandedStateForItem:(id<GBSidebarItem>)item;
 
-- (void) updateSpinnerForRepositoryController:(GBBaseRepositoryController*)repoCtrl;
+- (void) updateSpinnerForSidebarItem:(id<GBSidebarItem>)item;
 
 - (void) editGroup:(GBRepositoriesGroup*)aGroup;
 

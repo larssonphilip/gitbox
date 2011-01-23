@@ -35,4 +35,6 @@
 
 - (void) didSelect;
 
+- (void) cleanupSpinnerIfNeeded;
+
 @end

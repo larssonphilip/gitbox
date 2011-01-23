@@ -16,6 +16,8 @@
 - (void) dealloc
 {
   self.updatesQueue = nil;
+  NSLog(@"GBBaseRepositoryController dealloc %@", self);
+  [self.sidebarSpinner removeFromSuperview];
   self.sidebarSpinner = nil;
   [super dealloc];
 }
@@ -98,6 +100,13 @@
 {
 }
 
+- (void) cleanupSpinnerIfNeeded
+{
+  if (![self isSpinning])
+  {
+    [self.sidebarSpinner removeFromSuperview];
+  }
+}
 
 
 #pragma mark GBRepositoriesControllerLocalItem

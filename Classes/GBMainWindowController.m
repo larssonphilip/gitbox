@@ -417,7 +417,7 @@
 
 - (void) repositoryControllerDidChangeSpinningStatus:(GBRepositoryController*)repoCtrl
 {
-  [self.sourcesController updateSpinnerForRepositoryController:repoCtrl];
+  [self.sourcesController updateSpinnerForSidebarItem:repoCtrl];
   if (![self isSelectedRepositoryController:repoCtrl]) return;
   [self.toolbarController updateSpinner];
 }
@@ -582,17 +582,37 @@
   self.submoduleCloneProcessViewController.repositoryController = repoCtrl;
   [self.submoduleCloneProcessViewController update];
   [self.submoduleCloneProcessViewController loadInView:[[self.splitView subviews] objectAtIndex:1]];
-  
+}
+
+- (void) submoduleCloningControllerDidStart:(GBSubmoduleCloningController*)cloningRepoCtrl
+{
+  [self.submoduleCloneProcessViewController update];
+  [self.toolbarController update];
+  [self.sourcesController update];
 }
 
 - (void) submoduleCloningControllerDidFinish:(GBSubmoduleCloningController*)cloningRepoCtrl
-{  
+{ 
+  [cloningRepoCtrl cleanupSpinnerIfNeeded];
+  [self.submoduleCloneProcessViewController update];
+  [self.sourcesController updateSpinnerForSidebarItem:cloningRepoCtrl.submodule];
+  
+  BOOL shouldSelect = [self isSelectedRepositoryController:cloningRepoCtrl];
+  
   GBSubmodule* submodule = cloningRepoCtrl.submodule;
   GBRepositoryController* repoCtrl = [GBRepositoryController repositoryControllerWithURL:[submodule localURL]];
   submodule.repositoryController = repoCtrl;
   submodule.repositoryController.delegate = self;
   [repoCtrl start];
   [repoCtrl initialUpdateWithBlock:nil];
+  self.toolbarController.baseRepositoryController = repoCtrl;
+  
+  [self.toolbarController update];
+  [self.sourcesController update];
+  if (shouldSelect)
+  {
+    [self.repositoriesController selectRepositoryController:repoCtrl];
+  }
 }
 
 - (void) submoduleCloningControllerDidFail:(GBSubmoduleCloningController*)repoCtrl

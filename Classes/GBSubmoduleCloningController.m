@@ -65,6 +65,7 @@
   self.task.arguments = [NSArray arrayWithObjects:@"submodule", @"update", @"--", self.submodule.path, nil];
   
   [self.task launchWithBlock:^{
+    self.isDisabled--;
     self.isSpinning--;
     GBTask* aTask = self.task;
     self.task = nil;
@@ -97,6 +98,10 @@
       }
     }
   }];
+
+  if ([self.delegate respondsToSelector:@selector(submoduleCloningControllerDidStart:)]) {
+    [self.delegate submoduleCloningControllerDidStart:self];
+  }
 }
 
 - (void) stop

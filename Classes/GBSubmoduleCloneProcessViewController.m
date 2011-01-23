@@ -34,14 +34,16 @@
     if ([self.repositoryController isDownloading])
     {
       [self.messageLabel setStringValue:NSLocalizedString(@"  Download in progress...", @"Clone")];
-      [self.errorLabel setStringValue:[[self.repositoryController.submodule remoteURL] absoluteString]];
+      NSString* urlString = [[self.repositoryController.submodule remoteURL] absoluteString];
+      [self.errorLabel setStringValue:urlString ? urlString : @""];
       [self.cancelButton setHidden:NO];
       [self.downloadButton setHidden:YES];
     }
     else // Not downloading yet
     {
       [self.messageLabel setStringValue:NSLocalizedString(@"Download External Repository", @"Clone")];
-      [self.errorLabel setStringValue:[[self.repositoryController.submodule remoteURL] absoluteString]];
+      NSString* urlString = [[self.repositoryController.submodule remoteURL] absoluteString];
+      [self.errorLabel setStringValue:urlString ? urlString : @""];
       [self.cancelButton setHidden:YES];
       [self.downloadButton setHidden:NO];
     }
