@@ -4,7 +4,7 @@
 
 #import "GBRepositoriesController.h"
 #import "GBRepositoryController.h"
-#import "GBCloningRepositoryController.h"
+#import "GBRepositoryCloningController.h"
 #import "GBBaseRepositoryController.h"
 #import "GBSubmoduleCloningController.h"
 
@@ -512,7 +512,7 @@
 #pragma mark GBCloningRepositoryControllerDelegate
 
 
-- (void) cloningRepositoryControllerDidSelect:(GBCloningRepositoryController*)repoCtrl
+- (void) cloningRepositoryControllerDidSelect:(GBRepositoryCloningController*)repoCtrl
 {
   self.toolbarController.baseRepositoryController = repoCtrl;
   [self.toolbarController update];
@@ -522,7 +522,7 @@
   [self.cloneProcessViewController loadInView:[[self.splitView subviews] objectAtIndex:1]];
 }
 
-- (void) cloningRepositoryControllerDidFinish:(GBCloningRepositoryController*)repoCtrl
+- (void) cloningRepositoryControllerDidFinish:(GBRepositoryCloningController*)repoCtrl
 {
   // Cloning finished: 
   // 1. should find out where is located cloning repo ctrl
@@ -545,13 +545,13 @@
   }
 }
 
-- (void) cloningRepositoryControllerDidFail:(GBCloningRepositoryController*)repoCtrl
+- (void) cloningRepositoryControllerDidFail:(GBRepositoryCloningController*)repoCtrl
 {
   [self.cloneProcessViewController update];
   [self.toolbarController update];
 }
 
-- (void) cloningRepositoryControllerDidCancel:(GBCloningRepositoryController*)repoCtrl
+- (void) cloningRepositoryControllerDidCancel:(GBRepositoryCloningController*)repoCtrl
 {
   [self.repositoriesController removeLocalRepositoryController:repoCtrl];
   [self.toolbarController update];

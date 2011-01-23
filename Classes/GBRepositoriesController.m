@@ -1,6 +1,6 @@
 #import "GBRepositoriesController.h"
 #import "GBRepositoryController.h"
-#import "GBCloningRepositoryController.h"
+#import "GBRepositoryCloningController.h"
 #import "GBRepository.h"
 #import "GBRepositoriesGroup.h"
 
@@ -65,11 +65,11 @@
   return nil;
 }
 
-- (GBCloningRepositoryController*) selectedCloningRepositoryController
+- (GBRepositoryCloningController*) selectedCloningRepositoryController
 {
-  if ([self.selectedRepositoryController isKindOfClass:[GBCloningRepositoryController class]])
+  if ([self.selectedRepositoryController isKindOfClass:[GBRepositoryCloningController class]])
   {
-    return (GBCloningRepositoryController*) self.selectedRepositoryController;
+    return (GBRepositoryCloningController*) self.selectedRepositoryController;
   }
   return nil;
 }

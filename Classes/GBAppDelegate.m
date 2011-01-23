@@ -3,7 +3,7 @@
 #import "GBRepositoriesController.h"
 #import "GBBaseRepositoryController.h"
 #import "GBRepositoryController.h"
-#import "GBCloningRepositoryController.h"
+#import "GBRepositoryCloningController.h"
 
 #import "GBMainWindowController.h"
 #import "GBSidebarController.h"
@@ -146,7 +146,7 @@
         return;
       }
       
-      GBCloningRepositoryController* cloneController = [[GBCloningRepositoryController new] autorelease];
+      GBRepositoryCloningController* cloneController = [[GBRepositoryCloningController new] autorelease];
       cloneController.sourceURL = ctrl.sourceURL;
       cloneController.targetURL = ctrl.targetURL;
       

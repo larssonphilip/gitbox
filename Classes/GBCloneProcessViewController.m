@@ -1,5 +1,5 @@
 #import "GBCloneProcessViewController.h"
-#import "GBCloningRepositoryController.h"
+#import "GBRepositoryCloningController.h"
 
 @implementation GBCloneProcessViewController
 
