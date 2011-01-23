@@ -42,6 +42,23 @@
   [self proceed];
 }
 
+- (void) prependBlock:(void(^)())aBlock
+{
+  if (!aBlock) return;
+
+  // Optimization: call the block immediately without touching the queue
+  if (self.operationCount < self.maxConcurrentOperationCount)
+  {
+    self.operationCount++;
+    aBlock();
+    return;
+  }
+
+  if (!self.queue) self.queue = [NSMutableArray array];
+  [self.queue insertObject:[[aBlock copy] autorelease] atIndex:0];
+  [self proceed];
+}
+
 - (void) endBlock
 {
   self.operationCount--;

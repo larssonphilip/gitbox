@@ -17,6 +17,7 @@
 @property(nonatomic, retain) NSMutableArray* queue;
 
 - (void) addBlock:(void(^)())aBlock;
+- (void) prependBlock:(void(^)())aBlock;
 - (void) endBlock;
 
 @end

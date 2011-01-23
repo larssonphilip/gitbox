@@ -139,7 +139,11 @@
   [repoCtrl start];
   if (!queued)
   {
-    [repoCtrl initialUpdateWithBlock:^{}];
+    [self.localRepositoriesUpdatesQueue prependBlock:^{
+      [repoCtrl initialUpdateWithBlock:^{
+        [self.localRepositoriesUpdatesQueue endBlock];
+      }];
+    }];
   }
   else
   {
@@ -265,7 +269,11 @@
   self.selectedRepositoryController = repoCtrl;
   self.selectedLocalItem = repoCtrl;
   
-  [repoCtrl initialUpdateWithBlock:nil];
+  [self.localRepositoriesUpdatesQueue prependBlock:^{
+    [repoCtrl initialUpdateWithBlock:^{
+      [self.localRepositoriesUpdatesQueue endBlock];
+    }];
+  }];
   
   if ([self.delegate respondsToSelector:@selector(repositoriesController:didSelectRepository:)]) { [self.delegate repositoriesController:self didSelectRepository:repoCtrl]; }
   

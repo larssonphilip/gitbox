@@ -21,6 +21,7 @@
 #import "GBFileEditingController.h"
 
 #import "OAFastJumpController.h"
+#import "OABlockQueue.h"
 
 #import "NSWindowController+OAWindowControllerHelpers.h"
 #import "NSView+OAViewHelpers.h"
@@ -604,7 +605,12 @@
   submodule.repositoryController = repoCtrl;
   submodule.repositoryController.delegate = self;
   [repoCtrl start];
-  [repoCtrl initialUpdateWithBlock:nil];
+  [repoCtrl.updatesQueue prependBlock:^{
+    [repoCtrl initialUpdateWithBlock:^{
+      [repoCtrl.updatesQueue endBlock];
+    }];
+  }];
+
   self.toolbarController.baseRepositoryController = repoCtrl;
   
   [self.toolbarController update];

@@ -17,6 +17,7 @@
 #import "OABlockGroup.h"
 #import "OABlockQueue.h"
 #import "OABlockMerger.h"
+#import "NSArray+OAArrayHelpers.h"
 #import "NSObject+OAPerformBlockAfterDelay.h"
 
 @interface GBRepositoryController ()
@@ -230,19 +231,19 @@
   [self.blockMerger performTaskOnce:taskName withBlock:^{
     [self pushFSEventsPause];
     [self pushSpinning];
-    [self.repository initSubmodulesWithBlock:^{
-      [self updateLocalRefsWithBlock:^{
-        [self pushSpinning];
-        [self loadCommitsWithBlock:^{
+    
+    [self updateLocalRefsWithBlock:^{
+      [self loadCommitsWithBlock:^{
+        [self.repository initSubmodulesWithBlock:^{
           [self updateSubmodulesWithBlock:^{
             [self popSpinning];
+            [self popFSEventsPause];
             [self.blockMerger didFinishTask:taskName];
           }];
         }];
-        [self popSpinning];
-        [self popFSEventsPause];
       }];
     }];
+
     
     if (!self.selectedCommit && self.repository.stage)
     {
@@ -346,7 +347,7 @@
   aBlock = [[aBlock copy] autorelease];
   [self.repository updateSubmodulesWithBlock:^{
     
-    for (GBSubmodule* submodule in self.repository.submodules)
+    for (GBSubmodule* submodule in [self.repository.submodules reversedArray])
     {
       if (!submodule.repositoryController) // repo controller is not set up yet
       {
@@ -357,7 +358,7 @@
           submodule.repositoryController.delegate = self.delegate;
           repoCtrl.updatesQueue = self.updatesQueue;
           [repoCtrl start];
-          [self.updatesQueue addBlock:^{
+          [self.updatesQueue prependBlock:^{
             [repoCtrl initialUpdateWithBlock:^{
               [self.updatesQueue endBlock];
             }];
