@@ -1,0 +1,27 @@
+
+
+Tabs:
+
+1. General
+  - sharing
+  - repo url
+  - user name/email
+  - basic stats?
+  
+2. Local branches and tags
+  - table of tags
+  - table of branches
+  - deletion buttons
+  - renaming branches
+  - spinner to display deletion progress
+
+3. Remote servers and branches
+  - master-detail UI: left table with remotes, right - alias, url, list of branches
+  - delete branch
+  - rename branch?
+
+4. .git/config
+
+5. .gitignore
+
+6. submodules?
