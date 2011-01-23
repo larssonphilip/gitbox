@@ -75,12 +75,11 @@
     [scanner scanUpToString:@"\n" intoString:NULL];
     [scanner scanString:@"\n" intoString:NULL];
     
-    NSString *key          = [NSString stringWithFormat:@"%@.%@.%@", @"submodule", submodulePath, @"url"];
-    NSString *submoduleURL = [self.repository configValueForKey:key];
+    NSURL* submoduleURL = [self.repository URLForSubmoduleAtPath:submodulePath];
     
     GBSubmodule *submodule = [[GBSubmodule new] autorelease];
     submodule.path         = submodulePath;
-    submodule.remoteURL    = [NSURL URLWithString:submoduleURL];
+    submodule.remoteURL    = submoduleURL;
     submodule.repository   = self.repository;
 
     #if DEBUG

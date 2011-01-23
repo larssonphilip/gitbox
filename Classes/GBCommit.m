@@ -1,13 +1,13 @@
 #import "GBCommit.h"
 #import "GBRepository.h"
 #import "GBCommittedChangesTask.h"
-
-#import "NSData+OADataHelpers.h"
-#import "NSString+OAGitHelpers.h"
+#import "GBGitConfig.h"
 
 #import "GBCommitCell.h"
 #import "GBStageCell.h"
 
+#import "NSData+OADataHelpers.h"
+#import "NSString+OAGitHelpers.h"
 #import "NSAttributedString+OAAttributedStringHelpers.h"
 
 @implementation GBCommit
@@ -138,15 +138,18 @@
 - (void) loadChangesWithBlock:(void(^)())block
 {
   block = [[block copy] autorelease];
-  GBCommittedChangesTask* task = [GBCommittedChangesTask task];
-  task.commit = self;
-  task.repository = self.repository;
-  [self.repository launchTask:task withBlock:^{
-    NSArray* theChanges = [task.changes sortedArrayUsingComparator:^(GBChange* a,GBChange* b){
-      return [[[a fileURL] path] localizedCaseInsensitiveCompare:[[b fileURL] path]];
+  
+  [[GBGitConfig userConfig] ensureDisabledPathQuoting:^{
+    GBCommittedChangesTask* task = [GBCommittedChangesTask task];
+    task.commit = self;
+    task.repository = self.repository;
+    [self.repository launchTask:task withBlock:^{
+      NSArray* theChanges = [task.changes sortedArrayUsingComparator:^(GBChange* a,GBChange* b){
+        return [[[a fileURL] path] localizedCaseInsensitiveCompare:[[b fileURL] path]];
+      }];
+      self.changes = theChanges;
+      if (block) block();
     }];
-    self.changes = theChanges;
-    if (block) block();
   }];
 }
 

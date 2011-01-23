@@ -181,6 +181,7 @@ Error messages translation to English:
 
 Bugs:
 
+- check once again branches with dots and slashes 
 - IMPORTANT: bug: sidebar: sometimes, when dropped the repo to the sidebar, it does not update the history. Maybe the updateQueue is flooded.
 - IMPORTANT: bug: general: should test all leaks of blocks, NSTasks and related file handles!
 

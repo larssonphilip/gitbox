@@ -205,25 +205,23 @@
   // Launch the updates
   [self.windowController showWindow:self];
   
-  [GBRepository configureUTF8WithBlock:^{
-    [self.windowController loadState];
-    [self loadRepositories];
-    
-    NSArray* urls = [[self.URLsToOpenAfterLaunch retain] autorelease];
-    self.URLsToOpenAfterLaunch = nil;
-    for (NSURL* aURL in urls)
-    {
-      [GBRepository validateRepositoryURL:aURL withBlock:^(BOOL isValid){
-        if (isValid) [self.repositoriesController openLocalRepositoryAtURL:aURL];
-      }];
-    }
-    
-    if (![[NSUserDefaults standardUserDefaults] objectForKey:@"WelcomeWasDisplayed"])
-    {
-      [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:YES] forKey:@"WelcomeWasDisplayed"];
-      [self.windowController showWelcomeWindow:self];
-    }
-  }];
+  [self.windowController loadState];
+  [self loadRepositories];
+  
+  NSArray* urls = [[self.URLsToOpenAfterLaunch retain] autorelease];
+  self.URLsToOpenAfterLaunch = nil;
+  for (NSURL* aURL in urls)
+  {
+    [GBRepository validateRepositoryURL:aURL withBlock:^(BOOL isValid){
+      if (isValid) [self.repositoriesController openLocalRepositoryAtURL:aURL];
+    }];
+  }
+  
+  if (![[NSUserDefaults standardUserDefaults] objectForKey:@"WelcomeWasDisplayed"])
+  {
+    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:YES] forKey:@"WelcomeWasDisplayed"];
+    [self.windowController showWelcomeWindow:self];
+  }
 }
 
 - (void) applicationWillTerminate:(NSNotification*)aNotification

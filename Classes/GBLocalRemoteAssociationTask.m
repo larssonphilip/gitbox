@@ -2,7 +2,6 @@
 #import "GBRef.h"
 #import "GBRepository.h"
 
-#import "NSData+OADataHelpers.h"
 #import "NSString+OAGitHelpers.h"
 
 @implementation GBLocalRemoteAssociationTask
@@ -32,7 +31,7 @@
 {
   [super didFinish];
   
-  for (NSString* line in [[self.output UTF8String] componentsSeparatedByString:@"\n"])
+  for (NSString* line in [[self UTF8OutputStripped] componentsSeparatedByString:@"\n"])
   {
     if (line && [line length] > 0)
     {

@@ -84,7 +84,7 @@ NSString* OATaskNotification = @"OATaskNotification";
   [task launchAndWait];
   if (![task isError])
   {
-    NSString* path = [[task.output UTF8String] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    NSString* path = [task UTF8OutputStripped];
     if (path && [path length] > 1)
     {
       return path;
@@ -212,7 +212,15 @@ NSString* OATaskNotification = @"OATaskNotification";
   return [[self.launchPath lastPathComponent] stringByAppendingFormat:@" %@", [self.arguments componentsJoinedByString:@" "]];
 }
 
+- (NSString*) UTF8Output
+{
+  return [self.output UTF8String];
+}
 
+- (NSString*) UTF8OutputStripped
+{
+  return [[self UTF8Output] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+}
 
 
 
@@ -308,7 +316,7 @@ NSString* OATaskNotification = @"OATaskNotification";
 - (id) showError
 {
   [NSAlert message: [NSString stringWithFormat:NSLocalizedString(@"Command failed: %@", @"Task"), [self command]]
-       description:[[self.output UTF8String] stringByAppendingFormat:NSLocalizedString(@"\nCode: %d", @"Task"), self.terminationStatus]];
+       description:[[self UTF8OutputStripped] stringByAppendingFormat:NSLocalizedString(@"\nCode: %d", @"Task"), self.terminationStatus]];
   return self;
 }
 
@@ -466,7 +474,7 @@ NSString* OATaskNotification = @"OATaskNotification";
   {
     self.activity.status = [NSString stringWithFormat:@"%@ [%d]", NSLocalizedString(@"Finished", @"Task"), [self terminationStatus]];
   }
-  self.activity.textOutput = [self.output UTF8String];  
+  self.activity.textOutput = [self UTF8Output];
 }
 
 
@@ -480,11 +488,11 @@ NSString* OATaskNotification = @"OATaskNotification";
     if (!self.ignoreFailure)
     {
       //NSLog(@"OATask failed: %@ [%d]", [self command], self.terminationStatus);
-      NSString* stringOutput = [self.output UTF8String];
-      if (stringOutput)
-      {
-        //NSLog(@"OATask output: %@", stringOutput);
-      }
+//      NSString* stringOutput = [self UTF8OutputStripped];
+//      if (stringOutput)
+//      {
+//        //NSLog(@"OATask output: %@", stringOutput);
+//      }
     }
   }
   

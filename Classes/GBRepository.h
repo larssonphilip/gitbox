@@ -24,14 +24,11 @@
 @property(nonatomic, retain) GBRef* currentLocalRef;
 @property(nonatomic, retain) GBRef* currentRemoteBranch;
 @property(nonatomic, retain) NSArray* localBranchCommits;
-@property(nonatomic, retain) NSString* topCommitId;
 @property(nonatomic, retain) NSError* lastError;
-@property(nonatomic, assign) dispatch_queue_t dispatchQueue;
 
 @property(nonatomic, assign) NSUInteger unmergedCommitsCount;
 @property(nonatomic, assign) NSUInteger unpushedCommitsCount;
 
-+ (id) repository;
 + (id) repositoryWithURL:(NSURL*)url;
 
 + (NSString*) gitVersion;
@@ -44,22 +41,22 @@
 + (BOOL) validateRepositoryURL:(NSURL*)aURL withBlock:(void (^)(BOOL isValid))aBlock;
 
 + (void) initRepositoryAtURL:(NSURL*)url;
-+ (void) configureUTF8WithBlock:(void(^)())block;
+//+ (void) configureUTF8WithBlock:(void(^)())block;
 
 
 # pragma mark git-config(1) interface
 
 
-+ (NSString*) globalConfigValueForKey:(NSString*)key;
-+ (void) setGlobalConfigValue:(NSString*)value forKey:(NSString*)key;
+//+ (NSString*) globalConfigValueForKey:(NSString*)key;
+//+ (void) setGlobalConfigValue:(NSString*)value forKey:(NSString*)key;
 
-- (NSString*) configValueForKey:(NSString*)key;
-- (void) setConfigValue:(NSString*)value forKey:(NSString*)key;
+//- (NSString*) configValueForKey:(NSString*)key;
+//- (void) setConfigValue:(NSString*)value forKey:(NSString*)key;
 
-+ (void) configureName:(NSString*)name email:(NSString*)email withBlock:(void(^)())block;
+//+ (void) configureName:(NSString*)name email:(NSString*)email withBlock:(void(^)())block;
 
-+ (NSString*) globalConfiguredName;
-+ (NSString*) globalConfiguredEmail;
+//+ (NSString*) globalConfiguredName;
+//+ (NSString*) globalConfiguredEmail;
 
 
 #pragma mark Interrogation
@@ -71,6 +68,7 @@
 - (GBRemote*) remoteForAlias:(NSString*)remoteAlias;
 - (BOOL) doesRefExist:(GBRef*) ref;
 - (BOOL) doesHaveSubmodules;
+- (NSURL*) URLForSubmoduleAtPath:(NSString*)path;
 
 
 #pragma mark Update

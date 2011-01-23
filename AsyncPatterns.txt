@@ -47,15 +47,15 @@ Async w/o coalescing:
 
 Async with coalescing:
 
-[self.jobManager performIfNotRunningForKey:@"MySpecificOperation" block:^{
+[self.blockMerger performIfNotRunningForKey:@"MySpecificOperation" block:^{
   [self doSomething:^{
-    [self.jobManager didFinishKey:@"MySpecificOperation"];
+    [self.blockMerger didFinishKey:@"MySpecificOperation"];
   }];
 } completionHandler:block];
 
-[self.jobManager performOnceForKey:@"MySpecificOperation" block:^{
+[self.blockMerger performOnceForKey:@"MySpecificOperation" block:^{
   [self doSomething:^{
-    [self.jobManager didFinishKey:@"MySpecificOperation"];
+    [self.blockMerger didFinishKey:@"MySpecificOperation"];
   }];
 } completionHandler:block];
 

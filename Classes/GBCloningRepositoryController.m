@@ -1,6 +1,5 @@
 #import "GBCloningRepositoryController.h"
 #import "GBCloneTask.h"
-#import "NSData+OADataHelpers.h"
 
 @implementation GBCloningRepositoryController
 
@@ -47,7 +46,7 @@
       self.error = [NSError errorWithDomain:@"Gitbox"
                                        code:1 
                                    userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
-                                             [task.output UTF8String], NSLocalizedDescriptionKey,
+                                             [task UTF8OutputStripped], NSLocalizedDescriptionKey,
                                              [NSNumber numberWithInt:[task terminationStatus]], @"terminationStatus",
                                              [task command], @"command",
                                              nil
@@ -57,7 +56,7 @@
     if (task.isTerminated || [task isError])
     {
       NSLog(@"GBCloningRepositoryController: did FAIL to clone at %@", self.targetURL);
-      NSLog(@"GBCloningRepositoryController: output: %@", [task.output UTF8String]);
+      NSLog(@"GBCloningRepositoryController: output: %@", [task UTF8OutputStripped]);
       if ([self.delegate respondsToSelector:@selector(cloningRepositoryControllerDidFail:)]) {
         [self.delegate cloningRepositoryControllerDidFail:self];
       }

@@ -40,6 +40,21 @@
 	return [[result copy] autorelease];
 }
 
+- (NSString*) stringWithEscapingConfigKeyPart
+{
+  // Seems like git config does not like quoted parts
+  return self;
+//  if ([self rangeOfString:@"\\"].length > 0 || [self rangeOfString:@"\""].length > 0 || [self rangeOfString:@" "].length > 0)
+//  {
+//    NSString* escaped = [self stringWithEscapedDoubleQuotes];
+//    return [NSString stringWithFormat:@"\"%@\"", escaped];
+//  }
+//  else
+//  {
+//    return self;
+//  }
+}
+
 - (NSString*) nonZeroCommitId
 {
   if ([self isEqualToString:@"0000000000000000000000000000000000000000"])

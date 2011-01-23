@@ -8,16 +8,23 @@
 #import "GBHistoryTask.h"
 #import "GBLocalRefsTask.h"
 #import "GBUpdateSubmodulesTask.h"
+#import "GBGitConfig.h"
 
+#import "OAPropertyListController.h"
+#import "OABlockGroup.h"
+#import "OABlockMerger.h"
 #import "NSFileManager+OAFileManagerHelpers.h"
 #import "NSData+OADataHelpers.h"
 #import "NSArray+OAArrayHelpers.h"
 #import "NSString+OAGitHelpers.h"
-#import "OAPropertyListController.h"
-#import "OABlockGroup.h"
 #import "NSAlert+OAAlertHelpers.h"
 
 @interface GBRepository ()
+
+@property(nonatomic, retain) NSString* topCommitId;
+@property(nonatomic, retain) OABlockMerger* blockMerger;
+@property(nonatomic, retain) GBGitConfig* config;
+@property(nonatomic, assign) dispatch_queue_t dispatchQueue;
 
 - (void) loadCurrentLocalRefWithBlock:(void(^)())block;
 - (void) loadLocalRefsWithBlock:(void(^)())block;
@@ -43,6 +50,8 @@
 @synthesize topCommitId;
 @synthesize dispatchQueue;
 @synthesize lastError;
+@synthesize blockMerger;
+@synthesize config;
 
 @synthesize unmergedCommitsCount;
 @synthesize unpushedCommitsCount;
@@ -65,6 +74,8 @@
   self.currentRemoteBranch = nil;
   self.localBranchCommits = nil;
   self.topCommitId = nil;
+  self.blockMerger = nil;
+  self.config = nil;
   
   if (self.dispatchQueue) dispatch_release(self.dispatchQueue);
   self.dispatchQueue = nil;
@@ -78,6 +89,8 @@
   if ((self = [super init]))
   {
     self.dispatchQueue = dispatch_queue_create("com.oleganza.gitbox.repository_queue", NULL);
+    self.blockMerger = [[OABlockMerger new] autorelease];
+    self.config = [GBGitConfig configForRepository:self];
   }
   return self;
 }
@@ -85,14 +98,9 @@
 
 
 
-+ (id) repository
-{
-  return [[self new] autorelease];
-}
-
 + (id) repositoryWithURL:(NSURL*)url
 {
-  GBRepository* r = [self repository];
+  GBRepository* r = [[self new] autorelease];
   r.url = [[[NSURL alloc] initFileURLWithPath:[url path] isDirectory:YES] autorelease]; // force ending slash "/" if needed
   return r;
 }
@@ -124,7 +132,7 @@
     return nil;
   }
   [task launchAndWait];
-  return [[[task.output UTF8String] stringByReplacingOccurrencesOfString:@"git version" withString:@""] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+  return [[[task UTF8OutputStripped] stringByReplacingOccurrencesOfString:@"git version" withString:@""] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 }
 
 
@@ -243,88 +251,76 @@
                                           toPath:[url.path stringByAppendingPathComponent:@".gitignore"] 
                                            error:NULL];
 }
-
-// todo change for an instance method
-+ (void) configureUTF8WithBlock:(void(^)())block
-{
-  block = [[block copy] autorelease];
-  OATask* task = [OATask task];
-  task.launchPath = [GBTask pathToBundledBinary:@"git"];
-  task.arguments = [NSArray arrayWithObjects:@"config", @"--global", @"core.quotepath", @"false",  nil];
-  [task launchWithBlock:block];
-  //[self launchTask:task withBlock:block];
-}
-
-
-
-
-
-# pragma mark git-config(1) interface
-
-+ (NSString*) globalConfigValueForKey:(NSString*)key
-{
-  OATask* task = [OATask task];
-  task.launchPath = [GBTask pathToBundledBinary:@"git"];
-  task.arguments = [NSArray arrayWithObjects:@"config", @"--global", key,  nil];
-  [task launchAndWait];
-  return [[task.output UTF8String] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-}
-
-+ (void) setGlobalConfigValue:(NSString*)value forKey:(NSString*)key
-{
-  OATask* task              = [OATask task];
-  task.launchPath           = [GBTask pathToBundledBinary:@"git"];
-
-  task.arguments = [NSArray arrayWithObjects:@"config", @"--global", key, value,  nil];
-  [task launchAndWait];
-}
-
-
-
-- (NSString*) configValueForKey:(NSString*)key
-{
-  OATask* task              = [OATask task];
-  task.currentDirectoryPath = [self path];
-  task.launchPath           = [GBTask pathToBundledBinary:@"git"];
-  
-  task.arguments = [NSArray arrayWithObjects:@"config", key,  nil];
-  [task launchAndWait];
-  
-  return [[task.output UTF8String] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-}
-
-- (void) setConfigValue:(NSString*)value forKey:(NSString*)key
-{
-  OATask* task              = [OATask task];
-  task.currentDirectoryPath = [self path];
-  task.launchPath           = [GBTask pathToBundledBinary:@"git"];
-
-  task.arguments = [NSArray arrayWithObjects:@"config",key, value,  nil];
-  [task launchAndWait];
-}
-
-
-
-+ (void) configureName:(NSString*)name email:(NSString*)email withBlock:(void(^)())block
-{
-  // git config --global user.name "Joey Joejoe"
-  // git config --global user.email "joey@joejoe.com"
-  
-  [self setGlobalConfigValue:name forKey:@"user.name"];
-  [self setGlobalConfigValue:email forKey:@"user.email"];
-  block();
-}
-
-+ (NSString*) globalConfiguredName
-{
-  return [self globalConfigValueForKey:@"user.name"];
-}
-
-+ (NSString*) globalConfiguredEmail
-{
-  return [self globalConfigValueForKey:@"user.email"];
-}
-
+//
+//
+//
+//
+//# pragma mark git-config(1) interface
+//
+//+ (NSString*) globalConfigValueForKey:(NSString*)key
+//{
+//  OATask* task = [OATask task];
+//  task.launchPath = [GBTask pathToBundledBinary:@"git"];
+//  task.arguments = [NSArray arrayWithObjects:@"config", @"--global", key,  nil];
+//  [task launchAndWait];
+//  return [[task.output UTF8String] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+//}
+//
+//+ (void) setGlobalConfigValue:(NSString*)value forKey:(NSString*)key
+//{
+//  OATask* task              = [OATask task];
+//  task.launchPath           = [GBTask pathToBundledBinary:@"git"];
+//
+//  task.arguments = [NSArray arrayWithObjects:@"config", @"--global", key, value,  nil];
+//  [task launchAndWait];
+//}
+//
+//
+//
+//- (NSString*) configValueForKey:(NSString*)key
+//{
+//  OATask* task              = [OATask task];
+//  task.currentDirectoryPath = [self path];
+//  task.launchPath           = [GBTask pathToBundledBinary:@"git"];
+//  
+//  task.arguments = [NSArray arrayWithObjects:@"config", key,  nil];
+//  [task launchAndWait];
+//  
+//  return [[task.output UTF8String] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+//}
+//
+//- (void) setConfigValue:(NSString*)value forKey:(NSString*)key
+//{
+//  OATask* task              = [OATask task];
+//  task.currentDirectoryPath = [self path];
+//  task.launchPath           = [GBTask pathToBundledBinary:@"git"];
+//
+//  task.arguments = [NSArray arrayWithObjects:@"config",key, value,  nil];
+//  [task launchAndWait];
+//}
+//
+//
+//
+//+ (void) configureName:(NSString*)name email:(NSString*)email withBlock:(void(^)())block
+//{
+//  // git config --global user.name "Joey Joejoe"
+//  // git config --global user.email "joey@joejoe.com"
+//  
+//  [self setGlobalConfigValue:name forKey:@"user.name"];
+//  [self setGlobalConfigValue:email forKey:@"user.email"];
+//  block();
+//}
+//
+//+ (NSString*) globalConfiguredName
+//{
+//  return [self globalConfigValueForKey:@"user.name"];
+//}
+//
+//+ (NSString*) globalConfiguredEmail
+//{
+//  return [self globalConfigValueForKey:@"user.email"];
+//}
+//
 
 
 #pragma mark Properties
@@ -459,10 +455,18 @@
   return [fileManager fileExistsAtPath:dotGitModulesPath];
 }
 
+- (NSURL*) URLForSubmoduleAtPath:(NSString*)submodulePath
+{
+  NSString* key = [NSString stringWithFormat:@"%@.%@.%@", @"submodule", [submodulePath stringWithEscapingConfigKeyPart], @"url"];
+  NSString* urlString = [self.config stringForKey:key];
+  if (!urlString || [urlString isEqualToString:@""]) return nil;
+  return [NSURL URLWithString:urlString];
+}
+
+
 
 
 #pragma mark Update
-
 
 
 
@@ -724,23 +728,17 @@
     return;
   }
   
-  GBTask* task1 = [self task];
-  task1.arguments = [NSArray arrayWithObjects:@"config", 
-                     [NSString stringWithFormat:@"branch.%@.remote", name], 
-                     ref.remoteAlias, 
-                     nil];
-  [self launchTask:task1 withBlock:^{
-    GBTask* task2 = [self task];
-    task2.arguments = [NSArray arrayWithObjects:@"config", 
-                       [NSString stringWithFormat:@"branch.%@.merge", name],
-                       [NSString stringWithFormat:@"refs/heads/%@", ref.name],
-                       nil];
-    [self launchTask:task2 withBlock:^{
-      [task2 showErrorIfNeeded];
+  NSString* escapedName = [name stringWithEscapingConfigKeyPart];
+  NSLog(@"escapedName = %@", escapedName);
+  [self.config setString:ref.remoteAlias
+                  forKey:[NSString stringWithFormat:@"branch.%@.remote", escapedName] withBlock:^{
+                    
+    [self.config setString:[NSString stringWithFormat:@"refs/heads/%@", ref.name]
+                    forKey:[NSString stringWithFormat:@"branch.%@.merge", escapedName] withBlock:^{
       if (block) block();
     }];
-  }];
 
+  }];
 }
 
 
@@ -866,7 +864,7 @@
   [self launchTask:task withBlock:^{
     if ([task isError])
     {
-      [self alertWithMessage: @"Merge failed" description:[task.output UTF8String]];
+      [self alertWithMessage: @"Merge failed" description:[task UTF8OutputStripped]];
     }
     if (block) block();
   }];

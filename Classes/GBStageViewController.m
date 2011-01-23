@@ -1,8 +1,6 @@
-
-
-
 #define StageHeaderAnimationDebug 0
 
+#import "GBGitConfig.h"
 #import "GBRepository.h"
 #import "GBRef.h"
 #import "GBStage.h"
@@ -416,7 +414,7 @@
 {
   if (!self.messageHistoryController.email)
   {
-    self.messageHistoryController.email = [GBRepository globalConfiguredEmail];
+    self.messageHistoryController.email = [[GBGitConfig userConfig] userEmail];
   }
   NSString* message = [self.messageHistoryController previousMessage];
   if (message)
@@ -431,7 +429,7 @@
 {
   if (!self.messageHistoryController.email)
   {
-    self.messageHistoryController.email = [GBRepository globalConfiguredEmail];
+    self.messageHistoryController.email = [[GBGitConfig userConfig] userEmail];
   }
   NSString* message = [self.messageHistoryController nextMessage];
   if (message)
@@ -687,7 +685,7 @@
     return;
   }
   
-  NSString* email = [GBRepository globalConfiguredEmail];
+  NSString* email = [[GBGitConfig userConfig] userEmail];
   
   if (email && [email length] > 3)
   {
@@ -702,7 +700,7 @@
   [ctrl fillWithAddressBookData];
   ctrl.finishBlock = ^{
     self.alreadyValidatedUserNameAndEmail = YES;
-    [GBRepository configureName:ctrl.userName email:ctrl.userEmail withBlock:block];
+    [[GBGitConfig userConfig] setName:ctrl.userName email:ctrl.userEmail withBlock:block];
   };
   [ctrl runSheetInWindow:[self window]];
 }

@@ -29,6 +29,10 @@
 		2004343E12DB175B00B045C0 /* GBRepositoriesGroupCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2004343D12DB175B00B045C0 /* GBRepositoriesGroupCell.m */; };
 		2004343F12DB175B00B045C0 /* GBRepositoriesGroupCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2004343D12DB175B00B045C0 /* GBRepositoriesGroupCell.m */; };
 		200A3FBF12E7AD6E004DF940 /* Search.txt in Resources */ = {isa = PBXBuildFile; fileRef = 200A3FBE12E7AD6E004DF940 /* Search.txt */; };
+		200A41B112EB91B0004DF940 /* OABlockMerger.m in Sources */ = {isa = PBXBuildFile; fileRef = 200A41B012EB91B0004DF940 /* OABlockMerger.m */; };
+		200A41B212EB91B0004DF940 /* OABlockMerger.m in Sources */ = {isa = PBXBuildFile; fileRef = 200A41B012EB91B0004DF940 /* OABlockMerger.m */; };
+		200A41C912EB9B14004DF940 /* GBGitConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 200A41C812EB9B14004DF940 /* GBGitConfig.m */; };
+		200A41CA12EB9B14004DF940 /* GBGitConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 200A41C812EB9B14004DF940 /* GBGitConfig.m */; };
 		200B08B511B6E359004C09A8 /* GBLocalRemoteAssociationTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 200B08B411B6E359004C09A8 /* GBLocalRemoteAssociationTask.m */; };
 		2010732F11A7E9C300EFDE56 /* app.icns in Resources */ = {isa = PBXBuildFile; fileRef = 2010732E11A7E9C300EFDE56 /* app.icns */; };
 		201073B611A80A4600EFDE56 /* GBRemotesTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 201073B511A80A4600EFDE56 /* GBRemotesTask.m */; };
@@ -370,6 +374,10 @@
 		200435F412DC59E200B045C0 /* GBRepositoriesControllerLocalItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBRepositoriesControllerLocalItem.h; sourceTree = "<group>"; };
 		2009871711C4597800F35630 /* Payment.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Payment.txt; sourceTree = "<group>"; };
 		200A3FBE12E7AD6E004DF940 /* Search.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Search.txt; sourceTree = "<group>"; };
+		200A41AF12EB91B0004DF940 /* OABlockMerger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OABlockMerger.h; sourceTree = "<group>"; };
+		200A41B012EB91B0004DF940 /* OABlockMerger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OABlockMerger.m; sourceTree = "<group>"; };
+		200A41C712EB9B14004DF940 /* GBGitConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBGitConfig.h; sourceTree = "<group>"; };
+		200A41C812EB9B14004DF940 /* GBGitConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBGitConfig.m; sourceTree = "<group>"; };
 		200B08B311B6E359004C09A8 /* GBLocalRemoteAssociationTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBLocalRemoteAssociationTask.h; sourceTree = "<group>"; };
 		200B08B411B6E359004C09A8 /* GBLocalRemoteAssociationTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBLocalRemoteAssociationTask.m; sourceTree = "<group>"; };
 		2010732E11A7E9C300EFDE56 /* app.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = app.icns; sourceTree = "<group>"; };
@@ -722,6 +730,8 @@
 		2038F30811952FAE0087CE37 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				200A41C712EB9B14004DF940 /* GBGitConfig.h */,
+				200A41C812EB9B14004DF940 /* GBGitConfig.m */,
 				2038F30A11952FCF0087CE37 /* GBRepository.h */,
 				2038F30B11952FCF0087CE37 /* GBRepository.m */,
 				70865D2912D25F5F00033683 /* GBSubmodule.h */,
@@ -1033,6 +1043,8 @@
 				2031BB9712A85456008CC337 /* OABlockGroup.m */,
 				2031BB9C12A85646008CC337 /* OABlockQueue.h */,
 				2031BB9D12A85646008CC337 /* OABlockQueue.m */,
+				200A41AF12EB91B0004DF940 /* OABlockMerger.h */,
+				200A41B012EB91B0004DF940 /* OABlockMerger.m */,
 			);
 			name = "Concurrency Helpers";
 			sourceTree = "<group>";
@@ -1474,6 +1486,8 @@
 				2097EC6D12DE6B450070AE89 /* GBSidebarCell.m in Sources */,
 				20EF8BED12E6603600F3438A /* GBUpdateSubmodulesTask.m in Sources */,
 				20EF8BF012E6605100F3438A /* GBSubmodule.m in Sources */,
+				200A41B212EB91B0004DF940 /* OABlockMerger.m in Sources */,
+				200A41CA12EB9B14004DF940 /* GBGitConfig.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1583,6 +1597,8 @@
 				2097EB5C12DDF7D30070AE89 /* GBChangesTableView.m in Sources */,
 				2097EC6C12DE6B450070AE89 /* GBSidebarCell.m in Sources */,
 				70EEC8D012DFE33E00DD1555 /* GBUpdateSubmodulesTask.m in Sources */,
+				200A41B112EB91B0004DF940 /* OABlockMerger.m in Sources */,
+				200A41C912EB9B14004DF940 /* GBGitConfig.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -1010,9 +1010,8 @@
   if (![self checkRepositoryExistance]) return;
   
   //NSLog(@"GBRepositoryController: autoFetch into %@ (delay: %f)", [self url], autoFetchInterval);
-  //while (autoFetchInterval < 10.0)  autoFetchInterval += 1.0;
-  while (autoFetchInterval > 100.0) autoFetchInterval -= 10.0;
-  autoFetchInterval = autoFetchInterval*(1.4142 + drand48()*0.2);
+  while (autoFetchInterval > 120.0) autoFetchInterval -= 10.0;
+  autoFetchInterval = autoFetchInterval*(2 + drand48()*0.2);
   
   [self scheduleAutoFetch];
   

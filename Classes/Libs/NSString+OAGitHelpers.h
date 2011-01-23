@@ -11,4 +11,6 @@
 
 - (NSString*) stringWithEscapedDoubleQuotes;
 
+- (NSString*) stringWithEscapingConfigKeyPart;
+
 @end

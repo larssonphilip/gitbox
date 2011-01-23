@@ -1,6 +1,5 @@
 #import "OATask.h"
 #import "OAActivity.h"
-#import "NSData+OADataHelpers.h"
 
 
 @implementation OAActivity
@@ -32,7 +31,7 @@
 {
   if (!textOutput)
   {
-    return [self.task.output UTF8String];
+    return [self.task UTF8Output];
   }
   return [[textOutput retain] autorelease];
 }

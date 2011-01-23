@@ -1,7 +1,6 @@
 #import "GBRemoteRefsTask.h"
 #import "GBRemote.h"
 #import "GBRef.h"
-#import "NSData+OADataHelpers.h"
 
 @implementation GBRemoteRefsTask
 
@@ -39,7 +38,7 @@
   NSMutableArray* theBranches = [NSMutableArray array];
   NSMutableArray* theTags     = [NSMutableArray array];
   
-  for (NSString* line in [[self.output UTF8String] componentsSeparatedByString:@"\n"])
+  for (NSString* line in [[self UTF8OutputStripped] componentsSeparatedByString:@"\n"])
   {
     if (line && [line length] > 0)
     {

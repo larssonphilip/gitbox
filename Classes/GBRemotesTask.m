@@ -1,9 +1,6 @@
 #import "GBRemotesTask.h"
 #import "GBRemote.h"
 
-#import "NSData+OADataHelpers.h"
-
-
 @interface GBRemotesTask ()
 @property(nonatomic, retain) NSMutableDictionary* remotesByAlias;
 @end
@@ -46,7 +43,7 @@
 {
   [super didFinish];
   NSMutableArray* list = [NSMutableArray array];
-  for (NSString* line in [[self.output UTF8String] componentsSeparatedByString:@"\n"])
+  for (NSString* line in [[self UTF8OutputStripped] componentsSeparatedByString:@"\n"])
   {
     if (line && [line length] > 0)
     {

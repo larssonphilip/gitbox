@@ -1,7 +1,5 @@
 extern NSString* OATaskNotification;
 
-typedef void (^OATaskBlock)();
-
 @class OAActivity;
 @interface OATask : NSObject
 {
@@ -16,7 +14,7 @@ typedef void (^OATaskBlock)();
 @property(nonatomic,retain) id standardOutput;
 @property(nonatomic,retain) id standardError;
 @property(nonatomic,retain) OAActivity* activity;
-@property(nonatomic,copy) OATaskBlock callbackBlock;
+@property(nonatomic,copy) void(^callbackBlock)();
 @property(nonatomic,copy) NSString* keychainPasswordName;
 
 @property(nonatomic,assign) BOOL skipKeychainPassword;
@@ -37,13 +35,15 @@ typedef void (^OATaskBlock)();
 - (int) terminationStatus;
 - (BOOL) isError;
 - (NSString*) command;
+- (NSString*) UTF8Output;
+- (NSString*) UTF8OutputStripped;
 
 
 #pragma mark Mutation methods
 
 - (void) prepareTask; // for subclasses
 
-- (void) launchWithBlock:(OATaskBlock)block;
+- (void) launchWithBlock:(void(^)())block;
 - (void) launchInQueue:(dispatch_queue_t)aQueue withBlock:(void(^)())block;
 
 - (id) launchAndWait;

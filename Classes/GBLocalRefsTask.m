@@ -1,8 +1,6 @@
 #import "GBLocalRefsTask.h"
 #import "GBRef.h"
 
-#import "NSData+OADataHelpers.h"
-
 @implementation GBLocalRefsTask
 
 @synthesize branches;
@@ -54,7 +52,7 @@
   b1f9554e636f1a707c4405c0851fd8aa9d321e82 refs/tags/0.9.7
   cac7493f1ec3c45655f861dcf6db2b99fe5b1cda refs/tags/1.0
   */
-  for (NSString* line in [[self.output UTF8String] componentsSeparatedByString:@"\n"])
+  for (NSString* line in [[self UTF8OutputStripped] componentsSeparatedByString:@"\n"])
   {
     if (line && [line length] > 0)
     {
