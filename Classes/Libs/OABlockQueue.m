@@ -54,7 +54,7 @@
 
 - (void) proceed
 {
-  BOOL shouldLog = ([self.queue count] > 10);
+  BOOL shouldLog = ([self.queue count] > 20);
   if (shouldLog)
   {
     NSLog(@"OABlockQueue: operationCount = %d, limit = %d, total = %d", (int)self.operationCount, (int)self.maxConcurrentOperationCount, (int)[self.queue count]);
