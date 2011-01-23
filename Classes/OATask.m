@@ -277,13 +277,23 @@ NSString* OATaskNotification = @"OATaskNotification";
 
     [self.nstask launch];
     //NSLog(@"nstask env: %@", [self.nstask environment]);
-    NSFileHandle* pipeFileHandle = [self fileHandleForReading];
-    if (pipeFileHandle)
+    
+    @try
     {
-      [self.output appendData:[pipeFileHandle readDataToEndOfFile]];
+      NSFileHandle* pipeFileHandle = [self fileHandleForReading];
+      if (pipeFileHandle)
+      {
+        [self.output appendData:[pipeFileHandle readDataToEndOfFile]];
+      }
+      [self.nstask waitUntilExit];
     }
-    [self.nstask waitUntilExit];
-
+    @catch (NSException* e)
+    {
+      NSLog(@"OATask: pipe seems to be broken: caught exception: %@", e);
+      [self.nstask terminate];
+      self.output = [NSMutableData data];
+    }
+    
     dispatch_async(callerQueue, ^{
       #if OATASK_DEBUG
         NSLog(@"%@%@ ended [%@...]", [@"" stringByPaddingToLength:logIndentation*16 withString:@" " startingAtIndex:0], [self class], cmd);
