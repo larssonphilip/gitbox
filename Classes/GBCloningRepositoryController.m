@@ -2,14 +2,14 @@
 #import "GBCloneTask.h"
 
 @interface GBCloningRepositoryController ()
-@property(nonatomic,retain) GBCloneTask* cloneTask;
+@property(nonatomic,retain) GBCloneTask* task;
 @end
 
 @implementation GBCloningRepositoryController
 
 @synthesize sourceURL;
 @synthesize targetURL;
-@synthesize cloneTask;
+@synthesize task;
 @synthesize error;
 
 @synthesize delegate;
@@ -18,8 +18,8 @@
 {
   self.sourceURL = nil;
   self.targetURL = nil;
-  self.cloneTask = nil;
-  self.error = nil;
+  self.task      = nil;
+  self.error     = nil;
   [super dealloc];
 }
 
@@ -36,31 +36,31 @@
 - (void) start
 {
   [super start];
-  GBCloneTask* task = [[GBCloneTask new] autorelease];
+  GBCloneTask* t = [[GBCloneTask new] autorelease];
   self.isDisabled++;
   self.isSpinning++;
-  task.sourceURL = self.sourceURL;
-  task.targetURL = self.targetURL;
-  self.cloneTask = task;
-  [task launchWithBlock:^{
+  t.sourceURL = self.sourceURL;
+  t.targetURL = self.targetURL;
+  self.task = t;
+  [t launchWithBlock:^{
     self.isSpinning--;
-    self.cloneTask = nil;
-    if ([task isError])
+    self.task = nil;
+    if ([t isError])
     {
       self.error = [NSError errorWithDomain:@"Gitbox"
                                        code:1 
                                    userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
-                                             [task UTF8OutputStripped], NSLocalizedDescriptionKey,
-                                             [NSNumber numberWithInt:[task terminationStatus]], @"terminationStatus",
-                                             [task command], @"command",
+                                             [t UTF8OutputStripped], NSLocalizedDescriptionKey,
+                                             [NSNumber numberWithInt:[t terminationStatus]], @"terminationStatus",
+                                             [t command], @"command",
                                              nil
                                             ]];
     }
     
-    if (task.isTerminated || [task isError])
+    if (t.isTerminated || [t isError])
     {
       NSLog(@"GBCloningRepositoryController: did FAIL to clone at %@", self.targetURL);
-      NSLog(@"GBCloningRepositoryController: output: %@", [task UTF8OutputStripped]);
+      NSLog(@"GBCloningRepositoryController: output: %@", [t UTF8OutputStripped]);
       if ([self.delegate respondsToSelector:@selector(cloningRepositoryControllerDidFail:)]) {
         [self.delegate cloningRepositoryControllerDidFail:self];
       }
@@ -78,11 +78,11 @@
 
 - (void) stop
 {
-  if (self.cloneTask)
+  if (self.task)
   {
     self.isSpinning--;
-    [self.cloneTask terminate];
-    self.cloneTask = nil;
+    [self.task terminate];
+    self.task = nil;
     [[NSFileManager defaultManager] removeItemAtURL:self.targetURL error:NULL];
   }
   [super stop];
