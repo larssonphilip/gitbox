@@ -12,9 +12,13 @@
 
 @interface OABlockQueue : NSObject
 
-@property(nonatomic) NSInteger maxConcurrentOperationCount; // 1 by default
-@property(nonatomic) NSInteger operationCount;
+@property(nonatomic, copy) NSString* name;
 @property(nonatomic, retain) NSMutableArray* queue;
+
+@property(nonatomic, assign) NSInteger maxConcurrentOperationCount; // 1 by default
+@property(nonatomic, assign) NSInteger operationCount;
+
++ (OABlockQueue*) queueWithName:(NSString*)aName concurrency:(NSInteger)maxConcurrentOps;
 
 - (void) addBlock:(void(^)())aBlock;
 - (void) prependBlock:(void(^)())aBlock;

@@ -6,6 +6,7 @@
 @interface GBBaseRepositoryController : NSObject <GBRepositoriesControllerLocalItem, GBSidebarItem>
 
 @property(nonatomic, retain) OABlockQueue* updatesQueue;
+@property(nonatomic, retain) OABlockQueue* autofetchQueue;
 @property(nonatomic, retain) NSProgressIndicator* sidebarSpinner;
 
 @property(nonatomic, assign) BOOL displaysTwoPathComponents;
@@ -23,6 +24,7 @@
 - (NSString*) parentFolderName;
 - (NSString*) windowTitle;
 - (NSURL*) windowRepresentedURL;
+- (NSImage*) icon;
 
 - (void) initialUpdateWithBlock:(void(^)())block;
 

@@ -13,12 +13,6 @@
 #pragma mark GBSidebarCell
 
 
-- (NSImage*) icon
-{
-  return [[NSWorkspace sharedWorkspace] iconForFile:[[[self repositoryController] url] path]];
-}
-
-
 - (NSRect) drawExtraFeaturesAndReturnRemainingRect:(NSRect)rect
 {
   // TODO: draw "download" button

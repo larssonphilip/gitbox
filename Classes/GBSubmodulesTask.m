@@ -100,7 +100,7 @@
     }
 
     #if DEBUG
-      NSLog(@"Instantiated submodule %@ (%@) at %@", submodule.path, submoduleURL, [self.repository path]);
+      //NSLog(@"Instantiated submodule %@ (%@) at %@", submodule.path, submoduleURL, [self.repository path]);
     #endif
 
     [ary addObject:submodule];

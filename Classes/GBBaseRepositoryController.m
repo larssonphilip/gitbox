@@ -6,6 +6,7 @@
 @implementation GBBaseRepositoryController
 
 @synthesize updatesQueue;
+@synthesize autofetchQueue;
 @synthesize sidebarSpinner;
 
 @synthesize displaysTwoPathComponents;
@@ -16,6 +17,7 @@
 - (void) dealloc
 {
   self.updatesQueue = nil;
+  self.autofetchQueue = nil;
   NSLog(@"GBBaseRepositoryController dealloc %@", self);
   [self.sidebarSpinner removeFromSuperview];
   self.sidebarSpinner = nil;
@@ -80,6 +82,18 @@
   return nil;
 }
 
+- (NSImage*) icon
+{
+  NSString* path = [[self url] path];
+  if (!path) return nil;
+  
+  while ([path length] > 0 && ![[NSFileManager defaultManager] fileExistsAtPath:path])
+  {
+    path = [path stringByDeletingLastPathComponent];
+  }
+  return [[NSWorkspace sharedWorkspace] iconForFile:path];
+}
+
 - (void) initialUpdateWithBlock:(void(^)())block { if (block) block(); }
 
 - (void) beginBackgroundUpdate {}
@@ -102,6 +116,8 @@
     [self.sidebarSpinner removeFromSuperview];
   }
 }
+
+
 
 
 #pragma mark GBRepositoriesControllerLocalItem

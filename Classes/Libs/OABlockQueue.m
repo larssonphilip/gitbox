@@ -7,14 +7,24 @@
 
 @implementation OABlockQueue
 
-@synthesize maxConcurrentOperationCount;
-@synthesize operationCount;
+@synthesize name;
 @synthesize queue;
 
+@synthesize maxConcurrentOperationCount;
+@synthesize operationCount;
 @synthesize tooBigQueue;
+
++ (OABlockQueue*) queueWithName:(NSString*)aName concurrency:(NSInteger)maxConcurrentOps
+{
+  OABlockQueue* q = [[self new] autorelease];
+  q.name = aName;
+  q.maxConcurrentOperationCount = maxConcurrentOps;
+  return q;
+}
 
 - (void) dealloc
 {
+  self.name = nil;
   self.queue = nil;
   [self dealloc];
 }
@@ -92,7 +102,7 @@
   
   if (shouldLog)
   {
-    NSLog(@"OABlockQueue: operationCount = %d, limit = %d, total = %d", (int)self.operationCount, (int)self.maxConcurrentOperationCount, (int)[self.queue count]);
+    NSLog(@"OABlockQueue <%@>: operationCount = %d, limit = %d, total = %d", self.name, (int)self.operationCount, (int)self.maxConcurrentOperationCount, (int)[self.queue count]);
   }  
   if (self.operationCount < self.maxConcurrentOperationCount)
   {

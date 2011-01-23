@@ -12,6 +12,7 @@
 @property(nonatomic,retain) GBBaseRepositoryController* selectedRepositoryController;
 @property(nonatomic,retain) GBRepositoriesGroup* localRepositoriesGroup;
 @property(nonatomic,retain) OABlockQueue* localRepositoriesUpdatesQueue;
+@property(nonatomic,retain) OABlockQueue* autofetchQueue;
 @property(nonatomic,retain) id<GBRepositoriesControllerLocalItem> selectedLocalItem;
 
 @property(assign) id<GBRepositoriesControllerDelegate> delegate;

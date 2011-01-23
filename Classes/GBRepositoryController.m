@@ -196,9 +196,7 @@
     }
   }];
   [self.fsEventStream start];
-  
-  [self resetAutoFetchInterval];
-  [self scheduleAutoFetch];
+  self.isWaitingForAutofetch = YES; // will be reset in initialUpdateWithBlock
 }
 
 - (void) stop
@@ -244,6 +242,11 @@
           [self updateSubmodulesWithBlock:^{
             [self popSpinning];
             [self popFSEventsPause];
+            
+            self.isWaitingForAutofetch = NO; // resets YES set in -start method
+            [self resetAutoFetchInterval];
+            [self scheduleAutoFetch];
+            
             [self.blockMerger didFinishTask:taskName];
           }];
         }];
@@ -363,6 +366,7 @@
           submodule.repositoryController = repoCtrl;
           submodule.repositoryController.delegate = self.delegate;
           repoCtrl.updatesQueue = self.updatesQueue;
+          repoCtrl.autofetchQueue = self.autofetchQueue;
           [repoCtrl start];
           [self.updatesQueue prependBlock:^{
             [repoCtrl initialUpdateWithBlock:^{
@@ -375,6 +379,7 @@
           GBSubmoduleCloningController* repoCtrl = [[GBSubmoduleCloningController new] autorelease];
           repoCtrl.submodule = submodule;
           repoCtrl.updatesQueue = self.updatesQueue;
+          repoCtrl.autofetchQueue = self.autofetchQueue;
           submodule.repositoryController = repoCtrl;
           submodule.repositoryController.delegate = self.delegate;
         }
@@ -1140,20 +1145,18 @@
   autoFetchInterval = autoFetchInterval*(2 + drand48()*0.2);
   
   [self scheduleAutoFetch];
-  
-  //#warning AutoFetch disabled!
-  //return;
-  
+    
   if (!self.isWaitingForAutofetch)
   {
     //NSLog(@"AutoFetch: self.updatesQueue = %d / %d [%@]", (int)self.updatesQueue.operationCount, (int)[self.updatesQueue.queue count], [self nameInSidebar]);
     self.isWaitingForAutofetch = YES;
-    [self.updatesQueue addBlock:^{
+    NSAssert(self.autofetchQueue, @"Somebody forgot to set autofetchQueue for repository controller %@", self.repository.url);
+    [self.autofetchQueue addBlock:^{
       self.isWaitingForAutofetch = NO;
       //NSLog(@"AutoFetch: start %@", [self nameInSidebar]);
       [self updateRemoteRefsWithBlock:^{
         //NSLog(@"AutoFetch: end %@", [self nameInSidebar]);
-        [self.updatesQueue endBlock];
+        [self.autofetchQueue endBlock];
       }];
     }];
   }

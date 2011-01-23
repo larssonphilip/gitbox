@@ -17,7 +17,7 @@
 
 - (NSImage*) icon
 {
-  return [[NSWorkspace sharedWorkspace] iconForFile:[[[self repositoryController] url] path]];
+  return [[self repositoryController] icon];
 }
 
 

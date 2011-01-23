@@ -16,6 +16,7 @@
 @synthesize selectedRepositoryController;
 @synthesize localRepositoriesGroup;
 @synthesize localRepositoriesUpdatesQueue;
+@synthesize autofetchQueue;
 @synthesize selectedLocalItem;
 
 @synthesize delegate;
@@ -25,6 +26,7 @@
   self.selectedRepositoryController = nil;
   self.localRepositoriesGroup = nil;
   self.localRepositoriesUpdatesQueue = nil;
+  self.autofetchQueue = nil;
   self.selectedLocalItem = nil;
   [super dealloc];
 }
@@ -33,8 +35,9 @@
 {
   if ((self = [super init]))
   {
-    self.localRepositoriesUpdatesQueue = [[OABlockQueue new] autorelease];
-    self.localRepositoriesUpdatesQueue.maxConcurrentOperationCount = 1;
+    self.localRepositoriesUpdatesQueue = [OABlockQueue queueWithName:@"LocalUpdates" concurrency:1];
+    self.autofetchQueue = [OABlockQueue queueWithName:@"AutoFetch" concurrency:6];
+    
     self.localRepositoriesGroup = [[[GBRepositoriesGroup alloc] init] autorelease];
     self.localRepositoriesGroup.name = @"localRepositoriesGroup"; // name for debugging only, won't be visible in UI
   }
@@ -136,6 +139,7 @@
 {
   if (!repoCtrl) return;
   repoCtrl.updatesQueue = self.localRepositoriesUpdatesQueue;
+  repoCtrl.autofetchQueue = self.autofetchQueue;
   [repoCtrl start];
   
   if (!queued)
