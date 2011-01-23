@@ -227,6 +227,12 @@
 
 - (void) initialUpdateWithBlock:(void(^)())block
 {
+  if (!self.repository)
+  {
+    if (block) block();
+    return;
+  }
+  
   NSString* taskName = NSStringFromSelector(_cmd);
   [self.blockMerger performTaskOnce:taskName withBlock:^{
     [self pushFSEventsPause];
@@ -368,6 +374,7 @@
         {
           GBSubmoduleCloningController* repoCtrl = [[GBSubmoduleCloningController new] autorelease];
           repoCtrl.submodule = submodule;
+          repoCtrl.updatesQueue = self.updatesQueue;
           submodule.repositoryController = repoCtrl;
           submodule.repositoryController.delegate = self.delegate;
         }

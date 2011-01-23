@@ -578,11 +578,13 @@
 - (void) submoduleCloningControllerDidSelect:(GBSubmoduleCloningController*)repoCtrl
 {
   self.toolbarController.baseRepositoryController = repoCtrl;
-  [self.toolbarController update];
-  [self.historyController update];
   self.submoduleCloneProcessViewController.repositoryController = repoCtrl;
-  [self.submoduleCloneProcessViewController update];
-  [self.submoduleCloneProcessViewController loadInView:[[self.splitView subviews] objectAtIndex:1]];
+  [self.jumpController delayBlockIfNeeded:^{
+    [self.toolbarController update];
+    [self.historyController update];
+    [self.submoduleCloneProcessViewController update];
+    [self.submoduleCloneProcessViewController loadInView:[[self.splitView subviews] objectAtIndex:1]];
+  }];
 }
 
 - (void) submoduleCloningControllerDidStart:(GBSubmoduleCloningController*)cloningRepoCtrl
@@ -604,6 +606,7 @@
   GBRepositoryController* repoCtrl = [GBRepositoryController repositoryControllerWithURL:[submodule localURL]];
   submodule.repositoryController = repoCtrl;
   submodule.repositoryController.delegate = self;
+  repoCtrl.updatesQueue = cloningRepoCtrl.updatesQueue;
   [repoCtrl start];
   [repoCtrl.updatesQueue prependBlock:^{
     [repoCtrl initialUpdateWithBlock:^{
