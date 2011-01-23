@@ -3,9 +3,12 @@
 #import "GBRemote.h"
 #import "GBStage.h"
 #import "GBChange.h"
+#import "GBSubmodule.h"
 
 #import "GBRepositoriesController.h"
 #import "GBRepositoryController.h"
+
+#import "GBSidebarCell.h"
 
 #import "OAFSEventStream.h"
 #import "NSString+OAStringHelpers.h"
@@ -23,6 +26,7 @@
 @property(nonatomic, assign) BOOL isCommitting;
 @property(nonatomic, assign) BOOL isUpdatingRemoteRefs;
 @property(nonatomic, assign) BOOL isWaitingForAutofetch;
+@property(nonatomic, assign) BOOL isCollapsedInSidebar;
 
 - (void) pushDisabled;
 - (void) popDisabled;
@@ -74,6 +78,7 @@
 @synthesize isUpdatingRemoteRefs;
 @synthesize isDisappearedFromFileSystem;
 @synthesize isWaitingForAutofetch;
+@synthesize isCollapsedInSidebar;
 @synthesize delegate;
 
 
@@ -252,7 +257,7 @@
       [self updateLocalRefsWithBlock:^{
         [self pushSpinning];
         [self loadCommitsWithBlock:^{
-          [self.repository updateSubmodulesWithBlock:^{
+          [self updateSubmodulesWithBlock:^{
             [self popSpinning];
             [self.blockMerger didFinishTask:taskName];
           }];
@@ -359,6 +364,32 @@
   
 }
 
+- (void) updateSubmodulesWithBlock:(void(^)())aBlock
+{
+  aBlock = [[aBlock copy] autorelease];
+  [self.repository updateSubmodulesWithBlock:^{
+    
+    for (GBSubmodule* submodule in self.repository.submodules)
+    {
+      if (!submodule.repositoryController)
+      {
+        GBRepositoryController* repoCtrl = [GBRepositoryController repositoryControllerWithURL:[submodule localURL]];
+        submodule.repositoryController = repoCtrl;
+        
+        repoCtrl.updatesQueue = self.updatesQueue;
+        [repoCtrl start];
+        [self.updatesQueue addBlock:^{
+          [repoCtrl initialUpdateWithBlock:^{
+            [self.updatesQueue endBlock];
+          }];
+        }];
+      }
+    }
+        
+    if ([self.delegate respondsToSelector:@selector(repositoryControllerDidUpdateSubmodules:)]) [self.delegate repositoryControllerDidUpdateSubmodules:self];
+    if (aBlock) aBlock();
+  }];
+}
 
 
 
@@ -833,6 +864,55 @@
 //       Submodule will return repository controller when needed (when selected), 
 //       but will have its own UI ("download" button, right-click menu etc.)
 
+- (NSInteger) numberOfChildrenInSidebar
+{
+  return [self.repository.submodules count];
+}
+
+- (id<GBSidebarItem>) childForIndexInSidebar:(NSInteger)index
+{
+  if (index < 0 || index >= [self.repository.submodules count]) return nil;
+  return [self.repository.submodules objectAtIndex:index];
+}
+
+- (id<GBSidebarItem>) findItemWithIndentifier:(NSString*)identifier
+{
+  return [super findItemWithIndentifier:identifier];
+}
+
+- (BOOL) isExpandableInSidebar
+{
+  return [self numberOfChildrenInSidebar] > 0;
+}
+
+- (BOOL) isDraggableInSidebar
+{
+  return YES;
+}
+
+- (BOOL) isEditableInSidebar
+{
+  return NO;
+}
+
+- (BOOL) isExpandedInSidebar
+{
+  //NSLog(@"isExpandedInSidebar: %d [%@]", (int)(!self.isCollapsedInSidebar), [self.repository path]);
+  return !self.isCollapsedInSidebar;
+}
+
+- (void) setExpandedInSidebar:(BOOL)expanded
+{
+  //NSLog(@"setExpandedInSidebar: %d [%@]", (int)expanded, [self.repository path]);
+  self.isCollapsedInSidebar = !expanded;
+  
+  // TODO: save expanded state for submodules list
+  
+  if (!expanded)
+  {
+    [self hideAllSpinnersInSidebar];
+  }
+}
 
 
 

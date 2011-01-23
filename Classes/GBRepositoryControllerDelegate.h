@@ -17,4 +17,7 @@
 - (void) repositoryControllerDidUpdateCommitableChanges:(GBRepositoryController*)repoCtrl;
 - (void) repositoryControllerDidCommit:(GBRepositoryController*)repoCtrl;
 - (void) repositoryController:(GBRepositoryController*)repoCtrl didMoveToURL:(NSURL*)newURL;
+
+- (void) repositoryControllerDidUpdateSubmodules:(GBRepositoryController*)repoCtrl;
+
 @end

@@ -497,6 +497,15 @@
   }
 }
 
+- (void) repositoryControllerDidUpdateSubmodules:(GBRepositoryController*)repoCtrl
+{
+  // FIXME: update only the repo of interest
+  [self.sourcesController update];
+  [self.sourcesController updateExpandedState];
+}
+
+
+
 
 
 #pragma mark GBCloningRepositoryControllerDelegate

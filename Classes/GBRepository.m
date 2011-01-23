@@ -630,11 +630,7 @@
   GBUpdateSubmodulesTask* task = [GBUpdateSubmodulesTask taskWithRepository:self];
 
   [self launchTask:task withBlock:^{
-
     self.submodules = task.submodules;
-    
-    // TODO
-
     if (block) block();
   }];
 }

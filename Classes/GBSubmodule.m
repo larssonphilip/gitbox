@@ -1,12 +1,15 @@
 #import "GBSubmodule.h"
 #import "GBRepository.h"
 #import "GBTask.h"
-
+#import "GBSubmoduleCell.h"
+#import "GBRepositoryController.h"
 
 @implementation GBSubmodule
 
 @synthesize remoteURL;
 @synthesize path;
+@synthesize repositoryController;
+
 @synthesize repository;
 
 
@@ -16,7 +19,8 @@
 {
   self.remoteURL = nil;
   self.path      = nil;
-
+  self.repositoryController = nil;
+  
   [super dealloc];
 }
 
@@ -104,15 +108,10 @@
   return [[self localURL] path];
 }
 
-- (GBBaseRepositoryController*) repositoryController
-{
-  // TODO: return self.repositoryController
-  return nil;
-}
-
 - (id<GBRepositoriesControllerLocalItem>) repositoriesControllerLocalItem
 {
   // TODO: should probably return its parent repositoryController, but only that which is not inside the submodule itself
+  // TODO: think hard about it later!
   return nil;
 }
 
@@ -140,8 +139,8 @@
 
 - (Class) sidebarCellClass
 {
-  // TODO; return [GBSubmoduleCell class];
-  return nil;
+  // TODO: use GBSubmoduleCell to render custom "download" button etc.
+  return [GBSubmoduleCell class];
 }
 
 - (BOOL) isDraggableInSidebar

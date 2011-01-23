@@ -203,7 +203,11 @@
 
 - (BOOL) validateSelectRightPane:(id)sender
 {
-  return ![self isEditing] && ![[self selectedSidebarItem] isRepositoriesGroup];
+  BOOL disableJumping = \
+    [self isEditing]  ||
+    [[self selectedSidebarItem] isRepositoriesGroup] ||
+    ([[self selectedSidebarItem] isExpandableInSidebar] && ![[self selectedSidebarItem] isExpandedInSidebar]);
+  return !disableJumping;
 }
 
 - (IBAction) openInFinder:(id)_
