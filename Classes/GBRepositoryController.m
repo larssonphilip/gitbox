@@ -376,13 +376,16 @@
         GBRepositoryController* repoCtrl = [GBRepositoryController repositoryControllerWithURL:[submodule localURL]];
         submodule.repositoryController = repoCtrl;
         
-        repoCtrl.updatesQueue = self.updatesQueue;
-        [repoCtrl start];
-        [self.updatesQueue addBlock:^{
-          [repoCtrl initialUpdateWithBlock:^{
-            [self.updatesQueue endBlock];
-          }];
-        }];
+        // FIXME: check if the repo is actually cloned. If not, setup GBSubmoduleCloningController.
+        
+//        repoCtrl.updatesQueue = self.updatesQueue;
+//        [repoCtrl start];
+//        [self.updatesQueue addBlock:^{
+//          [repoCtrl initialUpdateWithBlock:^{
+//            [self.updatesQueue endBlock];
+//          }];
+//        }];
+        
       }
     }
         
