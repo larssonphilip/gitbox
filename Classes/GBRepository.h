@@ -41,22 +41,6 @@
 + (BOOL) validateRepositoryURL:(NSURL*)aURL withBlock:(void (^)(BOOL isValid))aBlock;
 
 + (void) initRepositoryAtURL:(NSURL*)url;
-//+ (void) configureUTF8WithBlock:(void(^)())block;
-
-
-# pragma mark git-config(1) interface
-
-
-//+ (NSString*) globalConfigValueForKey:(NSString*)key;
-//+ (void) setGlobalConfigValue:(NSString*)value forKey:(NSString*)key;
-
-//- (NSString*) configValueForKey:(NSString*)key;
-//- (void) setConfigValue:(NSString*)value forKey:(NSString*)key;
-
-//+ (void) configureName:(NSString*)name email:(NSString*)email withBlock:(void(^)())block;
-
-//+ (NSString*) globalConfiguredName;
-//+ (NSString*) globalConfiguredEmail;
 
 
 #pragma mark Interrogation

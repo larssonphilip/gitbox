@@ -251,76 +251,9 @@
                                           toPath:[url.path stringByAppendingPathComponent:@".gitignore"] 
                                            error:NULL];
 }
-//
-//
-//
-//
-//# pragma mark git-config(1) interface
-//
-//+ (NSString*) globalConfigValueForKey:(NSString*)key
-//{
-//  OATask* task = [OATask task];
-//  task.launchPath = [GBTask pathToBundledBinary:@"git"];
-//  task.arguments = [NSArray arrayWithObjects:@"config", @"--global", key,  nil];
-//  [task launchAndWait];
-//  return [[task.output UTF8String] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-//}
-//
-//+ (void) setGlobalConfigValue:(NSString*)value forKey:(NSString*)key
-//{
-//  OATask* task              = [OATask task];
-//  task.launchPath           = [GBTask pathToBundledBinary:@"git"];
-//
-//  task.arguments = [NSArray arrayWithObjects:@"config", @"--global", key, value,  nil];
-//  [task launchAndWait];
-//}
-//
-//
-//
-//- (NSString*) configValueForKey:(NSString*)key
-//{
-//  OATask* task              = [OATask task];
-//  task.currentDirectoryPath = [self path];
-//  task.launchPath           = [GBTask pathToBundledBinary:@"git"];
-//  
-//  task.arguments = [NSArray arrayWithObjects:@"config", key,  nil];
-//  [task launchAndWait];
-//  
-//  return [[task.output UTF8String] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-//}
-//
-//- (void) setConfigValue:(NSString*)value forKey:(NSString*)key
-//{
-//  OATask* task              = [OATask task];
-//  task.currentDirectoryPath = [self path];
-//  task.launchPath           = [GBTask pathToBundledBinary:@"git"];
-//
-//  task.arguments = [NSArray arrayWithObjects:@"config",key, value,  nil];
-//  [task launchAndWait];
-//}
-//
-//
-//
-//+ (void) configureName:(NSString*)name email:(NSString*)email withBlock:(void(^)())block
-//{
-//  // git config --global user.name "Joey Joejoe"
-//  // git config --global user.email "joey@joejoe.com"
-//  
-//  [self setGlobalConfigValue:name forKey:@"user.name"];
-//  [self setGlobalConfigValue:email forKey:@"user.email"];
-//  block();
-//}
-//
-//+ (NSString*) globalConfiguredName
-//{
-//  return [self globalConfigValueForKey:@"user.name"];
-//}
-//
-//+ (NSString*) globalConfiguredEmail
-//{
-//  return [self globalConfigValueForKey:@"user.email"];
-//}
-//
+
+
+
 
 
 #pragma mark Properties
