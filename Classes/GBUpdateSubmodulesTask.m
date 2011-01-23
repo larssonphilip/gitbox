@@ -36,20 +36,23 @@
    
    that is, the output looks like this:
    
-   [space][optional + or -][SHA1 of commit submodule is pinned to][space][submodule path][the rest]
+   [space][optional + or -][SHA1 of commit submodule is pinned to][space or newline?][submodule path][the rest]
    */
   NSScanner* scanner = [NSScanner scannerWithString:[data UTF8String]];
+  NSCharacterSet* whitespaceCharacterSet = [NSCharacterSet whitespaceAndNewlineCharacterSet];
+  NSCharacterSet* plusOrMinusCharacterSet = [NSCharacterSet characterSetWithCharactersInString:@"+-"];
   [scanner setCharactersToBeSkipped:[NSCharacterSet characterSetWithCharactersInString:@""]];
   
   NSMutableArray *ary = [NSMutableArray array];
   
   while ([scanner isAtEnd] == NO)
   {
-    [scanner scanString:@" " intoString:NULL];
+    [scanner scanCharactersFromSet:whitespaceCharacterSet intoString:NULL];
+    
     // optional plus or minus
     NSString* leadingChar = nil;
     
-    [scanner scanCharactersFromSet:[NSCharacterSet characterSetWithCharactersInString:@"+-"] intoString:&leadingChar];
+    [scanner scanCharactersFromSet:plusOrMinusCharacterSet intoString:&leadingChar];
     
     // commit submodule is pinned down to
     NSString* submoduleRef = nil;
@@ -64,7 +67,7 @@
     
     // submodule path
     NSString* submodulePath = nil;
-    if (![scanner scanUpToString:@" " intoString:&submodulePath]) {
+    if (![scanner scanUpToCharactersFromSet:whitespaceCharacterSet intoString:&submodulePath]) {
       // TOOD: log an error
     }
     
@@ -75,6 +78,7 @@
     [scanner scanUpToString:@"\n" intoString:NULL];
     [scanner scanString:@"\n" intoString:NULL];
     
+    //NSLog(@"submodulePath = %@, self.repository = %@", submodulePath, self.repository);
     NSURL* submoduleURL = [self.repository URLForSubmoduleAtPath:submodulePath];
     
     GBSubmodule *submodule = [[GBSubmodule new] autorelease];
@@ -98,7 +102,7 @@
 {
   [super didFinish];
 
-  if (![self isError])
+  if (self.terminationStatus == 0 || self.terminationStatus == 1)
   {
     self.submodules = [self submodulesFromStatusOutput:self.output];
   }
