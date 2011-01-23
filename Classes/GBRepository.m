@@ -907,12 +907,13 @@
   GBTask* task = [self task];
   NSString* refspec = [NSString stringWithFormat:@"%@:%@", aLocalBranch.name, aRemoteBranch.name];
   task.arguments = [NSArray arrayWithObjects:@"push", @"--tags", aRemoteBranch.remoteAlias, refspec, nil];
-  task.keychainPasswordName = [aRemoteBranch.remote keychainPasswordName];
+  GBRemote* aRemote = aRemoteBranch.remote;
+  task.keychainPasswordName = [aRemote keychainPasswordName];
   [self launchTask:task withBlock:^{
-    aRemoteBranch.remote.failedCommunication = [task isError];
+    aRemote.failedCommunication = [task isError];
     if ([task isError])
     {
-      [self alertWithMessage: @"Push failed" description:[task.output UTF8String]];
+      [self alertWithMessage: @"Push failed" description:[task UTF8Output]];
     }
     else
     {
@@ -921,10 +922,9 @@
       if (aLocalBranch.commitId && aRemoteBranch.name)
       {
         aRemoteBranch.commitId = aLocalBranch.commitId;
-        GBRemote* remote = aRemoteBranch.remote;
-        if (remote)
+        if (aRemote)
         {
-          for (GBRef* ref in [remote pushedAndNewBranches])
+          for (GBRef* ref in [aRemote pushedAndNewBranches])
           {
             if (ref.name && aRemoteBranch.name && [ref.name isEqualToString:aRemoteBranch.name])
             {
