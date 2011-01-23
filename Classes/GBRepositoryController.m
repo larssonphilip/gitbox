@@ -133,30 +133,6 @@
   return [self url];
 }
 
-- (NSString*) badgeLabel
-{
-  NSUInteger total = [self.repository totalPendingChanges];
-  
-  if (total > 999) 
-  {
-    return @"999+";
-  }
-  
-  if (total > 0)
-  {
-    return [NSString stringWithFormat:@"%d", total];
-  }
-  else
-  {
-    return nil;
-  }
-}
-
-- (NSInteger) badgeValue
-{
-	return [self.repository totalPendingChanges];
-}
-
 
 
 - (NSArray*) commits
@@ -925,7 +901,35 @@
   }
 }
 
+- (NSInteger) badgeValue
+{
+  return [self.repository totalPendingChanges];
+}
 
+- (NSInteger) accumulatedBadgeValue
+{
+	NSInteger submodulesValue = 0;
+  for (GBSubmodule* submodule in self.repository.submodules)
+  {
+    submodulesValue += [submodule accumulatedBadgeValue];
+  }
+	return [self badgeValue] + submodulesValue;
+}
+
+- (BOOL) isSpinningInSidebar
+{
+  return self.isSpinning;
+}
+
+- (BOOL) isAccumulatedSpinningInSidebar
+{
+  if ([self isSpinningInSidebar]) return YES;
+  for (GBSubmodule* submodule in self.repository.submodules)
+  {
+    if ([submodule isAccumulatedSpinningInSidebar]) return YES;
+  }
+  return NO;
+}
 
 
 

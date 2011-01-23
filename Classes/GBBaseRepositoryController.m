@@ -70,11 +70,6 @@
 
 
 
-- (NSString*) badgeLabel
-{
-  return nil;
-}
-
 - (NSString*) windowTitle
 {
   return [[[self url] path] twoLastPathComponentsWithDash];
@@ -265,7 +260,6 @@
 
 - (NSInteger) accumulatedBadgeValue
 {
-	// TODO: add badge values for the submodules
 	return [self badgeValue];
 }
 
@@ -276,7 +270,6 @@
 
 - (BOOL) isAccumulatedSpinningInSidebar
 {
-  // TODO: OR with values from submodules
   return [self isSpinningInSidebar];
 }
 
