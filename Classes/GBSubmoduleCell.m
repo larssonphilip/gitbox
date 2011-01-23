@@ -13,6 +13,11 @@
 #pragma mark GBSidebarCell
 
 
+- (NSImage*) icon
+{
+  return [NSImage imageNamed:@"GBSidebarSubmoduleIcon.png"];
+}
+
 - (NSRect) drawExtraFeaturesAndReturnRemainingRect:(NSRect)rect
 {
   // TODO: draw "download" button
