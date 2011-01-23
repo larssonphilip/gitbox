@@ -7,7 +7,7 @@
 #import "GBRemotesTask.h"
 #import "GBHistoryTask.h"
 #import "GBLocalRefsTask.h"
-#import "GBUpdateSubmodulesTask.h"
+#import "GBSubmodulesTask.h"
 #import "GBGitConfig.h"
 
 #import "OAPropertyListController.h"
@@ -627,7 +627,7 @@
 {
   block = [[block copy] autorelease];
 
-  GBUpdateSubmodulesTask* task = [GBUpdateSubmodulesTask taskWithRepository:self];
+  GBSubmodulesTask* task = [GBSubmodulesTask taskWithRepository:self];
 
   [self launchTask:task withBlock:^{
     self.submodules = task.submodules;

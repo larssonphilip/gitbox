@@ -1,11 +1,11 @@
 #import "GBRepository.h"
 #import "GBSubmodule.h"
-#import "GBUpdateSubmodulesTask.h"
+#import "GBSubmodulesTask.h"
 
 #import "NSData+OADataHelpers.h"
 
 
-@implementation GBUpdateSubmodulesTask
+@implementation GBSubmodulesTask
 
 @synthesize submodules;
 
