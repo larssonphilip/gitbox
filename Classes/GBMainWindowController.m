@@ -6,6 +6,7 @@
 #import "GBRepositoryController.h"
 #import "GBCloningRepositoryController.h"
 #import "GBBaseRepositoryController.h"
+#import "GBSubmoduleCloningController.h"
 
 #import "GBMainWindowController.h"
 #import "GBToolbarController.h"
@@ -556,6 +557,34 @@
   [self.toolbarController update];
 }
 
+
+
+
+
+#pragma mark GBSubmoduleCloningControllerDelegate
+
+
+
+
+- (void) submoduleCloningControllerDidSelect:(GBSubmoduleCloningController*)repoCtrl
+{
+  
+}
+
+- (void) submoduleCloningControllerDidFinish:(GBSubmoduleCloningController*)repoCtrl
+{
+  
+}
+
+- (void) submoduleCloningControllerDidFail:(GBSubmoduleCloningController*)repoCtrl
+{
+  
+}
+
+- (void) submoduleCloningControllerDidCancel:(GBSubmoduleCloningController*)repoCtrl
+{
+  
+}
 
 
 

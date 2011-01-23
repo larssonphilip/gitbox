@@ -1,13 +1,18 @@
 #import "GBSidebarItem.h"
 
 @class GBRepository;
-@class GBRepositoryController;
+@class GBBaseRepositoryController;
+
+extern NSString* const GBSubmoduleStatusNotCloned;
+extern NSString* const GBSubmoduleStatusUpToDate;
+extern NSString* const GBSubmoduleStatusNotUpToDate;
 
 @interface GBSubmodule : NSObject<GBSidebarItem>
 
-@property(nonatomic, retain) NSURL* remoteURL;
-@property(nonatomic, retain) NSString* path;
-@property(nonatomic, retain) GBRepositoryController* repositoryController;
+@property(nonatomic, copy) NSURL* remoteURL;
+@property(nonatomic, copy) NSString* path;
+@property(nonatomic, copy) NSString* status;
+@property(nonatomic, retain) GBBaseRepositoryController* repositoryController;
 
 @property(nonatomic, assign) GBRepository* repository;
 
@@ -21,6 +26,7 @@
 - (NSURL*) repositoryURL;
 - (NSString*) repositoryPath;
 
+- (BOOL) isCloned;
 
 
 #pragma mark Mutation

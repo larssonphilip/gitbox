@@ -85,6 +85,19 @@
     submodule.path         = submodulePath;
     submodule.remoteURL    = submoduleURL;
     submodule.repository   = self.repository;
+    
+    if (!leadingChar || [leadingChar isEqualToString:@""])
+    {
+      submodule.status = GBSubmoduleStatusUpToDate;
+    }
+    else if ([leadingChar isEqualToString:@"-"])
+    {
+      submodule.status = GBSubmoduleStatusNotCloned;
+    }
+    else if ([leadingChar isEqualToString:@"+"])
+    {
+      submodule.status = GBSubmoduleStatusNotUpToDate;
+    }
 
     #if DEBUG
       NSLog(@"Instantiated submodule %@ (%@) at %@", submodule.path, submoduleURL, [self.repository path]);

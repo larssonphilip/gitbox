@@ -7,6 +7,7 @@
 
 #import "GBRepositoriesController.h"
 #import "GBRepositoryController.h"
+#import "GBSubmoduleCloningController.h"
 
 #import "GBSidebarCell.h"
 
@@ -371,21 +372,27 @@
     
     for (GBSubmodule* submodule in self.repository.submodules)
     {
-      if (!submodule.repositoryController)
+      if (!submodule.repositoryController) // repo controller is not set up yet
       {
-        GBRepositoryController* repoCtrl = [GBRepositoryController repositoryControllerWithURL:[submodule localURL]];
-        submodule.repositoryController = repoCtrl;
-        
-        // FIXME: check if the repo is actually cloned. If not, setup GBSubmoduleCloningController.
-        
-//        repoCtrl.updatesQueue = self.updatesQueue;
-//        [repoCtrl start];
-//        [self.updatesQueue addBlock:^{
-//          [repoCtrl initialUpdateWithBlock:^{
-//            [self.updatesQueue endBlock];
-//          }];
-//        }];
-        
+        if ([submodule isCloned])
+        {
+          GBRepositoryController* repoCtrl = [GBRepositoryController repositoryControllerWithURL:[submodule localURL]];
+          submodule.repositoryController = repoCtrl;
+
+          repoCtrl.updatesQueue = self.updatesQueue;
+          [repoCtrl start];
+          [self.updatesQueue addBlock:^{
+            [repoCtrl initialUpdateWithBlock:^{
+              [self.updatesQueue endBlock];
+            }];
+          }];          
+        }
+        else
+        {
+          GBSubmoduleCloningController* repoCtrl = [[GBSubmoduleCloningController new] autorelease];
+          repoCtrl.submodule = submodule;
+          submodule.repositoryController = repoCtrl;
+        }
       }
     }
         

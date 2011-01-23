@@ -4,10 +4,15 @@
 #import "GBSubmoduleCell.h"
 #import "GBRepositoryController.h"
 
+NSString* const GBSubmoduleStatusNotCloned = @"GBSubmoduleStatusNotCloned";
+NSString* const GBSubmoduleStatusUpToDate = @"GBSubmoduleStatusUpToDate";
+NSString* const GBSubmoduleStatusNotUpToDate = @"GBSubmoduleStatusNotUpToDate";
+
 @implementation GBSubmodule
 
 @synthesize remoteURL;
 @synthesize path;
+@synthesize status;
 @synthesize repositoryController;
 
 @synthesize repository;
@@ -19,6 +24,7 @@
 {
   self.remoteURL = nil;
   self.path      = nil;
+  self.status = nil;
   self.repositoryController = nil;
   
   [super dealloc];
@@ -50,6 +56,10 @@
   return [[self repositoryURL] path];
 }
 
+- (BOOL) isCloned
+{
+  return ![self.status isEqualToString:GBSubmoduleStatusNotCloned];
+}
 
 
 
@@ -100,12 +110,12 @@
 
 - (NSString*) nameInSidebar
 {
-  return [[[self localURL] path] lastPathComponent];
+  return [self path];
 }
 
 - (NSString*) tooltipInSidebar
 {
-  return [[self localURL] path];
+  return [[[self localURL] absoluteURL] path];
 }
 
 - (id<GBRepositoriesControllerLocalItem>) repositoriesControllerLocalItem

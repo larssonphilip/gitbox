@@ -1,6 +1,10 @@
 #import "GBCloningRepositoryController.h"
 #import "GBCloneTask.h"
 
+@interface GBCloningRepositoryController ()
+@property(nonatomic,retain) GBCloneTask* cloneTask;
+@end
+
 @implementation GBCloningRepositoryController
 
 @synthesize sourceURL;
