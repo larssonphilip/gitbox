@@ -126,7 +126,8 @@ Features:
 - stage: individual chunks commit
 - stage: undo for commit (like amend)
 - stage: amend latest commit if it is not pushed yet
-- stage: conflict stage: highlight conflicted changes, allow to choose one of the versions 
+- stage: conflict: highlight conflicted changes, allow to choose one of the versions 
+- stage: conflict: allow visual merge for conflicted files
 
 - settings: add gear button on the left
 - settings: delete local branch
