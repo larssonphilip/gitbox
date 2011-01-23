@@ -265,6 +265,8 @@
   self.selectedRepositoryController = repoCtrl;
   self.selectedLocalItem = repoCtrl;
   
+  [repoCtrl initialUpdateWithBlock:nil];
+  
   if ([self.delegate respondsToSelector:@selector(repositoriesController:didSelectRepository:)]) { [self.delegate repositoriesController:self didSelectRepository:repoCtrl]; }
   
   [self.selectedRepositoryController didSelect];

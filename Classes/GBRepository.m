@@ -614,12 +614,8 @@
 																						 [NSNumber numberWithInt:[task terminationStatus]], @"terminationStatus",
 																						 [task command], @"command",
 																						 nil]];
-      if (block) block();
-      return;
 		}
-    //NSLog(@"GBCloningRepositoryController: did finish submodule init at %@", [self path]);
-    // Update submodule when init did finish.
-    [self updateSubmodulesWithBlock:block];
+    if (block) block();
 	}];
 }
 

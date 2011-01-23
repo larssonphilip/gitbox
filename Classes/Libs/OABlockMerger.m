@@ -42,17 +42,18 @@
   
   if (existingHandler)
   {
-    NSLog(@"OABlockMerger:%p [performTask:%@] attaching to running task", self, taskName);
+    //NSLog(@"OABlockMerger:%p [performTask:%@] attaching to running task", self, taskName);
+    existingHandler = [[existingHandler copy] autorelease];
     void (^newHandler)() = ^{
       existingHandler();
-      completionHandler();
+      if (completionHandler) completionHandler();
     };
-    [[newHandler copy] autorelease];
+    newHandler = [[newHandler copy] autorelease];
     [self.completionHandlersByTaskNames setObject:newHandler forKey:taskName];
   }
   else
   {
-    NSLog(@"OABlockMerger:%p [performTask:%@] launching task", self, taskName);
+    //NSLog(@"OABlockMerger:%p [performTask:%@] launching task", self, taskName);
     [self.completionHandlersByTaskNames setObject:completionHandler forKey:taskName];
     taskBlock();
   }
@@ -65,25 +66,24 @@
 {
   NSAssert(taskName, @"taskName must be provided");
   NSAssert(taskBlock, @"taskBlock must be provided");
-  if (!completionHandler) completionHandler = ^{};
   
   if ([self.ranTaskNames containsObject:taskName])
   {
     void (^existingHandler)() = (void(^)())[self.completionHandlersByTaskNames objectForKey:taskName];
     if (existingHandler) // is running
     {
-      NSLog(@"OABlockMerger:%p [performTaskOnce:%@] attaching to running task", self, taskName);
+      //NSLog(@"OABlockMerger:%p [performTaskOnce:%@] attaching to running task", self, taskName);
       [self performTask:taskName withBlock:taskBlock completionHandler:completionHandler];
     }
     else // already finished, simply call the coompletion block
     {
-      NSLog(@"OABlockMerger:%p [performTaskOnce:%@] task is finished, calling back immediately", self, taskName);
-      completionHandler();
+      //NSLog(@"OABlockMerger:%p [performTaskOnce:%@] task is finished, calling back immediately", self, taskName);
+      if (completionHandler) completionHandler();
     }
   }
   else // has not started yet
   {
-    NSLog(@"OABlockMerger:%p [performTaskOnce:%@] launching task for the first time", self, taskName);
+    //NSLog(@"OABlockMerger:%p [performTaskOnce:%@] launching task for the first time", self, taskName);
     [self performTask:taskName withBlock:taskBlock completionHandler:completionHandler];
   }
 }

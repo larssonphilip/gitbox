@@ -98,6 +98,7 @@
 
 - (void) drawInteriorWithFrame:(NSRect)cellFrame inView:(GBSidebarOutlineView*)theControlView
 {
+  if (![theControlView isKindOfClass:[GBSidebarOutlineView class]]) return;
   self.outlineView = theControlView;
   self.isDragged = [self.outlineView preparesImageForDragging];
   NSWindow* window = [self.outlineView window];

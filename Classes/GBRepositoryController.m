@@ -12,14 +12,17 @@
 #import "NSError+OAPresent.h"
 #import "OABlockGroup.h"
 #import "OABlockQueue.h"
+#import "OABlockMerger.h"
 #import "NSObject+OAPerformBlockAfterDelay.h"
 
 @interface GBRepositoryController ()
 
-@property(nonatomic,assign) BOOL isDisappearedFromFileSystem;
-@property(nonatomic,assign) BOOL isCommitting;
-@property(nonatomic,assign) BOOL isUpdatingRemoteRefs;
-@property(nonatomic,assign) BOOL isWaitingForAutofetch;
+@property(nonatomic, retain) OABlockMerger* blockMerger;
+
+@property(nonatomic, assign) BOOL isDisappearedFromFileSystem;
+@property(nonatomic, assign) BOOL isCommitting;
+@property(nonatomic, assign) BOOL isUpdatingRemoteRefs;
+@property(nonatomic, assign) BOOL isWaitingForAutofetch;
 
 - (void) pushDisabled;
 - (void) popDisabled;
@@ -33,7 +36,6 @@
 - (void) pushFSEventsPause;
 - (void) popFSEventsPause;
 
-- (void) loadCommits;
 - (void) loadCommitsWithBlock:(void(^)())block;
 - (void) loadStageChanges;
 - (void) loadChangesForCommit:(GBCommit*)commit;
@@ -65,6 +67,7 @@
 @synthesize cancelledCommitMessage;
 @synthesize commitMessageHistory;
 @synthesize urlBookmarkData;
+@synthesize blockMerger;
 
 @synthesize isRemoteBranchesDisabled;
 @synthesize isCommitting;
@@ -83,7 +86,17 @@
   self.cancelledCommitMessage = nil;
   self.commitMessageHistory = nil;
   self.urlBookmarkData = nil;
+  self.blockMerger = nil;
   [super dealloc];
+}
+
+- (id) init
+{
+  if ((self = [super init]))
+  {
+    self.blockMerger = [[OABlockMerger new] autorelease];
+  }
+  return self;
 }
 
 + (id) repositoryControllerWithURL:(NSURL*)url
@@ -173,6 +186,7 @@
 - (void) start
 {
   [super start];
+  
   self.fsEventStream = [[OAFSEventStream new] autorelease];
 #if DEBUG
   self.fsEventStream.shouldLogEvents = NO;
@@ -224,6 +238,40 @@
 
 
 #pragma mark Updates
+
+
+
+
+- (void) initialUpdateWithBlock:(void(^)())block
+{
+  NSString* taskName = NSStringFromSelector(_cmd);
+  [self.blockMerger performTaskOnce:taskName withBlock:^{
+    [self pushFSEventsPause];
+    [self pushSpinning];
+    [self.repository initSubmodulesWithBlock:^{
+      [self updateLocalRefsWithBlock:^{
+        [self pushSpinning];
+        [self loadCommitsWithBlock:^{
+          [self.repository updateSubmodulesWithBlock:^{
+            [self popSpinning];
+            [self.blockMerger didFinishTask:taskName];
+          }];
+        }];
+        [self popSpinning];
+        [self popFSEventsPause];
+      }];
+    }];
+    
+    if (!self.selectedCommit && self.repository.stage)
+    {
+      [self selectCommit:self.repository.stage];
+    }
+    else
+    {
+      [self loadStageChanges];
+    }
+  } completionHandler:block];
+}
 
 
 
@@ -308,35 +356,6 @@
   
 }
 
-- (void) initialUpdateWithBlock:(void(^)())block
-{
-  block = [[block copy] autorelease];
-  
-  [self pushFSEventsPause];
-  [self pushSpinning];
-  [self.repository initSubmodulesWithBlock:nil];
-  [self updateLocalRefsWithBlock:^{
-    [self pushSpinning];
-    [self loadCommitsWithBlock:^{
-      if (block) block();
-      [self popSpinning];
-    }];
-    // avoid this on startup: [self updateRemoteRefsWithBlock:block];
-    [self popSpinning];
-    [self popFSEventsPause];
-  }];
-  
-  if (!self.selectedCommit && self.repository.stage)
-  {
-    [self selectCommit:self.repository.stage];
-  }
-  else
-  {
-    [self loadStageChanges];
-  }
-  
-}
-
 
 
 
@@ -364,7 +383,7 @@
     [self updateLocalRefsWithBlock:^{
       if ([self.delegate respondsToSelector:@selector(repositoryControllerDidCheckoutBranch:)]) { [self.delegate repositoryControllerDidCheckoutBranch:self]; }
 
-      [self loadCommits];
+      [self loadCommitsWithBlock:nil];
       
       [self popDisabled];
       [self popSpinning];
@@ -406,7 +425,7 @@
     withLocalName:self.repository.currentLocalRef.name 
     block:^{
       if ([self.delegate respondsToSelector:@selector(repositoryControllerDidChangeRemoteBranch:)]) { [self.delegate repositoryControllerDidChangeRemoteBranch:self]; }
-      [self loadCommits];
+      [self loadCommitsWithBlock:nil];
       [self updateRemoteRefsWithBlock:nil];
     }];
 }
@@ -443,7 +462,7 @@
   [self pushFSEventsPause];
   [self loadStageChanges];
   [self updateLocalRefsWithBlock:^{
-    [self loadCommits];
+    [self loadCommitsWithBlock:nil];
     [self updateRemoteRefsWithBlock:^{
     }];
     [self popFSEventsPause];
@@ -690,7 +709,7 @@
     
     [self loadStageChanges];
     [self updateLocalRefsWithBlock:^{
-      [self loadCommits];
+      [self loadCommitsWithBlock:nil];
     }];
     
     [self popSpinning];
@@ -728,7 +747,7 @@
   [self.repository fetchCurrentBranchWithBlock:^{
     [self.repository.lastError present];
     [self updateLocalRefsWithBlock:^{
-      [self loadCommits];
+      [self loadCommitsWithBlock:nil];
       [self updateRemoteRefsWithBlock:nil];
       [self popFSEventsPause];
     }];
@@ -744,15 +763,16 @@
   [self pushDisabled];
   [self pushFSEventsPause];
   [self.repository pullOrMergeWithBlock:^{
-    [self.repository initSubmodulesWithBlock:nil];
-    [self loadStageChanges];
-    [self updateLocalRefsWithBlock:^{
-      [self loadCommits];
-      [self updateRemoteRefsWithBlock:nil];
-      [self popFSEventsPause];
+    [self.repository initSubmodulesWithBlock:^{
+      [self loadStageChanges];
+      [self updateLocalRefsWithBlock:^{
+        [self loadCommitsWithBlock:nil];
+        [self updateRemoteRefsWithBlock:nil];
+        [self popFSEventsPause];
+      }];
+      [self popDisabled];
+      [self popSpinning];
     }];
-    [self popDisabled];
-    [self popSpinning];
   }];
 }
 
@@ -764,7 +784,7 @@
   [self pushFSEventsPause];
   [self.repository pushWithBlock:^{
     [self updateLocalRefsWithBlock:^{
-      [self loadCommits];
+      [self loadCommitsWithBlock:nil];
       [self updateRemoteRefsWithBlock:nil];
       [self popFSEventsPause];
     }];
@@ -880,11 +900,6 @@
 
 
 
-
-- (void) loadCommits
-{
-  [self loadCommitsWithBlock:nil];
-}
 
 - (void) loadCommitsWithBlock:(void(^)())block
 {
