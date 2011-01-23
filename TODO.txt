@@ -18,6 +18,7 @@ Bug fixes:
 
 Misc items done:
 
++ submodules: init after clone or pull to add .gitmodules info to .git/config
 + clone: remember last cloned URL and prefill clone dialog
 + sidebar: add contextual menu with "add repo", "clone repo", "new group" to the folder
 + bug: when selected all commits and clicked the text view, it does not immediately erase contents of the text view
@@ -35,18 +36,24 @@ Misc items done:
 
 Gitbox 1.3 Features:
 
-+ submodules: init after clone or pull to add .gitmodules info to .git/config
+- submodules: GBSubmoduleCloningController which displays info + download button in the middle pane
+- submodules: display "download" button in the sidebar item
+- submodules: after cloned, replace repo ctrl with the real repo ctrl
+
 - submodules: case 1: user clones a repo which has some submodules => needs init, display "download" button for submodules in sidebar
 - submodules: case 2: user pulls a repo which has some submodules updated => needs pull
 - submodules: case 3: user pulls a repo which has some submodules updated, but his submodule itself is checked out on some branch => needs fetch, not pull
 - submodules: case 4: user clones the repo inside the repo => needs to display as a non-tracked submodule which can be tracked
 - submodules: case 5: user tries to commit a submodule which has the HEAD non-pushed (or dirty directory) - show warning or ask to push manually; show button "show module"
 
+
 Gitbox 1.3 Enhancements:
 
 
 
 Gitbox 1.3 Bug fixes:
+
+
 
 
 
