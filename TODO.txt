@@ -28,6 +28,7 @@ Misc items done:
 + bug: stage: refuse first responder when stage is empty.
 + bug: sidebar: quickly jumping through repos in sidebar is slow: avoid unnecessary updates and shell-outs when repo is selected.
 + general: fix networking behaviour: try to load the remote branches and reload them when pull/fetch (was done in 1.2)
+- sidebar: commit+push is ugly: it spins, then it stops spinning, then it changes the badge number and then spins again. (last spinning is fixed)
 
 -----------------------------------------------------------
 
@@ -164,7 +165,6 @@ Error messages translation to English:
 - toolbar: show confirmation prompt when trying to push branch "X" into "origin/Y" (that is when branch name differ)
 - toolbar: think on how to checkout a branch into a different folder. Make it useful as a default.
 
-- sidebar: commit+push is ugly: it spins, then it stops spinning, then it changes the badge number and then spins again. (last spinning is fixed)
 - sidebar: when starting an app, sidebar appears to be collapsed at first and then repos appear. Should be more smooth.
 - sidebar: choose a custom name for a repo? or use an image?
 

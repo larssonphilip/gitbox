@@ -287,6 +287,8 @@
   
   block = [[block copy] autorelease];
   
+  BOOL wantsSpinning = !!self.isSpinning;
+  if (wantsSpinning) [self pushSpinning];
   [self pushFSEventsPause];
   [self.repository updateLocalRefsWithBlock:^{
     
@@ -298,6 +300,7 @@
     
     if (block) block();
     
+    if (wantsSpinning) [self popSpinning];
     [self popFSEventsPause];
     
     if ([self.delegate respondsToSelector:@selector(repositoryControllerDidUpdateRefs:)]) { [self.delegate repositoryControllerDidUpdateRefs:self]; }
@@ -911,6 +914,9 @@
     return;
   }
   
+  BOOL wantsSpinning = !!self.isSpinning;
+  if (wantsSpinning) [self pushSpinning];
+
   [self.repository updateLocalBranchCommitsWithBlock:^{
     
     [OABlockGroup groupBlock:^(OABlockGroup* blockGroup){
@@ -932,6 +938,7 @@
     } continuation: ^{
       if ([self.delegate respondsToSelector:@selector(repositoryControllerDidUpdateCommits:)]) { [self.delegate repositoryControllerDidUpdateCommits:self]; }
       if (block) block();
+      if (wantsSpinning) [self popSpinning];
     }];
   }];
 }
