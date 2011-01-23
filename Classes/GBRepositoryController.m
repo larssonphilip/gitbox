@@ -378,7 +378,7 @@
         {
           GBRepositoryController* repoCtrl = [GBRepositoryController repositoryControllerWithURL:[submodule localURL]];
           submodule.repositoryController = repoCtrl;
-
+          submodule.repositoryController.delegate = self.delegate;
           repoCtrl.updatesQueue = self.updatesQueue;
           [repoCtrl start];
           [self.updatesQueue addBlock:^{
@@ -392,6 +392,7 @@
           GBSubmoduleCloningController* repoCtrl = [[GBSubmoduleCloningController new] autorelease];
           repoCtrl.submodule = submodule;
           submodule.repositoryController = repoCtrl;
+          submodule.repositoryController.delegate = self.delegate;
         }
       }
     }

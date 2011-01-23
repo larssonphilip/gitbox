@@ -1,5 +1,6 @@
 #import "GBRepository.h"
 #import "GBCommit.h"
+#import "GBSubmodule.h"
 #import "GBRepositoriesGroup.h"
 
 #import "GBRepositoriesController.h"
@@ -14,6 +15,7 @@
 #import "GBHistoryViewController.h"
 #import "GBWelcomeController.h"
 #import "GBCloneProcessViewController.h"
+#import "GBSubmoduleCloneProcessViewController.h"
 
 #import "GBRemotesController.h"
 #import "GBFileEditingController.h"
@@ -28,6 +30,9 @@
 
 @interface GBMainWindowController ()
 @property(nonatomic, retain) OAFastJumpController* jumpController;
+@property(nonatomic, retain) GBCloneProcessViewController* cloneProcessViewController;
+@property(nonatomic, retain) GBSubmoduleCloneProcessViewController* submoduleCloneProcessViewController;
+
 - (void) updateToolbarAlignment;
 @end
 
@@ -41,6 +46,7 @@
 @synthesize historyController;
 @synthesize welcomeController;
 @synthesize cloneProcessViewController;
+@synthesize submoduleCloneProcessViewController;
 @synthesize jumpController;
 
 @synthesize splitView;
@@ -54,6 +60,7 @@
   self.historyController = nil;
   self.welcomeController = nil;
   self.cloneProcessViewController = nil;
+  self.submoduleCloneProcessViewController = nil;
   self.jumpController = nil;
   
   self.splitView = nil;
@@ -68,7 +75,7 @@
     self.sourcesController = [[[GBSidebarController alloc] initWithNibName:@"GBSidebarController" bundle:nil] autorelease];
     self.historyController = [[[GBHistoryViewController alloc] initWithNibName:@"GBHistoryViewController" bundle:nil] autorelease];
     self.cloneProcessViewController = [[[GBCloneProcessViewController alloc] initWithNibName:@"GBCloneProcessViewController" bundle:nil] autorelease];
-    
+    self.submoduleCloneProcessViewController = [[[GBSubmoduleCloneProcessViewController alloc] initWithNibName:@"GBSubmoduleCloneProcessViewController" bundle:nil] autorelease];
     self.jumpController = [OAFastJumpController controller];
   }
   return self;
@@ -341,6 +348,7 @@
 {
   [self.historyController unloadView];
   [self.cloneProcessViewController unloadView];
+  [self.submoduleCloneProcessViewController unloadView];
 }
 
 - (void) repositoriesController:(GBRepositoriesController*)reposCtrl didSelectRepository:(GBBaseRepositoryController*)repoCtrl
@@ -568,22 +576,37 @@
 
 - (void) submoduleCloningControllerDidSelect:(GBSubmoduleCloningController*)repoCtrl
 {
+  self.toolbarController.baseRepositoryController = repoCtrl;
+  [self.toolbarController update];
+  [self.historyController update];
+  self.submoduleCloneProcessViewController.repositoryController = repoCtrl;
+  [self.submoduleCloneProcessViewController update];
+  [self.submoduleCloneProcessViewController loadInView:[[self.splitView subviews] objectAtIndex:1]];
   
 }
 
-- (void) submoduleCloningControllerDidFinish:(GBSubmoduleCloningController*)repoCtrl
-{
-  
+- (void) submoduleCloningControllerDidFinish:(GBSubmoduleCloningController*)cloningRepoCtrl
+{  
+  GBSubmodule* submodule = cloningRepoCtrl.submodule;
+  GBRepositoryController* repoCtrl = [GBRepositoryController repositoryControllerWithURL:[submodule localURL]];
+  submodule.repositoryController = repoCtrl;
+  submodule.repositoryController.delegate = self;
+  [repoCtrl start];
+  [repoCtrl initialUpdateWithBlock:nil];
 }
 
 - (void) submoduleCloningControllerDidFail:(GBSubmoduleCloningController*)repoCtrl
 {
-  
+  [self.submoduleCloneProcessViewController update];
+  [self.toolbarController update];
+  [self.sourcesController update];
 }
 
 - (void) submoduleCloningControllerDidCancel:(GBSubmoduleCloningController*)repoCtrl
 {
-  
+  [self.submoduleCloneProcessViewController update];
+  [self.toolbarController update];
+  [self.sourcesController update];
 }
 
 

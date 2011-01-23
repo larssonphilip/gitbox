@@ -8,20 +8,20 @@
 @class GBHistoryViewController;
 @class GBWelcomeController;
 @class GBCloneProcessViewController;
+@class GBSubmoduleCloneProcessViewController;
 @interface GBMainWindowController : NSWindowController<NSSplitViewDelegate, 
                                                       GBRepositoriesControllerDelegate,
                                                       GBRepositoryControllerDelegate>
 
-@property(retain) GBRepositoriesController* repositoriesController;
-@property(retain) GBBaseRepositoryController* repositoryController;
+@property(nonatomic, retain) GBRepositoriesController* repositoriesController;
+@property(nonatomic, retain) GBBaseRepositoryController* repositoryController;
 
-@property(retain) IBOutlet GBToolbarController* toolbarController;
-@property(retain) GBSidebarController* sourcesController;
-@property(retain) GBHistoryViewController* historyController;
-@property(retain) GBWelcomeController* welcomeController;
-@property(retain) GBCloneProcessViewController* cloneProcessViewController;
+@property(nonatomic, retain) IBOutlet GBToolbarController* toolbarController;
+@property(nonatomic, retain) GBSidebarController* sourcesController;
+@property(nonatomic, retain) GBHistoryViewController* historyController;
+@property(nonatomic, retain) GBWelcomeController* welcomeController;
 
-@property(retain) IBOutlet NSSplitView* splitView;
+@property(nonatomic, retain) IBOutlet NSSplitView* splitView;
 
 - (void) saveState;
 - (void) loadState;
