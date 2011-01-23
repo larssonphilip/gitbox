@@ -1,6 +1,7 @@
 #import "OABlockQueue.h"
 
 @interface OABlockQueue ()
+@property(nonatomic, assign) BOOL tooBigQueue;
 - (void) proceed;
 @end
 
@@ -9,6 +10,8 @@
 @synthesize maxConcurrentOperationCount;
 @synthesize operationCount;
 @synthesize queue;
+
+@synthesize tooBigQueue;
 
 - (void) dealloc
 {
@@ -71,7 +74,22 @@
 
 - (void) proceed
 {
-  BOOL shouldLog = ([self.queue count] > 20);
+  BOOL shouldLog = NO;
+  if (!self.tooBigQueue)
+  {
+    self.tooBigQueue = ([self.queue count] >= 5);
+    shouldLog = self.tooBigQueue;
+  }
+  else
+  {
+    shouldLog = ([self.queue count] % 5 == 0);
+    if ([self.queue count] <= 1)
+    {
+      self.tooBigQueue = NO;
+      shouldLog = YES;
+    }
+  }
+  
   if (shouldLog)
   {
     NSLog(@"OABlockQueue: operationCount = %d, limit = %d, total = %d", (int)self.operationCount, (int)self.maxConcurrentOperationCount, (int)[self.queue count]);

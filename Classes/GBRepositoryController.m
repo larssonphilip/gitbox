@@ -380,9 +380,10 @@
         }
       }
     }
-        
-    if ([self.delegate respondsToSelector:@selector(repositoryControllerDidUpdateSubmodules:)]) [self.delegate repositoryControllerDidUpdateSubmodules:self];
+    
     if (aBlock) aBlock();
+    
+    if ([self.delegate respondsToSelector:@selector(repositoryControllerDidUpdateSubmodules:)]) [self.delegate repositoryControllerDidUpdateSubmodules:self];
   }];
 }
 

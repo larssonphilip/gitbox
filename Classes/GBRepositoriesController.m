@@ -137,6 +137,7 @@
   if (!repoCtrl) return;
   repoCtrl.updatesQueue = self.localRepositoriesUpdatesQueue;
   [repoCtrl start];
+  
   if (!queued)
   {
     [self.localRepositoriesUpdatesQueue prependBlock:^{
@@ -269,11 +270,14 @@
   self.selectedRepositoryController = repoCtrl;
   self.selectedLocalItem = repoCtrl;
   
-  [self.localRepositoriesUpdatesQueue prependBlock:^{
-    [repoCtrl initialUpdateWithBlock:^{
-      [self.localRepositoriesUpdatesQueue endBlock];
+  if (repoCtrl)
+  {
+    [self.localRepositoriesUpdatesQueue prependBlock:^{
+      [repoCtrl initialUpdateWithBlock:^{
+        [self.localRepositoriesUpdatesQueue endBlock];
+      }];
     }];
-  }];
+  }
   
   if ([self.delegate respondsToSelector:@selector(repositoriesController:didSelectRepository:)]) { [self.delegate repositoriesController:self didSelectRepository:repoCtrl]; }
   
