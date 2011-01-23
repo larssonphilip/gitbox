@@ -10,5 +10,6 @@
 @property(nonatomic, assign) id<GBSubmoduleCloningControllerDelegate> delegate;
 
 - (void) cancelCloning;
+- (BOOL) isDownloading;
 
 @end

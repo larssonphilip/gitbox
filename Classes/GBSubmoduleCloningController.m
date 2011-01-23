@@ -46,6 +46,12 @@
 #pragma mark API
 
 
+- (BOOL) isDownloading
+{
+  return !!self.task;
+}
+
+
 - (void) start
 {
   if (self.task) return;
