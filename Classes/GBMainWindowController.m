@@ -598,7 +598,6 @@
 { 
   [cloningRepoCtrl cleanupSpinnerIfNeeded];
   [self.submoduleCloneProcessViewController update];
-  [self.sourcesController updateSpinnerForSidebarItem:cloningRepoCtrl.submodule];
   
   BOOL shouldSelect = [self isSelectedRepositoryController:cloningRepoCtrl];
   
@@ -614,15 +613,18 @@
       [repoCtrl.updatesQueue endBlock];
     }];
   }];
-
-  self.toolbarController.baseRepositoryController = repoCtrl;
   
-  [self.toolbarController update];
-  [self.sourcesController update];
   if (shouldSelect)
   {
     [self.repositoriesController selectRepositoryController:repoCtrl];
   }
+  else
+  {
+    [self.toolbarController update];
+    [self.sourcesController update];
+  }
+  
+  [self.sourcesController updateSpinnerForSidebarItem:submodule];
 }
 
 - (void) submoduleCloningControllerDidFail:(GBSubmoduleCloningController*)repoCtrl

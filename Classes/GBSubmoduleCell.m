@@ -5,6 +5,7 @@
 @interface GBSubmoduleCell ()
 - (GBSubmodule*) submodule;
 - (GBBaseRepositoryController*) repositoryController;
+- (NSRect) drawDownloadButtonAndReturnRemainingRect:(NSRect)rect;
 @end
 
 @implementation GBSubmoduleCell
@@ -20,13 +21,22 @@
 
 - (NSRect) drawExtraFeaturesAndReturnRemainingRect:(NSRect)rect
 {
-  // TODO: draw "download" button
-  // TODO: draw sharing icon
+  if (![[self submodule] isCloned] && ![[self submodule] isSpinningInSidebar])
+  {
+    return [self drawDownloadButtonAndReturnRemainingRect:rect];
+  }
   return [super drawExtraFeaturesAndReturnRemainingRect:rect];
 }
 
 
+
 #pragma mark Private
+
+
+- (NSRect) drawDownloadButtonAndReturnRemainingRect:(NSRect)rect
+{
+  return rect;
+}
 
 - (GBSubmodule*) submodule
 {

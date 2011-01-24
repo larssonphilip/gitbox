@@ -630,6 +630,8 @@
   GBSubmodulesTask* task = [GBSubmodulesTask taskWithRepository:self];
 
   [self launchTask:task withBlock:^{
+    // TODO: merge submodule statuses & URLs with the existing list
+    
     self.submodules = task.submodules;
     if (block) block();
   }];
