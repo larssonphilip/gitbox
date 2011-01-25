@@ -400,6 +400,7 @@
 		200A44FB12EC5A1C004DF940 /* GBSubmoduleCloneProcessViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBSubmoduleCloneProcessViewController.xib; sourceTree = "<group>"; };
 		200A471E12ECB265004DF940 /* GBSidebarRepositoryIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GBSidebarRepositoryIcon.png; path = Images/GBSidebarRepositoryIcon.png; sourceTree = SOURCE_ROOT; };
 		200A471F12ECB265004DF940 /* GBSidebarSubmoduleIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GBSidebarSubmoduleIcon.png; path = Images/GBSidebarSubmoduleIcon.png; sourceTree = SOURCE_ROOT; };
+		200A47C612EF6F1A004DF940 /* Sidebar.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Sidebar.txt; sourceTree = "<group>"; };
 		200B08B311B6E359004C09A8 /* GBLocalRemoteAssociationTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBLocalRemoteAssociationTask.h; sourceTree = "<group>"; };
 		200B08B411B6E359004C09A8 /* GBLocalRemoteAssociationTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBLocalRemoteAssociationTask.m; sourceTree = "<group>"; };
 		2010732E11A7E9C300EFDE56 /* app.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = app.icns; sourceTree = "<group>"; };
@@ -894,6 +895,7 @@
 				2049942212D6878A007ED992 /* SidebarGroups.txt */,
 				200432AE12D8A1AE00B045C0 /* Submodules.txt */,
 				20C9A55D12E85E0800DBA3E1 /* Subversion.txt */,
+				200A47C612EF6F1A004DF940 /* Sidebar.txt */,
 			);
 			name = Documents;
 			sourceTree = "<group>";

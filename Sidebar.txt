@@ -1,0 +1,17 @@
+
+Sidebar.txt
+
+January 25: we have several issues with sidebar design like unclean drag/drop handling, buggy embedded views management and in-place updates.
+
+What we need to support
+
+1. Heterogeneous recursive items: sections, repos, groups, submodules which are repos containing other submodules, github accounts and repos, shared computers and shared repos etc.
+2. Drag and drop with item-specific rules: insertion of external items, reordering existing items. 
+3. Persistance: storing the items, collapsed status.
+4. Embedded views: displaying spinners, buttons, indicators.
+5. State replacement: switching UI after cloning the repo and updating the sidebar item. 
+
+
+
+
+
