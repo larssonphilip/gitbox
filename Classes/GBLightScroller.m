@@ -2,12 +2,42 @@
 
 #import "CGContext+OACGContextHelpers.h"
 
+static const CGFloat GBLightScrollerMaxAlpha = 0.4;
+
+@interface GBLightScroller ()
+@property(nonatomic, assign) CGRect lastKnobRect;
+@property(nonatomic, assign) CGFloat lastKnobAlpha;
+@property(nonatomic, assign) BOOL shouldFadeKnob;
+@end
+
 @implementation GBLightScroller
+
+@synthesize lastKnobRect;
+@synthesize lastKnobAlpha;
+@synthesize shouldFadeKnob;
 
 + (CGFloat) width
 {
   return 9.0;
 }
+
+- (id)initWithFrame:(NSRect)frameRect
+{
+  if ((self = [super initWithFrame:frameRect]))
+  {
+    self.lastKnobRect = CGRectMake(-1, -1, 0, 0);
+    self.lastKnobAlpha = GBLightScrollerMaxAlpha;
+    self.shouldFadeKnob = NO;
+  }
+  return self;
+}
+
+- (void) dealloc
+{
+  [NSObject cancelPreviousPerformRequestsWithTarget:self];
+  [super dealloc];
+}
+
 
 - (BOOL) isOpaque
 {
@@ -37,44 +67,87 @@
 {
 }
 
+- (void) setNeedsDisplayKnob
+{
+  [self setNeedsDisplay:YES];
+}
+
+- (void) setNeedsFadeKnob
+{
+  self.shouldFadeKnob = YES;
+  [self setNeedsDisplayKnob];
+}
+
 - (void) drawKnob
 {
 	CGRect rect = NSRectToCGRect([self rectForPart:NSScrollerKnob]);
   
-  CGFloat alphaDistanceMultiplier = 1.0; // 1.0 if farther than 50px, 
-  CGFloat threshold = fminf(rect.size.height/2.0, 30.0);
-  if (rect.origin.y < threshold)
+  CGFloat alpha = self.lastKnobAlpha;
+  
+  if (CGRectEqualToRect(rect, self.lastKnobRect))
   {
-    alphaDistanceMultiplier = (rect.origin.y - 3.0)/(threshold);
-    if (alphaDistanceMultiplier < 0) alphaDistanceMultiplier = 0;
-    CGFloat limit = 0.0;
-    alphaDistanceMultiplier = limit + (1-limit)*alphaDistanceMultiplier;
+    if (self.shouldFadeKnob)
+    {
+      alpha = alpha*0.8 - 0.05;
+      if (alpha < 0.05) alpha = 0.0;
+      [NSObject cancelPreviousPerformRequestsWithTarget:self];
+      if (alpha > 0)
+      {
+        [self performSelector:@selector(setNeedsDisplayKnob) withObject:nil afterDelay:0.03];
+      }
+      else
+      {
+        self.shouldFadeKnob = NO;
+      }
+    }
+  }
+  else
+  {
+    self.shouldFadeKnob = NO;
+    alpha = GBLightScrollerMaxAlpha;
+    [NSObject cancelPreviousPerformRequestsWithTarget:self];
+  }
+  self.lastKnobRect = rect;
+  if (!self.shouldFadeKnob)
+  {
+    [self performSelector:@selector(setNeedsFadeKnob) withObject:nil afterDelay:0.3];
   }
   
+//  CGFloat alphaDistanceMultiplier = 1.0; // 1.0 if farther than 50px, 
+//  CGFloat threshold = fminf(rect.size.height/2.0, 30.0);
+//  if (rect.origin.y < threshold)
+//  {
+//    alphaDistanceMultiplier = (rect.origin.y - 3.0)/(threshold);
+//    if (alphaDistanceMultiplier < 0) alphaDistanceMultiplier = 0;
+//    CGFloat limit = 0.0;
+//    alphaDistanceMultiplier = limit + (1-limit)*alphaDistanceMultiplier;
+//  }
+//
+//  alpha *= alphaDistanceMultiplier;
+
   rect = CGRectInset(rect, 0, 0.5);
   rect.origin.x = rect.origin.x + (rect.size.width - 6.0 - 1.0) - 0.5;
   rect.size.width = 6.0;
   
-  CGContextRef context = CGContextCurrentContext();
-  
-  CGFloat alpha = 0.3; // inactive window
-  
-  if ([[self window] isMainWindow] && [[self window] isKeyWindow])
+  if (!([[self window] isMainWindow] && [[self window] isKeyWindow])) // inactive window
   {
-    alpha = 0.5;
+    alpha *= 0.6;
   }
   
-  alpha *= alphaDistanceMultiplier;
+  self.lastKnobAlpha = alpha;
+  
   
   CGFloat radius = 3.0;
+  
+  CGContextRef context = CGContextCurrentContext();
   CGContextSaveGState(context);
   // transparency layer is used because we play with blend mode for stroke (see below)
   CGContextBeginTransparencyLayerWithRect(context, rect, NULL);  
   CGContextAddRoundRect(context, rect, radius);
   CGContextClip(context);
   
-  CGColorRef color1 = CGColorCreateGenericRGB(0.0, 0.0, 0.0, alpha*0.55);
-  CGColorRef color2 = CGColorCreateGenericRGB(0.0, 0.0, 0.0, alpha*0.8);
+  CGColorRef color1 = CGColorCreateGenericRGB(0.0, 0.0, 0.0, alpha*0.8);
+  CGColorRef color2 = CGColorCreateGenericRGB(0.0, 0.0, 0.0, alpha*1.0);
   CGColorRef colorsList[] = { color1, color2 };
   CFArrayRef colors = CFArrayCreate(NULL, (const void**)colorsList, sizeof(colorsList) / sizeof(CGColorRef), &kCFTypeArrayCallBacks);
   
