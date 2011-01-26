@@ -8,6 +8,7 @@ static const CGFloat GBLightScrollerMaxAlpha = 0.4;
 @property(nonatomic, assign) CGRect lastKnobRect;
 @property(nonatomic, assign) CGFloat lastKnobAlpha;
 @property(nonatomic, assign) BOOL shouldFadeKnob;
+@property(nonatomic, assign) BOOL mouseIsOverScroller;
 @end
 
 @implementation GBLightScroller
@@ -15,6 +16,7 @@ static const CGFloat GBLightScrollerMaxAlpha = 0.4;
 @synthesize lastKnobRect;
 @synthesize lastKnobAlpha;
 @synthesize shouldFadeKnob;
+@synthesize mouseIsOverScroller;
 
 + (CGFloat) width
 {
@@ -28,6 +30,7 @@ static const CGFloat GBLightScrollerMaxAlpha = 0.4;
     self.lastKnobRect = CGRectMake(-1, -1, 0, 0);
     self.lastKnobAlpha = GBLightScrollerMaxAlpha;
     self.shouldFadeKnob = NO;
+    self.mouseIsOverScroller = NO;
   }
   return self;
 }
@@ -78,13 +81,31 @@ static const CGFloat GBLightScrollerMaxAlpha = 0.4;
   [self setNeedsDisplayKnob];
 }
 
+//- (void)mouseMoved:(NSEvent*)theEvent
+//{
+//  NSPoint point = [self convertPoint:[theEvent locationInWindow] fromView:nil];
+//  NSLog(@"bounds = %@ point = %@", NSStringFromRect(self.bounds), NSStringFromPoint(point));
+//  if (CGRectContainsPoint(self.bounds, point))
+//  {
+//    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(setNeedsDisplayKnob) object:nil];
+//    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(setNeedsFadeKnob) object:nil];
+//    self.mouseIsOverScroller = YES;
+//  }
+//  else
+//  {
+//    self.mouseIsOverScroller = NO;
+//    [self setNeedsDisplayKnob];
+//  }
+//  [super mouseMoved:theEvent];
+//}
+
 - (void) drawKnob
 {
 	CGRect rect = NSRectToCGRect([self rectForPart:NSScrollerKnob]);
   
   CGFloat alpha = self.lastKnobAlpha;
   
-  if (CGRectEqualToRect(rect, self.lastKnobRect))
+  if (CGRectEqualToRect(rect, self.lastKnobRect) && !self.mouseIsOverScroller)
   {
     if (self.shouldFadeKnob)
     {
@@ -105,7 +126,8 @@ static const CGFloat GBLightScrollerMaxAlpha = 0.4;
   {
     self.shouldFadeKnob = NO;
     alpha = GBLightScrollerMaxAlpha;
-    [NSObject cancelPreviousPerformRequestsWithTarget:self];
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(setNeedsDisplayKnob) object:nil];
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(setNeedsFadeKnob) object:nil];
   }
   self.lastKnobRect = rect;
   if (!self.shouldFadeKnob)
