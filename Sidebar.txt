@@ -11,7 +11,62 @@ What we need to support
 4. Embedded views: displaying spinners, buttons, indicators.
 5. State replacement: switching UI after cloning the repo and updating the sidebar item. 
 
+Also, the current design of window controller is not optimal - it is a heavy center updating all the major view controllers as a delegate to all model controllers. This should be distributed among every view controller using notifications.
 
+AppDelegate:
+- create window controller
+- create repositories controller
+- tell window controller about repositories controller
+- load window state
+- add dropped repositories
+
+WindowController:
+- create two-pane split view: for sidebar and its detail view
+- create sidebar controller
+- create toolbar
+- tell the sidebar about toolbar
+- tell the sidebar about the right pane
+- load the state of the sidebar
+- forward some actions (with validations) to the toolbar
+- adjust the toolbar buttons alignment when resizing the split view
+
+SidebarController:
+- create a two-pane view for the right window pane
+- create a history view controller
+- create a stage view controller
+- create a changes view controller
+- create a clone view controller on demand
+- create a submodule download view controller on demand
+- subscribe to repositories controller notifications
+- subscribe to repository controller, group notifications etc.
+- load the GBSidebarItems from user defaults
+- update the sidebar on changes
+- handle drag and drop
+- update toolbar according to the selected item
+
+Model Controllers:
+
+- receive actions
+- post notifications which will be consumed by view controllers to update their states.
+
+
+
+
+
+Notification helpers:
+
+1. Post notification:
+  
+  [self notifySelector:@selector(repositoryDidUpdateChanges:)];
+
+2. Subscribe to notification:
+
+  [repositoryController addObserver:self forSelector:@selector(repositoryDidUpdateChanges:)];
+
+3. Unsubscribe from notification:
+
+  [repositoryController removeObserver:self forSelector:@selector(repositoryDidUpdateChanges:)];
+  [repositoryController removeObserver:self forSelector:@selector(repositoryDidUpdateChanges:)];
 
 
 
