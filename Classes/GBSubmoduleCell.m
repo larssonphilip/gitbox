@@ -16,6 +16,10 @@
 
 - (NSImage*) icon
 {
+  if ([[self submodule] status] == GBSubmoduleStatusNotCloned)
+  {
+    return [NSImage imageNamed:@"GBSidebarSubmoduleMissingIcon.png"];
+  }
   return [NSImage imageNamed:@"GBSidebarSubmoduleIcon.png"];
 }
 

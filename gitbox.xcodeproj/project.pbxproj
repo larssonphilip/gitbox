@@ -47,6 +47,8 @@
 		200A472312ECB265004DF940 /* GBSidebarSubmoduleIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 200A471F12ECB265004DF940 /* GBSidebarSubmoduleIcon.png */; };
 		200A47FA12EF8F07004DF940 /* NSObject+OASelectorNotifications.m in Sources */ = {isa = PBXBuildFile; fileRef = 200A47F912EF8F07004DF940 /* NSObject+OASelectorNotifications.m */; };
 		200A47FB12EF8F07004DF940 /* NSObject+OASelectorNotifications.m in Sources */ = {isa = PBXBuildFile; fileRef = 200A47F912EF8F07004DF940 /* NSObject+OASelectorNotifications.m */; };
+		200A484112F0034A004DF940 /* GBSidebarSubmoduleMissingIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 200A484012F0034A004DF940 /* GBSidebarSubmoduleMissingIcon.png */; };
+		200A484212F0034A004DF940 /* GBSidebarSubmoduleMissingIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 200A484012F0034A004DF940 /* GBSidebarSubmoduleMissingIcon.png */; };
 		200B08B511B6E359004C09A8 /* GBLocalRemoteAssociationTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 200B08B411B6E359004C09A8 /* GBLocalRemoteAssociationTask.m */; };
 		2010732F11A7E9C300EFDE56 /* app.icns in Resources */ = {isa = PBXBuildFile; fileRef = 2010732E11A7E9C300EFDE56 /* app.icns */; };
 		201073B611A80A4600EFDE56 /* GBRemotesTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 201073B511A80A4600EFDE56 /* GBRemotesTask.m */; };
@@ -405,6 +407,7 @@
 		200A47C612EF6F1A004DF940 /* Sidebar.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Sidebar.txt; sourceTree = "<group>"; };
 		200A47F812EF8F07004DF940 /* NSObject+OASelectorNotifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+OASelectorNotifications.h"; sourceTree = "<group>"; };
 		200A47F912EF8F07004DF940 /* NSObject+OASelectorNotifications.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+OASelectorNotifications.m"; sourceTree = "<group>"; };
+		200A484012F0034A004DF940 /* GBSidebarSubmoduleMissingIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GBSidebarSubmoduleMissingIcon.png; path = Images/GBSidebarSubmoduleMissingIcon.png; sourceTree = SOURCE_ROOT; };
 		200B08B311B6E359004C09A8 /* GBLocalRemoteAssociationTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBLocalRemoteAssociationTask.h; sourceTree = "<group>"; };
 		200B08B411B6E359004C09A8 /* GBLocalRemoteAssociationTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBLocalRemoteAssociationTask.m; sourceTree = "<group>"; };
 		2010732E11A7E9C300EFDE56 /* app.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = app.icns; sourceTree = "<group>"; };
@@ -941,6 +944,7 @@
 				2097EE2312DF2B4A0070AE89 /* GBSidebarGroupIcon.png */,
 				200A471E12ECB265004DF940 /* GBSidebarRepositoryIcon.png */,
 				200A471F12ECB265004DF940 /* GBSidebarSubmoduleIcon.png */,
+				200A484012F0034A004DF940 /* GBSidebarSubmoduleMissingIcon.png */,
 			);
 			name = Sidebar;
 			sourceTree = "<group>";
@@ -1344,6 +1348,7 @@
 				200A44FF12EC5A1C004DF940 /* GBSubmoduleCloneProcessViewController.xib in Resources */,
 				200A472212ECB265004DF940 /* GBSidebarRepositoryIcon.png in Resources */,
 				200A472312ECB265004DF940 /* GBSidebarSubmoduleIcon.png in Resources */,
+				200A484112F0034A004DF940 /* GBSidebarSubmoduleMissingIcon.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1391,6 +1396,7 @@
 				200A44FD12EC5A1C004DF940 /* GBSubmoduleCloneProcessViewController.xib in Resources */,
 				200A472012ECB265004DF940 /* GBSidebarRepositoryIcon.png in Resources */,
 				200A472112ECB265004DF940 /* GBSidebarSubmoduleIcon.png in Resources */,
+				200A484212F0034A004DF940 /* GBSidebarSubmoduleMissingIcon.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
