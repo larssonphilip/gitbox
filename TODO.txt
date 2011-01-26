@@ -174,6 +174,7 @@ Features:
 
 Enhancements:
 
+- general: since push/pull happen in the same dispatch queue as any other git command, while sending a big pack of data we simply cannot load commits and changes anymore. Should put up different queues for different tasks: changes can be loaded and staged  separately from committing and branch manipulation, local branches can be edited while doing push.
 - general: do different initial updates for remembered repos and opened/cloned ones:
   - general: for the remembered repos first load submodules with spinner to update sidebar, then load branches and history (but not stage/commit changes)
   - general: for added repos do the full initial update like it's done today
