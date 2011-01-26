@@ -16,18 +16,22 @@
  1. Post a notification from repository:
  
     [self notifyWithSelector:@selector(repositoryDidUpdateChanges:)];
+    [self notifyWithSelector:@selector(repository:didCheckoutBranch:) withObject:aBranch];
  
  2. Subscribe for notifications from repository:
  
     [repository addObserver:self forSelector:@selector(repositoryDidUpdateChanges:)];
+    [repository addObserver:self forSelector:@selector(repository:didCheckoutBranch:)];
  
  3. Unsubscribe from notifications from repository:
  
     [repository removeObserver:self forSelector:@selector(repositoryDidUpdateChanges:)];
+    [repository removeObserver:self forSelector:@selector(repository:didCheckoutBranch:)];
  
  4. Receive a notification:
     
     - (void) repositoryDidUpdateChanges:(GBRepository*)aRepository { ... }
+    - (void) repository:(GBRepository*)aRepository didCheckoutBranch:(GBRef*)aBranch { ... }
     
 
  If the selector is NULL when subscribing, the name will be nil.
@@ -39,6 +43,7 @@
 
 @interface NSObject (OASelectorNotifications)
 - (void) notifyWithSelector:(SEL)selector;
+- (void) notifyWithSelector:(SEL)selector withObject:(id)object;
 - (void) addObserver:(id)observer forSelector:(SEL)selector;
 - (void) removeObserver:(id)observer forSelector:(SEL)selector;
 - (void) addSelectorObserver:(id)observer;

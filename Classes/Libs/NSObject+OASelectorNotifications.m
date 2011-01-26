@@ -9,25 +9,29 @@
  To make things easier and less verbose, we won't declare notification names, but only the selectors.
  You will subscribe directly to the observed object with a given selector.
  Notification name will be calculated from the observable object class and the selector.
- The only argument of the selector will be an instance of NSNotification with its "object" returning the sender, as usual.
+ The only argument of the selector will be the sender (not the notification object as usually)
  
  Examples: 
  
  1. Post a notification from repository:
  
     [self notifyWithSelector:@selector(repositoryDidUpdateChanges:)];
+    [self notifyWithSelector:@selector(repository:didCheckoutBranch:) withObject:aBranch];
  
  2. Subscribe for notifications from repository:
  
     [repository addObserver:self forSelector:@selector(repositoryDidUpdateChanges:)];
+    [repository addObserver:self forSelector:@selector(repository:didCheckoutBranch:)];
  
  3. Unsubscribe from notifications from repository:
  
     [repository removeObserver:self forSelector:@selector(repositoryDidUpdateChanges:)];
+    [repository removeObserver:self forSelector:@selector(repository:didCheckoutBranch:)];
  
  4. Receive a notification:
  
-    - (void) repositoryDidUpdateChanges:(NSNotification*)aNotification { ... }
+    - (void) repositoryDidUpdateChanges:(GBRepository*)aRepository { ... }
+    - (void) repository:(GBRepository*)aRepository didCheckoutBranch:(GBRef*)aBranch { ... }
  
  
  If the selector is NULL when subscribing, the name will be nil.
@@ -55,17 +59,35 @@
   NSAssert(selector, @"OADispatchSelectorNotification cannot convert OANotificationSelector from NSString to SEL");
   if ([self respondsToSelector:selector])
   {
-    [self performSelector:selector withObject:self];
+    id argument = [userInfo objectForKey:@"OANotificationSelectorArgument"];
+    if (argument)
+    {
+      [self performSelector:selector withObject:self withObject:argument];
+    }
+    else
+    {
+      [self performSelector:selector withObject:self];
+    }
   }
 }
 
 
 - (void) notifyWithSelector:(SEL)selector
 {
+  [self notifyWithSelector:selector withObject:nil];
+}
+
+- (void) notifyWithSelector:(SEL)selector withObject:(id)argument
+{
   NSAssert(selector, @"notifySelector: requires non-nil selector");
+  
+  // Note: if argument is nil, the dictionary will ignore OANotificationSelectorArgument key as intended.
   NSNotification* aNotification = [NSNotification notificationWithName:[self OANotificationNameForSelector:selector] 
                                                                 object:self
-                                                              userInfo:[NSDictionary dictionaryWithObject:NSStringFromSelector(selector) forKey:@"OANotificationSelector"]];
+                                                              userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
+                                                                        NSStringFromSelector(selector), @"OANotificationSelector", 
+                                                                        argument, @"OANotificationSelectorArgument", 
+                                                                        nil]];
   [[NSNotificationCenter defaultCenter] postNotification:aNotification];
 }
 
