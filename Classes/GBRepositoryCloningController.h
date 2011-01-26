@@ -1,5 +1,5 @@
 #import "GBBaseRepositoryController.h"
-#import "GBCloningRepositoryControllerDelegate.h"
+#import "GBRepositoryCloningControllerDelegate.h"
 
 @interface GBRepositoryCloningController : GBBaseRepositoryController
 
@@ -7,7 +7,7 @@
 @property(nonatomic,retain) NSURL* targetURL;
 @property(nonatomic,retain) NSError* error;
 
-@property(nonatomic,assign) id<GBCloningRepositoryControllerDelegate> delegate;
+@property(nonatomic,assign) id<GBRepositoryCloningControllerDelegate> delegate;
 
 - (void) cancelCloning;
 
