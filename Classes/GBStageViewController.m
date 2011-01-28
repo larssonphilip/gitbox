@@ -45,17 +45,23 @@
 @property(nonatomic, retain) GBStageMessageHistoryController* messageHistoryController;
 @property(nonatomic, assign) BOOL alreadyValidatedUserNameAndEmail;
 @property(nonatomic, assign) CGFloat overridenHeaderHeight;
-- (void) validateUserNameAndEmailIfNeededWithBlock:(void(^)())block;
+
+@property(nonatomic, readonly) GBStage* stage;
+
+- (BOOL) isEditingCommitMessage;
+- (void) resetMessageHistory;
+
+- (void) updateViews;
 - (void) updateHeader;
 - (void) updateHeaderSizeAnimating:(BOOL)animating;
 - (void) updateCommitButtonEnabledState;
 - (void) syncHeaderAfterLeaving;
+
 - (BOOL) validateCommit:(id)sender;
 - (BOOL) validateReallyCommit:(id)sender;
-- (BOOL) isEditingCommitMessage;
 - (NSString*) validCommitMessage;
-- (void) resetMessageHistory;
-- (void) updateWithChanges:(NSArray*)newChanges;
+- (void) validateUserNameAndEmailIfNeededWithBlock:(void(^)())block;
+
 @end
 
 
@@ -74,6 +80,8 @@
 
 @synthesize alreadyValidatedUserNameAndEmail;
 @synthesize overridenHeaderHeight;
+
+@dynamic stage;
 
 #pragma mark Init
 
@@ -105,6 +113,7 @@
 {
   [super setRepositoryController:repoCtrl];
   self.commit = repoCtrl.repository.stage;
+  [self resetMessageHistory];
 }
 
 
@@ -114,10 +123,17 @@
 #pragma mark Subclass API
 
 
-- (GBStage*)stage
+
+
+- (CGFloat) headerHeight
 {
-  return [self.commit asStage];
+  if (self.overridenHeaderHeight > 0.0)
+  {
+    return self.overridenHeaderHeight;
+  }
+  return [super headerHeight];
 }
+
 
 - (void) setChanges:(NSArray *)aChanges
 {
@@ -125,11 +141,42 @@
   {
     if (change.delegate == (id)self) change.delegate = nil;
   }
+  
+  // Remember the set of selected file URLs.
+  NSMutableSet* selectedURLs = [NSMutableSet set];
+  for (GBChange* aChange in [self selectedChanges])
+  {
+    if (aChange.srcURL) [selectedURLs addObject:aChange.srcURL];
+    if (aChange.dstURL) [selectedURLs addObject:aChange.dstURL];
+  }
+  
+  
   [super setChanges:aChanges];
   
-  // TODO: port code from updateWithChanges: to restore selection
-  // TODO: should set delegate as self, not self.repositoryController
+  
+  for (GBChange* change in self.changes)
+  {
+    change.delegate = self;
+  }
+  
+  [self.statusArrayController arrangeObjects:self.changes];
+  
+  // Restore selection
+  NSMutableArray* newSelectedChanges = [NSMutableArray array];
+  for (GBChange* aChange in [self.statusArrayController arrangedObjects])
+  {
+    if (aChange.fileURL && [selectedURLs containsObject:aChange.fileURL])
+    {
+      [newSelectedChanges addObject:aChange];
+    }
+  }
+  
+  [self.statusArrayController setSelectedObjects:newSelectedChanges];
+  
+  [self updateViews];
 }
+
+
 
 
 
@@ -142,7 +189,6 @@
 - (void) loadView
 {
   [super loadView];
-  [self update];
   
   [self.tableView registerForDraggedTypes:[NSArray arrayWithObjects:(NSString *)kUTTypeFileURL, NSStringPboardType, NSFilenamesPboardType, nil]];
   [self.tableView setDraggingSourceOperationMask:NSDragOperationNone forLocal:YES];
@@ -156,55 +202,10 @@
   self.headerCell.verticalOffset = -1;
   
   self.shortcutHintDetector = [GBStageShortcutHintDetector detectorWithView:self.shortcutHintLabel];
+  
+  [self updateViews];
 }
 
-- (void) update
-{
-  [super update];
-  for (GBChange* change in self.changes)
-  {
-    change.delegate = self.repositoryController;
-  }
-  [self.statusArrayController arrangeObjects:self.changes];
-  [self updateHeader];
-  [self.tableView setNextKeyView:self.messageTextView];
-  [[self.tableView enclosingScrollView] setFrame:[self.view bounds]];
-  [self resetMessageHistory];
-}
-
-- (void) updateWithChanges:(NSArray*)newChanges
-{
-  // Here we have to save selection, replace changes and restore selection. 
-  NSMutableSet* selectedURLs = [NSMutableSet set];
-  for (GBChange* aChange in [self selectedChanges])
-  {
-    if (aChange.srcURL) [selectedURLs addObject:aChange.srcURL];
-    if (aChange.dstURL) [selectedURLs addObject:aChange.dstURL];
-  }
-  
-  self.changes = newChanges;
-  [self update];
-  
-  NSMutableArray* newSelectedChanges = [NSMutableArray array];
-  for (GBChange* aChange in [self.statusArrayController arrangedObjects])
-  {
-    if (aChange.fileURL && [selectedURLs containsObject:aChange.fileURL])
-    {
-      [newSelectedChanges addObject:aChange];
-    }
-  }
-  
-  [self.statusArrayController setSelectedObjects: newSelectedChanges];
-}
-
-- (CGFloat) headerHeight
-{
-  if (self.overridenHeaderHeight > 0.0)
-  {
-    return self.overridenHeaderHeight;
-  }
-  return [super headerHeight];
-}
 
 
 
@@ -229,7 +230,7 @@
 
 - (IBAction) stageDoUnstage:(id)sender
 {
-  [self.repositoryController  unstageChanges:[self selectedChanges]];
+  [self.repositoryController unstageChanges:[self selectedChanges]];
 }
 - (BOOL) validateStageDoUnstage:(id)sender
 {
@@ -490,6 +491,47 @@
   }
 }
 
+
+
+
+
+
+#pragma mark Private
+
+
+
+- (GBStage*) stage
+{
+  return [self.commit asStage];
+}
+
+- (void) updateViews
+{
+  [self updateHeader];
+  [self.tableView setNextKeyView:self.messageTextView];
+  [[self.tableView enclosingScrollView] setFrame:[self.view bounds]];
+}
+
+
+
+
+
+
+#pragma mark GBChangeDelegate
+
+
+
+- (void) stageChange:(GBChange*)aChange
+{
+  if (![self.changes containsObject:aChange]) return;
+  [self.repositoryController stageChanges:[NSArray arrayWithObject:aChange]];
+}
+
+- (void) unstageChange:(GBChange*)aChange
+{
+  if (![self.changes containsObject:aChange]) return;
+  [self.repositoryController unstageChanges:[NSArray arrayWithObject:aChange]];
+}
 
 
 

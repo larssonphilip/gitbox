@@ -167,7 +167,6 @@
   {
     self.stageController.repositoryController = self.repositoryController;
     self.commitController.changes = commit.changes;
-    [self.commitController update];
   }
 }
 
@@ -176,15 +175,15 @@
   GBCommit* commit = self.repositoryController.selectedCommit;
   NSView* targetView = self.additionalView;
   
-  self.commitController.commit = nil;
+  self.commitController.repositoryController = nil;
   [self.commitController unloadView];
   
-  self.stageController.stage = nil;
+  self.stageController.repositoryController = nil;
   [self.stageController unloadView];
 
   if (!commit || [commit isStage])
   {
-    self.stageController.stage = [commit asStage];
+    self.stageController.repositoryController = self.repositoryController;
     [self.stageController loadInView:targetView];
     [self.tableView setNextKeyView:self.stageController.tableView];
   }

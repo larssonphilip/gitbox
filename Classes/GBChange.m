@@ -73,7 +73,6 @@
       [delegate unstageChange:self];
     }
   }
-  [self update];
 }
 
 - (void) setStagedSilently:(BOOL) flag

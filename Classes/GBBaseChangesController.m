@@ -58,6 +58,8 @@
   repositoryController = [repoCtrl retain];
   
   [repositoryController addObserverForAllSelectors:self];
+  
+  self.commit = nil;
 }
 
 
@@ -81,7 +83,7 @@
 - (void) repositoryController:(GBRepositoryController*)repoCtrl didUpdateChangesForCommit:(GBCommit*)aCommit
 {
   if (aCommit != self.commit) return;
-  
+  self.changes = aCommit.changes;
 }
 
 

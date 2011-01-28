@@ -11,7 +11,7 @@
 @class GBMainWindowController;
 @class OAFSEventStream;
 
-@interface GBRepositoryController : GBBaseRepositoryController<GBChangeDelegate>
+@interface GBRepositoryController : GBBaseRepositoryController
 {  
   NSInteger isStaging; // maintains a count of number of staging tasks running
   NSInteger isLoadingChanges; // maintains a count of number of changes loading tasks running

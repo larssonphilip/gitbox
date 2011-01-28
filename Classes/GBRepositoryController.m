@@ -827,25 +827,6 @@
 
 
 
-#pragma mark GBChangeDelegate
-
-
-
-
-- (void) stageChange:(GBChange*)aChange
-{
-  [self stageChanges:[NSArray arrayWithObject:aChange]];
-}
-
-- (void) unstageChange:(GBChange*)aChange
-{
-  [self unstageChanges:[NSArray arrayWithObject:aChange]];
-}
-
-
-
-
-
 
 
 
@@ -1059,7 +1040,6 @@
     // or another loading task is running.
     if (!isStaging && !isLoadingChanges)
     {
-      if ([self.delegate respondsToSelector:@selector(repositoryControllerDidUpdateCommitChanges:)]) { [self.delegate repositoryControllerDidUpdateCommitChanges:self]; }
       [self notifyWithSelector:@selector(repositoryController:didUpdateChangesForCommit:) withObject:self.repository.stage];
     }
     [self popFSEventsPause];
@@ -1076,7 +1056,7 @@
   }
   [self pushFSEventsPause];
   [commit loadChangesWithBlock:^{
-    if ([self.delegate respondsToSelector:@selector(repositoryControllerDidUpdateCommitChanges:)]) { [self.delegate repositoryControllerDidUpdateCommitChanges:self]; }
+    [self notifyWithSelector:@selector(repositoryController:didUpdateChangesForCommit:) withObject:commit];
     [self popFSEventsPause];
   }];
 }

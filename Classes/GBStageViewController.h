@@ -1,8 +1,9 @@
 #import "GBBaseChangesController.h"
+#import "GBChangeDelegate.h"
 
 @class GBStage;
 @class GBCommitPromptController;
-@interface GBStageViewController : GBBaseChangesController<NSTextFieldDelegate, NSTextViewDelegate, NSAnimationDelegate>
+@interface GBStageViewController : GBBaseChangesController<GBChangeDelegate, NSTextFieldDelegate, NSTextViewDelegate, NSAnimationDelegate>
 
 // Nib API
 
