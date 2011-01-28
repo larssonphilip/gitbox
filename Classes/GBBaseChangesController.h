@@ -35,4 +35,5 @@
 - (IBAction) stageRevealInFinder:_;
 - (IBAction) selectLeftPane:_;
 - (BOOL) validateSelectLeftPane:_;
+
 @end

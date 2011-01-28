@@ -165,8 +165,8 @@
   }
   else
   {
-    self.stageController.repositoryController = self.repositoryController;
-    self.commitController.changes = commit.changes;
+    self.commitController.repositoryController = self.repositoryController;
+    self.commitController.commit = commit;
   }
 }
 
@@ -189,6 +189,7 @@
   }
   else
   {
+    self.commitController.repositoryController = self.repositoryController;
     self.commitController.commit = commit;
     [self.commitController loadInView:targetView];
     [self.tableView setNextKeyView:self.commitController.tableView];

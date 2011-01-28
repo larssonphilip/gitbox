@@ -15,6 +15,7 @@
 
 @interface GBCommitViewController ()
 @property(nonatomic,retain) GBUserpicController* userpicController;
+- (void) updateViews;
 - (void) updateCommitHeader;
 - (void) updateTemplate:(NSTextStorage*)storage withCommit:(GBCommit*)aCommit;
 - (void) updateMessageStorage:(NSTextStorage*)storage;
@@ -39,7 +40,7 @@
   [[NSNotificationCenter defaultCenter] removeObserver:self
                                                   name:nil 
                                                 object:self.tableView];
-  self.commit = nil;
+ 
   self.headerRTFTemplate = nil;
   self.headerTextView = nil;
   self.messageTextView = nil;
@@ -54,6 +55,22 @@
 #pragma mark GBBaseViewController
 
 
+
+- (void) setChanges:(NSArray *)aChanges
+{
+  [super setChanges:aChanges];
+  [self updateViews];
+}
+
+
+
+
+
+#pragma mark NSViewController
+
+
+
+
 - (void) loadView
 {
   [super loadView];
@@ -65,7 +82,7 @@
     self.userpicController = [[GBUserpicController new] autorelease];
   }
   
-  [self update];
+  [self updateViews];
   
   [self.tableView registerForDraggedTypes:[NSArray arrayWithObjects:NSStringPboardType, NSFilenamesPboardType, nil]];
   [self.tableView setDraggingSourceOperationMask:NSDragOperationNone forLocal:YES];
@@ -74,15 +91,15 @@
   
   [self.headerTextView setLinkTextAttributes:
    [NSDictionary dictionaryWithObjectsAndKeys:                                              
-        [NSColor colorWithCalibratedRed:50.0/255.0 green:100.0/255.0 blue:220.0/255.0 alpha:1.0],
-        NSForegroundColorAttributeName,
-        
-        [NSNumber numberWithInt:NSUnderlineStyleNone],
-        NSUnderlineStyleAttributeName,
+    [NSColor colorWithCalibratedRed:50.0/255.0 green:100.0/255.0 blue:220.0/255.0 alpha:1.0],
+    NSForegroundColorAttributeName,
     
-        [NSCursor pointingHandCursor],
-        NSCursorAttributeName,
-        nil]];
+    [NSNumber numberWithInt:NSUnderlineStyleNone],
+    NSUnderlineStyleAttributeName,
+    
+    [NSCursor pointingHandCursor],
+    NSCursorAttributeName,
+    nil]];
 }
 
 
@@ -93,13 +110,11 @@
 
 
 
-- (void) update
+- (void) updateViews
 {
   [[NSNotificationCenter defaultCenter] removeObserver:self
                                                   name:NSViewFrameDidChangeNotification 
                                                 object:self.tableView];
-  
-  [super update];
   [self updateCommitHeader];
   [self.tableView setPostsFrameChangedNotifications:YES];
   
@@ -107,7 +122,6 @@
                                            selector:@selector(tableViewDidResize:)
                                                name:NSViewFrameDidChangeNotification
                                              object:self.tableView];
-  
 }
 
 - (void) updateCommitHeader

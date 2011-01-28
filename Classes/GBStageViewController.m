@@ -150,16 +150,12 @@
     if (aChange.dstURL) [selectedURLs addObject:aChange.dstURL];
   }
   
-  
   [super setChanges:aChanges];
-  
   
   for (GBChange* change in self.changes)
   {
     change.delegate = self;
   }
-  
-  [self.statusArrayController arrangeObjects:self.changes];
   
   // Restore selection
   NSMutableArray* newSelectedChanges = [NSMutableArray array];

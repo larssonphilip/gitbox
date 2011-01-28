@@ -511,6 +511,9 @@
 {
   [self resetAutoFetchInterval];
   self.selectedCommit = commit;
+  if ([self.delegate respondsToSelector:@selector(repositoryControllerDidSelectCommit:)]) { 
+    [self.delegate repositoryControllerDidSelectCommit:self];
+  }
   if (commit)
   {
     if ([commit isStage])
@@ -523,7 +526,6 @@
       [self loadChangesForCommit:commit];
     }
   }
-  if ([self.delegate respondsToSelector:@selector(repositoryControllerDidSelectCommit:)]) { [self.delegate repositoryControllerDidSelectCommit:self]; }
 }
 
 

@@ -2,6 +2,8 @@
 
 @interface GBCommitViewController : GBBaseChangesController<NSSplitViewDelegate, NSOpenSavePanelDelegate>
 
+// Nib API
+
 @property(retain) NSData* headerRTFTemplate;
 @property(retain) IBOutlet NSTextView* headerTextView;
 @property(retain) IBOutlet NSTextView* messageTextView;

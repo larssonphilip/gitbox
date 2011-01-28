@@ -69,7 +69,7 @@
   
   [commit release];
   commit = [aCommit retain];
-  
+
   self.changes = commit.changes;
 }
 
@@ -105,6 +105,7 @@
   // [self.tableView setRefusesFirstResponder:[changes count] < 1]; 
   
   self.changesWithHeaderForBindings = [[NSArray arrayWithObject:[GBChange dummy]] arrayByAddingObjectsFromArray:self.changes];
+  // why do we need that? [self.statusArrayController arrangeObjects:self.changes];
 }
 
 

@@ -70,8 +70,8 @@ How to migrate to this wonderful design from where we are?
 
 The migrations steps are:
 
-- make the stage work with notifications and repository controller.
-- make commit view controller work with notifications, repo ctrl and commit.
+± make the stage work with notifications and repository controller. Needs testing.
+- make the commit view controller work with notifications, repo ctrl and commit.
 - make history work with additional view, repo ctrl, notifications.
 - make clone controllers work with independent notifications.
 - after-clone code should be inside model controllers, view controllers should just refresh their views when done.
