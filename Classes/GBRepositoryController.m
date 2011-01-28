@@ -18,7 +18,8 @@
 #import "OABlockQueue.h"
 #import "OABlockMerger.h"
 #import "NSArray+OAArrayHelpers.h"
-#import "NSObject+OAPerformBlockAfterDelay.h"
+//#import "NSObject+OAPerformBlockAfterDelay.h"
+#import "NSObject+OASelectorNotifications.h"
 
 @interface GBRepositoryController ()
 
@@ -726,12 +727,6 @@
   } postStageBlock:nil];
 }
 
-- (void) selectCommitableChanges:(NSArray*)changes
-{
-  self.repository.stage.hasSelectedChanges = ([changes count] > 0);
-  if ([self.delegate respondsToSelector:@selector(repositoryControllerDidUpdateCommitableChanges:)]) { [self.delegate repositoryControllerDidUpdateCommitableChanges:self]; }
-}
-
 - (void) commitWithMessage:(NSString*)message
 {
   [self resetAutoFetchInterval];
@@ -1065,6 +1060,7 @@
     if (!isStaging && !isLoadingChanges)
     {
       if ([self.delegate respondsToSelector:@selector(repositoryControllerDidUpdateCommitChanges:)]) { [self.delegate repositoryControllerDidUpdateCommitChanges:self]; }
+      [self notifyWithSelector:@selector(repositoryController:didUpdateChangesForCommit:) withObject:self.repository.stage];
     }
     [self popFSEventsPause];
   }];

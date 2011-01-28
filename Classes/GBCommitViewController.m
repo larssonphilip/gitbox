@@ -413,7 +413,7 @@
   [panel setNameFieldStringValue:[change defaultNameForExtractedFile]];
   [panel setPrompt:NSLocalizedString(@"Save", @"Commit")];
   [panel setDelegate:self];
-  [panel beginSheetModalForWindow:[self window] completionHandler:^(NSInteger result){
+  [panel beginSheetModalForWindow:[[self view] window] completionHandler:^(NSInteger result){
     if (result == NSFileHandlingPanelOKButton)
     {
       [change extractFileWithTargetURL:[panel URL]];
@@ -491,18 +491,6 @@
 
 
 
-
-#pragma mark Drag and drop
-
-
-- (BOOL)tableView:(NSTableView *)aTableView
-writeRowsWithIndexes:(NSIndexSet *)indexSet
-     toPasteboard:(NSPasteboard *)pasteboard
-{
-  NSArray* items = [[self.changes objectsAtIndexes:[self changesIndexesForTableIndexes:indexSet]] valueForKey:@"pasteboardItem"];
-  [pasteboard writeObjects:items];
-  return YES;
-}
 
 
 

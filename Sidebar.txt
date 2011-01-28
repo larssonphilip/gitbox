@@ -60,6 +60,7 @@ Model Controllers:
 - receive actions
 - post notifications which will be consumed by view controllers to update their states.
 
+----------------------------------------------------------------------------------------------
 
 How to migrate to this wonderful design from where we are?
 

@@ -35,7 +35,7 @@
  
  
  If the selector is NULL when subscribing, the name will be nil.
- To unsubscribe from all the objects (usually in dealloc), use [[[NSNotificationCenter] defaultCenter] removeObserver:self];
+ To unsubscribe from all the objects (usually in dealloc), use [[NSNotificationCenter defaultCenter] removeObserver:self];
  
  This file is distributed under MIT license.
  
@@ -88,6 +88,21 @@
                                                                         NSStringFromSelector(selector), @"OANotificationSelector", 
                                                                         argument, @"OANotificationSelectorArgument", 
                                                                         nil]];
+  if ([self respondsToSelector:@selector(delegate)])
+  {
+    id delegate = [(id)self delegate];
+    if ([delegate respondsToSelector:selector])
+    {
+      if (argument)
+      {
+        [delegate performSelector:selector withObject:self withObject:argument];
+      }
+      else
+      {
+        [delegate performSelector:selector withObject:self];
+      }
+    }
+  }
   [[NSNotificationCenter defaultCenter] postNotification:aNotification];
 }
 
@@ -111,12 +126,12 @@
   [[NSNotificationCenter defaultCenter] removeObserver:observer name:name object:self];
 }
 
-- (void) addSelectorObserver:(id)observer
+- (void) addObserverForAllSelectors:(id)observer
 {
   [self addObserver:observer forSelector:NULL];
 }
 
-- (void) removeSelectorObserver:(id)observer
+- (void) removeObserverForAllSelectors:(id)observer
 {
   [self removeObserver:observer forSelector:NULL];
 }

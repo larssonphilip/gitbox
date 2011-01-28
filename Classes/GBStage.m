@@ -18,7 +18,6 @@
 @synthesize currentCommitMessage;
 
 @synthesize hasStagedChanges;
-@synthesize hasSelectedChanges;
 
 #pragma mark Init
 
@@ -55,7 +54,7 @@
 
 - (BOOL) isCommitable
 {
-  return ([self.stagedChanges count] > 0 || self.hasSelectedChanges);
+  return [self.stagedChanges count] > 0;
 }
 
 

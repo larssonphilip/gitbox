@@ -20,6 +20,8 @@
 #import "NSArray+OAArrayHelpers.h"
 
 @class GBStageViewController;
+
+
 @interface GBStageHeaderAnimation : NSAnimation
 @property(nonatomic, copy) NSString* message;
 @property(nonatomic, assign) GBStageViewController* controller;
@@ -30,6 +32,9 @@
 + (GBStageHeaderAnimation*) animationWithController:(GBStageViewController*)ctrl;
 - (void) prepareAnimation;
 @end
+
+
+
 
 @interface GBStageViewController ()
 @property(nonatomic, retain) GBCommitPromptController* commitPromptController;
@@ -50,13 +55,13 @@
 - (BOOL) isEditingCommitMessage;
 - (NSString*) validCommitMessage;
 - (void) resetMessageHistory;
+- (void) updateWithChanges:(NSArray*)newChanges;
 @end
 
 
 
 @implementation GBStageViewController
 
-@synthesize stage;
 @synthesize messageTextView;
 @synthesize commitButton;
 @synthesize commitPromptController;
@@ -74,7 +79,6 @@
 
 - (void) dealloc
 {
-  self.stage = nil;
   self.messageTextView = nil;
   self.commitButton = nil;
   self.commitPromptController = nil;
@@ -88,6 +92,52 @@
   self.messageHistoryController = nil;
   [super dealloc];
 }
+
+
+
+
+
+#pragma mark Public API
+
+
+
+- (void) setRepositoryController:(GBRepositoryController*)repoCtrl
+{
+  [super setRepositoryController:repoCtrl];
+  self.commit = repoCtrl.repository.stage;
+}
+
+
+
+
+
+#pragma mark Subclass API
+
+
+- (GBStage*)stage
+{
+  return [self.commit asStage];
+}
+
+- (void) setChanges:(NSArray *)aChanges
+{
+  for (GBChange* change in self.changes)
+  {
+    if (change.delegate == (id)self) change.delegate = nil;
+  }
+  [super setChanges:aChanges];
+  
+  // TODO: port code from updateWithChanges: to restore selection
+  // TODO: should set delegate as self, not self.repositoryController
+}
+
+
+
+
+#pragma mark NSViewController
+
+
+
 
 - (void) loadView
 {
@@ -230,7 +280,7 @@
   fileEditor.title = @".gitignore";
   fileEditor.URL = [[self.stage.repository url] URLByAppendingPathComponent:@".gitignore"];
   fileEditor.linesToAppend = paths;
-  [fileEditor runSheetInWindow:[self window]];
+  [fileEditor runSheetInWindow:[[self view] window]];
 }
 - (BOOL) validateStageIgnoreFile:(id)sender
 {
@@ -249,7 +299,7 @@
   [alert setInformativeText:NSLocalizedString(@"All non-committed changes will be lost.",@"Stage")];
   [alert setAlertStyle:NSWarningAlertStyle];
   [alert retain];
-  [alert beginSheetModalForWindow:[self window]
+  [alert beginSheetModalForWindow:[[self view] window]
                     modalDelegate:self
                    didEndSelector:@selector(stageRevertFileAlertDidEnd:returnCode:contextInfo:)
                       contextInfo:[[self selectedChanges] copy]];
@@ -267,7 +317,7 @@
     [self.repositoryController revertChanges:changes];
   }
   [changes autorelease];
-  [NSApp endSheet:[self window]];
+  [NSApp endSheet:[[self view] window]];
   [[alert window] orderOut:self];
   [alert autorelease];
 }
@@ -281,7 +331,7 @@
   [alert setInformativeText:NSLocalizedString(@"All non-committed changes will be lost.", @"Stage")];
   [alert setAlertStyle:NSWarningAlertStyle];
   [alert retain];
-  [alert beginSheetModalForWindow:[self window]
+  [alert beginSheetModalForWindow:[[self view] window]
                     modalDelegate:self
                    didEndSelector:@selector(stageDeleteFileAlertDidEnd:returnCode:contextInfo:)
                       contextInfo:[[self selectedChanges] copy]];  
@@ -302,7 +352,7 @@
     [self.repositoryController deleteFilesInChanges:changes];
   }
   [changes autorelease];
-  [NSApp endSheet:[self window]];
+  [NSApp endSheet:[[self view] window]];
   [[alert window] orderOut:self];
   [alert autorelease];
 }
@@ -343,7 +393,7 @@
     repoCtrl.cancelledCommitMessage = prompt.value;
   };
   
-  [prompt runSheetInWindow:[self window]];
+  [prompt runSheetInWindow:[[self view] window]];
 }
 
 - (IBAction) commit:(id)sender
@@ -655,18 +705,7 @@
   return YES;
 }
 
-- (void)tableViewSelectionDidChange:(NSNotification *)aNotification
-{
-  [super tableViewSelectionDidChange:aNotification];
-  [self.repositoryController selectCommitableChanges:[self selectedChanges]];
-}
 
-- (BOOL) tableView:(NSTableView*)aTableView writeRowsWithIndexes:(NSIndexSet*)indexSet toPasteboard:(NSPasteboard*)pasteboard
-{
-  NSArray* items = [[self.changes objectsAtIndexes:[self changesIndexesForTableIndexes:indexSet]] valueForKey:@"pasteboardItem"];
-  [pasteboard writeObjects:items];
-  return YES;
-}
 
 
 
@@ -702,7 +741,7 @@
     self.alreadyValidatedUserNameAndEmail = YES;
     [[GBGitConfig userConfig] setName:ctrl.userName email:ctrl.userEmail withBlock:block];
   };
-  [ctrl runSheetInWindow:[self window]];
+  [ctrl runSheetInWindow:[[self view] window]];
 }
 
 

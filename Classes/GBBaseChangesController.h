@@ -1,31 +1,34 @@
+// This is a base utility class for GBStageViewController and GBCommitViewController.
+// It should not be visible to any other class in the app.
+
 #import <Quartz/Quartz.h>
 #import <QuickLook/QuickLook.h>
 
 @class GBRepositoryController;
+@class GBCommit;
 @interface GBBaseChangesController : NSViewController<NSTableViewDelegate, NSUserInterfaceValidations, QLPreviewPanelDataSource, QLPreviewPanelDelegate>
 
-@property(nonatomic, retain) IBOutlet NSTableView* tableView;
-@property(nonatomic, retain) IBOutlet NSArrayController* statusArrayController; 
-@property(nonatomic, retain) IBOutlet NSView* headerView; 
+// Public API
+
 @property(nonatomic, retain) GBRepositoryController* repositoryController;
-@property(nonatomic, retain) NSArray* changes;
+@property(nonatomic, retain) GBCommit* commit;
+
+
+// NIB API
+
+@property(nonatomic, retain) IBOutlet NSTableView* tableView;
+@property(nonatomic, retain) IBOutlet NSArrayController* statusArrayController;
+@property(nonatomic, retain) IBOutlet NSView* headerView;
 @property(nonatomic, retain) NSArray* changesWithHeaderForBindings; // bound to statusArrayController
 
-#pragma mark Interrogation
+
+// Subclass API
+
+@property(nonatomic, retain) NSArray* changes;
 
 - (NSArray*) selectedChanges;
-- (NSWindow*) window;
 - (NSCell*) headerCell;
 - (CGFloat) headerHeight;
-- (NSIndexSet*) changesIndexesForTableIndexes:(NSIndexSet*)indexSet;
-
-
-#pragma mark Update
-
-- (void) update;
-
-
-#pragma mark Actions
 
 - (IBAction) selectFirstLineIfNeeded:_;
 - (IBAction) stageShowDifference:_;

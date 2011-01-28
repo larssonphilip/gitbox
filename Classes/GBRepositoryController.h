@@ -49,7 +49,6 @@
 - (void) revertChanges:(NSArray*)changes;
 - (void) deleteFilesInChanges:(NSArray*)changes;
 
-- (void) selectCommitableChanges:(NSArray*)changes;
 - (void) commitWithMessage:(NSString*)message;
 
 - (void) updateSubmodulesWithBlock:(void(^)())aBlock;

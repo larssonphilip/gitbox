@@ -8,10 +8,10 @@
 
 @property(nonatomic,retain) NSURL* srcURL;
 @property(nonatomic,retain) NSURL* dstURL;
-@property(nonatomic,retain) NSString* statusCode;
-@property(nonatomic,retain) NSString* status;
-@property(nonatomic,retain) NSString* oldRevision;
-@property(nonatomic,retain) NSString* newRevision;
+@property(nonatomic,copy)   NSString* statusCode;
+@property(nonatomic,copy)   NSString* status;
+@property(nonatomic,copy)   NSString* oldRevision;
+@property(nonatomic,copy)   NSString* newRevision;
 @property(nonatomic,copy)   NSString* commitId;
 
 // Important: staged property & delegate are only used for checkbox binding in UI.
@@ -42,7 +42,6 @@
 - (GBChange*) nilIfBusy;
 
 - (void) setStagedSilently:(BOOL) flag;
-- (void) update;
 
 - (Class) cellClass;
 - (GBChangeCell*) cell;

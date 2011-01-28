@@ -460,20 +460,13 @@
   [self.historyController update];
 }
 
-- (void) repositoryControllerDidUpdateCommitChanges:(GBRepositoryController*)repoCtrl
+- (void) repositoryController:(GBRepositoryController*)repoCtrl didUpdateChangesForCommit:(GBCommit*)aCommit
 {
   [self.sourcesController updateBadges];
   if (![self isSelectedRepositoryController:repoCtrl]) return;
   [self.toolbarController updateCommitButton];
   [self.historyController refreshChangesController];
   [self.historyController updateStage];
-}
-
-- (void) repositoryControllerDidUpdateCommitableChanges:(GBRepositoryController*)repoCtrl
-{
-  [self.sourcesController updateBadges];
-  if (![self isSelectedRepositoryController:repoCtrl]) return;
-  [self.toolbarController updateCommitButton];
 }
 
 - (void) repositoryControllerDidCommit:(GBRepositoryController*)repoCtrl

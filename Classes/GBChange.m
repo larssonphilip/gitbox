@@ -223,9 +223,14 @@
   return aStatusCode;
 }
 
-- (void) update
+- (void) setStatusCode:(NSString*)aCode
 {
-  self.status = [self statusForStatusCode:self.statusCode];
+  if (statusCode == aCode) return;
+  
+  [statusCode release];
+  statusCode = [aCode retain];
+  
+  self.status = [self statusForStatusCode:statusCode];
 }
 
 - (NSString*) pathStatus

@@ -1,6 +1,7 @@
 #import "GBBaseRepositoryControllerDelegate.h"
 
 @class GBRepositoryController;
+@class GBCommit;
 @protocol GBRepositoryControllerDelegate<GBBaseRepositoryControllerDelegate>
 @optional
 - (void) repositoryControllerDidSelect:(GBRepositoryController*)repoCtrl;
@@ -13,8 +14,7 @@
 - (void) repositoryControllerDidCheckoutBranch:(GBRepositoryController*)repoCtrl;
 - (void) repositoryControllerDidChangeRemoteBranch:(GBRepositoryController*)repoCtrl;
 - (void) repositoryControllerDidSelectCommit:(GBRepositoryController*)repoCtrl;
-- (void) repositoryControllerDidUpdateCommitChanges:(GBRepositoryController*)repoCtrl;
-- (void) repositoryControllerDidUpdateCommitableChanges:(GBRepositoryController*)repoCtrl;
+- (void) repositoryController:(GBRepositoryController*)repoCtrl didUpdateChangesForCommit:(GBCommit*)aCommit;
 - (void) repositoryControllerDidCommit:(GBRepositoryController*)repoCtrl;
 - (void) repositoryController:(GBRepositoryController*)repoCtrl didMoveToURL:(NSURL*)newURL;
 

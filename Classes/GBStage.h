@@ -10,7 +10,6 @@
 @property(nonatomic, copy) NSString* currentCommitMessage;
 
 @property(nonatomic, assign) BOOL hasStagedChanges;
-@property(nonatomic, assign) BOOL hasSelectedChanges;
 
 - (BOOL) isDirty;
 - (BOOL) isCommitable;

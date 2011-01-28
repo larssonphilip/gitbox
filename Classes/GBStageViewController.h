@@ -4,12 +4,11 @@
 @class GBCommitPromptController;
 @interface GBStageViewController : GBBaseChangesController<NSTextFieldDelegate, NSTextViewDelegate, NSAnimationDelegate>
 
-@property(nonatomic, retain) GBStage* stage;
+// Nib API
+
 @property(nonatomic, retain) IBOutlet NSTextView* messageTextView;
 @property(nonatomic, retain) IBOutlet NSButton* commitButton;
 @property(nonatomic, retain) IBOutlet NSTextField* shortcutHintLabel;
-
-- (void) updateWithChanges:(NSArray*)newChanges;
 
 - (IBAction) stageDoStage:(id)sender;
 - (IBAction) stageDoUnstage:(id)sender;

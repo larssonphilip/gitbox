@@ -1,3 +1,4 @@
+#import "GBCommit.h"
 #import "GBChange.h"
 #import "GBChangeCell.h"
 #import "GBChangeCheckboxCell.h"
@@ -5,6 +6,7 @@
 #import "GBCellWithView.h"
 
 #import "NSObject+OADispatchItemValidation.h"
+#import "NSObject+OASelectorNotifications.h"
 #import "NSArray+OAArrayHelpers.h"
 
 @interface GBBaseChangesController ()
@@ -13,23 +15,27 @@
 
 @implementation GBBaseChangesController
 
+@synthesize repositoryController;
+@synthesize commit;
+
 @synthesize tableView;
 @synthesize statusArrayController;
 @synthesize headerView;
-@synthesize repositoryController;
+
 @synthesize changes;
 @synthesize changesWithHeaderForBindings;
 @synthesize quicklookPanel;
 
-#pragma mark Init
-
 - (void) dealloc
 {
   [NSObject cancelPreviousPerformRequestsWithTarget:self];
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
+  self.repositoryController = nil;
+  self.commit = nil;
+  
   self.tableView = nil;
   self.statusArrayController = nil;
   self.headerView = nil;
-  self.repositoryController = nil;
   self.changes = nil;
   self.changesWithHeaderForBindings = nil;
   self.quicklookPanel = nil;
@@ -37,7 +43,68 @@
 }
 
 
-#pragma mark Interrogation
+
+#pragma mark Public API
+
+
+
+- (void) setRepositoryController:(GBRepositoryController*)repoCtrl
+{
+  if (repositoryController == repoCtrl) return;
+  
+  [repositoryController removeObserverForAllSelectors:self];
+  
+  [repositoryController release];
+  repositoryController = [repoCtrl retain];
+  
+  [repositoryController addObserverForAllSelectors:self];
+}
+
+
+- (void) setCommit:(GBCommit*)aCommit
+{
+  if (commit == aCommit) return;
+  
+  [commit release];
+  commit = [aCommit retain];
+  
+  self.changes = commit.changes;
+}
+
+
+
+
+
+#pragma mark GBRepositoryController Notifications
+
+
+- (void) repositoryController:(GBRepositoryController*)repoCtrl didUpdateChangesForCommit:(GBCommit*)aCommit
+{
+  if (aCommit != self.commit) return;
+  
+}
+
+
+
+
+
+#pragma mark Subclass API
+
+
+
+- (void) setChanges:(NSArray*)theChanges
+{
+  if (changes == theChanges) return;
+  
+  [changes release];
+  changes = [theChanges retain];
+  
+  // Refusing first responder when empty causes problems with jumping into the pane before it loaded the items
+  // [self.tableView setRefusesFirstResponder:[changes count] < 1]; 
+  
+  self.changesWithHeaderForBindings = [[NSArray arrayWithObject:[GBChange dummy]] arrayByAddingObjectsFromArray:self.changes];
+}
+
 
 - (NSArray*) selectedChanges
 {
@@ -62,39 +129,7 @@
   }
 }
 
-- (NSWindow*) window
-{
-  return [[self view] window];
-}
 
-- (NSIndexSet*) changesIndexesForTableIndexes:(NSIndexSet*)indexSet
-{
-  NSMutableIndexSet* newIndexSet = [NSMutableIndexSet indexSet];
-  [indexSet enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop){
-    if (idx > 0) [newIndexSet addIndex:idx - 1];
-  }];
-  return newIndexSet;
-}
-
-
-
-
-
-
-
-
-#pragma mark Update
-
-
-- (void) update
-{
-  for (GBChange* change in self.changes)
-  {
-    [change update];
-  }
-  self.changesWithHeaderForBindings = [[NSArray arrayWithObject:[GBChange dummy]] arrayByAddingObjectsFromArray:self.changes];
-  [self.tableView setRefusesFirstResponder:[self.changes count] < 1];
-}
 
 // override in subclass (optional)
 - (NSCell*) headerCell
@@ -193,6 +228,14 @@ dataCellForTableColumn:(NSTableColumn*)aTableColumn
 {
   [self.quicklookPanel reloadData];
 }
+
+- (BOOL) tableView:(NSTableView*)aTableView writeRowsWithIndexes:(NSIndexSet*)indexSet toPasteboard:(NSPasteboard*)pasteboard
+{
+  NSArray* items = [[self.changesWithHeaderForBindings objectsAtIndexes:indexSet] valueForKey:@"pasteboardItem"];
+  [pasteboard writeObjects:items];
+  return YES;
+}
+
 
 
 
