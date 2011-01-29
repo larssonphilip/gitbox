@@ -81,7 +81,7 @@
   
   if (!OAValidateLicenseNumber(license))
   {
-    [self.progressLabel setStringValue:@"You can use all features for free with one opened repository.\n"
+    [self.progressLabel setStringValue:@"You can use all the features for free with 3 opened repositories.\n"
      "Please buy a license if you wish to work with more repositories."];
     
     [self.buyButton setHidden:NO];
