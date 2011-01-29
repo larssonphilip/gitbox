@@ -1,0 +1,11 @@
+
+Like that: https://skitch.com/oleganza/rm73q/app-gitbox
+
+- Do not track branches, only parents.
+- Do not draw connections and lines for common commits.
+- Start drawing with the latest common commit, mark it in gray.
+- Blue line can be merged with green line multiple times in any direction.
+- One line will be drawn in case of fastforward (blue or green).
+- Two lines if branches both have unique commits.
+- Should also shift commit cells to the left/right to be more clear.
+- We should choose more contrast pair of colors. Say, orange and blue. Also think about daltonism.

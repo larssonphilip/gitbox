@@ -497,6 +497,7 @@
 		203976641251A63700770D13 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
 		203977E51252815000770D13 /* NSTableView+OATableViewHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSTableView+OATableViewHelpers.h"; sourceTree = "<group>"; };
 		203977E61252815000770D13 /* NSTableView+OATableViewHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSTableView+OATableViewHelpers.m"; sourceTree = "<group>"; };
+		203E517B12F4A18700D1A668 /* GraphVisualization.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = GraphVisualization.txt; sourceTree = "<group>"; };
 		203F717612A4E04700BE1A55 /* askpass.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = askpass.rb; sourceTree = "<group>"; };
 		203F729912A62E0200BE1A55 /* GBCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBCell.h; sourceTree = "<group>"; };
 		203F729A12A62E0200BE1A55 /* GBCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBCell.m; sourceTree = "<group>"; };
@@ -894,6 +895,7 @@
 				206CAB38122A771D009284FE /* Architecture.txt */,
 				2097EB8312DDFAA00070AE89 /* AsyncPatterns.txt */,
 				20EF861412E217B900F3438A /* Authentication.txt */,
+				203E517B12F4A18700D1A668 /* GraphVisualization.txt */,
 				20C9A55F12E85ED100DBA3E1 /* Mercurial.txt */,
 				2009871711C4597800F35630 /* Payment.txt */,
 				20A09DDF12A121FD00294730 /* Quotes.txt */,
