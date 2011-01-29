@@ -74,7 +74,7 @@ Gitbox 1.3 Enhancements:
 Gitbox 1.3 Bug fixes:
 
 - sidebar: delegate all sidebar right-click menu items to the sidebar controller and selected/clicked item. Fix Open in Terminal/Open in Finder commands.
-
+- sidebar: postpone reloading the sidebar while editing a group name
 
 
 
