@@ -417,7 +417,7 @@
 
 - (BOOL) validateCommit:(id)sender
 {
-  return [self.stage isCommitable];
+  return [self.stage isCommitable] || [[self selectedChanges] count] > 0;
 }
 
 - (IBAction) reallyCommit:(id)sender
