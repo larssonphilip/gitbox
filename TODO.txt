@@ -268,7 +268,7 @@ Gitbox 1.2 Release Notes
 
 New features:
 
-✓ Reordering and groups in sidebar. 
+✓ Reordering and grouping repositories.
 ✓ Quick Look for files on stage and in the history. 
 ✓ New right pane design with a person picture. 
 ✓ New commit dialog. 
