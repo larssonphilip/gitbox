@@ -42,7 +42,7 @@ typedef enum {
 
 #pragma mark Mutation
 
-
+- (void) loadChangesIfNeededWithBlock:(void(^)())block;
 - (void) loadChangesWithBlock:(void(^)())block;
 
 @end

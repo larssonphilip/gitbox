@@ -87,6 +87,7 @@
 
 - (void) dealloc
 {
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
   self.repository = nil;
   self.selectedCommit = nil;
   self.fsEventStream = nil;
@@ -115,6 +116,16 @@
   ctrl.repository = repo;
   return ctrl;
 }
+
+- (void) setRepository:(GBRepository*)aRepository
+{
+  if (repository == aRepository) return;
+  [repository.stage removeObserverForAllSelectors:self];
+  [repository release];
+  repository = [aRepository retain];
+  [repository.stage addObserverForAllSelectors:self];
+}
+
 
 - (NSMutableArray*) commitMessageHistory
 {
@@ -257,7 +268,7 @@
     
     if (!self.selectedCommit && self.repository.stage)
     {
-      [self selectCommit:self.repository.stage];
+      self.selectedCommit = self.repository.stage;
     }
     else
     {
@@ -396,6 +407,28 @@
 
 
 
+
+
+
+#pragma mark GBCommit Notifications
+
+
+- (void) commitDidUpdateChanges:(GBCommit*)aCommit
+{
+  // Avoid publishing changes if another staging is running
+  // or another loading task is running.
+  if (aCommit != self.repository.stage || (!isStaging && isLoadingChanges <= 1))
+  {
+    [self notifyWithSelector:@selector(repositoryController:didUpdateChangesForCommit:) withObject:self.repository.stage];
+  }
+}
+
+
+
+
+
+
+
 #pragma mark Git actions
 
 
@@ -411,7 +444,7 @@
   
   // clear existing commits before switching
   repo.localBranchCommits = nil;
-  if ([self.delegate respondsToSelector:@selector(repositoryControllerDidUpdateCommits:)]) [self.delegate repositoryControllerDidUpdateCommits:self];
+  [self notifyWithSelector:@selector(repositoryControllerDidUpdateCommits:)];
   
   checkoutBlock(^{
     
@@ -507,25 +540,15 @@
 }
 
 
-- (void) selectCommit:(GBCommit*)commit
+- (void) setSelectedCommit:(GBCommit*)aCommit
 {
+  if (selectedCommit == aCommit) return;
+
+  [selectedCommit release];
+  selectedCommit = [aCommit retain];
+
   [self resetAutoFetchInterval];
-  self.selectedCommit = commit;
-  if ([self.delegate respondsToSelector:@selector(repositoryControllerDidSelectCommit:)]) { 
-    [self.delegate repositoryControllerDidSelectCommit:self];
-  }
-  if (commit)
-  {
-    if ([commit isStage])
-    {
-      // ??? Unnecessary update; it only produces glitches in the selection. We have FS events anyway.
-      [self loadStageChanges];
-    }
-    else if (!commit.changes)
-    {
-      [self loadChangesForCommit:commit];
-    }
-  }
+  [self notifyWithSelector:@selector(repositoryControllerDidSelectCommit:)];
 }
 
 
@@ -540,7 +563,7 @@
   
   GBCommit* aCommit = [commits objectAtIndex:index];
   
-  [self selectCommit:aCommit];
+  self.selectedCommit = aCommit;
 }
 
 
@@ -1023,7 +1046,8 @@
       }];
       
     } continuation: ^{
-      if ([self.delegate respondsToSelector:@selector(repositoryControllerDidUpdateCommits:)]) { [self.delegate repositoryControllerDidUpdateCommits:self]; }
+      
+      [self notifyWithSelector:@selector(repositoryControllerDidUpdateCommits:)];
       if (block) block();
       if (wantsSpinning) [self popSpinning];
     }];
@@ -1038,12 +1062,6 @@
   isLoadingChanges++;
   [self.repository.stage loadChangesWithBlock:^{
     isLoadingChanges--;
-    // Avoid publishing changes if another staging is running
-    // or another loading task is running.
-    if (!isStaging && !isLoadingChanges)
-    {
-      [self notifyWithSelector:@selector(repositoryController:didUpdateChangesForCommit:) withObject:self.repository.stage];
-    }
     [self popFSEventsPause];
   }];
 }
@@ -1057,8 +1075,7 @@
     return;
   }
   [self pushFSEventsPause];
-  [commit loadChangesWithBlock:^{
-    [self notifyWithSelector:@selector(repositoryController:didUpdateChangesForCommit:) withObject:commit];
+  [commit loadChangesIfNeededWithBlock:^{
     [self popFSEventsPause];
   }];
 }

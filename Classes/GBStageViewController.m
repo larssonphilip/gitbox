@@ -16,7 +16,6 @@
 
 #import "GBCellWithView.h"
 
-#import "NSObject+OAKeyValueObserving.h"
 #import "NSArray+OAArrayHelpers.h"
 
 @class GBStageViewController;

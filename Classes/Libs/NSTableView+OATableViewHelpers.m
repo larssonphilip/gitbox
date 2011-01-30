@@ -4,10 +4,10 @@
 
 - (void) withDelegate:(id<NSTableViewDelegate>)aDelegate doBlock:(void(^)())block
 {
-  id temporarilyRemovedDelegateToSurpressCallbackCycle = [self delegate];
+  id oldDelegate = [self delegate];
   [self setDelegate:aDelegate];
   block();
-  [self setDelegate:temporarilyRemovedDelegateToSurpressCallbackCycle];
+  [self setDelegate:oldDelegate];
 }
 
 @end

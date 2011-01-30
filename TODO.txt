@@ -216,6 +216,9 @@ Bugs:
 - IMPORTANT: bug: sidebar: sometimes, when dropped the repo to the sidebar, it does not update the history. Maybe the updateQueue is flooded.
 - IMPORTANT: bug: general: should test all leaks of blocks, NSTasks and related file handles!
 
+- bug: stage: enable spellcheck in the textview
+- bug: general: gitbox uses FSevents listener per repo which creates many duplicate file descriptors for intermediate paths (see `lsof | grep Gitbox`), should try to use a single listener for all the opened repos. Maybe this will avoid duplication.
+
 - bug: general: crash with broken file descriptor after a night of running app: not fixed for [OATask launchInQueue:withBlock:]
 - bug: general: when repo is inside dropbox folder, strange things happen (see mailbox: sometimes cannot commit or stage is blinking)
 - bug: general: when pushing and switching branches, gitbox tries to fetch immediately which blocks the interaction. Should add a delay to perform fetch only after user is done doing what he was doing

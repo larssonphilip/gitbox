@@ -9,6 +9,7 @@
 #import "GBUntrackedChangesTask.h"
 #import "OABlockGroup.h"
 #import "NSData+OADataHelpers.h"
+#import "NSObject+OASelectorNotifications.h"
 
 @implementation GBStage
 
@@ -68,19 +69,21 @@
 {
   self.hasStagedChanges = (self.stagedChanges && [self.stagedChanges count] > 0);
   self.changes = [self sortedChanges];
+  [self notifyWithSelector:@selector(commitDidUpdateChanges:)];
 }
 
 - (void) loadChangesWithBlock:(void(^)())block
 {
   block = [[block copy] autorelease];
+  
   GBTask* refreshIndexTask = [GBRefreshIndexTask taskWithRepository:self.repository];
   [self.repository launchTask:refreshIndexTask withBlock:^{
     
     GBStagedChangesTask* stagedChangesTask = [GBStagedChangesTask taskWithRepository:self.repository];
     [self.repository launchTask:stagedChangesTask withBlock:^{
-            
+
       [OABlockGroup groupBlock:^(OABlockGroup* blockGroup){
-        
+
         if ([stagedChangesTask terminationStatus] == 0)
         {
           self.stagedChanges = stagedChangesTask.changes;

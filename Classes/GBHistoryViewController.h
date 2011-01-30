@@ -4,22 +4,19 @@
 @class GBCommitViewController;
 @interface GBHistoryViewController : NSViewController<NSTableViewDelegate, NSUserInterfaceValidations>
 
-@property(nonatomic,retain) GBRepositoryController* repositoryController;
-@property(nonatomic,retain) GBStageViewController* stageController;
-@property(nonatomic,retain) GBCommitViewController* commitController;
-@property(nonatomic,retain) NSArray* commits;
-@property(nonatomic,retain) NSView* additionalView;
-@property(nonatomic,retain) IBOutlet NSTableView* tableView;
-@property(nonatomic,retain) IBOutlet NSArrayController* logArrayController;
+// Public API
 
-- (void) loadAdditionalControllers;
-
-- (void) updateStage;
-- (void) updateCommits;
-- (void) update;
-- (void) refreshChangesController;
+@property(nonatomic, retain) GBRepositoryController* repositoryController;
+@property(nonatomic, retain) GBCommit* commit;
+@property(nonatomic, retain) NSView* additionalView;
 
 - (IBAction) selectLeftPane:_;
 - (IBAction) selectRightPane:_;
+
+
+// Nib API
+
+@property(nonatomic, retain) IBOutlet NSTableView* tableView;
+@property(nonatomic, retain) IBOutlet NSArrayController* logArrayController;
 
 @end

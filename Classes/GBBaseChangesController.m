@@ -58,8 +58,6 @@
   repositoryController = [repoCtrl retain];
   
   [repositoryController addObserverForAllSelectors:self];
-  
-  self.commit = nil;
 }
 
 
@@ -67,8 +65,12 @@
 {
   if (commit == aCommit) return;
   
+  [commit removeObserverForAllSelectors:self];
+  
   [commit release];
   commit = [aCommit retain];
+  
+  [commit addObserverForAllSelectors:self];
 
   self.changes = commit.changes;
 }
@@ -77,10 +79,10 @@
 
 
 
-#pragma mark GBRepositoryController Notifications
+#pragma mark GBCommit Notifications
 
 
-- (void) repositoryController:(GBRepositoryController*)repoCtrl didUpdateChangesForCommit:(GBCommit*)aCommit
+- (void) commitDidUpdateChanges:(GBCommit*)aCommit
 {
   if (aCommit != self.commit) return;
   self.changes = aCommit.changes;
@@ -105,7 +107,7 @@
   // [self.tableView setRefusesFirstResponder:[changes count] < 1]; 
   
   self.changesWithHeaderForBindings = [[NSArray arrayWithObject:[GBChange dummy]] arrayByAddingObjectsFromArray:self.changes];
-  // why do we need that? [self.statusArrayController arrangeObjects:self.changes];
+  // do we ever need that? [self.statusArrayController arrangeObjects:self.changes];
 }
 
 

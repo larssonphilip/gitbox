@@ -342,12 +342,12 @@
 {
   [self.sourcesController update];
   [self.toolbarController update];
-  [self.historyController update];
+  //[self.historyController update];
 }
 
 - (void) repositoriesController:(GBRepositoriesController*)reposCtrl willSelectRepository:(GBBaseRepositoryController*)repoCtrl
 {
-  [self.historyController unloadView];
+  //[self.historyController unloadView];
   [self.cloneProcessViewController unloadView];
   [self.submoduleCloneProcessViewController unloadView];
 }
@@ -356,7 +356,7 @@
 {
   self.repositoryController = repoCtrl;
   
-  self.historyController.repositoryController = nil;
+  //self.historyController.repositoryController = nil;
   self.toolbarController.baseRepositoryController = nil;
   self.toolbarController.repositoryController = nil;
 
@@ -369,7 +369,7 @@
   if (!repoCtrl) 
   {
     [self.toolbarController update];
-    [self.historyController update];
+    //[self.historyController update];
   }
 }
 
@@ -404,10 +404,10 @@
   
   [self.jumpController delayBlockIfNeeded:^{
     [self.toolbarController update];
-    [self.historyController update];
+    //[self.historyController update];
   }];
   
-  [self.historyController loadInView:[[self.splitView subviews] objectAtIndex:1]];
+  //[self.historyController loadInView:[[self.splitView subviews] objectAtIndex:1]];
 }
 
 - (void) repositoryControllerDidChangeDisabledStatus:(GBRepositoryController*)repoCtrl
@@ -427,7 +427,7 @@
 {
   [self.sourcesController updateBadges];
   if (![self isSelectedRepositoryController:repoCtrl]) return;
-  self.historyController.commits = [repoCtrl commits];
+  //self.historyController.commits = [repoCtrl commits];
 }
 
 - (void) repositoryControllerDidUpdateRefs:(GBRepositoryController*)repoCtrl
@@ -457,7 +457,7 @@
   [self.sourcesController updateBadges];
   if (![self isSelectedRepositoryController:repoCtrl]) return;
   [self.toolbarController updateCommitButton];
-  [self.historyController update];
+  //[self.historyController update];
 }
 
 - (void) repositoryController:(GBRepositoryController*)repoCtrl didUpdateChangesForCommit:(GBCommit*)aCommit
@@ -465,8 +465,8 @@
   [self.sourcesController updateBadges];
   if (![self isSelectedRepositoryController:repoCtrl]) return;
   [self.toolbarController updateCommitButton];
-  [self.historyController refreshChangesController];
-  [self.historyController updateStage];
+//  [self.historyController refreshChangesController];
+//  [self.historyController updateStage];
 }
 
 - (void) repositoryControllerDidCommit:(GBRepositoryController*)repoCtrl
@@ -665,12 +665,12 @@
   [self.historyController loadInView:secondView];
   [self.historyController view]; // preloads view
   [self.historyController.tableView setNextKeyView:[self.window contentView]];
-  [self.historyController loadAdditionalControllers];
+  //[self.historyController loadAdditionalControllers];
   
   [self.sourcesController.outlineView setNextKeyView:self.historyController.tableView];
   [[self window] makeFirstResponder:self.sourcesController.outlineView];
   [self.toolbarController update];
-  [self.historyController update];
+ // [self.historyController update];
   
   [self updateToolbarAlignment];
 }

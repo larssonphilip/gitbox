@@ -6,7 +6,6 @@
 
 #import "NSArray+OAArrayHelpers.h"
 #import "NSSplitView+OASplitViewHelpers.h"
-#import "NSObject+OAKeyValueObserving.h"
 #import "NSString+OAStringHelpers.h"
 #import "NSView+OAViewHelpers.h"
 #import "NSObject+OAPerformBlockAfterDelay.h"
@@ -112,6 +111,8 @@
 
 - (void) updateViews
 {
+  [self.commit loadChangesIfNeededWithBlock:nil];
+  
   [[NSNotificationCenter defaultCenter] removeObserver:self
                                                   name:NSViewFrameDidChangeNotification 
                                                 object:self.tableView];
@@ -174,7 +175,7 @@
 
 - (void) updateMessageStorage:(NSTextStorage*)storage
 {
-  // I had an idea to paint "Signed-off-by: ..." line in grey, but I have a better use of my time right now. [Oleg]
+  // I had an idea to paint "Signed-off-by: ..." line in grey, but I have a better use of my time right now. Oleg.
 }
 
 - (void) updateTemplate:(NSTextStorage*)storage withCommit:(GBCommit*)aCommit

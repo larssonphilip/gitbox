@@ -9,6 +9,7 @@
 #import "NSData+OADataHelpers.h"
 #import "NSString+OAGitHelpers.h"
 #import "NSAttributedString+OAAttributedStringHelpers.h"
+#import "NSObject+OASelectorNotifications.h"
 
 @implementation GBCommit
 
@@ -93,6 +94,8 @@
 
 - (BOOL) isEqual:(id)object
 {
+  if (self == object) return YES;
+  
   if ([[object class] isEqual:[self class]])
   {
     return [[object commitId] isEqualToString:self.commitId];
@@ -135,6 +138,19 @@
 #pragma mark Mutation
 
 
+
+
+- (void) loadChangesIfNeededWithBlock:(void(^)())block
+{
+  if (self.changes && [self.changes count] > 0)
+  {
+    if (block) block();
+    return;
+  }
+  
+  [self loadChangesWithBlock:block];
+}
+
 - (void) loadChangesWithBlock:(void(^)())block
 {
   block = [[block copy] autorelease];
@@ -148,6 +164,7 @@
         return [[[a fileURL] path] localizedCaseInsensitiveCompare:[[b fileURL] path]];
       }];
       self.changes = theChanges;
+      [self notifyWithSelector:@selector(commitDidUpdateChanges:)];
       if (block) block();
     }];
   }];

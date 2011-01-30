@@ -1,4 +1,5 @@
 #import "GBCommit.h"
+#import "GBRepository.h"
 
 #import "GBRepositoryController.h"
 #import "GBToolbarController.h"
@@ -11,13 +12,25 @@
 #import "OAFastJumpController.h"
 
 #import "NSArray+OAArrayHelpers.h"
-#import "NSObject+OAKeyValueObserving.h"
+#import "NSObject+OASelectorNotifications.h"
 #import "NSObject+OADispatchItemValidation.h"
 #import "NSView+OAViewHelpers.h"
 #import "NSTableView+OATableViewHelpers.h"
 
 @interface GBHistoryViewController ()
+
+@property(nonatomic, retain) GBStageViewController* stageController;
+@property(nonatomic, retain) GBCommitViewController* commitController;
+@property(nonatomic, retain) NSArray* commits;
 @property(nonatomic, retain) OAFastJumpController* jumpController;
+
+- (void) prepareChangesControllersIfNeeded;
+
+- (void) updateStage;
+//- (void) updateCommits;
+//- (void) update;
+//- (void) refreshChangesController;
+
 @end
 
 
@@ -25,12 +38,15 @@
 @implementation GBHistoryViewController
 
 @synthesize repositoryController;
+@synthesize commit;
+@synthesize additionalView;
+
+@synthesize tableView;
+@synthesize logArrayController;
+
 @synthesize stageController;
 @synthesize commitController;
 @synthesize commits;
-@synthesize additionalView;
-@synthesize tableView;
-@synthesize logArrayController;
 @synthesize jumpController;
 
 #pragma mark Init
@@ -40,15 +56,144 @@
 {
   [NSObject cancelPreviousPerformRequestsWithTarget:self];
   self.repositoryController = nil;
+  self.commit = nil;
+  self.additionalView = nil;
+  
+  self.tableView = nil;
+  self.logArrayController = nil;
+
   self.stageController = nil;
   self.commitController = nil;
   self.commits = nil;
-  self.additionalView = nil;
-  self.tableView = nil;
-  self.logArrayController = nil;
   self.jumpController = nil;
   [super dealloc];
 }
+
+
+
+
+
+#pragma mark Public API
+
+
+
+- (void) setRepositoryController:(GBRepositoryController*)repoCtrl
+{
+  if (repositoryController == repoCtrl) return;
+  
+  [repositoryController removeObserverForAllSelectors:self];
+  
+  [repositoryController release];
+  repositoryController = [repoCtrl retain];
+  
+  [repositoryController addObserverForAllSelectors:self];
+  
+  [self prepareChangesControllersIfNeeded];
+  
+  self.stageController.repositoryController = repoCtrl;
+  self.commitController.repositoryController = repoCtrl;
+  
+  if (repoCtrl.selectedCommit)
+  {
+    self.commit = repoCtrl.selectedCommit;
+  }
+}
+
+
+- (void) setCommit:(GBCommit*)aCommit
+{
+  if (commit == aCommit) return;
+  
+  [commit release];
+  commit = [aCommit retain];
+  
+  [self.tableView withDelegate:nil doBlock:^{
+    if (!aCommit)
+    {
+      [self.tableView deselectAll:nil];
+    }
+    else
+    {
+      NSUInteger anIndex = [self.commits indexOfObject:aCommit];
+      if (anIndex != NSNotFound)
+      {
+        [self.tableView selectRowIndexes:[NSIndexSet indexSetWithIndex:anIndex] byExtendingSelection:NO];
+        [self.tableView scrollRowToVisible:anIndex];
+      }
+      else
+      {
+        [self.tableView deselectAll:nil];
+      }
+    }
+  }];
+  
+  if (aCommit) // avoid mess if this method is called in dealloc
+  {
+    [self prepareChangesControllersIfNeeded];
+  }
+  
+  [self.stageController.view removeFromSuperview];
+  [self.commitController.view removeFromSuperview];
+  
+  if (aCommit)
+  {
+    if ([aCommit isStage])
+    {
+      [self.stageController loadInView:self.additionalView];
+      [self.tableView setNextKeyView:self.stageController.tableView];
+    }
+    else
+    {
+      self.commitController.commit = commit;
+      [self.commitController loadInView:self.additionalView];
+      [self.tableView setNextKeyView:self.commitController.tableView];
+    }
+  }
+}
+
+
+
+
+
+#pragma mark GBRepositoryController
+
+
+
+- (void) repositoryControllerDidUpdateCommits:(GBRepositoryController*)repoCtrl
+{
+  self.commits = [self.repositoryController commits];
+  GBCommit* aCommit = self.commit;
+  if (aCommit)
+  {
+    // Find the new commit instance for the current commit.
+    NSUInteger index = [self.commits indexOfObject:aCommit];
+    if (index != NSNotFound)
+    {
+      aCommit = [self.commits objectAtIndex:index];
+      self.commit = aCommit;
+    }
+  }
+}
+
+- (void) repositoryControllerDidSelectCommit:(GBRepositoryController*)repoCtrl
+{
+  self.commit = self.repositoryController.selectedCommit;
+}
+
+- (void) repositoryController:(GBRepositoryController*)repoCtrl didUpdateChangesForCommit:(GBCommit*)aCommit
+{
+  if (aCommit != (GBCommit*)(self.repositoryController.repository.stage)) return;
+  [self updateStage];
+}
+
+
+
+
+
+
+#pragma mark NSViewController 
+
+
 
 - (void) loadView
 {
@@ -58,27 +203,26 @@
 }
 
 
-- (void) loadAdditionalControllers
+- (void) prepareChangesControllersIfNeeded
 {
-  self.stageController = [[[GBStageViewController alloc] initWithNibName:@"GBStageViewController" bundle:nil] autorelease];
-  self.commitController = [[[GBCommitViewController alloc] initWithNibName:@"GBCommitViewController" bundle:nil] autorelease];  
-
-  [self.stageController view]; // preloads view
-  [self.stageController.tableView setNextKeyView:[self.tableView nextKeyView]];
-  [self.commitController view]; // preloads view
-  [self.commitController.tableView setNextKeyView:[self.tableView nextKeyView]];
+  if (!self.stageController)
+  {
+    self.stageController = [[[GBStageViewController alloc] initWithNibName:@"GBStageViewController" bundle:nil] autorelease];
+    [self.stageController view]; // preloads view
+    [self.stageController.tableView setNextKeyView:[self.tableView nextKeyView]];
+  }
+  
+  if (!self.commitController)
+  {
+    self.commitController = [[[GBCommitViewController alloc] initWithNibName:@"GBCommitViewController" bundle:nil] autorelease];
+    [self.commitController view]; // preloads view
+    [self.commitController.tableView setNextKeyView:[self.tableView nextKeyView]];
+  }
 }
 
 
 
 
-#pragma mark Interrogation
-
-
-- (GBCommit*) selectedCommit
-{
-  return (GBCommit*)[[self.logArrayController selectedObjects] firstObject];
-}
 
 
 
@@ -97,8 +241,8 @@
   [self.jumpController flush]; // force the next view to appear before jumping into it
     
   [[self.tableView window] selectKeyViewFollowingView:self.tableView];
-  GBCommit* commit = self.repositoryController.selectedCommit;
-  if (!commit || [commit isStage])
+  GBCommit* aCommit = self.repositoryController.selectedCommit;
+  if (!aCommit || [aCommit isStage])
   {
     [self.stageController selectFirstLineIfNeeded:_];
   }
@@ -139,74 +283,74 @@
   }
 }
 
-- (void) updateCommits
-{
-  [self.tableView reloadData];
-  id commit = self.repositoryController.selectedCommit;
-  if (commit && self.commits)
-  {
-    NSUInteger index = [self.commits indexOfObject:commit];
-    if (index != NSNotFound)
-    {
-      [self.tableView withDelegate:nil doBlock:^{
-        [self.tableView selectRowIndexes:[NSIndexSet indexSetWithIndex:index] byExtendingSelection:NO];
-        [self performSelector:@selector(scrollToVisibleRow) withObject:nil afterDelay:0.0];
-      }];
-    }
-  }
-}
+//- (void) updateCommits
+//{
+//  [self.tableView reloadData];
+//  id commit = self.repositoryController.selectedCommit;
+//  if (commit && self.commits)
+//  {
+//    NSUInteger index = [self.commits indexOfObject:commit];
+//    if (index != NSNotFound)
+//    {
+//      [self.tableView withDelegate:nil doBlock:^{
+//        [self.tableView selectRowIndexes:[NSIndexSet indexSetWithIndex:index] byExtendingSelection:NO];
+//        [self performSelector:@selector(scrollToVisibleRow) withObject:nil afterDelay:0.0];
+//      }];
+//    }
+//  }
+//}
 
-- (void) refreshChangesController
-{
-  GBCommit* commit = self.repositoryController.selectedCommit;
-  if (!commit || [commit isStage])
-  {
-    self.stageController.repositoryController = self.repositoryController;
-  }
-  else
-  {
-    self.commitController.repositoryController = self.repositoryController;
-    self.commitController.commit = commit;
-  }
-}
+//- (void) refreshChangesController
+//{
+//  GBCommit* commit = self.repositoryController.selectedCommit;
+//  if (!commit || [commit isStage])
+//  {
+//    self.stageController.repositoryController = self.repositoryController;
+//  }
+//  else
+//  {
+//    self.commitController.repositoryController = self.repositoryController;
+//    self.commitController.commit = commit;
+//  }
+//}
 
-- (void) updateChangesController
-{
-  GBCommit* commit = self.repositoryController.selectedCommit;
-  NSView* targetView = self.additionalView;
-  
-  self.commitController.repositoryController = nil;
-  [self.commitController unloadView];
-  
-  self.stageController.repositoryController = nil;
-  [self.stageController unloadView];
+//- (void) updateChangesController
+//{
+//  GBCommit* commit = self.repositoryController.selectedCommit;
+//  NSView* targetView = self.additionalView;
+//  
+//  self.commitController.repositoryController = nil;
+//  [self.commitController unloadView];
+//  
+//  self.stageController.repositoryController = nil;
+//  [self.stageController unloadView];
+//
+//  if (!commit || [commit isStage])
+//  {
+//    self.stageController.repositoryController = self.repositoryController;
+//    [self.stageController loadInView:targetView];
+//    [self.tableView setNextKeyView:self.stageController.tableView];
+//  }
+//  else
+//  {
+//    self.commitController.repositoryController = self.repositoryController;
+//    self.commitController.commit = commit;
+//    [self.commitController loadInView:targetView];
+//    [self.tableView setNextKeyView:self.commitController.tableView];
+//  }
+//  [self refreshChangesController];
+//}
 
-  if (!commit || [commit isStage])
-  {
-    self.stageController.repositoryController = self.repositoryController;
-    [self.stageController loadInView:targetView];
-    [self.tableView setNextKeyView:self.stageController.tableView];
-  }
-  else
-  {
-    self.commitController.repositoryController = self.repositoryController;
-    self.commitController.commit = commit;
-    [self.commitController loadInView:targetView];
-    [self.tableView setNextKeyView:self.commitController.tableView];
-  }
-  [self refreshChangesController];
-}
-
-- (void) update
-{
-  self.commits = [self.repositoryController commits];
-  self.commitController.repositoryController = self.repositoryController;
-  self.stageController.repositoryController = self.repositoryController;
-  
-  [self updateStage];
-  [self updateCommits];
-  [self updateChangesController];
-}
+//- (void) update
+//{
+//  self.commits = [self.repositoryController commits];
+//  self.commitController.repositoryController = self.repositoryController;
+//  self.stageController.repositoryController = self.repositoryController;
+//  
+//  [self updateStage];
+//  [self updateCommits];
+////  [self updateChangesController];
+//}
 
 
 
@@ -224,7 +368,8 @@
 - (void) tableViewSelectionDidChange:(NSNotification *)aNotification
 {
   [self.jumpController delayBlockIfNeeded:^{
-    [self.repositoryController selectCommit:[self selectedCommit]];
+    GBCommit* aCommit = [[self.logArrayController selectedObjects] firstObject];
+    self.repositoryController.selectedCommit = aCommit;
   }];
 }
 
@@ -235,14 +380,14 @@ dataCellForTableColumn:(NSTableColumn*)aTableColumn
   // according to the documentation, tableView may ask for a tableView separator cell giving a nil table column, so odd...
   if (aTableColumn == nil) return nil;
   
-  GBCommit* commit = [self.commits objectAtIndex:row];
-  return [commit cell];
+  GBCommit* aCommit = [self.commits objectAtIndex:row];
+  return [aCommit cell];
 }
 
 - (CGFloat)tableView:(NSTableView *)tableView heightOfRow:(NSInteger)row
 {
-  GBCommit* commit = [self.commits objectAtIndex:row];
-  return [[commit cellClass] cellHeight];
+  GBCommit* aCommit = [self.commits objectAtIndex:row];
+  return [[aCommit cellClass] cellHeight];
 }
 
 - (NSString*) tableView:(NSTableView*)aTableView
@@ -258,6 +403,10 @@ dataCellForTableColumn:(NSTableColumn*)aTableColumn
   }
   return nil;
 }
+
+
+
+
 
 
 #pragma mark NSUserInterfaceValidations
