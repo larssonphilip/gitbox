@@ -233,6 +233,7 @@
 
 - (BOOL) applicationShouldOpenUntitledFile:(NSApplication*) app
 {
+  [self.windowController showWindow:self];	
   return NO;
 }
 
