@@ -553,6 +553,7 @@
 		2084C8671299A078009295C8 /* calc_hard_links.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = calc_hard_links.rb; sourceTree = "<group>"; };
 		2084C8681299A078009295C8 /* git-remove-hardlinks.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = "git-remove-hardlinks.rb"; sourceTree = "<group>"; };
 		2084C8691299A078009295C8 /* keygen.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = keygen.rb; sourceTree = "<group>"; };
+		208A6B9712F879B600F3F608 /* DiffAndBlame.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = DiffAndBlame.txt; sourceTree = "<group>"; };
 		20915F3412874D2A005E0D82 /* Gitbox.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Gitbox.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		20915F7E12875C92005E0D82 /* GBPreferencesController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBPreferencesController.xib; sourceTree = "<group>"; };
 		20915F8712875FDA005E0D82 /* prefix_appstore.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = prefix_appstore.pch; sourceTree = "<group>"; };
@@ -905,6 +906,7 @@
 				2049942212D6878A007ED992 /* SidebarGroups.txt */,
 				200432AE12D8A1AE00B045C0 /* Submodules.txt */,
 				20C9A55D12E85E0800DBA3E1 /* Subversion.txt */,
+				208A6B9712F879B600F3F608 /* DiffAndBlame.txt */,
 			);
 			name = Documents;
 			sourceTree = "<group>";
