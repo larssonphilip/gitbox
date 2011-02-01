@@ -21,7 +21,7 @@
 
 @property(nonatomic, retain) GBStageViewController* stageController;
 @property(nonatomic, retain) GBCommitViewController* commitController;
-@property(nonatomic, retain) NSArray* commits;
+@property(nonatomic, retain) NSArray* stageAndCommits;
 @property(nonatomic, retain) OAFastJumpController* jumpController;
 
 - (void) prepareChangesControllersIfNeeded;
@@ -46,7 +46,7 @@
 
 @synthesize stageController;
 @synthesize commitController;
-@synthesize commits;
+@synthesize stageAndCommits;
 @synthesize jumpController;
 
 #pragma mark Init
@@ -64,7 +64,7 @@
 
   self.stageController = nil;
   self.commitController = nil;
-  self.commits = nil;
+  self.stageAndCommits = nil;
   self.jumpController = nil;
   [super dealloc];
 }
@@ -87,6 +87,8 @@
   repositoryController = [repoCtrl retain];
   
   [repositoryController addObserverForAllSelectors:self];
+  
+  self.stageAndCommits = [self.repositoryController stageAndCommits];
   
   if (repoCtrl)
   {
@@ -121,7 +123,7 @@
     }
     else
     {
-      NSUInteger anIndex = [self.commits indexOfObject:aCommit];
+      NSUInteger anIndex = [self.stageAndCommits indexOfObject:aCommit];
       if (anIndex != NSNotFound)
       {
         [self.tableView selectRowIndexes:[NSIndexSet indexSetWithIndex:anIndex] byExtendingSelection:NO];
@@ -168,15 +170,15 @@
 
 - (void) repositoryControllerDidUpdateCommits:(GBRepositoryController*)repoCtrl
 {
-  self.commits = [self.repositoryController commits];
+  self.stageAndCommits = [self.repositoryController stageAndCommits];
   GBCommit* aCommit = self.commit;
   if (aCommit)
   {
     // Find the new commit instance for the current commit.
-    NSUInteger index = [self.commits indexOfObject:aCommit];
+    NSUInteger index = [self.stageAndCommits indexOfObject:aCommit];
     if (index != NSNotFound)
     {
-      aCommit = [self.commits objectAtIndex:index];
+      aCommit = [self.stageAndCommits objectAtIndex:index];
       self.commit = aCommit;
     }
   }
@@ -275,7 +277,7 @@
 
 - (void) updateStage
 {
-  if ([self.commits count] > 0)
+  if ([self.stageAndCommits count] > 0)
   {
     [self.tableView reloadDataForRowIndexes:[NSIndexSet indexSetWithIndex:0] columnIndexes:[NSIndexSet indexSetWithIndex:0]];
   }
@@ -387,13 +389,13 @@ dataCellForTableColumn:(NSTableColumn*)aTableColumn
   // according to the documentation, tableView may ask for a tableView separator cell giving a nil table column, so odd...
   if (aTableColumn == nil) return nil;
   
-  GBCommit* aCommit = [self.commits objectAtIndex:row];
+  GBCommit* aCommit = [self.stageAndCommits objectAtIndex:row];
   return [aCommit cell];
 }
 
 - (CGFloat)tableView:(NSTableView *)tableView heightOfRow:(NSInteger)row
 {
-  GBCommit* aCommit = [self.commits objectAtIndex:row];
+  GBCommit* aCommit = [self.stageAndCommits objectAtIndex:row];
   return [[aCommit cellClass] cellHeight];
 }
 

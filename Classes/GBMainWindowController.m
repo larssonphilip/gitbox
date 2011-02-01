@@ -518,7 +518,7 @@
 {
   self.toolbarController.baseRepositoryController = repoCtrl;
   [self.toolbarController update];
-  [self.historyController update];
+//  [self.historyController update];
   self.cloneProcessViewController.repositoryController = repoCtrl;
   [self.cloneProcessViewController update];
   [self.cloneProcessViewController loadInView:[[self.splitView subviews] objectAtIndex:1]];
@@ -574,7 +574,7 @@
   self.submoduleCloneProcessViewController.repositoryController = repoCtrl;
   [self.jumpController delayBlockIfNeeded:^{
     [self.toolbarController update];
-    [self.historyController update];
+//    [self.historyController update];
     [self.submoduleCloneProcessViewController update];
     [self.submoduleCloneProcessViewController loadInView:[[self.splitView subviews] objectAtIndex:1]];
   }];

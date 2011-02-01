@@ -153,6 +153,11 @@
   return [self.repository stageAndCommits];
 }
 
+- (NSArray*) stageAndCommits
+{
+  return [self.repository stageAndCommits];
+}
+
 - (BOOL) checkRepositoryExistance
 {
   if (self.isDisappearedFromFileSystem) return NO; // avoid multiple callbacks

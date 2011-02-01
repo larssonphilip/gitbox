@@ -32,7 +32,8 @@
 
 + (id) repositoryControllerWithURL:(NSURL*)url;
 
-- (NSArray*) commits;
+// obsolete, use stageAndCommits - (NSArray*) commits;
+- (NSArray*) stageAndCommits;
 
 - (void) checkoutRef:(GBRef*) ref;
 - (void) checkoutRef:(GBRef*) ref withNewName:(NSString*)name;
