@@ -88,7 +88,10 @@
   
   [repositoryController addObserverForAllSelectors:self];
   
-  [self prepareChangesControllersIfNeeded];
+  if (repoCtrl)
+  {
+    [self prepareChangesControllersIfNeeded];
+  }
   
   self.stageController.repositoryController = repoCtrl;
   self.commitController.repositoryController = repoCtrl;
@@ -96,6 +99,10 @@
   if (repoCtrl.selectedCommit)
   {
     self.commit = repoCtrl.selectedCommit;
+  }
+  else
+  {
+    self.commit = nil;
   }
 }
 
