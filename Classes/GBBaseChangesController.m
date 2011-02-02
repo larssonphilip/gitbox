@@ -252,6 +252,7 @@ dataCellForTableColumn:(NSTableColumn*)aTableColumn
 
 - (void)tableViewSelectionDidChange:(NSNotification *)aNotification
 {
+  [[QLPreviewPanel sharedPreviewPanel] updateController];
   [self.quicklookPanel reloadData];
 }
 
