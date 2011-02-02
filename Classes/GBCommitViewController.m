@@ -25,7 +25,6 @@
 
 @implementation GBCommitViewController
 
-@synthesize commit;
 @synthesize headerRTFTemplate;
 @synthesize headerTextView;
 @synthesize messageTextView;
@@ -53,6 +52,13 @@
 
 #pragma mark GBBaseViewController
 
+
+
+- (void) setCommit:(GBCommit*)aCommit
+{
+	[super setCommit:aCommit];
+	[self updateViews];
+}
 
 
 - (void) setChanges:(NSArray *)aChanges
