@@ -72,6 +72,18 @@
   [self notifyWithSelector:@selector(commitDidUpdateChanges:)];
 }
 
+- (void) loadChangesIfNeededWithBlock:(void(^)())block
+{
+  if (self.changes) // for stage it's enough to have non-nil array, even empty.
+  {
+    if (block) block();
+    return;
+  }
+  
+  [super loadChangesIfNeededWithBlock:block];
+}
+
+
 - (void) loadChangesWithBlock:(void(^)())block
 {
   block = [[block copy] autorelease];
