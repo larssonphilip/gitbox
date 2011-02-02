@@ -505,6 +505,7 @@
   [self updateHeader];
   [self.tableView setNextKeyView:self.messageTextView];
   [[self.tableView enclosingScrollView] setFrame:[self.view bounds]];
+  [self.stage loadChangesIfNeededWithBlock:nil];
 }
 
 
