@@ -11,6 +11,7 @@
 
 @interface GBBaseChangesController ()
 @property(nonatomic, retain) QLPreviewPanel* quicklookPanel;
+- (void) updateChanges;
 @end
 
 @implementation GBBaseChangesController
@@ -36,7 +37,7 @@
   self.tableView = nil;
   self.statusArrayController = nil;
   self.headerView = nil;
-  self.changes = nil;
+  [changes release]; changes = nil;
   self.changesWithHeaderForBindings = nil;
   self.quicklookPanel = nil;
   [super dealloc];
@@ -58,6 +59,8 @@
   repositoryController = [repoCtrl retain];
   
   [repositoryController addObserverForAllSelectors:self];
+	
+  [self updateChanges];
 }
 
 
@@ -69,7 +72,7 @@
   
   [commit release];
   commit = [aCommit retain];
-  
+
   [commit addObserverForAllSelectors:self];
 
   self.changes = commit.changes;
@@ -98,7 +101,7 @@
 
 - (void) setChanges:(NSArray*)theChanges
 {
-  if (changes == theChanges) return;
+  if (theChanges && changes == theChanges) return;
   
   [changes release];
   changes = [theChanges retain];
@@ -106,7 +109,8 @@
   // Refusing first responder when empty causes problems with jumping into the pane before it loaded the items
   // [self.tableView setRefusesFirstResponder:[changes count] < 1]; 
   
-  self.changesWithHeaderForBindings = [[NSArray arrayWithObject:[GBChange dummy]] arrayByAddingObjectsFromArray:self.changes];
+  [self updateChanges];
+  
   // do we ever need that? [self.statusArrayController arrangeObjects:self.changes];
 }
 
@@ -150,6 +154,23 @@
   if (!self.headerView) return 100.0;
   return [self.headerView frame].size.height;
 }
+
+
+
+
+- (void) updateChanges
+{
+	if (self.changes)
+	{
+		self.changesWithHeaderForBindings = [[NSArray arrayWithObject:[GBChange dummy]] arrayByAddingObjectsFromArray:self.changes];
+	}
+	else
+	{
+		self.changesWithHeaderForBindings = [NSArray arrayWithObject:[GBChange dummy]];
+	}
+}
+
+
 
 
 
