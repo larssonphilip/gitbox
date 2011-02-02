@@ -62,11 +62,11 @@
     id argument = [userInfo objectForKey:@"OANotificationSelectorArgument"];
     if (argument)
     {
-      [self performSelector:selector withObject:self withObject:argument];
+      [self performSelector:selector withObject:notification.object withObject:argument];
     }
     else
     {
-      [self performSelector:selector withObject:self];
+      [self performSelector:selector withObject:notification.object];
     }
   }
 }
