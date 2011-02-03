@@ -32,9 +32,7 @@ WindowController:
 
 SidebarController:
 - create a two-pane view for the right window pane
-- create a history view controller
-- create a stage view controller
-- create a changes view controller
+- create a repository view controller
 - create a clone view controller on demand
 - create a submodule download view controller on demand
 - subscribe to repositories controller notifications
@@ -44,6 +42,19 @@ SidebarController:
 - handle drag and drop
 - update toolbar according to the selected item
 - when changing selected repository, switches the history controller
+
+SidebarItem:
+- Flavours of items:
+  - Root item (invisible)
+  - Section: Repositories, Shared, Github, Watched, Beanstalk
+  - Local Repositories Group
+  - Local Repository
+  - Submodule
+  - Github: Pull Request
+  - Github: Account
+  - Github: Repository
+
+- Item should control which view is displayed in the right pane
 
 HistoryController:
 + create a table view with bindings to a list of commits
