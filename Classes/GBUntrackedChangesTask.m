@@ -25,6 +25,7 @@
       change.srcURL = [NSURL URLWithString:[path stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding] 
                              relativeToURL:self.repository.url];
       change.repository = self.repository;
+      change.statusCode = @"";
       [untrackedChanges addObject:change];
     }
   }

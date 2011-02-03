@@ -1,6 +1,7 @@
 #import "GBBaseRepositoryController.h"
 #import "GBRepositoriesController.h"
 #import "GBRepositoriesGroup.h"
+#import "GBRepositoryViewController.h"
 
 #import "GBSidebarController.h"
 #import "GBRepository.h"
@@ -15,9 +16,16 @@
 #import "OALicenseNumberCheck.h"
 #import "NSObject+OAPerformBlockAfterDelay.h"
 
+@interface GBSidebarController ()
+@property(nonatomic, retain) GBRepositoryViewController* repositoryViewController;
+@property(nonatomic, assign) NSUInteger ignoreSelectionChange;
+@end
+
+
 
 @implementation GBSidebarController
 
+@synthesize repositoryViewController;
 @synthesize sections;
 @synthesize outlineView;
 @synthesize repositoriesController;
@@ -26,10 +34,11 @@
 @synthesize repositoriesGroupMenu;
 @synthesize submoduleMenu;
 @synthesize defaultMenu;
-
+@synthesize ignoreSelectionChange;
 
 - (void) dealloc
 {
+  self.repositoryViewController = nil;
   self.sections = nil;
   self.outlineView = nil;
   self.repositoriesController = nil;

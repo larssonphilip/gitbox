@@ -39,7 +39,7 @@
 
 @synthesize repositoryController;
 @synthesize commit;
-@synthesize additionalView;
+@synthesize detailView;
 
 @synthesize tableView;
 @synthesize logArrayController;
@@ -57,7 +57,7 @@
   [NSObject cancelPreviousPerformRequestsWithTarget:self];
   self.repositoryController = nil;
   self.commit = nil;
-  self.additionalView = nil;
+  self.detailView = nil;
   
   self.tableView = nil;
   self.logArrayController = nil;
@@ -148,13 +148,13 @@
   {
     if ([aCommit isStage])
     {
-      [self.stageController loadInView:self.additionalView];
+      [self.stageController loadInView:self.detailView];
       [self.tableView setNextKeyView:self.stageController.tableView];
     }
     else
     {
       self.commitController.commit = commit;
-      [self.commitController loadInView:self.additionalView];
+      [self.commitController loadInView:self.detailView];
       [self.tableView setNextKeyView:self.commitController.tableView];
     }
   }
@@ -326,7 +326,7 @@
 //- (void) updateChangesController
 //{
 //  GBCommit* commit = self.repositoryController.selectedCommit;
-//  NSView* targetView = self.additionalView;
+//  NSView* targetView = self.detailView;
 //  
 //  self.commitController.repositoryController = nil;
 //  [self.commitController unloadView];

@@ -285,6 +285,10 @@
 		20A37BAC120DC4510068AB8B /* GBToolbarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20A37BAB120DC4510068AB8B /* GBToolbarController.m */; };
 		20A37BB6120DC7640068AB8B /* GBSidebarController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 20A37BB5120DC7640068AB8B /* GBSidebarController.xib */; };
 		20A37BBE120DDBA60068AB8B /* GBMainWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 20A37BBD120DDBA60068AB8B /* GBMainWindowController.xib */; };
+		20A9407512FA07C100C3F6F4 /* GBRepositoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20A9407412FA07C100C3F6F4 /* GBRepositoryViewController.m */; };
+		20A9407612FA07C100C3F6F4 /* GBRepositoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20A9407412FA07C100C3F6F4 /* GBRepositoryViewController.m */; };
+		20A9408712FA0E5900C3F6F4 /* GBRepositoryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 20A9408612FA0E5900C3F6F4 /* GBRepositoryViewController.xib */; };
+		20A9408812FA0E5900C3F6F4 /* GBRepositoryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 20A9408612FA0E5900C3F6F4 /* GBRepositoryViewController.xib */; };
 		20A9719112C7808F00E2B7B9 /* GBStageShortcutHintDetector.m in Sources */ = {isa = PBXBuildFile; fileRef = 20A9719012C7808F00E2B7B9 /* GBStageShortcutHintDetector.m */; };
 		20A9719212C7808F00E2B7B9 /* GBStageShortcutHintDetector.m in Sources */ = {isa = PBXBuildFile; fileRef = 20A9719012C7808F00E2B7B9 /* GBStageShortcutHintDetector.m */; };
 		20A971E012C7D0D500E2B7B9 /* GBStageMessageHistoryController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20A971DF12C7D0D500E2B7B9 /* GBStageMessageHistoryController.m */; };
@@ -604,6 +608,9 @@
 		20A37BAB120DC4510068AB8B /* GBToolbarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBToolbarController.m; sourceTree = "<group>"; };
 		20A37BB5120DC7640068AB8B /* GBSidebarController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBSidebarController.xib; sourceTree = "<group>"; };
 		20A37BBD120DDBA60068AB8B /* GBMainWindowController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBMainWindowController.xib; sourceTree = "<group>"; };
+		20A9407312FA07C100C3F6F4 /* GBRepositoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBRepositoryViewController.h; sourceTree = "<group>"; };
+		20A9407412FA07C100C3F6F4 /* GBRepositoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBRepositoryViewController.m; sourceTree = "<group>"; };
+		20A9408612FA0E5900C3F6F4 /* GBRepositoryViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBRepositoryViewController.xib; sourceTree = "<group>"; };
 		20A9718F12C7808F00E2B7B9 /* GBStageShortcutHintDetector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBStageShortcutHintDetector.h; sourceTree = "<group>"; };
 		20A9719012C7808F00E2B7B9 /* GBStageShortcutHintDetector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBStageShortcutHintDetector.m; sourceTree = "<group>"; };
 		20A971DE12C7D0D500E2B7B9 /* GBStageMessageHistoryController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBStageMessageHistoryController.h; sourceTree = "<group>"; };
@@ -911,6 +918,32 @@
 			name = Documents;
 			sourceTree = "<group>";
 		};
+		20A9407112FA068800C3F6F4 /* Main Pane */ = {
+			isa = PBXGroup;
+			children = (
+				20A9407212FA06B200C3F6F4 /* Repository View Controller */,
+				2054FFEE125DE9D200692C77 /* GBCloneProcessViewController.h */,
+				2054FFEF125DE9D200692C77 /* GBCloneProcessViewController.m */,
+				2054FFE7125DE75800692C77 /* GBCloneProcessViewController.xib */,
+				200A44F912EC5A1C004DF940 /* GBSubmoduleCloneProcessViewController.h */,
+				200A44FA12EC5A1C004DF940 /* GBSubmoduleCloneProcessViewController.m */,
+				200A44FB12EC5A1C004DF940 /* GBSubmoduleCloneProcessViewController.xib */,
+			);
+			name = "Main Pane";
+			sourceTree = "<group>";
+		};
+		20A9407212FA06B200C3F6F4 /* Repository View Controller */ = {
+			isa = PBXGroup;
+			children = (
+				20A9407312FA07C100C3F6F4 /* GBRepositoryViewController.h */,
+				20A9407412FA07C100C3F6F4 /* GBRepositoryViewController.m */,
+				20A9408612FA0E5900C3F6F4 /* GBRepositoryViewController.xib */,
+				20A9713812C6C6D200E2B7B9 /* History View */,
+				20A9713912C6C6D800E2B7B9 /* Changes View */,
+			);
+			name = "Repository View Controller";
+			sourceTree = "<group>";
+		};
 		20A9713612C6C6B900E2B7B9 /* Main UI */ = {
 			isa = PBXGroup;
 			children = (
@@ -953,18 +986,12 @@
 			name = Sidebar;
 			sourceTree = "<group>";
 		};
-		20A9713812C6C6D200E2B7B9 /* Central Pane */ = {
+		20A9713812C6C6D200E2B7B9 /* History View */ = {
 			isa = PBXGroup;
 			children = (
 				2058E97E11AEE26F00F2853F /* GBHistoryViewController.h */,
 				2058E97F11AEE26F00F2853F /* GBHistoryViewController.m */,
 				2058E98311AEE30E00F2853F /* GBHistoryViewController.xib */,
-				2054FFEE125DE9D200692C77 /* GBCloneProcessViewController.h */,
-				2054FFEF125DE9D200692C77 /* GBCloneProcessViewController.m */,
-				2054FFE7125DE75800692C77 /* GBCloneProcessViewController.xib */,
-				200A44F912EC5A1C004DF940 /* GBSubmoduleCloneProcessViewController.h */,
-				200A44FA12EC5A1C004DF940 /* GBSubmoduleCloneProcessViewController.m */,
-				200A44FB12EC5A1C004DF940 /* GBSubmoduleCloneProcessViewController.xib */,
 				2057964011ADD3AA004715FE /* GBCommitCell.h */,
 				2057964111ADD3AA004715FE /* GBCommitCell.m */,
 				2057979911ADEEEE004715FE /* GBStageCell.h */,
@@ -973,10 +1000,10 @@
 				20C3B70D125BCCC600ABEDE7 /* GBCommitCellMarkerUnmerged.png */,
 				20C3B70F125BCCC600ABEDE7 /* GBCommitCellMarkerUnpushed.png */,
 			);
-			name = "Central Pane";
+			name = "History View";
 			sourceTree = "<group>";
 		};
-		20A9713912C6C6D800E2B7B9 /* Right Pane */ = {
+		20A9713912C6C6D800E2B7B9 /* Changes View */ = {
 			isa = PBXGroup;
 			children = (
 				2093A7C611AF0E8300239185 /* GBBaseChangesController.h */,
@@ -990,7 +1017,7 @@
 				20A9713A12C6C71B00E2B7B9 /* Stage */,
 				20A9713B12C6C72000E2B7B9 /* Committed changes */,
 			);
-			name = "Right Pane";
+			name = "Changes View";
 			sourceTree = "<group>";
 		};
 		20A9713A12C6C71B00E2B7B9 /* Stage */ = {
@@ -1193,8 +1220,7 @@
 				206CAC72122EB619009284FE /* Model Controllers */,
 				20A9713612C6C6B900E2B7B9 /* Main UI */,
 				20A9713712C6C6CB00E2B7B9 /* Sidebar */,
-				20A9713812C6C6D200E2B7B9 /* Central Pane */,
-				20A9713912C6C6D800E2B7B9 /* Right Pane */,
+				20A9407112FA068800C3F6F4 /* Main Pane */,
 				20BF19341282238800A30EE6 /* Prompts and aux window controllers */,
 				2057963E11ADD37F004715FE /* Shared Views */,
 				20B1620D11944B6900A709CF /* Libs */,
@@ -1353,6 +1379,7 @@
 				200A472212ECB265004DF940 /* GBSidebarRepositoryIcon.png in Resources */,
 				200A472312ECB265004DF940 /* GBSidebarSubmoduleIcon.png in Resources */,
 				200A484112F0034A004DF940 /* GBSidebarSubmoduleMissingIcon.png in Resources */,
+				20A9408712FA0E5900C3F6F4 /* GBRepositoryViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1401,6 +1428,7 @@
 				200A472012ECB265004DF940 /* GBSidebarRepositoryIcon.png in Resources */,
 				200A472112ECB265004DF940 /* GBSidebarSubmoduleIcon.png in Resources */,
 				200A484212F0034A004DF940 /* GBSidebarSubmoduleMissingIcon.png in Resources */,
+				20A9408812FA0E5900C3F6F4 /* GBRepositoryViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1548,6 +1576,7 @@
 				200A444C12EC2DCE004DF940 /* GBSubmoduleCloningController.m in Sources */,
 				200A44FE12EC5A1C004DF940 /* GBSubmoduleCloneProcessViewController.m in Sources */,
 				200A47FA12EF8F07004DF940 /* NSObject+OASelectorNotifications.m in Sources */,
+				20A9407512FA07C100C3F6F4 /* GBRepositoryViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1663,6 +1692,7 @@
 				200A444B12EC2DCE004DF940 /* GBSubmoduleCloningController.m in Sources */,
 				200A44FC12EC5A1C004DF940 /* GBSubmoduleCloneProcessViewController.m in Sources */,
 				200A47FB12EF8F07004DF940 /* NSObject+OASelectorNotifications.m in Sources */,
+				20A9407612FA07C100C3F6F4 /* GBRepositoryViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

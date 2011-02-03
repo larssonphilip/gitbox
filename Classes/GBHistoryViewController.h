@@ -1,4 +1,5 @@
 
+@class GBCommit;
 @class GBRepositoryController;
 @class GBStageViewController;
 @class GBCommitViewController;
@@ -8,7 +9,7 @@
 
 @property(nonatomic, retain) GBRepositoryController* repositoryController;
 @property(nonatomic, retain) GBCommit* commit;
-@property(nonatomic, retain) NSView* additionalView;
+@property(nonatomic, retain) NSView* detailView;
 
 - (IBAction) selectLeftPane:_;
 - (IBAction) selectRightPane:_;

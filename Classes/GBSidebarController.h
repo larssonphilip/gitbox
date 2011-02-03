@@ -3,24 +3,19 @@
 @class GBBaseRepositoryController;
 @class GBRepositoryController;
 @class GBRepository;
-@class GBHistoryViewController;
 @class GBRepositoriesGroup;
 
-@interface GBSidebarController : NSViewController<NSOutlineViewDataSource,
-                                                  NSOutlineViewDelegate>
-{
-  NSUInteger ignoreSelectionChange;
-}
+@interface GBSidebarController : NSViewController<NSOutlineViewDataSource, NSOutlineViewDelegate>
 
 @property(nonatomic,retain) GBRepositoriesController* repositoriesController;
 
-@property(nonatomic,retain) NSMutableArray* sections;
-@property(nonatomic,retain) IBOutlet NSOutlineView* outlineView;
-@property(nonatomic,retain) IBOutlet NSButton* buyButton;
-@property(nonatomic,retain) IBOutlet NSMenu* localRepositoryMenu;
-@property(nonatomic,retain) IBOutlet NSMenu* repositoriesGroupMenu;
-@property(nonatomic,retain) IBOutlet NSMenu* submoduleMenu;
-@property(nonatomic,retain) IBOutlet NSMenu* defaultMenu;
+@property(nonatomic, retain) NSMutableArray* sections;
+@property(nonatomic, retain) IBOutlet NSOutlineView* outlineView;
+@property(nonatomic, retain) IBOutlet NSButton* buyButton;
+@property(nonatomic, retain) IBOutlet NSMenu* localRepositoryMenu;
+@property(nonatomic, retain) IBOutlet NSMenu* repositoriesGroupMenu;
+@property(nonatomic, retain) IBOutlet NSMenu* submoduleMenu;
+@property(nonatomic, retain) IBOutlet NSMenu* defaultMenu;
 
 - (void) saveState;
 - (void) loadState;
