@@ -127,7 +127,11 @@
       if (anIndex != NSNotFound)
       {
         [self.tableView selectRowIndexes:[NSIndexSet indexSetWithIndex:anIndex] byExtendingSelection:NO];
-        [self.tableView scrollRowToVisible:anIndex];
+        NSRect rowRect = [self.tableView rectOfRow:anIndex];
+        if (!NSContainsRect([self.tableView bounds], rowRect))
+        {
+          [self.tableView scrollRowToVisible:anIndex];
+        }
       }
       else
       {
@@ -288,7 +292,11 @@
   NSUInteger index = [self.logArrayController selectionIndex];
   if (index != NSNotFound)
   {
-    [self.tableView scrollRowToVisible:index];
+    NSRect rowRect = [self.tableView rectOfRow:index];
+    if (!NSContainsRect([self.tableView bounds], rowRect))
+    {
+      [self.tableView scrollRowToVisible:index];
+    }
   }
 }
 
