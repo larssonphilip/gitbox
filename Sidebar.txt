@@ -56,6 +56,15 @@ SidebarItem:
 
 - Item should control which view is displayed in the right pane
 
+- GBSidebarItem provides the subitems and appearance options: cell, title, icon, badge etc.
+- GBSidebarItem has a delegate that provides up-to-date info and helps to react to events.
+
+Sidebar Event Flow:
+- set the root sidebar item.
+
+
+
+
 HistoryController:
 + create a table view with bindings to a list of commits
 + subscribe to repository controller notifications and update commits when needed
@@ -68,8 +77,8 @@ StageController:
 
 Model Controllers:
 
-- receive actions
-- post notifications which will be consumed by view controllers to update their states.
++ receive actions
+± post notifications which will be consumed by view controllers to update their states.
 
 ----------------------------------------------------------------------------------------------
 

@@ -1,3 +1,4 @@
+// This controller manages split view with history + settings view below.
 
 @class GBRepositoryController;
 @interface GBRepositoryViewController : NSViewController<NSSplitViewDelegate>

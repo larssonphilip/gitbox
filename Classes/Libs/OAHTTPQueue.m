@@ -23,7 +23,7 @@
 
 - (id) init
 {
-	if (self = [super init])
+	if ((self = [super init]))
 	{
 		self.queue = [NSMutableArray arrayWithCapacity:32];
 		self.activeDownloads = [NSMutableArray arrayWithCapacity:32];

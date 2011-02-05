@@ -320,6 +320,7 @@
 #pragma mark GBRepositoriesControllerDelegate
 
 
+// do not need, will be inside GBSidebarItem
 - (void) repositoriesControllerDidLoadLocalRepositoriesAndGroups:(GBRepositoriesController*)reposCtrl
 {
   [reposCtrl.localRepositoriesGroup enumerateRepositoriesWithBlock:^(GBBaseRepositoryController* repoCtrl){
@@ -330,6 +331,7 @@
   [self.toolbarController update];
 }
 
+// do not need, will be inside GBSidebarItem
 - (void) repositoriesController:(GBRepositoriesController*)reposCtrl didAddRepository:(GBBaseRepositoryController*)repoCtrl
 {
   repoCtrl.delegate = self;
@@ -338,6 +340,7 @@
   [self.toolbarController update];
 }
 
+// do not need, will be inside GBSidebarItem
 - (void) repositoriesController:(GBRepositoriesController*)reposCtrl didRemoveRepository:(GBBaseRepositoryController*)repoCtrl
 {
   [self.sourcesController update];
@@ -345,6 +348,7 @@
   //[self.historyController update];
 }
 
+// do not need, will be inside GBSidebarItem
 - (void) repositoriesController:(GBRepositoriesController*)reposCtrl willSelectRepository:(GBBaseRepositoryController*)repoCtrl
 {
   //[self.historyController unloadView];
@@ -352,6 +356,7 @@
   [self.submoduleCloneProcessViewController unloadView];
 }
 
+// do not need, will be inside GBSidebarItem
 - (void) repositoriesController:(GBRepositoriesController*)reposCtrl didSelectRepository:(GBBaseRepositoryController*)repoCtrl
 {
   self.repositoryController = repoCtrl;
