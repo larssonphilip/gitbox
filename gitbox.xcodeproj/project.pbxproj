@@ -558,7 +558,7 @@
 		2084C8681299A078009295C8 /* git-remove-hardlinks.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = "git-remove-hardlinks.rb"; sourceTree = "<group>"; };
 		2084C8691299A078009295C8 /* keygen.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = keygen.rb; sourceTree = "<group>"; };
 		208A6B9712F879B600F3F608 /* DiffAndBlame.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = DiffAndBlame.txt; sourceTree = "<group>"; };
-		20915F3412874D2A005E0D82 /* Gitbox.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Gitbox.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		20915F3412874D2A005E0D82 /* Gitbox.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = Gitbox.app; path = /Users/oleganza/Work/gitbox/app/build/Release/Gitbox.app; sourceTree = "<absolute>"; };
 		20915F7E12875C92005E0D82 /* GBPreferencesController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBPreferencesController.xib; sourceTree = "<group>"; };
 		20915F8712875FDA005E0D82 /* prefix_appstore.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = prefix_appstore.pch; sourceTree = "<group>"; };
 		20915F8B12876062005E0D82 /* GBPreferencesController-appstore.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "GBPreferencesController-appstore.xib"; sourceTree = "<group>"; };
@@ -681,7 +681,7 @@
 		70EEC8CE12DFE33E00DD1555 /* GBSubmodulesTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBSubmodulesTask.h; sourceTree = "<group>"; };
 		70EEC8CF12DFE33E00DD1555 /* GBSubmodulesTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBSubmodulesTask.m; sourceTree = "<group>"; };
 		8D15AC360486D014006FF6A4 /* info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = info.plist; sourceTree = "<group>"; };
-		8D15AC370486D014006FF6A4 /* Gitbox.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Gitbox.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8D15AC370486D014006FF6A4 /* Gitbox.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = Gitbox.app; path = /Users/oleganza/Work/gitbox/app/build/Release/Gitbox.app; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -744,8 +744,6 @@
 		19C28FB0FE9D524F11CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				8D15AC370486D014006FF6A4 /* Gitbox.app */,
-				20915F3412874D2A005E0D82 /* Gitbox.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
