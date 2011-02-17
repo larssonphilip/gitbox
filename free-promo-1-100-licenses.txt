@@ -9,8 +9,8 @@
 0dece0e73fa9062c838d0c5882bb605bbbf59d007d95 Henry Tseng <henry@heycanvas.com>, who purchased appstore version and reported a bug with license check.
 16fa7cfbb5391c9d0da403d10165672d97cd055c41b6 reviewme.oz-apps.com review copy
 266c2aaa05b4b7c952c16effb5065200972b6e58b344 reviewme.oz-apps.com reader's license
-280f196f328fc9adc7a34d75e626c930e516c66892bc
-5888974de6a796135029415d7c7b82facbc68f10f065
+280f196f328fc9adc7a34d75e626c930e516c66892bc Luis Martins <luis.martins@multiweb.pt>
+5888974de6a796135029415d7c7b82facbc68f10f065 Pepi Zawodsky <pepi.zawodsky@maclemon.at> Cocoaheads in Vienna, Austria
 1b9adfb451d00d525fd454175f292557c3ae2209355c
 42f65f8590a1c23a338d55e5e3a90c1844d43f49f594
 444ea0599a017bc8c0ef8bff98a607cb49d88d52044d
