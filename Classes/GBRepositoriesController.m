@@ -3,31 +3,32 @@
 #import "GBRepositoryCloningController.h"
 #import "GBRepository.h"
 #import "GBRepositoriesGroup.h"
+#import "GBSidebarItem.h"
 
 #import "NSFileManager+OAFileManagerHelpers.h"
-
+#import "OALicenseNumberCheck.h"
 #import "OALicenseNumberCheck.h"
 #import "OAObfuscatedLicenseCheck.h"
 #import "OABlockQueue.h"
 #import "NSAlert+OAAlertHelpers.h"
+#import "NSObject+OASelectorNotifications.h"
+
 
 @implementation GBRepositoriesController
 
-@synthesize selectedRepositoryController;
+@synthesize sidebarItem;
 @synthesize localRepositoriesGroup;
 @synthesize localRepositoriesUpdatesQueue;
 @synthesize autofetchQueue;
-@synthesize selectedLocalItem;
 
-@synthesize delegate;
+//@synthesize delegate;
 
 - (void) dealloc
 {
-  self.selectedRepositoryController = nil;
+  self.sidebarItem = nil;
   self.localRepositoriesGroup = nil;
   self.localRepositoriesUpdatesQueue = nil;
   self.autofetchQueue = nil;
-  self.selectedLocalItem = nil;
   [super dealloc];
 }
 
@@ -35,6 +36,9 @@
 {
   if ((self = [super init]))
   {
+    self.sidebarItem = [[[GBSidebarItem alloc] init] autorelease];
+    self.sidebarItem.object = self;
+    
     self.localRepositoriesUpdatesQueue = [OABlockQueue queueWithName:@"LocalUpdates" concurrency:1];
     self.autofetchQueue = [OABlockQueue queueWithName:@"AutoFetch" concurrency:6];
     
@@ -59,24 +63,24 @@
 }
 
 
-- (GBRepositoryController*) selectedLocalRepositoryController
-{
-  if ([self.selectedRepositoryController isKindOfClass:[GBRepositoryController class]])
-  {
-    return (GBRepositoryController*) self.selectedRepositoryController;
-  }
-  return nil;
-}
-
-- (GBRepositoryCloningController*) selectedCloningRepositoryController
-{
-  if ([self.selectedRepositoryController isKindOfClass:[GBRepositoryCloningController class]])
-  {
-    return (GBRepositoryCloningController*) self.selectedRepositoryController;
-  }
-  return nil;
-}
-
+//- (GBRepositoryController*) selectedLocalRepositoryController
+//{
+//  if ([self.selectedRepositoryController isKindOfClass:[GBRepositoryController class]])
+//  {
+//    return (GBRepositoryController*) self.selectedRepositoryController;
+//  }
+//  return nil;
+//}
+//
+//- (GBRepositoryCloningController*) selectedCloningRepositoryController
+//{
+//  if ([self.selectedRepositoryController isKindOfClass:[GBRepositoryCloningController class]])
+//  {
+//    return (GBRepositoryCloningController*) self.selectedRepositoryController;
+//  }
+//  return nil;
+//}
+//
 
 
 
@@ -91,9 +95,9 @@
 
 - (void) openLocalRepositoryAtURL:(NSURL*)url
 {
-  [self doWithSelectedGroupAtIndex:^(GBRepositoriesGroup* aGroup, NSInteger anIndex){
-    [self openLocalRepositoryAtURL:url inGroup:aGroup atIndex:anIndex];
-  }];
+//  [self doWithSelectedGroupAtIndex:^(GBRepositoriesGroup* aGroup, NSInteger anIndex){
+//    [self openLocalRepositoryAtURL:url inGroup:aGroup atIndex:anIndex];
+//  }];
 }
 
 
@@ -102,7 +106,7 @@
   GBBaseRepositoryController* repoCtrl = [self openedLocalRepositoryControllerWithURL:url];
   if (repoCtrl)
   {
-    [self selectRepositoryController:repoCtrl];
+    //[self selectRepositoryController:repoCtrl];
     return;
   }
   
@@ -128,10 +132,10 @@
   repoCtrl = [GBRepositoryController repositoryControllerWithURL:url];
   if (!repoCtrl) return;
   
-  [self addLocalRepositoryController:repoCtrl inGroup:aGroup atIndex:anIndex];
+//  [self addLocalRepositoryController:repoCtrl inGroup:aGroup atIndex:anIndex];
   [[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:url];
   
-  [self selectRepositoryController:repoCtrl];
+//  [self selectRepositoryController:repoCtrl];
 }
 
 
@@ -163,7 +167,7 @@
 
 - (void) addLocalRepositoryController:(GBBaseRepositoryController*)repoCtrl
 {
-  [self addLocalRepositoryController:repoCtrl inGroup:self.localRepositoriesGroup atIndex:NSOutlineViewDropOnItemIndex];
+//  [self addLocalRepositoryController:repoCtrl inGroup:self.localRepositoriesGroup atIndex:NSOutlineViewDropOnItemIndex];
 }
 
 
@@ -173,14 +177,16 @@
   
   if ([self.localRepositoriesGroup hasRepositoryController:repoCtrl]) return;
   
-  if ([self.delegate respondsToSelector:@selector(repositoriesController:willAddRepository:)]) { [self.delegate repositoriesController:self willAddRepository:repoCtrl]; }
+  [self notifyWithSelector:@selector(repositoriesController:willAddRepository:) withObject:repoCtrl];
+//  if ([self.delegate respondsToSelector:@selector(repositoriesController:willAddRepository:)]) { [self.delegate repositoriesController:self willAddRepository:repoCtrl]; }
   
   [aGroup insertLocalItem:repoCtrl atIndex:anIndex];
   [self launchRepositoryController:repoCtrl queued:NO];
 
-  if ([self.delegate respondsToSelector:@selector(repositoriesController:didAddRepository:)]) { [self.delegate repositoriesController:self didAddRepository:repoCtrl]; }
+  [self notifyWithSelector:@selector(repositoriesController:didAddRepository:) withObject:repoCtrl];
+//  if ([self.delegate respondsToSelector:@selector(repositoriesController:didAddRepository:)]) { [self.delegate repositoriesController:self didAddRepository:repoCtrl]; }
   
-  [self saveLocalRepositoriesAndGroups];
+//  [self saveLocalRepositoriesAndGroups];
 }
 
 
@@ -214,94 +220,94 @@
     [self.localRepositoriesGroup removeLocalItem:[[aLocalItem retain] autorelease]];
     [aGroup insertLocalItem:aLocalItem atIndex:anIndex];
   }
-  [self saveLocalRepositoriesAndGroups];
+//  [self saveLocalRepositoriesAndGroups];
 }
 
 
-- (void) removeLocalRepositoriesGroup:(GBRepositoriesGroup*)aGroup
-{
-  if (!aGroup) return;
-  if (aGroup == self.localRepositoriesGroup) return;
+//- (void) removeLocalRepositoriesGroup:(GBRepositoriesGroup*)aGroup
+//{
+//  if (!aGroup) return;
+//  if (aGroup == self.localRepositoriesGroup) return;
+//
+//  NSMutableArray* reposToRemove = [NSMutableArray array];
+//  
+//  [aGroup enumerateRepositoriesWithBlock:^(GBBaseRepositoryController* repoCtrl){
+//    [reposToRemove addObject:repoCtrl];
+//  }];
+//  
+//  if ([reposToRemove containsObject:self.selectedRepositoryController])
+//  {
+//    [self selectRepositoryController:nil];
+//  }
+//  
+//  for (GBBaseRepositoryController* repoCtrl in reposToRemove)
+//  {
+//    if ([self.delegate respondsToSelector:@selector(repositoriesController:willRemoveRepository:)]) { [self.delegate repositoriesController:self willRemoveRepository:repoCtrl]; }
+//    
+//    [repoCtrl stop];
+//    
+//    if ([self.delegate respondsToSelector:@selector(repositoriesController:didRemoveRepository:)]) { [self.delegate repositoriesController:self didRemoveRepository:repoCtrl]; }
+//  }
+//  
+//  [self.localRepositoriesGroup removeLocalItem:aGroup];
+//  
+//  [self saveLocalRepositoriesAndGroups];
+//}
 
-  NSMutableArray* reposToRemove = [NSMutableArray array];
-  
-  [aGroup enumerateRepositoriesWithBlock:^(GBBaseRepositoryController* repoCtrl){
-    [reposToRemove addObject:repoCtrl];
-  }];
-  
-  if ([reposToRemove containsObject:self.selectedRepositoryController])
-  {
-    [self selectRepositoryController:nil];
-  }
-  
-  for (GBBaseRepositoryController* repoCtrl in reposToRemove)
-  {
-    if ([self.delegate respondsToSelector:@selector(repositoriesController:willRemoveRepository:)]) { [self.delegate repositoriesController:self willRemoveRepository:repoCtrl]; }
-    
-    [repoCtrl stop];
-    
-    if ([self.delegate respondsToSelector:@selector(repositoriesController:didRemoveRepository:)]) { [self.delegate repositoriesController:self didRemoveRepository:repoCtrl]; }
-  }
-  
-  [self.localRepositoriesGroup removeLocalItem:aGroup];
-  
-  [self saveLocalRepositoriesAndGroups];
-}
+//- (void) removeLocalRepositoryController:(GBBaseRepositoryController*)repoCtrl
+//{
+//  if (!repoCtrl) return;
+//  
+//  if (repoCtrl == self.selectedRepositoryController)
+//  {
+//    [self selectRepositoryController:nil];
+//  }
+//  
+//  if ([self.delegate respondsToSelector:@selector(repositoriesController:willRemoveRepository:)]) { [self.delegate repositoriesController:self willRemoveRepository:repoCtrl]; }
+//  [repoCtrl stop];
+//  
+//  [self.localRepositoriesGroup removeLocalItem:repoCtrl];
+//  
+//  if ([self.delegate respondsToSelector:@selector(repositoriesController:didRemoveRepository:)]) { [self.delegate repositoriesController:self didRemoveRepository:repoCtrl]; }
+//  
+//  [self saveLocalRepositoriesAndGroups];
+//}
 
-- (void) removeLocalRepositoryController:(GBBaseRepositoryController*)repoCtrl
-{
-  if (!repoCtrl) return;
-  
-  if (repoCtrl == self.selectedRepositoryController)
-  {
-    [self selectRepositoryController:nil];
-  }
-  
-  if ([self.delegate respondsToSelector:@selector(repositoriesController:willRemoveRepository:)]) { [self.delegate repositoriesController:self willRemoveRepository:repoCtrl]; }
-  [repoCtrl stop];
-  
-  [self.localRepositoriesGroup removeLocalItem:repoCtrl];
-  
-  if ([self.delegate respondsToSelector:@selector(repositoriesController:didRemoveRepository:)]) { [self.delegate repositoriesController:self didRemoveRepository:repoCtrl]; }
-  
-  [self saveLocalRepositoriesAndGroups];
-}
+//- (void) selectRepositoryController:(GBBaseRepositoryController*) repoCtrl
+//{
+//  if ([self.delegate respondsToSelector:@selector(repositoriesController:willSelectRepository:)]) { [self.delegate repositoriesController:self willSelectRepository:repoCtrl]; }
+//  
+//  self.selectedRepositoryController = repoCtrl;
+//  self.selectedLocalItem = repoCtrl;
+//  
+//  if (repoCtrl)
+//  {
+//    [self.localRepositoriesUpdatesQueue prependBlock:^{
+//      [repoCtrl initialUpdateWithBlock:^{
+//        [self.localRepositoriesUpdatesQueue endBlock];
+//      }];
+//    }];
+//  }
+//  
+//  if ([self.delegate respondsToSelector:@selector(repositoriesController:didSelectRepository:)]) { [self.delegate repositoriesController:self didSelectRepository:repoCtrl]; }
+//  
+//  [self.selectedRepositoryController didSelect];
+//}
 
-- (void) selectRepositoryController:(GBBaseRepositoryController*) repoCtrl
-{
-  if ([self.delegate respondsToSelector:@selector(repositoriesController:willSelectRepository:)]) { [self.delegate repositoriesController:self willSelectRepository:repoCtrl]; }
-  
-  self.selectedRepositoryController = repoCtrl;
-  self.selectedLocalItem = repoCtrl;
-  
-  if (repoCtrl)
-  {
-    [self.localRepositoriesUpdatesQueue prependBlock:^{
-      [repoCtrl initialUpdateWithBlock:^{
-        [self.localRepositoriesUpdatesQueue endBlock];
-      }];
-    }];
-  }
-  
-  if ([self.delegate respondsToSelector:@selector(repositoriesController:didSelectRepository:)]) { [self.delegate repositoriesController:self didSelectRepository:repoCtrl]; }
-  
-  [self.selectedRepositoryController didSelect];
-}
-
-- (void) selectLocalItem:(id<GBRepositoriesControllerLocalItem>) aLocalItem
-{
-  self.selectedLocalItem = aLocalItem;
-}
-
-- (void) addGroup:(GBRepositoriesGroup*)aGroup inGroup:(GBRepositoriesGroup*)aTargetGroup atIndex:(NSInteger)anIndex
-{
-  if ([self.delegate respondsToSelector:@selector(repositoriesController:willAddGroup:)]) { [self.delegate repositoriesController:self willAddGroup:aGroup]; }
-  
-  if (!aTargetGroup) aTargetGroup = self.localRepositoriesGroup;
-  [aTargetGroup insertLocalItem:aGroup atIndex:anIndex];
-  
-  if ([self.delegate respondsToSelector:@selector(repositoriesController:didAddGroup:)]) { [self.delegate repositoriesController:self didAddGroup:aGroup]; }
-}
+//- (void) selectLocalItem:(id<GBRepositoriesControllerLocalItem>) aLocalItem
+//{
+//  self.selectedLocalItem = aLocalItem;
+//}
+//
+//- (void) addGroup:(GBRepositoriesGroup*)aGroup inGroup:(GBRepositoriesGroup*)aTargetGroup atIndex:(NSInteger)anIndex
+//{
+//  if ([self.delegate respondsToSelector:@selector(repositoriesController:willAddGroup:)]) { [self.delegate repositoriesController:self willAddGroup:aGroup]; }
+//  
+//  if (!aTargetGroup) aTargetGroup = self.localRepositoriesGroup;
+//  [aTargetGroup insertLocalItem:aGroup atIndex:anIndex];
+//  
+//  if ([self.delegate respondsToSelector:@selector(repositoriesController:didAddGroup:)]) { [self.delegate repositoriesController:self didAddGroup:aGroup]; }
+//}
 
 
 
@@ -422,7 +428,7 @@
   
   NSURL* selectedURL = [self URLFromBookmarkData:selectedLocalRepoBoomarkData];
   
-  if ([self.delegate respondsToSelector:@selector(repositoriesControllerDidLoadLocalRepositoriesAndGroups:)]) { [self.delegate repositoriesControllerDidLoadLocalRepositoriesAndGroups:self]; }
+//  if ([self.delegate respondsToSelector:@selector(repositoriesControllerDidLoadLocalRepositoriesAndGroups:)]) { [self.delegate repositoriesControllerDidLoadLocalRepositoriesAndGroups:self]; }
 
   if (selectedURL)
   {
@@ -434,7 +440,7 @@
     selectedRepoCtrl = firstRepoCtrl;
   }
   
-  [self selectRepositoryController:selectedRepoCtrl];
+  //[self selectRepositoryController:selectedRepoCtrl];
 }
 
 
@@ -447,13 +453,13 @@
                                             forKey:@"GBRepositoriesController_localRepositoriesGroup"];
   
   NSData* selectedLocalRepoBoomarkData = nil;
-  if (self.selectedRepositoryController)
-  {
-    selectedLocalRepoBoomarkData = [[self.selectedRepositoryController url] bookmarkDataWithOptions:NSURLBookmarkCreationMinimalBookmark
-                                    includingResourceValuesForKeys:nil
-                                                     relativeToURL:nil
-                                                             error:NULL]; 
-  }
+//  if (self.selectedRepositoryController)
+//  {
+//    selectedLocalRepoBoomarkData = [[self.selectedRepositoryController url] bookmarkDataWithOptions:NSURLBookmarkCreationMinimalBookmark
+//                                    includingResourceValuesForKeys:nil
+//                                                     relativeToURL:nil
+//                                                             error:NULL]; 
+//  }
   
   if (selectedLocalRepoBoomarkData)
   {
@@ -487,25 +493,28 @@
 }
 
 
-- (void) doWithSelectedGroupAtIndex:(void(^)(GBRepositoriesGroup* aGroup, NSInteger anIndex))aBlock
-{
-  GBRepositoriesGroup* aGroup = [self.localRepositoriesGroup groupContainingLocalItem:self.selectedLocalItem];
-  if (!aGroup) aGroup = self.localRepositoriesGroup;
-  NSUInteger indexInGroup = [aGroup.items indexOfObject:self.selectedLocalItem];
-  if (indexInGroup == NSNotFound)
-  {
-    indexInGroup = [aGroup.items count];
-  }
-  else
-  {
-    indexInGroup++;// insert after the item, not before
-  }
-  if ([self.selectedLocalItem isRepositoriesGroup]) // in case, the group is selected, insert inside it
-  {
-    aGroup = (GBRepositoriesGroup*)self.selectedLocalItem;
-    indexInGroup = 0;
-  }
-  aBlock(aGroup, indexInGroup);
-}
+//- (void) doWithSelectedGroupAtIndex:(void(^)(GBRepositoriesGroup* aGroup, NSInteger anIndex))aBlock
+//{
+//  GBRepositoriesGroup* aGroup = [self.localRepositoriesGroup groupContainingLocalItem:self.selectedLocalItem];
+//  if (!aGroup) aGroup = self.localRepositoriesGroup;
+//  NSUInteger indexInGroup = [aGroup.items indexOfObject:self.selectedLocalItem];
+//  if (indexInGroup == NSNotFound)
+//  {
+//    indexInGroup = [aGroup.items count];
+//  }
+//  else
+//  {
+//    indexInGroup++;// insert after the item, not before
+//  }
+//  if ([self.selectedLocalItem isRepositoriesGroup]) // in case, the group is selected, insert inside it
+//  {
+//    aGroup = (GBRepositoriesGroup*)self.selectedLocalItem;
+//    indexInGroup = 0;
+//  }
+//  aBlock(aGroup, indexInGroup);
+//}
+
+
+
 
 @end

@@ -1,5 +1,5 @@
 #import "GBSidebarCell.h"
-#import "GBSidebarItem.h"
+#import "GBObsoleteSidebarItem.h"
 #import "GBSidebarOutlineView.h"
 #import "GBLightScroller.h"
 #import "CGContext+OACGContextHelpers.h"
@@ -7,7 +7,7 @@
 #define kGBSidebarCellIconWidth 16.0
 
 @interface GBSidebarCell ()
-- (id<GBSidebarItem>) sidebarItem;
+- (id<GBObsoleteSidebarItem>) sidebarItem;
 - (NSRect) drawIconAndReturnRemainingRect:(NSRect)rect;
 @end
 
@@ -184,9 +184,9 @@
 #pragma mark Private
 
 
-- (id<GBSidebarItem>) sidebarItem
+- (id<GBObsoleteSidebarItem>) sidebarItem
 {
-  return (id<GBSidebarItem>)[self representedObject];
+  return (id<GBObsoleteSidebarItem>)[self representedObject];
 }
 
 - (NSRect) drawIconAndReturnRemainingRect:(NSRect)rect

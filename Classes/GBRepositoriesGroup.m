@@ -9,6 +9,8 @@
 
 
 @implementation GBRepositoriesGroup
+
+@synthesize sidebarItem;
 @synthesize name;
 @synthesize items;
 @synthesize sidebarSpinner;
@@ -17,6 +19,7 @@
 
 - (void) dealloc
 {
+  self.sidebarItem = nil;
   self.name = nil;
   self.items = nil;
   self.sidebarSpinner = nil;
@@ -176,17 +179,17 @@
   return YES;
 }
 
-- (id<GBSidebarItem>) childForIndexInSidebar:(NSInteger)index
+- (id<GBObsoleteSidebarItem>) childForIndexInSidebar:(NSInteger)index
 {
   if (index < 0 || index >= [self.items count]) return nil;
   return [self.items objectAtIndex:(NSUInteger)index];
 }
 
-- (id<GBSidebarItem>) findItemWithIndentifier:(NSString*)identifier
+- (id<GBObsoleteSidebarItem>) findItemWithIndentifier:(NSString*)identifier
 {
   if (!identifier) return nil;
   if ([[self sidebarItemIdentifier] isEqual:identifier]) return self;
-  for (id<GBSidebarItem> item in self.items)
+  for (id<GBObsoleteSidebarItem> item in self.items)
   {
     id i = [item findItemWithIndentifier:identifier];
     if (i) return i;
@@ -272,7 +275,7 @@
 - (NSInteger) accumulatedBadgeValue
 {
 	NSInteger sum = [self badgeValue];
-	for (id<GBSidebarItem> item in self.items)
+	for (id<GBObsoleteSidebarItem> item in self.items)
 	{
 		sum += [item accumulatedBadgeValue];
 	}
@@ -287,7 +290,7 @@
 - (BOOL) isAccumulatedSpinningInSidebar
 {
   if ([self isSpinningInSidebar]) return YES;
-	for (id<GBSidebarItem> item in self.items)
+	for (id<GBObsoleteSidebarItem> item in self.items)
 	{
 		if ([item isAccumulatedSpinningInSidebar]) return YES;
 	}
@@ -297,27 +300,12 @@
 - (void) hideAllSpinnersInSidebar
 {
   [self.sidebarSpinner setHidden:YES];
-	for (id<GBSidebarItem> item in self.items)
+	for (id<GBObsoleteSidebarItem> item in self.items)
 	{
 		[item hideAllSpinnersInSidebar];
 	}
 }
 
 
-
-
-- (NSArray*) writableTypesForPasteboard:(NSPasteboard *)pasteboard
-{
-  return [NSArray arrayWithObject:GBSidebarItemPasteboardType];
-}
-
-- (id) pasteboardPropertyListForType:(NSString *)type
-{
-  if ([type isEqual:GBSidebarItemPasteboardType])
-  {
-    return [self sidebarItemIdentifier];
-  }
-  return nil;
-}
 
 @end

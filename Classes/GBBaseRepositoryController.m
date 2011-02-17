@@ -197,12 +197,12 @@
   return NO;
 }
 
-- (id<GBSidebarItem>) childForIndexInSidebar:(NSInteger)index
+- (id<GBObsoleteSidebarItem>) childForIndexInSidebar:(NSInteger)index
 {
   return nil;
 }
 
-- (id<GBSidebarItem>) findItemWithIndentifier:(NSString*)identifier
+- (id<GBObsoleteSidebarItem>) findItemWithIndentifier:(NSString*)identifier
 {
   if (!identifier) return nil;
   if ([[self sidebarItemIdentifier] isEqual:identifier]) return self;
@@ -303,16 +303,12 @@
 
 - (NSArray*) writableTypesForPasteboard:(NSPasteboard *)pasteboard
 {
-  return [[NSArray arrayWithObjects:GBSidebarItemPasteboardType, NSPasteboardTypeString, (NSString*)kUTTypeFileURL, nil] 
+  return [[NSArray arrayWithObjects:NSPasteboardTypeString, (NSString*)kUTTypeFileURL, nil] 
           arrayByAddingObjectsFromArray:[[self url] writableTypesForPasteboard:pasteboard]];
 }
 
 - (id)pasteboardPropertyListForType:(NSString *)type
 {
-  if ([type isEqual:GBSidebarItemPasteboardType])
-  {
-    return [self sidebarItemIdentifier];
-  }
   if ([type isEqualToString:(NSString*)kUTTypeFileURL])
   {
     return [[self url] absoluteURL];

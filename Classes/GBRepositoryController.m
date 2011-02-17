@@ -10,6 +10,7 @@
 #import "GBSubmoduleCloningController.h"
 
 #import "GBSidebarCell.h"
+#import "GBSidebarItem.h"
 
 #import "OAFSEventStream.h"
 #import "NSString+OAStringHelpers.h"
@@ -68,6 +69,7 @@
 @implementation GBRepositoryController
 
 @synthesize repository;
+@synthesize sidebarItem;
 @synthesize selectedCommit;
 @synthesize fsEventStream;
 @synthesize lastCommitBranchName;
@@ -89,6 +91,7 @@
 {
   [[NSNotificationCenter defaultCenter] removeObserver:self];
   self.repository = nil;
+  self.sidebarItem = nil;
   self.selectedCommit = nil;
   self.fsEventStream = nil;
   self.lastCommitBranchName = nil;
@@ -104,6 +107,9 @@
   if ((self = [super init]))
   {
     self.blockMerger = [[OABlockMerger new] autorelease];
+    self.sidebarItem = [[[GBSidebarItem alloc] init] autorelease];
+    self.sidebarItem.object = self;
+    self.sidebarItem.expandable = NO;
   }
   return self;
 }
@@ -876,13 +882,13 @@
   return [self.repository.submodules count];
 }
 
-- (id<GBSidebarItem>) childForIndexInSidebar:(NSInteger)index
+- (id<GBObsoleteSidebarItem>) childForIndexInSidebar:(NSInteger)index
 {
   if (index < 0 || index >= [self.repository.submodules count]) return nil;
   return [self.repository.submodules objectAtIndex:index];
 }
 
-- (id<GBSidebarItem>) findItemWithIndentifier:(NSString*)identifier
+- (id<GBObsoleteSidebarItem>) findItemWithIndentifier:(NSString*)identifier
 {
   return [super findItemWithIndentifier:identifier];
 }

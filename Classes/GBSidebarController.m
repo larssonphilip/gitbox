@@ -1,47 +1,41 @@
-#import "GBBaseRepositoryController.h"
-#import "GBRepositoriesController.h"
-#import "GBRepositoriesGroup.h"
-#import "GBRepositoryViewController.h"
-
 #import "GBSidebarController.h"
-#import "GBRepository.h"
-#import "GBRepositoryCell.h"
-
+#import "GBRootController.h"
+#import "GBRepositoriesController.h"
 #import "GBSidebarItem.h"
+#import "GBSidebarCell.h"
+
+#import "OALicenseNumberCheck.h"
 
 #import "NSFileManager+OAFileManagerHelpers.h"
 #import "NSTableView+OATableViewHelpers.h"
 #import "NSObject+OADispatchItemValidation.h"
-
-#import "OALicenseNumberCheck.h"
+#import "NSObject+OASelectorNotifications.h"
 #import "NSObject+OAPerformBlockAfterDelay.h"
+#import "NSArray+OAArrayHelpers.h"
 
 @interface GBSidebarController ()
-@property(nonatomic, retain) GBRepositoryViewController* repositoryViewController;
 @property(nonatomic, assign) NSUInteger ignoreSelectionChange;
+- (GBSidebarItem*) clickedOrSelectedSidebarItem;
+- (void) updateBuyButton;
 @end
-
 
 
 @implementation GBSidebarController
 
-@synthesize repositoryViewController;
-@synthesize sections;
+@synthesize rootController;
 @synthesize outlineView;
-@synthesize repositoriesController;
-@synthesize buyButton;
 @synthesize localRepositoryMenu;
 @synthesize repositoriesGroupMenu;
 @synthesize submoduleMenu;
 @synthesize defaultMenu;
 @synthesize ignoreSelectionChange;
+@synthesize buyButton;
 
 - (void) dealloc
 {
-  self.repositoryViewController = nil;
-  self.sections = nil;
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
+  self.rootController = nil;
   self.outlineView = nil;
-  self.repositoriesController = nil;
   self.buyButton = nil;
   self.localRepositoryMenu = nil;
   self.repositoriesGroupMenu = nil;
@@ -57,23 +51,39 @@
   [self.outlineView registerForDraggedTypes:[NSArray arrayWithObjects:GBSidebarItemPasteboardType, NSFilenamesPboardType, nil]];
   [self.outlineView setDraggingSourceOperationMask:NSDragOperationEvery forLocal:YES];
   [self.outlineView setDraggingSourceOperationMask:NSDragOperationEvery forLocal:NO];
+  
+  [self updateBuyButton];
 }
 
-- (NSMutableArray*) sections 
+- (void) setRootController:(GBRootController *)aRootController
 {
-  if (!sections)
-  {
-    self.sections = [NSMutableArray arrayWithObjects:
-                     self.repositoriesController.localRepositoriesGroup,
-                     nil];
-  }
-  return [[sections retain] autorelease];
+  if (rootController == aRootController) return;
+  
+  [rootController removeObserverForAllSelectors:self];
+  [rootController release];
+  rootController = [aRootController retain];
+  [rootController addObserverForAllSelectors:self];
+  
+  [self.outlineView reloadData];
 }
 
-- (id<GBSidebarItem>) localRepositoriesSection
+
+
+
+#pragma mark GBRootController notifications
+
+
+
+- (void) rootControllerDidChangeSelection:(GBRootController*)aRootController
 {
-  return self.repositoriesController.localRepositoriesGroup;
+  // TODO: update selection if it's different
+  NSLog(@"TODO: update selection if it's different");
 }
+
+
+
+
+
 
 
 #pragma mark IBActions
@@ -81,14 +91,17 @@
 
 
 
+
+
+
 // This helper is used only for prev/next navigation, should be rewritten to support groups
-- (id) firstNonSectionRowStartingAtRow:(NSInteger)row direction:(NSInteger)direction
+- (id) firstSelectableRowStartingAtRow:(NSInteger)row direction:(NSInteger)direction
 {
   if (direction != -1) direction = 1;
   while (row >= 0 && row < [self.outlineView numberOfRows])
   {
-    id<GBSidebarItem> item = [self.outlineView itemAtRow:row];
-    if (![self outlineView:self.outlineView isGroupItem:item])
+    GBSidebarItem* item = [self.outlineView itemAtRow:row];
+    if ([item isSelectable])
     {
       return item;
     }
@@ -97,39 +110,36 @@
   return nil;
 }
 
-- (IBAction) selectPreviousRepository:(id)_
+- (void) selectItemWithDirection:(NSInteger)direction
 {
   [[self.outlineView window] makeFirstResponder:self.outlineView];
-  NSInteger index = [self.outlineView rowForItem:self.repositoriesController.selectedRepositoryController];
-  id<GBSidebarItem> item = nil;
+  NSInteger index = [self.outlineView rowForItem:[self.rootController selectedSidebarItem]];
+  GBSidebarItem* item = nil;
   if (index < 0)
   {
-    item = [self firstNonSectionRowStartingAtRow:0 direction:+1];
+    item = [self firstSelectableRowStartingAtRow:0 direction:+1];
   }
   else
   {
-    item = [self firstNonSectionRowStartingAtRow:index-1 direction:-1];
+    item = [self firstSelectableRowStartingAtRow:(index + direction) direction:direction];
   }
-  if (item) [self.repositoriesController selectRepositoryController:[item repositoryController]];
+  if (item)
+  {
+    self.rootController.selectedSidebarItem = item;
+  }  
 }
 
-- (IBAction) selectNextRepository:(id)_
+- (IBAction) selectPreviousItem:(id)_
 {
-  [[self.outlineView window] makeFirstResponder:self.outlineView];
-  NSInteger index = [self.outlineView rowForItem:self.repositoriesController.selectedRepositoryController];
-  id<GBSidebarItem> item = nil;
-  if (index < 0)
-  {
-    item = [self firstNonSectionRowStartingAtRow:0 direction:+1];
-  }
-  else
-  {
-    item = [self firstNonSectionRowStartingAtRow:index+1 direction:+1];
-  }
-  if (item) [self.repositoriesController selectRepositoryController:[item repositoryController]];
+  [self selectItemWithDirection:-1];
 }
 
-- (id<GBSidebarItem>) clickedOrSelectedSidebarItem
+- (IBAction) selectNextItem:(id)_
+{
+  [self selectItemWithDirection:+1];
+}
+
+- (GBSidebarItem*) clickedOrSelectedSidebarItem
 {
   NSInteger row = [self.outlineView clickedRow];
   if (row < 0)
@@ -143,7 +153,7 @@
   return nil;
 }
 
-- (id<GBSidebarItem>) selectedSidebarItem
+- (GBSidebarItem*) selectedSidebarItem
 {
   NSInteger row = [self.outlineView selectedRow];
   if (row >= 0)
@@ -153,80 +163,82 @@
   return nil;
 }
 
-- (IBAction) remove:(id)_
-{
-  // FIXME: should refactor repositories controller so it can remove any item with delegate notification
-  // need to call some conversion method like "asRepositoriesLocalItem"
-  id<GBSidebarItem> item = [self clickedOrSelectedSidebarItem];
-  
-  if ([item isRepository])
-  {
-    [self.repositoriesController removeLocalRepositoryController:[item repositoryController]];
-  }
-  else if ([item isRepositoriesGroup])
-  {
-    [self.repositoriesController removeLocalRepositoriesGroup:(GBRepositoriesGroup*)item];
-  }
-  [self update];
-  
-  [self.repositoriesController selectRepositoryController:[[self selectedSidebarItem] repositoryController]];
-}
+//- (IBAction) remove:(id)_
+//{
+//  // FIXME: should refactor repositories controller so it can remove any item with delegate notification
+//  // need to call some conversion method like "asRepositoriesLocalItem"
+//  id<GBObsoleteSidebarItem> item = [self clickedOrSelectedSidebarItem];
+//  
+//  if ([item isRepository])
+//  {
+//    [self.repositoriesController removeLocalRepositoryController:[item repositoryController]];
+//  }
+//  else if ([item isRepositoriesGroup])
+//  {
+//    [self.repositoriesController removeLocalRepositoriesGroup:(GBRepositoriesGroup*)item];
+//  }
+//  [self update];
+//  
+//  [self.repositoriesController selectRepositoryController:[[self selectedSidebarItem] repositoryController]];
+//}
 
-- (IBAction) addGroup:(id)_
-{
-  [self.repositoriesController doWithSelectedGroupAtIndex:^(GBRepositoriesGroup* aGroup, NSInteger anIndex){
-    [self.repositoriesController addGroup:[GBRepositoriesGroup untitledGroup] inGroup:aGroup atIndex:anIndex];
-    [self.outlineView expandItem:aGroup];
-  }];
-}
+//- (IBAction) addGroup:(id)_
+//{
+//  [self.repositoriesController doWithSelectedGroupAtIndex:^(GBRepositoriesGroup* aGroup, NSInteger anIndex){
+//    [self.repositoriesController addGroup:[GBRepositoriesGroup untitledGroup] inGroup:aGroup atIndex:anIndex];
+//    [self.outlineView expandItem:aGroup];
+//  }];
+//}
+//
+//- (IBAction) rename:(id)_
+//{
+//  id<GBObsoleteSidebarItem> item = [self clickedOrSelectedSidebarItem];
+//  if (!item) return;
+//  if (![item isEditableInSidebar]) return;
+//  NSInteger rowIndex = [self.outlineView rowForItem:item];
+//  if (rowIndex < 0) return;
+//  [self.outlineView selectRowIndexes:[NSIndexSet indexSetWithIndex:rowIndex] byExtendingSelection:NO];
+//  [self.outlineView editColumn:0 row:rowIndex withEvent:nil select:YES];
+//}
+//
+//- (BOOL) validateRename:(id)_
+//{
+//  id<GBObsoleteSidebarItem> item = [self clickedOrSelectedSidebarItem];
+//  if (!item) return NO;
+//  if (![item isEditableInSidebar]) return NO;
+//  return YES;
+//}
 
-- (IBAction) rename:(id)_
-{
-  id<GBSidebarItem> item = [self clickedOrSelectedSidebarItem];
-  if (!item) return;
-  if (![item isEditableInSidebar]) return;
-  NSInteger rowIndex = [self.outlineView rowForItem:item];
-  if (rowIndex < 0) return;
-  [self.outlineView selectRowIndexes:[NSIndexSet indexSetWithIndex:rowIndex] byExtendingSelection:NO];
-  [self.outlineView editColumn:0 row:rowIndex withEvent:nil select:YES];
-}
+//
+//- (IBAction) selectRightPane:_
+//{
+//  [[self.outlineView window] selectKeyViewFollowingView:self.outlineView];
+//}
+//
+//- (BOOL) isEditing
+//{
+//  return [[[self.view window] firstResponder] isKindOfClass:[NSText class]];
+//}
+//
+//- (BOOL) validateSelectRightPane:(id)sender
+//{
+//  BOOL disableJumping = \
+//    [self isEditing]  ||
+//    [[self selectedSidebarItem] isRepositoriesGroup] ||
+//    ([[self selectedSidebarItem] isExpandableInSidebar] && ![[self selectedSidebarItem] isExpandedInSidebar]);
+//  return !disableJumping;
+//}
+//
+//- (IBAction) openInFinder:(id)_
+//{
+//  NSString* path = [[[[self clickedOrSelectedSidebarItem] repositoryController] url] path];
+//  if (path)
+//  {
+//    [[NSWorkspace sharedWorkspace] openFile:path];
+//  }
+//}
 
-- (BOOL) validateRename:(id)_
-{
-  id<GBSidebarItem> item = [self clickedOrSelectedSidebarItem];
-  if (!item) return NO;
-  if (![item isEditableInSidebar]) return NO;
-  return YES;
-}
 
-
-- (IBAction) selectRightPane:_
-{
-  [[self.outlineView window] selectKeyViewFollowingView:self.outlineView];
-}
-
-- (BOOL) isEditing
-{
-  return [[[self.view window] firstResponder] isKindOfClass:[NSText class]];
-}
-
-- (BOOL) validateSelectRightPane:(id)sender
-{
-  BOOL disableJumping = \
-    [self isEditing]  ||
-    [[self selectedSidebarItem] isRepositoriesGroup] ||
-    ([[self selectedSidebarItem] isExpandableInSidebar] && ![[self selectedSidebarItem] isExpandedInSidebar]);
-  return !disableJumping;
-}
-
-- (IBAction) openInFinder:(id)_
-{
-  NSString* path = [[[[self clickedOrSelectedSidebarItem] repositoryController] url] path];
-  if (path)
-  {
-    [[NSWorkspace sharedWorkspace] openFile:path];
-  }
-}
 
 
 
@@ -236,9 +248,24 @@
 
 - (BOOL) validateUserInterfaceItem:(id<NSValidatedUserInterfaceItem>)anItem
 {
+  id<GBSidebarItemObject> selectedObject = [self clickedOrSelectedSidebarItem].object;
+  if (selectedObject && [selectedObject respondsToSelector:_cmd])
+  {
+    return [(id<NSUserInterfaceValidations>)selectedObject validateUserInterfaceItem:anItem];
+  }
   return [self dispatchUserInterfaceItemValidation:anItem];
 }
 
+- (BOOL) tryToPerform:(SEL)selector with:(id)object
+{
+  id<GBSidebarItemObject> selectedObject = [self clickedOrSelectedSidebarItem].object;
+  if (selectedObject && [selectedObject respondsToSelector:selector])
+  {
+    [selectedObject performSelector:selector withObject:object];
+    return YES;
+  }
+  return [super tryToPerform:selector with:object];
+}
 
 
 
@@ -248,215 +275,180 @@
 
 
 
-- (void) saveExpandedState
-{
-  NSMutableArray* collapsedSections = [NSMutableArray array];
+//- (void) saveExpandedState
+//{
+//  NSMutableArray* collapsedSections = [NSMutableArray array];
+//
+//  int i = 0;
+//  for (id<GBObsoleteSidebarItem> section in self.sections)
+//  {
+//    if (![self.outlineView isItemExpanded:section])
+//    {
+//      [collapsedSections addObject:[NSString stringWithFormat:@"section%d", i]];
+//    }
+//    i++;
+//  }
+//  
+//  [[NSUserDefaults standardUserDefaults] setObject:collapsedSections forKey:@"GBSidebarController_collapsedSections"];
+//}
+//
+//- (void) loadExpandedState
+//{
+//  NSArray* collapsedSections = [[NSUserDefaults standardUserDefaults] objectForKey:@"GBSidebarController_collapsedSections"];
+//  
+//  int i = 0;
+//  for (id<GBObsoleteSidebarItem> section in self.sections)
+//  {
+//    if (![collapsedSections containsObject:[NSString stringWithFormat:@"section%d", i]])
+//    {
+//      [self.outlineView expandItem:section];
+//    }
+//    else
+//    {
+//      [self.outlineView collapseItem:section];
+//    }
+//    i++;
+//  }
+//}
 
-  int i = 0;
-  for (id<GBSidebarItem> section in self.sections)
-  {
-    if (![self.outlineView isItemExpanded:section])
-    {
-      [collapsedSections addObject:[NSString stringWithFormat:@"section%d", i]];
-    }
-    i++;
-  }
-  
-  [[NSUserDefaults standardUserDefaults] setObject:collapsedSections forKey:@"GBSidebarController_collapsedSections"];
+//- (void) update
+//{
+//  [self updateBuyButton];
+//  [self saveExpandedState];
+//  ignoreSelectionChange++;
+//  [self.outlineView reloadData];
+//  ignoreSelectionChange--;
+//  [self loadExpandedState];
+//  [self updateSelectedRow];
+//}
+
+//- (void) updateBadges
+//{
+//  [self.outlineView setNeedsDisplay:YES];
+//}
+
+//- (void) updateSelectedRow
+//{
+//  GBBaseRepositoryController* repoCtrl = self.repositoriesController.selectedRepositoryController;
+//  //NSLog(@"updateSelectedRow: repoCtrl = %@", repoCtrl);
+//  
+//  // First, check that the selection contains the selected repo already. 
+//  // Then preserve whatever selection we have.
+//  NSInteger row = [self.outlineView rowForItem:repoCtrl];
+//  if (row >= 0)
+//  {
+//    if ([[self.outlineView selectedRowIndexes] containsIndex:(NSUInteger)row] ||
+//        [self.outlineView clickedRow] == row)
+//    {
+//      return;
+//    }
+//  }
+//  
+//  // Current selection does not contain selectedRepositoryController, so we update it.
+//  [self.outlineView withDelegate:nil doBlock:^{
+//    if (!repoCtrl)
+//    {
+//      [self.outlineView deselectAll:self];
+//    }
+//    else
+//    {
+//      [self.outlineView selectRowIndexes:[NSIndexSet indexSetWithIndex:[self.outlineView rowForItem:repoCtrl]] 
+//                    byExtendingSelection:NO];
+//    }
+//  }];
+//}
+//
+//- (void) expandLocalRepositories
+//{
+//  [self.outlineView expandItem:[self localRepositoriesSection]];
+//}
+//
+//- (void) updateSpinnerForSidebarItem:(id<GBObsoleteSidebarItem>)item
+//{
+//  [self.outlineView reloadItem:item];
+//}
+//
+//- (void) editGroup:(GBRepositoriesGroup*)aGroup
+//{
+//  NSInteger rowIndex = [self.outlineView rowForItem:aGroup];
+//  
+//  if (rowIndex < 0) return;
+//  [self.outlineView selectRowIndexes:[NSIndexSet indexSetWithIndex:rowIndex] byExtendingSelection:NO];
+//  [self.outlineView editColumn:0 row:rowIndex withEvent:nil select:YES];
+//}
+//
+//- (void) updateExpandedState
+//{
+//  [self updateExpandedStateForItem:[self localRepositoriesSection]];
+//}
+//
+//- (void) updateExpandedStateForItem:(id<GBObsoleteSidebarItem>)item
+//{
+//  if ([item isExpandableInSidebar])
+//  {
+//    if ([item isExpandedInSidebar])
+//    {
+//      [self.outlineView expandItem:item];
+//    }
+//    else
+//    {
+//      [self.outlineView collapseItem:item];
+//    }
+//  }
+//  for (NSUInteger index = 0; index < [item numberOfChildrenInSidebar]; index++)
+//  {
+//    [self updateExpandedStateForItem:[item childForIndexInSidebar:index]];
+//  }
+//}
+//
+
+
+
+
+
+
+#pragma mark NSOutlineViewDataSource and NSOutlineViewDelegate
+
+
+
+- (NSInteger) outlineView:(NSOutlineView*)anOutlineView numberOfChildrenOfItem:(GBSidebarItem*)item
+{
+  if (item == nil) item = self.rootController.sidebarItem;
+  return [item numberOfChildren];
 }
 
-- (void) loadExpandedState
+- (id) outlineView:(NSOutlineView*)anOutlineView child:(NSInteger)index ofItem:(GBSidebarItem*)item
 {
-  NSArray* collapsedSections = [[NSUserDefaults standardUserDefaults] objectForKey:@"GBSidebarController_collapsedSections"];
-  
-  int i = 0;
-  for (id<GBSidebarItem> section in self.sections)
-  {
-    if (![collapsedSections containsObject:[NSString stringWithFormat:@"section%d", i]])
-    {
-      [self.outlineView expandItem:section];
-    }
-    else
-    {
-      [self.outlineView collapseItem:section];
-    }
-    i++;
-  }
+  if (item == nil) item = self.rootController.sidebarItem;
+  return [item childAtIndex:index];
 }
 
-- (void) update
+- (id)outlineView:(NSOutlineView*)anOutlineView objectValueForTableColumn:(NSTableColumn*)tableColumn byItem:(GBSidebarItem*)item
 {
-#if GITBOX_APP_STORE
-#else
-  
-  NSString* license = [[NSUserDefaults standardUserDefaults] objectForKey:@"license"];
-  [self.buyButton setHidden:OAValidateLicenseNumber(license)];
-  
-#endif
-  
-  [self saveExpandedState];
-  ignoreSelectionChange++;
-  [self.outlineView reloadData];
-  ignoreSelectionChange--;
-  [self loadExpandedState];
-  [self updateSelectedRow];
+  return item.title;
 }
 
-- (void) updateBadges
-{
-  [self.outlineView setNeedsDisplay:YES];
-}
-
-- (void) updateSelectedRow
-{
-  GBBaseRepositoryController* repoCtrl = self.repositoriesController.selectedRepositoryController;
-  //NSLog(@"updateSelectedRow: repoCtrl = %@", repoCtrl);
-  
-  // First, check that the selection contains the selected repo already. 
-  // Then preserve whatever selection we have.
-  NSInteger row = [self.outlineView rowForItem:repoCtrl];
-  if (row >= 0)
-  {
-    if ([[self.outlineView selectedRowIndexes] containsIndex:(NSUInteger)row] ||
-        [self.outlineView clickedRow] == row)
-    {
-      return;
-    }
-  }
-  
-  // Current selection does not contain selectedRepositoryController, so we update it.
-  [self.outlineView withDelegate:nil doBlock:^{
-    if (!repoCtrl)
-    {
-      [self.outlineView deselectAll:self];
-    }
-    else
-    {
-      [self.outlineView selectRowIndexes:[NSIndexSet indexSetWithIndex:[self.outlineView rowForItem:repoCtrl]] 
-                    byExtendingSelection:NO];
-    }
-  }];
-}
-
-- (void) expandLocalRepositories
-{
-  [self.outlineView expandItem:[self localRepositoriesSection]];
-}
-
-- (void) updateSpinnerForSidebarItem:(id<GBSidebarItem>)item
-{
-  [self.outlineView reloadItem:item];
-}
-
-- (void) editGroup:(GBRepositoriesGroup*)aGroup
-{
-  NSInteger rowIndex = [self.outlineView rowForItem:aGroup];
-  
-  if (rowIndex < 0) return;
-  [self.outlineView selectRowIndexes:[NSIndexSet indexSetWithIndex:rowIndex] byExtendingSelection:NO];
-  [self.outlineView editColumn:0 row:rowIndex withEvent:nil select:YES];
-}
-
-- (void) updateExpandedState
-{
-  [self updateExpandedStateForItem:[self localRepositoriesSection]];
-}
-
-- (void) updateExpandedStateForItem:(id<GBSidebarItem>)item
-{
-  if ([item isExpandableInSidebar])
-  {
-    if ([item isExpandedInSidebar])
-    {
-      [self.outlineView expandItem:item];
-    }
-    else
-    {
-      [self.outlineView collapseItem:item];
-    }
-  }
-  for (NSUInteger index = 0; index < [item numberOfChildrenInSidebar]; index++)
-  {
-    [self updateExpandedStateForItem:[item childForIndexInSidebar:index]];
-  }
-}
-
-
-
-
-
-
-#pragma mark State load/save
-
-
-
-- (void) saveState
-{
-  [self saveExpandedState];
-}
-
-- (void) loadState
-{
-  [self.outlineView reloadData];
-  [self loadExpandedState];
-}
-
-
-
-
-
-
-
-
-#pragma mark NSOutlineViewDataSource
-
-
-
-- (NSInteger)outlineView:(NSOutlineView*)anOutlineView numberOfChildrenOfItem:(id<GBSidebarItem>)item
-{
-  if (item == nil) return [self.sections count];
-  
-  return [item numberOfChildrenInSidebar];
-}
-
-- (BOOL)outlineView:(NSOutlineView*)anOutlineView isItemExpandable:(id<GBSidebarItem>)item
+- (BOOL)outlineView:(NSOutlineView*)anOutlineView isItemExpandable:(GBSidebarItem*)item
 {
   if (item == nil) return NO;
-  return [item isExpandableInSidebar];
+  return item.isExpandable;
 }
 
-- (id)outlineView:(NSOutlineView*)anOutlineView child:(NSInteger)index ofItem:(id<GBSidebarItem>)item
+
+
+// Editing
+
+- (BOOL)outlineView:(NSOutlineView*)anOutlineView shouldEditTableColumn:(NSTableColumn*)tableColumn item:(GBSidebarItem*)item
 {
-  if (item == nil) return [self.sections objectAtIndex:index];
-  return [item childForIndexInSidebar:index];
+  return [item isEditable];
 }
 
-- (id)outlineView:(NSOutlineView*)anOutlineView objectValueForTableColumn:(NSTableColumn*)tableColumn byItem:(id<GBSidebarItem>)item
+- (void)outlineView:(NSOutlineView *)anOutlineView setObjectValue:(id)object forTableColumn:(NSTableColumn *)tableColumn byItem:(GBSidebarItem*)item
 {
-  if (item == [self localRepositoriesSection])
-  {
-    return NSLocalizedString(@"REPOSITORIES", @"GBSidebar");
-  }
-  return [item nameInSidebar];
+  if ([object respondsToSelector:@selector(string)]) object = [object string];
+  object = [NSString stringWithFormat:@"%@", object];
+  [item setStringValue:object];
 }
-
-- (void)outlineView:(NSOutlineView *)anOutlineView setObjectValue:(id)object forTableColumn:(NSTableColumn *)tableColumn byItem:(id<GBSidebarItem>)item
-{
-  if ([item isRepositoriesGroup])
-  {
-    GBRepositoriesGroup* aGroup = (GBRepositoriesGroup*)item;
-    if ([object respondsToSelector:@selector(string)]) object = [object string];
-    aGroup.name = [NSString stringWithFormat:@"%@", object];
-    [self.repositoriesController saveLocalRepositoriesAndGroups];
-  }
-}
-
-
-
-
-#pragma mark NSOutlineViewDelegate
-
-
 
 //- (BOOL)control:(NSControl *)control textShouldBeginEditing:(NSText *)fieldEditor {
 //  return YES;
@@ -472,79 +464,51 @@
 
 - (void) outlineViewItemDidExpand:(NSNotification *)notification
 {
-  id<GBSidebarItem> item = [[notification userInfo] objectForKey:@"NSObject"];
-  [item setExpandedInSidebar:YES];
-  // if saving here, sidebar becomes empty (??) [self.repositoriesController saveLocalRepositoriesAndGroups];
+  GBSidebarItem* item = [[notification userInfo] objectForKey:@"NSObject"];
+  item.expanded = YES;
 }
 
 - (void) outlineViewItemDidCollapse:(NSNotification *)notification
 {
-  id<GBSidebarItem> item = [[notification userInfo] objectForKey:@"NSObject"];
-  [item setExpandedInSidebar:NO];
-  // if saving here, sidebar becomes empty (??) [self.repositoriesController saveLocalRepositoriesAndGroups];
+  GBSidebarItem* item = [[notification userInfo] objectForKey:@"NSObject"];
+  item.expanded = NO;
 }
 
-- (BOOL)outlineView:(NSOutlineView*)anOutlineView isGroupItem:(id<GBSidebarItem>)item
+- (BOOL) outlineView:(NSOutlineView*)anOutlineView isGroupItem:(GBSidebarItem*)item
 {
-  // Only sections should have "group" style.
-  if (item && [self.sections containsObject:item]) return YES;
-  return NO;
+  return [item isSection];
 }
 
-- (BOOL)outlineView:(NSOutlineView*)anOutlineView shouldSelectItem:(id<GBSidebarItem>)item
+- (BOOL) outlineView:(NSOutlineView*)anOutlineView shouldSelectItem:(GBSidebarItem*)item
 {
   if (item == nil) return NO; // do not select invisible root 
-  if ([self.sections containsObject:item]) return NO; // do not select sections
-  return YES;
+  return [item isSelectable];
 }
 
-- (BOOL)outlineView:(NSOutlineView*)anOutlineView shouldEditTableColumn:(NSTableColumn*)tableColumn item:(id<GBSidebarItem>)item
-{
-  if ([self.sections containsObject:item]) return NO; // do not edit sections
-  return [item isEditableInSidebar];
-}
-
-- (void)outlineViewSelectionDidChange:(NSNotification*)notification
+- (void) outlineViewSelectionDidChange:(NSNotification*)notification
 {
   if (ignoreSelectionChange) return;
-  NSInteger row = [self.outlineView selectedRow];
-  id<GBSidebarItem> item = nil;
-  if (row >= 0 && row < [self.outlineView numberOfRows])
-  {
-    item = [self.outlineView itemAtRow:row];
-  }
-  [self.repositoriesController selectRepositoryController:[item repositoryController]];
-  [self.repositoriesController selectLocalItem:[item repositoriesControllerLocalItem]];
+  
+  NSMutableArray* selectedItems = [NSMutableArray array];
+  [[self.outlineView selectedRowIndexes] enumerateIndexesUsingBlock:^(NSUInteger row, BOOL *stop) {
+    [selectedItems addObject:[self.outlineView itemAtRow:row]];
+  }];
+  self.rootController.selectedSidebarItems = selectedItems;
 }
 
-- (void)outlineView:(NSOutlineView*)anOutlineView willDisplayCell:(id)cell forTableColumn:(NSTableColumn*)tableColumn item:(id<GBSidebarItem>)item
+- (void)outlineView:(NSOutlineView*)anOutlineView willDisplayCell:(id)cell forTableColumn:(NSTableColumn*)tableColumn item:(GBSidebarItem*)item
 {
-  if ([self.sections containsObject:item]) return;  
-  if ([item isRepository])
-  {
-    [cell setMenu:self.localRepositoryMenu];
-  }
-  if ([item isRepositoriesGroup])
-  {
-    [cell setMenu:self.repositoriesGroupMenu];
-  }
-  if ([item isSubmodule])
-  {
-    [cell setMenu:self.submoduleMenu];
-  }
+  // menu should be attached directly to the cell
 }
 
-- (NSCell *)outlineView:(NSOutlineView *)outlineView dataCellForTableColumn:(NSTableColumn *)tableColumn item:(id<GBSidebarItem>)item
+- (NSCell *)outlineView:(NSOutlineView *)outlineView dataCellForTableColumn:(NSTableColumn *)tableColumn item:(GBSidebarItem*)item
 {
   // tableColumn == nil means the outlineView needs a separator cell
   if (!tableColumn) return nil;
   
-  NSCell* cell = nil;
+  if (!item) item = self.rootController.sidebarItem;
   
-  if (item && ![self.sections containsObject:item])
-  {
-    cell = [item sidebarCell];
-  }
+  NSCell* cell = item.cell;
   
   if (!cell)
   {
@@ -554,16 +518,16 @@
   return cell;
 }
 
-- (CGFloat)outlineView:(NSOutlineView *)outlineView heightOfRowByItem:(id<GBSidebarItem>)item
+- (CGFloat)outlineView:(NSOutlineView*)outlineView heightOfRowByItem:(GBSidebarItem*)item
 {
-  if (item && ![self.sections containsObject:item])
+  if (!item) item = self.rootController.sidebarItem;
+  NSCell* cell = item.cell;
+  
+  if (cell && [cell respondsToSelector:@selector(cellHeight)])
   {
-    Class cellClass = [item sidebarCellClass];
-    if (cellClass)
-    {
-      return [cellClass cellHeight];
-    }
+    return [(id)cell cellHeight];
   }
+  
   return 21.0;
 }
 
@@ -571,15 +535,14 @@
            toolTipForCell:(NSCell *)cell
                      rect:(NSRectPointer)rect
               tableColumn:(NSTableColumn *)tc
-                     item:(id<GBSidebarItem>)item
+                     item:(GBSidebarItem*)item
             mouseLocation:(NSPoint)mouseLocation
 {
-  if (item && [self.sections containsObject:item])
-  {
-    return @"";
-  }
-  NSString* string = [item tooltipInSidebar];
-  return string ? string : @"";
+  if (!item) item = self.rootController.sidebarItem;
+  
+  NSString* tooltip = item.tooltip;
+  if (!tooltip) return @"";  
+  return tooltip;
 }
 
 
@@ -595,11 +558,11 @@
          writeItems:(NSArray *)items
        toPasteboard:(NSPasteboard *)pasteboard
 {
-  NSMutableArray* draggableItems = [NSMutableArray arrayWithCapacity:[items count]];
+  NSMutableArray* draggableItems = [NSMutableArray array];
   
-  for (id<GBSidebarItem> item in items)
+  for (GBSidebarItem* item in items)
   {
-    if ([item isDraggableInSidebar])
+    if ([item isDraggable])
     {
       [draggableItems addObject:item];
     }
@@ -613,7 +576,7 @@
 
 - (NSDragOperation)outlineView:(NSOutlineView *)anOutlineView
                   validateDrop:(id<NSDraggingInfo>)draggingInfo
-                  proposedItem:(id<GBSidebarItem>)proposedItem
+                  proposedItem:(GBSidebarItem*)proposedItem
             proposedChildIndex:(NSInteger)childIndex
 {
   //To make it easier to see exactly what is called, uncomment the following line:
@@ -623,36 +586,27 @@
   if ([draggingInfo draggingSource] == nil)
   {
     NSArray* filenames = [pasteboard propertyListForType:NSFilenamesPboardType];
-    BOOL atLeastOneIsValid = NO;
     
     if (!filenames) return NSDragOperationNone;
     if (![filenames isKindOfClass:[NSArray class]]) return NSDragOperationNone;
     if ([filenames count] <= 0) return NSDragOperationNone;
     
-    for (NSString* aPath in filenames)
-    {
-      atLeastOneIsValid = atLeastOneIsValid || [GBRepository isValidRepositoryPathOrFolder:aPath];
-    }
+    NSArray* URLs = [filenames mapWithBlock:^(id filename){
+      return [NSURL fileURLWithPath:filename];
+    }];
     
-    if (!atLeastOneIsValid) return NSDragOperationNone;
-
-    // If only one item is dragged and it is already here, simply retarget the drop item to be "on" the entire section
-    if ([filenames count] == 1)
-    {
-      NSURL* url = [NSURL fileURLWithPath:[filenames objectAtIndex:0]];
-      id<GBSidebarItem> existingItem = url ? [self.repositoriesController openedLocalRepositoryControllerWithURL:url] : nil;
-      if (existingItem)
-      {
-        [self.outlineView setDropItem:existingItem dropChildIndex:NSOutlineViewDropOnItemIndex];
-        return NSDragOperationGeneric;
-      }
-    }
     
-    // Accept only groups and sections
-    if (proposedItem == [self localRepositoriesSection] || [proposedItem isRepositoriesGroup])
-    {
-      return NSDragOperationGeneric;
-    }
+    // Move into sidebar items
+//    BOOL atLeastOneIsValid = NO;
+//    for (NSString* aPath in filenames)
+//    {
+//      atLeastOneIsValid = atLeastOneIsValid || [GBRepository isValidRepositoryPathOrFolder:aPath];
+//    }
+//    
+//    if (!atLeastOneIsValid) return NSDragOperationNone;
+    
+    // TODO: accept only groups and sections
+    return [proposedItem dragOperationForURLs:URLs outlineView:anOutlineView];
   }
   else
   {
@@ -660,36 +614,37 @@
     
     if ([pasteboardItems count] <= 0) return NSDragOperationNone;
     
+    NSMutableArray* items = [NSMutableArray array];
     for (NSPasteboardItem* pasteboardItem in pasteboardItems)
     {
-      NSString* draggedItemIdentifier = [pasteboardItem stringForType:GBSidebarItemPasteboardType];
+      NSString* draggedItemUID = [pasteboardItem stringForType:GBSidebarItemPasteboardType];
       
-      if (!draggedItemIdentifier) return NSDragOperationNone;
+      if (!draggedItemUID) return NSDragOperationNone;
       
-      id<GBSidebarItem> draggedItem = [[self localRepositoriesSection] findItemWithIndentifier:draggedItemIdentifier];
+      GBSidebarItem* draggedItem = [self.rootController.sidebarItem findItemWithUID:draggedItemUID];
       if (!draggedItem) return NSDragOperationNone;
       
       // Avoid dragging inside itself
-      if ([draggedItem findItemWithIndentifier:[proposedItem sidebarItemIdentifier]])
+      if ([draggedItem findItemWithUID:proposedItem.UID])
       {
         return NSDragOperationNone;
-      }      
+      }
+      
+      [items addObject:draggedItem];
     }
     
-    // inner dragging:
-    // Accept only groups and sections
-    if (proposedItem == [self localRepositoriesSection] || [proposedItem isRepositoriesGroup])
-    {
-      return NSDragOperationGeneric;
-    }
+    // TODO: Accept only groups and sections
+    return [proposedItem dragOperationForItems:items outlineView:anOutlineView];
   }
   return NSDragOperationNone;
 }
 
 
+
+
 - (BOOL)outlineView:(NSOutlineView *)anOutlineView
          acceptDrop:(id <NSDraggingInfo>)draggingInfo
-               item:(id<GBSidebarItem>)targetItem
+               item:(GBSidebarItem*)targetItem
          childIndex:(NSInteger)childIndex
 {
   
@@ -704,29 +659,33 @@
     if (!filenames) return NO;
     if ([filenames count] < 1) return NO;
     
-    NSMutableArray* URLs = [NSMutableArray array];
+//    NSMutableArray* URLs = [NSMutableArray array];
     
-    for (NSString* aPath in filenames)
-    {
-      NSURL* aURL = [NSURL fileURLWithPath:aPath];
-      [GBRepository validateRepositoryURL:aURL withBlock:^(BOOL isValid){
-        if (isValid)
-        {
-          [URLs addObject:aURL];
-        }
-      }];
-    }
+//    for (NSString* aPath in filenames)
+//    {
+//      NSURL* aURL = [NSURL fileURLWithPath:aPath];
+//      [GBRepository validateRepositoryURL:aURL withBlock:^(BOOL isValid){
+//        if (isValid)
+//        {
+//          [URLs addObject:aURL];
+//        }
+//      }];
+//    }
+    
+    NSArray* URLs = [filenames mapWithBlock:^(id filename){
+      return [NSURL fileURLWithPath:filename];
+    }];
     
     if ([URLs count] < 1) return NO;
     
-    GBRepositoriesGroup* aGroup = [targetItem isRepositoriesGroup] ? (GBRepositoriesGroup*)targetItem : nil;
-    
-    [NSObject performBlock:^{
-      for (NSURL* aURL in URLs)
-      {
-        [self.repositoriesController openLocalRepositoryAtURL:aURL inGroup:aGroup atIndex:childIndex];
-      }
-    } afterDelay:0.0];
+//    GBRepositoriesGroup* aGroup = [targetItem isRepositoriesGroup] ? (GBRepositoriesGroup*)targetItem : nil;
+//    
+//    [NSObject performBlock:^{
+//      for (NSURL* aURL in URLs)
+//      {
+//        [self.repositoriesController openLocalRepositoryAtURL:aURL inGroup:aGroup atIndex:childIndex];
+//      }
+//    } afterDelay:0.0];
     
     [anOutlineView expandItem:targetItem]; // in some cases when outline view does not expand automatically
     return YES;
@@ -748,49 +707,69 @@
       
       if (itemIdentifier)
       {
-        id<GBSidebarItem> draggedItem = [[self localRepositoriesSection] findItemWithIndentifier:itemIdentifier];
-        if (draggedItem)
-        {
-          movedSomething = YES;
-          GBRepositoriesGroup* aGroup = [targetItem isRepositoriesGroup] ? (GBRepositoriesGroup*)targetItem : nil;
-          [self.repositoriesController moveLocalItem:(id<GBRepositoriesControllerLocalItem>)draggedItem toGroup:aGroup atIndex:childIndex];
-          NSUInteger index = [aGroup.items indexOfObject:draggedItem];
-          if (index == NSNotFound)
-          {
-            childIndex = [aGroup.items count];
-          }
-          else
-          {
-            childIndex = index + 1;
-          }
-        }
+//        id<GBObsoleteSidebarItem> draggedItem = [[self localRepositoriesSection] findItemWithIndentifier:itemIdentifier];
+//        if (draggedItem)
+//        {
+//          movedSomething = YES;
+//          GBRepositoriesGroup* aGroup = [targetItem isRepositoriesGroup] ? (GBRepositoriesGroup*)targetItem : nil;
+//          [self.repositoriesController moveLocalItem:(id<GBRepositoriesControllerLocalItem>)draggedItem toGroup:aGroup atIndex:childIndex];
+//          NSUInteger index = [aGroup.items indexOfObject:draggedItem];
+//          if (index == NSNotFound)
+//          {
+//            childIndex = [aGroup.items count];
+//          }
+//          else
+//          {
+//            childIndex = index + 1;
+//          }
+//        }
       }
     }
     
     if (movedSomething)
     {
-      [self update];
-      
-      // Collect current indexes for the selected items and selected them.
-      NSMutableIndexSet* indexesOfMovedItems = [NSMutableIndexSet indexSet];
-      for (id item in selectedItems)
-      {
-        NSInteger idx = [anOutlineView rowForItem:item];
-        if (idx >= 0)
-        {
-          [indexesOfMovedItems addIndex:(NSUInteger)idx];
-        }
-      }
-      
-      [anOutlineView expandItem:targetItem]; // in some cases when outline view does not expand automatically
-      
-      [anOutlineView withDelegate:nil doBlock:^{
-        [anOutlineView selectRowIndexes:indexesOfMovedItems byExtendingSelection:NO];
-      }];
+//      [self update];
+//      
+//      // Collect current indexes for the selected items and selected them.
+//      NSMutableIndexSet* indexesOfMovedItems = [NSMutableIndexSet indexSet];
+//      for (id item in selectedItems)
+//      {
+//        NSInteger idx = [anOutlineView rowForItem:item];
+//        if (idx >= 0)
+//        {
+//          [indexesOfMovedItems addIndex:(NSUInteger)idx];
+//        }
+//      }
+//      
+//      [anOutlineView expandItem:targetItem]; // in some cases when outline view does not expand automatically
+//      
+//      [anOutlineView withDelegate:nil doBlock:^{
+//        [anOutlineView selectRowIndexes:indexesOfMovedItems byExtendingSelection:NO];
+//      }];
       return YES;
     }
   }
   return NO;
+}
+
+
+
+
+
+
+
+#pragma mark Private
+
+
+- (void) updateBuyButton
+{
+#if GITBOX_APP_STORE
+#else
+  
+  NSString* license = [[NSUserDefaults standardUserDefaults] objectForKey:@"license"];
+  [self.buyButton setHidden:OAValidateLicenseNumber(license)];
+  
+#endif
 }
 
 

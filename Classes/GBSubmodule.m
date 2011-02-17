@@ -96,12 +96,12 @@ NSString* const GBSubmoduleStatusNotUpToDate = @"GBSubmoduleStatusNotUpToDate";
   return [[self repositoryController] isExpandableInSidebar];
 }
 
-- (id<GBSidebarItem>) childForIndexInSidebar:(NSInteger)index
+- (id<GBObsoleteSidebarItem>) childForIndexInSidebar:(NSInteger)index
 {
   return [[self repositoryController] childForIndexInSidebar:index];
 }
 
-- (id<GBSidebarItem>) findItemWithIndentifier:(NSString*)identifier
+- (id<GBObsoleteSidebarItem>) findItemWithIndentifier:(NSString*)identifier
 {
   // TODO: test drag and drop and rewrite this code
   if (!identifier) return nil;

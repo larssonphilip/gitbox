@@ -10,7 +10,7 @@
 - (BOOL) allAreTrue:(SEL)selector;
 - (id) objectWithValue:(id)value forKey:(NSString*)key;
 - (id) objectWithValue:(id)value forKeyPath:(NSString*)keyPath;
-
+- (NSArray*) mapWithBlock:(id(^)(id))mapBlock;
 
 @end
 

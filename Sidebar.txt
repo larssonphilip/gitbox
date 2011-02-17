@@ -63,6 +63,20 @@ Sidebar Event Flow:
 - set the root sidebar item.
 
 
+Toolbar:
+
+- shares common features like plus button, settings and flexible separator.
+- displays branches and pull/merge/push buttons for GBRepositoryControllers
+- displays branch, "clone", "local copy" buttons for github repos
+- displays no repo-specific controls for cloning controller, submodule cloning controller and groups.
+- multiple selection: hide repo-specific controls
+
+- window controller has a toolbar controller
+- window controller listens to the selection change and changes the toolbar controller
+- toolbar controller has a reference to a toolbar and is a delegate for it
+- toolbar controller inherits from the base class GBToolbarController which defines common buttons on the left side (add, settings, sidebar dynamic spacer) and provides an API for subclasses to add buttons on the right side.
+- each item in the tree optionally provides a toolbarController method which returns a toolbarController
+- each item in the tree optionally provides a viewController method which returns a view controller visible when the item is selected.
 
 
 HistoryController:

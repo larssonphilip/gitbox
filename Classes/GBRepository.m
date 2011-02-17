@@ -168,14 +168,15 @@
       {
         if (!isDirectory) return NO;
         return YES;
-      } 
-    }      
+      }
+    }    
   }
   return NO;
 }
 
-+ (BOOL) isValidRepositoryPathOrFolder:(NSString*)aPath
++ (BOOL) isValidRepositoryOrFolderURL:(NSURL*)aURL
 {
+  NSString* aPath = [aURL path];
   if (!aPath) return NO;
   if ([aPath rangeOfString:@"/.Trash/"].location != NSNotFound) return NO;
   

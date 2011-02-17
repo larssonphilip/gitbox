@@ -1,6 +1,6 @@
 #import "GBBaseRepositoryController.h"
 #import "GBChangeDelegate.h"
-
+#import "GBSidebarItemObject.h"
 #import "GBRepositoryControllerDelegate.h"
 
 @class GBRepository;
@@ -8,10 +8,10 @@
 @class GBRemote;
 @class GBCommit;
 
-@class GBMainWindowController;
+@class GBSidebarItem;
 @class OAFSEventStream;
 
-@interface GBRepositoryController : GBBaseRepositoryController
+@interface GBRepositoryController : GBBaseRepositoryController<GBSidebarItemObject>
 {  
   NSInteger isStaging; // maintains a count of number of staging tasks running
   NSInteger isLoadingChanges; // maintains a count of number of changes loading tasks running
@@ -20,6 +20,7 @@
 }
 
 @property(nonatomic,retain) GBRepository* repository;
+@property(nonatomic,retain) GBSidebarItem* sidebarItem;
 @property(nonatomic,retain) GBCommit* selectedCommit;
 @property(nonatomic,retain) OAFSEventStream* fsEventStream;
 @property(nonatomic,retain) NSString* lastCommitBranchName;

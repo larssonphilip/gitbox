@@ -68,6 +68,17 @@
   return nil;
 }
 
+- (NSArray*) mapWithBlock:(id(^)(id))mapBlock
+{
+  NSMutableArray* array = [NSMutableArray array];
+  for (id obj in self)
+  {
+    id obj2 = mapBlock(obj);
+    if (obj2) [array addObject:obj2];
+  }
+  return array;
+}
+
 @end
 
 

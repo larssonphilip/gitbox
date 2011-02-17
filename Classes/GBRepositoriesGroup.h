@@ -1,8 +1,10 @@
 #import "GBRepositoriesControllerLocalItem.h"
-#import "GBSidebarItem.h"
+#import "GBSidebarItemObject.h"
 
-@interface GBRepositoriesGroup : NSObject<GBRepositoriesControllerLocalItem, GBSidebarItem>
+@class GBSidebarItem;
+@interface GBRepositoriesGroup : NSObject<GBRepositoriesControllerLocalItem, GBSidebarItemObject>
 
+@property(nonatomic, retain) GBSidebarItem* sidebarItem;
 @property(nonatomic, copy) NSString* name;
 @property(nonatomic, retain) NSMutableArray* items;
 @property(nonatomic, retain) NSProgressIndicator* sidebarSpinner;

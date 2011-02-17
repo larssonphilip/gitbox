@@ -37,7 +37,7 @@
 + (BOOL) isSupportedGitVersion:(NSString*)version;
 
 + (BOOL) isValidRepositoryPath:(NSString*)aPath;
-+ (BOOL) isValidRepositoryPathOrFolder:(NSString*)aPath;
++ (BOOL) isValidRepositoryOrFolderURL:(NSURL*)aURL;
 + (BOOL) validateRepositoryURL:(NSURL*)aURL withBlock:(void (^)(BOOL isValid))aBlock;
 
 + (void) initRepositoryAtURL:(NSURL*)url;

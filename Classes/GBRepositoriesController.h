@@ -1,48 +1,44 @@
 #import "GBRepositoriesControllerDelegate.h"
-#import "GBRepositoriesControllerLocalItem.h"
+#import "GBSidebarItemObject.h"
 
 @class GBRepositoriesGroup;
 @class GBBaseRepositoryController;
 @class GBRepositoryController;
 @class GBRepositoryCloningController;
+@class GBSidebarItem;
 @class OABlockQueue;
 
-@interface GBRepositoriesController : NSObject
+@interface GBRepositoriesController : NSObject<GBSidebarItemObject>
 
-@property(nonatomic,retain) GBBaseRepositoryController* selectedRepositoryController;
-@property(nonatomic,retain) GBRepositoriesGroup* localRepositoriesGroup;
-@property(nonatomic,retain) OABlockQueue* localRepositoriesUpdatesQueue;
-@property(nonatomic,retain) OABlockQueue* autofetchQueue;
-@property(nonatomic,retain) id<GBRepositoriesControllerLocalItem> selectedLocalItem;
+@property(nonatomic, retain) GBSidebarItem* sidebarItem;
+@property(nonatomic, retain) GBRepositoriesGroup* localRepositoriesGroup;
+@property(nonatomic, retain) OABlockQueue* localRepositoriesUpdatesQueue;
+@property(nonatomic, retain) OABlockQueue* autofetchQueue;
 
-@property(assign) id<GBRepositoriesControllerDelegate> delegate;
+//@property(assign) id<GBRepositoriesControllerDelegate> delegate;
 
-- (GBBaseRepositoryController*) openedLocalRepositoryControllerWithURL:(NSURL*)url;
+//- (GBBaseRepositoryController*) openedLocalRepositoryControllerWithURL:(NSURL*)url;
 
-- (GBRepositoryController*) selectedLocalRepositoryController;
-- (GBRepositoryCloningController*) selectedCloningRepositoryController;
+//- (GBRepositoryController*) selectedLocalRepositoryController;
+//- (GBRepositoryCloningController*) selectedCloningRepositoryController;
 
-- (void) moveLocalItem:(id<GBRepositoriesControllerLocalItem>)aLocalItem toGroup:(GBRepositoriesGroup*)aGroup atIndex:(NSInteger)anIndex;
+//- (void) openLocalRepositoryAtURL:(NSURL*)url;
+//- (void) openLocalRepositoryAtURL:(NSURL*)url inGroup:(GBRepositoriesGroup*)aGroup atIndex:(NSInteger)anIndex;
+//
+//- (void) addLocalRepositoryController:(GBBaseRepositoryController*)repoCtrl;
+//- (void) addLocalRepositoryController:(GBBaseRepositoryController*)repoCtrl inGroup:(GBRepositoriesGroup*)aGroup atIndex:(NSInteger)anIndex;
 
-- (void) openLocalRepositoryAtURL:(NSURL*)url;
-- (void) openLocalRepositoryAtURL:(NSURL*)url inGroup:(GBRepositoriesGroup*)aGroup atIndex:(NSInteger)anIndex;
+//- (void) removeLocalRepositoriesGroup:(GBRepositoriesGroup*)aGroup;
+//- (void) removeLocalRepositoryController:(GBBaseRepositoryController*)repoCtrl;
 
-- (void) addLocalRepositoryController:(GBBaseRepositoryController*)repoCtrl;
-- (void) addLocalRepositoryController:(GBBaseRepositoryController*)repoCtrl inGroup:(GBRepositoriesGroup*)aGroup atIndex:(NSInteger)anIndex;
+//- (void) addGroup:(GBRepositoriesGroup*)aGroup inGroup:(GBRepositoriesGroup*)aGroup atIndex:(NSInteger)anIndex;
 
-- (void) removeLocalRepositoriesGroup:(GBRepositoriesGroup*)aGroup;
-- (void) removeLocalRepositoryController:(GBBaseRepositoryController*)repoCtrl;
-- (void) selectRepositoryController:(GBBaseRepositoryController*) repoCtrl;
-- (void) selectLocalItem:(id<GBRepositoriesControllerLocalItem>) aLocalItem;
+//- (void) loadLocalRepositoriesAndGroups;
+//- (void) saveLocalRepositoriesAndGroups;
 
-- (void) addGroup:(GBRepositoriesGroup*)aGroup inGroup:(GBRepositoriesGroup*)aGroup atIndex:(NSInteger)anIndex;
+//- (void) beginBackgroundUpdate;
+//- (void) endBackgroundUpdate;
 
-- (void) loadLocalRepositoriesAndGroups;
-- (void) saveLocalRepositoriesAndGroups;
-
-- (void) beginBackgroundUpdate;
-- (void) endBackgroundUpdate;
-
-- (void) doWithSelectedGroupAtIndex:(void(^)(GBRepositoriesGroup* aGroup, NSInteger anIndex))aBlock;
+//- (void) doWithSelectedGroupAtIndex:(void(^)(GBRepositoriesGroup* aGroup, NSInteger anIndex))aBlock;
 
 @end

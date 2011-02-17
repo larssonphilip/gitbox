@@ -1,9 +1,9 @@
 #import "GBRepositoriesControllerLocalItem.h"
 #import "GBBaseRepositoryControllerDelegate.h"
-#import "GBSidebarItem.h"
+#import "GBObsoleteSidebarItem.h"
 
 @class OABlockQueue;
-@interface GBBaseRepositoryController : NSObject <GBRepositoriesControllerLocalItem, GBSidebarItem>
+@interface GBBaseRepositoryController : NSObject <GBRepositoriesControllerLocalItem, GBObsoleteSidebarItem>
 
 @property(nonatomic, retain) OABlockQueue* updatesQueue;
 @property(nonatomic, retain) OABlockQueue* autofetchQueue;

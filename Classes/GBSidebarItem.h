@@ -1,42 +1,45 @@
 
+#import "GBSidebarItemObject.h"
+
 #define GBSidebarItemPasteboardType @"com.oleganza.gitbox.GBSidebarItemPasteboardType"
 
-@class GBBaseRepositoryController;
-@protocol GBRepositoriesControllerLocalItem;
-@protocol GBSidebarItem <NSObject, NSPasteboardWriting>
+@class GBSidebarController;
+@class GBSidebarCell;
 
-- (NSString*) sidebarItemIdentifier;
-- (NSString*) nameInSidebar;
-- (NSString*) tooltipInSidebar;
+@interface GBSidebarItem : NSResponder<NSPasteboardWriting>
 
-- (NSInteger) numberOfChildrenInSidebar;
-- (id<GBSidebarItem>) childForIndexInSidebar:(NSInteger)index;
-- (id<GBSidebarItem>) findItemWithIndentifier:(NSString*)identifier;
+@property(nonatomic, assign) id<GBSidebarItemObject> object;
+@property(nonatomic, assign) GBSidebarController* sidebarController;
 
-- (GBBaseRepositoryController*) repositoryController;
-- (id<GBRepositoriesControllerLocalItem>) repositoriesControllerLocalItem;
 
-- (BOOL) isRepository;
-- (BOOL) isRepositoriesGroup;
-- (BOOL) isSubmodule;
+// Appearance
 
-- (NSCell*) sidebarCell;
-- (Class) sidebarCellClass;
+@property(nonatomic, copy, readonly) NSString* UID;
+@property(nonatomic, retain) NSImage* image;
+@property(nonatomic, copy) NSString* title;
+@property(nonatomic, copy) NSString* tooltip;
+@property(nonatomic, assign) NSUInteger badgeInteger;
+@property(nonatomic, retain) GBSidebarCell* cell;
+@property(nonatomic, assign, getter=isCollapsed) BOOL collapsed;
+@property(nonatomic, assign, getter=isExpanded) BOOL expanded;
+@property(nonatomic, assign, getter=isSection) BOOL section;
 
-- (BOOL) isExpandableInSidebar;
-- (BOOL) isDraggableInSidebar;
-- (BOOL) isEditableInSidebar;
 
-- (BOOL) isExpandedInSidebar;
-- (void) setExpandedInSidebar:(BOOL)expanded;
+// Behaviour
 
-- (BOOL) isSpinningInSidebar;
-- (BOOL) isAccumulatedSpinningInSidebar;
-- (NSProgressIndicator*) sidebarSpinner;
-- (void) setSidebarSpinner:(NSProgressIndicator*)spinnerView;
-- (void) hideAllSpinnersInSidebar;
+@property(nonatomic, assign, getter=isSelectable) BOOL selectable;
+@property(nonatomic, assign, getter=isExpandable) BOOL expandable;
+@property(nonatomic, assign, getter=isEditable)   BOOL editable;
+@property(nonatomic, assign, getter=isDraggable)  BOOL draggable;
+- (NSDragOperation) dragOperationForURLs:(NSArray*)URLs outlineView:(NSOutlineView*)anOutlineView;
+- (NSDragOperation) dragOperationForItems:(NSArray*)items outlineView:(NSOutlineView*)anOutlineView;
 
-- (NSInteger) badgeValue;
-- (NSInteger) accumulatedBadgeValue;
+
+// Content
+
+- (NSInteger) numberOfChildren;
+- (GBSidebarItem*) childAtIndex:(NSInteger)anIndex;
+- (void) setStringValue:(NSString*)value;
+- (GBSidebarItem*) findItemWithUID:(NSString*)aUID;
 
 @end
