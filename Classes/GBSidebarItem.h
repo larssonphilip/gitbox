@@ -41,5 +41,7 @@
 - (GBSidebarItem*) childAtIndex:(NSInteger)anIndex;
 - (void) setStringValue:(NSString*)value;
 - (GBSidebarItem*) findItemWithUID:(NSString*)aUID;
+// enumerates all children at all levels
+- (void) enumerateChildrenUsingBlock:(void(^)(GBSidebarItem* obj, NSUInteger idx, BOOL *stop))block;
 
 @end

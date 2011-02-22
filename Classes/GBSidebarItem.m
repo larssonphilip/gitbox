@@ -219,6 +219,23 @@
   return nil;
 }
 
+- (void) enumerateChildrenUsingBlock:(void(^)(GBSidebarItem* obj, NSUInteger idx, BOOL *stop))block
+{
+  NSInteger num = [self numberOfChildren];
+  __block BOOL stop = NO;
+  for (NSInteger i = 0; i < num; i++)
+  {
+    GBSidebarItem* child = [self childAtIndex:i];
+    block(child, (NSUInteger)i, &stop);
+    if (stop) return;
+    [child enumerateChildrenUsingBlock:^(GBSidebarItem* obj, NSUInteger idx, BOOL *stop2){
+      block(obj, idx, stop2);
+      if (stop2) stop = YES;
+    }];
+    if (stop) return;
+  }
+}
+
 
 
 

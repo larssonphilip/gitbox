@@ -38,6 +38,10 @@
   {
     self.sidebarItem = [[[GBSidebarItem alloc] init] autorelease];
     self.sidebarItem.object = self;
+    self.sidebarItem.title = NSLocalizedString(@"REPOSITORIES", @"Sidebar");
+    self.sidebarItem.expanded = YES;
+    self.sidebarItem.expandable = YES;
+    self.sidebarItem.section = YES;
     
     self.localRepositoriesUpdatesQueue = [OABlockQueue queueWithName:@"LocalUpdates" concurrency:1];
     self.autofetchQueue = [OABlockQueue queueWithName:@"AutoFetch" concurrency:6];

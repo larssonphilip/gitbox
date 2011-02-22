@@ -65,6 +65,13 @@
   [rootController addObserverForAllSelectors:self];
   
   [self.outlineView reloadData];
+  
+  [rootController.sidebarItem enumerateChildrenUsingBlock:^(GBSidebarItem* obj, NSUInteger idx, BOOL* stop){
+    if (obj.isExpandable && obj.isExpanded)
+    {
+      [self.outlineView expandItem:obj];
+    }
+  }];
 }
 
 
