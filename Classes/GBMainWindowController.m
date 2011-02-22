@@ -55,6 +55,7 @@
     self.sidebarController = [[[GBSidebarController alloc] initWithNibName:@"GBSidebarController" bundle:nil] autorelease];
     self.defaultToolbarController = [[[GBToolbarController alloc] init] autorelease];
     self.defaultDetailViewController = [[[GBPlaceholderViewController alloc] initWithNibName:@"GBPlaceholderViewController" bundle:nil] autorelease];
+    self.defaultDetailViewController.title = NSLocalizedString(@"No selection", @"Window");
   }
   return self;
 }
@@ -132,17 +133,23 @@
     {
       newDetailController = [object viewController];
     }
+    [self.window setTitle:[object windowTitle]];
+    [self.window setRepresentedURL:[object windowRepresentedURL]];
   }
   else
   {
     if (aRootController.selectedObjects && [aRootController.selectedObjects count] > 0)
     {
+      [self.window setTitle:NSLocalizedString(@"Multiple selection", @"Window")];
+      [self.window setRepresentedURL:nil];
       self.defaultDetailViewController.title = NSLocalizedString(@"Multiple selection", @"Window");
       newDetailController = self.defaultDetailViewController;
     }
   }
   if (!newDetailController)
   {
+    [self.window setTitle:NSLocalizedString(@"No selection", @"Window")];
+    [self.window setRepresentedURL:nil];
     self.defaultDetailViewController.title = NSLocalizedString(@"No selection", @"Window");
     newDetailController = self.defaultDetailViewController;
   }
@@ -334,29 +341,6 @@
 
 
 
-#pragma mark UI state
-
-
-//- (void) updateWindowTitleWithRepositoryController:(GBBaseRepositoryController*) repoCtrl
-//{
-//  if (repoCtrl)
-//  {
-//    [self.window setTitle:[repoCtrl windowTitle]];
-//    [self.window setRepresentedURL:[repoCtrl windowRepresentedURL]];
-//  }
-//  else
-//  {
-//    [self.window setTitle:NSLocalizedString(@"No Repository Selected", @"App")];
-//    [self.window setRepresentedURL:nil];
-//  }
-//}
-
-
-
-
-
-
-
 
 
 #pragma mark NSWindowController
@@ -366,6 +350,9 @@
 {
   [super windowDidLoad];
   
+  [self.window setTitle:NSLocalizedString(@"No selection", @"Window")];
+  [self.window setRepresentedURL:nil];
+  
   self.sidebarController.rootController = self.rootController;
   [self.sidebarController loadInView:[self sidebarView]];
   
@@ -373,6 +360,10 @@
   if (!self.toolbarController)
   {
     self.toolbarController = self.defaultToolbarController;
+  }
+  if (!self.detailViewController)
+  {
+    self.detailViewController = self.defaultDetailViewController;
   }
   [self updateToolbarAlignment];
 }

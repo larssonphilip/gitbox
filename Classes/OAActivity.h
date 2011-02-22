@@ -15,6 +15,7 @@
 @property(nonatomic,assign) OATask* task;
 @property(nonatomic,assign) BOOL isRunning;
 
+@property(nonatomic,retain) NSDate* date;
 @property(nonatomic,retain) NSString* path;
 @property(nonatomic,retain) NSString* command;
 @property(nonatomic,retain) NSString* status;
