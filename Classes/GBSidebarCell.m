@@ -1,5 +1,5 @@
 #import "GBSidebarCell.h"
-#import "GBObsoleteSidebarItem.h"
+#import "GBSidebarItem.h"
 #import "GBSidebarOutlineView.h"
 #import "GBLightScroller.h"
 #import "CGContext+OACGContextHelpers.h"
@@ -7,22 +7,28 @@
 #define kGBSidebarCellIconWidth 16.0
 
 @interface GBSidebarCell ()
-- (id<GBObsoleteSidebarItem>) sidebarItem;
 - (NSRect) drawIconAndReturnRemainingRect:(NSRect)rect;
 @end
 
 @implementation GBSidebarCell
 
+@synthesize sidebarItem;
+@synthesize outlineView;
 @synthesize isForeground;
 @synthesize isFocused;
 @synthesize isDragged;
-@synthesize outlineView;
 
 + (CGFloat) cellHeight
 {
   return 20.0;
 }
 
++ (GBSidebarCell*) cellWithItem:(GBSidebarItem*)anItem
+{
+  GBSidebarCell* cell = [[[self alloc] init] autorelease];
+  cell.sidebarItem = anItem;
+  return cell;
+}
 
 
 #pragma mark Subclasses' API
@@ -84,7 +90,7 @@
   rect.origin.y += offset;
   rect.size.height += fabs(offset);
   
-  NSString* title = [[self sidebarItem] nameInSidebar];
+  NSString* title = self.sidebarItem.title;
   [title drawInRect:rect withAttributes:attributes];
 }
 
@@ -142,16 +148,11 @@
 
 - (id) copyWithZone:(NSZone *)zone
 {
-  GBSidebarCell* cell = [super copyWithZone:zone];
-  [cell setRepresentedObject:[self representedObject]];
+  GBSidebarCell* cell = [[[[self class] alloc] init] autorelease];
+  cell.sidebarItem = self.sidebarItem;
   return cell;
 }
 
-
-- (BOOL) isEditable
-{
-  return [[self sidebarItem] isEditableInSidebar];
-}
 
 - (NSText *)setUpFieldEditorAttributes:(NSText *)textObj
 {
@@ -184,10 +185,6 @@
 #pragma mark Private
 
 
-- (id<GBObsoleteSidebarItem>) sidebarItem
-{
-  return (id<GBObsoleteSidebarItem>)[self representedObject];
-}
 
 - (NSRect) drawIconAndReturnRemainingRect:(NSRect)rect
 {
@@ -225,7 +222,7 @@
 
 - (NSRect) drawSpinnerIfNeededInRectAndReturnRemainingRect:(NSRect)rect
 {
-  NSProgressIndicator* spinner = [[self sidebarItem] sidebarSpinner];
+  NSProgressIndicator* spinner = self.sidebarItem.progressIndicator;
   BOOL isSpinning = [[self sidebarItem] isSpinningInSidebar];
   if (![[self sidebarItem] isExpandedInSidebar])
   {
@@ -243,8 +240,8 @@
     spinner = [[[NSProgressIndicator alloc] initWithFrame:NSMakeRect(0, 0, 16.0, 16.0)] autorelease];
     [spinner setStyle:NSProgressIndicatorSpinningStyle];
     [spinner setControlSize:NSSmallControlSize];
-    [[self sidebarItem] setSidebarSpinner:spinner];
-    spinner = [[self sidebarItem] sidebarSpinner];
+    self.sidebarItem.progressIndicator = spinner;
+    spinner = self.sidebarItem.progressIndicator;
     if (!spinner) return rect;
   }
   

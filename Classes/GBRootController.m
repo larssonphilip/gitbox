@@ -1,7 +1,11 @@
 #import "GBRootController.h"
+#import "GBRepository.h"
 #import "GBRepositoriesController.h"
+#import "GBRepositoriesGroup.h"
+#import "GBRepositoryController.h"
 #import "GBSidebarItem.h"
 #import "NSObject+OASelectorNotifications.h"
+#import "NSArray+OAArrayHelpers.h"
 
 @interface GBRootController ()
 @property(nonatomic, retain, readwrite) GBSidebarItem* sidebarItem;
@@ -46,12 +50,84 @@
 
 - (BOOL) openURLs:(NSArray*)URLs
 {
-  //[self.repositoriesController openURLs:URLs];
-  //  return [GBRepository validateRepositoryURL:aURL withBlock:^(BOOL isValid){
-  //    if (isValid) [self.repositoriesController openLocalRepositoryAtURL:aURL];
-  //  }];
-  return NO;
+  if (!URLs) return NO;
+  
+  GBSidebarItem* contextItem = [[[self selectedSidebarItems] reversedArray] firstObjectCommonWithArray:[self.repositoriesController.sidebarItem allChildren]];
+  
+  if (!contextItem) contextItem = self.repositoriesController.sidebarItem;
+  
+  id obj = contextItem.object;
+  
+  GBRepositoriesGroup* group = nil;
+  NSUInteger insertionIndex = 0;
+  
+  if (!obj) obj = self.repositoriesController;
+  
+  if (obj == self.repositoriesController)
+  {
+    group = self.repositoriesController.localRepositoriesGroup;
+  }
+  else
+  {
+    if ([obj isKindOfClass:[GBRepositoriesGroup class]])
+    {
+      group = obj;
+    }
+    else if ([obj isKindOfClass:[GBRepositoryController class]])
+    {
+      group = [self.repositoriesController.sidebarItem parentOfItem:contextItem].object;
+      if (!group)
+      {
+        NSLog(@"Unusual case: cannot find parent for %@", obj);
+        group = self.repositoriesController.localRepositoriesGroup;
+      }
+      insertionIndex = [group.items indexOfObject:obj];
+      if (insertionIndex == NSNotFound)
+      {
+        insertionIndex = 0;
+      }
+    }
+  }
+  
+  return [self openURLs:URLs inGroup:group atIndex:insertionIndex];
 }
+
+
+- (BOOL) openURLs:(NSArray*)URLs inGroup:(GBRepositoriesGroup*)aGroup atIndex:(NSUInteger)insertionIndex
+{
+  if (!URLs) return NO;
+  
+  if (insertionIndex == NSNotFound)
+  {
+    insertionIndex = 0;
+  }
+  
+  BOOL insertedAtLeastOneRepo = NO;
+  NSMutableArray* newRepoControllers = [NSMutableArray array];
+  for (NSURL* aURL in URLs)
+  {
+    if ([GBRepository validateRepositoryURL:aURL])
+    {
+      GBRepositoryController* repoCtrl = [GBRepositoryController repositoryControllerWithURL:aURL];
+      if (repoCtrl)
+      {
+        [aGroup insertObject:repoCtrl atIndex:insertionIndex];
+        [newRepoControllers addObject:repoCtrl];
+        insertedAtLeastOneRepo = YES;
+      }
+    }
+  }
+  
+  [self notifyWithSelector:@selector(rootControllerDidChangeContents:)];
+  
+  self.selectedObjects = newRepoControllers;
+  
+  [self notifyWithSelector:@selector(rootControllerDidChangeSelection:)];
+  
+  return insertedAtLeastOneRepo;
+}
+
+
 
 
 

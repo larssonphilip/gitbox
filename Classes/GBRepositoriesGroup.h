@@ -2,7 +2,7 @@
 #import "GBSidebarItemObject.h"
 
 @class GBSidebarItem;
-@interface GBRepositoriesGroup : NSObject<GBRepositoriesControllerLocalItem, GBSidebarItemObject>
+@interface GBRepositoriesGroup : NSObject</*GBRepositoriesControllerLocalItem,*/ GBSidebarItemObject>
 
 @property(nonatomic, retain) GBSidebarItem* sidebarItem;
 @property(nonatomic, copy) NSString* name;
@@ -12,6 +12,7 @@
 + (GBRepositoriesGroup*) untitledGroup;
 - (NSString*) untitledGroupName;
 
-- (void) insertLocalItem:(id<GBRepositoriesControllerLocalItem>)aLocalItem atIndex:(NSInteger)anIndex;
+- (void) insertObject:(id<GBSidebarItemObject>)anObject atIndex:(NSUInteger)anIndex;
+// deprecated - (void) insertLocalItem:(id<GBRepositoriesControllerLocalItem>)aLocalItem atIndex:(NSInteger)anIndex;
 
 @end

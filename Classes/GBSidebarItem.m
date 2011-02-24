@@ -7,22 +7,23 @@
 
 @implementation GBSidebarItem
 
+@synthesize object;
+@synthesize sidebarController;
 @synthesize UID;
 @synthesize image;
 @synthesize title;
 @synthesize tooltip;
-@synthesize cell;
-
-@synthesize object;
-@synthesize sidebarController;
 @synthesize badgeInteger;
+@synthesize cell;
+@synthesize progressIndicator;
+@synthesize section;
+@synthesize spinning;
 @synthesize selectable;
 @synthesize expandable;
-@synthesize draggable;
 @synthesize editable;
+@synthesize draggable;
 @synthesize collapsed;
 @dynamic    expanded;
-@synthesize section;
 
 - (void) dealloc
 {
@@ -31,6 +32,7 @@
   self.title = nil;
   self.tooltip = nil;
   self.cell = nil;
+  self.progressIndicator = nil;
   [super dealloc];
 }
 
@@ -38,7 +40,6 @@
 {
   if ((self = [super init]))
   {
-    
   }
   return self;
 }
@@ -94,15 +95,62 @@
   return badgeInteger;
 }
 
-- (BOOL) isExpanded
+- (NSUInteger) subtreeBadgeInteger
 {
-  return !self.collapsed;
+  __block NSUInteger i = self.badgeInteger;
+  [self enumerateChildrenUsingBlock:^(GBSidebarItem* obj, NSUInteger idx, BOOL *stop) {
+    i += obj.badgeInteger;
+  }];
+  return i;
 }
 
-- (void) setExpanded:(BOOL)expanded
+- (NSUInteger) visibleBadgeInteger
 {
-  self.collapsed = !expanded;
+  if ([self isExpanded])
+  {
+    return [self badgeInteger];
+  }
+  else
+  {
+    return [self subtreeBadgeInteger];
+  }
 }
+
+- (BOOL) isSpinning
+{
+  if ([self.object respondsToSelector:@selector(sidebarItemIsSpinning)])
+  {
+    return [self.object sidebarItemIsSpinning];
+  }
+  return spinning;
+}
+
+- (BOOL) isSubtreeSpinning // returns YES if receiver spins or any of the children spin
+{
+  __block BOOL spins = NO;
+  if ([self isSpinning]) return YES;
+  [self enumerateChildrenUsingBlock:^(GBSidebarItem* obj, NSUInteger idx, BOOL *stop) {
+    if ([obj isSpinning])
+    {
+      spins = YES;
+      *stop = YES;
+    }
+  }];
+  return spins;
+}
+
+- (BOOL) visibleSpinning // returns YES if the spinner should be visible depending on expanded state
+{
+  if ([self isExpanded])
+  {
+    return [self isSpinning];
+  }
+  else
+  {
+    return [self isTreeSpinning];
+  }
+}
+
 
 
 
@@ -158,6 +206,16 @@
   return draggable;
 }
 
+- (BOOL) isExpanded
+{
+  return !self.collapsed;
+}
+
+- (void) setExpanded:(BOOL)expanded
+{
+  self.collapsed = !expanded;
+}
+
 - (NSDragOperation) dragOperationForURLs:(NSArray*)URLs outlineView:(NSOutlineView*)anOutlineView
 {
   if ([self.object respondsToSelector:@selector(sidebarItemDragOperationForURLs:outlineView:)])
@@ -175,6 +233,8 @@
   }
   return NSDragOperationNone;
 }
+
+
 
 
 
@@ -235,6 +295,32 @@
     if (stop) return;
   }
 }
+
+- (NSArray*) allChildren
+{
+  NSMutableArray* children = [NSMutableArray array];
+  [self enumerateChildrenUsingBlock:^(GBSidebarItem* obj, NSUInteger idx, BOOL *stop){
+    [children addObject:obj];
+  }];
+  return children;
+}
+
+- (GBSidebarItem*) parentOfItem:(GBSidebarItem*)anItem
+{
+  if (!anItem) return nil;
+  
+  NSInteger num = [self numberOfChildren];
+  for (NSInteger i = 0; i < num; i++)
+  {
+    GBSidebarItem* child = [self childAtIndex:i];
+    if ([child isEqual:anItem]) return self;
+    GBSidebarItem* parent = [child parentOfItem:anItem];
+    if (parent) return parent;
+  }
+  
+  return nil;
+}
+
 
 
 

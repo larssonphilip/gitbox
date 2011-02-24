@@ -61,10 +61,10 @@
 
 
 
-- (GBBaseRepositoryController*) openedLocalRepositoryControllerWithURL:(NSURL*)aURL
-{
-  return [self.localRepositoriesGroup findRepositoryControllerWithURL:aURL];
-}
+//- (GBBaseRepositoryController*) openedLocalRepositoryControllerWithURL:(NSURL*)aURL
+//{
+//  return [self.localRepositoriesGroup findRepositoryControllerWithURL:aURL];
+//}
 
 
 //- (GBRepositoryController*) selectedLocalRepositoryController
@@ -169,63 +169,63 @@
 }
 
 
-- (void) addLocalRepositoryController:(GBBaseRepositoryController*)repoCtrl
-{
-//  [self addLocalRepositoryController:repoCtrl inGroup:self.localRepositoriesGroup atIndex:NSOutlineViewDropOnItemIndex];
-}
+//- (void) addLocalRepositoryController:(GBBaseRepositoryController*)repoCtrl
+//{
+////  [self addLocalRepositoryController:repoCtrl inGroup:self.localRepositoriesGroup atIndex:NSOutlineViewDropOnItemIndex];
+//}
+//
+//
+//- (void) addLocalRepositoryController:(GBBaseRepositoryController*)repoCtrl inGroup:(GBRepositoriesGroup*)aGroup atIndex:(NSInteger)anIndex
+//{
+//  if (!repoCtrl) return;
+//  
+//  if ([self.localRepositoriesGroup hasRepositoryController:repoCtrl]) return;
+//  
+//  [self notifyWithSelector:@selector(repositoriesController:willAddRepository:) withObject:repoCtrl];
+////  if ([self.delegate respondsToSelector:@selector(repositoriesController:willAddRepository:)]) { [self.delegate repositoriesController:self willAddRepository:repoCtrl]; }
+//  
+//  [aGroup insertLocalItem:repoCtrl atIndex:anIndex];
+//  [self launchRepositoryController:repoCtrl queued:NO];
+//
+//  [self notifyWithSelector:@selector(repositoriesController:didAddRepository:) withObject:repoCtrl];
+////  if ([self.delegate respondsToSelector:@selector(repositoriesController:didAddRepository:)]) { [self.delegate repositoriesController:self didAddRepository:repoCtrl]; }
+//  
+////  [self saveLocalRepositoriesAndGroups];
+//}
 
 
-- (void) addLocalRepositoryController:(GBBaseRepositoryController*)repoCtrl inGroup:(GBRepositoriesGroup*)aGroup atIndex:(NSInteger)anIndex
-{
-  if (!repoCtrl) return;
-  
-  if ([self.localRepositoriesGroup hasRepositoryController:repoCtrl]) return;
-  
-  [self notifyWithSelector:@selector(repositoriesController:willAddRepository:) withObject:repoCtrl];
-//  if ([self.delegate respondsToSelector:@selector(repositoriesController:willAddRepository:)]) { [self.delegate repositoriesController:self willAddRepository:repoCtrl]; }
-  
-  [aGroup insertLocalItem:repoCtrl atIndex:anIndex];
-  [self launchRepositoryController:repoCtrl queued:NO];
-
-  [self notifyWithSelector:@selector(repositoriesController:didAddRepository:) withObject:repoCtrl];
-//  if ([self.delegate respondsToSelector:@selector(repositoriesController:didAddRepository:)]) { [self.delegate repositoriesController:self didAddRepository:repoCtrl]; }
-  
-//  [self saveLocalRepositoriesAndGroups];
-}
-
-
-- (void) moveLocalItem:(id<GBRepositoriesControllerLocalItem>)aLocalItem toGroup:(GBRepositoriesGroup*)aGroup atIndex:(NSInteger)anIndex
-{
-  if (!aLocalItem) return;
-  if (aLocalItem == self.localRepositoriesGroup) return;
-  
-  NSMutableArray* items = aGroup.items;
-  
-  if ([items containsObject:aLocalItem])
-  {
-    NSUInteger insertionPosition = ((anIndex == NSOutlineViewDropOnItemIndex) ? [items count] : (NSUInteger)anIndex);
-    
-    [aGroup insertLocalItem:aLocalItem atIndex:anIndex];
-    NSIndexSet* indexes = [items indexesOfObjectsPassingTest:^(id obj, NSUInteger idx, BOOL *stop){
-      return (BOOL)(obj == aLocalItem && idx != insertionPosition);
-    }];
-    if ([indexes count] == 1)
-    {
-      [items removeObjectAtIndex:[indexes firstIndex]];
-    }
-    else
-    {
-      NSLog(@"ERROR: unexpected state! after insertion, item appears %d times. [anIndex = %d]", (int)[indexes count], (int)anIndex);
-      return;
-    }
-  }
-  else
-  {
-    [self.localRepositoriesGroup removeLocalItem:[[aLocalItem retain] autorelease]];
-    [aGroup insertLocalItem:aLocalItem atIndex:anIndex];
-  }
-//  [self saveLocalRepositoriesAndGroups];
-}
+//- (void) moveLocalItem:(id<GBRepositoriesControllerLocalItem>)aLocalItem toGroup:(GBRepositoriesGroup*)aGroup atIndex:(NSInteger)anIndex
+//{
+//  if (!aLocalItem) return;
+//  if (aLocalItem == self.localRepositoriesGroup) return;
+//  
+//  NSMutableArray* items = aGroup.items;
+//  
+//  if ([items containsObject:aLocalItem])
+//  {
+//    NSUInteger insertionPosition = ((anIndex == NSOutlineViewDropOnItemIndex) ? [items count] : (NSUInteger)anIndex);
+//    
+//    [aGroup insertLocalItem:aLocalItem atIndex:anIndex];
+//    NSIndexSet* indexes = [items indexesOfObjectsPassingTest:^(id obj, NSUInteger idx, BOOL *stop){
+//      return (BOOL)(obj == aLocalItem && idx != insertionPosition);
+//    }];
+//    if ([indexes count] == 1)
+//    {
+//      [items removeObjectAtIndex:[indexes firstIndex]];
+//    }
+//    else
+//    {
+//      NSLog(@"ERROR: unexpected state! after insertion, item appears %d times. [anIndex = %d]", (int)[indexes count], (int)anIndex);
+//      return;
+//    }
+//  }
+//  else
+//  {
+//    [self.localRepositoriesGroup removeLocalItem:[[aLocalItem retain] autorelease]];
+//    [aGroup insertLocalItem:aLocalItem atIndex:anIndex];
+//  }
+////  [self saveLocalRepositoriesAndGroups];
+//}
 
 
 //- (void) removeLocalRepositoriesGroup:(GBRepositoriesGroup*)aGroup

@@ -1,12 +1,15 @@
 
+@class GBSidebarItem;
 @class GBSidebarOutlineView;
 @interface GBSidebarCell : NSTextFieldCell
 
+@property(nonatomic,assign) GBSidebarItem* sidebarItem; // item owns the cell
+@property(nonatomic,assign) GBSidebarOutlineView* outlineView;
 @property(nonatomic,assign) BOOL isForeground;
 @property(nonatomic,assign) BOOL isFocused;
 @property(nonatomic,assign) BOOL isDragged;
-@property(nonatomic,assign) GBSidebarOutlineView* outlineView;
 
++ (GBSidebarCell*) cellWithItem:(GBSidebarItem*)anItem;
 + (CGFloat) cellHeight;
 
 - (NSImage*) icon;

@@ -17,6 +17,7 @@
 - (BOOL) sidebarItemIsExpandable;
 - (BOOL) sidebarItemIsEditable;
 - (BOOL) sidebarItemIsDraggable;
+- (BOOL) sidebarItemIsSpinning;
 - (void) sidebarItemSetStringValue:(NSString*)value;
 - (NSDragOperation) sidebarItemDragOperationForURLs:(NSArray*)URLs outlineView:(NSOutlineView*)anOutlineView;
 - (NSDragOperation) sidebarItemDragOperationForItems:(NSArray*)items outlineView:(NSOutlineView*)anOutlineView;

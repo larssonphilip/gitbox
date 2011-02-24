@@ -5,11 +5,16 @@
 // - GBGithubWatchedRepositoriesController
 // etc.
 
+// Notifications' selectors:
+// - rootControllerDidChangeContents:(GBRootController*)aRootController
+// - rootControllerDidChangeSelection:(GBRootController*)aRootController
+
 #import "GBSidebarItemObject.h"
 #import "GBMainWindowItem.h"
 
 @class GBSidebarItem;
 @class GBRepositoriesController;
+@class GBRepositoriesGroup;
 
 @interface GBRootController : NSObject<GBSidebarItemObject>
 
@@ -23,8 +28,5 @@
 
 // Returns NO if cannot open any of URLs
 - (BOOL) openURLs:(NSArray*)URLs;
-
-// Notifications:
-// - (void) rootControllerDidChangeSelection:(GBRootController*)aRootController;
-
+- (BOOL) openURLs:(NSArray*)URLs inGroup:(GBRepositoriesGroup*)aGroup atIndex:(NSUInteger)insertionIndex;
 @end

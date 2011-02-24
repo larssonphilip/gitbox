@@ -191,13 +191,22 @@
   return NO;
 }
 
+// OBSOLETE
 + (BOOL) validateRepositoryURL:(NSURL*)aURL withBlock:(void(^)(BOOL isValid))aBlock
+{
+  BOOL v = [self validateRepositoryURL:aURL];
+  if (aBlock) aBlock(v);
+  return v;
+}
+
++ (BOOL) validateRepositoryURL:(NSURL*)aURL
 {
   NSString* aPath = [aURL path];
   
+  if (!aPath) return NO;
+  
   if ([self isValidRepositoryPath:aPath])
   {
-    aBlock(YES);
     return YES;
   }
   
@@ -205,24 +214,22 @@
   if (![[NSFileManager defaultManager] fileExistsAtPath:aPath isDirectory:&isDirectory])
   {
     [NSAlert message:NSLocalizedString(@"Folder does not exist.", @"") description:aPath];
-    aBlock(NO);
     return NO;
   }
   
   if (!isDirectory)
   {
     [NSAlert message:NSLocalizedString(@"File is not a folder.", @"") description:aPath];
-    aBlock(NO);
     return NO;
   }
   
   if (![NSFileManager isWritableDirectoryAtPath:aPath])
   {
     [NSAlert message:NSLocalizedString(@"No write access to the folder.", @"") description:aPath];
-    aBlock(NO);
     return NO;
   }
   
+  // Make app visible before popping an alert (otherwise it will look awkward)
   if (![NSApp isActive])
   {
     [NSApp activateIgnoringOtherApps:YES];
@@ -232,11 +239,9 @@
           description:aPath])
   {
     [self initRepositoryAtURL:aURL];
-    aBlock(YES);
     return YES;
   }
   
-  aBlock(NO);
   return NO;
 }
 
