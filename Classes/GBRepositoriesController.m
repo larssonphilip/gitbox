@@ -55,6 +55,36 @@
 
 
 
+#pragma mark GBSidebarItem
+
+
+
+
+- (NSInteger) sidebarItemNumberOfChildren
+{
+  return [self.localRepositoriesGroup sidebarItemNumberOfChildren];
+}
+
+- (GBSidebarItem*) sidebarItemChildAtIndex:(NSInteger)index
+{
+  return [self.localRepositoriesGroup sidebarItemChildAtIndex:index];
+}
+
+- (NSDragOperation) sidebarItemDragOperationForURLs:(NSArray*)URLs outlineView:(NSOutlineView*)anOutlineView
+{
+  return [self.localRepositoriesGroup sidebarItemDragOperationForURLs:URLs outlineView:anOutlineView];
+}
+
+- (NSDragOperation) sidebarItemDragOperationForItems:(NSArray*)items outlineView:(NSOutlineView*)anOutlineView
+{
+  return [self.localRepositoriesGroup sidebarItemDragOperationForItems:items outlineView:anOutlineView];
+}
+
+
+
+
+
+
 
 #pragma mark Interrogation
 
@@ -97,50 +127,50 @@
 
 
 
-- (void) openLocalRepositoryAtURL:(NSURL*)url
-{
-//  [self doWithSelectedGroupAtIndex:^(GBRepositoriesGroup* aGroup, NSInteger anIndex){
-//    [self openLocalRepositoryAtURL:url inGroup:aGroup atIndex:anIndex];
-//  }];
-}
+//- (void) openLocalRepositoryAtURL:(NSURL*)url
+//{
+////  [self doWithSelectedGroupAtIndex:^(GBRepositoriesGroup* aGroup, NSInteger anIndex){
+////    [self openLocalRepositoryAtURL:url inGroup:aGroup atIndex:anIndex];
+////  }];
+//}
 
-
-- (void) openLocalRepositoryAtURL:(NSURL*)url inGroup:(GBRepositoriesGroup*)aGroup atIndex:(NSInteger)anIndex
-{
-  GBBaseRepositoryController* repoCtrl = [self openedLocalRepositoryControllerWithURL:url];
-  if (repoCtrl)
-  {
-    //[self selectRepositoryController:repoCtrl];
-    return;
-  }
-  
-#if GITBOX_APP_STORE
-#else
-    
-    if ([self.localRepositoriesGroup repositoriesCount] >= 3)
-    {
-      NSString* license = [[NSUserDefaults standardUserDefaults] objectForKey:@"license"];
-      if (!OAValidateLicenseNumber(license))
-      {
-        [NSApp tryToPerform:@selector(showLicense:) with:self];
-        
-        NSString* license = [[NSUserDefaults standardUserDefaults] objectForKey:@"license"];
-        if (!OAValidateLicenseNumber(license))
-        {
-          return;
-        }
-      }
-    }
-#endif
-    
-  repoCtrl = [GBRepositoryController repositoryControllerWithURL:url];
-  if (!repoCtrl) return;
-  
-//  [self addLocalRepositoryController:repoCtrl inGroup:aGroup atIndex:anIndex];
-  [[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:url];
-  
-//  [self selectRepositoryController:repoCtrl];
-}
+//
+//- (void) openLocalRepositoryAtURL:(NSURL*)url inGroup:(GBRepositoriesGroup*)aGroup atIndex:(NSInteger)anIndex
+//{
+//  GBBaseRepositoryController* repoCtrl = [self openedLocalRepositoryControllerWithURL:url];
+//  if (repoCtrl)
+//  {
+//    //[self selectRepositoryController:repoCtrl];
+//    return;
+//  }
+//  
+//#if GITBOX_APP_STORE
+//#else
+//    
+//    if ([self.localRepositoriesGroup repositoriesCount] >= 3)
+//    {
+//      NSString* license = [[NSUserDefaults standardUserDefaults] objectForKey:@"license"];
+//      if (!OAValidateLicenseNumber(license))
+//      {
+//        [NSApp tryToPerform:@selector(showLicense:) with:self];
+//        
+//        NSString* license = [[NSUserDefaults standardUserDefaults] objectForKey:@"license"];
+//        if (!OAValidateLicenseNumber(license))
+//        {
+//          return;
+//        }
+//      }
+//    }
+//#endif
+//    
+//  repoCtrl = [GBRepositoryController repositoryControllerWithURL:url];
+//  if (!repoCtrl) return;
+//  
+////  [self addLocalRepositoryController:repoCtrl inGroup:aGroup atIndex:anIndex];
+//  [[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:url];
+//  
+////  [self selectRepositoryController:repoCtrl];
+//}
 
 
 - (void) launchRepositoryController:(GBBaseRepositoryController*)repoCtrl queued:(BOOL)queued
@@ -325,7 +355,7 @@
 
 
 
-
+/*
 
 - (NSURL*) URLFromBookmarkData:(NSData*)bookmarkData
 {
@@ -392,8 +422,7 @@
   return aGroup;
 }
 
-
-- (void) loadLocalRepositoriesAndGroups
+ - (void) loadLocalRepositoriesAndGroups
 {
   GBBaseRepositoryController* selectedRepoCtrl = nil;
   
@@ -476,7 +505,7 @@
   }
 }
 
-
+*/
 
 
 

@@ -1,6 +1,5 @@
 #import "GBBaseRepositoryController.h"
 #import "NSString+OAStringHelpers.h"
-#import "GBRepositoryCell.h"
 #import "OABlockQueue.h"
 
 @implementation GBBaseRepositoryController
@@ -172,43 +171,6 @@
 #pragma mark GBSidebarItem
 
 
-- (NSString*) sidebarItemIdentifier
-{
-  return [NSString stringWithFormat:@"GBBaseRepositoryController:%p", self];
-}
-
-- (NSString*) nameInSidebar
-{
-  return [[[self url] path] lastPathComponent];
-}
-
-- (NSString*) tooltipInSidebar
-{
-  return [[self url] path];
-}
-
-- (NSInteger) numberOfChildrenInSidebar
-{
-  return 0;
-}
-
-- (BOOL) isExpandableInSidebar
-{
-  return NO;
-}
-
-- (id<GBObsoleteSidebarItem>) childForIndexInSidebar:(NSInteger)index
-{
-  return nil;
-}
-
-- (id<GBObsoleteSidebarItem>) findItemWithIndentifier:(NSString*)identifier
-{
-  if (!identifier) return nil;
-  if ([[self sidebarItemIdentifier] isEqual:identifier]) return self;
-  return nil;
-}
-
 - (GBBaseRepositoryController*) repositoryController
 {
   return self;
@@ -233,68 +195,6 @@
 {
   return NO;
 }
-
-- (NSCell*) sidebarCell
-{
-  NSCell* cell = [[[self sidebarCellClass] new] autorelease];
-  [cell setRepresentedObject:self];
-  return cell;
-}
-
-- (Class) sidebarCellClass
-{
-  return [GBRepositoryCell class];
-}
-
-- (BOOL) isDraggableInSidebar
-{
-  return YES;
-}
-
-- (BOOL) isEditableInSidebar
-{
-  return NO;
-}
-
-- (BOOL) isExpandedInSidebar
-{
-  return YES;
-}
-
-- (void) setExpandedInSidebar:(BOOL)expanded
-{
-  if (!expanded)
-  {
-    [self hideAllSpinnersInSidebar];
-  }
-}
-
-- (NSInteger) badgeValue
-{
-	return 0;
-}
-
-- (NSInteger) accumulatedBadgeValue
-{
-	return [self badgeValue];
-}
-
-- (BOOL) isSpinningInSidebar
-{
-  return self.isSpinning;
-}
-
-- (BOOL) isAccumulatedSpinningInSidebar
-{
-  return [self isSpinningInSidebar];
-}
-
-- (void) hideAllSpinnersInSidebar
-{
-  // TODO: call for each submodule
-  [self.sidebarSpinner setHidden:YES];
-}
-
 
 
 

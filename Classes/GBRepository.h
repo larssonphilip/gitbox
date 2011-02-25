@@ -38,6 +38,7 @@
 
 + (BOOL) isValidRepositoryPath:(NSString*)aPath;
 + (BOOL) isValidRepositoryOrFolderURL:(NSURL*)aURL;
++ (BOOL) isAtLeastOneValidRepositoryOrFolderURL:(NSArray*)URLs;
 + (BOOL) validateRepositoryURL:(NSURL*)aURL;
 
 + (void) initRepositoryAtURL:(NSURL*)url;

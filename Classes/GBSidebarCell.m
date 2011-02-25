@@ -23,12 +23,36 @@
   return 20.0;
 }
 
-+ (GBSidebarCell*) cellWithItem:(GBSidebarItem*)anItem
+- (id)init
 {
-  GBSidebarCell* cell = [[[self alloc] init] autorelease];
-  cell.sidebarItem = anItem;
+  if ((self = [super init]))
+  {
+    [self setSelectable:YES];
+    [self setUsesSingleLineMode:YES];
+    [self setSendsActionOnEndEditing:YES];
+    [self setFont:[NSFont systemFontOfSize:[NSFont smallSystemFontSize]]];
+    [self setLineBreakMode:NSLineBreakByTruncatingTail];
+  }
+  return self;
+}
+
+- (id) initWithItem:(GBSidebarItem*)anItem
+{
+  if ((self = [self init]))
+  {
+    self.sidebarItem = anItem;
+  }
+  return self;
+}
+
+- (id) copyWithZone:(NSZone *)zone
+{
+  GBSidebarCell* cell = [[[[self class] alloc] init] autorelease];
+  cell.sidebarItem = self.sidebarItem;
   return cell;
 }
+
+
 
 
 #pragma mark Subclasses' API
@@ -133,26 +157,6 @@
 #pragma mark AppKit
 
 
-- (id)init
-{
-  if ((self = [super init]))
-  {
-    [self setSelectable:YES];
-    [self setUsesSingleLineMode:YES];
-    [self setSendsActionOnEndEditing:YES];
-    [self setFont:[NSFont systemFontOfSize:[NSFont smallSystemFontSize]]];
-    [self setLineBreakMode:NSLineBreakByTruncatingTail];
-  }
-  return self;
-}
-
-- (id) copyWithZone:(NSZone *)zone
-{
-  GBSidebarCell* cell = [[[[self class] alloc] init] autorelease];
-  cell.sidebarItem = self.sidebarItem;
-  return cell;
-}
-
 
 - (NSText *)setUpFieldEditorAttributes:(NSText *)textObj
 {
@@ -223,11 +227,7 @@
 - (NSRect) drawSpinnerIfNeededInRectAndReturnRemainingRect:(NSRect)rect
 {
   NSProgressIndicator* spinner = self.sidebarItem.progressIndicator;
-  BOOL isSpinning = [[self sidebarItem] isSpinningInSidebar];
-  if (![[self sidebarItem] isExpandedInSidebar])
-  {
-    isSpinning = [[self sidebarItem] isAccumulatedSpinningInSidebar];
-  }
+  BOOL isSpinning = [self.sidebarItem visibleSpinning];
   
   if (!isSpinning)
   {
@@ -267,11 +267,7 @@
 - (NSRect) drawBadgeIfNeededInRectAndReturnRemainingRect:(NSRect)rect
 {
   static CGFloat leftPadding = 2.0;
-	NSInteger badgeValue = [[self sidebarItem] badgeValue];
-	if (![[self sidebarItem] isExpandedInSidebar])
-	{
-		badgeValue = [[self sidebarItem] accumulatedBadgeValue];
-	}
+	NSInteger badgeValue = [self.sidebarItem visibleBadgeInteger];
 	
 	if (badgeValue > 0)
 	{

@@ -9,8 +9,8 @@
 @property(nonatomic,assign) BOOL isFocused;
 @property(nonatomic,assign) BOOL isDragged;
 
-+ (GBSidebarCell*) cellWithItem:(GBSidebarItem*)anItem;
 + (CGFloat) cellHeight;
+- (id) initWithItem:(GBSidebarItem*)anItem;
 
 - (NSImage*) icon;
 - (NSRect) drawExtraFeaturesAndReturnRemainingRect:(NSRect)rect;

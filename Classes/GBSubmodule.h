@@ -1,21 +1,22 @@
-#import "GBObsoleteSidebarItem.h"
+#import "GBSidebarItemObject.h"
 
 @class GBRepository;
-@class GBBaseRepositoryController;
+@class GBSidebarItem;
+@class GBRepositoryController;
 
 extern NSString* const GBSubmoduleStatusNotCloned;
 extern NSString* const GBSubmoduleStatusUpToDate;
 extern NSString* const GBSubmoduleStatusNotUpToDate;
 
-@interface GBSubmodule : NSObject<GBObsoleteSidebarItem>
+@interface GBSubmodule : NSObject<GBSidebarItemObject>
 
 @property(nonatomic, copy) NSURL* remoteURL;
 @property(nonatomic, copy) NSString* path;
 @property(nonatomic, copy) NSString* status;
-@property(nonatomic, retain) GBBaseRepositoryController* repositoryController;
+@property(nonatomic, retain) GBRepositoryController* repositoryController;
+@property(nonatomic, retain) GBSidebarItem* sidebarItem;
 
 @property(nonatomic, assign) GBRepository* repository;
-
 
 
 #pragma mark Interrogation

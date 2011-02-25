@@ -191,6 +191,16 @@
   return NO;
 }
 
++ (BOOL) isAtLeastOneValidRepositoryOrFolderURL:(NSArray*)URLs
+{
+  for (NSURL* url in URLs)
+  {
+    if ([self isValidRepositoryOrFolderURL:url]) return YES;
+  }
+  return NO;
+}
+
+
 // OBSOLETE
 + (BOOL) validateRepositoryURL:(NSURL*)aURL withBlock:(void(^)(BOOL isValid))aBlock
 {

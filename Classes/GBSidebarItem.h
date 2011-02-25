@@ -49,7 +49,7 @@
 - (GBSidebarItem*) findItemWithUID:(NSString*)aUID;
 
 // Enumerates all children at all levels
-- (void) enumerateChildrenUsingBlock:(void(^)(GBSidebarItem* obj, NSUInteger idx, BOOL *stop))block;
+- (void) enumerateChildrenUsingBlock:(void(^)(GBSidebarItem* item, NSUInteger idx, BOOL *stop))block;
 
 // Array of all children at all levels computed using enumerateChildrenUsingBlock:
 - (NSArray*) allChildren;

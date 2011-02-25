@@ -147,7 +147,7 @@
   }
   else
   {
-    return [self isTreeSpinning];
+    return [self isSubtreeSpinning];
   }
 }
 
@@ -216,6 +216,18 @@
   self.collapsed = !expanded;
 }
 
+- (void) setCollapsed:(BOOL)value
+{
+  if (collapsed == value) return;
+  collapsed = value;
+  if (collapsed)
+  {
+    [self enumerateChildrenUsingBlock:^(GBSidebarItem* obj, NSUInteger idx, BOOL* stop) {
+      [obj.progressIndicator removeFromSuperview];
+    }];
+  }
+}
+
 - (NSDragOperation) dragOperationForURLs:(NSArray*)URLs outlineView:(NSOutlineView*)anOutlineView
 {
   if ([self.object respondsToSelector:@selector(sidebarItemDragOperationForURLs:outlineView:)])
@@ -279,7 +291,7 @@
   return nil;
 }
 
-- (void) enumerateChildrenUsingBlock:(void(^)(GBSidebarItem* obj, NSUInteger idx, BOOL *stop))block
+- (void) enumerateChildrenUsingBlock:(void(^)(GBSidebarItem* item, NSUInteger idx, BOOL *stop))block
 {
   NSInteger num = [self numberOfChildren];
   __block BOOL stop = NO;
@@ -288,8 +300,8 @@
     GBSidebarItem* child = [self childAtIndex:i];
     block(child, (NSUInteger)i, &stop);
     if (stop) return;
-    [child enumerateChildrenUsingBlock:^(GBSidebarItem* obj, NSUInteger idx, BOOL *stop2){
-      block(obj, idx, stop2);
+    [child enumerateChildrenUsingBlock:^(GBSidebarItem* item2, NSUInteger idx, BOOL *stop2){
+      block(item2, idx, stop2);
       if (stop2) stop = YES;
     }];
     if (stop) return;
@@ -299,8 +311,8 @@
 - (NSArray*) allChildren
 {
   NSMutableArray* children = [NSMutableArray array];
-  [self enumerateChildrenUsingBlock:^(GBSidebarItem* obj, NSUInteger idx, BOOL *stop){
-    [children addObject:obj];
+  [self enumerateChildrenUsingBlock:^(GBSidebarItem* item, NSUInteger idx, BOOL *stop){
+    [children addObject:item];
   }];
   return children;
 }

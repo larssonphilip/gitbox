@@ -1,5 +1,5 @@
-#import "GBRepositoryCell.h"
+#import "GBSidebarCell.h"
 
-@interface GBSubmoduleCell : GBRepositoryCell
+@interface GBSubmoduleCell : GBSidebarCell
 
 @end

@@ -1,6 +1,8 @@
 #import "GBSubmodule.h"
 #import "GBRepository.h"
 #import "GBTask.h"
+
+#import "GBSidebarItem.h"
 #import "GBSubmoduleCell.h"
 #import "GBRepositoryController.h"
 
@@ -13,6 +15,7 @@ NSString* const GBSubmoduleStatusNotUpToDate = @"GBSubmoduleStatusNotUpToDate";
 @synthesize remoteURL;
 @synthesize path;
 @synthesize status;
+@synthesize sidebarItem;
 @synthesize repositoryController;
 
 @synthesize repository;
@@ -25,10 +28,24 @@ NSString* const GBSubmoduleStatusNotUpToDate = @"GBSubmoduleStatusNotUpToDate";
   self.remoteURL = nil;
   self.path      = nil;
   self.status = nil;
+  self.sidebarItem = nil;
   self.repositoryController = nil;
   
   [super dealloc];
 }
+
+- (id)init
+{
+  if ((self = [super init]))
+  {
+    self.sidebarItem = [[[GBSidebarItem alloc] init] autorelease];
+    self.sidebarItem.object = self;
+    self.sidebarItem.draggable = YES;
+    self.sidebarItem.cell = [[[GBSubmoduleCell alloc] initWithItem:self.sidebarItem] autorelease];
+  }
+  return self;
+}
+
 
 
 
@@ -80,133 +97,39 @@ NSString* const GBSubmoduleStatusNotUpToDate = @"GBSubmoduleStatusNotUpToDate";
 #pragma mark GBSidebarItem
 
 
-
-- (NSString*) sidebarItemIdentifier
+- (NSInteger) sidebarItemNumberOfChildren
 {
-  return [NSString stringWithFormat:@"GBSubmodule:%p", self];
+  return [self.repositoryController sidebarItemNumberOfChildren];
 }
 
-- (NSInteger) numberOfChildrenInSidebar
+ - (GBSidebarItem*) sidebarItemChildAtIndex:(NSInteger)anIndex
 {
-  return [[self repositoryController] numberOfChildrenInSidebar];
+  return [self.repositoryController sidebarItemChildAtIndex:anIndex];
 }
 
-- (BOOL) isExpandableInSidebar
-{
-  return [[self repositoryController] isExpandableInSidebar];
-}
-
-- (id<GBObsoleteSidebarItem>) childForIndexInSidebar:(NSInteger)index
-{
-  return [[self repositoryController] childForIndexInSidebar:index];
-}
-
-- (id<GBObsoleteSidebarItem>) findItemWithIndentifier:(NSString*)identifier
-{
-  // TODO: test drag and drop and rewrite this code
-  if (!identifier) return nil;
-  if ([[self sidebarItemIdentifier] isEqual:identifier]) return self;
-  return nil;
-}
-
-- (NSString*) nameInSidebar
+- (NSString*) sidebarItemTitle
 {
   return [self path];
 }
 
-- (NSString*) tooltipInSidebar
+- (NSString*) sidebarItemTooltip
 {
   return [[[self localURL] absoluteURL] path];
 }
 
-- (id<GBRepositoriesControllerLocalItem>) repositoriesControllerLocalItem
+ - (BOOL) sidebarItemIsExpandable
 {
-  // TODO: should probably return its parent repositoryController, but only that which is not inside the submodule itself
-  // TODO: think hard about it later!
-  return nil;
+  return [self.repositoryController sidebarItemIsExpandable];
 }
 
-- (BOOL) isRepository
+- (NSUInteger) sidebarItemBadgeInteger
 {
-  return NO;
+	return [self.repositoryController sidebarItemBadgeInteger];
 }
 
-- (BOOL) isRepositoriesGroup
+- (BOOL) sidebarItemIsSpinning
 {
-  return NO;
-}
-
-- (BOOL) isSubmodule
-{
-  return YES;
-}
-
-- (NSCell*) sidebarCell
-{
-  NSCell* cell = [[[self sidebarCellClass] new] autorelease];
-  [cell setRepresentedObject:self];
-  return cell;
-}
-
-- (Class) sidebarCellClass
-{
-  // TODO: use GBSubmoduleCell to render custom "download" button etc.
-  return [GBSubmoduleCell class];
-}
-
-- (BOOL) isDraggableInSidebar
-{
-  return NO;
-}
-
-- (BOOL) isEditableInSidebar
-{
-  return NO;
-}
-
-- (BOOL) isExpandedInSidebar
-{
-  return [[self repositoryController] isExpandedInSidebar];
-}
-
-- (void) setExpandedInSidebar:(BOOL)expanded
-{
-  [[self repositoryController] setExpandedInSidebar:expanded];
-}
-
-- (NSInteger) badgeValue
-{
-	return [[self repositoryController] badgeValue]; // TODO: return badgeValue for the repositoryController
-}
-
-- (NSInteger) accumulatedBadgeValue
-{
-	return [[self repositoryController] accumulatedBadgeValue]; // TODO: return accumulatedBadgeValue for the repositoryController
-}
-
-- (BOOL) isSpinningInSidebar
-{
-  return [[self repositoryController] isSpinningInSidebar];
-}
-
-- (BOOL) isAccumulatedSpinningInSidebar
-{
-  return [[self repositoryController] isAccumulatedSpinningInSidebar];
-}
-
-- (NSProgressIndicator*) sidebarSpinner
-{
-  return [[self repositoryController] sidebarSpinner];
-}
-
-- (void) setSidebarSpinner:(NSProgressIndicator*)spinnerView
-{
-  [[self repositoryController] setSidebarSpinner:spinnerView];
-}
-
-- (void) hideAllSpinnersInSidebar
-{
-  [[self repositoryController] hideAllSpinnersInSidebar];
+  return [self.repositoryController sidebarItemIsSpinning];
 }
 
 - (NSArray*) writableTypesForPasteboard:(NSPasteboard *)pasteboard

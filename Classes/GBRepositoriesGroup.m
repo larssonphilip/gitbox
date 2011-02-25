@@ -1,7 +1,8 @@
 #import "GBBaseRepositoryController.h"
 #import "GBRepositoriesGroup.h"
-#import "GBRepositoriesGroupCell.h"
 #import "GBSidebarItem.h"
+#import "GBSidebarCell.h"
+#import "GBRepository.h"
 
 @interface GBRepositoriesGroup ()
 @property(nonatomic, assign) BOOL isExpanded;
@@ -34,8 +35,10 @@
     self.sidebarItem = [[[GBSidebarItem alloc] init] autorelease];
     self.sidebarItem.object = self;
     self.sidebarItem.expandable = YES;
+    self.sidebarItem.draggable = YES;
+    self.sidebarItem.editable = YES;
     self.sidebarItem.image = [NSImage imageNamed:@"GBSidebarGroupIcon"];
-    self.sidebarItem.cell = [GBSidebarCell cellWithItem:self.sidebarItem];
+    self.sidebarItem.cell = [[[GBSidebarCell alloc] initWithItem:self.sidebarItem] autorelease];
   }
   return self;
 }
@@ -171,158 +174,41 @@
 #pragma mark GBSidebarItem
 
 
-- (NSString*) sidebarItemIdentifier
-{
-  return [NSString stringWithFormat:@"GBRepositoriesGroup:%p", self];
-}
 
-- (NSString*) nameInSidebar
-{
-  return self.name;
-}
-
-- (NSString*) tooltipInSidebar
-{
-  return self.name;
-}
-
-- (NSInteger) numberOfChildrenInSidebar
+- (NSInteger) sidebarItemNumberOfChildren
 {
   return (NSInteger)[self.items count];
 }
 
-- (BOOL) isExpandableInSidebar
+- (GBSidebarItem*) sidebarItemChildAtIndex:(NSInteger)anIndex
 {
-  return YES;
+  if (anIndex < 0 || anIndex >= [self.items count]) return nil;
+  return [[self.items objectAtIndex:(NSUInteger)anIndex] sidebarItem];
 }
 
-- (id<GBObsoleteSidebarItem>) childForIndexInSidebar:(NSInteger)index
+- (NSString*) sidebarItemTitle
 {
-  if (index < 0 || index >= [self.items count]) return nil;
-  return [self.items objectAtIndex:(NSUInteger)index];
+  return self.name;
 }
 
-//- (id<GBObsoleteSidebarItem>) findItemWithIndentifier:(NSString*)identifier
-//{
-//  if (!identifier) return nil;
-//  if ([[self sidebarItemIdentifier] isEqual:identifier]) return self;
-//  for (id<GBObsoleteSidebarItem> item in self.items)
-//  {
-//    id i = [item findItemWithIndentifier:identifier];
-//    if (i) return i;
-//  }
-//  return nil;
-//}
-
-- (GBBaseRepositoryController*) repositoryController
+- (NSString*) sidebarItemTooltip
 {
-  return nil;
+  return self.name;
 }
 
-//- (id<GBRepositoriesControllerLocalItem>) repositoriesControllerLocalItem
-//{
-//  return self;
-//}
-
-- (BOOL) isRepository
+- (void) sidebarItemSetStringValue:(NSString*)value
 {
-  return NO;
+  self.name = value;
 }
 
-- (BOOL) isRepositoriesGroup
+- (NSDragOperation) sidebarItemDragOperationForURLs:(NSArray*)URLs outlineView:(NSOutlineView*)anOutlineView
 {
-  return YES;
+  return ([GBRepository isAtLeastOneValidRepositoryOrFolderURL:URLs] ? NSDragOperationGeneric : NSDragOperationNone);
 }
 
-- (BOOL) isSubmodule
+- (NSDragOperation) sidebarItemDragOperationForItems:(NSArray*)items outlineView:(NSOutlineView*)anOutlineView
 {
-  return NO;
+  return NSDragOperationGeneric; // allow dropping items in the group
 }
-
-- (NSCell*) sidebarCell
-{
-  NSCell* cell = [[[self sidebarCellClass] new] autorelease];
-  [cell setRepresentedObject:self];
-  return cell;
-}
-
-- (Class) sidebarCellClass
-{
-  return [GBRepositoriesGroupCell class];
-}
-
-//- (BOOL) writeToSidebarPasteboard:(NSPasteboard *)pasteboard
-//{
-//  [pasteboard declareTypes:[NSArray arrayWithObjects:NSFilenamesPboardType, nil] owner:self];
-//  [pasteboard setPropertyList:[NSArray arrayWithObject:[self path]] forType:NSFilenamesPboardType];
-//
-//  return NO;
-//}
-//
-
-- (BOOL) isDraggableInSidebar
-{
-  return YES;
-}
-
-- (BOOL) isEditableInSidebar
-{
-  return YES;
-}
-
-- (BOOL) isExpandedInSidebar
-{
-  return self.isExpanded;
-}
-
-- (void) setExpandedInSidebar:(BOOL)expanded
-{
-  self.isExpanded = expanded;
-  if (!expanded)
-  {
-    [self hideAllSpinnersInSidebar];
-  }
-}
-
-- (NSInteger) badgeValue
-{
-	return 0;
-}
-
-- (NSInteger) accumulatedBadgeValue
-{
-	NSInteger sum = [self badgeValue];
-	for (id<GBObsoleteSidebarItem> item in self.items)
-	{
-		sum += [item accumulatedBadgeValue];
-	}
-	return sum;
-}
-
-- (BOOL) isSpinningInSidebar
-{
-  return NO;
-}
-
-- (BOOL) isAccumulatedSpinningInSidebar
-{
-  if ([self isSpinningInSidebar]) return YES;
-	for (id<GBObsoleteSidebarItem> item in self.items)
-	{
-		if ([item isAccumulatedSpinningInSidebar]) return YES;
-	}
-	return NO;
-}
-
-- (void) hideAllSpinnersInSidebar
-{
-  [self.sidebarSpinner setHidden:YES];
-	for (id<GBObsoleteSidebarItem> item in self.items)
-	{
-		[item hideAllSpinnersInSidebar];
-	}
-}
-
-
 
 @end

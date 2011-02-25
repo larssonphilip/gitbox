@@ -30,7 +30,6 @@
 @property(nonatomic, assign) BOOL isCommitting;
 @property(nonatomic, assign) BOOL isUpdatingRemoteRefs;
 @property(nonatomic, assign) BOOL isWaitingForAutofetch;
-@property(nonatomic, assign) BOOL isCollapsedInSidebar;
 
 - (void) pushDisabled;
 - (void) popDisabled;
@@ -83,7 +82,6 @@
 @synthesize isUpdatingRemoteRefs;
 @synthesize isDisappearedFromFileSystem;
 @synthesize isWaitingForAutofetch;
-@synthesize isCollapsedInSidebar;
 @synthesize delegate;
 
 
@@ -109,7 +107,9 @@
     self.blockMerger = [[OABlockMerger new] autorelease];
     self.sidebarItem = [[[GBSidebarItem alloc] init] autorelease];
     self.sidebarItem.object = self;
-    self.sidebarItem.expandable = NO;
+    self.sidebarItem.draggable = YES;
+    self.sidebarItem.image = [self icon];
+    self.sidebarItem.cell = [[[GBSidebarCell alloc] initWithItem:self.sidebarItem] autorelease];
   }
   return self;
 }
@@ -399,6 +399,7 @@
         }
         else
         {
+          // TODO: instead of switching the repositoryController, should switch the object for sidebar item.
           GBSubmoduleCloningController* repoCtrl = [[GBSubmoduleCloningController new] autorelease];
           repoCtrl.submodule = submodule;
           repoCtrl.updatesQueue = self.updatesQueue;
@@ -871,91 +872,46 @@
 #pragma mark GBSidebarItem
 
 
-
-// TODO: override some methods to return submodules
 // Note: do not return instances of GBRepositoryController, but GBSubmodule instead. 
 //       Submodule will return repository controller when needed (when selected), 
 //       but will have its own UI ("download" button, right-click menu etc.)
 
-- (NSInteger) numberOfChildrenInSidebar
+- (NSInteger) sidebarItemNumberOfChildren
 {
-  return [self.repository.submodules count];
+  return (NSInteger)[self.repository.submodules count];
 }
 
-- (id<GBObsoleteSidebarItem>) childForIndexInSidebar:(NSInteger)index
+- (GBSidebarItem*) sidebarItemChildAtIndex:(NSInteger)anIndex
 {
-  if (index < 0 || index >= [self.repository.submodules count]) return nil;
-  return [self.repository.submodules objectAtIndex:index];
+  if (anIndex < 0 || anIndex >= [self.repository.submodules count]) return nil;
+  return [[self.repository.submodules objectAtIndex:anIndex] sidebarItem];
 }
 
-- (id<GBObsoleteSidebarItem>) findItemWithIndentifier:(NSString*)identifier
+- (NSString*) sidebarItemTitle
 {
-  return [super findItemWithIndentifier:identifier];
+  return [[[self url] path] lastPathComponent];
 }
 
-- (BOOL) isExpandableInSidebar
+- (NSString*) sidebarItemTooltip
 {
-  return [self numberOfChildrenInSidebar] > 0;
+  return [[[self url] absoluteURL] path];
 }
 
-- (BOOL) isDraggableInSidebar
+- (BOOL) sidebarItemIsExpandable
 {
-  return YES;
+  return [self sidebarItemNumberOfChildren] > 0;
 }
 
-- (BOOL) isEditableInSidebar
-{
-  return NO;
-}
-
-- (BOOL) isExpandedInSidebar
-{
-  //NSLog(@"isExpandedInSidebar: %d [%@]", (int)(!self.isCollapsedInSidebar), [self.repository path]);
-  return !self.isCollapsedInSidebar;
-}
-
-- (void) setExpandedInSidebar:(BOOL)expanded
-{
-  //NSLog(@"setExpandedInSidebar: %d [%@]", (int)expanded, [self.repository path]);
-  self.isCollapsedInSidebar = !expanded;
-  
-  // TODO: save expanded state for submodules list
-  
-  if (!expanded)
-  {
-    [self hideAllSpinnersInSidebar];
-  }
-}
-
-- (NSInteger) badgeValue
+- (NSUInteger) sidebarItemBadgeInteger
 {
   return [self.repository totalPendingChanges];
 }
 
-- (NSInteger) accumulatedBadgeValue
-{
-	NSInteger submodulesValue = 0;
-  for (GBSubmodule* submodule in self.repository.submodules)
-  {
-    submodulesValue += [submodule accumulatedBadgeValue];
-  }
-	return [self badgeValue] + submodulesValue;
-}
-
-- (BOOL) isSpinningInSidebar
+- (BOOL) sidebarItemIsSpinning
 {
   return self.isSpinning;
 }
 
-- (BOOL) isAccumulatedSpinningInSidebar
-{
-  if ([self isSpinningInSidebar]) return YES;
-  for (GBSubmodule* submodule in self.repository.submodules)
-  {
-    if ([submodule isAccumulatedSpinningInSidebar]) return YES;
-  }
-  return NO;
-}
 
 
 

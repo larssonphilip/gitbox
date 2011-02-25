@@ -2,7 +2,6 @@
 #import "GBSidebarItemObject.h"
 
 @class GBRepositoriesGroup;
-@class GBBaseRepositoryController;
 @class GBRepositoryController;
 @class GBRepositoryCloningController;
 @class GBSidebarItem;

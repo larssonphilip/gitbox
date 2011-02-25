@@ -6,6 +6,7 @@
 #import "GBSidebarItem.h"
 #import "NSObject+OASelectorNotifications.h"
 #import "NSArray+OAArrayHelpers.h"
+#import "OALicenseNumberCheck.h"
 
 @interface GBRootController ()
 @property(nonatomic, retain, readwrite) GBSidebarItem* sidebarItem;
@@ -96,6 +97,33 @@
 - (BOOL) openURLs:(NSArray*)URLs inGroup:(GBRepositoriesGroup*)aGroup atIndex:(NSUInteger)insertionIndex
 {
   if (!URLs) return NO;
+  
+#if GITBOX_APP_STORE
+#else
+  
+  __block NSUInteger repos = 0;
+  [self.repositoriesController.sidebarItem enumerateChildrenUsingBlock:^(GBSidebarItem *item, NSUInteger idx, BOOL *stop) {
+    if ([item.object isKindOfClass:[GBRepositoryController class]])
+    {
+      repos++;
+    }
+  }];
+  
+  if (([URLs count] + repos) > 3)
+  {
+    NSString* license = [[NSUserDefaults standardUserDefaults] objectForKey:@"license"];
+    if (!OAValidateLicenseNumber(license))
+    {
+      [NSApp tryToPerform:@selector(showLicense:) with:self];
+      
+      NSString* license = [[NSUserDefaults standardUserDefaults] objectForKey:@"license"];
+      if (!OAValidateLicenseNumber(license))
+      {
+        return NO;
+      }
+    }
+  }
+#endif
   
   if (insertionIndex == NSNotFound)
   {

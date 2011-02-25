@@ -1,9 +1,10 @@
 #import "GBSubmoduleCell.h"
 #import "GBSubmodule.h"
+#import "GBSidebarItem.h"
 #import "GBRepositoryController.h"
 
 @interface GBSubmoduleCell ()
-- (GBSubmodule*) submodule;
+@property(nonatomic, retain, readonly) GBSubmodule* submodule;
 - (GBBaseRepositoryController*) repositoryController;
 - (NSRect) drawDownloadButtonAndReturnRemainingRect:(NSRect)rect;
 @end
@@ -25,7 +26,7 @@
 
 - (NSRect) drawExtraFeaturesAndReturnRemainingRect:(NSRect)rect
 {
-  if (![[self submodule] isCloned] && ![[self submodule] isSpinningInSidebar])
+  if (![self.submodule isCloned] && ![self.sidebarItem visibleSpinning])
   {
     return [self drawDownloadButtonAndReturnRemainingRect:rect];
   }
@@ -44,12 +45,12 @@
 
 - (GBSubmodule*) submodule
 {
-  return (GBSubmodule*)[self representedObject];
+  return (GBSubmodule*)[self.sidebarItem object];
 }
 
 - (GBBaseRepositoryController*) repositoryController
 {
-  return [[self submodule] repositoryController];
+  return self.submodule.repositoryController;
 }
 
 @end
