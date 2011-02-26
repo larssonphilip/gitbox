@@ -584,7 +584,6 @@
       [items addObject:draggedItem];
     }
     
-    // TODO: Accept only groups and sections
     return [proposedItem dragOperationForItems:items outlineView:anOutlineView];
   }
   return NSDragOperationNone;
@@ -638,26 +637,27 @@
 //      }
 //    } afterDelay:0.0];
     
-    [anOutlineView expandItem:targetItem]; // in some cases when outline view does not expand automatically
+    [anOutlineView expandItem:targetItem]; // in some cases the outline view does not expand automatically
     return YES;
   }
   else // local drop
   {
-    BOOL movedSomething = NO;
+//    BOOL movedSomething = NO;
     
-    // Remember what was selected to restore after drop
-    NSMutableArray* selectedItems = [NSMutableArray array];
-    [[anOutlineView selectedRowIndexes] enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL* stop){
-      id item = [anOutlineView itemAtRow:idx];
-      if (item) [selectedItems addObject:item];
-    }];
+//    // Remember what was selected to restore after drop
+//    NSMutableArray* selectedItems = [NSMutableArray array];
+//    [[anOutlineView selectedRowIndexes] enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL* stop){
+//      id item = [anOutlineView itemAtRow:idx];
+//      if (item) [selectedItems addObject:item];
+//    }];
     
     for (NSPasteboardItem* pasteboardItem in [pasteboard pasteboardItems])
     {
-      NSString* itemIdentifier  = [pasteboardItem stringForType:GBSidebarItemPasteboardType];
+      NSString* itemUID  = [pasteboardItem stringForType:GBSidebarItemPasteboardType];
       
-      if (itemIdentifier)
+      if (itemUID)
       {
+        //GBSidebarItem* item = []
 //        id<GBObsoleteSidebarItem> draggedItem = [[self localRepositoriesSection] findItemWithIndentifier:itemIdentifier];
 //        if (draggedItem)
 //        {
@@ -677,7 +677,7 @@
       }
     }
     
-    if (movedSomething)
+    //if (movedSomething)
     {
 //      [self update];
 //      
@@ -692,7 +692,7 @@
 //        }
 //      }
 //      
-//      [anOutlineView expandItem:targetItem]; // in some cases when outline view does not expand automatically
+//      [anOutlineView expandItem:targetItem]; // in some cases the outline view does not expand automatically
 //      
 //      [anOutlineView withDelegate:nil doBlock:^{
 //        [anOutlineView selectRowIndexes:indexesOfMovedItems byExtendingSelection:NO];
@@ -725,6 +725,7 @@
   [self.outlineView reloadData];
   ignoreSelectionChange--;
   //  [self loadExpandedState];
+  [self updateExpandedState];
   [self updateSelection];
 }
 
