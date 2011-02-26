@@ -173,8 +173,8 @@
     if (result == NSFileHandlingPanelOKButton)
     {
       NSUInteger anIndex = 0;
-      GBRepositoriesGroup* group = [self.rootController groupAndIndex:&anIndex forInsertionWithClickedItem:[self clickedSidebarItem]];
-      [self.rootController openURLs:[openPanel URLs] inGroup:group atIndex:anIndex];
+      GBSidebarItem* targetItem = [self.rootController sidebarItemAndIndex:&anIndex forInsertionWithClickedItem:[self clickedSidebarItem]];
+      [self.rootController openURLs:[openPanel URLs] inSidebarItem:targetItem atIndex:anIndex];
     }
   }];
 }
@@ -198,20 +198,22 @@
 - (IBAction) addGroup:(id)sender
 {
   NSUInteger anIndex = 0;
-  GBRepositoriesGroup* group = [self.rootController groupAndIndex:&anIndex forInsertionWithClickedItem:[self clickedSidebarItem]];
-  GBRepositoriesGroup* newGroup = [self.rootController addUntitledGroupInGroup:group atIndex:anIndex];
-  
-  if (newGroup.sidebarItem)
+  GBSidebarItem* targetItem = [self.rootController sidebarItemAndIndex:&anIndex forInsertionWithClickedItem:[self clickedSidebarItem]];
+  [self.rootController addUntitledGroupInSidebarItem:targetItem atIndex:anIndex];
+    
+  if (targetItem)
   {
-    if (group.sidebarItem)
-	{
-		[self.outlineView expandItem:group.sidebarItem];
-	}
-    [self.outlineView expandItem:newGroup.sidebarItem];
+    [self.outlineView expandItem:targetItem];
+  }
+  
+  GBSidebarItem* selectedItem = self.rootController.selectedSidebarItem;
+  if (selectedItem)
+  {
+    [self.outlineView expandItem:selectedItem];
     
-    NSInteger rowIndex = [self.outlineView rowForItem:newGroup.sidebarItem];
+    NSInteger rowIndex = [self.outlineView rowForItem:selectedItem];
     
-    if (rowIndex >= 0)
+    if (rowIndex >= 0 && [selectedItem isEditable])
     {
       [self.outlineView editColumn:0 row:rowIndex withEvent:nil select:YES];
     }
@@ -454,8 +456,6 @@
   
   NSCell* cell = item.cell;
 	
-  NSLog(@"item %@", item);
-  
   if (!cell)
   {
     cell = [tableColumn dataCell];

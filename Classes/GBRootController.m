@@ -48,7 +48,7 @@
 
 
 
-- (GBRepositoriesGroup*) groupAndIndex:(NSUInteger*)anIndexRef forInsertionWithClickedItem:(GBSidebarItem*)clickedItem
+- (GBSidebarItem*) sidebarItemAndIndex:(NSUInteger*)anIndexRef forInsertionWithClickedItem:(GBSidebarItem*)clickedItem
 {
   // If clickedItem is a repo, need to return its parent group and item's index + 1.
   // If clickedItem is a group, need to return the item and index 0 to insert in the beginning.
@@ -90,7 +90,7 @@
   }
   
   if (anIndexRef) *anIndexRef = anIndex;
-  return group;
+  return group.sidebarItem;
 }
 
 
@@ -100,13 +100,13 @@
   if (!URLs) return NO;
   
   NSUInteger anIndex = 0;
-  GBRepositoriesGroup* group = [self groupAndIndex:&anIndex forInsertionWithClickedItem:nil];
-  return [self openURLs:URLs inGroup:group atIndex:anIndex];
+  GBSidebarItem* targetItem = [self sidebarItemAndIndex:&anIndex forInsertionWithClickedItem:nil];
+  return [self openURLs:URLs inGroup:targetItem atIndex:anIndex];
 }
 
 
 
-- (BOOL) openURLs:(NSArray*)URLs inGroup:(GBRepositoriesGroup*)aGroup atIndex:(NSUInteger)insertionIndex
+- (BOOL) openURLs:(NSArray*)URLs inSidebarItem:(GBSidebarItem*)targetItem atIndex:(NSUInteger)insertionIndex
 {
   
 #if GITBOX_APP_STORE
@@ -137,6 +137,13 @@
 #endif
 
   if (!URLs) return NO;
+  
+  GBRepositoriesGroup* aGroup = (id)targetItem.object;
+  
+  if (aGroup == (id)self.repositoriesController)
+  {
+    aGroup = self.repositoriesController.localRepositoriesGroup;
+  }
   
   if (!aGroup)
   {
@@ -174,8 +181,13 @@
 }
 
 
-- (GBRepositoriesGroup*) addUntitledGroupInGroup:(GBRepositoriesGroup*)aGroup atIndex:(NSUInteger)insertionIndex
+- (void) addUntitledGroupInSidebarItem:(GBSidebarItem*)targetItem atIndex:(NSUInteger)insertionIndex
 {
+  GBRepositoriesGroup* aGroup = (id)targetItem.object;
+  if (aGroup == (id)self.repositoriesController)
+  {
+    aGroup = self.repositoriesController.localRepositoriesGroup;
+  }
   if (!aGroup)
   {
     aGroup = self.repositoriesController.localRepositoriesGroup;
@@ -195,8 +207,6 @@
   self.selectedObject = newGroup;
   
   [self notifyWithSelector:@selector(rootControllerDidChangeSelection:)];
-  
-  return newGroup;
 }
 
 

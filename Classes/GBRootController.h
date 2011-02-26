@@ -27,13 +27,13 @@
 @property(nonatomic, retain) GBSidebarItem* selectedSidebarItem;
 
 
-- (GBRepositoriesGroup*) groupAndIndex:(NSUInteger*)anIndexRef forInsertionWithClickedItem:(GBSidebarItem*)clickedItem;
+- (GBSidebarItem*) sidebarItemAndIndex:(NSUInteger*)anIndexRef forInsertionWithClickedItem:(GBSidebarItem*)clickedItem;
 
 // Returns NO if cannot open any of URLs
 
 - (BOOL) openURLs:(NSArray*)URLs;
-- (BOOL) openURLs:(NSArray*)URLs inGroup:(GBRepositoriesGroup*)aGroup atIndex:(NSUInteger)insertionIndex;
+- (BOOL) openURLs:(NSArray*)URLs inSidebarItem:(GBSidebarItem*)targetItem atIndex:(NSUInteger)insertionIndex;
 
-- (GBRepositoriesGroup*) addUntitledGroupInGroup:(GBRepositoriesGroup*)aGroup atIndex:(NSUInteger)insertionIndex;
+- (void) addUntitledGroupInSidebarItem:(GBSidebarItem*)targetItem atIndex:(NSUInteger)insertionIndex;
 
 @end
