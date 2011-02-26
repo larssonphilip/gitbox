@@ -85,10 +85,10 @@
 #pragma mark GBMainWindowItem
 
 
-- (NSString*) windowTitle
-{
-  return self.name;
-}
+//- (NSString*) windowTitle
+//{
+//  return self.name;
+//}
 
 
 //#pragma mark GBRepositoriesControllerLocalItem

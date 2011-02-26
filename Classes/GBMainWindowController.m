@@ -122,6 +122,9 @@
 {
   GBToolbarController* newToolbarController = nil;
   NSViewController* newDetailController = nil;
+  NSString* windowTitle = nil;
+  NSURL* windowRepresentedURL = nil;
+  NSString* detailViewTitle = nil;
   if (aRootController.selectedObject)
   {
     id<GBMainWindowItem> object = aRootController.selectedObject;
@@ -135,19 +138,11 @@
     }
     if ([object respondsToSelector:@selector(windowTitle)])
     {
-      [self.window setTitle:[object windowTitle]];
-    }
-    else
-    {
-      [self.window setTitle:@""];
+      windowTitle = [object windowTitle];
     }
     if ([object respondsToSelector:@selector(windowRepresentedURL)])
     {
-      [self.window setRepresentedURL:[object windowRepresentedURL]];
-    }
-    else
-    {
-      [self.window setRepresentedURL:nil];
+      windowRepresentedURL = [object windowRepresentedURL];
     }
   }
   else
@@ -160,13 +155,43 @@
       newDetailController = self.defaultDetailViewController;
     }
   }
+
+  if (!detailViewTitle)
+  {
+    if (!windowTitle)
+    {
+      windowTitle = NSLocalizedString(@"No selection", @"Window");
+    }
+    if (!detailViewTitle)
+    {
+      detailViewTitle = NSLocalizedString(@"No selection", @"Window");
+    }
+  }
+  
+  if (!detailViewTitle)
+  {
+    detailViewTitle = windowTitle;
+  }
+  
+  if (!detailViewTitle)
+  {
+    detailViewTitle = @"";
+  }
+  
+  if (!windowTitle)
+  {
+    windowTitle = @"";
+  }
+    
   if (!newDetailController)
   {
-    [self.window setTitle:NSLocalizedString(@"No selection", @"Window")];
-    [self.window setRepresentedURL:nil];
-    self.defaultDetailViewController.title = NSLocalizedString(@"No selection", @"Window");
+    self.defaultDetailViewController.title = detailViewTitle;
     newDetailController = self.defaultDetailViewController;
   }
+  
+  [self.window setTitle:windowTitle];
+  [self.window setRepresentedURL:windowRepresentedURL];
+
   self.toolbarController = newToolbarController;
   self.detailViewController = newDetailController;
 }
