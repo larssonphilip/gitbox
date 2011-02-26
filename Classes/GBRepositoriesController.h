@@ -7,7 +7,7 @@
 @class GBSidebarItem;
 @class OABlockQueue;
 
-@interface GBRepositoriesController : NSObject<GBSidebarItemObject>
+@interface GBRepositoriesController : NSResponder<GBSidebarItemObject>
 
 @property(nonatomic, retain) GBSidebarItem* sidebarItem;
 @property(nonatomic, retain) GBRepositoriesGroup* localRepositoriesGroup;

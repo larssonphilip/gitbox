@@ -8,7 +8,7 @@ extern NSString* const GBSubmoduleStatusNotCloned;
 extern NSString* const GBSubmoduleStatusUpToDate;
 extern NSString* const GBSubmoduleStatusNotUpToDate;
 
-@interface GBSubmodule : NSObject<GBSidebarItemObject>
+@interface GBSubmodule : NSResponder<GBSidebarItemObject>
 
 @property(nonatomic, copy) NSURL* remoteURL;
 @property(nonatomic, copy) NSString* path;

@@ -16,7 +16,7 @@
 @class GBRepositoriesController;
 @class GBRepositoriesGroup;
 
-@interface GBRootController : NSObject<GBSidebarItemObject>
+@interface GBRootController : NSResponder<GBSidebarItemObject>
 
 @property(nonatomic, retain, readonly)  GBSidebarItem* sidebarItem;
 @property(nonatomic, retain, readonly)  GBRepositoriesController* repositoriesController;
@@ -26,7 +26,12 @@
 @property(nonatomic, retain) NSArray* selectedSidebarItems;
 @property(nonatomic, retain) GBSidebarItem* selectedSidebarItem;
 
+
+- (GBRepositoriesGroup*) groupAndIndex:(NSUInteger*)anIndexRef forInsertionWithClickedItem:(GBSidebarItem*)clickedItem;
+
 // Returns NO if cannot open any of URLs
+
 - (BOOL) openURLs:(NSArray*)URLs;
 - (BOOL) openURLs:(NSArray*)URLs inGroup:(GBRepositoriesGroup*)aGroup atIndex:(NSUInteger)insertionIndex;
+
 @end

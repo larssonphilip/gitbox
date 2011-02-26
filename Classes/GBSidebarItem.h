@@ -8,7 +8,7 @@
 
 @interface GBSidebarItem : NSResponder<NSPasteboardWriting>
 
-@property(nonatomic, assign) id<GBSidebarItemObject> object;
+@property(nonatomic, assign) NSResponder<GBSidebarItemObject>* object;
 @property(nonatomic, assign) GBSidebarController* sidebarController;
 
 
@@ -45,6 +45,7 @@
 
 - (NSInteger) numberOfChildren;
 - (GBSidebarItem*) childAtIndex:(NSInteger)anIndex;
+- (NSUInteger) indexOfChild:(GBSidebarItem*)aChild;
 - (void) setStringValue:(NSString*)value;
 - (GBSidebarItem*) findItemWithUID:(NSString*)aUID;
 

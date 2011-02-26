@@ -3,7 +3,7 @@
 #import "GBObsoleteSidebarItem.h"
 
 @class OABlockQueue;
-@interface GBBaseRepositoryController : NSObject <GBRepositoriesControllerLocalItem>
+@interface GBBaseRepositoryController : NSResponder <GBRepositoriesControllerLocalItem>
 
 @property(nonatomic, retain) OABlockQueue* updatesQueue;
 @property(nonatomic, retain) OABlockQueue* autofetchQueue;

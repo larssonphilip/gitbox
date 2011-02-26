@@ -11,6 +11,7 @@
 @interface GBRootController ()
 @property(nonatomic, retain, readwrite) GBSidebarItem* sidebarItem;
 @property(nonatomic, retain, readwrite) GBRepositoriesController* repositoriesController;
+
 @end
 
 @implementation GBRootController
@@ -47,56 +48,72 @@
 
 
 
-
-
-- (BOOL) openURLs:(NSArray*)URLs
+- (GBRepositoriesGroup*) groupAndIndex:(NSUInteger*)anIndexRef forInsertionWithClickedItem:(GBSidebarItem*)clickedItem
 {
-  if (!URLs) return NO;
+  // If clickedItem is a repo, need to return its parent group and item's index + 1.
+  // If clickedItem is a group, need to return the item and index 0 to insert in the beginning.
+  // If clickedItem is not nil and none of the above, return nil.
+  // If clickedItem is nil, find group and index based on selection.
   
-  GBSidebarItem* contextItem = [[[self selectedSidebarItems] reversedArray] firstObjectCommonWithArray:[self.repositoriesController.sidebarItem allChildren]];
+  GBRepositoriesGroup* group = nil;
+  NSUInteger anIndex = 0; // by default, insert in the beginning of the container.
+  
+  GBSidebarItem* contextItem = clickedItem;
+  if (!contextItem)
+  {
+    contextItem = [[[self selectedSidebarItems] reversedArray] firstObjectCommonWithArray:
+                                                    [self.repositoriesController.sidebarItem allChildren]];
+  }
   
   if (!contextItem) contextItem = self.repositoriesController.sidebarItem;
   
   id obj = contextItem.object;
-  
-  GBRepositoriesGroup* group = nil;
-  NSUInteger insertionIndex = 0;
-  
   if (!obj) obj = self.repositoriesController;
   
   if (obj == self.repositoriesController)
   {
     group = self.repositoriesController.localRepositoriesGroup;
   }
-  else
+  else if ([obj isKindOfClass:[GBRepositoriesGroup class]])
   {
-    if ([obj isKindOfClass:[GBRepositoriesGroup class]])
+    group = obj;
+  }
+  else if (obj)
+  {
+    GBSidebarItem* groupItem = [self.repositoriesController.sidebarItem parentOfItem:clickedItem];
+    group = (id)groupItem.object;
+    if (group)
     {
-      group = obj;
-    }
-    else if ([obj isKindOfClass:[GBRepositoryController class]])
-    {
-      group = [self.repositoriesController.sidebarItem parentOfItem:contextItem].object;
-      if (!group)
-      {
-        NSLog(@"Unusual case: cannot find parent for %@", obj);
-        group = self.repositoriesController.localRepositoriesGroup;
-      }
-      insertionIndex = [group.items indexOfObject:obj];
-      if (insertionIndex == NSNotFound)
-      {
-        insertionIndex = 0;
-      }
+      anIndex = [group.items indexOfObject:obj];
+      if (anIndex == NSNotFound) anIndex = 0;
     }
   }
   
-  return [self openURLs:URLs inGroup:group atIndex:insertionIndex];
+  if (anIndexRef) *anIndexRef = anIndex;
+  return group;
 }
+
+
+
+- (BOOL) openURLs:(NSArray*)URLs
+{
+  if (!URLs) return NO;
+  
+  NSUInteger anIndex = 0;
+  GBRepositoriesGroup* group = [self groupAndIndex:&anIndex forInsertionWithClickedItem:nil];
+  return [self openURLs:URLs inGroup:group atIndex:anIndex];
+}
+
 
 
 - (BOOL) openURLs:(NSArray*)URLs inGroup:(GBRepositoriesGroup*)aGroup atIndex:(NSUInteger)insertionIndex
 {
   if (!URLs) return NO;
+  
+  if (!aGroup)
+  {
+    aGroup = self.repositoriesController.localRepositoriesGroup;
+  }
   
 #if GITBOX_APP_STORE
 #else
@@ -154,6 +171,8 @@
   
   return insertedAtLeastOneRepo;
 }
+
+
 
 
 

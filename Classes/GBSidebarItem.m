@@ -269,6 +269,18 @@
   return [self.object sidebarItemChildAtIndex:anIndex];
 }
 
+- (NSUInteger) indexOfChild:(GBSidebarItem*)aChild
+{
+  if (!aChild) return NSNotFound;
+  NSInteger num = [self numberOfChildren];
+  for (NSInteger i = 0; i < num; i++)
+  {
+    id c = [self childAtIndex:i];
+    if ([c isEqual:aChild]) return (NSUInteger)i;
+  }
+  return NSNotFound;
+}
+
 - (void) setStringValue:(NSString*)value
 {
   if ([self.object respondsToSelector:@selector(sidebarItemSetStringValue:)])
