@@ -1,7 +1,6 @@
 
 @interface GBAppDelegate : NSObject <NSApplicationDelegate>
 
-- (IBAction) openDocument:_;
 - (IBAction) showActivityWindow:_;
 - (IBAction) showOnlineHelp:_;
 - (IBAction) showLicense:_;

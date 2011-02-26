@@ -22,7 +22,7 @@
 @property(nonatomic, retain, readonly)  GBRepositoriesController* repositoriesController;
 
 @property(nonatomic, retain) NSArray* selectedObjects;
-@property(nonatomic, retain) id<GBSidebarItemObject, GBMainWindowItem> selectedObject;
+@property(nonatomic, retain) NSResponder<GBSidebarItemObject, GBMainWindowItem>* selectedObject;
 @property(nonatomic, retain) NSArray* selectedSidebarItems;
 @property(nonatomic, retain) GBSidebarItem* selectedSidebarItem;
 
@@ -33,5 +33,7 @@
 
 - (BOOL) openURLs:(NSArray*)URLs;
 - (BOOL) openURLs:(NSArray*)URLs inGroup:(GBRepositoriesGroup*)aGroup atIndex:(NSUInteger)insertionIndex;
+
+- (GBRepositoriesGroup*) addUntitledGroupInGroup:(GBRepositoriesGroup*)aGroup atIndex:(NSUInteger)insertionIndex;
 
 @end

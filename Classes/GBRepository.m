@@ -176,6 +176,7 @@
 
 + (BOOL) isValidRepositoryOrFolderURL:(NSURL*)aURL
 {
+  if (![aURL isFileURL]) return NO;
   NSString* aPath = [aURL path];
   if (!aPath) return NO;
   if ([aPath rangeOfString:@"/.Trash/"].location != NSNotFound) return NO;

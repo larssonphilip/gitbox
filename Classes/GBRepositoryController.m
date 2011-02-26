@@ -107,6 +107,7 @@
     self.blockMerger = [[OABlockMerger new] autorelease];
     self.sidebarItem = [[[GBSidebarItem alloc] init] autorelease];
     self.sidebarItem.object = self;
+    self.sidebarItem.selectable = YES;
     self.sidebarItem.draggable = YES;
     self.sidebarItem.image = [self icon];
     self.sidebarItem.cell = [[[GBSidebarCell alloc] initWithItem:self.sidebarItem] autorelease];
@@ -377,6 +378,13 @@
 - (void) updateSubmodulesWithBlock:(void(^)())aBlock
 {
   aBlock = [[aBlock copy] autorelease];
+  
+  
+#warning Debug: temp disabled submodules update while refactoring
+  if (aBlock) aBlock();
+  return;
+  
+  
   [self.repository updateSubmodulesWithBlock:^{
     
     for (GBSubmodule* submodule in [self.repository.submodules reversedArray])
@@ -395,7 +403,7 @@
             [repoCtrl initialUpdateWithBlock:^{
               [self.updatesQueue endBlock];
             }];
-          }];          
+          }];
         }
         else
         {

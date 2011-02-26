@@ -23,22 +23,37 @@
   return 20.0;
 }
 
-- (id)init
+- (void) setupCell
 {
-  if ((self = [super init]))
-  {
-    [self setSelectable:YES];
-    [self setUsesSingleLineMode:YES];
-    [self setSendsActionOnEndEditing:YES];
-    [self setFont:[NSFont systemFontOfSize:[NSFont smallSystemFontSize]]];
-    [self setLineBreakMode:NSLineBreakByTruncatingTail];
-  }
+  [self setSelectable:YES];
+  [self setEditable:YES];
+  [self setUsesSingleLineMode:YES];
+  [self setSendsActionOnEndEditing:YES];
+  [self setFont:[NSFont systemFontOfSize:[NSFont smallSystemFontSize]]];
+  [self setLineBreakMode:NSLineBreakByTruncatingTail];
+}
+
+- (id)initTextCell:(NSString*)string
+{
+  if ((self = [super initTextCell:string])) [self setupCell];
+  return self;
+}
+
+- (id)initImageCell:(NSImage*)img
+{
+  if ((self = [super initImageCell:img])) [self setupCell];
+  return self;
+}
+
+- (id)initWithCoder:(NSCoder*)coder
+{
+  if ((self = [super initWithCoder:coder])) [self setupCell];
   return self;
 }
 
 - (id) initWithItem:(GBSidebarItem*)anItem
 {
-  if ((self = [self init]))
+  if ((self = [self initTextCell:@""]))
   {
     self.sidebarItem = anItem;
   }
@@ -47,8 +62,13 @@
 
 - (id) copyWithZone:(NSZone *)zone
 {
-  GBSidebarCell* cell = [[[[self class] alloc] init] autorelease];
-  cell.sidebarItem = self.sidebarItem;
+  GBSidebarCell* cell = [[[self class] alloc] initWithItem:self.sidebarItem];
+  
+  [cell setStringValue:[self stringValue]]; // <- this is important to make editing work
+  cell.outlineView = self.outlineView;
+  cell.isForeground = self.isForeground;
+  cell.isFocused = self.isFocused;
+  cell.isDragged = self.isDragged;
   return cell;
 }
 
@@ -58,9 +78,9 @@
 #pragma mark Subclasses' API
 
 
-- (NSImage*) icon
+- (NSImage*) image
 {
-  return nil;
+  return self.sidebarItem.image;
 }
 
 - (NSRect) drawExtraFeaturesAndReturnRemainingRect:(NSRect)rect
@@ -192,7 +212,7 @@
 
 - (NSRect) drawIconAndReturnRemainingRect:(NSRect)rect
 {
-  NSImage* image = [self icon];
+  NSImage* image = [self image];
   
   NSSize imageSize = NSMakeSize(kGBSidebarCellIconWidth, kGBSidebarCellIconWidth);
   [image setSize:imageSize];

@@ -15,7 +15,7 @@
 #pragma mark GBSidebarCell
 
 
-- (NSImage*) icon
+- (NSImage*) image
 {
   if ([[self submodule] status] == GBSubmoduleStatusNotCloned)
   {

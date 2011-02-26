@@ -108,12 +108,6 @@
 
 - (BOOL) openURLs:(NSArray*)URLs inGroup:(GBRepositoriesGroup*)aGroup atIndex:(NSUInteger)insertionIndex
 {
-  if (!URLs) return NO;
-  
-  if (!aGroup)
-  {
-    aGroup = self.repositoriesController.localRepositoriesGroup;
-  }
   
 #if GITBOX_APP_STORE
 #else
@@ -141,6 +135,13 @@
     }
   }
 #endif
+
+  if (!URLs) return NO;
+  
+  if (!aGroup)
+  {
+    aGroup = self.repositoriesController.localRepositoriesGroup;
+  }
   
   if (insertionIndex == NSNotFound)
   {
@@ -173,7 +174,30 @@
 }
 
 
+- (GBRepositoriesGroup*) addUntitledGroupInGroup:(GBRepositoriesGroup*)aGroup atIndex:(NSUInteger)insertionIndex
+{
+  if (!aGroup)
+  {
+    aGroup = self.repositoriesController.localRepositoriesGroup;
+  }
+  
+  if (insertionIndex == NSNotFound)
+  {
+    insertionIndex = 0;
+  }
 
+  GBRepositoriesGroup* newGroup = [GBRepositoriesGroup untitledGroup];
+  
+  [aGroup insertObject:newGroup atIndex:insertionIndex];
+  
+  [self notifyWithSelector:@selector(rootControllerDidChangeContents:)];
+  
+  self.selectedObject = newGroup;
+  
+  [self notifyWithSelector:@selector(rootControllerDidChangeSelection:)];
+  
+  return newGroup;
+}
 
 
 
@@ -208,7 +232,7 @@
   [self notifyWithSelector:@selector(rootControllerDidChangeSelection:)];
 }
 
-- (void) setSelectedObject:(id<GBSidebarItemObject>)newSelectedObject
+- (void) setSelectedObject:(NSResponder<GBSidebarItemObject, GBMainWindowItem>*)newSelectedObject
 {
   if (newSelectedObject == selectedObject) return;
   self.selectedObjects = [NSArray arrayWithObject:newSelectedObject];

@@ -1,9 +1,9 @@
 @class GBToolbarController;
 @class NSViewController;
 @protocol GBMainWindowItem <NSObject>
+@optional
 - (NSString*) windowTitle;
 - (NSURL*) windowRepresentedURL;
-@optional
 - (GBToolbarController*) toolbarController;
 - (NSViewController*) viewController;
 @end

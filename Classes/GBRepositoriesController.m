@@ -48,6 +48,7 @@
     
     self.localRepositoriesGroup = [[[GBRepositoriesGroup alloc] init] autorelease];
     self.localRepositoriesGroup.name = @"localRepositoriesGroup"; // name for debugging only, won't be visible in UI
+	self.localRepositoriesGroup.sidebarItem = self.sidebarItem;
   }
   return self;
 }

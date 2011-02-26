@@ -11,10 +11,14 @@
 @property(nonatomic, retain) IBOutlet NSMenu* submoduleMenu;
 @property(nonatomic, retain) IBOutlet NSMenu* defaultMenu;
 
+- (IBAction) openDocument:(id)_;
+- (IBAction) addGroup:(id)_;
 - (IBAction) selectPreviousItem:(id)_;
 - (IBAction) selectNextItem:(id)_;
 
 - (void) updateBuyButton;
+
+
 
 //- (void) saveState;
 //- (void) loadState;
@@ -35,7 +39,6 @@
 //
 //- (IBAction) remove:(id)_;
 //- (IBAction) rename:(id)_;
-//- (IBAction) addGroup:(id)_;
 //- (IBAction) openInFinder:(id)_;
 //- (IBAction) selectRightPane:_;
 

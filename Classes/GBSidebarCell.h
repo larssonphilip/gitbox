@@ -12,7 +12,7 @@
 + (CGFloat) cellHeight;
 - (id) initWithItem:(GBSidebarItem*)anItem;
 
-- (NSImage*) icon;
+- (NSImage*) image;
 - (NSRect) drawExtraFeaturesAndReturnRemainingRect:(NSRect)rect;
 - (void) drawTextInRect:(NSRect)rect;
 - (NSRect) drawBadge:(NSString*)badge inRect:(NSRect)rect;

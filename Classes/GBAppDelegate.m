@@ -7,13 +7,6 @@
 #import "GBLicenseController.h"
 #import "GBSidebarController.h"
 
-//#import "GBRepository.h"
-//#import "GBStage.h"
-//#import "OATask.h"
-//#import "GBTask.h"
-
-//#import "NSAlert+OAAlertHelpers.h"
-//#import "NSData+OADataHelpers.h"
 #import "NSFileManager+OAFileManagerHelpers.h"
 #import "NSWindowController+OAWindowControllerHelpers.h"
 
@@ -87,35 +80,6 @@
   NSString* urlString = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"GBReleaseNotesURL"];
   [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:urlString]];
 }
-
-- (IBAction) openDocument:_
-{
-  NSOpenPanel* openPanel = [NSOpenPanel openPanel];
-  openPanel.delegate = self;
-  openPanel.allowsMultipleSelection = YES;
-  openPanel.canChooseFiles = YES;
-  openPanel.canChooseDirectories = YES;
-  [openPanel beginSheetModalForWindow:[self.windowController window] completionHandler:^(NSInteger result){
-    if (result == NSFileHandlingPanelOKButton)
-    {
-      [self.rootController openURLs:[openPanel URLs]];
-    }
-  }];
-}
-  // NSOpenSavePanelDelegate for openDocument: action
-
-  - (BOOL) panel:(id)sender validateURL:(NSURL*)url error:(NSError **)outError
-  {
-    if ([url isFileURL] && [NSFileManager isWritableDirectoryAtPath:[url path]])
-    {
-      return YES;
-    }
-    if (outError != NULL)
-    {
-      *outError = [NSError errorWithDomain:NSOSStatusErrorDomain code:unimpErr userInfo:NULL];
-    }
-    return NO;
-  }
 
 - (IBAction) showActivityWindow:(id)sender
 {
@@ -237,11 +201,6 @@
   [self.windowController showWindow:self];	
   return NO;
 }
-
-
-
-
-
 
 
 

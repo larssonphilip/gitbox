@@ -34,6 +34,7 @@
     self.items = [NSMutableArray array];
     self.sidebarItem = [[[GBSidebarItem alloc] init] autorelease];
     self.sidebarItem.object = self;
+    self.sidebarItem.selectable = YES;
     self.sidebarItem.expandable = YES;
     self.sidebarItem.draggable = YES;
     self.sidebarItem.editable = YES;
@@ -52,7 +53,7 @@
 
 - (NSString*) untitledGroupName
 {
-  return NSLocalizedString(@"untitled group", @"GBRepositoriesGroup");
+  return NSLocalizedString(@"untitled", @"GBRepositoriesGroup");
 }
 
 - (void) insertObject:(id<GBSidebarItemObject>)anObject atIndex:(NSUInteger)anIndex
@@ -81,8 +82,15 @@
 
 
 
+#pragma mark GBMainWindowItem
 
-//
+
+- (NSString*) windowTitle
+{
+  return self.name;
+}
+
+
 //#pragma mark GBRepositoriesControllerLocalItem
 //
 //

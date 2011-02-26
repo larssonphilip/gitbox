@@ -50,6 +50,19 @@
 #pragma Appearance
 
 
+- (NSString*) description
+{
+  return [NSString stringWithFormat:@"<%@: %p title=%@ cell=%@ expanded=%d object=%@>",
+          [self class],
+          self,
+          [self title],
+          self.cell,
+          (int)self.isExpanded,
+          self.object
+          ];
+}
+
+
 - (NSString*) UID
 {
   if (!UID)

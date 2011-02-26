@@ -14,7 +14,6 @@
 @property(nonatomic, retain) IBOutlet NSSplitView* splitView;
 
 // Move this elsewhere
-//- (IBAction) addGroup:(id)_;
 //- (IBAction) editRepositories:(id)_;
 //- (IBAction) editGitIgnore:(id)_;
 //- (IBAction) editGitConfig:(id)_;

@@ -1,8 +1,9 @@
 #import "GBRepositoriesControllerLocalItem.h"
 #import "GBSidebarItemObject.h"
+#import "GBMainWindowItem.h"
 
 @class GBSidebarItem;
-@interface GBRepositoriesGroup : NSResponder</*GBRepositoriesControllerLocalItem,*/ GBSidebarItemObject>
+@interface GBRepositoriesGroup : NSResponder<GBMainWindowItem, GBSidebarItemObject>
 
 @property(nonatomic, retain) GBSidebarItem* sidebarItem;
 @property(nonatomic, copy) NSString* name;

@@ -5,19 +5,19 @@
 
 @synthesize windowHoldingSheet;
 
-- (IBAction) clone:_
+- (IBAction) clone:sender
 {
   [self endSheet];
-  [NSApp tryToPerform:@selector(cloneRepository:) with:_];
+  [NSApp tryToPerform:@selector(cloneRepository:) with:sender];
 }
 
-- (IBAction) open:_
+- (IBAction) open:sender
 {
   [self endSheet];
-  [NSApp tryToPerform:@selector(openDocument:) with:_];
+  [NSApp tryToPerform:@selector(openDocument:) with:sender];
 }
 
-- (IBAction) cancel:_
+- (IBAction) cancel:sender
 {
   [self endSheet];
 }

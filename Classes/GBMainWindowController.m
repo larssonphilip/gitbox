@@ -133,8 +133,22 @@
     {
       newDetailController = [object viewController];
     }
-    [self.window setTitle:[object windowTitle]];
-    [self.window setRepresentedURL:[object windowRepresentedURL]];
+    if ([object respondsToSelector:@selector(windowTitle)])
+    {
+      [self.window setTitle:[object windowTitle]];
+    }
+    else
+    {
+      [self.window setTitle:@""];
+    }
+    if ([object respondsToSelector:@selector(windowRepresentedURL)])
+    {
+      [self.window setRepresentedURL:[object windowRepresentedURL]];
+    }
+    else
+    {
+      [self.window setRepresentedURL:nil];
+    }
   }
   else
   {
