@@ -15,6 +15,7 @@
 @synthesize tooltip;
 @synthesize badgeInteger;
 @synthesize cell;
+@synthesize menu;
 @synthesize progressIndicator;
 @synthesize section;
 @synthesize spinning;
@@ -32,6 +33,7 @@
   self.title = nil;
   self.tooltip = nil;
   self.cell = nil;
+  self.menu = nil;
   self.progressIndicator = nil;
   [super dealloc];
 }
@@ -163,6 +165,8 @@
     return [self isSubtreeSpinning];
   }
 }
+
+
 
 
 
@@ -358,7 +362,14 @@
   return nil;
 }
 
-
+- (NSMenu*) menu
+{
+  if ([self.object respondsToSelector:@selector(sidebarItemMenu)])
+  {
+    return [self.object sidebarItemMenu];
+  }
+  return menu;
+}
 
 
 

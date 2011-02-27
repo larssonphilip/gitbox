@@ -149,10 +149,8 @@
   {
     if (aRootController.selectedObjects && [aRootController.selectedObjects count] > 0)
     {
-      [self.window setTitle:NSLocalizedString(@"Multiple selection", @"Window")];
-      [self.window setRepresentedURL:nil];
-      self.defaultDetailViewController.title = NSLocalizedString(@"Multiple selection", @"Window");
-      newDetailController = self.defaultDetailViewController;
+      windowTitle = NSLocalizedString(@"Multiple selection", @"Window");
+      detailViewTitle = NSLocalizedString(@"Multiple selection", @"Window");
     }
   }
 
@@ -194,6 +192,7 @@
 
   self.toolbarController = newToolbarController;
   self.detailViewController = newDetailController;
+  [self updateToolbarAlignment];
 }
 
 

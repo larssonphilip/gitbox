@@ -467,6 +467,7 @@
 - (void)outlineView:(NSOutlineView*)anOutlineView willDisplayCell:(id)cell forTableColumn:(NSTableColumn*)tableColumn item:(GBSidebarItem*)item
 {
 	// menu should be attached directly to the cell
+  
 }
 
 - (CGFloat)outlineView:(NSOutlineView*)outlineView heightOfRowByItem:(GBSidebarItem*)item

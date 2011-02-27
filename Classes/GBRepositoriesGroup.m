@@ -41,6 +41,8 @@
     self.sidebarItem.editable = YES;
     self.sidebarItem.image = [NSImage imageNamed:@"GBSidebarGroupIcon"];
     self.sidebarItem.cell = [[[GBSidebarCell alloc] initWithItem:self.sidebarItem] autorelease];
+    
+    [self.sidebarItem.cell setMenu:[self sidebarItemMenu]];
   }
   return self;
 }
@@ -160,5 +162,31 @@
   }
   return NSDragOperationGeneric;
 }
+
+
+- (NSMenu*) sidebarItemMenu
+{
+  NSMenu* menu = [[[NSMenu alloc] initWithTitle:@""] autorelease];
+  
+  [menu addItem:[[[NSMenuItem alloc] 
+                  initWithTitle:NSLocalizedString(@"Add Repository...", @"Sidebar") action:@selector(openDocument:) keyEquivalent:@""] autorelease]];
+  [menu addItem:[[[NSMenuItem alloc] 
+                  initWithTitle:NSLocalizedString(@"Clone Repository...", @"Sidebar") action:@selector(cloneRepository:) keyEquivalent:@""] autorelease]];
+  
+  [menu addItem:[NSMenuItem separatorItem]];
+  
+  [menu addItem:[[[NSMenuItem alloc] 
+                  initWithTitle:NSLocalizedString(@"New Group", @"Sidebar") action:@selector(addGroup:) keyEquivalent:@""] autorelease]];
+  
+  [menu addItem:[NSMenuItem separatorItem]];
+  
+  [menu addItem:[[[NSMenuItem alloc] 
+                  initWithTitle:NSLocalizedString(@"Rename", @"Sidebar") action:@selector(rename:) keyEquivalent:@""] autorelease]];
+  
+  [menu addItem:[[[NSMenuItem alloc] 
+                  initWithTitle:NSLocalizedString(@"Remove from Sidebar", @"Sidebar") action:@selector(remove:) keyEquivalent:@""] autorelease]];
+  return menu;
+}
+
 
 @end

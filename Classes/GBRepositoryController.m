@@ -7,6 +7,7 @@
 
 #import "GBRepositoriesController.h"
 #import "GBRepositoryController.h"
+#import "GBRepositoryToolbarController.h"
 #import "GBSubmoduleCloningController.h"
 
 #import "GBSidebarCell.h"
@@ -30,6 +31,9 @@
 @property(nonatomic, assign) BOOL isCommitting;
 @property(nonatomic, assign) BOOL isUpdatingRemoteRefs;
 @property(nonatomic, assign) BOOL isWaitingForAutofetch;
+@property(nonatomic, assign) NSInteger isStaging; // maintains a count of number of staging tasks running
+@property(nonatomic, assign) NSInteger isLoadingChanges; // maintains a count of number of changes loading tasks running
+@property(nonatomic, assign) NSTimeInterval autoFetchInterval;
 
 - (void) pushDisabled;
 - (void) popDisabled;
@@ -69,11 +73,11 @@
 
 @synthesize repository;
 @synthesize sidebarItem;
+@synthesize toolbarController;
+@synthesize viewController;
 @synthesize selectedCommit;
 @synthesize fsEventStream;
 @synthesize lastCommitBranchName;
-@synthesize cancelledCommitMessage;
-@synthesize commitMessageHistory;
 @synthesize urlBookmarkData;
 @synthesize blockMerger;
 
@@ -83,27 +87,37 @@
 @synthesize isDisappearedFromFileSystem;
 @synthesize isWaitingForAutofetch;
 @synthesize delegate;
-
+@synthesize isStaging; // maintains a count of number of staging tasks running
+@synthesize isLoadingChanges; // maintains a count of number of changes loading tasks running
+@synthesize autoFetchInterval;
 
 - (void) dealloc
 {
   [[NSNotificationCenter defaultCenter] removeObserver:self];
   self.repository = nil;
   self.sidebarItem = nil;
+  self.toolbarController = nil;
+  self.viewController = nil;
   self.selectedCommit = nil;
   self.fsEventStream = nil;
   self.lastCommitBranchName = nil;
-  self.cancelledCommitMessage = nil;
-  self.commitMessageHistory = nil;
   self.urlBookmarkData = nil;
   self.blockMerger = nil;
   [super dealloc];
 }
 
-- (id) init
++ (id) repositoryControllerWithURL:(NSURL*)url
 {
+  if (!url) return nil;
+  return [[[self alloc] initWithURL:url] autorelease];
+}
+
+- (id) initWithURL:(NSURL*)aURL
+{
+  NSAssert(aURL, @"aURL should not be nil in initWithURL for GBRepositoryController");
   if ((self = [super init]))
   {
+    self.repository = [GBRepository repositoryWithURL:aURL];
     self.blockMerger = [[OABlockMerger new] autorelease];
     self.sidebarItem = [[[GBSidebarItem alloc] init] autorelease];
     self.sidebarItem.object = self;
@@ -113,15 +127,6 @@
     self.sidebarItem.cell = [[[GBSidebarCell alloc] initWithItem:self.sidebarItem] autorelease];
   }
   return self;
-}
-
-+ (id) repositoryControllerWithURL:(NSURL*)url
-{
-  if (!url) return nil;
-  GBRepositoryController* ctrl = [[self new] autorelease];
-  GBRepository* repo = [GBRepository repositoryWithURL:url];
-  ctrl.repository = repo;
-  return ctrl;
 }
 
 - (void) setRepository:(GBRepository*)aRepository
@@ -134,27 +139,25 @@
 }
 
 
-- (NSMutableArray*) commitMessageHistory
-{
-  if (!commitMessageHistory)
-  {
-    self.commitMessageHistory = [NSMutableArray array];
-  }
-  return [[commitMessageHistory retain] autorelease];
-}
-
 - (NSURL*) url
 {
   return self.repository.url;
 }
 
-- (NSURL*) windowRepresentedURL
+- (NSImage*) icon
 {
-  return [self url];
+  NSString* path = [[self url] path];
+  
+  if (path && [[NSFileManager defaultManager] fileExistsAtPath:path])
+  {
+    return [[NSWorkspace sharedWorkspace] iconForFile:path];
+  }
+  
+  return [NSImage imageNamed:NSImageNameFolder];
 }
 
 
-
+// obsolete
 - (NSArray*) commits
 {
   return [self.repository stageAndCommits];
@@ -230,19 +233,59 @@
   [super stop];
 }
 
-- (void) didSelect
+
+
+
+
+
+
+
+#pragma mark GBMainWindowItem
+
+
+// toolbarController and viewController are properties assigned by parent controller
+
+- (NSString*) windowTitle
 {
-  [super didSelect];
-  if ([self.delegate respondsToSelector:@selector(repositoryControllerDidSelect:)]) { 
-    [self.delegate repositoryControllerDidSelect:self];
-  }
+  return [[[self url] path] twoLastPathComponentsWithDash];
+}
+
+- (NSURL*) windowRepresentedURL
+{
+  return [self url];
+}
+
+- (void) didSelectWindowItem
+{
+  self.toolbarController.repositoryController = self;
 }
 
 
 
 
 
+
+
+
+#pragma mark GBSidebarItem
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #pragma mark Updates
+
+
 
 
 
@@ -1139,6 +1182,33 @@
   // FIXME: this network availability check does not work.
   return [NSURLConnection canHandleRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://google.com/"]]];
 }
+
+
+
+
+#pragma mark NSPasteboardWriting
+
+
+
+- (NSArray*) writableTypesForPasteboard:(NSPasteboard *)pasteboard
+{
+  return [[NSArray arrayWithObjects:NSPasteboardTypeString, (NSString*)kUTTypeFileURL, nil] 
+          arrayByAddingObjectsFromArray:[[self url] writableTypesForPasteboard:pasteboard]];
+}
+
+- (id)pasteboardPropertyListForType:(NSString *)type
+{
+  if ([type isEqualToString:(NSString*)kUTTypeFileURL])
+  {
+    return [[self url] absoluteURL];
+  }
+  if ([type isEqualToString:NSPasteboardTypeString])
+  {
+    return [[self url] path];
+  }
+  return [[self url] pasteboardPropertyListForType:type];
+}
+
 
 
 @end

@@ -3,6 +3,8 @@
 #import "GBRepositoriesController.h"
 #import "GBRepositoriesGroup.h"
 #import "GBRepositoryController.h"
+#import "GBRepositoryToolbarController.h"
+#import "GBRepositoryViewController.h"
 #import "GBSidebarItem.h"
 #import "NSObject+OASelectorNotifications.h"
 #import "NSArray+OAArrayHelpers.h"
@@ -155,6 +157,8 @@
       GBRepositoryController* repoCtrl = [GBRepositoryController repositoryControllerWithURL:aURL];
       if (repoCtrl)
       {
+        repoCtrl.toolbarController = self.repositoriesController.repositoryToolbarController;
+        repoCtrl.viewController = self.repositoriesController.repositoryViewController;
         [aGroup insertObject:repoCtrl atIndex:insertionIndex];
         [newRepoControllers addObject:repoCtrl];
         insertedAtLeastOneRepo = YES;
@@ -236,6 +240,9 @@
 
 
 
+
+
+
 #pragma mark Selection
 
 
@@ -256,8 +263,16 @@
   
   if (selectedObject != newSelectedObject)
   {
+    if ([selectedObject respondsToSelector:@selector(willDeselectWindowItem)])
+    {
+      [selectedObject willDeselectWindowItem];
+    }
     [selectedObject release];
     selectedObject = [newSelectedObject retain];
+    if ([selectedObject respondsToSelector:@selector(didSelectWindowItem)])
+    {
+      [selectedObject didSelectWindowItem];
+    }
   }
   
   [self notifyWithSelector:@selector(rootControllerDidChangeSelection:)];

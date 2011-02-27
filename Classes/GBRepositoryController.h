@@ -1,4 +1,5 @@
 #import "GBBaseRepositoryController.h"
+#import "GBMainWindowItem.h"
 #import "GBChangeDelegate.h"
 #import "GBSidebarItemObject.h"
 #import "GBRepositoryControllerDelegate.h"
@@ -9,29 +10,28 @@
 @class GBCommit;
 
 @class GBSidebarItem;
+@class GBRepositoryToolbarController;
+@class GBRepositoryViewController;
 @class OAFSEventStream;
 
-@interface GBRepositoryController : GBBaseRepositoryController<GBSidebarItemObject>
-{  
-  NSInteger isStaging; // maintains a count of number of staging tasks running
-  NSInteger isLoadingChanges; // maintains a count of number of changes loading tasks running
-  
-  NSTimeInterval autoFetchInterval;
-}
+@interface GBRepositoryController : GBBaseRepositoryController<GBMainWindowItem, GBSidebarItemObject>
 
 @property(nonatomic,retain) GBRepository* repository;
+@property(nonatomic,retain, readonly) NSURL* url;
 @property(nonatomic,retain) GBSidebarItem* sidebarItem;
+@property(nonatomic,retain) GBRepositoryToolbarController* toolbarController;
+@property(nonatomic,retain) GBRepositoryViewController* viewController;
 @property(nonatomic,retain) GBCommit* selectedCommit;
 @property(nonatomic,retain) OAFSEventStream* fsEventStream;
 @property(nonatomic,retain) NSString* lastCommitBranchName;
-@property(nonatomic,retain) NSString* cancelledCommitMessage;
-@property(nonatomic,retain) NSMutableArray* commitMessageHistory;
 @property(nonatomic,retain) NSData* urlBookmarkData;
 
 @property(nonatomic,assign) NSInteger isRemoteBranchesDisabled;
 @property(nonatomic,assign) id<GBRepositoryControllerDelegate> delegate;
 
 + (id) repositoryControllerWithURL:(NSURL*)url;
+
+- (id) initWithURL:(NSURL*)aURL;
 
 // obsolete, use stageAndCommits - (NSArray*) commits;
 - (NSArray*) stageAndCommits;

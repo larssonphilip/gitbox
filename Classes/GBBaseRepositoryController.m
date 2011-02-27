@@ -95,9 +95,6 @@
 
 - (void) initialUpdateWithBlock:(void(^)())block { if (block) block(); }
 
-- (void) beginBackgroundUpdate {}
-- (void) endBackgroundUpdate {}
-
 - (void) start {}
 - (void) stop
 {
@@ -168,33 +165,6 @@
 }
 
 
-#pragma mark GBSidebarItem
-
-
-- (GBBaseRepositoryController*) repositoryController
-{
-  return self;
-}
-
-- (id<GBRepositoriesControllerLocalItem>) repositoriesControllerLocalItem
-{
-  return self;
-}
-
-- (BOOL) isRepository
-{
-  return YES;
-}
-
-- (BOOL) isRepositoriesGroup
-{
-  return NO;
-}
-
-- (BOOL) isSubmodule
-{
-  return NO;
-}
 
 
 

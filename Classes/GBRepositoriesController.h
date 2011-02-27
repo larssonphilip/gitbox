@@ -2,11 +2,16 @@
 #import "GBRepositoriesGroup.h"
 
 @class OABlockQueue;
+@class GBRepositoryViewController;
+@class GBRepositoryToolbarController;
 
 @interface GBRepositoriesController : GBRepositoriesGroup
 
 @property(nonatomic, retain) OABlockQueue* localRepositoriesUpdatesQueue;
 @property(nonatomic, retain) OABlockQueue* autofetchQueue;
+@property(nonatomic, retain) GBRepositoryViewController* repositoryViewController;
+@property(nonatomic, retain) GBRepositoryToolbarController* repositoryToolbarController;
+
 
 //@property(assign) id<GBRepositoriesControllerDelegate> delegate;
 
@@ -28,9 +33,6 @@
 
 //- (void) loadLocalRepositoriesAndGroups;
 //- (void) saveLocalRepositoriesAndGroups;
-
-//- (void) beginBackgroundUpdate;
-//- (void) endBackgroundUpdate;
 
 //- (void) doWithSelectedGroupAtIndex:(void(^)(GBRepositoriesGroup* aGroup, NSInteger anIndex))aBlock;
 

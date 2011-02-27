@@ -6,4 +6,6 @@
 - (NSURL*) windowRepresentedURL;
 - (GBToolbarController*) toolbarController;
 - (NSViewController*) viewController;
+- (void) willDeselectWindowItem;
+- (void) didSelectWindowItem;
 @end

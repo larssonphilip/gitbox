@@ -4,6 +4,8 @@
 #import "GBRepository.h"
 #import "GBRepositoriesGroup.h"
 #import "GBSidebarItem.h"
+#import "GBRepositoryToolbarController.h"
+#import "GBRepositoryViewController.h"
 
 #import "NSFileManager+OAFileManagerHelpers.h"
 #import "OALicenseNumberCheck.h"
@@ -18,6 +20,9 @@
 
 @synthesize localRepositoriesUpdatesQueue;
 @synthesize autofetchQueue;
+@synthesize repositoryViewController;
+@synthesize repositoryToolbarController;
+
 
 - (void) dealloc
 {
@@ -38,12 +43,17 @@
     self.sidebarItem.section = YES;
     self.sidebarItem.draggable = NO;
     self.sidebarItem.editable = NO;
+    self.sidebarItem.menu = [self sidebarItemMenu];
 
     self.localRepositoriesUpdatesQueue = [OABlockQueue queueWithName:@"LocalUpdates" concurrency:1];
     self.autofetchQueue = [OABlockQueue queueWithName:@"AutoFetch" concurrency:6];
+    
+    self.repositoryViewController = [[[GBRepositoryViewController alloc] initWithNibName:@"GBRepositoryViewController" bundle:nil] autorelease];
+    self.repositoryToolbarController = [[[GBRepositoryToolbarController alloc] init] autorelease];
   }
   return self;
 }
+
 
 
 
@@ -53,38 +63,22 @@
 
 
 
-
-
-
-#pragma mark Interrogation
-
-
-
-
-//- (GBBaseRepositoryController*) openedLocalRepositoryControllerWithURL:(NSURL*)aURL
-//{
-//  return [self.localRepositoriesGroup findRepositoryControllerWithURL:aURL];
-//}
-
-
-//- (GBRepositoryController*) selectedLocalRepositoryController
-//{
-//  if ([self.selectedRepositoryController isKindOfClass:[GBRepositoryController class]])
-//  {
-//    return (GBRepositoryController*) self.selectedRepositoryController;
-//  }
-//  return nil;
-//}
-//
-//- (GBRepositoryCloningController*) selectedCloningRepositoryController
-//{
-//  if ([self.selectedRepositoryController isKindOfClass:[GBRepositoryCloningController class]])
-//  {
-//    return (GBRepositoryCloningController*) self.selectedRepositoryController;
-//  }
-//  return nil;
-//}
-//
+- (NSMenu*) sidebarItemMenu
+{
+  NSMenu* menu = [[[NSMenu alloc] initWithTitle:@""] autorelease];
+  
+  [menu addItem:[[[NSMenuItem alloc] 
+                  initWithTitle:NSLocalizedString(@"Add Repository...", @"Sidebar") action:@selector(openDocument:) keyEquivalent:@""] autorelease]];
+  [menu addItem:[[[NSMenuItem alloc] 
+                  initWithTitle:NSLocalizedString(@"Clone Repository...", @"Sidebar") action:@selector(cloneRepository:) keyEquivalent:@""] autorelease]];
+  
+  [menu addItem:[NSMenuItem separatorItem]];
+  
+  [menu addItem:[[[NSMenuItem alloc] 
+                  initWithTitle:NSLocalizedString(@"New Group", @"Sidebar") action:@selector(addGroup:) keyEquivalent:@""] autorelease]];
+  
+  return menu;
+}
 
 
 
@@ -94,53 +88,6 @@
 #pragma mark Actions
 
 
-
-
-
-//- (void) openLocalRepositoryAtURL:(NSURL*)url
-//{
-////  [self doWithSelectedGroupAtIndex:^(GBRepositoriesGroup* aGroup, NSInteger anIndex){
-////    [self openLocalRepositoryAtURL:url inGroup:aGroup atIndex:anIndex];
-////  }];
-//}
-
-//
-//- (void) openLocalRepositoryAtURL:(NSURL*)url inGroup:(GBRepositoriesGroup*)aGroup atIndex:(NSInteger)anIndex
-//{
-//  GBBaseRepositoryController* repoCtrl = [self openedLocalRepositoryControllerWithURL:url];
-//  if (repoCtrl)
-//  {
-//    //[self selectRepositoryController:repoCtrl];
-//    return;
-//  }
-//  
-//#if GITBOX_APP_STORE
-//#else
-//    
-//    if ([self.localRepositoriesGroup repositoriesCount] >= 3)
-//    {
-//      NSString* license = [[NSUserDefaults standardUserDefaults] objectForKey:@"license"];
-//      if (!OAValidateLicenseNumber(license))
-//      {
-//        [NSApp tryToPerform:@selector(showLicense:) with:self];
-//        
-//        NSString* license = [[NSUserDefaults standardUserDefaults] objectForKey:@"license"];
-//        if (!OAValidateLicenseNumber(license))
-//        {
-//          return;
-//        }
-//      }
-//    }
-//#endif
-//    
-//  repoCtrl = [GBRepositoryController repositoryControllerWithURL:url];
-//  if (!repoCtrl) return;
-//  
-////  [self addLocalRepositoryController:repoCtrl inGroup:aGroup atIndex:anIndex];
-//  [[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:url];
-//  
-////  [self selectRepositoryController:repoCtrl];
-//}
 
 
 - (void) launchRepositoryController:(GBBaseRepositoryController*)repoCtrl queued:(BOOL)queued
@@ -476,48 +423,6 @@
 }
 
 */
-
-
-
-
-
-#pragma mark Background Update
-
-
-
-- (void) beginBackgroundUpdate
-{
-  
-}
-
-- (void) endBackgroundUpdate
-{
-  
-}
-
-
-//- (void) doWithSelectedGroupAtIndex:(void(^)(GBRepositoriesGroup* aGroup, NSInteger anIndex))aBlock
-//{
-//  GBRepositoriesGroup* aGroup = [self.localRepositoriesGroup groupContainingLocalItem:self.selectedLocalItem];
-//  if (!aGroup) aGroup = self.localRepositoriesGroup;
-//  NSUInteger indexInGroup = [aGroup.items indexOfObject:self.selectedLocalItem];
-//  if (indexInGroup == NSNotFound)
-//  {
-//    indexInGroup = [aGroup.items count];
-//  }
-//  else
-//  {
-//    indexInGroup++;// insert after the item, not before
-//  }
-//  if ([self.selectedLocalItem isRepositoriesGroup]) // in case, the group is selected, insert inside it
-//  {
-//    aGroup = (GBRepositoriesGroup*)self.selectedLocalItem;
-//    indexInGroup = 0;
-//  }
-//  aBlock(aGroup, indexInGroup);
-//}
-
-
 
 
 @end

@@ -22,6 +22,7 @@
 - (NSUInteger) subtreeBadgeInteger;
 - (NSUInteger) visibleBadgeInteger;
 @property(nonatomic, retain) GBSidebarCell* cell;
+@property(nonatomic, retain) NSMenu* menu;
 @property(nonatomic, retain) NSProgressIndicator* progressIndicator;
 @property(nonatomic, assign, getter=isSection) BOOL section;
 @property(nonatomic, assign, getter=isSpinning)   BOOL spinning;

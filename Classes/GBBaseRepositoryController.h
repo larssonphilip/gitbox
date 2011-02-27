@@ -3,7 +3,7 @@
 #import "GBObsoleteSidebarItem.h"
 
 @class OABlockQueue;
-@interface GBBaseRepositoryController : NSResponder <GBRepositoriesControllerLocalItem>
+@interface GBBaseRepositoryController : NSResponder
 
 @property(nonatomic, retain) OABlockQueue* updatesQueue;
 @property(nonatomic, retain) OABlockQueue* autofetchQueue;
@@ -27,9 +27,6 @@
 - (NSImage*) icon;
 
 - (void) initialUpdateWithBlock:(void(^)())block;
-
-- (void) beginBackgroundUpdate;
-- (void) endBackgroundUpdate;
 
 - (void) start;
 - (void) stop;

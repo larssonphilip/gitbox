@@ -3,7 +3,7 @@
 @class GBRepositoryController;
 @interface GBRepositoryToolbarController : GBToolbarController
 
-@property(nonatomic, retain) GBRepositoryController* repositoryController;
+@property(nonatomic, assign) GBRepositoryController* repositoryController; // repository controller owns toolbar controller
 
 - (IBAction) pull:_;
 - (IBAction) push:_;
