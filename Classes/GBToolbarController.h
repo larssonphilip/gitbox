@@ -4,16 +4,13 @@
 @property(nonatomic, retain) IBOutlet NSWindow* window;
 @property(nonatomic, assign) CGFloat sidebarWidth;
 
-- (void) update; // method for subclass
+// Methods for subclasses:
 
-// FIXME: Keed outlets for convenience, refactor later. They should be used by GBRepositoryToolbarController.
-
-@property(nonatomic, retain) IBOutlet NSPopUpButton* currentBranchPopUpButton;
-@property(nonatomic, retain) IBOutlet NSSegmentedControl* pullPushControl;
-@property(nonatomic, retain) IBOutlet NSButton* pullButton;
-@property(nonatomic, retain) IBOutlet NSPopUpButton* remoteBranchPopUpButton;
-@property(nonatomic, retain) IBOutlet NSProgressIndicator* progressIndicator;
-@property(nonatomic, retain) IBOutlet NSButton* commitButton;
-
+- (void) update;
+- (NSToolbarItem*) toolbarItemForIdentifier:(NSString*)itemIdentifier;
+- (void) appendItemWithIdentifier:(NSString*)itemIdentifier;
+- (void) removeItemWithIdentifier:(NSString*)itemIdentifier;
+- (void) replaceItemWithIdentifier:(NSString*)itemIdentifier1 withItemWithIdentifier:(NSString*)itemIdentifier2;
+- (void) removeAdditionalItems;
 
 @end

@@ -15,13 +15,17 @@
 
 @interface GBRepositoryToolbarController ()
 
+@property(nonatomic, readonly) NSPopUpButton* currentBranchPopUpButton;
+@property(nonatomic, readonly) NSSegmentedControl* pullPushControl;
+@property(nonatomic, readonly) NSButton* pullButton;
+@property(nonatomic, readonly) NSPopUpButton* otherBranchPopUpButton;
+
+
 - (void) updateDisabledState;
-- (void) updateSpinner;
 - (void) updateBranchMenus;
 - (void) updateCurrentBranchMenus;
 - (void) updateRemoteBranchMenus;
 - (void) updateSyncButtons;
-- (void) updateCommitButton;
 
 - (BOOL) validatePull:(id)sender;
 - (BOOL) validatePush:(id)sender;
@@ -33,6 +37,10 @@
 @implementation GBRepositoryToolbarController
 
 @synthesize repositoryController;
+@dynamic currentBranchPopUpButton;
+@dynamic pullPushControl;
+@dynamic pullButton;
+@dynamic otherBranchPopUpButton;
 
 - (void) dealloc
 {
@@ -65,6 +73,31 @@
 
 
 
+#pragma mark Controls properties
+
+
+- (NSPopUpButton*) currentBranchPopUpButton
+{
+  return (id)[[self toolbarItemForIdentifier:@"GBCurrentBranch"] view];
+}
+
+- (NSSegmentedControl*) pullPushControl
+{
+  return (id)[[self toolbarItemForIdentifier:@"GBPullPush"] view];
+}
+
+- (NSButton*) pullButton
+{
+  return (id)[[self toolbarItemForIdentifier:@"GBPull"] view];
+}
+
+- (NSPopUpButton*) otherBranchPopUpButton
+{
+  return (id)[[self toolbarItemForIdentifier:@"GBOtherBranch"] view];
+}
+
+
+
 
 
 #pragma mark GBRepositoryController notifications
@@ -86,10 +119,15 @@
 - (void) update
 {
   [super update];
-  [self updateBranchMenus];
-  [self updateDisabledState];
-  [self updateSpinner];
-  [self updateCommitButton];
+  
+  [self appendItemWithIdentifier:@"GBCurrentBranch"];
+  [self appendItemWithIdentifier:@"GBPullPush"];
+  [self appendItemWithIdentifier:@"GBOtherBranch"];
+  
+//  [self updateBranchMenus];
+//  [self updateDisabledState];
+//  [self updateSpinner];
+//  [self updateCommitButton];
 }
 
 - (void) updateDisabledState
@@ -102,26 +140,13 @@
   isDisabled = isDisabled || (self.repositoryController && [self.repositoryController.repository.localBranches count] < 1);
   
   [self.currentBranchPopUpButton setEnabled:!isDisabled && !isCurrentBranchDisabled];
-  [self.remoteBranchPopUpButton setEnabled:!isDisabled && !isRemoteBranchDisabled];
+  [self.otherBranchPopUpButton setEnabled:!isDisabled && !isRemoteBranchDisabled];
   [self updateSyncButtons];
 }
 
-- (void) updateSpinner
-{
-  //NSLog(@"updateSpinner: self.baseRepositoryController = %@", self.baseRepositoryController);
-  if (self.repositoryController.isSpinning)
-  {
-    [self.progressIndicator startAnimation:self];
-  }
-  else
-  {
-    [self.progressIndicator stopAnimation:self];
-  }
-}
 
 - (void) updateSyncButtons
 {
-  static NSInteger syncButtonIndex = 3;
   NSSegmentedControl* control = self.pullPushControl;
   GBRepository* repo = self.repositoryController.repository;
   
@@ -130,16 +155,14 @@
     [control setLabel:NSLocalizedString(@"← merge", @"Toolbar") forSegment:0];
     [control setLabel:@" " forSegment:1];
     [self.pullButton setTitle:NSLocalizedString(@"← merge   ", @"Toolbar")];
-    [self.toolbar removeItemAtIndex:syncButtonIndex];
-    [self.toolbar insertItemWithItemIdentifier:@"pull" atIndex:syncButtonIndex];
+    [self replaceItemWithIdentifier:@"GBPullPush" withItemWithIdentifier:@"GBPull"];
   }
   else
   {
     [control setLabel:NSLocalizedString(@"← pull", @"Toolbar") forSegment:0];
     [control setLabel:NSLocalizedString(@"push →", @"Toolbar") forSegment:1];
     [self.pullButton setTitle:NSLocalizedString(@"← pull   ", @"Toolbar")];
-    [self.toolbar removeItemAtIndex:syncButtonIndex];
-    [self.toolbar insertItemWithItemIdentifier:@"pullpush" atIndex:syncButtonIndex];
+    [self replaceItemWithIdentifier:@"GBPull" withItemWithIdentifier:@"GBPullPush"];
   }
   
   [control setEnabled:[self validatePull:nil] forSegment:0];
@@ -149,23 +172,6 @@
 
 
 
-
-- (void) updateCommitButton
-{
-  GBCommit* commit = self.repositoryController.selectedCommit;
-  
-  [self.commitButton setTitle:NSLocalizedString(@"Commit", @"Toolbar")];
-  if ([commit isStage])
-  {
-    [self.commitButton setHidden:NO];
-    [self.commitButton setEnabled:[[commit asStage] isCommitable]];
-  }
-  else
-  {
-    [self.commitButton setHidden:YES];
-    [self.commitButton setEnabled:NO];
-  }
-}
 
 
 
@@ -344,7 +350,7 @@
   GBRepository* repo = self.repositoryController.repository;
   NSArray* remotes = repo.remotes;
   
-  NSPopUpButton* button = self.remoteBranchPopUpButton;
+  NSPopUpButton* button = self.otherBranchPopUpButton;
   NSMenu* remoteBranchesMenu = [NSMenu menu];
   
   if ([button pullsDown])
