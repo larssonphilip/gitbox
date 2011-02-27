@@ -1,16 +1,10 @@
 #import "GBRepositoriesControllerDelegate.h"
-#import "GBSidebarItemObject.h"
+#import "GBRepositoriesGroup.h"
 
-@class GBRepositoriesGroup;
-@class GBRepositoryController;
-@class GBRepositoryCloningController;
-@class GBSidebarItem;
 @class OABlockQueue;
 
-@interface GBRepositoriesController : NSResponder<GBSidebarItemObject>
+@interface GBRepositoriesController : GBRepositoriesGroup
 
-@property(nonatomic, retain) GBSidebarItem* sidebarItem;
-@property(nonatomic, retain) GBRepositoriesGroup* localRepositoriesGroup;
 @property(nonatomic, retain) OABlockQueue* localRepositoriesUpdatesQueue;
 @property(nonatomic, retain) OABlockQueue* autofetchQueue;
 

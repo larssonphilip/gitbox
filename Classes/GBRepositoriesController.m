@@ -16,17 +16,11 @@
 
 @implementation GBRepositoriesController
 
-@synthesize sidebarItem;
-@synthesize localRepositoriesGroup;
 @synthesize localRepositoriesUpdatesQueue;
 @synthesize autofetchQueue;
 
-//@synthesize delegate;
-
 - (void) dealloc
 {
-  self.sidebarItem = nil;
-  self.localRepositoriesGroup = nil;
   self.localRepositoriesUpdatesQueue = nil;
   self.autofetchQueue = nil;
   [super dealloc];
@@ -36,19 +30,17 @@
 {
   if ((self = [super init]))
   {
+    self.name = NSLocalizedString(@"REPOSITORIES", @"Sidebar");
     self.sidebarItem = [[[GBSidebarItem alloc] init] autorelease];
     self.sidebarItem.object = self;
-    self.sidebarItem.title = NSLocalizedString(@"REPOSITORIES", @"Sidebar");
     self.sidebarItem.expanded = YES;
     self.sidebarItem.expandable = YES;
     self.sidebarItem.section = YES;
-    
+    self.sidebarItem.draggable = NO;
+    self.sidebarItem.editable = NO;
+
     self.localRepositoriesUpdatesQueue = [OABlockQueue queueWithName:@"LocalUpdates" concurrency:1];
     self.autofetchQueue = [OABlockQueue queueWithName:@"AutoFetch" concurrency:6];
-    
-    self.localRepositoriesGroup = [[[GBRepositoriesGroup alloc] init] autorelease];
-    self.localRepositoriesGroup.name = @"localRepositoriesGroup"; // name for debugging only, won't be visible in UI
-	self.localRepositoriesGroup.sidebarItem = self.sidebarItem;
   }
   return self;
 }
@@ -57,29 +49,6 @@
 
 
 #pragma mark GBSidebarItem
-
-
-
-
-- (NSInteger) sidebarItemNumberOfChildren
-{
-  return [self.localRepositoriesGroup sidebarItemNumberOfChildren];
-}
-
-- (GBSidebarItem*) sidebarItemChildAtIndex:(NSInteger)index
-{
-  return [self.localRepositoriesGroup sidebarItemChildAtIndex:index];
-}
-
-- (NSDragOperation) sidebarItemDragOperationForURLs:(NSArray*)URLs outlineView:(NSOutlineView*)anOutlineView
-{
-  return [self.localRepositoriesGroup sidebarItemDragOperationForURLs:URLs outlineView:anOutlineView];
-}
-
-- (NSDragOperation) sidebarItemDragOperationForItems:(NSArray*)items outlineView:(NSOutlineView*)anOutlineView
-{
-  return [self.localRepositoriesGroup sidebarItemDragOperationForItems:items outlineView:anOutlineView];
-}
 
 
 

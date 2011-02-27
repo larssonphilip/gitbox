@@ -70,11 +70,7 @@
   id obj = contextItem.object;
   if (!obj) obj = self.repositoriesController;
   
-  if (obj == self.repositoriesController)
-  {
-    group = self.repositoriesController.localRepositoriesGroup;
-  }
-  else if ([obj isKindOfClass:[GBRepositoriesGroup class]])
+  if ([obj isKindOfClass:[GBRepositoriesGroup class]])
   {
     group = obj;
   }
@@ -140,14 +136,9 @@
   
   GBRepositoriesGroup* aGroup = (id)targetItem.object;
   
-  if (aGroup == (id)self.repositoriesController)
-  {
-    aGroup = self.repositoriesController.localRepositoriesGroup;
-  }
-  
   if (!aGroup)
   {
-    aGroup = self.repositoriesController.localRepositoriesGroup;
+    aGroup = self.repositoriesController;
   }
   
   if (insertionIndex == NSNotFound)
@@ -184,13 +175,10 @@
 - (void) addUntitledGroupInSidebarItem:(GBSidebarItem*)targetItem atIndex:(NSUInteger)insertionIndex
 {
   GBRepositoriesGroup* aGroup = (id)targetItem.object;
-  if (aGroup == (id)self.repositoriesController)
-  {
-    aGroup = self.repositoriesController.localRepositoriesGroup;
-  }
+
   if (!aGroup)
   {
-    aGroup = self.repositoriesController.localRepositoriesGroup;
+    aGroup = self.repositoriesController;
   }
   
   if (insertionIndex == NSNotFound)
@@ -213,13 +201,10 @@
 - (void) moveItems:(NSArray*)items toSidebarItem:(GBSidebarItem*)targetItem atIndex:(NSUInteger)insertionIndex
 { 
   GBRepositoriesGroup* aGroup = (id)targetItem.object;
-  if (aGroup == (id)self.repositoriesController)
-  {
-    aGroup = self.repositoriesController.localRepositoriesGroup;
-  }
+
   if (!aGroup)
   {
-    aGroup = self.repositoriesController.localRepositoriesGroup;
+    aGroup = self.repositoriesController;
   }
   
   if (insertionIndex == NSNotFound)
@@ -232,10 +217,7 @@
     // remove from the parent
     GBSidebarItem* parentItem = [self.repositoriesController.sidebarItem parentOfItem:item];
     GBRepositoriesGroup* parentGroup = (id)parentItem.object;
-    if (parentGroup == (id)self.repositoriesController)
-    {
-      parentGroup = self.repositoriesController.localRepositoriesGroup;
-    }
+    
     if (parentGroup)
     {
       [parentGroup removeObject:item.object];
