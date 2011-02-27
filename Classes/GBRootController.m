@@ -101,7 +101,7 @@
   
   NSUInteger anIndex = 0;
   GBSidebarItem* targetItem = [self sidebarItemAndIndex:&anIndex forInsertionWithClickedItem:nil];
-  return [self openURLs:URLs inGroup:targetItem atIndex:anIndex];
+  return [self openURLs:URLs inSidebarItem:targetItem atIndex:anIndex];
 }
 
 
@@ -210,7 +210,46 @@
 }
 
 
-
+- (void) moveItems:(NSArray*)items toSidebarItem:(GBSidebarItem*)targetItem atIndex:(NSUInteger)insertionIndex
+{ 
+  GBRepositoriesGroup* aGroup = (id)targetItem.object;
+  if (aGroup == (id)self.repositoriesController)
+  {
+    aGroup = self.repositoriesController.localRepositoriesGroup;
+  }
+  if (!aGroup)
+  {
+    aGroup = self.repositoriesController.localRepositoriesGroup;
+  }
+  
+  if (insertionIndex == NSNotFound)
+  {
+    insertionIndex = 0;
+  }
+  
+  for (GBSidebarItem* item in items)
+  {
+    // remove from the parent
+    GBSidebarItem* parentItem = [self.repositoriesController.sidebarItem parentOfItem:item];
+    GBRepositoriesGroup* parentGroup = (id)parentItem.object;
+    if (parentGroup == (id)self.repositoriesController)
+    {
+      parentGroup = self.repositoriesController.localRepositoriesGroup;
+    }
+    if (parentGroup)
+    {
+      [parentGroup removeObject:item.object];
+      [aGroup insertObject:item.object atIndex:insertionIndex];
+      insertionIndex++;
+    }
+  }
+  
+  [self notifyWithSelector:@selector(rootControllerDidChangeContents:)];
+  
+  self.selectedSidebarItems = items;
+  
+  [self notifyWithSelector:@selector(rootControllerDidChangeSelection:)];
+}
 
 
 

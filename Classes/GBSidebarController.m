@@ -651,52 +651,51 @@
 //      if (item) [selectedItems addObject:item];
 //    }];
     
+    NSMutableArray* items = [NSMutableArray array];
+    
     for (NSPasteboardItem* pasteboardItem in [pasteboard pasteboardItems])
     {
       NSString* itemUID  = [pasteboardItem stringForType:GBSidebarItemPasteboardType];
       
       if (itemUID)
       {
-        //GBSidebarItem* item = []
-//        id<GBObsoleteSidebarItem> draggedItem = [[self localRepositoriesSection] findItemWithIndentifier:itemIdentifier];
-//        if (draggedItem)
-//        {
-//          movedSomething = YES;
-//          GBRepositoriesGroup* aGroup = [targetItem isRepositoriesGroup] ? (GBRepositoriesGroup*)targetItem : nil;
-//          [self.repositoriesController moveLocalItem:(id<GBRepositoriesControllerLocalItem>)draggedItem toGroup:aGroup atIndex:childIndex];
-//          NSUInteger index = [aGroup.items indexOfObject:draggedItem];
-//          if (index == NSNotFound)
-//          {
-//            childIndex = [aGroup.items count];
-//          }
-//          else
-//          {
-//            childIndex = index + 1;
-//          }
-//        }
+        GBSidebarItem* anItem = [self.rootController.sidebarItem findItemWithUID:itemUID];
+        [items addObject:anItem];
       }
     }
     
-    //if (movedSomething)
+    if ([items count] > 0)
     {
-//      [self update];
-//      
-//      // Collect current indexes for the selected items and selected them.
-//      NSMutableIndexSet* indexesOfMovedItems = [NSMutableIndexSet indexSet];
-//      for (id item in selectedItems)
-//      {
-//        NSInteger idx = [anOutlineView rowForItem:item];
-//        if (idx >= 0)
-//        {
-//          [indexesOfMovedItems addIndex:(NSUInteger)idx];
-//        }
-//      }
-//      
-//      [anOutlineView expandItem:targetItem]; // in some cases the outline view does not expand automatically
-//      
-//      [anOutlineView withDelegate:nil doBlock:^{
-//        [anOutlineView selectRowIndexes:indexesOfMovedItems byExtendingSelection:NO];
-//      }];
+      [anOutlineView expandItem:targetItem]; // in some cases the outline view does not expand automatically
+      if (childIndex == NSOutlineViewDropOnItemIndex) childIndex = 0;
+      [self.rootController moveItems:items toSidebarItem:targetItem atIndex:(NSUInteger)childIndex];
+      
+      
+      
+      //      [self update];
+      //      
+      //      // Collect current indexes for the selected items and selected them.
+      //      NSMutableIndexSet* indexesOfMovedItems = [NSMutableIndexSet indexSet];
+      //      for (id item in selectedItems)
+      //      {
+      //        NSInteger idx = [anOutlineView rowForItem:item];
+      //        if (idx >= 0)
+      //        {
+      //          [indexesOfMovedItems addIndex:(NSUInteger)idx];
+      //        }
+      //      }
+      //      
+      
+      
+      
+      //[self updateSelection];
+      
+      //      
+      //      [anOutlineView withDelegate:nil doBlock:^{
+      //        [anOutlineView selectRowIndexes:indexesOfMovedItems byExtendingSelection:NO];
+      //      }];
+
+      
       return YES;
     }
   }

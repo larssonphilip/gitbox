@@ -1,4 +1,3 @@
-#import "GBRepositoriesControllerLocalItem.h"
 #import "GBSidebarItemObject.h"
 #import "GBMainWindowItem.h"
 
@@ -14,6 +13,6 @@
 - (NSString*) untitledGroupName;
 
 - (void) insertObject:(id<GBSidebarItemObject>)anObject atIndex:(NSUInteger)anIndex;
-// deprecated - (void) insertLocalItem:(id<GBRepositoriesControllerLocalItem>)aLocalItem atIndex:(NSInteger)anIndex;
+- (void) removeObject:(id<GBSidebarItemObject>)anObject;
 
 @end

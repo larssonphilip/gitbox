@@ -1,4 +1,5 @@
-#import "GBBaseRepositoryController.h"
+#import "GBRepositoryController.h"
+#import "GBRepositoryCloningController.h"
 #import "GBRepositoriesGroup.h"
 #import "GBSidebarItem.h"
 #import "GBSidebarCell.h"
@@ -66,17 +67,11 @@
   [self.items insertObject:anObject atIndex:anIndex];  
 }
 
-
-// deprecated
-- (void) insertLocalItem:(id<GBRepositoriesControllerLocalItem>)aLocalItem atIndex:(NSInteger)anIndex;
+- (void) removeObject:(id<GBSidebarItemObject>)anObject
 {
-  if (!aLocalItem) return;
-  
-  if (anIndex == NSOutlineViewDropOnItemIndex) anIndex = [self.items count];
-  if (anIndex > [self.items count]) anIndex = [self.items count];
-  if (anIndex < 0) anIndex = 0;
-  
-  [self.items insertObject:aLocalItem atIndex:(NSUInteger)anIndex];
+  if (!anObject) return;
+  [[anObject retain] autorelease];
+  [self.items removeObject:anObject];
 }
 
 
@@ -91,56 +86,7 @@
 //}
 
 
-//#pragma mark GBRepositoriesControllerLocalItem
-//
-//
-//- (void) enumerateRepositoriesWithBlock:(void(^)(GBBaseRepositoryController* repoCtrl))aBlock
-//{
-//  for (id<GBRepositoriesControllerLocalItem> item in self.items)
-//  {
-//    [item enumerateRepositoriesWithBlock:aBlock];
-//  }
-//}
-//
-//- (GBBaseRepositoryController*) findRepositoryControllerWithURL:(NSURL*)aURL
-//{
-//  for (id<GBRepositoriesControllerLocalItem> item in self.items)
-//  {
-//    GBBaseRepositoryController* repoCtrl = [item findRepositoryControllerWithURL:aURL];
-//    if (repoCtrl) return repoCtrl;
-//  }
-//  return nil;
-//}
-//
-//- (NSUInteger) repositoriesCount
-//{
-//  NSUInteger c = 0;
-//  for (id<GBRepositoriesControllerLocalItem> item in self.items)
-//  {
-//    c += [item repositoriesCount];
-//  }
-//  return c;
-//}
-//
-//- (BOOL) hasRepositoryController:(GBBaseRepositoryController*)repoCtrl
-//{
-//  for (id<GBRepositoriesControllerLocalItem> item in self.items)
-//  {
-//    BOOL has = [item hasRepositoryController:repoCtrl];
-//    if (has) return YES;
-//  }
-//  return NO;
-//}
-//
-//- (void) removeLocalItem:(id<GBRepositoriesControllerLocalItem>)aLocalItem
-//{
-//  if (!aLocalItem) return;
-//  [self.items removeObject:aLocalItem];
-//  for (id<GBRepositoriesControllerLocalItem> item in self.items)
-//  {
-//    [item removeLocalItem:aLocalItem];
-//  }
-//}
+
 //
 //- (id) plistRepresentationForUserDefaults
 //{
@@ -160,22 +106,7 @@
 //          nil];
 //}
 //
-//- (GBRepositoriesGroup*) groupContainingLocalItem:(id<GBRepositoriesControllerLocalItem>)aLocalItem
-//{
-//  if (!aLocalItem) return nil;
-//  if ([self.items containsObject:aLocalItem])
-//  {
-//    return self;
-//  }
-//  for (id<GBRepositoriesControllerLocalItem> subitem in self.items)
-//  {
-//    GBRepositoriesGroup* group = [subitem groupContainingLocalItem:aLocalItem];
-//    if (group) return group;
-//  }
-//  return nil;
-//}
-//
-//
+
 
 
 
@@ -214,9 +145,20 @@
   return ([GBRepository isAtLeastOneValidRepositoryOrFolderURL:URLs] ? NSDragOperationGeneric : NSDragOperationNone);
 }
 
-- (NSDragOperation) sidebarItemDragOperationForItems:(NSArray*)items outlineView:(NSOutlineView*)anOutlineView
+- (NSDragOperation) sidebarItemDragOperationForItems:(NSArray*)theItems outlineView:(NSOutlineView*)anOutlineView
 {
-  return NSDragOperationGeneric; // allow dropping items in the group
+  for (GBSidebarItem* item in theItems)
+  {
+    id o = item.object;
+    if (!o) return NSDragOperationNone;
+    if (!([o isKindOfClass:[GBRepositoryController class]] ||
+          [o isKindOfClass:[GBRepositoriesGroup class]] ||
+          [o isKindOfClass:[GBRepositoryCloningController class]]))
+    {
+      return NSDragOperationNone;
+    }
+  }
+  return NSDragOperationGeneric;
 }
 
 @end

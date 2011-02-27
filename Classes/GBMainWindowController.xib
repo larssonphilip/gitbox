@@ -250,7 +250,7 @@
 										</array>
 										<reference key="NSMenuFont" ref="308166207"/>
 									</object>
-									<int key="NSSelectedIndex">3</int>
+									<int key="NSSelectedIndex">1</int>
 									<bool key="NSPullDown">YES</bool>
 									<int key="NSPreferredEdge">1</int>
 									<bool key="NSUsesItemFromMenu">YES</bool>
@@ -764,13 +764,11 @@
 									<int key="NSvFlags">256</int>
 									<string key="NSFrameSize">{799, 435}</string>
 									<reference key="NSSuperview" ref="831883882"/>
-									<reference key="NSWindow"/>
 									<reference key="NSNextKeyView" ref="50605990"/>
 								</object>
 							</array>
 							<string key="NSFrameSize">{799, 435}</string>
 							<reference key="NSSuperview" ref="568628114"/>
-							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="440544023"/>
 							<string key="NSOffsets">{0, 0}</string>
 							<object class="NSTextFieldCell" key="NSTitleCell">
@@ -816,7 +814,6 @@
 									<int key="NSvFlags">268</int>
 									<string key="NSFrameSize">{197, 435}</string>
 									<reference key="NSSuperview" ref="50605990"/>
-									<reference key="NSWindow"/>
 									<reference key="NSNextKeyView" ref="910591720"/>
 									<string key="NSClassName">NSView</string>
 								</object>
@@ -825,14 +822,12 @@
 									<int key="NSvFlags">256</int>
 									<string key="NSFrame">{{198, 0}, {601, 435}}</string>
 									<reference key="NSSuperview" ref="50605990"/>
-									<reference key="NSWindow"/>
 									<reference key="NSNextKeyView"/>
 									<string key="NSClassName">NSView</string>
 								</object>
 							</array>
 							<string key="NSFrameSize">{799, 435}</string>
 							<reference key="NSSuperview" ref="568628114"/>
-							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="464340179"/>
 							<bool key="NSIsVertical">YES</bool>
 							<int key="NSDividerStyle">2</int>
@@ -841,7 +836,6 @@
 					</array>
 					<string key="NSFrame">{{7, 11}, {799, 435}}</string>
 					<reference key="NSSuperview"/>
-					<reference key="NSWindow"/>
 					<reference key="NSNextKeyView" ref="831883882"/>
 				</object>
 				<string key="NSScreenRect">{{0, 0}, {1440, 878}}</string>
@@ -1436,92 +1430,7 @@
 			<nil key="sourceID"/>
 			<int key="maxID">100436</int>
 		</object>
-		<object class="IBClassDescriber" key="IBDocument.Classes">
-			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
-				<object class="IBPartialClassDescription">
-					<string key="className">GBAppDelegate</string>
-					<string key="superclassName">NSObject</string>
-					<dictionary class="NSMutableDictionary" key="actions">
-						<string key="checkForUpdates:">id</string>
-						<string key="openDocument:">id</string>
-						<string key="releaseNotes:">id</string>
-						<string key="showActivityWindow:">id</string>
-						<string key="showDiffToolPreferences:">id</string>
-						<string key="showLicense:">id</string>
-						<string key="showOnlineHelp:">id</string>
-						<string key="showPreferences:">id</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="actionInfosByName">
-						<object class="IBActionInfo" key="checkForUpdates:">
-							<string key="name">checkForUpdates:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="openDocument:">
-							<string key="name">openDocument:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="releaseNotes:">
-							<string key="name">releaseNotes:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="showActivityWindow:">
-							<string key="name">showActivityWindow:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="showDiffToolPreferences:">
-							<string key="name">showDiffToolPreferences:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="showLicense:">
-							<string key="name">showLicense:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="showOnlineHelp:">
-							<string key="name">showOnlineHelp:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="showPreferences:">
-							<string key="name">showPreferences:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-					</dictionary>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/GBAppDelegate.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">GBMainWindowController</string>
-					<string key="superclassName">NSWindowController</string>
-					<object class="NSMutableDictionary" key="actions">
-						<string key="NS.key.0">showWelcomeWindow:</string>
-						<string key="NS.object.0">id</string>
-					</object>
-					<object class="NSMutableDictionary" key="actionInfosByName">
-						<string key="NS.key.0">showWelcomeWindow:</string>
-						<object class="IBActionInfo" key="NS.object.0">
-							<string key="name">showWelcomeWindow:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-					</object>
-					<object class="NSMutableDictionary" key="outlets">
-						<string key="NS.key.0">splitView</string>
-						<string key="NS.object.0">NSSplitView</string>
-					</object>
-					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<string key="NS.key.0">splitView</string>
-						<object class="IBToOneOutletInfo" key="NS.object.0">
-							<string key="name">splitView</string>
-							<string key="candidateClassName">NSSplitView</string>
-						</object>
-					</object>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/GBMainWindowController.h</string>
-					</object>
-				</object>
-			</array>
-		</object>
+		<object class="IBClassDescriber" key="IBDocument.Classes"/>
 		<int key="IBDocument.localizationMode">0</int>
 		<string key="IBDocument.TargetRuntimeIdentifier">IBCocoaFramework</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDependencyDefaults">
