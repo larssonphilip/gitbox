@@ -414,17 +414,20 @@
   [item setStringValue:object];
 }
 
-//- (BOOL)control:(NSControl *)control textShouldBeginEditing:(NSText *)fieldEditor {
-//  return YES;
-//}
-//- (BOOL)control:(NSControl *)control textShouldEndEditing:(NSText *)fieldEditor {
-//  if ([[fieldEditor string] length] == 0) {
-//    // don't allow empty node names
-//    return NO;
-//  } else {
-//    return YES;
-//  }
-//}
+- (BOOL)control:(NSControl *)control textShouldBeginEditing:(NSText *)fieldEditor
+{
+  return YES;
+}
+
+- (BOOL)control:(NSControl *)control textShouldEndEditing:(NSText *)fieldEditor
+{
+  if ([[[fieldEditor string] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length] == 0)
+  {
+    // don't allow empty node names
+    return NO;
+  }
+  return YES;
+}
 
 - (void) outlineViewItemDidExpand:(NSNotification *)notification
 {

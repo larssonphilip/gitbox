@@ -2,6 +2,7 @@
 #import "GBMainWindowItem.h"
 
 @class GBSidebarItem;
+@class GBRepositoryController;
 @interface GBRepositoriesGroup : NSResponder<GBMainWindowItem, GBSidebarItemObject>
 
 @property(nonatomic, retain) GBSidebarItem* sidebarItem;
@@ -14,5 +15,7 @@
 
 - (void) insertObject:(id<GBSidebarItemObject>)anObject atIndex:(NSUInteger)anIndex;
 - (void) removeObject:(id<GBSidebarItemObject>)anObject;
+
+- (GBRepositoryController*) repositoryControllerWithURL:(NSURL*)aURL;
 
 @end

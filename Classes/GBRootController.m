@@ -154,12 +154,17 @@
   {
     if ([GBRepository validateRepositoryURL:aURL])
     {
-      GBRepositoryController* repoCtrl = [GBRepositoryController repositoryControllerWithURL:aURL];
-      if (repoCtrl)
+      GBRepositoryController* repoCtrl = [self.repositoriesController repositoryControllerWithURL:aURL];
+      
+      if (!repoCtrl)
       {
+        repoCtrl = [GBRepositoryController repositoryControllerWithURL:aURL];
         repoCtrl.toolbarController = self.repositoriesController.repositoryToolbarController;
         repoCtrl.viewController = self.repositoriesController.repositoryViewController;
         [aGroup insertObject:repoCtrl atIndex:insertionIndex];
+      }
+      if (repoCtrl)
+      {
         [newRepoControllers addObject:repoCtrl];
         insertedAtLeastOneRepo = YES;
       }

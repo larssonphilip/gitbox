@@ -74,6 +74,30 @@
   [self.items removeObject:anObject];
 }
 
+- (GBRepositoryController*) repositoryControllerWithURL:(NSURL*)aURL
+{
+  if (!aURL) return nil;
+  
+  GBRepositoryController* ctrl = nil;
+  
+  for (id item in self.items)
+  {
+    if ([item isKindOfClass:[GBRepositoriesGroup class]])
+    {
+      ctrl = [item repositoryControllerWithURL:aURL];
+    }
+    else if ([item isKindOfClass:[GBRepositoryController class]])
+    {
+      if ([[(GBRepositoryController*)item url] isEqual:aURL])
+      {
+        ctrl = item;
+      }
+    }
+    if (ctrl) return ctrl;
+  }
+  return ctrl;
+}
+
 
 
 
