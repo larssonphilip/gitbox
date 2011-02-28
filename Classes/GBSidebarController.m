@@ -19,6 +19,7 @@
 @property(nonatomic, retain) NSResponder<GBSidebarItemObject>* nextResponderSidebarObject;
 @property(nonatomic, assign) NSUInteger ignoreSelectionChange;
 - (GBSidebarItem*) clickedSidebarItem;
+- (NSArray*) selectedSidebarItems;
 - (void) updateContents;
 - (void) updateSelection;
 - (void) updateExpandedState;
@@ -105,6 +106,13 @@
     return item;
   }
   return nil;
+}
+
+- (NSArray*) selectedSidebarItems
+{
+  NSArray* items = self.rootController.selectedSidebarItems;
+  if ([self clickedSidebarItem]) items = [NSArray arrayWithObject:[self clickedSidebarItem]];
+  return items;
 }
 
 - (NSMenu*) defaultMenu
@@ -224,10 +232,26 @@
 
 - (IBAction) remove:(id)sender
 {
-  NSArray* items = self.rootController.selectedSidebarItems;
-  if ([self clickedSidebarItem]) items = [NSArray arrayWithObject:[self clickedSidebarItem]];
-  [self.rootController removeSidebarItems:items];
+  [self.rootController removeSidebarItems:[self selectedSidebarItems]];
 }
+
+- (IBAction) openInFinder:(id)sender
+{
+  for (GBSidebarItem* item in [self selectedSidebarItems])
+  {
+    [item.object tryToPerform:@selector(openInFinder:) with:sender];
+  }
+}
+
+- (IBAction) openInTerminal:(id)sender
+{
+  for (GBSidebarItem* item in [self selectedSidebarItems])
+  {
+    [item.object tryToPerform:@selector(openInTerminal:) with:sender];
+  }
+}
+
+
 
 
 //
@@ -270,14 +294,6 @@
 //  return !disableJumping;
 //}
 //
-//- (IBAction) openInFinder:(id)_
-//{
-//  NSString* path = [[[[self clickedOrSelectedSidebarItem] repositoryController] url] path];
-//  if (path)
-//  {
-//    [[NSWorkspace sharedWorkspace] openFile:path];
-//  }
-//}
 
 
 
