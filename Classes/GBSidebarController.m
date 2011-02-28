@@ -18,9 +18,7 @@
 @interface GBSidebarController () <NSOpenSavePanelDelegate>
 @property(nonatomic, retain) NSResponder<GBSidebarItemObject>* nextResponderSidebarObject;
 @property(nonatomic, assign) NSUInteger ignoreSelectionChange;
-- (GBSidebarItem*) clickedOrSelectedSidebarItem;
 - (GBSidebarItem*) clickedSidebarItem;
-- (GBSidebarItem*) selectedSidebarItem;
 - (void) updateContents;
 - (void) updateSelection;
 - (void) updateExpandedState;
@@ -92,31 +90,21 @@
   [self setNextResponder:nextResponderSidebarObject];
 }
 
-- (GBSidebarItem*) selectedSidebarItem
-{
-  NSInteger row = [self.outlineView selectedRow];
-  if (row >= 0)
-  {
-    return [self.outlineView itemAtRow:row];
-  }
-  return nil;
-}
-
 - (GBSidebarItem*) clickedSidebarItem
 {
   NSInteger row = [self.outlineView clickedRow];
   if (row >= 0)
   {
-    return [self.outlineView itemAtRow:row];
+    id item = [self.outlineView itemAtRow:row];
+    
+    // If the clicked item is contained in the selection, then we don't have any distinct clicked item.
+    if ([self.rootController.selectedSidebarItems containsObject:item])
+    {
+      return nil;
+    }
+    return item;
   }
   return nil;
-}
-
-- (GBSidebarItem*) clickedOrSelectedSidebarItem
-{
-  id item = [self clickedSidebarItem];
-  if (!item) item = [self selectedSidebarItem];
-  return item;
 }
 
 - (NSMenu*) defaultMenu
@@ -234,24 +222,14 @@
 }
 
 
-//- (IBAction) remove:(id)sender
-//{
-//  // FIXME: should refactor repositories controller so it can remove any item with delegate notification
-//  // need to call some conversion method like "asRepositoriesLocalItem"
-//  id<GBObsoleteSidebarItem> item = [self clickedOrSelectedSidebarItem];
-//  
-//  if ([item isRepository])
-//  {
-//    [self.repositoriesController removeLocalRepositoryController:[item repositoryController]];
-//  }
-//  else if ([item isRepositoriesGroup])
-//  {
-//    [self.repositoriesController removeLocalRepositoriesGroup:(GBRepositoriesGroup*)item];
-//  }
-//  [self update];
-//  
-//  [self.repositoriesController selectRepositoryController:[[self selectedSidebarItem] repositoryController]];
-//}
+- (IBAction) remove:(id)sender
+{
+  NSArray* items = self.rootController.selectedSidebarItems;
+  if ([self clickedSidebarItem]) items = [NSArray arrayWithObject:[self clickedSidebarItem]];
+  [self.rootController removeSidebarItems:items];
+}
+
+
 //
 //- (IBAction) rename:(id)_
 //{
@@ -650,29 +628,13 @@
     
     if ([URLs count] < 1) return NO;
     
-//    GBRepositoriesGroup* aGroup = [targetItem isRepositoriesGroup] ? (GBRepositoriesGroup*)targetItem : nil;
-//    
-//    [NSObject performBlock:^{
-//      for (NSURL* aURL in URLs)
-//      {
-//        [self.repositoriesController openLocalRepositoryAtURL:aURL inGroup:aGroup atIndex:childIndex];
-//      }
-//    } afterDelay:0.0];
-    
     [anOutlineView expandItem:targetItem]; // in some cases the outline view does not expand automatically
+    if (childIndex == NSOutlineViewDropOnItemIndex) childIndex = 0;
+    [self.rootController openURLs:URLs inSidebarItem:targetItem atIndex:(NSUInteger)childIndex];
     return YES;
   }
   else // local drop
   {
-//    BOOL movedSomething = NO;
-    
-//    // Remember what was selected to restore after drop
-//    NSMutableArray* selectedItems = [NSMutableArray array];
-//    [[anOutlineView selectedRowIndexes] enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL* stop){
-//      id item = [anOutlineView itemAtRow:idx];
-//      if (item) [selectedItems addObject:item];
-//    }];
-    
     NSMutableArray* items = [NSMutableArray array];
     
     for (NSPasteboardItem* pasteboardItem in [pasteboard pasteboardItems])
@@ -686,40 +648,12 @@
       }
     }
     
-    if ([items count] > 0)
-    {
-      [anOutlineView expandItem:targetItem]; // in some cases the outline view does not expand automatically
-      if (childIndex == NSOutlineViewDropOnItemIndex) childIndex = 0;
-      [self.rootController moveItems:items toSidebarItem:targetItem atIndex:(NSUInteger)childIndex];
-      
-      
-      
-      //      [self update];
-      //      
-      //      // Collect current indexes for the selected items and selected them.
-      //      NSMutableIndexSet* indexesOfMovedItems = [NSMutableIndexSet indexSet];
-      //      for (id item in selectedItems)
-      //      {
-      //        NSInteger idx = [anOutlineView rowForItem:item];
-      //        if (idx >= 0)
-      //        {
-      //          [indexesOfMovedItems addIndex:(NSUInteger)idx];
-      //        }
-      //      }
-      //      
-      
-      
-      
-      //[self updateSelection];
-      
-      //      
-      //      [anOutlineView withDelegate:nil doBlock:^{
-      //        [anOutlineView selectRowIndexes:indexesOfMovedItems byExtendingSelection:NO];
-      //      }];
-
-      
-      return YES;
-    }
+    if ([items count] < 1) return NO;
+    
+    [anOutlineView expandItem:targetItem]; // in some cases the outline view does not expand automatically
+    if (childIndex == NSOutlineViewDropOnItemIndex) childIndex = 0;
+    [self.rootController moveItems:items toSidebarItem:targetItem atIndex:(NSUInteger)childIndex];
+    return YES;
   }
   return NO;
 }

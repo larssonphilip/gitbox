@@ -162,6 +162,7 @@
         repoCtrl.toolbarController = self.repositoriesController.repositoryToolbarController;
         repoCtrl.viewController = self.repositoriesController.repositoryViewController;
         [aGroup insertObject:repoCtrl atIndex:insertionIndex];
+        insertionIndex++;
       }
       if (repoCtrl)
       {
@@ -243,7 +244,26 @@
 }
 
 
+- (void) removeSidebarItems:(NSArray*)items
+{
+  for (GBSidebarItem* item in items)
+  {
+    // remove from the parent
+    GBSidebarItem* parentItem = [self.repositoriesController.sidebarItem parentOfItem:item];
+    GBRepositoriesGroup* parentGroup = (id)parentItem.object;
+    
+    if (parentGroup)
+    {
+      [parentGroup removeObject:item.object];
+    }
+  }
+  
+  [self notifyWithSelector:@selector(rootControllerDidChangeContents:)];
 
+  self.selectedSidebarItems = nil;
+  
+  [self notifyWithSelector:@selector(rootControllerDidChangeSelection:)];
+}
 
 
 
