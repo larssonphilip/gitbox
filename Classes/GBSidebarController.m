@@ -251,34 +251,29 @@
   }
 }
 
+- (IBAction) rename:(id)sender
+{
+  id item = [[self selectedSidebarItems] objectAtIndex:0];
+  NSInteger rowIndex = [self.outlineView rowForItem:item];
+  if (rowIndex < 0) return;
+  [self.outlineView selectRowIndexes:[NSIndexSet indexSetWithIndex:rowIndex] byExtendingSelection:NO];
+  [self.outlineView editColumn:0 row:rowIndex withEvent:nil select:YES];
+}
+
+- (BOOL) validateRename:(id)_
+{
+  if ([[self selectedSidebarItems] count] != 1) return NO;
+  if (![[[self selectedSidebarItems] objectAtIndex:0] isEditable]) return NO;
+  return YES;
+}
 
 
+- (IBAction) selectRightPane:_
+{
+  [[self.outlineView window] selectKeyViewFollowingView:self.outlineView];
+}
 
-//
-//- (IBAction) rename:(id)_
-//{
-//  id<GBObsoleteSidebarItem> item = [self clickedOrSelectedSidebarItem];
-//  if (!item) return;
-//  if (![item isEditableInSidebar]) return;
-//  NSInteger rowIndex = [self.outlineView rowForItem:item];
-//  if (rowIndex < 0) return;
-//  [self.outlineView selectRowIndexes:[NSIndexSet indexSetWithIndex:rowIndex] byExtendingSelection:NO];
-//  [self.outlineView editColumn:0 row:rowIndex withEvent:nil select:YES];
-//}
-//
-//- (BOOL) validateRename:(id)_
-//{
-//  id<GBObsoleteSidebarItem> item = [self clickedOrSelectedSidebarItem];
-//  if (!item) return NO;
-//  if (![item isEditableInSidebar]) return NO;
-//  return YES;
-//}
 
-//
-//- (IBAction) selectRightPane:_
-//{
-//  [[self.outlineView window] selectKeyViewFollowingView:self.outlineView];
-//}
 //
 //- (BOOL) isEditing
 //{
