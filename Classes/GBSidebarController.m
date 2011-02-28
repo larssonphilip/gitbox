@@ -25,6 +25,7 @@
 - (void) updateSelection;
 - (void) updateExpandedState;
 - (void) updateBuyButton;
+- (NSMenu*) defaultMenu;
 @end
 
 
@@ -33,9 +34,7 @@
 @synthesize rootController;
 @synthesize outlineView;
 @synthesize localRepositoryMenu;
-@synthesize repositoriesGroupMenu;
 @synthesize submoduleMenu;
-@synthesize defaultMenu;
 @synthesize ignoreSelectionChange;
 @synthesize buyButton;
 @synthesize nextResponderSidebarObject;
@@ -47,9 +46,7 @@
   self.outlineView = nil;
   self.buyButton = nil;
   self.localRepositoryMenu = nil;
-  self.repositoriesGroupMenu = nil;
   self.submoduleMenu = nil;
-  self.defaultMenu = nil;
   self.nextResponderSidebarObject = nil;
   [super dealloc];
 }
@@ -61,7 +58,7 @@
   [self.outlineView registerForDraggedTypes:[NSArray arrayWithObjects:GBSidebarItemPasteboardType, NSFilenamesPboardType, nil]];
   [self.outlineView setDraggingSourceOperationMask:NSDragOperationEvery forLocal:YES];
   [self.outlineView setDraggingSourceOperationMask:NSDragOperationEvery forLocal:NO];
-  
+  [self.outlineView setMenu:[self defaultMenu]];
   [self updateBuyButton];
 }
 
@@ -126,7 +123,22 @@
   return item;
 }
 
-
+- (NSMenu*) defaultMenu
+{
+  NSMenu* menu = [[[NSMenu alloc] initWithTitle:@""] autorelease];
+  
+  [menu addItem:[[[NSMenuItem alloc] 
+                  initWithTitle:NSLocalizedString(@"Add Repository...", @"Sidebar") action:@selector(openDocument:) keyEquivalent:@""] autorelease]];
+  [menu addItem:[[[NSMenuItem alloc] 
+                  initWithTitle:NSLocalizedString(@"Clone Repository...", @"Sidebar") action:@selector(cloneRepository:) keyEquivalent:@""] autorelease]];
+  
+  [menu addItem:[NSMenuItem separatorItem]];
+  
+  [menu addItem:[[[NSMenuItem alloc] 
+                  initWithTitle:NSLocalizedString(@"New Group", @"Sidebar") action:@selector(addGroup:) keyEquivalent:@""] autorelease]];
+  
+  return menu;
+}
 
 
 
@@ -192,6 +204,11 @@
     *outError = [NSError errorWithDomain:NSOSStatusErrorDomain code:unimpErr userInfo:NULL];
   }
   return NO;
+}
+
+- (IBAction) cloneRepository:sender
+{
+  NSLog(@"TODO: implement cloneRepository:");
 }
 
 
@@ -461,13 +478,19 @@
     cell = [tableColumn dataCell];
   }
   
+  [cell setMenu:item.menu];
+  
   return cell;
 }
 
-- (void)outlineView:(NSOutlineView*)anOutlineView willDisplayCell:(id)cell forTableColumn:(NSTableColumn*)tableColumn item:(GBSidebarItem*)item
+- (void)outlineView:(NSOutlineView*)anOutlineView willDisplayCell:(NSCell*)cell forTableColumn:(NSTableColumn*)tableColumn item:(GBSidebarItem*)item
 {
-	// menu should be attached directly to the cell
-  
+  NSLog(@"willDisplayCell for item: %@ cell: %@  menu: %@", item, cell, item.menu);
+  NSMenu* menu = item.menu;
+  if (menu)
+  {
+    [cell setMenu:menu];
+  }
 }
 
 - (CGFloat)outlineView:(NSOutlineView*)outlineView heightOfRowByItem:(GBSidebarItem*)item

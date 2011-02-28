@@ -26,13 +26,12 @@
 @property(nonatomic, retain) NSArray* selectedSidebarItems;
 @property(nonatomic, retain) GBSidebarItem* selectedSidebarItem;
 
-
 - (GBSidebarItem*) sidebarItemAndIndex:(NSUInteger*)anIndexRef forInsertionWithClickedItem:(GBSidebarItem*)clickedItem;
 
 // Returns NO if cannot open any of URLs
-
 - (BOOL) openURLs:(NSArray*)URLs;
 - (BOOL) openURLs:(NSArray*)URLs inSidebarItem:(GBSidebarItem*)targetItem atIndex:(NSUInteger)insertionIndex;
+
 - (void) addUntitledGroupInSidebarItem:(GBSidebarItem*)targetItem atIndex:(NSUInteger)insertionIndex;
 - (void) moveItems:(NSArray*)items toSidebarItem:(GBSidebarItem*)targetItem atIndex:(NSUInteger)insertionIndex;
 

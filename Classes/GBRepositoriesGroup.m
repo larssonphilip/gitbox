@@ -41,8 +41,6 @@
     self.sidebarItem.editable = YES;
     self.sidebarItem.image = [NSImage imageNamed:@"GBSidebarGroupIcon"];
     self.sidebarItem.cell = [[[GBSidebarCell alloc] initWithItem:self.sidebarItem] autorelease];
-    
-    [self.sidebarItem.cell setMenu:[self sidebarItemMenu]];
   }
   return self;
 }
@@ -82,10 +80,10 @@
 #pragma mark GBMainWindowItem
 
 
-//- (NSString*) windowTitle
-//{
-//  return self.name;
-//}
+- (NSString*) windowTitle
+{
+  return self.name;
+}
 
 
 

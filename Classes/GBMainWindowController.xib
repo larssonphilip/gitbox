@@ -31,10 +31,10 @@
 				<string key="NSClassName">NSApplication</string>
 			</object>
 			<object class="NSWindowTemplate" id="275939982">
-				<int key="NSWindowStyleMask">15</int>
+				<int key="NSWindowStyleMask">4111</int>
 				<int key="NSWindowBacking">2</int>
 				<string key="NSWindowRect">{{315, 289}, {799, 435}}</string>
-				<int key="NSWTFlags">1886912512</int>
+				<int key="NSWTFlags">1886913536</int>
 				<string key="NSWindowTitle">Window</string>
 				<string key="NSWindowClass">NSWindow</string>
 				<object class="NSToolbar" key="NSViewClass" id="959528133">
@@ -819,7 +819,7 @@
 					<reference key="NSNextKeyView" ref="831883882"/>
 				</object>
 				<string key="NSScreenRect">{{0, 0}, {1440, 878}}</string>
-				<string key="NSMinSize">{600, 255}</string>
+				<string key="NSMinSize">{600, 254}</string>
 				<string key="NSMaxSize">{1.79769e+308, 1.79769e+308}</string>
 				<string key="NSFrameAutosaveName">gitboxwindow</string>
 			</object>
@@ -857,14 +857,6 @@
 						<reference key="destination" ref="512844837"/>
 					</object>
 					<int key="connectionID">100386</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">pullOrPush:</string>
-						<reference key="source" ref="613418571"/>
-						<reference key="destination" ref="723410101"/>
-					</object>
-					<int key="connectionID">100396</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBActionConnection" key="connection">
@@ -1346,7 +1338,7 @@
 				<string key="100021.designableToolbarIdentifier">toolbar</string>
 				<string key="100036.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="100037.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-				<string key="100038.IBEditorWindowLastContentRect">{{73, 489}, {237, 73}}</string>
+				<string key="100038.IBEditorWindowLastContentRect">{{581, 396}, {237, 73}}</string>
 				<string key="100038.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="100039.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="100042.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -1406,11 +1398,11 @@
 				<string key="100430.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="100434.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="100435.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-				<string key="5.IBEditorWindowLastContentRect">{{203, 92}, {799, 435}}</string>
+				<string key="5.IBEditorWindowLastContentRect">{{197, 85}, {799, 435}}</string>
 				<string key="5.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-				<string key="5.IBWindowTemplateEditedContentRect">{{203, 92}, {799, 435}}</string>
+				<string key="5.IBWindowTemplateEditedContentRect">{{197, 85}, {799, 435}}</string>
 				<integer value="1" key="5.ImportedFromIB2"/>
-				<boolean value="YES" key="5.NSWindowTemplate.visibleAtLaunch"/>
+				<boolean value="NO" key="5.NSWindowTemplate.visibleAtLaunch"/>
 				<string key="5.editorWindowContentRectSynchronizationRect">{{201, 387}, {507, 413}}</string>
 				<boolean value="YES" key="5.windowTemplate.hasMinSize"/>
 				<string key="5.windowTemplate.minSize">{600, 200}</string>

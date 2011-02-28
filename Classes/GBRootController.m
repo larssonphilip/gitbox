@@ -78,7 +78,7 @@
   }
   else if (obj)
   {
-    GBSidebarItem* groupItem = [self.repositoriesController.sidebarItem parentOfItem:clickedItem];
+    GBSidebarItem* groupItem = [self.repositoriesController.sidebarItem parentOfItem:contextItem];
     group = (id)groupItem.object;
     if (group)
     {
