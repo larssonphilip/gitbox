@@ -33,8 +33,6 @@
 
 @synthesize rootController;
 @synthesize outlineView;
-@synthesize localRepositoryMenu;
-@synthesize submoduleMenu;
 @synthesize ignoreSelectionChange;
 @synthesize buyButton;
 @synthesize nextResponderSidebarObject;
@@ -45,8 +43,6 @@
   self.rootController = nil;
   self.outlineView = nil;
   self.buyButton = nil;
-  self.localRepositoryMenu = nil;
-  self.submoduleMenu = nil;
   self.nextResponderSidebarObject = nil;
   [super dealloc];
 }
@@ -485,7 +481,6 @@
 
 - (void)outlineView:(NSOutlineView*)anOutlineView willDisplayCell:(NSCell*)cell forTableColumn:(NSTableColumn*)tableColumn item:(GBSidebarItem*)item
 {
-  NSLog(@"willDisplayCell for item: %@ cell: %@  menu: %@", item, cell, item.menu);
   NSMenu* menu = item.menu;
   if (menu)
   {

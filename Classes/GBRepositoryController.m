@@ -8,6 +8,7 @@
 #import "GBRepositoriesController.h"
 #import "GBRepositoryController.h"
 #import "GBRepositoryToolbarController.h"
+#import "GBRepositoryViewController.h"
 #import "GBSubmoduleCloningController.h"
 
 #import "GBSidebarCell.h"
@@ -20,7 +21,6 @@
 #import "OABlockQueue.h"
 #import "OABlockMerger.h"
 #import "NSArray+OAArrayHelpers.h"
-//#import "NSObject+OAPerformBlockAfterDelay.h"
 #import "NSObject+OASelectorNotifications.h"
 
 @interface GBRepositoryController ()
@@ -258,6 +258,7 @@
 - (void) didSelectWindowItem
 {
   self.toolbarController.repositoryController = self;
+  self.viewController.repositoryController = self;
 }
 
 
@@ -270,6 +271,36 @@
 #pragma mark GBSidebarItem
 
 
+
+
+
+- (NSMenu*) sidebarItemMenu
+{
+  NSMenu* menu = [[[NSMenu alloc] initWithTitle:@""] autorelease];
+  
+  [menu addItem:[[[NSMenuItem alloc] 
+                  initWithTitle:NSLocalizedString(@"Open in Finder", @"Sidebar") action:@selector(openInFinder:) keyEquivalent:@""] autorelease]];
+  [menu addItem:[[[NSMenuItem alloc] 
+                  initWithTitle:NSLocalizedString(@"Open in Terminal", @"Sidebar") action:@selector(openInTerminal:) keyEquivalent:@""] autorelease]];
+  
+  [menu addItem:[NSMenuItem separatorItem]];
+
+  [menu addItem:[[[NSMenuItem alloc] 
+                  initWithTitle:NSLocalizedString(@"Add Repository...", @"Sidebar") action:@selector(openDocument:) keyEquivalent:@""] autorelease]];
+  [menu addItem:[[[NSMenuItem alloc] 
+                  initWithTitle:NSLocalizedString(@"Clone Repository...", @"Sidebar") action:@selector(cloneRepository:) keyEquivalent:@""] autorelease]];
+  
+  [menu addItem:[NSMenuItem separatorItem]];
+  
+  [menu addItem:[[[NSMenuItem alloc] 
+                  initWithTitle:NSLocalizedString(@"New Group", @"Sidebar") action:@selector(addGroup:) keyEquivalent:@""] autorelease]];
+  
+  [menu addItem:[NSMenuItem separatorItem]];
+    
+  [menu addItem:[[[NSMenuItem alloc] 
+                  initWithTitle:NSLocalizedString(@"Remove from Sidebar", @"Sidebar") action:@selector(remove:) keyEquivalent:@""] autorelease]];
+  return menu;
+}
 
 
 
