@@ -659,7 +659,6 @@
   [selectedCommit release];
   selectedCommit = [aCommit retain];
 
-  [self resetAutoFetchInterval];
   [self notifyWithSelector:@selector(repositoryControllerDidSelectCommit:)];
 }
 
