@@ -25,5 +25,7 @@
 //- (IBAction) selectNextRepository:(id)_;
 
 - (IBAction) showWelcomeWindow:(id)_;
+- (IBAction) selectNextPane:(id)_;
+- (IBAction) selectNextPane:(id)_;
 
 @end

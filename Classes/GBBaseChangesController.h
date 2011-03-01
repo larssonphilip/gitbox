@@ -30,10 +30,10 @@
 - (NSCell*) headerCell;
 - (CGFloat) headerHeight;
 
-- (IBAction) selectFirstLineIfNeeded:_;
+- (IBAction) selectFirstLineIfNeeded:(id)sender;
 - (IBAction) stageShowDifference:_;
 - (IBAction) stageRevealInFinder:_;
-- (IBAction) selectLeftPane:_;
-- (BOOL) validateSelectLeftPane:_;
+- (IBAction) selectLeftPane:(id)sender;
+- (BOOL) validateSelectLeftPane:(id)sender;
 
 @end

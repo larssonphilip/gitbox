@@ -11,8 +11,8 @@
 @property(nonatomic, retain) GBCommit* commit;
 @property(nonatomic, retain) NSView* detailView;
 
-- (IBAction) selectLeftPane:_;
-- (IBAction) selectRightPane:_;
+- (IBAction) selectLeftPane:(id)sender;
+- (IBAction) selectRightPane:(id)sender;
 
 
 // Nib API

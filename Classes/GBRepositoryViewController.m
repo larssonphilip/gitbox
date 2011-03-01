@@ -49,7 +49,22 @@
   [self.historyController loadInView:[self historyView]];
 }
 
+- (NSView*) firstKeyView
+{
+  return [self.historyController tableView];
+}
 
+
+
+
+#pragma mark Actions
+
+
+- (IBAction) selectPane:(id)sender
+{
+  if (sender == self) return;
+  [self.historyController tryToPerform:@selector(selectPane:) with:self];
+}
 
 
 

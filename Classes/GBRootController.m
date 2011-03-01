@@ -162,6 +162,7 @@
         repoCtrl.toolbarController = self.repositoriesController.repositoryToolbarController;
         repoCtrl.viewController = self.repositoriesController.repositoryViewController;
         [aGroup insertObject:repoCtrl atIndex:insertionIndex];
+        [self.repositoriesController launchRepositoryController:repoCtrl queued:NO];
         insertionIndex++;
       }
       if (repoCtrl)

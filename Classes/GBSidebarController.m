@@ -270,8 +270,37 @@
 
 - (IBAction) selectRightPane:_
 {
-  [[self.outlineView window] selectKeyViewFollowingView:self.outlineView];
+  // Key view loop sucks: http://www.cocoadev.com/index.pl?KeyViewLoopGuidelines
+  //NSLog(@"selectRightPane: next key view: %@, next valid key view: %@", [[self view] nextKeyView], [[self view] nextValidKeyView]);
+  //[[[self view] window] selectKeyViewFollowingView:[self view]];
+  
+  [[self nextResponder] tryToPerform:@selector(selectNextPane:) with:self];
 }
+
+- (IBAction) selectPane:_
+{
+  [[[self view] window] makeFirstResponder:self.outlineView];
+}
+
+
+- (BOOL) validateSelectRightPane:(id)sender
+{
+  if ([[[[self view] window] firstResponder] isKindOfClass:[NSText class]]) 
+  {
+    return NO;
+  }
+  if (!self.rootController.selectedSidebarItem)
+  {
+    return NO;
+  }
+  // Allows left arrow to expand the item
+  if (![self.rootController.selectedSidebarItem isExpanded])
+  {
+    return NO;
+  }
+  return YES;
+}
+
 
 
 //
@@ -280,15 +309,7 @@
 //  return [[[self.view window] firstResponder] isKindOfClass:[NSText class]];
 //}
 //
-//- (BOOL) validateSelectRightPane:(id)sender
-//{
-//  BOOL disableJumping = \
-//    [self isEditing]  ||
-//    [[self selectedSidebarItem] isRepositoriesGroup] ||
-//    ([[self selectedSidebarItem] isExpandableInSidebar] && ![[self selectedSidebarItem] isExpandedInSidebar]);
-//  return !disableJumping;
-//}
-//
+
 
 
 

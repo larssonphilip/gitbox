@@ -153,13 +153,15 @@
     if ([aCommit isStage])
     {
       [self.stageController loadInView:self.detailView];
-      [self.tableView setNextKeyView:self.stageController.tableView];
+      [self.stageController setNextResponder:self];
+      //[self.tableView setNextKeyView:self.stageController.tableView];
     }
     else
     {
       self.commitController.commit = commit;
       [self.commitController loadInView:self.detailView];
-      [self.tableView setNextKeyView:self.commitController.tableView];
+      [self.commitController setNextResponder:self];
+      //[self.tableView setNextKeyView:self.commitController.tableView];
     }
   }
 }
@@ -213,6 +215,7 @@
   [super loadView];
   if (!self.jumpController) self.jumpController = [OAFastJumpController controller];
   [self.tableView setIntercellSpacing:NSMakeSize(0.0, 0.0)]; // remove the awful paddings
+  //[[self view] setNextKeyView:self.tableView];
 }
 
 
@@ -222,14 +225,14 @@
   {
     self.stageController = [[[GBStageViewController alloc] initWithNibName:@"GBStageViewController" bundle:nil] autorelease];
     [self.stageController view]; // preloads view
-    [self.stageController.tableView setNextKeyView:[self.tableView nextKeyView]];
+    //[self.stageController.tableView setNextKeyView:[self.tableView nextKeyView]];
   }
   
   if (!self.commitController)
   {
     self.commitController = [[[GBCommitViewController alloc] initWithNibName:@"GBCommitViewController" bundle:nil] autorelease];
     [self.commitController view]; // preloads view
-    [self.commitController.tableView setNextKeyView:[self.tableView nextKeyView]];
+    //[self.commitController.tableView setNextKeyView:[self.tableView nextKeyView]];
   }
 }
 
@@ -244,28 +247,45 @@
 #pragma mark Actions
 
 
-- (IBAction) selectLeftPane:_
+- (IBAction) selectPane:(id)sender
 {
-  [[self.tableView window] selectKeyViewPrecedingView:self.tableView];
+  [[[self view] window] makeFirstResponder:self.tableView];
 }
 
-- (IBAction) selectRightPane:_
+- (IBAction) selectPreviousPane:(id)sender
+{
+  [self selectPane:(id)sender];
+}
+
+- (IBAction) selectLeftPane:(id)sender
+{
+  // key view loop sucks
+  //  NSLog(@"HC selectLeftPane: prev key view: %@, prev valid key view: %@", [[self view] previousKeyView], [[self view] previousValidKeyView]);  
+  //  [[[self view] window] selectKeyViewPrecedingView:[self tableView]];
+  
+  [[self nextResponder] tryToPerform:@selector(selectPreviousPane:) with:self];
+}
+
+- (IBAction) selectRightPane:(id)sender
 {
   [self.jumpController flush]; // force the next view to appear before jumping into it
-    
-  [[self.tableView window] selectKeyViewFollowingView:self.tableView];
+  //NSLog(@"HC selectRightPane: next key view: %@, next valid key view: %@", [[self view] nextKeyView], [[self view] nextValidKeyView]);
+  //[[[self view] window] selectKeyViewFollowingView:self.tableView];
+  
   GBCommit* aCommit = self.repositoryController.selectedCommit;
   if (!aCommit || [aCommit isStage])
   {
-    [self.stageController selectFirstLineIfNeeded:_];
+    [self.stageController tryToPerform:@selector(selectPane:) with:self];
+    [self.stageController selectFirstLineIfNeeded:sender];
   }
   else
   {
-    [self.commitController selectFirstLineIfNeeded:_];
+    [self.commitController tryToPerform:@selector(selectPane:) with:self];
+    [self.commitController selectFirstLineIfNeeded:sender];
   }
 }
 
-- (BOOL) validateSelectRightPane:_
+- (BOOL) validateSelectRightPane:(id)sender
 {
   // Note: first condition is for case when changes are not loaded yet and user quickly jumps to the next pane
   return !self.repositoryController.selectedCommit.changes  || ([self.repositoryController.selectedCommit.changes count] > 0);

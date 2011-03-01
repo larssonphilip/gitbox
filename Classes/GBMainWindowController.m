@@ -103,6 +103,7 @@
   [detailViewController release];
   detailViewController = [newViewController retain];
   [detailViewController loadInView:[self detailView]];
+  [self.detailViewController setNextResponder:self.sidebarController];
 }
 
 
@@ -275,16 +276,6 @@
 
 
 
-//- (IBAction) selectPreviousRepository:(id)_
-//{
-//  [self.sidebarController selectPreviousRepository:_];
-//}
-//
-//- (IBAction) selectNextRepository:(id)_
-//{
-//  [self.sidebarController selectNextRepository:_];
-//}
-
 //- (IBAction) pullOrPush:(id)_
 //{
 //  [self.toolbarController pullOrPush:_];
@@ -331,7 +322,15 @@
   [self.welcomeController runSheetInWindow:[self window]];
 }
 
+- (IBAction) selectPreviousPane:(id)sender
+{
+  [self.sidebarController tryToPerform:@selector(selectPane:) with:self];
+}
 
+- (IBAction) selectNextPane:(id)sender
+{
+  [self.detailViewController tryToPerform:@selector(selectPane:) with:self];
+}
 
 
 
@@ -366,6 +365,7 @@
   self.sidebarController.rootController = self.rootController;
   [self.sidebarController loadInView:[self sidebarView]];
   
+  [[self window] setInitialFirstResponder:self.sidebarController.outlineView];
   [[self window] makeFirstResponder:self.sidebarController.outlineView];
   if (!self.toolbarController)
   {

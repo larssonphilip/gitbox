@@ -294,22 +294,38 @@ dataCellForTableColumn:(NSTableColumn*)aTableColumn
   }
 
 
-- (IBAction) selectLeftPane:_
+- (IBAction) selectPane:(id)sender
 {
-  [[self.tableView window] selectKeyViewPrecedingView:self.tableView];
+  [[[self view] window] makeFirstResponder:self.tableView];
 }
 
-- (IBAction) selectFirstLineIfNeeded:_
+- (IBAction) selectLeftPane:(id)sender
+{
+  [[self nextResponder] tryToPerform:@selector(selectPreviousPane:) with:self];
+}
+
+- (BOOL) validateSelectLeftPane:(id)sender
+{
+  return YES;
+}
+
+- (IBAction) selectRightPane:(id)sender
+{
+}
+
+- (BOOL) validateSelectRightPane:(id)sender
+{
+  return NO;
+}
+
+
+
+- (IBAction) selectFirstLineIfNeeded:(id)sender
 {
   if (![[self selectedChanges] firstObject])
   {
     [self.statusArrayController setSelectionIndex:1];
   }
-}
-
-- (BOOL) validateSelectLeftPane:_
-{
-  return YES;
 }
 
 
