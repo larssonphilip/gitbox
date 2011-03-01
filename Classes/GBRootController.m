@@ -9,6 +9,8 @@
 #import "NSObject+OASelectorNotifications.h"
 #import "NSArray+OAArrayHelpers.h"
 #import "OALicenseNumberCheck.h"
+#import "OAPropertyListRepresentation.h"
+
 
 @interface GBRootController ()
 @property(nonatomic, retain, readwrite) GBSidebarItem* sidebarItem;
@@ -360,6 +362,48 @@
   return nil;
 }
 
+
+
+
+#pragma mark Persistence
+
+
+
+- (id) OAContentsPropertyList
+{
+  return [NSArray arrayWithObjects:
+          [NSDictionary dictionaryWithObjectsAndKeys:
+           @"repositoriesController", @"name",
+           [NSNumber numberWithBool:[self.repositoriesController.sidebarItem isCollapsed]], @"collapsed",
+           [self.repositoriesController OAContentsPropertyList], @"content",
+           nil],
+          nil];
+}
+
+- (void) OALoadContentsFromPropertyList:(NSArray*)plist
+{
+  if (!plist || ![plist isKindOfClass:[NSArray class]]) return;
+  
+  for (NSDictionary* dict in plist)
+  {
+    if (![dict isKindOfClass:[NSDictionary class]]) continue;
+    
+    NSString* name = [dict objectForKey:@"name"];
+    NSNumber* collapsedValue = [dict objectForKey:@"collapsed"];
+    id contents = [dict objectForKey:@"content"];
+    
+    // TODO: when more sections are added, this is a good place to order them to restore user's sorting.
+    if ([name isEqual:@"repositoriesController"])
+    {
+      self.repositoriesController.sidebarItem.collapsed = (collapsedValue ? [collapsedValue boolValue] : NO);
+      [self.repositoriesController OALoadContentsFromPropertyList:contents];
+    }
+    else if ([name isEqual:@"githubController"])
+    {
+      // ...
+    }
+  }
+}
 
 
 @end
