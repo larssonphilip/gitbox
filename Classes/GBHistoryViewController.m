@@ -1,4 +1,5 @@
 #import "GBCommit.h"
+#import "GBStage.h"
 #import "GBRepository.h"
 
 #import "GBRepositoryController.h"
@@ -250,6 +251,11 @@
 - (IBAction) selectPane:(id)sender
 {
   [[[self view] window] makeFirstResponder:self.tableView];
+  
+  if (!self.commit)
+  {
+    self.repositoryController.selectedCommit = self.repositoryController.repository.stage;
+  }
 }
 
 - (IBAction) selectPreviousPane:(id)sender

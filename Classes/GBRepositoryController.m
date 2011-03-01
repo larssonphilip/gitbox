@@ -1211,15 +1211,18 @@
   {
     //NSLog(@"AutoFetch: self.updatesQueue = %d / %d [%@]", (int)self.updatesQueue.operationCount, (int)[self.updatesQueue.queue count], [self nameInSidebar]);
     self.isWaitingForAutofetch = YES;
-    NSAssert(self.autofetchQueue, @"Somebody forgot to set autofetchQueue for repository controller %@", self.repository.url);
-    [self.autofetchQueue addBlock:^{
-      self.isWaitingForAutofetch = NO;
-      //NSLog(@"AutoFetch: start %@", [self nameInSidebar]);
-      [self updateRemoteRefsWithBlock:^{
-        //NSLog(@"AutoFetch: end %@", [self nameInSidebar]);
-        [self.autofetchQueue endBlock];
+    //NSAssert(self.autofetchQueue, @"Somebody forgot to set autofetchQueue for repository controller %@", self.repository.url);
+    if (self.autofetchQueue)
+    {
+      [self.autofetchQueue addBlock:^{
+        self.isWaitingForAutofetch = NO;
+        //NSLog(@"AutoFetch: start %@", [self nameInSidebar]);
+        [self updateRemoteRefsWithBlock:^{
+          //NSLog(@"AutoFetch: end %@", [self nameInSidebar]);
+          [self.autofetchQueue endBlock];
+        }];
       }];
-    }];
+    }
   }
 }
 
