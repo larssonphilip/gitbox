@@ -125,6 +125,7 @@
     self.sidebarItem.draggable = YES;
     self.sidebarItem.image = [self icon];
     self.sidebarItem.cell = [[[GBSidebarCell alloc] initWithItem:self.sidebarItem] autorelease];
+    self.selectedCommit = self.repository.stage;
   }
   return self;
 }

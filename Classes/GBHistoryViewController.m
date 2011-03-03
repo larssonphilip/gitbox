@@ -56,8 +56,8 @@
 - (void) dealloc
 {
   [NSObject cancelPreviousPerformRequestsWithTarget:self];
-  self.repositoryController = nil;
-  self.commit = nil;
+  [repositoryController release];
+  [commit release];
   self.detailView = nil;
   
   self.tableView = nil;
@@ -99,14 +99,8 @@
   self.stageController.repositoryController = repoCtrl;
   self.commitController.repositoryController = repoCtrl;
   
-  if (repoCtrl.selectedCommit)
-  {
-    self.commit = repoCtrl.selectedCommit;
-  }
-  else
-  {
-    self.commit = nil;
-  }
+  [self view]; // load view
+  self.commit = repoCtrl.selectedCommit;
 }
 
 
@@ -141,10 +135,7 @@
     }
   }];
   
-  if (aCommit) // avoid mess if this method is called in dealloc
-  {
-    [self prepareChangesControllersIfNeeded];
-  }
+  [self prepareChangesControllersIfNeeded];
   
   [self.stageController.view removeFromSuperview];
   [self.commitController.view removeFromSuperview];

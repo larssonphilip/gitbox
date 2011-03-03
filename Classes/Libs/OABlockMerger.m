@@ -75,7 +75,7 @@
       //NSLog(@"OABlockMerger:%p [performTaskOnce:%@] attaching to running task", self, taskName);
       [self performTask:taskName withBlock:taskBlock completionHandler:completionHandler];
     }
-    else // already finished, simply call the coompletion block
+    else // already finished, simply call the completion block
     {
       //NSLog(@"OABlockMerger:%p [performTaskOnce:%@] task is finished, calling back immediately", self, taskName);
       if (completionHandler) completionHandler();

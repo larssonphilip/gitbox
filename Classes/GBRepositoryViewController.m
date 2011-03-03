@@ -37,7 +37,7 @@
   
   [repositoryController release];
   repositoryController = [aRepoCtrl retain];
-  
+  [self view]; // load view
   self.historyController.repositoryController = aRepoCtrl;
 }
 
