@@ -2,6 +2,8 @@
 @protocol GBSidebarItemObject <NSObject>
 
 - (GBSidebarItem*) sidebarItem;
+- (id) sidebarItemContentsPropertyList;
+- (void) sidebarItemLoadContentsFromPropertyList:(id)plist;
 
 @optional
 

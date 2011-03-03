@@ -369,18 +369,18 @@
 
 
 
-- (id) OAContentsPropertyList
+- (id) sidebarItemContentsPropertyList
 {
   return [NSArray arrayWithObjects:
           [NSDictionary dictionaryWithObjectsAndKeys:
            @"repositoriesController", @"name",
            [NSNumber numberWithBool:[self.repositoriesController.sidebarItem isCollapsed]], @"collapsed",
-           [self.repositoriesController OAContentsPropertyList], @"content",
+           [self.repositoriesController sidebarItemContentsPropertyList], @"content",
            nil],
           nil];
 }
 
-- (void) OALoadContentsFromPropertyList:(NSArray*)plist
+- (void) sidebarItemLoadContentsFromPropertyList:(id)plist
 {
   if (!plist || ![plist isKindOfClass:[NSArray class]]) return;
   
@@ -396,7 +396,7 @@
     if ([name isEqual:@"repositoriesController"])
     {
       self.repositoriesController.sidebarItem.collapsed = (collapsedValue ? [collapsedValue boolValue] : NO);
-      [self.repositoriesController OALoadContentsFromPropertyList:contents];
+      [self.repositoriesController sidebarItemLoadContentsFromPropertyList:contents];
     }
     else if ([name isEqual:@"githubController"])
     {
