@@ -58,6 +58,7 @@ Gitbox 1.3 Refactoring:
 - bugfix: when fetch is clicked, should fetch everything 
 - maintain selection of the file when switching commits
 - maintain quicklook contents when switching commits
+- update spinners by listening to the repo ctrls
 
 
 Gitbox 1.3 Features:
