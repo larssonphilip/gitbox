@@ -14,6 +14,7 @@
 @interface GBRepository : NSObject
 
 @property(nonatomic, retain) NSURL* url;
+@property(nonatomic, retain, readonly) NSData* URLBookmarkData;
 @property(nonatomic, retain) NSURL* dotGitURL;
 @property(nonatomic, retain) NSArray* localBranches;
 @property(nonatomic, retain) NSArray* remotes;
@@ -35,14 +36,12 @@
 + (NSString*) gitVersionForLaunchPath:(NSString*) aLaunchPath;
 + (NSString*) supportedGitVersion;
 + (BOOL) isSupportedGitVersion:(NSString*)version;
-
 + (BOOL) isValidRepositoryPath:(NSString*)aPath;
 + (BOOL) isValidRepositoryOrFolderURL:(NSURL*)aURL;
 + (BOOL) isAtLeastOneValidRepositoryOrFolderURL:(NSArray*)URLs;
 + (BOOL) validateRepositoryURL:(NSURL*)aURL;
-
 + (void) initRepositoryAtURL:(NSURL*)url;
-
++ (NSURL*) URLFromBookmarkData:(NSData*)bookmarkData;
 
 #pragma mark Interrogation
 

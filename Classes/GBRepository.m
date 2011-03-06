@@ -21,6 +21,7 @@
 
 @interface GBRepository ()
 
+@property(nonatomic, retain, readwrite) NSData* URLBookmarkData;
 @property(nonatomic, retain) NSString* topCommitId;
 @property(nonatomic, retain) OABlockMerger* blockMerger;
 @property(nonatomic, retain) GBGitConfig* config;
@@ -37,6 +38,7 @@
 @implementation GBRepository
 
 @synthesize url;
+@synthesize URLBookmarkData;
 @synthesize dotGitURL;
 @synthesize localBranches;
 @synthesize remotes;
@@ -65,6 +67,7 @@
   [NSObject cancelPreviousPerformRequestsWithTarget:self];
   
   self.url = nil;
+  self.URLBookmarkData = nil;
   self.dotGitURL = nil;
   self.localBranches = nil;
   self.remotes = nil;
@@ -269,13 +272,57 @@
                                            error:NULL];
 }
 
-
-
++ (NSURL*) URLFromBookmarkData:(NSData*)bookmarkData
+{
+  if (!bookmarkData) return nil;
+  if (![bookmarkData isKindOfClass:[NSData class]]) return nil;
+  
+  NSError* error = nil;
+  NSURL* aURL = [NSURL URLByResolvingBookmarkData:bookmarkData
+                                          options:NSURLBookmarkResolutionWithoutUI | NSURLBookmarkResolutionWithoutMounting
+                                    relativeToURL:nil
+                              bookmarkDataIsStale:NO
+                                            error:&error];
+  if (error)
+  {
+    NSLog(@"[GBRepository URLFromBookmarkData:]: Cannot create URL from bookmark data: %@", bookmarkData);
+  }
+  
+  if (!aURL) return nil;
+  if (![aURL path]) return nil;
+  return aURL;
+}
 
 
 #pragma mark Properties
 
 
+
+- (void) setUrl:(NSURL *)aURL
+{
+  if (aURL == url) return;
+  
+  [url release];
+  url = [aURL retain];
+  
+  if (!url)
+  {
+    self.URLBookmarkData = nil;
+  }
+  else
+  {
+    NSError* error = nil;
+    self.URLBookmarkData = [url bookmarkDataWithOptions:NSURLBookmarkCreationPreferFileIDResolution
+                                includingResourceValuesForKeys:nil
+                                                 relativeToURL:nil
+                                                         error:&error];
+    if (error)
+    {
+      NSLog(@"[GBRepository setUrl:]: Cannot create bookmark data for URL %@", url);
+      self.URLBookmarkData = nil;
+    }
+  }
+}
 
 - (NSURL*) dotGitURL
 {

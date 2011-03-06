@@ -17,9 +17,6 @@
 
 
 @interface GBRepositoriesController ()
-@property(nonatomic, assign) BOOL itemsRestoredFromPreferences;
-- (void) loadLocalRepositoriesAndGroups;
-- (void) saveLocalRepositoriesAndGroups;
 @end
 
 @implementation GBRepositoriesController
@@ -28,7 +25,6 @@
 @synthesize autofetchQueue;
 @synthesize repositoryViewController;
 @synthesize repositoryToolbarController;
-@synthesize itemsRestoredFromPreferences;
 
 
 - (void) dealloc
@@ -64,77 +60,166 @@
 
 
 
-#pragma mark GBSidebarItem
-
-
-- (NSInteger) sidebarItemNumberOfChildren
-{
-  if (!self.itemsRestoredFromPreferences)
-  {
-    [self loadLocalRepositoriesAndGroups];
-    self.itemsRestoredFromPreferences = YES;
-  }
-  return [super sidebarItemNumberOfChildren];
-}
+#pragma mark Launch
 
 
 
 
-
-#pragma mark Actions
-
-
-
-
-- (void) launchRepositoryController:(GBBaseRepositoryController*)repoCtrl queued:(BOOL)queued
+- (void) startRepositoryController:(GBRepositoryController*)repoCtrl
 {
   if (!repoCtrl) return;
+  repoCtrl.toolbarController = self.repositoryToolbarController;
+  repoCtrl.viewController = self.repositoryViewController;
   repoCtrl.updatesQueue = self.localRepositoriesUpdatesQueue;
   repoCtrl.autofetchQueue = self.autofetchQueue;
   [repoCtrl start];
   
-  if (!queued)
-  {
-    [self.localRepositoriesUpdatesQueue prependBlock:^{
-      [repoCtrl initialUpdateWithBlock:^{
-        [self.localRepositoriesUpdatesQueue endBlock];
-      }];
-    }];
-  }
-  else
-  {
-    [self.localRepositoriesUpdatesQueue addBlock:^{
-      [repoCtrl initialUpdateWithBlock:^{
-        [self.localRepositoriesUpdatesQueue endBlock];
-      }];
-    }];
-  }
+//  if (!queued)
+//  {
+//    [self.localRepositoriesUpdatesQueue prependBlock:^{
+//      [repoCtrl initialUpdateWithBlock:^{
+//        [self.localRepositoriesUpdatesQueue endBlock];
+//      }];
+//    }];
+//  }
+//  else
+//  {
+//    [self.localRepositoriesUpdatesQueue addBlock:^{
+//      [repoCtrl initialUpdateWithBlock:^{
+//        [self.localRepositoriesUpdatesQueue endBlock];
+//      }];
+//    }];
+//  }
 }
 
 
 
+@end
 
 
 
-#pragma mark Persistance
+
+
+
+@interface GBRepositoriesController (Persistance)
+- (id) propertyListForGroupContents:(GBRepositoriesGroup*)aGroup;
+- (id) propertyListForGroup:(GBRepositoriesGroup*)aGroup;
+- (id) propertyListForRepositoryController:(GBRepositoryController*)repoCtrl;
+@end
+
+@implementation GBRepositoriesController (Persistance)
 
 
 
 
-- (NSURL*) URLFromBookmarkData:(NSData*)bookmarkData
+#pragma mark Saving
+
+
+- (id) propertyListForGroupContents:(GBRepositoriesGroup*)aGroup
 {
-  if (!bookmarkData) return nil;
-  if (![bookmarkData isKindOfClass:[NSData class]]) return nil;
-  NSURL* aURL = [NSURL URLByResolvingBookmarkData:bookmarkData
-                                          options:NSURLBookmarkResolutionWithoutUI | 
-                 NSURLBookmarkResolutionWithoutMounting
-                                    relativeToURL:nil
-                              bookmarkDataIsStale:NO
-                                            error:NULL];
-  if (!aURL) return nil;
-  if (![aURL path]) return nil;
-  return aURL;
+  NSMutableArray* list = [NSMutableArray array];
+  
+  for (id<GBSidebarItemObject> item in aGroup.items)
+  {
+    if ([item isKindOfClass:[GBRepositoriesGroup class]])
+    {
+      [list addObject:[self propertyListForGroup:(id)item]];
+    }
+    else if ([item isKindOfClass:[GBRepositoryController class]])
+    {
+      [list addObject:[self propertyListForRepositoryController:(id)item]];
+    }
+  }
+  return list;
 }
+
+- (id) propertyListForGroup:(GBRepositoriesGroup*)aGroup
+{
+  return [NSDictionary dictionaryWithObjectsAndKeys:
+                                @"GBRepositoriesGroup", @"class",
+                                aGroup.name, @"name",
+                                [NSNumber numberWithBool:[aGroup.sidebarItem isCollapsed]], @"collapsed",
+                                [self propertyListForGroupContents:aGroup], @"contents",
+                                nil];
+}
+
+- (id) propertyListForRepositoryController:(GBRepositoryController*)repoCtrl
+{
+  return [NSDictionary dictionaryWithObjectsAndKeys:
+                   @"GBRepositoryController", @"class",
+                   repoCtrl.repository.URLBookmarkData, @"URLBookmarkData",
+                   [NSNumber numberWithBool:[repoCtrl.sidebarItem isCollapsed]], @"collapsed",
+                   [repoCtrl sidebarItemContentsPropertyList], @"contents",
+                   nil];
+}
+
+- (id) sidebarItemContentsPropertyList
+{
+  return [self propertyListForGroupContents:self];
+}
+
+
+
+
+
+#pragma mark Loading
+
+
+
+- (void) loadGroupContents:(GBRepositoriesGroup*)currentGroup fromPropertyList:(id)plist
+{
+  
+  if (!plist || ![plist isKindOfClass:[NSArray class]]) return;
+  
+  NSMutableArray* newItems = [NSMutableArray array];
+  
+  for (NSDictionary* dict in plist)
+  {
+    if (![dict isKindOfClass:[NSDictionary class]]) continue;
+    
+    NSString* className = [dict objectForKey:@"class"];
+    BOOL collapsed = [[dict objectForKey:@"collapsed"] boolValue];
+    id contents = [dict objectForKey:@"contents"];
+    
+    if ([className isEqual:@"GBRepositoriesGroup"])
+    {
+      GBRepositoriesGroup* aGroup = [[[GBRepositoriesGroup alloc] init] autorelease];
+      aGroup.name = [dict objectForKey:@"name"];
+      aGroup.sidebarItem.collapsed = collapsed;
+      [self loadGroupContents:aGroup fromPropertyList:contents];
+      [newItems addObject:aGroup];
+    }
+    else if ([className isEqual:@"GBRepositoryController"])
+    {
+      NSData* bookmarkData = [dict objectForKey:@"URLBookmarkData"];
+      NSURL* aURL = [GBRepository URLFromBookmarkData:bookmarkData];
+      
+      if (aURL && [GBRepository isValidRepositoryPath:[aURL path]])
+      {
+        GBRepositoryController* repoCtrl = [GBRepositoryController repositoryControllerWithURL:aURL];
+        [repoCtrl sidebarItemLoadContentsFromPropertyList:contents];
+        [newItems addObject:repoCtrl];
+        [self startRepositoryController:repoCtrl];
+      }
+    }
+  }
+  currentGroup.items = newItems;  
+}
+
+
+- (void) sidebarItemLoadContentsFromPropertyList:(id)plist
+{
+  [self loadGroupContents:self fromPropertyList:plist];
+}
+
+
+
+
+
+
+
+
+
 
 
 //- (GBRepositoryController*) localItemFromURLBookmark:(NSData*)bookmarkData

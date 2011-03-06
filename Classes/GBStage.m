@@ -99,7 +99,7 @@
         if ([stagedChangesTask terminationStatus] == 0)
         {
           self.stagedChanges = stagedChangesTask.changes;
-          [self update];
+          //[self update];
         }
         else
         {
@@ -108,7 +108,7 @@
           [blockGroup enter];
           [self.repository launchTask:stagedChangesTask2 withBlock:^{
             self.stagedChanges = stagedChangesTask2.changes;
-            [self update];
+            //[self update];
             [blockGroup leave];
           }];
         }
@@ -118,7 +118,7 @@
         GBUnstagedChangesTask* unstagedChangesTask = [GBUnstagedChangesTask taskWithRepository:self.repository];
         [self.repository launchTask:unstagedChangesTask withBlock:^{
           self.unstagedChanges = unstagedChangesTask.changes;
-          [self update];
+          //[self update];
           
           GBUntrackedChangesTask* untrackedChangesTask = [GBUntrackedChangesTask taskWithRepository:self.repository];
           [self.repository launchTask:untrackedChangesTask withBlock:^{

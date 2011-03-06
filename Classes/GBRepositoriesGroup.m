@@ -211,4 +211,21 @@
 }
 
 
+
+
+
+#pragma mark Persistance
+
+
+// actual loading is done by repositories controller
+- (id) sidebarItemContentsPropertyList
+{
+  return nil;
+}
+
+- (void) sidebarItemLoadContentsFromPropertyList:(id)plist
+{
+}
+
+
 @end

@@ -142,4 +142,22 @@ NSString* const GBSubmoduleStatusNotUpToDate = @"GBSubmoduleStatusNotUpToDate";
   return [[self localURL] pasteboardPropertyListForType:type];
 }
 
+
+
+
+
+#pragma mark Persistance
+
+
+
+- (id) sidebarItemContentsPropertyList
+{
+  return nil;
+}
+
+- (void) sidebarItemLoadContentsFromPropertyList:(id)plist
+{
+}
+
+
 @end

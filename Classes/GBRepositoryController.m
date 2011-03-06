@@ -78,7 +78,6 @@
 @synthesize selectedCommit;
 @synthesize fsEventStream;
 @synthesize lastCommitBranchName;
-@synthesize urlBookmarkData;
 @synthesize blockMerger;
 
 @synthesize isRemoteBranchesDisabled;
@@ -101,7 +100,6 @@
   self.selectedCommit = nil;
   self.fsEventStream = nil;
   self.lastCommitBranchName = nil;
-  self.urlBookmarkData = nil;
   self.blockMerger = nil;
   [super dealloc];
 }
@@ -161,7 +159,7 @@
 // obsolete
 - (NSArray*) commits
 {
-  return [self.repository stageAndCommits];
+  return [self stageAndCommits];
 }
 
 - (NSArray*) stageAndCommits
@@ -177,17 +175,14 @@
     self.isDisappearedFromFileSystem = YES;
     
     NSLog(@"GBRepositoryController: repo does not exist at path %@", [self.repository path]);
-    NSURL* url = [NSURL URLByResolvingBookmarkData:self.urlBookmarkData 
-                                           options:NSURLBookmarkResolutionWithoutUI | 
-                                                   NSURLBookmarkResolutionWithoutMounting
-                                     relativeToURL:nil 
-                               bookmarkDataIsStale:NO 
-                                             error:NULL];
+    
+    NSURL* url = [GBRepository URLFromBookmarkData:self.repository.URLBookmarkData];
+    
     if (url)
     {
       url = [[[NSURL alloc] initFileURLWithPath:[url path] isDirectory:YES] autorelease];
     }
-    [self.delegate repositoryController:self didMoveToURL:url];
+    [self notifyWithSelector:@selector(repositoryController:didMoveToURL:) withObject:url];
     return NO;
   }
   return YES;
@@ -203,10 +198,6 @@
   self.fsEventStream.shouldLogEvents = NO;
 #endif
   
-  self.urlBookmarkData =  [[self url] bookmarkDataWithOptions:NSURLBookmarkCreationPreferFileIDResolution
-                                                          includingResourceValuesForKeys:nil
-                                                                           relativeToURL:nil
-                                                                                   error:NULL];
   //NSLog(@"GBRepositoryController start: %@", [self url]);
   [self.fsEventStream addPath:[self.repository path] withBlock:^(NSString* path){
     
@@ -1260,6 +1251,27 @@
   }
   return [[self url] pasteboardPropertyListForType:type];
 }
+
+
+
+
+
+
+
+
+#pragma mark Persistance
+
+
+
+- (id) sidebarItemContentsPropertyList
+{
+  return nil;
+}
+
+- (void) sidebarItemLoadContentsFromPropertyList:(id)plist
+{
+}
+
 
 
 

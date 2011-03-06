@@ -53,6 +53,7 @@
   [self.outlineView setDraggingSourceOperationMask:NSDragOperationEvery forLocal:NO];
   [self.outlineView setMenu:[self defaultMenu]];
   [self updateBuyButton];
+  [self updateContents];
 }
 
 - (void) setRootController:(GBRootController *)aRootController

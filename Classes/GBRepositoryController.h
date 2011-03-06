@@ -24,7 +24,6 @@
 @property(nonatomic,retain) GBCommit* selectedCommit;
 @property(nonatomic,retain) OAFSEventStream* fsEventStream;
 @property(nonatomic,retain) NSString* lastCommitBranchName;
-@property(nonatomic,retain) NSData* urlBookmarkData;
 
 @property(nonatomic,assign) NSInteger isRemoteBranchesDisabled;
 @property(nonatomic,assign) id<GBRepositoryControllerDelegate> delegate;
@@ -33,7 +32,6 @@
 
 - (id) initWithURL:(NSURL*)aURL;
 
-// obsolete, use stageAndCommits - (NSArray*) commits;
 - (NSArray*) stageAndCommits;
 
 - (void) checkoutRef:(GBRef*) ref;

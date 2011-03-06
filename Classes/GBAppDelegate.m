@@ -9,6 +9,7 @@
 
 #import "NSFileManager+OAFileManagerHelpers.h"
 #import "NSWindowController+OAWindowControllerHelpers.h"
+#import "NSObject+OASelectorNotifications.h"
 
 #import "OALicenseNumberCheck.h"
 
@@ -19,6 +20,9 @@
 @property(nonatomic, retain) GBPreferencesController* preferencesController;
 @property(nonatomic, retain) GBLicenseController* licenseController;
 @property(nonatomic, retain) NSMutableArray* URLsToOpenAfterLaunch;
+
+- (void) saveItems;
+
 @end
 
 @implementation GBAppDelegate
@@ -132,7 +136,6 @@
 
 
 
-
 #pragma mark NSApplicationDelegate
 
 
@@ -140,8 +143,12 @@
 
 - (void) applicationDidFinishLaunching:(NSNotification*) aNotification
 {
-  // Instantiate controllers
+  
   self.rootController = [[GBRootController new] autorelease];
+  id plist = [[NSUserDefaults standardUserDefaults] objectForKey:@"GBSidebarItems"];
+  [self.rootController sidebarItemLoadContentsFromPropertyList:plist];
+  [self.rootController addObserverForAllSelectors:self];
+  
   self.windowController = [[[GBMainWindowController alloc] initWithWindowNibName:@"GBMainWindowController"] autorelease];
   
   NSString* preferencesNibName = @"GBPreferencesController";
@@ -171,6 +178,8 @@
 
 - (void) applicationWillTerminate:(NSNotification*)aNotification
 {
+  [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(saveItems) object:nil];
+  [self saveItems];
 }
 
 
@@ -201,6 +210,36 @@
   [self.windowController showWindow:self];	
   return NO;
 }
+
+
+
+
+
+
+#pragma mark GBRootController notifications
+
+
+
+- (void) rootControllerDidChangeContents:(GBRootController*)aRootController
+{
+  [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(saveItems) object:nil];
+  [self performSelector:@selector(saveItems) withObject:nil afterDelay:0.5];
+}
+
+
+- (void) saveItems
+{
+  id plist = [self.rootController sidebarItemContentsPropertyList];
+  [[NSUserDefaults standardUserDefaults] setObject:plist forKey:@"GBSidebarItems"];
+  [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+
+
+
+
+
+
 
 
 

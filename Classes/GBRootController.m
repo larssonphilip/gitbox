@@ -161,10 +161,8 @@
       if (!repoCtrl)
       {
         repoCtrl = [GBRepositoryController repositoryControllerWithURL:aURL];
-        repoCtrl.toolbarController = self.repositoriesController.repositoryToolbarController;
-        repoCtrl.viewController = self.repositoriesController.repositoryViewController;
         [aGroup insertObject:repoCtrl atIndex:insertionIndex];
-        //[self.repositoriesController launchRepositoryController:repoCtrl queued:NO];
+        [self.repositoriesController startRepositoryController:repoCtrl];
         insertionIndex++;
       }
       if (repoCtrl)
@@ -373,9 +371,9 @@
 {
   return [NSArray arrayWithObjects:
           [NSDictionary dictionaryWithObjectsAndKeys:
-           @"repositoriesController", @"name",
+           @"GBRepositoriesController", @"class",
            [NSNumber numberWithBool:[self.repositoriesController.sidebarItem isCollapsed]], @"collapsed",
-           [self.repositoriesController sidebarItemContentsPropertyList], @"content",
+           [self.repositoriesController sidebarItemContentsPropertyList], @"contents",
            nil],
           nil];
 }
@@ -388,17 +386,17 @@
   {
     if (![dict isKindOfClass:[NSDictionary class]]) continue;
     
-    NSString* name = [dict objectForKey:@"name"];
+    NSString* className = [dict objectForKey:@"class"];
     NSNumber* collapsedValue = [dict objectForKey:@"collapsed"];
-    id contents = [dict objectForKey:@"content"];
+    id contents = [dict objectForKey:@"contents"];
     
     // TODO: when more sections are added, this is a good place to order them to restore user's sorting.
-    if ([name isEqual:@"repositoriesController"])
+    if ([className isEqual:@"GBRepositoriesController"])
     {
       self.repositoriesController.sidebarItem.collapsed = (collapsedValue ? [collapsedValue boolValue] : NO);
       [self.repositoriesController sidebarItemLoadContentsFromPropertyList:contents];
     }
-    else if ([name isEqual:@"githubController"])
+    else if ([className isEqual:@"GBGithubController"])
     {
       // ...
     }
