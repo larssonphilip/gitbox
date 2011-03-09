@@ -91,7 +91,6 @@
 @synthesize isUpdatingRemoteRefs;
 @synthesize isDisappearedFromFileSystem;
 @synthesize isWaitingForAutofetch;
-@synthesize delegate;
 @synthesize isStaging; // maintains a count of number of staging tasks running
 @synthesize isLoadingChanges; // maintains a count of number of changes loading tasks running
 @synthesize autoFetchInterval;
@@ -410,7 +409,7 @@
     if (wantsSpinning) [self popSpinning];
     [self popFSEventsPause];
     
-    if ([self.delegate respondsToSelector:@selector(repositoryControllerDidUpdateRefs:)]) { [self.delegate repositoryControllerDidUpdateRefs:self]; }
+    [self notifyWithSelector:@selector(repositoryControllerDidUpdateRefs:)];
   }];  
 }
 
@@ -486,7 +485,7 @@
         {
           GBRepositoryController* repoCtrl = [GBRepositoryController repositoryControllerWithURL:[submodule localURL]];
           submodule.repositoryController = repoCtrl;
-          submodule.repositoryController.delegate = self.delegate;
+          //submodule.repositoryController.delegate = self.delegate;
           repoCtrl.updatesQueue = self.updatesQueue;
           repoCtrl.autofetchQueue = self.autofetchQueue;
           [repoCtrl start];
@@ -503,15 +502,15 @@
           repoCtrl.submodule = submodule;
 //          repoCtrl.updatesQueue = self.updatesQueue;
 //          repoCtrl.autofetchQueue = self.autofetchQueue;
-          submodule.repositoryController = repoCtrl;
-          submodule.repositoryController.delegate = self.delegate;
+          //submodule.repositoryController = repoCtrl;
+          //submodule.repositoryController.delegate = self.delegate;
         }
       }
     }
     
     if (aBlock) aBlock();
     
-    if ([self.delegate respondsToSelector:@selector(repositoryControllerDidUpdateSubmodules:)]) [self.delegate repositoryControllerDidUpdateSubmodules:self];
+    [self notifyWithSelector:@selector(repositoryControllerDidUpdateSubmodules:)];
   }];
 }
 
@@ -561,8 +560,7 @@
     
     [self loadStageChanges];
     [self updateLocalRefsWithBlock:^{
-      if ([self.delegate respondsToSelector:@selector(repositoryControllerDidCheckoutBranch:)]) { [self.delegate repositoryControllerDidCheckoutBranch:self]; }
-
+      [self notifyWithSelector:@selector(repositoryControllerDidCheckoutBranch:)];
       [self loadCommitsWithBlock:nil];
       
       [self popDisabled];
@@ -604,7 +602,7 @@
   [self.repository configureTrackingRemoteBranch:remoteBranch 
     withLocalName:self.repository.currentLocalRef.name 
     block:^{
-      if ([self.delegate respondsToSelector:@selector(repositoryControllerDidChangeRemoteBranch:)]) { [self.delegate repositoryControllerDidChangeRemoteBranch:self]; }
+      [self notifyWithSelector:@selector(repositoryControllerDidChangeRemoteBranch:)];
       [self loadCommitsWithBlock:nil];
       [self updateRemoteRefsWithBlock:nil];
     }];
@@ -879,7 +877,7 @@
     
     [self popSpinning];
     [self popFSEventsPause];
-    if ([self.delegate respondsToSelector:@selector(repositoryControllerDidCommit:)]) { [self.delegate repositoryControllerDidCommit:self]; }
+    [self notifyWithSelector:@selector(repositoryControllerDidCommit:)];
   }];
 }
 
@@ -1026,7 +1024,7 @@
   self.isDisabled++;
   if (self.isDisabled == 1)
   {
-    if ([self.delegate respondsToSelector:@selector(repositoryControllerDidChangeDisabledStatus:)]) { [self.delegate repositoryControllerDidChangeDisabledStatus:self]; }
+    [self notifyWithSelector:@selector(repositoryControllerDidChangeDisabledStatus:)];
   }
 }
 
@@ -1035,7 +1033,7 @@
   self.isDisabled--;
   if (self.isDisabled == 0)
   {
-    if ([self.delegate respondsToSelector:@selector(repositoryControllerDidChangeDisabledStatus:)]) { [self.delegate repositoryControllerDidChangeDisabledStatus:self]; }
+    [self notifyWithSelector:@selector(repositoryControllerDidChangeDisabledStatus:)];
   }
 }
 
@@ -1044,7 +1042,7 @@
   isRemoteBranchesDisabled++;
   if (isRemoteBranchesDisabled == 1)
   {
-    if ([self.delegate respondsToSelector:@selector(repositoryControllerDidChangeDisabledStatus:)]) { [self.delegate repositoryControllerDidChangeDisabledStatus:self]; }
+    [self notifyWithSelector:@selector(repositoryControllerDidChangeDisabledStatus:)];
   }
 }
 
@@ -1053,7 +1051,7 @@
   isRemoteBranchesDisabled--;
   if (isRemoteBranchesDisabled == 0)
   {
-    if ([self.delegate respondsToSelector:@selector(repositoryControllerDidChangeDisabledStatus:)]) { [self.delegate repositoryControllerDidChangeDisabledStatus:self]; }
+    [self notifyWithSelector:@selector(repositoryControllerDidChangeDisabledStatus:)];
   }
 }
 

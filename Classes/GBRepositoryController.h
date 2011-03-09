@@ -30,7 +30,6 @@
 @property(nonatomic, assign) NSInteger isRemoteBranchesDisabled;
 @property(nonatomic, assign, readonly) NSInteger isDisabled;
 @property(nonatomic, assign, readonly) NSInteger isSpinning;
-@property(nonatomic, assign) id<GBRepositoryControllerDelegate> delegate;
 
 + (id) repositoryControllerWithURL:(NSURL*)url;
 

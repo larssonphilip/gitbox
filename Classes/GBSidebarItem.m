@@ -329,9 +329,9 @@
     GBSidebarItem* child = [self childAtIndex:i];
     block(child, (NSUInteger)i, &stop);
     if (stop) return;
-    [child enumerateChildrenUsingBlock:^(GBSidebarItem* item2, NSUInteger idx, BOOL *stop2){
-      block(item2, idx, stop2);
-      if (stop2) stop = YES;
+    [child enumerateChildrenUsingBlock:^(GBSidebarItem* item2, NSUInteger idx, BOOL *stopPointer2){
+      block(item2, idx, stopPointer2);
+      if (*stopPointer2) stop = YES;
     }];
     if (stop) return;
   }
