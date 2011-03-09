@@ -60,4 +60,6 @@
 // Returns a closest parent of an item (possibly self) or nil if the item equals self or not found.
 - (GBSidebarItem*) parentOfItem:(GBSidebarItem*)anItem;
 
+- (void) update;
+
 @end

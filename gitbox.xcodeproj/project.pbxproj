@@ -394,7 +394,6 @@
 		200408E01274E2BC00BE8957 /* GBBaseRepositoryControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBBaseRepositoryControllerDelegate.h; sourceTree = "<group>"; };
 		200409031274EBE400BE8957 /* GBRepositoryCloningControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBRepositoryCloningControllerDelegate.h; sourceTree = "<group>"; };
 		200432AE12D8A1AE00B045C0 /* Submodules.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Submodules.txt; sourceTree = "<group>"; };
-		2004330212D8B37F00B045C0 /* GBObsoleteSidebarItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBObsoleteSidebarItem.h; sourceTree = "<group>"; };
 		200433A012DA02CF00B045C0 /* GBGreyGradientView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBGreyGradientView.h; sourceTree = "<group>"; };
 		200433A112DA02CF00B045C0 /* GBGreyGradientView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBGreyGradientView.m; sourceTree = "<group>"; };
 		200435F412DC59E200B045C0 /* GBRepositoriesControllerLocalItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBRepositoriesControllerLocalItem.h; sourceTree = "<group>"; };
@@ -1004,7 +1003,6 @@
 				20586A8812FDE54E00729DB1 /* GBSidebarItemObject.h */,
 				20586A8412FDE4C200729DB1 /* GBSidebarItem.h */,
 				20586A8512FDE4C400729DB1 /* GBSidebarItem.m */,
-				2004330212D8B37F00B045C0 /* GBObsoleteSidebarItem.h */,
 				2097EC6A12DE6B450070AE89 /* GBSidebarCell.h */,
 				2097EC6B12DE6B450070AE89 /* GBSidebarCell.m */,
 				200A43E712EC2507004DF940 /* GBSubmoduleCell.h */,

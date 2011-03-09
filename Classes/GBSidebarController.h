@@ -1,5 +1,6 @@
 
 @class GBRootController;
+@class GBSidebarItem;
 
 @interface GBSidebarController : NSViewController<NSOutlineViewDataSource, NSOutlineViewDelegate>
 
@@ -20,5 +21,7 @@
 - (IBAction) selectPane:(id)sender;
 
 - (void) updateBuyButton;
+- (void) updateContents;
+- (void) updateItem:(GBSidebarItem*)anItem;
 
 @end

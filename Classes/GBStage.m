@@ -124,7 +124,7 @@
           [self.repository launchTask:untrackedChangesTask withBlock:^{
             self.untrackedChanges = untrackedChangesTask.changes;
             [self update];
-            
+                        
             /*
             // TODO: parse changes as GBSubmoduleStatusChange (subclass of GBChange)
             [self.repository updateSubmodulesWithBlock:^{

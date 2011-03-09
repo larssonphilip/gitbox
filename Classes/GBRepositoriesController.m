@@ -59,6 +59,20 @@
 
 
 
+#pragma mark GBSidebarItem
+
+
+
+- (NSString*) sidebarItemTooltip
+{
+  return @"";
+}
+
+
+
+
+
+
 
 #pragma mark Launch
 

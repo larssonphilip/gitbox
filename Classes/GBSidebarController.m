@@ -387,6 +387,7 @@
 - (NSInteger) outlineView:(NSOutlineView*)anOutlineView numberOfChildrenOfItem:(GBSidebarItem*)item
 {
   if (item == nil) item = self.rootController.sidebarItem;
+  item.sidebarController = self;
   return [item numberOfChildren];
 }
 
@@ -700,17 +701,23 @@
 
 
 
-
+- (void) updateItem:(GBSidebarItem*)anItem
+{
+  if (!anItem) return;
+  ignoreSelectionChange++;
+  [self.outlineView reloadItem:anItem reloadChildren:[anItem isExpanded]];
+  ignoreSelectionChange--;
+  [self updateExpandedState];
+  [self updateSelection];
+}
 
 
 - (void) updateContents
 {
   [self updateBuyButton];
-  //  [self saveExpandedState];
   ignoreSelectionChange++;
   [self.outlineView reloadData];
   ignoreSelectionChange--;
-  //  [self loadExpandedState];
   [self updateExpandedState];
   [self updateSelection];
 }

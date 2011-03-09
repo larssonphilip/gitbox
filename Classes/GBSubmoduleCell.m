@@ -5,7 +5,7 @@
 
 @interface GBSubmoduleCell ()
 @property(nonatomic, retain, readonly) GBSubmodule* submodule;
-- (GBBaseRepositoryController*) repositoryController;
+- (GBRepositoryController*) repositoryController;
 - (NSRect) drawDownloadButtonAndReturnRemainingRect:(NSRect)rect;
 @end
 
@@ -48,7 +48,7 @@
   return (GBSubmodule*)[self.sidebarItem object];
 }
 
-- (GBBaseRepositoryController*) repositoryController
+- (GBRepositoryController*) repositoryController
 {
   return self.submodule.repositoryController;
 }

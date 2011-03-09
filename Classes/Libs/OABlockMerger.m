@@ -29,12 +29,17 @@
 
 // Calls taskBlock if task is not running.
 // Calls completionHandler when task finishes.
-- (void) performTask:(NSString*)taskName withBlock:(void(^)())taskBlock completionHandler:(void(^)())completionHandler
+- (void) performTask:(NSString*)taskName withBlock:(void(^)(OABlockMergerBlock))taskBlock completionHandler:(void(^)())completionHandler
 {
   NSAssert(taskName, @"taskName must be provided");
   NSAssert(taskBlock, @"taskBlock must be provided");
   if (!completionHandler) completionHandler = ^{};
   completionHandler = [[completionHandler copy] autorelease];
+  
+  OABlockMergerBlock callbackBlock = ^{
+    [self didFinishTask:taskName];
+  };
+  callbackBlock = [[callbackBlock copy] autorelease];
   
   [self.ranTaskNames addObject:taskName];
   
@@ -55,14 +60,14 @@
   {
     //NSLog(@"OABlockMerger:%p [performTask:%@] launching task", self, taskName);
     [self.completionHandlersByTaskNames setObject:completionHandler forKey:taskName];
-    taskBlock();
+    taskBlock(callbackBlock);
   }
 }
 
 // Calls taskBlock if task was never started.
 // Calls completionHandler when task finishes.
 // Calls completionHandler immediately if task has been already finished.
-- (void) performTaskOnce:(NSString*)taskName withBlock:(void(^)())taskBlock completionHandler:(void(^)())completionHandler
+- (void) performTaskOnce:(NSString*)taskName withBlock:(void(^)(OABlockMergerBlock))taskBlock completionHandler:(void(^)())completionHandler
 {
   NSAssert(taskName, @"taskName must be provided");
   NSAssert(taskBlock, @"taskBlock must be provided");

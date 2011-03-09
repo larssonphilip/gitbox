@@ -55,18 +55,16 @@
 - (void) start
 {
   if (self.task) return;
-  
-  [super start];
 
-  self.isDisabled++;
-  self.isSpinning++;
+//  self.isDisabled++;
+//  self.isSpinning++;
 
   self.task = [self.submodule.repository task];
   self.task.arguments = [NSArray arrayWithObjects:@"submodule", @"update", @"--", self.submodule.path, nil];
   
   [self.task launchWithBlock:^{
-    self.isDisabled--;
-    self.isSpinning--;
+//    self.isDisabled--;
+//    self.isSpinning--;
     GBTask* aTask = self.task;
     self.task = nil;
     if ([aTask isError])
@@ -108,13 +106,12 @@
 {
   if (self.task)
   {
-    self.isSpinning--;
+//    self.isSpinning--;
     [self.task terminate];
     self.task = nil;
     NSURL* dotgitURL = [NSURL URLWithString:[[[self.submodule localURL] path] stringByAppendingPathComponent:@".git"]];
     [[NSFileManager defaultManager] removeItemAtURL:dotgitURL error:NULL];
   }
-  [super stop];
 }
 
 - (void) cancelCloning
@@ -127,7 +124,6 @@
 
 - (void) didSelect
 {
-  [super didSelect];
   if ([self.delegate respondsToSelector:@selector(submoduleCloningControllerDidSelect:)]) { 
     [self.delegate submoduleCloningControllerDidSelect:self];
   }

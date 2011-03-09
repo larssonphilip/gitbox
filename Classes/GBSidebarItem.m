@@ -371,7 +371,13 @@
   return menu;
 }
 
-
+- (void) update
+{
+  // TODO: possible optimization: 
+  // Find out if this item is visible (all parents are expanded).
+  // If not, update the farthest collapsed parent.
+  [self.sidebarController updateContents];
+}
 
 
 

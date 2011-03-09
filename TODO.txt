@@ -49,7 +49,7 @@ Misc items done:
 
 Gitbox 1.3 Refactoring:
 
-- make load/save for sidebar items (independent impl for each subtree for lesser coupling)
++ make load/save for sidebar items
 - remember submodules as well
 - on load and on opening, update only submodules status, in a queue (without a spinner)
 - on selection, load the regular stuff with spinner

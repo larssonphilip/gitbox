@@ -339,8 +339,7 @@
     return;
   }
   
-  NSString* taskName = NSStringFromSelector(_cmd);
-  [self.blockMerger performTaskOnce:taskName withBlock:^{
+  [self.blockMerger performTaskOnce:NSStringFromSelector(_cmd) withBlock:^(OABlockMergerBlock callbackBlock){
     [self pushFSEventsPause];
     [self pushSpinning];
     
@@ -355,7 +354,7 @@
             [self resetAutoFetchInterval];
             [self scheduleAutoFetch];
             
-            [self.blockMerger didFinishTask:taskName];
+            callbackBlock();
           }];
         }];
       }];
@@ -494,8 +493,8 @@
           // TODO: instead of switching the repositoryController, should switch the object for sidebar item.
           GBSubmoduleCloningController* repoCtrl = [[GBSubmoduleCloningController new] autorelease];
           repoCtrl.submodule = submodule;
-          repoCtrl.updatesQueue = self.updatesQueue;
-          repoCtrl.autofetchQueue = self.autofetchQueue;
+//          repoCtrl.updatesQueue = self.updatesQueue;
+//          repoCtrl.autofetchQueue = self.autofetchQueue;
           submodule.repositoryController = repoCtrl;
           submodule.repositoryController.delegate = self.delegate;
         }
@@ -1055,7 +1054,8 @@
   self.isSpinning++;
   if (self.isSpinning == 1) 
   {
-    if ([self.delegate respondsToSelector:@selector(repositoryControllerDidChangeSpinningStatus:)]) { [self.delegate repositoryControllerDidChangeSpinningStatus:self]; }
+    [self.sidebarItem update];
+    [self notifyWithSelector:@selector(repositoryControllerDidChangeSpinningStatus:)];
   }
 }
 
@@ -1064,7 +1064,8 @@
   self.isSpinning--;
   if (self.isSpinning == 0)
   {
-    if ([self.delegate respondsToSelector:@selector(repositoryControllerDidChangeSpinningStatus:)]) { [self.delegate repositoryControllerDidChangeSpinningStatus:self]; }
+    [self.sidebarItem update];
+    [self notifyWithSelector:@selector(repositoryControllerDidChangeSpinningStatus:)];
   }
 }
 

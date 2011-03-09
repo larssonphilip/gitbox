@@ -172,10 +172,8 @@
 
 - (void) ensureDisabledPathQuoting:(void(^)())aBlock
 {
-  [self.blockMerger performTaskOnce:@"ConfigureUTF8" withBlock:^{
-    [self setString:@"false" forKey:@"core.quotepath" withBlock:^{
-      [self.blockMerger didFinishTask:@"ConfigureUTF8"];
-    }];
+  [self.blockMerger performTaskOnce:@"ConfigureUTF8" withBlock:^(OABlockMergerBlock callbackBlock){
+    [self setString:@"false" forKey:@"core.quotepath" withBlock:callbackBlock];
   } completionHandler:aBlock];
 }
 

@@ -1,8 +1,9 @@
-#import "GBBaseRepositoryController.h"
 #import "GBSubmoduleCloningControllerDelegate.h"
+#import "GBSidebarItemObject.h"
+#import "GBMainWindowItem.h"
 
 @class GBSubmodule;
-@interface GBSubmoduleCloningController : GBBaseRepositoryController
+@interface GBSubmoduleCloningController : NSObject<GBSidebarItemObject, GBMainWindowItem>
 
 @property(nonatomic, retain) NSError* error;
 
