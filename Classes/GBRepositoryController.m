@@ -33,7 +33,11 @@
 @property(nonatomic, assign) BOOL isWaitingForAutofetch;
 @property(nonatomic, assign) NSInteger isStaging; // maintains a count of number of staging tasks running
 @property(nonatomic, assign) NSInteger isLoadingChanges; // maintains a count of number of changes loading tasks running
+@property(nonatomic, assign, readwrite) NSInteger isDisabled;
+@property(nonatomic, assign, readwrite) NSInteger isSpinning;
 @property(nonatomic, assign) NSTimeInterval autoFetchInterval;
+
+- (NSImage*) icon;
 
 - (void) pushDisabled;
 - (void) popDisabled;
@@ -79,6 +83,8 @@
 @synthesize fsEventStream;
 @synthesize lastCommitBranchName;
 @synthesize blockMerger;
+@synthesize updatesQueue;
+@synthesize autofetchQueue;
 
 @synthesize isRemoteBranchesDisabled;
 @synthesize isCommitting;
@@ -89,6 +95,8 @@
 @synthesize isStaging; // maintains a count of number of staging tasks running
 @synthesize isLoadingChanges; // maintains a count of number of changes loading tasks running
 @synthesize autoFetchInterval;
+@synthesize isDisabled;
+@synthesize isSpinning;
 
 - (void) dealloc
 {
@@ -101,6 +109,9 @@
   self.fsEventStream = nil;
   self.lastCommitBranchName = nil;
   self.blockMerger = nil;
+  self.updatesQueue = nil;
+  self.autofetchQueue = nil;
+
   [super dealloc];
 }
 
@@ -191,8 +202,6 @@
 
 - (void) start
 {
-  [super start];
-  
   self.fsEventStream = [[OAFSEventStream new] autorelease];
 #if DEBUG
   self.fsEventStream.shouldLogEvents = NO;
@@ -222,7 +231,6 @@
 {
   [self unscheduleAutoFetch];
   [self.fsEventStream stop];
-  [super stop];
 }
 
 

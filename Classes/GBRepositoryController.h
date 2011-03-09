@@ -1,4 +1,3 @@
-#import "GBBaseRepositoryController.h"
 #import "GBMainWindowItem.h"
 #import "GBChangeDelegate.h"
 #import "GBSidebarItemObject.h"
@@ -13,26 +12,34 @@
 @class GBRepositoryToolbarController;
 @class GBRepositoryViewController;
 @class OAFSEventStream;
+@class OABlockQueue;
 
-@interface GBRepositoryController : GBBaseRepositoryController<GBMainWindowItem, GBSidebarItemObject>
+@interface GBRepositoryController : NSResponder<GBMainWindowItem, GBSidebarItemObject>
 
-@property(nonatomic,retain) GBRepository* repository;
-@property(nonatomic,retain, readonly) NSURL* url;
-@property(nonatomic,retain) GBSidebarItem* sidebarItem;
-@property(nonatomic,retain) GBRepositoryToolbarController* toolbarController;
-@property(nonatomic,retain) GBRepositoryViewController* viewController;
-@property(nonatomic,retain) GBCommit* selectedCommit;
-@property(nonatomic,retain) OAFSEventStream* fsEventStream;
-@property(nonatomic,retain) NSString* lastCommitBranchName;
+@property(nonatomic, retain) GBRepository* repository;
+@property(nonatomic, retain, readonly) NSURL* url;
+@property(nonatomic, retain) OABlockQueue* updatesQueue;
+@property(nonatomic, retain) OABlockQueue* autofetchQueue;
+@property(nonatomic, retain) GBSidebarItem* sidebarItem;
+@property(nonatomic, retain) GBRepositoryToolbarController* toolbarController;
+@property(nonatomic, retain) GBRepositoryViewController* viewController;
+@property(nonatomic, retain) GBCommit* selectedCommit;
+@property(nonatomic, retain) OAFSEventStream* fsEventStream;
+@property(nonatomic, retain) NSString* lastCommitBranchName;
 
-@property(nonatomic,assign) NSInteger isRemoteBranchesDisabled;
-@property(nonatomic,assign) id<GBRepositoryControllerDelegate> delegate;
+@property(nonatomic, assign) NSInteger isRemoteBranchesDisabled;
+@property(nonatomic, assign, readonly) NSInteger isDisabled;
+@property(nonatomic, assign, readonly) NSInteger isSpinning;
+@property(nonatomic, assign) id<GBRepositoryControllerDelegate> delegate;
 
 + (id) repositoryControllerWithURL:(NSURL*)url;
 
 - (id) initWithURL:(NSURL*)aURL;
 
 - (NSArray*) stageAndCommits;
+
+- (void) start;
+- (void) stop;
 
 - (void) checkoutRef:(GBRef*) ref;
 - (void) checkoutRef:(GBRef*) ref withNewName:(NSString*)name;
