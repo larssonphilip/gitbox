@@ -136,7 +136,7 @@
              */
             // remove this line when updateSubmodulesWithBlock is uncommented.
             if (block) block();
-            
+            [self notifyWithSelector:@selector(commitDidUpdateChanges:)];
           }]; // untracked
         }]; // unstaged
         
@@ -251,7 +251,7 @@
     if ([addedPaths count] > 0)
     {
       GBTask* rmTask = [self.repository task];
-      rmTask.arguments = [[NSArray arrayWithObjects:@"rm", @"--cached", nil] arrayByAddingObjectsFromArray:addedPaths];
+      rmTask.arguments = [[NSArray arrayWithObjects:@"rm", @"--cached", @"--force", nil] arrayByAddingObjectsFromArray:addedPaths];
       [self.repository launchTask:rmTask withBlock:^{
         // Commented out because git spits out error code even if the unstage is successful.
         // [task showErrorIfNeeded];

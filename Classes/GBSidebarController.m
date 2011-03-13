@@ -87,7 +87,8 @@
   [nextResponderSidebarObject release];
   nextResponderSidebarObject = [nextResponderSidebarObject2 retain];
   
-  [self setNextResponder:nextResponderSidebarObject];
+  // if the selected object is nil, skip it and usenext logical responder
+  [self setNextResponder:nextResponderSidebarObject ? nextResponderSidebarObject : postNextResponder];
 }
 
 - (GBSidebarItem*) clickedSidebarItem
@@ -259,7 +260,7 @@
   [self.outlineView editColumn:0 row:rowIndex withEvent:nil select:YES];
 }
 
-- (BOOL) validateRename:(id)_
+- (BOOL) validateRename:(id)sender
 {
   if ([[self selectedSidebarItems] count] != 1) return NO;
   if (![[[self selectedSidebarItems] objectAtIndex:0] isEditable]) return NO;
@@ -267,12 +268,12 @@
 }
 
 
-- (IBAction) selectRightPane:_
+- (IBAction) selectRightPane:(id)sender
 {
   // Key view loop sucks: http://www.cocoadev.com/index.pl?KeyViewLoopGuidelines
   //NSLog(@"selectRightPane: next key view: %@, next valid key view: %@", [[self view] nextKeyView], [[self view] nextValidKeyView]);
   //[[[self view] window] selectKeyViewFollowingView:[self view]];
-  
+  //NSLog(@"GBSidebarController: selectRightPane (sender = %@; nextResponder = %@)", sender, [self nextResponder]);
   [[self nextResponder] tryToPerform:@selector(selectNextPane:) with:self];
 }
 
@@ -284,10 +285,13 @@
 
 - (BOOL) validateSelectRightPane:(id)sender
 {
-  if ([[[[self view] window] firstResponder] isKindOfClass:[NSText class]]) 
+  NSResponder* firstResponder = [[[self view] window] firstResponder];
+  //NSLog(@"GBSidebarItem: validateSelectRightPane: firstResponder = %@", firstResponder);
+  if (!(firstResponder == self || firstResponder == self.outlineView) || ![[[self view] window] isKeyWindow])
   {
     return NO;
   }
+  
   if (!self.rootController.selectedSidebarItem)
   {
     return NO;
@@ -399,6 +403,7 @@
 
 - (id)outlineView:(NSOutlineView*)anOutlineView objectValueForTableColumn:(NSTableColumn*)tableColumn byItem:(GBSidebarItem*)item
 {
+  item.sidebarController = self;
   return item.title;
 }
 
@@ -696,30 +701,35 @@
 
 
 
-#pragma mark Private
+#pragma mark Updates
 
 
 
 
 - (void) updateItem:(GBSidebarItem*)anItem
 {
+  // TODO: possible optimization: 
+  // Find out if this item is visible (all parents are expanded).
+  // If not, update the farthest collapsed parent.
   if (!anItem) return;
-  ignoreSelectionChange++;
+  self.ignoreSelectionChange++;
   [self.outlineView reloadItem:anItem reloadChildren:[anItem isExpanded]];
-  ignoreSelectionChange--;
   [self updateExpandedState];
+  self.ignoreSelectionChange--;
   [self updateSelection];
+  [self.outlineView setNeedsDisplay:YES];
 }
 
 
 - (void) updateContents
 {
   [self updateBuyButton];
-  ignoreSelectionChange++;
+  self.ignoreSelectionChange++;
   [self.outlineView reloadData];
-  ignoreSelectionChange--;
   [self updateExpandedState];
+  self.ignoreSelectionChange--;
   [self updateSelection];
+  [self.outlineView setNeedsDisplay:YES];
 }
 
 - (void) updateSelection

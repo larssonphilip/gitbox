@@ -25,6 +25,7 @@
 @property(nonatomic, retain) NSResponder<GBSidebarItemObject, GBMainWindowItem>* selectedObject;
 @property(nonatomic, retain) NSArray* selectedSidebarItems;
 @property(nonatomic, retain) GBSidebarItem* selectedSidebarItem;
+@property(nonatomic, retain) NSArray* selectedItemIndexes;
 
 - (GBSidebarItem*) sidebarItemAndIndex:(NSUInteger*)anIndexRef forInsertionWithClickedItem:(GBSidebarItem*)clickedItem;
 

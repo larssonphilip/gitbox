@@ -26,6 +26,7 @@
 @synthesize selectedObject;
 @dynamic    selectedSidebarItem;
 @dynamic    selectedSidebarItems;
+@dynamic    selectedItemIndexes;
 
 
 - (void)dealloc
@@ -339,11 +340,52 @@
   self.selectedObject = (id<GBSidebarItemObject,GBMainWindowItem>)newSelectedSidebarItem.object;
 }
 
+- (NSArray*) selectedItemIndexes
+{
+  NSMutableArray* indexes = [NSMutableArray array];
+  NSArray* items = [self selectedSidebarItems];
+  __block NSUInteger globalIndex = 0;
+  [self.sidebarItem enumerateChildrenUsingBlock:^(GBSidebarItem *item, NSUInteger idx, BOOL *stop) {
+    if ([items containsObject:item])
+    {
+      [indexes addObject:[NSNumber numberWithUnsignedInteger:globalIndex]];
+    }
+    globalIndex++;
+  }];
+  return indexes;
+}
+
+- (void) setSelectedItemIndexes:(NSArray*)indexes
+{
+  if (!indexes)
+  {
+    self.selectedSidebarItems = nil;
+    return;
+  }
+  
+  NSMutableIndexSet* validIndexes = [NSMutableIndexSet indexSet];
+  NSArray* allChildren = [self.sidebarItem allChildren];
+  NSUInteger total = [allChildren count];
+  for (NSNumber* aNumber in indexes)
+  {
+    NSUInteger anIndex = [aNumber unsignedIntegerValue];
+    if (anIndex < total)
+    {
+      [validIndexes addIndex:anIndex];
+    }
+  }
+  self.selectedSidebarItems = [allChildren objectsAtIndexes:validIndexes];
+}
+
+
+
 
 
 
 
 #pragma mark GBSidebarItemObject protocol
+
+
 
 
 - (NSInteger) sidebarItemNumberOfChildren
@@ -369,20 +411,29 @@
 
 - (id) sidebarItemContentsPropertyList
 {
-  return [NSArray arrayWithObjects:
-          [NSDictionary dictionaryWithObjectsAndKeys:
-           @"GBRepositoriesController", @"class",
-           [NSNumber numberWithBool:[self.repositoriesController.sidebarItem isCollapsed]], @"collapsed",
-           [self.repositoriesController sidebarItemContentsPropertyList], @"contents",
-           nil],
+  return [NSDictionary dictionaryWithObjectsAndKeys:
+          
+          [NSArray arrayWithObjects:
+           [NSDictionary dictionaryWithObjectsAndKeys:
+            @"GBRepositoriesController", @"class",
+            [NSNumber numberWithBool:[self.repositoriesController.sidebarItem isCollapsed]], @"collapsed",
+            [self.repositoriesController sidebarItemContentsPropertyList], @"contents",
+            nil],
+           nil], @"contents", 
+          
+           [self selectedItemIndexes], @"selectedItemIndexes",
+          
           nil];
 }
 
 - (void) sidebarItemLoadContentsFromPropertyList:(id)plist
 {
-  if (!plist || ![plist isKindOfClass:[NSArray class]]) return;
+  if (!plist || ![plist isKindOfClass:[NSDictionary class]]) return;
   
-  for (NSDictionary* dict in plist)
+  NSArray* indexes = [plist objectForKey:@"selectedItemIndexes"];
+  NSArray* contents = [plist objectForKey:@"contents"];
+  
+  for (NSDictionary* dict in contents)
   {
     if (![dict isKindOfClass:[NSDictionary class]]) continue;
     
@@ -398,9 +449,11 @@
     }
     else if ([className isEqual:@"GBGithubController"])
     {
-      // ...
+      // load github controller items
     }
   }
+  
+  self.selectedItemIndexes = indexes;
 }
 
 

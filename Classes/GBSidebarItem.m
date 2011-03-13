@@ -373,10 +373,8 @@
 
 - (void) update
 {
-  // TODO: possible optimization: 
-  // Find out if this item is visible (all parents are expanded).
-  // If not, update the farthest collapsed parent.
-  [self.sidebarController updateContents];
+  //NSLog(@"[GBSidebarItem update]: self.sidebarController = %@ [%@]", self.sidebarController, self);
+  [self.sidebarController updateItem:self];
 }
 
 

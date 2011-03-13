@@ -18,6 +18,7 @@
 @interface GBMainWindowController ()
 @property(nonatomic, retain) GBToolbarController* defaultToolbarController;
 @property(nonatomic, retain) GBPlaceholderViewController* defaultDetailViewController;
+@property(nonatomic, retain) id<GBMainWindowItem> selectedWindowItem;
 - (void) updateToolbarAlignment;
 - (NSView*) sidebarView;
 - (NSView*) detailView;
@@ -31,6 +32,7 @@
 @synthesize defaultDetailViewController;
 @synthesize toolbarController;
 @synthesize detailViewController;
+@synthesize selectedWindowItem;
 @synthesize sidebarController;
 @synthesize welcomeController;
 @synthesize splitView;
@@ -42,6 +44,7 @@
   [toolbarController release]; toolbarController = nil;
   [detailViewController release]; detailViewController = nil;
   [defaultDetailViewController release]; defaultDetailViewController = nil;
+  [selectedWindowItem release]; selectedWindowItem = nil;
   self.sidebarController = nil;
   self.welcomeController = nil;
   self.splitView = nil;
@@ -107,54 +110,47 @@
 }
 
 
-
-
-
-
-
-
-#pragma mark GBRootController notification
-
-
-
-
-
-- (void) rootControllerDidChangeSelection:(GBRootController*)aRootController
+- (void) setSelectedWindowItem:(id<GBMainWindowItem>)anObject
 {
+  if (selectedWindowItem == anObject) return;
+  
+  [selectedWindowItem release];
+  selectedWindowItem = [anObject retain];
+  
   GBToolbarController* newToolbarController = nil;
   NSViewController* newDetailController = nil;
   NSString* windowTitle = nil;
   NSURL* windowRepresentedURL = nil;
   NSString* detailViewTitle = nil;
-  if (aRootController.selectedObject)
+  
+  if (anObject)
   {
-    id<GBMainWindowItem> object = aRootController.selectedObject;
-    if ([object respondsToSelector:@selector(toolbarController)])
+    if ([anObject respondsToSelector:@selector(toolbarController)])
     {
-      newToolbarController = [object toolbarController];
+      newToolbarController = [anObject toolbarController];
     }
-    if ([object respondsToSelector:@selector(viewController)])
+    if ([anObject respondsToSelector:@selector(viewController)])
     {
-      newDetailController = [object viewController];
+      newDetailController = [anObject viewController];
     }
-    if ([object respondsToSelector:@selector(windowTitle)])
+    if ([anObject respondsToSelector:@selector(windowTitle)])
     {
-      windowTitle = [object windowTitle];
+      windowTitle = [anObject windowTitle];
     }
-    if ([object respondsToSelector:@selector(windowRepresentedURL)])
+    if ([anObject respondsToSelector:@selector(windowRepresentedURL)])
     {
-      windowRepresentedURL = [object windowRepresentedURL];
+      windowRepresentedURL = [anObject windowRepresentedURL];
     }
   }
   else
   {
-    if (aRootController.selectedObjects && [aRootController.selectedObjects count] > 0)
+    if (self.rootController.selectedObjects && [self.rootController.selectedObjects count] > 0)
     {
       windowTitle = NSLocalizedString(@"Multiple selection", @"Window");
       detailViewTitle = NSLocalizedString(@"Multiple selection", @"Window");
     }
   }
-
+  
   if (!detailViewTitle)
   {
     if (!windowTitle)
@@ -181,7 +177,7 @@
   {
     windowTitle = @"";
   }
-    
+  
   if (!newDetailController)
   {
     self.defaultDetailViewController.title = detailViewTitle;
@@ -190,10 +186,27 @@
   
   [self.window setTitle:windowTitle];
   [self.window setRepresentedURL:windowRepresentedURL];
-
+  
   self.toolbarController = newToolbarController;
   self.detailViewController = newDetailController;
   [self updateToolbarAlignment];
+}
+
+
+
+
+
+
+
+#pragma mark GBRootController notification
+
+
+
+
+
+- (void) rootControllerDidChangeSelection:(GBRootController*)aRootController
+{
+  self.selectedWindowItem = aRootController.selectedObject;
 }
 
 
@@ -333,6 +346,16 @@
 }
 
 
+// DOES NOT WORK HERE!
+// If no specific controller is a responder to pane selection, we should disable these actions.
+// For instance, when Open panel is opened, we should have default behaviour for left/right buttons
+
+//- (IBAction) selectLeftPane:(id)sender {}
+//- (IBAction) selectRightPane:(id)sender {}
+//- (BOOL) validateSelectLeftPane:(id)sender { return NO; }
+//- (BOOL) validateSelectRightPane:(id)sender { return NO; }
+
+
 
 
 #pragma mark NSUserInterfaceValidations
@@ -367,6 +390,9 @@
   
   [[self window] setInitialFirstResponder:self.sidebarController.outlineView];
   [[self window] makeFirstResponder:self.sidebarController.outlineView];
+  
+  self.selectedWindowItem = self.rootController.selectedObject;
+  
   if (!self.toolbarController)
   {
     self.toolbarController = self.defaultToolbarController;

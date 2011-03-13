@@ -166,12 +166,6 @@
 }
 
 
-// obsolete
-- (NSArray*) commits
-{
-  return [self stageAndCommits];
-}
-
 - (NSArray*) stageAndCommits
 {
   return [self.repository stageAndCommits];
@@ -222,7 +216,7 @@
       [self dotgitStateDidChange];
     }
   }];
-  [self.fsEventStream start];
+  //[self.fsEventStream start];
   self.isWaitingForAutofetch = YES; // will be reset in initialUpdateWithBlock
 }
 
@@ -253,295 +247,6 @@
   NSAppleScript* as = [[[NSAppleScript alloc] initWithSource: s] autorelease];
   [as executeAndReturnError:nil];
 }
-
-
-
-
-#pragma mark GBMainWindowItem
-
-
-// toolbarController and viewController are properties assigned by parent controller
-
-- (NSString*) windowTitle
-{
-  return [[[self url] path] twoLastPathComponentsWithDash];
-}
-
-- (NSURL*) windowRepresentedURL
-{
-  return [self url];
-}
-
-- (void) didSelectWindowItem
-{
-  self.toolbarController.repositoryController = self;
-  self.viewController.repositoryController = self;
-}
-
-
-
-
-
-
-
-
-#pragma mark GBSidebarItem
-
-
-
-
-
-- (NSMenu*) sidebarItemMenu
-{
-  NSMenu* menu = [[[NSMenu alloc] initWithTitle:@""] autorelease];
-  
-  [menu addItem:[[[NSMenuItem alloc] 
-                  initWithTitle:NSLocalizedString(@"Open in Finder", @"Sidebar") action:@selector(openInFinder:) keyEquivalent:@""] autorelease]];
-  [menu addItem:[[[NSMenuItem alloc] 
-                  initWithTitle:NSLocalizedString(@"Open in Terminal", @"Sidebar") action:@selector(openInTerminal:) keyEquivalent:@""] autorelease]];
-  
-  [menu addItem:[NSMenuItem separatorItem]];
-
-  [menu addItem:[[[NSMenuItem alloc] 
-                  initWithTitle:NSLocalizedString(@"Add Repository...", @"Sidebar") action:@selector(openDocument:) keyEquivalent:@""] autorelease]];
-  [menu addItem:[[[NSMenuItem alloc] 
-                  initWithTitle:NSLocalizedString(@"Clone Repository...", @"Sidebar") action:@selector(cloneRepository:) keyEquivalent:@""] autorelease]];
-  
-  [menu addItem:[NSMenuItem separatorItem]];
-  
-  [menu addItem:[[[NSMenuItem alloc] 
-                  initWithTitle:NSLocalizedString(@"New Group", @"Sidebar") action:@selector(addGroup:) keyEquivalent:@""] autorelease]];
-  
-  [menu addItem:[NSMenuItem separatorItem]];
-    
-  [menu addItem:[[[NSMenuItem alloc] 
-                  initWithTitle:NSLocalizedString(@"Remove from Sidebar", @"Sidebar") action:@selector(remove:) keyEquivalent:@""] autorelease]];
-  return menu;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-#pragma mark Updates
-
-
-
-
-
-
-- (void) initialUpdateWithBlock:(void(^)())block
-{
-  if (!self.repository)
-  {
-    if (block) block();
-    return;
-  }
-  
-  [self.blockMerger performTaskOnce:NSStringFromSelector(_cmd) withBlock:^(OABlockMergerBlock callbackBlock){
-    [self pushFSEventsPause];
-    [self pushSpinning];
-    
-    [self updateLocalRefsWithBlock:^{
-      [self loadCommitsWithBlock:^{
-        [self.repository initSubmodulesWithBlock:^{
-          [self updateSubmodulesWithBlock:^{
-            [self popSpinning];
-            [self popFSEventsPause];
-            
-            self.isWaitingForAutofetch = NO; // resets YES set in -start method
-            [self resetAutoFetchInterval];
-            [self scheduleAutoFetch];
-            
-            callbackBlock();
-          }];
-        }];
-      }];
-    }];
-
-    
-    if (!self.selectedCommit && self.repository.stage)
-    {
-      self.selectedCommit = self.repository.stage;
-    }
-    else
-    {
-      [self loadStageChanges];
-    }
-  } completionHandler:block];
-}
-
-
-
-
-
-- (void) updateLocalRefsWithBlock:(void(^)())block
-{
-  if (!self.repository)
-  {
-    if (block) block();
-    return;
-  }
-  
-  block = [[block copy] autorelease];
-  
-  BOOL wantsSpinning = !!self.isSpinning;
-  if (wantsSpinning) [self pushSpinning];
-  [self pushFSEventsPause];
-  [self.repository updateLocalRefsWithBlock:^{
-    
-    if ((!self.repository.currentRemoteBranch || [self.repository.currentRemoteBranch isRemoteBranch]) && 
-        [self.repository.currentLocalRef isLocalBranch])
-    {
-      self.repository.currentRemoteBranch = self.repository.currentLocalRef.configuredRemoteBranch;
-    }
-    
-    if (block) block();
-    
-    if (wantsSpinning) [self popSpinning];
-    [self popFSEventsPause];
-    
-    [self notifyWithSelector:@selector(repositoryControllerDidUpdateRefs:)];
-  }];  
-}
-
-- (void) updateRemoteRefsWithBlock:(void(^)())block
-{
-  if (self.isUpdatingRemoteRefs)
-  {
-    if (block) block();
-    return;
-  }
-  self.isUpdatingRemoteRefs = YES;
-  
-  block = [[block copy] autorelease];
-  
-  [OABlockGroup groupBlock:^(OABlockGroup* blockGroup){
-    for (GBRemote* aRemote in self.repository.remotes)
-    {
-      [blockGroup enter];
-      [self updateBranchesForRemote:aRemote withBlock:^{
-        [blockGroup leave];
-      }];
-    }
-  } continuation:^{
-    self.isUpdatingRemoteRefs = NO;
-    if (block) block();
-  }];
-}
-
-- (void) updateBranchesForRemote:(GBRemote*)aRemote withBlock:(void(^)())block
-{
-  block = [[block copy] autorelease];
-  
-  if (!aRemote)
-  {
-    if (block) block();
-    return;
-  }
-  
-  //NSLog(@"%@: updating branches for remote %@...", [self class], aRemote.alias);
-  [aRemote updateBranchesWithBlock:^{
-    if (aRemote.needsFetch)
-    {
-      [self resetAutoFetchInterval];
-      //NSLog(@"%@: updated branches for remote %@; needs fetch! %@", [self class], aRemote.alias, [self longNameForSourceList]);
-      [self fetchRemote:aRemote withBlock:block];
-    }
-    else
-    {
-      //NSLog(@"%@: updated branches for remote %@; no changes.", [self class], aRemote.alias);
-      if (block) block();
-    }
-  }];
-  
-}
-
-- (void) updateSubmodulesWithBlock:(void(^)())aBlock
-{
-  aBlock = [[aBlock copy] autorelease];
-  
-  
-#warning Debug: temp disabled submodules update while refactoring
-  if (aBlock) aBlock();
-  return;
-  
-  
-  [self.repository updateSubmodulesWithBlock:^{
-    
-    for (GBSubmodule* submodule in [self.repository.submodules reversedArray])
-    {
-      if (!submodule.repositoryController) // repo controller is not set up yet
-      {
-        if ([submodule isCloned])
-        {
-          GBRepositoryController* repoCtrl = [GBRepositoryController repositoryControllerWithURL:[submodule localURL]];
-          submodule.repositoryController = repoCtrl;
-          //submodule.repositoryController.delegate = self.delegate;
-          repoCtrl.updatesQueue = self.updatesQueue;
-          repoCtrl.autofetchQueue = self.autofetchQueue;
-          [repoCtrl start];
-          [self.updatesQueue prependBlock:^{
-            [repoCtrl initialUpdateWithBlock:^{
-              [self.updatesQueue endBlock];
-            }];
-          }];
-        }
-        else
-        {
-          // TODO: instead of switching the repositoryController, should switch the object for sidebar item.
-          GBSubmoduleCloningController* repoCtrl = [[GBSubmoduleCloningController new] autorelease];
-          repoCtrl.submodule = submodule;
-//          repoCtrl.updatesQueue = self.updatesQueue;
-//          repoCtrl.autofetchQueue = self.autofetchQueue;
-          //submodule.repositoryController = repoCtrl;
-          //submodule.repositoryController.delegate = self.delegate;
-        }
-      }
-    }
-    
-    if (aBlock) aBlock();
-    
-    [self notifyWithSelector:@selector(repositoryControllerDidUpdateSubmodules:)];
-  }];
-}
-
-
-
-
-
-
-
-#pragma mark GBCommit Notifications
-
-
-- (void) commitDidUpdateChanges:(GBCommit*)aCommit
-{
-  // Avoid publishing changes if another staging is running
-  // or another loading task is running.
-  if (aCommit != self.repository.stage || (!isStaging && isLoadingChanges <= 1))
-  {
-    [self notifyWithSelector:@selector(repositoryController:didUpdateChangesForCommit:) withObject:self.repository.stage];
-  }
-}
-
-
-
-
-
-
-
-#pragma mark Git actions
-
-
 
 - (void) checkoutHelper:(void(^)(void(^)()))checkoutBlock
 {
@@ -600,12 +305,12 @@
   [self resetAutoFetchInterval];
   self.repository.currentRemoteBranch = remoteBranch;
   [self.repository configureTrackingRemoteBranch:remoteBranch 
-    withLocalName:self.repository.currentLocalRef.name 
-    block:^{
-      [self notifyWithSelector:@selector(repositoryControllerDidChangeRemoteBranch:)];
-      [self loadCommitsWithBlock:nil];
-      [self updateRemoteRefsWithBlock:nil];
-    }];
+                                   withLocalName:self.repository.currentLocalRef.name 
+                                           block:^{
+                                             [self notifyWithSelector:@selector(repositoryControllerDidChangeRemoteBranch:)];
+                                             [self loadCommitsWithBlock:nil];
+                                             [self updateRemoteRefsWithBlock:nil];
+                                           }];
 }
 
 - (void) createAndSelectRemoteBranchWithName:(NSString*)name remote:(GBRemote*)aRemote
@@ -652,10 +357,10 @@
 - (void) setSelectedCommit:(GBCommit*)aCommit
 {
   if (selectedCommit == aCommit) return;
-
+  
   [selectedCommit release];
   selectedCommit = [aCommit retain];
-
+  
   [self notifyWithSelector:@selector(repositoryControllerDidSelectCommit:)];
 }
 
@@ -705,13 +410,13 @@
  
  Scenario 1: S2 starts before L1, so we should avoid running L1 at all.
  S1----->L1----->U1
-     S2----->L2----->U2
+ S2----->L2----->U2
  
  
  
  Scenario 2: S2 started after L1, so we should avoid U1.
  S1----->L1----->U1
-             S2----->L2----->U2
+ S2----->L2----->U2
  
  In both scenarios we need to know whether there are any other staging processes running or not.
  If there is one, we simply avoid running loading task or at least avoid updating the UI.
@@ -724,7 +429,7 @@
  
  Scenario 3: L1 starts before S2, but finishes after *both* S1 and S2 have finished.
  S1---->L1------------>U1
-            S2---->L2---------->U2
+ S2---->L2---------->U2
  
  In this case it is not enough to have isStaging flag. We should also ask whether there is any 
  loading tasks still running. For that we use isLoadingChanges counter.
@@ -965,7 +670,74 @@
 
 
 
+
+#pragma mark GBMainWindowItem
+
+
+// toolbarController and viewController are properties assigned by parent controller
+
+- (NSString*) windowTitle
+{
+  return [[[self url] path] twoLastPathComponentsWithDash];
+}
+
+- (NSURL*) windowRepresentedURL
+{
+  return [self url];
+}
+
+- (void) didSelectWindowItem
+{
+  self.toolbarController.repositoryController = self;
+  self.viewController.repositoryController = self;
+  
+  if (!self.repository.localBranchCommits)
+  {
+    [self loadCommitsWithBlock:^{}];
+  }
+}
+
+
+
+
+
+
+
+
 #pragma mark GBSidebarItem
+
+
+
+
+
+- (NSMenu*) sidebarItemMenu
+{
+  NSMenu* menu = [[[NSMenu alloc] initWithTitle:@""] autorelease];
+  
+  [menu addItem:[[[NSMenuItem alloc] 
+                  initWithTitle:NSLocalizedString(@"Open in Finder", @"Sidebar") action:@selector(openInFinder:) keyEquivalent:@""] autorelease]];
+  [menu addItem:[[[NSMenuItem alloc] 
+                  initWithTitle:NSLocalizedString(@"Open in Terminal", @"Sidebar") action:@selector(openInTerminal:) keyEquivalent:@""] autorelease]];
+  
+  [menu addItem:[NSMenuItem separatorItem]];
+  
+  [menu addItem:[[[NSMenuItem alloc] 
+                  initWithTitle:NSLocalizedString(@"Add Repository...", @"Sidebar") action:@selector(openDocument:) keyEquivalent:@""] autorelease]];
+  [menu addItem:[[[NSMenuItem alloc] 
+                  initWithTitle:NSLocalizedString(@"Clone Repository...", @"Sidebar") action:@selector(cloneRepository:) keyEquivalent:@""] autorelease]];
+  
+  [menu addItem:[NSMenuItem separatorItem]];
+  
+  [menu addItem:[[[NSMenuItem alloc] 
+                  initWithTitle:NSLocalizedString(@"New Group", @"Sidebar") action:@selector(addGroup:) keyEquivalent:@""] autorelease]];
+  
+  [menu addItem:[NSMenuItem separatorItem]];
+  
+  [menu addItem:[[[NSMenuItem alloc] 
+                  initWithTitle:NSLocalizedString(@"Remove from Sidebar", @"Sidebar") action:@selector(remove:) keyEquivalent:@""] autorelease]];
+  return menu;
+}
+
 
 
 // Note: do not return instances of GBRepositoryController, but GBSubmodule instead. 
@@ -1007,6 +779,299 @@
 {
   return self.isSpinning;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+#pragma mark Updates
+
+
+
+
+
+
+- (void) initialUpdateWithBlock:(void(^)())block
+{
+  if (!self.repository)
+  {
+    if (block) block();
+    return;
+  }
+  
+  [self.blockMerger performTaskOnce:NSStringFromSelector(_cmd) withBlock:^(OABlockMergerBlock callbackBlock){
+    [self pushFSEventsPause];
+    [self pushSpinning];
+    
+    [self updateLocalRefsWithBlock:^{
+      [self loadCommitsWithBlock:^{
+        [self.repository initSubmodulesWithBlock:^{
+          [self updateSubmodulesWithBlock:^{
+            [self popSpinning];
+            [self popFSEventsPause];
+            
+            self.isWaitingForAutofetch = NO; // resets YES set in -start method
+            [self resetAutoFetchInterval];
+            [self scheduleAutoFetch];
+            
+            callbackBlock();
+          }];
+        }];
+      }];
+    }];
+
+    
+    if (!self.selectedCommit && self.repository.stage)
+    {
+      self.selectedCommit = self.repository.stage;
+    }
+    else
+    {
+      [self loadStageChanges];
+    }
+  } completionHandler:block];
+}
+
+
+
+
+
+- (void) updateLocalRefsWithBlock:(void(^)())aBlock
+{
+  if (!self.repository)
+  {
+    if (aBlock) aBlock();
+    return;
+  }
+    
+  [self.blockMerger performTask:NSStringFromSelector(_cmd) withBlock:^(OABlockMergerBlock callbackBlock) {
+    BOOL wantsSpinning = !!self.isSpinning;
+    if (wantsSpinning) [self pushSpinning];
+    [self pushFSEventsPause];
+    [self.repository updateLocalRefsWithBlock:^{
+      
+      if ((!self.repository.currentRemoteBranch || [self.repository.currentRemoteBranch isRemoteBranch]) && 
+          [self.repository.currentLocalRef isLocalBranch])
+      {
+        self.repository.currentRemoteBranch = self.repository.currentLocalRef.configuredRemoteBranch;
+      }
+      
+      if (callbackBlock) callbackBlock();
+      
+      if (wantsSpinning) [self popSpinning];
+      [self popFSEventsPause];
+      
+      [self notifyWithSelector:@selector(repositoryControllerDidUpdateRefs:)];
+    }];  
+  } completionHandler:aBlock];
+}
+
+- (void) updateRemoteRefsWithBlock:(void(^)())block
+{
+  if (self.isUpdatingRemoteRefs)
+  {
+    if (block) block();
+    return;
+  }
+  self.isUpdatingRemoteRefs = YES;
+  
+  block = [[block copy] autorelease];
+  
+  [OABlockGroup groupBlock:^(OABlockGroup* blockGroup){
+    for (GBRemote* aRemote in self.repository.remotes)
+    {
+      [blockGroup enter];
+      [self updateBranchesForRemote:aRemote withBlock:^{
+        [blockGroup leave];
+      }];
+    }
+  } continuation:^{
+    self.isUpdatingRemoteRefs = NO;
+    if (block) block();
+  }];
+}
+
+- (void) updateBranchesForRemote:(GBRemote*)aRemote withBlock:(void(^)())block
+{
+  block = [[block copy] autorelease];
+  
+  if (!aRemote)
+  {
+    if (block) block();
+    return;
+  }
+  
+  //NSLog(@"%@: updating branches for remote %@...", [self class], aRemote.alias);
+  [aRemote updateBranchesWithBlock:^{
+    if (aRemote.needsFetch)
+    {
+      [self resetAutoFetchInterval];
+      //NSLog(@"%@: updated branches for remote %@; needs fetch! %@", [self class], aRemote.alias, [self longNameForSourceList]);
+      [self fetchRemote:aRemote withBlock:block];
+    }
+    else
+    {
+      //NSLog(@"%@: updated branches for remote %@; no changes.", [self class], aRemote.alias);
+      if (block) block();
+    }
+  }];
+  
+}
+
+- (void) updateSubmodulesWithBlock:(void(^)())aBlock
+{
+  aBlock = [[aBlock copy] autorelease];
+  
+  
+#warning Debug: temp disabled submodules update while refactoring
+  if (aBlock) aBlock();
+  return;
+  
+  
+  [self.repository updateSubmodulesWithBlock:^{
+    
+    for (GBSubmodule* submodule in [self.repository.submodules reversedArray])
+    {
+      if (!submodule.repositoryController) // repo controller is not set up yet
+      {
+        if ([submodule isCloned])
+        {
+          GBRepositoryController* repoCtrl = [GBRepositoryController repositoryControllerWithURL:[submodule localURL]];
+          submodule.repositoryController = repoCtrl;
+          //submodule.repositoryController.delegate = self.delegate;
+          repoCtrl.updatesQueue = self.updatesQueue;
+          repoCtrl.autofetchQueue = self.autofetchQueue;
+          [repoCtrl start];
+          [self.updatesQueue prependBlock:^{
+            [repoCtrl initialUpdateWithBlock:^{
+              [self.updatesQueue endBlock];
+            }];
+          }];
+        }
+        else
+        {
+          // TODO: instead of switching the repositoryController, should switch the object for sidebar item.
+          GBSubmoduleCloningController* repoCtrl = [[GBSubmoduleCloningController new] autorelease];
+          repoCtrl.submodule = submodule;
+//          repoCtrl.updatesQueue = self.updatesQueue;
+//          repoCtrl.autofetchQueue = self.autofetchQueue;
+          //submodule.repositoryController = repoCtrl;
+          //submodule.repositoryController.delegate = self.delegate;
+        }
+      }
+    }
+    
+    if (aBlock) aBlock();
+    
+    [self notifyWithSelector:@selector(repositoryControllerDidUpdateSubmodules:)];
+  }];
+}
+
+
+
+- (void) loadCommitsWithBlock:(void(^)())block
+{
+  block = [[block copy] autorelease];
+  
+  //NSLog(@"started loadCommitsWithBlock");
+  
+  [self pushFSEventsPause];
+  BOOL wantsSpinning = !!self.isSpinning;
+  if (wantsSpinning) [self pushSpinning];
+  
+  [self.blockMerger performTask:NSStringFromSelector(_cmd) withBlock:^(OABlockMergerBlock callbackBlock){
+
+    [OABlockGroup groupBlock:^(OABlockGroup *aGroup) {
+    
+      if (!self.repository.currentLocalRef)
+      {
+        [aGroup enter];
+        [self updateLocalRefsWithBlock:^{
+          [aGroup leave];
+        }];
+      }
+    }
+    continuation:^{
+      if (!self.repository.currentLocalRef)
+      {
+        if (callbackBlock) callbackBlock();
+        return;
+      }
+      [self.repository updateLocalBranchCommitsWithBlock:^{
+        //NSLog(@"completed updateLocalBranchCommitsWithBlock");
+        if (callbackBlock) callbackBlock();
+        [self.sidebarItem update];
+        [self notifyWithSelector:@selector(repositoryControllerDidUpdateCommits:)];
+      }];
+    }];
+  }
+  completionHandler:^{
+    //NSLog(@"finishing loadCommitsWithBlock");
+    if (block) block();
+    if (wantsSpinning) [self popSpinning];
+    [self popFSEventsPause];
+  }];
+}
+
+- (void) loadStageChanges
+{
+  if (!self.repository.stage) return;
+  
+  [self pushFSEventsPause];
+  isLoadingChanges++;
+  [self.repository.stage loadChangesWithBlock:^{
+    isLoadingChanges--;
+    [self.sidebarItem update];
+    [self popFSEventsPause];
+  }];
+}
+
+- (void) loadChangesForCommit:(GBCommit*)commit
+{
+  if (!commit) return;
+  if (commit == self.repository.stage)
+  {
+    [self loadStageChanges];
+    return;
+  }
+  [self pushFSEventsPause];
+  [commit loadChangesIfNeededWithBlock:^{
+    [self popFSEventsPause];
+  }];
+}
+
+
+
+
+
+
+
+
+
+#pragma mark GBCommit Notifications
+
+
+- (void) commitDidUpdateChanges:(GBCommit*)aCommit
+{
+  // Avoid publishing changes if another staging is running
+  // or another loading task is running.
+  if (!isStaging && isLoadingChanges <= 1)
+  {
+    [self notifyWithSelector:@selector(repositoryController:didUpdateChangesForCommit:) withObject:aCommit];
+  }
+}
+
+
+
+
+
 
 
 
@@ -1074,79 +1139,6 @@
     [self notifyWithSelector:@selector(repositoryControllerDidChangeSpinningStatus:)];
   }
 }
-
-
-
-
-
-- (void) loadCommitsWithBlock:(void(^)())block
-{
-  block = [[block copy] autorelease];
-  
-  if (!self.repository.currentLocalRef)
-  {
-    if (block) block();
-    return;
-  }
-  
-  BOOL wantsSpinning = !!self.isSpinning;
-  if (wantsSpinning) [self pushSpinning];
-
-  [self.repository updateLocalBranchCommitsWithBlock:^{
-    
-    [OABlockGroup groupBlock:^(OABlockGroup* blockGroup){
-      
-      [blockGroup enter];
-      [self pushFSEventsPause];
-      [self.repository updateUnmergedCommitsWithBlock:^{
-        [self popFSEventsPause];
-        [blockGroup leave];
-      }];
-      
-      [blockGroup enter];
-      [self pushFSEventsPause];
-      [self.repository updateUnpushedCommitsWithBlock:^{
-        [self popFSEventsPause];
-        [blockGroup leave];
-      }];
-      
-    } continuation: ^{
-      
-      [self notifyWithSelector:@selector(repositoryControllerDidUpdateCommits:)];
-      if (block) block();
-      if (wantsSpinning) [self popSpinning];
-    }];
-  }];
-}
-
-- (void) loadStageChanges
-{
-  if (!self.repository.stage) return;
-  
-  [self pushFSEventsPause];
-  isLoadingChanges++;
-  [self.repository.stage loadChangesWithBlock:^{
-    isLoadingChanges--;
-    [self popFSEventsPause];
-  }];
-}
-
-- (void) loadChangesForCommit:(GBCommit*)commit
-{
-  if (!commit) return;
-  if (commit == self.repository.stage)
-  {
-    [self loadStageChanges];
-    return;
-  }
-  [self pushFSEventsPause];
-  [commit loadChangesIfNeededWithBlock:^{
-    [self popFSEventsPause];
-  }];
-}
-
-
-
 
 - (void) pushFSEventsPause
 {

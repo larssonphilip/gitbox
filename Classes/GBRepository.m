@@ -22,7 +22,6 @@
 @interface GBRepository ()
 
 @property(nonatomic, retain, readwrite) NSData* URLBookmarkData;
-@property(nonatomic, retain) NSString* topCommitId;
 @property(nonatomic, retain) OABlockMerger* blockMerger;
 @property(nonatomic, retain) GBGitConfig* config;
 @property(nonatomic, assign) dispatch_queue_t dispatchQueue;
@@ -49,7 +48,6 @@
 @synthesize currentLocalRef;
 @synthesize currentRemoteBranch;
 @synthesize localBranchCommits;
-@synthesize topCommitId;
 @synthesize dispatchQueue;
 @synthesize lastError;
 @synthesize blockMerger;
@@ -76,7 +74,6 @@
   self.currentLocalRef = nil;
   self.currentRemoteBranch = nil;
   self.localBranchCommits = nil;
-  self.topCommitId = nil;
   self.blockMerger = nil;
   self.config = nil;
   
@@ -480,7 +477,6 @@
       }];
     }];
   }];
-  
 }
 
 
@@ -571,14 +567,6 @@
 
 
 
-
-
-
-
-
-
-
-
 - (void) updateLocalBranchCommitsWithBlock:(void(^)())block
 {
   block = [[block copy] autorelease];
@@ -591,12 +579,13 @@
   }
 
   [self launchTask:task withBlock:^{
-    
-    NSString* newTopCommitId = [[task.commits objectAtIndex:0 or:nil] commitId];
-    self.topCommitId = newTopCommitId;
     self.localBranchCommits = task.commits;
     
-    if (block) block();
+    [self updateUnmergedCommitsWithBlock:^{
+      [self updateUnpushedCommitsWithBlock:^{
+        if (block) block();
+      }];
+    }];
   }];
 }
 
