@@ -27,10 +27,6 @@
 - (void) updateRemoteBranchMenus;
 - (void) updateSyncButtons;
 
-- (BOOL) validatePull:(id)sender;
-- (BOOL) validatePush:(id)sender;
-- (BOOL) validateFetch:(id)sender;
-
 @end
 
 
@@ -186,9 +182,9 @@
     [self replaceItemWithIdentifier:@"GBPull" withItemWithIdentifier:@"GBPullPush"];
   }
   
-  [control setEnabled:[self validatePull:nil] forSegment:0];
-  [control setEnabled:[self validatePush:nil] /*&& repo.unpushedCommitsCount > 0*/ forSegment:1]; // commented out because it looks ugly
-  [self.pullButton setEnabled:[self validatePull:nil]];
+  [control setEnabled:[self.repositoryController validatePull:nil] forSegment:0];
+  [control setEnabled:[self.repositoryController validatePush:nil] /*&& repo.unpushedCommitsCount > 0*/ forSegment:1]; // commented out because it looks ugly
+  [self.pullButton setEnabled:[self.repositoryController validatePull:nil]];
 }
 
 
@@ -537,74 +533,59 @@
 #pragma mark IBActions
 
 
-- (IBAction) fetch:(id)_
-{
-  [self.repositoryController fetch];
-}
 
 - (IBAction) pullOrPush:(NSSegmentedControl*)segmentedControl
 {
   NSInteger segment = [segmentedControl selectedSegment];
   if (segment == 0)
   {
-    [self pull:segmentedControl];
+    [self.repositoryController pull:segmentedControl];
   }
   else if (segment == 1)
   {
-    [self push:segmentedControl];
+    [self.repositoryController push:segmentedControl];
   }
   else
   {
     NSLog(@"ERROR: Unrecognized push/pull segment %d", (int)segment);
   }
 }
-
-
-- (IBAction) pull:(id)sender
-{
-  [self.repositoryController pull];
-}
-
-- (IBAction) push:(id)sender
-{
-  [self.repositoryController push];
-}
-
-- (BOOL) validateFetch:(id)_
-{
-  GBRepositoryController* rc = self.repositoryController;
-  return rc.repository.currentRemoteBranch &&
-  [rc.repository.currentRemoteBranch isRemoteBranch] &&
-  !rc.isDisabled && 
-  !rc.isRemoteBranchesDisabled;
-}
-
-- (BOOL) validatePull:(id)sender
-{
-  GBRepositoryController* rc = self.repositoryController;
-  if ([sender isKindOfClass:[NSMenuItem class]])
-  {
-    NSMenuItem* item = sender;
-    [item setTitle:NSLocalizedString(@"Pull", @"Command")];
-    if (rc.repository.currentRemoteBranch && [rc.repository.currentRemoteBranch isLocalBranch])
-    {
-      [item setTitle:NSLocalizedString(@"Merge", @"Command")];
-    }
-  }
-  
-  return [rc.repository.currentLocalRef isLocalBranch] && rc.repository.currentRemoteBranch && !rc.isDisabled && !rc.isRemoteBranchesDisabled;
-}
-
-- (BOOL) validatePush:(id)_
-{
-  GBRepositoryController* rc = self.repositoryController;
-  return [rc.repository.currentLocalRef isLocalBranch] && 
-  rc.repository.currentRemoteBranch && 
-  !rc.isDisabled && 
-  !rc.isRemoteBranchesDisabled && 
-  ![rc.repository.currentRemoteBranch isLocalBranch];
-}
-
+// Moved to GBRepositoryController
+//- (BOOL) validateFetch:(id)_
+//{
+//  GBRepositoryController* rc = self.repositoryController;
+//  return rc.repository.currentRemoteBranch &&
+//  [rc.repository.currentRemoteBranch isRemoteBranch] &&
+//  !rc.isDisabled && 
+//  !rc.isRemoteBranchesDisabled;
+//}
+//
+//- (BOOL) validatePull:(id)sender
+//{
+//  GBRepositoryController* rc = self.repositoryController;
+//  if ([sender isKindOfClass:[NSMenuItem class]])
+//  {
+//    NSMenuItem* item = sender;
+//    [item setTitle:NSLocalizedString(@"Pull", @"Command")];
+//    if (rc.repository.currentRemoteBranch && [rc.repository.currentRemoteBranch isLocalBranch])
+//    {
+//      [item setTitle:NSLocalizedString(@"Merge", @"Command")];
+//    }
+//  }
+//  
+//  return [rc.repository.currentLocalRef isLocalBranch] && rc.repository.currentRemoteBranch && !rc.isDisabled && !rc.isRemoteBranchesDisabled;
+//}
+//
+//- (BOOL) validatePush:(id)_
+//{
+//  GBRepositoryController* rc = self.repositoryController;
+//  return [rc.repository.currentLocalRef isLocalBranch] && 
+//  rc.repository.currentRemoteBranch && 
+//  !rc.isDisabled && 
+//  !rc.isRemoteBranchesDisabled && 
+//  ![rc.repository.currentRemoteBranch isLocalBranch];
+//}
+//
 
 
 

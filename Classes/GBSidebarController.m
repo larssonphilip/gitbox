@@ -66,10 +66,7 @@
   [rootController addObserverForAllSelectors:self];
   
   self.nextResponderSidebarObject = rootController.selectedObject;
-  
-  [self.outlineView reloadData];
-
-  [self updateExpandedState];
+  [self updateContents];
 }
 
 - (void) setNextResponderSidebarObject:(NSResponder<GBSidebarItemObject> *)nextResponderSidebarObject2
@@ -87,7 +84,7 @@
   [nextResponderSidebarObject release];
   nextResponderSidebarObject = [nextResponderSidebarObject2 retain];
   
-  // if the selected object is nil, skip it and usenext logical responder
+  // if the selected object is nil, skip it and use next logical responder
   [self setNextResponder:nextResponderSidebarObject ? nextResponderSidebarObject : postNextResponder];
 }
 

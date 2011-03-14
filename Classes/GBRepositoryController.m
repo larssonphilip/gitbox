@@ -22,6 +22,7 @@
 #import "OABlockMerger.h"
 #import "NSArray+OAArrayHelpers.h"
 #import "NSObject+OASelectorNotifications.h"
+#import "NSObject+OADispatchItemValidation.h"
 
 @interface GBRepositoryController ()
 
@@ -606,7 +607,7 @@
   }];
 }
 
-- (void) fetch
+- (IBAction) fetch:(id)sender
 {
   [self resetAutoFetchInterval];
   [self pushSpinning];
@@ -624,7 +625,7 @@
   }];
 }
 
-- (void) pull // or merge
+- (IBAction) pull:(id)sender // or merge
 {
   [self resetAutoFetchInterval];
   [self pushSpinning];
@@ -644,7 +645,7 @@
   }];
 }
 
-- (void) push
+- (IBAction) push:(id)sender
 {
   [self resetAutoFetchInterval];
   [self pushSpinning];
@@ -662,6 +663,44 @@
 }
 
 
+- (BOOL) validateFetch:(id)sender
+{
+  return self.repository.currentRemoteBranch &&
+  [self.repository.currentRemoteBranch isRemoteBranch] &&
+  !self.isDisabled && 
+  !self.isRemoteBranchesDisabled;
+}
+
+- (BOOL) validatePull:(id)sender
+{
+  if ([sender isKindOfClass:[NSMenuItem class]])
+  {
+    NSMenuItem* item = sender;
+    [item setTitle:NSLocalizedString(@"Pull", @"Command")];
+    if (self.repository.currentRemoteBranch && [self.repository.currentRemoteBranch isLocalBranch])
+    {
+      [item setTitle:NSLocalizedString(@"Merge", @"Command")];
+    }
+  }
+  
+  return [self.repository.currentLocalRef isLocalBranch] && self.repository.currentRemoteBranch && !self.isDisabled && !self.isRemoteBranchesDisabled;
+}
+
+- (BOOL) validatePush:(id)sender
+{
+  GBRepositoryController* rc = self;
+  return [rc.repository.currentLocalRef isLocalBranch] && 
+  rc.repository.currentRemoteBranch && 
+  !rc.isDisabled && 
+  !rc.isRemoteBranchesDisabled && 
+  ![rc.repository.currentRemoteBranch isLocalBranch];
+}
+
+
+- (BOOL) validateUserInterfaceItem:(id<NSValidatedUserInterfaceItem>)anItem
+{
+  return [self dispatchUserInterfaceItemValidation:anItem];
+}
 
 
 

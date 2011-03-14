@@ -385,8 +385,10 @@
   [self.window setTitle:NSLocalizedString(@"No selection", @"Window")];
   [self.window setRepresentedURL:nil];
   
-  self.sidebarController.rootController = self.rootController;
+  // Order is important for responder chain to be correct from start
   [self.sidebarController loadInView:[self sidebarView]];
+  self.sidebarController.rootController = self.rootController;
+  
   
   [[self window] setInitialFirstResponder:self.sidebarController.outlineView];
   [[self window] makeFirstResponder:self.sidebarController.outlineView];

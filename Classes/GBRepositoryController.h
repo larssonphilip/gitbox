@@ -58,8 +58,12 @@
 
 - (void) updateSubmodulesWithBlock:(void(^)())aBlock;
 
-- (void) fetch;
-- (void) pull;
-- (void) push;
+- (IBAction) fetch:(id)sender;
+- (IBAction) pull:(id)sender;
+- (IBAction) push:(id)sender;
+
+- (BOOL) validateFetch:(id)sender;
+- (BOOL) validatePull:(id)sender;
+- (BOOL) validatePush:(id)sender;
 
 @end
