@@ -106,7 +106,30 @@
 // TODO: update branch menus and disabled status when the relevant repo state changes
 
 
-
+- (void) repositoryControllerDidChangeDisabledStatus:(GBRepositoryController*)repoCtrl
+{
+  [self update];
+}
+- (void) repositoryControllerDidChangeSpinningStatus:(GBRepositoryController*)repoCtrl
+{
+  [self update];
+}
+- (void) repositoryControllerDidCheckoutBranch:(GBRepositoryController*)repoCtrl
+{
+  [self update];
+}
+- (void) repositoryControllerDidChangeRemoteBranch:(GBRepositoryController*)repoCtrl
+{
+  [self update];
+}
+- (void) repositoryControllerDidCommit:(GBRepositoryController*)repoCtrl
+{
+  [self update];
+}
+- (void) repositoryControllerDidUpdateRefs:(GBRepositoryController*)repoCtrl
+{
+  [self update];
+}
 
 
 
@@ -124,10 +147,8 @@
   [self appendItemWithIdentifier:@"GBPullPush"];
   [self appendItemWithIdentifier:@"GBOtherBranch"];
   
-//  [self updateBranchMenus];
-//  [self updateDisabledState];
-//  [self updateSpinner];
-//  [self updateCommitButton];
+  [self updateBranchMenus];
+  [self updateDisabledState];
 }
 
 - (void) updateDisabledState
