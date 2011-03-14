@@ -5,4 +5,6 @@
 
 @property(nonatomic, assign) GBRepositoryController* repositoryController; // repository controller owns toolbar controller
 
+- (IBAction) pullOrPush:(NSSegmentedControl*)segmentedControl;
+
 @end
