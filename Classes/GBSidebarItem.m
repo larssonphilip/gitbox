@@ -373,7 +373,6 @@
 
 - (void) update
 {
-  //NSLog(@"[GBSidebarItem update]: self.sidebarController = %@ [%@]", self.sidebarController, self);
   [self.sidebarController updateItem:self];
 }
 
