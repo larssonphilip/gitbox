@@ -55,8 +55,8 @@ Gitbox 1.3 Refactoring:
 + bug: when displaying the history, should load commits if needed
 + bug: when selected group and repo, after selecting a repo, commits do not load automatically
 + bug: whe updated stage or history, should update sidebarItem
++ bug: toolbar is not in responder chain - pullOrPush does not work
 - bug: restore toolbar buttons and menus
-- bug: toolbar is not in responder chain - pullOrPush does not work
 - bug: restore all the Main Menu actions: pull/push etc.
 - bug: restore clone controller
 

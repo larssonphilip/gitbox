@@ -96,9 +96,15 @@
   NSResponder* responder = [self nextResponder];
   if (toolbarController)
   {
-    responder = [toolbarController nextResponder];
+    responder = [[[toolbarController nextResponder] retain] autorelease];
     [toolbarController setNextResponder:nil];
+    toolbarController.window = nil;
   }
+  
+//  NSLog(@"window nextResponder: %@", [[self window] nextResponder]);
+//  NSLog(@"self nextResponder: %@", [self nextResponder]);
+//  NSLog(@"DEBUG: window -> %@ -> %@ (current next responder: %@; new toolbar controller: %@)", 
+//        toolbarController, responder, [self nextResponder], newToolbarController);
   
   if (newToolbarController)
   {
@@ -114,6 +120,7 @@
   [toolbarController release];
   toolbarController = [newToolbarController retain];
   toolbarController.toolbar = [[self window] toolbar];
+  toolbarController.window = [self window];
 }
 
 

@@ -550,42 +550,6 @@
     NSLog(@"ERROR: Unrecognized push/pull segment %d", (int)segment);
   }
 }
-// Moved to GBRepositoryController
-//- (BOOL) validateFetch:(id)_
-//{
-//  GBRepositoryController* rc = self.repositoryController;
-//  return rc.repository.currentRemoteBranch &&
-//  [rc.repository.currentRemoteBranch isRemoteBranch] &&
-//  !rc.isDisabled && 
-//  !rc.isRemoteBranchesDisabled;
-//}
-//
-//- (BOOL) validatePull:(id)sender
-//{
-//  GBRepositoryController* rc = self.repositoryController;
-//  if ([sender isKindOfClass:[NSMenuItem class]])
-//  {
-//    NSMenuItem* item = sender;
-//    [item setTitle:NSLocalizedString(@"Pull", @"Command")];
-//    if (rc.repository.currentRemoteBranch && [rc.repository.currentRemoteBranch isLocalBranch])
-//    {
-//      [item setTitle:NSLocalizedString(@"Merge", @"Command")];
-//    }
-//  }
-//  
-//  return [rc.repository.currentLocalRef isLocalBranch] && rc.repository.currentRemoteBranch && !rc.isDisabled && !rc.isRemoteBranchesDisabled;
-//}
-//
-//- (BOOL) validatePush:(id)_
-//{
-//  GBRepositoryController* rc = self.repositoryController;
-//  return [rc.repository.currentLocalRef isLocalBranch] && 
-//  rc.repository.currentRemoteBranch && 
-//  !rc.isDisabled && 
-//  !rc.isRemoteBranchesDisabled && 
-//  ![rc.repository.currentRemoteBranch isLocalBranch];
-//}
-//
 
 
 
