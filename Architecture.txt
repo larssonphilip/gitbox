@@ -1,3 +1,13 @@
+Responder chain:
+
+- app delegate
+- window
+  - selected item 
+  - sidebar
+  - detail view
+    - history view
+    - stage/commit view
+
 
 1. GBAppDelegate controls windows
 2. GBWindowController controls main menu and view controllers: sources, toolbar, history view, stage/changes view

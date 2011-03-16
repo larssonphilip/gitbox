@@ -89,6 +89,27 @@
   
   if (newToolbarController == toolbarController) return;
   
+  // Responder chain:
+  // 1. window -> app delegate (nil toolbar controller)
+  // 2. window -> toolbarController -> app delegate
+
+  NSResponder* responder = [self nextResponder];
+  if (toolbarController)
+  {
+    responder = [toolbarController nextResponder];
+    [toolbarController setNextResponder:nil];
+  }
+  
+  if (newToolbarController)
+  {
+    [newToolbarController setNextResponder:responder];
+    [self setNextResponder:newToolbarController];
+  }
+  else
+  {
+    [self setNextResponder:responder];
+  }
+  
   toolbarController.toolbar = nil;
   [toolbarController release];
   toolbarController = [newToolbarController retain];

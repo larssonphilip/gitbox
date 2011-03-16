@@ -1,4 +1,4 @@
-@interface GBToolbarController : NSObject<NSToolbarDelegate>
+@interface GBToolbarController : NSResponder<NSToolbarDelegate>
 
 @property(nonatomic, retain) IBOutlet NSToolbar* toolbar;
 @property(nonatomic, retain) IBOutlet NSWindow* window;
