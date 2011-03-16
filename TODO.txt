@@ -95,6 +95,8 @@ Gitbox 1.3 Features:
 - submodules: case 4: user clones the repo inside the repo => needs to display as a non-tracked submodule which can be tracked
 - submodules: case 5: user tries to commit a submodule which has the HEAD non-pushed (or dirty directory) - show warning or ask to push manually; show button "show module"
 
+- sidebar: "Duplicate..." menu item to make a quick clone + copy of .git/config.
+
 
 Gitbox 1.3 Enhancements:
 
@@ -106,7 +108,6 @@ Gitbox 1.3 Bug fixes:
 
 - sidebar: delegate all sidebar right-click menu items to the sidebar controller and selected/clicked item. Fix Open in Terminal/Open in Finder commands.
 - sidebar: postpone reloading the sidebar while editing a group name
-
 
 
 --
