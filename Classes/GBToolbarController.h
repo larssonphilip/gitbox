@@ -12,5 +12,6 @@
 - (void) removeItemWithIdentifier:(NSString*)itemIdentifier;
 - (void) replaceItemWithIdentifier:(NSString*)itemIdentifier1 withItemWithIdentifier:(NSString*)itemIdentifier2;
 - (void) removeAdditionalItems;
+- (CGFloat) sidebarPadding;
 
 @end

@@ -112,12 +112,13 @@
   [self.toolbar insertItemWithItemIdentifier:itemIdentifier2 atIndex:itemIndex];
 }
 
+// Removes all the items except for the first one: the "add" button.
 - (void) removeAdditionalItems
 {
   NSInteger c = [[self.toolbar items] count];
-  for (NSInteger i = 2; i < c; i++)
+  for (NSInteger i = 1; i < c; i++)
   {
-    [self.toolbar removeItemAtIndex:2]; // 2 means we are removing the third item until there's no items left
+    [self.toolbar removeItemAtIndex:1]; // 1 means we are removing the second item until there's no items left
   }
 }
 
@@ -148,22 +149,24 @@
 - (void) update
 {
   [self removeAdditionalItems];
+  [self appendItemWithIdentifier:@"GBSidebarPadding"];
   [self updateAlignment];
 }
 
 
 - (void) updateAlignment
-{
-  static CGFloat spaceForMissingSettingsButton = 38.0; // remove this when settings button will come back
-  CGFloat paddingOffset = -11.0 - 76.0 + spaceForMissingSettingsButton; // right spacing + "add" and "settings" buttons widths and their paddings
-  
+{  
   NSToolbarItem* spaceItem = self.sidebarPaddingItem;
   
   NSSize size = [spaceItem minSize];
-  size.width = self.sidebarWidth + paddingOffset;
+  size.width = [self sidebarPadding];
   [spaceItem setMaxSize:size];
   [spaceItem setMinSize:size];
 }
 
+- (CGFloat) sidebarPadding
+{
+  return self.sidebarWidth - 11.0 - 76.0 + 38.0;
+}
 
 @end

@@ -16,6 +16,7 @@
 @interface GBRepositoryToolbarController ()
 
 @property(nonatomic, readonly) NSPopUpButton* currentBranchPopUpButton;
+@property(nonatomic, readonly) NSButton* settingsButton;
 @property(nonatomic, readonly) NSSegmentedControl* pullPushControl;
 @property(nonatomic, readonly) NSButton* pullButton;
 @property(nonatomic, readonly) NSPopUpButton* otherBranchPopUpButton;
@@ -77,6 +78,11 @@
   return (id)[[self toolbarItemForIdentifier:@"GBCurrentBranch"] view];
 }
 
+- (NSButton*) settingsButton
+{
+  return (id)[[self toolbarItemForIdentifier:@"GBSettings"] view];
+}
+
 - (NSSegmentedControl*) pullPushControl
 {
   return (id)[[self toolbarItemForIdentifier:@"GBPullPush"] view];
@@ -134,11 +140,16 @@
 
 
 
+- (CGFloat) sidebarPadding
+{
+  return [super sidebarPadding] - 38.0; // compensation for GBSettings button
+}
 
 - (void) update
 {
   [super update];
   
+  [self.toolbar insertItemWithItemIdentifier:@"GBSettings" atIndex:1];
   [self appendItemWithIdentifier:@"GBCurrentBranch"];
   
   GBRepository* repo = self.repositoryController.repository;
