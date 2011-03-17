@@ -78,6 +78,7 @@
 
 @synthesize repository;
 @synthesize sidebarItem;
+@synthesize window;
 @synthesize toolbarController;
 @synthesize viewController;
 @synthesize selectedCommit;
@@ -103,6 +104,7 @@
   [[NSNotificationCenter defaultCenter] removeObserver:self];
   self.repository = nil;
   self.sidebarItem = nil;
+  self.window = nil;
   self.toolbarController = nil;
   self.viewController = nil;
   self.selectedCommit = nil;

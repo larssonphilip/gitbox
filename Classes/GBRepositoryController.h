@@ -21,6 +21,7 @@
 @property(nonatomic, retain) OABlockQueue* updatesQueue;
 @property(nonatomic, retain) OABlockQueue* autofetchQueue;
 @property(nonatomic, retain) GBSidebarItem* sidebarItem;
+@property(nonatomic, retain) NSWindow* window;
 @property(nonatomic, retain) GBRepositoryToolbarController* toolbarController;
 @property(nonatomic, retain) GBRepositoryViewController* viewController;
 @property(nonatomic, retain) GBCommit* selectedCommit;

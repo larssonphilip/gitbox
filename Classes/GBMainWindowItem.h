@@ -2,6 +2,7 @@
 @class NSViewController;
 @protocol GBMainWindowItem <NSObject>
 @optional
+@property(nonatomic, retain) NSWindow* window;
 - (NSString*) windowTitle;
 - (NSURL*) windowRepresentedURL;
 - (GBToolbarController*) toolbarController;

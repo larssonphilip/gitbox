@@ -142,8 +142,16 @@
 {
   if (selectedWindowItem == anObject) return;
   
+  if ([selectedWindowItem respondsToSelector:@selector(setWindow:)]) 
+  {
+    selectedWindowItem.window = nil;
+  }
   [selectedWindowItem release];
   selectedWindowItem = [anObject retain];
+  if ([selectedWindowItem respondsToSelector:@selector(setWindow:)]) 
+  {
+    selectedWindowItem.window = nil;
+  }
   
   GBToolbarController* newToolbarController = nil;
   NSViewController* newDetailController = nil;
