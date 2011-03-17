@@ -162,7 +162,6 @@
 
 
 
-
 - (IBAction) openDocument:sender
 {
   NSOpenPanel* openPanel = [NSOpenPanel openPanel];
@@ -359,20 +358,43 @@
 }
 
 
+// TODO: to avoid declaring all the actions here when handling right click menu actions, try the following:
+// - do not insert sidebar item into responder chain
+// - override tryToPerform:with:; if failed to perform using super implementation, try sidebar item and validate 
+// - when asked to validate, search for requested action in the 
+// Note: this might now work with main menu actions like "push": when menu item is validated, item should be in the responder chain.
 
+// So we may try to keep the item in the responder chain, but then for tryToPerform:with: before trying super implementation, we should 
+// try to find local action, then item's action and only if both failed, resort to default implementation.
 
+// Also: for multiple selection we need to insert into responder chain a multiple selection object which will validate and dispatch actions.
+// And after that we only need our custom tryToPerform:with: implementation to handle the case when right click menu is outside the selection.
 
-
-
-
-
-#pragma mark OADispatchItemValidation
-
+//- (BOOL)tryToPerform:(SEL)selector with:(id)object
+//{
+//  if ([self respondsToSelector:selector])
+//  {
+//    [self performSelector:selector withObject:object];
+//    return YES;
+//  }
+//  
+//  
+//  //  if ([self respondsToSelector:selector])
+//  //  {
+//  //    [self performSelector:selector withObject:object];
+//  //    return YES;
+//  //  }
+//  return [super tryToPerform:selector with:object];
+//}
+//
 
 - (BOOL) validateUserInterfaceItem:(id<NSValidatedUserInterfaceItem>)anItem
 {
   return [self dispatchUserInterfaceItemValidation:anItem];
 }
+
+
+
 
 
 
