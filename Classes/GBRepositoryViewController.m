@@ -76,6 +76,30 @@
 // TODO: keep the size of the left column, keep the min sizes for all columns
 
 
+- (CGFloat)splitView:(NSSplitView*) aSplitView constrainMinCoordinate:(CGFloat)proposedMin ofSubviewAt:(NSInteger)dividerIndex
+{
+  static CGFloat historyMinWidth = 200.0;
+  
+  if (dividerIndex == 0)
+  {
+    return historyMinWidth;
+  }
+  
+  return 0;
+}
+
+- (CGFloat)splitView:(NSSplitView*) aSplitView constrainMaxCoordinate:(CGFloat)proposedMax ofSubviewAt:(NSInteger)dividerIndex
+{
+  //NSLog(@"constrainMaxCoordinate: %f, index: %d", proposedMax, dividerIndex);
+  
+  CGFloat totalWidth = splitView.frame.size.width;
+  if (dividerIndex == 0)
+  {
+    return round(totalWidth - 200.0);
+  }
+  return proposedMax;
+}
+
 
 
 
