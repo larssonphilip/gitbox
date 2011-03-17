@@ -140,7 +140,16 @@
   [super update];
   
   [self appendItemWithIdentifier:@"GBCurrentBranch"];
-  [self appendItemWithIdentifier:@"GBPullPush"];
+  
+  GBRepository* repo = self.repositoryController.repository;
+  if (repo.currentRemoteBranch && [repo.currentRemoteBranch isLocalBranch])
+  {
+    [self appendItemWithIdentifier:@"GBPull"];
+  }
+  else
+  {
+    [self appendItemWithIdentifier:@"GBPullPush"];
+  }
   [self appendItemWithIdentifier:@"GBOtherBranch"];
   
   [self updateBranchMenus];
@@ -172,14 +181,12 @@
     [control setLabel:NSLocalizedString(@"← merge", @"Toolbar") forSegment:0];
     [control setLabel:@" " forSegment:1];
     [self.pullButton setTitle:NSLocalizedString(@"← merge   ", @"Toolbar")];
-    [self replaceItemWithIdentifier:@"GBPullPush" withItemWithIdentifier:@"GBPull"];
   }
   else
   {
     [control setLabel:NSLocalizedString(@"← pull", @"Toolbar") forSegment:0];
     [control setLabel:NSLocalizedString(@"push →", @"Toolbar") forSegment:1];
     [self.pullButton setTitle:NSLocalizedString(@"← pull   ", @"Toolbar")];
-    [self replaceItemWithIdentifier:@"GBPull" withItemWithIdentifier:@"GBPullPush"];
   }
   
   [control setEnabled:[self.repositoryController validatePull:nil] forSegment:0];
