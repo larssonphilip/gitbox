@@ -78,11 +78,11 @@
 
 - (CGFloat)splitView:(NSSplitView*) aSplitView constrainMinCoordinate:(CGFloat)proposedMin ofSubviewAt:(NSInteger)dividerIndex
 {
-  static CGFloat historyMinWidth = 200.0;
+  CGFloat totalWidth = aSplitView.frame.size.width;
   
   if (dividerIndex == 0)
   {
-    return historyMinWidth;
+    return round(totalWidth*0.2);
   }
   
   return 0;
@@ -92,10 +92,10 @@
 {
   //NSLog(@"constrainMaxCoordinate: %f, index: %d", proposedMax, dividerIndex);
   
-  CGFloat totalWidth = splitView.frame.size.width;
+  CGFloat totalWidth = aSplitView.frame.size.width;
   if (dividerIndex == 0)
   {
-    return round(totalWidth - 200.0);
+    return round(totalWidth*0.8);
   }
   return proposedMax;
 }
