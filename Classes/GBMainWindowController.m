@@ -150,7 +150,7 @@
   selectedWindowItem = [anObject retain];
   if ([selectedWindowItem respondsToSelector:@selector(setWindow:)]) 
   {
-    selectedWindowItem.window = nil;
+    selectedWindowItem.window = [self window];
   }
   
   GBToolbarController* newToolbarController = nil;
@@ -259,106 +259,16 @@
 
 
 
-//- (IBAction) editRepositories:(id)_
-//{
-//  GBRemotesController* remotesController = [GBRemotesController controller];
-//  
-//  remotesController.repository = [self selectedLocalRepositoryController].repository;
-//  remotesController.target = self;
-//  remotesController.finishSelector = @selector(doneEditRepositories:);
-//  remotesController.cancelSelector = @selector(cancelledEditRepositories:);
-//  
-//  [self beginSheetForController:remotesController];
-//}
-//
-//- (void) doneEditRepositories:(GBRemotesController*)remotesController
-//{
-//  [self endSheetForController:remotesController];
-//}
-//
-//- (void) cancelledEditRepositories:(GBRemotesController*)remotesController
-//{
-//  [self endSheetForController:remotesController];
-//}
-//
-//- (BOOL) validateEditRepositories:(id)_
-//{
-//  return !![self selectedLocalRepositoryController];
-//}
 
 
-//- (IBAction) editGitIgnore:(id)_
-//{
-//  GBFileEditingController* fileEditor = [GBFileEditingController controller];
-//  fileEditor.title = @".gitignore";
-//  fileEditor.URL = [[[self selectedRepositoryController] url] URLByAppendingPathComponent:@".gitignore"];
-//  [fileEditor runSheetInWindow:[self window]];
-//}
-//
-//- (IBAction) editGitConfig:(id)_
-//{
-//  GBFileEditingController* fileEditor = [GBFileEditingController controller];
-//  fileEditor.title = @".git/config";
-//  fileEditor.URL = [[[self selectedRepositoryController] url] URLByAppendingPathComponent:@".git/config"];
-//  [fileEditor runSheetInWindow:[self window]];
-//}
-//
-//- (IBAction) editGlobalGitConfig:(id)_
-//{
-//  GBFileEditingController* fileEditor = [GBFileEditingController controller];
-//  fileEditor.title = @"~/.gitconfig";
-//  fileEditor.URL = [NSURL fileURLWithPath:[NSHomeDirectory() stringByAppendingPathComponent:@".gitconfig"]];
-//  [fileEditor runSheetInWindow:[self window]];  
-//}
-//
-//- (BOOL) validateEditGitIgnore:(id)_
-//{
-//  return !![self selectedLocalRepositoryController];
-//}
-//
-//- (BOOL) validateEditGitConfig:(id)_
-//{
-//  return !![self selectedLocalRepositoryController];
-//}
+- (IBAction) editGlobalGitConfig:(id)_
+{
+  GBFileEditingController* fileEditor = [GBFileEditingController controller];
+  fileEditor.title = @"~/.gitconfig";
+  fileEditor.URL = [NSURL fileURLWithPath:[NSHomeDirectory() stringByAppendingPathComponent:@".gitconfig"]];
+  [fileEditor runSheetInWindow:[self window]];  
+}
 
-
-
-
-
-//- (IBAction) pullOrPush:(id)_
-//{
-//  [self.toolbarController pullOrPush:_];
-//}
-//
-//- (IBAction) fetch:(id)_
-//{
-//  [self.toolbarController fetch:_];
-//}
-//
-//- (IBAction) pull:(id)_
-//{
-//  [self.toolbarController pull:_];
-//}
-//
-//- (IBAction) push:(id)_
-//{
-//  [self.toolbarController push:_];
-//}
-//
-//- (BOOL) validateFetch:(id)_
-//{
-//  return [self.toolbarController validateFetch:_];
-//}
-//
-//- (BOOL) validatePull:(id)_
-//{
-//  return [self.toolbarController validatePull:_];
-//}
-//
-//- (BOOL) validatePush:(id)_
-//{
-//  return [self.toolbarController validatePush:_];
-//}
 
 
 
@@ -381,15 +291,6 @@
   [self.detailViewController tryToPerform:@selector(selectPane:) with:self];
 }
 
-
-// DOES NOT WORK HERE!
-// If no specific controller is a responder to pane selection, we should disable these actions.
-// For instance, when Open panel is opened, we should have default behaviour for left/right buttons
-
-//- (IBAction) selectLeftPane:(id)sender {}
-//- (IBAction) selectRightPane:(id)sender {}
-//- (BOOL) validateSelectLeftPane:(id)sender { return NO; }
-//- (BOOL) validateSelectRightPane:(id)sender { return NO; }
 
 
 

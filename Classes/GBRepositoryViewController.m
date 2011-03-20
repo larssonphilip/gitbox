@@ -1,6 +1,10 @@
 #import "GBRepositoryViewController.h"
+#import "GBRepositoryController.h"
 #import "GBHistoryViewController.h"
+#import "GBRemotesController.h"
 #import "NSView+OAViewHelpers.h"
+#import "NSWindowController+OAWindowControllerHelpers.h"
+#import "NSObject+OADispatchItemValidation.h"
 
 @interface GBRepositoryViewController ()
 @property(nonatomic, retain) GBHistoryViewController* historyController;
@@ -57,7 +61,10 @@
 
 
 
+
+
 #pragma mark Actions
+
 
 
 - (IBAction) selectPane:(id)sender
@@ -67,13 +74,19 @@
 }
 
 
+// For each action selector "doSomething:" redirects call to "validateDoSomething:"
+// If the selector is not implemented, returns YES.
+- (BOOL) validateUserInterfaceItem:(id<NSValidatedUserInterfaceItem>)anItem
+{
+  return [self dispatchUserInterfaceItemValidation:anItem];
+}
+
+
 
 
 
 #pragma mark NSSplitViewDelegate
 
-
-// TODO: keep the size of the left column, keep the min sizes for all columns
 
 
 - (CGFloat)splitView:(NSSplitView*) aSplitView constrainMinCoordinate:(CGFloat)proposedMin ofSubviewAt:(NSInteger)dividerIndex

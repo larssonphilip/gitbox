@@ -1,12 +1,12 @@
 #import "NSWindowController+OAWindowControllerHelpers.h"
 
 @implementation NSWindowController (OAWindowControllerHelpers)
-
+// obsolete
 - (void) beginSheetForController:(NSWindowController*)ctrl
 {
   [[self window] beginSheetForController:ctrl];
 }
-
+// obsolete
 - (void) endSheetForController:(NSWindowController*)ctrl
 {
   [[self window] endSheetForController:ctrl];

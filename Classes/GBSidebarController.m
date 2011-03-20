@@ -302,14 +302,6 @@
 
 
 
-//
-//- (BOOL) isEditing
-//{
-//  return [[[self.view window] firstResponder] isKindOfClass:[NSText class]];
-//}
-//
-
-
 
 
 // This helper is used only for prev/next navigation, should be rewritten to support groups
@@ -602,17 +594,6 @@
       return [NSURL fileURLWithPath:filename];
     }];
     
-    
-    // Move into sidebar items
-//    BOOL atLeastOneIsValid = NO;
-//    for (NSString* aPath in filenames)
-//    {
-//      atLeastOneIsValid = atLeastOneIsValid || [GBRepository isValidRepositoryPathOrFolder:aPath];
-//    }
-//    
-//    if (!atLeastOneIsValid) return NSDragOperationNone;
-    
-    // TODO: accept only groups and sections
     return [proposedItem dragOperationForURLs:URLs outlineView:anOutlineView];
   }
   else
@@ -664,19 +645,6 @@
     
     if (!filenames) return NO;
     if ([filenames count] < 1) return NO;
-    
-//    NSMutableArray* URLs = [NSMutableArray array];
-    
-//    for (NSString* aPath in filenames)
-//    {
-//      NSURL* aURL = [NSURL fileURLWithPath:aPath];
-//      [GBRepository validateRepositoryURL:aURL withBlock:^(BOOL isValid){
-//        if (isValid)
-//        {
-//          [URLs addObject:aURL];
-//        }
-//      }];
-//    }
     
     NSArray* URLs = [filenames mapWithBlock:^(id filename){
       return [NSURL fileURLWithPath:filename];

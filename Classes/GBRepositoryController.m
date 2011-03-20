@@ -24,6 +24,13 @@
 #import "NSObject+OASelectorNotifications.h"
 #import "NSObject+OADispatchItemValidation.h"
 
+
+// will be obsolete when settings panel is done
+#import "GBRemotesController.h"
+#import "GBFileEditingController.h"
+#import "NSWindowController+OAWindowControllerHelpers.h"
+
+
 @interface GBRepositoryController ()
 
 @property(nonatomic, retain) OABlockMerger* blockMerger;
@@ -699,10 +706,55 @@
 }
 
 
+
+
+- (IBAction) editRepositories:(id)sender
+{
+  GBRemotesController* remotesController = [GBRemotesController controller];
+  
+  remotesController.repository = self.repository;
+  remotesController.target = self;
+  remotesController.finishSelector = @selector(doneEditRepositories:);
+  remotesController.cancelSelector = @selector(cancelledEditRepositories:);
+  
+  [self.window beginSheetForController:remotesController];
+}
+
+- (void) doneEditRepositories:(GBRemotesController*)remotesController
+{
+  [self.window endSheetForController:remotesController];
+}
+
+- (void) cancelledEditRepositories:(GBRemotesController*)remotesController
+{
+  [self.window endSheetForController:remotesController];
+}
+
+- (IBAction) editGitIgnore:(id)sender
+{
+  GBFileEditingController* fileEditor = [GBFileEditingController controller];
+  fileEditor.title = @".gitignore";
+  fileEditor.URL = [self.url URLByAppendingPathComponent:@".gitignore"];
+  [fileEditor runSheetInWindow:self.window];
+}
+
+- (IBAction) editGitConfig:(id)sender
+{
+  GBFileEditingController* fileEditor = [GBFileEditingController controller];
+  fileEditor.title = @".git/config";
+  fileEditor.URL = [self.url URLByAppendingPathComponent:@".git/config"];
+  [fileEditor runSheetInWindow:[self window]];
+}
+
+
+
+
+
 - (BOOL) validateUserInterfaceItem:(id<NSValidatedUserInterfaceItem>)anItem
 {
   return [self dispatchUserInterfaceItemValidation:anItem];
 }
+
 
 
 

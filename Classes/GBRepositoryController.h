@@ -67,4 +67,11 @@
 - (BOOL) validatePull:(id)sender;
 - (BOOL) validatePush:(id)sender;
 
+
+// will be obsolete when settings UI is done
+- (IBAction) editRepositories:(id)sender;
+- (IBAction) editGitIgnore:(id)sender;
+- (IBAction) editGitConfig:(id)sender;
+
+
 @end
