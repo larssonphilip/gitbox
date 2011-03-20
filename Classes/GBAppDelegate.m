@@ -95,40 +95,7 @@
   [self.preferencesController showWindow:nil];
 }
 
-// OBSOLETE: should move to GBSidebarController
-//- (IBAction) cloneRepository:_
-//{
-//  if (!self.cloneWindowController)
-//  {
-//    self.cloneWindowController = [[[GBCloneWindowController alloc] initWithWindowNibName:@"GBCloneWindowController"] autorelease];
-//  }
-//  
-//  GBCloneWindowController* ctrl = self.cloneWindowController;
-//  
-//  ctrl.finishBlock = ^{
-//    if (ctrl.sourceURL && ctrl.targetURL)
-//    {
-//      if (![ctrl.targetURL isFileURL])
-//      {
-//        NSLog(@"ERROR: GBCloneWindowController targetURL is not file URL (%@)", ctrl.targetURL);
-//        return;
-//      }
-//      
-//      GBRepositoryCloningController* cloneController = [[GBRepositoryCloningController new] autorelease];
-//      cloneController.sourceURL = ctrl.sourceURL;
-//      cloneController.targetURL = ctrl.targetURL;
-//      
-//      NSLog(@"TODO: change for the cloning-specific API here (i.e. addCloningRepositoryController:)");
-//      
-//      [self.repositoriesController doWithSelectedGroupAtIndex:^(GBRepositoriesGroup* aGroup, NSInteger anIndex){
-//        [self.repositoriesController addLocalRepositoryController:cloneController inGroup:aGroup atIndex:anIndex];
-//      }];
-//      [self.repositoriesController selectRepositoryController:cloneController];
-//    }
-//  };
-//  
-//  [ctrl runSheetInWindow:[self.windowController window]];
-//}
+
 
 
 

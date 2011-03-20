@@ -2,6 +2,12 @@
 #import "NSWindowController+OAWindowControllerHelpers.h"
 #import "NSFileManager+OAFileManagerHelpers.h"
 
+@interface GBCloneWindowController ()
+- (NSURL*) urlFromTextField;
+- (void) update;
+@end
+
+
 @implementation GBCloneWindowController
 
 @synthesize urlField;
@@ -22,44 +28,13 @@
   [super dealloc];
 }
 
-- (NSURL*) urlFromTextField
+- (IBAction) cancel:(id)sender
 {
-  NSString* urlString = [self.urlField stringValue];
-  if ([urlString isEqual:@""]) return nil;
-  urlString = [urlString stringByReplacingOccurrencesOfString:@"git clone" withString:@""];
-  urlString = [urlString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-  
-  if ([urlString rangeOfString:@"~/"].location == 0)
-  {
-    urlString = [urlString stringByReplacingOccurrencesOfString:@"~" withString:NSHomeDirectory()];
-  }
-  
-  if ([urlString rangeOfString:@"://"].location == NSNotFound)
-  {
-    if ([[NSFileManager defaultManager] fileExistsAtPath:urlString])
-    {
-      return [NSURL fileURLWithPath:urlString];
-    }
-//    urlString = [urlString stringByReplacingOccurrencesOfString:@":/" withString:@"/"]; // git@github.com:/oleganza/path => git@github.com/oleganza/
-//    urlString = [urlString stringByReplacingOccurrencesOfString:@":" withString:@"/~/"]; // git@github.com:oleganza/path => git@github.com/~/oleganza/path
-//    urlString = [urlString stringByReplacingOccurrencesOfString:@"//" withString:@"/"]; // needs a fix if it was domain:/root/path
-//    urlString = [NSString stringWithFormat:@"ssh://%@", urlString];
-  }
-  NSURL* url = [NSURL URLWithString:urlString];
-  return url;
-}
-
-- (void) update
-{
-  [self.nextButton setEnabled:!![self urlFromTextField]];
-}
-
-- (IBAction) cancel:_
-{
+  self.finishBlock = nil;
   if (self.windowHoldingSheet) [self.windowHoldingSheet endSheetForController:self];
 }
 
-- (IBAction) ok:_
+- (IBAction) ok:(id)sender
 {
   self.sourceURL = [self urlFromTextField];
   
@@ -100,12 +75,14 @@
         if (self.targetDirectoryURL && self.targetURL)
         {
           if (self.finishBlock) self.finishBlock();
+          self.finishBlock = nil;
           
           // Clean up for next use.
           [self.urlField setStringValue:@""];
           self.sourceURL = nil;
           self.targetDirectoryURL = nil;
           self.targetURL = nil;
+          
         }
       }
       else
@@ -136,6 +113,9 @@
 }
 
 
+
+
+
 #pragma mark NSTextFieldDelegate
 
 
@@ -143,6 +123,9 @@
 {
   [self update];
 }
+
+
+
 
 
 
@@ -181,5 +164,51 @@
     [aPanel setNameFieldStringValue:uniqueName];
   }
 }
+
+
+
+
+
+
+#pragma mark Private
+
+
+
+- (NSURL*) urlFromTextField
+{
+  NSString* urlString = [self.urlField stringValue];
+  if ([urlString isEqual:@""]) return nil;
+  urlString = [urlString stringByReplacingOccurrencesOfString:@"git clone" withString:@""];
+  urlString = [urlString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+  
+  if ([urlString rangeOfString:@"~/"].location == 0)
+  {
+    urlString = [urlString stringByReplacingOccurrencesOfString:@"~" withString:NSHomeDirectory()];
+  }
+  
+  if ([urlString rangeOfString:@"://"].location == NSNotFound)
+  {
+    if ([[NSFileManager defaultManager] fileExistsAtPath:urlString])
+    {
+      return [NSURL fileURLWithPath:urlString];
+    }
+    //    urlString = [urlString stringByReplacingOccurrencesOfString:@":/" withString:@"/"]; // git@github.com:/oleganza/path => git@github.com/oleganza/
+    //    urlString = [urlString stringByReplacingOccurrencesOfString:@":" withString:@"/~/"]; // git@github.com:oleganza/path => git@github.com/~/oleganza/path
+    //    urlString = [urlString stringByReplacingOccurrencesOfString:@"//" withString:@"/"]; // needs a fix if it was domain:/root/path
+    //    urlString = [NSString stringWithFormat:@"ssh://%@", urlString];
+  }
+  NSURL* url = [NSURL URLWithString:urlString];
+  return url;
+}
+
+
+- (void) update
+{
+  [self.nextButton setEnabled:!![self urlFromTextField]];
+}
+
+
+
+
 
 @end

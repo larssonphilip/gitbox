@@ -12,7 +12,7 @@
 
 - (void) runSheetInWindow:(NSWindow*)aWindow;
 
-- (IBAction) cancel:_;
-- (IBAction) ok:_;
+- (IBAction) cancel:(id)sender;
+- (IBAction) ok:(id)sender;
 
 @end

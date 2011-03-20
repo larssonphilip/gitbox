@@ -3,7 +3,8 @@
 #import "GBRepository.h"
 #import "GBSidebarItem.h"
 #import "GBSidebarCell.h"
-
+#import "GBCloneWindowController.h"
+#import "GBRepositoryCloningController.h"
 #import "OALicenseNumberCheck.h"
 
 #import "NSFileManager+OAFileManagerHelpers.h"
@@ -16,6 +17,7 @@
 @interface GBSidebarController () <NSOpenSavePanelDelegate>
 @property(nonatomic, retain) NSResponder<GBSidebarItemObject>* nextResponderSidebarObject;
 @property(nonatomic, assign) NSUInteger ignoreSelectionChange;
+@property(nonatomic, retain) GBCloneWindowController* cloneWindowController;
 - (GBSidebarItem*) clickedSidebarItem;
 - (NSArray*) selectedSidebarItems;
 - (void) updateContents;
@@ -33,6 +35,7 @@
 @synthesize ignoreSelectionChange;
 @synthesize buyButton;
 @synthesize nextResponderSidebarObject;
+@synthesize cloneWindowController;
 
 - (void) dealloc
 {
@@ -41,6 +44,7 @@
   self.outlineView = nil;
   self.buyButton = nil;
   self.nextResponderSidebarObject = nil;
+  self.cloneWindowController = nil;
   [super dealloc];
 }
 
@@ -194,9 +198,40 @@
   return NO;
 }
 
-- (IBAction) cloneRepository:sender
+- (IBAction) cloneRepository:(id)sender
 {
-  NSLog(@"TODO: implement cloneRepository:");
+  if (!self.cloneWindowController)
+  {
+    self.cloneWindowController = [[[GBCloneWindowController alloc] initWithWindowNibName:@"GBCloneWindowController"] autorelease];
+  }
+  
+  GBCloneWindowController* ctrl = self.cloneWindowController;
+  
+  ctrl.finishBlock = ^{
+    if (ctrl.sourceURL && ctrl.targetURL)
+    {
+      if (![ctrl.targetURL isFileURL])
+      {
+        NSLog(@"ERROR: GBCloneWindowController targetURL is not file URL (%@)", ctrl.targetURL);
+        return;
+      }
+      
+      GBRepositoryCloningController* cloneController = [[GBRepositoryCloningController new] autorelease];
+      cloneController.sourceURL = ctrl.sourceURL;
+      cloneController.targetURL = ctrl.targetURL;
+
+      
+      
+//      NSLog(@"TODO: change for the cloning-specific API here (i.e. addCloningRepositoryController:)");
+//      
+//      [self.repositoriesController doWithSelectedGroupAtIndex:^(GBRepositoriesGroup* aGroup, NSInteger anIndex){
+//        [self.repositoriesController addLocalRepositoryController:cloneController inGroup:aGroup atIndex:anIndex];
+//      }];
+//      [self.repositoriesController selectRepositoryController:cloneController];
+    }
+  };
+  
+  [ctrl runSheetInWindow:[[self view] window]];
 }
 
 
