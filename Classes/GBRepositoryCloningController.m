@@ -143,6 +143,32 @@
 
 
 
+#pragma mark GBSidebarItemObject
+
+
+- (NSString*) sidebarItemTitle
+{
+  return [[[self url] path] lastPathComponent];
+}
+
+- (NSString*) sidebarItemTooltip
+{
+  return [[[self url] absoluteURL] path];
+}
+
+- (id) sidebarItemContentsPropertyList
+{
+  return nil;
+}
+
+- (void) sidebarItemLoadContentsFromPropertyList:(id)plist
+{
+}
+
+
+
+
+
 #pragma mark NSPasteboardWriting
 
 
@@ -167,23 +193,6 @@
   return [[self url] pasteboardPropertyListForType:type];
 }
 
-
-
-
-
-
-#pragma mark GBSidebarItemObject
-
-
-
-- (id) sidebarItemContentsPropertyList
-{
-  return nil;
-}
-
-- (void) sidebarItemLoadContentsFromPropertyList:(id)plist
-{
-}
 
 
 
