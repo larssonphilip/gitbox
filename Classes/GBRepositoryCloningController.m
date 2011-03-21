@@ -1,32 +1,45 @@
+#import "GBSidebarItem.h"
+#import "GBCloneProcessViewController.h"
 #import "GBRepositoryCloningController.h"
 #import "GBCloneTask.h"
+#import "NSString+OAStringHelpers.h"
+
 
 @interface GBRepositoryCloningController ()
 @property(nonatomic,retain) GBCloneTask* task;
+@property(nonatomic, assign, readwrite) NSInteger isDisabled;
+@property(nonatomic, assign, readwrite) NSInteger isSpinning;
+
 @end
 
 @implementation GBRepositoryCloningController
+
+@synthesize sidebarItem;
+@synthesize window;
+@synthesize viewController;
 
 @synthesize sourceURL;
 @synthesize targetURL;
 @synthesize task;
 @synthesize error;
 
-@synthesize delegate;
+@synthesize isDisabled;
+@synthesize isSpinning;
+
 
 - (void) dealloc
 {
-  self.sourceURL = nil;
-  self.targetURL = nil;
-  self.task      = nil;
-  self.error     = nil;
+  self.sidebarItem = nil;
+  self.window      = nil;
+  self.viewController = nil;
+  self.sourceURL   = nil;
+  self.targetURL   = nil;
+  self.task        = nil;
+  self.error       = nil;
   [super dealloc];
 }
 
-- (NSURL*) windowRepresentedURL
-{
-  return self.targetURL;
-}
+
 
 - (NSURL*) url
 {
@@ -35,7 +48,6 @@
 
 - (void) start
 {
-  [super start];
   GBCloneTask* t = [[GBCloneTask new] autorelease];
   self.isDisabled++;
   self.isSpinning++;
@@ -61,17 +73,17 @@
     {
       NSLog(@"GBCloningRepositoryController: did FAIL to clone at %@", self.targetURL);
       NSLog(@"GBCloningRepositoryController: output: %@", [t UTF8OutputStripped]);
-      if ([self.delegate respondsToSelector:@selector(cloningRepositoryControllerDidFail:)]) {
-        [self.delegate cloningRepositoryControllerDidFail:self];
-      }
+//      if ([self.delegate respondsToSelector:@selector(cloningRepositoryControllerDidFail:)]) {
+//        [self.delegate cloningRepositoryControllerDidFail:self];
+//      }
     }
     else
     {
       NSLog(@"GBCloningRepositoryController: did finish clone at %@", self.targetURL);
 			
-      if ([self.delegate respondsToSelector:@selector(cloningRepositoryControllerDidFinish:)]) {
-        [self.delegate cloningRepositoryControllerDidFinish:self];
-      }
+//      if ([self.delegate respondsToSelector:@selector(cloningRepositoryControllerDidFinish:)]) {
+//        [self.delegate cloningRepositoryControllerDidFinish:self];
+//      }
     }
   }];
 }
@@ -85,23 +97,92 @@
     self.task = nil;
     [[NSFileManager defaultManager] removeItemAtURL:self.targetURL error:NULL];
   }
-  [super stop];
 }
 
 - (void) cancelCloning
 {
   [self stop];
-  if ([self.delegate respondsToSelector:@selector(cloningRepositoryControllerDidCancel:)]) {
-    [self.delegate cloningRepositoryControllerDidCancel:self];
-  }  
+//  if ([self.delegate respondsToSelector:@selector(cloningRepositoryControllerDidCancel:)]) {
+//    [self.delegate cloningRepositoryControllerDidCancel:self];
+//  }  
 }
 
-- (void) didSelect
+
+
+
+
+
+
+
+#pragma mark GBMainWindowItem
+
+
+
+- (NSString*) windowTitle
 {
-  [super didSelect];
-  if ([self.delegate respondsToSelector:@selector(cloningRepositoryControllerDidSelect:)]) { 
-    [self.delegate cloningRepositoryControllerDidSelect:self];
-  }
+  return [[[self url] path] twoLastPathComponentsWithDash];
 }
+
+- (NSURL*) windowRepresentedURL
+{
+  return self.targetURL;
+}
+
+- (void) didSelectWindowItem
+{
+}
+
+
+
+
+
+#pragma mark NSPasteboardWriting
+
+
+
+
+- (NSArray*) writableTypesForPasteboard:(NSPasteboard *)pasteboard
+{
+  return [[NSArray arrayWithObjects:NSPasteboardTypeString, (NSString*)kUTTypeFileURL, nil] 
+          arrayByAddingObjectsFromArray:[[self url] writableTypesForPasteboard:pasteboard]];
+}
+
+- (id)pasteboardPropertyListForType:(NSString *)type
+{
+  if ([type isEqualToString:(NSString*)kUTTypeFileURL])
+  {
+    return [[self url] absoluteURL];
+  }
+  if ([type isEqualToString:NSPasteboardTypeString])
+  {
+    return [[self url] path];
+  }
+  return [[self url] pasteboardPropertyListForType:type];
+}
+
+
+
+
+
+
+#pragma mark GBSidebarItemObject
+
+
+
+- (id) sidebarItemContentsPropertyList
+{
+  return nil;
+}
+
+- (void) sidebarItemLoadContentsFromPropertyList:(id)plist
+{
+}
+
+
+
+
+
+
+
 
 @end

@@ -246,6 +246,36 @@
 }
 
 
+
+- (void) insertItems:(NSArray*)items inSidebarItem:(GBSidebarItem*)targetItem atIndex:(NSUInteger)insertionIndex
+{
+  GBRepositoriesGroup* aGroup = (id)targetItem.object;
+  
+  if (!aGroup)
+  {
+    aGroup = self.repositoriesController;
+  }
+  
+  if (insertionIndex == NSNotFound)
+  {
+    insertionIndex = 0;
+  }
+  
+  for (GBSidebarItem* item in items)
+  {
+    [aGroup insertObject:item.object atIndex:insertionIndex];
+    insertionIndex++;
+  }
+  
+  [self notifyWithSelector:@selector(rootControllerDidChangeContents:)];
+  
+  self.selectedSidebarItems = items;
+  
+  [self notifyWithSelector:@selector(rootControllerDidChangeSelection:)];  
+}
+
+
+
 - (void) removeSidebarItems:(NSArray*)items
 {
   for (GBSidebarItem* item in items)

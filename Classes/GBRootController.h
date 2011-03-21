@@ -35,7 +35,7 @@
 
 - (void) addUntitledGroupInSidebarItem:(GBSidebarItem*)targetItem atIndex:(NSUInteger)insertionIndex;
 - (void) moveItems:(NSArray*)items toSidebarItem:(GBSidebarItem*)targetItem atIndex:(NSUInteger)insertionIndex;
-
+- (void) insertItems:(NSArray*)items inSidebarItem:(GBSidebarItem*)targetItem atIndex:(NSUInteger)insertionIndex;
 - (void) removeSidebarItems:(NSArray*)sidebarItems;
 
 @end

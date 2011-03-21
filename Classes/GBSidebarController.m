@@ -220,14 +220,9 @@
       cloneController.sourceURL = ctrl.sourceURL;
       cloneController.targetURL = ctrl.targetURL;
 
-      
-      
-//      NSLog(@"TODO: change for the cloning-specific API here (i.e. addCloningRepositoryController:)");
-//      
-//      [self.repositoriesController doWithSelectedGroupAtIndex:^(GBRepositoriesGroup* aGroup, NSInteger anIndex){
-//        [self.repositoriesController addLocalRepositoryController:cloneController inGroup:aGroup atIndex:anIndex];
-//      }];
-//      [self.repositoriesController selectRepositoryController:cloneController];
+      NSUInteger anIndex = 0;
+      GBSidebarItem* targetItem = [self.rootController sidebarItemAndIndex:&anIndex forInsertionWithClickedItem:[self clickedSidebarItem]];
+      [self.rootController insertItems:[NSArray arrayWithObject:cloneController.sidebarItem] inSidebarItem:targetItem atIndex:anIndex];
     }
   };
   
