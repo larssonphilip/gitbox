@@ -232,6 +232,11 @@
     
     if (parentGroup)
     {
+      // Special case: the item is in the same group and moving below affecting the index
+      if (parentGroup == aGroup && [parentGroup.items indexOfObject:item.object] < insertionIndex)
+      {
+        insertionIndex--; // after removal of the object, this value will be correct.
+      }
       [parentGroup removeObject:item.object];
       [aGroup insertObject:item.object atIndex:insertionIndex];
       insertionIndex++;
