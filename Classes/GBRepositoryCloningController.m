@@ -2,7 +2,9 @@
 #import "GBCloneProcessViewController.h"
 #import "GBRepositoryCloningController.h"
 #import "GBCloneTask.h"
+#import "GBSidebarCell.h"
 #import "NSString+OAStringHelpers.h"
+#import "NSObject+OASelectorNotifications.h"
 
 
 @interface GBRepositoryCloningController ()
@@ -39,7 +41,19 @@
   [super dealloc];
 }
 
-
+- (id) init
+{
+  if ((self = [super init]))
+  {
+    self.sidebarItem = [[[GBSidebarItem alloc] init] autorelease];
+    self.sidebarItem.object = self;
+    self.sidebarItem.selectable = YES;
+    self.sidebarItem.draggable = YES;
+    self.sidebarItem.image = [NSImage imageNamed:NSImageNameFolder];
+    self.sidebarItem.cell = [[[GBSidebarCell alloc] initWithItem:self.sidebarItem] autorelease];
+  }
+  return self;
+}
 
 - (NSURL*) url
 {
@@ -73,17 +87,12 @@
     {
       NSLog(@"GBCloningRepositoryController: did FAIL to clone at %@", self.targetURL);
       NSLog(@"GBCloningRepositoryController: output: %@", [t UTF8OutputStripped]);
-//      if ([self.delegate respondsToSelector:@selector(cloningRepositoryControllerDidFail:)]) {
-//        [self.delegate cloningRepositoryControllerDidFail:self];
-//      }
+      [self notifyWithSelector:@selector(cloningRepositoryControllerDidFail:)];
     }
     else
     {
       NSLog(@"GBCloningRepositoryController: did finish clone at %@", self.targetURL);
-			
-//      if ([self.delegate respondsToSelector:@selector(cloningRepositoryControllerDidFinish:)]) {
-//        [self.delegate cloningRepositoryControllerDidFinish:self];
-//      }
+      [self notifyWithSelector:@selector(cloningRepositoryControllerDidFinish:)];
     }
   }];
 }
@@ -102,9 +111,7 @@
 - (void) cancelCloning
 {
   [self stop];
-//  if ([self.delegate respondsToSelector:@selector(cloningRepositoryControllerDidCancel:)]) {
-//    [self.delegate cloningRepositoryControllerDidCancel:self];
-//  }  
+  [self notifyWithSelector:@selector(cloningRepositoryControllerDidCancel:)];
 }
 
 
@@ -177,9 +184,6 @@
 - (void) sidebarItemLoadContentsFromPropertyList:(id)plist
 {
 }
-
-
-
 
 
 
