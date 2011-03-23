@@ -3,6 +3,7 @@
 #import "GBRepositoryCloningController.h"
 #import "GBCloneTask.h"
 #import "GBSidebarCell.h"
+#import "GBRepositoryController.h"
 #import "NSString+OAStringHelpers.h"
 #import "NSObject+OASelectorNotifications.h"
 
@@ -11,7 +12,8 @@
 @property(nonatomic,retain) GBCloneTask* task;
 @property(nonatomic, assign, readwrite) NSInteger isDisabled;
 @property(nonatomic, assign, readwrite) NSInteger isSpinning;
-
+- (void) removeFromTree;
+- (void) replaceInTreeWithController:(GBRepositoryController*)aRepositoryController;
 @end
 
 @implementation GBRepositoryCloningController
@@ -110,12 +112,22 @@
     self.task = nil;
     [[NSFileManager defaultManager] removeItemAtURL:self.targetURL error:NULL];
   }
+  [self removeFromTree];
   [self notifyWithSelector:@selector(cloningRepositoryControllerDidCancel:)];
 }
 
 
 
 
+- (void) removeFromTree
+{
+  
+}
+
+- (void) replaceInTreeWithController:(GBRepositoryController*)aRepositoryController
+{
+  
+}
 
 
 
