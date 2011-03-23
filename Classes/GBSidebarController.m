@@ -15,15 +15,16 @@
 #import "NSArray+OAArrayHelpers.h"
 
 @interface GBSidebarController () <NSOpenSavePanelDelegate>
-@property(nonatomic, retain) NSResponder<GBSidebarItemObject>* nextResponderSidebarObject;
+@property(nonatomic, retain) NSArray* nextRespondingSidebarObjects; // a list of sidebar item objects linked in a responder chain
 @property(nonatomic, assign) NSUInteger ignoreSelectionChange;
 @property(nonatomic, retain) GBCloneWindowController* cloneWindowController;
-- (GBSidebarItem*) clickedSidebarItem;
+@property(nonatomic, readonly) GBSidebarItem* clickedSidebarItem; // returns a clicked item if it exists and lies outside the selection
 - (NSArray*) selectedSidebarItems;
 - (void) updateContents;
 - (void) updateSelection;
 - (void) updateExpandedState;
 - (void) updateBuyButton;
+- (void) updateResponders;
 - (NSMenu*) defaultMenu;
 @end
 
@@ -34,7 +35,7 @@
 @synthesize outlineView;
 @synthesize ignoreSelectionChange;
 @synthesize buyButton;
-@synthesize nextResponderSidebarObject;
+@synthesize nextRespondingSidebarObjects;
 @synthesize cloneWindowController;
 
 - (void) dealloc
@@ -43,7 +44,7 @@
   self.rootController = nil;
   self.outlineView = nil;
   self.buyButton = nil;
-  self.nextResponderSidebarObject = nil;
+  [nextRespondingSidebarObjects release]; nextRespondingSidebarObjects = nil;
   self.cloneWindowController = nil;
   [super dealloc];
 }
@@ -69,28 +70,73 @@
   rootController = [aRootController retain];
   [rootController addObserverForAllSelectors:self];
   
-  self.nextResponderSidebarObject = rootController.selectedObject;
+  [self updateResponders];
   [self updateContents];
 }
 
-- (void) setNextResponderSidebarObject:(NSResponder<GBSidebarItemObject> *)nextResponderSidebarObject2
+
+// TODO: actually, need to set a chain of responders starting from the root down to the selected item.
+// For the multiple selection proxy, should use the common parents only.
+//
+//- (void) setNextResponderSidebarObject:(NSResponder*)nextResponderSidebarObject2
+//{
+//  if (nextResponderSidebarObject2 == nextResponderSidebarObject) return;
+//  
+//  id postNextResponder = [self nextResponder];
+//  if (postNextResponder == nextResponderSidebarObject)
+//  {
+//    postNextResponder = [nextResponderSidebarObject nextResponder];
+//    [nextResponderSidebarObject setNextResponder:nil];
+//  }
+//  [nextResponderSidebarObject2 setNextResponder:postNextResponder];
+//  
+//  [nextResponderSidebarObject release];
+//  nextResponderSidebarObject = [nextResponderSidebarObject2 retain];
+//  
+//  // if the selected object is nil, skip it and use next logical responder
+//  [self setNextResponder:nextResponderSidebarObject ? nextResponderSidebarObject : postNextResponder];
+//}
+
+- (NSResponder*) nextResponderSidebarObject // last in the chain
 {
-  if (nextResponderSidebarObject2 == nextResponderSidebarObject) return;
-  
-  id postNextResponder = [self nextResponder];
-  if (postNextResponder == nextResponderSidebarObject)
-  {
-    postNextResponder = [nextResponderSidebarObject nextResponder];
-    [nextResponderSidebarObject setNextResponder:nil];
-  }
-  [nextResponderSidebarObject2 setNextResponder:postNextResponder];
-  
-  [nextResponderSidebarObject release];
-  nextResponderSidebarObject = [nextResponderSidebarObject2 retain];
-  
-  // if the selected object is nil, skip it and use next logical responder
-  [self setNextResponder:nextResponderSidebarObject ? nextResponderSidebarObject : postNextResponder];
+  NSArray* list = self.nextRespondingSidebarObjects;
+  if (!list || [list count] < 1) return nil;
+  return [list objectAtIndex:[list count] - 1];
 }
+
+// 
+// self -> a[0] -> a[1] -> a[2] -> window controller -> ...
+// 
+// 1. Break the previous chain
+// 2. Insert and connect new chain
+
+- (void) setNextRespondingSidebarObjects:(NSArray*)list
+{
+  if (nextRespondingSidebarObjects == list) return;
+  
+  // 1. Break the previous chain: self->a->b->c->next becomes self->next
+  for (NSResponder* obj in nextRespondingSidebarObjects)
+  {
+    [self setNextResponder:[obj nextResponder]];
+    [obj setNextResponder:nil];
+  }
+  
+  [nextRespondingSidebarObjects release];
+  nextRespondingSidebarObjects = [list retain];
+  
+  // 2. Insert new chain: self->next becomes self->x->y->next
+  NSResponder* lastObject = self;
+  for (NSResponder* obj in nextRespondingSidebarObjects)
+  {
+    [obj setNextResponder:[lastObject nextResponder]];
+    [lastObject setNextResponder:obj];
+    lastObject = obj;
+  }
+}
+
+
+
+
 
 - (GBSidebarItem*) clickedSidebarItem
 {
@@ -112,7 +158,7 @@
 - (NSArray*) selectedSidebarItems
 {
   NSArray* items = self.rootController.selectedSidebarItems;
-  if ([self clickedSidebarItem]) items = [NSArray arrayWithObject:[self clickedSidebarItem]];
+  if (self.clickedSidebarItem) items = [NSArray arrayWithObject:self.clickedSidebarItem];
   return items;
 }
 
@@ -166,7 +212,7 @@
 
 
 
-- (IBAction) openDocument:sender
+- (IBAction) openDocument:(id)sender
 {
   NSOpenPanel* openPanel = [NSOpenPanel openPanel];
   openPanel.delegate = self;
@@ -177,7 +223,7 @@
     if (result == NSFileHandlingPanelOKButton)
     {
       NSUInteger anIndex = 0;
-      GBSidebarItem* targetItem = [self.rootController sidebarItemAndIndex:&anIndex forInsertionWithClickedItem:[self clickedSidebarItem]];
+      GBSidebarItem* targetItem = [self.rootController sidebarItemAndIndex:&anIndex forInsertionWithClickedItem:self.clickedSidebarItem];
       [self.rootController openURLs:[openPanel URLs] inSidebarItem:targetItem atIndex:anIndex];
     }
   }];
@@ -220,8 +266,10 @@
       cloneController.sourceURL = ctrl.sourceURL;
       cloneController.targetURL = ctrl.targetURL;
 
+      [cloneController addObserverForAllSelectors:self];
+      
       NSUInteger anIndex = 0;
-      GBSidebarItem* targetItem = [self.rootController sidebarItemAndIndex:&anIndex forInsertionWithClickedItem:[self clickedSidebarItem]];
+      GBSidebarItem* targetItem = [self.rootController sidebarItemAndIndex:&anIndex forInsertionWithClickedItem:self.clickedSidebarItem];
       [self.rootController insertItems:[NSArray arrayWithObject:cloneController.sidebarItem] inSidebarItem:targetItem atIndex:anIndex];
       
       [cloneController startCloning];
@@ -231,11 +279,27 @@
   [ctrl runSheetInWindow:[[self view] window]];
 }
 
+- (void) cloningRepositoryControllerDidFail:(GBRepositoryCloningController*)cloningRepoCtrl
+{
+  [cloningRepoCtrl removeObserverForAllSelectors:self];
+}
+
+- (void) cloningRepositoryControllerDidCancel:(GBRepositoryCloningController*)cloningRepoCtrl
+{
+  [cloningRepoCtrl removeObserverForAllSelectors:self];
+  [self.rootController removeSidebarItems:[NSArray arrayWithObject:cloningRepoCtrl]];
+}
+
+- (void) cloningRepositoryControllerDidFinish:(GBRepositoryCloningController*)cloningRepoCtrl
+{
+  [cloningRepoCtrl removeObserverForAllSelectors:self];
+}
+
 
 - (IBAction) addGroup:(id)sender
 {
   NSUInteger anIndex = 0;
-  GBSidebarItem* targetItem = [self.rootController sidebarItemAndIndex:&anIndex forInsertionWithClickedItem:[self clickedSidebarItem]];
+  GBSidebarItem* targetItem = [self.rootController sidebarItemAndIndex:&anIndex forInsertionWithClickedItem:self.clickedSidebarItem];
   [self.rootController addUntitledGroupInSidebarItem:targetItem atIndex:anIndex];
     
   if (targetItem)
@@ -394,23 +458,24 @@
 // Also: for multiple selection we need to insert into responder chain a multiple selection object which will validate and dispatch actions.
 // And after that we only need our custom tryToPerform:with: implementation to handle the case when right click menu is outside the selection.
 
-//- (BOOL)tryToPerform:(SEL)selector with:(id)object
-//{
-//  if ([self respondsToSelector:selector])
-//  {
-//    [self performSelector:selector withObject:object];
-//    return YES;
-//  }
-//  
-//  
-//  //  if ([self respondsToSelector:selector])
-//  //  {
-//  //    [self performSelector:selector withObject:object];
-//  //    return YES;
-//  //  }
-//  return [super tryToPerform:selector with:object];
-//}
-//
+- (BOOL)tryToPerform:(SEL)selector with:(id)object
+{
+  NSLog(@"Sidebar: tryToPerform:%@ with:%@", NSStringFromSelector(selector), object);
+  if ([self respondsToSelector:selector])
+  {
+    [self performSelector:selector withObject:object];
+    return YES;
+  }
+  
+  GBSidebarItem* clickedItem = self.clickedSidebarItem;
+  if (clickedItem)
+  {
+    NSLog(@"TODO: temporary replace nextResponderSidebarObject with the clickedItem.object; restore after performing selector");
+  }
+  
+  return [super tryToPerform:selector with:object];
+}
+
 
 - (BOOL) validateUserInterfaceItem:(id<NSValidatedUserInterfaceItem>)anItem
 {
@@ -770,7 +835,7 @@
   
   self.ignoreSelectionChange--;
   
-  self.nextResponderSidebarObject = self.rootController.selectedObject;
+  [self updateResponders];
 }
 
 - (void) updateExpandedState
@@ -800,6 +865,14 @@
   
 #endif
 }
+
+- (void) updateResponders
+{
+  // TODO: use GBSidebarMultipleSelection object to encapsulate multiple selected objects
+  //       for multiple objects, should use a common parent only
+  self.nextRespondingSidebarObjects = [[self.rootController.sidebarItem pathToItem:[self.rootController selectedSidebarItem]] valueForKey:@"object"];
+}
+
 
 
 @end
