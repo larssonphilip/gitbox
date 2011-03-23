@@ -1,5 +1,5 @@
 #import "GBSidebarItem.h"
-#import "GBCloneProcessViewController.h"
+#import "GBRepositoryCloningViewController.h"
 #import "GBRepositoryCloningController.h"
 #import "GBCloneTask.h"
 #import "GBSidebarCell.h"
@@ -36,6 +36,7 @@
   self.viewController = nil;
   self.sourceURL   = nil;
   self.targetURL   = nil;
+  [self.task terminate];
   self.task        = nil;
   self.error       = nil;
   [super dealloc];
@@ -51,6 +52,9 @@
     self.sidebarItem.draggable = YES;
     self.sidebarItem.image = [NSImage imageNamed:NSImageNameFolder];
     self.sidebarItem.cell = [[[GBSidebarCell alloc] initWithItem:self.sidebarItem] autorelease];
+    
+    self.viewController = [[[GBRepositoryCloningViewController alloc] initWithNibName:@"GBRepositoryCloningViewController" bundle:nil] autorelease];
+    self.viewController.repositoryController = self;
   }
   return self;
 }
@@ -60,7 +64,7 @@
   return self.targetURL;
 }
 
-- (void) start
+- (void) startCloning
 {
   GBCloneTask* t = [[GBCloneTask new] autorelease];
   self.isDisabled++;
@@ -97,7 +101,7 @@
   }];
 }
 
-- (void) stop
+- (void) cancelCloning
 {
   if (self.task)
   {
@@ -106,11 +110,6 @@
     self.task = nil;
     [[NSFileManager defaultManager] removeItemAtURL:self.targetURL error:NULL];
   }
-}
-
-- (void) cancelCloning
-{
-  [self stop];
   [self notifyWithSelector:@selector(cloningRepositoryControllerDidCancel:)];
 }
 

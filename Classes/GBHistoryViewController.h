@@ -7,7 +7,7 @@
 
 // Public API
 
-@property(nonatomic, retain) GBRepositoryController* repositoryController;
+@property(nonatomic, assign) GBRepositoryController* repositoryController; // view controller is indirectly owned by repo controller
 @property(nonatomic, retain) GBCommit* commit;
 @property(nonatomic, retain) NSView* detailView;
 

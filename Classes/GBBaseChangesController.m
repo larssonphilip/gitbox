@@ -31,8 +31,7 @@
 {
   [NSObject cancelPreviousPerformRequestsWithTarget:self];
   [[NSNotificationCenter defaultCenter] removeObserver:self];
-  self.repositoryController = nil;
-  self.commit = nil;
+  [commit release]; commit = nil;
   
   self.tableView = nil;
   self.statusArrayController = nil;
@@ -55,8 +54,7 @@
   
   [repositoryController removeObserverForAllSelectors:self];
   
-  [repositoryController release];
-  repositoryController = [repoCtrl retain];
+  repositoryController = repoCtrl;
   
   [repositoryController addObserverForAllSelectors:self];
 	

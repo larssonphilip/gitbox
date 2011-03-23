@@ -1,3 +1,4 @@
+#import "GBRepository.h"
 #import "GBRepositoryViewController.h"
 #import "GBRepositoryController.h"
 #import "GBHistoryViewController.h"
@@ -39,10 +40,17 @@
 {
   if (aRepoCtrl == repositoryController) return;
   
-  [repositoryController release];
-  repositoryController = [aRepoCtrl retain];
+  repositoryController = aRepoCtrl;
+  
   [self view]; // load view
   self.historyController.repositoryController = aRepoCtrl;
+  
+  // TODO: wrap this in a jump controller
+  // TODO: do a similar thing with stage and commit controllers (they currently load changes in updateViews method which is silly)
+  if (!aRepoCtrl.repository.localBranchCommits)
+  {
+    [aRepoCtrl loadCommitsWithBlock:^{}];
+  }
 }
 
 - (void) loadView

@@ -56,7 +56,6 @@
 - (void) dealloc
 {
   [NSObject cancelPreviousPerformRequestsWithTarget:self];
-  [repositoryController release];
   [commit release];
   self.detailView = nil;
   
@@ -84,8 +83,7 @@
   
   [repositoryController removeObserverForAllSelectors:self];
   
-  [repositoryController release];
-  repositoryController = [repoCtrl retain];
+  repositoryController = repoCtrl;
   
   [repositoryController addObserverForAllSelectors:self];
   

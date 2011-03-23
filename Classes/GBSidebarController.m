@@ -223,6 +223,8 @@
       NSUInteger anIndex = 0;
       GBSidebarItem* targetItem = [self.rootController sidebarItemAndIndex:&anIndex forInsertionWithClickedItem:[self clickedSidebarItem]];
       [self.rootController insertItems:[NSArray arrayWithObject:cloneController.sidebarItem] inSidebarItem:targetItem atIndex:anIndex];
+      
+      [cloneController startCloning];
     }
   };
   

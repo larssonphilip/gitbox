@@ -41,7 +41,6 @@
 
 - (void) dealloc
 {
-  [repositoryController release]; repositoryController = nil;
   [super dealloc];
 }
 
@@ -60,8 +59,7 @@
   
   [repositoryController removeObserverForAllSelectors:self];
   
-  [repositoryController release];
-  repositoryController = [repoCtrl retain];
+  repositoryController = repoCtrl;
   
   [repositoryController addObserverForAllSelectors:self];
   [self update];
@@ -169,6 +167,11 @@
 
 - (void) updateDisabledState
 {
+  // enabling these buttons because they somehow appear disabled after sheet appearance
+  [self.settingsButton setEnabled:YES];
+  [self.pullPushControl setEnabled:YES];
+  [self.pullButton setEnabled:YES];
+  
   //NSLog(@"updateDisabledState: ctrl: %d  isDisabled: %d", (int)(!!self.baseRepositoryController), (int)(!!self.baseRepositoryController.isDisabled));
   BOOL isDisabled = self.repositoryController.isDisabled || !self.repositoryController;
   BOOL isCurrentBranchDisabled = NO; // TODO: get from repo controller

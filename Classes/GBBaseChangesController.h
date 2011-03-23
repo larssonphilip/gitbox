@@ -10,7 +10,7 @@
 
 // Public API
 
-@property(nonatomic, retain) GBRepositoryController* repositoryController;
+@property(nonatomic, assign) GBRepositoryController* repositoryController;
 @property(nonatomic, retain) GBCommit* commit;
 
 

@@ -748,7 +748,6 @@
 
 
 
-
 - (BOOL) validateUserInterfaceItem:(id<NSValidatedUserInterfaceItem>)anItem
 {
   return [self dispatchUserInterfaceItemValidation:anItem];
@@ -782,11 +781,6 @@
 {
   self.toolbarController.repositoryController = self;
   self.viewController.repositoryController = self;
-  
-  if (!self.repository.localBranchCommits)
-  {
-    [self loadCommitsWithBlock:^{}];
-  }
 }
 
 
@@ -887,6 +881,7 @@
 
 
 #pragma mark Updates
+
 
 
 

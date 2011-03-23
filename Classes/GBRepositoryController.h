@@ -41,6 +41,8 @@
 - (void) start;
 - (void) stop;
 
+- (void) loadCommitsWithBlock:(void(^)())block;
+
 - (void) checkoutRef:(GBRef*) ref;
 - (void) checkoutRef:(GBRef*) ref withNewName:(NSString*)name;
 - (void) checkoutNewBranchWithName:(NSString*)name;

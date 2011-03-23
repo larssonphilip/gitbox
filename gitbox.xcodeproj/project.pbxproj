@@ -120,8 +120,8 @@
 		203F729B12A62E0200BE1A55 /* GBCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 203F729A12A62E0200BE1A55 /* GBCell.m */; };
 		203F729C12A62E0200BE1A55 /* GBCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 203F729A12A62E0200BE1A55 /* GBCell.m */; };
 		2043A83111C900A0001ED307 /* GBPreferencesController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2043A83011C900A0001ED307 /* GBPreferencesController.m */; };
-		2054FFE8125DE75800692C77 /* GBCloneProcessViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2054FFE7125DE75800692C77 /* GBCloneProcessViewController.xib */; };
-		2054FFF0125DE9D200692C77 /* GBCloneProcessViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2054FFEF125DE9D200692C77 /* GBCloneProcessViewController.m */; };
+		2054FFE8125DE75800692C77 /* GBRepositoryCloningViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2054FFE7125DE75800692C77 /* GBRepositoryCloningViewController.xib */; };
+		2054FFF0125DE9D200692C77 /* GBRepositoryCloningViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2054FFEF125DE9D200692C77 /* GBRepositoryCloningViewController.m */; };
 		2057964211ADD3AA004715FE /* GBCommitCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2057964111ADD3AA004715FE /* GBCommitCell.m */; };
 		2057979B11ADEEEE004715FE /* GBStageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2057979A11ADEEEE004715FE /* GBStageCell.m */; };
 		2057EF0E11A9B00F009EDF2F /* GBRemoteRefsTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 2057EF0D11A9B00F009EDF2F /* GBRemoteRefsTask.m */; };
@@ -179,7 +179,7 @@
 		20915ED412874D2A005E0D82 /* GBCommitCellMarkerUnmerged.png in Resources */ = {isa = PBXBuildFile; fileRef = 20C3B70D125BCCC600ABEDE7 /* GBCommitCellMarkerUnmerged.png */; };
 		20915ED612874D2A005E0D82 /* GBCommitCellMarkerUnpushed.png in Resources */ = {isa = PBXBuildFile; fileRef = 20C3B70F125BCCC600ABEDE7 /* GBCommitCellMarkerUnpushed.png */; };
 		20915ED712874D2A005E0D82 /* GBCloneWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 20C3C30A125D9EA900ABEDE7 /* GBCloneWindowController.xib */; };
-		20915ED812874D2A005E0D82 /* GBCloneProcessViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2054FFE7125DE75800692C77 /* GBCloneProcessViewController.xib */; };
+		20915ED812874D2A005E0D82 /* GBRepositoryCloningViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2054FFE7125DE75800692C77 /* GBRepositoryCloningViewController.xib */; };
 		20915ED912874D2A005E0D82 /* GBUserNameEmailController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 20BF19561282258400A30EE6 /* GBUserNameEmailController.xib */; };
 		20915EDB12874D2A005E0D82 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A37F4B0FDCFA73011CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		20915EDC12874D2A005E0D82 /* GBAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2038F1DE11936B060087CE37 /* GBAppDelegate.m */; };
@@ -248,7 +248,7 @@
 		20915F1E12874D2A005E0D82 /* OAPrimaryMACAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = 20C3B71E125BCDC100ABEDE7 /* OAPrimaryMACAddress.m */; };
 		20915F1F12874D2A005E0D82 /* GBWelcomeController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20C3C233125C4DB600ABEDE7 /* GBWelcomeController.m */; };
 		20915F2012874D2A005E0D82 /* GBCloneWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20C3C311125DA0BC00ABEDE7 /* GBCloneWindowController.m */; };
-		20915F2112874D2A005E0D82 /* GBCloneProcessViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2054FFEF125DE9D200692C77 /* GBCloneProcessViewController.m */; };
+		20915F2112874D2A005E0D82 /* GBRepositoryCloningViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2054FFEF125DE9D200692C77 /* GBRepositoryCloningViewController.m */; };
 		20915F2212874D2A005E0D82 /* GBRepositoryCloningController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2082B7C3126587CA00667A7F /* GBRepositoryCloningController.m */; };
 		20915F2312874D2A005E0D82 /* GBBaseRepositoryController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2082B8101266500800667A7F /* GBBaseRepositoryController.m */; };
 		20915F2412874D2A005E0D82 /* GBCloneTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 20BF14111279533900A30EE6 /* GBCloneTask.m */; };
@@ -513,9 +513,9 @@
 		2043A83011C900A0001ED307 /* GBPreferencesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBPreferencesController.m; sourceTree = "<group>"; };
 		2049942212D6878A007ED992 /* SidebarGroups.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SidebarGroups.txt; sourceTree = "<group>"; };
 		2049942512D687A8007ED992 /* Settings.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Settings.txt; sourceTree = "<group>"; };
-		2054FFE7125DE75800692C77 /* GBCloneProcessViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBCloneProcessViewController.xib; sourceTree = "<group>"; };
-		2054FFEE125DE9D200692C77 /* GBCloneProcessViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBCloneProcessViewController.h; sourceTree = "<group>"; };
-		2054FFEF125DE9D200692C77 /* GBCloneProcessViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBCloneProcessViewController.m; sourceTree = "<group>"; };
+		2054FFE7125DE75800692C77 /* GBRepositoryCloningViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBRepositoryCloningViewController.xib; sourceTree = "<group>"; };
+		2054FFEE125DE9D200692C77 /* GBRepositoryCloningViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; path = GBRepositoryCloningViewController.h; sourceTree = "<group>"; };
+		2054FFEF125DE9D200692C77 /* GBRepositoryCloningViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBRepositoryCloningViewController.m; sourceTree = "<group>"; };
 		2057964011ADD3AA004715FE /* GBCommitCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBCommitCell.h; sourceTree = "<group>"; };
 		2057964111ADD3AA004715FE /* GBCommitCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBCommitCell.m; sourceTree = "<group>"; };
 		2057979911ADEEEE004715FE /* GBStageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBStageCell.h; sourceTree = "<group>"; };
@@ -951,9 +951,9 @@
 			isa = PBXGroup;
 			children = (
 				20A9407212FA06B200C3F6F4 /* Repository View Controller */,
-				2054FFEE125DE9D200692C77 /* GBCloneProcessViewController.h */,
-				2054FFEF125DE9D200692C77 /* GBCloneProcessViewController.m */,
-				2054FFE7125DE75800692C77 /* GBCloneProcessViewController.xib */,
+				2054FFEE125DE9D200692C77 /* GBRepositoryCloningViewController.h */,
+				2054FFEF125DE9D200692C77 /* GBRepositoryCloningViewController.m */,
+				2054FFE7125DE75800692C77 /* GBRepositoryCloningViewController.xib */,
 				200A44F912EC5A1C004DF940 /* GBSubmoduleCloneProcessViewController.h */,
 				200A44FA12EC5A1C004DF940 /* GBSubmoduleCloneProcessViewController.m */,
 				200A44FB12EC5A1C004DF940 /* GBSubmoduleCloneProcessViewController.xib */,
@@ -1394,7 +1394,7 @@
 				20915ED412874D2A005E0D82 /* GBCommitCellMarkerUnmerged.png in Resources */,
 				20915ED612874D2A005E0D82 /* GBCommitCellMarkerUnpushed.png in Resources */,
 				20915ED712874D2A005E0D82 /* GBCloneWindowController.xib in Resources */,
-				20915ED812874D2A005E0D82 /* GBCloneProcessViewController.xib in Resources */,
+				20915ED812874D2A005E0D82 /* GBRepositoryCloningViewController.xib in Resources */,
 				20915ED912874D2A005E0D82 /* GBUserNameEmailController.xib in Resources */,
 				20915F8C12876062005E0D82 /* GBPreferencesController-appstore.xib in Resources */,
 				20A09F3812A3875800294730 /* askpass.sh in Resources */,
@@ -1442,7 +1442,7 @@
 				20C3B712125BCCC600ABEDE7 /* GBCommitCellMarkerUnmerged.png in Resources */,
 				20C3B714125BCCC600ABEDE7 /* GBCommitCellMarkerUnpushed.png in Resources */,
 				20C3C30B125D9EA900ABEDE7 /* GBCloneWindowController.xib in Resources */,
-				2054FFE8125DE75800692C77 /* GBCloneProcessViewController.xib in Resources */,
+				2054FFE8125DE75800692C77 /* GBRepositoryCloningViewController.xib in Resources */,
 				20BF19571282258400A30EE6 /* GBUserNameEmailController.xib in Resources */,
 				20915F8012875C92005E0D82 /* GBPreferencesController.xib in Resources */,
 				20A09F3712A3875200294730 /* askpass.sh in Resources */,
@@ -1567,7 +1567,7 @@
 				20915F1E12874D2A005E0D82 /* OAPrimaryMACAddress.m in Sources */,
 				20915F1F12874D2A005E0D82 /* GBWelcomeController.m in Sources */,
 				20915F2012874D2A005E0D82 /* GBCloneWindowController.m in Sources */,
-				20915F2112874D2A005E0D82 /* GBCloneProcessViewController.m in Sources */,
+				20915F2112874D2A005E0D82 /* GBRepositoryCloningViewController.m in Sources */,
 				20915F2212874D2A005E0D82 /* GBRepositoryCloningController.m in Sources */,
 				20915F2312874D2A005E0D82 /* GBBaseRepositoryController.m in Sources */,
 				20915F2412874D2A005E0D82 /* GBCloneTask.m in Sources */,
@@ -1686,7 +1686,7 @@
 				20C3B71F125BCDC100ABEDE7 /* OAPrimaryMACAddress.m in Sources */,
 				20C3C234125C4DB600ABEDE7 /* GBWelcomeController.m in Sources */,
 				20C3C312125DA0BC00ABEDE7 /* GBCloneWindowController.m in Sources */,
-				2054FFF0125DE9D200692C77 /* GBCloneProcessViewController.m in Sources */,
+				2054FFF0125DE9D200692C77 /* GBRepositoryCloningViewController.m in Sources */,
 				2082B7C4126587CA00667A7F /* GBRepositoryCloningController.m in Sources */,
 				2082B8111266500800667A7F /* GBBaseRepositoryController.m in Sources */,
 				20BF14121279533900A30EE6 /* GBCloneTask.m in Sources */,
