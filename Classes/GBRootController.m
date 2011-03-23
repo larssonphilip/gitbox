@@ -178,8 +178,6 @@
   
   self.selectedObjects = newRepoControllers;
   
-  [self notifyWithSelector:@selector(rootControllerDidChangeSelection:)];
-  
   return insertedAtLeastOneRepo;
 }
 
@@ -205,8 +203,6 @@
   [self notifyWithSelector:@selector(rootControllerDidChangeContents:)];
   
   self.selectedObject = newGroup;
-  
-  [self notifyWithSelector:@selector(rootControllerDidChangeSelection:)];
 }
 
 
@@ -246,8 +242,6 @@
   [self notifyWithSelector:@selector(rootControllerDidChangeContents:)];
   
   self.selectedSidebarItems = items;
-  
-  [self notifyWithSelector:@selector(rootControllerDidChangeSelection:)];
 }
 
 
@@ -275,8 +269,6 @@
   [self notifyWithSelector:@selector(rootControllerDidChangeContents:)];
   
   self.selectedSidebarItems = items;
-  
-  [self notifyWithSelector:@selector(rootControllerDidChangeSelection:)];  
 }
 
 
@@ -298,8 +290,6 @@
   [self notifyWithSelector:@selector(rootControllerDidChangeContents:)];
 
   self.selectedSidebarItems = nil;
-  
-  [self notifyWithSelector:@selector(rootControllerDidChangeSelection:)];
 }
 
 
