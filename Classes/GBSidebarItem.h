@@ -60,6 +60,10 @@
 // Returns a closest parent of an item (possibly self) or nil if the item equals self or not found.
 - (GBSidebarItem*) parentOfItem:(GBSidebarItem*)anItem;
 
+// List of all parents of the item including itself.
+// Returns nil if item is nil or not found inside receiver.
+- (NSArray*) pathToItem:(GBSidebarItem*)anItem;
+
 - (void) update;
 
 @end

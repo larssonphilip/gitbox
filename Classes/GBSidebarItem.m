@@ -34,6 +34,7 @@
   self.tooltip = nil;
   self.cell = nil;
   self.menu = nil;
+  [self.progressIndicator removeFromSuperview];
   self.progressIndicator = nil;
   [super dealloc];
 }
@@ -360,6 +361,32 @@
   }
   
   return nil;
+}
+
+- (NSMutableArray*) mutablePathToItem:(GBSidebarItem*)anItem
+{
+  if (!anItem) return nil;
+  if (self == anItem) return [NSMutableArray arrayWithObject:self];
+  
+  NSInteger num = [self numberOfChildren];
+  for (NSInteger i = 0; i < num; i++)
+  {
+    GBSidebarItem* child = [self childAtIndex:i];
+    NSMutableArray* list = [child mutablePathToItem:anItem];
+    if (list)
+    {
+      [list insertObject:self atIndex:0];
+      return list;
+    }
+  }
+  return nil;
+}
+
+// List of all parents of the item including itself
+// Returns nil if item is nil or not found inside receiver.
+- (NSArray*) pathToItem:(GBSidebarItem*)anItem
+{
+  return [self mutablePathToItem:anItem];
 }
 
 - (NSMenu*) menu
