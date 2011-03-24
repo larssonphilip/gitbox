@@ -437,7 +437,7 @@
 // Also: for multiple selection we need to insert into responder chain a multiple selection object which will validate and dispatch actions.
 // And after that we only need our custom tryToPerform:with: implementation to handle the case when right click menu is outside the selection.
 
-- (BOOL)tryToPerform:(SEL)selector with:(id)object
+- (BOOL)tryToPerform:(SEL)selector with:(id)argument
 {
   GBSidebarItem* clickedItem = self.clickedSidebarItem;
   
@@ -448,12 +448,12 @@
     self.rootController.clickedSidebarItem = clickedItem;
     if (!currentChain || ![currentChain containsObject:clickedItem.object])
     {
-      self.nextRespondingSidebarObjects = [[NSArray arrayWithObject:clickedItem] arrayByAddingObjectsFromArray:currentChain ? currentChain : [NSArray array]];
+      self.nextRespondingSidebarObjects = [[NSArray arrayWithObject:clickedItem.object] arrayByAddingObjectsFromArray:currentChain ? currentChain : [NSArray array]];
     }
   }
   
-  NSLog(@"Sidebar: tryToPerform:%@ with:%@", NSStringFromSelector(selector), object);
-  BOOL result = [super tryToPerform:selector with:object];
+  NSLog(@"Sidebar: tryToPerform:%@ with:%@", NSStringFromSelector(selector), argument);
+  BOOL result = [super tryToPerform:selector with:argument];
   
   self.nextRespondingSidebarObjects = currentChain;
   self.rootController.clickedSidebarItem = nil;
