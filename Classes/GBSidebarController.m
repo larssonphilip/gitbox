@@ -14,7 +14,7 @@
 #import "NSObject+OAPerformBlockAfterDelay.h"
 #import "NSArray+OAArrayHelpers.h"
 
-@interface GBSidebarController () <NSOpenSavePanelDelegate>
+@interface GBSidebarController ()
 @property(nonatomic, retain) NSArray* nextRespondingSidebarObjects; // a list of sidebar item objects linked in a responder chain
 @property(nonatomic, assign) NSUInteger ignoreSelectionChange;
 @property(nonatomic, retain) GBCloneWindowController* cloneWindowController;
@@ -74,28 +74,6 @@
   [self updateContents];
 }
 
-
-// TODO: actually, need to set a chain of responders starting from the root down to the selected item.
-// For the multiple selection proxy, should use the common parents only.
-//
-//- (void) setNextResponderSidebarObject:(NSResponder*)nextResponderSidebarObject2
-//{
-//  if (nextResponderSidebarObject2 == nextResponderSidebarObject) return;
-//  
-//  id postNextResponder = [self nextResponder];
-//  if (postNextResponder == nextResponderSidebarObject)
-//  {
-//    postNextResponder = [nextResponderSidebarObject nextResponder];
-//    [nextResponderSidebarObject setNextResponder:nil];
-//  }
-//  [nextResponderSidebarObject2 setNextResponder:postNextResponder];
-//  
-//  [nextResponderSidebarObject release];
-//  nextResponderSidebarObject = [nextResponderSidebarObject2 retain];
-//  
-//  // if the selected object is nil, skip it and use next logical responder
-//  [self setNextResponder:nextResponderSidebarObject ? nextResponderSidebarObject : postNextResponder];
-//}
 
 - (NSResponder*) nextResponderSidebarObject // last in the chain
 {
@@ -212,37 +190,37 @@
 
 
 
-- (IBAction) openDocument:(id)sender
-{
-  NSOpenPanel* openPanel = [NSOpenPanel openPanel];
-  openPanel.delegate = self;
-  openPanel.allowsMultipleSelection = YES;
-  openPanel.canChooseFiles = YES;
-  openPanel.canChooseDirectories = YES;
-  [openPanel beginSheetModalForWindow:[self.view window] completionHandler:^(NSInteger result){
-    if (result == NSFileHandlingPanelOKButton)
-    {
-      NSUInteger anIndex = 0;
-      GBSidebarItem* targetItem = [self.rootController sidebarItemAndIndex:&anIndex forInsertionWithClickedItem:self.clickedSidebarItem];
-      [self.rootController openURLs:[openPanel URLs] inSidebarItem:targetItem atIndex:anIndex];
-    }
-  }];
-}
-
-// NSOpenSavePanelDelegate for openDocument: action
-
-- (BOOL) panel:(id)sender validateURL:(NSURL*)aURL error:(NSError **)outError
-{
-  if ([GBRepository isValidRepositoryOrFolderURL:aURL])
-  {
-    return YES;
-  }
-  if (outError != NULL)
-  {
-    *outError = [NSError errorWithDomain:NSOSStatusErrorDomain code:unimpErr userInfo:NULL];
-  }
-  return NO;
-}
+//- (IBAction) openDocument:(id)sender
+//{
+//  NSOpenPanel* openPanel = [NSOpenPanel openPanel];
+//  openPanel.delegate = self;
+//  openPanel.allowsMultipleSelection = YES;
+//  openPanel.canChooseFiles = YES;
+//  openPanel.canChooseDirectories = YES;
+//  [openPanel beginSheetModalForWindow:[self.view window] completionHandler:^(NSInteger result){
+//    if (result == NSFileHandlingPanelOKButton)
+//    {
+//      NSUInteger anIndex = 0;
+//      GBSidebarItem* targetItem = [self.rootController sidebarItemAndIndex:&anIndex forInsertionWithClickedItem:self.clickedSidebarItem];
+//      [self.rootController openURLs:[openPanel URLs] inSidebarItem:targetItem atIndex:anIndex];
+//    }
+//  }];
+//}
+//
+//// NSOpenSavePanelDelegate for openDocument: action
+//
+//- (BOOL) panel:(id)sender validateURL:(NSURL*)aURL error:(NSError **)outError
+//{
+//  if ([GBRepository isValidRepositoryOrFolderURL:aURL])
+//  {
+//    return YES;
+//  }
+//  if (outError != NULL)
+//  {
+//    *outError = [NSError errorWithDomain:NSOSStatusErrorDomain code:unimpErr userInfo:NULL];
+//  }
+//  return NO;
+//}
 
 - (IBAction) cloneRepository:(id)sender
 {
@@ -327,37 +305,38 @@
   [self.rootController removeSidebarItems:[self selectedSidebarItems]];
 }
 
-- (IBAction) openInFinder:(id)sender
-{
-  for (GBSidebarItem* item in [self selectedSidebarItems])
-  {
-    [item.object tryToPerform:@selector(openInFinder:) with:sender];
-  }
-}
 
-- (IBAction) openInTerminal:(id)sender
-{
-  for (GBSidebarItem* item in [self selectedSidebarItems])
-  {
-    [item.object tryToPerform:@selector(openInTerminal:) with:sender];
-  }
-}
 
-- (IBAction) rename:(id)sender
-{
-  id item = [[self selectedSidebarItems] objectAtIndex:0];
-  NSInteger rowIndex = [self.outlineView rowForItem:item];
-  if (rowIndex < 0) return;
-  [self.outlineView selectRowIndexes:[NSIndexSet indexSetWithIndex:rowIndex] byExtendingSelection:NO];
-  [self.outlineView editColumn:0 row:rowIndex withEvent:nil select:YES];
-}
+//- (IBAction) openInFinder:(id)sender
+//{
+//  for (GBSidebarItem* item in [self selectedSidebarItems])
+//  {
+//    [item.object tryToPerform:@selector(openInFinder:) with:sender];
+//  }
+//}
+//
+//- (IBAction) openInTerminal:(id)sender
+//{
+//  for (GBSidebarItem* item in [self selectedSidebarItems])
+//  {
+//    [item.object tryToPerform:@selector(openInTerminal:) with:sender];
+//  }
+//}
 
-- (BOOL) validateRename:(id)sender
-{
-  if ([[self selectedSidebarItems] count] != 1) return NO;
-  if (![[[self selectedSidebarItems] objectAtIndex:0] isEditable]) return NO;
-  return YES;
-}
+//- (IBAction) rename:(id)sender
+//{
+//  id anItem = [[self selectedSidebarItems] objectAtIndex:0];
+//  [self editItem:anItem];
+//}
+//
+//- (BOOL) validateRename:(id)sender
+//{
+//  if ([[self selectedSidebarItems] count] != 1) return NO;
+//  if (![[[self selectedSidebarItems] objectAtIndex:0] isEditable]) return NO;
+//  return YES;
+//}
+
+
 
 
 - (IBAction) selectRightPane:(id)sender
@@ -460,20 +439,26 @@
 
 - (BOOL)tryToPerform:(SEL)selector with:(id)object
 {
-  NSLog(@"Sidebar: tryToPerform:%@ with:%@", NSStringFromSelector(selector), object);
-  if ([self respondsToSelector:selector])
-  {
-    [self performSelector:selector withObject:object];
-    return YES;
-  }
-  
   GBSidebarItem* clickedItem = self.clickedSidebarItem;
+  
+  // Note: inserting clicked item into responder chain is necessary, but not enough: should also handle validation somehow!
+  NSArray* currentChain = self.nextRespondingSidebarObjects;
   if (clickedItem)
   {
-    NSLog(@"TODO: temporary replace nextResponderSidebarObject with the clickedItem.object; restore after performing selector");
+    self.rootController.clickedSidebarItem = clickedItem;
+    if (!currentChain || ![currentChain containsObject:clickedItem.object])
+    {
+      self.nextRespondingSidebarObjects = [[NSArray arrayWithObject:clickedItem] arrayByAddingObjectsFromArray:currentChain ? currentChain : [NSArray array]];
+    }
   }
   
-  return [super tryToPerform:selector with:object];
+  NSLog(@"Sidebar: tryToPerform:%@ with:%@", NSStringFromSelector(selector), object);
+  BOOL result = [super tryToPerform:selector with:object];
+  
+  self.nextRespondingSidebarObjects = currentChain;
+  self.rootController.clickedSidebarItem = nil;
+  
+  return result;
 }
 
 
@@ -790,6 +775,17 @@
 
 
 
+- (void) editItem:(GBSidebarItem*)anItem
+{
+  if (!anItem) return;
+  if (![anItem isEditable]) return;
+  NSInteger rowIndex = [self.outlineView rowForItem:anItem];
+  if (rowIndex < 0) return;
+  [self.outlineView selectRowIndexes:[NSIndexSet indexSetWithIndex:rowIndex] byExtendingSelection:NO];
+  [self.outlineView editColumn:0 row:rowIndex withEvent:nil select:YES];
+}
+
+
 - (void) updateItem:(GBSidebarItem*)anItem
 {
   // TODO: possible optimization: 
@@ -870,7 +866,9 @@
 {
   // TODO: use GBSidebarMultipleSelection object to encapsulate multiple selected objects
   //       for multiple objects, should use a common parent only
-  self.nextRespondingSidebarObjects = [[self.rootController.sidebarItem pathToItem:[self.rootController selectedSidebarItem]] valueForKey:@"object"];
+  
+  // Note: using reversed array to allow nested items override actions (group has a rename: action and can be contained within another group)
+  self.nextRespondingSidebarObjects = [[[self.rootController.sidebarItem pathToItem:[self.rootController selectedSidebarItem]] valueForKey:@"object"] reversedArray];
 }
 
 

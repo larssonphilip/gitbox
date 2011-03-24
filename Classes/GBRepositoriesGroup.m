@@ -16,6 +16,7 @@
 @synthesize name;
 @synthesize items;
 @synthesize sidebarSpinner;
+@synthesize window;
 
 @synthesize isExpanded;
 
@@ -57,6 +58,19 @@
   return NSLocalizedString(@"untitled", @"GBRepositoriesGroup");
 }
 
+- (void) setWindow:(NSWindow *)aWindow
+{
+  if (window == aWindow) return;
+  window = aWindow;
+  for (id anObject in self.items)
+  {
+    if ([anObject respondsToSelector:@selector(setWindow:)])
+    {
+      [anObject setWindow:window];
+    }
+  }
+}
+
 - (void) insertObject:(id<GBSidebarItemObject>)anObject atIndex:(NSUInteger)anIndex
 {
   if (!anObject) return;
@@ -96,6 +110,17 @@
     if (ctrl) return ctrl;
   }
   return ctrl;
+}
+
+
+
+
+#pragma mark Actions
+
+
+- (IBAction) rename:(id)sender
+{
+  [self.sidebarItem edit];
 }
 
 

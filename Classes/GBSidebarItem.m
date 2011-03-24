@@ -264,7 +264,10 @@
   return NSDragOperationNone;
 }
 
-
+- (void) edit
+{
+  [self.sidebarController editItem:self];
+}
 
 
 

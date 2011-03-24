@@ -111,7 +111,6 @@
   [[NSNotificationCenter defaultCenter] removeObserver:self];
   self.repository = nil;
   self.sidebarItem = nil;
-  self.window = nil;
   self.toolbarController = nil;
   self.viewController = nil;
   self.selectedCommit = nil;
@@ -156,6 +155,13 @@
   [repository.stage addObserverForAllSelectors:self];
 }
 
+
+- (void) setWindow:(NSWindow *)aWindow
+{
+  if (window == aWindow) return;
+  window = aWindow;
+  // TODO: iterate over submodules and set window to every one of them
+}
 
 - (NSURL*) url
 {

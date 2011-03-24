@@ -17,22 +17,20 @@
 #import "NSObject+OASelectorNotifications.h"
 
 
-@interface GBRepositoriesController ()
+@interface GBRepositoriesController () <NSOpenSavePanelDelegate>
 @end
 
 @implementation GBRepositoriesController
 
+@synthesize rootController;
 @synthesize localRepositoriesUpdatesQueue;
 @synthesize autofetchQueue;
-@synthesize window;
 @synthesize repositoryViewController;
 @synthesize repositoryToolbarController;
-
 
 - (void) dealloc
 {
   self.localRepositoriesUpdatesQueue = nil;
-  self.window = nil;
   self.autofetchQueue = nil;
   [super dealloc];
 }
@@ -61,6 +59,45 @@
 
 
 
+#pragma mark Actions
+
+
+- (IBAction) openDocument:(id)sender
+{
+  NSAssert(self.window, @"GBRepositoriesController should have a window or sender should be a view");
+  NSOpenPanel* openPanel = [NSOpenPanel openPanel];
+  openPanel.delegate = self;
+  openPanel.allowsMultipleSelection = YES;
+  openPanel.canChooseFiles = YES;
+  openPanel.canChooseDirectories = YES;
+  [openPanel beginSheetModalForWindow:self.window completionHandler:^(NSInteger result){
+    if (result == NSFileHandlingPanelOKButton)
+    {
+      NSUInteger anIndex = 0;
+      
+//      GBSidebarItem* targetItem = [self.rootController sidebarItemAndIndex:&anIndex forInsertionWithClickedItem:self.clickedSidebarItem];
+//      [self.rootController openURLs:[openPanel URLs] inSidebarItem:targetItem atIndex:anIndex];
+    }
+  }];
+}
+
+// NSOpenSavePanelDelegate for openDocument: action
+
+- (BOOL) panel:(id)sender validateURL:(NSURL*)aURL error:(NSError **)outError
+{
+  if ([GBRepository isValidRepositoryOrFolderURL:aURL])
+  {
+    return YES;
+  }
+  if (outError != NULL)
+  {
+    *outError = [NSError errorWithDomain:NSOSStatusErrorDomain code:unimpErr userInfo:NULL];
+  }
+  return NO;
+}
+
+
+
 
 #pragma mark GBSidebarItem
 
@@ -70,8 +107,6 @@
 {
   return @"";
 }
-
-
 
 
 
@@ -112,6 +147,38 @@
 
 
 @end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

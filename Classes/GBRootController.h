@@ -21,10 +21,14 @@
 @property(nonatomic, retain, readonly)  GBSidebarItem* sidebarItem;
 @property(nonatomic, retain, readonly)  GBRepositoriesController* repositoriesController;
 
+@property(nonatomic, assign) NSWindow* window; // window is assigned by the window as an owner of the reference to receiver
+
 @property(nonatomic, retain) NSArray* selectedObjects;
 @property(nonatomic, retain) NSResponder<GBSidebarItemObject, GBMainWindowItem>* selectedObject;
+@property(nonatomic, retain) NSResponder<GBSidebarItemObject, GBMainWindowItem>* clickedObject;
 @property(nonatomic, retain) NSArray* selectedSidebarItems;
 @property(nonatomic, retain) GBSidebarItem* selectedSidebarItem;
+@property(nonatomic, retain) GBSidebarItem* clickedSidebarItem;
 @property(nonatomic, retain) NSArray* selectedItemIndexes;
 
 - (GBSidebarItem*) sidebarItemAndIndex:(NSUInteger*)anIndexRef forInsertionWithClickedItem:(GBSidebarItem*)clickedItem;

@@ -22,10 +22,14 @@
 
 @synthesize sidebarItem;
 @synthesize repositoriesController;
+@synthesize window;
+
 @synthesize selectedObjects;
 @synthesize selectedObject;
+@synthesize clickedObject;
 @dynamic    selectedSidebarItem;
 @dynamic    selectedSidebarItems;
+@dynamic    clickedSidebarItem;
 @dynamic    selectedItemIndexes;
 
 
@@ -36,22 +40,29 @@
   
   [selectedObject release]; selectedObject = nil;
   [selectedObjects release]; selectedObjects = nil;
+  [clickedObject release]; clickedObject = nil;
   
   [super dealloc];
 }
 
 - (id) init
 {
-    if ((self = [super init]))
-    {
-      self.sidebarItem = [[[GBSidebarItem alloc] init] autorelease];
-      self.sidebarItem.object = self;
-      self.repositoriesController = [[[GBRepositoriesController alloc] init] autorelease];
-    }
-    return self;
+  if ((self = [super init]))
+  {
+    self.sidebarItem = [[[GBSidebarItem alloc] init] autorelease];
+    self.sidebarItem.object = self;
+    self.repositoriesController = [[[GBRepositoriesController alloc] init] autorelease];
+    self.repositoriesController.rootController = self;
+  }
+  return self;
 }
 
-
+- (void) setWindow:(NSWindow *)aWindow
+{
+  if (window == aWindow) return;
+  window = aWindow;
+  self.repositoriesController.window = window;
+}
 
 - (GBSidebarItem*) sidebarItemAndIndex:(NSUInteger*)anIndexRef forInsertionWithClickedItem:(GBSidebarItem*)clickedItem
 {
@@ -101,7 +112,7 @@
   if (!URLs) return NO;
   
   NSUInteger anIndex = 0;
-  GBSidebarItem* targetItem = [self sidebarItemAndIndex:&anIndex forInsertionWithClickedItem:nil];
+  GBSidebarItem* targetItem = [self sidebarItemAndIndex:&anIndex forInsertionWithClickedItem:self.clickedSidebarItem];
   return [self openURLs:URLs inSidebarItem:targetItem atIndex:anIndex];
 }
 
@@ -402,7 +413,15 @@
   self.selectedSidebarItems = [allChildren objectsAtIndexes:validIndexes];
 }
 
+- (GBSidebarItem*) clickedSidebarItem
+{
+  return [self.clickedObject sidebarItem];
+}
 
+- (void) setClickedSidebarItem:(GBSidebarItem*)anItem
+{
+  self.clickedObject = (id<GBSidebarItemObject,GBMainWindowItem>)anItem.object;
+}
 
 
 

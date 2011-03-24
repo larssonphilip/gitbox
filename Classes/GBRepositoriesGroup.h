@@ -9,6 +9,7 @@
 @property(nonatomic, copy) NSString* name;
 @property(nonatomic, retain) NSMutableArray* items;
 @property(nonatomic, retain) NSProgressIndicator* sidebarSpinner;
+@property(nonatomic, assign) NSWindow* window;
 
 + (GBRepositoriesGroup*) untitledGroup;
 - (NSString*) untitledGroupName;
@@ -17,5 +18,7 @@
 - (void) removeObject:(id<GBSidebarItemObject>)anObject;
 
 - (GBRepositoryController*) repositoryControllerWithURL:(NSURL*)aURL;
+
+- (IBAction) rename:(id)sender;
 
 @end

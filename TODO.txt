@@ -60,6 +60,8 @@ Gitbox 1.3 Refactoring:
 + optional selector setWindow: for GBMainWindowItem (so they can present sheets etc.)
 
 + bug: restore toolbar buttons and menus
+- bug: rename does not work on a clicked item (when outside of the selection)
+- bug: openDocument is not completed
 - bug: restore clone controller
 - bug: restore FSEvents mechanism
 - bug: restore autofetch

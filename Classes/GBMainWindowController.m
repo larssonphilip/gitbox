@@ -76,9 +76,11 @@
 {
   if (newRootController == rootController) return;
   
+  rootController.window = nil;
   [rootController removeObserverForAllSelectors:self];
   [rootController release];
   rootController = [newRootController retain];
+  rootController.window = [self isWindowLoaded] ? [self window] : nil;
   [rootController addObserverForAllSelectors:self];
 }
 
@@ -141,17 +143,9 @@
 - (void) setSelectedWindowItem:(id<GBMainWindowItem>)anObject
 {
   if (selectedWindowItem == anObject) return;
-  
-  if ([selectedWindowItem respondsToSelector:@selector(setWindow:)]) 
-  {
-    selectedWindowItem.window = nil;
-  }
+
   [selectedWindowItem release];
   selectedWindowItem = [anObject retain];
-  if ([selectedWindowItem respondsToSelector:@selector(setWindow:)]) 
-  {
-    selectedWindowItem.window = [self window];
-  }
   
   GBToolbarController* newToolbarController = nil;
   NSViewController* newDetailController = nil;
@@ -318,6 +312,8 @@
 - (void) windowDidLoad
 {
   [super windowDidLoad];
+  
+  self.rootController.window = [self window];
   
   [self.window setTitle:NSLocalizedString(@"No selection", @"Window")];
   [self.window setRepresentedURL:nil];
