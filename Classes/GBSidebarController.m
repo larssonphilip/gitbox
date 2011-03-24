@@ -14,7 +14,7 @@
 #import "NSObject+OAPerformBlockAfterDelay.h"
 #import "NSArray+OAArrayHelpers.h"
 
-@interface GBSidebarController ()
+@interface GBSidebarController () <NSMenuDelegate>
 @property(nonatomic, retain) NSArray* nextRespondingSidebarObjects; // a list of sidebar item objects linked in a responder chain
 @property(nonatomic, assign) NSUInteger ignoreSelectionChange;
 @property(nonatomic, retain) GBCloneWindowController* cloneWindowController;
@@ -153,7 +153,8 @@
   
   [menu addItem:[[[NSMenuItem alloc] 
                   initWithTitle:NSLocalizedString(@"New Group", @"Sidebar") action:@selector(addGroup:) keyEquivalent:@""] autorelease]];
-  
+
+  menu.delegate = self;
   return menu;
 }
 
@@ -425,41 +426,41 @@
 }
 
 
-// TODO: to avoid declaring all the actions here when handling right click menu actions, try the following:
-// - do not insert sidebar item into responder chain
-// - override tryToPerform:with:; if failed to perform using super implementation, try sidebar item and validate 
-// - when asked to validate, search for requested action in the 
-// Note: this might now work with main menu actions like "push": when menu item is validated, item should be in the responder chain.
-
-// So we may try to keep the item in the responder chain, but then for tryToPerform:with: before trying super implementation, we should 
-// try to find local action, then item's action and only if both failed, resort to default implementation.
-
-// Also: for multiple selection we need to insert into responder chain a multiple selection object which will validate and dispatch actions.
-// And after that we only need our custom tryToPerform:with: implementation to handle the case when right click menu is outside the selection.
-
-- (BOOL)tryToPerform:(SEL)selector with:(id)argument
-{
-  GBSidebarItem* clickedItem = self.clickedSidebarItem;
-  
-  // Note: inserting clicked item into responder chain is necessary, but not enough: should also handle validation somehow!
-  NSArray* currentChain = self.nextRespondingSidebarObjects;
-  if (clickedItem)
-  {
-    self.rootController.clickedSidebarItem = clickedItem;
-    if (!currentChain || ![currentChain containsObject:clickedItem.object])
-    {
-      self.nextRespondingSidebarObjects = [[NSArray arrayWithObject:clickedItem.object] arrayByAddingObjectsFromArray:currentChain ? currentChain : [NSArray array]];
-    }
-  }
-  
-  NSLog(@"Sidebar: tryToPerform:%@ with:%@", NSStringFromSelector(selector), argument);
-  BOOL result = [super tryToPerform:selector with:argument];
-  
-  self.nextRespondingSidebarObjects = currentChain;
-  self.rootController.clickedSidebarItem = nil;
-  
-  return result;
-}
+//// TODO: to avoid declaring all the actions here when handling right click menu actions, try the following:
+//// - do not insert sidebar item into responder chain
+//// - override tryToPerform:with:; if failed to perform using super implementation, try sidebar item and validate 
+//// - when asked to validate, search for requested action in the 
+//// Note: this might now work with main menu actions like "push": when menu item is validated, item should be in the responder chain.
+//
+//// So we may try to keep the item in the responder chain, but then for tryToPerform:with: before trying super implementation, we should 
+//// try to find local action, then item's action and only if both failed, resort to default implementation.
+//
+//// Also: for multiple selection we need to insert into responder chain a multiple selection object which will validate and dispatch actions.
+//// And after that we only need our custom tryToPerform:with: implementation to handle the case when right click menu is outside the selection.
+//
+//- (BOOL)tryToPerform:(SEL)selector with:(id)argument
+//{
+//  GBSidebarItem* clickedItem = self.clickedSidebarItem;
+//  
+//  // Note: inserting clicked item into responder chain is necessary, but not enough: should also handle validation somehow!
+//  NSArray* currentChain = self.nextRespondingSidebarObjects;
+//  if (clickedItem)
+//  {
+//    self.rootController.clickedSidebarItem = clickedItem;
+//    if (!currentChain || ![currentChain containsObject:clickedItem.object])
+//    {
+//      self.nextRespondingSidebarObjects = [[NSArray arrayWithObject:clickedItem.object] arrayByAddingObjectsFromArray:currentChain ? currentChain : [NSArray array]];
+//    }
+//  }
+//  
+//  NSLog(@"Sidebar: tryToPerform:%@ with:%@", NSStringFromSelector(selector), argument);
+//  BOOL result = [super tryToPerform:selector with:argument];
+//  
+//  self.nextRespondingSidebarObjects = currentChain;
+//  self.rootController.clickedSidebarItem = nil;
+//  
+//  return result;
+//}
 
 
 - (BOOL) validateUserInterfaceItem:(id<NSValidatedUserInterfaceItem>)anItem
@@ -471,6 +472,33 @@
 
 
 
+
+#pragma mark NSMenuDelegate
+
+
+
+- (void) menuWillOpen:(NSMenu*)aMenu
+{
+	GBSidebarItem* clickedItem = self.clickedSidebarItem;
+	NSArray* currentChain = self.nextRespondingSidebarObjects;
+	if (clickedItem)
+	{
+		self.rootController.clickedSidebarItem = clickedItem;
+		if (!currentChain || ![currentChain containsObject:clickedItem.object])
+		{
+			self.nextRespondingSidebarObjects = [[NSArray arrayWithObject:clickedItem.object] arrayByAddingObjectsFromArray:currentChain ? currentChain : [NSArray array]];
+		}
+	}
+}
+
+- (void) menuDidClose:(NSMenu*)aMenu
+{
+	// Action is sent after menu is closed, so we have to let it run first and then update the responder chain.
+	dispatch_async(dispatch_get_main_queue(), ^() {
+		[self updateResponders];
+		self.rootController.clickedSidebarItem = nil;
+	});
+}
 
 
 
@@ -585,8 +613,7 @@
     cell = [tableColumn dataCell];
   }
   
-  [cell setMenu:item.menu];
-  
+//  [cell setMenu:item.menu];
   return cell;
 }
 
@@ -595,6 +622,7 @@
   NSMenu* menu = item.menu;
   if (menu)
   {
+    menu.delegate = self;
     [cell setMenu:menu];
   }
 }

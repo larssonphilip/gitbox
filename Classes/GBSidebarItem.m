@@ -394,11 +394,12 @@
 
 - (NSMenu*) menu
 {
+  NSMenu* aMenu = menu;
   if ([self.object respondsToSelector:@selector(sidebarItemMenu)])
   {
-    return [self.object sidebarItemMenu];
+    aMenu = [self.object sidebarItemMenu];
   }
-  return menu;
+  return aMenu;
 }
 
 - (void) update

@@ -9,13 +9,13 @@
 @property(nonatomic, retain) IBOutlet NSButton* buyButton;
 
 // most of these methods should move to proper controllers in the tree: RepositoriesController, RepositoryController etc.
-- (IBAction) openDocument:(id)sender;
+//- (IBAction) openDocument:(id)sender;
 - (IBAction) addGroup:(id)sender;
 - (IBAction) selectPreviousItem:(id)sender;
 - (IBAction) selectNextItem:(id)sender;
 
-- (IBAction) openInFinder:(id)sender;
-- (IBAction) openInTerminal:(id)sender;
+//- (IBAction) openInFinder:(id)sender;
+//- (IBAction) openInTerminal:(id)sender;
 - (IBAction) remove:(id)sender;
 - (IBAction) selectRightPane:(id)sender;
 - (IBAction) selectPane:(id)sender;
