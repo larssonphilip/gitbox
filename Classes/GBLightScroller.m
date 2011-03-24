@@ -132,7 +132,7 @@ static const CGFloat GBLightScrollerMaxAlpha = 0.4;
   self.lastKnobRect = rect;
   if (!self.shouldFadeKnob)
   {
-    [self performSelector:@selector(setNeedsFadeKnob) withObject:nil afterDelay:0.3];
+    [self performSelector:@selector(setNeedsFadeKnob) withObject:nil afterDelay:0.5];
   }
   
 //  CGFloat alphaDistanceMultiplier = 1.0; // 1.0 if farther than 50px, 
@@ -148,8 +148,8 @@ static const CGFloat GBLightScrollerMaxAlpha = 0.4;
 //  alpha *= alphaDistanceMultiplier;
 
   rect = CGRectInset(rect, 0, 0.5);
-  rect.origin.x = rect.origin.x + (rect.size.width - 6.0 - 1.0) - 0.5;
-  rect.size.width = 6.0;
+  rect.origin.x = rect.origin.x + (rect.size.width - 8.0 - 1.0) - 0.5;
+  rect.size.width = 8.0;
   
   if (!([[self window] isMainWindow] && [[self window] isKeyWindow])) // inactive window
   {
@@ -159,7 +159,7 @@ static const CGFloat GBLightScrollerMaxAlpha = 0.4;
   self.lastKnobAlpha = alpha;
   
   
-  CGFloat radius = 3.0;
+  CGFloat radius = 4.0;
   
   CGContextRef context = CGContextCurrentContext();
   CGContextSaveGState(context);
@@ -168,8 +168,8 @@ static const CGFloat GBLightScrollerMaxAlpha = 0.4;
   CGContextAddRoundRect(context, rect, radius);
   CGContextClip(context);
   
-  CGColorRef color1 = CGColorCreateGenericRGB(0.0, 0.0, 0.0, alpha*0.8);
-  CGColorRef color2 = CGColorCreateGenericRGB(0.0, 0.0, 0.0, alpha*1.0);
+  CGColorRef color1 = CGColorCreateGenericRGB(0.0, 0.0, 0.0, alpha*0.7);
+  CGColorRef color2 = CGColorCreateGenericRGB(0.0, 0.0, 0.0, alpha);
   CGColorRef colorsList[] = { color1, color2 };
   CFArrayRef colors = CFArrayCreate(NULL, (const void**)colorsList, sizeof(colorsList) / sizeof(CGColorRef), &kCFTypeArrayCallBacks);
   
