@@ -1,3 +1,4 @@
+#import "GBRootController.h"
 #import "GBRepositoriesController.h"
 #import "GBRepositoryController.h"
 #import "GBRepositoryCloningController.h"
@@ -23,6 +24,7 @@
 
 @synthesize localRepositoriesUpdatesQueue;
 @synthesize autofetchQueue;
+@synthesize window;
 @synthesize repositoryViewController;
 @synthesize repositoryToolbarController;
 
@@ -30,6 +32,7 @@
 - (void) dealloc
 {
   self.localRepositoriesUpdatesQueue = nil;
+  self.window = nil;
   self.autofetchQueue = nil;
   [super dealloc];
 }

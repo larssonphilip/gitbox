@@ -10,6 +10,7 @@
 
 @property(nonatomic, retain) OABlockQueue* localRepositoriesUpdatesQueue;
 @property(nonatomic, retain) OABlockQueue* autofetchQueue;
+@property(nonatomic, retain) NSWindow* window;
 @property(nonatomic, retain) GBRepositoryViewController* repositoryViewController;
 @property(nonatomic, retain) GBRepositoryToolbarController* repositoryToolbarController;
 
