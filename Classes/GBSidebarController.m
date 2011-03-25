@@ -3,6 +3,7 @@
 #import "GBRepository.h"
 #import "GBSidebarItem.h"
 #import "GBSidebarCell.h"
+#import "GBSidebarMultipleSelection.h"
 #import "GBCloneWindowController.h"
 #import "GBRepositoryCloningController.h"
 #import "OALicenseNumberCheck.h"
@@ -890,13 +891,61 @@
 #endif
 }
 
+// returns a longest possible array which is a prefix for each of the arrays
+- (NSArray*) commonPrefixForArrays:(NSArray*)arrays ignoreFromEnd:(NSUInteger)ignoredFromTail
+{
+  NSMutableArray* result = [NSMutableArray array];
+  if ([arrays count] < 1) return result;
+  NSInteger i = 0;
+  while (1) // loop over i until any of the arrays ends
+  {
+    id element = nil;
+    for (NSArray* array in arrays)
+    {
+      if (i >= (((NSInteger)[array count]) - ignoredFromTail)) return result; // i exceeded the minimax index or the last item
+      if (!element)
+      {
+        element = [array objectAtIndex:i];
+      }
+      else
+      {
+        if (![element isEqual:[array objectAtIndex:i]]) return result;
+      }
+    }
+    [result addObject:element];
+    i++;
+  }
+  return result;
+}
+
+
 - (void) updateResponders
 {
   // TODO: use GBSidebarMultipleSelection object to encapsulate multiple selected objects
   //       for multiple objects, should use a common parent only
   
-  // Note: using reversed array to allow nested items override actions (group has a rename: action and can be contained within another group)
-  self.nextRespondingSidebarObjects = [[[self.rootController.sidebarItem pathToItem:[self.rootController selectedSidebarItem]] valueForKey:@"object"] reversedArray];
+  if ([self.rootController.selectedObjects count] > 1)
+  {
+    NSMutableArray* paths = [NSMutableArray array];
+    for (GBSidebarItem* item in self.rootController.selectedSidebarItems)
+    {
+      NSArray* path = [[self.rootController.sidebarItem pathToItem:item] valueForKey:@"object"];
+      if (!path) path = [NSArray array];
+      [paths addObject:path];
+    }
+    
+    // commonParents should not contain one of the selected items (when there is a group)
+    NSArray* commonParents = [self commonPrefixForArrays:paths ignoreFromEnd:1];
+    
+    self.nextRespondingSidebarObjects = [[NSArray arrayWithObject:[GBSidebarMultipleSelection selectionWithObjects:self.rootController.selectedObjects]] arrayByAddingObjectsFromArray:[commonParents reversedArray]];
+  }
+  else
+  {
+    // Note: using reversed array to allow nested items override actions (group has a rename: action and can be contained within another group)
+    self.nextRespondingSidebarObjects = [[[self.rootController.sidebarItem pathToItem:[self.rootController selectedSidebarItem]] valueForKey:@"object"] reversedArray];
+  }
+  
+  //NSLog(@"updateResponders: self.nextRespondingSidebarObjects = %@", self.nextRespondingSidebarObjects);
 }
 
 

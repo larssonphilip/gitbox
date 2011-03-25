@@ -123,6 +123,11 @@
   [self.sidebarItem edit];
 }
 
+- (BOOL) validateActionForMultipleSelection:(SEL)selector
+{
+  if (selector == @selector(rename:)) return NO;
+  return YES;
+}
 
 
 
