@@ -482,13 +482,20 @@
 {
 	GBSidebarItem* clickedItem = self.clickedSidebarItem;
 	NSArray* currentChain = self.nextRespondingSidebarObjects;
-	if (clickedItem)
+	if (clickedItem && clickedItem.object)
 	{
 		self.rootController.clickedSidebarItem = clickedItem;
-		if (!currentChain || ![currentChain containsObject:clickedItem.object])
-		{
-			self.nextRespondingSidebarObjects = [[NSArray arrayWithObject:clickedItem.object] arrayByAddingObjectsFromArray:currentChain ? currentChain : [NSArray array]];
-		}
+    
+    if (currentChain && [currentChain containsObject:clickedItem.object])
+    {
+      // we have the clicked item somewhere in the chain - should remove it from chain and put in the beginning.
+      NSMutableArray* chain = [[currentChain mutableCopy] autorelease];
+      [chain removeObject:clickedItem.object];
+      currentChain = chain;
+    }
+    
+    self.nextRespondingSidebarObjects = [[NSArray arrayWithObject:clickedItem.object] 
+                                         arrayByAddingObjectsFromArray:currentChain ? currentChain : [NSArray array]];
 	}
 }
 
@@ -892,7 +899,7 @@
 }
 
 // returns a longest possible array which is a prefix for each of the arrays
-- (NSArray*) commonPrefixForArrays:(NSArray*)arrays ignoreFromEnd:(NSUInteger)ignoredFromTail
+- (NSArray*) commonPrefixForArrays:(NSArray*)arrays ignoreFromEnd:(NSUInteger)ignoredFromEnd
 {
   NSMutableArray* result = [NSMutableArray array];
   if ([arrays count] < 1) return result;
@@ -902,7 +909,7 @@
     id element = nil;
     for (NSArray* array in arrays)
     {
-      if (i >= (((NSInteger)[array count]) - ignoredFromTail)) return result; // i exceeded the minimax index or the last item
+      if (i >= (((NSInteger)[array count]) - ignoredFromEnd)) return result; // i exceeded the minimax index or the last item
       if (!element)
       {
         element = [array objectAtIndex:i];
