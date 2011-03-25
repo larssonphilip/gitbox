@@ -73,10 +73,7 @@
   [openPanel beginSheetModalForWindow:self.window completionHandler:^(NSInteger result){
     if (result == NSFileHandlingPanelOKButton)
     {
-      NSUInteger anIndex = 0;
-      
-//      GBSidebarItem* targetItem = [self.rootController sidebarItemAndIndex:&anIndex forInsertionWithClickedItem:self.clickedSidebarItem];
-//      [self.rootController openURLs:[openPanel URLs] inSidebarItem:targetItem atIndex:anIndex];
+      [self.rootController openURLs:[openPanel URLs]];
     }
   }];
 }

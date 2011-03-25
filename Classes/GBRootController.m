@@ -64,6 +64,7 @@
   self.repositoriesController.window = window;
 }
 
+// TODO: should use self.clickedSidebarItem and change the API
 - (GBSidebarItem*) sidebarItemAndIndex:(NSUInteger*)anIndexRef forInsertionWithClickedItem:(GBSidebarItem*)clickedItem
 {
   // If clickedItem is a repo, need to return its parent group and item's index + 1.

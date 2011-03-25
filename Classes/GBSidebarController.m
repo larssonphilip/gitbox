@@ -192,38 +192,6 @@
 
 
 
-//- (IBAction) openDocument:(id)sender
-//{
-//  NSOpenPanel* openPanel = [NSOpenPanel openPanel];
-//  openPanel.delegate = self;
-//  openPanel.allowsMultipleSelection = YES;
-//  openPanel.canChooseFiles = YES;
-//  openPanel.canChooseDirectories = YES;
-//  [openPanel beginSheetModalForWindow:[self.view window] completionHandler:^(NSInteger result){
-//    if (result == NSFileHandlingPanelOKButton)
-//    {
-//      NSUInteger anIndex = 0;
-//      GBSidebarItem* targetItem = [self.rootController sidebarItemAndIndex:&anIndex forInsertionWithClickedItem:self.clickedSidebarItem];
-//      [self.rootController openURLs:[openPanel URLs] inSidebarItem:targetItem atIndex:anIndex];
-//    }
-//  }];
-//}
-//
-//// NSOpenSavePanelDelegate for openDocument: action
-//
-//- (BOOL) panel:(id)sender validateURL:(NSURL*)aURL error:(NSError **)outError
-//{
-//  if ([GBRepository isValidRepositoryOrFolderURL:aURL])
-//  {
-//    return YES;
-//  }
-//  if (outError != NULL)
-//  {
-//    *outError = [NSError errorWithDomain:NSOSStatusErrorDomain code:unimpErr userInfo:NULL];
-//  }
-//  return NO;
-//}
-
 - (IBAction) cloneRepository:(id)sender
 {
   if (!self.cloneWindowController)
@@ -306,38 +274,6 @@
 {
   [self.rootController removeSidebarItems:[self selectedSidebarItems]];
 }
-
-
-
-//- (IBAction) openInFinder:(id)sender
-//{
-//  for (GBSidebarItem* item in [self selectedSidebarItems])
-//  {
-//    [item.object tryToPerform:@selector(openInFinder:) with:sender];
-//  }
-//}
-//
-//- (IBAction) openInTerminal:(id)sender
-//{
-//  for (GBSidebarItem* item in [self selectedSidebarItems])
-//  {
-//    [item.object tryToPerform:@selector(openInTerminal:) with:sender];
-//  }
-//}
-
-//- (IBAction) rename:(id)sender
-//{
-//  id anItem = [[self selectedSidebarItems] objectAtIndex:0];
-//  [self editItem:anItem];
-//}
-//
-//- (BOOL) validateRename:(id)sender
-//{
-//  if ([[self selectedSidebarItems] count] != 1) return NO;
-//  if (![[[self selectedSidebarItems] objectAtIndex:0] isEditable]) return NO;
-//  return YES;
-//}
-
 
 
 
