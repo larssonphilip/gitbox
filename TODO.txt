@@ -69,6 +69,8 @@ Repository opeations should go into GBRepositoriesController and it should updat
 
 - bug: top-level controllers should be in responder chain to make global operations accessible when nothing is selected (or nothing is contained): like openDocument, cloneRepository etc.
 
+- bug: segfault when fetching multiple selection
+
 - bug: restore clone controller
 - bug: restore FSEvents mechanism
 - bug: restore autofetch
