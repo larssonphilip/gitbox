@@ -15,7 +15,14 @@
 @property(nonatomic, retain) GBRepositoryViewController* repositoryViewController;
 @property(nonatomic, retain) GBRepositoryToolbarController* repositoryToolbarController;
 
+// Actions
+
 - (IBAction) openDocument:(id)sender;
+
+// API
+
+- (void) removeController:(id)object;
+- (void) openURL:(NSURL*)aURL replacingController:(id)object;
 
 
 // should be private

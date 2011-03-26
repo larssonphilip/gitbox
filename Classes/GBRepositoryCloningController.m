@@ -1,4 +1,5 @@
 #import "GBSidebarItem.h"
+#import "GBRepositoriesController.h"
 #import "GBRepositoryCloningViewController.h"
 #import "GBRepositoryCloningController.h"
 #import "GBCloneTask.h"
@@ -12,12 +13,11 @@
 @property(nonatomic,retain) GBCloneTask* task;
 @property(nonatomic, assign, readwrite) NSInteger isDisabled;
 @property(nonatomic, assign, readwrite) NSInteger isSpinning;
-- (void) removeFromTree;
-- (void) replaceInTreeWithController:(GBRepositoryController*)aRepositoryController;
 @end
 
 @implementation GBRepositoryCloningController
 
+@synthesize repositoriesController;
 @synthesize sidebarItem;
 @synthesize window;
 @synthesize viewController;
@@ -99,6 +99,7 @@
     {
       NSLog(@"GBCloningRepositoryController: did finish clone at %@", self.targetURL);
       [self notifyWithSelector:@selector(cloningRepositoryControllerDidFinish:)];
+      [self.repositoriesController openURL:self.targetURL replacingController:self];
     }
   }];
 }
@@ -112,22 +113,10 @@
     self.task = nil;
     [[NSFileManager defaultManager] removeItemAtURL:self.targetURL error:NULL];
   }
-  [self removeFromTree];
   [self notifyWithSelector:@selector(cloningRepositoryControllerDidCancel:)];
+  [self.repositoriesController removeController:self];
 }
 
-
-
-
-- (void) removeFromTree
-{
-  
-}
-
-- (void) replaceInTreeWithController:(GBRepositoryController*)aRepositoryController
-{
-  
-}
 
 
 

@@ -2,9 +2,12 @@
 #import "GBSidebarItemObject.h"
 
 @class GBSidebarItem;
+@class GBRepositoriesController;
 @class GBRepositoryCloningViewController;
 
 @interface GBRepositoryCloningController : NSResponder<GBMainWindowItem, GBSidebarItemObject>
+
+@property(nonatomic, assign) GBRepositoriesController* repositoriesController;
 
 @property(nonatomic, retain) GBSidebarItem* sidebarItem;
 @property(nonatomic, retain) NSWindow* window;

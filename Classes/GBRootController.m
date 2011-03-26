@@ -108,6 +108,17 @@
 
 
 
+// Contained objects should send this message so that rootController could notify its listeners about content changes (refresh sidebar etc.)
+- (void) contentDidChange
+{
+  [self notifyWithSelector:@selector(rootControllerDidChangeContents:)];
+}
+
+
+
+
+
+// should delegate to repositories controller
 - (BOOL) openURLs:(NSArray*)URLs
 {
   if (!URLs) return NO;
@@ -118,7 +129,7 @@
 }
 
 
-
+// should delegate to repositories controller
 - (BOOL) openURLs:(NSArray*)URLs inSidebarItem:(GBSidebarItem*)targetItem atIndex:(NSUInteger)insertionIndex
 {
   

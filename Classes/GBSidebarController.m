@@ -191,7 +191,7 @@
 
 
 
-
+// TODO: move to repositories controller
 - (IBAction) cloneRepository:(id)sender
 {
   if (!self.cloneWindowController)
@@ -227,23 +227,26 @@
   [ctrl runSheetInWindow:[[self view] window]];
 }
 
+// TODO: move to repositories controller
 - (void) cloningRepositoryControllerDidFail:(GBRepositoryCloningController*)cloningRepoCtrl
 {
   [cloningRepoCtrl removeObserverForAllSelectors:self];
 }
 
+// TODO: move to repositories controller
 - (void) cloningRepositoryControllerDidCancel:(GBRepositoryCloningController*)cloningRepoCtrl
 {
   [cloningRepoCtrl removeObserverForAllSelectors:self];
   [self.rootController removeSidebarItems:[NSArray arrayWithObject:cloningRepoCtrl]];
 }
 
+// TODO: move to repositories controller
 - (void) cloningRepositoryControllerDidFinish:(GBRepositoryCloningController*)cloningRepoCtrl
 {
   [cloningRepoCtrl removeObserverForAllSelectors:self];
 }
 
-
+// TODO: move to repositories controller
 - (IBAction) addGroup:(id)sender
 {
   NSUInteger anIndex = 0;
@@ -269,7 +272,7 @@
   }
 }
 
-
+// TODO: move to repositories controller
 - (IBAction) remove:(id)sender
 {
   [self.rootController removeSidebarItems:[self selectedSidebarItems]];
@@ -363,43 +366,6 @@
 }
 
 
-//// TODO: to avoid declaring all the actions here when handling right click menu actions, try the following:
-//// - do not insert sidebar item into responder chain
-//// - override tryToPerform:with:; if failed to perform using super implementation, try sidebar item and validate 
-//// - when asked to validate, search for requested action in the 
-//// Note: this might now work with main menu actions like "push": when menu item is validated, item should be in the responder chain.
-//
-//// So we may try to keep the item in the responder chain, but then for tryToPerform:with: before trying super implementation, we should 
-//// try to find local action, then item's action and only if both failed, resort to default implementation.
-//
-//// Also: for multiple selection we need to insert into responder chain a multiple selection object which will validate and dispatch actions.
-//// And after that we only need our custom tryToPerform:with: implementation to handle the case when right click menu is outside the selection.
-//
-//- (BOOL)tryToPerform:(SEL)selector with:(id)argument
-//{
-//  GBSidebarItem* clickedItem = self.clickedSidebarItem;
-//  
-//  // Note: inserting clicked item into responder chain is necessary, but not enough: should also handle validation somehow!
-//  NSArray* currentChain = self.nextRespondingSidebarObjects;
-//  if (clickedItem)
-//  {
-//    self.rootController.clickedSidebarItem = clickedItem;
-//    if (!currentChain || ![currentChain containsObject:clickedItem.object])
-//    {
-//      self.nextRespondingSidebarObjects = [[NSArray arrayWithObject:clickedItem.object] arrayByAddingObjectsFromArray:currentChain ? currentChain : [NSArray array]];
-//    }
-//  }
-//  
-//  NSLog(@"Sidebar: tryToPerform:%@ with:%@", NSStringFromSelector(selector), argument);
-//  BOOL result = [super tryToPerform:selector with:argument];
-//  
-//  self.nextRespondingSidebarObjects = currentChain;
-//  self.rootController.clickedSidebarItem = nil;
-//  
-//  return result;
-//}
-
-
 - (BOOL) validateUserInterfaceItem:(id<NSValidatedUserInterfaceItem>)anItem
 {
   return [self dispatchUserInterfaceItemValidation:anItem];
@@ -413,7 +379,7 @@
 #pragma mark NSMenuDelegate
 
 
-
+// Inserts clicked item in the responder chain
 - (void) menuWillOpen:(NSMenu*)aMenu
 {
 	GBSidebarItem* clickedItem = self.clickedSidebarItem;

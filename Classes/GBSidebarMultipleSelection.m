@@ -39,10 +39,14 @@
 
 
 
-// We support both styles of action handling: tryToPerform:with: and performSelector:withObject: (latter is used by NSApp sendAction:...)
+// We support both styles of action handling: tryToPerform:with: and performSelector:withObject: (latter is used by NSApplication sendAction:...)
 
 - (BOOL) tryToPerform:(SEL)selector with:(id)argument
 {
+  if ([super respondsToSelector:selector])
+  {
+    return [super tryToPerform:selector with:argument];
+  }
   if ([self canPerformAction:selector])
   {
     [self performSelector:selector withObject:argument];
@@ -70,13 +74,16 @@
 
 - (id) performSelector:(SEL)selector withObject:(id)argument
 {
+  //NSLog(@"GBSidebarMultipleSelection: selector = %@", NSStringFromSelector(selector));
   if ([super respondsToSelector:selector]) return [super performSelector:selector withObject:argument];
   
   self.action = selector;
   
   for (id obj in self.objects)
   {
+    NSLog(@"GBSidebarMultipleSelection: self: %@ obj: %@ selector: %@", self, obj, NSStringFromSelector(selector));
     id target = [self targetForAction:selector inObject:obj];
+    NSLog(@"GBSidebarMultipleSelection: target %@ for selector %@", target, NSStringFromSelector(selector));
     if (target)
     {
       if (![target respondsToSelector:@selector(validateUserInterfaceItem:)] || 
@@ -130,7 +137,7 @@
 }
 
 
-// This mimics the way NSApp finds a target for action in a responder chain
+// This mimics the way NSApplication finds a target for action in a responder chain
 - (id) targetForAction:(SEL)selector inObject:(id)object
 {
   if (!object) return nil;

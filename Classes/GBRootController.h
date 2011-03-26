@@ -42,4 +42,7 @@
 - (void) insertItems:(NSArray*)items inSidebarItem:(GBSidebarItem*)targetItem atIndex:(NSUInteger)insertionIndex;
 - (void) removeSidebarItems:(NSArray*)sidebarItems;
 
+// Contained objects should send this message so that rootController could notify its listeners about content changes (refresh sidebar etc.)
+- (void) contentDidChange;
+
 @end

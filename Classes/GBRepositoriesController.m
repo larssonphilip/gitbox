@@ -96,6 +96,24 @@
 
 
 
+
+#pragma mark Public API
+
+
+- (void) removeController:(id)object
+{
+  // TODO: find the group for this object and remove it 
+}
+
+- (void) openURL:(NSURL*)aURL replacingController:(id)object
+{
+  
+}
+
+
+
+
+
 #pragma mark GBSidebarItem
 
 
