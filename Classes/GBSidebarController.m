@@ -100,7 +100,8 @@
     [obj setNextResponder:nil];
   }
   
-  [nextRespondingSidebarObjects release];
+  // autorelease is important as GBSidebarMultipleSelection can be replaced while performing an action, but should not be released yet
+  [nextRespondingSidebarObjects autorelease]; 
   nextRespondingSidebarObjects = [list retain];
   
   // 2. Insert new chain: self->next becomes self->x->y->next
@@ -833,6 +834,8 @@
   // TODO: use GBSidebarMultipleSelection object to encapsulate multiple selected objects
   //       for multiple objects, should use a common parent only
   
+  NSArray* newChain = nil;
+  
   if ([self.rootController.selectedObjects count] > 1)
   {
     NSMutableArray* paths = [NSMutableArray array];
@@ -846,13 +849,25 @@
     // commonParents should not contain one of the selected items (when there is a group)
     NSArray* commonParents = [self commonPrefixForArrays:paths ignoreFromEnd:1];
     
-    self.nextRespondingSidebarObjects = [[NSArray arrayWithObject:[GBSidebarMultipleSelection selectionWithObjects:self.rootController.selectedObjects]] arrayByAddingObjectsFromArray:[commonParents reversedArray]];
+    newChain = [[NSArray arrayWithObject:[GBSidebarMultipleSelection selectionWithObjects:self.rootController.selectedObjects]] arrayByAddingObjectsFromArray:[commonParents reversedArray]];
   }
   else
   {
     // Note: using reversed array to allow nested items override actions (group has a rename: action and can be contained within another group)
-    self.nextRespondingSidebarObjects = [[[self.rootController.sidebarItem pathToItem:[self.rootController selectedSidebarItem]] valueForKey:@"object"] reversedArray];
+    newChain = [[[self.rootController.sidebarItem pathToItem:[self.rootController selectedSidebarItem]] valueForKey:@"object"] reversedArray];
   }
+  
+  if (!newChain)
+  {
+    newChain = [NSArray array];
+  }
+  
+  // These responders should always be in the tail of the chain. 
+  // But before appending them, we should avoid duplication.
+  NSMutableArray* staticResponders = [[[self.rootController staticResponders] mutableCopy] autorelease];
+  [staticResponders removeObjectsInArray:newChain];
+  
+  self.nextRespondingSidebarObjects = [newChain arrayByAddingObjectsFromArray:staticResponders];
   
   //NSLog(@"updateResponders: self.nextRespondingSidebarObjects = %@", self.nextRespondingSidebarObjects);
 }

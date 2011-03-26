@@ -64,6 +64,14 @@
   self.repositoriesController.window = window;
 }
 
+- (NSArray*) staticResponders
+{
+  // Insert more root responders before self
+  return [NSArray arrayWithObjects:self.repositoriesController, self, nil];
+}
+
+
+
 // TODO: should use self.clickedSidebarItem and change the API
 - (GBSidebarItem*) sidebarItemAndIndex:(NSUInteger*)anIndexRef forInsertionWithClickedItem:(GBSidebarItem*)clickedItem
 {

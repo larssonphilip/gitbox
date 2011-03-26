@@ -75,15 +75,18 @@
 - (id) performSelector:(SEL)selector withObject:(id)argument
 {
   //NSLog(@"GBSidebarMultipleSelection: selector = %@", NSStringFromSelector(selector));
-  if ([super respondsToSelector:selector]) return [super performSelector:selector withObject:argument];
+  if ([super respondsToSelector:selector])
+  {
+    return [super performSelector:selector withObject:argument];
+  }
   
   self.action = selector;
   
   for (id obj in self.objects)
   {
-    NSLog(@"GBSidebarMultipleSelection: self: %@ obj: %@ selector: %@", self, obj, NSStringFromSelector(selector));
+    //NSLog(@"GBSidebarMultipleSelection: self: %@ obj: %@ selector: %@", self, obj, NSStringFromSelector(selector));
     id target = [self targetForAction:selector inObject:obj];
-    NSLog(@"GBSidebarMultipleSelection: target %@ for selector %@", target, NSStringFromSelector(selector));
+    //NSLog(@"GBSidebarMultipleSelection: target %@ for selector %@", target, NSStringFromSelector(selector));
     if (target)
     {
       if (![target respondsToSelector:@selector(validateUserInterfaceItem:)] || 
