@@ -1,0 +1,22 @@
+Github integration
+
+Iteration 1:
+
+- should display accessible repos, but there could be many of them - need filter or quick search and maybe folders also.
+- each repo should browse branches and commits
+- "clone..." button in the toolbar to immediately clone the repo
+
+Iteration 2:
+
+- full github browser: by user name, by repos name
+- watched repositories
+
+Iteration 3:
+
+- pull requests
+
+Iteration 4:
+
+- organizations and teams
+
+

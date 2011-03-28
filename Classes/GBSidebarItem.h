@@ -40,7 +40,16 @@
 @property(nonatomic, assign, getter=isExpanded) BOOL expanded;
 - (NSDragOperation) dragOperationForURLs:(NSArray*)URLs outlineView:(NSOutlineView*)anOutlineView;
 - (NSDragOperation) dragOperationForItems:(NSArray*)items outlineView:(NSOutlineView*)anOutlineView;
+
+
+
+// Actions
+
 - (void) edit;
+- (void) expand;
+- (void) collapse;
+- (void) update;
+
 
 // Content
 
@@ -63,7 +72,5 @@
 // List of all parents of the item including itself.
 // Returns nil if item is nil or not found inside receiver.
 - (NSArray*) pathToItem:(GBSidebarItem*)anItem;
-
-- (void) update;
 
 @end

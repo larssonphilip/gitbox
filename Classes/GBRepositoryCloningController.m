@@ -99,7 +99,6 @@
     {
       NSLog(@"GBCloningRepositoryController: did finish clone at %@", self.targetURL);
       [self notifyWithSelector:@selector(cloningRepositoryControllerDidFinish:)];
-      [self.repositoriesController openURL:self.targetURL replacingController:self];
     }
   }];
 }
@@ -114,7 +113,6 @@
     [[NSFileManager defaultManager] removeItemAtURL:self.targetURL error:NULL];
   }
   [self notifyWithSelector:@selector(cloningRepositoryControllerDidCancel:)];
-  [self.repositoriesController removeController:self];
 }
 
 

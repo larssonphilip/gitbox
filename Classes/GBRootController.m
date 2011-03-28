@@ -15,7 +15,6 @@
 @interface GBRootController ()
 @property(nonatomic, retain, readwrite) GBSidebarItem* sidebarItem;
 @property(nonatomic, retain, readwrite) GBRepositoriesController* repositoriesController;
-
 @end
 
 @implementation GBRootController
@@ -27,6 +26,9 @@
 @synthesize selectedObjects;
 @synthesize selectedObject;
 @synthesize clickedObject;
+@synthesize dropTargetSidebarItem;
+@synthesize dropTargetIndex;
+
 @dynamic    selectedSidebarItem;
 @dynamic    selectedSidebarItems;
 @dynamic    clickedSidebarItem;
@@ -41,6 +43,7 @@
   [selectedObject release]; selectedObject = nil;
   [selectedObjects release]; selectedObjects = nil;
   [clickedObject release]; clickedObject = nil;
+  [dropTargetSidebarItem release]; dropTargetSidebarItem = nil;
   
   [super dealloc];
 }
@@ -72,47 +75,6 @@
 
 
 
-// TODO: should use self.clickedSidebarItem and change the API
-- (GBSidebarItem*) sidebarItemAndIndex:(NSUInteger*)anIndexRef forInsertionWithClickedItem:(GBSidebarItem*)clickedItem
-{
-  // If clickedItem is a repo, need to return its parent group and item's index + 1.
-  // If clickedItem is a group, need to return the item and index 0 to insert in the beginning.
-  // If clickedItem is not nil and none of the above, return nil.
-  // If clickedItem is nil, find group and index based on selection.
-  
-  GBRepositoriesGroup* group = nil;
-  NSUInteger anIndex = 0; // by default, insert in the beginning of the container.
-  
-  GBSidebarItem* contextItem = clickedItem;
-  if (!contextItem)
-  {
-    contextItem = [[[self selectedSidebarItems] reversedArray] firstObjectCommonWithArray:
-                                                    [self.repositoriesController.sidebarItem allChildren]];
-  }
-  
-  if (!contextItem) contextItem = self.repositoriesController.sidebarItem;
-  
-  id obj = contextItem.object;
-  if (!obj) obj = self.repositoriesController;
-  
-  if ([obj isKindOfClass:[GBRepositoriesGroup class]])
-  {
-    group = obj;
-  }
-  else if (obj)
-  {
-    GBSidebarItem* groupItem = [self.repositoriesController.sidebarItem parentOfItem:contextItem];
-    group = (id)groupItem.object;
-    if (group)
-    {
-      anIndex = [group.items indexOfObject:obj];
-      if (anIndex == NSNotFound) anIndex = 0;
-    }
-  }
-  
-  if (anIndexRef) *anIndexRef = anIndex;
-  return group.sidebarItem;
-}
 
 
 
@@ -130,17 +92,7 @@
 - (BOOL) openURLs:(NSArray*)URLs
 {
   if (!URLs) return NO;
-  
-  NSUInteger anIndex = 0;
-  GBSidebarItem* targetItem = [self sidebarItemAndIndex:&anIndex forInsertionWithClickedItem:self.clickedSidebarItem];
-  return [self openURLs:URLs inSidebarItem:targetItem atIndex:anIndex];
-}
-
-
-// should delegate to repositories controller
-- (BOOL) openURLs:(NSArray*)URLs inSidebarItem:(GBSidebarItem*)targetItem atIndex:(NSUInteger)insertionIndex
-{
-  
+    
 #if GITBOX_APP_STORE
 #else
   
@@ -167,9 +119,10 @@
     }
   }
 #endif
-
-  if (!URLs) return NO;
   
+  NSUInteger insertionIndex = 0;
+  GBSidebarItem* targetItem = [self contextSidebarItemAndIndex:&insertionIndex];
+
   GBRepositoriesGroup* aGroup = (id)targetItem.object;
   
   if (!aGroup)
@@ -212,9 +165,12 @@
   return insertedAtLeastOneRepo;
 }
 
-
-- (void) addUntitledGroupInSidebarItem:(GBSidebarItem*)targetItem atIndex:(NSUInteger)insertionIndex
+// TODO: move to repositories controller
+- (IBAction) addGroup:(id)sender
 {
+  NSUInteger insertionIndex = 0;
+  GBSidebarItem* targetItem = [self contextSidebarItemAndIndex:&insertionIndex];
+  
   GBRepositoriesGroup* aGroup = (id)targetItem.object;
 
   if (!aGroup)
@@ -231,9 +187,12 @@
   
   [aGroup insertObject:newGroup atIndex:insertionIndex];
   
-  [self notifyWithSelector:@selector(rootControllerDidChangeContents:)];
+  [self contentDidChange];
   
   self.selectedObject = newGroup;
+  
+  [newGroup.sidebarItem expand];
+  [newGroup.sidebarItem edit];
 }
 
 
@@ -304,24 +263,7 @@
 
 
 
-- (void) removeSidebarItems:(NSArray*)items
-{
-  for (GBSidebarItem* item in items)
-  {
-    // remove from the parent
-    GBSidebarItem* parentItem = [self.repositoriesController.sidebarItem parentOfItem:item];
-    GBRepositoriesGroup* parentGroup = (id)parentItem.object;
-    
-    if (parentGroup)
-    {
-      [parentGroup removeObject:item.object];
-    }
-  }
-  
-  [self notifyWithSelector:@selector(rootControllerDidChangeContents:)];
 
-  self.selectedSidebarItems = nil;
-}
 
 
 
@@ -365,6 +307,33 @@
 {
   if (newSelectedObject == selectedObject) return;
   self.selectedObjects = [NSArray arrayWithObject:newSelectedObject];
+}
+
+- (void) addObjectsToSelection:(NSArray*)objects
+{
+  if (!objects) return;
+  if (!self.selectedObjects)
+  {
+    self.selectedObjects = objects;
+    return;
+  }
+  
+  NSMutableArray* currentObjects = [[self.selectedObjects mutableCopy] autorelease];
+  NSMutableArray* objectsToAdd = [[objects mutableCopy] autorelease];
+  [objectsToAdd removeObjectsInArray:currentObjects];
+  [currentObjects addObjectsFromArray:objectsToAdd];
+  
+  self.selectedObjects = currentObjects;
+}
+
+- (void) removeObjectsFromSelection:(NSArray*)objects
+{
+  if (!objects) return;
+  if (!self.selectedObjects) return;
+  
+  NSMutableArray* currentObjects = [[self.selectedObjects mutableCopy] autorelease];
+  [currentObjects removeObjectsInArray:objects];
+  self.selectedObjects = currentObjects;
 }
 
 
@@ -443,6 +412,21 @@
   self.clickedObject = (id<GBSidebarItemObject,GBMainWindowItem>)anItem.object;
 }
 
+- (NSArray*) clickedOrSelectedSidebarItems
+{
+  return [[self clickedOrSelectedObjects] valueForKey:@"sidebarItem"];
+}
+
+- (NSArray*) clickedOrSelectedObjects
+{
+  if (self.clickedObject) return [NSArray arrayWithObject:self.clickedObject];
+  return self.selectedObjects;
+}
+
+
+
+
+
 
 
 
@@ -519,6 +503,69 @@
   
   self.selectedItemIndexes = indexes;
 }
+
+
+
+
+
+
+#pragma mark Private
+
+
+
+
+- (GBSidebarItem*) contextSidebarItemAndIndex:(NSUInteger*)anIndexRef
+{
+  // If clickedItem is a repo, need to return its parent group and item's index + 1.
+  // If clickedItem is a group, need to return the item and index 0 to insert in the beginning.
+  // If clickedItem is not nil and none of the above, return nil.
+  // If clickedItem is nil, find group and index based on selection.
+  
+  GBRepositoriesGroup* group = nil;
+  NSUInteger anIndex = 0; // by default, insert in the beginning of the container.
+  
+  GBSidebarItem* contextItem = self.clickedSidebarItem;
+  if (!contextItem)
+  {
+    if (self.dropTargetSidebarItem)
+    {
+      if (anIndexRef) *anIndexRef = self.dropTargetIndex;
+      return self.dropTargetSidebarItem;
+    }
+  }
+  if (!contextItem)
+  {
+    contextItem = [[[self selectedSidebarItems] reversedArray] firstObjectCommonWithArray:
+                   [self.repositoriesController.sidebarItem allChildren]];
+  }
+  
+  if (!contextItem) contextItem = self.repositoriesController.sidebarItem;
+  
+  id obj = contextItem.object;
+  if (!obj) obj = self.repositoriesController;
+  
+  if ([obj isKindOfClass:[GBRepositoriesGroup class]])
+  {
+    group = obj;
+  }
+  else if (obj)
+  {
+    GBSidebarItem* groupItem = [self.repositoriesController.sidebarItem parentOfItem:contextItem];
+    group = (id)groupItem.object;
+    if (group)
+    {
+      anIndex = [group.items indexOfObject:obj];
+      if (anIndex == NSNotFound) anIndex = 0;
+    }
+  }
+  
+  if (anIndexRef) *anIndexRef = anIndex;
+  return group.sidebarItem;
+}
+
+
+
+
 
 
 @end

@@ -73,6 +73,7 @@
   [openPanel beginSheetModalForWindow:self.window completionHandler:^(NSInteger result){
     if (result == NSFileHandlingPanelOKButton)
     {
+      [openPanel orderOut:self]; // to let a license sheet pop out correctly
       [self.rootController openURLs:[openPanel URLs]];
     }
   }];
@@ -96,18 +97,39 @@
 
 
 
-
-#pragma mark Public API
-
-
-- (void) removeController:(id)object
+- (IBAction) remove:(id)sender
 {
-  // TODO: find the group for this object and remove it 
+  [self removeObjects:self.rootController.clickedOrSelectedObjects];
 }
 
-- (void) openURL:(NSURL*)aURL replacingController:(id)object
+- (void) removeObjects:(NSArray*)objects
 {
+  for (id<GBSidebarItemObject> object in objects)
+  {
+    GBSidebarItem* parentItem = [self.sidebarItem parentOfItem:[object sidebarItem]];
+    GBRepositoriesGroup* parentGroup = (id)parentItem.object;
+    
+    if (parentGroup && [parentGroup isKindOfClass:[GBRepositoriesGroup class]])
+    {
+      if (parentGroup == self)
+      {
+        [super removeObject:object]; // because we override the removeObject here
+      }
+      else
+      {
+        [parentGroup removeObject:object];
+      }
+    }
+  }
   
+  [self.rootController contentDidChange];
+  
+  [self.rootController removeObjectsFromSelection:objects];
+}
+
+- (void) removeObject:(id<GBSidebarItemObject>)object
+{
+  [self removeObjects:[NSArray arrayWithObject:object]];
 }
 
 

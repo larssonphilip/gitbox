@@ -84,9 +84,7 @@
   
   for (id obj in self.objects)
   {
-    //NSLog(@"GBSidebarMultipleSelection: self: %@ obj: %@ selector: %@", self, obj, NSStringFromSelector(selector));
     id target = [self targetForAction:selector inObject:obj];
-    //NSLog(@"GBSidebarMultipleSelection: target %@ for selector %@", target, NSStringFromSelector(selector));
     if (target)
     {
       if (![target respondsToSelector:@selector(validateUserInterfaceItem:)] || 

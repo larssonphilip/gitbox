@@ -148,8 +148,9 @@ static const CGFloat GBLightScrollerMaxAlpha = 0.4;
 //  alpha *= alphaDistanceMultiplier;
 
   rect = CGRectInset(rect, 0, 0.5);
-  rect.origin.x = rect.origin.x + (rect.size.width - 8.0 - 1.0) - 0.5;
-  rect.size.width = 8.0;
+  CGFloat width = 7.0;
+  rect.origin.x = rect.origin.x + (rect.size.width - width - 1.0) - 0.5;
+  rect.size.width = width;
   
   if (!([[self window] isMainWindow] && [[self window] isKeyWindow])) // inactive window
   {
@@ -159,7 +160,7 @@ static const CGFloat GBLightScrollerMaxAlpha = 0.4;
   self.lastKnobAlpha = alpha;
   
   
-  CGFloat radius = 4.0;
+  CGFloat radius = 3.5;
   
   CGContextRef context = CGContextCurrentContext();
   CGContextSaveGState(context);

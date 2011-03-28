@@ -218,7 +218,7 @@
       [cloneController addObserverForAllSelectors:self];
       
       NSUInteger anIndex = 0;
-      GBSidebarItem* targetItem = [self.rootController sidebarItemAndIndex:&anIndex forInsertionWithClickedItem:self.clickedSidebarItem];
+      GBSidebarItem* targetItem = [self.rootController contextSidebarItemAndIndex:&anIndex];
       [self.rootController insertItems:[NSArray arrayWithObject:cloneController.sidebarItem] inSidebarItem:targetItem atIndex:anIndex];
       
       [cloneController startCloning];
@@ -238,45 +238,13 @@
 - (void) cloningRepositoryControllerDidCancel:(GBRepositoryCloningController*)cloningRepoCtrl
 {
   [cloningRepoCtrl removeObserverForAllSelectors:self];
-  [self.rootController removeSidebarItems:[NSArray arrayWithObject:cloningRepoCtrl]];
+//  [self.rootController removeSidebarItems:[NSArray arrayWithObject:cloningRepoCtrl]];
 }
 
 // TODO: move to repositories controller
 - (void) cloningRepositoryControllerDidFinish:(GBRepositoryCloningController*)cloningRepoCtrl
 {
   [cloningRepoCtrl removeObserverForAllSelectors:self];
-}
-
-// TODO: move to repositories controller
-- (IBAction) addGroup:(id)sender
-{
-  NSUInteger anIndex = 0;
-  GBSidebarItem* targetItem = [self.rootController sidebarItemAndIndex:&anIndex forInsertionWithClickedItem:self.clickedSidebarItem];
-  [self.rootController addUntitledGroupInSidebarItem:targetItem atIndex:anIndex];
-    
-  if (targetItem)
-  {
-    [self.outlineView expandItem:targetItem];
-  }
-  
-  GBSidebarItem* selectedItem = self.rootController.selectedSidebarItem;
-  if (selectedItem)
-  {
-    [self.outlineView expandItem:selectedItem];
-    
-    NSInteger rowIndex = [self.outlineView rowForItem:selectedItem];
-    
-    if (rowIndex >= 0 && [selectedItem isEditable])
-    {
-      [self.outlineView editColumn:0 row:rowIndex withEvent:nil select:YES];
-    }
-  }
-}
-
-// TODO: move to repositories controller
-- (IBAction) remove:(id)sender
-{
-  [self.rootController removeSidebarItems:[self selectedSidebarItems]];
 }
 
 
@@ -675,7 +643,11 @@
     
     [anOutlineView expandItem:targetItem]; // in some cases the outline view does not expand automatically
     if (childIndex == NSOutlineViewDropOnItemIndex) childIndex = 0;
-    [self.rootController openURLs:URLs inSidebarItem:targetItem atIndex:(NSUInteger)childIndex];
+    self.rootController.dropTargetSidebarItem = targetItem;
+    self.rootController.dropTargetIndex = childIndex;
+    [self.rootController openURLs:URLs];
+    self.rootController.dropTargetSidebarItem = nil;
+    self.rootController.dropTargetIndex = 0;
     return YES;
   }
   else // local drop
@@ -697,7 +669,11 @@
     
     [anOutlineView expandItem:targetItem]; // in some cases the outline view does not expand automatically
     if (childIndex == NSOutlineViewDropOnItemIndex) childIndex = 0;
+    self.rootController.dropTargetSidebarItem = targetItem;
+    self.rootController.dropTargetIndex = childIndex;
     [self.rootController moveItems:items toSidebarItem:targetItem atIndex:(NSUInteger)childIndex];
+    self.rootController.dropTargetSidebarItem = nil;
+    self.rootController.dropTargetIndex = 0;
     return YES;
   }
   return NO;
@@ -724,6 +700,23 @@
   [self.outlineView editColumn:0 row:rowIndex withEvent:nil select:YES];
 }
 
+- (void) expandItem:(GBSidebarItem*)anItem
+{
+  if (!anItem) return;
+  
+  GBSidebarItem* parentItem = [self.rootController.sidebarItem parentOfItem:anItem];
+  if (parentItem && ![parentItem isExpanded] && parentItem != anItem) [self expandItem:parentItem];
+  [self.outlineView expandItem:anItem];
+}
+
+- (void) collapseItem:(GBSidebarItem*)anItem
+{
+  if (!anItem) return;
+  
+  GBSidebarItem* parentItem = [self.rootController.sidebarItem parentOfItem:anItem];
+  if (parentItem && ![parentItem isExpanded] && parentItem != anItem) [self collapseItem:parentItem];
+  [self.outlineView collapseItem:anItem];
+}
 
 - (void) updateItem:(GBSidebarItem*)anItem
 {
@@ -812,7 +805,8 @@
     id element = nil;
     for (NSArray* array in arrays)
     {
-      if (i >= (((NSInteger)[array count]) - ignoredFromEnd)) return result; // i exceeded the minimax index or the last item
+      NSInteger limit = ((NSInteger)[array count]) - (NSInteger)ignoredFromEnd;
+      if (i >= limit) return result; // i exceeded the minimax index or the last item
       if (!element)
       {
         element = [array objectAtIndex:i];

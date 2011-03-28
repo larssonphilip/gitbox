@@ -34,22 +34,46 @@
   return [alert runModal];  
 }
 
-+ (BOOL) prompt:(NSString*)message description:(NSString*)description ok:(NSString*)okTitle
++ (BOOL) prompt:(NSString*)message description:(NSString*)description ok:(NSString*)okTitle window:(NSWindow*)aWindow
 {
-  if (!message) return 0;
+  if (!message) return NO;
+
   NSAlert* alert = [NSAlert alertWithMessageText:message
                                    defaultButton:okTitle
                                  alternateButton:NSLocalizedString(@"Cancel", @"")
                                      otherButton:nil
                        informativeTextWithFormat:description ? description : @""];
   
-  return ([alert runModal] == NSAlertDefaultReturn);  
+  if (!aWindow)
+  {
+    return ([alert runModal] == NSAlertDefaultReturn);
+  }
+  
+  NSInteger result = NSAlertErrorReturn;
+  [alert beginSheetModalForWindow:aWindow modalDelegate:self didEndSelector:@selector(alertDidEnd:returnCode:contextInfo:) contextInfo:&result];
+  return (result == NSAlertDefaultReturn);
+}
+
++ (void) alertDidEnd:(NSAlert*)alert returnCode:(NSInteger)returnCode contextInfo:(NSInteger*)resultRef
+{
+  *resultRef = returnCode;
+}
+
++ (BOOL) prompt:(NSString*)message description:(NSString*)description ok:(NSString*)okTitle
+{
+  return [self prompt:message description:description ok:okTitle window:nil];
+}
+
++ (BOOL) prompt:(NSString*)message description:(NSString*)description window:(NSWindow*)aWindow
+{
+  return [self prompt:message description:description ok:NSLocalizedString(@"OK", @"") window:aWindow];
 }
 
 + (BOOL) prompt:(NSString*)message description:(NSString*)description
 {
-  return [self prompt:message description:description ok:NSLocalizedString(@"OK", @"")];
+  return [self prompt:message description:description window:nil];
 }
+
 
 
 @end

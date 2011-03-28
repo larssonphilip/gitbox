@@ -18,11 +18,9 @@
 // Actions
 
 - (IBAction) openDocument:(id)sender;
-
-// API
-
-- (void) removeController:(id)object;
-- (void) openURL:(NSURL*)aURL replacingController:(id)object;
+- (IBAction) remove:(id)sender;
+- (void) removeObjects:(NSArray*)objects;
+- (void) removeObject:(id<GBSidebarItemObject>)object;
 
 
 // should be private

@@ -6,3 +6,5 @@
 #define GITBOX_APP_STORE 1
 //#define OA_APPSTORE_SAMPLE_RECEIPT 1
 //#define OA_APPSTORE_IGNORE_RECEIPT 1
+
+#import "GBCommonPrefix.h"

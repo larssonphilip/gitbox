@@ -264,10 +264,32 @@
   return NSDragOperationNone;
 }
 
+
+
+#pragma mark Actions
+
+
 - (void) edit
 {
   [self.sidebarController editItem:self];
 }
+
+- (void) expand
+{
+  [self.sidebarController expandItem:self];
+}
+
+- (void) collapse
+{
+  [self.sidebarController collapseItem:self];
+}
+
+- (void) update
+{
+  [self.sidebarController updateItem:self];
+}
+
+
 
 
 
@@ -402,10 +424,6 @@
   return aMenu;
 }
 
-- (void) update
-{
-  [self.sidebarController updateItem:self];
-}
 
 
 
