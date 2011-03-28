@@ -623,18 +623,14 @@
 
 - (IBAction) fetch:(id)sender
 {
-  //NSLog(@"fetching in %@ [%@]", self, [self url]);
   [self resetAutoFetchInterval];
   [self pushSpinning];
   [self pushDisabled];
   [self pushFSEventsPause];
   [self.repository fetchCurrentBranchWithBlock:^{
-    //NSLog(@"fetched %@", [self url]);
     [self.repository.lastError present];
     [self updateLocalRefsWithBlock:^{
-      //NSLog(@"updated local refs %@", [self url]);
       [self loadCommitsWithBlock:^{
-        //NSLog(@"loaded commits %@", [self url]);
       }];
       [self updateRemoteRefsWithBlock:nil];
       [self popFSEventsPause];

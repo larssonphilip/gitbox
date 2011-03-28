@@ -65,9 +65,9 @@ Gitbox 1.3 Refactoring:
 
 + bug: segfault when fetching multiple selection
 
-sidebar should simply transfer all the work to rootController without specific actions.
-For dropped item+index we can set properties on rootController like with clicked item, so it can know its context.
-Repository opeations should go into GBRepositoriesController and it should update rootController which triggers "didChangeContents" notifications.
++ sidebar should simply transfer all the work to rootController without specific actions.
++ For dropped item+index we can set properties on rootController like with clicked item, so it can know its context.
+± Repository opeations should go into GBRepositoriesController and it should update rootController which triggers "didChangeContents" notifications.
 
 + bug: top-level controllers should be in responder chain to make global operations accessible when nothing is selected (or nothing is contained): like openDocument, cloneRepository etc.
 

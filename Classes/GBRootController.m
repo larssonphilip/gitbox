@@ -79,7 +79,7 @@
 
 
 // Contained objects should send this message so that rootController could notify its listeners about content changes (refresh sidebar etc.)
-- (void) contentDidChange
+- (void) contentsDidChange
 {
   [self notifyWithSelector:@selector(rootControllerDidChangeContents:)];
 }
@@ -187,7 +187,7 @@
   
   [aGroup insertObject:newGroup atIndex:insertionIndex];
   
-  [self contentDidChange];
+  [self contentsDidChange];
   
   self.selectedObject = newGroup;
   

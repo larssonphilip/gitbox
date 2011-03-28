@@ -18,7 +18,9 @@
 // Actions
 
 - (IBAction) openDocument:(id)sender;
+- (IBAction) addGroup:(id)sender;
 - (IBAction) remove:(id)sender;
+
 - (void) removeObjects:(NSArray*)objects;
 - (void) removeObject:(id<GBSidebarItemObject>)object;
 

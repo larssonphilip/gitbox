@@ -80,7 +80,6 @@
 }
 
 // NSOpenSavePanelDelegate for openDocument: action
-
 - (BOOL) panel:(id)sender validateURL:(NSURL*)aURL error:(NSError **)outError
 {
   if ([GBRepository isValidRepositoryOrFolderURL:aURL])
@@ -95,12 +94,42 @@
 }
 
 
-
-
 - (IBAction) remove:(id)sender
 {
   [self removeObjects:self.rootController.clickedOrSelectedObjects];
 }
+
+//- (IBAction) addGroup:(id)sender
+//{
+//  NSUInteger insertionIndex = 0;
+//  GBSidebarItem* targetItem = [self contextSidebarItemAndIndex:&insertionIndex];
+//  
+//  GBRepositoriesGroup* aGroup = (id)targetItem.object;
+//  
+//  if (!aGroup)
+//  {
+//    aGroup = self.repositoriesController;
+//  }
+//  
+//  if (insertionIndex == NSNotFound)
+//  {
+//    insertionIndex = 0;
+//  }
+//  
+//  GBRepositoriesGroup* newGroup = [GBRepositoriesGroup untitledGroup];
+//  
+//  [aGroup insertObject:newGroup atIndex:insertionIndex];
+//  
+//  [self contentsDidChange];
+//  
+//  self.selectedObject = newGroup;
+//  
+//  [newGroup.sidebarItem expand];
+//  [newGroup.sidebarItem edit];
+//}
+
+
+
 
 - (void) removeObjects:(NSArray*)objects
 {
@@ -122,7 +151,7 @@
     }
   }
   
-  [self.rootController contentDidChange];
+  [self.rootController contentsDidChange];
   
   [self.rootController removeObjectsFromSelection:objects];
 }
@@ -131,6 +160,7 @@
 {
   [self removeObjects:[NSArray arrayWithObject:object]];
 }
+  
 
 
 

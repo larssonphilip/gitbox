@@ -52,7 +52,7 @@
 - (void) insertItems:(NSArray*)items inSidebarItem:(GBSidebarItem*)targetItem atIndex:(NSUInteger)insertionIndex;
 
 // Contained objects should send this message so that rootController could notify its listeners about content changes (refresh sidebar etc.)
-- (void) contentDidChange;
+- (void) contentsDidChange;
 
 // A list of responders to be always present in responder chain (in order of priority)
 - (NSArray*) staticResponders;
