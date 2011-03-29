@@ -119,6 +119,7 @@
   NSUInteger insertionIndex = 0;
   GBRepositoriesGroup* aGroup = [self contextGroupAndIndex:&insertionIndex];
   GBRepositoriesGroup* newGroup = [GBRepositoriesGroup untitledGroup];
+  aGroup.repositoriesController = self;
   
   [aGroup insertObject:newGroup atIndex:insertionIndex];
   
@@ -361,6 +362,7 @@
       GBRepositoriesGroup* aGroup = [[[GBRepositoriesGroup alloc] init] autorelease];
       aGroup.name = [dict objectForKey:@"name"];
       aGroup.sidebarItem.collapsed = collapsed;
+      aGroup.repositoriesController = self;
       [self loadGroupContents:aGroup fromPropertyList:contents];
       [newItems addObject:aGroup];
     }
