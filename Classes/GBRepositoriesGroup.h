@@ -3,6 +3,7 @@
 
 @class GBSidebarItem;
 @class GBRepositoryController;
+@class GBRepositoriesController;
 @interface GBRepositoriesGroup : NSResponder<GBMainWindowItem, GBSidebarItemObject>
 
 @property(nonatomic, retain) GBSidebarItem* sidebarItem;
@@ -10,6 +11,7 @@
 @property(nonatomic, retain) NSMutableArray* items;
 @property(nonatomic, retain) NSProgressIndicator* sidebarSpinner;
 @property(nonatomic, assign) NSWindow* window;
+@property(nonatomic, assign) GBRepositoriesController* repositoriesController;
 
 + (GBRepositoriesGroup*) untitledGroup;
 - (NSString*) untitledGroupName;

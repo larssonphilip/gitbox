@@ -165,35 +165,6 @@
   return insertedAtLeastOneRepo;
 }
 
-// TODO: move to repositories controller
-- (IBAction) addGroup:(id)sender
-{
-  NSUInteger insertionIndex = 0;
-  GBSidebarItem* targetItem = [self contextSidebarItemAndIndex:&insertionIndex];
-  
-  GBRepositoriesGroup* aGroup = (id)targetItem.object;
-
-  if (!aGroup)
-  {
-    aGroup = self.repositoriesController;
-  }
-  
-  if (insertionIndex == NSNotFound)
-  {
-    insertionIndex = 0;
-  }
-
-  GBRepositoriesGroup* newGroup = [GBRepositoriesGroup untitledGroup];
-  
-  [aGroup insertObject:newGroup atIndex:insertionIndex];
-  
-  [self contentsDidChange];
-  
-  self.selectedObject = newGroup;
-  
-  [newGroup.sidebarItem expand];
-  [newGroup.sidebarItem edit];
-}
 
 
 - (void) moveItems:(NSArray*)items toSidebarItem:(GBSidebarItem*)targetItem atIndex:(NSUInteger)insertionIndex

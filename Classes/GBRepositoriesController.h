@@ -24,6 +24,7 @@
 - (void) removeObjects:(NSArray*)objects;
 - (void) removeObject:(id<GBSidebarItemObject>)object;
 
+- (void) contentsDidChange;
 
 // should be private
 - (void) startRepositoryController:(GBRepositoryController*)repoCtrl;

@@ -45,9 +45,6 @@
 // Returns NO if cannot open any of URLs
 - (BOOL) openURLs:(NSArray*)URLs;
 
- // move to repositories controller
-- (IBAction) addGroup:(id)sender;
-
 - (void) moveItems:(NSArray*)items toSidebarItem:(GBSidebarItem*)targetItem atIndex:(NSUInteger)insertionIndex;
 - (void) insertItems:(NSArray*)items inSidebarItem:(GBSidebarItem*)targetItem atIndex:(NSUInteger)insertionIndex;
 

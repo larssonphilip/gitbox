@@ -9,6 +9,7 @@
 #import "GBRepositoryViewController.h"
 
 #import "NSFileManager+OAFileManagerHelpers.h"
+#import "NSArray+OAArrayHelpers.h"
 #import "OALicenseNumberCheck.h"
 #import "OALicenseNumberCheck.h"
 #import "OAObfuscatedLicenseCheck.h"
@@ -18,6 +19,7 @@
 
 
 @interface GBRepositoriesController () <NSOpenSavePanelDelegate>
+- (GBRepositoriesGroup*) contextGroupAndIndex:(NSUInteger*)anIndexRef;
 @end
 
 @implementation GBRepositoriesController
@@ -57,9 +59,22 @@
   return self;
 }
 
+- (GBRepositoriesController*) repositoriesController
+{
+  return self;
+}
+
+- (void) contentsDidChange
+{
+  [self.rootController contentsDidChange];
+}
+
+
+
 
 
 #pragma mark Actions
+
 
 
 - (IBAction) openDocument:(id)sender
@@ -99,34 +114,21 @@
   [self removeObjects:self.rootController.clickedOrSelectedObjects];
 }
 
-//- (IBAction) addGroup:(id)sender
-//{
-//  NSUInteger insertionIndex = 0;
-//  GBSidebarItem* targetItem = [self contextSidebarItemAndIndex:&insertionIndex];
-//  
-//  GBRepositoriesGroup* aGroup = (id)targetItem.object;
-//  
-//  if (!aGroup)
-//  {
-//    aGroup = self.repositoriesController;
-//  }
-//  
-//  if (insertionIndex == NSNotFound)
-//  {
-//    insertionIndex = 0;
-//  }
-//  
-//  GBRepositoriesGroup* newGroup = [GBRepositoriesGroup untitledGroup];
-//  
-//  [aGroup insertObject:newGroup atIndex:insertionIndex];
-//  
-//  [self contentsDidChange];
-//  
-//  self.selectedObject = newGroup;
-//  
-//  [newGroup.sidebarItem expand];
-//  [newGroup.sidebarItem edit];
-//}
+- (IBAction) addGroup:(id)sender
+{
+  NSUInteger insertionIndex = 0;
+  GBRepositoriesGroup* aGroup = [self contextGroupAndIndex:&insertionIndex];
+  GBRepositoriesGroup* newGroup = [GBRepositoriesGroup untitledGroup];
+  
+  [aGroup insertObject:newGroup atIndex:insertionIndex];
+  
+  [self contentsDidChange];
+  
+  self.rootController.selectedObject = newGroup;
+  
+  [newGroup.sidebarItem expand];
+  [newGroup.sidebarItem edit];
+}
 
 
 
@@ -151,7 +153,7 @@
     }
   }
   
-  [self.rootController contentsDidChange];
+  [self contentsDidChange];
   
   [self.rootController removeObjectsFromSelection:objects];
 }
@@ -178,10 +180,7 @@
 
 
 
-
 #pragma mark Launch
-
-
 
 
 - (void) startRepositoryController:(GBRepositoryController*)repoCtrl
@@ -212,26 +211,51 @@
 }
 
 
+- (GBRepositoriesGroup*) contextGroupAndIndex:(NSUInteger*)anIndexRef
+{
+  // If clickedItem is a repo, need to return its parent group and item's index + 1.
+  // If clickedItem is a group, need to return the item and index 0 to insert in the beginning.
+  // If clickedItem is not nil and none of the above, return nil.
+  // If clickedItem is nil, find group and index based on selection.
+  
+  GBRepositoriesGroup* group = nil;
+  NSUInteger anIndex = 0; // by default, insert in the beginning of the container.
+  
+  GBSidebarItem* contextItem = self.rootController.clickedSidebarItem;
+  
+  if (!contextItem)
+  {
+    contextItem = [[[self.rootController selectedSidebarItems] reversedArray] firstObjectCommonWithArray:
+                   [self.sidebarItem allChildren]];
+  }
+  
+  if (!contextItem) contextItem = self.sidebarItem;
+  
+  id obj = contextItem.object;
+  if (!obj) obj = self;
+  
+  if ([obj isKindOfClass:[GBRepositoriesGroup class]])
+  {
+    group = obj;
+  }
+  else if (obj)
+  {
+    GBSidebarItem* groupItem = [self.sidebarItem parentOfItem:contextItem];
+    group = (id)groupItem.object;
+    if (group)
+    {
+      anIndex = [group.items indexOfObject:obj];
+      if (anIndex == NSNotFound) anIndex = 0;
+    }
+  }
+  
+  if (anIndexRef) *anIndexRef = anIndex;
+  return group ? group : self;
+}
+
+
 
 @end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

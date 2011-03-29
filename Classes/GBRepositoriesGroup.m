@@ -1,6 +1,7 @@
 #import "GBRepositoryController.h"
 #import "GBRepositoryCloningController.h"
 #import "GBRepositoriesGroup.h"
+#import "GBRepositoriesController.h"
 #import "GBSidebarItem.h"
 #import "GBSidebarCell.h"
 #import "GBRepository.h"
@@ -17,6 +18,7 @@
 @synthesize items;
 @synthesize sidebarSpinner;
 @synthesize window;
+@synthesize repositoriesController;
 
 @synthesize isExpanded;
 
