@@ -71,11 +71,14 @@
   GBCloneTask* t = [[GBCloneTask new] autorelease];
   self.isDisabled++;
   self.isSpinning++;
+  [self.sidebarItem update];
   t.sourceURL = self.sourceURL;
   t.targetURL = self.targetURL;
   self.task = t;
   [t launchWithBlock:^{
     self.isSpinning--;
+    [self.sidebarItem update];
+    
     self.task = nil;
     if ([t isError])
     {
@@ -108,6 +111,7 @@
   if (self.task)
   {
     self.isSpinning--;
+    [self.sidebarItem update];
     [self.task terminate];
     self.task = nil;
     [[NSFileManager defaultManager] removeItemAtURL:self.targetURL error:NULL];
@@ -163,6 +167,10 @@
 {
 }
 
+- (BOOL) sidebarItemIsSpinning
+{
+  return self.isSpinning;
+}
 
 
 
