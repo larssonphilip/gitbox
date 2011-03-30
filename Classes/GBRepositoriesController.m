@@ -25,6 +25,7 @@
 - (void) removeObject:(id<GBSidebarItemObject>)object;
 
 - (GBRepositoriesGroup*) contextGroupAndIndex:(NSUInteger*)anIndexRef;
+- (GBRepositoriesGroup*) groupAndIndex:(NSUInteger*)anIndexRef forObject:(id<GBSidebarItemObject>)anObject;
 - (void) startRepositoryController:(GBRepositoryController*)repoCtrl;
 @end
 
@@ -201,8 +202,18 @@
 {
   [cloningRepoCtrl removeObserverForAllSelectors:self];
   
-  // TODO: create a proper repo ctrl and add it in place of cloningRepoCtrl
+  NSUInteger insertionIndex = 0;
+  GBRepositoriesGroup* aGroup = [self groupAndIndex:&insertionIndex forObject:cloningRepoCtrl];
   
+  // TODO: remove cloning repo ctrl from the group
+  
+  GBRepositoryController* repoCtrl = [GBRepositoryController repositoryControllerWithURL:cloningRepoCtrl.targetURL];
+  [aGroup insertObject:repoCtrl atIndex:insertionIndex];
+  [self contentsDidChange];
+  
+  // TODO: update selection with cloning group replaced by new repo ctrl
+  
+  [self startRepositoryController:repoCtrl];
 }
 
 
@@ -409,22 +420,28 @@
                    [self.sidebarItem allChildren]];
   }
   
-  if (!contextItem) contextItem = self.sidebarItem;
+  return [self groupAndIndex:anIndexRef forObject:contextItem.object];
+}
+
+
+- (GBRepositoriesGroup*) groupAndIndex:(NSUInteger*)anIndexRef forObject:(id<GBSidebarItemObject>)anObject
+{
+  GBRepositoriesGroup* group = nil;
+  NSUInteger anIndex = 0; // by default, insert in the beginning of the container.
+    
+  if (!anObject) anObject = self;
   
-  id obj = contextItem.object;
-  if (!obj) obj = self;
-  
-  if ([obj isKindOfClass:[GBRepositoriesGroup class]])
+  if ([anObject isKindOfClass:[GBRepositoriesGroup class]])
   {
-    group = obj;
+    group = anObject;
   }
-  else if (obj)
+  else if (anObject)
   {
-    GBSidebarItem* groupItem = [self.sidebarItem parentOfItem:contextItem];
+    GBSidebarItem* groupItem = [self.sidebarItem parentOfItem:[anObject sidebarItem]];
     group = (id)groupItem.object;
     if (group)
     {
-      anIndex = [group.items indexOfObject:obj];
+      anIndex = [group.items indexOfObject:anObject];
       if (anIndex == NSNotFound) anIndex = 0;
     }
   }
@@ -432,7 +449,6 @@
   if (anIndexRef) *anIndexRef = anIndex;
   return group ? group : self;
 }
-
 
 
 @end

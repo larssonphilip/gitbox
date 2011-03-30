@@ -1269,7 +1269,7 @@
 
 - (void) scheduleAutoFetch
 {
-  [NSObject cancelPreviousPerformRequestsWithTarget:self 
+  [NSObject cancelPreviousPerformRequestsWithTarget:self
                                            selector:@selector(autoFetch)
                                              object:nil];  
   [self performSelector:@selector(autoFetch) 
