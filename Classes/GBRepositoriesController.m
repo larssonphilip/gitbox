@@ -200,20 +200,34 @@
 
 - (void) cloningRepositoryControllerDidFinish:(GBRepositoryCloningController*)cloningRepoCtrl
 {
+  [[cloningRepoCtrl retain] autorelease];
+  
   [cloningRepoCtrl removeObserverForAllSelectors:self];
   
   NSUInteger insertionIndex = 0;
   GBRepositoriesGroup* aGroup = [self groupAndIndex:&insertionIndex forObject:cloningRepoCtrl];
   
-  // TODO: remove cloning repo ctrl from the group
-  
   GBRepositoryController* repoCtrl = [GBRepositoryController repositoryControllerWithURL:cloningRepoCtrl.targetURL];
+  [self startRepositoryController:repoCtrl];
+  
+  NSMutableArray* selectedObjects = [[self.rootController.selectedObjects mutableCopy] autorelease];
+  
+  if (selectedObjects)
+  {
+    NSUInteger i = [selectedObjects indexOfObject:cloningRepoCtrl];
+    if (i != NSNotFound)
+    {
+      [selectedObjects removeObjectAtIndex:i];
+      [selectedObjects insertObject:repoCtrl atIndex:i];
+    }
+  }
+  
+  [aGroup removeObject:cloningRepoCtrl];
   [aGroup insertObject:repoCtrl atIndex:insertionIndex];
+  
   [self contentsDidChange];
   
-  // TODO: update selection with cloning group replaced by new repo ctrl
-  
-  [self startRepositoryController:repoCtrl];
+  self.rootController.selectedObjects = selectedObjects;
 }
 
 
@@ -408,10 +422,7 @@
   // If clickedItem is a group, need to return the item and index 0 to insert in the beginning.
   // If clickedItem is not nil and none of the above, return nil.
   // If clickedItem is nil, find group and index based on selection.
-  
-  GBRepositoriesGroup* group = nil;
-  NSUInteger anIndex = 0; // by default, insert in the beginning of the container.
-  
+    
   GBSidebarItem* contextItem = self.rootController.clickedSidebarItem;
   
   if (!contextItem)
