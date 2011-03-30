@@ -26,8 +26,6 @@
 @synthesize selectedObjects;
 @synthesize selectedObject;
 @synthesize clickedObject;
-@synthesize dropTargetSidebarItem;
-@synthesize dropTargetIndex;
 
 @dynamic    selectedSidebarItem;
 @dynamic    selectedSidebarItems;
@@ -43,7 +41,6 @@
   [selectedObject release]; selectedObject = nil;
   [selectedObjects release]; selectedObjects = nil;
   [clickedObject release]; clickedObject = nil;
-  [dropTargetSidebarItem release]; dropTargetSidebarItem = nil;
   
   [super dealloc];
 }
@@ -74,10 +71,6 @@
 }
 
 
-
-
-
-
 // Contained objects should send this message so that rootController could notify its listeners about content changes (refresh sidebar etc.)
 - (void) contentsDidChange
 {
@@ -85,154 +78,10 @@
 }
 
 
-
-
-
-// should delegate to repositories controller
 - (BOOL) openURLs:(NSArray*)URLs
 {
-  if (!URLs) return NO;
-    
-#if GITBOX_APP_STORE
-#else
-  
-  __block NSUInteger repos = 0;
-  [self.repositoriesController.sidebarItem enumerateChildrenUsingBlock:^(GBSidebarItem *item, NSUInteger idx, BOOL *stop) {
-    if ([item.object isKindOfClass:[GBRepositoryController class]])
-    {
-      repos++;
-    }
-  }];
-  
-  if (([URLs count] + repos) > 3)
-  {
-    NSString* license = [[NSUserDefaults standardUserDefaults] objectForKey:@"license"];
-    if (!OAValidateLicenseNumber(license))
-    {
-      [NSApp tryToPerform:@selector(showLicense:) with:self];
-      
-      NSString* license = [[NSUserDefaults standardUserDefaults] objectForKey:@"license"];
-      if (!OAValidateLicenseNumber(license))
-      {
-        return NO;
-      }
-    }
-  }
-#endif
-  
-  NSUInteger insertionIndex = 0;
-  GBSidebarItem* targetItem = [self contextSidebarItemAndIndex:&insertionIndex];
-
-  GBRepositoriesGroup* aGroup = (id)targetItem.object;
-  
-  if (!aGroup)
-  {
-    aGroup = self.repositoriesController;
-  }
-  
-  if (insertionIndex == NSNotFound)
-  {
-    insertionIndex = 0;
-  }
-  
-  BOOL insertedAtLeastOneRepo = NO;
-  NSMutableArray* newRepoControllers = [NSMutableArray array];
-  for (NSURL* aURL in URLs)
-  {
-    if ([GBRepository validateRepositoryURL:aURL])
-    {
-      GBRepositoryController* repoCtrl = [self.repositoriesController repositoryControllerWithURL:aURL];
-      
-      if (!repoCtrl)
-      {
-        repoCtrl = [GBRepositoryController repositoryControllerWithURL:aURL];
-        [aGroup insertObject:repoCtrl atIndex:insertionIndex];
-        [self.repositoriesController startRepositoryController:repoCtrl];
-        insertionIndex++;
-      }
-      if (repoCtrl)
-      {
-        [newRepoControllers addObject:repoCtrl];
-        insertedAtLeastOneRepo = YES;
-      }
-    }
-  }
-  
-  [self notifyWithSelector:@selector(rootControllerDidChangeContents:)];
-  
-  self.selectedObjects = newRepoControllers;
-  
-  return insertedAtLeastOneRepo;
+  return [self.repositoriesController openURLs:URLs];
 }
-
-
-
-- (void) moveItems:(NSArray*)items toSidebarItem:(GBSidebarItem*)targetItem atIndex:(NSUInteger)insertionIndex
-{ 
-  GBRepositoriesGroup* aGroup = (id)targetItem.object;
-
-  if (!aGroup)
-  {
-    aGroup = self.repositoriesController;
-  }
-  
-  if (insertionIndex == NSNotFound)
-  {
-    insertionIndex = 0;
-  }
-  
-  for (GBSidebarItem* item in items)
-  {
-    // remove from the parent
-    GBSidebarItem* parentItem = [self.repositoriesController.sidebarItem parentOfItem:item];
-    GBRepositoriesGroup* parentGroup = (id)parentItem.object;
-    
-    if (parentGroup)
-    {
-      // Special case: the item is in the same group and moving below affecting the index
-      if (parentGroup == aGroup && [parentGroup.items indexOfObject:item.object] < insertionIndex)
-      {
-        insertionIndex--; // after removal of the object, this value will be correct.
-      }
-      [parentGroup removeObject:item.object];
-      [aGroup insertObject:item.object atIndex:insertionIndex];
-      insertionIndex++;
-    }
-  }
-  
-  [self notifyWithSelector:@selector(rootControllerDidChangeContents:)];
-  
-  self.selectedSidebarItems = items;
-}
-
-
-
-- (void) insertItems:(NSArray*)items inSidebarItem:(GBSidebarItem*)targetItem atIndex:(NSUInteger)insertionIndex
-{
-  GBRepositoriesGroup* aGroup = (id)targetItem.object;
-  
-  if (!aGroup)
-  {
-    aGroup = self.repositoriesController;
-  }
-  
-  if (insertionIndex == NSNotFound)
-  {
-    insertionIndex = 0;
-  }
-  
-  for (GBSidebarItem* item in items)
-  {
-    [aGroup insertObject:item.object atIndex:insertionIndex];
-    insertionIndex++;
-  }
-  
-  [self notifyWithSelector:@selector(rootControllerDidChangeContents:)];
-  
-  self.selectedSidebarItems = items;
-}
-
-
 
 
 
@@ -474,69 +323,6 @@
   
   self.selectedItemIndexes = indexes;
 }
-
-
-
-
-
-
-#pragma mark Private
-
-
-
-
-- (GBSidebarItem*) contextSidebarItemAndIndex:(NSUInteger*)anIndexRef
-{
-  // If clickedItem is a repo, need to return its parent group and item's index + 1.
-  // If clickedItem is a group, need to return the item and index 0 to insert in the beginning.
-  // If clickedItem is not nil and none of the above, return nil.
-  // If clickedItem is nil, find group and index based on selection.
-  
-  GBRepositoriesGroup* group = nil;
-  NSUInteger anIndex = 0; // by default, insert in the beginning of the container.
-  
-  GBSidebarItem* contextItem = self.clickedSidebarItem;
-  if (!contextItem)
-  {
-    if (self.dropTargetSidebarItem)
-    {
-      if (anIndexRef) *anIndexRef = self.dropTargetIndex;
-      return self.dropTargetSidebarItem;
-    }
-  }
-  if (!contextItem)
-  {
-    contextItem = [[[self selectedSidebarItems] reversedArray] firstObjectCommonWithArray:
-                   [self.repositoriesController.sidebarItem allChildren]];
-  }
-  
-  if (!contextItem) contextItem = self.repositoriesController.sidebarItem;
-  
-  id obj = contextItem.object;
-  if (!obj) obj = self.repositoriesController;
-  
-  if ([obj isKindOfClass:[GBRepositoriesGroup class]])
-  {
-    group = obj;
-  }
-  else if (obj)
-  {
-    GBSidebarItem* groupItem = [self.repositoriesController.sidebarItem parentOfItem:contextItem];
-    group = (id)groupItem.object;
-    if (group)
-    {
-      anIndex = [group.items indexOfObject:obj];
-      if (anIndex == NSNotFound) anIndex = 0;
-    }
-  }
-  
-  if (anIndexRef) *anIndexRef = anIndex;
-  return group.sidebarItem;
-}
-
-
-
-
 
 
 @end

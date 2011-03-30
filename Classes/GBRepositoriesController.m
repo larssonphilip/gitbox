@@ -7,10 +7,10 @@
 #import "GBSidebarItem.h"
 #import "GBRepositoryToolbarController.h"
 #import "GBRepositoryViewController.h"
+#import "GBCloneWindowController.h"
 
 #import "NSFileManager+OAFileManagerHelpers.h"
 #import "NSArray+OAArrayHelpers.h"
-#import "OALicenseNumberCheck.h"
 #import "OALicenseNumberCheck.h"
 #import "OAObfuscatedLicenseCheck.h"
 #import "OABlockQueue.h"
@@ -19,7 +19,13 @@
 
 
 @interface GBRepositoriesController () <NSOpenSavePanelDelegate>
+@property(nonatomic, retain) GBCloneWindowController* cloneWindowController;
+
+- (void) removeObjects:(NSArray*)objects;
+- (void) removeObject:(id<GBSidebarItemObject>)object;
+
 - (GBRepositoriesGroup*) contextGroupAndIndex:(NSUInteger*)anIndexRef;
+- (void) startRepositoryController:(GBRepositoryController*)repoCtrl;
 @end
 
 @implementation GBRepositoriesController
@@ -29,11 +35,13 @@
 @synthesize autofetchQueue;
 @synthesize repositoryViewController;
 @synthesize repositoryToolbarController;
+@synthesize cloneWindowController;
 
 - (void) dealloc
 {
   self.localRepositoriesUpdatesQueue = nil;
   self.autofetchQueue = nil;
+  self.cloneWindowController = nil;
   [super dealloc];
 }
 
@@ -80,6 +88,11 @@
 - (IBAction) openDocument:(id)sender
 {
   NSAssert(self.window, @"GBRepositoriesController should have a window or sender should be a view");
+  
+  // Getting the context group before presenting a sheet to handle a clicked item in sidebar.
+  NSUInteger insertionIndex = 0;
+  GBRepositoriesGroup* aGroup = [self contextGroupAndIndex:&insertionIndex];
+
   NSOpenPanel* openPanel = [NSOpenPanel openPanel];
   openPanel.delegate = self;
   openPanel.allowsMultipleSelection = YES;
@@ -89,7 +102,7 @@
     if (result == NSFileHandlingPanelOKButton)
     {
       [openPanel orderOut:self]; // to let a license sheet pop out correctly
-      [self.rootController openURLs:[openPanel URLs]];
+      [self openURLs:[openPanel URLs] inGroup:aGroup atIndex:insertionIndex];
     }
   }];
 }
@@ -108,7 +121,7 @@
   return NO;
 }
 
-
+// TODO: make this an individual action for groups and repos
 - (IBAction) remove:(id)sender
 {
   [self removeObjects:self.rootController.clickedOrSelectedObjects];
@@ -132,7 +145,173 @@
 }
 
 
+- (IBAction) cloneRepository:(id)sender
+{
+  // get the current selection context before showing any windows
+  NSUInteger insertionIndex = 0;
+  GBRepositoriesGroup* aGroup = [self contextGroupAndIndex:&insertionIndex];
 
+  if (!self.cloneWindowController)
+  {
+    self.cloneWindowController = [[[GBCloneWindowController alloc] initWithWindowNibName:@"GBCloneWindowController"] autorelease];
+  }
+  
+  GBCloneWindowController* ctrl = self.cloneWindowController;
+  
+  ctrl.finishBlock = ^{
+    if (ctrl.sourceURL && ctrl.targetURL)
+    {
+      if (![ctrl.targetURL isFileURL])
+      {
+        NSLog(@"ERROR: GBCloneWindowController targetURL is not file URL (%@)", ctrl.targetURL);
+        return;
+      }
+      
+      GBRepositoryCloningController* cloneController = [[[GBRepositoryCloningController alloc] init] autorelease];
+      cloneController.sourceURL = ctrl.sourceURL;
+      cloneController.targetURL = ctrl.targetURL;
+      
+      [cloneController addObserverForAllSelectors:self];
+      
+      [aGroup insertObject:cloneController atIndex:insertionIndex];
+      
+      [self contentsDidChange];
+      
+      self.rootController.selectedObject = cloneController;
+      
+      [cloneController startCloning];
+    }
+  };
+  
+  [ctrl runSheetInWindow:self.window];
+}
+
+- (void) cloningRepositoryControllerDidFail:(GBRepositoryCloningController*)cloningRepoCtrl
+{
+  [cloningRepoCtrl removeObserverForAllSelectors:self];
+}
+
+- (void) cloningRepositoryControllerDidCancel:(GBRepositoryCloningController*)cloningRepoCtrl
+{
+  [cloningRepoCtrl removeObserverForAllSelectors:self];
+  [self removeObject:cloningRepoCtrl];
+}
+
+- (void) cloningRepositoryControllerDidFinish:(GBRepositoryCloningController*)cloningRepoCtrl
+{
+  [cloningRepoCtrl removeObserverForAllSelectors:self];
+  
+  // TODO: create a proper repo ctrl and add it in place of cloningRepoCtrl
+  
+}
+
+
+
+
+
+- (BOOL) openURLs:(NSArray*)URLs
+{
+  NSUInteger insertionIndex = 0;
+  GBRepositoriesGroup* aGroup = [self contextGroupAndIndex:&insertionIndex];
+  return [self openURLs:URLs inGroup:aGroup atIndex:insertionIndex];
+}
+
+
+- (BOOL) openURLs:(NSArray*)URLs inGroup:(GBRepositoriesGroup*)aGroup atIndex:(NSUInteger)insertionIndex
+{
+  if (!URLs) return NO;
+  
+#if GITBOX_APP_STORE
+#else
+  
+  __block NSUInteger repos = 0;
+  [self.sidebarItem enumerateChildrenUsingBlock:^(GBSidebarItem *item, NSUInteger idx, BOOL *stop) {
+    if ([item.object isKindOfClass:[GBRepositoryController class]])
+    {
+      repos++;
+    }
+  }];
+  
+  if (([URLs count] + repos) > 3)
+  {
+    NSString* license = [[NSUserDefaults standardUserDefaults] objectForKey:@"license"];
+    if (!OAValidateLicenseNumber(license))
+    {
+      [NSApp tryToPerform:@selector(showLicense:) with:self];
+      
+      NSString* license = [[NSUserDefaults standardUserDefaults] objectForKey:@"license"];
+      if (!OAValidateLicenseNumber(license))
+      {
+        return NO;
+      }
+    }
+  }
+#endif
+  
+  if (!aGroup) aGroup = self;
+  if (insertionIndex == NSNotFound) insertionIndex = 0;
+  
+  BOOL insertedAtLeastOneRepo = NO;
+  NSMutableArray* newRepoControllers = [NSMutableArray array];
+  for (NSURL* aURL in URLs)
+  {
+    if ([GBRepository validateRepositoryURL:aURL])
+    {
+      GBRepositoryController* repoCtrl = [self repositoryControllerWithURL:aURL];
+      
+      if (!repoCtrl)
+      {
+        repoCtrl = [GBRepositoryController repositoryControllerWithURL:aURL];
+        [aGroup insertObject:repoCtrl atIndex:insertionIndex];
+        [self startRepositoryController:repoCtrl];
+        insertionIndex++;
+      }
+      if (repoCtrl)
+      {
+        [newRepoControllers addObject:repoCtrl];
+        insertedAtLeastOneRepo = YES;
+      }
+    }
+  }
+  
+  [self contentsDidChange];
+  
+  self.rootController.selectedObjects = newRepoControllers;
+  
+  return insertedAtLeastOneRepo;
+
+}
+
+- (BOOL) moveObjects:(NSArray*)objects toGroup:(GBRepositoriesGroup*)aGroup atIndex:(NSUInteger)insertionIndex
+{
+  if (!aGroup) aGroup = self;
+  if (insertionIndex == NSNotFound) insertionIndex = 0;
+  
+  for (id<GBSidebarItemObject> object in objects)
+  {
+    // remove from the parent
+    GBSidebarItem* parentItem = [self.sidebarItem parentOfItem:[object sidebarItem]];
+    GBRepositoriesGroup* parentGroup = (id)parentItem.object;
+    
+    if (parentGroup && [parentGroup isKindOfClass:[GBRepositoriesGroup class]])
+    {
+      // Special case: the item is in the same group and moving below affecting the index
+      if (parentGroup == aGroup && [parentGroup.items indexOfObject:object] < insertionIndex)
+      {
+        insertionIndex--; // after removal of the object, this value will be correct.
+      }
+      [parentGroup removeObject:object];
+      [aGroup insertObject:object atIndex:insertionIndex];
+      insertionIndex++;
+    }
+  }
+  
+  [self contentsDidChange];
+  
+  self.rootController.selectedObjects = objects;
+  
+  return YES;
+}
 
 - (void) removeObjects:(NSArray*)objects
 {

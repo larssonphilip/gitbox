@@ -40,6 +40,8 @@
 @property(nonatomic, assign, getter=isExpanded) BOOL expanded;
 - (NSDragOperation) dragOperationForURLs:(NSArray*)URLs outlineView:(NSOutlineView*)anOutlineView;
 - (NSDragOperation) dragOperationForItems:(NSArray*)items outlineView:(NSOutlineView*)anOutlineView;
+- (BOOL) openURLs:(NSArray*)URLs atIndex:(NSUInteger)anIndex;
+- (BOOL) moveItems:(NSArray*)items toIndex:(NSUInteger)anIndex;
 
 
 

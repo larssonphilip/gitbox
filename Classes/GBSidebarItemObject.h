@@ -25,4 +25,7 @@
 - (NSDragOperation) sidebarItemDragOperationForItems:(NSArray*)items outlineView:(NSOutlineView*)anOutlineView;
 - (NSMenu*) sidebarItemMenu;
 
+- (BOOL) sidebarItemOpenURLs:(NSArray*)URLs atIndex:(NSUInteger)anIndex;
+- (BOOL) sidebarItemMoveObjects:(NSArray*)items toIndex:(NSUInteger)anIndex;
+
 @end

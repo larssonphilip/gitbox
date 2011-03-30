@@ -29,8 +29,6 @@
 @property(nonatomic, retain) NSArray* selectedSidebarItems;
 @property(nonatomic, retain) GBSidebarItem* selectedSidebarItem;
 @property(nonatomic, retain) GBSidebarItem* clickedSidebarItem;
-@property(nonatomic, retain) GBSidebarItem* dropTargetSidebarItem;
-@property(nonatomic, assign) NSInteger dropTargetIndex;
 @property(nonatomic, retain) NSArray* selectedItemIndexes;
 @property(nonatomic, readonly) NSArray* clickedOrSelectedSidebarItems;
 @property(nonatomic, readonly) NSArray* clickedOrSelectedObjects;
@@ -38,15 +36,8 @@
 - (void) addObjectsToSelection:(NSArray*)objects;
 - (void) removeObjectsFromSelection:(NSArray*)objects;
 
-
-// todo: should be private 
-- (GBSidebarItem*) contextSidebarItemAndIndex:(NSUInteger*)anIndexRef;
-
 // Returns NO if cannot open any of URLs
 - (BOOL) openURLs:(NSArray*)URLs;
-
-- (void) moveItems:(NSArray*)items toSidebarItem:(GBSidebarItem*)targetItem atIndex:(NSUInteger)insertionIndex;
-- (void) insertItems:(NSArray*)items inSidebarItem:(GBSidebarItem*)targetItem atIndex:(NSUInteger)insertionIndex;
 
 // Contained objects should send this message so that rootController could notify its listeners about content changes (refresh sidebar etc.)
 - (void) contentsDidChange;

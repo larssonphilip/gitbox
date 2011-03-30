@@ -189,8 +189,9 @@
 
 - (void) rootControllerDidChangeContents:(GBRootController*)aRootController
 {
+  // Saves contents on the next cycle.
   [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(saveItems) object:nil];
-  [self performSelector:@selector(saveItems) withObject:nil afterDelay:0.5];
+  [self performSelector:@selector(saveItems) withObject:nil afterDelay:0.0];
 }
 
 

@@ -20,13 +20,12 @@
 - (IBAction) openDocument:(id)sender;
 - (IBAction) addGroup:(id)sender;
 - (IBAction) remove:(id)sender;
+- (IBAction) cloneRepository:(id)sender;
 
-- (void) removeObjects:(NSArray*)objects;
-- (void) removeObject:(id<GBSidebarItemObject>)object;
+- (BOOL) openURLs:(NSArray*)URLs;
+- (BOOL) openURLs:(NSArray*)URLs inGroup:(GBRepositoriesGroup*)aGroup atIndex:(NSUInteger)anIndex;
+- (BOOL) moveObjects:(NSArray*)objects toGroup:(GBRepositoriesGroup*)aGroup atIndex:(NSUInteger)anIndex;
 
 - (void) contentsDidChange;
-
-// should be private
-- (void) startRepositoryController:(GBRepositoryController*)repoCtrl;
 
 @end

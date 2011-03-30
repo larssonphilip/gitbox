@@ -217,6 +217,17 @@
   return NSDragOperationGeneric;
 }
 
+- (BOOL) sidebarItemOpenURLs:(NSArray*)URLs atIndex:(NSUInteger)anIndex
+{
+  return [self.repositoriesController openURLs:URLs inGroup:self atIndex:anIndex];
+}
+
+- (BOOL) sidebarItemMoveObjects:(NSArray*)objects toIndex:(NSUInteger)anIndex
+{
+  return [self.repositoriesController moveObjects:objects toGroup:self atIndex:anIndex];
+}
+
+
 
 - (NSMenu*) sidebarItemMenu
 {

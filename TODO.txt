@@ -89,7 +89,7 @@ Gitbox 1.3 Refactoring:
 - maintain selection of the file when switching commits
 - maintain quicklook contents when switching commits
 
-- should use a single FSEvents monitor for all the repos
+
 
 
 Gitbox 1.3 Features:
@@ -113,6 +113,9 @@ Gitbox 1.3 Features:
 
 
 Gitbox 1.3 Enhancements:
+
+- should use a single FSEvents monitor for all the repos
+- 1.3 needs an Appirater-like dialog to ask user to leave a rating note on Mac AppStore
 
 - sidebar: before dropping over parent node, highlight appropriate index inside, not the parent
 - stage: for deleted file rename menu item "Revert File..." to "Restore File..."
@@ -194,14 +197,14 @@ Features:
 - settings: delete local branch
 - settings: delete remote branch
 
-- site: new header
-- site: link to App Store
++ site: new header
++ site: link to App Store
++ site: new description (like on appstore)
++ site: testimonials on the right to the description
++ site: tabbed screenshots
++ site: partial FAQ with a link to the full
 - site: student discount info
-- site: new description (like on appstore)
-- site: testimonials on the right to the description
-- site: tabbed screenshots
 - site: 8 features with smaller icons on the side
-- site: partial FAQ with a link to the full
 
 - site: help
 - screencasts:

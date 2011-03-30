@@ -264,6 +264,28 @@
   return NSDragOperationNone;
 }
 
+- (BOOL) openURLs:(NSArray*)URLs atIndex:(NSUInteger)anIndex
+{
+  if ([self.object respondsToSelector:@selector(sidebarItemOpenURLs:atIndex:)])
+  {
+    return [self.object sidebarItemOpenURLs:URLs atIndex:anIndex];
+  }
+  return NO;
+}
+
+- (BOOL) moveItems:(NSArray*)items toIndex:(NSUInteger)anIndex
+{
+  if ([self.object respondsToSelector:@selector(sidebarItemMoveObjects:toIndex:)])
+  {
+    return [self.object sidebarItemMoveObjects:[items valueForKey:@"object"] toIndex:anIndex];
+  }
+  return NO;
+}
+
+
+
+
+
 
 
 #pragma mark Actions

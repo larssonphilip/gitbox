@@ -4,8 +4,6 @@
 #import "GBSidebarItem.h"
 #import "GBSidebarCell.h"
 #import "GBSidebarMultipleSelection.h"
-#import "GBCloneWindowController.h"
-#import "GBRepositoryCloningController.h"
 #import "OALicenseNumberCheck.h"
 
 #import "NSFileManager+OAFileManagerHelpers.h"
@@ -18,7 +16,6 @@
 @interface GBSidebarController () <NSMenuDelegate>
 @property(nonatomic, retain) NSArray* nextRespondingSidebarObjects; // a list of sidebar item objects linked in a responder chain
 @property(nonatomic, assign) NSUInteger ignoreSelectionChange;
-@property(nonatomic, retain) GBCloneWindowController* cloneWindowController;
 @property(nonatomic, readonly) GBSidebarItem* clickedSidebarItem; // returns a clicked item if it exists and lies outside the selection
 - (NSArray*) selectedSidebarItems;
 - (void) updateContents;
@@ -37,7 +34,6 @@
 @synthesize ignoreSelectionChange;
 @synthesize buyButton;
 @synthesize nextRespondingSidebarObjects;
-@synthesize cloneWindowController;
 
 - (void) dealloc
 {
@@ -46,7 +42,6 @@
   self.outlineView = nil;
   self.buyButton = nil;
   [nextRespondingSidebarObjects release]; nextRespondingSidebarObjects = nil;
-  self.cloneWindowController = nil;
   [super dealloc];
 }
 
@@ -189,63 +184,6 @@
 
 
 #pragma mark IBActions
-
-
-
-// TODO: move to repositories controller
-- (IBAction) cloneRepository:(id)sender
-{
-  if (!self.cloneWindowController)
-  {
-    self.cloneWindowController = [[[GBCloneWindowController alloc] initWithWindowNibName:@"GBCloneWindowController"] autorelease];
-  }
-  
-  GBCloneWindowController* ctrl = self.cloneWindowController;
-  
-  ctrl.finishBlock = ^{
-    if (ctrl.sourceURL && ctrl.targetURL)
-    {
-      if (![ctrl.targetURL isFileURL])
-      {
-        NSLog(@"ERROR: GBCloneWindowController targetURL is not file URL (%@)", ctrl.targetURL);
-        return;
-      }
-      
-      GBRepositoryCloningController* cloneController = [[GBRepositoryCloningController new] autorelease];
-      cloneController.sourceURL = ctrl.sourceURL;
-      cloneController.targetURL = ctrl.targetURL;
-
-      [cloneController addObserverForAllSelectors:self];
-      
-      NSUInteger anIndex = 0;
-      GBSidebarItem* targetItem = [self.rootController contextSidebarItemAndIndex:&anIndex];
-      [self.rootController insertItems:[NSArray arrayWithObject:cloneController.sidebarItem] inSidebarItem:targetItem atIndex:anIndex];
-      
-      [cloneController startCloning];
-    }
-  };
-  
-  [ctrl runSheetInWindow:[[self view] window]];
-}
-
-// TODO: move to repositories controller
-- (void) cloningRepositoryControllerDidFail:(GBRepositoryCloningController*)cloningRepoCtrl
-{
-  [cloningRepoCtrl removeObserverForAllSelectors:self];
-}
-
-// TODO: move to repositories controller
-- (void) cloningRepositoryControllerDidCancel:(GBRepositoryCloningController*)cloningRepoCtrl
-{
-  [cloningRepoCtrl removeObserverForAllSelectors:self];
-//  [self.rootController removeSidebarItems:[NSArray arrayWithObject:cloningRepoCtrl]];
-}
-
-// TODO: move to repositories controller
-- (void) cloningRepositoryControllerDidFinish:(GBRepositoryCloningController*)cloningRepoCtrl
-{
-  [cloningRepoCtrl removeObserverForAllSelectors:self];
-}
 
 
 
@@ -643,11 +581,9 @@
     
     [anOutlineView expandItem:targetItem]; // in some cases the outline view does not expand automatically
     if (childIndex == NSOutlineViewDropOnItemIndex) childIndex = 0;
-    self.rootController.dropTargetSidebarItem = targetItem;
-    self.rootController.dropTargetIndex = childIndex;
-    [self.rootController openURLs:URLs];
-    self.rootController.dropTargetSidebarItem = nil;
-    self.rootController.dropTargetIndex = 0;
+
+    [targetItem openURLs:URLs atIndex:childIndex];
+    
     return YES;
   }
   else // local drop
@@ -669,11 +605,9 @@
     
     [anOutlineView expandItem:targetItem]; // in some cases the outline view does not expand automatically
     if (childIndex == NSOutlineViewDropOnItemIndex) childIndex = 0;
-    self.rootController.dropTargetSidebarItem = targetItem;
-    self.rootController.dropTargetIndex = childIndex;
-    [self.rootController moveItems:items toSidebarItem:targetItem atIndex:(NSUInteger)childIndex];
-    self.rootController.dropTargetSidebarItem = nil;
-    self.rootController.dropTargetIndex = 0;
+    
+    [targetItem moveItems:items toIndex:childIndex];
+    
     return YES;
   }
   return NO;
