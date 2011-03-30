@@ -26,6 +26,8 @@
 
 - (GBRepositoriesGroup*) contextGroupAndIndex:(NSUInteger*)anIndexRef;
 - (GBRepositoriesGroup*) groupAndIndex:(NSUInteger*)anIndexRef forObject:(id<GBSidebarItemObject>)anObject;
+
+- (void) configureRepositorycontroller:(GBRepositoryController*)repoCtrl;
 - (void) startRepositoryController:(GBRepositoryController*)repoCtrl;
 @end
 
@@ -60,7 +62,7 @@
     self.sidebarItem.editable = NO;
 
     self.localRepositoriesUpdatesQueue = [OABlockQueue queueWithName:@"LocalUpdates" concurrency:1];
-    self.autofetchQueue = [OABlockQueue queueWithName:@"AutoFetch" concurrency:6];
+    self.autofetchQueue = [OABlockQueue queueWithName:@"AutoFetch" concurrency:4];
     
     self.repositoryViewController = [[[GBRepositoryViewController alloc] initWithNibName:@"GBRepositoryViewController" bundle:nil] autorelease];
     self.repositoryToolbarController = [[[GBRepositoryToolbarController alloc] init] autorelease];
@@ -385,16 +387,22 @@
 
 
 
-#pragma mark Launch
+#pragma mark Private helpers
 
 
-- (void) startRepositoryController:(GBRepositoryController*)repoCtrl
+- (void) configureRepositorycontroller:(GBRepositoryController*)repoCtrl
 {
   if (!repoCtrl) return;
   repoCtrl.toolbarController = self.repositoryToolbarController;
   repoCtrl.viewController = self.repositoryViewController;
   repoCtrl.updatesQueue = self.localRepositoriesUpdatesQueue;
   repoCtrl.autofetchQueue = self.autofetchQueue;
+}
+
+- (void) startRepositoryController:(GBRepositoryController*)repoCtrl
+{
+  if (!repoCtrl) return;
+  [self configureRepositorycontroller:repoCtrl];
   [repoCtrl start];
   
 //  if (!queued)

@@ -91,7 +91,6 @@ Gitbox 1.3 Refactoring:
 
 
 
-
 Gitbox 1.3 Features:
 
 - submodules: display "download" button in the sidebar item

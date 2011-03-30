@@ -28,9 +28,6 @@
 - (void) prepareChangesControllersIfNeeded;
 
 - (void) updateStage;
-//- (void) updateCommits;
-//- (void) update;
-//- (void) refreshChangesController;
 
 @end
 
@@ -314,76 +311,6 @@
     }
   }
 }
-
-//- (void) updateCommits
-//{
-//  [self.tableView reloadData];
-//  id commit = self.repositoryController.selectedCommit;
-//  if (commit && self.commits)
-//  {
-//    NSUInteger index = [self.commits indexOfObject:commit];
-//    if (index != NSNotFound)
-//    {
-//      [self.tableView withDelegate:nil doBlock:^{
-//        [self.tableView selectRowIndexes:[NSIndexSet indexSetWithIndex:index] byExtendingSelection:NO];
-//        [self performSelector:@selector(scrollToVisibleRow) withObject:nil afterDelay:0.0];
-//      }];
-//    }
-//  }
-//}
-
-//- (void) refreshChangesController
-//{
-//  GBCommit* commit = self.repositoryController.selectedCommit;
-//  if (!commit || [commit isStage])
-//  {
-//    self.stageController.repositoryController = self.repositoryController;
-//  }
-//  else
-//  {
-//    self.commitController.repositoryController = self.repositoryController;
-//    self.commitController.commit = commit;
-//  }
-//}
-
-//- (void) updateChangesController
-//{
-//  GBCommit* commit = self.repositoryController.selectedCommit;
-//  NSView* targetView = self.detailView;
-//  
-//  self.commitController.repositoryController = nil;
-//  [self.commitController unloadView];
-//  
-//  self.stageController.repositoryController = nil;
-//  [self.stageController unloadView];
-//
-//  if (!commit || [commit isStage])
-//  {
-//    self.stageController.repositoryController = self.repositoryController;
-//    [self.stageController loadInView:targetView];
-//    [self.tableView setNextKeyView:self.stageController.tableView];
-//  }
-//  else
-//  {
-//    self.commitController.repositoryController = self.repositoryController;
-//    self.commitController.commit = commit;
-//    [self.commitController loadInView:targetView];
-//    [self.tableView setNextKeyView:self.commitController.tableView];
-//  }
-//  [self refreshChangesController];
-//}
-
-//- (void) update
-//{
-//  self.commits = [self.repositoryController commits];
-//  self.commitController.repositoryController = self.repositoryController;
-//  self.stageController.repositoryController = self.repositoryController;
-//  
-//  [self updateStage];
-//  [self updateCommits];
-////  [self updateChangesController];
-//}
-
 
 
 
