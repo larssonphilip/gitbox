@@ -23,7 +23,7 @@
 
 /* Begin PBXBuildFile section */
 		2000325411FC75050069C70D /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2000325311FC75050069C70D /* IOKit.framework */; };
-		2002AC0C123CA1A20072075C /* OAFSEventStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 2002AC0B123CA1A20072075C /* OAFSEventStream.m */; };
+		2002AC0C123CA1A20072075C /* OAFSEventStreamLegacy.m in Sources */ = {isa = PBXBuildFile; fileRef = 2002AC0B123CA1A20072075C /* OAFSEventStreamLegacy.m */; };
 		200433A212DA02CF00B045C0 /* GBGreyGradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = 200433A112DA02CF00B045C0 /* GBGreyGradientView.m */; };
 		200433A312DA02CF00B045C0 /* GBGreyGradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = 200433A112DA02CF00B045C0 /* GBGreyGradientView.m */; };
 		200A41B112EB91B0004DF940 /* OABlockMerger.m in Sources */ = {isa = PBXBuildFile; fileRef = 200A41B012EB91B0004DF940 /* OABlockMerger.m */; };
@@ -244,7 +244,7 @@
 		20915F1912874D2A005E0D82 /* GBToolbarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20A37BAB120DC4510068AB8B /* GBToolbarController.m */; };
 		20915F1A12874D2A005E0D82 /* GBRepositoryController.m in Sources */ = {isa = PBXBuildFile; fileRef = 206CAC70122EB5F7009284FE /* GBRepositoryController.m */; };
 		20915F1B12874D2A005E0D82 /* GBRepositoriesController.m in Sources */ = {isa = PBXBuildFile; fileRef = 206CAC74122EBCAD009284FE /* GBRepositoriesController.m */; };
-		20915F1C12874D2A005E0D82 /* OAFSEventStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 2002AC0B123CA1A20072075C /* OAFSEventStream.m */; };
+		20915F1C12874D2A005E0D82 /* OAFSEventStreamLegacy.m in Sources */ = {isa = PBXBuildFile; fileRef = 2002AC0B123CA1A20072075C /* OAFSEventStreamLegacy.m */; };
 		20915F1D12874D2A005E0D82 /* NSTableView+OATableViewHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 203977E61252815000770D13 /* NSTableView+OATableViewHelpers.m */; };
 		20915F1E12874D2A005E0D82 /* OAPrimaryMACAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = 20C3B71E125BCDC100ABEDE7 /* OAPrimaryMACAddress.m */; };
 		20915F1F12874D2A005E0D82 /* GBWelcomeController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20C3C233125C4DB600ABEDE7 /* GBWelcomeController.m */; };
@@ -386,8 +386,8 @@
 		13E42FBA07B3F13500E4EEF1 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
 		1DDD582B0DA1D0D100B32029 /* MainMenu.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
 		2000325311FC75050069C70D /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
-		2002AC0A123CA1A20072075C /* OAFSEventStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAFSEventStream.h; sourceTree = "<group>"; };
-		2002AC0B123CA1A20072075C /* OAFSEventStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAFSEventStream.m; sourceTree = "<group>"; };
+		2002AC0A123CA1A20072075C /* OAFSEventStreamLegacy.h */ = {isa = PBXFileReference; fileEncoding = 4; path = OAFSEventStreamLegacy.h; sourceTree = "<group>"; };
+		2002AC0B123CA1A20072075C /* OAFSEventStreamLegacy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAFSEventStreamLegacy.m; sourceTree = "<group>"; };
 		2002AE09124A9BAB0072075C /* OAOptionalDelegateMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAOptionalDelegateMessage.h; sourceTree = "<group>"; };
 		2004082B1274A7B100BE8957 /* GBRepositoryControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBRepositoryControllerDelegate.h; sourceTree = "<group>"; };
 		200408551274AB3800BE8957 /* GBRepositoriesControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBRepositoriesControllerDelegate.h; sourceTree = "<group>"; };
@@ -1188,8 +1188,8 @@
 				2016465D12D0D0EC005C69DA /* OAHTTPQueue.m */,
 				2016465E12D0D0EC005C69DA /* OAXMLDecoder.h */,
 				2016465F12D0D0EC005C69DA /* OAXMLDecoder.m */,
-				2002AC0A123CA1A20072075C /* OAFSEventStream.h */,
-				2002AC0B123CA1A20072075C /* OAFSEventStream.m */,
+				2002AC0A123CA1A20072075C /* OAFSEventStreamLegacy.h */,
+				2002AC0B123CA1A20072075C /* OAFSEventStreamLegacy.m */,
 				20C3B71D125BCDC100ABEDE7 /* OAPrimaryMACAddress.h */,
 				20C3B71E125BCDC100ABEDE7 /* OAPrimaryMACAddress.m */,
 				20265C0111D68D3400709F6B /* OAPropertyListController.h */,
@@ -1568,7 +1568,7 @@
 				20915F1912874D2A005E0D82 /* GBToolbarController.m in Sources */,
 				20915F1A12874D2A005E0D82 /* GBRepositoryController.m in Sources */,
 				20915F1B12874D2A005E0D82 /* GBRepositoriesController.m in Sources */,
-				20915F1C12874D2A005E0D82 /* OAFSEventStream.m in Sources */,
+				20915F1C12874D2A005E0D82 /* OAFSEventStreamLegacy.m in Sources */,
 				20915F1D12874D2A005E0D82 /* NSTableView+OATableViewHelpers.m in Sources */,
 				20915F1E12874D2A005E0D82 /* OAPrimaryMACAddress.m in Sources */,
 				20915F1F12874D2A005E0D82 /* GBWelcomeController.m in Sources */,
@@ -1688,7 +1688,7 @@
 				20A37BAC120DC4510068AB8B /* GBToolbarController.m in Sources */,
 				206CAC71122EB5F7009284FE /* GBRepositoryController.m in Sources */,
 				206CAC75122EBCAD009284FE /* GBRepositoriesController.m in Sources */,
-				2002AC0C123CA1A20072075C /* OAFSEventStream.m in Sources */,
+				2002AC0C123CA1A20072075C /* OAFSEventStreamLegacy.m in Sources */,
 				203977E71252815000770D13 /* NSTableView+OATableViewHelpers.m in Sources */,
 				20C3B71F125BCDC100ABEDE7 /* OAPrimaryMACAddress.m in Sources */,
 				20C3C234125C4DB600ABEDE7 /* GBWelcomeController.m in Sources */,

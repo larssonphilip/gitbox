@@ -1,4 +1,4 @@
-#import "OAFSEventStream.h"
+#import "OAFSEventStreamLegacy.h"
 #import "NSString+OAStringHelpers.h"
 
 void OAFSEventStreamCallback( ConstFSEventStreamRef streamRef,
@@ -8,8 +8,8 @@ void OAFSEventStreamCallback( ConstFSEventStreamRef streamRef,
                              const FSEventStreamEventFlags eventFlags[],
                              const FSEventStreamEventId eventIds[])
 {
-  OAFSEventStream* stream = (OAFSEventStream*)info;
-  //NSLog(@"OAFSEventStreamCallback: %@", eventPaths);
+  OAFSEventStreamLegacy* stream = (OAFSEventStreamLegacy*)info;
+  NSLog(@"OAFSEventStreamCallback: %@", eventPaths);
   for (NSUInteger index = 0; index < numEvents; index++)
   {
     NSString* eventPath = [[(NSArray*)eventPaths objectAtIndex:index] stringByStandardizingPath];
@@ -18,12 +18,12 @@ void OAFSEventStreamCallback( ConstFSEventStreamRef streamRef,
 }
 
 
-@interface OAFSEventStream ()
+@interface OAFSEventStreamLegacy ()
 @property(nonatomic, assign) BOOL isStarted;
 @property(nonatomic, assign) BOOL isStopped;
 @end
 
-@implementation OAFSEventStream
+@implementation OAFSEventStreamLegacy
 @synthesize blocksByPaths;
 @synthesize coalescedPathsByPaths;
 @synthesize shouldLogEvents;
@@ -81,7 +81,7 @@ void OAFSEventStreamCallback( ConstFSEventStreamRef streamRef,
   streamContext.release = NULL;
   streamContext.copyDescription = NULL;
   
-  CFAbsoluteTime latency = 0.1; /* seconds */
+  CFAbsoluteTime latency = 0.9999; /* seconds */
   
   /* Create the stream, passing in a callback */
   streamRef = FSEventStreamCreate(NULL,
@@ -91,6 +91,7 @@ void OAFSEventStreamCallback( ConstFSEventStreamRef streamRef,
                                kFSEventStreamEventIdSinceNow, /* Or a previous event ID */
                                latency,
                                  kFSEventStreamCreateFlagUseCFTypes|
+                                 //kFSEventStreamCreateFlagNoDefer|  // (looks like this flag does not change the behaviour...)
                                 // kFSEventStreamCreateFlagIgnoreSelf| <- since we are shelling out anyway and have a custom mechanism to handle self updates, we should listen for ours updates here by default.
                                  kFSEventStreamCreateFlagWatchRoot
                                );
@@ -154,7 +155,7 @@ void OAFSEventStreamCallback( ConstFSEventStreamRef streamRef,
                                              object:watchedPath];
   [self performSelector:@selector(delayedCallbackForPath:)
              withObject:watchedPath
-             afterDelay:0.3];
+             afterDelay:1.3];
 }
 
 - (void) delayedCallbackForPath:(NSString*)watchedPath

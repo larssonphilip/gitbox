@@ -14,7 +14,7 @@
 #import "GBSidebarCell.h"
 #import "GBSidebarItem.h"
 
-#import "OAFSEventStream.h"
+#import "OAFSEventStreamLegacy.h"
 #import "NSString+OAStringHelpers.h"
 #import "NSError+OAPresent.h"
 #import "OABlockGroup.h"
@@ -210,7 +210,7 @@
 
 - (void) start
 {
-  self.fsEventStream = [[OAFSEventStream new] autorelease];
+  self.fsEventStream = [[OAFSEventStreamLegacy new] autorelease];
 #if DEBUG
   self.fsEventStream.shouldLogEvents = NO;
 #endif

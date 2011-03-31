@@ -2,7 +2,7 @@
 
 typedef void (^OAFSEventStreamCallbackBlock)(NSString*);
 
-@interface OAFSEventStream : NSObject
+@interface OAFSEventStreamLegacy : NSObject
 {
   NSInteger paused;
   FSEventStreamRef streamRef;
