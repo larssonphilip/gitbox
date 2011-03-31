@@ -9,12 +9,32 @@ NSString* const OAFSEventStreamNotification = @"OAFSEventStreamNotification";
 - (void) update;
 - (void) start;
 - (void) stop;
+- (void) didReceiveEvents:(NSArray*)events;
 @end
+
+
+void OAFSEventStreamCallback( ConstFSEventStreamRef streamRef,
+                                   void* info,
+                                   size_t numEvents,
+                                   void* eventPaths, // assuming CFArray/NSArray because of kFSEventStreamCreateFlagUseCFTypes
+                                   const FSEventStreamEventFlags eventFlags[],
+                                   const FSEventStreamEventId eventIds[])
+{
+  OAFSEventStream* owner = (OAFSEventStream*)info;
+  NSMutableArray* events = [NSMutableArray arrayWithCapacity:numEvents];
+  
+  for (NSUInteger i = 0; i < numEvents; i++)
+  {
+    NSString* eventPath = [[(NSArray*)eventPaths objectAtIndex:i] stringByStandardizingPath];
+    [events addObject:[OAFSEvent eventWithPath:eventPath flags:eventFlags[i] eventId:eventIds[i]]];
+  }
+  
+  [owner didReceiveEvents:events];
+}
 
 @implementation OAFSEventStream
 
 @synthesize streamRef;
-@synthesize dispatchQueue;
 @synthesize latency;
 @synthesize watchRoot;
 @synthesize ignoreSelf;
@@ -26,11 +46,9 @@ NSString* const OAFSEventStreamNotification = @"OAFSEventStreamNotification";
 - (void)dealloc
 {
   [self stop];
-  if (dispatchQueue) dispatch_release(dispatchQueue);
   [pathsBag release]; pathsBag = nil;
   [super dealloc];
 }
-
 
 - (id)init
 {
@@ -38,6 +56,7 @@ NSString* const OAFSEventStreamNotification = @"OAFSEventStreamNotification";
   {
     self.pathsBag = [NSCountedSet set];
     self.latency = 0.1;
+    self.watchRoot = YES;
   }
   return self;
 }
@@ -78,14 +97,10 @@ NSString* const OAFSEventStreamNotification = @"OAFSEventStreamNotification";
 
 - (void) update
 {
+  [self stop];
   if ([self isEnabled])
   {
-    [self stop];
     [self start];
-  }
-  else
-  {
-    [self stop];
   }
 }
 
@@ -93,29 +108,33 @@ NSString* const OAFSEventStreamNotification = @"OAFSEventStreamNotification";
 {
   if (!self.pathsBag) self.pathsBag = [NSCountedSet set];
   CFArrayRef pathsToWatch = (CFArrayRef)[self.pathsBag allObjects];
-//  
-//  streamContext.version = 0;
-//  streamContext.info = (void*)self;
-//  streamContext.retain = NULL;
-//  streamContext.release = NULL;
-//  streamContext.copyDescription = NULL;
-//  
-//  CFAbsoluteTime latency = 0.9999; /* seconds */
-//  
-//  /* Create the stream, passing in a callback */
-//  streamRef = FSEventStreamCreate(NULL,
-//                                  OAFSEventStreamCallback,
-//                                  &streamContext,
-//                                  pathsToWatch,
-//                                  kFSEventStreamEventIdSinceNow, /* Or a previous event ID */
-//                                  latency,
-//                                  kFSEventStreamCreateFlagUseCFTypes|
-//                                  //kFSEventStreamCreateFlagNoDefer|  // (looks like this flag does not change the behaviour...)
-//                                  // kFSEventStreamCreateFlagIgnoreSelf| <- since we are shelling out anyway and have a custom mechanism to handle self updates, we should listen for ours updates here by default.
-//                                  kFSEventStreamCreateFlagWatchRoot
-//                                  );
-//  FSEventStreamScheduleWithRunLoop(streamRef, CFRunLoopGetCurrent(), kCFRunLoopDefaultMode);
-//  FSEventStreamStart(streamRef);
+  
+  if (!pathsToWatch || CFArrayGetCount(pathsToWatch) <= 0) return;
+  
+  FSEventStreamContext streamContext;
+  
+  streamContext.version = 0;
+  streamContext.info = (void*)self; // passing self is the only reason to create this struct here
+  streamContext.retain = NULL;
+  streamContext.release = NULL;
+  streamContext.copyDescription = NULL;
+  
+  CFAbsoluteTime aLatency = MAX(0.01, self.latency);
+  
+  self.streamRef = FSEventStreamCreate(NULL,
+                                  OAFSEventStreamCallback,
+                                  &streamContext,
+                                  pathsToWatch,
+                                  kFSEventStreamEventIdSinceNow, /* Or a previous event ID */
+                                  aLatency,
+                                  kFSEventStreamCreateFlagUseCFTypes|
+                                  //kFSEventStreamCreateFlagNoDefer|  // (looks like this flag does not change the behaviour...)
+                                  (self.ignoreSelf ? kFSEventStreamCreateFlagIgnoreSelf : 0) |
+                                  (self.watchRoot ? kFSEventStreamCreateFlagWatchRoot : 0)
+                                  );
+  
+  FSEventStreamSetDispatchQueue(streamRef, dispatch_get_main_queue());
+  FSEventStreamStart(streamRef);
 }
 
 - (void) stop
@@ -129,4 +148,65 @@ NSString* const OAFSEventStreamNotification = @"OAFSEventStreamNotification";
   }
 }
 
+- (void) didReceiveEvents:(NSArray*)events
+{
+  NSLog(@"OAFSEventStream didReceiveEvents: %@", events);
+  
+  if (!events) return;
+  
+  NSNotification* aNotification = [NSNotification notificationWithName:OAFSEventStreamNotification
+                                                                object:self
+                                                              userInfo:[NSDictionary dictionaryWithObject:events forKey:@"events"]];
+  [[NSNotificationCenter defaultCenter] postNotification:aNotification];
+}
+
 @end
+
+
+
+
+
+@implementation OAFSEvent
+@synthesize path;
+@synthesize flags;
+@synthesize eventId;
+- (void) dealloc
+{
+  [path release]; path = nil;
+  [super dealloc];
+}
++ (OAFSEvent*) eventWithPath:(NSString*)aPath flags:(FSEventStreamEventFlags)flags eventId:(FSEventStreamEventId)eventId
+{
+  OAFSEvent* event = [[[self alloc] init] autorelease];
+  event.path = aPath;
+  event.flags = flags;
+  event.eventId = eventId;
+  return event;
+}
+- (NSString*) flagsDescription
+{
+  NSMutableArray* flagNames = [NSMutableArray array];
+  FSEventStreamEventFlags eventFlags = self.flags;
+  if (eventFlags == kFSEventStreamEventFlagNone)
+  {
+    [flagNames addObject: @"None"];
+  }
+  else
+  {
+    if (eventFlags & kFSEventStreamEventFlagMustScanSubDirs) [flagNames addObject: @"MustScanSubDirs"];
+    if (eventFlags & kFSEventStreamEventFlagUserDropped)     [flagNames addObject: @"UserDropped"];
+    if (eventFlags & kFSEventStreamEventFlagKernelDropped)   [flagNames addObject: @"KernelDropped"];
+    if (eventFlags & kFSEventStreamEventFlagEventIdsWrapped) [flagNames addObject: @"EventIdsWrapped"];
+    if (eventFlags & kFSEventStreamEventFlagHistoryDone)     [flagNames addObject: @"HistoryDone"];
+    if (eventFlags & kFSEventStreamEventFlagRootChanged)     [flagNames addObject: @"RootChanged"];
+    if (eventFlags & kFSEventStreamEventFlagMount)           [flagNames addObject: @"Mount"];
+    if (eventFlags & kFSEventStreamEventFlagUnmount)         [flagNames addObject: @"Unmount"];
+  }
+  return [flagNames componentsJoinedByString:@", "];
+}
+- (NSString*) description
+{
+  return [NSString stringWithFormat:@"<OAFSEvent %d %@ flags: %@>", self.eventId, self.path, [self flagsDescription]];
+}
+@end
+

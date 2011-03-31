@@ -1,7 +1,7 @@
 #import "OAFSEventStreamLegacy.h"
 #import "NSString+OAStringHelpers.h"
 
-void OAFSEventStreamCallback( ConstFSEventStreamRef streamRef,
+void OAFSEventStreamLegacyCallback( ConstFSEventStreamRef streamRef,
                              void* info,
                              size_t numEvents,
                              void* eventPaths, // assuming CFArray/NSArray because of kFSEventStreamCreateFlagUseCFTypes
@@ -85,7 +85,7 @@ void OAFSEventStreamCallback( ConstFSEventStreamRef streamRef,
   
   /* Create the stream, passing in a callback */
   streamRef = FSEventStreamCreate(NULL,
-                               OAFSEventStreamCallback,
+                               OAFSEventStreamLegacyCallback,
                                &streamContext,
                                pathsToWatch,
                                kFSEventStreamEventIdSinceNow, /* Or a previous event ID */

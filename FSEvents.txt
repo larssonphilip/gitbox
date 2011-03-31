@@ -1,0 +1,17 @@
+
+FSEvents
+
+Problems:
+
+1. Need simple reliable NSObject wrapper for FSEventStream API
+2. When Gitbox reacts to the changes on filesystem, it can trigger fs event.
+   Normally, such event should make Gitbox perform UI update.
+   There's a special case, however: when Gitbox performs stage update, it calls refresh-index which updates .git/index file.
+   In this case update inside .git folder should be ignored.
+
+To address the first problem we'll have OAFSEventStream class. 
+And to address various git-specific issues we'll have GBFolderMonitor
+with event silencing, path filtering and coalescing.
+
+Each repository should have it's own GBFolderMonitor listening to both ./ and .git/ folders.
+Each monitor should share a single instance of OAFSEventStream class to avoid duplication of file descriptors.

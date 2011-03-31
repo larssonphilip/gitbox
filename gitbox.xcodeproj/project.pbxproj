@@ -690,6 +690,7 @@
 		20C899B512B95DDF002F600F /* OANonScrollingScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = OANonScrollingScrollView.m; path = ../OANonScrollingScrollView.m; sourceTree = "<group>"; };
 		20C9A55D12E85E0800DBA3E1 /* Subversion.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Subversion.txt; sourceTree = "<group>"; };
 		20C9A55F12E85ED100DBA3E1 /* Mercurial.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Mercurial.txt; sourceTree = "<group>"; };
+		20CCCE011344AA2B00096AF7 /* FSEvents.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = FSEvents.txt; sourceTree = "<group>"; };
 		20E7B6EC1303620F00CB6732 /* GBMainWindowItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBMainWindowItem.h; sourceTree = "<group>"; };
 		20EA6FCB131B0CBA00B97430 /* OAPropertyListRepresentation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAPropertyListRepresentation.h; sourceTree = "<group>"; };
 		20EA6FCF131B0EB300B97430 /* OAPropertyListRepresentation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAPropertyListRepresentation.m; sourceTree = "<group>"; };
@@ -941,6 +942,9 @@
 				206CAB38122A771D009284FE /* Architecture.txt */,
 				2097EB8312DDFAA00070AE89 /* AsyncPatterns.txt */,
 				20EF861412E217B900F3438A /* Authentication.txt */,
+				208A6B9712F879B600F3F608 /* DiffAndBlame.txt */,
+				20CCCE011344AA2B00096AF7 /* FSEvents.txt */,
+				2059D4FC133FD697008D3556 /* Github.txt */,
 				203E517B12F4A18700D1A668 /* GraphVisualization.txt */,
 				20C9A55F12E85ED100DBA3E1 /* Mercurial.txt */,
 				2009871711C4597800F35630 /* Payment.txt */,
@@ -951,8 +955,6 @@
 				2049942212D6878A007ED992 /* SidebarGroups.txt */,
 				200432AE12D8A1AE00B045C0 /* Submodules.txt */,
 				20C9A55D12E85E0800DBA3E1 /* Subversion.txt */,
-				208A6B9712F879B600F3F608 /* DiffAndBlame.txt */,
-				2059D4FC133FD697008D3556 /* Github.txt */,
 				20C66EEA134467B00067D232 /* WWDC2011.txt */,
 			);
 			name = Documents;

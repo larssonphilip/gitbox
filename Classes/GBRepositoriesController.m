@@ -14,12 +14,14 @@
 #import "OALicenseNumberCheck.h"
 #import "OAObfuscatedLicenseCheck.h"
 #import "OABlockQueue.h"
+#import "OAFSEventStream.h"
 #import "NSAlert+OAAlertHelpers.h"
 #import "NSObject+OASelectorNotifications.h"
 
 
 @interface GBRepositoriesController () <NSOpenSavePanelDelegate>
 @property(nonatomic, retain) GBCloneWindowController* cloneWindowController;
+@property(nonatomic, retain) OAFSEventStream* fsEventStream;
 
 - (void) removeObjects:(NSArray*)objects;
 - (void) removeObject:(id<GBSidebarItemObject>)object;
@@ -39,12 +41,14 @@
 @synthesize repositoryViewController;
 @synthesize repositoryToolbarController;
 @synthesize cloneWindowController;
+@synthesize fsEventStream;
 
 - (void) dealloc
 {
   self.localRepositoriesUpdatesQueue = nil;
   self.autofetchQueue = nil;
   self.cloneWindowController = nil;
+  self.fsEventStream = nil;
   [super dealloc];
 }
 
@@ -66,6 +70,10 @@
     
     self.repositoryViewController = [[[GBRepositoryViewController alloc] initWithNibName:@"GBRepositoryViewController" bundle:nil] autorelease];
     self.repositoryToolbarController = [[[GBRepositoryToolbarController alloc] init] autorelease];
+    
+    self.fsEventStream = [[[OAFSEventStream alloc] init] autorelease];
+    self.fsEventStream.latency = 0.1;
+    self.fsEventStream.enabled = YES;
   }
   return self;
 }
