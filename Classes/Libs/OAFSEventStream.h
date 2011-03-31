@@ -9,13 +9,13 @@ extern NSString* const OAFSEventStreamNotification;
 @property(nonatomic, assign) NSTimeInterval latency;
 @property(nonatomic, assign) BOOL watchRoot;
 @property(nonatomic, assign) BOOL ignoreSelf;
+@property(nonatomic, assign, getter=isEnabled) BOOL enabled;
 
 @property(nonatomic, readonly) NSArray* paths;
 
 - (void) addPath:(NSString*)aPath;
 - (void) removePath:(NSString*)aPath;
 
-- (void) start;
-- (void) stop;
+- (void) flushEvents;
 
 @end

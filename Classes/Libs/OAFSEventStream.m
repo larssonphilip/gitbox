@@ -5,17 +5,22 @@ NSString* const OAFSEventStreamNotification = @"OAFSEventStreamNotification";
 @interface OAFSEventStream ()
 @property(nonatomic, retain) NSCountedSet* pathsBag;
 @property(nonatomic, assign) BOOL started;
+@property(nonatomic, assign) FSEventStreamRef streamRef;
 - (void) update;
+- (void) start;
+- (void) stop;
 @end
 
 @implementation OAFSEventStream
 
+@synthesize streamRef;
 @synthesize dispatchQueue;
 @synthesize latency;
 @synthesize watchRoot;
 @synthesize ignoreSelf;
 @synthesize pathsBag;
 @synthesize started;
+@synthesize enabled;
 @dynamic paths;
 
 - (void)dealloc
@@ -54,17 +59,18 @@ NSString* const OAFSEventStreamNotification = @"OAFSEventStreamNotification";
   [self update];
 }
 
-- (void) start
+- (void) setEnabled:(BOOL)flag
 {
-  self.started = YES;
+  if (enabled == flag) return;
+  enabled = flag;
   [self update];
 }
 
-- (void) stop
+- (void) flushEvents
 {
-  self.started = NO;
-  [self update];  
+  if (streamRef) FSEventStreamFlushSync(streamRef);
 }
+
 
 
 #pragma mark Private
@@ -72,8 +78,55 @@ NSString* const OAFSEventStreamNotification = @"OAFSEventStreamNotification";
 
 - (void) update
 {
-  
+  if ([self isEnabled])
+  {
+    [self stop];
+    [self start];
+  }
+  else
+  {
+    [self stop];
+  }
 }
 
+- (void) start
+{
+  if (!self.pathsBag) self.pathsBag = [NSCountedSet set];
+  CFArrayRef pathsToWatch = (CFArrayRef)[self.pathsBag allObjects];
+//  
+//  streamContext.version = 0;
+//  streamContext.info = (void*)self;
+//  streamContext.retain = NULL;
+//  streamContext.release = NULL;
+//  streamContext.copyDescription = NULL;
+//  
+//  CFAbsoluteTime latency = 0.9999; /* seconds */
+//  
+//  /* Create the stream, passing in a callback */
+//  streamRef = FSEventStreamCreate(NULL,
+//                                  OAFSEventStreamCallback,
+//                                  &streamContext,
+//                                  pathsToWatch,
+//                                  kFSEventStreamEventIdSinceNow, /* Or a previous event ID */
+//                                  latency,
+//                                  kFSEventStreamCreateFlagUseCFTypes|
+//                                  //kFSEventStreamCreateFlagNoDefer|  // (looks like this flag does not change the behaviour...)
+//                                  // kFSEventStreamCreateFlagIgnoreSelf| <- since we are shelling out anyway and have a custom mechanism to handle self updates, we should listen for ours updates here by default.
+//                                  kFSEventStreamCreateFlagWatchRoot
+//                                  );
+//  FSEventStreamScheduleWithRunLoop(streamRef, CFRunLoopGetCurrent(), kCFRunLoopDefaultMode);
+//  FSEventStreamStart(streamRef);
+}
+
+- (void) stop
+{
+  if (streamRef)
+  {
+    FSEventStreamStop(streamRef);
+    FSEventStreamInvalidate(streamRef);
+    FSEventStreamRelease(streamRef);
+    streamRef = NULL;
+  }
+}
 
 @end
