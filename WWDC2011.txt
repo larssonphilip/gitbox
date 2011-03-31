@@ -1,0 +1,7 @@
+Questions for WWDC 2011:
+
+1. Looks like when flag is missing kFSEventStreamCreateFlagNoDefer, stream still does not defer events?
+2. Why Xcode4 sometimes consumes 100-200% CPU on Macbook Air?
+3. FSEvents: how to design in such a way so no to miss events and support sequential updates?
+4. 
+

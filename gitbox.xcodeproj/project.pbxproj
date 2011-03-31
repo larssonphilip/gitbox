@@ -119,6 +119,8 @@
 		203F729B12A62E0200BE1A55 /* GBCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 203F729A12A62E0200BE1A55 /* GBCell.m */; };
 		203F729C12A62E0200BE1A55 /* GBCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 203F729A12A62E0200BE1A55 /* GBCell.m */; };
 		2043A83111C900A0001ED307 /* GBPreferencesController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2043A83011C900A0001ED307 /* GBPreferencesController.m */; };
+		2051376E13446443008614D4 /* OAFSEventStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 2051376D13446443008614D4 /* OAFSEventStream.m */; };
+		2051376F13446443008614D4 /* OAFSEventStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 2051376D13446443008614D4 /* OAFSEventStream.m */; };
 		2054FFE8125DE75800692C77 /* GBRepositoryCloningViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2054FFE7125DE75800692C77 /* GBRepositoryCloningViewController.xib */; };
 		2054FFF0125DE9D200692C77 /* GBRepositoryCloningViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2054FFEF125DE9D200692C77 /* GBRepositoryCloningViewController.m */; };
 		2057964211ADD3AA004715FE /* GBCommitCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2057964111ADD3AA004715FE /* GBCommitCell.m */; };
@@ -386,7 +388,7 @@
 		13E42FBA07B3F13500E4EEF1 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
 		1DDD582B0DA1D0D100B32029 /* MainMenu.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
 		2000325311FC75050069C70D /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
-		2002AC0A123CA1A20072075C /* OAFSEventStreamLegacy.h */ = {isa = PBXFileReference; fileEncoding = 4; path = OAFSEventStreamLegacy.h; sourceTree = "<group>"; };
+		2002AC0A123CA1A20072075C /* OAFSEventStreamLegacy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAFSEventStreamLegacy.h; sourceTree = "<group>"; };
 		2002AC0B123CA1A20072075C /* OAFSEventStreamLegacy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAFSEventStreamLegacy.m; sourceTree = "<group>"; };
 		2002AE09124A9BAB0072075C /* OAOptionalDelegateMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAOptionalDelegateMessage.h; sourceTree = "<group>"; };
 		2004082B1274A7B100BE8957 /* GBRepositoryControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBRepositoryControllerDelegate.h; sourceTree = "<group>"; };
@@ -514,6 +516,8 @@
 		2043A83011C900A0001ED307 /* GBPreferencesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBPreferencesController.m; sourceTree = "<group>"; };
 		2049942212D6878A007ED992 /* SidebarGroups.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SidebarGroups.txt; sourceTree = "<group>"; };
 		2049942512D687A8007ED992 /* Settings.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Settings.txt; sourceTree = "<group>"; };
+		2051376C13446442008614D4 /* OAFSEventStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAFSEventStream.h; sourceTree = "<group>"; };
+		2051376D13446443008614D4 /* OAFSEventStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAFSEventStream.m; sourceTree = "<group>"; };
 		2054FFE7125DE75800692C77 /* GBRepositoryCloningViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBRepositoryCloningViewController.xib; sourceTree = "<group>"; };
 		2054FFEE125DE9D200692C77 /* GBRepositoryCloningViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBRepositoryCloningViewController.h; sourceTree = "<group>"; };
 		2054FFEF125DE9D200692C77 /* GBRepositoryCloningViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBRepositoryCloningViewController.m; sourceTree = "<group>"; };
@@ -675,6 +679,7 @@
 		20C3C30A125D9EA900ABEDE7 /* GBCloneWindowController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBCloneWindowController.xib; sourceTree = "<group>"; };
 		20C3C310125DA0BC00ABEDE7 /* GBCloneWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBCloneWindowController.h; sourceTree = "<group>"; };
 		20C3C311125DA0BC00ABEDE7 /* GBCloneWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBCloneWindowController.m; sourceTree = "<group>"; };
+		20C66EEA134467B00067D232 /* WWDC2011.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = WWDC2011.txt; sourceTree = "<group>"; };
 		20C83E7A12A9ACB900769F47 /* OAFastJumpController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAFastJumpController.h; sourceTree = "<group>"; };
 		20C83E7B12A9ACB900769F47 /* OAFastJumpController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAFastJumpController.m; sourceTree = "<group>"; };
 		20C83F6B12AA1BBB00769F47 /* GBChangeCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBChangeCell.h; sourceTree = "<group>"; };
@@ -948,6 +953,7 @@
 				20C9A55D12E85E0800DBA3E1 /* Subversion.txt */,
 				208A6B9712F879B600F3F608 /* DiffAndBlame.txt */,
 				2059D4FC133FD697008D3556 /* Github.txt */,
+				20C66EEA134467B00067D232 /* WWDC2011.txt */,
 			);
 			name = Documents;
 			sourceTree = "<group>";
@@ -1188,6 +1194,8 @@
 				2016465D12D0D0EC005C69DA /* OAHTTPQueue.m */,
 				2016465E12D0D0EC005C69DA /* OAXMLDecoder.h */,
 				2016465F12D0D0EC005C69DA /* OAXMLDecoder.m */,
+				2051376C13446442008614D4 /* OAFSEventStream.h */,
+				2051376D13446443008614D4 /* OAFSEventStream.m */,
 				2002AC0A123CA1A20072075C /* OAFSEventStreamLegacy.h */,
 				2002AC0B123CA1A20072075C /* OAFSEventStreamLegacy.m */,
 				20C3B71D125BCDC100ABEDE7 /* OAPrimaryMACAddress.h */,
@@ -1619,6 +1627,7 @@
 				206E0130130C605800018300 /* GBPlaceholderViewController.m in Sources */,
 				20EA6FD0131B0EB300B97430 /* OAPropertyListRepresentation.m in Sources */,
 				2086DF53133BC20F00289144 /* GBSidebarMultipleSelection.m in Sources */,
+				2051376F13446443008614D4 /* OAFSEventStream.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1739,6 +1748,7 @@
 				206E012F130C605800018300 /* GBPlaceholderViewController.m in Sources */,
 				20EA6FD1131B0EB300B97430 /* OAPropertyListRepresentation.m in Sources */,
 				2086DF52133BC20F00289144 /* GBSidebarMultipleSelection.m in Sources */,
+				2051376E13446443008614D4 /* OAFSEventStream.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
