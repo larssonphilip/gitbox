@@ -8,7 +8,8 @@ void OAFSEventStreamCallback( ConstFSEventStreamRef streamRef,
                              const FSEventStreamEventFlags eventFlags[],
                              const FSEventStreamEventId eventIds[])
 {
-  OAFSEventStream* stream = (OAFSEventStream*)info;  
+  OAFSEventStream* stream = (OAFSEventStream*)info;
+  //NSLog(@"OAFSEventStreamCallback: %@", eventPaths);
   for (NSUInteger index = 0; index < numEvents; index++)
   {
     NSString* eventPath = [[(NSArray*)eventPaths objectAtIndex:index] stringByStandardizingPath];
@@ -113,12 +114,10 @@ void OAFSEventStreamCallback( ConstFSEventStreamRef streamRef,
 {
   if (self.isStopped) return;
   self.isStopped = YES;
-  
   [NSObject cancelPreviousPerformRequestsWithTarget:self];
   self.coalescedPathsByPaths = nil;
-  FSEventStreamUnscheduleFromRunLoop(streamRef, CFRunLoopGetCurrent(), kCFRunLoopDefaultMode);
   FSEventStreamStop(streamRef);
-//  FSEventStreamInvalidate(streamRef);
+  FSEventStreamInvalidate(streamRef);
   FSEventStreamRelease(streamRef);
 }
 
