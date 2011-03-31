@@ -9,6 +9,10 @@ Problems:
    There's a special case, however: when Gitbox performs stage update, it calls refresh-index which updates .git/index file.
    In this case update inside .git folder should be ignored.
 
+3. When watchRoot is used, for each path FSEventStream opens file descriptor for each parent folder. In result, common parent folders are opened multiple times. Maybe it's not an issue. 
+   Possible workaround: instead of using watchRoot, subscribe manually to all parent paths and check existance of the repo folders (inside GBFolderMonitor), but this can lead to too many notifications.
+   Possible alleviation: use another stream and watchRoots for parent paths only (so for gitbox/app, gitbox/app/.git and gitbox/site there will only be a set of descriptors for /Users/oleganza/Work/gitbox)
+
 To address the first problem we'll have OAFSEventStream class. 
 And to address various git-specific issues we'll have GBFolderMonitor
 with event silencing, path filtering and coalescing.

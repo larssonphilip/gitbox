@@ -231,7 +231,7 @@
       [self dotgitStateDidChange];
     }
   }];
-  [self.fsEventStream start];
+  //[self.fsEventStream start];
   self.isWaitingForAutofetch = YES; // will be reset in initialUpdateWithBlock
 }
 
