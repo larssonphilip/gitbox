@@ -14,7 +14,7 @@
 #import "GBSidebarCell.h"
 #import "GBSidebarItem.h"
 
-#import "OAFSEventStreamLegacy.h"
+#import "OAFSEventStream.h"
 #import "NSString+OAStringHelpers.h"
 #import "NSError+OAPresent.h"
 #import "OABlockGroup.h"
@@ -71,9 +71,6 @@
 
 - (void) fetchRemote:(GBRemote*)aRemote withBlock:(void(^)())block;
 
-- (void) workingDirectoryStateDidChange;
-- (void) dotgitStateDidChange;
-
 - (void) resetAutoFetchInterval;
 - (void) scheduleAutoFetch;
 - (void) unscheduleAutoFetch;
@@ -96,7 +93,7 @@
 @synthesize updatesQueue;
 @synthesize autofetchQueue;
 @synthesize folderMonitor;
-@synthesize fsEventStream;
+@dynamic fseventStream;
 
 @synthesize isRemoteBranchesDisabled;
 @synthesize isCommitting;
@@ -121,7 +118,6 @@
   self.blockMerger = nil;
   self.updatesQueue = nil;
   self.autofetchQueue = nil;
-  self.fsEventStream = nil;
   self.folderMonitor.target = nil;
   self.folderMonitor.action = NULL;
   self.folderMonitor = nil;
@@ -149,8 +145,6 @@
     self.selectedCommit = self.repository.stage;
     self.folderMonitor = [[[GBFolderMonitor alloc] init] autorelease];
     self.folderMonitor.path = [[aURL path] stringByStandardizingPath];
-    self.folderMonitor.target = self;
-    self.folderMonitor.action = @selector(folderMonitorDidUpdate:);
   }
   return self;
 }
@@ -164,6 +158,15 @@
   [repository.stage addObserverForAllSelectors:self];
 }
 
+- (OAFSEventStream*) fseventStream
+{
+  return self.folderMonitor.eventStream;
+}
+
+- (void) setFseventStream:(OAFSEventStream *)newfseventStream
+{
+  self.folderMonitor.eventStream = newfseventStream;
+}
 
 - (void) setWindow:(NSWindow *)aWindow
 {
@@ -219,35 +222,38 @@
 
 - (void) start
 {
-  self.fsEventStream = [[OAFSEventStreamLegacy new] autorelease];
-#if DEBUG
-  self.fsEventStream.shouldLogEvents = NO;
-#endif
-  
-  //NSLog(@"GBRepositoryController start: %@", [self url]);
-  [self.fsEventStream addPath:[self.repository path] withBlock:^(NSString* path){
-    
-    if ([self checkRepositoryExistance])
-    {
-      //NSLog(@"FSEvents: workingDirectoryStateDidChange %@", [self url]);
-      [self workingDirectoryStateDidChange];
-    }
-  }];
-  [self.fsEventStream addPath:[self.repository.dotGitURL path] withBlock:^(NSString* path){
-    if ([self checkRepositoryExistance])
-    {
-      //NSLog(@"FSEvents: dotgitStateDidChange %@", [self url]);
-      [self dotgitStateDidChange];
-    }
-  }];
+//  self.fsEventStream = [[OAFSEventStreamLegacy new] autorelease];
+//#if DEBUG
+//  self.fsEventStream.shouldLogEvents = NO;
+//#endif
+//  
+//  //NSLog(@"GBRepositoryController start: %@", [self url]);
+//  [self.fsEventStream addPath:[self.repository path] withBlock:^(NSString* path){
+//    
+//    if ([self checkRepositoryExistance])
+//    {
+//      //NSLog(@"FSEvents: workingDirectoryStateDidChange %@", [self url]);
+//      [self workingDirectoryStateDidChange];
+//    }
+//  }];
+//  [self.fsEventStream addPath:[self.repository.dotGitURL path] withBlock:^(NSString* path){
+//    if ([self checkRepositoryExistance])
+//    {
+//      //NSLog(@"FSEvents: dotgitStateDidChange %@", [self url]);
+//      [self dotgitStateDidChange];
+//    }
+//  }];
   //[self.fsEventStream start];
   self.isWaitingForAutofetch = YES; // will be reset in initialUpdateWithBlock
+  self.folderMonitor.target = self;
+  self.folderMonitor.action = @selector(folderMonitorDidUpdate:);
 }
 
 - (void) stop
 {
   [self unscheduleAutoFetch];
-  [self.fsEventStream stop];
+  self.folderMonitor.target = nil;
+  self.folderMonitor.action = NULL;
 }
 
 
@@ -352,31 +358,36 @@
 
 - (void) folderMonitorDidUpdate:(GBFolderMonitor*)monitor
 {
-  // TODO: update something
+  GBRepository* repo = self.repository;
+  if (!repo) return;
+  if (![self checkRepositoryExistance]) return;
+  
+  if (monitor.dotgitIsUpdated)
+  {
+    [self pushFSEventsPause];
+    [self loadStageChanges];
+    [self updateLocalRefsWithBlock:^{
+      [self loadCommitsWithBlock:nil];
+      [self updateRemoteRefsWithBlock:^{
+      }];
+      [self popFSEventsPause];
+    }];
+  }
+  else
+  {
+    if (monitor.folderIsUpdated)
+    {
+      // TODO: if monitor.dotgitIsPaused, then update stage changes *without* refreshing the index to avoid complex issues.
+      [self loadStageChanges];
+    }
+  }
 }
 
-
-- (void) workingDirectoryStateDidChange
-{
-  [self loadStageChanges];
-}
 
 - (void) dotgitStateDidChange
 {
   //NSLog(@"%@ %@ changed .git in %@", [self class], NSStringFromSelector(_cmd), [self nameForSourceList]);
   
-  GBRepository* repo = self.repository;
-  
-  if (!repo) return;
-  
-  [self pushFSEventsPause];
-  [self loadStageChanges];
-  [self updateLocalRefsWithBlock:^{
-    [self loadCommitsWithBlock:nil];
-    [self updateRemoteRefsWithBlock:^{
-    }];
-    [self popFSEventsPause];
-  }];
   
 }
 
@@ -1251,12 +1262,15 @@
 
 - (void) pushFSEventsPause
 {
-  [self.fsEventStream pushPause];
+  
+  // TODO: add also pausing of the .git only so we can still get notifications while refreshing the stage
+  
+  [self.folderMonitor pauseFolder];
 }
 
 - (void) popFSEventsPause
 {
-  [self.fsEventStream popPause];
+  [self.folderMonitor resumeFolder];
 }
 
 

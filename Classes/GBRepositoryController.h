@@ -11,7 +11,7 @@
 @class GBSidebarItem;
 @class GBRepositoryToolbarController;
 @class GBRepositoryViewController;
-@class OAFSEventStreamLegacy;
+@class OAFSEventStream;
 @class OABlockQueue;
 
 @interface GBRepositoryController : NSResponder<GBMainWindowItem, GBSidebarItemObject>
@@ -25,7 +25,7 @@
 @property(nonatomic, retain) GBRepositoryToolbarController* toolbarController;
 @property(nonatomic, retain) GBRepositoryViewController* viewController;
 @property(nonatomic, retain) GBCommit* selectedCommit;
-@property(nonatomic, retain) OAFSEventStreamLegacy* fsEventStream;
+@property(nonatomic, retain) OAFSEventStream* fseventStream;
 @property(nonatomic, retain) NSString* lastCommitBranchName;
 
 @property(nonatomic, assign) NSInteger isRemoteBranchesDisabled;

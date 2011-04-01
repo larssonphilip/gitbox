@@ -72,11 +72,11 @@
     self.repositoryToolbarController = [[[GBRepositoryToolbarController alloc] init] autorelease];
     
     self.fsEventStream = [[[OAFSEventStream alloc] init] autorelease];
-#warning temporary hard-coded paths to the repos for OAFSEventStream
+//#warning temporary hard-coded paths to the repos for OAFSEventStream
 //    [self.fsEventStream addPath:@"/Users/oleganza/Work/gitbox/app"];
 //    [self.fsEventStream addPath:@"/Users/oleganza/Work/gitbox/app/.git"];
-    [self.fsEventStream addPath:@"/Users/oleganza/Work/oleganza/site"];
-    [self.fsEventStream addPath:@"/Users/oleganza/Work/oleganza/site/.git"];
+//    [self.fsEventStream addPath:@"/Users/oleganza/Work/oleganza/site"];
+//    [self.fsEventStream addPath:@"/Users/oleganza/Work/oleganza/site/.git"];
     self.fsEventStream.latency = 0.1;
     self.fsEventStream.enabled = YES;
   }
@@ -416,6 +416,7 @@
 {
   if (!repoCtrl) return;
   [self configureRepositorycontroller:repoCtrl];
+  repoCtrl.fseventStream = self.fsEventStream;
   [repoCtrl start];
   
 //  if (!queued)
