@@ -45,33 +45,33 @@
   {
     [[self window] orderOut:_];
     [NSApp stopModalWithCode:0];
-    
-    #if DEBUG
-        static int64_t delay = 10523123123;
-    #else
-        static int64_t delay = 200123123123;
-        //                        |  |  |
-    #endif
-    NSString* lowerCase = [license lowercaseString];
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, delay), dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), [[(^{
-      if (![lowerCase isEqualToString:license])
-      {
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, delay), dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), [[(^{
-          [[NSUserDefaults standardUserDefaults] removeObjectForKey:key];
-          [[NSUserDefaults standardUserDefaults] synchronize];
-        }) copy] autorelease]);
-
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, delay), dispatch_get_main_queue(), [[(^{
-          [NSAlert message:message description:@""];
-		  exit(0);
-        }) copy] autorelease]);
-        
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2*delay), dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), [[(^{
-          void(^crashingblock)() = (void(^)())NULL;
-          crashingblock();
-        }) copy] autorelease]);
-      }
-    }) copy] autorelease]);
+//    
+//    #if DEBUG
+//        static int64_t delay = 10523123123;
+//    #else
+//        static int64_t delay = 200123123123;
+//        //                        |  |  |
+//    #endif
+//    NSString* lowerCase = [license lowercaseString];
+//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, delay), dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), [[(^{
+//      if (![lowerCase isEqualToString:license])
+//      {
+//        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, delay), dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), [[(^{
+//          [[NSUserDefaults standardUserDefaults] removeObjectForKey:key];
+//          [[NSUserDefaults standardUserDefaults] synchronize];
+//        }) copy] autorelease]);
+//
+//        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, delay), dispatch_get_main_queue(), [[(^{
+//          [NSAlert message:message description:@""];
+//		  exit(0);
+//        }) copy] autorelease]);
+//        
+//        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2*delay), dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), [[(^{
+//          void(^crashingblock)() = (void(^)())NULL;
+//          crashingblock();
+//        }) copy] autorelease]);
+//      }
+//    }) copy] autorelease]);
   }
 }
 
