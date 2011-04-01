@@ -79,6 +79,7 @@ Gitbox 1.3 Refactoring:
 - bug: restore autofetch
 - enhancement: cache repos' badges within plist for immediate presentation on launch
 - enhancement: need better way to organize async methods and complex patterns: load once, load immediately, load with reusing current message, grouping etc.
+- refactoring: clean up starting/stopping repo ctrl in GBRepositoriesController
 
 - bug: when fetch is clicked, should fetch everything
 - history: highlight difference by using two SHA-1 and traversing loaded items; later tag all the commits for nice tree-like graphic

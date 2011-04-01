@@ -233,9 +233,10 @@
 
 - (void) start
 {
-  self.isWaitingForAutofetch = YES; // will be reset in initialUpdateWithBlock
   self.folderMonitor.target = self;
   self.folderMonitor.action = @selector(folderMonitorDidUpdate:);
+  self.autoFetchInterval = 3.0 + drand48()*10.0; // spread all repos' initial autofetch within 10 seconds
+  [self scheduleAutoFetch];
 }
 
 - (void) stop
@@ -1316,8 +1317,8 @@
   if (![self checkRepositoryExistance]) return;
   
   //NSLog(@"GBRepositoryController: autoFetch into %@ (delay: %f)", [self url], autoFetchInterval);
-  while (autoFetchInterval > 120.0) autoFetchInterval -= 10.0;
-  autoFetchInterval = autoFetchInterval*(2 + drand48()*0.2);
+  while (autoFetchInterval > 600.0) autoFetchInterval -= 60.0;
+  autoFetchInterval = autoFetchInterval*(1.9 + drand48()*0.2);
   
   [self scheduleAutoFetch];
     
