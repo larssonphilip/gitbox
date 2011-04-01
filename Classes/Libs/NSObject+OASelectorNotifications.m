@@ -60,7 +60,7 @@
   if ([self respondsToSelector:selector])
   {
     id argument = [userInfo objectForKey:@"OANotificationSelectorArgument"];
-    if (argument)
+    if ([userInfo objectForKey:@"OANotificationSelectorWithArgument"])
     {
       [self performSelector:selector withObject:notification.object withObject:argument];
     }
@@ -74,18 +74,33 @@
 
 - (void) notifyWithSelector:(SEL)selector
 {
-  [self notifyWithSelector:selector withObject:nil];
+  NSAssert(selector, @"notifySelector: requires non-nil selector");
+  
+  NSNotification* aNotification = [NSNotification notificationWithName:[self OANotificationNameForSelector:selector] 
+                                                                object:self
+                                                              userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
+                                                                        NSStringFromSelector(selector), @"OANotificationSelector", 
+                                                                        nil]];
+  if ([self respondsToSelector:@selector(delegate)])
+  {
+    id delegate = [(id)self delegate];
+    if ([delegate respondsToSelector:selector])
+    {
+      [delegate performSelector:selector withObject:self];
+    }
+  }
+  [[NSNotificationCenter defaultCenter] postNotification:aNotification];
 }
 
 - (void) notifyWithSelector:(SEL)selector withObject:(id)argument
 {
   NSAssert(selector, @"notifySelector: requires non-nil selector");
   
-  // Note: if argument is nil, the dictionary will ignore OANotificationSelectorArgument key as intended.
   NSNotification* aNotification = [NSNotification notificationWithName:[self OANotificationNameForSelector:selector] 
                                                                 object:self
                                                               userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
                                                                         NSStringFromSelector(selector), @"OANotificationSelector", 
+                                                                        @"YES", @"OANotificationSelectorWithArgument",
                                                                         argument, @"OANotificationSelectorArgument", 
                                                                         nil]];
   if ([self respondsToSelector:@selector(delegate)])
@@ -93,14 +108,7 @@
     id delegate = [(id)self delegate];
     if ([delegate respondsToSelector:selector])
     {
-      if (argument)
-      {
-        [delegate performSelector:selector withObject:self withObject:argument];
-      }
-      else
-      {
-        [delegate performSelector:selector withObject:self];
-      }
+      [delegate performSelector:selector withObject:self withObject:argument];
     }
   }
   [[NSNotificationCenter defaultCenter] postNotification:aNotification];
