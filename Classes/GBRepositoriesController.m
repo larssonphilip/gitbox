@@ -24,7 +24,6 @@
 @property(nonatomic, retain) OAFSEventStream* fsEventStream;
 
 - (void) removeObjects:(NSArray*)objects;
-- (void) removeObject:(id<GBSidebarItemObject>)object;
 
 - (GBRepositoriesGroup*) contextGroupAndIndex:(NSUInteger*)anIndexRef;
 - (GBRepositoriesGroup*) groupAndIndex:(NSUInteger*)anIndexRef forObject:(id<GBSidebarItemObject>)anObject;
@@ -210,7 +209,7 @@
 - (void) cloningRepositoryControllerDidCancel:(GBRepositoryCloningController*)cloningRepoCtrl
 {
   [cloningRepoCtrl removeObserverForAllSelectors:self];
-  [self removeObject:cloningRepoCtrl];
+  [self removeObjects:[NSArray arrayWithObject:cloningRepoCtrl]];
 }
 
 - (void) cloningRepositoryControllerDidFinish:(GBRepositoryCloningController*)cloningRepoCtrl
@@ -362,14 +361,11 @@
     
     if (parentGroup && [parentGroup isKindOfClass:[GBRepositoriesGroup class]])
     {
-      if (parentGroup == self)
+      if ([object isKindOfClass:[GBRepositoryController class]])
       {
-        [super removeObject:object]; // because we override the removeObject here
+        [(GBRepositoryController*)object stop];
       }
-      else
-      {
-        [parentGroup removeObject:object];
-      }
+      [parentGroup removeObject:object];
     }
   }
   
@@ -378,11 +374,6 @@
   [self.rootController removeObjectsFromSelection:objects];
 }
 
-- (void) removeObject:(id<GBSidebarItemObject>)object
-{
-  [self removeObjects:[NSArray arrayWithObject:object]];
-}
-  
 
 
 
@@ -492,6 +483,12 @@
 - (void) repositoryController:(GBRepositoryController*)oldRepoCtrl didMoveToURL:(NSURL*)newURL
 {
   // TODO: extract common logic from here and didClone method
+  
+  if (!newURL)
+  {
+    [self removeObjects:[NSArray arrayWithObject:oldRepoCtrl]];
+    return;
+  }
   
   [[oldRepoCtrl retain] autorelease];
   [oldRepoCtrl stop];
