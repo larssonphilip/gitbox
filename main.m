@@ -10,6 +10,12 @@ int main(int argc, char *argv[])
 {
   NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
   
+  if(getenv("NSZombieEnabled") || getenv("NSAutoreleaseFreedObjectCheckEnabled"))
+  {
+    NSLog(@"WARNING! NSZombieEnabled/NSAutoreleaseFreedObjectCheckEnabled enabled!");
+  }
+
+  
   #if GITBOX_APP_STORE
     // The purpose of this check here is to provide the user with
     // a proper iTunes update (say, when she moves to another computer).
