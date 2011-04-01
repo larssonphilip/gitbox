@@ -417,7 +417,7 @@
   if (!repoCtrl) return;
   [self configureRepositorycontroller:repoCtrl];
   [repoCtrl addObserverForAllSelectors:self];
-  repoCtrl.fseventStream = self.fsEventStream;
+  repoCtrl.fsEventStream = self.fsEventStream;
   [repoCtrl start];
   
 //  if (!queued)
@@ -495,6 +495,8 @@
   
   [[oldRepoCtrl retain] autorelease];
   [oldRepoCtrl stop];
+  
+  //NSLog(@"FSEventStream: %@", self.fsEventStream);
   
   NSUInteger insertionIndex = 0;
   GBRepositoriesGroup* aGroup = [self groupAndIndex:&insertionIndex forObject:oldRepoCtrl];

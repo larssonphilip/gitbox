@@ -3,6 +3,7 @@
 #import "GBChangeCell.h"
 #import "GBChangeCheckboxCell.h"
 #import "GBBaseChangesController.h"
+#import "GBRepositoryController.h"
 #import "GBCellWithView.h"
 
 #import "NSObject+OADispatchItemValidation.h"
@@ -57,7 +58,7 @@
   repositoryController = repoCtrl;
   
   [repositoryController addObserverForAllSelectors:self];
-	
+  
   [self updateChanges];
 }
 

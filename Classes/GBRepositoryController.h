@@ -24,7 +24,7 @@
 @property(nonatomic, retain) GBRepositoryToolbarController* toolbarController;
 @property(nonatomic, retain) GBRepositoryViewController* viewController;
 @property(nonatomic, retain) GBCommit* selectedCommit;
-@property(nonatomic, retain) OAFSEventStream* fseventStream;
+@property(nonatomic, retain) OAFSEventStream* fsEventStream;
 @property(nonatomic, retain) NSString* lastCommitBranchName;
 
 @property(nonatomic, assign) NSInteger isRemoteBranchesDisabled;

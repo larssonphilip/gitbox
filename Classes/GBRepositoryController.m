@@ -93,7 +93,7 @@
 @synthesize updatesQueue;
 @synthesize autofetchQueue;
 @synthesize folderMonitor;
-@dynamic fseventStream;
+@dynamic fsEventStream;
 
 @synthesize isRemoteBranchesDisabled;
 @synthesize isCommitting;
@@ -158,12 +158,12 @@
   [repository.stage addObserverForAllSelectors:self];
 }
 
-- (OAFSEventStream*) fseventStream
+- (OAFSEventStream*) fsEventStream
 {
   return self.folderMonitor.eventStream;
 }
 
-- (void) setFseventStream:(OAFSEventStream *)newfseventStream
+- (void) setFsEventStream:(OAFSEventStream *)newfseventStream
 {
   self.folderMonitor.eventStream = newfseventStream;
 }
@@ -252,8 +252,12 @@
 - (void) stop
 {
   [self unscheduleAutoFetch];
+  if (self.toolbarController.repositoryController == self) self.toolbarController.repositoryController = nil;
+  if (self.viewController.repositoryController == self) self.viewController.repositoryController = nil;
   self.folderMonitor.target = nil;
   self.folderMonitor.action = NULL;
+  self.folderMonitor.path = nil;
+  self.repository = nil;
   [self notifyWithSelector:@selector(repositoryControllerDidStop:)];
 }
 
