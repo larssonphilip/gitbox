@@ -463,44 +463,6 @@
 
 
 
-#pragma mark GBRepositoryControllerDelegate
-
-
-//- (void) repositoryController:(GBRepositoryController*)repoCtrl didMoveToURL:(NSURL*)newURL
-//{
-//  GBRepositoriesGroup* aGroup = [self.repositoriesController.localRepositoriesGroup groupContainingLocalItem:repoCtrl];
-//  if (!aGroup) aGroup = self.repositoriesController.localRepositoriesGroup; // should never happen, but just in case
-//  NSUInteger indexInGroup = [aGroup.items indexOfObject:repoCtrl];
-//  if (indexInGroup == NSNotFound) indexInGroup = 0; // should never happen, but be safe just in case
-//
-//  
-//  BOOL shouldSelectNewRepo = [self isSelectedRepositoryController:repoCtrl];
-//  [self.repositoriesController removeLocalRepositoryController:repoCtrl];
-//  if (!newURL) return;
-//  
-//  if ([[newURL absoluteString] rangeOfString:@"/.Trash/"].length > 0) return;
-//  
-//  GBRepositoryController* newRepoCtrl = [GBRepositoryController repositoryControllerWithURL:newURL];
-//
-//  [self.repositoriesController addLocalRepositoryController:newRepoCtrl inGroup:aGroup atIndex:indexInGroup];
-//  [[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:newURL];
-//  if (shouldSelectNewRepo)
-//  {
-//    [self.repositoriesController selectRepositoryController:newRepoCtrl];
-//  }
-//}
-//
-//- (void) repositoryControllerDidUpdateSubmodules:(GBRepositoryController*)repoCtrl
-//{
-//  // FIXME: update only the repo of interest
-//  [self.sidebarController update];
-//  [self.sidebarController updateExpandedState];
-//}
-//
-//
-
-
-
 
 #pragma mark GBSubmoduleCloningControllerDelegate
 
