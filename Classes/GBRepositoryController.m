@@ -109,18 +109,23 @@
 - (void) dealloc
 {
   [[NSNotificationCenter defaultCenter] removeObserver:self];
-  self.repository = nil;
-  self.sidebarItem = nil;
-  self.toolbarController = nil;
-  self.viewController = nil;
-  self.selectedCommit = nil;
-  self.lastCommitBranchName = nil;
-  self.blockMerger = nil;
-  self.updatesQueue = nil;
-  self.autofetchQueue = nil;
+  //NSLog(@">>> GBRepositoryController:%p dealloc...", self);
+  self.repository = nil; // so we unsubscribe correctly
+  self.sidebarItem.object = nil;
+  [sidebarItem release]; sidebarItem = nil;
+  if (toolbarController.repositoryController == self) toolbarController.repositoryController = nil;
+  [toolbarController release]; toolbarController = nil;
+  if (viewController.repositoryController == self) viewController.repositoryController = nil;
+  [viewController release]; viewController = nil;
+  [selectedCommit release]; selectedCommit = nil;
+  [lastCommitBranchName release]; lastCommitBranchName = nil;
+  [blockMerger release]; blockMerger = nil;
+  [updatesQueue release]; updatesQueue = nil;
+  [autofetchQueue release]; autofetchQueue = nil;
   self.folderMonitor.target = nil;
   self.folderMonitor.action = NULL;
-  self.folderMonitor = nil;
+  [folderMonitor release]; folderMonitor = nil;
+  //NSLog(@">>> GBRepositoryController:%p dealloc done.", self);
   [super dealloc];
 }
 
@@ -207,43 +212,33 @@
     
     NSLog(@"GBRepositoryController: repo does not exist at path %@", [self.repository path]);
     
-    NSURL* url = [GBRepository URLFromBookmarkData:self.repository.URLBookmarkData];
+    NSURL* newURL = [GBRepository URLFromBookmarkData:self.repository.URLBookmarkData];
     
-    if (url)
+    if (newURL && [[newURL absoluteString] rangeOfString:@"/.Trash/"].length > 0)
     {
-      url = [[[NSURL alloc] initFileURLWithPath:[url path] isDirectory:YES] autorelease];
+      newURL = nil;
     }
-    [self notifyWithSelector:@selector(repositoryController:didMoveToURL:) withObject:url];
+    
+    if (newURL)
+    {
+      newURL = [[[NSURL alloc] initFileURLWithPath:[newURL path] isDirectory:YES] autorelease];
+    }
+    
+    [self notifyWithSelector:@selector(repositoryController:didMoveToURL:) withObject:newURL];
     return NO;
   }
   return YES;
 }
 
+//- (void) notifyWithSelector:(SEL)selector withObject:(id)argument
+//{
+//  NSLog(@">>> GBRepositoryController:%p notifyWithSelector:%@ withObject:%@", self, NSStringFromSelector(selector), argument);
+//  [super notifyWithSelector:selector withObject:argument];
+//}
+
 
 - (void) start
 {
-//  self.fsEventStream = [[OAFSEventStreamLegacy new] autorelease];
-//#if DEBUG
-//  self.fsEventStream.shouldLogEvents = NO;
-//#endif
-//  
-//  //NSLog(@"GBRepositoryController start: %@", [self url]);
-//  [self.fsEventStream addPath:[self.repository path] withBlock:^(NSString* path){
-//    
-//    if ([self checkRepositoryExistance])
-//    {
-//      //NSLog(@"FSEvents: workingDirectoryStateDidChange %@", [self url]);
-//      [self workingDirectoryStateDidChange];
-//    }
-//  }];
-//  [self.fsEventStream addPath:[self.repository.dotGitURL path] withBlock:^(NSString* path){
-//    if ([self checkRepositoryExistance])
-//    {
-//      //NSLog(@"FSEvents: dotgitStateDidChange %@", [self url]);
-//      [self dotgitStateDidChange];
-//    }
-//  }];
-  //[self.fsEventStream start];
   self.isWaitingForAutofetch = YES; // will be reset in initialUpdateWithBlock
   self.folderMonitor.target = self;
   self.folderMonitor.action = @selector(folderMonitorDidUpdate:);
@@ -258,6 +253,7 @@
   self.folderMonitor.action = NULL;
   self.folderMonitor.path = nil;
   self.repository = nil;
+  //NSLog(@"!!! Stopped GBRepoCtrl:%p!", self);
   [self notifyWithSelector:@selector(repositoryControllerDidStop:)];
 }
 
