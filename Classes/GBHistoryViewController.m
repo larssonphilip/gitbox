@@ -88,6 +88,10 @@
   
   if (repoCtrl)
   {
+    // TODO: do a similar thing with stage and commit controllers (they currently load changes in updateViews method which is silly)
+    [self.jumpController delayBlockIfNeeded:^{
+      [self.repositoryController loadCommitsIfNeeded];
+    }];
     [self prepareChangesControllersIfNeeded];
   }
   
