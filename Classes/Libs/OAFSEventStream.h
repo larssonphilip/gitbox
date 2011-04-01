@@ -9,6 +9,7 @@ extern NSString* const OAFSEventStreamNotification;
 @property(nonatomic, assign) FSEventStreamEventId eventId;
 + (OAFSEvent*) eventWithPath:(NSString*)aPath flags:(FSEventStreamEventFlags)flags eventId:(FSEventStreamEventId)eventId;
 - (NSString*) flagsDescription;
+- (BOOL) containedInFolder:(NSString*)aPath;
 @end
 
 

@@ -20,6 +20,7 @@
 #import "OABlockGroup.h"
 #import "OABlockQueue.h"
 #import "OABlockMerger.h"
+#import "GBFolderMonitor.h"
 #import "NSArray+OAArrayHelpers.h"
 #import "NSObject+OASelectorNotifications.h"
 #import "NSObject+OADispatchItemValidation.h"
@@ -34,6 +35,7 @@
 @interface GBRepositoryController ()
 
 @property(nonatomic, retain) OABlockMerger* blockMerger;
+@property(nonatomic, retain) GBFolderMonitor* folderMonitor;
 
 @property(nonatomic, assign) BOOL isDisappearedFromFileSystem;
 @property(nonatomic, assign) BOOL isCommitting;
@@ -89,11 +91,12 @@
 @synthesize toolbarController;
 @synthesize viewController;
 @synthesize selectedCommit;
-@synthesize fsEventStream;
 @synthesize lastCommitBranchName;
 @synthesize blockMerger;
 @synthesize updatesQueue;
 @synthesize autofetchQueue;
+@synthesize folderMonitor;
+@synthesize fsEventStream;
 
 @synthesize isRemoteBranchesDisabled;
 @synthesize isCommitting;
@@ -114,12 +117,14 @@
   self.toolbarController = nil;
   self.viewController = nil;
   self.selectedCommit = nil;
-  self.fsEventStream = nil;
   self.lastCommitBranchName = nil;
   self.blockMerger = nil;
   self.updatesQueue = nil;
   self.autofetchQueue = nil;
-
+  self.fsEventStream = nil;
+  self.folderMonitor.target = nil;
+  self.folderMonitor.action = NULL;
+  self.folderMonitor = nil;
   [super dealloc];
 }
 
@@ -142,6 +147,10 @@
     self.sidebarItem.draggable = YES;
     self.sidebarItem.cell = [[[GBSidebarCell alloc] initWithItem:self.sidebarItem] autorelease];
     self.selectedCommit = self.repository.stage;
+    self.folderMonitor = [[[GBFolderMonitor alloc] init] autorelease];
+    self.folderMonitor.path = [[aURL path] stringByStandardizingPath];
+    self.folderMonitor.target = self;
+    self.folderMonitor.action = @selector(folderMonitorDidUpdate:);
   }
   return self;
 }
@@ -341,7 +350,10 @@
 }
 
 
-
+- (void) folderMonitorDidUpdate:(GBFolderMonitor*)monitor
+{
+  // TODO: update something
+}
 
 
 - (void) workingDirectoryStateDidChange

@@ -90,6 +90,16 @@ void OAFSEventStreamCallback( ConstFSEventStreamRef streamRef,
   if (streamRef) FSEventStreamFlushSync(streamRef);
 }
 
+- (NSString*) description
+{
+  return [NSString stringWithFormat:@"<OAFSEventStream:%p paths=%@ latency=%f %@%@%@>", self, self.pathsBag, self.latency, 
+          (self.enabled ? @"enabled" : @"disabled"),
+          (self.watchRoot ? @", watchRoot" : @""),
+          (self.ignoreSelf ? @", ignoreSelf" : @"")
+          ];
+}
+
+
 
 
 #pragma mark Private
@@ -128,7 +138,7 @@ void OAFSEventStreamCallback( ConstFSEventStreamRef streamRef,
                                   kFSEventStreamEventIdSinceNow, /* Or a previous event ID */
                                   aLatency,
                                   kFSEventStreamCreateFlagUseCFTypes|
-                                  //kFSEventStreamCreateFlagNoDefer|  // (looks like this flag does not change the behaviour...)
+                                  //kFSEventStreamCreateFlagNoDefer|  // do not set: we want to defer and group all events within latency interval
                                   (self.ignoreSelf ? kFSEventStreamCreateFlagIgnoreSelf : 0) |
                                   (self.watchRoot ? kFSEventStreamCreateFlagWatchRoot : 0)
                                   );
@@ -170,11 +180,13 @@ void OAFSEventStreamCallback( ConstFSEventStreamRef streamRef,
 @synthesize path;
 @synthesize flags;
 @synthesize eventId;
+
 - (void) dealloc
 {
   [path release]; path = nil;
   [super dealloc];
 }
+
 + (OAFSEvent*) eventWithPath:(NSString*)aPath flags:(FSEventStreamEventFlags)flags eventId:(FSEventStreamEventId)eventId
 {
   OAFSEvent* event = [[[self alloc] init] autorelease];
@@ -183,6 +195,7 @@ void OAFSEventStreamCallback( ConstFSEventStreamRef streamRef,
   event.eventId = eventId;
   return event;
 }
+
 - (NSString*) flagsDescription
 {
   NSMutableArray* flagNames = [NSMutableArray array];
@@ -204,6 +217,33 @@ void OAFSEventStreamCallback( ConstFSEventStreamRef streamRef,
   }
   return [flagNames componentsJoinedByString:@", "];
 }
+
+- (BOOL) containedInFolder:(NSString*)aPath
+{
+  // 3 cases:
+  // /a/b/c/d  vs. /a/b/e => NO
+  // /a/bar/c/d  vs. /a/b => NO
+  // /a/b/c/d  vs. /a/b/c => YES
+  
+  if (!self.path) return NO;
+  if (!aPath) return NO;
+  if ([aPath isEqualToString:@""]) return NO;
+  
+  if ([aPath isEqualToString:self.path]) return YES;
+  
+  NSString* commonPrefix = [self.path commonPrefixWithString:aPath options:0];
+  if (![commonPrefix isEqualToString:aPath]) return NO;
+  
+  // Verify this case: /a/bar/c/d vs. /a/b => NO
+  
+  NSUInteger prefixLength = [commonPrefix length];
+  if ([self.path length] > prefixLength)
+  {
+    return ([[self.path substringWithRange:NSMakeRange(prefixLength, 1)] isEqualToString:@"/"]);
+  }
+  return ([[self.path substringWithRange:NSMakeRange(prefixLength-1, 1)] isEqualToString:@"/"]);
+}
+
 - (NSString*) description
 {
   return [NSString stringWithFormat:@"<OAFSEvent %d %@ flags: %@>", self.eventId, self.path, [self flagsDescription]];
