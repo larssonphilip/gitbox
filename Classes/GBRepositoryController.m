@@ -377,18 +377,10 @@
   {
     if (monitor.folderIsUpdated)
     {
-      // TODO: if monitor.dotgitIsPaused, then update stage changes *without* refreshing the index to avoid complex issues.
+      // TODO: if monitor.dotgitIsPaused, then update stage changes *without* refreshing the index to avoid complex event sequences.
       [self loadStageChanges];
     }
   }
-}
-
-
-- (void) dotgitStateDidChange
-{
-  //NSLog(@"%@ %@ changed .git in %@", [self class], NSStringFromSelector(_cmd), [self nameForSourceList]);
-  
-  
 }
 
 

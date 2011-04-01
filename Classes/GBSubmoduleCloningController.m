@@ -2,6 +2,7 @@
 #import "GBSubmoduleCloningController.h"
 #import "GBSubmodule.h"
 #import "GBRepository.h"
+#import "NSObject+OASelectorNotifications.h"
 
 @interface GBSubmoduleCloningController ()
 @property(nonatomic, retain) GBTask* task;
@@ -13,7 +14,6 @@
 @synthesize task;
 
 @synthesize submodule;
-@synthesize delegate;
 
 - (void) dealloc
 {
@@ -83,23 +83,16 @@
     {
       NSLog(@"GBSubmoduleCloningController: did FAIL to clone at %@", [self.submodule localURL]);
       NSLog(@"GBSubmoduleCloningController: output: %@", [aTask UTF8OutputStripped]);
-      if ([self.delegate respondsToSelector:@selector(submoduleCloningControllerDidFail:)]) {
-        [self.delegate submoduleCloningControllerDidFail:self];
-      }
+      [self notifyWithSelector:@selector(submoduleCloningControllerDidFail:)];
     }
     else
     {
       NSLog(@"GBSubmoduleCloningController: did finish clone at %@", [self.submodule localURL]);
-			
-      if ([self.delegate respondsToSelector:@selector(submoduleCloningControllerDidFinish:)]) {
-        [self.delegate submoduleCloningControllerDidFinish:self];
-      }
+			[self notifyWithSelector:@selector(submoduleCloningControllerDidFinish:)];
     }
   }];
 
-  if ([self.delegate respondsToSelector:@selector(submoduleCloningControllerDidStart:)]) {
-    [self.delegate submoduleCloningControllerDidStart:self];
-  }
+  [self notifyWithSelector:@selector(submoduleCloningControllerDidStart:)];
 }
 
 - (void) stop
@@ -117,16 +110,12 @@
 - (void) cancelCloning
 {
   [self stop];
-  if ([self.delegate respondsToSelector:@selector(submoduleCloningControllerDidCancel:)]) {
-    [self.delegate submoduleCloningControllerDidCancel:self];
-  }  
+  [self notifyWithSelector:@selector(submoduleCloningControllerDidCancel:)];
 }
 
-- (void) didSelect
+- (void) didSelectWindowItem
 {
-  if ([self.delegate respondsToSelector:@selector(submoduleCloningControllerDidSelect:)]) { 
-    [self.delegate submoduleCloningControllerDidSelect:self];
-  }
+  [self notifyWithSelector:@selector(submoduleCloningControllerDidSelect:)];
 }
 
 

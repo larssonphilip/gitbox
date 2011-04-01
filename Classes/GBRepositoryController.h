@@ -1,7 +1,6 @@
 #import "GBMainWindowItem.h"
 #import "GBChangeDelegate.h"
 #import "GBSidebarItemObject.h"
-#import "GBRepositoryControllerDelegate.h"
 
 @class GBRepository;
 @class GBRef;

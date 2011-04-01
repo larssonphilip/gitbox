@@ -1,4 +1,3 @@
-#import "GBRepositoriesControllerDelegate.h"
 #import "GBRepositoriesGroup.h"
 
 @class OABlockQueue;

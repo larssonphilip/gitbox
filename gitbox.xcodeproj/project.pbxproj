@@ -387,7 +387,6 @@
 		1DDD582B0DA1D0D100B32029 /* MainMenu.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
 		2000325311FC75050069C70D /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
 		2002AE09124A9BAB0072075C /* OAOptionalDelegateMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAOptionalDelegateMessage.h; sourceTree = "<group>"; };
-		2004082B1274A7B100BE8957 /* GBRepositoryControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBRepositoryControllerDelegate.h; sourceTree = "<group>"; };
 		200432AE12D8A1AE00B045C0 /* Submodules.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Submodules.txt; sourceTree = "<group>"; };
 		200433A012DA02CF00B045C0 /* GBGreyGradientView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBGreyGradientView.h; sourceTree = "<group>"; };
 		200433A112DA02CF00B045C0 /* GBGreyGradientView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBGreyGradientView.m; sourceTree = "<group>"; };
@@ -402,7 +401,6 @@
 		200A43E812EC2507004DF940 /* GBSubmoduleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBSubmoduleCell.m; sourceTree = "<group>"; };
 		200A444912EC2DCE004DF940 /* GBSubmoduleCloningController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBSubmoduleCloningController.h; sourceTree = "<group>"; };
 		200A444A12EC2DCE004DF940 /* GBSubmoduleCloningController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBSubmoduleCloningController.m; sourceTree = "<group>"; };
-		200A445112EC2FB8004DF940 /* GBSubmoduleCloningControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBSubmoduleCloningControllerDelegate.h; sourceTree = "<group>"; };
 		200A44F912EC5A1C004DF940 /* GBSubmoduleCloneProcessViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBSubmoduleCloneProcessViewController.h; sourceTree = "<group>"; };
 		200A44FA12EC5A1C004DF940 /* GBSubmoduleCloneProcessViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBSubmoduleCloneProcessViewController.m; sourceTree = "<group>"; };
 		200A44FB12EC5A1C004DF940 /* GBSubmoduleCloneProcessViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBSubmoduleCloneProcessViewController.xib; sourceTree = "<group>"; };
@@ -882,12 +880,10 @@
 				200435F412DC59E200B045C0 /* GBRepositoriesControllerLocalItem.h */,
 				206CAC73122EBCAD009284FE /* GBRepositoriesController.h */,
 				206CAC74122EBCAD009284FE /* GBRepositoriesController.m */,
-				2004082B1274A7B100BE8957 /* GBRepositoryControllerDelegate.h */,
 				206CAC6F122EB5F7009284FE /* GBRepositoryController.h */,
 				206CAC70122EB5F7009284FE /* GBRepositoryController.m */,
 				2082B7C2126587CA00667A7F /* GBRepositoryCloningController.h */,
 				2082B7C3126587CA00667A7F /* GBRepositoryCloningController.m */,
-				200A445112EC2FB8004DF940 /* GBSubmoduleCloningControllerDelegate.h */,
 				200A444912EC2DCE004DF940 /* GBSubmoduleCloningController.h */,
 				200A444A12EC2DCE004DF940 /* GBSubmoduleCloningController.m */,
 				2016464C12D0C2F6005C69DA /* GBUserpicController.h */,
