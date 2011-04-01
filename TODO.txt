@@ -75,7 +75,7 @@ Gitbox 1.3 Refactoring:
 + bug: restore FSEvents mechanism
 - enhancement: fsevents: push dotgit-only pause when doing stage updates, fetch, config updates or other internal changes.
 - enhancement: fsevents: on folder update, while .git is on pause, update stage *without* updating the index, so we don't generate more .git/ events
-- bug: handle repository renaming; repositories controller should subscribe to every repoCtrl and listen when they move
++ bug: handle repository renaming; repositories controller should subscribe to every repoCtrl and listen when they move
 - bug: restore autofetch
 
 - bug: when fetch is clicked, should fetch everything
