@@ -87,11 +87,6 @@
 {
   if (!anObject) return;
   [[anObject retain] autorelease];
-  if ([anObject isKindOfClass:[GBRepositoryController class]])
-  {
-    GBRepositoryController* repoCtrl = (GBRepositoryController*)anObject;
-    [repoCtrl stop];
-  }
   [self.items removeObject:anObject];
 }
 
