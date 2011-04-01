@@ -40,7 +40,7 @@
 - (void) start;
 - (void) stop;
 
-- (void) loadCommitsWithBlock:(void(^)())block;
+- (void) loadCommitsIfNeeded;
 
 - (void) checkoutRef:(GBRef*) ref;
 - (void) checkoutRef:(GBRef*) ref withNewName:(NSString*)name;

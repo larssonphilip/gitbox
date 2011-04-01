@@ -230,12 +230,6 @@
   return YES;
 }
 
-//- (void) notifyWithSelector:(SEL)selector withObject:(id)argument
-//{
-//  NSLog(@">>> GBRepositoryController:%p notifyWithSelector:%@ withObject:%@", self, NSStringFromSelector(selector), argument);
-//  [super notifyWithSelector:selector withObject:argument];
-//}
-
 
 - (void) start
 {
@@ -258,7 +252,13 @@
 }
 
 
+
+
+
+
 #pragma mark Actions
+
+
 
 
 
@@ -1088,12 +1088,19 @@
 }
 
 
+- (void) loadCommitsIfNeeded
+{
+  if (!self.repository.localBranchCommits)
+  {
+    [self loadCommitsWithBlock:^{}];
+  }
+}
 
 - (void) loadCommitsWithBlock:(void(^)())block
 {
   block = [[block copy] autorelease];
   
-  //NSLog(@"started loadCommitsWithBlock");
+  NSLog(@"started loadCommitsWithBlock");
   
   [self pushFSEventsPause];
   BOOL wantsSpinning = !!self.isSpinning;
