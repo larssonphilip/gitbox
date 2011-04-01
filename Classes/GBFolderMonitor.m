@@ -148,7 +148,7 @@
   
   if (self.folderPauseCounter)
   {
-    NSLog(@"GBFolderMonitor: folder is on pause, skipping events: %@", events);
+    //NSLog(@"GBFolderMonitor: folder is on pause, skipping events: %@", events);
     return;
   }
   if (self.folderResumeDate)
@@ -198,11 +198,11 @@
   self.dotgitIsUpdated = dotgitDidChange;
   self.dotgitIsPaused = skipDotGitEvents;
   
-  NSLog(@"GBFolderMonitor: publishing status:%@%@%@",
-        (self.folderIsUpdated ? @" folderIsUpdated" : @""),
-        (self.dotgitIsUpdated ? @", dotgitIsUpdated" : @""),
-        (self.dotgitIsPaused ? @", dotgitIsPaused" : @"")
-        );
+//  NSLog(@"GBFolderMonitor: publishing status:%@%@%@",
+//        (self.folderIsUpdated ? @" folderIsUpdated" : @""),
+//        (self.dotgitIsUpdated ? @", dotgitIsUpdated" : @""),
+//        (self.dotgitIsPaused ? @", dotgitIsPaused" : @"")
+//        );
 
   if (!self.target || !self.action)
   {

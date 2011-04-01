@@ -160,7 +160,7 @@ void OAFSEventStreamCallback( ConstFSEventStreamRef streamRef,
 
 - (void) didReceiveEvents:(NSArray*)events
 {
-  NSLog(@"OAFSEventStream didReceiveEvents: %@", events);
+  //NSLog(@"OAFSEventStream didReceiveEvents: %@", events);
   
   if (!events) return;
   
