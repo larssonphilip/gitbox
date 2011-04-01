@@ -23,7 +23,6 @@
 
 /* Begin PBXBuildFile section */
 		2000325411FC75050069C70D /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2000325311FC75050069C70D /* IOKit.framework */; };
-		2002AC0C123CA1A20072075C /* OAFSEventStreamLegacy.m in Sources */ = {isa = PBXBuildFile; fileRef = 2002AC0B123CA1A20072075C /* OAFSEventStreamLegacy.m */; };
 		200433A212DA02CF00B045C0 /* GBGreyGradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = 200433A112DA02CF00B045C0 /* GBGreyGradientView.m */; };
 		200433A312DA02CF00B045C0 /* GBGreyGradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = 200433A112DA02CF00B045C0 /* GBGreyGradientView.m */; };
 		200A41B112EB91B0004DF940 /* OABlockMerger.m in Sources */ = {isa = PBXBuildFile; fileRef = 200A41B012EB91B0004DF940 /* OABlockMerger.m */; };
@@ -155,7 +154,6 @@
 		206E0131130C605800018300 /* GBPlaceholderViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 206E012E130C605500018300 /* GBPlaceholderViewController.xib */; };
 		206E0132130C605800018300 /* GBPlaceholderViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 206E012E130C605500018300 /* GBPlaceholderViewController.xib */; };
 		2082B7C4126587CA00667A7F /* GBRepositoryCloningController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2082B7C3126587CA00667A7F /* GBRepositoryCloningController.m */; };
-		2082B8111266500800667A7F /* GBBaseRepositoryController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2082B8101266500800667A7F /* GBBaseRepositoryController.m */; };
 		2086DF52133BC20F00289144 /* GBSidebarMultipleSelection.m in Sources */ = {isa = PBXBuildFile; fileRef = 2086DF51133BC20F00289144 /* GBSidebarMultipleSelection.m */; };
 		2086DF53133BC20F00289144 /* GBSidebarMultipleSelection.m in Sources */ = {isa = PBXBuildFile; fileRef = 2086DF51133BC20F00289144 /* GBSidebarMultipleSelection.m */; };
 		20915EBC12874D2A005E0D82 /* default_gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 209A960011BC60BC006B0B5C /* default_gitignore */; };
@@ -246,14 +244,12 @@
 		20915F1912874D2A005E0D82 /* GBToolbarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20A37BAB120DC4510068AB8B /* GBToolbarController.m */; };
 		20915F1A12874D2A005E0D82 /* GBRepositoryController.m in Sources */ = {isa = PBXBuildFile; fileRef = 206CAC70122EB5F7009284FE /* GBRepositoryController.m */; };
 		20915F1B12874D2A005E0D82 /* GBRepositoriesController.m in Sources */ = {isa = PBXBuildFile; fileRef = 206CAC74122EBCAD009284FE /* GBRepositoriesController.m */; };
-		20915F1C12874D2A005E0D82 /* OAFSEventStreamLegacy.m in Sources */ = {isa = PBXBuildFile; fileRef = 2002AC0B123CA1A20072075C /* OAFSEventStreamLegacy.m */; };
 		20915F1D12874D2A005E0D82 /* NSTableView+OATableViewHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 203977E61252815000770D13 /* NSTableView+OATableViewHelpers.m */; };
 		20915F1E12874D2A005E0D82 /* OAPrimaryMACAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = 20C3B71E125BCDC100ABEDE7 /* OAPrimaryMACAddress.m */; };
 		20915F1F12874D2A005E0D82 /* GBWelcomeController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20C3C233125C4DB600ABEDE7 /* GBWelcomeController.m */; };
 		20915F2012874D2A005E0D82 /* GBCloneWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20C3C311125DA0BC00ABEDE7 /* GBCloneWindowController.m */; };
 		20915F2112874D2A005E0D82 /* GBRepositoryCloningViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2054FFEF125DE9D200692C77 /* GBRepositoryCloningViewController.m */; };
 		20915F2212874D2A005E0D82 /* GBRepositoryCloningController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2082B7C3126587CA00667A7F /* GBRepositoryCloningController.m */; };
-		20915F2312874D2A005E0D82 /* GBBaseRepositoryController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2082B8101266500800667A7F /* GBBaseRepositoryController.m */; };
 		20915F2412874D2A005E0D82 /* GBCloneTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 20BF14111279533900A30EE6 /* GBCloneTask.m */; };
 		20915F2612874D2A005E0D82 /* GBAllStagedFilesTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 20BF186F1280C11C00A30EE6 /* GBAllStagedFilesTask.m */; };
 		20915F2712874D2A005E0D82 /* GBUserNameEmailController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20BF1953128224E500A30EE6 /* GBUserNameEmailController.m */; };
@@ -390,13 +386,8 @@
 		13E42FBA07B3F13500E4EEF1 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
 		1DDD582B0DA1D0D100B32029 /* MainMenu.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
 		2000325311FC75050069C70D /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
-		2002AC0A123CA1A20072075C /* OAFSEventStreamLegacy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAFSEventStreamLegacy.h; sourceTree = "<group>"; };
-		2002AC0B123CA1A20072075C /* OAFSEventStreamLegacy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAFSEventStreamLegacy.m; sourceTree = "<group>"; };
 		2002AE09124A9BAB0072075C /* OAOptionalDelegateMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAOptionalDelegateMessage.h; sourceTree = "<group>"; };
 		2004082B1274A7B100BE8957 /* GBRepositoryControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBRepositoryControllerDelegate.h; sourceTree = "<group>"; };
-		200408551274AB3800BE8957 /* GBRepositoriesControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBRepositoriesControllerDelegate.h; sourceTree = "<group>"; };
-		200408E01274E2BC00BE8957 /* GBBaseRepositoryControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBBaseRepositoryControllerDelegate.h; sourceTree = "<group>"; };
-		200409031274EBE400BE8957 /* GBRepositoryCloningControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBRepositoryCloningControllerDelegate.h; sourceTree = "<group>"; };
 		200432AE12D8A1AE00B045C0 /* Submodules.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Submodules.txt; sourceTree = "<group>"; };
 		200433A012DA02CF00B045C0 /* GBGreyGradientView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBGreyGradientView.h; sourceTree = "<group>"; };
 		200433A112DA02CF00B045C0 /* GBGreyGradientView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBGreyGradientView.m; sourceTree = "<group>"; };
@@ -575,8 +566,6 @@
 		2080DC2912567B0800D05B33 /* GBChangeDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBChangeDelegate.h; sourceTree = "<group>"; };
 		2082B7C2126587CA00667A7F /* GBRepositoryCloningController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBRepositoryCloningController.h; sourceTree = "<group>"; };
 		2082B7C3126587CA00667A7F /* GBRepositoryCloningController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBRepositoryCloningController.m; sourceTree = "<group>"; };
-		2082B80F1266500800667A7F /* GBBaseRepositoryController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBBaseRepositoryController.h; sourceTree = "<group>"; };
-		2082B8101266500800667A7F /* GBBaseRepositoryController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBBaseRepositoryController.m; sourceTree = "<group>"; };
 		2084C75D1297425F009295C8 /* OALicenseNumberCheck.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OALicenseNumberCheck.h; sourceTree = "<group>"; };
 		2084C8671299A078009295C8 /* calc_hard_links.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = calc_hard_links.rb; sourceTree = "<group>"; };
 		2084C8681299A078009295C8 /* git-remove-hardlinks.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = "git-remove-hardlinks.rb"; sourceTree = "<group>"; };
@@ -890,17 +879,12 @@
 			children = (
 				20586A8012FDDBF900729DB1 /* GBRootController.h */,
 				20586A8112FDDBF900729DB1 /* GBRootController.m */,
-				200408551274AB3800BE8957 /* GBRepositoriesControllerDelegate.h */,
 				200435F412DC59E200B045C0 /* GBRepositoriesControllerLocalItem.h */,
 				206CAC73122EBCAD009284FE /* GBRepositoriesController.h */,
 				206CAC74122EBCAD009284FE /* GBRepositoriesController.m */,
-				200408E01274E2BC00BE8957 /* GBBaseRepositoryControllerDelegate.h */,
-				2082B80F1266500800667A7F /* GBBaseRepositoryController.h */,
-				2082B8101266500800667A7F /* GBBaseRepositoryController.m */,
 				2004082B1274A7B100BE8957 /* GBRepositoryControllerDelegate.h */,
 				206CAC6F122EB5F7009284FE /* GBRepositoryController.h */,
 				206CAC70122EB5F7009284FE /* GBRepositoryController.m */,
-				200409031274EBE400BE8957 /* GBRepositoryCloningControllerDelegate.h */,
 				2082B7C2126587CA00667A7F /* GBRepositoryCloningController.h */,
 				2082B7C3126587CA00667A7F /* GBRepositoryCloningController.m */,
 				200A445112EC2FB8004DF940 /* GBSubmoduleCloningControllerDelegate.h */,
@@ -1204,8 +1188,6 @@
 				2016465F12D0D0EC005C69DA /* OAXMLDecoder.m */,
 				2051376C13446442008614D4 /* OAFSEventStream.h */,
 				2051376D13446443008614D4 /* OAFSEventStream.m */,
-				2002AC0A123CA1A20072075C /* OAFSEventStreamLegacy.h */,
-				2002AC0B123CA1A20072075C /* OAFSEventStreamLegacy.m */,
 				20C3B71D125BCDC100ABEDE7 /* OAPrimaryMACAddress.h */,
 				20C3B71E125BCDC100ABEDE7 /* OAPrimaryMACAddress.m */,
 				20265C0111D68D3400709F6B /* OAPropertyListController.h */,
@@ -1584,14 +1566,12 @@
 				20915F1912874D2A005E0D82 /* GBToolbarController.m in Sources */,
 				20915F1A12874D2A005E0D82 /* GBRepositoryController.m in Sources */,
 				20915F1B12874D2A005E0D82 /* GBRepositoriesController.m in Sources */,
-				20915F1C12874D2A005E0D82 /* OAFSEventStreamLegacy.m in Sources */,
 				20915F1D12874D2A005E0D82 /* NSTableView+OATableViewHelpers.m in Sources */,
 				20915F1E12874D2A005E0D82 /* OAPrimaryMACAddress.m in Sources */,
 				20915F1F12874D2A005E0D82 /* GBWelcomeController.m in Sources */,
 				20915F2012874D2A005E0D82 /* GBCloneWindowController.m in Sources */,
 				20915F2112874D2A005E0D82 /* GBRepositoryCloningViewController.m in Sources */,
 				20915F2212874D2A005E0D82 /* GBRepositoryCloningController.m in Sources */,
-				20915F2312874D2A005E0D82 /* GBBaseRepositoryController.m in Sources */,
 				20915F2412874D2A005E0D82 /* GBCloneTask.m in Sources */,
 				20915F2612874D2A005E0D82 /* GBAllStagedFilesTask.m in Sources */,
 				20915F2712874D2A005E0D82 /* GBUserNameEmailController.m in Sources */,
@@ -1706,14 +1686,12 @@
 				20A37BAC120DC4510068AB8B /* GBToolbarController.m in Sources */,
 				206CAC71122EB5F7009284FE /* GBRepositoryController.m in Sources */,
 				206CAC75122EBCAD009284FE /* GBRepositoriesController.m in Sources */,
-				2002AC0C123CA1A20072075C /* OAFSEventStreamLegacy.m in Sources */,
 				203977E71252815000770D13 /* NSTableView+OATableViewHelpers.m in Sources */,
 				20C3B71F125BCDC100ABEDE7 /* OAPrimaryMACAddress.m in Sources */,
 				20C3C234125C4DB600ABEDE7 /* GBWelcomeController.m in Sources */,
 				20C3C312125DA0BC00ABEDE7 /* GBCloneWindowController.m in Sources */,
 				2054FFF0125DE9D200692C77 /* GBRepositoryCloningViewController.m in Sources */,
 				2082B7C4126587CA00667A7F /* GBRepositoryCloningController.m in Sources */,
-				2082B8111266500800667A7F /* GBBaseRepositoryController.m in Sources */,
 				20BF14121279533900A30EE6 /* GBCloneTask.m in Sources */,
 				20BF18701280C11C00A30EE6 /* GBAllStagedFilesTask.m in Sources */,
 				20BF1954128224E500A30EE6 /* GBUserNameEmailController.m in Sources */,
