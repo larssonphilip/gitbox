@@ -254,6 +254,7 @@
   [self unscheduleAutoFetch];
   self.folderMonitor.target = nil;
   self.folderMonitor.action = NULL;
+  [self notifyWithSelector:@selector(repositoryControllerDidStop:)];
 }
 
 

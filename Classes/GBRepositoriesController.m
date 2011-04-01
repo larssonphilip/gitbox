@@ -416,6 +416,7 @@
 {
   if (!repoCtrl) return;
   [self configureRepositorycontroller:repoCtrl];
+  [repoCtrl addObserverForAllSelectors:self];
   repoCtrl.fseventStream = self.fsEventStream;
   [repoCtrl start];
   
@@ -481,6 +482,49 @@
   
   if (anIndexRef) *anIndexRef = anIndex;
   return group ? group : self;
+}
+
+
+
+#pragma mark GBRepositoryController notifications
+
+
+- (void) repositoryController:(GBRepositoryController*)oldRepoCtrl didMoveToURL:(NSURL*)newURL
+{
+  // TODO: extract common logic from here and didClone method
+  
+  [[oldRepoCtrl retain] autorelease];
+  [oldRepoCtrl stop];
+  
+  NSUInteger insertionIndex = 0;
+  GBRepositoriesGroup* aGroup = [self groupAndIndex:&insertionIndex forObject:oldRepoCtrl];
+  
+  GBRepositoryController* repoCtrl = [GBRepositoryController repositoryControllerWithURL:newURL];
+  [self startRepositoryController:repoCtrl];
+  
+  NSMutableArray* selectedObjects = [[self.rootController.selectedObjects mutableCopy] autorelease];
+  
+  if (selectedObjects)
+  {
+    NSUInteger i = [selectedObjects indexOfObject:oldRepoCtrl];
+    if (i != NSNotFound)
+    {
+      [selectedObjects removeObjectAtIndex:i];
+      [selectedObjects insertObject:repoCtrl atIndex:i];
+    }
+  }
+  
+  [aGroup removeObject:oldRepoCtrl];
+  [aGroup insertObject:repoCtrl atIndex:insertionIndex];
+  
+  [self contentsDidChange];
+  
+  self.rootController.selectedObjects = selectedObjects;
+}
+
+- (void) repositoryControllerDidStop:(GBRepositoryController*)repoCtrl
+{
+  [repoCtrl removeObserverForAllSelectors:self];
 }
 
 
