@@ -23,6 +23,7 @@
 # pragma mark Executables
 
 
+// TODO: future improvement here: do not remove bundled tar and unpack to Application Support folder instead of bundle to enable packed binary for the App Store.
 + (NSString*) pathToBundledBinary:(NSString*)name
 {
   NSString* pathToPlaceholder = [[NSBundle mainBundle] pathForResource:@"git-placeholder" ofType:@"bundle"];
