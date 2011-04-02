@@ -12,7 +12,8 @@
 
 #import "OAPropertyListController.h"
 #import "OABlockGroup.h"
-#import "OABlockMerger.h"
+#import "OABlockMerger.h" // obsolete
+#import "OABlockTable.h"
 #import "NSFileManager+OAFileManagerHelpers.h"
 #import "NSData+OADataHelpers.h"
 #import "NSArray+OAArrayHelpers.h"
@@ -23,6 +24,7 @@
 
 @property(nonatomic, retain, readwrite) NSData* URLBookmarkData;
 @property(nonatomic, retain) OABlockMerger* blockMerger;
+@property(nonatomic, retain) OABlockTable* blockTable;
 @property(nonatomic, retain) GBGitConfig* config;
 @property(nonatomic, assign) dispatch_queue_t dispatchQueue;
 
@@ -51,6 +53,7 @@
 @synthesize dispatchQueue;
 @synthesize lastError;
 @synthesize blockMerger;
+@synthesize blockTable;
 @synthesize config;
 
 @synthesize unmergedCommitsCount;
@@ -75,6 +78,7 @@
   self.currentRemoteBranch = nil;
   self.localBranchCommits = nil;
   self.blockMerger = nil;
+  self.blockTable = nil;
   self.config = nil;
   
   if (self.dispatchQueue) dispatch_release(self.dispatchQueue);
@@ -90,6 +94,7 @@
   {
     self.dispatchQueue = dispatch_queue_create("com.oleganza.gitbox.repository_queue", NULL);
     self.blockMerger = [[OABlockMerger new] autorelease];
+    self.blockTable = [[OABlockTable new] autorelease];
     self.config = [GBGitConfig configForRepository:self];
   }
   return self;
