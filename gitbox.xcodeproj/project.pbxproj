@@ -299,6 +299,10 @@
 		20A9719212C7808F00E2B7B9 /* GBStageShortcutHintDetector.m in Sources */ = {isa = PBXBuildFile; fileRef = 20A9719012C7808F00E2B7B9 /* GBStageShortcutHintDetector.m */; };
 		20A971E012C7D0D500E2B7B9 /* GBStageMessageHistoryController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20A971DF12C7D0D500E2B7B9 /* GBStageMessageHistoryController.m */; };
 		20A971E112C7D0D500E2B7B9 /* GBStageMessageHistoryController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20A971DF12C7D0D500E2B7B9 /* GBStageMessageHistoryController.m */; };
+		20AAFAC81347B44300A8E31F /* OABlockOperations.m in Sources */ = {isa = PBXBuildFile; fileRef = 20AAFAC71347B44300A8E31F /* OABlockOperations.m */; };
+		20AAFAC91347B44300A8E31F /* OABlockOperations.m in Sources */ = {isa = PBXBuildFile; fileRef = 20AAFAC71347B44300A8E31F /* OABlockOperations.m */; };
+		20AAFACC1347CD9700A8E31F /* OABlockTable.m in Sources */ = {isa = PBXBuildFile; fileRef = 20AAFACB1347CD9700A8E31F /* OABlockTable.m */; };
+		20AAFACD1347CD9700A8E31F /* OABlockTable.m in Sources */ = {isa = PBXBuildFile; fileRef = 20AAFACB1347CD9700A8E31F /* OABlockTable.m */; };
 		20B1621211944C0F00A709CF /* NSFileManager+OAFileManagerHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B1621111944C0F00A709CF /* NSFileManager+OAFileManagerHelpers.m */; };
 		20B399FA11B7F30600D6A3C4 /* GBLocalRefsTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B399F911B7F30600D6A3C4 /* GBLocalRefsTask.m */; };
 		20B8B70C11A489F1006D6442 /* GBChangesBaseTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B8B70B11A489F1006D6442 /* GBChangesBaseTask.m */; };
@@ -627,6 +631,10 @@
 		20A9719012C7808F00E2B7B9 /* GBStageShortcutHintDetector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBStageShortcutHintDetector.m; sourceTree = "<group>"; };
 		20A971DE12C7D0D500E2B7B9 /* GBStageMessageHistoryController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBStageMessageHistoryController.h; sourceTree = "<group>"; };
 		20A971DF12C7D0D500E2B7B9 /* GBStageMessageHistoryController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBStageMessageHistoryController.m; sourceTree = "<group>"; };
+		20AAFAC61347B44300A8E31F /* OABlockOperations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OABlockOperations.h; sourceTree = "<group>"; };
+		20AAFAC71347B44300A8E31F /* OABlockOperations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OABlockOperations.m; sourceTree = "<group>"; };
+		20AAFACA1347CD9700A8E31F /* OABlockTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OABlockTable.h; sourceTree = "<group>"; };
+		20AAFACB1347CD9700A8E31F /* OABlockTable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OABlockTable.m; sourceTree = "<group>"; };
 		20B1621011944C0F00A709CF /* NSFileManager+OAFileManagerHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSFileManager+OAFileManagerHelpers.h"; sourceTree = "<group>"; };
 		20B1621111944C0F00A709CF /* NSFileManager+OAFileManagerHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSFileManager+OAFileManagerHelpers.m"; sourceTree = "<group>"; };
 		20B399F811B7F30600D6A3C4 /* GBLocalRefsTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBLocalRefsTask.h; sourceTree = "<group>"; };
@@ -1148,6 +1156,10 @@
 				2031BB9D12A85646008CC337 /* OABlockQueue.m */,
 				200A41AF12EB91B0004DF940 /* OABlockMerger.h */,
 				200A41B012EB91B0004DF940 /* OABlockMerger.m */,
+				20AAFAC61347B44300A8E31F /* OABlockOperations.h */,
+				20AAFAC71347B44300A8E31F /* OABlockOperations.m */,
+				20AAFACA1347CD9700A8E31F /* OABlockTable.h */,
+				20AAFACB1347CD9700A8E31F /* OABlockTable.m */,
 			);
 			name = "Concurrency Helpers";
 			sourceTree = "<group>";
@@ -1613,6 +1625,8 @@
 				2086DF53133BC20F00289144 /* GBSidebarMultipleSelection.m in Sources */,
 				2051376F13446443008614D4 /* OAFSEventStream.m in Sources */,
 				20C66EF11344EEAF0067D232 /* GBFolderMonitor.m in Sources */,
+				20AAFAC91347B44300A8E31F /* OABlockOperations.m in Sources */,
+				20AAFACD1347CD9700A8E31F /* OABlockTable.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1733,6 +1747,8 @@
 				2086DF52133BC20F00289144 /* GBSidebarMultipleSelection.m in Sources */,
 				2051376E13446443008614D4 /* OAFSEventStream.m in Sources */,
 				20C66EF01344EEAF0067D232 /* GBFolderMonitor.m in Sources */,
+				20AAFAC81347B44300A8E31F /* OABlockOperations.m in Sources */,
+				20AAFACC1347CD9700A8E31F /* OABlockTable.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

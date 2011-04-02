@@ -19,7 +19,8 @@
 #import "NSError+OAPresent.h"
 #import "OABlockGroup.h"
 #import "OABlockQueue.h"
-#import "OABlockMerger.h"
+#import "OABlockMerger.h" // obsolete
+#import "OABlockTable.h"
 #import "GBFolderMonitor.h"
 #import "NSArray+OAArrayHelpers.h"
 #import "NSObject+OASelectorNotifications.h"
@@ -34,7 +35,8 @@
 
 @interface GBRepositoryController ()
 
-@property(nonatomic, retain) OABlockMerger* blockMerger;
+@property(nonatomic, retain) OABlockMerger* blockMerger; // obsolete
+@property(nonatomic, retain) OABlockTable* blockTable;
 @property(nonatomic, retain) GBFolderMonitor* folderMonitor;
 
 @property(nonatomic, assign) BOOL isDisappearedFromFileSystem;
@@ -61,15 +63,16 @@
 - (void) pushFSEventsPause;
 - (void) popFSEventsPause;
 
-- (void) loadCommitsWithBlock:(void(^)())block;
+- (void) loadCommitsWithBlock:(void(^)())aBlock;
 - (void) loadStageChanges;
 - (void) loadChangesForCommit:(GBCommit*)commit;
 
-- (void) updateLocalRefsWithBlock:(void(^)())block;
-- (void) updateRemoteRefsWithBlock:(void(^)())block;
-- (void) updateBranchesForRemote:(GBRemote*)aRemote withBlock:(void(^)())block;
+- (void) updateLocalRefsIfNeededWithBlock:(void(^)())aBlock;
+- (void) updateLocalRefsWithBlock:(void(^)())aBlock;
+- (void) updateRemoteRefsWithBlock:(void(^)())aBlock;
+- (void) updateBranchesForRemote:(GBRemote*)aRemote withBlock:(void(^)())aBlock;
 
-- (void) fetchRemote:(GBRemote*)aRemote withBlock:(void(^)())block;
+- (void) fetchRemote:(GBRemote*)aRemote withBlock:(void(^)())aBlock;
 
 - (void) resetAutoFetchInterval;
 - (void) scheduleAutoFetch;
@@ -89,7 +92,8 @@
 @synthesize viewController;
 @synthesize selectedCommit;
 @synthesize lastCommitBranchName;
-@synthesize blockMerger;
+@synthesize blockMerger; // obsolete
+@synthesize blockTable;
 @synthesize updatesQueue;
 @synthesize autofetchQueue;
 @synthesize folderMonitor;
@@ -120,6 +124,7 @@
   [selectedCommit release]; selectedCommit = nil;
   [lastCommitBranchName release]; lastCommitBranchName = nil;
   [blockMerger release]; blockMerger = nil;
+  [blockTable release]; blockTable = nil;
   [updatesQueue release]; updatesQueue = nil;
   [autofetchQueue release]; autofetchQueue = nil;
   self.folderMonitor.target = nil;
@@ -142,6 +147,7 @@
   {
     self.repository = [GBRepository repositoryWithURL:aURL];
     self.blockMerger = [[OABlockMerger new] autorelease];
+    self.blockTable = [[OABlockTable new] autorelease];
     self.sidebarItem = [[[GBSidebarItem alloc] init] autorelease];
     self.sidebarItem.object = self;
     self.sidebarItem.selectable = YES;
@@ -912,49 +918,59 @@
 
 
 
-- (void) initialUpdateWithBlock:(void(^)())block
+//- (void) initialUpdateWithBlock:(void(^)())block
+//{
+//  if (!self.repository)
+//  {
+//    if (block) block();
+//    return;
+//  }
+//  
+//  [self.blockMerger performTaskOnce:NSStringFromSelector(_cmd) withBlock:^(OABlockMergerBlock callbackBlock){
+//    [self pushFSEventsPause];
+//    [self pushSpinning];
+//    
+//    [self updateLocalRefsWithBlock:^{
+//      [self loadCommitsWithBlock:^{
+//        [self.repository initSubmodulesWithBlock:^{
+//          [self updateSubmodulesWithBlock:^{
+//            [self popSpinning];
+//            [self popFSEventsPause];
+//            
+//            self.isWaitingForAutofetch = NO; // resets YES set in -start method
+//            [self resetAutoFetchInterval];
+//            [self scheduleAutoFetch];
+//            
+//            callbackBlock();
+//          }];
+//        }];
+//      }];
+//    }];
+//
+//    
+//    if (!self.selectedCommit && self.repository.stage)
+//    {
+//      self.selectedCommit = self.repository.stage;
+//    }
+//    else
+//    {
+//      [self loadStageChanges];
+//    }
+//  } completionHandler:block];
+//}
+
+
+
+- (void) updateLocalRefsIfNeededWithBlock:(void(^)())aBlock
 {
-  if (!self.repository)
+  if (self.repository.currentLocalRef)
   {
-    if (block) block();
+    if (aBlock) aBlock();
     return;
   }
   
-  [self.blockMerger performTaskOnce:NSStringFromSelector(_cmd) withBlock:^(OABlockMergerBlock callbackBlock){
-    [self pushFSEventsPause];
-    [self pushSpinning];
-    
-    [self updateLocalRefsWithBlock:^{
-      [self loadCommitsWithBlock:^{
-        [self.repository initSubmodulesWithBlock:^{
-          [self updateSubmodulesWithBlock:^{
-            [self popSpinning];
-            [self popFSEventsPause];
-            
-            self.isWaitingForAutofetch = NO; // resets YES set in -start method
-            [self resetAutoFetchInterval];
-            [self scheduleAutoFetch];
-            
-            callbackBlock();
-          }];
-        }];
-      }];
-    }];
-
-    
-    if (!self.selectedCommit && self.repository.stage)
-    {
-      self.selectedCommit = self.repository.stage;
-    }
-    else
-    {
-      [self loadStageChanges];
-    }
-  } completionHandler:block];
+  [self updateLocalRefsWithBlock:aBlock];
 }
-
-
-
 
 
 - (void) updateLocalRefsWithBlock:(void(^)())aBlock
@@ -964,27 +980,28 @@
     if (aBlock) aBlock();
     return;
   }
-    
-  [self.blockMerger performTask:NSStringFromSelector(_cmd) withBlock:^(OABlockMergerBlock callbackBlock) {
+  
+  [self.blockTable addBlock:aBlock forName:@"updateLocalRefs" andProceedIfClear:^{
     BOOL wantsSpinning = !!self.isSpinning;
     if (wantsSpinning) [self pushSpinning];
     [self pushFSEventsPause];
     [self.repository updateLocalRefsWithBlock:^{
       
-      if ((!self.repository.currentRemoteBranch || [self.repository.currentRemoteBranch isRemoteBranch]) && 
+      if ((!self.repository.currentRemoteBranch || 
+           [self.repository.currentRemoteBranch isRemoteBranch]) && 
           [self.repository.currentLocalRef isLocalBranch])
       {
         self.repository.currentRemoteBranch = self.repository.currentLocalRef.configuredRemoteBranch;
       }
       
-      if (callbackBlock) callbackBlock();
+      [self.blockTable callBlockForName:@"updateLocalRefs"];
       
       if (wantsSpinning) [self popSpinning];
       [self popFSEventsPause];
       
       [self notifyWithSelector:@selector(repositoryControllerDidUpdateRefs:)];
     }];  
-  } completionHandler:aBlock];
+  }];
 }
 
 - (void) updateRemoteRefsWithBlock:(void(^)())block
@@ -1063,11 +1080,11 @@
           repoCtrl.updatesQueue = self.updatesQueue;
           repoCtrl.autofetchQueue = self.autofetchQueue;
           [repoCtrl start];
-          [self.updatesQueue prependBlock:^{
-            [repoCtrl initialUpdateWithBlock:^{
-              [self.updatesQueue endBlock];
-            }];
-          }];
+//          [self.updatesQueue prependBlock:^{
+//            [repoCtrl initialUpdateWithBlock:^{
+//              [self.updatesQueue endBlock];
+//            }];
+//          }];
         }
         else
         {
@@ -1097,47 +1114,28 @@
   }
 }
 
-- (void) loadCommitsWithBlock:(void(^)())block
+- (void) loadCommitsWithBlock:(void(^)())aBlock
 {
-  block = [[block copy] autorelease];
-  
-  NSLog(@"started loadCommitsWithBlock");
+  if (!self.repository)
+  {
+    if (aBlock) aBlock();
+    return;
+  }
   
   [self pushFSEventsPause];
   BOOL wantsSpinning = !!self.isSpinning;
   if (wantsSpinning) [self pushSpinning];
   
-  [self.blockMerger performTask:NSStringFromSelector(_cmd) withBlock:^(OABlockMergerBlock callbackBlock){
-
-    [OABlockGroup groupBlock:^(OABlockGroup *aGroup) {
-    
-      if (!self.repository.currentLocalRef)
-      {
-        [aGroup enter];
-        [self updateLocalRefsWithBlock:^{
-          [aGroup leave];
-        }];
-      }
-    }
-    continuation:^{
-      if (!self.repository.currentLocalRef)
-      {
-        if (callbackBlock) callbackBlock();
-        return;
-      }
+  [self.blockTable addBlock:aBlock forName:@"loadCommits" andProceedIfClear:^{
+    [self updateLocalRefsIfNeededWithBlock:^{
       [self.repository updateLocalBranchCommitsWithBlock:^{
-        //NSLog(@"completed updateLocalBranchCommitsWithBlock");
-        if (callbackBlock) callbackBlock();
+        [self.blockTable callBlockForName:@"loadCommits"];
+        if (wantsSpinning) [self popSpinning];
+        [self popFSEventsPause];
         [self.sidebarItem update];
         [self notifyWithSelector:@selector(repositoryControllerDidUpdateCommits:)];
       }];
     }];
-  }
-  completionHandler:^{
-    //NSLog(@"finishing loadCommitsWithBlock");
-    if (block) block();
-    if (wantsSpinning) [self popSpinning];
-    [self popFSEventsPause];
   }];
 }
 

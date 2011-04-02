@@ -569,6 +569,11 @@
 
 - (void) updateLocalBranchCommitsWithBlock:(void(^)())block
 {
+  if (!self.currentLocalRef)
+  {
+    if (block) block();
+    return;
+  }
   block = [[block copy] autorelease];
   GBHistoryTask* task = [GBHistoryTask task];
   task.repository = self;
