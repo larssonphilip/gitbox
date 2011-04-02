@@ -1122,11 +1122,11 @@
     return;
   }
   
-  [self pushFSEventsPause];
-  BOOL wantsSpinning = !!self.isSpinning;
-  if (wantsSpinning) [self pushSpinning];
-  
   [self.blockTable addBlock:aBlock forName:@"loadCommits" andProceedIfClear:^{
+    [self pushFSEventsPause];
+    BOOL wantsSpinning = !!self.isSpinning;
+    if (wantsSpinning) [self pushSpinning];
+
     [self updateLocalRefsIfNeededWithBlock:^{
       [self.repository updateLocalBranchCommitsWithBlock:^{
         [self.blockTable callBlockForName:@"loadCommits"];
