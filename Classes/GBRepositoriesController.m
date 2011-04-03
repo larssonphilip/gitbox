@@ -147,7 +147,7 @@
   NSUInteger insertionIndex = 0;
   GBRepositoriesGroup* aGroup = [self contextGroupAndIndex:&insertionIndex];
   GBRepositoriesGroup* newGroup = [GBRepositoriesGroup untitledGroup];
-  aGroup.repositoriesController = self;
+  newGroup.repositoriesController = self;
   
   [aGroup insertObject:newGroup atIndex:insertionIndex];
   
