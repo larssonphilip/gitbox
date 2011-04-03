@@ -1,22 +1,23 @@
 #import "GBRepository.h"
 #import "GBGitConfig.h"
-#import "OABlockMerger.h"
+#import "OABlockTable.h"
 #import "GBTask.h"
 
 
 @interface GBGitConfig ()
-@property(nonatomic, retain) OABlockMerger* blockMerger;
+@property(nonatomic, retain) OABlockTable* blockTable;
+@property(nonatomic, assign) BOOL disabledPathQuoting;
 @end
 
 @implementation GBGitConfig
 
-@synthesize blockMerger;
-
+@synthesize blockTable;
+@synthesize disabledPathQuoting;
 @synthesize repository;
 
 - (void) dealloc
 {
-  self.blockMerger = nil;
+  self.blockTable = nil;
   [super dealloc];
 }
 
@@ -42,7 +43,7 @@
 {
   if ((self = [super init]))
   {
-    self.blockMerger = [[OABlockMerger new] autorelease];
+    self.blockTable = [[OABlockTable new] autorelease];
   }
   return self;
 }
@@ -172,9 +173,17 @@
 
 - (void) ensureDisabledPathQuoting:(void(^)())aBlock
 {
-  [self.blockMerger performTaskOnce:@"ConfigureUTF8" withBlock:^(OABlockMergerBlock callbackBlock){
-    [self setString:@"false" forKey:@"core.quotepath" withBlock:callbackBlock];
-  } completionHandler:aBlock];
+  if (self.disabledPathQuoting)
+  {
+    if (aBlock) aBlock();
+    return;
+  }
+  [self.blockTable addBlock:aBlock forName:@"ensureDisabledPathQuoting" proceedIfClear:^{
+    [self setString:@"false" forKey:@"core.quotepath" withBlock:^{
+      self.disabledPathQuoting = YES;
+      [self.blockTable callBlockForName:@"ensureDisabledPathQuoting"];
+    }];
+  }];
 }
 
 - (void) setName:(NSString*)name email:(NSString*)email withBlock:(void(^)())aBlock

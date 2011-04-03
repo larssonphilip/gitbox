@@ -57,6 +57,8 @@
 
 #pragma mark Update
 
+- (void) loadRemotesIfNeededWithBlock:(void(^)())block;
+- (void) loadRemotesWithBlock:(void(^)())block;
 - (void) updateLocalRefsWithBlock:(void(^)())block;
 
 - (void) updateLocalBranchCommitsWithBlock:(void(^)())block;

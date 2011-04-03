@@ -6,6 +6,7 @@
 #import "GBSidebarMultipleSelection.h"
 #import "OALicenseNumberCheck.h"
 
+#import "OAFastJumpController.h"
 #import "NSFileManager+OAFileManagerHelpers.h"
 #import "NSTableView+OATableViewHelpers.h"
 #import "NSObject+OADispatchItemValidation.h"
@@ -17,6 +18,7 @@
 @property(nonatomic, retain) NSArray* nextRespondingSidebarObjects; // a list of sidebar item objects linked in a responder chain
 @property(nonatomic, assign) NSUInteger ignoreSelectionChange;
 @property(nonatomic, readonly) GBSidebarItem* clickedSidebarItem; // returns a clicked item if it exists and lies outside the selection
+@property(nonatomic, retain) OAFastJumpController* jumpController;
 - (NSArray*) selectedSidebarItems;
 - (void) updateContents;
 - (void) updateSelection;
@@ -34,6 +36,7 @@
 @synthesize ignoreSelectionChange;
 @synthesize buyButton;
 @synthesize nextRespondingSidebarObjects;
+@synthesize jumpController;
 
 - (void) dealloc
 {
@@ -41,6 +44,7 @@
   self.rootController = nil;
   self.outlineView = nil;
   self.buyButton = nil;
+  self.jumpController = nil;
   [nextRespondingSidebarObjects release]; nextRespondingSidebarObjects = nil;
   [super dealloc];
 }
@@ -48,7 +52,7 @@
 - (void) loadView
 {
   [super loadView];
-  
+  if (!self.jumpController) self.jumpController = [OAFastJumpController controller];
   [self.outlineView registerForDraggedTypes:[NSArray arrayWithObjects:GBSidebarItemPasteboardType, NSFilenamesPboardType, nil]];
   [self.outlineView setDraggingSourceOperationMask:NSDragOperationEvery forLocal:YES];
   [self.outlineView setDraggingSourceOperationMask:NSDragOperationEvery forLocal:NO];
@@ -189,6 +193,7 @@
 
 - (IBAction) selectRightPane:(id)sender
 {
+  [self.jumpController flush];
   // Key view loop sucks: http://www.cocoadev.com/index.pl?KeyViewLoopGuidelines
   //NSLog(@"selectRightPane: next key view: %@, next valid key view: %@", [[self view] nextKeyView], [[self view] nextValidKeyView]);
   //[[[self view] window] selectKeyViewFollowingView:[self view]];
@@ -413,7 +418,9 @@
   [[self.outlineView selectedRowIndexes] enumerateIndexesUsingBlock:^(NSUInteger row, BOOL *stop) {
     [selectedItems addObject:[self.outlineView itemAtRow:row]];
   }];
-  self.rootController.selectedSidebarItems = selectedItems;
+  [self.jumpController delayBlockIfNeeded:^{
+    self.rootController.selectedSidebarItems = selectedItems;
+  }];
 }
 
 - (NSCell *)outlineView:(NSOutlineView *)outlineView dataCellForTableColumn:(NSTableColumn *)tableColumn item:(GBSidebarItem*)item

@@ -1,5 +1,5 @@
 
-// Merges callbacks for already running tasks without repeatitive runs. 
+// Merges callbacks for already running tasks without repetative runs. 
 // Also allows to run certain task only once (but still merge callbacks if the task is still running)
 
 /*

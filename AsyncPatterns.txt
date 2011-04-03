@@ -47,6 +47,8 @@ Async w/o coalescing:
 
 Async with coalescing:
 
+(See OABlockTable instead of OABlockMerger)
+
 [self.blockMerger performIfNotRunningForKey:@"MySpecificOperation" block:^{
   [self doSomething:^{
     [self.blockMerger didFinishKey:@"MySpecificOperation"];

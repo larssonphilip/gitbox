@@ -12,7 +12,6 @@
 
 #import "OAPropertyListController.h"
 #import "OABlockGroup.h"
-#import "OABlockMerger.h" // obsolete
 #import "OABlockTable.h"
 #import "NSFileManager+OAFileManagerHelpers.h"
 #import "NSData+OADataHelpers.h"
@@ -23,14 +22,12 @@
 @interface GBRepository ()
 
 @property(nonatomic, retain, readwrite) NSData* URLBookmarkData;
-@property(nonatomic, retain) OABlockMerger* blockMerger;
 @property(nonatomic, retain) OABlockTable* blockTable;
 @property(nonatomic, retain) GBGitConfig* config;
 @property(nonatomic, assign) dispatch_queue_t dispatchQueue;
 
 - (void) loadCurrentLocalRefWithBlock:(void(^)())block;
 - (void) loadLocalRefsWithBlock:(void(^)())block;
-- (void) loadRemotesWithBlock:(void(^)())block;
 
 @end
 
@@ -52,7 +49,6 @@
 @synthesize localBranchCommits;
 @synthesize dispatchQueue;
 @synthesize lastError;
-@synthesize blockMerger;
 @synthesize blockTable;
 @synthesize config;
 
@@ -77,7 +73,6 @@
   self.currentLocalRef = nil;
   self.currentRemoteBranch = nil;
   self.localBranchCommits = nil;
-  self.blockMerger = nil;
   self.blockTable = nil;
   self.config = nil;
   
@@ -93,7 +88,6 @@
   if ((self = [super init]))
   {
     self.dispatchQueue = dispatch_queue_create("com.oleganza.gitbox.repository_queue", NULL);
-    self.blockMerger = [[OABlockMerger new] autorelease];
     self.blockTable = [[OABlockTable new] autorelease];
     self.config = [GBGitConfig configForRepository:self];
   }
@@ -469,15 +463,15 @@
 
 
 
-- (void) updateLocalRefsWithBlock:(void(^)())block
+- (void) updateLocalRefsWithBlock:(void(^)())aBlock
 {
-  block = [[block copy] autorelease];
+  aBlock = [[aBlock copy] autorelease];
   
   [self loadRemotesWithBlock:^{
     [self loadLocalRefsWithBlock:^{
       [self loadCurrentLocalRefWithBlock:^{
         [self.currentLocalRef loadConfiguredRemoteBranchWithBlock:^{
-          if (block) block();
+          if (aBlock) aBlock();
         }];
       }];
     }];
@@ -485,9 +479,19 @@
 }
 
 
-- (void) loadRemotesWithBlock:(void(^)())block
+- (void) loadRemotesIfNeededWithBlock:(void(^)())aBlock
 {
-  block = [[block copy] autorelease];
+  if (self.remotes && [self.remotes count] > 0) 
+  {
+    if (aBlock) aBlock();
+    return;
+  }
+  [self loadRemotesWithBlock:aBlock];
+}
+
+- (void) loadRemotesWithBlock:(void(^)())aBlock
+{
+  aBlock = [[aBlock copy] autorelease];
   GBRemotesTask* task = [GBRemotesTask task];
   task.repository = self;
   [self launchTask:task withBlock:^{
@@ -502,7 +506,7 @@
     }
     
     self.remotes = task.remotes;
-    if (block) block();
+    if (aBlock) aBlock();
   }];
 }
 

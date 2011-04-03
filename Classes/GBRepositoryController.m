@@ -19,7 +19,6 @@
 #import "NSError+OAPresent.h"
 #import "OABlockGroup.h"
 #import "OABlockQueue.h"
-#import "OABlockMerger.h" // obsolete
 #import "OABlockTable.h"
 #import "GBFolderMonitor.h"
 #import "NSArray+OAArrayHelpers.h"
@@ -35,13 +34,11 @@
 
 @interface GBRepositoryController ()
 
-@property(nonatomic, retain) OABlockMerger* blockMerger; // obsolete
 @property(nonatomic, retain) OABlockTable* blockTable;
 @property(nonatomic, retain) GBFolderMonitor* folderMonitor;
 
 @property(nonatomic, assign) BOOL isDisappearedFromFileSystem;
 @property(nonatomic, assign) BOOL isCommitting;
-@property(nonatomic, assign) BOOL isUpdatingRemoteRefs;
 @property(nonatomic, assign) BOOL isWaitingForAutofetch;
 @property(nonatomic, assign) NSInteger isStaging; // maintains a count of number of staging tasks running
 @property(nonatomic, assign) NSInteger isLoadingChanges; // maintains a count of number of changes loading tasks running
@@ -65,7 +62,7 @@
 
 - (void) loadCommitsWithBlock:(void(^)())aBlock;
 - (void) loadStageChanges;
-- (void) loadChangesForCommit:(GBCommit*)commit;
+- (void) loadStageChangesWithBlock:(void(^)())aBlock;
 
 - (void) updateLocalRefsIfNeededWithBlock:(void(^)())aBlock;
 - (void) updateLocalRefsWithBlock:(void(^)())aBlock;
@@ -92,7 +89,6 @@
 @synthesize viewController;
 @synthesize selectedCommit;
 @synthesize lastCommitBranchName;
-@synthesize blockMerger; // obsolete
 @synthesize blockTable;
 @synthesize updatesQueue;
 @synthesize autofetchQueue;
@@ -101,7 +97,6 @@
 
 @synthesize isRemoteBranchesDisabled;
 @synthesize isCommitting;
-@synthesize isUpdatingRemoteRefs;
 @synthesize isDisappearedFromFileSystem;
 @synthesize isWaitingForAutofetch;
 @synthesize isStaging; // maintains a count of number of staging tasks running
@@ -123,7 +118,6 @@
   [viewController release]; viewController = nil;
   [selectedCommit release]; selectedCommit = nil;
   [lastCommitBranchName release]; lastCommitBranchName = nil;
-  [blockMerger release]; blockMerger = nil;
   [blockTable release]; blockTable = nil;
   [updatesQueue release]; updatesQueue = nil;
   [autofetchQueue release]; autofetchQueue = nil;
@@ -146,7 +140,6 @@
   if ((self = [super init]))
   {
     self.repository = [GBRepository repositoryWithURL:aURL];
-    self.blockMerger = [[OABlockMerger new] autorelease];
     self.blockTable = [[OABlockTable new] autorelease];
     self.sidebarItem = [[[GBSidebarItem alloc] init] autorelease];
     self.sidebarItem.object = self;
@@ -241,7 +234,7 @@
 {
   self.folderMonitor.target = self;
   self.folderMonitor.action = @selector(folderMonitorDidUpdate:);
-  self.autoFetchInterval = 3.0 + drand48()*10.0; // spread all repos' initial autofetch within 10 seconds
+  self.autoFetchInterval = 3.0 + drand48()*20.0; // spread all repos' initial autofetch within 20 seconds
   [self scheduleAutoFetch];
 }
 
@@ -258,6 +251,36 @@
   [self notifyWithSelector:@selector(repositoryControllerDidStop:)];
 }
 
+
+- (void) folderMonitorDidUpdate:(GBFolderMonitor*)monitor
+{
+  GBRepository* repo = self.repository;
+  if (!repo) return;
+  if (![self checkRepositoryExistance]) return;
+  
+  if (monitor.dotgitIsUpdated)
+  {
+    [self pushFSEventsPause];
+    [self loadStageChangesWithBlock:^{
+      [self updateLocalRefsWithBlock:^{
+        [self loadCommitsWithBlock:^{
+          [self updateRemoteRefsWithBlock:^{
+          }];
+        }];
+        [self popFSEventsPause];
+      }];
+    }];
+  }
+  else
+  {
+    if (monitor.folderIsUpdated)
+    {
+      // TODO: if monitor.dotgitIsPaused, then update stage changes *without* refreshing the index to avoid complex event sequences.
+      [self loadStageChangesWithBlock:^{
+      }];
+    }
+  }
+}
 
 
 
@@ -288,6 +311,7 @@
 
 - (void) checkoutHelper:(void(^)(void(^)()))checkoutBlock
 {
+  // TODO: queue up all checkouts
   checkoutBlock = [[checkoutBlock copy] autorelease];
   GBRepository* repo = self.repository;
   
@@ -301,16 +325,16 @@
   
   checkoutBlock(^{
     
-    [self loadStageChanges];
-    [self updateLocalRefsWithBlock:^{
-      [self notifyWithSelector:@selector(repositoryControllerDidCheckoutBranch:)];
-      [self loadCommitsWithBlock:nil];
-      
-      [self popDisabled];
-      [self popSpinning];
-      [self popFSEventsPause];
+    [self loadStageChangesWithBlock:^{
+      [self updateLocalRefsWithBlock:^{
+        [self notifyWithSelector:@selector(repositoryControllerDidCheckoutBranch:)];
+        [self loadCommitsWithBlock:nil];
+        
+        [self popDisabled];
+        [self popSpinning];
+        [self popFSEventsPause];
+      }];
     }];
-    
   });
 }
 
@@ -363,33 +387,6 @@
   [self selectRemoteBranch:remoteBranch];
 }
 
-
-- (void) folderMonitorDidUpdate:(GBFolderMonitor*)monitor
-{
-  GBRepository* repo = self.repository;
-  if (!repo) return;
-  if (![self checkRepositoryExistance]) return;
-  
-  if (monitor.dotgitIsUpdated)
-  {
-    [self pushFSEventsPause];
-    [self loadStageChanges];
-    [self updateLocalRefsWithBlock:^{
-      [self loadCommitsWithBlock:nil];
-      [self updateRemoteRefsWithBlock:^{
-      }];
-      [self popFSEventsPause];
-    }];
-  }
-  else
-  {
-    if (monitor.folderIsUpdated)
-    {
-      // TODO: if monitor.dotgitIsPaused, then update stage changes *without* refreshing the index to avoid complex event sequences.
-      [self loadStageChanges];
-    }
-  }
-}
 
 
 - (void) setSelectedCommit:(GBCommit*)aCommit
@@ -537,7 +534,7 @@
     // Avoid loading changes if another staging is running.
     if (!isStaging) 
     {
-      [self loadStageChanges];
+      [self loadStageChangesWithBlock:^{}];
     }
     [self popSpinning];
     [self popFSEventsPause];
@@ -548,26 +545,23 @@
 
 - (void) stageChanges:(NSArray*)changes
 {
-  [self resetAutoFetchInterval];
   [self stageChanges:changes withBlock:nil];
 }
 
-- (void) stageChanges:(NSArray*)changes withBlock:(void(^)())block
+- (void) stageChanges:(NSArray*)changes withBlock:(void(^)())aBlock
 {
-  [self resetAutoFetchInterval];
   if ([changes count] <= 0)
   {
-    if (block) block();
+    if (aBlock) aBlock();
     return;
   }
   [self stagingHelperForChanges:changes withBlock:^(NSArray* notBusyChanges, GBStage* stage, void(^helperBlock)()){
     [stage stageChanges:notBusyChanges withBlock:helperBlock];
-  } postStageBlock:block];
+  } postStageBlock:aBlock];
 }
 
 - (void) unstageChanges:(NSArray*)changes
 {
-  [self resetAutoFetchInterval];
   if ([changes count] <= 0)
   {
     return;
@@ -579,7 +573,6 @@
 
 - (void) revertChanges:(NSArray*)changes
 {
-  [self resetAutoFetchInterval];
   // Revert each file individually because added untracked file causes a total failure
   // in 'git checkout HEAD' command when mixed with tracked paths.
   for (GBChange* change in changes)
@@ -597,7 +590,6 @@
 
 - (void) deleteFilesInChanges:(NSArray*)changes
 {
-  [self resetAutoFetchInterval];
   [self stagingHelperForChanges:changes withBlock:^(NSArray* notBusyChanges, GBStage* stage, void(^block)()){
     [stage deleteFilesInChanges:notBusyChanges withBlock:block];
   } postStageBlock:nil];
@@ -605,7 +597,6 @@
 
 - (void) commitWithMessage:(NSString*)message
 {
-  [self resetAutoFetchInterval];
   if (self.isCommitting) return;
   self.isCommitting = YES;
   [self pushSpinning];
@@ -613,9 +604,10 @@
   [self.repository commitWithMessage:message block:^{
     self.isCommitting = NO;
     
-    [self loadStageChanges];
-    [self updateLocalRefsWithBlock:^{
-      [self loadCommitsWithBlock:nil];
+    [self loadStageChangesWithBlock:^{
+      [self updateLocalRefsWithBlock:^{
+        [self loadCommitsWithBlock:nil];
+      }];
     }];
     
     [self popSpinning];
@@ -626,7 +618,11 @@
 
 - (void) fetchRemote:(GBRemote*)aRemote withBlock:(void(^)())block
 {
-  if (!self.repository) return block();
+  if (!self.repository)
+  {
+    if (block) block();
+    return;
+  }
   
   block = [[block copy] autorelease];
   
@@ -638,7 +634,7 @@
       [self loadCommitsWithBlock:block];
       [self updateRemoteRefsWithBlock:nil];
       [self popFSEventsPause];
-    }];    
+    }];
     [self popDisabled];
     [self popSpinning];
   }];
@@ -671,11 +667,12 @@
   [self pushFSEventsPause];
   [self.repository pullOrMergeWithBlock:^{
     [self.repository initSubmodulesWithBlock:^{
-      [self loadStageChanges];
-      [self updateLocalRefsWithBlock:^{
-        [self loadCommitsWithBlock:nil];
-        [self updateRemoteRefsWithBlock:nil];
-        [self popFSEventsPause];
+      [self loadStageChangesWithBlock:^{
+        [self updateLocalRefsWithBlock:^{
+          [self loadCommitsWithBlock:nil];
+          [self updateRemoteRefsWithBlock:nil];
+          [self popFSEventsPause];
+        }];
       }];
       [self popDisabled];
       [self popSpinning];
@@ -691,8 +688,10 @@
   [self pushFSEventsPause];
   [self.repository pushWithBlock:^{
     [self updateLocalRefsWithBlock:^{
-      [self loadCommitsWithBlock:nil];
-      [self updateRemoteRefsWithBlock:nil];
+      [self loadCommitsWithBlock:^{
+        [self updateRemoteRefsWithBlock:^{
+        }];
+      }];
       [self popFSEventsPause];
     }];
     [self popSpinning];
@@ -981,7 +980,7 @@
     return;
   }
   
-  [self.blockTable addBlock:aBlock forName:@"updateLocalRefs" andProceedIfClear:^{
+  [self.blockTable addBlock:aBlock forName:@"updateLocalRefs" proceedIfClear:^{
     BOOL wantsSpinning = !!self.isSpinning;
     if (wantsSpinning) [self pushSpinning];
     [self pushFSEventsPause];
@@ -1004,28 +1003,28 @@
   }];
 }
 
-- (void) updateRemoteRefsWithBlock:(void(^)())block
+- (void) updateRemoteRefsWithBlock:(void(^)())aBlock
 {
-  if (self.isUpdatingRemoteRefs)
+  if (!self.repository)
   {
-    if (block) block();
+    if (aBlock) aBlock();
     return;
   }
-  self.isUpdatingRemoteRefs = YES;
-  
-  block = [[block copy] autorelease];
-  
-  [OABlockGroup groupBlock:^(OABlockGroup* blockGroup){
-    for (GBRemote* aRemote in self.repository.remotes)
-    {
-      [blockGroup enter];
-      [self updateBranchesForRemote:aRemote withBlock:^{
-        [blockGroup leave];
+    
+  [self.blockTable addBlock:aBlock forName:@"updateRemoteRefs" proceedIfClear:^{
+    [self.repository loadRemotesIfNeededWithBlock:^{
+      [OABlockGroup groupBlock:^(OABlockGroup* blockGroup){
+        for (GBRemote* aRemote in self.repository.remotes)
+        {
+          [blockGroup enter];
+          [self updateBranchesForRemote:aRemote withBlock:^{
+            [blockGroup leave];
+          }];
+        }
+      } continuation:^{
+        [self.blockTable callBlockForName:@"updateRemoteRefs"];
       }];
-    }
-  } continuation:^{
-    self.isUpdatingRemoteRefs = NO;
-    if (block) block();
+    }];
   }];
 }
 
@@ -1122,7 +1121,7 @@
     return;
   }
   
-  [self.blockTable addBlock:aBlock forName:@"loadCommits" andProceedIfClear:^{
+  [self.blockTable addBlock:aBlock forName:@"loadCommits" proceedIfClear:^{
     [self pushFSEventsPause];
     BOOL wantsSpinning = !!self.isSpinning;
     if (wantsSpinning) [self pushSpinning];
@@ -1141,30 +1140,29 @@
 
 - (void) loadStageChanges
 {
-  if (!self.repository.stage) return;
+  [self loadStageChangesWithBlock:^{}];
+}
+
+- (void) loadStageChangesWithBlock:(void(^)())aBlock
+{
+  if (!self.repository.stage)
+  {
+    if (aBlock) aBlock();
+    return;
+  }
   
-  [self pushFSEventsPause];
-  isLoadingChanges++;
-  [self.repository.stage loadChangesWithBlock:^{
-    isLoadingChanges--;
-    [self.sidebarItem update];
-    [self popFSEventsPause];
+  [self.blockTable addBlock:aBlock forName:@"loadStageChanges" proceedIfClear:^{
+    [self pushFSEventsPause];
+    isLoadingChanges++;
+    [self.repository.stage loadChangesWithBlock:^{
+      isLoadingChanges--;
+      [self.blockTable callBlockForName:@"loadStageChanges"];
+      [self.sidebarItem update];
+      [self popFSEventsPause];
+    }];
   }];
 }
 
-- (void) loadChangesForCommit:(GBCommit*)commit
-{
-  if (!commit) return;
-  if (commit == self.repository.stage)
-  {
-    [self loadStageChanges];
-    return;
-  }
-  [self pushFSEventsPause];
-  [commit loadChangesIfNeededWithBlock:^{
-    [self popFSEventsPause];
-  }];
-}
 
 
 
@@ -1286,9 +1284,9 @@
 
 - (void) resetAutoFetchInterval
 {
-  //NSLog(@"GBRepositoryController: resetAutoFetchInterval in %@ (was: %f)", [self url], autoFetchInterval);
+  NSLog(@"GBRepositoryController: resetAutoFetchInterval in %@ (was: %f)", [self url], autoFetchInterval);
   NSTimeInterval plusMinusOne = (2*(0.5-drand48()));
-  autoFetchInterval = 3.0 + plusMinusOne;
+  autoFetchInterval = 10.0 + plusMinusOne*2;
   [self scheduleAutoFetch];
 }
 
@@ -1332,7 +1330,9 @@
         //NSLog(@"AutoFetch: start %@", [self nameInSidebar]);
         [self updateRemoteRefsWithBlock:^{
           //NSLog(@"AutoFetch: end %@", [self nameInSidebar]);
-          [self.autofetchQueue endBlock];
+          [self loadStageChangesWithBlock:^{
+            [self.autofetchQueue endBlock];
+          }];
         }];
       }];
     }
@@ -1372,8 +1372,6 @@
   }
   return [[self url] pasteboardPropertyListForType:type];
 }
-
-
 
 
 

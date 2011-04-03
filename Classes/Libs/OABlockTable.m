@@ -43,7 +43,7 @@
   [aBlock release];
 }
 
-- (void) addBlock:(void(^)())aBlock forName:(NSString*)aName andProceedIfClear:(void(^)())continuation
+- (void) addBlock:(void(^)())aBlock forName:(NSString*)aName proceedIfClear:(void(^)())continuation
 {
   if ([self containsBlockForName:aName])
   {
@@ -61,5 +61,42 @@
   return [NSString stringWithFormat:@"<OABlockTable:%p names: %@>", [self.table allKeys]];
 }
 
+
+
+
+// Returns a global shared blocktable.
++ (OABlockTable*) sharedTable
+{
+  static OABlockTable* volatile OABlockTableSharedInstance = nil;
+	static dispatch_once_t OABlockTableSharedInstanceOnce = 0;
+	
+	dispatch_once( &OABlockTableSharedInstanceOnce, ^{ OABlockTableSharedInstance = [[self alloc] init]; });
+	return OABlockTableSharedInstance;
+}
+
++ (BOOL) containsBlockForName:(NSString*)aName
+{
+  return [[self sharedTable] containsBlockForName:aName];
+}
+
++ (void) addBlock:(void(^)())aBlock forName:(NSString*)aName
+{
+  return [[self sharedTable] addBlock:aBlock forName:aName];
+}
+
++ (void) callBlockForName:(NSString*)aName
+{
+  return [[self sharedTable] callBlockForName:aName];
+}
+
++ (void) addBlock:(void(^)())aBlock forName:(NSString*)aName proceedIfClear:(void(^)())continuation
+{
+  return [[self sharedTable] addBlock:aBlock forName:aName proceedIfClear:continuation];  
+}
+
++ (NSString*) description
+{
+  return [NSString stringWithFormat:@"<OABlockTable:%p (shared) names: %@>", [[self sharedTable].table allKeys]];
+}
 
 @end
