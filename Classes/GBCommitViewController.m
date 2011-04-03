@@ -561,30 +561,4 @@
 }
 
 
-//
-//
-//#pragma mark NSSplitViewDelegate
-//
-//
-//
-//- (CGFloat) minSplitViewHeaderHeight
-//{
-//  return 85.0;
-//}
-//
-//- (CGFloat)splitView:(NSSplitView*) aSplitView constrainMinCoordinate:(CGFloat)proposedMin ofSubviewAt:(NSInteger)dividerIndex
-//{
-//  return [self minSplitViewHeaderHeight];
-//}
-//
-//- (CGFloat)splitView:(NSSplitView*) aSplitView constrainMaxCoordinate:(CGFloat)proposedMax ofSubviewAt:(NSInteger)dividerIndex
-//{
-//  return [self view].bounds.size.height - 80.0; // 80 px for changes table height
-//}
-//
-//- (void) splitView:(NSSplitView*)aSplitView resizeSubviewsWithOldSize:(NSSize)oldSize
-//{
-//  [aSplitView resizeSubviewsWithOldSize:oldSize firstViewSizeLimit:[self minSplitViewHeaderHeight]];
-//}
-
 @end
