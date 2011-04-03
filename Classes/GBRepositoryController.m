@@ -1003,6 +1003,11 @@
   }];
 }
 
+- (void) updateRemoteRefs
+{
+  [self updateRemoteRefsWithBlock:^{}];
+}
+
 - (void) updateRemoteRefsWithBlock:(void(^)())aBlock
 {
   if (!self.repository)
@@ -1311,32 +1316,33 @@
 - (void) autoFetch
 {
   if (![self checkRepositoryExistance]) return;
+  if (!self.autofetchQueue) return;
   
   //NSLog(@"GBRepositoryController: autoFetch into %@ (delay: %f)", [self url], autoFetchInterval);
   while (autoFetchInterval > 300.0) autoFetchInterval -= 60.0;
   autoFetchInterval = autoFetchInterval*(1.9 + drand48()*0.2);
   
   [self scheduleAutoFetch];
-    
-  if (!self.isWaitingForAutofetch)
+  
+  if (self.isWaitingForAutofetch) return;
+  
+  //NSLog(@"AutoFetch: self.updatesQueue = %d / %d [%@]", (int)self.updatesQueue.operationCount, (int)[self.updatesQueue.queue count], [self nameInSidebar]);
+  self.isWaitingForAutofetch = YES;
+  //NSAssert(self.autofetchQueue, @"Somebody forgot to set autofetchQueue for repository controller %@", self.repository.url);
+  if (self.autofetchQueue)
   {
-    //NSLog(@"AutoFetch: self.updatesQueue = %d / %d [%@]", (int)self.updatesQueue.operationCount, (int)[self.updatesQueue.queue count], [self nameInSidebar]);
-    self.isWaitingForAutofetch = YES;
-    //NSAssert(self.autofetchQueue, @"Somebody forgot to set autofetchQueue for repository controller %@", self.repository.url);
-    if (self.autofetchQueue)
-    {
-      [self.autofetchQueue addBlock:^{
-        self.isWaitingForAutofetch = NO;
-        //NSLog(@"AutoFetch: start %@", [self nameInSidebar]);
-        [self updateRemoteRefsWithBlock:^{
-          //NSLog(@"AutoFetch: end %@", [self nameInSidebar]);
-          [self loadStageChangesWithBlock:^{
-            [self.autofetchQueue endBlock];
-          }];
+    [self.autofetchQueue addBlock:^{
+      self.isWaitingForAutofetch = NO;
+      //NSLog(@"AutoFetch: start %@", [self nameInSidebar]);
+      [self updateRemoteRefsWithBlock:^{
+        //NSLog(@"AutoFetch: end %@", [self nameInSidebar]);
+        [self loadStageChangesWithBlock:^{
+          [self.autofetchQueue endBlock];
         }];
       }];
-    }
+    }];
   }
+  
 }
 
 

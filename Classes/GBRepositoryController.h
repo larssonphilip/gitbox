@@ -41,6 +41,7 @@
 - (void) stop;
 
 - (void) loadCommitsIfNeeded;
+- (void) updateRemoteRefs;
 
 - (void) checkoutRef:(GBRef*) ref;
 - (void) checkoutRef:(GBRef*) ref withNewName:(NSString*)name;
