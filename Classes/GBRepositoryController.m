@@ -1289,7 +1289,7 @@
 
 - (void) resetAutoFetchInterval
 {
-  NSLog(@"GBRepositoryController: resetAutoFetchInterval in %@ (was: %f)", [self url], autoFetchInterval);
+  //NSLog(@"GBRepositoryController: resetAutoFetchInterval in %@ (was: %f)", [self url], autoFetchInterval);
   NSTimeInterval plusMinusOne = (2*(0.5-drand48()));
   autoFetchInterval = 10.0 + plusMinusOne*2;
   [self scheduleAutoFetch];
