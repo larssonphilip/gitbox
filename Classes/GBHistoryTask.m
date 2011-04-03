@@ -35,7 +35,7 @@
 {
   // FIXME: should use %B in some later git version rather than %w(10000,4,4)...%b
   NSMutableArray* args = [NSMutableArray arrayWithObjects:@"rev-list", 
-          @"--format=commit %H%ntree %T%nparents %P%nauthorName %an%nauthorEmail %ae%ncommitterName %cn%ncommitterEmail %ce%nauthorDate %ai%n%n%w(10000,4,4)%s%n%n%b",
+          @"--format=commit %H%ntree %T%nparents %P%nauthorName %an%nauthorEmail %ae%ncommitterName %cn%ncommitterEmail %ce%nauthorDate %ai%n%n%w(99999,4,4)%B",
           [NSString stringWithFormat:@"--max-count=%d", self.limit],
           [NSString stringWithFormat:@"--skip=%d", self.skip],
           [self.branch commitish],
