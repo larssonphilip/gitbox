@@ -107,6 +107,9 @@ Gitbox 1.3 Refactoring:
 - bug: crash when staging 26000 files: *** Terminating app due to uncaught exception 'NSInvalidArgumentException', reason: 'too many arguments (28408) -- limit is 4096'
 + bug: commit message formatting: should detect manually-formatted commits (like in git.git) by comparing number of lines without punctuation to number of lines with punctuation (on both ends to also cover a case of lists).
 
+- minor: do not flash scrollers when switching between the repos (ideally, never flash at all, but show only when scrolling)
+
+
 Gitbox 1.3 Features:
 
 - submodules: display "download" button in the sidebar item
