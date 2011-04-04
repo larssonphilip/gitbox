@@ -596,7 +596,6 @@
 
   [self launchTask:task withBlock:^{
     self.localBranchCommits = task.commits;
-    
     [self updateUnmergedCommitsWithBlock:^{
       [self updateUnpushedCommitsWithBlock:^{
         if (block) block();
