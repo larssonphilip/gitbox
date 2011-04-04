@@ -613,10 +613,10 @@
     [self loadStageChangesWithBlock:^{
       [self updateLocalRefsWithBlock:^{
         [self loadCommitsWithBlock:nil];
+        [self popSpinning];
       }];
     }];
     
-    [self popSpinning];
     [self popFSEventsPause];
     [self notifyWithSelector:@selector(repositoryControllerDidCommit:)];
   }];
@@ -640,9 +640,9 @@
       [self loadCommitsWithBlock:block];
       [self updateRemoteRefsWithBlock:nil];
       [self popFSEventsPause];
+      [self popSpinning];
     }];
     [self popDisabled];
-    [self popSpinning];
   }];
 }
 
@@ -659,9 +659,9 @@
       }];
       [self updateRemoteRefsWithBlock:nil];
       [self popFSEventsPause];
+      [self popSpinning];
     }];
     [self popDisabled];
-    [self popSpinning];
   }];
 }
 
@@ -678,10 +678,10 @@
           [self loadCommitsWithBlock:nil];
           [self updateRemoteRefsWithBlock:nil];
           [self popFSEventsPause];
+          [self popSpinning];
         }];
       }];
       [self popDisabled];
-      [self popSpinning];
     }];
   }];
 }
@@ -697,10 +697,10 @@
       [self loadCommitsWithBlock:^{
         [self updateRemoteRefsWithBlock:^{
         }];
+        [self popSpinning];
       }];
       [self popFSEventsPause];
     }];
-    [self popSpinning];
     [self popDisabled];
   }];
 }
