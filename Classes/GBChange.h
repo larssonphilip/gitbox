@@ -10,6 +10,7 @@
 @property(nonatomic,retain) NSURL* dstURL;
 @property(nonatomic,copy)   NSString* statusCode;
 @property(nonatomic,copy)   NSString* status;
+@property(nonatomic,assign) NSInteger statusScore;
 @property(nonatomic,copy)   NSString* oldRevision;
 @property(nonatomic,copy)   NSString* newRevision;
 @property(nonatomic,copy)   NSString* commitId;

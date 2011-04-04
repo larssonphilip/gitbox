@@ -140,6 +140,12 @@
     //  10. status, followed by optional "score" number.
     NSString* statusCode = nil;
     if (![scanner scanUpToString:@"\t" intoString:&statusCode]) ChangesScanError(@"Expected status");
+    
+    NSInteger statusScore = 0;
+    if ([statusCode length] > 1)
+    {
+      statusScore = [[statusCode substringFromIndex:1] integerValue];
+    }
     statusCode = [statusCode substringToIndex:1]; // strip score value
     
     //  11. a tab or a NUL when -z option is used.
@@ -174,6 +180,7 @@
     GBChange* aChange = [[GBChange new] autorelease];
     [self initializeChange:aChange];
     aChange.repository = self.repository;
+    aChange.statusScore = statusScore; // should set statusScore before setting a statusCode for correct calculation
     aChange.statusCode = statusCode;
     aChange.oldRevision = oldRevision;
     aChange.newRevision = newRevision;

@@ -27,6 +27,7 @@
 @synthesize dstURL;
 @synthesize statusCode;
 @synthesize status;
+@synthesize statusScore;
 @synthesize oldRevision;
 @synthesize newRevision;
 @synthesize commitId;
@@ -204,7 +205,11 @@
 //  }
   
   if (c == 'A') return NSLocalizedString(@"Added", @"Change");
-  if (c == 'C') return NSLocalizedString(@"Copied", @"Change");
+  if (c == 'C') 
+  {
+    if (statusScore < 100) return NSLocalizedString(@"Modified", @"Change"); // copy status will be denoted by the arrow between the src and dst
+    return NSLocalizedString(@"Copied", @"Change");
+  }
   if (c == 'D') return NSLocalizedString(@"Deleted", @"Change");
   if (c == 'M') return NSLocalizedString(@"Modified", @"Change");
   if (c == 'T') return NSLocalizedString(@"Type changed", @"Change");
@@ -212,6 +217,7 @@
   if (c == 'X') return NSLocalizedString(@"Unknown", @"Change");
   if (c == 'R')
   {
+    if (statusScore < 100) return NSLocalizedString(@"Modified", @"Change"); // renaming will be denoted by the arrow between the src and dst
     if (self.srcURL && self.dstURL && [[[self.srcURL path] lastPathComponent] isEqualToString:[[self.dstURL path] lastPathComponent]])
     {
       return NSLocalizedString(@"Moved", @"Change");
