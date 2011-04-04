@@ -65,7 +65,10 @@
   [self update];
 }
 
-
+- (BOOL) wantsSettingsButton
+{
+  return NO;
+}
 
 
 #pragma mark Controls properties
@@ -140,14 +143,17 @@
 
 - (CGFloat) sidebarPadding
 {
-  return [super sidebarPadding] - 38.0; // compensation for GBSettings button
+  return [super sidebarPadding] - ([self wantsSettingsButton] ? 38.0 : 0.0); // compensation for GBSettings button
 }
 
 - (void) update
 {
   [super update];
   
-  [self.toolbar insertItemWithItemIdentifier:@"GBSettings" atIndex:1];
+  if ([self wantsSettingsButton])
+  {
+    [self.toolbar insertItemWithItemIdentifier:@"GBSettings" atIndex:1];
+  }
   [self appendItemWithIdentifier:@"GBCurrentBranch"];
   
   GBRepository* repo = self.repositoryController.repository;
