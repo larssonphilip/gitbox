@@ -294,9 +294,68 @@
           nil];
 }
 
+- (id) plistV13FromPlistV12:(id)plist
+{
+	if (!plist) return nil;
+	if (![plist isKindOfClass:[NSDictionary class]]) return nil;
+	
+	NSMutableArray* plist13 = [NSMutableArray array];
+	
+	for (id itemPlist in [plist objectForKey:@"items"])
+	{
+		NSString* groupName = [itemPlist objectForKey:@"name"];
+		NSArray* groupItems = [itemPlist objectForKey:@"items"];
+		NSNumber* groupIsExpanded = [itemPlist objectForKey:@"isExpanded"];
+		NSData* urlData = [itemPlist objectForKey:@"URL"];
+		
+		if (groupItems)
+		{
+			id dict = [NSDictionary dictionaryWithObjectsAndKeys:
+					   @"GBRepositoriesGroup", @"class",
+					   groupName, @"name",
+					   [NSNumber numberWithBool:![groupIsExpanded boolValue]], @"collapsed",
+					   [self plistV13FromPlistV12:itemPlist], @"contents", 
+					   nil];
+			[plist13 addObject:dict];
+		}
+		else
+		{
+			id dict = [NSDictionary dictionaryWithObjectsAndKeys:
+					   @"GBRepositoryController", @"class",
+					   urlData, @"URLBookmarkData",
+					   [NSNumber numberWithBool:NO], @"collapsed",
+					   nil];
+			[plist13 addObject:dict];
+		}
+	}
+	return plist13;
+}
+
 - (void) sidebarItemLoadContentsFromPropertyList:(id)plist
 {
-  if (!plist || ![plist isKindOfClass:[NSDictionary class]]) return;
+	
+  if (![[NSUserDefaults standardUserDefaults] boolForKey:@"migrated_toV13sidebar"])
+  {
+	  [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"migrated_toV13sidebar"];
+	  plist = nil;
+	  NSDictionary* localRepositoriesGroupPlist = [[NSUserDefaults standardUserDefaults] objectForKey:@"GBRepositoriesController_localRepositoriesGroup"];
+	  if (localRepositoriesGroupPlist)
+	  {
+		  plist = [NSDictionary dictionaryWithObjectsAndKeys:
+				   
+				   [NSArray arrayWithObjects:[NSDictionary dictionaryWithObjectsAndKeys:
+											  @"GBRepositoriesController", @"class",
+											  [self plistV13FromPlistV12:localRepositoriesGroupPlist], @"contents",
+											   nil], 
+					nil], @"contents",
+				   nil];
+	  }
+  }
+
+  if (!plist || ![plist isKindOfClass:[NSDictionary class]])
+  {
+    return;
+  }
   
   NSArray* indexes = [plist objectForKey:@"selectedItemIndexes"];
   NSArray* contents = [plist objectForKey:@"contents"];
@@ -323,6 +382,7 @@
   
   self.selectedItemIndexes = indexes;
 }
+
 
 
 @end
