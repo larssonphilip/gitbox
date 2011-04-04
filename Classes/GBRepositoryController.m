@@ -240,7 +240,7 @@
 {
   self.folderMonitor.target = self;
   self.folderMonitor.action = @selector(folderMonitorDidUpdate:);
-  self.autoFetchInterval = 3.0 + drand48()*20.0; // spread all repos' initial autofetch within 20 seconds
+  self.autoFetchInterval = 3.0 + drand48()*60.0; // spread all repos' initial autofetch within 1 minute
   [self scheduleAutoFetch];
 }
 
