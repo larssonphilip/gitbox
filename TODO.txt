@@ -11,6 +11,7 @@ Enhancements:
 ✓ Several enhancements to right-click menus in sidebar.
 ✓ Clone dialog remembers last entered URL.
 ✓ Fetching new commits when you start typing a commit message, so you can pull before committing.
+✓ Sidebar badge shows the total count of nonpushed and nonmerged commits when it is bigger that 999.
 
 Bug fixes:
 
@@ -69,7 +70,7 @@ Gitbox 1.3 Refactoring:
 
 + sidebar should simply transfer all the work to rootController without specific actions.
 + For dropped item+index we can set properties on rootController like with clicked item, so it can know its context.
-± Repository opeations should go into GBRepositoriesController and it should update rootController which triggers "didChangeContents" notifications.
++ Repository opeations should go into GBRepositoriesController and it should update rootController which triggers "didChangeContents" notifications.
 
 + bug: top-level controllers should be in responder chain to make global operations accessible when nothing is selected (or nothing is contained): like openDocument, cloneRepository etc.
 
@@ -83,15 +84,15 @@ Gitbox 1.3 Refactoring:
 + do not reset autofetch interval on local changes
 + but do autofetch check whenever started typing commit message
 + bug: cannot drop a repo into a newly created folder.
++ history: calculate full number of differing commits by running background command: git rev-list A...B  --count (need to do that after each commit, branch checkout or pull/push/merge/fetch) [Doc: another special notation is "<commit1>...<commit2>" which is useful for merges. The resulting set of commits is the symmetric difference between the two operands.]
 
 - enhancement: fsevents: push dotgit-only pause when doing stage updates, fetch, config updates or other internal changes.
 - enhancement: fsevents: on folder update, while .git is on pause, update stage *without* updating the index, so we don't generate more .git/ events
 - enhancement: cache repos' badges within plist for immediate presentation on launch
 
 - refactoring: clean up starting/stopping repo ctrl in GBRepositoriesController
-- bug: when fetch is clicked, should fetch everything (see history in mail)
-- history: highlight difference by using two SHA-1 and traversing loaded items; later tag all the commits for nice tree-like graphic
-- history: calculate full number of differing commits by running background command: git rev-list A...B (need to do that after each commit, branch checkout or pull/push/merge/fetch) 
+- bug: when fetch is clicked, should fetch everything (see email discussion)
+- history: highlight difference by using two SHA-1 and traversing loaded items; later tag all the commits for nice tree-like graphics
 
 - remember submodules as well
 - on load and on opening, update only submodules status, in a queue (without a spinner)
@@ -314,7 +315,7 @@ Some thoughts (possibly stupid):
 - general: do not require name and email for ~/.gitconfig 
 - general: allow switching to a system-provided git in preferences
 - history: mark as read/unread + automatic mark as read
-- history: flag interesting commits
+- history: flag interesting commits (e.g. for bisect)
 - changes: maybe 2 tabs: changes & tree (tree should show a status as usual)
 
 To read:

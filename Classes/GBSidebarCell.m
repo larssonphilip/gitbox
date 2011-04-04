@@ -292,10 +292,6 @@
 	if (badgeValue > 0)
 	{
 		NSString* badgeLabel = [NSString stringWithFormat:@"%d", badgeValue];
-		if (badgeValue > 999)
-		{
-			badgeLabel = @"999+";
-		}
 		if (badgeLabel && [badgeLabel length] > 0 && !self.isDragged)
 		{
 			NSRect badgeFrame = [self drawBadge:badgeLabel inRect:rect];

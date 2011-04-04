@@ -25,6 +25,7 @@
 @property(nonatomic, retain) OABlockTable* blockTable;
 @property(nonatomic, retain) GBGitConfig* config;
 @property(nonatomic, assign) dispatch_queue_t dispatchQueue;
+@property(nonatomic, assign, readwrite) NSUInteger commitsDiffCount;
 
 - (void) loadCurrentLocalRefWithBlock:(void(^)())block;
 - (void) loadLocalRefsWithBlock:(void(^)())block;
@@ -52,8 +53,9 @@
 @synthesize blockTable;
 @synthesize config;
 
-@synthesize unmergedCommitsCount;
-@synthesize unpushedCommitsCount;
+@synthesize unmergedCommitsCount; // obsolete
+@synthesize unpushedCommitsCount; // obsolete
+@synthesize commitsDiffCount;
 
 
 #pragma mark Init
@@ -704,6 +706,42 @@
   }];
 }
 
+
+- (void) updateCommitsDiffCountWithBlock:(void(^)())block
+{
+  NSString* commitish1 = [self.currentLocalRef commitish];
+  NSString* commitish2 = [self.currentRemoteBranch commitish];
+  
+  if (!commitish1 || !commitish2 || [commitish1 isEqualToString:@""] || [commitish2 isEqualToString:@""])
+  {
+    self.commitsDiffCount = 0;
+    if (!block) block();
+    return;
+  }
+  
+  block = [[block copy] autorelease];
+  
+  // There's a problem with blockTable here: if the branch was changed when this command was running, the result will be stale.
+  //[self.blockTable addBlock:block forName:@"updateCommitsDiffCount" proceedIfClear:^{}];
+  
+  GBTask* task = [self task];
+  NSString* query = [NSString stringWithFormat:@"%@...%@", commitish1, commitish2]; // '...' produces symmetric difference
+  task.arguments = [NSArray arrayWithObjects:@"rev-list", query, @"--count",  nil];
+  [self launchTask:task withBlock:^{
+    if ([task isError])
+    {
+      self.lastError = [NSError errorWithDomain:@"Gitbox" code:1
+                                       userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
+                                                 [task.output UTF8String], NSLocalizedDescriptionKey,
+                                                 [NSNumber numberWithInt:[task terminationStatus]], @"terminationStatus",
+                                                 [task command], @"command",
+                                                 nil]];
+    }
+    NSString* countString = [task.output UTF8String];
+    self.commitsDiffCount = (NSUInteger)[countString integerValue];
+    if (block) block();
+  }];
+}
 
 
 

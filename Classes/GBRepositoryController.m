@@ -46,6 +46,9 @@
 @property(nonatomic, assign, readwrite) NSInteger isSpinning;
 @property(nonatomic, assign) NSTimeInterval autoFetchInterval;
 
+@property(nonatomic, assign) NSUInteger commitsBadgeInteger; // will be cached on save and updated after history updates
+@property(nonatomic, assign) NSUInteger stageBadgeInteger; // will be cached on save and updated after stage updates
+
 - (NSImage*) icon;
 
 - (void) pushDisabled;
@@ -63,6 +66,7 @@
 - (void) loadCommitsWithBlock:(void(^)())aBlock;
 - (void) loadStageChanges;
 - (void) loadStageChangesWithBlock:(void(^)())aBlock;
+- (void) loadCommitsBadgeInteger;
 
 - (void) updateLocalRefsIfNeededWithBlock:(void(^)())aBlock;
 - (void) updateLocalRefsWithBlock:(void(^)())aBlock;
@@ -104,6 +108,8 @@
 @synthesize autoFetchInterval;
 @synthesize isDisabled;
 @synthesize isSpinning;
+@synthesize commitsBadgeInteger;
+@synthesize stageBadgeInteger;
 
 - (void) dealloc
 {
@@ -887,7 +893,8 @@
 
 - (NSUInteger) sidebarItemBadgeInteger
 {
-  return [self.repository totalPendingChanges];
+  return self.commitsBadgeInteger + self.stageBadgeInteger;
+  //return [self.repository totalPendingChanges];
 }
 
 - (BOOL) sidebarItemIsSpinning
@@ -1138,6 +1145,7 @@
         [self popFSEventsPause];
         [self.sidebarItem update];
         [self notifyWithSelector:@selector(repositoryControllerDidUpdateCommits:)];
+        [self loadCommitsBadgeInteger];
       }];
     }];
   }];
@@ -1168,6 +1176,13 @@
   }];
 }
 
+- (void) loadCommitsBadgeInteger
+{
+  [self.repository updateCommitsDiffCountWithBlock:^{
+    self.commitsBadgeInteger = self.repository.commitsDiffCount;
+    [self.sidebarItem update];
+  }];
+}
 
 
 
@@ -1187,6 +1202,12 @@
   if (!isStaging && isLoadingChanges <= 1)
   {
     [self notifyWithSelector:@selector(repositoryController:didUpdateChangesForCommit:) withObject:aCommit];
+  }
+  
+  if ((GBCommit*)(self.repository.stage) == aCommit)
+  {
+    self.stageBadgeInteger = [self.repository.stage totalPendingChanges];
+    [self.sidebarItem update];
   }
 }
 

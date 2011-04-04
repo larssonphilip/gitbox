@@ -27,8 +27,9 @@
 @property(nonatomic, retain) NSArray* localBranchCommits;
 @property(nonatomic, retain) NSError* lastError;
 
-@property(nonatomic, assign) NSUInteger unmergedCommitsCount;
-@property(nonatomic, assign) NSUInteger unpushedCommitsCount;
+@property(nonatomic, assign) NSUInteger unmergedCommitsCount; // obsolete
+@property(nonatomic, assign) NSUInteger unpushedCommitsCount; // obsolete
+@property(nonatomic, assign, readonly) NSUInteger commitsDiffCount;
 
 + (id) repositoryWithURL:(NSURL*)url;
 
@@ -42,6 +43,7 @@
 + (BOOL) validateRepositoryURL:(NSURL*)aURL;
 + (void) initRepositoryAtURL:(NSURL*)url;
 + (NSURL*) URLFromBookmarkData:(NSData*)bookmarkData;
+
 
 #pragma mark Interrogation
 
@@ -67,6 +69,8 @@
 
 - (void) initSubmodulesWithBlock:(void(^)())block;
 - (void) updateSubmodulesWithBlock:(void(^)())block;
+
+- (void) updateCommitsDiffCountWithBlock:(void(^)())block;
 
 
 #pragma mark Mutation
