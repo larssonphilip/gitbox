@@ -418,9 +418,10 @@
   [[self.outlineView selectedRowIndexes] enumerateIndexesUsingBlock:^(NSUInteger row, BOOL *stop) {
     [selectedItems addObject:[self.outlineView itemAtRow:row]];
   }];
-  [self.jumpController delayBlockIfNeeded:^{
+  // Causes strange jumping while refreshing repos
+  //[self.jumpController delayBlockIfNeeded:^{
     self.rootController.selectedSidebarItems = selectedItems;
-  }];
+  //}];
 }
 
 - (NSCell *)outlineView:(NSOutlineView *)outlineView dataCellForTableColumn:(NSTableColumn *)tableColumn item:(GBSidebarItem*)item

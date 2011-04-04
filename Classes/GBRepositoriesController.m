@@ -654,9 +654,54 @@
   currentGroup.items = newItems;  
 }
 
+- (id) plistV13FromPlistV12:(id)plist
+{
+  if (!plist) return nil;
+  if (![plist isKindOfClass:[NSDictionary class]]) return nil;
+
+  NSMutableArray* plist13 = [NSMutableArray array];
+  
+  for (id itemPlist in [plist objectForKey:@"items"])
+  {
+    NSString* groupName = [itemPlist objectForKey:@"name"];
+    NSArray* groupItems = [itemPlist objectForKey:@"items"];
+    NSNumber* groupIsExpanded = [itemPlist objectForKey:@"isExpanded"];
+    NSData* urlData = [itemPlist objectForKey:@"URL"];
+    
+    if (groupItems)
+    {
+      id dict = [NSDictionary dictionaryWithObjectsAndKeys:
+                 @"GBRepositoriesGroup", @"class",
+                 groupName, @"name",
+                 [NSNumber numberWithBool:![groupIsExpanded boolValue]], @"collapsed",
+                 [self plistV13FromPlistV12:itemPlist], @"contents", 
+                 nil];
+      [plist13 addObject:dict];
+    }
+    else
+    {
+      id dict = [NSDictionary dictionaryWithObjectsAndKeys:
+                  @"GBRepositoryController", @"class",
+                  urlData, @"URLBookmarkData",
+                  [NSNumber numberWithBool:NO], @"collapsed",
+                  nil];
+      [plist13 addObject:dict];
+    }
+  }
+  return plist13;
+}
 
 - (void) sidebarItemLoadContentsFromPropertyList:(id)plist
 {
+  // Support for v1.2 sidebar
+  if (!plist)
+  {
+    NSDictionary* localRepositoriesGroupPlist = [[NSUserDefaults standardUserDefaults] objectForKey:@"GBRepositoriesController_localRepositoriesGroup"];
+    if (localRepositoriesGroupPlist)
+    {
+      plist = [self plistV13FromPlistV12:localRepositoriesGroupPlist];
+    }
+  }
   [self loadGroupContents:self fromPropertyList:plist];
 }
 

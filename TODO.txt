@@ -86,7 +86,7 @@ Gitbox 1.3 Refactoring:
 + bug: cannot drop a repo into a newly created folder.
 + history: calculate full number of differing commits by running background command: git rev-list A...B  --count (need to do that after each commit, branch checkout or pull/push/merge/fetch) [Doc: another special notation is "<commit1>...<commit2>" which is useful for merges. The resulting set of commits is the symmetric difference between the two operands.]
 
-- support sidebar saved format v1.2 for gentle migration
++ support sidebar saved format v1.2 for gentle migration
 - cache repos' badges within plist for immediate presentation on launch
 
 - enhancement: fsevents: push dotgit-only pause when doing stage updates, fetch, config updates or other internal changes.
