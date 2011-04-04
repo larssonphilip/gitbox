@@ -1411,14 +1411,39 @@
 
 - (id) sidebarItemContentsPropertyList
 {
-  return nil;
+  return [NSDictionary dictionaryWithObjectsAndKeys:
+          [NSNumber numberWithUnsignedInteger:self.commitsBadgeInteger], @"commitsBadgeInteger",
+          [NSNumber numberWithUnsignedInteger:self.stageBadgeInteger], @"stageBadgeInteger", 
+          
+          // TODO: add submodules here
+          
+          nil];
 }
 
 - (void) sidebarItemLoadContentsFromPropertyList:(id)plist
 {
+  if (!plist || ![plist isKindOfClass:[NSDictionary class]]) return;
+  
+  self.commitsBadgeInteger = (NSUInteger)[[plist objectForKey:@"commitsBadgeInteger"] integerValue];
+  self.stageBadgeInteger = (NSUInteger)[[plist objectForKey:@"stageBadgeInteger"] integerValue];
 }
 
 
-
-
 @end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
