@@ -107,7 +107,7 @@
   [scanner setCharactersToBeSkipped:[NSCharacterSet characterSetWithCharactersInString:@""]];
   
   while ([scanner isAtEnd] == NO)
-  { 
+  {
     //  1. a colon.
     if (![scanner scanString:@":" intoString:NULL]) ChangesScanError(@"Expected colon");
     

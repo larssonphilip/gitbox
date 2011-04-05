@@ -38,6 +38,7 @@
 
 @synthesize url;
 @synthesize URLBookmarkData;
+@dynamic path;
 @synthesize dotGitURL;
 @synthesize localBranches;
 @synthesize remotes;
@@ -667,45 +668,6 @@
   }];
 }
 
-
-- (void) initSubmodulesWithBlock:(void(^)())block
-{
-  block = [[block copy] autorelease];
-  GBTask* task = [self task];
-  task.arguments = [NSArray arrayWithObjects:@"submodule", @"init",  nil];
-	[self launchTask:task withBlock:^{
-		if ([task isError])
-    {
-			self.lastError = [NSError errorWithDomain:@"Gitbox" code:1
-																	 userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
-																						 [task.output UTF8String], NSLocalizedDescriptionKey,
-																						 [NSNumber numberWithInt:[task terminationStatus]], @"terminationStatus",
-																						 [task command], @"command",
-																						 nil]];
-		}
-    if (block) block();
-	}];
-}
-
-
-// Updates list of submodules (NOT what 'git submodule update' does!) for this repository. 
-// DOES NOT pull actual submodules or change their refs in any way. MK.
-
-- (void) updateSubmodulesWithBlock:(void (^)())block
-{
-  block = [[block copy] autorelease];
-
-  GBSubmodulesTask* task = [GBSubmodulesTask taskWithRepository:self];
-
-  [self launchTask:task withBlock:^{
-    // TODO: merge submodule statuses & URLs with the existing list
-    
-    self.submodules = task.submodules;
-    if (block) block();
-  }];
-}
-
-
 - (void) updateCommitsDiffCountWithBlock:(void(^)())block
 {
   NSString* commitish1 = [self.currentLocalRef commitish];
@@ -741,6 +703,58 @@
     if (block) block();
   }];
 }
+
+
+
+// A routine for configuring .gitmodules in .git/config. 
+// 99% of users don't want to think about it, so it is a private method used by updateSubmodulesWithBlock:
+- (void) initSubmodulesWithBlock:(void(^)())block
+{
+  block = [[block copy] autorelease];
+  GBTask* task = [self task];
+  task.arguments = [NSArray arrayWithObjects:@"submodule", @"init",  nil];
+	[self launchTask:task withBlock:^{
+		if ([task isError])
+    {
+			self.lastError = [NSError errorWithDomain:@"Gitbox" code:1
+																	 userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
+																						 [task.output UTF8String], NSLocalizedDescriptionKey,
+																						 [NSNumber numberWithInt:[task terminationStatus]], @"terminationStatus",
+																						 [task command], @"command",
+																						 nil]];
+		}
+    if (block) block();
+	}];
+}
+
+
+// Updates list of submodules (NOT what 'git submodule update' does!) for this repository. 
+// DOES NOT pull actual submodules or change their refs in any way. MK.
+
+- (void) updateSubmodulesWithBlock:(void (^)())block
+{
+  // Quick check for common case: if file .gitmodules does not exist, we have no submodules
+  if (![[NSFileManager defaultManager] fileExistsAtPath:[[self path] stringByAppendingPathComponent:@".gitmodules"]])
+  {
+    self.submodules = [NSArray array];
+    if (block) block();
+    return;
+  }
+  
+  block = [[block copy] autorelease];
+
+  [self initSubmodulesWithBlock:^{
+    GBSubmodulesTask* task = [GBSubmodulesTask taskWithRepository:self];
+    [self launchTask:task withBlock:^{
+      
+      // TODO: reuse submodules with the same name and update its status and URL
+      
+      self.submodules = task.submodules;
+      if (block) block();
+    }];
+  }];
+}
+
 
 
 

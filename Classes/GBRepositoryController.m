@@ -72,7 +72,7 @@
 - (void) updateLocalRefsWithBlock:(void(^)())aBlock;
 - (void) updateRemoteRefsWithBlock:(void(^)())aBlock;
 - (void) updateBranchesForRemote:(GBRemote*)aRemote withBlock:(void(^)())aBlock;
-
+- (void) updateSubmodulesWithBlock:(void(^)())aBlock;
 - (void) fetchRemote:(GBRemote*)aRemote withBlock:(void(^)())aBlock;
 
 - (void) resetAutoFetchInterval;
@@ -94,7 +94,7 @@
 @synthesize selectedCommit;
 @synthesize lastCommitBranchName;
 @synthesize blockTable;
-@synthesize updatesQueue;
+//@synthesize updatesQueue;
 @synthesize autofetchQueue;
 @synthesize folderMonitor;
 @dynamic fsEventStream;
@@ -125,7 +125,7 @@
   [selectedCommit release]; selectedCommit = nil;
   [lastCommitBranchName release]; lastCommitBranchName = nil;
   [blockTable release]; blockTable = nil;
-  [updatesQueue release]; updatesQueue = nil;
+//  [updatesQueue release]; updatesQueue = nil;
   [autofetchQueue release]; autofetchQueue = nil;
   self.folderMonitor.target = nil;
   self.folderMonitor.action = NULL;
@@ -333,12 +333,14 @@
     
     [self loadStageChangesWithBlock:^{
       [self updateLocalRefsWithBlock:^{
-        [self notifyWithSelector:@selector(repositoryControllerDidCheckoutBranch:)];
-        [self loadCommitsWithBlock:nil];
-        
-        [self popDisabled];
-        [self popSpinning];
-        [self popFSEventsPause];
+        [self updateSubmodulesWithBlock:^{
+          [self notifyWithSelector:@selector(repositoryControllerDidCheckoutBranch:)];
+          [self loadCommitsWithBlock:nil];
+          
+          [self popDisabled];
+          [self popSpinning];
+          [self popFSEventsPause];
+        }];
       }];
     }];
   });
@@ -672,9 +674,9 @@
   [self pushDisabled];
   [self pushFSEventsPause];
   [self.repository pullOrMergeWithBlock:^{
-    [self.repository initSubmodulesWithBlock:^{
-      [self loadStageChangesWithBlock:^{
-        [self updateLocalRefsWithBlock:^{
+    [self loadStageChangesWithBlock:^{
+      [self updateLocalRefsWithBlock:^{
+        [self updateSubmodulesWithBlock:^{
           [self loadCommitsWithBlock:nil];
           [self updateRemoteRefsWithBlock:nil];
           [self popFSEventsPause];
@@ -894,7 +896,6 @@
 - (NSUInteger) sidebarItemBadgeInteger
 {
   return self.commitsBadgeInteger + self.stageBadgeInteger;
-  //return [self.repository totalPendingChanges];
 }
 
 - (BOOL) sidebarItemIsSpinning
@@ -1064,33 +1065,32 @@
       if (block) block();
     }
   }];
-  
 }
 
 - (void) updateSubmodulesWithBlock:(void(^)())aBlock
 {
   aBlock = [[aBlock copy] autorelease];
   
-  
-#warning Debug: temp disabled submodules update while refactoring
-  if (aBlock) aBlock();
-  return;
-  
-  
+  __block BOOL didChangeSubmodules = NO;
   [self.repository updateSubmodulesWithBlock:^{
     
     for (GBSubmodule* submodule in [self.repository.submodules reversedArray])
     {
+      // use some other condition like is it contained in the local array of submodules
       if (!submodule.repositoryController) // repo controller is not set up yet
       {
+        didChangeSubmodules = YES;
         if ([submodule isCloned])
         {
-          GBRepositoryController* repoCtrl = [GBRepositoryController repositoryControllerWithURL:[submodule localURL]];
-          submodule.repositoryController = repoCtrl;
+          //GBRepositoryController* repoCtrl = [GBRepositoryController repositoryControllerWithURL:[submodule localURL]];
+          //submodule.repositoryController = repoCtrl;
           //submodule.repositoryController.delegate = self.delegate;
-          repoCtrl.updatesQueue = self.updatesQueue;
-          repoCtrl.autofetchQueue = self.autofetchQueue;
-          [repoCtrl start];
+          //repoCtrl.updatesQueue = self.updatesQueue;
+          //repoCtrl.autofetchQueue = self.autofetchQueue;
+          //[repoCtrl start];
+          
+          // TODO: Should add self as an observer to monitor events such as moving to another URL or stopping the ctrl etc.
+          
 //          [self.updatesQueue prependBlock:^{
 //            [repoCtrl initialUpdateWithBlock:^{
 //              [self.updatesQueue endBlock];
@@ -1100,10 +1100,9 @@
         else
         {
           // TODO: instead of switching the repositoryController, should switch the object for sidebar item.
-          GBSubmoduleCloningController* repoCtrl = [[GBSubmoduleCloningController new] autorelease];
-          repoCtrl.submodule = submodule;
-//          repoCtrl.updatesQueue = self.updatesQueue;
-//          repoCtrl.autofetchQueue = self.autofetchQueue;
+          //GBSubmoduleCloningController* repoCtrl = [[GBSubmoduleCloningController new] autorelease];
+          //repoCtrl.submodule = submodule;
+          
           //submodule.repositoryController = repoCtrl;
           //submodule.repositoryController.delegate = self.delegate;
         }
@@ -1112,7 +1111,10 @@
     
     if (aBlock) aBlock();
     
-    [self notifyWithSelector:@selector(repositoryControllerDidUpdateSubmodules:)];
+    if (didChangeSubmodules)
+    {
+      [self notifyWithSelector:@selector(repositoryControllerDidUpdateSubmodules:)];
+    }
   }];
 }
 
@@ -1169,7 +1171,9 @@
     isLoadingChanges++;
     [self.repository.stage loadChangesWithBlock:^{
       isLoadingChanges--;
-      [self.blockTable callBlockForName:@"loadStageChanges"];
+      [self updateSubmodulesWithBlock:^{
+        [self.blockTable callBlockForName:@"loadStageChanges"];
+      }];
       [self.sidebarItem update];
       [self popFSEventsPause];
     }];

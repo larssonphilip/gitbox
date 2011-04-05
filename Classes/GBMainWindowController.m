@@ -239,7 +239,12 @@
   self.selectedWindowItem = aRootController.selectedObject;
 }
 
-
+- (void) rootControllerDidChangeContents:(GBRootController*)aRootController
+{
+  // Reset selected object for the case when viewController changes
+  self.selectedWindowItem = nil;
+  self.selectedWindowItem = aRootController.selectedObject;
+}
 
 
 

@@ -45,6 +45,8 @@
   
   NSMutableArray *ary = [NSMutableArray array];
   
+  #define GBSubmodulesScanError(msg) {NSLog(@"ERROR: GBSubmodulesTask parse error: %@", msg); return ary;}
+  
   while ([scanner isAtEnd] == NO)
   {
     [scanner scanCharactersFromSet:whitespaceCharacterSet intoString:NULL];
@@ -57,18 +59,18 @@
     // commit submodule is pinned down to
     NSString* submoduleRef = nil;
     if (![scanner scanUpToString:@" " intoString:&submoduleRef]) {
-      // TOOD: log an error
+      GBSubmodulesScanError(@"Expected submodule ref");
     }
     
     // space
     if (![scanner scanString:@" " intoString:NULL]) {
-      // TODO: log an error
+      GBSubmodulesScanError(@"Expected space after submodule ref");
     }
     
     // submodule path
     NSString* submodulePath = nil;
     if (![scanner scanUpToCharactersFromSet:whitespaceCharacterSet intoString:&submodulePath]) {
-      // TOOD: log an error
+      GBSubmodulesScanError(@"Expected submodule path");
     }
     
     /* from there on there may or may not be any other content in the line.
@@ -106,7 +108,6 @@
     [ary addObject:submodule];
   }
 
-  self.submodules = ary;
   return ary;
 }
 

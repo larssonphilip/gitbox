@@ -15,6 +15,7 @@
 
 @property(nonatomic, retain) NSURL* url;
 @property(nonatomic, retain, readonly) NSData* URLBookmarkData;
+@property(nonatomic, retain, readonly) NSString* path;
 @property(nonatomic, retain) NSURL* dotGitURL;
 @property(nonatomic, retain) NSArray* localBranches;
 @property(nonatomic, retain) NSArray* remotes;
@@ -47,7 +48,6 @@
 
 #pragma mark Interrogation
 
-- (NSString*) path;
 - (NSArray*) stageAndCommits;
 - (NSArray*) commits;
 - (NSUInteger) totalPendingChanges;
@@ -66,11 +66,10 @@
 - (void) updateLocalBranchCommitsWithBlock:(void(^)())block;
 - (void) updateUnmergedCommitsWithBlock:(void(^)())block;
 - (void) updateUnpushedCommitsWithBlock:(void(^)())block;
+- (void) updateCommitsDiffCountWithBlock:(void(^)())block;
 
-- (void) initSubmodulesWithBlock:(void(^)())block;
 - (void) updateSubmodulesWithBlock:(void(^)())block;
 
-- (void) updateCommitsDiffCountWithBlock:(void(^)())block;
 
 
 #pragma mark Mutation

@@ -17,7 +17,7 @@
 
 @property(nonatomic, retain) GBRepository* repository;
 @property(nonatomic, retain, readonly) NSURL* url;
-@property(nonatomic, retain) OABlockQueue* updatesQueue;
+//@property(nonatomic, retain) OABlockQueue* updatesQueue;
 @property(nonatomic, retain) OABlockQueue* autofetchQueue;
 @property(nonatomic, retain) GBSidebarItem* sidebarItem;
 @property(nonatomic, assign) NSWindow* window;
@@ -58,8 +58,6 @@
 - (void) deleteFilesInChanges:(NSArray*)changes;
 
 - (void) commitWithMessage:(NSString*)message;
-
-- (void) updateSubmodulesWithBlock:(void(^)())aBlock;
 
 - (IBAction) fetch:(id)sender;
 - (IBAction) pull:(id)sender;

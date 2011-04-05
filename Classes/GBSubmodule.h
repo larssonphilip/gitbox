@@ -1,4 +1,5 @@
 #import "GBSidebarItemObject.h"
+#import "GBMainWindowItem.h"
 
 @class GBRepository;
 @class GBSidebarItem;
@@ -8,7 +9,7 @@ extern NSString* const GBSubmoduleStatusNotCloned;
 extern NSString* const GBSubmoduleStatusUpToDate;
 extern NSString* const GBSubmoduleStatusNotUpToDate;
 
-@interface GBSubmodule : NSResponder<GBSidebarItemObject>
+@interface GBSubmodule : NSResponder<GBSidebarItemObject, GBMainWindowItem>
 
 @property(nonatomic, copy) NSURL* remoteURL;
 @property(nonatomic, copy) NSString* path;

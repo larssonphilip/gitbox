@@ -22,6 +22,8 @@
 @interface GBRepositoriesController () <NSOpenSavePanelDelegate>
 @property(nonatomic, retain) GBCloneWindowController* cloneWindowController;
 @property(nonatomic, retain) OAFSEventStream* fsEventStream;
+//@property(nonatomic, retain) OABlockQueue* localRepositoriesUpdatesQueue;
+@property(nonatomic, retain) OABlockQueue* autofetchQueue;
 
 - (void) removeObjects:(NSArray*)objects;
 
@@ -35,7 +37,7 @@
 @implementation GBRepositoriesController
 
 @synthesize rootController;
-@synthesize localRepositoriesUpdatesQueue;
+//@synthesize localRepositoriesUpdatesQueue;
 @synthesize autofetchQueue;
 @synthesize repositoryViewController;
 @synthesize repositoryToolbarController;
@@ -44,7 +46,7 @@
 
 - (void) dealloc
 {
-  self.localRepositoriesUpdatesQueue = nil;
+//  self.localRepositoriesUpdatesQueue = nil;
   self.autofetchQueue = nil;
   self.cloneWindowController = nil;
   self.fsEventStream = nil;
@@ -64,7 +66,7 @@
     self.sidebarItem.draggable = NO;
     self.sidebarItem.editable = NO;
 
-    self.localRepositoriesUpdatesQueue = [OABlockQueue queueWithName:@"LocalUpdates" concurrency:1];
+//    self.localRepositoriesUpdatesQueue = [OABlockQueue queueWithName:@"LocalUpdates" concurrency:1];
     self.autofetchQueue = [OABlockQueue queueWithName:@"AutoFetch" concurrency:4];
     
     self.repositoryViewController = [[[GBRepositoryViewController alloc] initWithNibName:@"GBRepositoryViewController" bundle:nil] autorelease];
@@ -399,7 +401,7 @@
   if (!repoCtrl) return;
   repoCtrl.toolbarController = self.repositoryToolbarController;
   repoCtrl.viewController = self.repositoryViewController;
-  repoCtrl.updatesQueue = self.localRepositoriesUpdatesQueue;
+//  repoCtrl.updatesQueue = self.localRepositoriesUpdatesQueue;
   repoCtrl.autofetchQueue = self.autofetchQueue;
 }
 
@@ -519,6 +521,11 @@
   [self contentsDidChange];
   
   self.rootController.selectedObjects = selectedObjects;
+}
+
+- (void) repositoryControllerDidUpdateSubmodules:(GBRepositoryController*)repoCtrl
+{
+  [self contentsDidChange];
 }
 
 - (void) repositoryControllerDidStop:(GBRepositoryController*)repoCtrl
