@@ -50,13 +50,13 @@ static NSString* const kGBSubmoduleCellButton = @"GBSubmoduleCellButton";
   if (!button)
   {
     // TODO: adjust the frame to the contained text
-    button = [[[NSButton alloc] initWithFrame:NSMakeRect(0, 0, 50.0, 16.0)] autorelease];
+    button = [[[NSButton alloc] initWithFrame:NSMakeRect(0, 0, 50.0, 13.0)] autorelease];
     
     // TODO: support also "Update" button which pull and checks out updated HEAD
     [button setTitle:NSLocalizedString(@"Download", @"")];
     
     [button setBezelStyle:NSRoundRectBezelStyle];
-    [[button cell] setControlSize:NSSmallControlSize];
+    [[button cell] setControlSize:NSMiniControlSize];
     [[button cell] setFont:[NSFont systemFontOfSize:[NSFont systemFontSizeForControlSize:[[button cell] controlSize]]]];
     [self.sidebarItem setView:button forKey:kGBSubmoduleCellButton];
   }
@@ -69,7 +69,7 @@ static NSString* const kGBSubmoduleCellButton = @"GBSubmoduleCellButton";
   
   static CGFloat leftPadding = 2.0;
   static CGFloat rightPadding = 2.0;
-  static CGFloat yOffset = -1.0;
+  static CGFloat yOffset = -2;
   NSRect buttonFrame = [button frame];
   buttonFrame.origin.x = rect.origin.x + (rect.size.width - buttonFrame.size.width - rightPadding);
   buttonFrame.origin.y = rect.origin.y + yOffset;
