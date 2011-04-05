@@ -9,7 +9,11 @@
 
 @synthesize submodules;
 
-
+- (void) dealloc
+{
+  self.submodules = nil;
+  [super dealloc];
+}
 
 - (NSArray*) submodulesFromStatusOutput:(NSData*) data
 {
