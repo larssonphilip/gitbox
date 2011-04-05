@@ -246,24 +246,22 @@
 
 - (NSRect) drawSpinnerIfNeededInRectAndReturnRemainingRect:(NSRect)rect
 {
-  NSProgressIndicator* spinner = self.sidebarItem.progressIndicator;
-  BOOL isSpinning = [self.sidebarItem visibleSpinning];
-  
-  if (!isSpinning)
+  if (![self.sidebarItem visibleSpinning])
   {
-    [spinner removeFromSuperview];
+    [self.sidebarItem setView:nil forKey:@"GBSidebarCellPogressIndicator"];
     return rect;
   }
-  
+ 
+  NSProgressIndicator* spinner = (NSProgressIndicator*)[self.sidebarItem viewForKey:@"GBSidebarCellPogressIndicator"];
   if (!spinner)
   {
     spinner = [[[NSProgressIndicator alloc] initWithFrame:NSMakeRect(0, 0, 16.0, 16.0)] autorelease];
     [spinner setStyle:NSProgressIndicatorSpinningStyle];
     [spinner setControlSize:NSSmallControlSize];
-    self.sidebarItem.progressIndicator = spinner;
-    spinner = self.sidebarItem.progressIndicator;
-    if (!spinner) return rect;
+    [self.sidebarItem setView:spinner forKey:@"GBSidebarCellPogressIndicator"];
   }
+  
+  if (!spinner) return rect;
   
   [spinner setIndeterminate:YES];
   [spinner startAnimation:nil];

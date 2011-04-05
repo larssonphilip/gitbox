@@ -23,11 +23,13 @@
 - (NSUInteger) visibleBadgeInteger;
 @property(nonatomic, retain) GBSidebarCell* cell;
 
-@property(nonatomic, retain) NSProgressIndicator* progressIndicator;
 @property(nonatomic, assign, getter=isSection) BOOL section;
 @property(nonatomic, assign, getter=isSpinning)   BOOL spinning;
 - (BOOL) isSubtreeSpinning; // returns YES if receiver spins or any of the children spin
 - (BOOL) visibleSpinning; // returns YES if the spinner should be visible depending on expanded state
+
+- (NSView*) viewForKey:(NSString*)aKey;
+- (void) setView:(NSView*)aView forKey:(NSString*)aKey;
 
 
 // Behaviour
@@ -42,7 +44,6 @@
 - (NSDragOperation) dragOperationForItems:(NSArray*)items outlineView:(NSOutlineView*)anOutlineView;
 - (BOOL) openURLs:(NSArray*)URLs atIndex:(NSUInteger)anIndex;
 - (BOOL) moveItems:(NSArray*)items toIndex:(NSUInteger)anIndex;
-
 
 
 // Actions

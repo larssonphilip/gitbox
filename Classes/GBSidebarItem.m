@@ -3,6 +3,7 @@
 
 @interface GBSidebarItem ()
 @property(nonatomic, copy, readwrite) NSString* UID;
+@property(nonatomic, retain) NSMutableDictionary* viewsDictionary;
 @end
 
 @implementation GBSidebarItem
@@ -16,7 +17,7 @@
 @synthesize badgeInteger;
 @synthesize cell;
 @synthesize menu;
-@synthesize progressIndicator;
+@synthesize viewsDictionary;
 @synthesize section;
 @synthesize spinning;
 @synthesize selectable;
@@ -34,8 +35,11 @@
   self.tooltip = nil;
   self.cell = nil;
   self.menu = nil;
-  [self.progressIndicator removeFromSuperview];
-  self.progressIndicator = nil;
+  for (NSString* key in viewsDictionary)
+  {
+    [[viewsDictionary objectForKey:key] removeFromSuperview];
+  }
+  [viewsDictionary release]; viewsDictionary = nil;
   [super dealloc];
 }
 
@@ -43,6 +47,7 @@
 {
   if ((self = [super init]))
   {
+    self.viewsDictionary = [NSMutableDictionary dictionary];
   }
   return self;
 }
@@ -55,7 +60,7 @@
 
 - (NSString*) description
 {
-  return [NSString stringWithFormat:@"<%@: %p title=%@ cell=%@ expanded=%d object=%@>",
+  return [NSString stringWithFormat:@"<%@:%p title=%@ cell=%@ expanded=%d object=%@>",
           [self class],
           self,
           [self title],
@@ -167,6 +172,24 @@
   }
 }
 
+- (NSView*) viewForKey:(NSString*)aKey
+{
+  return [self.viewsDictionary objectForKey:aKey];
+}
+
+- (void) setView:(NSView*)aView forKey:(NSString*)aKey
+{
+  NSView* oldView = [self.viewsDictionary objectForKey:aKey];
+  [oldView removeFromSuperview];
+  if (aView)
+  {
+    [self.viewsDictionary setObject:aView forKey:aKey];
+  }
+  else
+  {
+    [self.viewsDictionary removeObjectForKey:aKey];
+  }
+}
 
 
 
@@ -178,6 +201,7 @@
 
 
 // Forward actions to the delegate if it responds to them.
+// Note: tryToPerform:with: is not used by [NSApp tryToPerform:with:] which uses respondsToSelector:/performSelector:withObject: instead.
 - (BOOL) tryToPerform:(SEL)anAction with:(id)argument
 {
   if ([self.object respondsToSelector:anAction])
@@ -187,6 +211,23 @@
   }
   return [super tryToPerform:anAction with:argument];
 }
+
+- (BOOL) respondsToSelector:(SEL)selector
+{
+  if ([super respondsToSelector:selector]) return YES;
+  if (!self.object) return NO;
+  return [self.object respondsToSelector:selector];
+}
+
+- (id) performSelector:(SEL)selector withObject:(id)argument
+{
+  if ([super respondsToSelector:selector])
+  {
+    return [super performSelector:selector withObject:argument];
+  }
+  return [self.object performSelector:selector withObject:argument];
+}
+
 
 - (BOOL) isSelectable
 {
@@ -241,7 +282,10 @@
   if (collapsed)
   {
     [self enumerateChildrenUsingBlock:^(GBSidebarItem* obj, NSUInteger idx, BOOL* stop) {
-      [obj.progressIndicator removeFromSuperview];
+      for (NSString* aKey in obj.viewsDictionary)
+      {
+        [[obj.viewsDictionary objectForKey:aKey] removeFromSuperview];
+      }
     }];
   }
 }
