@@ -15,7 +15,7 @@
 		return [NSArray array];
 	}
 	NSArray* rest = [nr OAResponderChain];
-	return [[NSArray arrayWithObject:nr] arrayByAddingObjectsFromArray:rest];
+	return [rest arrayByAddingObject:nr];
 }
 
 
