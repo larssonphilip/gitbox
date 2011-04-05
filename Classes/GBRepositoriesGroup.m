@@ -16,7 +16,6 @@
 @synthesize sidebarItem;
 @synthesize name;
 @synthesize items;
-@synthesize sidebarSpinner;
 @synthesize window;
 @synthesize repositoriesController;
 
@@ -27,7 +26,6 @@
   self.sidebarItem = nil;
   self.name = nil;
   self.items = nil;
-  self.sidebarSpinner = nil;
   [super dealloc];
 }
 
