@@ -2,7 +2,7 @@ Gitbox 1.3 Release Notes (WIP)
 
 New features:
 
-✓ Fantastic submodules support: automatic display for all submodules (recursively), one-click download and update.
+✓ Fantastic submodules support: automatic display for all submodules, one-click download and update.
 ✓ Applying pull, push and other actions to many repositories at once.
 
 Enhancements:
@@ -12,12 +12,15 @@ Enhancements:
 ✓ Clone dialog remembers last entered URL.
 ✓ Fetching new commits when you start typing a commit message, so you can pull before committing.
 ✓ Sidebar badge shows the total count of nonpushed and nonmerged commits when it is bigger that 999.
+✓ Renamed and copied files which were also modified now display "modified" status instead of "renamed" or "copied".
 
 Bug fixes:
 
 ✓ Performance fix when staging and commiting quickly.
 ✓ Fixed bugs related to filesystem events: sometimes modified files did not appear in the stage, now they do.
-✓ Fixed commit message wrapping.
+✓ Fixed several bugs with staging partial files, reverting multiple files and other actions in stage.
+✓ Fixed commit message wrapping; now multi-line commits are rendered correctly.
+
 
 
 Misc items done:
@@ -46,9 +49,6 @@ Misc items done:
 
 + bug: stage: refuse first responder when stage is empty.
 + bug: stage: when selected all commits and clicked the text view, it does not immediately erase contents of the text view
-
-
------------------------------------------------------------
 
 Gitbox 1.3 Refactoring:
 
@@ -88,30 +88,12 @@ Gitbox 1.3 Refactoring:
 
 + support sidebar saved format v1.2 for gentle migration
 + cache repos' badges within plist for immediate presentation on launch
-
-- gross bug! when entering a commit message, sidebar can be updated and responder chain is changed so that text message does not get the events
-
-- enhancement: fsevents: push dotgit-only pause when doing stage updates, fetch, config updates or other internal changes.
-- enhancement: fsevents: on folder update, while .git is on pause, update stage *without* updating the index, so we don't generate more .git/ events
-
-- refactoring: clean up starting/stopping repo ctrl in GBRepositoriesController
-- bug: when fetch is clicked, should fetch everything (see email discussion)
-- history: highlight difference by using two SHA-1 and traversing loaded items; later tag all the commits for nice tree-like graphics
-
-- remember submodules as well
-- on load and on opening, update only submodules status, in a queue (without a spinner)
-
-- maintain scroll position in history (per repo) when iterating over the repos
-- maintain selection of the file when switching commits
-- maintain quicklook contents when switching commits
-
-- bug: minor issue: when quickly iterating through sidebar when repos are autofetched, the selection sometimes jumps. We should reset jump controller's block when selection is changed elsewhere.
-
-- bug: crash when staging 26000 files: *** Terminating app due to uncaught exception 'NSInvalidArgumentException', reason: 'too many arguments (28408) -- limit is 4096'
 + bug: commit message formatting: should detect manually-formatted commits (like in git.git) by comparing number of lines without punctuation to number of lines with punctuation (on both ends to also cover a case of lists).
 
-- minor: do not flash scrollers when switching between the repos (ideally, never flash at all, but show only when scrolling)
++ sidebar: delegate all sidebar right-click menu items to the sidebar controller and selected/clicked item. Fix Open in Terminal/Open in Finder commands.
 
+
+-----------------------------------------------------------
 
 Gitbox 1.3 Features:
 
@@ -122,6 +104,7 @@ Gitbox 1.3 Features:
 - submodules: remember collapsed status of submodules in user defaults
 - submodules: reload submodules status on fsevents and update the sidebar if changed
 - submodules: when reloading submodules merge or reload all of them - think hard on that!
+- submodules: remember submodules in prefs plist because we don't update all of them on startup
 
 - submodules: case 1: user clones a repo which has some submodules => needs init, display "download" button for submodules in sidebar
 - submodules: case 2: user pulls a repo which has some submodules updated => needs pull
@@ -135,17 +118,33 @@ Gitbox 1.3 Features:
 Gitbox 1.3 Enhancements:
 
 + should use a single FSEvents monitor for all the repos
-- 1.3 needs an Appirater-like dialog to ask user to leave a rating note on Mac AppStore
+- appirater-like dialog to ask user to leave a rating note on Mac AppStore
 
 - sidebar: before dropping over parent node, highlight appropriate index inside, not the parent
 - stage: for deleted file rename menu item "Revert File..." to "Restore File..."
 
 - edit repo name and store it in .git/vendor/gitbox/info.plist
 
+- enhancement: fsevents: push dotgit-only pause when doing stage updates, fetch, config updates or other internal changes.
+- enhancement: fsevents: on folder update, while .git is on pause, update stage *without* updating the index, so we don't generate more .git/ events
+
+- enhancement: maintain scroll position in history (per repo) when iterating over the repos
+- enhancement: maintain selection of the file when switching commits
+- enhancement: maintain quicklook contents when switching commits
+
+- refactoring: clean up starting/stopping repo ctrl in GBRepositoriesController
+- refactoring: history: highlight difference by using two SHA-1 and traversing loaded items; later tag all the commits for nice tree-like graphics
+
 Gitbox 1.3 Bug fixes:
 
-- sidebar: delegate all sidebar right-click menu items to the sidebar controller and selected/clicked item. Fix Open in Terminal/Open in Finder commands.
-- sidebar: postpone reloading the sidebar while editing a group name
+- gross bug! when entering a commit message, sidebar can be updated and responder chain is changed so that text message does not get the events
+- bug: still has an issue with autofetch filling up the autofetch queue: some tasks must be leaking or callback blocks are not called correctly
+- bug: crash when staging 26000 files: *** Terminating app due to uncaught exception 'NSInvalidArgumentException', reason: 'too many arguments (28408) -- limit is 4096'
+- (right now jump controller is disabled because of that) bug: minor issue: when quickly iterating through sidebar when repos are autofetched, the selection sometimes jumps. We should reset jump controller's block when selection is changed elsewhere.
+- bug: when fetch is clicked, should fetch everything (see email discussion)
+- bug: do not flash scrollers when at the top of the scrollable area
+
+? sidebar: postpone reloading the sidebar while editing a group name
 
 
 --
