@@ -105,7 +105,9 @@ static const CGFloat GBLightScrollerMaxAlpha = 0.4;
   
   CGFloat alpha = self.lastKnobAlpha;
   
-  if (CGRectEqualToRect(rect, self.lastKnobRect) && !self.mouseIsOverScroller)
+  CGFloat topY = 3.0;
+  
+  if ((CGRectEqualToRect(rect, self.lastKnobRect) || (rect.origin.y <= topY && self.lastKnobRect.origin.y <= topY)) && !self.mouseIsOverScroller)
   {
     if (self.shouldFadeKnob)
     {
