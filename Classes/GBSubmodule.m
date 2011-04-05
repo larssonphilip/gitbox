@@ -41,6 +41,7 @@ NSString* const GBSubmoduleStatusNotUpToDate = @"GBSubmoduleStatusNotUpToDate";
     self.sidebarItem = [[[GBSidebarItem alloc] init] autorelease];
     self.sidebarItem.object = self;
     self.sidebarItem.draggable = YES;
+    self.sidebarItem.selectable = YES;
     self.sidebarItem.cell = [[[GBSubmoduleCell alloc] initWithItem:self.sidebarItem] autorelease];
   }
   return self;
