@@ -741,16 +741,16 @@
     return;
   }
   
-  block = [[block copy] autorelease];
-
-  [self initSubmodulesWithBlock:^{
-    GBSubmodulesTask* task = [GBSubmodulesTask taskWithRepository:self];
-    [self launchTask:task withBlock:^{
-      
-      // TODO: reuse submodules with the same name and update its status and URL
-      
-      self.submodules = task.submodules;
-      if (block) block();
+  [self.blockTable addBlock:block forName:@"updateSubmodules" proceedIfClear:^{
+    [self initSubmodulesWithBlock:^{
+      GBSubmodulesTask* task = [GBSubmodulesTask taskWithRepository:self];
+      [self launchTask:task withBlock:^{
+        
+        // TODO: reuse submodules with the same name and update its status and URL
+        
+        self.submodules = task.submodules;
+        [self.blockTable callBlockForName:@"updateSubmodules"];
+      }];
     }];
   }];
 }
