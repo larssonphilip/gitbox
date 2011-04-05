@@ -89,6 +89,8 @@ Gitbox 1.3 Refactoring:
 + support sidebar saved format v1.2 for gentle migration
 + cache repos' badges within plist for immediate presentation on launch
 
+- gross bug! when entering a commit message, sidebar can be updated and responder chain is changed so that text message does not get the events
+
 - enhancement: fsevents: push dotgit-only pause when doing stage updates, fetch, config updates or other internal changes.
 - enhancement: fsevents: on folder update, while .git is on pause, update stage *without* updating the index, so we don't generate more .git/ events
 
