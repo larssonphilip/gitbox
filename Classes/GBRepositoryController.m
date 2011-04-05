@@ -40,6 +40,7 @@
 @property(nonatomic, assign) BOOL isDisappearedFromFileSystem;
 @property(nonatomic, assign) BOOL isCommitting;
 @property(nonatomic, assign) BOOL isWaitingForAutofetch;
+@property(nonatomic, assign) BOOL isUpdatedSubmodulesOnce;
 @property(nonatomic, assign) NSInteger isStaging; // maintains a count of number of staging tasks running
 @property(nonatomic, assign) NSInteger isLoadingChanges; // maintains a count of number of changes loading tasks running
 @property(nonatomic, assign, readwrite) NSInteger isDisabled;
@@ -103,6 +104,7 @@
 @synthesize isCommitting;
 @synthesize isDisappearedFromFileSystem;
 @synthesize isWaitingForAutofetch;
+@synthesize isUpdatedSubmodulesOnce;
 @synthesize isStaging; // maintains a count of number of staging tasks running
 @synthesize isLoadingChanges; // maintains a count of number of changes loading tasks running
 @synthesize autoFetchInterval;
@@ -818,6 +820,15 @@
 {
   self.toolbarController.repositoryController = self;
   self.viewController.repositoryController = self;
+  
+  if (!self.isUpdatedSubmodulesOnce)
+  {
+    self.isUpdatedSubmodulesOnce = YES;
+    [self pushSpinning];
+    [self updateSubmodulesWithBlock:^{
+      [self popSpinning];
+    }];
+  }
 }
 
 
@@ -1069,52 +1080,52 @@
 
 - (void) updateSubmodulesWithBlock:(void(^)())aBlock
 {
-  aBlock = [[aBlock copy] autorelease];
-  
-  __block BOOL didChangeSubmodules = NO;
-  [self.repository updateSubmodulesWithBlock:^{
-    
-    for (GBSubmodule* submodule in [self.repository.submodules reversedArray])
-    {
-      // use some other condition like is it contained in the local array of submodules
-      if (!submodule.repositoryController) // repo controller is not set up yet
+  [self.blockTable addBlock:aBlock forName:@"updateSubmodules" proceedIfClear:^{
+    [self.repository updateSubmodulesWithBlock:^{
+      
+      BOOL didChangeSubmodules = NO;
+      for (GBSubmodule* submodule in [self.repository.submodules reversedArray])
       {
-        didChangeSubmodules = YES;
-        if ([submodule isCloned])
+        // use some other condition like is it contained in the local array of submodules
+        if (!submodule.repositoryController) // repo controller is not set up yet
         {
-          //GBRepositoryController* repoCtrl = [GBRepositoryController repositoryControllerWithURL:[submodule localURL]];
-          //submodule.repositoryController = repoCtrl;
-          //submodule.repositoryController.delegate = self.delegate;
-          //repoCtrl.updatesQueue = self.updatesQueue;
-          //repoCtrl.autofetchQueue = self.autofetchQueue;
-          //[repoCtrl start];
-          
-          // TODO: Should add self as an observer to monitor events such as moving to another URL or stopping the ctrl etc.
-          
-//          [self.updatesQueue prependBlock:^{
-//            [repoCtrl initialUpdateWithBlock:^{
-//              [self.updatesQueue endBlock];
-//            }];
-//          }];
-        }
-        else
-        {
-          // TODO: instead of switching the repositoryController, should switch the object for sidebar item.
-          //GBSubmoduleCloningController* repoCtrl = [[GBSubmoduleCloningController new] autorelease];
-          //repoCtrl.submodule = submodule;
-          
-          //submodule.repositoryController = repoCtrl;
-          //submodule.repositoryController.delegate = self.delegate;
+          didChangeSubmodules = YES;
+          if ([submodule isCloned])
+          {
+            //GBRepositoryController* repoCtrl = [GBRepositoryController repositoryControllerWithURL:[submodule localURL]];
+            //submodule.repositoryController = repoCtrl;
+            //submodule.repositoryController.delegate = self.delegate;
+            //repoCtrl.updatesQueue = self.updatesQueue;
+            //repoCtrl.autofetchQueue = self.autofetchQueue;
+            //[repoCtrl start];
+            
+            // TODO: Should add self as an observer to monitor events such as moving to another URL or stopping the ctrl etc.
+            
+            //          [self.updatesQueue prependBlock:^{
+            //            [repoCtrl initialUpdateWithBlock:^{
+            //              [self.updatesQueue endBlock];
+            //            }];
+            //          }];
+          }
+          else
+          {
+            // TODO: instead of switching the repositoryController, should switch the object for sidebar item.
+            //GBSubmoduleCloningController* repoCtrl = [[GBSubmoduleCloningController new] autorelease];
+            //repoCtrl.submodule = submodule;
+            
+            //submodule.repositoryController = repoCtrl;
+            //submodule.repositoryController.delegate = self.delegate;
+          }
         }
       }
-    }
-    
-    if (aBlock) aBlock();
-    
-    if (didChangeSubmodules)
-    {
-      [self notifyWithSelector:@selector(repositoryControllerDidUpdateSubmodules:)];
-    }
+      
+      [self.blockTable callBlockForName:@"updateSubmodules"];
+      
+      if (didChangeSubmodules)
+      {
+        [self notifyWithSelector:@selector(repositoryControllerDidUpdateSubmodules:)];
+      }
+    }];
   }];
 }
 
