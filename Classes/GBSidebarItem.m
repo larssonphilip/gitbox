@@ -35,9 +35,11 @@
   self.tooltip = nil;
   self.cell = nil;
   self.menu = nil;
-  for (NSString* key in viewsDictionary)
+  NSLog(@"GBSidebarItem#dealloc");
+  for (NSString* aKey in viewsDictionary)
   {
-    [[viewsDictionary objectForKey:key] removeFromSuperview];
+    NSLog(@"GBSidebarItem#dealloc: removing view %@", aKey);
+    [[viewsDictionary objectForKey:aKey] removeFromSuperview];
   }
   [viewsDictionary release]; viewsDictionary = nil;
   [super dealloc];
@@ -180,6 +182,10 @@
 - (void) setView:(NSView*)aView forKey:(NSString*)aKey
 {
   NSView* oldView = [self.viewsDictionary objectForKey:aKey];
+  
+  if (oldView == aView) return;
+  
+  [[oldView retain] autorelease];
   [oldView removeFromSuperview];
   if (aView)
   {
@@ -284,6 +290,7 @@
     [self enumerateChildrenUsingBlock:^(GBSidebarItem* obj, NSUInteger idx, BOOL* stop) {
       for (NSString* aKey in obj.viewsDictionary)
       {
+        NSLog(@"GBSidebarItem#setCollapsed: removing view %@ from child #%d %@", aKey, (int)idx, obj);
         [[obj.viewsDictionary objectForKey:aKey] removeFromSuperview];
       }
     }];

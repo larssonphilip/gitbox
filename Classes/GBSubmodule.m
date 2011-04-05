@@ -25,9 +25,11 @@ NSString* const GBSubmoduleStatusNotUpToDate = @"GBSubmoduleStatusNotUpToDate";
 
 - (void) dealloc
 {
+  NSLog(@"GBSubmodule#dealloc");
   self.remoteURL = nil;
   self.path      = nil;
   self.status = nil;
+  self.sidebarItem.object = nil;
   self.sidebarItem = nil;
   self.repositoryController = nil;
   

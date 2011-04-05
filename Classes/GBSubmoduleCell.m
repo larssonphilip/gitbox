@@ -9,11 +9,12 @@
 - (NSRect) drawDownloadButtonAndReturnRemainingRect:(NSRect)rect;
 @end
 
+static NSString* const kGBSubmoduleCellButton = @"GBSubmoduleCellButton";
+
 @implementation GBSubmoduleCell
 
 
 #pragma mark GBSidebarCell
-
 
 - (NSImage*) image
 {
@@ -27,9 +28,13 @@
 
 - (NSRect) drawExtraFeaturesAndReturnRemainingRect:(NSRect)rect
 {
-  if (![self.submodule isCloned] && ![self.sidebarItem visibleSpinning])
+  if (![self.submodule isCloned] && ![self.sidebarItem visibleSpinning] && [self.sidebarItem isExpanded])
   {
     return [self drawDownloadButtonAndReturnRemainingRect:rect];
+  }
+  else
+  {
+    [self.sidebarItem setView:nil forKey:kGBSubmoduleCellButton];
   }
   return [super drawExtraFeaturesAndReturnRemainingRect:rect];
 }
@@ -41,6 +46,37 @@
 
 - (NSRect) drawDownloadButtonAndReturnRemainingRect:(NSRect)rect
 {
+  NSButton* button = (NSButton*)[self.sidebarItem viewForKey:kGBSubmoduleCellButton];
+  if (!button)
+  {
+    // TODO: adjust the frame to the contained text
+    button = [[[NSButton alloc] initWithFrame:NSMakeRect(0, 0, 50.0, 16.0)] autorelease];
+    
+    // TODO: support also "Update" button which pull and checks out updated HEAD
+    [button setTitle:NSLocalizedString(@"Download", @"")];
+    
+    [button setBezelStyle:NSRoundRectBezelStyle];
+    [[button cell] setControlSize:NSSmallControlSize];
+    [[button cell] setFont:[NSFont systemFontOfSize:[NSFont systemFontSizeForControlSize:[[button cell] controlSize]]]];
+    [self.sidebarItem setView:button forKey:kGBSubmoduleCellButton];
+  }
+  
+  if (!button) return rect;
+  
+  [button sizeToFit];
+  [button setHidden:NO];
+  [self.outlineView addSubview:button];
+  
+  static CGFloat leftPadding = 2.0;
+  static CGFloat rightPadding = 2.0;
+  static CGFloat yOffset = -1.0;
+  NSRect buttonFrame = [button frame];
+  buttonFrame.origin.x = rect.origin.x + (rect.size.width - buttonFrame.size.width - rightPadding);
+  buttonFrame.origin.y = rect.origin.y + yOffset;
+  [button setFrame:buttonFrame];
+  
+  rect.size.width = buttonFrame.origin.x - rect.origin.x - leftPadding;
+  
   return rect;
 }
 

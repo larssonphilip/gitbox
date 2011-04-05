@@ -337,6 +337,7 @@
 		20C8972312B89BC2002F600F /* OATextFieldAndView.m in Sources */ = {isa = PBXBuildFile; fileRef = 20C8972112B89BC2002F600F /* OATextFieldAndView.m */; };
 		20C899B612B95DDF002F600F /* OANonScrollingScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 20C899B512B95DDF002F600F /* OANonScrollingScrollView.m */; };
 		20C899B712B95DDF002F600F /* OANonScrollingScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 20C899B512B95DDF002F600F /* OANonScrollingScrollView.m */; };
+		20DD4DC3134B4F7300E6E6B7 /* NSObject+OAResponderChain.m in Sources */ = {isa = PBXBuildFile; fileRef = 20DD4DC2134B4F7300E6E6B7 /* NSObject+OAResponderChain.m */; };
 		20EA6FD0131B0EB300B97430 /* OAPropertyListRepresentation.m in Sources */ = {isa = PBXBuildFile; fileRef = 20EA6FCF131B0EB300B97430 /* OAPropertyListRepresentation.m */; };
 		20EA6FD1131B0EB300B97430 /* OAPropertyListRepresentation.m in Sources */ = {isa = PBXBuildFile; fileRef = 20EA6FCF131B0EB300B97430 /* OAPropertyListRepresentation.m */; };
 		20EF88D712E34F9300F3438A /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20EF88D612E34F9300F3438A /* Quartz.framework */; };
@@ -690,6 +691,8 @@
 		20C9A55D12E85E0800DBA3E1 /* Subversion.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Subversion.txt; sourceTree = "<group>"; };
 		20C9A55F12E85ED100DBA3E1 /* Mercurial.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Mercurial.txt; sourceTree = "<group>"; };
 		20CCCE011344AA2B00096AF7 /* FSEvents.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = FSEvents.txt; sourceTree = "<group>"; };
+		20DD4DC1134B4F7300E6E6B7 /* NSObject+OAResponderChain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+OAResponderChain.h"; sourceTree = "<group>"; };
+		20DD4DC2134B4F7300E6E6B7 /* NSObject+OAResponderChain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+OAResponderChain.m"; sourceTree = "<group>"; };
 		20E7B6EC1303620F00CB6732 /* GBMainWindowItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBMainWindowItem.h; sourceTree = "<group>"; };
 		20EA6FCB131B0CBA00B97430 /* OAPropertyListRepresentation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAPropertyListRepresentation.h; sourceTree = "<group>"; };
 		20EA6FCF131B0EB300B97430 /* OAPropertyListRepresentation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAPropertyListRepresentation.m; sourceTree = "<group>"; };
@@ -1106,6 +1109,8 @@
 				2025D3B911BF1F2D004715FA /* NSAttributedString+OAAttributedStringHelpers.m */,
 				200A47F812EF8F07004DF940 /* NSObject+OASelectorNotifications.h */,
 				200A47F912EF8F07004DF940 /* NSObject+OASelectorNotifications.m */,
+				20DD4DC1134B4F7300E6E6B7 /* NSObject+OAResponderChain.h */,
+				20DD4DC2134B4F7300E6E6B7 /* NSObject+OAResponderChain.m */,
 			);
 			name = "Foundation Extensions";
 			sourceTree = "<group>";
@@ -1749,6 +1754,7 @@
 				20C66EF01344EEAF0067D232 /* GBFolderMonitor.m in Sources */,
 				20AAFAC81347B44300A8E31F /* OABlockOperations.m in Sources */,
 				20AAFACC1347CD9700A8E31F /* OABlockTable.m in Sources */,
+				20DD4DC3134B4F7300E6E6B7 /* NSObject+OAResponderChain.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
