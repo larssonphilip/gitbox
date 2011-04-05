@@ -389,7 +389,7 @@
   CGFloat totalWidth = splitView.frame.size.width;
   if (dividerIndex == 0)
   {
-    return round(MIN(300, 0.4*totalWidth));
+    return round(MIN(500, 0.5*totalWidth));
   }
   return proposedMax;
 }
