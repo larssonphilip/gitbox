@@ -35,10 +35,10 @@
   self.tooltip = nil;
   self.cell = nil;
   self.menu = nil;
-  NSLog(@"GBSidebarItem#dealloc");
+  //NSLog(@"GBSidebarItem#dealloc");
   for (NSString* aKey in viewsDictionary)
   {
-    NSLog(@"GBSidebarItem#dealloc: removing view %@", aKey);
+    //NSLog(@"GBSidebarItem#dealloc: removing view %@", aKey);
     [[viewsDictionary objectForKey:aKey] removeFromSuperview];
   }
   [viewsDictionary release]; viewsDictionary = nil;
@@ -290,7 +290,7 @@
     [self enumerateChildrenUsingBlock:^(GBSidebarItem* obj, NSUInteger idx, BOOL* stop) {
       for (NSString* aKey in obj.viewsDictionary)
       {
-        NSLog(@"GBSidebarItem#setCollapsed: removing view %@ from child #%d %@", aKey, (int)idx, obj);
+        //NSLog(@"GBSidebarItem#setCollapsed: removing view %@ from child #%d %@", aKey, (int)idx, obj);
         [[obj.viewsDictionary objectForKey:aKey] removeFromSuperview];
       }
     }];
