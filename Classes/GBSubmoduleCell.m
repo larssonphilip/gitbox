@@ -68,7 +68,7 @@ static NSString* const kGBSubmoduleCellButton = @"GBSubmoduleCellButton";
   [self.outlineView addSubview:button];
   
   static CGFloat leftPadding = 2.0;
-  static CGFloat rightPadding = 2.0;
+  static CGFloat rightPadding = 0.0;
   static CGFloat yOffset = -2;
   NSRect buttonFrame = [button frame];
   buttonFrame.origin.x = rect.origin.x + (rect.size.width - buttonFrame.size.width - rightPadding);
