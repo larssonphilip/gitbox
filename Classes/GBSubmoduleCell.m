@@ -19,9 +19,10 @@
 {
   if ([[self submodule] status] == GBSubmoduleStatusNotCloned)
   {
-    return [NSImage imageNamed:@"GBSidebarSubmoduleMissingIcon.png"];
+    return [NSImage imageNamed:@"GBSidebarSubmoduleMissingIcon"];
   }
-  return [NSImage imageNamed:@"GBSidebarSubmoduleIcon.png"];
+  return [NSImage imageNamed:NSImageNameFolder];
+  return [NSImage imageNamed:@"GBSidebarSubmoduleIcon"];
 }
 
 - (NSRect) drawExtraFeaturesAndReturnRemainingRect:(NSRect)rect
