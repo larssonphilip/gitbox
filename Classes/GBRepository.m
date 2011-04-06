@@ -64,6 +64,7 @@
 
 - (void) dealloc
 {
+  NSLog(@"GBRepository#dealloc: %@", self);
   [NSObject cancelPreviousPerformRequestsWithTarget:self];
   
   self.url = nil;
@@ -78,6 +79,7 @@
   self.localBranchCommits = nil;
   self.blockTable = nil;
   self.config = nil;
+  self.submodules = nil;
   
   if (self.dispatchQueue) dispatch_release(self.dispatchQueue);
   self.dispatchQueue = nil;
@@ -377,8 +379,10 @@
   return commits + changes;
 }
 
-
-
+- (NSString*) description
+{
+  return [NSString stringWithFormat:@"<GBRepository:%p %@>", self, self.url];
+}
 
 
 
@@ -445,10 +449,7 @@
 
 - (BOOL) doesHaveSubmodules
 {
-  NSFileManager* fileManager   = [[[NSFileManager alloc] init] autorelease];
-  NSString* dotGitModulesPath = [[NSURL URLWithString:@".gitmodule" relativeToURL: [self url]] path];
-
-  return [fileManager fileExistsAtPath:dotGitModulesPath];
+  return [[NSFileManager defaultManager] fileExistsAtPath:[[self path] stringByAppendingPathComponent:@".gitmodules"]];
 }
 
 - (NSURL*) URLForSubmoduleAtPath:(NSString*)submodulePath
@@ -734,7 +735,7 @@
 - (void) updateSubmodulesWithBlock:(void (^)())block
 {
   // Quick check for common case: if file .gitmodules does not exist, we have no submodules
-  if (![[NSFileManager defaultManager] fileExistsAtPath:[[self path] stringByAppendingPathComponent:@".gitmodules"]])
+  if (![self doesHaveSubmodules])
   {
     self.submodules = [NSArray array];
     if (block) block();

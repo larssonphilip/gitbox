@@ -116,6 +116,7 @@
 
 - (void) dealloc
 {
+  NSLog(@"GBRepositoryController#dealloc: %@", self);
   [[NSNotificationCenter defaultCenter] removeObserver:self];
   //NSLog(@">>> GBRepositoryController:%p dealloc...", self);
   self.repository = nil; // so we unsubscribe correctly
@@ -252,6 +253,7 @@
 
 - (void) stop
 {
+  NSLog(@"GBRepositoryController#stop: %@", self);
   [self unscheduleAutoFetch];
   if (self.toolbarController.repositoryController == self) self.toolbarController.repositoryController = nil;
   if (self.viewController.repositoryController == self) self.viewController.repositoryController = nil;
@@ -261,6 +263,11 @@
   self.repository = nil;
   //NSLog(@"!!! Stopped GBRepoCtrl:%p!", self);
   [self notifyWithSelector:@selector(repositoryControllerDidStop:)];
+}
+
+- (NSString*) description
+{
+  return [NSString stringWithFormat:@"<GBRepositoryController:%p %@>", self, self.url];
 }
 
 

@@ -50,6 +50,8 @@ Misc items done:
 + bug: stage: refuse first responder when stage is empty.
 + bug: stage: when selected all commits and clicked the text view, it does not immediately erase contents of the text view
 
++ should use a single FSEvents monitor for all the repos
+
 Gitbox 1.3 Refactoring:
 
 + make load/save for sidebar items
@@ -91,7 +93,7 @@ Gitbox 1.3 Refactoring:
 + bug: commit message formatting: should detect manually-formatted commits (like in git.git) by comparing number of lines without punctuation to number of lines with punctuation (on both ends to also cover a case of lists).
 
 + sidebar: delegate all sidebar right-click menu items to the sidebar controller and selected/clicked item. Fix Open in Terminal/Open in Finder commands.
-
++ should use a single FSEvents monitor for all the repos
 
 -----------------------------------------------------------
 
@@ -117,7 +119,7 @@ Gitbox 1.3 Features:
 
 Gitbox 1.3 Enhancements:
 
-+ should use a single FSEvents monitor for all the repos
+
 - appirater-like dialog to ask user to leave a rating note on Mac AppStore
 
 - sidebar: before dropping over parent node, highlight appropriate index inside, not the parent
@@ -138,6 +140,8 @@ Gitbox 1.3 Enhancements:
 Gitbox 1.3 Bug fixes:
 
 - gross bug! when entering a commit message, sidebar can be updated and responder chain is changed so that text message does not get the events
++ bug: when repo has submodules with download buttons and it is expanded, upon removal, buttons are still in the view
+- subtle bug: when repo has submodules with download buttons and it is expanded, when such submodule is selected, and right-click is used to remove its parent repo, its download button remains in the view
 - bug: still has an issue with autofetch filling up the autofetch queue: some tasks must be leaking or callback blocks are not called correctly
 - bug: crash when staging 26000 files: *** Terminating app due to uncaught exception 'NSInvalidArgumentException', reason: 'too many arguments (28408) -- limit is 4096'
 - (right now jump controller is disabled because of that) bug: minor issue: when quickly iterating through sidebar when repos are autofetched, the selection sometimes jumps. We should reset jump controller's block when selection is changed elsewhere.
