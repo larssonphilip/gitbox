@@ -97,7 +97,7 @@ Gitbox 1.3 Refactoring:
 
 Gitbox 1.3 Features:
 
-- submodules: display "download" button in the sidebar item
++ submodules: display "download" button in the sidebar item
 - submodules: when submodule folder is removed, properly update its status
 - submodules: cloning repo ctrl is not deallocated
 - submodules: cancelling of a cloning repo ctrl does not work (crash)
@@ -143,6 +143,9 @@ Gitbox 1.3 Bug fixes:
 - (right now jump controller is disabled because of that) bug: minor issue: when quickly iterating through sidebar when repos are autofetched, the selection sometimes jumps. We should reset jump controller's block when selection is changed elsewhere.
 - bug: when fetch is clicked, should fetch everything (see email discussion)
 - bug: do not flash scrollers when at the top of the scrollable area
+
+- bug: Activity objects appear to be overretained. Possibly file handles are leaked. Should add logging to OATask when it is alive for more than 5 seconds.
+- bug: crash when opening a diff tool and probably updating the stage at the same time.
 
 ? sidebar: postpone reloading the sidebar while editing a group name
 
