@@ -68,12 +68,14 @@ void OAFSEventStreamCallback( ConstFSEventStreamRef streamRef,
 
 - (void) addPath:(NSString*)aPath
 {
+  if (!aPath) return;
   [self.pathsBag addObject:aPath];
   [self update];
 }
 
 - (void) removePath:(NSString*)aPath
 {
+  if (!aPath) return;
   [self.pathsBag removeObject:aPath];
   [self update];
 }
