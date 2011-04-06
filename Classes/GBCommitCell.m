@@ -5,11 +5,14 @@
 
 @implementation GBCommitCell
 
+@synthesize isForeground;
 @synthesize isFocused;
 @dynamic commit;
-- (GBCommit*) commit
+
+- (void)dealloc
 {
-  return [self representedObject];
+  // TODO: release commit, font, paragraph style etc.
+  [super dealloc];
 }
 
 + (CGFloat) cellHeight
@@ -21,6 +24,55 @@
 {
   return [[[self alloc] initTextCell:@""] autorelease];
 }
+
+- (void) setupCell
+{
+  [self setSelectable:YES];
+  [self setEditable:NO];
+}
+
+- (id)initTextCell:(NSString*)string
+{
+  if ((self = [super initTextCell:string])) [self setupCell];
+  return self;
+}
+
+- (id)initImageCell:(NSImage*)img
+{
+  if ((self = [super initImageCell:img])) [self setupCell];
+  return self;
+}
+
+- (id)initWithCoder:(NSCoder*)coder
+{
+  if ((self = [super initWithCoder:coder])) [self setupCell];
+  return self;
+}
+
+- (id) initWithCommit:(GBCommit*)aCommit
+{
+  if ((self = [self initTextCell:@""]))
+  {
+    [self setRepresentedObject:aCommit];
+  }
+  return self;
+}
+
+- (id) copyWithZone:(NSZone *)zone
+{
+  GBCommitCell* cell = [[[self class] alloc] initWithCommit:self.commit];
+  cell.isForeground = self.isForeground;
+  cell.isFocused = self.isFocused;
+  return cell;
+}
+
+
+
+- (GBCommit*) commit
+{
+  return [self representedObject];
+}
+
 
 - (NSString*) tooltipString
 {
@@ -122,16 +174,16 @@
   
   [self drawSyncStatusIconInRect:innerRect];
   
-  GBCommit* object = self.commit;
+  GBCommit* commit = self.commit;
   
-  NSString* title = object.authorName;
+  NSString* title = commit.authorName;
   NSString* date = @"";
-  NSString* message = object.message;
+  NSString* message = commit.message;
   
-  if (object.date)
+  if (commit.date)
   {
     NSDateFormatter* dateFormatter = [[NSDateFormatter new] autorelease];
-    if ([object.date timeIntervalSinceNow] > -12*3600)
+    if ([commit.date timeIntervalSinceNow] > -12*3600)
     {
       [dateFormatter setDateStyle:NSDateFormatterNoStyle];
       [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
@@ -148,7 +200,7 @@
         [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
       }
     }
-    date = [dateFormatter stringFromDate:object.date];
+    date = [dateFormatter stringFromDate:commit.date];
   }
   
   // Prepare colors and styles
@@ -164,16 +216,16 @@
     titleColor = textColor;
   }
   
-  if ([object isMerge])
+  if ([commit isMerge])
   {
-    CGFloat fadeRatio = 0.5;
+    CGFloat fadeRatio = 0.45;
     NSColor* whiteColor = [NSColor whiteColor];
     titleColor = [titleColor blendedColorWithFraction:fadeRatio ofColor:whiteColor];
     textColor = [textColor blendedColorWithFraction:fadeRatio ofColor:whiteColor];
     dateColor = [dateColor blendedColorWithFraction:fadeRatio ofColor:whiteColor];
   }
   
-  if (object.syncStatus == GBCommitSyncStatusUnmerged)
+  if (commit.syncStatus == GBCommitSyncStatusUnmerged)
   {
     CGFloat fadeRatio = 0.5;
     titleColor = [titleColor colorWithAlphaComponent:fadeRatio];
@@ -198,9 +250,17 @@
                                           paragraphStyle, NSParagraphStyleAttributeName,
                                           nil] autorelease];
   
+  NSFont* messageFont = [NSFont systemFontOfSize:12.0];
+
+  // Lucida Grande does not ship with italics
+//  if ([commit isMerge])
+//  {
+//    messageFont = [[NSFontManager sharedFontManager] convertFont:messageFont toHaveTrait:NSItalicFontMask];
+//  }
+  
   NSMutableDictionary* messageAttributes = [[[NSMutableDictionary alloc] initWithObjectsAndKeys:
                                              textColor, NSForegroundColorAttributeName,
-                                             [NSFont systemFontOfSize:12.0], NSFontAttributeName,
+                                             messageFont, NSFontAttributeName,
                                              paragraphStyle, NSParagraphStyleAttributeName,
                                              nil] autorelease];
   
@@ -213,7 +273,15 @@
     [dateAttributes setObject:s forKey:NSShadowAttributeName];
     [messageAttributes setObject:s forKey:NSShadowAttributeName];
   }
-  
+
+  if ([commit isMerge])
+  {
+    NSNumber* obliqueness = [NSNumber numberWithFloat:0.2];
+    [titleAttributes setObject:obliqueness forKey:NSObliquenessAttributeName];
+    [messageAttributes setObject:obliqueness forKey:NSObliquenessAttributeName];
+    [dateAttributes setObject:obliqueness forKey:NSObliquenessAttributeName];
+  }
+
   
   // Calculate heights
   
@@ -276,6 +344,7 @@
   
   self.isFocused = ([window firstResponder] && [window firstResponder] == theControlView && 
                     [window isMainWindow] && [window isKeyWindow]);
+  self.isForeground = [window isMainWindow];
   
   [[NSColor whiteColor] setFill];
   NSRectFill(cellFrame);
@@ -345,13 +414,6 @@
   [self drawContentInFrame:cellFrame];
 }
 
-
-- (id) copyWithZone:(NSZone *)zone
-{
-  GBCommitCell* c = [super copyWithZone:zone];
-  c.representedObject = self.representedObject;
-  return c;
-}
 
 
 

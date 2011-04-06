@@ -1,10 +1,9 @@
 @class GBCommit;
 
 @interface GBCommitCell : NSTextFieldCell
-{
-  BOOL isFocused;
-}
-@property(assign) BOOL isFocused;
+
+@property(nonatomic, assign) BOOL isForeground;
+@property(nonatomic, assign) BOOL isFocused;
 @property(readonly) GBCommit* commit;
 
 + (CGFloat) cellHeight;

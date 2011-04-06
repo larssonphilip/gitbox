@@ -152,7 +152,7 @@
   self.outlineView = theControlView;
   self.isDragged = [self.outlineView preparesImageForDragging];
   NSWindow* window = [self.outlineView window];
-  self.isFocused = ([window firstResponder] && [window firstResponder] == self.outlineView && 
+  self.isFocused = ([window firstResponder] && [window firstResponder] == theControlView && 
                     [window isMainWindow] && [window isKeyWindow]);
   self.isForeground = [window isMainWindow];
 

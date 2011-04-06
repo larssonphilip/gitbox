@@ -3,6 +3,7 @@
 @class GBSidebarOutlineView;
 @interface GBSidebarCell : NSTextFieldCell
 
+// For subclasses:
 @property(nonatomic,assign) GBSidebarItem* sidebarItem; // item owns the cell
 @property(nonatomic,assign) GBSidebarOutlineView* outlineView;
 @property(nonatomic,assign) BOOL isForeground;
