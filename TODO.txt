@@ -127,6 +127,7 @@ Gitbox 1.3 Enhancements:
 
 - edit repo name and store it in .git/vendor/gitbox/info.plist
 
+- enhancement: perform task startup, parsing and finalization in the concurrent dispatch queue for not blocking the main thread.
 - enhancement: fsevents: push dotgit-only pause when doing stage updates, fetch, config updates or other internal changes.
 - enhancement: fsevents: on folder update, while .git is on pause, update stage *without* updating the index, so we don't generate more .git/ events
 
@@ -142,6 +143,7 @@ Gitbox 1.3 Bug fixes:
 - gross bug! when entering a commit message, sidebar can be updated and responder chain is changed so that text message does not get the events
 + bug: when repo has submodules with download buttons and it is expanded, upon removal, buttons are still in the view
 - subtle bug: when repo has submodules with download buttons and it is expanded, when such submodule is selected, and right-click is used to remove its parent repo, its download button remains in the view
+- bug: when closing a repo while it performs some tasks, it miserably crashes.
 - bug: still has an issue with autofetch filling up the autofetch queue: some tasks must be leaking or callback blocks are not called correctly
 - bug: crash when staging 26000 files: *** Terminating app due to uncaught exception 'NSInvalidArgumentException', reason: 'too many arguments (28408) -- limit is 4096'
 - (right now jump controller is disabled because of that) bug: minor issue: when quickly iterating through sidebar when repos are autofetched, the selection sometimes jumps. We should reset jump controller's block when selection is changed elsewhere.
