@@ -458,19 +458,16 @@
     
   if (!anObject) anObject = self;
   
-  if ([anObject isKindOfClass:[GBRepositoriesGroup class]])
+  group = (id)anObject;
+  while (group && ![group isKindOfClass:[GBRepositoriesGroup class]])
   {
-    group = anObject;
+    GBSidebarItem* parentItem = [self.sidebarItem parentOfItem:[group sidebarItem]];
+    group = (id)parentItem.object;
   }
-  else if (anObject)
+  if (group)
   {
-    GBSidebarItem* groupItem = [self.sidebarItem parentOfItem:[anObject sidebarItem]];
-    group = (id)groupItem.object;
-    if (group)
-    {
-      anIndex = [group.items indexOfObject:anObject];
-      if (anIndex == NSNotFound) anIndex = 0;
-    }
+    anIndex = [group.items indexOfObject:anObject];
+    if (anIndex == NSNotFound) anIndex = 0;
   }
   
   if (anIndexRef) *anIndexRef = anIndex;
