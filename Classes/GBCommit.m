@@ -29,17 +29,16 @@
 
 - (void) dealloc
 {
-  self.commitId = nil;
-  self.treeId = nil;
-  self.authorName = nil;
-  self.authorEmail = nil;
-  self.committerName = nil;
-  self.committerEmail = nil;
-  self.date = nil;
-  self.message = nil;
-  self.parentIds = nil;
-  self.changes = nil;
-  
+  [commitId release]; commitId = nil;
+  [treeId release]; treeId = nil;
+  [authorName release]; authorName = nil;
+  [authorEmail release]; authorEmail = nil;
+  [committerName release]; committerName = nil;
+  [committerEmail release]; committerEmail = nil;
+  [date release]; date = nil;
+  [message release]; message = nil;
+  [parentIds release]; parentIds = nil;
+  [changes release]; changes = nil;
   [super dealloc];
 }
 

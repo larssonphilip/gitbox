@@ -11,15 +11,15 @@ typedef enum {
 
 @interface GBCommit : NSObject
 
-@property(nonatomic,retain) NSString* commitId;
-@property(nonatomic,retain) NSString* treeId;
-@property(nonatomic,retain) NSString* authorName;
-@property(nonatomic,retain) NSString* authorEmail;
-@property(nonatomic,retain) NSString* committerName;
-@property(nonatomic,retain) NSString* committerEmail;
-@property(nonatomic,retain) NSDate* date;
-@property(nonatomic,retain) NSString* message;
-@property(nonatomic,retain) NSArray* parentIds;
+@property(nonatomic,copy) NSString* commitId;
+@property(nonatomic,copy) NSString* treeId;
+@property(nonatomic,copy) NSString* authorName;
+@property(nonatomic,copy) NSString* authorEmail;
+@property(nonatomic,copy) NSString* committerName;
+@property(nonatomic,copy) NSString* committerEmail;
+@property(nonatomic,copy) NSDate* date;
+@property(nonatomic,copy) NSString* message;
+@property(nonatomic,copy) NSArray* parentIds;
 @property(nonatomic,retain) NSArray* changes;
 
 @property(nonatomic,assign) GBCommitSyncStatus syncStatus;
