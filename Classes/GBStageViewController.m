@@ -648,7 +648,7 @@
     newHeaderFrame.size.height = textHeight + (idleHeaderViewHeight - idleTextHeight);
     newTextScrollViewFrame.size.height = idleTextScrollViewHeight;
     newButtonAlpha = 0.0;
-    newMessage = NSLocalizedString(@"Commit Message...", @"Commit");
+    newMessage = NSLocalizedString(@"Commit...", @"Commit");
     [self.messageTextView setString:@""];
     [self.messageTextView setTextColor:[NSColor disabledControlTextColor]];
   }

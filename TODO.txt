@@ -20,7 +20,7 @@ Bug fixes:
 ✓ Fixed bugs related to filesystem events: sometimes modified files did not appear in the stage, now they do.
 ✓ Fixed several bugs with staging partial files, reverting multiple files and other actions in stage.
 ✓ Fixed commit message wrapping; now multi-line commits are rendered correctly.
-
+✓ Fixed staging when clicking on a message field: now Gitbox does not stage selected files when you navigate to the message field. Use Cmd+Return shortcut to stage selected changes and jump to the message field. 
 
 
 Misc items done:
