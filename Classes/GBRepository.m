@@ -67,8 +67,8 @@
   NSLog(@"GBRepository#dealloc: %@", self);
   [NSObject cancelPreviousPerformRequestsWithTarget:self];
   
-  self.url = nil;
-  self.URLBookmarkData = nil;
+  [url release]; url = nil;
+  [URLBookmarkData release]; URLBookmarkData = nil;
   self.dotGitURL = nil;
   self.localBranches = nil;
   self.remotes = nil;

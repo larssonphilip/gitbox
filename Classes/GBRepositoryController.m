@@ -120,7 +120,7 @@
   [[NSNotificationCenter defaultCenter] removeObserver:self];
   //NSLog(@">>> GBRepositoryController:%p dealloc...", self);
   self.repository = nil; // so we unsubscribe correctly
-  self.sidebarItem.object = nil;
+  sidebarItem.object = nil;
   [sidebarItem release]; sidebarItem = nil;
   if (toolbarController.repositoryController == self) toolbarController.repositoryController = nil;
   [toolbarController release]; toolbarController = nil;
@@ -131,8 +131,8 @@
   [blockTable release]; blockTable = nil;
 //  [updatesQueue release]; updatesQueue = nil;
   [autofetchQueue release]; autofetchQueue = nil;
-  self.folderMonitor.target = nil;
-  self.folderMonitor.action = NULL;
+  folderMonitor.target = nil;
+  folderMonitor.action = NULL;
   [folderMonitor release]; folderMonitor = nil;
   //NSLog(@">>> GBRepositoryController:%p dealloc done.", self);
   [super dealloc];

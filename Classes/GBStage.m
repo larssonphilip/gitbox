@@ -24,10 +24,11 @@
 
 - (void) dealloc
 {
-  self.stagedChanges = nil;
-  self.unstagedChanges = nil;
-  self.untrackedChanges = nil;
-  self.currentCommitMessage = nil;
+  [stagedChanges release]; stagedChanges = nil;
+  [unstagedChanges release]; unstagedChanges = nil;
+  [untrackedChanges release]; untrackedChanges = nil;
+  [untrackedChanges release]; untrackedChanges = nil;
+  [currentCommitMessage release]; currentCommitMessage = nil;
   [super dealloc];
 }
 
