@@ -31,6 +31,7 @@
 #import "GBFileEditingController.h"
 #import "NSWindowController+OAWindowControllerHelpers.h"
 
+#define GB_STRESS_TEST_AUTOFETCH 0
 
 @interface GBRepositoryController ()
 
@@ -243,6 +244,9 @@
   self.folderMonitor.target = self;
   self.folderMonitor.action = @selector(folderMonitorDidUpdate:);
   self.autoFetchInterval = 3.0 + drand48()*120.0; // spread all repos' initial autofetch within 1 minute
+  #if GB_STRESS_TEST_AUTOFETCH
+  self.autoFetchInterval = drand48()*3.0;
+  #endif
   [self scheduleAutoFetch];
 }
 
@@ -1321,13 +1325,15 @@
 #pragma mark Auto Fetch
 
 
-
-
 - (void) resetAutoFetchInterval
 {
   //NSLog(@"GBRepositoryController: resetAutoFetchInterval in %@ (was: %f)", [self url], autoFetchInterval);
   NSTimeInterval plusMinusOne = (2*(0.5-drand48()));
   autoFetchInterval = 10.0 + plusMinusOne*2;
+  
+#if GB_STRESS_TEST_AUTOFETCH
+  autoFetchInterval = drand48()*2.0;
+#endif 
   [self scheduleAutoFetch];
 }
 
@@ -1357,6 +1363,10 @@
   //NSLog(@"GBRepositoryController: autoFetch into %@ (delay: %f)", [self url], autoFetchInterval);
   while (autoFetchInterval > 300.0) autoFetchInterval -= 60.0;
   autoFetchInterval = autoFetchInterval*(1.9 + drand48()*0.2);
+  
+  #if GB_STRESS_TEST_AUTOFETCH
+  autoFetchInterval =  drand48()*2.0;
+  #endif
   
   [self scheduleAutoFetch];
   
