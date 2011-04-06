@@ -28,10 +28,12 @@
 - (void) dealloc
 {
   // using setters to correctly remove the path and the observer from eventStream
-  self.eventStream = nil;
-  self.path = nil;
-  self.folderResumeDate = nil;
-  self.dotgitResumeDate = nil;
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
+  if (path) [eventStream removePath:path];
+  [eventStream release]; eventStream = nil;
+  [path release]; path = nil;
+  [folderResumeDate release]; folderResumeDate = nil;
+  [dotgitResumeDate release]; dotgitResumeDate = nil;
   [super dealloc];
 }
 
