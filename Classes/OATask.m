@@ -199,11 +199,17 @@ NSString* OATaskNotification = @"OATaskNotification";
 
 - (int) terminationStatus
 {
+  if ([self.nstask isRunning])
+  {
+    NSLog(@"ERROR: terminationStatus is requested for still running task! Returning 0.");
+    return 0;
+  }
   return [self.nstask terminationStatus];
 }
 
 - (BOOL) isError
 {
+  if ([self.nstask isRunning]) return NO;
   return self.terminationStatus != 0;
 }
 
@@ -476,13 +482,20 @@ NSString* OATaskNotification = @"OATaskNotification";
 {
   self.activity.isRunning = NO;
   
-  if ([self terminationStatus] == 0)
+  if ([self.nstask isRunning])
   {
-    self.activity.status = NSLocalizedString(@"Finished", @"Task");
+    self.activity.status = NSLocalizedString(@"Running...", @"Task");
   }
   else
   {
-    self.activity.status = [NSString stringWithFormat:@"%@ [%d]", NSLocalizedString(@"Finished", @"Task"), [self terminationStatus]];
+    if ([self terminationStatus] == 0)
+    {
+      self.activity.status = NSLocalizedString(@"Finished", @"Task");
+    }
+    else
+    {
+      self.activity.status = [NSString stringWithFormat:@"%@ [%d]", NSLocalizedString(@"Finished", @"Task"), [self terminationStatus]];
+    }
   }
   self.activity.textOutput = [self UTF8Output];
 }
@@ -493,19 +506,21 @@ NSString* OATaskNotification = @"OATaskNotification";
   [self endAllCallbacks];
   
   // Subclasses may override it to do some data processing.
-  if (self.terminationStatus != 0)
+  if (![self.nstask isRunning])
   {
-    if (!self.ignoreFailure)
+    if (self.terminationStatus != 0)
     {
-      //NSLog(@"OATask failed: %@ [%d]", [self command], self.terminationStatus);
-//      NSString* stringOutput = [self UTF8OutputStripped];
-//      if (stringOutput)
-//      {
-//        //NSLog(@"OATask output: %@", stringOutput);
-//      }
+      if (!self.ignoreFailure)
+      {
+        //NSLog(@"OATask failed: %@ [%d]", [self command], self.terminationStatus);
+  //      NSString* stringOutput = [self UTF8OutputStripped];
+  //      if (stringOutput)
+  //      {
+  //        //NSLog(@"OATask output: %@", stringOutput);
+  //      }
+      }
     }
-  }
-  
+  }  
   [self finishActivity];
   [self didFinish];
   
