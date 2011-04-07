@@ -76,6 +76,15 @@
   t.targetURL = self.targetURL;
   self.task = t;
   [t launchWithBlock:^{
+    
+    if (!self.task) // was terminated
+    {
+      //NSLog(@"!! No task, returning and cleaning up the folder");
+      if (self.targetURL) [[NSFileManager defaultManager] removeItemAtURL:self.targetURL error:NULL];
+      return;
+    }
+    
+    //NSLog(@"!! Task finished. Decrementing a spinner.");
     self.isSpinning--;
     [self.sidebarItem update];
     
@@ -110,11 +119,12 @@
 {
   if (self.task)
   {
+    //NSLog(@"!! Task cancelled. Decrementing a spinner. Terminating a task.");
     self.isSpinning--;
     [self.sidebarItem update];
-    [self.task terminate];
+    OATask* t = self.task;
     self.task = nil;
-    [[NSFileManager defaultManager] removeItemAtURL:self.targetURL error:NULL];
+    [t terminate];
   }
   [self notifyWithSelector:@selector(cloningRepositoryControllerDidCancel:)];
 }
