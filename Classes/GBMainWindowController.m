@@ -39,6 +39,7 @@
 
 - (void) dealloc
 {
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
   [rootController release]; rootController = nil;
   [defaultToolbarController release]; defaultToolbarController = nil;
   [toolbarController release]; toolbarController = nil;

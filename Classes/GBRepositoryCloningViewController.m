@@ -16,6 +16,7 @@
 
 - (void) dealloc
 {
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
   self.messageLabel = nil;
   self.errorLabel = nil;
   self.cancelButton = nil;

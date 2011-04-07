@@ -53,6 +53,7 @@
 - (void) dealloc
 {
   [NSObject cancelPreviousPerformRequestsWithTarget:self];
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
   [commit release];
   self.detailView = nil;
   

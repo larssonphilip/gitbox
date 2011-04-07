@@ -46,6 +46,7 @@
 
 - (void) dealloc
 {
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
 //  self.localRepositoriesUpdatesQueue = nil;
   self.autofetchQueue = nil;
   self.cloneWindowController = nil;
