@@ -54,7 +54,14 @@
 {
   NSDictionary* userInfo = [notification userInfo];
   NSString* selectorString = [userInfo objectForKey:@"OANotificationSelector"];
-  NSAssert(selectorString, @"OADispatchSelectorNotification expects a userInfo to contain a selector for key OANotificationSelector");
+  
+  // Note: When listening for all selectors, this method can catch all possible notifications. 
+  //       So we should ignore those which do not contain actual selector.
+  if (!selectorString)
+  {
+    return;
+  }
+  
   SEL selector = NSSelectorFromString(selectorString);
   NSAssert(selector, @"OADispatchSelectorNotification cannot convert OANotificationSelector from NSString to SEL");
   if ([self respondsToSelector:selector])
