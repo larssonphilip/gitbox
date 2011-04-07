@@ -110,6 +110,7 @@
 
 - (void) applicationDidFinishLaunching:(NSNotification*) aNotification
 {
+  [[GBActivityController sharedActivityController] loadWindow]; // force load the activity controller to begin monitoring the tasks
   
   self.rootController = [[GBRootController new] autorelease];
   id plist = [[NSUserDefaults standardUserDefaults] objectForKey:@"GBSidebarItems"];

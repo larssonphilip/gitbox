@@ -26,12 +26,26 @@ static GBActivityController* sharedGBActivityController;
 
 - (void) dealloc
 {
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
   [NSObject cancelPreviousPerformRequestsWithTarget:self];
   self.activities = nil;
   self.outputTextView = nil;
   self.tableView = nil;
   self.arrayController = nil;
   [super dealloc];
+}
+
+- (id) initWithWindowNibName:(NSString *)windowNibName
+{
+  if ((self = [super initWithWindowNibName:windowNibName]))
+  {
+    // subscribe for the OATask notifications.
+//    [[NSNotificationCenter defaultCenter] addObserver:self 
+//                                             selector:@selector(taskDidTerminateNotification:) 
+//                                                 name:OATaskDidTerminateNotification 
+//                                               object:nil];
+  }
+  return self;
 }
 
 - (NSMutableArray*) activities

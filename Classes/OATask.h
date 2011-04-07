@@ -1,26 +1,38 @@
-extern NSString* OATaskNotification;
+/*
+ 
+TODO:
+- remove OAActivity from this class, GBActivityController should subscribe for notifications and 
+- do not calculate launchPath lazily and in a blocking fashion
+- launch the task and process callbacks in a background queue, but post notifications on the same queue of launch
+- clearly separate plumbing API from convenience API. For convenience API use only the public plumbing API.
+- handle passwords in the appropriate subclass or client code.
+
+ 
+*/
+
+extern NSString* OATaskDidLaunchNotification;
+extern NSString* OATaskDidTerminateNotification;
+extern NSString* OATaskDidReceiveDataNotification;
 
 @class OAActivity;
 @interface OATask : NSObject
-{
-  dispatch_queue_t dispatchQueue;
-}
-@property(nonatomic,retain) NSString* executableName;
-@property(nonatomic,retain) NSString* launchPath;
-@property(nonatomic,retain) NSString* currentDirectoryPath;
-@property(nonatomic,retain) NSTask* nstask;
-@property(nonatomic,retain) NSMutableData* output;
-@property(nonatomic,retain) NSArray* arguments;
-@property(nonatomic,retain) id standardOutput;
-@property(nonatomic,retain) id standardError;
-@property(nonatomic,retain) OAActivity* activity;
-@property(nonatomic,copy) void(^callbackBlock)();
-@property(nonatomic,copy) NSString* keychainPasswordName;
 
-@property(nonatomic,assign) BOOL skipKeychainPassword;
-@property(nonatomic,assign) BOOL ignoreFailure;
-@property(nonatomic,assign) BOOL isTerminated;
-@property(nonatomic,assign) NSTimeInterval terminateTimeout;
+@property(nonatomic, retain) NSString* executableName;
+@property(nonatomic, retain) NSString* launchPath;
+@property(nonatomic, retain) NSString* currentDirectoryPath;
+@property(nonatomic, retain) NSTask* nstask;
+@property(nonatomic, retain) NSMutableData* output;
+@property(nonatomic, retain) NSArray* arguments;
+@property(nonatomic, retain) id standardOutput;
+@property(nonatomic, retain) id standardError;
+@property(nonatomic, retain) OAActivity* activity;
+@property(nonatomic, copy) void(^callbackBlock)();
+@property(nonatomic, copy) NSString* keychainPasswordName;
+
+@property(nonatomic, assign) BOOL skipKeychainPassword;
+@property(nonatomic, assign) BOOL ignoreFailure;
+@property(nonatomic, assign) BOOL isTerminated;
+@property(nonatomic, assign) NSTimeInterval terminateTimeout;
 
 
 + (id) task;
@@ -54,8 +66,6 @@ extern NSString* OATaskNotification;
 - (id) showError;
 - (id) showErrorIfNeeded;
 
-- (id) subscribe:(id)observer selector:(SEL) selector;
-- (id) unsubscribe:(id)observer;
 
 
 #pragma mark API for subclasses
@@ -63,5 +73,11 @@ extern NSString* OATaskNotification;
 - (void) didFinish;
 - (NSMutableDictionary*) configureEnvironment:(NSMutableDictionary*)dict;
 
+
+@end
+
+
+
+@interface OATask (Porcelain)
 
 @end

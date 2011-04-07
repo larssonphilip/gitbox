@@ -8,7 +8,9 @@
 #import "NSData+OADataHelpers.h"
 #import "GBActivityController.h"
 
-NSString* OATaskNotification = @"OATaskNotification";
+NSString* OATaskDidLaunchNotification = @"OATaskDidLaunchNotification";
+NSString* OATaskDidTerminateNotification = @"OATaskDidTerminateNotification";
+NSString* OATaskDidReceiveDataNotification = @"OATaskDidReceiveDataNotification";
 
 @interface OATask ()
 - (void) beginAllCallbacks;
@@ -359,28 +361,6 @@ NSString* OATaskNotification = @"OATaskNotification";
 
 
 
-#pragma mark Subscription
-
-
-- (id) subscribe:(id)observer selector:(SEL) selector
-{
-  [[NSNotificationCenter defaultCenter] addObserver:observer
-                                           selector:selector
-                                               name:OATaskNotification
-                                             object:self];
-  return self;
-}
-
-- (id) unsubscribe:(id)observer
-{
-  [[NSNotificationCenter defaultCenter] removeObserver:observer
-                                                  name:OATaskNotification 
-                                                object:self];
-  return self;
-}
-
-
-
 
 
 #pragma mark Callbacks Setup
@@ -527,11 +507,11 @@ NSString* OATaskNotification = @"OATaskNotification";
   if (self.callbackBlock) callbackBlock();
   self.callbackBlock = nil;
   
-  NSNotification* notification = [NSNotification notificationWithName:OATaskNotification object:self];
+  //NSNotification* notification = [NSNotification notificationWithName:OATaskNotification object:self];
   // NSPostNow because NSPostASAP causes properties to be updated with a delay and bindings are updated in a strange fashion
   // See commit 1c2d52b99c1ccf82e3540be10a3e1f0e3e054065 which fixes strange things with activity indicator.
-  [[NSNotificationQueue defaultQueue] enqueueNotification:notification 
-                                                       postingStyle:NSPostNow];
+//  [[NSNotificationQueue defaultQueue] enqueueNotification:notification 
+//                                                       postingStyle:NSPostNow];
 }
 
 
