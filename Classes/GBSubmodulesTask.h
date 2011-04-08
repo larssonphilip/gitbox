@@ -7,7 +7,4 @@
 
 - (NSArray*) submodulesFromStatusOutput:(NSData*) data;
 
-- (void) didFinish;
-- (void) prepareTask;
-
 @end

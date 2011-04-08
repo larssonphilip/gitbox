@@ -567,6 +567,8 @@
 		206E012D130C605400018300 /* GBPlaceholderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBPlaceholderViewController.m; sourceTree = "<group>"; };
 		206E012E130C605500018300 /* GBPlaceholderViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GBPlaceholderViewController.xib; sourceTree = "<group>"; };
 		2080DC2912567B0800D05B33 /* GBChangeDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBChangeDelegate.h; sourceTree = "<group>"; };
+		20820CD3134E331F00AD55AF /* interactive.rb */ = {isa = PBXFileReference; lastKnownFileType = text.script.ruby; path = interactive.rb; sourceTree = "<group>"; };
+		20820CD4134E331F00AD55AF /* response.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = response.txt; sourceTree = "<group>"; };
 		2082B7C2126587CA00667A7F /* GBRepositoryCloningController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBRepositoryCloningController.h; sourceTree = "<group>"; };
 		2082B7C3126587CA00667A7F /* GBRepositoryCloningController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBRepositoryCloningController.m; sourceTree = "<group>"; };
 		2084C75D1297425F009295C8 /* OALicenseNumberCheck.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OALicenseNumberCheck.h; sourceTree = "<group>"; };
@@ -918,6 +920,15 @@
 			name = Toolbars;
 			sourceTree = "<group>";
 		};
+		20820CD2134E331E00AD55AF /* Test */ = {
+			isa = PBXGroup;
+			children = (
+				20820CD3134E331F00AD55AF /* interactive.rb */,
+				20820CD4134E331F00AD55AF /* response.txt */,
+			);
+			path = Test;
+			sourceTree = "<group>";
+		};
 		2084C8661299A05A009295C8 /* Scripts */ = {
 			isa = PBXGroup;
 			children = (
@@ -1251,6 +1262,7 @@
 				2A37F4AFFDCFA73011CA2CEA /* Other Sources */,
 				2084C8661299A05A009295C8 /* Scripts */,
 				20A09D65129F8EF800294730 /* Documents */,
+				20820CD2134E331E00AD55AF /* Test */,
 				2A37F4B8FDCFA73011CA2CEA /* Resources */,
 				2A37F4C3FDCFA73011CA2CEA /* Frameworks */,
 				19C28FB0FE9D524F11CA2CBB /* Products */,

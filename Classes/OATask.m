@@ -1,26 +1,36 @@
 #define OATASK_DEBUG 0
 
 #import "OATask.h"
-#import "OAActivity.h"
+//#import "OAActivity.h"
 
 #import "NSArray+OAArrayHelpers.h"
 #import "NSAlert+OAAlertHelpers.h"
 #import "NSData+OADataHelpers.h"
-#import "GBActivityController.h"
+//#import "GBActivityController.h"
 
 NSString* OATaskDidLaunchNotification = @"OATaskDidLaunchNotification";
 NSString* OATaskDidTerminateNotification = @"OATaskDidTerminateNotification";
 NSString* OATaskDidReceiveDataNotification = @"OATaskDidReceiveDataNotification";
 
 @interface OATask ()
-- (void) beginAllCallbacks;
-- (void) endAllCallbacks;
-- (void) finishActivity;
-- (void) doFinish;
-- (NSFileHandle*) fileHandleForReading;
 
-- (void) launchAsynchronously;
-- (void) launchBlocking;
+// Private NSTask doing the dirty work.
+@property(nonatomic, retain) NSTask* nstask;
+
+// Dispatch queue of the caller. Usually it is a main queue.
+@property(nonatomic, assign) dispatch_queue_t originDispatchQueue;
+
+// Public accessors redeclared as readwrite.
+@property(nonatomic, retain, readwrite) NSMutableData* standardOutputData;
+@property(nonatomic, retain, readwrite) NSMutableData* standardErrorData;
+
+- (void) prepareTask;
+
+//- (void) beginAllCallbacks;
+//- (void) endAllCallbacks;
+//- (void) finishActivity;
+//- (void) doFinish;
+//- (NSFileHandle*) fileHandleForReading;
 
 @end
 
@@ -29,19 +39,20 @@ NSString* OATaskDidReceiveDataNotification = @"OATaskDidReceiveDataNotification"
 @synthesize executableName;
 @synthesize launchPath;
 @synthesize currentDirectoryPath;
-@synthesize nstask;
-@synthesize output;
 @synthesize arguments;
-@synthesize standardOutput;
-@synthesize standardError;
-@synthesize activity;
-@synthesize callbackBlock;
-@synthesize keychainPasswordName;
+@synthesize standardOutputHandleOrPipe;
+@synthesize standardErrorHandleOrPipe;
+@synthesize standardOutputData;
+@synthesize standardErrorData;
+@synthesize dispatchQueue;
+@synthesize didTerminateBlock;
+@synthesize didReceiveDataBlock;
 
-@synthesize skipKeychainPassword;
-@synthesize ignoreFailure;
-@synthesize isTerminated;
-@synthesize terminateTimeout;
+@dynamic isRunning;
+@dynamic terminationStatus;
+
+@synthesize nstask;
+@synthesize originDispatchQueue;
 
 - (void) dealloc
 {
@@ -50,13 +61,26 @@ NSString* OATaskDidReceiveDataNotification = @"OATaskDidReceiveDataNotification"
   
   if (nstask && [nstask isRunning])
   {
-    self.activity.isRunning = NO;
-    self.activity.status = NSLocalizedString(@"Disconnected", @"Task");
-    self.activity.textOutput = NSLocalizedString(@"Task was released: it was sent a TERM signal to subprocess, but stopped listening to its status.", @"Task");
-    //self.activity.task = nil;
-    self.activity = nil;
     [nstask terminate];
   }
+  
+  [executableName release]; executableName = nil;
+  [launchPath release]; launchPath = nil;
+  [currentDirectoryPath release]; currentDirectoryPath = nil;
+  [arguments release]; arguments = nil;
+  [standardOutputHandleOrPipe release]; standardOutputHandleOrPipe = nil;
+  [standardErrorHandleOrPipe release]; standardErrorHandleOrPipe = nil;
+  [standardOutputData release]; standardOutputData = nil;
+  [standardErrorData release]; standardErrorData = nil;
+  if (dispatchQueue) { dispatch_release(dispatchQueue); dispatchQueue = nil; }
+  
+  [didTerminateBlock release]; didTerminateBlock = nil;
+  [didReceiveDataBlock release]; didReceiveDataBlock = nil;
+    
+  [nstask release]; nstask = nil;
+  @synthesize originDispatchQueue;
+  
+  
   
   self.callbackBlock = nil;
   self.executableName = nil;
@@ -67,8 +91,8 @@ NSString* OATaskDidReceiveDataNotification = @"OATaskDidReceiveDataNotification"
   self.output = nil;
   self.standardOutput = nil;
   self.standardError = nil;
-  self.activity.task = nil;
-  self.activity = nil;
+//  self.activity.task = nil;
+//  self.activity = nil;
   self.keychainPasswordName = nil;
   [super dealloc];
 }
@@ -182,14 +206,14 @@ NSString* OATaskDidReceiveDataNotification = @"OATaskDidReceiveDataNotification"
   return [[output retain] autorelease];
 }
 
-- (OAActivity*) activity
-{
-  if (!activity)
-  {
-    self.activity = [[OAActivity new] autorelease];
-  }
-  return [[activity retain] autorelease];
-}
+//- (OAActivity*) activity
+//{
+//  if (!activity)
+//  {
+//    self.activity = [[OAActivity new] autorelease];
+//  }
+//  return [[activity retain] autorelease];
+//}
 
 
 
@@ -220,15 +244,7 @@ NSString* OATaskDidReceiveDataNotification = @"OATaskDidReceiveDataNotification"
   return [[self.launchPath lastPathComponent] stringByAppendingFormat:@" %@", [self.arguments componentsJoinedByString:@" "]];
 }
 
-- (NSString*) UTF8Output
-{
-  return [self.output UTF8String];
-}
 
-- (NSString*) UTF8OutputStripped
-{
-  return [[self UTF8Output] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-}
 
 
 
@@ -308,7 +324,7 @@ NSString* OATaskDidReceiveDataNotification = @"OATaskDidReceiveDataNotification"
         columns[logIndentation] = '0';
       #endif
       [self doFinish];
-      [[GBActivityController sharedActivityController] addActivity:self.activity];
+      //[[GBActivityController sharedActivityController] addActivity:self.activity];
       block();
       dispatch_release(callerQueue);
     });
@@ -458,27 +474,27 @@ NSString* OATaskDidReceiveDataNotification = @"OATaskDidReceiveDataNotification"
 #pragma mark Finishing
 
 
-- (void) finishActivity
-{
-  self.activity.isRunning = NO;
-  
-  if ([self.nstask isRunning])
-  {
-    self.activity.status = NSLocalizedString(@"Running...", @"Task");
-  }
-  else
-  {
-    if ([self terminationStatus] == 0)
-    {
-      self.activity.status = NSLocalizedString(@"Finished", @"Task");
-    }
-    else
-    {
-      self.activity.status = [NSString stringWithFormat:@"%@ [%d]", NSLocalizedString(@"Finished", @"Task"), [self terminationStatus]];
-    }
-  }
-  self.activity.textOutput = [self UTF8Output];
-}
+//- (void) finishActivity
+//{
+//  self.activity.isRunning = NO;
+//  
+//  if ([self.nstask isRunning])
+//  {
+//    self.activity.status = NSLocalizedString(@"Running...", @"Task");
+//  }
+//  else
+//  {
+//    if ([self terminationStatus] == 0)
+//    {
+//      self.activity.status = NSLocalizedString(@"Finished", @"Task");
+//    }
+//    else
+//    {
+//      self.activity.status = [NSString stringWithFormat:@"%@ [%d]", NSLocalizedString(@"Finished", @"Task"), [self terminationStatus]];
+//    }
+//  }
+//  self.activity.textOutput = [self UTF8Output];
+//}
 
 
 - (void) doFinish
@@ -607,21 +623,21 @@ NSString* OATaskDidReceiveDataNotification = @"OATaskDidReceiveDataNotification"
   }
   [self.nstask setEnvironment:environment];    
   
-  self.activity.isRunning = YES;
-  self.activity.status = NSLocalizedString(@"Running", @"Task");
-  self.activity.task = self;
-  self.activity.path = self.currentDirectoryPath;
-  self.activity.command = [self command];
+//  self.activity.isRunning = YES;
+//  self.activity.status = NSLocalizedString(@"Running", @"Task");
+//  self.activity.task = self;
+//  self.activity.path = self.currentDirectoryPath;
+//  self.activity.command = [self command];
 }
 
-- (void) launchAsynchronously
-{
-  [[GBActivityController sharedActivityController] addActivity:self.activity];
-  [self beginAllCallbacks];
-  //NSLog(@"ASYNC: %@", [self command]);
-  [self.nstask launch];
-  [[self fileHandleForReading] readInBackgroundAndNotify];
-}
+//- (void) launchAsynchronously
+//{
+//  [[GBActivityController sharedActivityController] addActivity:self.activity];
+//  [self beginAllCallbacks];
+//  //NSLog(@"ASYNC: %@", [self command]);
+//  [self.nstask launch];
+//  [[self fileHandleForReading] readInBackgroundAndNotify];
+//}
 
 - (void) launchBlocking
 {
@@ -661,3 +677,52 @@ NSString* OATaskDidReceiveDataNotification = @"OATaskDidReceiveDataNotification"
 
 
 @end
+
+
+
+
+
+
+
+
+
+
+
+
+@interface OATask (Porcelain)
+
+// Compatibility alias for standardOutputData
+- (NSData*) output
+{
+  return self.standardOutputData;
+}
+
+// UTF-8 string for the standardOutputData.
+- (NSString*) UTF8Output
+{
+  return [self.standardOutputData UTF8String];
+}
+
+// UTF-8 string for the standardOutputData stripped.
+- (NSString*) UTF8OutputStripped
+{
+  return [[self UTF8Output] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+}
+
+// Sets block as didTerminateBlock and sends launch: message.
+- (void) launchWithBlock:(void(^)())block
+{
+  self.didTerminateBlock = block;
+  [self launch];
+}
+
+// Sets block as didTerminateBlock, aQueue as dispatchQueue and sends launch: message.
+- (void) launchInQueue:(dispatch_queue_t)aQueue withBlock:(void(^)())block
+{
+  self.dispatchQueue = aQueue;
+  self.didTerminateBlock = block;
+  [self launch];
+}
+
+@end
+
