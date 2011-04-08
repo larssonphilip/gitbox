@@ -8,13 +8,14 @@
 #import "NSData+OADataHelpers.h"
 //#import "GBActivityController.h"
 
-NSString* OATaskDidLaunchNotification = @"OATaskDidLaunchNotification";
-NSString* OATaskDidTerminateNotification = @"OATaskDidTerminateNotification";
+NSString* OATaskDidLaunchNotification      = @"OATaskDidLaunchNotification";
+NSString* OATaskDidEnterQueueNotification  = @"OATaskDidEnterQueueNotification";
+NSString* OATaskDidTerminateNotification   = @"OATaskDidTerminateNotification";
 NSString* OATaskDidReceiveDataNotification = @"OATaskDidReceiveDataNotification";
 
 @interface OATask ()
 
-// Private NSTask doing the dirty work.
+// Private NSTask doing all the dirty work.
 @property(nonatomic, retain) NSTask* nstask;
 
 // Dispatch queue of the caller. Usually it is a main queue.
@@ -23,6 +24,10 @@ NSString* OATaskDidReceiveDataNotification = @"OATaskDidReceiveDataNotification"
 // Public accessors redeclared as readwrite.
 @property(nonatomic, retain, readwrite) NSMutableData* standardOutputData;
 @property(nonatomic, retain, readwrite) NSMutableData* standardErrorData;
+
+@property(nonatomic, readwrite) BOOL isWaiting;
+
+@property(nonatomic, assign) BOOL isLaunched;
 
 - (void) prepareTask;
 
@@ -49,10 +54,12 @@ NSString* OATaskDidReceiveDataNotification = @"OATaskDidReceiveDataNotification"
 @synthesize didReceiveDataBlock;
 
 @dynamic isRunning;
+@synthesize isWaiting;
 @dynamic terminationStatus;
 
 @synthesize nstask;
 @synthesize originDispatchQueue;
+@synthesize isLaunched;
 
 - (void) dealloc
 {
@@ -73,44 +80,44 @@ NSString* OATaskDidReceiveDataNotification = @"OATaskDidReceiveDataNotification"
   [standardOutputData release]; standardOutputData = nil;
   [standardErrorData release]; standardErrorData = nil;
   if (dispatchQueue) { dispatch_release(dispatchQueue); dispatchQueue = nil; }
-  
   [didTerminateBlock release]; didTerminateBlock = nil;
   [didReceiveDataBlock release]; didReceiveDataBlock = nil;
     
   [nstask release]; nstask = nil;
-  @synthesize originDispatchQueue;
-  
-  
-  
-  self.callbackBlock = nil;
-  self.executableName = nil;
-  self.launchPath = nil;
-  self.currentDirectoryPath = nil;
-  self.arguments = nil;
-  self.nstask = nil;
-  self.output = nil;
-  self.standardOutput = nil;
-  self.standardError = nil;
-//  self.activity.task = nil;
-//  self.activity = nil;
-  self.keychainPasswordName = nil;
+  if (originDispatchQueue) { dispatch_release(originDispatchQueue); originDispatchQueue = nil; };
   [super dealloc];
 }
+
+
+
+
 
 
 #pragma mark Class Methods
 
 
++ (id) task
+{
+  return [[[self alloc] init] autorelease];
+}
+
 + (NSString*) pathForExecutableUsingWhich:(NSString*)executable
 {
-  OATask* task = [OATask task];
-  task.currentDirectoryPath = NSHomeDirectory();
-  task.launchPath = @"/usr/bin/which";
-  task.arguments = [NSArray arrayWithObjects:executable, nil];
-  [task launchAndWait];
-  if (![task isError])
+  NSTask* task = [[[NSTask alloc] init] autorelease];
+  [task setCurrentDirectoryPath:NSHomeDirectory()];
+  [task setLaunchPath:@"/usr/bin/which"];
+  [task setArguments:[NSArray arrayWithObjects:executable, nil]];
+  
+  NSPipe* pipe = [NSPipe pipe];
+  [task setStandardOutput:pipe];
+  NSFileHandle* fileHandle = [pipe fileHandleForReading];
+  
+  NSData* data = [fileHandle readDataToEndOfFile];
+  [task terminate];
+  [task waitUntilExit];
+  if (![task terminationStatus])
   {
-    NSString* path = [task UTF8OutputStripped];
+    NSString* path = [[data UTF8String] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     if (path && [path length] > 1)
     {
       return path;
@@ -156,72 +163,14 @@ NSString* OATaskDidReceiveDataNotification = @"OATaskDidReceiveDataNotification"
 
 
 
-
-
-#pragma mark Init
+#pragma mark Properties
 
 
 
-+ (id) task
+- (BOOL) isRunning
 {
-  return [[self new] autorelease];
+  return self.nstask && [self.nstask isRunning];
 }
-
-
-- (NSString*) launchPath
-{
-  if (!launchPath && self.executableName)
-  {
-    NSString* exec = self.executableName;
-    NSString* aPath = nil;
-    
-    aPath = [[self class] systemPathForExecutable:exec];
-    if (aPath)
-    {
-      self.launchPath = aPath;
-    }
-    else
-    {
-      //[self alertExecutableNotFound:exec];
-    }
-  }
-  return [[launchPath retain] autorelease];
-}
-
-- (NSTask*) nstask
-{
-  if (!nstask)
-  {
-    self.nstask = [[NSTask new] autorelease];
-  }
-  return [[nstask retain] autorelease];
-}
-
-- (NSMutableData*) output
-{
-  if (!output)
-  {
-    self.output = [NSMutableData data];
-  }
-  return [[output retain] autorelease];
-}
-
-//- (OAActivity*) activity
-//{
-//  if (!activity)
-//  {
-//    self.activity = [[OAActivity new] autorelease];
-//  }
-//  return [[activity retain] autorelease];
-//}
-
-
-
-
-
-
-#pragma mark Interrogation
-
 
 - (int) terminationStatus
 {
@@ -233,36 +182,69 @@ NSString* OATaskDidReceiveDataNotification = @"OATaskDidReceiveDataNotification"
   return [self.nstask terminationStatus];
 }
 
-- (BOOL) isError
+- (void) setDispatchQueue:(dispatch_queue_t)aDispatchQueue
 {
-  if ([self.nstask isRunning]) return NO;
-  return self.terminationStatus != 0;
+  if (aDispatchQueue == dispatchQueue) return;
+  
+  if (dispatchQueue) dispatch_release(dispatchQueue);
+  dispatchQueue = aDispatchQueue;
+  if (dispatchQueue) dispatch_retain(dispatchQueue);
 }
 
-- (NSString*) command
+- (void) setOriginDispatchQueue:(dispatch_queue_t)anOriginDispatchQueue
 {
-  return [[self.launchPath lastPathComponent] stringByAppendingFormat:@" %@", [self.arguments componentsJoinedByString:@" "]];
+  if (anOriginDispatchQueue == originDispatchQueue) return;
+  
+  if (originDispatchQueue) dispatch_release(originDispatchQueue);
+  originDispatchQueue = anOriginDispatchQueue;
+  if (originDispatchQueue) dispatch_retain(originDispatchQueue);
 }
 
 
 
+#pragma mark Launch and terminate
 
 
+// Launches the task asynchronously
+- (void) launch
+{
+  NSAssert(self.isLaunched, @"[OATask launch] is sent when task was already launched.");
+  self.isLaunched = YES;
+  self.originDispatchQueue = dispatch_get_current_queue();
+  if (!self.dispatchQueue) self.dispatchQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+  
+  self.isWaiting = YES;
+  [[NSNotificationCenter defaultCenter] postNotificationName:OATaskDidLaunchNotification object:self];
+  dispatch_async(self.dispatchQueue, ^{
+    self.isWaiting = NO;
+    dispatch_async(self.originDispatchQueue, ^{
+      [[NSNotificationCenter defaultCenter] postNotificationName:OATaskDidEnterQueueNotification object:self];
+    });
+    
+  });
+}
 
+// Launches the task and blocks the current thread till it finishes.
+- (void) launchAndWait
+{
+  NSAssert(self.isLaunched, @"[OATask launchAndWait] is sent when task was already launched.");
+  self.isLaunched = YES;
+  
+  
+  
+}
 
-
-
+// Terminates the task by sending SIGTERM. Note that actual termination may happen after some time or not happen at all.
+- (void) terminate
+{
+  
+}
 
 
 
 
 #pragma mark Launch methods
 
-
-- (void) launchWithBlock:(void(^)())block
-{
-  [self launchInQueue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0) withBlock:block];
-}
 
 - (void) launchInQueue:(dispatch_queue_t)aQueue withBlock:(void(^)())block
 {
@@ -347,18 +329,7 @@ NSString* OATaskDidReceiveDataNotification = @"OATaskDidReceiveDataNotification"
   return [self launchAndWait];
 }
 
-- (id) showError
-{
-  [NSAlert message: [NSString stringWithFormat:NSLocalizedString(@"Command failed: %@", @"Task"), [self command]]
-       description:[[self UTF8OutputStripped] stringByAppendingFormat:NSLocalizedString(@"\nCode: %d", @"Task"), self.terminationStatus]];
-  return self;
-}
 
-- (id) showErrorIfNeeded
-{
-  if ([self isError]) [self showError];
-  return self;
-}
 
 - (void) terminate
 {
@@ -565,6 +536,27 @@ NSString* OATaskDidReceiveDataNotification = @"OATaskDidReceiveDataNotification"
 
 - (void) prepareTask
 {
+  NSAssert(!self.nstask, @"nstask is already created when calling prepareTask!");
+  
+  self.nstask = [[[NSTask alloc] init] autorelease];
+  
+  if (!self.launchPath && self.executableName)
+  {
+    NSString* exec = self.executableName;
+    NSString* aPath = nil;
+    
+    aPath = [[self class] systemPathForExecutable:exec];
+    if (aPath)
+    {
+      self.launchPath = aPath;
+    }
+    else
+    {
+      NSLog(@"OATask: launchPath is not found for executable %@", self.executableName);
+    }
+  }
+
+  
   NSPipe* defaultPipe = nil;
   if (!self.currentDirectoryPath) self.currentDirectoryPath = NSHomeDirectory();
   [self.nstask setCurrentDirectoryPath:self.currentDirectoryPath];
@@ -722,6 +714,41 @@ NSString* OATaskDidReceiveDataNotification = @"OATaskDidReceiveDataNotification"
   self.dispatchQueue = aQueue;
   self.didTerminateBlock = block;
   [self launch];
+}
+
+- (NSString*) command
+{
+  return [[self.launchPath lastPathComponent] stringByAppendingFormat:@" %@", [self.arguments componentsJoinedByString:@" "]];
+}
+
+- (BOOL) isError
+{
+  if ([self isRunning]) return NO;
+  return self.terminationStatus != 0;
+}
+
+- (id) showError
+{
+  [NSAlert message: [NSString stringWithFormat:NSLocalizedString(@"Command failed: %@", @"Task"), [self command]]
+       description:[[self UTF8OutputStripped] stringByAppendingFormat:NSLocalizedString(@"\nCode: %d", @"Task"), self.terminationStatus]];
+  return self;
+}
+
+- (id) showErrorIfNeeded
+{
+  if ([self isError]) [self showError];
+  return self;
+}
+
+- (NSString*) description
+{
+  return [NSString stringWithFormat:@"<%@:%p [%@] %@%@>", 
+          [self class], 
+          self, 
+          [self command], 
+          (self.isRunning ? @"running" : @"not running"),
+          (self.isWaiting ? @", waiting in dispatch queue" : @""),
+          ];
 }
 
 @end

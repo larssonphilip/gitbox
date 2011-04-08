@@ -22,8 +22,11 @@ How to:
  
 */
 
-// Posted just before task is about to get launched.
+// Posted when the task is about to get launched in a dispatch queue.
 extern NSString* OATaskDidLaunchNotification;
+
+// Posted when the task starts running in the dispatch queue.
+extern NSString* OATaskDidEnterQueueNotification;
 
 // Posted when the task is terminated.
 extern NSString* OATaskDidTerminateNotification;
@@ -71,6 +74,9 @@ extern NSString* OATaskDidReceiveDataNotification;
 // Returns YES if the task is running, NO otherwise.
 @property(nonatomic, readonly) BOOL isRunning;
 
+// Returns YES if the task is waiting to be launched in the dispatch queue, NO otherwise.
+@property(nonatomic, readonly) BOOL isWaiting;
+
 // Contains return code if task is terminated. If not, logs an error and returns 0.
 @property(nonatomic, readonly) int terminationStatus;
 
@@ -80,7 +86,7 @@ extern NSString* OATaskDidReceiveDataNotification;
 // A full path to system executable (e.g. "opendiff") using 'which' and a list of well-known locations. Returns nil if no path is found.
 + (NSString*) systemPathForExecutable:(NSString*)executable;
 
-// Launches the task in non-blocking manner.
+// Launches the task asynchronously
 - (void) launch;
 
 // Launches the task and blocks the current thread till it finishes.
@@ -89,20 +95,6 @@ extern NSString* OATaskDidReceiveDataNotification;
 // Terminates the task by sending SIGTERM. Note that actual termination may happen after some time or not happen at all.
 - (void) terminate;
 
-
-#pragma mark Inspecting
-
-// A pretty-formatted command for the executable name and arguments as if it was entered in the shell.
-- (NSString*) command;
-
-// Returns YES if task is finished and terminationStatus != 0
-- (BOOL) isError;
-
-// Shows a generic error with the terminationStatus.
-- (id) showError;
-
-// Calls showError if isError returns YES.
-- (id) showErrorIfNeeded;
 
 
 #pragma mark API for subclasses
@@ -138,5 +130,17 @@ extern NSString* OATaskDidReceiveDataNotification;
 
 // Sets block as didTerminateBlock, aQueue as dispatchQueue and sends launch: message.
 - (void) launchInQueue:(dispatch_queue_t)aQueue withBlock:(void(^)())block;
+
+// A pretty-formatted command for the executable name and arguments as if it was entered in the shell.
+- (NSString*) command;
+
+// Returns YES if task is finished and terminationStatus != 0
+- (BOOL) isError;
+
+// Shows a generic error with the terminationStatus.
+- (id) showError;
+
+// Calls showError if isError returns YES.
+- (id) showErrorIfNeeded;
 
 @end
