@@ -26,8 +26,11 @@ NSString* OATaskDidReceiveDataNotification = @"OATaskDidReceiveDataNotification"
 @property(nonatomic, retain, readwrite) NSMutableData* standardErrorData;
 
 @property(nonatomic, readwrite) BOOL isWaiting;
+@property(nonatomic) BOOL isLaunched;
 
-@property(nonatomic, assign) BOOL isLaunched;
+// Contains file handle if a private pipe is used for the stream
+@property(nonatomic, retain) NSFileHandle* standardOutputFileHandle;
+@property(nonatomic, retain) NSFileHandle* standardErrorFileHandle;
 
 - (void) prepareTask;
 
@@ -60,6 +63,9 @@ NSString* OATaskDidReceiveDataNotification = @"OATaskDidReceiveDataNotification"
 @synthesize nstask;
 @synthesize originDispatchQueue;
 @synthesize isLaunched;
+@synthesize standardOutputFileHandle;
+@synthesize standardErrorFileHandle;
+
 
 - (void) dealloc
 {
@@ -71,6 +77,9 @@ NSString* OATaskDidReceiveDataNotification = @"OATaskDidReceiveDataNotification"
     [nstask terminate];
   }
   
+  [standardOutputFileHandle release]; standardOutputFileHandle = nil;
+  [standardErrorFileHandle release]; standardErrorFileHandle = nil;
+
   [executableName release]; executableName = nil;
   [launchPath release]; launchPath = nil;
   [currentDirectoryPath release]; currentDirectoryPath = nil;
@@ -82,13 +91,23 @@ NSString* OATaskDidReceiveDataNotification = @"OATaskDidReceiveDataNotification"
   if (dispatchQueue) { dispatch_release(dispatchQueue); dispatchQueue = nil; }
   [didTerminateBlock release]; didTerminateBlock = nil;
   [didReceiveDataBlock release]; didReceiveDataBlock = nil;
-    
+  
   [nstask release]; nstask = nil;
   if (originDispatchQueue) { dispatch_release(originDispatchQueue); originDispatchQueue = nil; };
+  
   [super dealloc];
 }
 
-
+- (id)init
+{
+  self = [super init];
+  if (self)
+  {
+    self.standardOutputData = [NSMutableData data];
+    self.standardErrorData = [NSMutableData data];
+  }
+  return self;
+}
 
 
 
@@ -210,6 +229,9 @@ NSString* OATaskDidReceiveDataNotification = @"OATaskDidReceiveDataNotification"
 {
   NSAssert(self.isLaunched, @"[OATask launch] is sent when task was already launched.");
   self.isLaunched = YES;
+  
+  [self willLaunchTask];
+  
   self.originDispatchQueue = dispatch_get_current_queue();
   if (!self.dispatchQueue) self.dispatchQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
   
@@ -217,10 +239,11 @@ NSString* OATaskDidReceiveDataNotification = @"OATaskDidReceiveDataNotification"
   [[NSNotificationCenter defaultCenter] postNotificationName:OATaskDidLaunchNotification object:self];
   dispatch_async(self.dispatchQueue, ^{
     self.isWaiting = NO;
+    
+    
     dispatch_async(self.originDispatchQueue, ^{
       [[NSNotificationCenter defaultCenter] postNotificationName:OATaskDidEnterQueueNotification object:self];
     });
-    
   });
 }
 
@@ -230,23 +253,74 @@ NSString* OATaskDidReceiveDataNotification = @"OATaskDidReceiveDataNotification"
   NSAssert(self.isLaunched, @"[OATask launchAndWait] is sent when task was already launched.");
   self.isLaunched = YES;
   
+  [self willLaunchTask];
+  [self prepareTask];
   
+  [self.nstask launch];
   
+  if (self.standardOutputFileHandle)
+  {
+    [self.standardOutputData appendData:[self.standardOutputFileHandle readDataToEndOfFile]];
+  }
+  
+  if (self.standardErrorFileHandle)
+  {
+    [self.standardErrorData appendData:[self.standardErrorFileHandle readDataToEndOfFile]];
+  }
+  
+  [self.nstask waitUntilExit];
 }
 
 // Terminates the task by sending SIGTERM. Note that actual termination may happen after some time or not happen at all.
 - (void) terminate
 {
-  
+  [self.nstask terminate];
 }
 
 
 
 
-#pragma mark Launch methods
+
+#pragma mark Subclass API
 
 
-- (void) launchInQueue:(dispatch_queue_t)aQueue withBlock:(void(^)())block
+// Called in caller's thread before task is fully configured to be launched.
+// You may configure launch path, arguments or file descriptors in this method.
+// Default implementation does nothing.
+- (void) willLaunchTask
+{
+}
+
+
+// Called in a dispatch queue before task is fully configured to be launched.
+// You may configure the launch path, arguments or file descriptors in this method.
+// Default implementation does nothing.
+- (void) willPrepareTask
+{
+}
+
+
+// Called after environment is filled for the task, but not yet assigned. Subclass has an opportunity to add or modify keys in the dictionary.
+- (NSMutableDictionary*) configureEnvironment:(NSMutableDictionary*)dict
+{
+  return dict;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+#pragma mark LEGACY Launch methods
+
+
+- (void) LEGACYlaunchInQueue:(dispatch_queue_t)aQueue withBlock:(void(^)())block
 {
   block = [[block copy] autorelease];
   #if OATASK_DEBUG
@@ -315,18 +389,11 @@ NSString* OATaskDidReceiveDataNotification = @"OATaskDidReceiveDataNotification"
 
 
 
-- (id) launchAndWait
+- (id) LEGACYlaunchAndWait
 {
   [self prepareTask];
   [self launchBlocking];
   return self;
-}
-
-- (id) launchWithArgumentsAndWait:(NSArray*)args
-{
-  NSLog(@"DEPRECATED: OATask launchWithArgumentsAndWait. Please use block-based API instead.");
-  self.arguments = args;
-  return [self launchAndWait];
 }
 
 
@@ -528,16 +595,14 @@ NSString* OATaskDidReceiveDataNotification = @"OATaskDidReceiveDataNotification"
 #pragma mark Helpers
 
 
-// override in subclasses
-- (NSMutableDictionary*) configureEnvironment:(NSMutableDictionary*)dict
-{
-  return dict;
-}
+
 
 - (void) prepareTask
 {
   NSAssert(!self.nstask, @"nstask is already created when calling prepareTask!");
   
+  [self willPrepareTask];
+    
   self.nstask = [[[NSTask alloc] init] autorelease];
   
   if (!self.launchPath && self.executableName)
@@ -583,15 +648,15 @@ NSString* OATaskDidReceiveDataNotification = @"OATaskDidReceiveDataNotification"
   [environment setObject:locale forKey:@"LC_TIME"];
   [environment setObject:locale forKey:@"LC_ALL"];
   
-  if (!self.skipKeychainPassword)
-  {
-    [environment setObject:@"1" forKey:@"GITBOX_USE_KEYCHAIN_PASSWORD"];
-  }
-  
-  if (self.keychainPasswordName)
-  {
-    [environment setObject:self.keychainPasswordName forKey:@"GITBOX_KEYCHAIN_NAME"];
-  }
+//  if (!self.skipKeychainPassword)
+//  {
+//    [environment setObject:@"1" forKey:@"GITBOX_USE_KEYCHAIN_PASSWORD"];
+//  }
+//  
+//  if (self.keychainPasswordName)
+//  {
+//    [environment setObject:self.keychainPasswordName forKey:@"GITBOX_KEYCHAIN_NAME"];
+//  }
   
   environment = [self configureEnvironment:environment];
     

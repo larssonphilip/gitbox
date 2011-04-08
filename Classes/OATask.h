@@ -99,8 +99,14 @@ extern NSString* OATaskDidReceiveDataNotification;
 
 #pragma mark API for subclasses
 
-// Called in a target dispatch queue before task is fully configured to be launched.
-// Configure task launch path, arguments or file descriptors in this method.
+
+// Called in caller's thread before task is fully configured to be launched.
+// You may configure launch path, arguments or file descriptors in this method.
+// Default implementation does nothing.
+- (void) willLaunchTask;
+
+// Called in a dispatch queue before task is fully configured to be launched.
+// You may configure launch path, arguments or file descriptors in this method.
 // Default implementation does nothing.
 - (void) willPrepareTask;
 
