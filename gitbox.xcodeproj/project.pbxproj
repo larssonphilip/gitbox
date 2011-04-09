@@ -74,6 +74,8 @@
 		201E030211EE083D007E4420 /* GBCertificateUpdateController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 201E030111EE083D007E4420 /* GBCertificateUpdateController.xib */; };
 		201E030611EE09D7007E4420 /* GBCertificateUpdateController.m in Sources */ = {isa = PBXBuildFile; fileRef = 201E030511EE09D7007E4420 /* GBCertificateUpdateController.m */; };
 		201E030B11EE2CBD007E4420 /* GBLicenseController.m in Sources */ = {isa = PBXBuildFile; fileRef = 201E030A11EE2CBD007E4420 /* GBLicenseController.m */; };
+		201E27431350C26F00DF6D94 /* OAPseudoTTY.m in Sources */ = {isa = PBXBuildFile; fileRef = 201E27421350C26F00DF6D94 /* OAPseudoTTY.m */; };
+		201E27441350C26F00DF6D94 /* OAPseudoTTY.m in Sources */ = {isa = PBXBuildFile; fileRef = 201E27421350C26F00DF6D94 /* OAPseudoTTY.m */; };
 		201E5F6811AA71E00061EFD6 /* NSObject+OAKeyValueObserving.m in Sources */ = {isa = PBXBuildFile; fileRef = 201E5F6711AA71E00061EFD6 /* NSObject+OAKeyValueObserving.m */; };
 		2025D3BA11BF1F2D004715FA /* NSAttributedString+OAAttributedStringHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 2025D3B911BF1F2D004715FA /* NSAttributedString+OAAttributedStringHelpers.m */; };
 		20265C0311D68D3400709F6B /* OAPropertyListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20265C0211D68D3400709F6B /* OAPropertyListController.m */; };
@@ -445,6 +447,8 @@
 		201E030511EE09D7007E4420 /* GBCertificateUpdateController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBCertificateUpdateController.m; sourceTree = "<group>"; };
 		201E030911EE2CBD007E4420 /* GBLicenseController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBLicenseController.h; sourceTree = "<group>"; };
 		201E030A11EE2CBD007E4420 /* GBLicenseController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBLicenseController.m; sourceTree = "<group>"; };
+		201E27411350C26F00DF6D94 /* OAPseudoTTY.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAPseudoTTY.h; sourceTree = "<group>"; };
+		201E27421350C26F00DF6D94 /* OAPseudoTTY.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAPseudoTTY.m; sourceTree = "<group>"; };
 		201E5F6611AA71E00061EFD6 /* NSObject+OAKeyValueObserving.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+OAKeyValueObserving.h"; sourceTree = "<group>"; };
 		201E5F6711AA71E00061EFD6 /* NSObject+OAKeyValueObserving.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+OAKeyValueObserving.m"; sourceTree = "<group>"; };
 		2025D3B811BF1F2D004715FA /* NSAttributedString+OAAttributedStringHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSAttributedString+OAAttributedStringHelpers.h"; sourceTree = "<group>"; };
@@ -864,6 +868,8 @@
 				20BF14111279533900A30EE6 /* GBCloneTask.m */,
 				70EEC8CE12DFE33E00DD1555 /* GBSubmodulesTask.h */,
 				70EEC8CF12DFE33E00DD1555 /* GBSubmodulesTask.m */,
+				201E27411350C26F00DF6D94 /* OAPseudoTTY.h */,
+				201E27421350C26F00DF6D94 /* OAPseudoTTY.m */,
 			);
 			name = Tasks;
 			sourceTree = "<group>";
@@ -1644,6 +1650,7 @@
 				20C66EF11344EEAF0067D232 /* GBFolderMonitor.m in Sources */,
 				20AAFAC91347B44300A8E31F /* OABlockOperations.m in Sources */,
 				20AAFACD1347CD9700A8E31F /* OABlockTable.m in Sources */,
+				201E27441350C26F00DF6D94 /* OAPseudoTTY.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1767,6 +1774,7 @@
 				20AAFAC81347B44300A8E31F /* OABlockOperations.m in Sources */,
 				20AAFACC1347CD9700A8E31F /* OABlockTable.m in Sources */,
 				20DD4DC3134B4F7300E6E6B7 /* NSObject+OAResponderChain.m in Sources */,
+				201E27431350C26F00DF6D94 /* OAPseudoTTY.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

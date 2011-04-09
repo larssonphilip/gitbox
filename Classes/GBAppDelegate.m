@@ -134,10 +134,11 @@
     };
     
     [task launch];
+    return;
   }
   
   
-  if (YES)
+  if (NO)
   {
     OATask* task = [OATask task];
     task.executableName = @"ruby";
@@ -149,9 +150,26 @@
       NSLog(@"Did finish. STDOUT: %@ [status code: %d] %@", [task UTF8OutputStripped], task.terminationStatus, task);
     };
     [task launch];
+    return;
   }
   
-  return;
+  if (YES)
+  {
+    // Assuming cloned by HTTP https://github.com/oleganza/emrpc.git into ~/Desktop/emrpc
+    OATask* task = [OATask task];
+    task.executableName = @"git";
+    task.currentDirectoryPath = [NSHomeDirectory() stringByAppendingPathComponent:@"Desktop/emrpc"];
+    task.arguments = [NSArray arrayWithObject:@"push"];
+    task.didReceiveDataBlock = ^{
+      NSString* result = [task UTF8OutputStripped];
+      NSLog(@"Received data: %@", result);
+    };
+    task.didTerminateBlock = ^{
+      NSLog(@"Did finish. STDOUT: %@ [status code: %d] %@", [task UTF8OutputStripped], task.terminationStatus, task);
+    };
+    [task launch];
+    return;
+  }
   
   
   [[GBActivityController sharedActivityController] loadWindow]; // force load the activity controller to begin monitoring the tasks
