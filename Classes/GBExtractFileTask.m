@@ -64,31 +64,27 @@
 #pragma mark OATask
 
 
-- (void) prepareTask
+- (void) willPrepareTask
 {
-  if (!self.standardOutput)
+  if (self.targetURL)
   {
-    if (self.targetURL)
-    {
-      NSError* outError;
-      
-      // creates and intermediate folder and writes 0 bytes to the file
-      [[NSFileManager defaultManager] writeData:[NSData data] toPath:[self.targetURL path]];
+    NSError* outError;
+    
+    // creates and intermediate folder and writes 0 bytes to the file
+    [[NSFileManager defaultManager] writeData:[NSData data] toPath:[self.targetURL path]];
 
-      NSFileHandle* handle = [NSFileHandle fileHandleForWritingToURL:self.targetURL error:&outError];
-      if (handle)
-      {
-        self.standardOutput = handle;
-      }
-      else
-      {
-        NSLog(@"ERROR: GBExtractFileTask: NSFileHandle couldn't open %@ for writing: %@", self.targetURL, [outError localizedDescription]);
-        // invalidate temp URL
-        self.targetURL = nil;
-      }
+    NSFileHandle* handle = [NSFileHandle fileHandleForWritingToURL:self.targetURL error:&outError];
+    if (handle)
+    {
+      self.standardOutputHandleOrPipe = handle;
+    }
+    else
+    {
+      NSLog(@"ERROR: GBExtractFileTask: NSFileHandle couldn't open %@ for writing: %@", self.targetURL, [outError localizedDescription]);
+      // invalidate temp URL
+      self.targetURL = nil;
     }
   }
-  [super prepareTask];
 }
 
 - (NSArray*) arguments

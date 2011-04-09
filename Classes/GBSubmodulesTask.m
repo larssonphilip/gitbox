@@ -130,11 +130,9 @@
 
 # pragma mark implementation
 
-- (void) prepareTask
+- (NSArray*) arguments
 {
-  self.arguments = [NSArray arrayWithObjects:@"submodule", @"status", nil];
-  
-  [super prepareTask];
+  return [NSArray arrayWithObjects:@"submodule", @"status", nil];
 }
 
 @end

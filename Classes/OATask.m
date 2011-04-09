@@ -33,12 +33,7 @@ NSString* OATaskDidReceiveDataNotification = @"OATaskDidReceiveDataNotification"
 @property(nonatomic, retain) NSFileHandle* standardErrorFileHandle;
 
 - (void) prepareTask;
-
-//- (void) beginAllCallbacks;
-//- (void) endAllCallbacks;
-//- (void) finishActivity;
-//- (void) doFinish;
-//- (NSFileHandle*) fileHandleForReading;
+- (void) readStandardOutputAndStandardError;
 
 @end
 
@@ -74,6 +69,7 @@ NSString* OATaskDidReceiveDataNotification = @"OATaskDidReceiveDataNotification"
   
   if (nstask && [nstask isRunning])
   {
+    NSLog(@"OATask: dealloc is called while task is running. %@", self);
     [nstask terminate];
   }
   
@@ -131,10 +127,19 @@ NSString* OATaskDidReceiveDataNotification = @"OATaskDidReceiveDataNotification"
   [task setStandardOutput:pipe];
   NSFileHandle* fileHandle = [pipe fileHandleForReading];
   
-  NSData* data = [fileHandle readDataToEndOfFile];
-  [task terminate];
+  [task launch];
+  NSData* data = nil;
+  @try
+  {
+    data = [fileHandle readDataToEndOfFile];
+  }
+  @catch (NSException *exception)
+  {
+    NSLog(@"[OATask pathForExecutableUsingWhich:%@]: stdout pipe seems to be broken. Exception: %@", executable, exception);
+  }
+  
   [task waitUntilExit];
-  if (![task terminationStatus])
+  if ([task terminationStatus] == 0)
   {
     NSString* path = [[data UTF8String] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     if (path && [path length] > 1)
@@ -227,7 +232,7 @@ NSString* OATaskDidReceiveDataNotification = @"OATaskDidReceiveDataNotification"
 // Launches the task asynchronously
 - (void) launch
 {
-  NSAssert(self.isLaunched, @"[OATask launch] is sent when task was already launched.");
+  NSAssert(!self.isLaunched, @"[OATask launch] is sent when task was already launched.");
   self.isLaunched = YES;
   
   [self willLaunchTask];
@@ -239,10 +244,26 @@ NSString* OATaskDidReceiveDataNotification = @"OATaskDidReceiveDataNotification"
   [[NSNotificationCenter defaultCenter] postNotificationName:OATaskDidLaunchNotification object:self];
   dispatch_async(self.dispatchQueue, ^{
     self.isWaiting = NO;
-    
-    
     dispatch_async(self.originDispatchQueue, ^{
       [[NSNotificationCenter defaultCenter] postNotificationName:OATaskDidEnterQueueNotification object:self];
+    });
+    
+    [self prepareTask];
+    [self.nstask launch];
+ 
+    [self readStandardOutputAndStandardError];
+    [self.nstask waitUntilExit];
+    
+    self.didReceiveDataBlock = nil;
+    
+    [self didFinishInBackground];
+    dispatch_async(self.originDispatchQueue, ^{
+      [self didFinish];
+      if (self.didTerminateBlock) self.didTerminateBlock();
+      self.didTerminateBlock = nil;
+      self.originDispatchQueue = nil;
+      self.dispatchQueue = nil;
+      [[NSNotificationCenter defaultCenter] postNotificationName:OATaskDidTerminateNotification object:self];
     });
   });
 }
@@ -250,25 +271,35 @@ NSString* OATaskDidReceiveDataNotification = @"OATaskDidReceiveDataNotification"
 // Launches the task and blocks the current thread till it finishes.
 - (void) launchAndWait
 {
-  NSAssert(self.isLaunched, @"[OATask launchAndWait] is sent when task was already launched.");
+  NSAssert(!self.isLaunched, @"[OATask launchAndWait] is sent when task was already launched.");
   self.isLaunched = YES;
   
   [self willLaunchTask];
-  [self prepareTask];
+  self.originDispatchQueue = dispatch_get_current_queue();
   
+  self.isWaiting = YES;
+  [[NSNotificationCenter defaultCenter] postNotificationName:OATaskDidLaunchNotification object:self];
+  
+  self.isWaiting = NO;
+  [[NSNotificationCenter defaultCenter] postNotificationName:OATaskDidEnterQueueNotification object:self];
+
+  [self prepareTask];
   [self.nstask launch];
   
-  if (self.standardOutputFileHandle)
-  {
-    [self.standardOutputData appendData:[self.standardOutputFileHandle readDataToEndOfFile]];
-  }
-  
-  if (self.standardErrorFileHandle)
-  {
-    [self.standardErrorData appendData:[self.standardErrorFileHandle readDataToEndOfFile]];
-  }
-  
+  [self readStandardOutputAndStandardError];
   [self.nstask waitUntilExit];
+  
+  self.didReceiveDataBlock = nil;
+  
+  [self didFinishInBackground];
+  [self didFinish];
+  if (self.didTerminateBlock) self.didTerminateBlock();
+  self.didTerminateBlock = nil;
+  
+  self.originDispatchQueue = nil;
+  self.dispatchQueue = nil;
+  
+  [[NSNotificationCenter defaultCenter] postNotificationName:OATaskDidTerminateNotification object:self];
 }
 
 // Terminates the task by sending SIGTERM. Note that actual termination may happen after some time or not happen at all.
@@ -291,7 +322,6 @@ NSString* OATaskDidReceiveDataNotification = @"OATaskDidReceiveDataNotification"
 {
 }
 
-
 // Called in a dispatch queue before task is fully configured to be launched.
 // You may configure the launch path, arguments or file descriptors in this method.
 // Default implementation does nothing.
@@ -299,300 +329,39 @@ NSString* OATaskDidReceiveDataNotification = @"OATaskDidReceiveDataNotification"
 {
 }
 
-
 // Called after environment is filled for the task, but not yet assigned. Subclass has an opportunity to add or modify keys in the dictionary.
 - (NSMutableDictionary*) configureEnvironment:(NSMutableDictionary*)dict
 {
   return dict;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-#pragma mark LEGACY Launch methods
-
-
-- (void) LEGACYlaunchInQueue:(dispatch_queue_t)aQueue withBlock:(void(^)())block
+// Called in a dispatch queue when the task has read some data from stdout and stderr.
+// You may use this callback to write something to stdin.
+// Default implementation does nothing.
+- (void) didReceiveStandardOutputData:(NSData*)dataChunk
 {
-  block = [[block copy] autorelease];
-  #if OATASK_DEBUG
-    static char columns[13] = "000000000000\0";
-    char* c = columns;
-    NSInteger logIndentation = 0;
-    while (*c++ == '1') logIndentation++;
-    if (logIndentation > 11) logIndentation = 11;
-    columns[logIndentation] = '1';
-    
-  NSString* cmd = [self command];
-  if ([cmd length] > 20) cmd = [cmd substringToIndex:20];
-    NSLog(@"%@%@ started [%@...]", [@"" stringByPaddingToLength:logIndentation*16 withString:@" " startingAtIndex:0], [self class], cmd);
-  #endif
-  
-  [self prepareTask];
-  
-  NSFileManager* fm = [[[NSFileManager alloc] init] autorelease];
-  
-  NSString* cwd = [self currentDirectoryPath];
-  if (![fm fileExistsAtPath:cwd])
-  {
-    NSAssert(0, ([NSString stringWithFormat:@"Current directory does not exist: %@", cwd]));
-    return;
-    NSException* exception = [NSException exceptionWithName:@"OATaskCurrentDirectoryDoesNotExist"
-                                                     reason:[NSString stringWithFormat:@"OATask: Current directory path does not exist: %@", cwd] userInfo:nil];
-    @throw exception;
-    return;
-  }
-  
-  dispatch_queue_t callerQueue = dispatch_get_current_queue();
-  dispatch_retain(callerQueue);
-  dispatch_async(aQueue, ^{
-
-    [self.nstask launch];
-    //NSLog(@"nstask env: %@", [self.nstask environment]);
-    
-    @try
-    {
-      NSFileHandle* pipeFileHandle = [self fileHandleForReading];
-      if (pipeFileHandle)
-      {
-        [self.output appendData:[pipeFileHandle readDataToEndOfFile]];
-      }
-      [self.nstask waitUntilExit];
-    }
-    @catch (NSException* e)
-    {
-      NSLog(@"OATask: pipe seems to be broken: caught exception: %@", e);
-      [self.nstask terminate];
-      self.output = [NSMutableData data];
-    }
-    
-    dispatch_async(callerQueue, ^{
-      #if OATASK_DEBUG
-        NSLog(@"%@%@ ended [%@...]", [@"" stringByPaddingToLength:logIndentation*16 withString:@" " startingAtIndex:0], [self class], cmd);
-        columns[logIndentation] = '0';
-      #endif
-      [self doFinish];
-      //[[GBActivityController sharedActivityController] addActivity:self.activity];
-      block();
-      dispatch_release(callerQueue);
-    });
-  });
 }
 
-
-
-- (id) LEGACYlaunchAndWait
+- (void) didReceiveStandardErrorData:(NSData*)dataChunk
 {
-  [self prepareTask];
-  [self launchBlocking];
-  return self;
 }
 
-
-
-- (void) terminate
+// Called in dispatch queue when the task is finished, before didFinish method.
+- (void) didFinishInBackground
 {
-  self.isTerminated = YES;
-  [self endAllCallbacks];
-  [self.nstask terminate];
-  NSFileHandle* pipeFileHandle = [self fileHandleForReading];
-  if (pipeFileHandle)
-  {
-    [self.output appendData:[pipeFileHandle readDataToEndOfFile]];
-  }
-  [self doFinish];
 }
 
-
-
-
-
-
-
-#pragma mark Callbacks Setup
-
-
-- (void) beginReadingInBackground
-{
-  [[NSNotificationCenter defaultCenter] addObserver:self 
-                                           selector:@selector(taskDidReceiveReadCompletionNotification:) 
-                                               name:NSFileHandleReadCompletionNotification 
-                                             object:[self fileHandleForReading]];  
-}
-
-- (void) endReadingInBackground
-{
-  [[NSNotificationCenter defaultCenter] removeObserver:self 
-                                                  name:NSFileHandleReadCompletionNotification
-                                                object:[self fileHandleForReading]];  
-}
-
-
-- (void) beginWaitingForTermination
-{
-  [[NSNotificationCenter defaultCenter] addObserver:self 
-                                           selector:@selector(taskDidTerminateNotification:) 
-                                               name:NSTaskDidTerminateNotification 
-                                             object:self.nstask];
-}
-
-- (void) endWaitingForTermination
-{
-  [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                  name:NSTaskDidTerminateNotification
-                                                object:self.nstask];  
-}
-
-- (void) beginTimeoutCallback
-{
-  if (self.terminateTimeout > 0.0)
-  {
-    [self performSelector:@selector(terminateAfterTimeout) withObject:nil afterDelay:self.terminateTimeout];
-  }
-}
-
-- (void) endTimeoutCallback
-{
-  [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(terminateAfterTimeout) object:nil];
-}
-
-- (void) beginAllCallbacks
-{
-  [self beginWaitingForTermination];
-  [self beginReadingInBackground];
-  [self beginTimeoutCallback];
-}
-
-- (void) endAllCallbacks
-{
-  [self endTimeoutCallback];
-  [self endReadingInBackground];
-  [self endWaitingForTermination];
-}
-
-
-
-
-
-#pragma mark Callbacks
-
-
-- (void) taskDidTerminateNotification:(NSNotification*) notification
-{
-  //NSLog(@"TERM NOTIF: %@ (collected %d bytes)", [self command], [self.output length]);
-  // Do not do this unless all data is read: [self doFinish];
-}
-
-- (void) taskDidReceiveReadCompletionNotification:(NSNotification*) notification
-{
-  //NSLog(@"DATA NOTIF: %@ (collected %d bytes)", [self command], [self.output length]);
-  NSData* incomingData = [[notification userInfo] objectForKey:NSFileHandleNotificationDataItem];
-  if (![self.nstask isRunning] && (!incomingData || [incomingData length] <= 0))
-  {
-    [self doFinish];
-    return;
-  }
-  if (incomingData && [incomingData length] > 0)
-  {
-    [self.output appendData:incomingData];
-  }
-  [[self fileHandleForReading] readInBackgroundAndNotify];
-}
-
-
-
-#pragma mark Finishing
-
-
-//- (void) finishActivity
-//{
-//  self.activity.isRunning = NO;
-//  
-//  if ([self.nstask isRunning])
-//  {
-//    self.activity.status = NSLocalizedString(@"Running...", @"Task");
-//  }
-//  else
-//  {
-//    if ([self terminationStatus] == 0)
-//    {
-//      self.activity.status = NSLocalizedString(@"Finished", @"Task");
-//    }
-//    else
-//    {
-//      self.activity.status = [NSString stringWithFormat:@"%@ [%d]", NSLocalizedString(@"Finished", @"Task"), [self terminationStatus]];
-//    }
-//  }
-//  self.activity.textOutput = [self UTF8Output];
-//}
-
-
-- (void) doFinish
-{
-  [self endAllCallbacks];
-  
-  // Subclasses may override it to do some data processing.
-  if (![self.nstask isRunning])
-  {
-    if (self.terminationStatus != 0)
-    {
-      if (!self.ignoreFailure)
-      {
-        //NSLog(@"OATask failed: %@ [%d]", [self command], self.terminationStatus);
-  //      NSString* stringOutput = [self UTF8OutputStripped];
-  //      if (stringOutput)
-  //      {
-  //        //NSLog(@"OATask output: %@", stringOutput);
-  //      }
-      }
-    }
-  }  
-  [self finishActivity];
-  [self didFinish];
-  
-  if (self.callbackBlock) callbackBlock();
-  self.callbackBlock = nil;
-  
-  //NSNotification* notification = [NSNotification notificationWithName:OATaskNotification object:self];
-  // NSPostNow because NSPostASAP causes properties to be updated with a delay and bindings are updated in a strange fashion
-  // See commit 1c2d52b99c1ccf82e3540be10a3e1f0e3e054065 which fixes strange things with activity indicator.
-//  [[NSNotificationQueue defaultQueue] enqueueNotification:notification 
-//                                                       postingStyle:NSPostNow];
-}
-
-
+// Called in client thread when the task is finished, but before blocks are called and notifications are posted.
 - (void) didFinish
 {
-  // for subclasses
 }
 
 
-//- (void) alertExecutableNotFound:(NSString*)executable
-//{
-//  if (alertExecutableNotFoundBlock)
-//  {
-//    alertExecutableNotFoundBlock(executable);
-//  }
-//  else
-//  {
-//    NSString* message = [NSString stringWithFormat:NSLocalizedString(@"Cannot find path to %@.", @"Task"), executable];
-//    NSString* advice = NSLocalizedString(@"Please put it into your $PATH or a well-known location such as /usr/local/bin", @"Task");
-//    [NSAlert message:message description:advice];
-//  }
-//}
 
 
 
 
-#pragma mark Helpers
+#pragma mark Private
 
 
 
@@ -620,12 +389,11 @@ NSString* OATaskDidReceiveDataNotification = @"OATaskDidReceiveDataNotification"
       NSLog(@"OATask: launchPath is not found for executable %@", self.executableName);
     }
   }
-
   
-  NSPipe* defaultPipe = nil;
   if (!self.currentDirectoryPath) self.currentDirectoryPath = NSHomeDirectory();
   
   NSString* cwd = self.currentDirectoryPath;
+  NSFileManager* fm = [[[NSFileManager alloc] init] autorelease];
   if (![fm fileExistsAtPath:cwd])
   {
     NSAssert(0, ([NSString stringWithFormat:@"Current directory does not exist: %@", cwd]));
@@ -633,16 +401,16 @@ NSString* OATaskDidReceiveDataNotification = @"OATaskDidReceiveDataNotification"
   
   [self.nstask setCurrentDirectoryPath:self.currentDirectoryPath];
   [self.nstask setLaunchPath:    self.launchPath];
-  [self.nstask setArguments:     self.arguments];
+  [self.nstask setArguments:     self.arguments ? self.arguments : [NSArray array]];
   NSString* binPath = [self.launchPath stringByDeletingLastPathComponent];
   NSMutableDictionary* environment = [[[[NSProcessInfo processInfo] environment] mutableCopy] autorelease];
   NSString* path = [environment objectForKey:@"PATH"];
   if (!path) path = binPath;
   else path = [path stringByAppendingFormat:@":%@", binPath];
   [environment setObject:path forKey:@"PATH"];
-  NSString* askPass = [[NSBundle mainBundle] pathForResource:@"askpass" ofType:@"rb"];
-  [environment setObject:askPass forKey:@"SSH_ASKPASS"];
-  [environment setObject:askPass forKey:@"GIT_ASKPASS"];
+//  NSString* askPass = [[NSBundle mainBundle] pathForResource:@"askpass" ofType:@"rb"];
+//  [environment setObject:askPass forKey:@"SSH_ASKPASS"];
+//  [environment setObject:askPass forKey:@"GIT_ASKPASS"];
   [environment setObject:@":0" forKey:@"DISPLAY"];
 
   NSString* locale = @"en_US.UTF-8";
@@ -667,21 +435,21 @@ NSString* OATaskDidReceiveDataNotification = @"OATaskDidReceiveDataNotification"
   
   environment = [self configureEnvironment:environment];
     
-  if (!self.standardOutput)
+  if (!self.standardOutputHandleOrPipe)
   {
-    defaultPipe = (defaultPipe ? defaultPipe : [NSPipe pipe]);
-    self.standardOutput = defaultPipe;
+    self.standardOutputHandleOrPipe = [NSPipe pipe];
+    [self.nstask setStandardOutput:self.standardOutputHandleOrPipe];
+    self.standardOutputFileHandle = [self.standardOutputHandleOrPipe fileHandleForReading];
   }
-  if (!self.standardError)
+  if (!self.standardErrorHandleOrPipe)
   {
-    defaultPipe = (defaultPipe ? defaultPipe : [NSPipe pipe]);
-    self.standardError = defaultPipe;
+    self.standardErrorHandleOrPipe = [NSPipe pipe];
+    [self.nstask setStandardError: self.standardErrorHandleOrPipe];
+    self.standardErrorFileHandle = [self.standardErrorHandleOrPipe fileHandleForReading];
   }
   
-  [self.nstask setStandardOutput:self.standardOutput];
-  [self.nstask setStandardError: self.standardError];
-  
-  if ([self.standardOutput isKindOfClass:[NSPipe class]])
+  if ([[self.nstask standardOutput] isKindOfClass:[NSPipe class]] ||
+      [[self.nstask standardError] isKindOfClass:[NSPipe class]])
   {
     [environment setObject:@"YES" forKey:@"NSUnbufferedIO"];
   }
@@ -694,49 +462,93 @@ NSString* OATaskDidReceiveDataNotification = @"OATaskDidReceiveDataNotification"
 //  self.activity.command = [self command];
 }
 
-//- (void) launchAsynchronously
-//{
-//  [[GBActivityController sharedActivityController] addActivity:self.activity];
-//  [self beginAllCallbacks];
-//  //NSLog(@"ASYNC: %@", [self command]);
-//  [self.nstask launch];
-//  [[self fileHandleForReading] readInBackgroundAndNotify];
-//}
 
-- (void) launchBlocking
+- (void) readStandardOutputAndStandardError
 {
-  //NSLog(@"BLOCKING: %@", [self command]);
-  [self.nstask launch];
-  NSFileHandle* pipeFileHandle = [self fileHandleForReading];
-  @try
-  {
-	  if (pipeFileHandle)
-	  {
-		  [self.output appendData:[pipeFileHandle readDataToEndOfFile]];
-	  }
-	  [self.nstask waitUntilExit];
-  }
-  @catch (NSException* e)
-  {
-	  NSLog(@"OATask: pipe seems to be broken: caught exception: %@", e);
-	  [self.nstask terminate];
-	  self.output = [NSMutableData data];
-  }
-  [self doFinish];
-  [[GBActivityController sharedActivityController] addActivity:self.activity];
-}
-
-
-- (NSFileHandle*) fileHandleForReading
-{
-  if ([[self.nstask standardOutput] isKindOfClass:[NSPipe class]])
-  {
-    return [[self.nstask standardOutput] fileHandleForReading];
-  }
-  else
-  {
-    return nil;
-  }
+  // Since we may read from stdout and stderr independently,
+  // we should schedule them on different threads and wait for both to finish.
+  
+  dispatch_queue_t stdoutQueue = dispatch_queue_create("com.oleganza.OATask.stdoutReadingQueue", NULL);
+  dispatch_queue_t stderrQueue = dispatch_queue_create("com.oleganza.OATask.stderrReadingQueue", NULL);
+  dispatch_group_t group = dispatch_group_create();
+  
+  // stdout reading
+  dispatch_group_async(group, stdoutQueue, ^{
+    while (1)
+    {
+      NSData* dataChunk = nil;
+      @try
+      {
+        dataChunk = [self.standardOutputFileHandle availableData];
+      }
+      @catch (NSException *exception)
+      {
+        NSLog(@"OATask: stdout pipe seems to be broken: caught exception: %@", exception);
+      }
+      
+      if (dataChunk)
+      {
+        [self.standardOutputData appendData:dataChunk];
+        [self didReceiveStandardOutputData:dataChunk];
+        NSLog(@"OATask: didReceiveStandardOutputData: %d %@", (int)[dataChunk length], [dataChunk UTF8String]);
+      }
+      
+      BOOL finishedReading = !dataChunk || [dataChunk length] < 1;
+      
+      if (!finishedReading)
+      {
+        dispatch_async(self.originDispatchQueue, ^{
+          if (self.didReceiveDataBlock) self.didReceiveDataBlock();
+          [[NSNotificationCenter defaultCenter] postNotificationName:OATaskDidReceiveDataNotification object:self];
+        });
+      }
+      else
+      {
+        break;
+      }
+    }
+  });
+  
+  // stderr reading
+  dispatch_group_async(group, stderrQueue, ^{
+    while (1)
+    {
+      NSData* dataChunk = nil;
+      @try
+      {
+        dataChunk = [self.standardErrorFileHandle availableData];
+      }
+      @catch (NSException *exception)
+      {
+        NSLog(@"OATask: stderr pipe seems to be broken: caught exception: %@", exception);
+      }
+      
+      if (dataChunk)
+      {
+        [self.standardErrorData appendData:dataChunk];
+        [self didReceiveStandardErrorData:dataChunk];
+      }
+      
+      BOOL finishedReading = !dataChunk || [dataChunk length] < 1;
+      
+      if (!finishedReading)
+      {
+        dispatch_async(self.originDispatchQueue, ^{
+          if (self.didReceiveDataBlock) self.didReceiveDataBlock();
+          [[NSNotificationCenter defaultCenter] postNotificationName:OATaskDidReceiveDataNotification object:self];
+        });
+      }
+      else
+      {
+        break;
+      }
+    }
+  });
+  
+  dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
+  dispatch_release(group);
+  dispatch_release(stdoutQueue);
+  dispatch_release(stderrQueue);
 }
 
 
@@ -753,7 +565,7 @@ NSString* OATaskDidReceiveDataNotification = @"OATaskDidReceiveDataNotification"
 
 
 
-@interface OATask (Porcelain)
+@implementation OATask (Porcelain)
 
 // Compatibility alias for standardOutputData
 - (NSData*) output
@@ -819,9 +631,156 @@ NSString* OATaskDidReceiveDataNotification = @"OATaskDidReceiveDataNotification"
           self, 
           [self command], 
           (self.isRunning ? @"running" : @"not running"),
-          (self.isWaiting ? @", waiting in dispatch queue" : @""),
-          ];
+          (self.isWaiting ? @", waiting in dispatch queue" : @"")];
 }
 
 @end
 
+
+
+
+
+
+
+
+
+
+#pragma mark LEGACY
+
+//
+//- (void) LEGACYlaunchInQueue:(dispatch_queue_t)aQueue withBlock:(void(^)())block
+//{
+//  block = [[block copy] autorelease];
+//  #if OATASK_DEBUG
+//    static char columns[13] = "000000000000\0";
+//    char* c = columns;
+//    NSInteger logIndentation = 0;
+//    while (*c++ == '1') logIndentation++;
+//    if (logIndentation > 11) logIndentation = 11;
+//    columns[logIndentation] = '1';
+//    
+//  NSString* cmd = [self command];
+//  if ([cmd length] > 20) cmd = [cmd substringToIndex:20];
+//    NSLog(@"%@%@ started [%@...]", [@"" stringByPaddingToLength:logIndentation*16 withString:@" " startingAtIndex:0], [self class], cmd);
+//  #endif
+//  
+//  [self prepareTask];
+//  
+//  NSFileManager* fm = [[[NSFileManager alloc] init] autorelease];
+//  
+//  NSString* cwd = [self currentDirectoryPath];
+//  if (![fm fileExistsAtPath:cwd])
+//  {
+//    NSAssert(0, ([NSString stringWithFormat:@"Current directory does not exist: %@", cwd]));
+//    return;
+//    NSException* exception = [NSException exceptionWithName:@"OATaskCurrentDirectoryDoesNotExist"
+//                                                     reason:[NSString stringWithFormat:@"OATask: Current directory path does not exist: %@", cwd] userInfo:nil];
+//    @throw exception;
+//    return;
+//  }
+//  
+//  dispatch_queue_t callerQueue = dispatch_get_current_queue();
+//  dispatch_retain(callerQueue);
+//  dispatch_async(aQueue, ^{
+//
+//    [self.nstask launch];
+//    //NSLog(@"nstask env: %@", [self.nstask environment]);
+//    
+//    @try
+//    {
+//      NSFileHandle* pipeFileHandle = [self fileHandleForReading];
+//      if (pipeFileHandle)
+//      {
+//        [self.output appendData:[pipeFileHandle readDataToEndOfFile]];
+//      }
+//      [self.nstask waitUntilExit];
+//    }
+//    @catch (NSException* e)
+//    {
+//      NSLog(@"OATask: pipe seems to be broken: caught exception: %@", e);
+//      [self.nstask terminate];
+//      self.output = [NSMutableData data];
+//    }
+//    
+//    dispatch_async(callerQueue, ^{
+//      #if OATASK_DEBUG
+//        NSLog(@"%@%@ ended [%@...]", [@"" stringByPaddingToLength:logIndentation*16 withString:@" " startingAtIndex:0], [self class], cmd);
+//        columns[logIndentation] = '0';
+//      #endif
+//      [self doFinish];
+//      //[[GBActivityController sharedActivityController] addActivity:self.activity];
+//      block();
+//      dispatch_release(callerQueue);
+//    });
+//  });
+//}
+//
+
+//- (void) finishActivity
+//{
+//  self.activity.isRunning = NO;
+//  
+//  if ([self.nstask isRunning])
+//  {
+//    self.activity.status = NSLocalizedString(@"Running...", @"Task");
+//  }
+//  else
+//  {
+//    if ([self terminationStatus] == 0)
+//    {
+//      self.activity.status = NSLocalizedString(@"Finished", @"Task");
+//    }
+//    else
+//    {
+//      self.activity.status = [NSString stringWithFormat:@"%@ [%d]", NSLocalizedString(@"Finished", @"Task"), [self terminationStatus]];
+//    }
+//  }
+//  self.activity.textOutput = [self UTF8Output];
+//}
+
+
+
+//- (void) launchAsynchronously
+//{
+//  [[GBActivityController sharedActivityController] addActivity:self.activity];
+//  [self beginAllCallbacks];
+//  //NSLog(@"ASYNC: %@", [self command]);
+//  [self.nstask launch];
+//  [[self fileHandleForReading] readInBackgroundAndNotify];
+//}
+
+//- (void) launchBlocking
+//{
+//  //NSLog(@"BLOCKING: %@", [self command]);
+//  [self.nstask launch];
+//  NSFileHandle* pipeFileHandle = [self fileHandleForReading];
+//  @try
+//  {
+//	  if (pipeFileHandle)
+//	  {
+//		  [self.output appendData:[pipeFileHandle readDataToEndOfFile]];
+//	  }
+//	  [self.nstask waitUntilExit];
+//  }
+//  @catch (NSException* e)
+//  {
+//	  NSLog(@"OATask: pipe seems to be broken: caught exception: %@", e);
+//	  [self.nstask terminate];
+//	  self.output = [NSMutableData data];
+//  }
+//  [self doFinish];
+//  [[GBActivityController sharedActivityController] addActivity:self.activity];
+//}
+
+//
+//- (NSFileHandle*) fileHandleForReading
+//{
+//  if ([[self.nstask standardOutput] isKindOfClass:[NSPipe class]])
+//  {
+//    return [[self.nstask standardOutput] fileHandleForReading];
+//  }
+//  else
+//  {
+//    return nil;
+//  }
+//}

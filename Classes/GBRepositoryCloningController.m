@@ -101,7 +101,7 @@
                                             ]];
     }
     
-    if (t.isTerminated || [t isError])
+    if ([t isError])
     {
       NSLog(@"GBCloningRepositoryController: did FAIL to clone at %@", self.targetURL);
       NSLog(@"GBCloningRepositoryController: output: %@", [t UTF8OutputStripped]);

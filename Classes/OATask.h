@@ -1,10 +1,10 @@
 /*
  
 TODO:
-- remove OAActivity from this class, GBActivityController should subscribe for notifications and 
-- do not calculate launchPath lazily and in a blocking fashion
-- launch the task and process callbacks in a background queue, but post notifications on the same queue of launch
-- clearly separate plumbing API from convenience API. For convenience API use only the public plumbing API.
++ remove OAActivity from this class, GBActivityController should subscribe for notifications and 
++ do not calculate launchPath lazily and in a blocking fashion
++ launch the task and process callbacks in a background queue, but post notifications on the same queue of launch
++ clearly separate plumbing API from convenience API. For convenience API use only the public plumbing API.
 - handle passwords in the appropriate subclass or client code by responding via stdin pipe.
  
 How to:
@@ -100,12 +100,12 @@ extern NSString* OATaskDidReceiveDataNotification;
 #pragma mark API for subclasses
 
 
-// Called in caller's thread before task is fully configured to be launched.
+// Called in client thread before the task is fully configured to be launched.
 // You may configure launch path, arguments or file descriptors in this method.
 // Default implementation does nothing.
 - (void) willLaunchTask;
 
-// Called in a dispatch queue before task is fully configured to be launched.
+// Called in a dispatch queue before the task is fully configured to be launched.
 // You may configure launch path, arguments or file descriptors in this method.
 // Default implementation does nothing.
 - (void) willPrepareTask;
@@ -113,7 +113,16 @@ extern NSString* OATaskDidReceiveDataNotification;
 // Called after environment is filled for the task, but not yet assigned. Subclass has an opportunity to add or modify keys in the dictionary.
 - (NSMutableDictionary*) configureEnvironment:(NSMutableDictionary*)dict;
 
-// NEEDS CLARIFICATION: Called when task is finished, but before blocks are called and notifications are posted.
+// Called in a dispatch queue when the task has read some data from stdout and stderr.
+// You may use this callback to write something to stdin.
+// Default implementation does nothing.
+- (void) didReceiveStandardOutputData:(NSData*)dataChunk;
+- (void) didReceiveStandardErrorData:(NSData*)dataChunk;
+
+// Called in dispatch queue when the task is finished, before didFinish method.
+- (void) didFinishInBackground;
+
+// Called in client thread when the task is finished, but before blocks are called and notifications are posted.
 - (void) didFinish;
 
 @end

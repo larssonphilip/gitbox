@@ -932,7 +932,7 @@
                          [NSString stringWithFormat:@"%@:refs/remotes/%@", 
                           aRemoteBranch.name, [aRemoteBranch nameWithRemoteAlias]],
                          nil];
-  task.keychainPasswordName = [aRemoteBranch.remote keychainPasswordName];
+  //task.keychainPasswordName = [aRemoteBranch.remote keychainPasswordName];
   
   [self launchTask:task withBlock:^{
     aRemoteBranch.remote.failedCommunication = [task isError];
@@ -960,7 +960,7 @@
                      aRemote.alias,
                      [aRemote defaultFetchRefspec], // Declaring a proper refspec is necessary to make autofetch expectations about remote alias to work. git show-ref should always return refs for alias XYZ.
                      nil];
-  task.keychainPasswordName = [aRemote keychainPasswordName];
+  //task.keychainPasswordName = [aRemote keychainPasswordName];
   
   [self launchTask:task withBlock:^{
     aRemote.failedCommunication = [task isError];
@@ -993,7 +993,7 @@
                     [NSString stringWithFormat:@"%@:refs/remotes/%@", 
                      aRemoteBranch.name, [aRemoteBranch nameWithRemoteAlias]],
                     nil];
-  task.keychainPasswordName = [aRemoteBranch.remote keychainPasswordName];
+  //task.keychainPasswordName = [aRemoteBranch.remote keychainPasswordName];
   [self launchTask:task withBlock:^{
     aRemoteBranch.remote.failedCommunication = [task isError];
     if ([task isError])
@@ -1025,7 +1025,7 @@
   NSString* refspec = [NSString stringWithFormat:@"%@:%@", aLocalBranch.name, aRemoteBranch.name];
   task.arguments = [NSArray arrayWithObjects:@"push", @"--tags", aRemoteBranch.remoteAlias, refspec, nil];
   GBRemote* aRemote = aRemoteBranch.remote;
-  task.keychainPasswordName = [aRemote keychainPasswordName];
+  //task.keychainPasswordName = [aRemote keychainPasswordName];
   [self launchTask:task withBlock:^{
     aRemote.failedCommunication = [task isError];
     if ([task isError])

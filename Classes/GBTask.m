@@ -94,13 +94,12 @@
 
 #pragma mark Helpers
 
-- (void) prepareTask
+- (void) willLaunchTask
 {
-  [super prepareTask];
   if (!self.repository)
   {
     NSException *exception = [NSException exceptionWithName:@"RepositoryIsNil"
-                                                     reason:@"You may use GBRepository#task to prepare GBTask"  userInfo:nil];
+                                                     reason:@"You may use [GBRepository task] to get a new configured GBTask"  userInfo:nil];
     @throw exception;
   }
 }

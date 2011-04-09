@@ -79,7 +79,7 @@
                                              ]];
     }
     
-    if (aTask.isTerminated || [aTask isError])
+    if ([aTask isError])
     {
       NSLog(@"GBSubmoduleCloningController: did FAIL to clone at %@", [self.submodule localURL]);
       NSLog(@"GBSubmoduleCloningController: output: %@", [aTask UTF8OutputStripped]);

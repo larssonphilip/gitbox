@@ -150,7 +150,7 @@
   
   self.isUpdatingRemoteBranches = YES;
   GBRemoteRefsTask* task = [GBRemoteRefsTask task];
-  task.skipKeychainPassword = self.failedCommunication;
+  //task.skipKeychainPassword = self.failedCommunication;
   task.remote = self;
   task.repository = self.repository;
   

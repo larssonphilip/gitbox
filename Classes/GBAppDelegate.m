@@ -12,6 +12,7 @@
 #import "NSObject+OASelectorNotifications.h"
 
 #import "OALicenseNumberCheck.h"
+#import "OATask.h"
 
 @interface GBAppDelegate () <NSOpenSavePanelDelegate>
 
@@ -110,6 +111,49 @@
 
 - (void) applicationDidFinishLaunching:(NSNotification*) aNotification
 {
+  if (NO)
+  {
+    NSError* err = nil;
+    NSURL* url = [NSURL fileURLWithPath:[NSHomeDirectory() stringByAppendingPathComponent:@"Desktop/rails"]];
+    if (![[NSFileManager defaultManager] removeItemAtURL:url error:&err])
+    {
+      NSLog(@"error while removing %@: %@", url, err);
+    }
+    
+    NSLog(@"systemPathForExecutable:'git' = %@", [OATask systemPathForExecutable:@"git"]);
+    
+    OATask* task = [OATask task];
+    task.executableName = @"git";
+    task.currentDirectoryPath = [NSHomeDirectory() stringByAppendingPathComponent:@"Desktop"];
+    task.arguments = [NSArray arrayWithObjects:@"clone", @"git://github.com/rails/rails.git", @"--progress", nil];
+    task.didReceiveDataBlock = ^{
+      NSLog(@"Received data. STDOUT: %d STDERR: %d", (int)[task.standardOutputData length], (int)[task.standardErrorData length]);
+    };
+    task.didTerminateBlock = ^{
+      NSLog(@"Did finish. STDOUT: %d STDERR: %d [status code: %d] %@", (int)[task.standardOutputData length], (int)[task.standardErrorData length], task.terminationStatus, task);
+    };
+    
+    [task launch];
+  }
+  
+  
+  if (YES)
+  {
+    OATask* task = [OATask task];
+    task.executableName = @"ruby";
+    task.arguments = [NSArray arrayWithObject:[NSHomeDirectory() stringByAppendingPathComponent:@"Work/gitbox/app/Test/interactive.rb"]];
+    task.didReceiveDataBlock = ^{
+      NSLog(@"Received data: %@", [task UTF8OutputStripped]);
+    };
+    task.didTerminateBlock = ^{
+      NSLog(@"Did finish. STDOUT: %@ [status code: %d] %@", [task UTF8OutputStripped], task.terminationStatus, task);
+    };
+    [task launch];
+  }
+  
+  return;
+  
+  
   [[GBActivityController sharedActivityController] loadWindow]; // force load the activity controller to begin monitoring the tasks
   
   self.rootController = [[GBRootController new] autorelease];
@@ -198,6 +242,7 @@
 
 - (void) saveItems
 {
+  if (!self.rootController) return;
   id plist = [self.rootController sidebarItemContentsPropertyList];
   [[NSUserDefaults standardUserDefaults] setObject:plist forKey:@"GBSidebarItems"];
   [[NSUserDefaults standardUserDefaults] synchronize];
