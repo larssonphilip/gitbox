@@ -624,6 +624,13 @@ NSString* OATaskDidReceiveDataNotification = @"OATaskDidReceiveDataNotification"
   
   NSPipe* defaultPipe = nil;
   if (!self.currentDirectoryPath) self.currentDirectoryPath = NSHomeDirectory();
+  
+  NSString* cwd = self.currentDirectoryPath;
+  if (![fm fileExistsAtPath:cwd])
+  {
+    NSAssert(0, ([NSString stringWithFormat:@"Current directory does not exist: %@", cwd]));
+  }
+  
   [self.nstask setCurrentDirectoryPath:self.currentDirectoryPath];
   [self.nstask setLaunchPath:    self.launchPath];
   [self.nstask setArguments:     self.arguments];
