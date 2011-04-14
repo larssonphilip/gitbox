@@ -105,6 +105,22 @@
     [NSCursor pointingHandCursor],
     NSCursorAttributeName,
     nil]];
+  
+  
+  // DOESN'T WORK
+  [self.messageTextView setAutomaticLinkDetectionEnabled:YES];
+  
+  [self.messageTextView setLinkTextAttributes:
+   [NSDictionary dictionaryWithObjectsAndKeys:                                              
+    [NSColor colorWithCalibratedRed:50.0/255.0 green:100.0/255.0 blue:220.0/255.0 alpha:1.0],
+    NSForegroundColorAttributeName,
+    
+    [NSNumber numberWithInt:NSUnderlineStyleNone],
+    NSUnderlineStyleAttributeName,
+    
+    [NSCursor pointingHandCursor],
+    NSCursorAttributeName,
+    nil]];
 }
 
 
