@@ -121,7 +121,8 @@
       {
         [self.tableView selectRowIndexes:[NSIndexSet indexSetWithIndex:anIndex] byExtendingSelection:NO];
         NSRect rowRect = [self.tableView rectOfRow:anIndex];
-        if (!NSContainsRect([self.tableView bounds], rowRect))
+        NSView* aView = [self.tableView enclosingScrollView];
+        if (!NSContainsRect([aView bounds], [aView convertRect:rowRect fromView:self.tableView]))
         {
           [self.tableView scrollRowToVisible:anIndex];
         }
@@ -205,6 +206,7 @@
   [super loadView];
   if (!self.jumpController) self.jumpController = [OAFastJumpController controller];
   [self.tableView setIntercellSpacing:NSMakeSize(0.0, 0.0)]; // remove the awful paddings
+  [self.tableView setRowHeight:[GBCommitCell cellHeight]]; // fixes scrollToVisible
   //[[self view] setNextKeyView:self.tableView];
 }
 
@@ -299,19 +301,6 @@
   if ([self.stageAndCommits count] > 0)
   {
     [self.tableView reloadDataForRowIndexes:[NSIndexSet indexSetWithIndex:0] columnIndexes:[NSIndexSet indexSetWithIndex:0]];
-  }
-}
-
-- (void) scrollToVisibleRow
-{
-  NSUInteger index = [self.logArrayController selectionIndex];
-  if (index != NSNotFound)
-  {
-    NSRect rowRect = [self.tableView rectOfRow:index];
-    if (!NSContainsRect([self.tableView bounds], rowRect))
-    {
-      [self.tableView scrollRowToVisible:index];
-    }
   }
 }
 
