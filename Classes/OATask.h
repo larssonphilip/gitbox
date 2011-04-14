@@ -36,6 +36,10 @@ extern NSString* OATaskDidReceiveDataNotification;
 
 @interface OATask : NSObject
 
+
+@property(nonatomic, assign) BOOL skipKeychainPassword;
+@property(nonatomic, copy) NSString* keychainPasswordName;
+
 // Name of the executable to launch if launchPath is nil. Uses +systemPathForExecutable to compute the launchPath.
 @property(nonatomic, copy) NSString* executableName;
 
@@ -47,6 +51,9 @@ extern NSString* OATaskDidReceiveDataNotification;
 
 // Array of arguments. OATask raises an exception if more than 4096 arguments are present.
 @property(nonatomic, retain) NSArray* arguments;
+
+// Set to YES if you want to use pseudo-tty for interacting with the task. Default is NO.
+@property(nonatomic, assign, getter=isInteractive) BOOL interactive;
 
 // NSPipe or NSFileHandle for stdout. If nil, a private pipe is used to read into standardOutputData.
 @property(nonatomic, retain) id standardOutputHandleOrPipe;
@@ -89,12 +96,20 @@ extern NSString* OATaskDidReceiveDataNotification;
 // Launches the task asynchronously
 - (void) launch;
 
+// Launches the task asynchronously in an interactive pseudo-tty mode
+- (void) launchInteractively;
+
 // Launches the task and blocks the current thread till it finishes.
 - (void) launchAndWait;
 
-// Terminates the task by sending SIGTERM. Note that actual termination may happen after some time or not happen at all.
-- (void) terminate;
+// If interactive == YES, writes data to the standard input.
+- (void) writeData:(NSData*)aData;
 
+// If interactive == YES, writes the string and CR byte (\r) to the standard input.
+- (void) writeLine:(NSString*)aLine;
+
+// Sends SIGTERM signal to the task. Note that actual termination may happen after some time or not happen at all.
+- (void) terminate;
 
 
 #pragma mark API for subclasses

@@ -6,6 +6,7 @@
 #import "NSArray+OAArrayHelpers.h"
 #import "NSAlert+OAAlertHelpers.h"
 #import "NSData+OADataHelpers.h"
+#import "OAPseudoTTY.h"
 //#import "GBActivityController.h"
 
 NSString* OATaskDidLaunchNotification      = @"OATaskDidLaunchNotification";
@@ -32,17 +33,22 @@ NSString* OATaskDidReceiveDataNotification = @"OATaskDidReceiveDataNotification"
 @property(nonatomic, retain) NSFileHandle* standardOutputFileHandle;
 @property(nonatomic, retain) NSFileHandle* standardErrorFileHandle;
 
+@property(nonatomic, retain) OAPseudoTTY* pseudoTTY;
+
 - (void) prepareTask;
 - (void) readStandardOutputAndStandardError;
-
+- (void) prepareLaunchPathIfNeeded:(void(^)())aBlock;
 @end
 
 @implementation OATask
 
+@synthesize skipKeychainPassword;
+@synthesize keychainPasswordName;
 @synthesize executableName;
 @synthesize launchPath;
 @synthesize currentDirectoryPath;
 @synthesize arguments;
+@synthesize interactive;
 @synthesize standardOutputHandleOrPipe;
 @synthesize standardErrorHandleOrPipe;
 @synthesize standardOutputData;
@@ -60,7 +66,7 @@ NSString* OATaskDidReceiveDataNotification = @"OATaskDidReceiveDataNotification"
 @synthesize isLaunched;
 @synthesize standardOutputFileHandle;
 @synthesize standardErrorFileHandle;
-
+@synthesize pseudoTTY;
 
 - (void) dealloc
 {
@@ -72,6 +78,8 @@ NSString* OATaskDidReceiveDataNotification = @"OATaskDidReceiveDataNotification"
     NSLog(@"OATask: dealloc is called while task is running. %@", self);
     [nstask terminate];
   }
+  
+  [keychainPasswordName release]; keychainPasswordName = nil;
   
   [standardOutputFileHandle release]; standardOutputFileHandle = nil;
   [standardErrorFileHandle release]; standardErrorFileHandle = nil;
@@ -90,6 +98,8 @@ NSString* OATaskDidReceiveDataNotification = @"OATaskDidReceiveDataNotification"
   
   [nstask release]; nstask = nil;
   if (originDispatchQueue) { dispatch_release(originDispatchQueue); originDispatchQueue = nil; };
+  
+  [pseudoTTY release]; pseudoTTY = nil;
   
   [super dealloc];
 }
@@ -230,28 +240,42 @@ NSString* OATaskDidReceiveDataNotification = @"OATaskDidReceiveDataNotification"
 
 
 // Launches the task asynchronously
+
+// TODO: think on how to queue up the tasks for the same repo if we are going to use non-blocking way to interact with the task.
+// Or: launch the task on the main thread and receive termination notification on the main thread; but block in the secondary thread.
+
 - (void) launch
 {
+  if ([self isInteractive])
+  {
+    [self launchInteractively];
+    return;
+  }
   NSAssert(!self.isLaunched, @"[OATask launch] is sent when task was already launched.");
   self.isLaunched = YES;
   
   [self willLaunchTask];
   
+  self.isWaiting = YES;
+  [[NSNotificationCenter defaultCenter] postNotificationName:OATaskDidLaunchNotification object:self];
+
   self.originDispatchQueue = dispatch_get_current_queue();
   if (!self.dispatchQueue) self.dispatchQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
   
-  self.isWaiting = YES;
-  [[NSNotificationCenter defaultCenter] postNotificationName:OATaskDidLaunchNotification object:self];
   dispatch_async(self.dispatchQueue, ^{
     self.isWaiting = NO;
-    dispatch_async(self.originDispatchQueue, ^{
-      [[NSNotificationCenter defaultCenter] postNotificationName:OATaskDidEnterQueueNotification object:self];
-    });
     
     [self prepareTask];
-    [self.nstask launch];
- 
+    
+    // Important: we are launching task on the main thread to be able to receive termination notification.
+    // The actual waiting will happen on the background thread.
+    dispatch_async(self.originDispatchQueue, ^{
+      [[NSNotificationCenter defaultCenter] postNotificationName:OATaskDidEnterQueueNotification object:self];
+      [self.nstask launch];
+    });
+    
     [self readStandardOutputAndStandardError];
+    
     [self.nstask waitUntilExit];
     
     self.didReceiveDataBlock = nil;
@@ -267,6 +291,62 @@ NSString* OATaskDidReceiveDataNotification = @"OATaskDidReceiveDataNotification"
     });
   });
 }
+
+
+// Launches the task through PseudoTTY asynchronously on the caller's thread. 
+// THIS DOES NOT WORK WITH libcurl EXECUTABLES! When writing back response to "Username:" or "Password:" prompt,
+// the data is not consumed by the task at all.
+- (void) launchInteractively
+{
+  NSAssert(!self.isLaunched, @"[OATask launch] is sent when task was already launched.");
+  self.isLaunched = YES;
+  self.interactive = YES; 
+  
+  [self retain]; // self retain to ensure that self lives till the task finishes even if the didTerminateBlock does not retain it.
+  
+  [self willLaunchTask];
+  
+  self.isWaiting = YES;
+  [[NSNotificationCenter defaultCenter] postNotificationName:OATaskDidLaunchNotification object:self];
+  
+  self.originDispatchQueue = dispatch_get_current_queue();
+  if (!self.dispatchQueue) self.dispatchQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+  
+  dispatch_async(self.dispatchQueue, ^{
+    self.isWaiting = NO;
+    
+    [self prepareTask];
+    
+    // Suspending the queue while the task gets I/O and termination notifications on the main thread.
+    // Queue will be resumed in a termination callback.
+    dispatch_suspend(self.dispatchQueue);
+    
+    // Important: we are launching the task on the main thread to be able to receive termination notification.
+    // The actual waiting will happen on the background thread.
+    dispatch_async(self.originDispatchQueue, ^{
+      [[NSNotificationCenter defaultCenter] postNotificationName:OATaskDidEnterQueueNotification object:self];
+      if (self.standardOutputFileHandle)
+      {
+        [[NSNotificationCenter defaultCenter] addObserver:self 
+                                                 selector:@selector(fileHandleReadCompletion:) 
+                                                     name:NSFileHandleReadCompletionNotification 
+                                                   object:self.standardOutputFileHandle];
+        [self.standardOutputFileHandle readInBackgroundAndNotify]; //ForModes:[NSArray arrayWithObject:NSRunLoopCommonModes]
+      }
+      if (self.standardErrorFileHandle && self.standardErrorFileHandle != self.standardOutputFileHandle)
+      {
+        [[NSNotificationCenter defaultCenter] addObserver:self 
+                                                 selector:@selector(fileHandleReadCompletion:) 
+                                                     name:NSFileHandleReadCompletionNotification 
+                                                   object:self.standardErrorFileHandle];
+        [self.standardErrorFileHandle readInBackgroundAndNotifyForModes:[NSArray arrayWithObject:NSRunLoopCommonModes]];
+      }
+      
+      [self.nstask launch];
+    }); // originQueue
+  }); // dispatchQueue
+}
+
 
 // Launches the task and blocks the current thread till it finishes.
 - (void) launchAndWait
@@ -300,6 +380,18 @@ NSString* OATaskDidReceiveDataNotification = @"OATaskDidReceiveDataNotification"
   self.dispatchQueue = nil;
   
   [[NSNotificationCenter defaultCenter] postNotificationName:OATaskDidTerminateNotification object:self];
+}
+
+// If interactive == YES, writes data to the standard input.
+- (void) writeData:(NSData*)aData
+{
+  [self.pseudoTTY.masterFileHandle writeData:aData];
+}
+
+- (void) writeLine:(NSString*)aLine
+{
+  [self.pseudoTTY.masterFileHandle writeData:[aLine dataUsingEncoding:NSUTF8StringEncoding]];
+  [self.pseudoTTY.masterFileHandle writeData:[@"\r" dataUsingEncoding:NSUTF8StringEncoding]];
 }
 
 // Terminates the task by sending SIGTERM. Note that actual termination may happen after some time or not happen at all.
@@ -365,6 +457,36 @@ NSString* OATaskDidReceiveDataNotification = @"OATaskDidReceiveDataNotification"
 
 
 
+- (void) prepareLaunchPathIfNeeded:(void(^)())aBlock
+{
+  if (!self.launchPath && self.executableName)
+  {
+    aBlock = [[aBlock copy] autorelease];
+    NSString* exec = self.executableName;
+    dispatch_queue_t originQueue = dispatch_get_current_queue();
+    dispatch_retain(originQueue);
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^() {
+      NSString* aPath = [[self class] systemPathForExecutable:exec];
+      dispatch_async(originQueue, ^() {
+        if (aPath)
+        {
+          self.launchPath = aPath;
+        }
+        else
+        {
+          NSLog(@"OATask: launchPath is not found for executable %@", self.executableName);
+        }
+        if (aBlock) aBlock();
+        dispatch_release(originQueue);
+      });
+    });
+  }
+  else
+  {
+    if (aBlock) aBlock();
+  }
+}
+
 
 - (void) prepareTask
 {
@@ -377,9 +499,7 @@ NSString* OATaskDidReceiveDataNotification = @"OATaskDidReceiveDataNotification"
   if (!self.launchPath && self.executableName)
   {
     NSString* exec = self.executableName;
-    NSString* aPath = nil;
-    
-    aPath = [[self class] systemPathForExecutable:exec];
+    NSString* aPath = [[self class] systemPathForExecutable:exec];
     if (aPath)
     {
       self.launchPath = aPath;
@@ -408,9 +528,12 @@ NSString* OATaskDidReceiveDataNotification = @"OATaskDidReceiveDataNotification"
   if (!path) path = binPath;
   else path = [path stringByAppendingFormat:@":%@", binPath];
   [environment setObject:path forKey:@"PATH"];
-//  NSString* askPass = [[NSBundle mainBundle] pathForResource:@"askpass" ofType:@"rb"];
-//  [environment setObject:askPass forKey:@"SSH_ASKPASS"];
-//  [environment setObject:askPass forKey:@"GIT_ASKPASS"];
+  if (![self isInteractive])
+  {
+    NSString* askPass = [[NSBundle mainBundle] pathForResource:@"askpass" ofType:@"rb"];
+    [environment setObject:askPass forKey:@"SSH_ASKPASS"];
+    [environment setObject:askPass forKey:@"GIT_ASKPASS"];
+  }
   [environment setObject:@":0" forKey:@"DISPLAY"];
 
   NSString* locale = @"en_US.UTF-8";
@@ -423,36 +546,63 @@ NSString* OATaskDidReceiveDataNotification = @"OATaskDidReceiveDataNotification"
   [environment setObject:locale forKey:@"LC_TIME"];
   [environment setObject:locale forKey:@"LC_ALL"];
   
-//  if (!self.skipKeychainPassword)
-//  {
-//    [environment setObject:@"1" forKey:@"GITBOX_USE_KEYCHAIN_PASSWORD"];
-//  }
-//  
-//  if (self.keychainPasswordName)
-//  {
-//    [environment setObject:self.keychainPasswordName forKey:@"GITBOX_KEYCHAIN_NAME"];
-//  }
-  
-  environment = [self configureEnvironment:environment];
-    
-  if (!self.standardOutputHandleOrPipe)
+  if (![self isInteractive])
   {
-    self.standardOutputHandleOrPipe = [NSPipe pipe];
-    [self.nstask setStandardOutput:self.standardOutputHandleOrPipe];
-    self.standardOutputFileHandle = [self.standardOutputHandleOrPipe fileHandleForReading];
+    if (!self.skipKeychainPassword)
+    {
+      [environment setObject:@"1" forKey:@"GITBOX_USE_KEYCHAIN_PASSWORD"];
+    }
+
+    if (self.keychainPasswordName)
+    {
+      [environment setObject:self.keychainPasswordName forKey:@"GITBOX_KEYCHAIN_NAME"];
+    }
   }
-  if (!self.standardErrorHandleOrPipe)
+  environment = [self configureEnvironment:environment];
+  
+  if ([self isInteractive])
   {
-    self.standardErrorHandleOrPipe = [NSPipe pipe];
+    self.pseudoTTY = [[[OAPseudoTTY alloc] init] autorelease];
+    [self.nstask setStandardOutput:self.pseudoTTY.slaveFileHandle];
+    [self.nstask setStandardError:self.pseudoTTY.slaveFileHandle];
+    [self.nstask setStandardInput:self.pseudoTTY.slaveFileHandle];
+    
+    self.standardOutputFileHandle = self.pseudoTTY.masterFileHandle;
+    self.standardErrorFileHandle = nil;
+    
+    [environment setObject:@"YES" forKey:@"NSUnbufferedIO"];
+    
+    // We should monitor the task because pseudoTTY won't close masterFileHandle even if the task is finished.
+    [[NSNotificationCenter defaultCenter]
+      addObserver:self
+      selector:@selector(nsTaskDidTerminate:)
+      name:NSTaskDidTerminateNotification
+      object:self.nstask];
+
+  }
+  else
+  {
+    if (!self.standardOutputHandleOrPipe)
+    {
+      self.standardOutputHandleOrPipe = [NSPipe pipe];
+      self.standardOutputFileHandle = [self.standardOutputHandleOrPipe fileHandleForReading];
+    }
+    [self.nstask setStandardOutput:self.standardOutputHandleOrPipe];
+    
+    if (!self.standardErrorHandleOrPipe)
+    {
+      self.standardErrorHandleOrPipe = [NSPipe pipe];
+      self.standardErrorFileHandle = [self.standardErrorHandleOrPipe fileHandleForReading];
+    }
     [self.nstask setStandardError: self.standardErrorHandleOrPipe];
-    self.standardErrorFileHandle = [self.standardErrorHandleOrPipe fileHandleForReading];
   }
   
   if ([[self.nstask standardOutput] isKindOfClass:[NSPipe class]] ||
       [[self.nstask standardError] isKindOfClass:[NSPipe class]])
   {
-    [environment setObject:@"YES" forKey:@"NSUnbufferedIO"];
+    [environment setObject:@"YES" forKey:@"NSUnbufferedIO"]; // this really affects only cocoa apps.
   }
+  
   [self.nstask setEnvironment:environment];    
   
 //  self.activity.isRunning = YES;
@@ -461,7 +611,6 @@ NSString* OATaskDidReceiveDataNotification = @"OATaskDidReceiveDataNotification"
 //  self.activity.path = self.currentDirectoryPath;
 //  self.activity.command = [self command];
 }
-
 
 - (void) readStandardOutputAndStandardError
 {
@@ -490,7 +639,7 @@ NSString* OATaskDidReceiveDataNotification = @"OATaskDidReceiveDataNotification"
       {
         [self.standardOutputData appendData:dataChunk];
         [self didReceiveStandardOutputData:dataChunk];
-        NSLog(@"OATask: didReceiveStandardOutputData: %d %@", (int)[dataChunk length], [dataChunk UTF8String]);
+        //NSLog(@"OATask: didReceiveStandardOutputData: %d %@", (int)[dataChunk length], [dataChunk UTF8String]);
       }
       
       BOOL finishedReading = !dataChunk || [dataChunk length] < 1;
@@ -551,6 +700,79 @@ NSString* OATaskDidReceiveDataNotification = @"OATaskDidReceiveDataNotification"
   dispatch_release(stderrQueue);
 }
 
+
+
+// This callback should arrive on the main thread because the dispatchQueue must be blocked by I/O.
+- (void) nsTaskDidTerminate:(NSNotification*)notification
+{
+  // TODO: clean up the task, call all the callbacks and resume dispatch queue
+  NSData* data = nil;
+  @try
+  {
+    data = [self.pseudoTTY.masterFileHandle readDataToEndOfFile];
+  }
+  @catch (NSException *exception)
+  {
+    NSLog(@"[OATask nsTaskDidTerminate:]: pty master handle seems to be broken. Exception: %@", exception);
+  }
+  if (data) [self.standardOutputData appendData:data];
+  [self.pseudoTTY.masterFileHandle closeFile]; // closes master file handle to finish reading
+  
+  self.didReceiveDataBlock = nil;
+  
+  [self didFinishInBackground];
+  [self didFinish];
+  if (self.didTerminateBlock) self.didTerminateBlock();
+  self.didTerminateBlock = nil;
+  self.originDispatchQueue = nil;
+  
+  [[NSNotificationCenter defaultCenter] postNotificationName:OATaskDidTerminateNotification object:self];
+  dispatch_resume(self.dispatchQueue);
+  self.dispatchQueue = nil;
+  [self release]; // balances [self retain] done in the launchInteractively
+}
+
+
+- (void) fileHandleReadCompletion:(NSNotification*)notification
+{
+  NSFileHandle* fh = [notification object];
+  NSData* dataChunk = [[notification userInfo] objectForKey:NSFileHandleNotificationDataItem];
+  NSNumber* errorNumber = [[notification userInfo] objectForKey:@"NSFileHandleError"];
+  if (!dataChunk || errorNumber)
+  {
+    NSLog(@"OATask: PTY file handle reading error occured. NSFileHandleError = %@", errorNumber);
+  }
+  
+  if (!dataChunk) return;
+  
+  if (fh == self.standardOutputFileHandle)
+  {
+    [self.standardOutputData appendData:dataChunk];
+    [self didReceiveStandardOutputData:dataChunk];
+    if (self.didReceiveDataBlock) self.didReceiveDataBlock();
+    [[NSNotificationCenter defaultCenter] postNotificationName:OATaskDidReceiveDataNotification object:self];
+    //NSLog(@"OATask: didReceiveStandardOutputData: %d %@", (int)[dataChunk length], [dataChunk UTF8String]);
+  }
+  else if (fh == self.standardErrorFileHandle)
+  {
+    [self.standardErrorData appendData:dataChunk];
+    [self didReceiveStandardErrorData:dataChunk];
+    if (self.didReceiveDataBlock) self.didReceiveDataBlock();
+    [[NSNotificationCenter defaultCenter] postNotificationName:OATaskDidReceiveDataNotification object:self];
+    //NSLog(@"OATask: didReceiveStandardErrorData: %d %@", (int)[dataChunk length], [dataChunk UTF8String]);
+  }
+  else
+  {
+    NSLog(@"OATask: unknown file handle encountered: %@", fh);
+    return; // we don't want to continue reading it.
+  }
+  
+  // If not at the end of the stream, schedule next chunk of data to be read.
+  if ([dataChunk length] > 0)
+  {
+    [fh readInBackgroundAndNotify]; // ForModes:[NSArray arrayWithObject:NSRunLoopCommonModes]];
+  }
+}
 
 @end
 

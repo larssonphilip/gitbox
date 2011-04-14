@@ -6,7 +6,7 @@
 #include <unistd.h>
 
 @interface OAPseudoTTY ()
-@property(nonatomic, copy, readwrite) NSString* name;
+@property(nonatomic, copy,   readwrite) NSString* name;
 @property(nonatomic, retain, readwrite) NSFileHandle* masterFileHandle;
 @property(nonatomic, retain, readwrite) NSFileHandle* slaveFileHandle;
 @end
@@ -21,7 +21,8 @@
 {
   if ((self = [super init]))
   {
-    int masterfd, slavefd;
+    int masterfd;
+    int slavefd;
     char devname[64];
     if (openpty(&masterfd, &slavefd, devname, NULL, NULL) == -1)
     {

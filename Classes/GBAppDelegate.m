@@ -124,8 +124,12 @@
     
     OATask* task = [OATask task];
     task.executableName = @"git";
+    
+    // Interactive mode cannot stop the task!
+    task.interactive = YES;
     task.currentDirectoryPath = [NSHomeDirectory() stringByAppendingPathComponent:@"Desktop"];
-    task.arguments = [NSArray arrayWithObjects:@"clone", @"git://github.com/rails/rails.git", @"--progress", nil];
+    //task.arguments = [NSArray arrayWithObjects:@"clone", @"git://github.com/rails/rails.git", @"--progress", nil];
+    task.arguments = [NSArray arrayWithObjects:@"clone", @"/Users/oleganza/Code/rails", @"--progress", @"--no-hardlinks", nil];
     task.didReceiveDataBlock = ^{
       NSLog(@"Received data. STDOUT: %d STDERR: %d", (int)[task.standardOutputData length], (int)[task.standardErrorData length]);
     };
@@ -143,8 +147,25 @@
     OATask* task = [OATask task];
     task.executableName = @"ruby";
     task.arguments = [NSArray arrayWithObject:[NSHomeDirectory() stringByAppendingPathComponent:@"Work/gitbox/app/Test/interactive.rb"]];
+    task.interactive = YES;
+    static int step = 0;
     task.didReceiveDataBlock = ^{
-      NSLog(@"Received data: %@", [task UTF8OutputStripped]);
+      NSString* str = [task UTF8OutputStripped];
+      NSLog(@"Received data: %@", str);
+      if ([str rangeOfString:@"Username:"].length > 0 && step == 0)
+      {
+        step = 1;
+        [task writeData:[@"Oleg\r" dataUsingEncoding:NSUTF8StringEncoding]];
+      }
+      if ([str rangeOfString:@"Password:"].length > 0 && step == 1)
+      {
+        step = 2;
+        [task writeData:[@"Secret\r" dataUsingEncoding:NSUTF8StringEncoding]];
+        
+        // This does not help (only /bin/sh interprets this):
+//        char ctrlD = (char)04; // end of transmit code
+//        [task writeData:[NSData dataWithBytes:&ctrlD length:1]];
+      }
     };
     task.didTerminateBlock = ^{
       NSLog(@"Did finish. STDOUT: %@ [status code: %d] %@", [task UTF8OutputStripped], task.terminationStatus, task);
@@ -153,16 +174,33 @@
     return;
   }
   
-  if (YES)
+  if (NO)
   {
     // Assuming cloned by HTTP https://github.com/oleganza/emrpc.git into ~/Desktop/emrpc
     OATask* task = [OATask task];
+    task.interactive = YES;
     task.executableName = @"git";
     task.currentDirectoryPath = [NSHomeDirectory() stringByAppendingPathComponent:@"Desktop/emrpc"];
     task.arguments = [NSArray arrayWithObject:@"push"];
+    static int step = 0;
     task.didReceiveDataBlock = ^{
       NSString* result = [task UTF8OutputStripped];
       NSLog(@"Received data: %@", result);
+      if ([result rangeOfString:@"Username:"].length > 0 && step == 0)
+      {
+        step = 1;
+        [task writeData:[@"oleganza" dataUsingEncoding:NSUTF8StringEncoding]];
+        [task writeData:[@"\r" dataUsingEncoding:NSUTF8StringEncoding]];
+      }
+      if ([result rangeOfString:@"Password:"].length > 0 && step == 1)
+      {
+        step = 2;
+        [task writeData:[@"secret\r" dataUsingEncoding:NSUTF8StringEncoding]];
+        
+        // This does not help (only /bin/sh interprets this):
+        //        char ctrlD = (char)04; // end of transmit code
+        //        [task writeData:[NSData dataWithBytes:&ctrlD length:1]];
+      }
     };
     task.didTerminateBlock = ^{
       NSLog(@"Did finish. STDOUT: %@ [status code: %d] %@", [task UTF8OutputStripped], task.terminationStatus, task);
