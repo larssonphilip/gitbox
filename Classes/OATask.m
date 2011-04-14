@@ -582,16 +582,19 @@ NSString* OATaskDidReceiveDataNotification = @"OATaskDidReceiveDataNotification"
   }
   else
   {
+    // Note: we will use the same pipe for stdout and stderr if both handlers are not specified.
+    NSPipe* defaultPipe = nil;
     if (!self.standardOutputHandleOrPipe)
     {
-      self.standardOutputHandleOrPipe = [NSPipe pipe];
+      defaultPipe = [NSPipe pipe];
+      self.standardOutputHandleOrPipe = defaultPipe;
       self.standardOutputFileHandle = [self.standardOutputHandleOrPipe fileHandleForReading];
     }
     [self.nstask setStandardOutput:self.standardOutputHandleOrPipe];
     
     if (!self.standardErrorHandleOrPipe)
     {
-      self.standardErrorHandleOrPipe = [NSPipe pipe];
+      self.standardErrorHandleOrPipe = defaultPipe ? defaultPipe : [NSPipe pipe];
       self.standardErrorFileHandle = [self.standardErrorHandleOrPipe fileHandleForReading];
     }
     [self.nstask setStandardError: self.standardErrorHandleOrPipe];
@@ -659,41 +662,43 @@ NSString* OATaskDidReceiveDataNotification = @"OATaskDidReceiveDataNotification"
   });
   
   // stderr reading
-  dispatch_group_async(group, stderrQueue, ^{
-    while (1)
-    {
-      NSData* dataChunk = nil;
-      @try
+  if (self.standardErrorFileHandle && self.standardErrorFileHandle != self.standardOutputFileHandle)
+  {
+    dispatch_group_async(group, stderrQueue, ^{
+      while (1)
       {
-        dataChunk = [self.standardErrorFileHandle availableData];
+        NSData* dataChunk = nil;
+        @try
+        {
+          dataChunk = [self.standardErrorFileHandle availableData];
+        }
+        @catch (NSException *exception)
+        {
+          NSLog(@"OATask: stderr pipe seems to be broken: caught exception: %@", exception);
+        }
+        
+        if (dataChunk)
+        {
+          [self.standardErrorData appendData:dataChunk];
+          [self didReceiveStandardErrorData:dataChunk];
+        }
+        
+        BOOL finishedReading = !dataChunk || [dataChunk length] < 1;
+        
+        if (!finishedReading)
+        {
+          dispatch_async(self.originDispatchQueue, ^{
+            if (self.didReceiveDataBlock) self.didReceiveDataBlock();
+            [[NSNotificationCenter defaultCenter] postNotificationName:OATaskDidReceiveDataNotification object:self];
+          });
+        }
+        else
+        {
+          break;
+        }
       }
-      @catch (NSException *exception)
-      {
-        NSLog(@"OATask: stderr pipe seems to be broken: caught exception: %@", exception);
-      }
-      
-      if (dataChunk)
-      {
-        [self.standardErrorData appendData:dataChunk];
-        [self didReceiveStandardErrorData:dataChunk];
-      }
-      
-      BOOL finishedReading = !dataChunk || [dataChunk length] < 1;
-      
-      if (!finishedReading)
-      {
-        dispatch_async(self.originDispatchQueue, ^{
-          if (self.didReceiveDataBlock) self.didReceiveDataBlock();
-          [[NSNotificationCenter defaultCenter] postNotificationName:OATaskDidReceiveDataNotification object:self];
-        });
-      }
-      else
-      {
-        break;
-      }
-    }
-  });
-  
+    });
+  }
   dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
   dispatch_release(group);
   dispatch_release(stdoutQueue);
