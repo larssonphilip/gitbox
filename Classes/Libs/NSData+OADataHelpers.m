@@ -10,6 +10,8 @@
 // Replaces all broken sequences by � character and returns NSData with valid UTF-8 bytes.
 - (NSData*) dataByHealingUTF8Stream
 {
+  if ([self length] == 0) return self;
+  
   //  bits
   //  7   	U+007F      0xxxxxxx
   //  11   	U+07FF      110xxxxx	10xxxxxx
@@ -31,8 +33,10 @@
   NSData* replacementCharacterData = [replacementCharacter dataUsingEncoding:NSUTF8StringEncoding];
   
   NSMutableData* resultData = [NSMutableData dataWithCapacity:[self length]];
-  const char *bytes = [self bytes];
+  
   NSUInteger length = [self length];
+  const char *bytes = [self bytes];
+  
   
   static const NSUInteger bufferMaxSize = 1024;
   char buffer[bufferMaxSize]; // not initialized, but will be filled in completely before copying to resultData

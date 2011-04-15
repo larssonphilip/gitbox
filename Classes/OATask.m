@@ -1,13 +1,11 @@
 #define OATASK_DEBUG 0
 
 #import "OATask.h"
-//#import "OAActivity.h"
 
 #import "NSArray+OAArrayHelpers.h"
 #import "NSAlert+OAAlertHelpers.h"
 #import "NSData+OADataHelpers.h"
 #import "OAPseudoTTY.h"
-//#import "GBActivityController.h"
 
 NSString* OATaskDidLaunchNotification      = @"OATaskDidLaunchNotification";
 NSString* OATaskDidEnterQueueNotification  = @"OATaskDidEnterQueueNotification";
@@ -34,6 +32,8 @@ NSString* OATaskDidReceiveDataNotification = @"OATaskDidReceiveDataNotification"
 @property(nonatomic, retain) NSFileHandle* standardErrorFileHandle;
 
 @property(nonatomic, retain) OAPseudoTTY* pseudoTTY;
+
+@property(nonatomic, retain) NSDate* launchDate;
 
 - (void) prepareTask;
 - (void) readStandardOutputAndStandardError;
@@ -67,6 +67,7 @@ NSString* OATaskDidReceiveDataNotification = @"OATaskDidReceiveDataNotification"
 @synthesize standardOutputFileHandle;
 @synthesize standardErrorFileHandle;
 @synthesize pseudoTTY;
+@synthesize launchDate;
 
 - (void) dealloc
 {
@@ -101,6 +102,7 @@ NSString* OATaskDidReceiveDataNotification = @"OATaskDidReceiveDataNotification"
   
   [pseudoTTY release]; pseudoTTY = nil;
   
+  [launchDate release]; launchDate = nil;
   [super dealloc];
 }
 
@@ -244,6 +246,19 @@ NSString* OATaskDidReceiveDataNotification = @"OATaskDidReceiveDataNotification"
 // TODO: think on how to queue up the tasks for the same repo if we are going to use non-blocking way to interact with the task.
 // Or: launch the task on the main thread and receive termination notification on the main thread; but block in the secondary thread.
 
+- (void) watchdogLogging
+{
+  [self performSelector:@selector(watchdogLogging) withObject:nil afterDelay:60.0];
+  if (self.launchDate)
+  {
+    NSLog(@"OATask is alive for more than %f seconds. Maybe leaked or overretained. %@", [[NSDate date] timeIntervalSinceDate:self.launchDate], self);
+  }
+  else
+  {
+    NSLog(@"OATask is alive for more than ???? seconds. Maybe leaked or overretained. %@", self);
+  }
+}
+
 - (void) launch
 {
   if ([self isInteractive])
@@ -253,6 +268,9 @@ NSString* OATaskDidReceiveDataNotification = @"OATaskDidReceiveDataNotification"
   }
   NSAssert(!self.isLaunched, @"[OATask launch] is sent when task was already launched.");
   self.isLaunched = YES;
+  
+  self.launchDate = [NSDate date];
+  [self performSelector:@selector(watchdogLogging) withObject:nil afterDelay:60.0];
   
   [self willLaunchTask];
   
@@ -270,8 +288,8 @@ NSString* OATaskDidReceiveDataNotification = @"OATaskDidReceiveDataNotification"
     // Important: we are launching task on the main thread to be able to receive termination notification.
     // The actual waiting will happen on the background thread.
     dispatch_async(self.originDispatchQueue, ^{
-      [[NSNotificationCenter defaultCenter] postNotificationName:OATaskDidEnterQueueNotification object:self];
       [self.nstask launch];
+      [[NSNotificationCenter defaultCenter] postNotificationName:OATaskDidEnterQueueNotification object:self];
     });
     
     [self readStandardOutputAndStandardError];
@@ -651,7 +669,9 @@ NSString* OATaskDidReceiveDataNotification = @"OATaskDidReceiveDataNotification"
       {
         dispatch_async(self.originDispatchQueue, ^{
           if (self.didReceiveDataBlock) self.didReceiveDataBlock();
-          [[NSNotificationCenter defaultCenter] postNotificationName:OATaskDidReceiveDataNotification object:self];
+          [[NSNotificationCenter defaultCenter] postNotificationName:OATaskDidReceiveDataNotification 
+                                                              object:self 
+                                                            userInfo:[NSDictionary dictionaryWithObjectsAndKeys:dataChunk, @"data", nil]];
         });
       }
       else
@@ -689,7 +709,9 @@ NSString* OATaskDidReceiveDataNotification = @"OATaskDidReceiveDataNotification"
         {
           dispatch_async(self.originDispatchQueue, ^{
             if (self.didReceiveDataBlock) self.didReceiveDataBlock();
-            [[NSNotificationCenter defaultCenter] postNotificationName:OATaskDidReceiveDataNotification object:self];
+            [[NSNotificationCenter defaultCenter] postNotificationName:OATaskDidReceiveDataNotification
+                                                                object:self
+                                                              userInfo:[NSDictionary dictionaryWithObjectsAndKeys:dataChunk, @"data", nil]];
           });
         }
         else

@@ -1,4 +1,4 @@
-@class OAActivity;
+@class GBActivity;
 @interface GBActivityController : NSWindowController <NSTableViewDelegate, NSWindowDelegate>
 
 @property(nonatomic,retain) NSMutableArray* activities;
@@ -8,6 +8,6 @@
 
 + (id) sharedActivityController;
 
-- (void) addActivity:(OAActivity*)activity;
+- (void) addActivity:(GBActivity*)activity;
 
 @end

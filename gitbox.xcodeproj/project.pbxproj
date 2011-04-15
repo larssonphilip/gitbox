@@ -133,7 +133,7 @@
 		2057F0D711ACF075009EDF2F /* sparkle_dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = 2057F0D611ACF075009EDF2F /* sparkle_dsa_pub.pem */; };
 		2057F10511ACF4C0009EDF2F /* GBActivityController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2057F10411ACF4C0009EDF2F /* GBActivityController.xib */; };
 		2057F11011ACF751009EDF2F /* GBActivityController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2057F10F11ACF751009EDF2F /* GBActivityController.m */; };
-		2057F11611ACFA60009EDF2F /* OAActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 2057F11511ACFA60009EDF2F /* OAActivity.m */; };
+		2057F11611ACFA60009EDF2F /* GBActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 2057F11511ACFA60009EDF2F /* GBActivity.m */; };
 		20586A8212FDDBFA00729DB1 /* GBRootController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20586A8112FDDBF900729DB1 /* GBRootController.m */; };
 		20586A8312FDDBFA00729DB1 /* GBRootController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20586A8112FDDBF900729DB1 /* GBRootController.m */; };
 		20586A8612FDE4CC00729DB1 /* GBSidebarItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 20586A8512FDE4C400729DB1 /* GBSidebarItem.m */; };
@@ -217,7 +217,7 @@
 		20915EF912874D2A005E0D82 /* GBCommittedChangesTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 2059E82711AB3C2C00E4CF0B /* GBCommittedChangesTask.m */; };
 		20915EFA12874D2A005E0D82 /* GBRefreshIndexTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 2057EF6311ABDCCE009EDF2F /* GBRefreshIndexTask.m */; };
 		20915EFB12874D2A005E0D82 /* GBActivityController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2057F10F11ACF751009EDF2F /* GBActivityController.m */; };
-		20915EFC12874D2A005E0D82 /* OAActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 2057F11511ACFA60009EDF2F /* OAActivity.m */; };
+		20915EFC12874D2A005E0D82 /* GBActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 2057F11511ACFA60009EDF2F /* GBActivity.m */; };
 		20915EFD12874D2A005E0D82 /* GBCommitCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2057964111ADD3AA004715FE /* GBCommitCell.m */; };
 		20915EFE12874D2A005E0D82 /* GBStageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2057979A11ADEEEE004715FE /* GBStageCell.m */; };
 		20915EFF12874D2A005E0D82 /* GBHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2058E97F11AEE26F00F2853F /* GBHistoryViewController.m */; };
@@ -534,8 +534,8 @@
 		2057F10411ACF4C0009EDF2F /* GBActivityController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBActivityController.xib; sourceTree = "<group>"; };
 		2057F10E11ACF751009EDF2F /* GBActivityController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBActivityController.h; sourceTree = "<group>"; };
 		2057F10F11ACF751009EDF2F /* GBActivityController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBActivityController.m; sourceTree = "<group>"; };
-		2057F11411ACFA60009EDF2F /* OAActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAActivity.h; sourceTree = "<group>"; };
-		2057F11511ACFA60009EDF2F /* OAActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAActivity.m; sourceTree = "<group>"; };
+		2057F11411ACFA60009EDF2F /* GBActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; path = GBActivity.h; sourceTree = "<group>"; };
+		2057F11511ACFA60009EDF2F /* GBActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBActivity.m; sourceTree = "<group>"; };
 		20586A7C12FD4FAD00729DB1 /* Gitbox.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Gitbox.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		20586A7E12FD4FAD00729DB1 /* Gitbox.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Gitbox.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		20586A8012FDDBF900729DB1 /* GBRootController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBRootController.h; sourceTree = "<group>"; };
@@ -834,8 +834,8 @@
 			children = (
 				206A07BC11A33519003BB9E3 /* OATask.h */,
 				206A07BD11A33519003BB9E3 /* OATask.m */,
-				2057F11411ACFA60009EDF2F /* OAActivity.h */,
-				2057F11511ACFA60009EDF2F /* OAActivity.m */,
+				2057F11411ACFA60009EDF2F /* GBActivity.h */,
+				2057F11511ACFA60009EDF2F /* GBActivity.m */,
 				2038F6C311A030F70087CE37 /* GBTask.h */,
 				2038F6C411A030F70087CE37 /* GBTask.m */,
 				20B8B70A11A489F1006D6442 /* GBChangesBaseTask.h */,
@@ -1568,7 +1568,7 @@
 				20915EF912874D2A005E0D82 /* GBCommittedChangesTask.m in Sources */,
 				20915EFA12874D2A005E0D82 /* GBRefreshIndexTask.m in Sources */,
 				20915EFB12874D2A005E0D82 /* GBActivityController.m in Sources */,
-				20915EFC12874D2A005E0D82 /* OAActivity.m in Sources */,
+				20915EFC12874D2A005E0D82 /* GBActivity.m in Sources */,
 				20915EFD12874D2A005E0D82 /* GBCommitCell.m in Sources */,
 				20915EFE12874D2A005E0D82 /* GBStageCell.m in Sources */,
 				20915EFF12874D2A005E0D82 /* GBHistoryViewController.m in Sources */,
@@ -1691,7 +1691,7 @@
 				2059E82811AB3C2C00E4CF0B /* GBCommittedChangesTask.m in Sources */,
 				2057EF6411ABDCCE009EDF2F /* GBRefreshIndexTask.m in Sources */,
 				2057F11011ACF751009EDF2F /* GBActivityController.m in Sources */,
-				2057F11611ACFA60009EDF2F /* OAActivity.m in Sources */,
+				2057F11611ACFA60009EDF2F /* GBActivity.m in Sources */,
 				2057964211ADD3AA004715FE /* GBCommitCell.m in Sources */,
 				2057979B11ADEEEE004715FE /* GBStageCell.m in Sources */,
 				2058E98011AEE26F00F2853F /* GBHistoryViewController.m in Sources */,

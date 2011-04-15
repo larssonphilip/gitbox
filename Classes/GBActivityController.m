@@ -1,6 +1,7 @@
 #import "GBActivityController.h"
 #import "OATask.h"
-#import "OAActivity.h"
+#import "GBActivity.h"
+#import "NSArray+OAArrayHelpers.h"
 
 @implementation GBActivityController
 
@@ -27,7 +28,6 @@ static GBActivityController* sharedGBActivityController;
 - (void) dealloc
 {
   [[NSNotificationCenter defaultCenter] removeObserver:self];
-  [NSObject cancelPreviousPerformRequestsWithTarget:self];
   self.activities = nil;
   self.outputTextView = nil;
   self.tableView = nil;
@@ -40,10 +40,26 @@ static GBActivityController* sharedGBActivityController;
   if ((self = [super initWithWindowNibName:windowNibName]))
   {
     // subscribe for the OATask notifications.
-//    [[NSNotificationCenter defaultCenter] addObserver:self 
-//                                             selector:@selector(taskDidTerminateNotification:) 
-//                                                 name:OATaskDidTerminateNotification 
-//                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(taskDidLaunchNotification:) 
+                                                 name:OATaskDidLaunchNotification 
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(taskDidUpdateNotification:) 
+                                                 name:OATaskDidEnterQueueNotification 
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(taskDidUpdateNotification:) 
+                                                 name:OATaskDidReceiveDataNotification 
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(taskDidTerminateNotification:) 
+                                                 name:OATaskDidTerminateNotification 
+                                               object:nil];
+
   }
   return self;
 }
@@ -64,11 +80,9 @@ static GBActivityController* sharedGBActivityController;
 
 - (void) syncActivityOutput
 {
-  [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(syncActivityOutput) object:nil];
-  
   if (![[self window] isVisible]) return;
   
-  OAActivity* activity = nil;
+  GBActivity* activity = nil;
   if ([[self.arrayController selectedObjects] count] == 1)
   {
     activity = [[self.arrayController selectedObjects] objectAtIndex:0];
@@ -84,23 +98,34 @@ static GBActivityController* sharedGBActivityController;
       {
         [self.outputTextView setString:@""]; // setting nil corrupts entire text system in a window
       }
-      
-      if (activity.isRunning)
-      {
-        [self performSelector:@selector(syncActivityOutput) withObject:nil afterDelay:0.5];
-      }
     }    
   }
 }
 
 
-- (void) addActivity:(OAActivity*)activity
+- (void) addActivity:(GBActivity*)activity
 {
-  static NSUInteger maxNumberOfActivities = 1000;  
+  static int maxNumberOfActivities = 100;  
   
-  if ([self.activities count] > maxNumberOfActivities + 20) // 20 is a little overlap to avoid refreshing the array too often
+  if ([self.activities count] > maxNumberOfActivities + (maxNumberOfActivities/10)) // a little overlap to avoid refreshing the array too often
   {
-    self.activities = [[[self.activities subarrayWithRange:NSMakeRange([self.activities count] - maxNumberOfActivities, maxNumberOfActivities)] mutableCopy] autorelease];
+    NSMutableArray* keptActivities = [NSMutableArray array];
+    
+    int c = maxNumberOfActivities;
+    for (GBActivity* a in [self.activities reversedArray])
+    {
+      if (a.isRunning)
+      {
+        [keptActivities insertObject:a atIndex:0];
+      }
+      else if (c > 0)
+      {
+        c--;
+        [keptActivities insertObject:a atIndex:0];
+      }
+    }
+    
+    self.activities = keptActivities;
   }
   
   [self.activities addObject:activity];
@@ -145,6 +170,7 @@ static GBActivityController* sharedGBActivityController;
 
 - (void)windowDidResignKey:(NSNotification*)notification
 {
+  
 }
 
 
@@ -155,6 +181,76 @@ static GBActivityController* sharedGBActivityController;
 {
   [self syncActivityOutput];
 }
+
+
+
+
+
+#pragma mark OATask notifications
+
+
+- (GBActivity*) activityForTask:(OATask*)aTask
+{
+  for (GBActivity* activity in self.activities)
+  {
+    if (activity.task == aTask) return activity;
+  }
+  return nil;
+}
+
+- (void) taskDidUpdateNotification:(NSNotification*)notif
+{
+  OATask* aTask = [notif object];
+  NSData* chunk = [[notif userInfo] objectForKey:@"data"];
+  GBActivity* activity = [self activityForTask:aTask];
+  if (!activity) return;
+  
+  [activity appendData:chunk];
+  
+  if (aTask.isWaiting)
+  {
+    activity.status = NSLocalizedString(@"Waiting...", @"Task");
+  }
+  else if (aTask.isRunning)
+  {
+    activity.status = NSLocalizedString(@"Running...", @"Task");
+  }
+  else
+  {
+    activity.isRunning = NO;
+    if ([aTask terminationStatus] == 0)
+    {
+      activity.status = NSLocalizedString(@"Finished", @"Task");
+    }
+    else
+    {
+      activity.status = [NSString stringWithFormat:@"%@ [%d]", NSLocalizedString(@"Finished", @"Task"), [aTask terminationStatus]];
+    }
+    activity.task = nil;
+  }
+  [self syncActivityOutput];
+}
+
+- (void) taskDidTerminateNotification:(NSNotification*)notif
+{
+  [self taskDidUpdateNotification:notif];
+}
+
+- (void) taskDidLaunchNotification:(NSNotification*)notif
+{
+  GBActivity* activity = [[[GBActivity alloc] init] autorelease];
+  
+  OATask* aTask = [notif object];
+  activity.task = aTask;
+  activity.isRunning = YES;
+  activity.path = aTask.currentDirectoryPath;
+  activity.command = [aTask command];
+  
+  [self addActivity:activity];
+  
+  [self taskDidUpdateNotification:notif];
+}
+
 
 
 @end
