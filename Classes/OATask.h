@@ -56,6 +56,9 @@ extern NSString* OATaskDidDeallocateNotification;
 // Array of arguments. OATask raises an exception if more than 4096 arguments are present.
 @property(nonatomic, retain) NSArray* arguments;
 
+// Set to YES if you want to receive data notifications in real time (slower)
+@property(nonatomic, assign, getter=isRealTime) BOOL realTime;
+
 // Set to YES if you want to use pseudo-tty for interacting with the task. Default is NO.
 @property(nonatomic, assign, getter=isInteractive) BOOL interactive;
 

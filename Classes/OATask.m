@@ -50,6 +50,7 @@ NSString* OATaskDidDeallocateNotification  = @"OATaskDidDeallocateNotification";
 @synthesize currentDirectoryPath;
 @synthesize arguments;
 @synthesize interactive;
+@synthesize realTime;
 @synthesize standardOutputHandleOrPipe;
 @synthesize standardErrorHandleOrPipe;
 @synthesize standardOutputData;
@@ -636,7 +637,14 @@ NSString* OATaskDidDeallocateNotification  = @"OATaskDidDeallocateNotification";
       NSData* dataChunk = nil;
       @try
       {
-        dataChunk = [self.standardOutputFileHandle availableData];
+        if ([self isRealTime])
+        {
+          dataChunk = [self.standardOutputFileHandle availableData];
+        }
+        else
+        {
+          dataChunk = [self.standardOutputFileHandle readDataToEndOfFile];
+        }
       }
       @catch (NSException *exception)
       {
@@ -677,7 +685,14 @@ NSString* OATaskDidDeallocateNotification  = @"OATaskDidDeallocateNotification";
         NSData* dataChunk = nil;
         @try
         {
-          dataChunk = [self.standardErrorFileHandle availableData];
+          if ([self isRealTime])
+          {
+            dataChunk = [self.standardErrorFileHandle availableData];
+          }
+          else
+          {
+            dataChunk = [self.standardErrorFileHandle readDataToEndOfFile];
+          }
         }
         @catch (NSException *exception)
         {

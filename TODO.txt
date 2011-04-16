@@ -260,11 +260,12 @@ Features:
 Enhancements:
 
 - general: since push/pull happen in the same dispatch queue as any other git command, while sending a big pack of data we simply cannot load commits and changes anymore. Should put up different queues for different tasks: changes can be loaded and staged  separately from committing and branch manipulation, local branches can be edited while doing push.
+- general: eliminate unncesessary per-repo queued tasks (GBRepository launchTask:withBlock:). For instance, for loading commit changes.
 - general: do different initial updates for remembered repos and opened/cloned ones:
   - general: for the remembered repos first load submodules with spinner to update sidebar, then load branches and history (but not stage/commit changes)
   - general: for added repos do the full initial update like it's done today
 - general: human message in case git cannot merge/pull when some files are modified (error: Untracked working tree file 'Patryst.xcodeproj/project.pbxproj' would be overwritten by merge.)
-- general: Add common OS X to the global gitignore https://github.com/github/gitignore
+- general: Add common OS X to the global ~/.gitignore https://github.com/github/gitignore
 - general: check behavior when opendiff is missing
 - general: check that opendiff is selected by default on new start + it is not selected if it is missing
 - general: unpack git.bundle into Application Support/Gitbox/gitbox-{APP_VERSION}-git.bundle
@@ -298,8 +299,11 @@ Error messages translation to English:
 - stage: autocomplete file names when TAB pressed.
 
 
+
 Bugs:
 
+- bug: UI locks up. Maybe on iterative reading and notifications or because of activity window.
++ bug: commit changes are loaded twice.
 - bug: askpass is used only for ls-remotes, but should also be used for pull/push/fetch. Need nice design for such tasks.
 - bug: http auth uses askpass to ask for a username as well, need to support this.
 - bug: task may crash when folder is removed from disk because prepareTask asserts folder existance
