@@ -357,6 +357,8 @@
 
 - (void) removeObjects:(NSArray*)objects
 {
+  [[objects retain] autorelease]; // make objects survive till the end of this call
+  NSMutableArray* objectsToRemoveFromSelection = [NSMutableArray array];
   for (id<GBSidebarItemObject> object in objects)
   {
     GBSidebarItem* parentItem = [self.sidebarItem parentOfItem:[object sidebarItem]];
@@ -364,6 +366,9 @@
     
     if (parentGroup && [parentGroup isKindOfClass:[GBRepositoriesGroup class]])
     {
+      [objectsToRemoveFromSelection addObject:object];
+      NSArray* children = [[[object sidebarItem] allChildren] valueForKey:@"object"];
+      [objectsToRemoveFromSelection addObjectsFromArray:children];
       if ([object isKindOfClass:[GBRepositoryController class]])
       {
         [(GBRepositoryController*)object stop];
@@ -374,7 +379,7 @@
   
   [self contentsDidChange];
   
-  [self.rootController removeObjectsFromSelection:objects];
+  [self.rootController removeObjectsFromSelection:objectsToRemoveFromSelection];
 }
 
 
