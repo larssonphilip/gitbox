@@ -1339,7 +1339,7 @@
   autoFetchInterval = 10.0 + plusMinusOne*2;
   
 #if GB_STRESS_TEST_AUTOFETCH
-  autoFetchInterval = drand48()*2.0;
+  autoFetchInterval = drand48()*5.0;
 #endif 
   [self scheduleAutoFetch];
 }
