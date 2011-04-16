@@ -244,7 +244,7 @@
 {
   self.folderMonitor.target = self;
   self.folderMonitor.action = @selector(folderMonitorDidUpdate:);
-  self.autoFetchInterval = 3.0 + drand48()*120.0; // spread all repos' initial autofetch within 1 minute
+  self.autoFetchInterval = 3.0 + drand48()*300.0; // spread all repos' initial autofetch within 5 minutes
   #if GB_STRESS_TEST_AUTOFETCH
   self.autoFetchInterval = drand48()*3.0;
   #endif
@@ -1336,7 +1336,7 @@
 {
   //NSLog(@"GBRepositoryController: resetAutoFetchInterval in %@ (was: %f)", [self url], autoFetchInterval);
   NSTimeInterval plusMinusOne = (2*(0.5-drand48()));
-  autoFetchInterval = 10.0 + plusMinusOne*2;
+  autoFetchInterval = 20.0 + plusMinusOne*2;
   
 #if GB_STRESS_TEST_AUTOFETCH
   autoFetchInterval = drand48()*5.0;
@@ -1368,7 +1368,7 @@
   if (!self.autofetchQueue) return;
   
   //NSLog(@"GBRepositoryController: autoFetch into %@ (delay: %f)", [self url], autoFetchInterval);
-  while (autoFetchInterval > 300.0) autoFetchInterval -= 60.0;
+  while (autoFetchInterval > 600.0) autoFetchInterval -= 60.0;
   autoFetchInterval = autoFetchInterval*(1.9 + drand48()*0.2);
   
   #if GB_STRESS_TEST_AUTOFETCH
