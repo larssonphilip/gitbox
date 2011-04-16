@@ -1368,7 +1368,7 @@
   if (!self.autofetchQueue) return;
   
   //NSLog(@"GBRepositoryController: autoFetch into %@ (delay: %f)", [self url], autoFetchInterval);
-  while (autoFetchInterval > 600.0) autoFetchInterval -= 60.0;
+  while (autoFetchInterval > 60*60.0) autoFetchInterval -= 60.0;
   autoFetchInterval = autoFetchInterval*(1.9 + drand48()*0.2);
   
   #if GB_STRESS_TEST_AUTOFETCH
