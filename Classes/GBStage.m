@@ -148,11 +148,12 @@
   }]; // refresh-index
 }
 
+// helper method to process more than 4096 files in chunks
 - (void) launchTaskByChunksWithArguments:(NSArray*)args paths:(NSArray*)allPaths block:(void(^)())block taskCallback:(void(^)(GBTask*))taskCallback
 {
   taskCallback = [[taskCallback copy] autorelease];
   [OABlockGroup groupBlock:^(OABlockGroup *group) {
-    for (NSArray* paths in [allPaths arrayOfChunksBySize:10])
+    for (NSArray* paths in [allPaths arrayOfChunksBySize:1000])
     {
       [group enter];
       GBTask* task = [self.repository task];
@@ -181,13 +182,6 @@
                            taskCallback:^(GBTask *task) {
                              [task showErrorIfNeeded];
                            }];
-  
-//  GBTask* task = [self.repository task];
-//  task.arguments = [[NSArray arrayWithObjects:@"update-index", @"--remove", nil] arrayByAddingObjectsFromArray:pathsToDelete];
-//  [self.repository launchTask:task withBlock:^{
-//    [task showErrorIfNeeded];
-//    if (block) block();
-//  }];
 }
 
 - (void) stageAddedPaths:(NSArray*)pathsToAdd withBlock:(void(^)())block
@@ -206,20 +200,6 @@
                            taskCallback:^(GBTask *task) {
                              [task showErrorIfNeeded];
                            }];
-  
-//  [OABlockGroup groupBlock:^(OABlockGroup *group) {
-//    
-//    for (NSArray* paths in [pathsToAdd arrayOfChunksBySize:1024])
-//    {
-//      [group enter];
-//      GBTask* task = [self.repository task];
-//      task.arguments = [[NSArray arrayWithObjects:@"add", nil] arrayByAddingObjectsFromArray:paths];
-//      [self.repository launchTask:task withBlock:^{
-//        [task showErrorIfNeeded];
-//        [group leave];
-//      }];
-//    }
-//  } continuation:block];
 }
 
 - (void) stageChanges:(NSArray*)theChanges withBlock:(void(^)())block
@@ -269,35 +249,23 @@
     }
   }
 
-  // TODO: handle more than 4096 arguments
-  
   //
   // run two tasks: "git reset" and "git rm --cached"
   //       do not run if paths list is empty
   //       use a single common queue to make it easier to order the tasks
   //       "git rm --cached" is needed in case when HEAD does not yet exist
-  [OABlockGroup groupBlock:^(OABlockGroup* blockGroup){
-    
-    if ([otherPaths count] > 0)
-    {
-      GBTask* resetTask = [self.repository task];
-      resetTask.arguments = [[NSArray arrayWithObjects:@"reset", @"--", nil] arrayByAddingObjectsFromArray:otherPaths];
-      [self.repository launchTask:resetTask withBlock:^{
-        // Commented out because git spits out error code even if the unstage is successful.
-        // [task showErrorIfNeeded];
-      }];
-    }
-    
-    if ([addedPaths count] > 0)
-    {
-      GBTask* rmTask = [self.repository task];
-      rmTask.arguments = [[NSArray arrayWithObjects:@"rm", @"--cached", @"--force", nil] arrayByAddingObjectsFromArray:addedPaths];
-      [self.repository launchTask:rmTask withBlock:^{
-        // Commented out because git spits out error code even if the unstage is successful.
-        // [task showErrorIfNeeded];
-      }];    
-    }
-  } continuation: block];
+	
+  // [task showErrorIfNeeded] is not used because git spits out error code even if the unstage is successful.
+  
+  [self launchTaskByChunksWithArguments:[NSArray arrayWithObjects:@"reset", @"--", nil]
+                                  paths:otherPaths
+                                  block:
+   ^{
+     [self launchTaskByChunksWithArguments:[NSArray arrayWithObjects:@"rm", @"--cached", @"--force", nil]
+                                     paths:addedPaths
+                                     block:block 
+                              taskCallback:nil];
+   } taskCallback:nil];
 }
 
 - (void) stageAllWithBlock:(void(^)())block
@@ -326,15 +294,11 @@
     [aChange setStagedSilently:NO];
     [paths addObject:aChange.fileURL.path];
   }
-  GBTask* task = [self.repository task];
   
-  // TODO: handle more than 4096 arguments
-  
-  
-  task.arguments = [[NSArray arrayWithObjects:@"checkout", @"HEAD", @"--", nil] arrayByAddingObjectsFromArray:paths];
-  [self.repository launchTask:task withBlock:^{
-    if (block) block();
-  }];
+  [self launchTaskByChunksWithArguments:[NSArray arrayWithObjects:@"checkout", @"HEAD", @"--", nil]
+                                  paths:paths
+                                  block:block
+                           taskCallback:nil];
 }
 
 - (void) deleteFilesInChanges:(NSArray*)theChanges withBlock:(void(^)())block
@@ -377,15 +341,10 @@
   
   if ([pathsToGitRm count] > 0)
   {
-    
-    // TODO: handle more than 4096 arguments
-    
-    GBTask* task = [self.repository task];
-    task.arguments = [[NSArray arrayWithObjects:@"rm", nil] arrayByAddingObjectsFromArray:pathsToGitRm];
-    trashingBlock = [[trashingBlock copy] autorelease];
-    [self.repository launchTask:task withBlock:^{
-      trashingBlock();
-    }];
+    [self launchTaskByChunksWithArguments:[NSArray arrayWithObjects:@"rm", @"-f", nil]
+                                    paths:pathsToGitRm
+                                    block:trashingBlock
+                             taskCallback:nil];
   }
   else
   {
