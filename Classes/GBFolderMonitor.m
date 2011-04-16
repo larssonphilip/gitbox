@@ -158,7 +158,7 @@
     NSTimeInterval timeSinceResume = [[NSDate date] timeIntervalSinceDate:self.folderResumeDate]; 
     if (timeSinceResume <= self.eventStream.latency)
     {
-      NSLog(@"GBFolderMonitor: folder was on pause %f sec. ago (event latency %f), skipping events: %@", timeSinceResume, self.eventStream.latency, events);
+      // NSLog(@"GBFolderMonitor: folder was on pause %f sec. ago (event latency %f), skipping events: %@", timeSinceResume, self.eventStream.latency, events);
       return;
     }
   }
