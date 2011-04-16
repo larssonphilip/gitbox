@@ -10,6 +10,7 @@
 
 @synthesize task;
 @synthesize isRunning;
+@synthesize isRetained;
 
 @synthesize date;
 @synthesize path;
@@ -18,6 +19,7 @@
 
 @synthesize textOutput;
 @synthesize data;
+@synthesize dataLength;
 
 #pragma mark Init
 
@@ -29,6 +31,7 @@
   [status release]; status = nil;
   [textOutput release]; textOutput = nil;
   [data release]; data = nil;
+  [dataLength release]; dataLength = nil;
   [super dealloc];
 }
 
@@ -47,6 +50,8 @@
   if (!chunk) return;
   [self.data appendData:chunk];
   self.textOutput = [self.data UTF8String];
+  NSUInteger l = [self.data length];
+  self.dataLength = l ? [NSString stringWithFormat:@"%d", (int)l] : @"";
 }
 
 

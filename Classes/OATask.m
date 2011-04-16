@@ -9,8 +9,9 @@
 
 NSString* OATaskDidLaunchNotification      = @"OATaskDidLaunchNotification";
 NSString* OATaskDidEnterQueueNotification  = @"OATaskDidEnterQueueNotification";
-NSString* OATaskDidTerminateNotification   = @"OATaskDidTerminateNotification";
 NSString* OATaskDidReceiveDataNotification = @"OATaskDidReceiveDataNotification";
+NSString* OATaskDidTerminateNotification   = @"OATaskDidTerminateNotification";
+NSString* OATaskDidDeallocateNotification  = @"OATaskDidDeallocateNotification";
 
 @interface OATask ()
 
@@ -79,6 +80,8 @@ NSString* OATaskDidReceiveDataNotification = @"OATaskDidReceiveDataNotification"
     NSLog(@"OATask: dealloc is called while task is running. %@", self);
     [nstask terminate];
   }
+  
+  [[NSNotificationCenter defaultCenter] postNotificationName:OATaskDidDeallocateNotification object:[NSValue valueWithNonretainedObject:self]];
   
   [keychainPasswordName release]; keychainPasswordName = nil;
   

@@ -28,11 +28,15 @@ extern NSString* OATaskDidLaunchNotification;
 // Posted when the task starts running in the dispatch queue.
 extern NSString* OATaskDidEnterQueueNotification;
 
+// Posted each time task receives a new chunk of data.
+extern NSString* OATaskDidReceiveDataNotification;
+
 // Posted when the task is terminated.
 extern NSString* OATaskDidTerminateNotification;
 
-// Posted each time task receives a new chunk of data.
-extern NSString* OATaskDidReceiveDataNotification;
+// Posted when the task is deallocated. [notification object] contains NSValue with non-retained pointer to the task.
+extern NSString* OATaskDidDeallocateNotification;
+
 
 @interface OATask : NSObject
 

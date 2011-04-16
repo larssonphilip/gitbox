@@ -41,23 +41,28 @@ static GBActivityController* sharedGBActivityController;
   {
     // subscribe for the OATask notifications.
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(taskDidLaunchNotification:) 
+                                             selector:@selector(taskDidLaunch:) 
                                                  name:OATaskDidLaunchNotification 
                                                object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(taskDidUpdateNotification:) 
+                                             selector:@selector(taskDidUpdate:) 
                                                  name:OATaskDidEnterQueueNotification 
                                                object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(taskDidUpdateNotification:) 
+                                             selector:@selector(taskDidUpdate:) 
                                                  name:OATaskDidReceiveDataNotification 
                                                object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(taskDidTerminateNotification:) 
+                                             selector:@selector(taskDidTerminate:) 
                                                  name:OATaskDidTerminateNotification 
+                                               object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(taskDidDeallocate:) 
+                                                 name:OATaskDidDeallocateNotification
                                                object:nil];
 
   }
@@ -114,7 +119,7 @@ static GBActivityController* sharedGBActivityController;
     int c = maxNumberOfActivities;
     for (GBActivity* a in [self.activities reversedArray])
     {
-      if (a.isRunning)
+      if (a.isRunning || a.isRetained)
       {
         [keptActivities insertObject:a atIndex:0];
       }
@@ -198,7 +203,7 @@ static GBActivityController* sharedGBActivityController;
   return nil;
 }
 
-- (void) taskDidUpdateNotification:(NSNotification*)notif
+- (void) taskDidUpdate:(NSNotification*)notif
 {
   OATask* aTask = [notif object];
   NSData* chunk = [[notif userInfo] objectForKey:@"data"];
@@ -220,35 +225,54 @@ static GBActivityController* sharedGBActivityController;
     activity.isRunning = NO;
     if ([aTask terminationStatus] == 0)
     {
-      activity.status = NSLocalizedString(@"Finished", @"Task");
+      activity.status = NSLocalizedString(@"Finishing...", @"Task");
     }
     else
     {
-      activity.status = [NSString stringWithFormat:@"%@ [%d]", NSLocalizedString(@"Finished", @"Task"), [aTask terminationStatus]];
+      activity.status = [NSString stringWithFormat:@"%@ [%d]", NSLocalizedString(@"Finishing...", @"Task"), [aTask terminationStatus]];
     }
-    activity.task = nil;
   }
   [self syncActivityOutput];
 }
 
-- (void) taskDidTerminateNotification:(NSNotification*)notif
+- (void) taskDidTerminate:(NSNotification*)notif
 {
-  [self taskDidUpdateNotification:notif];
+  [self taskDidUpdate:notif];
 }
 
-- (void) taskDidLaunchNotification:(NSNotification*)notif
+- (void) taskDidLaunch:(NSNotification*)notif
 {
   GBActivity* activity = [[[GBActivity alloc] init] autorelease];
   
   OATask* aTask = [notif object];
   activity.task = aTask;
   activity.isRunning = YES;
+  activity.isRetained = YES;
   activity.path = aTask.currentDirectoryPath;
   activity.command = [aTask command];
   
   [self addActivity:activity];
   
-  [self taskDidUpdateNotification:notif];
+  [self taskDidUpdate:notif];
+}
+
+- (void) taskDidDeallocate:(NSNotification*)notif
+{
+  OATask* aTask = [[notif object] nonretainedObjectValue];
+  GBActivity* activity = [self activityForTask:aTask];
+  activity.isRetained = NO;
+  activity.task = nil;
+  
+  if ([aTask terminationStatus] == 0)
+  {
+    activity.status = NSLocalizedString(@"Finished", @"Task");
+  }
+  else
+  {
+    activity.status = [NSString stringWithFormat:@"%@ [%d]", NSLocalizedString(@"Finished", @"Task"), [aTask terminationStatus]];
+  }
+  
+  [self syncActivityOutput];
 }
 
 
