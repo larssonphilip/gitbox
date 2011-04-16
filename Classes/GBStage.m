@@ -9,6 +9,7 @@
 #import "GBUntrackedChangesTask.h"
 #import "OABlockGroup.h"
 #import "NSData+OADataHelpers.h"
+#import "NSArray+OAArrayHelpers.h"
 #import "NSObject+OASelectorNotifications.h"
 
 @implementation GBStage
@@ -147,7 +148,22 @@
   }]; // refresh-index
 }
 
-
+- (void) launchTaskByChunksWithArguments:(NSArray*)args paths:(NSArray*)allPaths block:(void(^)())block taskCallback:(void(^)(GBTask*))taskCallback
+{
+  taskCallback = [[taskCallback copy] autorelease];
+  [OABlockGroup groupBlock:^(OABlockGroup *group) {
+    for (NSArray* paths in [allPaths arrayOfChunksBySize:10])
+    {
+      [group enter];
+      GBTask* task = [self.repository task];
+      task.arguments = [args arrayByAddingObjectsFromArray:paths];
+      [self.repository launchTask:task withBlock:^{
+        if (taskCallback) taskCallback(task);
+        [group leave];
+      }];
+    }
+  } continuation:block];
+}
 
 - (void) stageDeletedPaths:(NSArray*)pathsToDelete withBlock:(void(^)())block
 {
@@ -159,12 +175,19 @@
     return;
   }
   
-  GBTask* task = [self.repository task];
-  task.arguments = [[NSArray arrayWithObjects:@"update-index", @"--remove", nil] arrayByAddingObjectsFromArray:pathsToDelete];
-  [self.repository launchTask:task withBlock:^{
-    [task showErrorIfNeeded];
-    if (block) block();
-  }];
+  [self launchTaskByChunksWithArguments:[NSArray arrayWithObjects:@"update-index", @"--remove", nil]
+                                  paths:pathsToDelete
+                                  block:block
+                           taskCallback:^(GBTask *task) {
+                             [task showErrorIfNeeded];
+                           }];
+  
+//  GBTask* task = [self.repository task];
+//  task.arguments = [[NSArray arrayWithObjects:@"update-index", @"--remove", nil] arrayByAddingObjectsFromArray:pathsToDelete];
+//  [self.repository launchTask:task withBlock:^{
+//    [task showErrorIfNeeded];
+//    if (block) block();
+//  }];
 }
 
 - (void) stageAddedPaths:(NSArray*)pathsToAdd withBlock:(void(^)())block
@@ -177,12 +200,26 @@
     return;
   }
   
-  GBTask* task = [self.repository task];
-  task.arguments = [[NSArray arrayWithObjects:@"add", nil] arrayByAddingObjectsFromArray:pathsToAdd];
-  [self.repository launchTask:task withBlock:^{
-    [task showErrorIfNeeded];
-    if (block) block();
-  }];
+  [self launchTaskByChunksWithArguments:[NSArray arrayWithObjects:@"add", nil]
+                                  paths:pathsToAdd
+                                  block:block
+                           taskCallback:^(GBTask *task) {
+                             [task showErrorIfNeeded];
+                           }];
+  
+//  [OABlockGroup groupBlock:^(OABlockGroup *group) {
+//    
+//    for (NSArray* paths in [pathsToAdd arrayOfChunksBySize:1024])
+//    {
+//      [group enter];
+//      GBTask* task = [self.repository task];
+//      task.arguments = [[NSArray arrayWithObjects:@"add", nil] arrayByAddingObjectsFromArray:paths];
+//      [self.repository launchTask:task withBlock:^{
+//        [task showErrorIfNeeded];
+//        [group leave];
+//      }];
+//    }
+//  } continuation:block];
 }
 
 - (void) stageChanges:(NSArray*)theChanges withBlock:(void(^)())block
@@ -232,6 +269,8 @@
     }
   }
 
+  // TODO: handle more than 4096 arguments
+  
   //
   // run two tasks: "git reset" and "git rm --cached"
   //       do not run if paths list is empty
@@ -288,6 +327,10 @@
     [paths addObject:aChange.fileURL.path];
   }
   GBTask* task = [self.repository task];
+  
+  // TODO: handle more than 4096 arguments
+  
+  
   task.arguments = [[NSArray arrayWithObjects:@"checkout", @"HEAD", @"--", nil] arrayByAddingObjectsFromArray:paths];
   [self.repository launchTask:task withBlock:^{
     if (block) block();
@@ -334,6 +377,9 @@
   
   if ([pathsToGitRm count] > 0)
   {
+    
+    // TODO: handle more than 4096 arguments
+    
     GBTask* task = [self.repository task];
     task.arguments = [[NSArray arrayWithObjects:@"rm", nil] arrayByAddingObjectsFromArray:pathsToGitRm];
     trashingBlock = [[trashingBlock copy] autorelease];

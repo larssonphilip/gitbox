@@ -79,6 +79,20 @@
   return array;
 }
 
+- (NSArray*) arrayOfChunksBySize:(NSUInteger)maxChunkSize
+{
+  NSUInteger c = [self count];
+  NSMutableArray* chunks = [NSMutableArray array];
+  NSUInteger chunkIndex = 0;
+  while (chunkIndex < c)
+  {
+    NSUInteger chunkSize = MIN(c - chunkIndex, maxChunkSize);
+    [chunks addObject:[self subarrayWithRange:NSMakeRange(chunkIndex, chunkSize)]];
+    chunkIndex += chunkSize;
+  }
+  return chunks;
+}
+
 @end
 
 
