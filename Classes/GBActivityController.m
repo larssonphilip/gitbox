@@ -119,7 +119,7 @@ static GBActivityController* sharedGBActivityController;
     int c = maxNumberOfActivities;
     for (GBActivity* a in [self.activities reversedArray])
     {
-      if (a.isRunning || a.isRetained)
+      if (a.isRunning)
       {
         [keptActivities insertObject:a atIndex:0];
       }
@@ -222,7 +222,6 @@ static GBActivityController* sharedGBActivityController;
   }
   else
   {
-    activity.isRunning = NO;
     if ([aTask terminationStatus] == 0)
     {
       activity.status = NSLocalizedString(@"Finishing...", @"Task");
@@ -247,7 +246,6 @@ static GBActivityController* sharedGBActivityController;
   OATask* aTask = [notif object];
   activity.task = aTask;
   activity.isRunning = YES;
-  activity.isRetained = YES;
   activity.path = aTask.currentDirectoryPath;
   activity.command = [aTask command];
   
@@ -260,7 +258,7 @@ static GBActivityController* sharedGBActivityController;
 {
   OATask* aTask = [[notif object] nonretainedObjectValue];
   GBActivity* activity = [self activityForTask:aTask];
-  activity.isRetained = NO;
+  activity.isRunning = NO;
   activity.task = nil;
   
   if ([aTask terminationStatus] == 0)

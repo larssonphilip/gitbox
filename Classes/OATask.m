@@ -246,22 +246,6 @@ NSString* OATaskDidDeallocateNotification  = @"OATaskDidDeallocateNotification";
 
 // Launches the task asynchronously
 
-// TODO: think on how to queue up the tasks for the same repo if we are going to use non-blocking way to interact with the task.
-// Or: launch the task on the main thread and receive termination notification on the main thread; but block in the secondary thread.
-
-- (void) watchdogLogging
-{
-  [self performSelector:@selector(watchdogLogging) withObject:nil afterDelay:60.0];
-  if (self.launchDate)
-  {
-    NSLog(@"OATask is alive for more than %f seconds. Maybe leaked or overretained. %@", [[NSDate date] timeIntervalSinceDate:self.launchDate], self);
-  }
-  else
-  {
-    NSLog(@"OATask is alive for more than ???? seconds. Maybe leaked or overretained. %@", self);
-  }
-}
-
 - (void) launch
 {
   if ([self isInteractive])
@@ -269,11 +253,11 @@ NSString* OATaskDidDeallocateNotification  = @"OATaskDidDeallocateNotification";
     [self launchInteractively];
     return;
   }
+  
   NSAssert(!self.isLaunched, @"[OATask launch] is sent when task was already launched.");
   self.isLaunched = YES;
   
   self.launchDate = [NSDate date];
-  [self performSelector:@selector(watchdogLogging) withObject:nil afterDelay:60.0];
   
   [self willLaunchTask];
   

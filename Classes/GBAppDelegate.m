@@ -125,8 +125,6 @@
     OATask* task = [OATask task];
     task.executableName = @"git";
     
-    // Interactive mode cannot stop the task!
-    task.interactive = YES;
     task.currentDirectoryPath = [NSHomeDirectory() stringByAppendingPathComponent:@"Desktop"];
     //task.arguments = [NSArray arrayWithObjects:@"clone", @"git://github.com/rails/rails.git", @"--progress", nil];
     task.arguments = [NSArray arrayWithObjects:@"clone", @"/Users/oleganza/Code/rails", @"--progress", @"--no-hardlinks", nil];

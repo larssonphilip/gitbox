@@ -10,7 +10,6 @@
 
 @synthesize task;
 @synthesize isRunning;
-@synthesize isRetained;
 
 @synthesize date;
 @synthesize path;

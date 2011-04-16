@@ -5,7 +5,6 @@
 
 @property(nonatomic,assign) OATask* task;
 @property(nonatomic,assign) BOOL isRunning;
-@property(nonatomic,assign) BOOL isRetained; // YES if task is finished, but still retained.
 
 @property(nonatomic,retain) NSDate* date;
 @property(nonatomic,copy) NSString* path;
