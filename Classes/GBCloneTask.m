@@ -29,6 +29,11 @@
   return [GBRemote keychainPasswordNameForURLString:[self.sourceURL absoluteString]];
 }
 
+- (BOOL) isRealTime
+{
+  return YES;
+}
+
 - (NSArray*) arguments
 {
   NSString* folder = [[self.targetURL path] lastPathComponent];
