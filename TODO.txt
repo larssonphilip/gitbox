@@ -302,7 +302,7 @@ Error messages translation to English:
 
 Bugs:
 
-- bug: UI locks up. Maybe on iterative reading and notifications or because of activity window.
++ bug: UI locks up. Maybe on iterative reading and notifications or because of activity window.
 + bug: commit changes are loaded twice.
 - bug: askpass is used only for ls-remotes, but should also be used for pull/push/fetch. Need nice design for such tasks.
 - bug: http auth uses askpass to ask for a username as well, need to support this.
