@@ -313,6 +313,8 @@
 
 - (void) launchDiffWithBlock:(void(^)())block
 {
+  [[self retain] autorelease]; // quick patch to work around the crash when changes are replaced
+  
   // Do nothing for deleted file
   if ([self isDeletedFile])
   {
