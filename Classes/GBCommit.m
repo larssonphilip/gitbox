@@ -10,6 +10,7 @@
 #import "NSString+OAGitHelpers.h"
 #import "NSAttributedString+OAAttributedStringHelpers.h"
 #import "NSObject+OASelectorNotifications.h"
+#import "OABlockTable.h"
 
 @implementation GBCommit
 
@@ -154,17 +155,25 @@
 {
   block = [[block copy] autorelease];
   
-  [[GBGitConfig userConfig] ensureDisabledPathQuoting:^{
-    GBCommittedChangesTask* task = [GBCommittedChangesTask task];
-    task.commit = self;
-    task.repository = self.repository;
-    [self.repository launchTask:task withBlock:^{
-      NSArray* theChanges = [task.changes sortedArrayUsingComparator:^(GBChange* a,GBChange* b){
-        return [[[a fileURL] path] localizedCaseInsensitiveCompare:[[b fileURL] path]];
+  if (!self.commitId)
+  {
+    if (block) block();
+    return;
+  }
+  NSString* name = [NSString stringWithFormat:@"GBCommit loadChangesWithBlock: %@", self.commitId];
+  [OABlockTable addBlock:block forName:name proceedIfClear:^{
+    [[GBGitConfig userConfig] ensureDisabledPathQuoting:^{
+      GBCommittedChangesTask* task = [GBCommittedChangesTask task];
+      task.commit = self;
+      task.repository = self.repository;
+      [task launchWithBlock:^{
+        NSArray* theChanges = [task.changes sortedArrayUsingComparator:^(GBChange* a,GBChange* b){
+          return [[[a fileURL] path] localizedCaseInsensitiveCompare:[[b fileURL] path]];
+        }];
+        self.changes = theChanges;
+        [self notifyWithSelector:@selector(commitDidUpdateChanges:)];
+        [OABlockTable callBlockForName:name];
       }];
-      self.changes = theChanges;
-      [self notifyWithSelector:@selector(commitDidUpdateChanges:)];
-      if (block) block();
     }];
   }];
 }
