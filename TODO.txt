@@ -144,8 +144,7 @@ Gitbox 1.3 Enhancements:
 
 Gitbox 1.3 Bug fixes:
 
-- add isRetained flag to GBActivity.
-- listen to NSApplicationWillTerminateNotification in OATask to terminate the current task.
+- 
 + do not remove waiting or running tasks from activity window
 + bug: regression since 1.2: when clicking parent id should scroll to the selected commit
 - patraque#1028: when selected a change and dragged in a repo, "+" button menu has disabled items
@@ -274,7 +273,7 @@ Enhancements:
 - general: think on the best and consistent way to terminate tasks
 - general: remember activity window visibility
 
-- general: try to implement NSTask dialog to handle all sorts of prompts and password requests in place without SSH_ASKPASS and other shit
+≠ (interactive pty mode does not work nice without bash in the middle) general: try to implement NSTask dialog to handle all sorts of prompts and password requests in place without SSH_ASKPASS and other shit
 
 - settings: Add "Edit Global Ignored Files..."  menu item to edit ~/.gitignore
 
@@ -294,13 +293,16 @@ Error messages translation to English:
 - history: find/nav bar sliding down in the history:
   - filters commits by sha-1, modified filenames and text
   - back/forward buttons allow undo/redo commit selection (clicking on parents)
-
+  - swipe left/right with three fingers to navigate through commits or history of jumping
 - stage: should display a branch hint if the different branch is selected (commit text field)
 - stage: autocomplete file names when TAB pressed.
 
 
 Bugs:
 
+- bug: askpass is used only for ls-remotes, but should also be used for pull/push/fetch. Need nice design for such tasks.
+- bug: http auth uses askpass to ask for a username as well, need to support this.
+- bug: task may crash when folder is removed from disk because prepareTask asserts folder existance
 - bug: when local branch is selected on the right, switching left branch does not change it. Reported by Gwendal.
 - CRASH: when sending setFailedCommunication using some dangling pointer
 - IMPORTANT: bug: sidebar: sometimes, when dropped the repo to the sidebar, it does not update the history. Maybe the updateQueue is flooded.

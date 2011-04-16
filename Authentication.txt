@@ -4,7 +4,7 @@ You can connect to git repos using different methods:
 
   git          - tested
   git+ssh      - tested, password requests are handled by askpass.rb 
-  http, https  - auth does not work
+  http, https  - auth uses SSH_ASKPASS
   rsync        - not tested
   
 SSH authentication:
@@ -17,7 +17,8 @@ SSH authentication:
              When password becomes invalid, Gitbox does not invalidate it and does not let you enter it again.
              
              Full fix: detect that the password was not accepted (can test for any error) and next time ask for it.
-             
+
+Remembered passwords and user names should be available in the settings and asked only once.
 
 HTTP authentication:
 
