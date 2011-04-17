@@ -29,6 +29,8 @@
 
 @synthesize isDisabled;
 @synthesize isSpinning;
+@synthesize sidebarItemProgress;
+@synthesize progressStatus;
 
 
 - (void) dealloc
@@ -41,6 +43,7 @@
   [self.task terminate];
   self.task        = nil;
   self.error       = nil;
+  self.progressStatus = nil;
   [super dealloc];
 }
 
@@ -75,6 +78,14 @@
   t.sourceURL = self.sourceURL;
   t.targetURL = self.targetURL;
   self.task = t;
+  
+  t.progressUpdateBlock = ^(){
+    self.sidebarItemProgress = t.progress;
+    self.progressStatus = t.status;
+    [self.sidebarItem update];
+    [self notifyWithSelector:@selector(cloningRepositoryControllerProgress:)];
+  };
+  
   [t launchWithBlock:^{
     
     if (!self.task) // was terminated

@@ -20,6 +20,9 @@
 @property(nonatomic, assign, readonly) NSInteger isDisabled;
 @property(nonatomic, assign, readonly) NSInteger isSpinning;
 
+@property(nonatomic, assign) double sidebarItemProgress;
+@property(nonatomic, copy) NSString* progressStatus;
+
 - (void) startCloning;
 - (void) cancelCloning;
 

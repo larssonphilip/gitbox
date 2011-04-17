@@ -42,6 +42,7 @@
 {
   [super loadView];
   [self update];
+  [self.progressIndicator setIndeterminate:NO];
 }
 
 - (IBAction) cancel:(id)sender
@@ -70,6 +71,14 @@
 #pragma mark GBRepositoryCloningController notifications
 
 
+- (void) cloningRepositoryControllerProgress:(GBRepositoryCloningController*)ctrl
+{
+  double pr = ctrl.sidebarItemProgress;
+  [self.progressIndicator setDoubleValue:pr];
+  [self.errorLabel setStringValue:ctrl.progressStatus ? ctrl.progressStatus : @""];
+}
+
+
 - (void) cloningRepositoryControllerDidFail:(GBRepositoryCloningController*)cloningRepoCtrl
 {
   [self.messageLabel setStringValue:NSLocalizedString(@"Clone Error", @"Clone")];
@@ -79,7 +88,6 @@
 
 - (void) cloningRepositoryControllerDidCancel:(GBRepositoryCloningController*)cloningRepoCtrl
 {
-  
 }
 
 - (void) cloningRepositoryControllerDidFinish:(GBRepositoryCloningController*)cloningRepoCtrl

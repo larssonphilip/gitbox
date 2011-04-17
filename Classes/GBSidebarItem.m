@@ -20,6 +20,7 @@
 @synthesize viewsDictionary;
 @synthesize section;
 @synthesize spinning;
+@synthesize progress;
 @synthesize selectable;
 @synthesize expandable;
 @synthesize editable;
@@ -171,6 +172,59 @@
   else
   {
     return [self isSubtreeSpinning];
+  }
+}
+
+- (double) progress
+{
+  if ([self.object respondsToSelector:@selector(sidebarItemProgress)])
+  {
+    return [self.object sidebarItemProgress];
+  }
+  return progress;
+}
+
+- (double) subtreeProgress
+{
+  // Return 0 if any of children spins with 0 progress.
+  // Return average among all spinning children.
+  
+  NSArray* items = [[self allChildren] arrayByAddingObject:self];
+  
+  double totalProgress = 0.0;
+  int totalSpinningChildren = 0;
+  
+  for (GBSidebarItem* item in items)
+  {
+    if ([item isSpinning])
+    {
+      double itemProgress = item.progress;
+      if (itemProgress <= 0.0)
+      {
+        return 0.0;
+      }
+      else
+      {
+        totalProgress += itemProgress;
+        totalSpinningChildren += 1;
+      }
+    }
+  }
+  
+  if (totalSpinningChildren <= 0) return 0.0;
+  
+  return totalProgress/totalSpinningChildren;
+}
+
+- (double) visibleProgress // returns average progress of all children if all of the spinning ones have progress > 0 and < 100
+{
+  if ([self isExpanded])
+  {
+    return [self progress];
+  }
+  else
+  {
+    return [self subtreeProgress];
   }
 }
 

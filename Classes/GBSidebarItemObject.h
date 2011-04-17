@@ -20,6 +20,7 @@
 - (BOOL) sidebarItemIsEditable;
 - (BOOL) sidebarItemIsDraggable;
 - (BOOL) sidebarItemIsSpinning;
+- (double) sidebarItemProgress;
 - (void) sidebarItemSetStringValue:(NSString*)value;
 - (NSDragOperation) sidebarItemDragOperationForURLs:(NSArray*)URLs outlineView:(NSOutlineView*)anOutlineView;
 - (NSDragOperation) sidebarItemDragOperationForItems:(NSArray*)items outlineView:(NSOutlineView*)anOutlineView;
