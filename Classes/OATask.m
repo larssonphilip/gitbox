@@ -294,6 +294,11 @@ NSString* OATaskDidDeallocateNotification  = @"OATaskDidDeallocateNotification";
       self.originDispatchQueue = nil;
       self.dispatchQueue = nil;
       [[NSNotificationCenter defaultCenter] postNotificationName:OATaskDidTerminateNotification object:self];
+      
+      // clean up file descriptors
+      [standardOutputHandleOrPipe release]; standardOutputHandleOrPipe = nil;
+      [standardErrorHandleOrPipe release]; standardErrorHandleOrPipe = nil;
+      [nstask release]; nstask = nil;
     });
   });
 }
