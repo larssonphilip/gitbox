@@ -32,7 +32,7 @@
 
 - (NSView*) viewForKey:(NSString*)aKey;
 - (void) setView:(NSView*)aView forKey:(NSString*)aKey;
-
+- (void) removeAllViews;
 
 // Behaviour
 

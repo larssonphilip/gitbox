@@ -115,21 +115,21 @@
   double partialProgress = 0.0;
   if ([line rangeOfString:@"Counting objects:"].length > 0)
   {
-    self.status = NSLocalizedString(@"Preparing...", @"CloneTask");
+    self.status = NSLocalizedString(@"Preparing...", @"Clone");
   }
   else if ((partialProgress = [self progressWithPrefix:@"Compressing objects:" line:line]) > 0.0)
   {
-    self.status = NSLocalizedString(@"Packing...", @"CloneTask");
+    self.status = NSLocalizedString(@"Packing...", @"Clone");
     newProgress = compressingRatio*partialProgress;
   }
   else if ((partialProgress = [self progressWithPrefix:@"Receiving objects:" line:line]) > 0.0)
   {
-    self.status = NSLocalizedString(@"Downloading...", @"CloneTask");
+    self.status = NSLocalizedString(@"Downloading...", @"Clone");
     newProgress = compressingRatio*100.0 + receivingRatio*partialProgress;
   }
   else if ((partialProgress = [self progressWithPrefix:@"Resolving deltas:" line:line]) > 0.0)
   {
-    self.status = NSLocalizedString(@"Unpacking...", @"CloneTask");
+    self.status = NSLocalizedString(@"Unpacking...", @"Clone");
     newProgress = (compressingRatio + receivingRatio)*100.0 + resolvingDeltasRatio*partialProgress;
   }
   

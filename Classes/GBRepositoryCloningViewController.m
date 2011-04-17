@@ -35,6 +35,7 @@
   [repositoryController addObserverForAllSelectors:self];
   
   [self view]; // load view
+  [self update];
 }
 
 
@@ -42,7 +43,8 @@
 {
   [super loadView];
   [self update];
-  [self.progressIndicator setIndeterminate:NO];
+  [self.progressIndicator setIndeterminate:YES];
+  [self.progressIndicator startAnimation:nil];
 }
 
 - (IBAction) cancel:(id)sender
@@ -52,7 +54,9 @@
 
 - (void) update
 {
-  [self.messageLabel setStringValue:NSLocalizedString(@"Clone in progress...", @"Clone")];
+  NSURL* URL = self.repositoryController.sourceURL;
+  [self.messageLabel setStringValue:[NSString stringWithFormat:NSLocalizedString(@"Cloning %@", @"Clone"), URL ? URL : @""]];
+
   [self.errorLabel setStringValue:@""];
   [self.cancelButton setTitle:NSLocalizedString(@"Cancel", @"")];
   
@@ -71,9 +75,20 @@
 #pragma mark GBRepositoryCloningController notifications
 
 
+- (void) cloningRepositoryControllerDidStart:(GBRepositoryCloningController*)ctrl
+{
+  [self update];
+  [self.errorLabel setStringValue:NSLocalizedString(@"Preparing...", @"Clone")];
+}
+
+
 - (void) cloningRepositoryControllerProgress:(GBRepositoryCloningController*)ctrl
 {
   double pr = ctrl.sidebarItemProgress;
+  if (pr > 0.1) 
+  {
+    [self.progressIndicator setIndeterminate:NO];
+  }
   [self.progressIndicator setDoubleValue:pr];
   [self.errorLabel setStringValue:ctrl.progressStatus ? ctrl.progressStatus : @""];
 }

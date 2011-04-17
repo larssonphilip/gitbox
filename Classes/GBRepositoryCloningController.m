@@ -79,7 +79,10 @@
   t.targetURL = self.targetURL;
   self.task = t;
   
+  [self notifyWithSelector:@selector(cloningRepositoryControllerDidStart:)];
+  
   t.progressUpdateBlock = ^(){
+    if (!self.task) return;
     self.sidebarItemProgress = t.progress;
     self.progressStatus = t.status;
     [self.sidebarItem update];
@@ -94,6 +97,9 @@
       if (self.targetURL) [[NSFileManager defaultManager] removeItemAtURL:self.targetURL error:NULL];
       return;
     }
+    
+    self.sidebarItemProgress = 0.0;
+    self.progressStatus = @"";
     
     //NSLog(@"!! Task finished. Decrementing a spinner.");
     self.isSpinning--;
@@ -111,6 +117,8 @@
                                              nil
                                             ]];
     }
+    
+    [self.sidebarItem removeAllViews];
     
     if ([t isError])
     {

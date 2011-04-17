@@ -251,7 +251,14 @@
   }
 }
 
-
+- (void) removeAllViews
+{
+  for (NSString* aKey in viewsDictionary)
+  {
+    //NSLog(@"GBSidebarItem#dealloc: removing view %@", aKey);
+    [[viewsDictionary objectForKey:aKey] removeFromSuperview];
+  }
+}
 
 
 

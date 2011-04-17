@@ -263,7 +263,9 @@
   
   if (!spinner) return rect;
   
-  [spinner setIndeterminate:YES];
+  double progress = [self.sidebarItem visibleProgress];
+  [spinner setIndeterminate:progress <= 0.1 || progress >= 99.9];
+  [spinner setDoubleValue:progress];
   [spinner startAnimation:nil];
   [spinner setHidden:NO];
   [self.outlineView addSubview:spinner];
