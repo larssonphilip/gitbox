@@ -10,7 +10,8 @@ Enhancements:
 ✓ Initial launch and autofetch performance improvements.
 ✓ Several enhancements to right-click menus in sidebar.
 ✓ Clone dialog remembers last entered URL.
-✓ Fetching new commits when you start typing a commit message, so you can pull before committing.
+✓ Progress is displayed while cloning.
+✓ New commits are fetched when you start typing a commit message, so you can pull before making a commit.
 ✓ Sidebar badge shows the total count of nonpushed and nonmerged commits when it is bigger that 999.
 ✓ Renamed and copied files which were also modified now display "modified" status instead of "renamed" or "copied".
 ✓ Scrollbars disappear when scrolling is finished.
