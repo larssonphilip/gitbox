@@ -593,11 +593,15 @@ NSString* OATaskDidDeallocateNotification  = @"OATaskDidDeallocateNotification";
   }
   else
   {
+    
+    // FIXME:
+//    *** Terminating app due to uncaught exception 'NSInvalidArgumentException', reason: '*** -[NSCFDictionary setObject:forKey:]: attempt to insert nil value (key: _NSTaskOutputFileHandle)'
+    
     // Note: we will use the same pipe for stdout and stderr if both handlers are not specified.
     NSPipe* defaultPipe = nil;
     if (!self.standardOutputHandleOrPipe)
     {
-      defaultPipe = [NSPipe pipe];
+      defaultPipe = defaultPipe ? defaultPipe : [NSPipe pipe];
       self.standardOutputHandleOrPipe = defaultPipe;
       self.standardOutputFileHandle = [self.standardOutputHandleOrPipe fileHandleForReading];
     }
@@ -605,7 +609,8 @@ NSString* OATaskDidDeallocateNotification  = @"OATaskDidDeallocateNotification";
     
     if (!self.standardErrorHandleOrPipe)
     {
-      self.standardErrorHandleOrPipe = defaultPipe ? defaultPipe : [NSPipe pipe];
+      defaultPipe = defaultPipe ? defaultPipe : [NSPipe pipe];
+      self.standardErrorHandleOrPipe = defaultPipe;
       self.standardErrorFileHandle = [self.standardErrorHandleOrPipe fileHandleForReading];
     }
     [self.nstask setStandardError: self.standardErrorHandleOrPipe];
