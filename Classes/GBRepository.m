@@ -677,7 +677,7 @@
   if (!commitish1 || !commitish2 || [commitish1 isEqualToString:@""] || [commitish2 isEqualToString:@""])
   {
     self.commitsDiffCount = 0;
-    if (!block) block();
+    if (block) block();
     return;
   }
   
