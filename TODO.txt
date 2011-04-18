@@ -105,6 +105,7 @@ Misc items done:
 + bug: do not flash scrollers when at the top of the scrollable area
 + subtle bug: when repo has submodules with download buttons and it is expanded, when such submodule is selected, and right-click is used to remove its parent repo, its download button remains in the view
 + bug: stage: enable spellcheck in the textview
++ bug: autofetch does stage update after ls-remote, which it should not (except for only once after app restart)
 
 -----------------------------------------------------------
 
@@ -156,7 +157,6 @@ Gitbox 1.3 Enhancements:
 
 Gitbox 1.3 Bug fixes:
 
-+ bug: autofetch does stage update after ls-remote, which it should not (except for only once after app restart)
 - patraque#1028: when selected a change and dragged in a repo, "+" button menu has disabled items
 - bug: when added manually, should perform autofetch immediately
 - gross bug! when entering a commit message, sidebar can be updated and responder chain is changed so that text message does not get the events
