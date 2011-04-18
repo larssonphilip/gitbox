@@ -279,7 +279,6 @@
     NSNumber* obliqueness = [NSNumber numberWithFloat:0.2];
     [titleAttributes setObject:obliqueness forKey:NSObliquenessAttributeName];
     [messageAttributes setObject:obliqueness forKey:NSObliquenessAttributeName];
-    [dateAttributes setObject:obliqueness forKey:NSObliquenessAttributeName];
   }
 
   
