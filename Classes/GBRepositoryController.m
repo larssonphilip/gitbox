@@ -42,6 +42,7 @@
 @property(nonatomic, assign) BOOL isCommitting;
 @property(nonatomic, assign) BOOL isWaitingForAutofetch;
 @property(nonatomic, assign) BOOL isUpdatedSubmodulesOnce;
+@property(nonatomic, assign) BOOL isLoadedStageChangesOnce;
 @property(nonatomic, assign) NSInteger isStaging; // maintains a count of number of staging tasks running
 @property(nonatomic, assign) NSInteger isLoadingChanges; // maintains a count of number of changes loading tasks running
 @property(nonatomic, assign, readwrite) NSInteger isDisabled;
@@ -67,6 +68,7 @@
 
 - (void) loadCommitsWithBlock:(void(^)())aBlock;
 - (void) loadStageChanges;
+- (void) loadStageChangesWithBlockIfNeeded:(void(^)())aBlock;
 - (void) loadStageChangesWithBlock:(void(^)())aBlock;
 - (void) loadCommitsBadgeInteger;
 
@@ -106,6 +108,7 @@
 @synthesize isDisappearedFromFileSystem;
 @synthesize isWaitingForAutofetch;
 @synthesize isUpdatedSubmodulesOnce;
+@synthesize isLoadedStageChangesOnce;
 @synthesize isStaging; // maintains a count of number of staging tasks running
 @synthesize isLoadingChanges; // maintains a count of number of changes loading tasks running
 @synthesize autoFetchInterval;
@@ -1180,6 +1183,16 @@
   [self loadStageChangesWithBlock:^{}];
 }
 
+- (void) loadStageChangesWithBlockIfNeeded:(void(^)())aBlock
+{
+	if (self.isLoadedStageChangesOnce) 
+	{
+		if (aBlock) aBlock();
+		return;
+	}
+	[self loadStageChangesWithBlock:aBlock];
+}
+
 - (void) loadStageChangesWithBlock:(void(^)())aBlock
 {
   if (!self.repository.stage)
@@ -1194,6 +1207,7 @@
     [self.repository.stage loadChangesWithBlock:^{
       isLoadingChanges--;
       [self updateSubmodulesWithBlock:^{
+        self.isLoadedStageChangesOnce = YES;
         [self.blockTable callBlockForName:@"loadStageChanges"];
       }];
       [self.sidebarItem update];
@@ -1336,7 +1350,7 @@
 {
   //NSLog(@"GBRepositoryController: resetAutoFetchInterval in %@ (was: %f)", [self url], autoFetchInterval);
   NSTimeInterval plusMinusOne = (2*(0.5-drand48()));
-  autoFetchInterval = 20.0 + plusMinusOne*2;
+  autoFetchInterval = 10.0 + plusMinusOne*2;
   
 #if GB_STRESS_TEST_AUTOFETCH
   autoFetchInterval = drand48()*5.0;
@@ -1389,7 +1403,7 @@
       //NSLog(@"AutoFetch: start %@", [self nameInSidebar]);
       [self updateRemoteRefsWithBlock:^{
         //NSLog(@"AutoFetch: end %@", [self nameInSidebar]);
-        [self loadStageChangesWithBlock:^{
+        [self loadStageChangesWithBlockIfNeeded:^{
           [self.autofetchQueue endBlock];
         }];
       }];
