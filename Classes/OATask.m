@@ -287,15 +287,9 @@ NSString* OATaskDidDeallocateNotification  = @"OATaskDidDeallocateNotification";
     [nstask release]; nstask = nil;
     [standardOutputHandleOrPipe release]; standardOutputHandleOrPipe = nil;
     [standardErrorHandleOrPipe release]; standardErrorHandleOrPipe = nil;
-    // closing file handles causes the pipes to grow more slowly while runloop is idle
-//    [standardOutputFileHandle closeFile];
-//    [standardErrorFileHandle closeFile];
     [standardOutputFileHandle release]; standardOutputFileHandle = nil;
     [standardErrorFileHandle release]; standardErrorFileHandle = nil;
-    
-    // When runloop is idle, this should make it alive again.
-    //[NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(pingRunloop:) userInfo:nil repeats:NO];
-    
+        
     self.didReceiveDataBlock = nil;
     
     [self didFinishInBackground];
@@ -307,13 +301,22 @@ NSString* OATaskDidDeallocateNotification  = @"OATaskDidDeallocateNotification";
       self.dispatchQueue = nil;
       
       [[NSNotificationCenter defaultCenter] postNotificationName:OATaskDidTerminateNotification object:self];
+      
+      // Ping the NSApp event queue to force it to release pipes and task.
+      NSEvent* pingEvent = [NSEvent otherEventWithType:NSApplicationDefined 
+                                              location:NSMakePoint(0, 0) 
+                                         modifierFlags:0 
+                                             timestamp:0 
+                                          windowNumber:0 
+                                               context:nil
+                                               subtype:0 
+                                                 data1:0 
+                                                 data2:0];
+      
+      NSAssert(pingEvent, @"Cannot create pingEvent!");
+      [NSApp postEvent:pingEvent atStart:NO];
     });
   });
-}
-
-- (void) pingRunloop:(NSTimer*)aTimer
-{
-  // do nothing; the timer is needed to ping the runloop in secondary thread to cause the deallocation of the task and pipes
 }
 
 

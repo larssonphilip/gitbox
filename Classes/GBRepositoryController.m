@@ -31,7 +31,7 @@
 #import "GBFileEditingController.h"
 #import "NSWindowController+OAWindowControllerHelpers.h"
 
-#define GB_STRESS_TEST_AUTOFETCH 1
+#define GB_STRESS_TEST_AUTOFETCH 0
 
 @interface GBRepositoryController ()
 
@@ -1417,7 +1417,7 @@
       [self updateRemoteRefsWithBlock:^{
         //NSLog(@"AutoFetch: end %@", [self nameInSidebar]);
         [self loadStageChangesWithBlockIfNeeded:^{
-			self.isWaitingForAutofetch = NO;
+          self.isWaitingForAutofetch = NO;
 //          [self.autofetchQueue endBlock];
         }];
       }];
