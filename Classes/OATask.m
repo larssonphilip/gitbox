@@ -273,16 +273,28 @@ NSString* OATaskDidDeallocateNotification  = @"OATaskDidDeallocateNotification";
     
     [self prepareTask];
     
-    // Important: we are launching task on the main thread to be able to receive termination notification.
-    // The actual waiting will happen on the background thread.
+    [self.nstask launch];
+	  
     dispatch_async(self.originDispatchQueue, ^{
-      [self.nstask launch];
       [[NSNotificationCenter defaultCenter] postNotificationName:OATaskDidEnterQueueNotification object:self];
     });
     
     [self readStandardOutputAndStandardError];
     
     [self.nstask waitUntilExit];
+
+    // clean up file descriptors
+    [nstask release]; nstask = nil;
+    [standardOutputHandleOrPipe release]; standardOutputHandleOrPipe = nil;
+    [standardErrorHandleOrPipe release]; standardErrorHandleOrPipe = nil;
+    // closing file handles causes the pipes to grow more slowly while runloop is idle
+//    [standardOutputFileHandle closeFile];
+//    [standardErrorFileHandle closeFile];
+    [standardOutputFileHandle release]; standardOutputFileHandle = nil;
+    [standardErrorFileHandle release]; standardErrorFileHandle = nil;
+    
+    // When runloop is idle, this should make it alive again.
+    //[NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(pingRunloop:) userInfo:nil repeats:NO];
     
     self.didReceiveDataBlock = nil;
     
@@ -293,15 +305,17 @@ NSString* OATaskDidDeallocateNotification  = @"OATaskDidDeallocateNotification";
       self.didTerminateBlock = nil;
       self.originDispatchQueue = nil;
       self.dispatchQueue = nil;
-      [[NSNotificationCenter defaultCenter] postNotificationName:OATaskDidTerminateNotification object:self];
       
-      // clean up file descriptors
-      [standardOutputHandleOrPipe release]; standardOutputHandleOrPipe = nil;
-      [standardErrorHandleOrPipe release]; standardErrorHandleOrPipe = nil;
-      [nstask release]; nstask = nil;
+      [[NSNotificationCenter defaultCenter] postNotificationName:OATaskDidTerminateNotification object:self];
     });
   });
 }
+
+- (void) pingRunloop:(NSTimer*)aTimer
+{
+  // do nothing; the timer is needed to ping the runloop in secondary thread to cause the deallocation of the task and pipes
+}
+
 
 
 // Launches the task through PseudoTTY asynchronously on the caller's thread. 
@@ -498,6 +512,10 @@ NSString* OATaskDidDeallocateNotification  = @"OATaskDidDeallocateNotification";
   }
 }
 
+- (NSTask*) nstask
+{
+  return nstask;
+}
 
 - (void) prepareTask
 {
@@ -505,7 +523,8 @@ NSString* OATaskDidDeallocateNotification  = @"OATaskDidDeallocateNotification";
   
   [self willPrepareTask];
     
-  self.nstask = [[[NSTask alloc] init] autorelease];
+  self.nstask = [[NSTask alloc] init];
+  [self.nstask release];
   
   if (!self.launchPath && self.executableName)
   {
@@ -598,10 +617,9 @@ NSString* OATaskDidDeallocateNotification  = @"OATaskDidDeallocateNotification";
 //    *** Terminating app due to uncaught exception 'NSInvalidArgumentException', reason: '*** -[NSCFDictionary setObject:forKey:]: attempt to insert nil value (key: _NSTaskOutputFileHandle)'
     
     // Note: we will use the same pipe for stdout and stderr if both handlers are not specified.
-    NSPipe* defaultPipe = nil;
+    NSPipe* defaultPipe = [[NSPipe alloc] init];
     if (!self.standardOutputHandleOrPipe)
     {
-      defaultPipe = defaultPipe ? defaultPipe : [NSPipe pipe];
       self.standardOutputHandleOrPipe = defaultPipe;
       self.standardOutputFileHandle = [self.standardOutputHandleOrPipe fileHandleForReading];
     }
@@ -609,11 +627,11 @@ NSString* OATaskDidDeallocateNotification  = @"OATaskDidDeallocateNotification";
     
     if (!self.standardErrorHandleOrPipe)
     {
-      defaultPipe = defaultPipe ? defaultPipe : [NSPipe pipe];
       self.standardErrorHandleOrPipe = defaultPipe;
       self.standardErrorFileHandle = [self.standardErrorHandleOrPipe fileHandleForReading];
     }
     [self.nstask setStandardError: self.standardErrorHandleOrPipe];
+    [defaultPipe release];
   }
   
   if ([[self.nstask standardOutput] isKindOfClass:[NSPipe class]] ||

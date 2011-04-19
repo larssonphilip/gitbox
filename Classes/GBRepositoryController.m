@@ -31,7 +31,7 @@
 #import "GBFileEditingController.h"
 #import "NSWindowController+OAWindowControllerHelpers.h"
 
-#define GB_STRESS_TEST_AUTOFETCH 0
+#define GB_STRESS_TEST_AUTOFETCH 1
 
 @interface GBRepositoryController ()
 
@@ -1391,29 +1391,38 @@
   autoFetchInterval = autoFetchInterval*(1.9 + drand48()*0.2);
   
   #if GB_STRESS_TEST_AUTOFETCH
-  autoFetchInterval =  drand48()*2.0;
+  autoFetchInterval =  drand48()*10.0;
   #endif
   
   [self scheduleAutoFetch];
-  
+  	
   if (self.isWaitingForAutofetch) return;
   
+#if GB_STRESS_TEST_AUTOFETCH
+	self.isWaitingForAutofetch = YES;
+	[self loadStageChangesWithBlock:^{
+		self.isWaitingForAutofetch = NO;
+	}];
+	return;
+#endif
+
   //NSLog(@"AutoFetch: self.updatesQueue = %d / %d [%@]", (int)self.updatesQueue.operationCount, (int)[self.updatesQueue.queue count], [self nameInSidebar]);
   self.isWaitingForAutofetch = YES;
   //NSAssert(self.autofetchQueue, @"Somebody forgot to set autofetchQueue for repository controller %@", self.repository.url);
-  if (self.autofetchQueue)
-  {
-    [self.autofetchQueue addBlock:^{
-      self.isWaitingForAutofetch = NO;
+//  if (self.autofetchQueue)
+//  {
+//    [self.autofetchQueue addBlock:^{
+//      self.isWaitingForAutofetch = NO;
       //NSLog(@"AutoFetch: start %@", [self nameInSidebar]);
       [self updateRemoteRefsWithBlock:^{
         //NSLog(@"AutoFetch: end %@", [self nameInSidebar]);
         [self loadStageChangesWithBlockIfNeeded:^{
-          [self.autofetchQueue endBlock];
+			self.isWaitingForAutofetch = NO;
+//          [self.autofetchQueue endBlock];
         }];
       }];
-    }];
-  }
+//    }];
+//  }
   
 }
 
