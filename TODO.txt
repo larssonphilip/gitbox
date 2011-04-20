@@ -164,10 +164,12 @@ Gitbox 1.3 Bug fixes:
 - (right now jump controller is disabled because of that) bug: minor issue: when quickly iterating through sidebar when repos are autofetched, the selection sometimes jumps. We should reset jump controller's block when selection is changed elsewhere.
 - bug: when fetch is clicked, should fetch everything (see email discussion)
 
-- patraque#1028: when selected a change and dragged in a repo, "+" button menu has disabled items
+
+- bug: responder chain: patraque#1028: when selected a change and dragged in a repo, "+" button menu has disabled items
 - bug: responder chain: sometimes selected view loses focus during autofetch or something.
 - bug: responder chain: when entering a commit message, sidebar can be updated and responder chain is changed so that text message does not get the events
 - bug: responder chain: merge button in toolbar does not work (maybe the same issue as with responder chain fuckup)
+  - fix: tie the rootController's responder chain not to the sidebar controller, but to the rootController itself. And window controller's next responder should be rootcontroller. Also don't forget about toolbar controller which also should be somewhere in the chain.
 
 - bug: update the stage when it is selected or when the main window is activated.
 

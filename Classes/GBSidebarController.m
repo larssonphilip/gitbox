@@ -41,7 +41,7 @@
 - (void) dealloc
 {
   [[NSNotificationCenter defaultCenter] removeObserver:self];
-  self.rootController = nil;
+  [rootController release]; rootController = nil;
   self.outlineView = nil;
   self.buyButton = nil;
   self.jumpController = nil;
@@ -74,13 +74,6 @@
   [self updateContents];
 }
 
-
-- (NSResponder*) nextResponderSidebarObject // last in the chain
-{
-  NSArray* list = self.nextRespondingSidebarObjects;
-  if (!list || [list count] < 1) return nil;
-  return [list objectAtIndex:[list count] - 1];
-}
 
 // 
 // self -> a[0] -> a[1] -> a[2] -> window controller -> ...
