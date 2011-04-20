@@ -82,7 +82,9 @@ NSString* OATaskDidDeallocateNotification  = @"OATaskDidDeallocateNotification";
     [nstask terminate];
   }
   
-  [[NSNotificationCenter defaultCenter] postNotificationName:OATaskDidDeallocateNotification object:[NSValue valueWithNonretainedObject:self]];
+  // The notification can be posted from other thread
+  NSValue* value = [NSValue valueWithNonretainedObject:self];
+  [[NSNotificationCenter defaultCenter] postNotificationName:OATaskDidDeallocateNotification object:value];
   
   [keychainPasswordName release]; keychainPasswordName = nil;
   

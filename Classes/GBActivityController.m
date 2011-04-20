@@ -254,23 +254,27 @@ static GBActivityController* sharedGBActivityController;
   [self taskDidUpdate:notif];
 }
 
+// Achtung: the notification can be posted from other thread
 - (void) taskDidDeallocate:(NSNotification*)notif
 {
-  OATask* aTask = [[notif object] nonretainedObjectValue];
-  GBActivity* activity = [self activityForTask:aTask];
-  activity.isRunning = NO;
-  activity.task = nil;
-  
-  if ([aTask terminationStatus] == 0)
-  {
-    activity.status = NSLocalizedString(@"Finished", @"Task");
-  }
-  else
-  {
-    activity.status = [NSString stringWithFormat:@"%@ [%d]", NSLocalizedString(@"Finished", @"Task"), [aTask terminationStatus]];
-  }
-  
-  [self syncActivityOutput];
+  __block OATask* aTask = [[notif object] nonretainedObjectValue]; // __block prevents retaining
+  int status = [aTask terminationStatus];
+  dispatch_async(dispatch_get_main_queue(), ^{
+    GBActivity* activity = [self activityForTask:aTask];
+    activity.isRunning = NO;
+    activity.task = nil;
+    
+    if (status == 0)
+    {
+      activity.status = NSLocalizedString(@"Finished", @"Task");
+    }
+    else
+    {
+      activity.status = [NSString stringWithFormat:@"%@ [%d]", NSLocalizedString(@"Finished", @"Task"), status];
+    }
+    
+    [self syncActivityOutput];
+  });
 }
 
 
