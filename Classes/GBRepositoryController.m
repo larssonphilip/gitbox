@@ -1094,10 +1094,10 @@
 
 - (void) updateSubmodulesWithBlock:(void(^)())aBlock
 {
-//#warning disabled submodules for beta testing
-//  
-//  if (aBlock) aBlock();
-//  return;
+#warning disabled submodules for beta testing
+  
+  if (aBlock) aBlock();
+  return;
   
   [self.blockTable addBlock:aBlock forName:@"updateSubmodules" proceedIfClear:^{
     [self.repository updateSubmodulesWithBlock:^{

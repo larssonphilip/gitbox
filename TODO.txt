@@ -166,7 +166,7 @@ Gitbox 1.3 Bug fixes:
 - bug: still has an issue with autofetch filling up the autofetch queue: some tasks must be leaking or callback blocks are not called correctly
 - (right now jump controller is disabled because of that) bug: minor issue: when quickly iterating through sidebar when repos are autofetched, the selection sometimes jumps. We should reset jump controller's block when selection is changed elsewhere.
 - bug: when fetch is clicked, should fetch everything (see email discussion)
-
+- bug: update the stage when it is selected or when the main window is activated.
 
 ? bug: crash when opening a diff tool and probably updating the stage at the same time.
 ? sidebar: postpone reloading the sidebar while editing a group name
