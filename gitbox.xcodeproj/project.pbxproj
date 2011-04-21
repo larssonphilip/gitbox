@@ -340,6 +340,8 @@
 		20C899B612B95DDF002F600F /* OANonScrollingScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 20C899B512B95DDF002F600F /* OANonScrollingScrollView.m */; };
 		20C899B712B95DDF002F600F /* OANonScrollingScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 20C899B512B95DDF002F600F /* OANonScrollingScrollView.m */; };
 		20DD4DC3134B4F7300E6E6B7 /* NSObject+OAResponderChain.m in Sources */ = {isa = PBXBuildFile; fileRef = 20DD4DC2134B4F7300E6E6B7 /* NSObject+OAResponderChain.m */; };
+		20E698D61360C0A4000A3A6F /* GBAuthViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 20E698D51360C0A4000A3A6F /* GBAuthViewController.xib */; };
+		20E698D71360C0A4000A3A6F /* GBAuthViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 20E698D51360C0A4000A3A6F /* GBAuthViewController.xib */; };
 		20EA6FD0131B0EB300B97430 /* OAPropertyListRepresentation.m in Sources */ = {isa = PBXBuildFile; fileRef = 20EA6FCF131B0EB300B97430 /* OAPropertyListRepresentation.m */; };
 		20EA6FD1131B0EB300B97430 /* OAPropertyListRepresentation.m in Sources */ = {isa = PBXBuildFile; fileRef = 20EA6FCF131B0EB300B97430 /* OAPropertyListRepresentation.m */; };
 		20EF88D712E34F9300F3438A /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20EF88D612E34F9300F3438A /* Quartz.framework */; };
@@ -579,7 +581,7 @@
 		2084C8671299A078009295C8 /* calc_hard_links.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = calc_hard_links.rb; sourceTree = "<group>"; };
 		2084C8681299A078009295C8 /* git-remove-hardlinks.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = "git-remove-hardlinks.rb"; sourceTree = "<group>"; };
 		2084C8691299A078009295C8 /* keygen.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = keygen.rb; sourceTree = "<group>"; };
-		2086DF50133BC20F00289144 /* OAMultipleSelection.h */ = {isa = PBXFileReference; fileEncoding = 4; path = OAMultipleSelection.h; sourceTree = "<group>"; };
+		2086DF50133BC20F00289144 /* OAMultipleSelection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAMultipleSelection.h; sourceTree = "<group>"; };
 		2086DF51133BC20F00289144 /* OAMultipleSelection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAMultipleSelection.m; sourceTree = "<group>"; };
 		208A6B9712F879B600F3F608 /* DiffAndBlame.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = DiffAndBlame.txt; sourceTree = "<group>"; };
 		20915F7E12875C92005E0D82 /* GBPreferencesController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBPreferencesController.xib; sourceTree = "<group>"; };
@@ -699,6 +701,7 @@
 		20CCCE011344AA2B00096AF7 /* FSEvents.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = FSEvents.txt; sourceTree = "<group>"; };
 		20DD4DC1134B4F7300E6E6B7 /* NSObject+OAResponderChain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+OAResponderChain.h"; sourceTree = "<group>"; };
 		20DD4DC2134B4F7300E6E6B7 /* NSObject+OAResponderChain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+OAResponderChain.m"; sourceTree = "<group>"; };
+		20E698D51360C0A4000A3A6F /* GBAuthViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GBAuthViewController.xib; sourceTree = "<group>"; };
 		20E7B6EC1303620F00CB6732 /* GBMainWindowItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBMainWindowItem.h; sourceTree = "<group>"; };
 		20EA6FCB131B0CBA00B97430 /* OAPropertyListRepresentation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAPropertyListRepresentation.h; sourceTree = "<group>"; };
 		20EA6FCF131B0EB300B97430 /* OAPropertyListRepresentation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAPropertyListRepresentation.m; sourceTree = "<group>"; };
@@ -984,6 +987,7 @@
 				200A44F912EC5A1C004DF940 /* GBSubmoduleCloneProcessViewController.h */,
 				200A44FA12EC5A1C004DF940 /* GBSubmoduleCloneProcessViewController.m */,
 				200A44FB12EC5A1C004DF940 /* GBSubmoduleCloneProcessViewController.xib */,
+				20E698D51360C0A4000A3A6F /* GBAuthViewController.xib */,
 			);
 			name = "Main Pane";
 			sourceTree = "<group>";
@@ -1448,6 +1452,7 @@
 				200A484112F0034A004DF940 /* GBSidebarSubmoduleMissingIcon.png in Resources */,
 				20A9408712FA0E5900C3F6F4 /* GBRepositoryViewController.xib in Resources */,
 				206E0132130C605800018300 /* GBPlaceholderViewController.xib in Resources */,
+				20E698D71360C0A4000A3A6F /* GBAuthViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1496,6 +1501,7 @@
 				200A484212F0034A004DF940 /* GBSidebarSubmoduleMissingIcon.png in Resources */,
 				20A9408812FA0E5900C3F6F4 /* GBRepositoryViewController.xib in Resources */,
 				206E0131130C605800018300 /* GBPlaceholderViewController.xib in Resources */,
+				20E698D61360C0A4000A3A6F /* GBAuthViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
