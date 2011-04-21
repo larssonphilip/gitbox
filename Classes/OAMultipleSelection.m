@@ -1,15 +1,20 @@
-#import "GBSidebarMultipleSelection.h"
+#import "OAMultipleSelection.h"
 #import "NSObject+OADispatchItemValidation.h"
 
+@protocol OAMultipleSelectionItem
+@optional
+- (BOOL) validateActionForMultipleSelection:(SEL)selector;
+@end
+
 // we will pass self as a dummy UI item when validating actions
-@interface GBSidebarMultipleSelection () <NSValidatedUserInterfaceItem, NSUserInterfaceValidations>
+@interface OAMultipleSelection () <NSValidatedUserInterfaceItem, NSUserInterfaceValidations>
 @property(nonatomic, retain) NSArray* objects;
 @property(nonatomic, assign) SEL action; // temporary property for NSValidatedUserInterfaceItem
 - (BOOL) canPerformAction:(SEL)selector;
 - (id) targetForAction:(SEL)selector inObject:(id)object;
 @end
 
-@implementation GBSidebarMultipleSelection
+@implementation OAMultipleSelection
 
 @synthesize objects;
 @synthesize action;
@@ -21,9 +26,9 @@
   [super dealloc];
 }
 
-+ (GBSidebarMultipleSelection*) selectionWithObjects:(NSArray*)objects
++ (OAMultipleSelection*) selectionWithObjects:(NSArray*)objects
 {
-  GBSidebarMultipleSelection* obj = [[[GBSidebarMultipleSelection alloc] init] autorelease];
+  OAMultipleSelection* obj = [[[OAMultipleSelection alloc] init] autorelease];
   obj.objects = objects;
   return obj;
 }
@@ -111,11 +116,11 @@
     {
       if ([target respondsToSelector:@selector(validateActionForMultipleSelection:)])
       {
-        if (![(id<GBSidebarMultipleSelectionItem>)target validateActionForMultipleSelection:selector]) return NO;
+        if (![target validateActionForMultipleSelection:selector]) return NO;
       }
       if ([target respondsToSelector:@selector(validateUserInterfaceItem:)])
       {
-        if ([(id<NSUserInterfaceValidations>)target validateUserInterfaceItem:item]) validatedAtLeastOneItem = YES;
+        if ([target validateUserInterfaceItem:item]) validatedAtLeastOneItem = YES;
       }
       else // target implements the action, but does not implement validation -> always valid
       {

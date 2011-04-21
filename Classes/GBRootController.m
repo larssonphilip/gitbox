@@ -10,7 +10,7 @@
 #import "NSArray+OAArrayHelpers.h"
 #import "OALicenseNumberCheck.h"
 #import "OAPropertyListRepresentation.h"
-#import "GBSidebarMultipleSelection.h"
+#import "OAMultipleSelection.h"
 
 
 @interface GBRootController ()
@@ -525,7 +525,7 @@
     // commonParents should not contain one of the selected items (when there is a group)
     NSArray* commonParents = [self commonPrefixForArrays:paths ignoreFromEnd:1];
     
-    newChain = [[NSArray arrayWithObject:[GBSidebarMultipleSelection selectionWithObjects:self.selectedObjects]] arrayByAddingObjectsFromArray:[commonParents reversedArray]];
+    newChain = [[NSArray arrayWithObject:[OAMultipleSelection selectionWithObjects:self.selectedObjects]] arrayByAddingObjectsFromArray:[commonParents reversedArray]];
   }
   else
   {

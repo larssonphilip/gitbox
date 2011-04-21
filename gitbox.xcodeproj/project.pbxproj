@@ -156,8 +156,8 @@
 		206E0131130C605800018300 /* GBPlaceholderViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 206E012E130C605500018300 /* GBPlaceholderViewController.xib */; };
 		206E0132130C605800018300 /* GBPlaceholderViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 206E012E130C605500018300 /* GBPlaceholderViewController.xib */; };
 		2082B7C4126587CA00667A7F /* GBRepositoryCloningController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2082B7C3126587CA00667A7F /* GBRepositoryCloningController.m */; };
-		2086DF52133BC20F00289144 /* GBSidebarMultipleSelection.m in Sources */ = {isa = PBXBuildFile; fileRef = 2086DF51133BC20F00289144 /* GBSidebarMultipleSelection.m */; };
-		2086DF53133BC20F00289144 /* GBSidebarMultipleSelection.m in Sources */ = {isa = PBXBuildFile; fileRef = 2086DF51133BC20F00289144 /* GBSidebarMultipleSelection.m */; };
+		2086DF52133BC20F00289144 /* OAMultipleSelection.m in Sources */ = {isa = PBXBuildFile; fileRef = 2086DF51133BC20F00289144 /* OAMultipleSelection.m */; };
+		2086DF53133BC20F00289144 /* OAMultipleSelection.m in Sources */ = {isa = PBXBuildFile; fileRef = 2086DF51133BC20F00289144 /* OAMultipleSelection.m */; };
 		20915EBC12874D2A005E0D82 /* default_gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 209A960011BC60BC006B0B5C /* default_gitignore */; };
 		20915EBD12874D2A005E0D82 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C1660FE840EACC02AAC07 /* InfoPlist.strings */; };
 		20915EBE12874D2A005E0D82 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD582B0DA1D0D100B32029 /* MainMenu.xib */; };
@@ -534,7 +534,7 @@
 		2057F10411ACF4C0009EDF2F /* GBActivityController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBActivityController.xib; sourceTree = "<group>"; };
 		2057F10E11ACF751009EDF2F /* GBActivityController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBActivityController.h; sourceTree = "<group>"; };
 		2057F10F11ACF751009EDF2F /* GBActivityController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBActivityController.m; sourceTree = "<group>"; };
-		2057F11411ACFA60009EDF2F /* GBActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; path = GBActivity.h; sourceTree = "<group>"; };
+		2057F11411ACFA60009EDF2F /* GBActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBActivity.h; sourceTree = "<group>"; };
 		2057F11511ACFA60009EDF2F /* GBActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBActivity.m; sourceTree = "<group>"; };
 		20586A7C12FD4FAD00729DB1 /* Gitbox.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Gitbox.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		20586A7E12FD4FAD00729DB1 /* Gitbox.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Gitbox.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -579,8 +579,8 @@
 		2084C8671299A078009295C8 /* calc_hard_links.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = calc_hard_links.rb; sourceTree = "<group>"; };
 		2084C8681299A078009295C8 /* git-remove-hardlinks.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = "git-remove-hardlinks.rb"; sourceTree = "<group>"; };
 		2084C8691299A078009295C8 /* keygen.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = keygen.rb; sourceTree = "<group>"; };
-		2086DF50133BC20F00289144 /* GBSidebarMultipleSelection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBSidebarMultipleSelection.h; sourceTree = "<group>"; };
-		2086DF51133BC20F00289144 /* GBSidebarMultipleSelection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBSidebarMultipleSelection.m; sourceTree = "<group>"; };
+		2086DF50133BC20F00289144 /* OAMultipleSelection.h */ = {isa = PBXFileReference; fileEncoding = 4; path = OAMultipleSelection.h; sourceTree = "<group>"; };
+		2086DF51133BC20F00289144 /* OAMultipleSelection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAMultipleSelection.m; sourceTree = "<group>"; };
 		208A6B9712F879B600F3F608 /* DiffAndBlame.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = DiffAndBlame.txt; sourceTree = "<group>"; };
 		20915F7E12875C92005E0D82 /* GBPreferencesController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBPreferencesController.xib; sourceTree = "<group>"; };
 		20915F8712875FDA005E0D82 /* prefix_appstore.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = prefix_appstore.pch; sourceTree = "<group>"; };
@@ -1036,8 +1036,8 @@
 				200A471E12ECB265004DF940 /* GBSidebarRepositoryIcon.png */,
 				200A471F12ECB265004DF940 /* GBSidebarSubmoduleIcon.png */,
 				200A484012F0034A004DF940 /* GBSidebarSubmoduleMissingIcon.png */,
-				2086DF50133BC20F00289144 /* GBSidebarMultipleSelection.h */,
-				2086DF51133BC20F00289144 /* GBSidebarMultipleSelection.m */,
+				2086DF50133BC20F00289144 /* OAMultipleSelection.h */,
+				2086DF51133BC20F00289144 /* OAMultipleSelection.m */,
 			);
 			name = Sidebar;
 			sourceTree = "<group>";
@@ -1645,7 +1645,7 @@
 				206E012B1304941000018300 /* GBRepositoryToolbarController.m in Sources */,
 				206E0130130C605800018300 /* GBPlaceholderViewController.m in Sources */,
 				20EA6FD0131B0EB300B97430 /* OAPropertyListRepresentation.m in Sources */,
-				2086DF53133BC20F00289144 /* GBSidebarMultipleSelection.m in Sources */,
+				2086DF53133BC20F00289144 /* OAMultipleSelection.m in Sources */,
 				2051376F13446443008614D4 /* OAFSEventStream.m in Sources */,
 				20C66EF11344EEAF0067D232 /* GBFolderMonitor.m in Sources */,
 				20AAFAC91347B44300A8E31F /* OABlockOperations.m in Sources */,
@@ -1768,7 +1768,7 @@
 				206E012A1304941000018300 /* GBRepositoryToolbarController.m in Sources */,
 				206E012F130C605800018300 /* GBPlaceholderViewController.m in Sources */,
 				20EA6FD1131B0EB300B97430 /* OAPropertyListRepresentation.m in Sources */,
-				2086DF52133BC20F00289144 /* GBSidebarMultipleSelection.m in Sources */,
+				2086DF52133BC20F00289144 /* OAMultipleSelection.m in Sources */,
 				2051376E13446443008614D4 /* OAFSEventStream.m in Sources */,
 				20C66EF01344EEAF0067D232 /* GBFolderMonitor.m in Sources */,
 				20AAFAC81347B44300A8E31F /* OABlockOperations.m in Sources */,
