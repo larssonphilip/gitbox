@@ -45,4 +45,8 @@
 // A list of responders to be always present in responder chain (in order of priority)
 - (NSArray*) staticResponders;
 
+// RootController maintains its own chain of responders. This API lets to correctly affect only responder outside of internal chain.
+- (NSResponder*) externalNextResponder;
+- (void) setExternalNextResponder:(NSResponder*)aResponder;
+
 @end

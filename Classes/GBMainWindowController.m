@@ -80,8 +80,8 @@
   NSResponder* responder = [self nextResponder];
   if (rootController)
   {
-    responder = [[[rootController nextResponder] retain] autorelease];
-    [rootController setNextResponder:nil];
+    responder = [[[rootController externalNextResponder] retain] autorelease];
+    [rootController setExternalNextResponder:nil];
   }
   
   rootController.window = nil;
@@ -93,7 +93,7 @@
   
   if (rootController)
   {
-    [rootController setNextResponder:responder];
+    [rootController setExternalNextResponder:responder];
     [self setNextResponder:rootController];
   }
   else
@@ -236,6 +236,7 @@
   [self.window setRepresentedURL:windowRepresentedURL];
   
   self.toolbarController = newToolbarController;
+  // TODO: delay this update here with jump controller
   self.detailViewController = newDetailController;
   [self updateToolbarAlignment];
 }
