@@ -25,3 +25,5 @@ GBAskPass should be used for ls-remote, push/pull/fetch tasks. It stores and rea
 QUESTION: how to block the askpass program while the main window is presenting a prompt? 
 Answer 1: We can have a runloop and create a local vending object to wait for reply. 
 Answer 2: We can simply wait and retry until we are told to cancel or get some username/password. (This is much simpler.)
+
+REMEMBER: if you need to do some git queries while authenticating, it should not be done in the default dispatch queue. Otherwise it will deadlock.
