@@ -15,8 +15,6 @@
 
 @interface GBSidebarController () <NSMenuDelegate>
 
-//@property(nonatomic, retain) NSArray* nextRespondingSidebarObjects; // a list of sidebar item objects linked in a responder chain
-
 @property(nonatomic, assign) NSUInteger ignoreSelectionChange;
 @property(nonatomic, readonly) GBSidebarItem* clickedSidebarItem; // returns a clicked item if it exists and lies outside the selection
 @property(nonatomic, retain) OAFastJumpController* jumpController;
@@ -35,7 +33,6 @@
 @synthesize outlineView;
 @synthesize ignoreSelectionChange;
 @synthesize buyButton;
-//@synthesize nextRespondingSidebarObjects; // obsolete
 @synthesize jumpController;
 
 - (void) dealloc
@@ -45,7 +42,6 @@
   self.outlineView = nil;
   self.buyButton = nil;
   self.jumpController = nil;
-//  [nextRespondingSidebarObjects release]; nextRespondingSidebarObjects = nil;
   [super dealloc];
 }
 
@@ -72,39 +68,6 @@
   
   [self updateContents];
 }
-
-
-//#warning TODO: port this to GBRootController
-//// 
-//// self -> a[0] -> a[1] -> a[2] -> window controller -> ...
-//// 
-//// 1. Break the previous chain
-//// 2. Insert and connect new chain
-//
-//- (void) setNextRespondingSidebarObjects:(NSArray*)list
-//{
-//  if (nextRespondingSidebarObjects == list) return;
-//  
-//  // 1. Break the previous chain: self->a->b->c->next becomes self->next
-//  for (NSResponder* obj in nextRespondingSidebarObjects)
-//  {
-//    [self setNextResponder:[obj nextResponder]];
-//    [obj setNextResponder:nil];
-//  }
-//  
-//  // autorelease is important as GBSidebarMultipleSelection can be replaced while performing an action, but should not be released yet
-//  [nextRespondingSidebarObjects autorelease]; 
-//  nextRespondingSidebarObjects = [list retain];
-//  
-//  // 2. Insert new chain: self->next becomes self->x->y->next
-//  NSResponder* lastObject = self;
-//  for (NSResponder* obj in nextRespondingSidebarObjects)
-//  {
-//    [obj setNextResponder:[lastObject nextResponder]];
-//    [lastObject setNextResponder:obj];
-//    lastObject = obj;
-//  }
-//}
 
 
 
