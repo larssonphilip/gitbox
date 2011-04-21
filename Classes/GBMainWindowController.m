@@ -77,12 +77,29 @@
 {
   if (newRootController == rootController) return;
   
+  NSResponder* responder = [self nextResponder];
+  if (rootController)
+  {
+    responder = [[[rootController nextResponder] retain] autorelease];
+    [rootController setNextResponder:nil];
+  }
+  
   rootController.window = nil;
   [rootController removeObserverForAllSelectors:self];
   [rootController release];
   rootController = [newRootController retain];
   rootController.window = [self isWindowLoaded] ? [self window] : nil;
   [rootController addObserverForAllSelectors:self];
+  
+  if (rootController)
+  {
+    [rootController setNextResponder:responder];
+    [self setNextResponder:rootController];
+  }
+  else
+  {
+    [self setNextResponder:responder];
+  }
 }
 
 

@@ -15,7 +15,10 @@
 #import "NSArray+OAArrayHelpers.h"
 
 @interface GBSidebarController () <NSMenuDelegate>
+
+#warning TODO: port this to GBRootController
 @property(nonatomic, retain) NSArray* nextRespondingSidebarObjects; // a list of sidebar item objects linked in a responder chain
+
 @property(nonatomic, assign) NSUInteger ignoreSelectionChange;
 @property(nonatomic, readonly) GBSidebarItem* clickedSidebarItem; // returns a clicked item if it exists and lies outside the selection
 @property(nonatomic, retain) OAFastJumpController* jumpController;
@@ -35,7 +38,7 @@
 @synthesize outlineView;
 @synthesize ignoreSelectionChange;
 @synthesize buyButton;
-@synthesize nextRespondingSidebarObjects;
+@synthesize nextRespondingSidebarObjects; // obsolete
 @synthesize jumpController;
 
 - (void) dealloc
@@ -75,6 +78,7 @@
 }
 
 
+#warning TODO: port this to GBRootController
 // 
 // self -> a[0] -> a[1] -> a[2] -> window controller -> ...
 // 
@@ -283,6 +287,8 @@
 
 #pragma mark NSMenuDelegate
 
+
+#warning TODO: port this to GBRootController, here set only clickedSidebarItem
 
 // Inserts clicked item in the responder chain
 - (void) menuWillOpen:(NSMenu*)aMenu
@@ -729,6 +735,8 @@
 #endif
 }
 
+
+#warning TODO: port this to GBRootController
 // returns a longest possible array which is a prefix for each of the arrays
 - (NSArray*) commonPrefixForArrays:(NSArray*)arrays ignoreFromEnd:(NSUInteger)ignoredFromEnd
 {
@@ -757,7 +765,7 @@
   return result;
 }
 
-
+#warning TODO: port this to GBRootController
 - (void) updateResponders
 {
   // TODO: use GBSidebarMultipleSelection object to encapsulate multiple selected objects

@@ -15,6 +15,7 @@
 @interface GBRootController ()
 @property(nonatomic, retain, readwrite) GBSidebarItem* sidebarItem;
 @property(nonatomic, retain, readwrite) GBRepositoriesController* repositoriesController;
+@property(nonatomic, retain) NSArray* nextRespondingSidebarObjects; // a list of sidebar item objects linked in a responder chain
 @end
 
 @implementation GBRootController
@@ -22,6 +23,7 @@
 @synthesize sidebarItem;
 @synthesize repositoriesController;
 @synthesize window;
+@synthesize nextRespondingSidebarObjects;
 
 @synthesize selectedObjects;
 @synthesize selectedObject;
@@ -38,6 +40,7 @@
   self.sidebarItem = nil;
   self.repositoriesController = nil;
   
+  [nextRespondingSidebarObjects release]; nextRespondingSidebarObjects = nil;
   [selectedObject release]; selectedObject = nil;
   [selectedObjects release]; selectedObjects = nil;
   [clickedObject release]; clickedObject = nil;

@@ -228,6 +228,7 @@
   self.preferencesController = [[[GBPreferencesController alloc] initWithWindowNibName:preferencesNibName] autorelease];
   [self.preferencesController loadWindow]; // force load Sparkle Updater
 
+#warning TODO: maybe assign rootController after window is displayed and has nextResponder
   self.windowController.rootController = self.rootController;
   [self.windowController showWindow:self];
   
