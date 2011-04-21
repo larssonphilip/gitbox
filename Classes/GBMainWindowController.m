@@ -8,6 +8,7 @@
 #import "GBRemotesController.h"
 #import "GBFileEditingController.h"
 
+#import "OAFastJumpController.h"
 #import "NSWindowController+OAWindowControllerHelpers.h"
 #import "NSView+OAViewHelpers.h"
 #import "NSSplitView+OASplitViewHelpers.h"
@@ -19,6 +20,7 @@
 @property(nonatomic, retain) GBToolbarController* defaultToolbarController;
 @property(nonatomic, retain) GBPlaceholderViewController* defaultDetailViewController;
 @property(nonatomic, retain) id<GBMainWindowItem> selectedWindowItem;
+@property(nonatomic, retain) OAFastJumpController* jumpController;
 - (void) updateToolbarAlignment;
 - (NSView*) sidebarView;
 - (NSView*) detailView;
@@ -36,6 +38,7 @@
 @synthesize sidebarController;
 @synthesize welcomeController;
 @synthesize splitView;
+@synthesize jumpController;
 
 - (void) dealloc
 {
@@ -49,6 +52,7 @@
   self.sidebarController = nil;
   self.welcomeController = nil;
   self.splitView = nil;
+  self.jumpController = nil;
   [super dealloc];
 }
 
@@ -60,6 +64,7 @@
     self.defaultToolbarController = [[[GBToolbarController alloc] init] autorelease];
     self.defaultDetailViewController = [[[GBPlaceholderViewController alloc] initWithNibName:@"GBPlaceholderViewController" bundle:nil] autorelease];
     self.defaultDetailViewController.title = NSLocalizedString(@"No selection", @"Window");
+    self.jumpController = [OAFastJumpController controller];
   }
   return self;
 }
@@ -235,10 +240,12 @@
   [self.window setTitle:windowTitle];
   [self.window setRepresentedURL:windowRepresentedURL];
   
-  self.toolbarController = newToolbarController;
-  // TODO: delay this update here with jump controller
-  self.detailViewController = newDetailController;
-  [self updateToolbarAlignment];
+  // A problem here: detailViewController itself updates its content when selection changes.
+  //[self.jumpController delayBlockIfNeeded:^{
+    self.toolbarController = newToolbarController;
+    self.detailViewController = newDetailController;
+    [self updateToolbarAlignment];
+  //}];
 }
 
 
@@ -263,6 +270,7 @@
   // Reset selected object for the case when viewController changes
   self.selectedWindowItem = nil;
   self.selectedWindowItem = aRootController.selectedObject;
+  [self.jumpController flush];
 }
 
 
@@ -301,11 +309,13 @@
 
 - (IBAction) selectPreviousPane:(id)sender
 {
+  [self.jumpController flush];
   [self.sidebarController tryToPerform:@selector(selectPane:) with:self];
 }
 
 - (IBAction) selectNextPane:(id)sender
 {
+  [self.jumpController flush];
   [self.detailViewController tryToPerform:@selector(selectPane:) with:self];
 }
 
