@@ -7,20 +7,21 @@ You can connect to git repos using different methods:
   http, https  - auth uses SSH_ASKPASS
   rsync        - not tested
   
-SSH authentication:
+Authentication:
 
-  - Question "add to known hosts? yes/no" is handled by askpass.rb script.
-  - Passphrase-protected SSH keys are intercepted by Mac OS X dialog completely.
-  - Regular SSH password is gathered using askpass.rb script.
-  
-  Major bug: in 1.1 password was remembered in Keychain immediately and then used automatically. 
-             When password becomes invalid, Gitbox does not invalidate it and does not let you enter it again.
-             
-             Full fix: detect that the password was not accepted (can test for any error) and next time ask for it.
+  - SSH: Question "add to known hosts? yes/no" is handled by askpass.rb script.
+  - SSH: Passphrase-protected SSH keys are intercepted by Mac OS X dialog completely.
+  - SSH: Regular SSH password is gathered using askpass.rb script.
+  - HTTP: askpass: Username and then password or only password (when username is given as a part of URL)
 
 Remembered passwords and user names should be available in the settings and asked only once.
 
-HTTP authentication:
+Solution:
 
-  Needs thorough testing. Right now Basic Auth login/password dialog is not supported at all!
+askpass should be an Objective-C command line program which passes environment and question to the distributed object. Name of the object is passed through environment. For each task we create a new vended object - GBAskPass.
 
+GBAskPass should be used for ls-remote, push/pull/fetch tasks. It stores and reads data from the Keychain and notifies its delegate about the requests for the data.
+
+QUESTION: how to block the askpass program while the main window is presenting a prompt? 
+Answer 1: We can have a runloop and create a local vending object to wait for reply. 
+Answer 2: We can simply wait and retry until we are told to cancel or get some username/password. (This is much simpler.)
