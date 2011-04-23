@@ -27,3 +27,27 @@ Answer 1: We can have a runloop and create a local vending object to wait for re
 Answer 2: We can simply wait and retry until we are told to cancel or get some username/password. (This is much simpler.)
 
 REMEMBER: if you need to do some git queries while authenticating, it should not be done in the default dispatch queue. Otherwise it will deadlock.
+
+Workflow example:
+
+- user presses "push" button
+- push wrapper task is launched
+- push wrapper adds self to GBAskPass shared instance as a client
+- push wrapper launches the actual push task with askpass client id
+- if push task needs a username or password, it contacts GBAskPass which notifies push wrapper
+- now push wrapper can respond with a data or present UI to do so
+- when the data is ready, push wrapper tells GBAskPass what value to return (GBAskPass stores a dictionary of values per client id and sends them to remote clients when they ask)
+- if the push wrapper asks user for credentials, it then stores them in the keychain.
+- when push task finishes with an authentication error, push wrapper presents a login UI with an error message.
+- if user cancels authentication, push wrapper will ignore the result.
+- what to do with autofetch? Overall behaviour is the same as with manual operation, but if the user cancelled authentication, then remember not to ask it again during lifetime of the process. (But still try to use keychain data.)
+
+Steps to implement:
+
+1. GBAskPassServer.
+2. Client target which should always be compiled and bundled with the main application.
+3. Target should contact GBAskPass server which displays simple prompt.
+4. GBAuthenticatedTask class which acts as a wrapper for ls-remote/push/pull/fetch tasks.
+5. Keychain support in GBAuthenticatedTask.
+6. Also: refactor OATask to know nothing about askpass and keychain, but use environment property to customize the environment.
+

@@ -6,6 +6,7 @@
 #import "GBPromptController.h"
 #import "GBLicenseController.h"
 #import "GBSidebarController.h"
+#import "GBAskPassServer.h"
 
 #import "NSFileManager+OAFileManagerHelpers.h"
 #import "NSWindowController+OAWindowControllerHelpers.h"
@@ -111,6 +112,8 @@
 
 - (void) applicationDidFinishLaunching:(NSNotification*) aNotification
 {
+  [GBAskPassServer sharedServer]; // preload the server
+  
   if (NO)
   {
     NSError* err = nil;

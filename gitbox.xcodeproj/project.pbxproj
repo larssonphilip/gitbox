@@ -95,6 +95,9 @@
 		2031BB9F12A85646008CC337 /* OABlockQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 2031BB9D12A85646008CC337 /* OABlockQueue.m */; };
 		2031BD6D12A8DC61008CC337 /* git-placeholder.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 2031BD6C12A8DC61008CC337 /* git-placeholder.bundle */; };
 		2031BD6E12A8DC61008CC337 /* git-placeholder.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 2031BD6C12A8DC61008CC337 /* git-placeholder.bundle */; };
+		20330BFC13636D4F006B2457 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20330BFB13636D4F006B2457 /* Foundation.framework */; };
+		20330BFF13636D4F006B2457 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 20330BFE13636D4F006B2457 /* main.m */; };
+		20330C0A136372CB006B2457 /* GBAskPassServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 20E698DA13635AE8000A3A6F /* GBAskPassServer.m */; };
 		2035632F11D3B57800965765 /* GBLightScroller.m in Sources */ = {isa = PBXBuildFile; fileRef = 2035632E11D3B57800965765 /* GBLightScroller.m */; };
 		2035634E11D3BCB100965765 /* CGContext+OACGContextHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 2035634D11D3BCB100965765 /* CGContext+OACGContextHelpers.m */; };
 		2035639E11D3C14C00965765 /* GBLightScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2035639D11D3C14C00965765 /* GBLightScrollView.m */; };
@@ -342,6 +345,8 @@
 		20DD4DC3134B4F7300E6E6B7 /* NSObject+OAResponderChain.m in Sources */ = {isa = PBXBuildFile; fileRef = 20DD4DC2134B4F7300E6E6B7 /* NSObject+OAResponderChain.m */; };
 		20E698D61360C0A4000A3A6F /* GBAuthViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 20E698D51360C0A4000A3A6F /* GBAuthViewController.xib */; };
 		20E698D71360C0A4000A3A6F /* GBAuthViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 20E698D51360C0A4000A3A6F /* GBAuthViewController.xib */; };
+		20E698DB13635AE8000A3A6F /* GBAskPassServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 20E698DA13635AE8000A3A6F /* GBAskPassServer.m */; };
+		20E698DC13635AE8000A3A6F /* GBAskPassServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 20E698DA13635AE8000A3A6F /* GBAskPassServer.m */; };
 		20EA6FD0131B0EB300B97430 /* OAPropertyListRepresentation.m in Sources */ = {isa = PBXBuildFile; fileRef = 20EA6FCF131B0EB300B97430 /* OAPropertyListRepresentation.m */; };
 		20EA6FD1131B0EB300B97430 /* OAPropertyListRepresentation.m in Sources */ = {isa = PBXBuildFile; fileRef = 20EA6FCF131B0EB300B97430 /* OAPropertyListRepresentation.m */; };
 		20EF88D712E34F9300F3438A /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20EF88D612E34F9300F3438A /* Quartz.framework */; };
@@ -358,6 +363,20 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		20330C0613636D5E006B2457 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2A37F4A9FDCFA73011CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 20330BF813636D4F006B2457;
+			remoteInfo = askpass;
+		};
+		20330C0813636D64006B2457 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2A37F4A9FDCFA73011CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 20330BF813636D4F006B2457;
+			remoteInfo = askpass;
+		};
 		2057F0E511ACF17C009EDF2F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 2A37F4A9FDCFA73011CA2CEA /* Project object */;
@@ -368,6 +387,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		20330BF713636D4F006B2457 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
 		2057EF8D11ABE63F009EDF2F /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -474,6 +502,10 @@
 		2031BD0012A8CECD008CC337 /* make_hard_links.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = make_hard_links.rb; sourceTree = "<group>"; };
 		2031BD61133E70FD009D5ABB /* GBCommonPrefix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBCommonPrefix.h; sourceTree = "<group>"; };
 		2031BD6C12A8DC61008CC337 /* git-placeholder.bundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "git-placeholder.bundle"; sourceTree = "<group>"; };
+		20330BF913636D4F006B2457 /* askpass */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = askpass; sourceTree = BUILT_PRODUCTS_DIR; };
+		20330BFB13636D4F006B2457 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		20330BFE13636D4F006B2457 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		20330C0113636D4F006B2457 /* askpass-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "askpass-Prefix.pch"; sourceTree = "<group>"; };
 		2035632D11D3B57800965765 /* GBLightScroller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBLightScroller.h; sourceTree = "<group>"; };
 		2035632E11D3B57800965765 /* GBLightScroller.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBLightScroller.m; sourceTree = "<group>"; };
 		2035634C11D3BCB100965765 /* CGContext+OACGContextHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CGContext+OACGContextHelpers.h"; sourceTree = "<group>"; };
@@ -702,6 +734,8 @@
 		20DD4DC1134B4F7300E6E6B7 /* NSObject+OAResponderChain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+OAResponderChain.h"; sourceTree = "<group>"; };
 		20DD4DC2134B4F7300E6E6B7 /* NSObject+OAResponderChain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+OAResponderChain.m"; sourceTree = "<group>"; };
 		20E698D51360C0A4000A3A6F /* GBAuthViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GBAuthViewController.xib; sourceTree = "<group>"; };
+		20E698D913635AE8000A3A6F /* GBAskPassServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBAskPassServer.h; sourceTree = "<group>"; };
+		20E698DA13635AE8000A3A6F /* GBAskPassServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBAskPassServer.m; sourceTree = "<group>"; };
 		20E7B6EC1303620F00CB6732 /* GBMainWindowItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBMainWindowItem.h; sourceTree = "<group>"; };
 		20EA6FCB131B0CBA00B97430 /* OAPropertyListRepresentation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAPropertyListRepresentation.h; sourceTree = "<group>"; };
 		20EA6FCF131B0EB300B97430 /* OAPropertyListRepresentation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAPropertyListRepresentation.m; sourceTree = "<group>"; };
@@ -721,6 +755,14 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		20330BF613636D4F006B2457 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				20330BFC13636D4F006B2457 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		20915F2912874D2A005E0D82 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -782,6 +824,7 @@
 			children = (
 				20586A7C12FD4FAD00729DB1 /* Gitbox.app */,
 				20586A7E12FD4FAD00729DB1 /* Gitbox.app */,
+				20330BF913636D4F006B2457 /* askpass */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -800,6 +843,24 @@
 				2030C65B128C98C9005F751C /* OAObfuscatedLicenseCheck.h */,
 			);
 			name = License;
+			sourceTree = "<group>";
+		};
+		20330BFD13636D4F006B2457 /* askpass */ = {
+			isa = PBXGroup;
+			children = (
+				20330BFE13636D4F006B2457 /* main.m */,
+				20330C0013636D4F006B2457 /* Supporting Files */,
+			);
+			name = askpass;
+			path = ../askpass;
+			sourceTree = "<group>";
+		};
+		20330C0013636D4F006B2457 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				20330C0113636D4F006B2457 /* askpass-Prefix.pch */,
+			);
+			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		2038F30811952FAE0087CE37 /* Models */ = {
@@ -1265,6 +1326,16 @@
 			name = "Prompts and aux window controllers";
 			sourceTree = "<group>";
 		};
+		20E698D813635AB9000A3A6F /* Authentication */ = {
+			isa = PBXGroup;
+			children = (
+				20E698D913635AE8000A3A6F /* GBAskPassServer.h */,
+				20E698DA13635AE8000A3A6F /* GBAskPassServer.m */,
+				20330BFD13636D4F006B2457 /* askpass */,
+			);
+			name = Authentication;
+			sourceTree = "<group>";
+		};
 		2A37F4AAFDCFA73011CA2CEA /* gitbox */ = {
 			isa = PBXGroup;
 			children = (
@@ -1284,6 +1355,7 @@
 			isa = PBXGroup;
 			children = (
 				201E02DA11EA1ED3007E4420 /* License */,
+				20E698D813635AB9000A3A6F /* Authentication */,
 				2038F6C611A030FF0087CE37 /* Tasks */,
 				2038F30811952FAE0087CE37 /* Models */,
 				206CAC72122EB619009284FE /* Model Controllers */,
@@ -1331,6 +1403,7 @@
 			isa = PBXGroup;
 			children = (
 				1058C7A6FEA54F5311CA2CBB /* Linked Frameworks */,
+				20330BFB13636D4F006B2457 /* Foundation.framework */,
 				1058C7A8FEA54F5311CA2CBB /* Other Frameworks */,
 			);
 			name = Frameworks;
@@ -1339,6 +1412,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		20330BF813636D4F006B2457 /* askpass */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 20330C0513636D4F006B2457 /* Build configuration list for PBXNativeTarget "askpass" */;
+			buildPhases = (
+				20330BF513636D4F006B2457 /* Sources */,
+				20330BF613636D4F006B2457 /* Frameworks */,
+				20330BF713636D4F006B2457 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = askpass;
+			productName = askpass;
+			productReference = 20330BF913636D4F006B2457 /* askpass */;
+			productType = "com.apple.product-type.tool";
+		};
 		20915EBA12874D2A005E0D82 /* appstore */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 20915F3112874D2A005E0D82 /* Build configuration list for PBXNativeTarget "appstore" */;
@@ -1351,6 +1441,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				20330C0913636D64006B2457 /* PBXTargetDependency */,
 			);
 			name = appstore;
 			productInstallPath = "$(HOME)/Applications";
@@ -1371,6 +1462,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				20330C0713636D5E006B2457 /* PBXTargetDependency */,
 			);
 			name = gitbox;
 			productInstallPath = "$(HOME)/Applications";
@@ -1402,6 +1494,7 @@
 				8D15AC270486D014006FF6A4 /* gitbox */,
 				2057F0DB11ACF16B009EDF2F /* Sparkle */,
 				20915EBA12874D2A005E0D82 /* appstore */,
+				20330BF813636D4F006B2457 /* askpass */,
 			);
 		};
 /* End PBXProject section */
@@ -1537,6 +1630,15 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		20330BF513636D4F006B2457 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				20330BFF13636D4F006B2457 /* main.m in Sources */,
+				20330C0A136372CB006B2457 /* GBAskPassServer.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		20915EDA12874D2A005E0D82 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1657,6 +1759,7 @@
 				20AAFAC91347B44300A8E31F /* OABlockOperations.m in Sources */,
 				20AAFACD1347CD9700A8E31F /* OABlockTable.m in Sources */,
 				201E27441350C26F00DF6D94 /* OAPseudoTTY.m in Sources */,
+				20E698DC13635AE8000A3A6F /* GBAskPassServer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1781,12 +1884,23 @@
 				20AAFACC1347CD9700A8E31F /* OABlockTable.m in Sources */,
 				20DD4DC3134B4F7300E6E6B7 /* NSObject+OAResponderChain.m in Sources */,
 				201E27431350C26F00DF6D94 /* OAPseudoTTY.m in Sources */,
+				20E698DB13635AE8000A3A6F /* GBAskPassServer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		20330C0713636D5E006B2457 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 20330BF813636D4F006B2457 /* askpass */;
+			targetProxy = 20330C0613636D5E006B2457 /* PBXContainerItemProxy */;
+		};
+		20330C0913636D64006B2457 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 20330BF813636D4F006B2457 /* askpass */;
+			targetProxy = 20330C0813636D64006B2457 /* PBXContainerItemProxy */;
+		};
 		2057F0E611ACF17C009EDF2F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 8D15AC270486D014006FF6A4 /* gitbox */;
@@ -1806,6 +1920,41 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		20330C0313636D4F006B2457 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "askpass/askpass-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		20330C0413636D4F006B2457 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "askpass/askpass-Prefix.pch";
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
 		2057F0DC11ACF16B009EDF2F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1956,6 +2105,14 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		20330C0513636D4F006B2457 /* Build configuration list for PBXNativeTarget "askpass" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				20330C0313636D4F006B2457 /* Debug */,
+				20330C0413636D4F006B2457 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		2057F0E411ACF174009EDF2F /* Build configuration list for PBXAggregateTarget "Sparkle" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
