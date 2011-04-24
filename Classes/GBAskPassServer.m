@@ -1,7 +1,7 @@
 
 #import "GBAskPassServer.h"
 
-NSString* const GBAskPassSharedServerName = @"GBAskPassSharedServer";
+NSString* const GBAskPassServerNameKey = @"GBAskPassServerName";
 NSString* const GBAskPassClientIdKey = @"GBAskPassClientId";
 
 @interface GBAskPassServer () <NSConnectionDelegate>
@@ -32,13 +32,8 @@ NSString* const GBAskPassClientIdKey = @"GBAskPassClientId";
 {
   static id volatile instance = nil;
 	static dispatch_once_t once = 0;
-	dispatch_once( &once, ^{ instance = [[self alloc] initWithName:GBAskPassSharedServerName]; });
+	dispatch_once( &once, ^{ instance = [[self alloc] init]; });
 	return instance;
-}
-
-+ (NSDistantObject<GBAskPassServer>*) sharedRemoteServer
-{
-  return [self remoteServerWithName:GBAskPassSharedServerName];
 }
 
 + (NSDistantObject<GBAskPassServer>*) remoteServerWithName:(NSString*)aName
@@ -49,12 +44,11 @@ NSString* const GBAskPassClientIdKey = @"GBAskPassClientId";
   return (NSDistantObject<GBAskPassServer>*)distantObject;
 }
 
-- (id)initWithName:(NSString*)aName
+- (id)init
 {
-  if (!aName) return nil;
   if ((self = [super init]))
   {
-    self.name = aName;
+    self.name = [NSString stringWithFormat:@"GBAskPassServer-%d-%p", [[NSProcessInfo processInfo] processIdentifier], self];
     self.clients = [NSCountedSet set];
     self.resultsByClientId = [NSMutableDictionary dictionary];
     // note: creating a retain cycle, call -invalidate to break it.
@@ -107,6 +101,7 @@ NSString* const GBAskPassClientIdKey = @"GBAskPassClientId";
   // A client already set a result: return it and forget it.
   if (preparedResult)
   {
+    //NSLog(@"DEBUG: returning result %@", preparedResult);
     [[preparedResult retain] autorelease];
     [self.resultsByClientId removeObjectForKey:clientId];
     return preparedResult;
@@ -122,12 +117,30 @@ NSString* const GBAskPassClientIdKey = @"GBAskPassClientId";
     }
   }
   
+//  #warning Temp debug code  
+//  double delayInSeconds = 2.0;
+//  dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+//  dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+//    NSString* r = [NSString stringWithFormat:@"Reply to %@", prompt];
+//    NSLog(@"DEBUG: setting result %@", r);
+//    [self setResult:r forClientId:clientId];
+//  });
+  
   return nil;
 }
 
 - (NSString*) echo:(NSString*)string
 {
   return string;
+}
+
+- (NSString*) description
+{
+  return [NSString stringWithFormat:@"<GBAskPassServer:%p name:%@ clients:%d resultsByClientId:%@>", 
+          self, 
+          self.name, 
+          [self.clients count], 
+          self.resultsByClientId];
 }
 
 @end

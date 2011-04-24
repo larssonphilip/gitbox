@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 
-extern NSString* const GBAskPassSharedServerName;
+extern NSString* const GBAskPassServerNameKey;
 extern NSString* const GBAskPassClientIdKey;
 
 // Protocol is declared for use in the remote process.
@@ -23,10 +23,8 @@ extern NSString* const GBAskPassClientIdKey;
 @property(nonatomic, copy, readonly) NSString* name;
 
 + (GBAskPassServer*) sharedServer; // API for serving process
-+ (NSDistantObject<GBAskPassServer>*) sharedRemoteServer; // API for remote client process
 + (NSDistantObject<GBAskPassServer>*) remoteServerWithName:(NSString*)aName;
 
-- (id) initWithName:(NSString*)aName;
 - (void) invalidate;
 
 - (void) addClient:(id<GBAskPassServerClient>)aClient;

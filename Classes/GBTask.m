@@ -18,6 +18,12 @@
   return task;
 }
 
+- (id) copyWithZone:(NSZone *)zone
+{
+  GBTask* newTask = [super copyWithZone:zone];
+  newTask.repository = self.repository;
+  return newTask;
+}
 
 
 # pragma mark Executables

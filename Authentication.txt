@@ -40,14 +40,14 @@ Workflow example:
 - if the push wrapper asks user for credentials, it then stores them in the keychain.
 - when push task finishes with an authentication error, push wrapper presents a login UI with an error message.
 - if user cancels authentication, push wrapper will ignore the result.
-- what to do with autofetch? Overall behaviour is the same as with manual operation, but if the user cancelled authentication, then remember not to ask it again during lifetime of the process. (But still try to use keychain data.)
+- what to do with autofetch? Overall behaviour is the same as with manual operation, but if the user cancelled authentication, then remember not to ask it again during lifetime of the process. (But still try to use keychain data when it becomes available.)
 
 Steps to implement:
 
-1. GBAskPassServer.
-2. Client target which should always be compiled and bundled with the main application.
-3. Target should contact GBAskPass server which displays simple prompt.
-4. GBAuthenticatedTask class which acts as a wrapper for ls-remote/push/pull/fetch tasks.
-5. Keychain support in GBAuthenticatedTask.
-6. Also: refactor OATask to know nothing about askpass and keychain, but use environment property to customize the environment.
++ 1. GBAskPassServer.
++ 2. Client target which should always be compiled and bundled with the main application.
+- 3. Target should contact GBAskPass server which displays a simple prompt.
+- 4. GBAskPassController class which acts as a wrapper for ls-remote/push/pull/fetch tasks.
+- 5. Keychain support in GBAskPassController.
+- 6. Also: refactor OATask to know nothing about askpass and keychain, but use environment property to customize the environment.
 

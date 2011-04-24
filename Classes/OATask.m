@@ -123,7 +123,21 @@ NSString* OATaskDidDeallocateNotification  = @"OATaskDidDeallocateNotification";
   return self;
 }
 
-
+- (id) copyWithZone:(NSZone *)zone
+{
+  OATask* newTask = [[[self class] alloc] init];
+  
+  newTask.executableName = self.executableName;
+  newTask.launchPath = self.launchPath;
+  newTask.currentDirectoryPath = self.currentDirectoryPath;
+  newTask.arguments = [[self.arguments copy] autorelease];
+  newTask.realTime = [self isRealTime];
+  newTask.interactive = [self isInteractive];
+  newTask.dispatchQueue = self.dispatchQueue;
+  newTask.didTerminateBlock = self.didTerminateBlock;
+  newTask.didReceiveDataBlock = self.didReceiveDataBlock;
+  return newTask;
+}
 
 
 #pragma mark Class Methods

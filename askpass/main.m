@@ -10,13 +10,16 @@ int main (int argc, const char * argv[])
   [NSRunLoop currentRunLoop];
   
   NSString* promptString = nil;
-  if (argc > 0)
+  if (argc >= 2) // the 0 index is for the program name
   {
-    promptString = [NSString stringWithCString:argv[0] encoding:NSUTF8StringEncoding];
+    promptString = [NSString stringWithCString:argv[1] encoding:NSUTF8StringEncoding];
   }
+  
+  NSLog(@"Gitbox askpass: prompt = '%@'", promptString);
   
   NSDictionary* environment = [[NSProcessInfo processInfo] environment];
   
+  NSString* serverName = [environment objectForKey:GBAskPassServerNameKey];
   NSString* clientId = [environment objectForKey:GBAskPassClientIdKey];
   
   if (!promptString || [promptString length] == 0)
@@ -26,20 +29,27 @@ int main (int argc, const char * argv[])
     return -1;
   }
 
-  if (!clientId || [clientId length] == 0)
+  if (!serverName || [serverName length] == 0)
   {
-    NSLog(@"Gitbox askpass: clientId is nil or empty.");
+    NSLog(@"Gitbox askpass: %@ is nil or empty.", GBAskPassServerNameKey);
     [pool drain];
     return -2;
   }
   
-  NSDistantObject<GBAskPassServer>* server = [GBAskPassServer sharedRemoteServer];
+  if (!clientId || [clientId length] == 0)
+  {
+    NSLog(@"Gitbox askpass: %@ is nil or empty.", GBAskPassClientIdKey);
+    [pool drain];
+    return -3;
+  }
+  
+  NSDistantObject<GBAskPassServer>* server = [GBAskPassServer remoteServerWithName:serverName];
   
   if (!server)
   {
     NSLog(@"Gitbox askpass: server is nil.");
     [pool drain];
-    return -3;
+    return -4;
   }
   
   int waittime = 0;
@@ -55,7 +65,7 @@ int main (int argc, const char * argv[])
       {
         NSLog(@"Gitbox askpass: cannot get char* UTF-8 string for result: %@.", result);
         [pool drain];
-        return -4;
+        return -5;
       }
       printf("%s\n", buffer);
       [pool drain];

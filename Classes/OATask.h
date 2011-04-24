@@ -38,7 +38,7 @@ extern NSString* OATaskDidTerminateNotification;
 extern NSString* OATaskDidDeallocateNotification;
 
 
-@interface OATask : NSObject
+@interface OATask : NSObject<NSCopying>
 
 
 @property(nonatomic, assign) BOOL skipKeychainPassword;
