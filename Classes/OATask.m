@@ -339,7 +339,6 @@ NSString* OATaskDidDeallocateNotification  = @"OATaskDidDeallocateNotification";
     [self.nstask waitUntilExit];
 
     // clean up file descriptors
-    [nstask release]; nstask = nil;
     [standardOutputHandleOrPipe release]; standardOutputHandleOrPipe = nil;
     [standardErrorHandleOrPipe release]; standardErrorHandleOrPipe = nil;
     [standardOutputFileHandle release]; standardOutputFileHandle = nil;
@@ -356,6 +355,9 @@ NSString* OATaskDidDeallocateNotification  = @"OATaskDidDeallocateNotification";
       self.dispatchQueue = nil;
       
       [[NSNotificationCenter defaultCenter] postNotificationName:OATaskDidTerminateNotification object:self];
+      
+      // Release nstask only after listeners got a chance to read terminationStatus.
+      [nstask release]; nstask = nil;
       
       // Ping the NSApp event queue to force it to release pipes and task.
       NSEvent* pingEvent = [NSEvent otherEventWithType:NSApplicationDefined 
