@@ -100,6 +100,10 @@ extern NSString* OATaskDidDeallocateNotification;
 // A full path to system executable (e.g. "opendiff") using 'which' and a list of well-known locations. Returns nil if no path is found.
 + (NSString*) systemPathForExecutable:(NSString*)executable;
 
+// Add/modify environment variables 
+- (void) setEnvironmentValue:(NSString*)value forKey:(NSString*)key;
+- (void) mergeEnvironment:(NSDictionary*)dict;
+
 // Launches the task asynchronously
 - (void) launch;
 

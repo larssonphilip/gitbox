@@ -47,7 +47,7 @@ int main (int argc, const char * argv[])
   
   if (!server)
   {
-    NSLog(@"Gitbox askpass: server is nil.");
+    NSLog(@"Gitbox askpass: server is nil. Name: %@; client ID: %@", serverName, clientId);
     [pool drain];
     return -4;
   }
@@ -71,8 +71,7 @@ int main (int argc, const char * argv[])
       [pool drain];
       return 0;
     }
-    
-    sleep(1);
+    usleep(500000000); // 0.5 sec
     waittime++;
   }
   

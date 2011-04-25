@@ -39,7 +39,7 @@ Workflow example:
 - when the data is ready, push wrapper tells GBAskPass what value to return (GBAskPass stores a dictionary of values per client id and sends them to remote clients when they ask)
 - if the push wrapper asks user for credentials, it then stores them in the keychain.
 - when push task finishes with an authentication error, push wrapper presents a login UI with an error message.
-- if user cancels authentication, push wrapper will ignore the result.
+- if the user cancels authentication, push wrapper will ignore the result.
 - what to do with autofetch? Overall behaviour is the same as with manual operation, but if the user cancelled authentication, then remember not to ask it again during lifetime of the process. (But still try to use keychain data when it becomes available.)
 
 Steps to implement:

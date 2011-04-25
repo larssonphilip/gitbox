@@ -15,6 +15,9 @@ NSString* OATaskDidDeallocateNotification  = @"OATaskDidDeallocateNotification";
 
 @interface OATask ()
 
+// Additional environment values merged in to the inherited environment
+@property(nonatomic, retain) NSMutableDictionary* additionalEnvironment;
+
 // Private NSTask doing all the dirty work.
 @property(nonatomic, retain) NSTask* nstask;
 
@@ -63,6 +66,7 @@ NSString* OATaskDidDeallocateNotification  = @"OATaskDidDeallocateNotification";
 @synthesize isWaiting;
 @dynamic terminationStatus;
 
+@synthesize additionalEnvironment;
 @synthesize nstask;
 @synthesize originDispatchQueue;
 @synthesize isLaunched;
@@ -103,6 +107,7 @@ NSString* OATaskDidDeallocateNotification  = @"OATaskDidDeallocateNotification";
   [didTerminateBlock release]; didTerminateBlock = nil;
   [didReceiveDataBlock release]; didReceiveDataBlock = nil;
   
+  [additionalEnvironment release]; additionalEnvironment = nil;
   [nstask release]; nstask = nil;
   if (originDispatchQueue) { dispatch_release(originDispatchQueue); originDispatchQueue = nil; };
   
@@ -136,6 +141,7 @@ NSString* OATaskDidDeallocateNotification  = @"OATaskDidDeallocateNotification";
   newTask.dispatchQueue = self.dispatchQueue;
   newTask.didTerminateBlock = self.didTerminateBlock;
   newTask.didReceiveDataBlock = self.didReceiveDataBlock;
+  newTask.additionalEnvironment = [[self.additionalEnvironment mutableCopy] autorelease];
   return newTask;
 }
 
@@ -255,6 +261,39 @@ NSString* OATaskDidDeallocateNotification  = @"OATaskDidDeallocateNotification";
   originDispatchQueue = anOriginDispatchQueue;
   if (originDispatchQueue) dispatch_retain(originDispatchQueue);
 }
+
+// Add/modify environment variables 
+- (void) setEnvironmentValue:(NSString*)value forKey:(NSString*)key
+{
+  if (!key) return;
+  
+  if (!self.additionalEnvironment)
+  {
+    self.additionalEnvironment = [NSMutableDictionary dictionary];
+  }
+  
+  if (value)
+  {
+    [self.additionalEnvironment setObject:value forKey:key];
+  }
+  else
+  {
+    [self.additionalEnvironment removeObjectForKey:key];
+  }
+}
+
+- (void) mergeEnvironment:(NSDictionary*)dict
+{
+  if (!self.additionalEnvironment)
+  {
+    self.additionalEnvironment = [NSMutableDictionary dictionary];
+  }
+  for (NSString* key in dict)
+  {
+    [self.additionalEnvironment setObject:[dict objectForKey:key] forKey:key];
+  }
+}
+
 
 
 
@@ -577,6 +616,8 @@ NSString* OATaskDidDeallocateNotification  = @"OATaskDidDeallocateNotification";
   if (!path) path = binPath;
   else path = [path stringByAppendingFormat:@":%@", binPath];
   [environment setObject:path forKey:@"PATH"];
+  
+  // TODO: remove obsolete askpass.rb when GBAskPassController is finished.
   if (![self isInteractive])
   {
     NSString* askPass = [[NSBundle mainBundle] pathForResource:@"askpass" ofType:@"rb"];
@@ -595,6 +636,7 @@ NSString* OATaskDidDeallocateNotification  = @"OATaskDidDeallocateNotification";
   [environment setObject:locale forKey:@"LC_TIME"];
   [environment setObject:locale forKey:@"LC_ALL"];
   
+  // TODO: remove obsolete askpass.rb when GBAskPassController is finished.
   if (![self isInteractive])
   {
     if (!self.skipKeychainPassword)
@@ -607,6 +649,12 @@ NSString* OATaskDidDeallocateNotification  = @"OATaskDidDeallocateNotification";
       [environment setObject:self.keychainPasswordName forKey:@"GITBOX_KEYCHAIN_NAME"];
     }
   }
+  
+  for (NSString* key in self.additionalEnvironment)
+  {
+    [environment setObject:[self.additionalEnvironment objectForKey:key] forKey:key];
+  }
+  
   environment = [self configureEnvironment:environment];
   
   if ([self isInteractive])

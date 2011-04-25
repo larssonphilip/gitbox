@@ -154,6 +154,7 @@ Gitbox 1.3 Enhancements:
 - refactoring: history: highlight difference by using two SHA-1 and traversing loaded items; later tag all the commits for nice tree-like graphics
 
 - maybe try to replace pull with merge+fetch+merge and perform fetch on another queue to make staging work independently (also for push)
+- [NSApp requestUserAttention:] when new commits are fetched (automatically or not).
 
 
 Gitbox 1.3 Bug fixes:

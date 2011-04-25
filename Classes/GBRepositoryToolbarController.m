@@ -670,8 +670,7 @@
   ctrl.finishBlock = ^{
     [self.repositoryController createAndSelectRemoteBranchWithName:ctrl.value remote:remote];
   };
-  [ctrl runSheetInWindow:[self window]];
-  
+  [ctrl runSheetInWindow:[self window]]; 
 }
 
 
