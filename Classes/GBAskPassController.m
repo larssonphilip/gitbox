@@ -87,7 +87,7 @@
     self.configurationBlock(newTask);
     task = [newTask retain];
     
-    NSString* pathToAskpass = [[NSBundle mainBundle] pathForResource:@"askpass" ofType:nil];
+    NSString* pathToAskpass = [[NSBundle mainBundle] executablePath]; // launching the same executable which will act as askpass with GBAskPassServerNameKey
     
     [task mergeEnvironment:[NSDictionary dictionaryWithObjectsAndKeys:
                             pathToAskpass, @"GIT_ASKPASS",

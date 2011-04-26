@@ -318,6 +318,9 @@
 		20AAFAC91347B44300A8E31F /* OABlockOperations.m in Sources */ = {isa = PBXBuildFile; fileRef = 20AAFAC71347B44300A8E31F /* OABlockOperations.m */; };
 		20AAFACC1347CD9700A8E31F /* OABlockTable.m in Sources */ = {isa = PBXBuildFile; fileRef = 20AAFACB1347CD9700A8E31F /* OABlockTable.m */; };
 		20AAFACD1347CD9700A8E31F /* OABlockTable.m in Sources */ = {isa = PBXBuildFile; fileRef = 20AAFACB1347CD9700A8E31F /* OABlockTable.m */; };
+		20AC938F1367473800FEACF9 /* GBAskPass.m in Sources */ = {isa = PBXBuildFile; fileRef = 20AC938E1367473800FEACF9 /* GBAskPass.m */; };
+		20AC93901367473800FEACF9 /* GBAskPass.m in Sources */ = {isa = PBXBuildFile; fileRef = 20AC938E1367473800FEACF9 /* GBAskPass.m */; };
+		20AC93911367481600FEACF9 /* GBAskPass.m in Sources */ = {isa = PBXBuildFile; fileRef = 20AC938E1367473800FEACF9 /* GBAskPass.m */; };
 		20B1621211944C0F00A709CF /* NSFileManager+OAFileManagerHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B1621111944C0F00A709CF /* NSFileManager+OAFileManagerHelpers.m */; };
 		20B399FA11B7F30600D6A3C4 /* GBLocalRefsTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B399F911B7F30600D6A3C4 /* GBLocalRefsTask.m */; };
 		20B8B70C11A489F1006D6442 /* GBChangesBaseTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B8B70B11A489F1006D6442 /* GBChangesBaseTask.m */; };
@@ -694,6 +697,8 @@
 		20AAFAC71347B44300A8E31F /* OABlockOperations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OABlockOperations.m; sourceTree = "<group>"; };
 		20AAFACA1347CD9700A8E31F /* OABlockTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OABlockTable.h; sourceTree = "<group>"; };
 		20AAFACB1347CD9700A8E31F /* OABlockTable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OABlockTable.m; sourceTree = "<group>"; };
+		20AC938D1367473800FEACF9 /* GBAskPass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBAskPass.h; sourceTree = "<group>"; };
+		20AC938E1367473800FEACF9 /* GBAskPass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBAskPass.m; sourceTree = "<group>"; };
 		20B1621011944C0F00A709CF /* NSFileManager+OAFileManagerHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSFileManager+OAFileManagerHelpers.h"; sourceTree = "<group>"; };
 		20B1621111944C0F00A709CF /* NSFileManager+OAFileManagerHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSFileManager+OAFileManagerHelpers.m"; sourceTree = "<group>"; };
 		20B399F811B7F30600D6A3C4 /* GBLocalRefsTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBLocalRefsTask.h; sourceTree = "<group>"; };
@@ -1348,6 +1353,8 @@
 			isa = PBXGroup;
 			children = (
 				20330BFD13636D4F006B2457 /* askpass */,
+				20AC938D1367473800FEACF9 /* GBAskPass.h */,
+				20AC938E1367473800FEACF9 /* GBAskPass.m */,
 				20E698D913635AE8000A3A6F /* GBAskPassServer.h */,
 				20E698DA13635AE8000A3A6F /* GBAskPassServer.m */,
 				20330C0D13646A25006B2457 /* GBAskPassController.h */,
@@ -1697,6 +1704,7 @@
 			files = (
 				20330BFF13636D4F006B2457 /* main.m in Sources */,
 				20330C0A136372CB006B2457 /* GBAskPassServer.m in Sources */,
+				20AC93911367481600FEACF9 /* GBAskPass.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1824,6 +1832,7 @@
 				20330C1013646A25006B2457 /* GBAskPassController.m in Sources */,
 				20330C141365B72A006B2457 /* GBAskPassBooleanPromptController.m in Sources */,
 				203FF1D01365C2ED000624D6 /* GBAskPassCredentialsController.m in Sources */,
+				20AC93901367473800FEACF9 /* GBAskPass.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1952,6 +1961,7 @@
 				20330C0F13646A25006B2457 /* GBAskPassController.m in Sources */,
 				20330C131365B72A006B2457 /* GBAskPassBooleanPromptController.m in Sources */,
 				203FF1CF1365C2ED000624D6 /* GBAskPassCredentialsController.m in Sources */,
+				20AC938F1367473800FEACF9 /* GBAskPass.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
