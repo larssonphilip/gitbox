@@ -15,7 +15,7 @@ int main (int argc, const char * argv[])
     promptString = [NSString stringWithCString:argv[1] encoding:NSUTF8StringEncoding];
   }
   
-  NSLog(@"Gitbox askpass: prompt = '%@'", promptString);
+  //NSLog(@"Gitbox askpass: prompt = '%@'", promptString);
   
   NSDictionary* environment = [[NSProcessInfo processInfo] environment];
   
@@ -71,7 +71,8 @@ int main (int argc, const char * argv[])
       [pool drain];
       return 0;
     }
-    usleep(500000000); // 0.5 sec
+    //NSLog(@"Gitbox askpass: waiting with prompt %@", promptString);
+    sleep(1);
     waittime++;
   }
   

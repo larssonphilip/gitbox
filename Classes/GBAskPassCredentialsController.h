@@ -7,8 +7,8 @@
 @property(nonatomic, copy) NSString* username;
 @property(nonatomic, copy) NSString* password;
 
-+ (id) controllerWithAddress:(NSString*)addr callback:(void(^)(BOOL))callback;
-+ (id) passwordOnlyControllerWithAddress:(NSString*)addr callback:(void(^)(BOOL))callback;
++ (id) controller;
++ (id) passwordOnlyController;
 
 // NIB API:
 

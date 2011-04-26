@@ -517,7 +517,7 @@
 		20330BFE13636D4F006B2457 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		20330C0113636D4F006B2457 /* askpass-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "askpass-Prefix.pch"; sourceTree = "<group>"; };
 		20330C0D13646A25006B2457 /* GBAskPassController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBAskPassController.h; sourceTree = "<group>"; };
-		20330C0E13646A25006B2457 /* GBAskPassController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBAskPassController.m; sourceTree = "<group>"; };
+		20330C0E13646A25006B2457 /* GBAskPassController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBAskPassController.m; sourceTree = "<group>"; wrapsLines = 1; };
 		20330C111365B729006B2457 /* GBAskPassBooleanPromptController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBAskPassBooleanPromptController.h; sourceTree = "<group>"; };
 		20330C121365B72A006B2457 /* GBAskPassBooleanPromptController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBAskPassBooleanPromptController.m; sourceTree = "<group>"; };
 		20330C151365B754006B2457 /* GBAskPassBooleanPromptController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GBAskPassBooleanPromptController.xib; sourceTree = "<group>"; };

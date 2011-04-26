@@ -6,7 +6,7 @@
 @property(nonatomic, copy) NSString* address;
 @property(nonatomic, copy) NSString* question;
 
-+ (id) controllerWithAddress:(NSString*)addr question:(NSString*)question callback:(void(^)(BOOL))callback;
++ (id) controller;
 
 // NIB API:
 

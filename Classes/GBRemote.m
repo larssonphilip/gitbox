@@ -2,6 +2,7 @@
 #import "GBRepository.h"
 #import "GBRef.h"
 #import "GBRemoteRefsTask.h"
+#import "GBAskPassController.h"
 
 #import "NSFileManager+OAFileManagerHelpers.h"
 #import "NSArray+OAArrayHelpers.h"
@@ -151,27 +152,29 @@
   self.isUpdatingRemoteBranches = YES;
   GBRemoteRefsTask* task = [GBRemoteRefsTask task];
   task.skipKeychainPassword = self.failedCommunication;
-  task.remote = self;
   task.repository = self.repository;
-  
-  [task launchWithBlock:^{
-    self.isUpdatingRemoteBranches = NO;
-    if (![task isError])
-    {
-      self.failedCommunication = NO;
-      // Do not update branches and tags, but simply tell the caller that it needs to fetch tags and branches for real.
-      self.needsFetch = [self doesNeedFetchNewBranches:task.branches andTags:task.tags];
-      
-      if (block) block();
-      
-      self.needsFetch = NO; // reset the status after the callback
-    }
-    else
-    {
-      self.failedCommunication = YES;
-      if (block) block();
-    }
+  [GBAskPassController controllerWithTask:task address:self.URLString configuration:^(GBRemoteRefsTask* aTask){
+    aTask.remote = self;
+    aTask.didTerminateBlock = ^{
+      self.isUpdatingRemoteBranches = NO;
+      if (![aTask isError])
+      {
+        self.failedCommunication = NO;
+        // Do not update branches and tags, but simply tell the caller that it needs to fetch tags and branches for real.
+        self.needsFetch = [self doesNeedFetchNewBranches:task.branches andTags:task.tags];
+        
+        if (block) block();
+        
+        self.needsFetch = NO; // reset the status after the callback
+      }
+      else
+      {
+        self.failedCommunication = YES;
+        if (block) block();
+      }
+    };
   }];
+  [task launch];
 }
 
 - (BOOL) doesNeedFetchNewBranches:(NSArray*)theBranches andTags:(NSArray*)theTags

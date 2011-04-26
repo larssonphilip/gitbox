@@ -6,7 +6,7 @@ NSString* const GBAskPassClientIdKey = @"GBAskPassClientId";
 
 @interface GBAskPassServer () <NSConnectionDelegate>
 @property(nonatomic, copy, readwrite) NSString* name;
-@property(nonatomic, retain) NSCountedSet* clients;
+@property(nonatomic, retain) NSMutableSet* clients;
 @property(nonatomic, retain) NSMutableDictionary* resultsByClientId;
 @property(nonatomic, retain) NSConnection* connection;
 @end
@@ -49,7 +49,7 @@ NSString* const GBAskPassClientIdKey = @"GBAskPassClientId";
   if ((self = [super init]))
   {
     self.name = [NSString stringWithFormat:@"GBAskPassServer-%d-%p", [[NSProcessInfo processInfo] processIdentifier], self];
-    self.clients = [NSCountedSet set];
+    self.clients = [NSMutableSet set];
     self.resultsByClientId = [NSMutableDictionary dictionary];
     // note: creating a retain cycle, call -invalidate to break it.
     self.connection = [NSConnection serviceConnectionWithName:self.name rootObject:self];
@@ -108,7 +108,7 @@ NSString* const GBAskPassClientIdKey = @"GBAskPassClientId";
   }
   
   // Client has not yet set a result. Find a client object and ask it.
-  
+  //NSLog(@"GBAskPassServer: resultForClient:%@ prompt:%@", clientId, prompt);
   for (id<GBAskPassServerClient> aClient in self.clients)
   {
     if ([[aClient askPassClientId] isEqualToString:clientId])

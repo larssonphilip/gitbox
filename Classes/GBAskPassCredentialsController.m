@@ -12,19 +12,15 @@
 @synthesize passwordField;
 
 
-+ (id) controllerWithAddress:(NSString*)addr callback:(void(^)(BOOL))callback
++ (id) controller
 {
   GBAskPassCredentialsController* ctrl = [[[self alloc] initWithWindowNibName:@"GBAskPassCredentialsController"] autorelease];
-  ctrl.address = addr;
-  ctrl.callback = callback;
   return ctrl;
 }
 
-+ (id) passwordOnlyControllerWithAddress:(NSString*)addr callback:(void(^)(BOOL))callback
++ (id) passwordOnlyController
 {
   GBAskPassCredentialsController* ctrl = [[[self alloc] initWithWindowNibName:@"GBAskPassCredentialsControllerPasswordOnly"] autorelease];
-  ctrl.address = addr;
-  ctrl.callback = callback;
   return ctrl;
 }
 

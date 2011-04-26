@@ -9,12 +9,9 @@
 @synthesize addressLabel;
 @synthesize questionLabel;
 
-+ (id) controllerWithAddress:(NSString*)addr question:(NSString*)question callback:(void(^)(BOOL))callback
++ (id) controller
 {
   GBAskPassBooleanPromptController* ctrl = [[[self alloc] initWithWindowNibName:@"GBAskPassBooleanPromptController"] autorelease];
-  ctrl.address = addr;
-  ctrl.question = question;
-  ctrl.callback = callback;
   return ctrl;
 }
 

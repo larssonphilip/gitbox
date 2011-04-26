@@ -12,6 +12,8 @@
 @property(nonatomic, copy, readwrite) NSString* failureMessage;
 @property(nonatomic, copy, readwrite) NSString* previousUsername;
 @property(nonatomic, copy, readwrite) NSString* previousPassword;
+@property(nonatomic, copy) void(^configurationBlock)(id);
+- (void) bypass;
 @end
 
 @implementation GBAskPassController
@@ -30,6 +32,7 @@
 @synthesize failureMessage;
 @synthesize previousUsername;
 @synthesize previousPassword;
+@synthesize configurationBlock;
 
 - (void) dealloc
 {
@@ -44,19 +47,15 @@
   [failureMessage release]; failureMessage = nil;
   [previousUsername release]; previousUsername = nil;
   [previousPassword release]; previousPassword = nil;
+  [configurationBlock release]; configurationBlock = nil;
   [super dealloc];
 }
 
-+ (id) controllerWithTask:(GBTask*)aTask address:(NSString*)address
-{
-  return [self controllerWithTask:aTask address:address delegate:nil];
-}
-
-+ (id) controllerWithTask:(GBTask*)aTask address:(NSString*)address delegate:(id<GBAskPassControllerDelegate>)aDelegate
++ (id) controllerWithTask:(GBTask*)aTask address:(NSString*)address configuration:(void(^)(id))configBlock;
 {
   GBAskPassController* ctrl = [[[self alloc] init] autorelease];
   ctrl.address = address;
-  ctrl.delegate = aDelegate ? aDelegate : ctrl;
+  ctrl.configurationBlock = configBlock;
   ctrl.task = aTask;
   return ctrl;
 }
@@ -67,6 +66,7 @@
   {
     self.askPassClientId = [NSString stringWithFormat:@"GBAskPassController:%p", self];
     self.delegate = self;
+    [[GBAskPassServer sharedServer] addClient:self];
   }
   return self;
 }
@@ -84,6 +84,7 @@
   
   if (newTask)
   {
+    self.configurationBlock(newTask);
     task = [newTask retain];
     
     NSString* pathToAskpass = [[NSBundle mainBundle] pathForResource:@"askpass" ofType:nil];
@@ -96,11 +97,15 @@
                             nil]];
     
     self.originalTaskBlock = task.didTerminateBlock;
+    if (!self.originalTaskBlock)
+    {
+      [NSException raise:@"GBAskPassController requires task with block" format:@"didTerminateBlock should not be nil when task is wrapped with GBAskPassController"];
+    }
+      
     task.didTerminateBlock = ^{
       if (![task isError] || self.bypassFailedAuthentication) // if no error occured or we should bypass it, simply call original block
       {
-        if (self.originalTaskBlock) self.originalTaskBlock();
-        self.originalTaskBlock = nil;
+        [self bypass];
         return;
       }
       
@@ -109,6 +114,7 @@
       //   Permission denied (publickey)
       //   fatal: Authentication failed
       
+      // TODO: get data from both STDERR and STDOUT
       NSString* output = [[task UTF8Output] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
       if ([[output lowercaseString] rangeOfString:@"permission"].length > 0 || 
           [[output lowercaseString] rangeOfString:@"authentication"].length > 0)
@@ -117,17 +123,23 @@
         self.previousUsername = self.username;
         self.previousPassword = self.password;
         
+        // reset state
+        self.username = nil;
+        self.password = nil;
+        self.booleanResponse = nil;
+        self.currentPrompt = nil;
+        
         // Auth failed, try to launch the task again, but this time without using keychain.
 
         GBTask* anotherTask = [[task copy] autorelease];
         anotherTask.didTerminateBlock = self.originalTaskBlock; // restore original block to make task look exactly like the original one
         self.task = anotherTask;
+        
         [self.task launch];
       }
       else // unknown error, bypass
       {
-        if (self.originalTaskBlock) self.originalTaskBlock();
-        self.originalTaskBlock = nil;
+        [self bypass];
         return;
       }
     };
@@ -147,6 +159,8 @@
     
   BOOL repeatedPrompt = (self.currentPrompt && [self.currentPrompt isEqualToString:prompt]);
   self.currentPrompt = prompt;
+  
+  //NSLog(@"PROMPT: %@ [%@]", prompt, clientId);
   
   if ([[prompt lowercaseString] rangeOfString:@"yes/no"].length > 0)
   {
@@ -222,6 +236,17 @@
 
 
 
+#pragma mark Private
+
+
+- (void) bypass
+{
+  [[GBAskPassServer sharedServer] removeClient:self];
+  if (self.originalTaskBlock) self.originalTaskBlock();
+  self.originalTaskBlock = nil;
+  return;
+}
+
 
 
 
@@ -234,51 +259,55 @@
   prompt = [prompt stringByReplacingOccurrencesOfString:@"\n" withString:@" "];
   prompt = [prompt stringByReplacingOccurrencesOfString:@" (yes/no)?" withString:@"?"];
   
-  GBAskPassBooleanPromptController* ctrl = [GBAskPassBooleanPromptController 
-                                            controllerWithAddress:self.address
-                                            question:prompt 
-                                            callback:^(BOOL result) {
-                                              self.booleanResponse = [NSNumber numberWithBool:result];
-                                              [ctrl close];
-                                            }];
+  GBAskPassBooleanPromptController* ctrl = [GBAskPassBooleanPromptController controller];
+  ctrl.address = self.address;
+  ctrl.question = prompt;
+  ctrl.callback = ^(BOOL result) {
+    self.booleanResponse = [NSNumber numberWithBool:result];
+    [ctrl close];
+  };
   [ctrl showWindow:self];
+  [NSApp requestUserAttention:NSCriticalRequest];
 }
 
 - (void) askPassPresentUsernamePrompt:(GBAskPassController*)askPassController
 {
-  GBAskPassCredentialsController* ctrl = [GBAskPassCredentialsController 
-                                            controllerWithAddress:self.address
-                                            callback:^(BOOL promptCancelled) {
-                                              if (promptCancelled)
-                                              {
-                                                [self cancel];
-                                              }
-                                              else
-                                              {
-                                                self.username = ctrl.username;
-                                                self.password = ctrl.password;
-                                              }
-                                              [ctrl close];
-                                            }];
+  GBAskPassCredentialsController* ctrl = [GBAskPassCredentialsController controller];
+  ctrl.address = self.address;
+  ctrl.username = self.previousUsername;
+  ctrl.callback = ^(BOOL promptCancelled) {
+    if (promptCancelled)
+    {
+      [self cancel];
+    }
+    else
+    {
+      self.username = ctrl.username;
+      self.password = ctrl.password;
+    }
+    [ctrl close];
+  };
   [ctrl showWindow:self];
+  [NSApp requestUserAttention:NSCriticalRequest];
 }
 
 - (void) askPassPresentPasswordPrompt:(GBAskPassController*)askPassController
 {
-  GBAskPassCredentialsController* ctrl = [GBAskPassCredentialsController 
-                                          passwordOnlyControllerWithAddress:self.address
-                                          callback:^(BOOL promptCancelled) {
-                                            if (promptCancelled)
-                                            {
-                                              [self cancel];
-                                            }
-                                            else
-                                            {
-                                              self.password = ctrl.password;
-                                            }
-                                            [ctrl close];
-                                          }];
+  GBAskPassCredentialsController* ctrl = [GBAskPassCredentialsController passwordOnlyController];
+  ctrl.address = self.address;
+  ctrl.callback = ^(BOOL promptCancelled) {
+    if (promptCancelled)
+    {
+      [self cancel];
+    }
+    else
+    {
+      self.password = ctrl.password;
+    }
+    [ctrl close];
+  };
   [ctrl showWindow:self];
+  [NSApp requestUserAttention:NSCriticalRequest];
 }
 
 
