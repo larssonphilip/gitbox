@@ -166,6 +166,9 @@ extern NSString* OATaskDidDeallocateNotification;
 // UTF-8 string for the standardOutput data stripped.
 - (NSString*) UTF8OutputStripped;
 
+// UTF-8 string for the standardError data.
+- (NSString*) UTF8Error;
+
 // Sets block as didTerminateBlock and sends launch: message.
 - (void) launchWithBlock:(void(^)())block;
 

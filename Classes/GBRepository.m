@@ -694,7 +694,7 @@
     {
       self.lastError = [NSError errorWithDomain:@"Gitbox" code:1
                                        userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
-                                                 [task.output UTF8String], NSLocalizedDescriptionKey,
+                                                 [task UTF8Error], NSLocalizedDescriptionKey,
                                                  [NSNumber numberWithInt:[task terminationStatus]], @"terminationStatus",
                                                  [task command], @"command",
                                                  nil]];
@@ -719,7 +719,7 @@
     {
 			self.lastError = [NSError errorWithDomain:@"Gitbox" code:1
 																	 userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
-																						 [task.output UTF8String], NSLocalizedDescriptionKey,
+																						 [task UTF8Error], NSLocalizedDescriptionKey,
 																						 [NSNumber numberWithInt:[task terminationStatus]], @"terminationStatus",
 																						 [task command], @"command",
 																						 nil]];
@@ -910,7 +910,7 @@
   [self launchTask:task withBlock:^{
     if ([task isError])
     {
-      [self alertWithMessage: @"Merge failed" description:[task UTF8OutputStripped]];
+      [self alertWithMessage: @"Merge failed" description:[task UTF8Error]];
     }
     if (block) block();
   }];
@@ -938,7 +938,7 @@
     aRemoteBranch.remote.failedCommunication = [task isError];
     if ([task isError])
     {
-      [self alertWithMessage: @"Pull failed" description:[task.output UTF8String]];
+      [self alertWithMessage: @"Pull failed" description:[task UTF8Error]];
     }
     if (block) block();
   }];
@@ -968,7 +968,7 @@
     {
       self.lastError = [self errorWithCode:GBErrorCodeFetchFailed
                                description:[NSString stringWithFormat:NSLocalizedString(@"Failed to fetch from %@",@"Error"), aRemote.alias]
-                                    reason:[task.output UTF8String]
+                                    reason:[task UTF8Error]
                                 suggestion:NSLocalizedString(@"Please check the URL or network settings.",@"Error")];
     }
     if (block) block();
@@ -1000,7 +1000,7 @@
     {
       self.lastError = [self errorWithCode:GBErrorCodeFetchFailed
                                description:[NSString stringWithFormat:NSLocalizedString(@"Failed to fetch from %@",@"Error"), aRemoteBranch.remoteAlias]
-                                    reason:[task.output UTF8String]
+                                    reason:[task UTF8Error]
                                 suggestion:NSLocalizedString(@"Please check the URL or network settings.",@"Error")];
     }
     if (block) block();
@@ -1030,7 +1030,7 @@
     aRemote.failedCommunication = [task isError];
     if ([task isError])
     {
-      [self alertWithMessage: @"Push failed" description:[task UTF8Output]];
+      [self alertWithMessage: @"Push failed" description:[task UTF8Error]];
     }
     else
     {

@@ -72,7 +72,7 @@
       self.error = [NSError errorWithDomain:@"Gitbox"
                                        code:1 
                                    userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
-                                             [aTask UTF8OutputStripped], NSLocalizedDescriptionKey,
+                                             [aTask UTF8Error], NSLocalizedDescriptionKey,
                                              [NSNumber numberWithInt:[aTask terminationStatus]], @"terminationStatus",
                                              [aTask command], @"command",
                                              nil
@@ -82,7 +82,7 @@
     if ([aTask isError])
     {
       NSLog(@"GBSubmoduleCloningController: did FAIL to clone at %@", [self.submodule localURL]);
-      NSLog(@"GBSubmoduleCloningController: output: %@", [aTask UTF8OutputStripped]);
+      NSLog(@"GBSubmoduleCloningController: output: %@", [aTask UTF8Error]);
       [self notifyWithSelector:@selector(submoduleCloningControllerDidFail:)];
     }
     else

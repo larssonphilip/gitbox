@@ -115,7 +115,7 @@
       //   fatal: Authentication failed
       
       // TODO: get data from both STDERR and STDOUT
-      NSString* output = [[task UTF8Output] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+      NSString* output = [[task UTF8Error] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
       if ([[output lowercaseString] rangeOfString:@"permission"].length > 0 || 
           [[output lowercaseString] rangeOfString:@"authentication"].length > 0)
       {

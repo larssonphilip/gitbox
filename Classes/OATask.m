@@ -682,25 +682,22 @@ NSString* OATaskDidDeallocateNotification  = @"OATaskDidDeallocateNotification";
   else
   {
     
-    // FIXME:
+    // FIXME: possibly this was an issue when gitbox was running out of file descriptors
 //    *** Terminating app due to uncaught exception 'NSInvalidArgumentException', reason: '*** -[NSCFDictionary setObject:forKey:]: attempt to insert nil value (key: _NSTaskOutputFileHandle)'
     
-    // Note: we will use the same pipe for stdout and stderr if both handlers are not specified.
-    NSPipe* defaultPipe = [[NSPipe alloc] init];
     if (!self.standardOutputHandleOrPipe)
     {
-      self.standardOutputHandleOrPipe = defaultPipe;
+      self.standardOutputHandleOrPipe = [[[NSPipe alloc] init] autorelease];
       self.standardOutputFileHandle = [self.standardOutputHandleOrPipe fileHandleForReading];
     }
     [self.nstask setStandardOutput:self.standardOutputHandleOrPipe];
     
     if (!self.standardErrorHandleOrPipe)
     {
-      self.standardErrorHandleOrPipe = defaultPipe;
+      self.standardErrorHandleOrPipe = [[[NSPipe alloc] init] autorelease];
       self.standardErrorFileHandle = [self.standardErrorHandleOrPipe fileHandleForReading];
     }
     [self.nstask setStandardError: self.standardErrorHandleOrPipe];
-    [defaultPipe release];
   }
   
   if ([[self.nstask standardOutput] isKindOfClass:[NSPipe class]] ||
@@ -933,6 +930,12 @@ NSString* OATaskDidDeallocateNotification  = @"OATaskDidDeallocateNotification";
   return [[self UTF8Output] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 }
 
+// UTF-8 string for the standardError data.
+- (NSString*) UTF8Error
+{
+  return [self.standardErrorData UTF8String];
+}
+
 // Sets block as didTerminateBlock and sends launch: message.
 - (void) launchWithBlock:(void(^)())block
 {
@@ -962,7 +965,7 @@ NSString* OATaskDidDeallocateNotification  = @"OATaskDidDeallocateNotification";
 - (id) showError
 {
   [NSAlert message: [NSString stringWithFormat:NSLocalizedString(@"Command failed: %@", @"Task"), [self command]]
-       description:[[self UTF8OutputStripped] stringByAppendingFormat:NSLocalizedString(@"\nCode: %d", @"Task"), self.terminationStatus]];
+       description:[[self UTF8Error] stringByAppendingFormat:NSLocalizedString(@"\nCode: %d", @"Task"), self.terminationStatus]];
   return self;
 }
 

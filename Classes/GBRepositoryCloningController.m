@@ -111,7 +111,7 @@
       self.error = [NSError errorWithDomain:@"Gitbox"
                                        code:1 
                                    userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
-                                             [t UTF8OutputStripped], NSLocalizedDescriptionKey,
+                                             [t UTF8Error], NSLocalizedDescriptionKey,
                                              [NSNumber numberWithInt:[t terminationStatus]], @"terminationStatus",
                                              [t command], @"command",
                                              nil
@@ -123,7 +123,7 @@
     if ([t isError])
     {
       NSLog(@"GBCloningRepositoryController: did FAIL to clone at %@", self.targetURL);
-      NSLog(@"GBCloningRepositoryController: output: %@", [t UTF8OutputStripped]);
+      NSLog(@"GBCloningRepositoryController: output: %@", [t UTF8Error]);
       [self notifyWithSelector:@selector(cloningRepositoryControllerDidFail:)];
     }
     else
