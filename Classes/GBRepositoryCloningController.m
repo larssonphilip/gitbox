@@ -73,6 +73,12 @@
 - (void) startCloning
 {
   [GBAskPassController launchedControllerWithAddress:[self.sourceURL absoluteString] taskFactory:^{
+
+    self.progressStatus = nil;
+    self.sidebarItemProgress = 0.0;
+    [self.sidebarItem update];
+    [self notifyWithSelector:@selector(cloningRepositoryControllerProgress:)];
+    
     GBCloneTask* t = [[GBCloneTask new] autorelease];
     self.isDisabled++;
     self.isSpinning++;
