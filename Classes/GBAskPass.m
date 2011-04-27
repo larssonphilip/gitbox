@@ -56,7 +56,18 @@ int GBAskPass(int argc, const char * argv[])
   
   while (1)
   {
-    NSString* result = [server resultForClient:clientId prompt:promptString environment:environment];
+    NSString* result = nil;
+    @try
+    {
+      result = [server resultForClient:clientId prompt:promptString environment:environment];
+    }
+    @catch (NSException * e)
+    {
+      // Exception is usually raised when Gitbox app is closed while askpass is waiting for reply.
+      NSLog(@"Gitbox askpass: exception raised when trying to get result from server: %@", e);
+      [pool drain];
+      return -5;
+    }
     
     if (result)
     {
@@ -65,7 +76,7 @@ int GBAskPass(int argc, const char * argv[])
       {
         NSLog(@"Gitbox askpass: cannot get char* UTF-8 string for result: %@.", result);
         [pool drain];
-        return -5;
+        return -6;
       }
       printf("%s\n", buffer);
       [pool drain];

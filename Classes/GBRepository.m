@@ -9,6 +9,7 @@
 #import "GBLocalRefsTask.h"
 #import "GBSubmodulesTask.h"
 #import "GBGitConfig.h"
+#import "GBAskPassController.h"
 
 #import "OAPropertyListController.h"
 #import "OABlockGroup.h"
@@ -708,7 +709,7 @@
 
 
 // A routine for configuring .gitmodules in .git/config. 
-// 99% of users don't want to think about it, so it is a private method used by updateSubmodulesWithBlock:
+// 99.99% of users don't want to think about it, so it is a private method used by updateSubmodulesWithBlock:
 - (void) initSubmodulesWithBlock:(void(^)())block
 {
   block = [[block copy] autorelease];
@@ -924,23 +925,26 @@
     block();
     return;
   }
-  GBTask* task = [self task];
-  task.arguments = [NSArray arrayWithObjects:@"pull", 
-                         @"--tags", 
-                         @"--force", 
-                         aRemoteBranch.remoteAlias, 
-                         [NSString stringWithFormat:@"%@:refs/remotes/%@", 
-                          aRemoteBranch.name, [aRemoteBranch nameWithRemoteAlias]],
-                         nil];
-  task.keychainPasswordName = [aRemoteBranch.remote keychainPasswordName];
-  
-  [self launchTask:task withBlock:^{
-    aRemoteBranch.remote.failedCommunication = [task isError];
-    if ([task isError])
-    {
-      [self alertWithMessage: @"Pull failed" description:[task UTF8Error]];
-    }
-    if (block) block();
+  [GBAskPassController launchedControllerWithAddress:aRemoteBranch.remote.URLString taskFactory:^{
+    GBTask* task = [self task];
+    task.arguments = [NSArray arrayWithObjects:@"pull", 
+                           @"--tags", 
+                           @"--force", 
+                           aRemoteBranch.remoteAlias, 
+                           [NSString stringWithFormat:@"%@:refs/remotes/%@", 
+                            aRemoteBranch.name, [aRemoteBranch nameWithRemoteAlias]],
+                           nil];
+    task.keychainPasswordName = [aRemoteBranch.remote keychainPasswordName];
+    task.dispatchQueue = self.dispatchQueue;
+    task.didTerminateBlock = ^{
+//      aRemoteBranch.remote.failedCommunication = [task isError];
+      if ([task isError])
+      {
+        [self alertWithMessage: @"Pull failed" description:[task UTF8Error]];
+      }
+      if (block) block();
+    };
+    return task;
   }];
 }
 
@@ -952,28 +956,31 @@
     if (block) block();
     return;
   }
-  GBTask* task = [self task];
-  task.arguments = [NSArray arrayWithObjects:@"fetch", 
-                     @"--tags",
-                     @"--force",
-                     @"--prune",
-                     aRemote.alias,
-                     [aRemote defaultFetchRefspec], // Declaring a proper refspec is necessary to make autofetch expectations about remote alias to work. git show-ref should always return refs for alias XYZ.
-                     nil];
-  task.keychainPasswordName = [aRemote keychainPasswordName];
-  
-  [self launchTask:task withBlock:^{
-    aRemote.failedCommunication = [task isError];
-    if ([task isError])
-    {
-      self.lastError = [self errorWithCode:GBErrorCodeFetchFailed
-                               description:[NSString stringWithFormat:NSLocalizedString(@"Failed to fetch from %@",@"Error"), aRemote.alias]
-                                    reason:[task UTF8Error]
-                                suggestion:NSLocalizedString(@"Please check the URL or network settings.",@"Error")];
-    }
-    if (block) block();
-    self.lastError = nil;
-  }];  
+  [GBAskPassController launchedControllerWithAddress:aRemote.URLString taskFactory:^{
+    GBTask* task = [self task];
+    task.arguments = [NSArray arrayWithObjects:@"fetch", 
+                       @"--tags",
+                       @"--force",
+                       @"--prune",
+                       aRemote.alias,
+                       [aRemote defaultFetchRefspec], // Declaring a proper refspec is necessary to make autofetch expectations about remote alias to work. git show-ref should always return refs for alias XYZ.
+                       nil];
+    task.keychainPasswordName = [aRemote keychainPasswordName];
+    task.dispatchQueue = self.dispatchQueue;
+    task.didTerminateBlock = ^{
+      //aRemote.failedCommunication = [task isError];
+      if ([task isError])
+      {
+        self.lastError = [self errorWithCode:GBErrorCodeFetchFailed
+                                 description:[NSString stringWithFormat:NSLocalizedString(@"Failed to fetch from %@",@"Error"), aRemote.alias]
+                                      reason:[task UTF8Error]
+                                  suggestion:NSLocalizedString(@"Please check the URL or network settings.",@"Error")];
+      }
+      if (block) block();
+      self.lastError = nil;
+    };
+    return task;
+  }];
 }
 
 
@@ -985,26 +992,30 @@
     if (block) block();
     return;
   }
-  GBTask* task = [self task];
-  task.arguments = [NSArray arrayWithObjects:@"fetch", 
-                    @"--tags", 
-                    @"--force", 
-                    aRemoteBranch.remoteAlias, 
-                    [NSString stringWithFormat:@"%@:refs/remotes/%@", 
-                     aRemoteBranch.name, [aRemoteBranch nameWithRemoteAlias]],
-                    nil];
-  task.keychainPasswordName = [aRemoteBranch.remote keychainPasswordName];
-  [self launchTask:task withBlock:^{
-    aRemoteBranch.remote.failedCommunication = [task isError];
-    if ([task isError])
-    {
-      self.lastError = [self errorWithCode:GBErrorCodeFetchFailed
-                               description:[NSString stringWithFormat:NSLocalizedString(@"Failed to fetch from %@",@"Error"), aRemoteBranch.remoteAlias]
-                                    reason:[task UTF8Error]
-                                suggestion:NSLocalizedString(@"Please check the URL or network settings.",@"Error")];
-    }
-    if (block) block();
-    self.lastError = nil;
+  [GBAskPassController launchedControllerWithAddress:aRemoteBranch.remote.URLString taskFactory:^{
+    GBTask* task = [self task];
+    task.arguments = [NSArray arrayWithObjects:@"fetch", 
+                      @"--tags", 
+                      @"--force", 
+                      aRemoteBranch.remoteAlias, 
+                      [NSString stringWithFormat:@"%@:refs/remotes/%@", 
+                       aRemoteBranch.name, [aRemoteBranch nameWithRemoteAlias]],
+                      nil];
+    task.keychainPasswordName = [aRemoteBranch.remote keychainPasswordName];
+    task.dispatchQueue = self.dispatchQueue;
+    task.didTerminateBlock = ^{
+      //aRemoteBranch.remote.failedCommunication = [task isError];
+      if ([task isError])
+      {
+        self.lastError = [self errorWithCode:GBErrorCodeFetchFailed
+                                 description:[NSString stringWithFormat:NSLocalizedString(@"Failed to fetch from %@",@"Error"), aRemoteBranch.remoteAlias]
+                                      reason:[task UTF8Error]
+                                  suggestion:NSLocalizedString(@"Please check the URL or network settings.",@"Error")];
+      }
+      if (block) block();
+      self.lastError = nil;
+    };
+    return task;
   }];
 }
 
@@ -1021,38 +1032,40 @@
     if (block) block();
     return;
   }
-  GBTask* task = [self task];
-  NSString* refspec = [NSString stringWithFormat:@"%@:%@", aLocalBranch.name, aRemoteBranch.name];
-  task.arguments = [NSArray arrayWithObjects:@"push", @"--tags", aRemoteBranch.remoteAlias, refspec, nil];
   GBRemote* aRemote = aRemoteBranch.remote;
-  task.keychainPasswordName = [aRemote keychainPasswordName];
-  [self launchTask:task withBlock:^{
-    aRemote.failedCommunication = [task isError];
-    if ([task isError])
-    {
-      [self alertWithMessage: @"Push failed" description:[task UTF8Error]];
-    }
-    else
-    {
-      // update remote branch commit id to avoid autofetching immediately after push.
-      // Normally we have two separate instances of remote branches: one from "configured for local branch" and one from remote.branches.
-      if (aLocalBranch.commitId && aRemoteBranch.name)
+  [GBAskPassController launchedControllerWithAddress:aRemoteBranch.remote.URLString taskFactory:^{
+    GBTask* task = [self task];
+    NSString* refspec = [NSString stringWithFormat:@"%@:%@", aLocalBranch.name, aRemoteBranch.name];
+    task.arguments = [NSArray arrayWithObjects:@"push", @"--tags", aRemoteBranch.remoteAlias, refspec, nil];
+    task.dispatchQueue = self.dispatchQueue;
+    task.didTerminateBlock = ^{
+      if ([task isError])
       {
-        aRemoteBranch.commitId = aLocalBranch.commitId;
-        if (aRemote)
+        [self alertWithMessage: @"Push failed" description:[task UTF8Error]];
+      }
+      else
+      {
+        // update remote branch commit id to avoid autofetching immediately after push.
+        // Normally we have two separate instances of remote branches: one from "configured for local branch" and one from remote.branches.
+        if (aLocalBranch.commitId && aRemoteBranch.name)
         {
-          for (GBRef* ref in [aRemote pushedAndNewBranches])
+          aRemoteBranch.commitId = aLocalBranch.commitId;
+          if (aRemote)
           {
-            if (ref.name && aRemoteBranch.name && [ref.name isEqualToString:aRemoteBranch.name])
+            for (GBRef* ref in [aRemote pushedAndNewBranches])
             {
-              ref.commitId = aLocalBranch.commitId;
+              if (ref.name && aRemoteBranch.name && [ref.name isEqualToString:aRemoteBranch.name])
+              {
+                ref.commitId = aLocalBranch.commitId;
+              }
             }
           }
         }
       }
-    }
-    if (block) block();
-  }];   
+      if (block) block();
+    };
+    return task;
+  }];
 }
 
 
