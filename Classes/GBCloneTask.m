@@ -83,7 +83,7 @@
   return 0.0;
 }
 
-- (void) didReceiveStandardOutputData:(NSData*)dataChunk
+- (void) didReceiveStandardErrorData:(NSData*)dataChunk
 {
 //  NSDate* now = [NSDate date];
 //  if (lastProgressUpdate && [now timeIntervalSinceDate:lastProgressUpdate] < 0.1) return; // skip updates every 0.1 sec for performance.
