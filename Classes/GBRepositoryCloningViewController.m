@@ -85,10 +85,7 @@
 - (void) cloningRepositoryControllerProgress:(GBRepositoryCloningController*)ctrl
 {
   double pr = ctrl.sidebarItemProgress;
-  if (pr > 0.1) 
-  {
-    [self.progressIndicator setIndeterminate:NO];
-  }
+  [self.progressIndicator setIndeterminate:pr < 0.02];
   [self.progressIndicator setDoubleValue:pr];
   [self.errorLabel setStringValue:ctrl.progressStatus ? ctrl.progressStatus : @""];
 }
