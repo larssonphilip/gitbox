@@ -150,10 +150,10 @@
   }
   
   self.isUpdatingRemoteBranches = YES;
-  GBRemoteRefsTask* task = [GBRemoteRefsTask task];
-  task.skipKeychainPassword = self.failedCommunication;
-  task.repository = self.repository;
-  [GBAskPassController controllerWithTask:task address:self.URLString configuration:^(GBRemoteRefsTask* aTask){
+  [GBAskPassController launchedControllerWithAddress:self.URLString taskFactory:^{
+    GBRemoteRefsTask* aTask = [GBRemoteRefsTask task];
+    aTask.skipKeychainPassword = self.failedCommunication;
+    aTask.repository = self.repository;
     aTask.remote = self;
     aTask.didTerminateBlock = ^{
       self.isUpdatingRemoteBranches = NO;
@@ -161,7 +161,7 @@
       {
         self.failedCommunication = NO;
         // Do not update branches and tags, but simply tell the caller that it needs to fetch tags and branches for real.
-        self.needsFetch = [self doesNeedFetchNewBranches:task.branches andTags:task.tags];
+        self.needsFetch = [self doesNeedFetchNewBranches:aTask.branches andTags:aTask.tags];
         
         if (block) block();
         
@@ -173,8 +173,8 @@
         if (block) block();
       }
     };
+    return aTask;
   }];
-  [task launch];
 }
 
 - (BOOL) doesNeedFetchNewBranches:(NSArray*)theBranches andTags:(NSArray*)theTags

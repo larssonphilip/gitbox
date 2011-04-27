@@ -13,6 +13,7 @@
 @property(nonatomic, copy, readwrite) NSString* previousUsername;
 @property(nonatomic, copy, readwrite) NSString* previousPassword;
 @property(nonatomic, copy) void(^configurationBlock)(id);
+@property(nonatomic, copy) id(^taskFactory)();
 - (void) bypass;
 @end
 
@@ -33,6 +34,7 @@
 @synthesize previousUsername;
 @synthesize previousPassword;
 @synthesize configurationBlock;
+@synthesize taskFactory;
 
 - (void) dealloc
 {
@@ -48,6 +50,7 @@
   [previousUsername release]; previousUsername = nil;
   [previousPassword release]; previousPassword = nil;
   [configurationBlock release]; configurationBlock = nil;
+  [taskFactory release]; taskFactory = nil;
   [super dealloc];
 }
 
@@ -57,6 +60,16 @@
   ctrl.address = address;
   ctrl.configurationBlock = configBlock;
   ctrl.task = aTask;
+  return ctrl;
+}
+
++ (id) launchedControllerWithAddress:(NSString*)address taskFactory:(id(^)())taskFactory
+{
+  GBAskPassController* ctrl = [[[self alloc] init] autorelease];
+  ctrl.address = address;
+  ctrl.taskFactory = taskFactory;
+  ctrl.task = taskFactory();
+  [ctrl.task launch];
   return ctrl;
 }
 
@@ -84,7 +97,7 @@
   
   if (newTask)
   {
-    self.configurationBlock(newTask);
+    if (self.configurationBlock) self.configurationBlock(newTask);
     task = [newTask retain];
     
     NSString* pathToAskpass = [[NSBundle mainBundle] executablePath]; // launching the same executable which will act as askpass with GBAskPassServerNameKey
@@ -114,7 +127,7 @@
       //   Permission denied (publickey)
       //   fatal: Authentication failed
       
-      // TODO: get data from both STDERR and STDOUT
+      // Shouldn't I try to read from both output and error streams?
       NSString* output = [[task UTF8Error] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
       if ([[output lowercaseString] rangeOfString:@"permission"].length > 0 || 
           [[output lowercaseString] rangeOfString:@"authentication"].length > 0)
@@ -130,11 +143,18 @@
         self.currentPrompt = nil;
         
         // Auth failed, try to launch the task again, but this time without using keychain.
-
-        GBTask* anotherTask = [[task copy] autorelease];
-        anotherTask.didTerminateBlock = self.originalTaskBlock; // restore original block to make task look exactly like the original one
-        self.task = anotherTask;
         
+        if (self.taskFactory)
+        {
+          GBTask* anotherTask = self.taskFactory();
+          self.task = anotherTask;
+        }
+        else
+        {
+          GBTask* anotherTask = [[task copy] autorelease];
+          anotherTask.didTerminateBlock = self.originalTaskBlock; // restore original block to make task look exactly like the original one
+          self.task = anotherTask;
+        }
         [self.task launch];
       }
       else // unknown error, bypass

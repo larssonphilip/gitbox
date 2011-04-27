@@ -174,9 +174,10 @@ Gitbox 1.3 Bug fixes:
 + bug: responder chain: merge button in toolbar does not work (maybe the same issue as with responder chain fuckup)
   + fix: tie the rootController's responder chain not to the sidebar controller, but to the rootController itself. And window controller's next responder should be rootcontroller. Also don't forget about toolbar controller which also should be somewhere in the chain.
 
-- bug: update the stage when it is selected or when the main window is activated.
+- bug: update the stage when it is selected or when the main window is activated
 + bug: do not merge stdout and stdin by default! But take care to display both of them in the activity window.
 - bug: configured remote server without(?) pushed branches, while the current branch associated with non-existant remote, is not displayed in remotes dropdown menu.
+- bug: when the Gitbox is closed, pending askpass process crashes and causes "Gitbox did crash" dialog appear.
 ? bug: crash when opening a diff tool and probably updating the stage at the same time.
 ? sidebar: postpone reloading the sidebar while editing a group name
 
