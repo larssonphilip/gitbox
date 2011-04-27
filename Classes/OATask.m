@@ -356,9 +356,6 @@ NSString* OATaskDidDeallocateNotification  = @"OATaskDidDeallocateNotification";
       
       [[NSNotificationCenter defaultCenter] postNotificationName:OATaskDidTerminateNotification object:self];
       
-      // Release nstask only after listeners got a chance to read terminationStatus.
-      [nstask release]; nstask = nil;
-      
       // Ping the NSApp event queue to force it to release pipes and task.
       NSEvent* pingEvent = [NSEvent otherEventWithType:NSApplicationDefined 
                                               location:NSMakePoint(0, 0) 
