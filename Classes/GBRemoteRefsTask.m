@@ -16,12 +16,6 @@
   [super dealloc];
 }
 
-
-- (NSString*) keychainPasswordName
-{
-  return [self.remote keychainPasswordName];
-}
-
 - (NSArray*) arguments
 {
   return [NSArray arrayWithObjects:@"ls-remote", @"--tags", @"--heads", self.remote.alias, nil];

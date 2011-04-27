@@ -24,7 +24,6 @@
 @synthesize repository;
 @synthesize isUpdatingRemoteBranches;
 @synthesize needsFetch;
-//@synthesize failedCommunication;
 
 - (void) dealloc
 {
@@ -101,7 +100,6 @@
   if (self.alias && [otherRemote.alias isEqualToString:self.alias])
   {
     self.newBranches = otherRemote.newBranches;
-    //self.failedCommunication = otherRemote.failedCommunication;
     [self updateBranches];
     return YES;
   }
@@ -119,15 +117,6 @@
   return [NSString stringWithFormat:@"+refs/heads/*:refs/remotes/%@/*", self.alias];
 }
 
-+ (NSString*) keychainPasswordNameForURLString:(NSString*)urlString
-{
-  return [NSString stringWithFormat:@"Gitbox password for %@", urlString];
-}
-
-- (NSString*) keychainPasswordName
-{
-  return [GBRemote keychainPasswordNameForURLString:self.URLString];
-}
 
 
 
@@ -152,14 +141,12 @@
   self.isUpdatingRemoteBranches = YES;
   [GBAskPassController launchedControllerWithAddress:self.URLString taskFactory:^{
     GBRemoteRefsTask* aTask = [GBRemoteRefsTask task];
-    //aTask.skipKeychainPassword = self.failedCommunication;
     aTask.repository = self.repository;
     aTask.remote = self;
     aTask.didTerminateBlock = ^{
       self.isUpdatingRemoteBranches = NO;
       if (![aTask isError])
       {
-        //self.failedCommunication = NO;
         // Do not update branches and tags, but simply tell the caller that it needs to fetch tags and branches for real.
         self.needsFetch = [self doesNeedFetchNewBranches:aTask.branches andTags:aTask.tags];
         
@@ -169,7 +156,6 @@
       }
       else
       {
-        //self.failedCommunication = YES;
         if (block) block();
       }
     };

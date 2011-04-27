@@ -8,7 +8,6 @@
 @property(nonatomic,retain) NSArray* branches;
 @property(nonatomic,retain) NSArray* newBranches;
 
-//@property(nonatomic,assign) BOOL failedCommunication; // set this immediately after attempt to communicate
 @property(nonatomic,assign) BOOL needsFetch;
 @property(nonatomic,assign) GBRepository* repository;
 
@@ -23,8 +22,6 @@
 - (void) updateNewBranches;
 - (void) updateBranches;
 
-+ (NSString*) keychainPasswordNameForURLString:(NSString*)urlString;
-- (NSString*) keychainPasswordName;
 
 #pragma mark Actions
 

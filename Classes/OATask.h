@@ -5,7 +5,6 @@ TODO:
 + do not calculate launchPath lazily and in a blocking fashion
 + launch the task and process callbacks in a background queue, but post notifications on the same queue of launch
 + clearly separate plumbing API from convenience API. For convenience API use only the public plumbing API.
-- handle passwords in the appropriate subclass or client code by responding via stdin pipe.
  
 How to:
  
@@ -39,10 +38,6 @@ extern NSString* OATaskDidDeallocateNotification;
 
 
 @interface OATask : NSObject<NSCopying>
-
-
-@property(nonatomic, assign) BOOL skipKeychainPassword;
-@property(nonatomic, copy) NSString* keychainPasswordName;
 
 // Name of the executable to launch if launchPath is nil. Uses +systemPathForExecutable to compute the launchPath.
 @property(nonatomic, copy) NSString* executableName;

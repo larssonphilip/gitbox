@@ -112,6 +112,7 @@ Misc items done:
 + bug: when the Gitbox is closed, pending askpass process crashes and causes "Gitbox did crash" dialog appear.
 + bug: responder chain: merge button in toolbar does not work (maybe the same issue as with responder chain fuckup)
   + fix: tie the rootController's responder chain not to the sidebar controller, but to the rootController itself. And window controller's next responder should be rootcontroller. Also don't forget about toolbar controller which also should be somewhere in the chain.
++ auth bug: when username changed, gitbox tries to use username which has just failed forcing user to constantly enter the password. Should remove all records for the given repo when failed.
 
 -----------------------------------------------------------
 
@@ -175,8 +176,6 @@ Gitbox 1.3 Bug fixes:
 - bug: update the stage when it is selected or when the main window is activated
 - bug: configured remote server without(?) pushed branches, while the current branch associated with non-existant remote, is not displayed in remotes dropdown menu.
 
-+ auth bug: when username changed, gitbox tries to use username which has just failed forcing user to constantly enter the password. Should remove all records for the given repo when failed.
-
 ? bug: still has an issue with autofetch filling up the autofetch queue: some tasks must be leaking or callback blocks are not called correctly
 
 ? bug: responder chain: sometimes selected view loses focus during autofetch or something.
@@ -203,6 +202,7 @@ Features:
 - general: handling URL schema: gitbox://git@sss.pierlis.com/repo.git#commits/sha1
 - general: obfuscated license check
 - general: polish the icon
+- general: built-in terminal in a floating HUD-style window. Should keep the shell task during lifetime of the repo and switch when the repo is switched. Cmd+Shift+Return as a hotkey to toggle the terminal window.
 
 - toolbar: force push a branch (when push fails, allow force push)
 - toolbar: Option/Alt key lets to fetch instead of pull

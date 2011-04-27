@@ -934,10 +934,8 @@
                            [NSString stringWithFormat:@"%@:refs/remotes/%@", 
                             aRemoteBranch.name, [aRemoteBranch nameWithRemoteAlias]],
                            nil];
-    task.keychainPasswordName = [aRemoteBranch.remote keychainPasswordName];
     task.dispatchQueue = self.dispatchQueue;
     task.didTerminateBlock = ^{
-//      aRemoteBranch.remote.failedCommunication = [task isError];
       if ([task isError])
       {
         [self alertWithMessage: @"Pull failed" description:[task UTF8Error]];
@@ -965,10 +963,8 @@
                        aRemote.alias,
                        [aRemote defaultFetchRefspec], // Declaring a proper refspec is necessary to make autofetch expectations about remote alias to work. git show-ref should always return refs for alias XYZ.
                        nil];
-    task.keychainPasswordName = [aRemote keychainPasswordName];
     task.dispatchQueue = self.dispatchQueue;
     task.didTerminateBlock = ^{
-      //aRemote.failedCommunication = [task isError];
       if ([task isError])
       {
         self.lastError = [self errorWithCode:GBErrorCodeFetchFailed
@@ -1001,10 +997,8 @@
                       [NSString stringWithFormat:@"%@:refs/remotes/%@", 
                        aRemoteBranch.name, [aRemoteBranch nameWithRemoteAlias]],
                       nil];
-    task.keychainPasswordName = [aRemoteBranch.remote keychainPasswordName];
     task.dispatchQueue = self.dispatchQueue;
     task.didTerminateBlock = ^{
-      //aRemoteBranch.remote.failedCommunication = [task isError];
       if ([task isError])
       {
         self.lastError = [self errorWithCode:GBErrorCodeFetchFailed

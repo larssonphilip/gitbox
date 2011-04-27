@@ -46,8 +46,6 @@ NSString* OATaskDidDeallocateNotification  = @"OATaskDidDeallocateNotification";
 
 @implementation OATask
 
-@synthesize skipKeychainPassword;
-@synthesize keychainPasswordName;
 @synthesize executableName;
 @synthesize launchPath;
 @synthesize currentDirectoryPath;
@@ -89,9 +87,7 @@ NSString* OATaskDidDeallocateNotification  = @"OATaskDidDeallocateNotification";
   // The notification can be posted from other thread
   NSValue* value = [NSValue valueWithNonretainedObject:self];
   [[NSNotificationCenter defaultCenter] postNotificationName:OATaskDidDeallocateNotification object:value];
-  
-  [keychainPasswordName release]; keychainPasswordName = nil;
-  
+    
   [standardOutputFileHandle release]; standardOutputFileHandle = nil;
   [standardErrorFileHandle release]; standardErrorFileHandle = nil;
 
@@ -616,13 +612,6 @@ NSString* OATaskDidDeallocateNotification  = @"OATaskDidDeallocateNotification";
   else path = [path stringByAppendingFormat:@":%@", binPath];
   [environment setObject:path forKey:@"PATH"];
   
-  // TODO: remove obsolete askpass.rb when GBAskPassController is finished.
-  if (![self isInteractive])
-  {
-    NSString* askPass = [[NSBundle mainBundle] pathForResource:@"askpass" ofType:@"rb"];
-    [environment setObject:askPass forKey:@"SSH_ASKPASS"];
-    [environment setObject:askPass forKey:@"GIT_ASKPASS"];
-  }
   [environment setObject:@":0" forKey:@"DISPLAY"];
 
   NSString* locale = @"en_US.UTF-8";
@@ -634,20 +623,6 @@ NSString* OATaskDidDeallocateNotification  = @"OATaskDidDeallocateNotification";
   [environment setObject:locale forKey:@"LC_NUMERIC"];
   [environment setObject:locale forKey:@"LC_TIME"];
   [environment setObject:locale forKey:@"LC_ALL"];
-  
-  // TODO: remove obsolete askpass.rb when GBAskPassController is finished.
-  if (![self isInteractive])
-  {
-    if (!self.skipKeychainPassword)
-    {
-      [environment setObject:@"1" forKey:@"GITBOX_USE_KEYCHAIN_PASSWORD"];
-    }
-
-    if (self.keychainPasswordName)
-    {
-      [environment setObject:self.keychainPasswordName forKey:@"GITBOX_KEYCHAIN_NAME"];
-    }
-  }
   
   for (NSString* key in self.additionalEnvironment)
   {

@@ -36,11 +36,6 @@
   return [[self.targetURL path] stringByDeletingLastPathComponent];
 }
 
-- (NSString*) keychainPasswordName
-{
-  return [GBRemote keychainPasswordNameForURLString:[self.sourceURL absoluteString]];
-}
-
 - (BOOL) isRealTime
 {
   return YES;
