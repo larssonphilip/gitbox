@@ -14,6 +14,11 @@
 @property(nonatomic, copy, readwrite) NSString* previousPassword;
 @property(nonatomic, copy) id(^taskFactory)();
 @property(nonatomic, readonly) NSString* keychainService;
+
+// Special properties to remove failing entry from the Keychain.
+@property(nonatomic, assign) SecKeychainItemRef previousKeychainItemRef;
+@property(nonatomic, copy) NSString* previousKeychainUsername;
+
 - (void) bypass;
 - (BOOL) loadCredentialsFromKeychain;
 @end
@@ -36,6 +41,10 @@
 @synthesize previousPassword;
 @synthesize taskFactory;
 
+@synthesize previousKeychainItemRef;
+@synthesize previousKeychainUsername;
+
+
 - (void) dealloc
 {
   [askPassClientId release]; askPassClientId = nil;
@@ -50,6 +59,9 @@
   [previousUsername release]; previousUsername = nil;
   [previousPassword release]; previousPassword = nil;
   [taskFactory release]; taskFactory = nil;
+  if (previousKeychainItemRef) CFRelease(previousKeychainItemRef);
+  previousKeychainItemRef = NULL;
+  [previousKeychainUsername release]; previousKeychainUsername = nil;
   [super dealloc];
 }
 
@@ -332,6 +344,8 @@
               break;
             }
           }
+          self.previousKeychainUsername = self.username;
+          self.previousKeychainItemRef = itemRef;
         }
         else
         {
@@ -377,6 +391,17 @@
 
 - (BOOL) storeCredentialsInKeychain
 {
+  if (self.previousKeychainItemRef)
+  {
+    // If we have previously loaded keychain data and now storing another username, we should remove previous entry.
+    if (self.username && self.previousKeychainUsername && ![self.username isEqualToString:self.previousKeychainUsername])
+    {
+      SecKeychainItemDelete(self.previousKeychainItemRef);
+    }
+    self.previousKeychainItemRef = NULL;
+    self.previousUsername = nil;
+  }
+  
   const char* serviceCString = [self.keychainService cStringUsingEncoding:NSUTF8StringEncoding];
   const char* usernameCString = [self.username cStringUsingEncoding:NSUTF8StringEncoding];
   const char* passwordCString = [self.password cStringUsingEncoding:NSUTF8StringEncoding];
@@ -428,8 +453,6 @@
     if (status == errSecDuplicateItem)
     {
       // The item already exists, lets update it.
-    
-      // FIXME: To avoid having multiple records and having trouble choosing between them, need to remove all records for current service.
       
       // First we need to find an existing item.
       
@@ -561,6 +584,17 @@
   [ctrl showWindow:self];
   [NSApp requestUserAttention:NSCriticalRequest];
 }
+
+- (void) setPreviousKeychainItemRef:(SecKeychainItemRef)newPreviousKeychainItemRef
+{
+  if (previousKeychainItemRef == newPreviousKeychainItemRef) return;
+  
+  if (previousKeychainItemRef) CFRelease(previousKeychainItemRef);
+  previousKeychainItemRef = newPreviousKeychainItemRef;
+  if (previousKeychainItemRef) CFRetain(previousKeychainItemRef);
+}
+
+
 
 
 @end

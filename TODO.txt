@@ -175,7 +175,7 @@ Gitbox 1.3 Bug fixes:
 - bug: update the stage when it is selected or when the main window is activated
 - bug: configured remote server without(?) pushed branches, while the current branch associated with non-existant remote, is not displayed in remotes dropdown menu.
 
-- auth bug: when username changed, gitbox tries to use username which has just failed forcing user to constantly enter the password. Should remove all records for the given repo when failed.
++ auth bug: when username changed, gitbox tries to use username which has just failed forcing user to constantly enter the password. Should remove all records for the given repo when failed.
 
 ? bug: still has an issue with autofetch filling up the autofetch queue: some tasks must be leaking or callback blocks are not called correctly
 
