@@ -25,10 +25,9 @@
 @property(nonatomic, assign, readonly, getter = isCancelled) BOOL cancelled;
 @property(nonatomic, assign) id<GBAskPassControllerDelegate> delegate; // by default, delegate is self.
 
-// obsolete + (id) controllerWithTask:(GBTask*)aTask address:(NSString*)address configuration:(void(^)(id))configBlock;
 + (id) launchedControllerWithAddress:(NSString*)address taskFactory:(id(^)())configBlock;
 
 - (void) cancel; // discards further interaction and bypasses failure.
-- (void) storeCredentialsInKeychain; // stores a proper record based on URLString, username and password.
+- (BOOL) storeCredentialsInKeychain; // stores a proper record based on URLString, username and password.
 
 @end
