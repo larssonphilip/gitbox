@@ -54,6 +54,7 @@
   [super dealloc];
 }
 
+// obsolete
 + (id) controllerWithTask:(GBTask*)aTask address:(NSString*)address configuration:(void(^)(id))configBlock;
 {
   GBAskPassController* ctrl = [[[self alloc] init] autorelease];

@@ -49,7 +49,6 @@ Steps to implement:
 + 3. Target should contact GBAskPass server which displays a simple prompt.
 + 4. GBAskPassController class which acts as a wrapper for ls-remote/push/pull/fetch tasks.
 + 5. Wrapping necessary tasks with GBAskPassController.
-- 5.5. Wrap clone and submodules clone tasks with GBAskPassController.
 - 6. Keychain support in GBAskPassController.
 - 7. Also: refactor OATask to know nothing about askpass and keychain, but use environment property to customize the environment.
 - 8. SECURITY: should think how not to expose password to some phony application. (Not a problem with Mac App Store as the app is installed by system and cannot be modified without a root access.)

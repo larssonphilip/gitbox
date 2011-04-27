@@ -25,7 +25,7 @@
 @property(nonatomic, assign, readonly, getter = isCancelled) BOOL cancelled;
 @property(nonatomic, assign) id<GBAskPassControllerDelegate> delegate; // by default, delegate is self.
 
-+ (id) controllerWithTask:(GBTask*)aTask address:(NSString*)address configuration:(void(^)(id))configBlock;
+// obsolete + (id) controllerWithTask:(GBTask*)aTask address:(NSString*)address configuration:(void(^)(id))configBlock;
 + (id) launchedControllerWithAddress:(NSString*)address taskFactory:(id(^)())configBlock;
 
 - (void) cancel; // discards further interaction and bypasses failure.
