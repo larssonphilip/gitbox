@@ -77,7 +77,6 @@ NSString* const GBAskPassClientIdKey = @"GBAskPassClientId";
 
 - (void) removeClient:(id<GBAskPassServerClient>)aClient
 {
-  [[aClient retain] autorelease];
   [self.clients removeObject:aClient];
 }
 

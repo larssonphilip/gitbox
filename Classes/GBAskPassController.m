@@ -150,24 +150,15 @@
         self.currentPrompt = nil;
         
         // Auth failed, try to launch the task again, but this time without using keychain.
+                
+        GBTask* anotherTask = self.taskFactory();
+        self.task = anotherTask;
         
-        [[self retain] autorelease]; // protect self while switching blocks
-        
-        if (self.taskFactory)
-        {
-          GBTask* anotherTask = self.taskFactory();
-          self.task = anotherTask;
-        }
-        else
-        {
-          GBTask* anotherTask = [[task copy] autorelease];
-          anotherTask.didTerminateBlock = self.originalTaskBlock; // restore original block to make task look exactly like the original one
-          self.task = anotherTask;
-        }
         [self.task launch];
       }
       else // unknown error, bypass
       {
+        NSLog(@"GBAskPassController: unknown error: %@ (calling task's block)", output);
         [self bypass];
         return;
       }
@@ -278,8 +269,8 @@
     return NO;
   }
 
-  SecKeychainSearchRef search;
-  SecKeychainItemRef itemRef;
+  SecKeychainSearchRef search = NULL;
+  SecKeychainItemRef itemRef = NULL;
   SecKeychainAttributeList list;
   SecKeychainAttribute attributes[2];
   
@@ -311,15 +302,15 @@
     
     if (status == errSecSuccess)
     {
-      SecKeychainAttributeInfo* attrInfoRef = NULL;
-      SecKeychainAttributeList* attrListRef = NULL;
-      
       // To fetch the attributes, we need to prepare a list of available attributes.
       // Apparently, itemID is the same as item class. http://lists.apple.com/archives/apple-cdsa/2008/Nov/msg00049.html
+      
+      SecKeychainAttributeInfo* attrInfoRef = NULL;
       
       status = SecKeychainAttributeInfoForItemID(NULL, CSSM_DL_DB_RECORD_GENERIC_PASSWORD, &attrInfoRef);
       if (status == errSecSuccess)
       {
+        SecKeychainAttributeList* attrListRef = NULL;
         UInt32 itemDataLength = 0;
         void* itemData = NULL;
         status = SecKeychainItemCopyAttributesAndData(
@@ -387,7 +378,7 @@
       succeed = NO;
     }
     
-    if (itemRef) CFRelease (itemRef);
+    if (itemRef) CFRelease(itemRef);
   }
   else
   {
@@ -404,8 +395,6 @@
 
 - (BOOL) storeCredentialsInKeychain
 {
-#warning debug!
-  return NO;
   if (self.previousKeychainItemRef)
   {
     // If we have previously loaded keychain data and now storing another username, we should remove previous entry.
@@ -529,10 +518,11 @@
 
 - (void) bypass
 {
-  [[self retain] autorelease];
+  [self retain];
   [[GBAskPassServer sharedServer] removeClient:self];
   if (self.originalTaskBlock) self.originalTaskBlock();
   self.originalTaskBlock = nil;
+  [self release];
   return;
 }
 
