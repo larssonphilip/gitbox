@@ -204,6 +204,8 @@ Features:
 - general: obfuscated license check
 - general: polish the icon
 - general: built-in terminal in a floating HUD-style window. Should keep the shell task during lifetime of the repo and switch when the repo is switched. Cmd+Shift+Return as a hotkey to toggle the terminal window.
+- general: advanced git feature: remove the file from repo by rewriting the whole history
+- general: advanced git feature: extract history from a folder (e.g. useful for creating submodule)
 
 - toolbar: force push a branch (when push fails, allow force push)
 - toolbar: Option/Alt key lets to fetch instead of pull
