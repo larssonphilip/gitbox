@@ -168,6 +168,7 @@ Gitbox 1.3 Enhancements:
 
 Gitbox 1.3 Bug fixes:
 
+- BUG: when auth dialog is closed, askpass ctrl is deallocated, but the task is still alive.
 - bug: when added manually, should perform autofetch immediately.
 - bug: when closing a repo while it performs a task, it crashes miserably.
 - (right now jump controller is disabled because of that) bug: minor issue: when quickly iterating through sidebar when repos are autofetched, the selection sometimes jumps. We should reset jump controller's block when selection is changed elsewhere.
@@ -323,9 +324,10 @@ Error messages translation to English:
 
 Bugs:
 
-- bug: askpass is used only for ls-remotes, but should also be used for pull/push/fetch. Need nice design for such tasks.
-- bug: http auth uses askpass to ask for a username as well, need to support this.
-- bug: task.skipKeychainPassword is used only for ls-remote, but should be also used in git fetch, pull and push.
++ bug: askpass is used only for ls-remotes, but should also be used for pull/push/fetch. Need nice design for such tasks.
++ bug: http auth uses askpass to ask for a username as well, need to support this.
++ bug: task.skipKeychainPassword is used only for ls-remote, but should be also used in git fetch, pull and push.
+
 - bug: task may crash when folder is removed from disk because prepareTask asserts folder existance
 - bug: when local branch is selected on the right, switching left branch does not change it. Reported by Gwendal.
 - CRASH: when sending setFailedCommunication using some dangling pointer

@@ -86,9 +86,13 @@
   return self;
 }
 
+// FIXME: there is a gross bug with controller being released when dialog finishes, but the task is still running.
+
 - (void) setTask:(GBTask *)newTask
 {
   if (task == newTask) return;
+  
+  [[self retain] autorelease]; // protect self while switching blocks
   
   if (task)
   {
@@ -96,6 +100,8 @@
     [task release];
     task = nil;
   }
+  
+  self.originalTaskBlock = nil;
   
   if (newTask)
   {
@@ -115,7 +121,7 @@
     {
       [NSException raise:@"GBAskPassController requires task with block" format:@"didTerminateBlock should not be nil when task is wrapped with GBAskPassController"];
     }
-      
+    
     task.didTerminateBlock = ^{
       if (![task isError] || self.bypassFailedAuthentication) // if no error occured or we should bypass it, simply call original block
       {
@@ -145,6 +151,8 @@
         
         // Auth failed, try to launch the task again, but this time without using keychain.
         
+        [[self retain] autorelease]; // protect self while switching blocks
+        
         if (self.taskFactory)
         {
           GBTask* anotherTask = self.taskFactory();
@@ -169,7 +177,7 @@
 
 - (NSString*) keychainService
 {
-  return [NSString stringWithFormat:@"Gitbox:%@", self.address];
+  return [NSString stringWithFormat:@"Gitbox: %@", self.address];
 }
 
 
@@ -366,6 +374,11 @@
       // TODO: handle error code here
       if (attrInfoRef) SecKeychainFreeAttributeInfo(attrInfoRef);
     }
+    else if (status == errSecItemNotFound)
+    {
+      // Silently return NO if no item exists in Keychain yet.
+      succeed = NO;
+    }
     else
     {
       CFStringRef statusStr = SecCopyErrorMessageString(status, NULL);
@@ -391,6 +404,8 @@
 
 - (BOOL) storeCredentialsInKeychain
 {
+#warning debug!
+  return NO;
   if (self.previousKeychainItemRef)
   {
     // If we have previously loaded keychain data and now storing another username, we should remove previous entry.
@@ -514,6 +529,7 @@
 
 - (void) bypass
 {
+  [[self retain] autorelease];
   [[GBAskPassServer sharedServer] removeClient:self];
   if (self.originalTaskBlock) self.originalTaskBlock();
   self.originalTaskBlock = nil;
@@ -536,7 +552,7 @@
   ctrl.address = self.address;
   ctrl.question = prompt;
   ctrl.callback = ^(BOOL result) {
-    self.booleanResponse = [NSNumber numberWithBool:result];
+    askPassController.booleanResponse = [NSNumber numberWithBool:result];
     [ctrl close];
   };
   [ctrl showWindow:self];
