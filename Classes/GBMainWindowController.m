@@ -8,6 +8,7 @@
 #import "GBRemotesController.h"
 #import "GBFileEditingController.h"
 
+#import "OABlockQueue.h"
 #import "OAFastJumpController.h"
 #import "NSWindowController+OAWindowControllerHelpers.h"
 #import "NSView+OAViewHelpers.h"
@@ -21,6 +22,7 @@
 @property(nonatomic, retain) GBPlaceholderViewController* defaultDetailViewController;
 @property(nonatomic, retain) id<GBMainWindowItem> selectedWindowItem;
 @property(nonatomic, retain) OAFastJumpController* jumpController;
+@property(nonatomic, retain, readwrite) OABlockQueue* sheetQueue;
 - (void) updateToolbarAlignment;
 - (NSView*) sidebarView;
 - (NSView*) detailView;
@@ -39,6 +41,7 @@
 @synthesize welcomeController;
 @synthesize splitView;
 @synthesize jumpController;
+@synthesize sheetQueue;
 
 - (void) dealloc
 {
@@ -49,6 +52,7 @@
   [detailViewController release]; detailViewController = nil;
   [defaultDetailViewController release]; defaultDetailViewController = nil;
   [selectedWindowItem release]; selectedWindowItem = nil;
+  [sheetQueue release]; sheetQueue = nil;
   self.sidebarController = nil;
   self.welcomeController = nil;
   self.splitView = nil;
@@ -65,11 +69,18 @@
     self.defaultDetailViewController = [[[GBPlaceholderViewController alloc] initWithNibName:@"GBPlaceholderViewController" bundle:nil] autorelease];
     self.defaultDetailViewController.title = NSLocalizedString(@"No selection", @"Window");
     self.jumpController = [OAFastJumpController controller];
+    self.sheetQueue = [OABlockQueue queueWithName:@"GBMainWindowController.sheetQueue" concurrency:1];
   }
   return self;
 }
 
-
++ (id) instance
+{
+  static id volatile instance = nil;
+	static dispatch_once_t once = 0;
+	dispatch_once( &once, ^{ instance = [[self alloc] initWithWindowNibName:@"GBMainWindowController"]; });
+	return instance;
+}
 
 
 

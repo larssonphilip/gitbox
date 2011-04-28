@@ -222,7 +222,7 @@
   [self.rootController sidebarItemLoadContentsFromPropertyList:plist];
   [self.rootController addObserverForAllSelectors:self];
   
-  self.windowController = [[[GBMainWindowController alloc] initWithWindowNibName:@"GBMainWindowController"] autorelease];
+  self.windowController = [GBMainWindowController instance];
   
   NSString* preferencesNibName = @"GBPreferencesController";
 #if GITBOX_APP_STORE

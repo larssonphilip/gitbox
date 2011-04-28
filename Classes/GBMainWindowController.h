@@ -1,3 +1,4 @@
+@class OABlockQueue;
 @class GBRootController;
 @class GBToolbarController;
 @class GBSidebarController;
@@ -11,7 +12,11 @@
 @property(nonatomic, retain) NSViewController* detailViewController;
 @property(nonatomic, retain) GBWelcomeController* welcomeController;
 
+@property(nonatomic, retain, readonly) OABlockQueue* sheetQueue;
+
 @property(nonatomic, retain) IBOutlet NSSplitView* splitView;
+
++ (id) instance;
 
 - (IBAction) editGlobalGitConfig:(id)_;
 
