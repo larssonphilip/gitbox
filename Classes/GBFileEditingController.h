@@ -1,16 +1,5 @@
 @interface GBFileEditingController : NSWindowController<NSWindowDelegate>
 {
-  NSURL* URL;
-  NSString* title;
-  NSArray* linesToAppend;
-
-  IBOutlet NSTextView* textView;
-
-  id target;
-  SEL finishSelector;
-  SEL cancelSelector;
-  NSWindow* windowHoldingSheet;
-  
   BOOL contentPrepared;
 }
 
