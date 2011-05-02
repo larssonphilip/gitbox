@@ -114,6 +114,8 @@ Misc items done:
   + fix: tie the rootController's responder chain not to the sidebar controller, but to the rootController itself. And window controller's next responder should be rootcontroller. Also don't forget about toolbar controller which also should be somewhere in the chain.
 + auth bug: when username changed, gitbox tries to use username which has just failed forcing user to constantly enter the password. Should remove all records for the given repo when failed.
 + bug: when auth dialog is closed, askpass ctrl is deallocated, but the task is still alive.
++ bug: should present askpass in a sheet
++ bug: askpass should check keychain in its queued block to cover a case when previous window has got relevant credentials
 
 -----------------------------------------------------------
 
@@ -138,7 +140,7 @@ Gitbox 1.3 Features:
 - sidebar: "Duplicate..." menu item to make a quick clone + copy of .git/config.
 - sidebar: double click opens item in finder (patraque 987)
 - sidebar: edit repo name and store it in .git/vendor/gitbox/info.plist
-
+- general: remember cancelled auth dialogs in .git/vendor/gitbox/info.plist
 
 Gitbox 1.3 Enhancements:
 
@@ -164,26 +166,27 @@ Gitbox 1.3 Enhancements:
 - maybe try to replace pull with merge+fetch+merge and perform fetch on another queue to make staging work independently (also for push)
 - [NSApp requestUserAttention:] when new commits are fetched (automatically or not).
 
-- common sheet queue for main window to append and prepend sheets. 
-  - can simply use OABlockQueue as it will let to avoid presenting a sheet when the previous one has already produced necessary data (like for Keychain).
++ common sheet queue for main window to append and prepend sheets. 
+  + can simply use OABlockQueue as it will let to avoid presenting a sheet when the previous one has already produced necessary data (like for Keychain).
   - also override presentError: on main window controller to put error in a queued sheet
-- autofetch: if askpass is cancelled during autofetch, should not ask again
-
+  
+? when error is not surpressed for automatic tasks, remember the first such error and present it when the repo is selected by user
+- sidebar: open in Xcode if the repo has an xcode project (submenu with projects list if have multiple project files)
 
 Gitbox 1.3 Bug fixes:
 
-- bug: should present askpass in a sheet
-- bug: askpass should check keychain in its queued block to cover a case when previous window has got relevant credentials
+- bug: for automatic background tasks should not display error sheets to not block the UI.
+- bug: do ls-remote and fetch when repo is added to check the authentication and especially SSH known_hosts alert.
+- bug: when cancel button is pressed, should not ask for auth again until explicit user action is invoked.
+- bug: update the stage when it is selected or when the main window is activated (maybe without refresh) - this should deal with sometimes missed FSEvents
+- bug: when clone error occured close button does not remove non-finished repo from list.
 
-- bug: when added manually, should perform autofetch immediately.
 - bug: when closing a repo while it performs a task, it crashes miserably.
 - (right now jump controller is disabled because of that) bug: minor issue: when quickly iterating through sidebar when repos are autofetched, the selection sometimes jumps. We should reset jump controller's block when selection is changed elsewhere.
 - bug: when fetch is clicked, should fetch everything (see email discussion)
 - bug: when dragged in a repo, Edit Servers... and other sheets do not work. When Gitbox is relaunched, it becomes fine.
-- bug: update the stage when it is selected or when the main window is activated
-- bug: configured remote server without(?) pushed branches, while the current branch associated with non-existant remote, is not displayed in remotes dropdown menu.
 
-- bug: when clone error occured close button does not remove non-finished repo from list.
+- bug: configured remote server without(?) pushed branches, while the current branch associated with non-existant remote, is not displayed in remotes dropdown menu.
 
 ? bug: still has an issue with autofetch filling up the autofetch queue: some tasks must be leaking or callback blocks are not called correctly
 
