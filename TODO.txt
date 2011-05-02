@@ -172,6 +172,8 @@ Gitbox 1.3 Enhancements:
   
 ? when error is not surpressed for automatic tasks, remember the first such error and present it when the repo is selected by user
 - sidebar: open in Xcode if the repo has an xcode project (submenu with projects list if have multiple project files)
+- history: parse commits in background hook instead of a main thread didFinish
+- changes: parse changes in background hook instead of a main thread didFinish
 
 Gitbox 1.3 Bug fixes:
 
