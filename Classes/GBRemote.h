@@ -27,5 +27,6 @@
 
 - (void) addNewBranch:(GBRef*)branch;
 - (void) updateBranchesWithBlock:(void(^)())block;
+- (void) updateBranchesSilently:(BOOL)silently withBlock:(void(^)())block;
 
 @end

@@ -128,7 +128,12 @@
   self.newBranches = [self.newBranches arrayByAddingObject:branch];
 }
 
-- (void) updateBranchesWithBlock:(void(^)())block;
+- (void) updateBranchesWithBlock:(void(^)())block
+{
+	[self updateBranchesSilently:NO withBlock:block];
+}
+
+- (void) updateBranchesSilently:(BOOL)silently withBlock:(void(^)())block
 {
   block = [[block copy] autorelease];
   
@@ -139,7 +144,7 @@
   }
   
   self.isUpdatingRemoteBranches = YES;
-  [GBAskPassController launchedControllerWithAddress:self.URLString taskFactory:^{
+  [GBAskPassController launchedControllerWithAddress:self.URLString silent:silently taskFactory:^{
     GBRemoteRefsTask* aTask = [GBRemoteRefsTask task];
     aTask.repository = self.repository;
     aTask.remote = self;

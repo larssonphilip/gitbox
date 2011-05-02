@@ -76,10 +76,12 @@
 - (void) updateLocalRefsIfNeededWithBlock:(void(^)())aBlock;
 - (void) updateLocalRefsWithBlock:(void(^)())aBlock;
 - (void) updateRemoteRefsWithBlock:(void(^)())aBlock;
+- (void) updateRemoteRefsSilently:(BOOL)silently withBlock:(void(^)())aBlock;
 - (void) updateBranchesForRemote:(GBRemote*)aRemote withBlock:(void(^)())aBlock;
+- (void) updateBranchesForRemote:(GBRemote*)aRemote silently:(BOOL)silently withBlock:(void(^)())aBlock;
 - (void) updateSubmodulesWithBlock:(void(^)())aBlock;
 - (void) fetchRemote:(GBRemote*)aRemote withBlock:(void(^)())aBlock;
-
+- (void) fetchRemote:(GBRemote*)aRemote silently:(BOOL)silently withBlock:(void(^)())aBlock;
 - (void) resetAutoFetchInterval;
 - (void) scheduleAutoFetch;
 - (void) unscheduleAutoFetch;
@@ -643,6 +645,11 @@
 
 - (void) fetchRemote:(GBRemote*)aRemote withBlock:(void(^)())block
 {
+  [self fetchRemote:aRemote silently:NO withBlock:block];
+}
+
+- (void) fetchRemote:(GBRemote*)aRemote silently:(BOOL)silently withBlock:(void(^)())block
+{
   if (!self.repository)
   {
     if (block) block();
@@ -654,10 +661,10 @@
   [self pushSpinning];
   [self pushDisabled];
   [self pushFSEventsPause];
-  [self.repository fetchRemote:aRemote withBlock:^{
+  [self.repository fetchRemote:aRemote silently:silently withBlock:^{
     [self updateLocalRefsWithBlock:^{
       [self loadCommitsWithBlock:block];
-      [self updateRemoteRefsWithBlock:nil];
+      [self updateRemoteRefsSilently:silently withBlock:block];
       [self popFSEventsPause];
       [self popSpinning];
     }];
@@ -1040,6 +1047,11 @@
 
 - (void) updateRemoteRefsWithBlock:(void(^)())aBlock
 {
+  [self updateRemoteRefsSilently:NO withBlock:aBlock];
+}
+
+- (void) updateRemoteRefsSilently:(BOOL)silently withBlock:(void(^)())aBlock
+{
   if (!self.repository)
   {
     if (aBlock) aBlock();
@@ -1052,7 +1064,7 @@
         for (GBRemote* aRemote in self.repository.remotes)
         {
           [blockGroup enter];
-          [self updateBranchesForRemote:aRemote withBlock:^{
+          [self updateBranchesForRemote:aRemote silently:silently withBlock:^{
             [blockGroup leave];
           }];
         }
@@ -1063,28 +1075,33 @@
   }];
 }
 
-- (void) updateBranchesForRemote:(GBRemote*)aRemote withBlock:(void(^)())block
+- (void) updateBranchesForRemote:(GBRemote*)aRemote withBlock:(void(^)())aBlock
 {
-  block = [[block copy] autorelease];
+  [self updateBranchesForRemote:aRemote silently:NO withBlock:aBlock];
+}
+
+- (void) updateBranchesForRemote:(GBRemote*)aRemote silently:(BOOL)silently withBlock:(void(^)())aBlock
+{
+  aBlock = [[aBlock copy] autorelease];
   
   if (!aRemote)
   {
-    if (block) block();
+    if (aBlock) aBlock();
     return;
   }
   
   //NSLog(@"%@: updating branches for remote %@...", [self class], aRemote.alias);
-  [aRemote updateBranchesWithBlock:^{
+  [aRemote updateBranchesSilently:silently withBlock:^{
     if (aRemote.needsFetch)
     {
       [self resetAutoFetchInterval];
       //NSLog(@"%@: updated branches for remote %@; needs fetch! %@", [self class], aRemote.alias, [self longNameForSourceList]);
-      [self fetchRemote:aRemote withBlock:block];
+      [self fetchRemote:aRemote silently:silently withBlock:aBlock];
     }
     else
     {
       //NSLog(@"%@: updated branches for remote %@; no changes.", [self class], aRemote.alias);
-      if (block) block();
+      if (aBlock) aBlock();
     }
   }];
 }
@@ -1352,7 +1369,7 @@
 {
   //NSLog(@"GBRepositoryController: resetAutoFetchInterval in %@ (was: %f)", [self url], autoFetchInterval);
   NSTimeInterval plusMinusOne = (2*(0.5-drand48()));
-  autoFetchInterval = 10.0 + plusMinusOne*2;
+  autoFetchInterval = 1.0 + plusMinusOne*2;
   
 #if GB_STRESS_TEST_AUTOFETCH
   autoFetchInterval = drand48()*5.0;
@@ -1403,23 +1420,32 @@
 	return;
 #endif
 
-  //NSLog(@"AutoFetch: self.updatesQueue = %d / %d [%@]", (int)self.updatesQueue.operationCount, (int)[self.updatesQueue.queue count], [self nameInSidebar]);
   self.isWaitingForAutofetch = YES;
-  //NSAssert(self.autofetchQueue, @"Somebody forgot to set autofetchQueue for repository controller %@", self.repository.url);
-//  if (self.autofetchQueue)
-//  {
-//    [self.autofetchQueue addBlock:^{
-//      self.isWaitingForAutofetch = NO;
-      //NSLog(@"AutoFetch: start %@", [self nameInSidebar]);
-      [self updateRemoteRefsWithBlock:^{
-        //NSLog(@"AutoFetch: end %@", [self nameInSidebar]);
-        [self loadStageChangesWithBlockIfNeeded:^{
-          self.isWaitingForAutofetch = NO;
-//          [self.autofetchQueue endBlock];
-        }];
-      }];
-//    }];
-//  }
+  [self updateRemoteRefsSilently:YES withBlock:^{
+    [self loadStageChangesWithBlockIfNeeded:^{
+      self.isWaitingForAutofetch = NO;
+    }];
+  }];
+	
+// Previous code with tons of debugging crap.
+	
+//  //NSLog(@"AutoFetch: self.updatesQueue = %d / %d [%@]", (int)self.updatesQueue.operationCount, (int)[self.updatesQueue.queue count], [self nameInSidebar]);
+//  self.isWaitingForAutofetch = YES;
+//  //NSAssert(self.autofetchQueue, @"Somebody forgot to set autofetchQueue for repository controller %@", self.repository.url);
+////  if (self.autofetchQueue)
+////  {
+////    [self.autofetchQueue addBlock:^{
+////      self.isWaitingForAutofetch = NO;
+//      //NSLog(@"AutoFetch: start %@", [self nameInSidebar]);
+//      [self updateRemoteRefsWithBlock:^{
+//        //NSLog(@"AutoFetch: end %@", [self nameInSidebar]);
+//        [self loadStageChangesWithBlockIfNeeded:^{
+//          self.isWaitingForAutofetch = NO;
+////          [self.autofetchQueue endBlock];
+//        }];
+//      }];
+////    }];
+////  }
   
 }
 

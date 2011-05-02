@@ -22,6 +22,7 @@
 
 - (void) bypass;
 - (BOOL) loadCredentialsFromKeychain;
+- (void) cleanupPreviousKeychainItem;
 @end
 
 @implementation GBAskPassController
@@ -33,6 +34,7 @@
 @synthesize username;
 @synthesize password;
 @synthesize booleanResponse;
+@synthesize silent;
 @synthesize bypassFailedAuthentication;
 @synthesize cancelled;
 @synthesize delegate;
@@ -68,8 +70,14 @@
 
 + (id) launchedControllerWithAddress:(NSString*)address taskFactory:(id(^)())taskFactory
 {
+  return [self launchedControllerWithAddress:address silent:NO taskFactory:taskFactory];
+}
+
++ (id) launchedControllerWithAddress:(NSString*)address silent:(BOOL)silent taskFactory:(id(^)())taskFactory
+{
   GBAskPassController* ctrl = [[[self alloc] init] autorelease];
   ctrl.address = address;
+	ctrl.silent = silent;
   ctrl.taskFactory = taskFactory;
   ctrl.task = taskFactory();
   [ctrl.task launch];
@@ -198,6 +206,12 @@
       return ([self.booleanResponse boolValue] ? @"yes" : @"no");
     }
     
+    if (self.silent)
+    {
+      [self cancel];
+      return @"no";
+    }
+    
     if (!repeatedPrompt)
     {
       [self.delegate askPass:self presentBooleanPrompt:prompt];
@@ -224,6 +238,12 @@
       }
     }
     
+    if (self.silent)
+    {
+      [self cancel];
+      return @"";
+    }
+
     if (!repeatedPrompt)
     {
       [self.delegate askPassPresentUsernamePrompt:self];
@@ -244,6 +264,12 @@
       }
     }
     
+    if (self.silent)
+    {
+      [self cancel];
+      return @"";
+    }
+    
     if (!repeatedPrompt)
     {
       [self.delegate askPassPresentPasswordPrompt:self];
@@ -257,6 +283,7 @@
 {
   self.cancelled = YES;
   self.bypassFailedAuthentication = YES;
+  //[self cleanupPreviousKeychainItem]; // when cancelled, clean up previously loaded keychain item (it is almost certainly is invalid)
 }
 
 - (BOOL) loadCredentialsFromKeychain
@@ -394,7 +421,7 @@
   return succeed;
 }
 
-- (BOOL) storeCredentialsInKeychain
+- (void) cleanupPreviousKeychainItem
 {
   if (self.previousKeychainItemRef)
   {
@@ -406,6 +433,11 @@
     self.previousKeychainItemRef = NULL;
     self.previousUsername = nil;
   }
+}
+
+- (BOOL) storeCredentialsInKeychain
+{
+  [self cleanupPreviousKeychainItem];
   
   const char* serviceCString = [self.keychainService cStringUsingEncoding:NSUTF8StringEncoding];
   const char* usernameCString = [self.username cStringUsingEncoding:NSUTF8StringEncoding];
@@ -552,74 +584,44 @@
 
 - (void) askPassPresentUsernamePrompt:(GBAskPassController*)askPassController
 {
-  [[GBMainWindowController instance] sheetQueueAddBlock:^{
-    [self loadCredentialsFromKeychain]; // if got some username while being in a queue
-    if (self.username)
+  GBAskPassCredentialsController* ctrl = [GBAskPassCredentialsController controller];
+  ctrl.address = askPassController.address;
+  ctrl.username = askPassController.previousUsername;
+  ctrl.callback = ^(BOOL promptCancelled) {
+    if (promptCancelled)
     {
-      [[GBMainWindowController instance] sheetQueueEndBlock];
-      return;
+      [askPassController cancel];
     }
-    
-    GBAskPassCredentialsController* ctrl = [GBAskPassCredentialsController controller];
-    ctrl.address = askPassController.address;
-    ctrl.username = askPassController.previousUsername;
-    ctrl.callback = ^(BOOL promptCancelled) {
-      if (promptCancelled)
-      {
-        [askPassController cancel];
-      }
-      else
-      {
-        askPassController.username = ctrl.username;
-        askPassController.password = ctrl.password;
-        [askPassController storeCredentialsInKeychain];
-      }
-      [[GBMainWindowController instance] dismissSheet:ctrl];
-    };
-    dispatch_async(dispatch_get_main_queue(), ^{ 
-      [NSApp beginSheet:[ctrl window]
-         modalForWindow:[[GBMainWindowController instance] window]
-          modalDelegate:nil
-         didEndSelector:nil
-            contextInfo:nil];
-    });
-    [NSApp requestUserAttention:NSCriticalRequest];
-  }];
+    else
+    {
+      askPassController.username = ctrl.username;
+      askPassController.password = ctrl.password;
+      [askPassController storeCredentialsInKeychain];
+    }
+    [[GBMainWindowController instance] dismissSheet:ctrl];
+  };
+  [[GBMainWindowController instance] presentSheet:ctrl];
+  [NSApp requestUserAttention:NSCriticalRequest];
 }
 
 - (void) askPassPresentPasswordPrompt:(GBAskPassController*)askPassController
 {
-  [[GBMainWindowController instance] sheetQueueAddBlock:^{
-    [self loadCredentialsFromKeychain]; // if got some password while being in a queue
-    if (self.password)
+  GBAskPassCredentialsController* ctrl = [GBAskPassCredentialsController passwordOnlyController];
+  ctrl.address = askPassController.address;
+  ctrl.callback = ^(BOOL promptCancelled) {
+    if (promptCancelled)
     {
-      [[GBMainWindowController instance] sheetQueueEndBlock];
-      return;
+      [askPassController cancel];
     }
-    
-    GBAskPassCredentialsController* ctrl = [GBAskPassCredentialsController passwordOnlyController];
-    ctrl.address = askPassController.address;
-    ctrl.callback = ^(BOOL promptCancelled) {
-      if (promptCancelled)
-      {
-        [askPassController cancel];
-      }
-      else
-      {
-        askPassController.password = ctrl.password;
-        [askPassController storeCredentialsInKeychain];
-      }
-      [[GBMainWindowController instance] dismissSheet:ctrl];
-    };
-    dispatch_async(dispatch_get_main_queue(), ^{ 
-      [NSApp beginSheet:[ctrl window]
-         modalForWindow:[[GBMainWindowController instance] window]
-          modalDelegate:nil
-         didEndSelector:nil
-            contextInfo:nil];
-    });
-    [NSApp requestUserAttention:NSCriticalRequest];
-  }];
+    else
+    {
+      askPassController.password = ctrl.password;
+      [askPassController storeCredentialsInKeychain];
+    }
+    [[GBMainWindowController instance] dismissSheet:ctrl];
+  };
+  [[GBMainWindowController instance] presentSheet:ctrl];
+  [NSApp requestUserAttention:NSCriticalRequest];
 }
 
 - (void) setPreviousKeychainItemRef:(SecKeychainItemRef)newPreviousKeychainItemRef

@@ -524,7 +524,7 @@
 		20330BFE13636D4F006B2457 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		20330C0113636D4F006B2457 /* askpass-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "askpass-Prefix.pch"; sourceTree = "<group>"; };
 		20330C0D13646A25006B2457 /* GBAskPassController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBAskPassController.h; sourceTree = "<group>"; };
-		20330C0E13646A25006B2457 /* GBAskPassController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBAskPassController.m; sourceTree = "<group>"; wrapsLines = 1; };
+		20330C0E13646A25006B2457 /* GBAskPassController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = GBAskPassController.m; sourceTree = "<group>"; tabWidth = 2; usesTabs = 0; wrapsLines = 1; };
 		20330C111365B729006B2457 /* GBAskPassBooleanPromptController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBAskPassBooleanPromptController.h; sourceTree = "<group>"; };
 		20330C121365B72A006B2457 /* GBAskPassBooleanPromptController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBAskPassBooleanPromptController.m; sourceTree = "<group>"; };
 		20330C151365B754006B2457 /* GBAskPassBooleanPromptController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GBAskPassBooleanPromptController.xib; sourceTree = "<group>"; };
@@ -538,7 +538,7 @@
 		2038F1DE11936B060087CE37 /* GBAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBAppDelegate.m; sourceTree = "<group>"; };
 		2038F1EA11936CA50087CE37 /* TODO.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TODO.txt; sourceTree = "<group>"; wrapsLines = 1; };
 		2038F30A11952FCF0087CE37 /* GBRepository.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBRepository.h; sourceTree = "<group>"; };
-		2038F30B11952FCF0087CE37 /* GBRepository.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBRepository.m; sourceTree = "<group>"; };
+		2038F30B11952FCF0087CE37 /* GBRepository.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = GBRepository.m; sourceTree = "<group>"; tabWidth = 2; usesTabs = 0; };
 		2038F39511953CB60087CE37 /* GBRef.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBRef.h; sourceTree = "<group>"; };
 		2038F39611953CB60087CE37 /* GBRef.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBRef.m; sourceTree = "<group>"; };
 		2038F3DF119546E90087CE37 /* NSArray+OAArrayHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+OAArrayHelpers.h"; sourceTree = "<group>"; };
@@ -622,7 +622,7 @@
 		206A088611A7AB36003BB9E3 /* OAActivityIndicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAActivityIndicator.m; sourceTree = "<group>"; };
 		206CAB38122A771D009284FE /* Architecture.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Architecture.txt; sourceTree = "<group>"; };
 		206CAC6F122EB5F7009284FE /* GBRepositoryController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBRepositoryController.h; sourceTree = "<group>"; };
-		206CAC70122EB5F7009284FE /* GBRepositoryController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBRepositoryController.m; sourceTree = "<group>"; wrapsLines = 1; };
+		206CAC70122EB5F7009284FE /* GBRepositoryController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = GBRepositoryController.m; sourceTree = "<group>"; tabWidth = 2; usesTabs = 0; wrapsLines = 1; };
 		206CAC73122EBCAD009284FE /* GBRepositoriesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBRepositoriesController.h; sourceTree = "<group>"; };
 		206CAC74122EBCAD009284FE /* GBRepositoriesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBRepositoriesController.m; sourceTree = "<group>"; };
 		206E01281304940F00018300 /* GBRepositoryToolbarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBRepositoryToolbarController.h; sourceTree = "<group>"; };

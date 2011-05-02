@@ -963,13 +963,18 @@
 
 - (void) fetchRemote:(GBRemote*)aRemote withBlock:(void(^)())block
 {
+	[self fetchRemote:aRemote silently:NO withBlock:block];
+}
+
+- (void) fetchRemote:(GBRemote*)aRemote silently:(BOOL)silently withBlock:(void(^)())block
+{
   block = [[block copy] autorelease];
   if (!aRemote)
   {
     if (block) block();
     return;
   }
-  [GBAskPassController launchedControllerWithAddress:aRemote.URLString taskFactory:^{
+  [GBAskPassController launchedControllerWithAddress:aRemote.URLString silent:silently taskFactory:^{
     GBTask* task = [self task];
     task.arguments = [NSArray arrayWithObjects:@"fetch", 
                        @"--tags",
