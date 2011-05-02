@@ -12,9 +12,6 @@
 @implementation GBRemotesController
 @synthesize repository;
 @synthesize remotesDictionaries;
-@synthesize target;
-@synthesize finishSelector;
-@synthesize cancelSelector;
 
 + (id) controller
 {
@@ -40,13 +37,13 @@
 - (IBAction) onOK:(id)sender
 {
   [self syncRemotesDictionariesWithRepository];
-  if (self.finishSelector) [self.target performSelector:self.finishSelector withObject:self];
+  [self performCompletionHandler:NO];
 }
 
 - (IBAction) onCancel:(id)sender
 {
   self.remotesDictionaries = nil;
-  if (self.cancelSelector) [self.target performSelector:self.cancelSelector withObject:self];
+  [self performCompletionHandler:YES];
 }
 
 

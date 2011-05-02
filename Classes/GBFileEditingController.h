@@ -1,4 +1,5 @@
-@interface GBFileEditingController : NSWindowController<NSWindowDelegate>
+#import "GBWindowControllerWithCallback.h"
+@interface GBFileEditingController : GBWindowControllerWithCallback<NSWindowDelegate>
 {
   BOOL contentPrepared;
 }
@@ -9,16 +10,9 @@
 
 @property(nonatomic,retain) IBOutlet NSTextView* textView;
 
-@property(nonatomic,assign) id target;
-@property(nonatomic,assign) SEL finishSelector;
-@property(nonatomic,assign) SEL cancelSelector;
-@property(nonatomic,assign) NSWindow* windowHoldingSheet;
-
 + (GBFileEditingController*) controller;
 
 - (IBAction) onOK:(id)sender;
 - (IBAction) onCancel:(id)sender;
-
-- (void) runSheetInWindow:(NSWindow*)window;
 
 @end

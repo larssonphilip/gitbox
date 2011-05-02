@@ -1,4 +1,3 @@
-
 @interface GBCloneWindowController : NSWindowController<NSWindowDelegate, NSTextFieldDelegate, NSOpenSavePanelDelegate>
 
 @property(retain) IBOutlet NSTextField* urlField;
@@ -8,9 +7,7 @@
 @property(retain) NSURL* targetURL;
 @property(copy) void (^finishBlock)();
 
-@property(assign) NSWindow* windowHoldingSheet;
-
-- (void) runSheetInWindow:(NSWindow*)aWindow;
+- (void) start;
 
 - (IBAction) cancel:(id)sender;
 - (IBAction) ok:(id)sender;

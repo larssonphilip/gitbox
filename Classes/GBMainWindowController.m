@@ -23,6 +23,7 @@
 @property(nonatomic, retain) id<GBMainWindowItem> selectedWindowItem;
 @property(nonatomic, retain) OAFastJumpController* jumpController;
 @property(nonatomic, retain, readwrite) OABlockQueue* sheetQueue;
+@property(nonatomic, retain) NSWindow* currentSheet;
 - (void) updateToolbarAlignment;
 - (NSView*) sidebarView;
 - (NSView*) detailView;
@@ -42,6 +43,7 @@
 @synthesize splitView;
 @synthesize jumpController;
 @synthesize sheetQueue;
+@synthesize currentSheet;
 
 - (void) dealloc
 {
@@ -57,6 +59,7 @@
   self.welcomeController = nil;
   self.splitView = nil;
   self.jumpController = nil;
+  [currentSheet release]; currentSheet = nil;
   [super dealloc];
 }
 
@@ -303,19 +306,25 @@
   GBFileEditingController* fileEditor = [GBFileEditingController controller];
   fileEditor.title = @"~/.gitconfig";
   fileEditor.URL = [NSURL fileURLWithPath:[NSHomeDirectory() stringByAppendingPathComponent:@".gitconfig"]];
-  [fileEditor runSheetInWindow:[self window]];  
+  fileEditor.completionHandler = ^(BOOL cancelled) {
+    [self dismissSheet:fileEditor];
+  };
+  [self presentSheet:fileEditor];
 }
 
 
 
 
-- (IBAction) showWelcomeWindow:(id)_
+- (IBAction) showWelcomeWindow:(id)sender
 {
   if (!self.welcomeController)
   {
     self.welcomeController = [[[GBWelcomeController alloc] initWithWindowNibName:@"GBWelcomeController"] autorelease];
   }
-  [self.welcomeController runSheetInWindow:[self window]];
+  self.welcomeController.completionHandler = ^(BOOL cancelled){
+    [self dismissSheet];
+  };
+  [self presentSheet:[self.welcomeController window]];
 }
 
 - (IBAction) selectPreviousPane:(id)sender
@@ -328,6 +337,71 @@
 {
   [self.jumpController flush];
   [self.detailViewController tryToPerform:@selector(selectPane:) with:self];
+}
+
+
+
+
+#pragma mark Sheets
+
+
+- (void) presentSheet:(id)aWindowOrWindowController
+{
+  if (!aWindowOrWindowController) return;
+  NSWindow* aWindow = aWindowOrWindowController;
+  if (![aWindowOrWindowController isKindOfClass:[NSWindow class]])
+  {
+    aWindow = [aWindowOrWindowController window];
+  }
+  if (!aWindow) return;
+  [self.sheetQueue addBlock:^{
+    self.currentSheet = aWindow;
+    // skipping current cycle to avoid collision with previously opened sheet which is closing right now
+    dispatch_async(dispatch_get_main_queue(), ^{ 
+      [NSApp beginSheet:self.currentSheet
+         modalForWindow:[self window]
+          modalDelegate:nil
+         didEndSelector:nil
+            contextInfo:nil];
+    });
+  }];
+}
+
+- (void) dismissSheet:(id)aWindowOrWindowController
+{
+  if (!aWindowOrWindowController) return;
+  NSWindow* aWindow = aWindowOrWindowController;
+  if (![aWindowOrWindowController isKindOfClass:[NSWindow class]])
+  {
+    aWindow = [aWindowOrWindowController window];
+  }
+  
+  if (!aWindow) return;
+  [NSApp endSheet:aWindow];
+  [aWindow orderOut:nil];
+  [self.sheetQueue endBlock];
+//  [self dismissSheet];
+}
+
+- (void) dismissSheet
+{
+  [self dismissSheet:self.currentSheet];
+  self.currentSheet = nil;
+//  if (!self.currentSheet) return;
+//  [NSApp endSheet:self.currentSheet];
+//  [self.currentSheet orderOut:nil];
+//  self.currentSheet = nil;
+//  [self.sheetQueue endBlock];
+}
+
+- (void) sheetQueueAddBlock:(void(^)())aBlock
+{
+  [self.sheetQueue addBlock:aBlock];
+}
+
+- (void) sheetQueueEndBlock
+{
+  [self.sheetQueue endBlock];
 }
 
 

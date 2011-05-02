@@ -166,6 +166,7 @@ Gitbox 1.3 Enhancements:
 
 - common sheet queue for main window to append and prepend sheets. 
   - can simply use OABlockQueue as it will let to avoid presenting a sheet when the previous one has already produced necessary data (like for Keychain).
+  - also override presentError: on main window controller to put error in a queued sheet
 - autofetch: if askpass is cancelled during autofetch, should not ask again
 
 
@@ -181,6 +182,8 @@ Gitbox 1.3 Bug fixes:
 - bug: when dragged in a repo, Edit Servers... and other sheets do not work. When Gitbox is relaunched, it becomes fine.
 - bug: update the stage when it is selected or when the main window is activated
 - bug: configured remote server without(?) pushed branches, while the current branch associated with non-existant remote, is not displayed in remotes dropdown menu.
+
+- bug: when clone error occured close button does not remove non-finished repo from list.
 
 ? bug: still has an issue with autofetch filling up the autofetch queue: some tasks must be leaking or callback blocks are not called correctly
 

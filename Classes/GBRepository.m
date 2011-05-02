@@ -10,6 +10,7 @@
 #import "GBSubmodulesTask.h"
 #import "GBGitConfig.h"
 #import "GBAskPassController.h"
+#import "GBMainWindowController.h"
 
 #import "OAPropertyListController.h"
 #import "OABlockGroup.h"
@@ -857,18 +858,32 @@
 
 - (void) alertWithMessage:(NSString*)message description:(NSString*)description
 {
+  description = [description stringByReplacingOccurrencesOfString:@"fatal: " withString:@""];
+  description = [description stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+  description = [description stringByAppendingFormat:@"\n\nRepository: %@", self.path];
+  
   NSAlert* alert = [[[NSAlert alloc] init] autorelease];
   [alert addButtonWithTitle:@"OK"];
   [alert setMessageText:message];
   [alert setInformativeText:description];
   [alert setAlertStyle:NSWarningAlertStyle];
   
-  [alert runModal];
-  
-  //[alert retain];
-  // This cycle delay helps to avoid toolbar deadlock
-  //[self performSelector:@selector(slideAlert:) withObject:alert afterDelay:0.1];
+  [[GBMainWindowController instance] sheetQueueAddBlock:^{
+    [alert retain];
+    [alert beginSheetModalForWindow:[[GBMainWindowController instance] window] 
+                      modalDelegate:self
+                     didEndSelector:@selector(alertDidEnd:returnCode:contextInfo:)
+                        contextInfo:NULL];
+  }];
 }
+
+- (void) alertDidEnd:(NSAlert*)alert returnCode:(NSInteger)returnCode contextInfo:(void*)ref
+{
+  [[alert window] orderOut:nil];
+  [[GBMainWindowController instance] sheetQueueEndBlock];
+  [alert release];
+}
+
 
 - (void) fetchCurrentBranchWithBlock:(void(^)())block
 {

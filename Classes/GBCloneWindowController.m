@@ -1,5 +1,5 @@
 #import "GBCloneWindowController.h"
-#import "NSWindowController+OAWindowControllerHelpers.h"
+#import "GBMainWindowController.h"
 #import "NSFileManager+OAFileManagerHelpers.h"
 
 @interface GBCloneWindowController ()
@@ -17,8 +17,6 @@
 @synthesize targetDirectoryURL;
 @synthesize targetURL;
 
-@synthesize windowHoldingSheet;
-
 - (void) dealloc
 {
   self.urlField = nil;
@@ -28,10 +26,15 @@
   [super dealloc];
 }
 
+- (void) start
+{
+  [[GBMainWindowController instance] presentSheet:[self window]];
+}
+
 - (IBAction) cancel:(id)sender
 {
+  [[GBMainWindowController instance] dismissSheet];
   self.finishBlock = nil;
-  if (self.windowHoldingSheet) [self.windowHoldingSheet endSheetForController:self];
 }
 
 - (IBAction) ok:(id)sender
@@ -43,10 +46,9 @@
     [[NSUserDefaults standardUserDefaults] setObject:[[[self.urlField stringValue] copy] autorelease] forKey:@"GBCloneWindowController-lastURL"];
   }
   
-  
   if (self.sourceURL)
   {
-    if (self.windowHoldingSheet) [self.windowHoldingSheet endSheetForController:self];
+    [[GBMainWindowController instance] dismissSheet];
     
     NSString* suggestedName = [[self.sourceURL absoluteString] lastPathComponent];
     suggestedName = [[suggestedName componentsSeparatedByString:@":"] lastObject]; // handle the case of "oleg.local:test.git"
@@ -65,30 +67,32 @@
     [panel setNameFieldStringValue:suggestedName];
     [panel setPrompt:NSLocalizedString(@"Clone", @"Clone")];
     [panel setDelegate:self];
-    [panel beginSheetModalForWindow:self.windowHoldingSheet completionHandler:^(NSInteger result){
-      if (result == NSFileHandlingPanelOKButton)
-      {
-        self.targetDirectoryURL = [panel directoryURL];
-        self.targetURL = [panel URL]; // this URL is interpreted as a file URL and breaks later
-        self.targetURL = [NSURL fileURLWithPath:[self.targetURL path] isDirectory:YES]; // make it directory url explicitly
-        
-        if (self.targetDirectoryURL && self.targetURL)
+    [[GBMainWindowController instance] sheetQueueAddBlock:^{
+      [panel beginSheetModalForWindow:[[GBMainWindowController instance] window] completionHandler:^(NSInteger result){
+        [[GBMainWindowController instance] sheetQueueEndBlock];
+        if (result == NSFileHandlingPanelOKButton)
         {
-          if (self.finishBlock) self.finishBlock();
-          self.finishBlock = nil;
+          self.targetDirectoryURL = [panel directoryURL];
+          self.targetURL = [panel URL]; // this URL is interpreted as a file URL and breaks later
+          self.targetURL = [NSURL fileURLWithPath:[self.targetURL path] isDirectory:YES]; // make it directory url explicitly
           
-          // Clean up for next use.
-          [self.urlField setStringValue:@""];
-          self.sourceURL = nil;
-          self.targetDirectoryURL = nil;
-          self.targetURL = nil;
-          
+          if (self.targetDirectoryURL && self.targetURL)
+          {
+            if (self.finishBlock) self.finishBlock();
+            self.finishBlock = nil;
+            
+            // Clean up for next use.
+            [self.urlField setStringValue:@""];
+            self.sourceURL = nil;
+            self.targetDirectoryURL = nil;
+            self.targetURL = nil;
+          }
         }
-      }
-      else
-      {
-        [self.windowHoldingSheet performSelector:@selector(beginSheetForController:) withObject:self afterDelay:0.0];
-      }
+        else
+        {
+          [[GBMainWindowController instance] presentSheet:[self window]];
+        }
+      }];
     }];
   }
 }
@@ -99,10 +103,8 @@
   [self update];
 }
 
-- (void) runSheetInWindow:(NSWindow*)aWindow
+- (void)windowDidBecomeKey:(NSNotification *)notification
 {
-  self.windowHoldingSheet = aWindow;
-  [aWindow beginSheetForController:self];
   NSString* lastURLString = [[NSUserDefaults standardUserDefaults] objectForKey:@"GBCloneWindowController-lastURL"];
   if (lastURLString)
   {

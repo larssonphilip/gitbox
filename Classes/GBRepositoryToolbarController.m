@@ -7,6 +7,7 @@
 
 #import "GBRepositoryToolbarController.h"
 #import "GBPromptController.h"
+#import "GBMainWindowController.h"
 
 #import "NSObject+OASelectorNotifications.h"
 #import "NSMenu+OAMenuHelpers.h"
@@ -603,10 +604,11 @@
   ctrl.value = defaultName;
   ctrl.requireSingleLine = YES;
   ctrl.requireStripWhitespace = YES;
-  ctrl.finishBlock = ^{
-    [self.repositoryController checkoutRef:remoteBranch withNewName:ctrl.value];
+  ctrl.completionHandler = ^(BOOL cancelled){
+    if (!cancelled) [self.repositoryController checkoutRef:remoteBranch withNewName:ctrl.value];
+    [[GBMainWindowController instance] dismissSheet:ctrl];
   };
-  [ctrl runSheetInWindow:self.window];
+  [[GBMainWindowController instance] presentSheet:ctrl];
 }
 
 - (IBAction) checkoutNewBranch:(id)sender
@@ -618,10 +620,11 @@
   ctrl.buttonText = NSLocalizedString(@"OK", @"");
   ctrl.requireSingleLine = YES;
   ctrl.requireStripWhitespace = YES;
-  ctrl.finishBlock = ^{
-    [self.repositoryController checkoutNewBranchWithName:ctrl.value];
+  ctrl.completionHandler = ^(BOOL cancelled){
+    if (!cancelled) [self.repositoryController checkoutNewBranchWithName:ctrl.value];
+    [[GBMainWindowController instance] dismissSheet:ctrl];
   };
-  [ctrl runSheetInWindow:[self window]];
+  [[GBMainWindowController instance] presentSheet:ctrl];
 }
 
 - (IBAction) checkoutCommit:(id)sender
@@ -640,10 +643,11 @@
   ctrl.buttonText = NSLocalizedString(@"OK", @"");
   ctrl.requireSingleLine = YES;
   ctrl.requireStripWhitespace = YES;
-  ctrl.finishBlock = ^{
-    [self.repositoryController checkoutRef:[GBRef refWithCommitId:ctrl.value]];
+  ctrl.completionHandler = ^(BOOL cancelled){
+    if (!cancelled) [self.repositoryController checkoutRef:[GBRef refWithCommitId:ctrl.value]];
+    [[GBMainWindowController instance] dismissSheet:ctrl];
   };
-  [ctrl runSheetInWindow:[self window]];
+  [[GBMainWindowController instance] presentSheet:ctrl];
 }
 
 
@@ -667,10 +671,11 @@
   ctrl.requireSingleLine = YES;
   ctrl.requireStripWhitespace = YES;
   ctrl.value = defaultName;
-  ctrl.finishBlock = ^{
-    [self.repositoryController createAndSelectRemoteBranchWithName:ctrl.value remote:remote];
+  ctrl.completionHandler = ^(BOOL cancelled){
+    if (!cancelled) [self.repositoryController createAndSelectRemoteBranchWithName:ctrl.value remote:remote];
+    [[GBMainWindowController instance] dismissSheet:ctrl];
   };
-  [ctrl runSheetInWindow:[self window]]; 
+  [[GBMainWindowController instance] presentSheet:ctrl];
 }
 
 

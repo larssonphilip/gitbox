@@ -10,6 +10,7 @@
 #import "GBRepositoryToolbarController.h"
 #import "GBRepositoryViewController.h"
 #import "GBSubmoduleCloningController.h"
+#import "GBMainWindowController.h"
 
 #import "GBSidebarCell.h"
 #import "GBSidebarItem.h"
@@ -765,21 +766,11 @@
   GBRemotesController* remotesController = [GBRemotesController controller];
   
   remotesController.repository = self.repository;
-  remotesController.target = self;
-  remotesController.finishSelector = @selector(doneEditRepositories:);
-  remotesController.cancelSelector = @selector(cancelledEditRepositories:);
+  remotesController.completionHandler = ^(BOOL cancelled){
+    [[GBMainWindowController instance] dismissSheet:remotesController];
+  };
   
-  [self.window beginSheetForController:remotesController];
-}
-
-- (void) doneEditRepositories:(GBRemotesController*)remotesController
-{
-  [self.window endSheetForController:remotesController];
-}
-
-- (void) cancelledEditRepositories:(GBRemotesController*)remotesController
-{
-  [self.window endSheetForController:remotesController];
+  [[GBMainWindowController instance] presentSheet:remotesController];
 }
 
 - (IBAction) editGitIgnore:(id)sender
@@ -787,7 +778,10 @@
   GBFileEditingController* fileEditor = [GBFileEditingController controller];
   fileEditor.title = @".gitignore";
   fileEditor.URL = [self.url URLByAppendingPathComponent:@".gitignore"];
-  [fileEditor runSheetInWindow:self.window];
+  fileEditor.completionHandler = ^(BOOL cancelled){
+    [[GBMainWindowController instance] dismissSheet:fileEditor];
+  };
+  [[GBMainWindowController instance] presentSheet:fileEditor];
 }
 
 - (IBAction) editGitConfig:(id)sender
@@ -795,7 +789,10 @@
   GBFileEditingController* fileEditor = [GBFileEditingController controller];
   fileEditor.title = @".git/config";
   fileEditor.URL = [self.url URLByAppendingPathComponent:@".git/config"];
-  [fileEditor runSheetInWindow:[self window]];
+  fileEditor.completionHandler = ^(BOOL cancelled){
+    [[GBMainWindowController instance] dismissSheet:fileEditor];
+  };
+  [[GBMainWindowController instance] presentSheet:fileEditor];
 }
 
 

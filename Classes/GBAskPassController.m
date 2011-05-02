@@ -3,6 +3,7 @@
 #import "GBAskPassServer.h"
 #import "GBAskPassBooleanPromptController.h"
 #import "GBAskPassCredentialsController.h"
+#import "GBMainWindowController.h"
 
 @interface GBAskPassController ()<GBAskPassServerClient>
 @property(nonatomic, copy) NSString* askPassClientId;
@@ -543,52 +544,82 @@
   ctrl.question = prompt;
   ctrl.callback = ^(BOOL result) {
     askPassController.booleanResponse = [NSNumber numberWithBool:result];
-    [ctrl close];
+    [[GBMainWindowController instance] dismissSheet:ctrl];
   };
-  [ctrl showWindow:self];
+  [[GBMainWindowController instance] presentSheet:ctrl];
   [NSApp requestUserAttention:NSCriticalRequest];
 }
 
 - (void) askPassPresentUsernamePrompt:(GBAskPassController*)askPassController
 {
-  GBAskPassCredentialsController* ctrl = [GBAskPassCredentialsController controller];
-  ctrl.address = askPassController.address;
-  ctrl.username = askPassController.previousUsername;
-  ctrl.callback = ^(BOOL promptCancelled) {
-    if (promptCancelled)
+  [[GBMainWindowController instance] sheetQueueAddBlock:^{
+    [self loadCredentialsFromKeychain]; // if got some username while being in a queue
+    if (self.username)
     {
-      [askPassController cancel];
+      [[GBMainWindowController instance] sheetQueueEndBlock];
+      return;
     }
-    else
-    {
-      askPassController.username = ctrl.username;
-      askPassController.password = ctrl.password;
-      [askPassController storeCredentialsInKeychain];
-    }
-    [ctrl close];
-  };
-  [ctrl showWindow:self];
-  [NSApp requestUserAttention:NSCriticalRequest];
+    
+    GBAskPassCredentialsController* ctrl = [GBAskPassCredentialsController controller];
+    ctrl.address = askPassController.address;
+    ctrl.username = askPassController.previousUsername;
+    ctrl.callback = ^(BOOL promptCancelled) {
+      if (promptCancelled)
+      {
+        [askPassController cancel];
+      }
+      else
+      {
+        askPassController.username = ctrl.username;
+        askPassController.password = ctrl.password;
+        [askPassController storeCredentialsInKeychain];
+      }
+      [[GBMainWindowController instance] dismissSheet:ctrl];
+    };
+    dispatch_async(dispatch_get_main_queue(), ^{ 
+      [NSApp beginSheet:[ctrl window]
+         modalForWindow:[[GBMainWindowController instance] window]
+          modalDelegate:nil
+         didEndSelector:nil
+            contextInfo:nil];
+    });
+    [NSApp requestUserAttention:NSCriticalRequest];
+  }];
 }
 
 - (void) askPassPresentPasswordPrompt:(GBAskPassController*)askPassController
 {
-  GBAskPassCredentialsController* ctrl = [GBAskPassCredentialsController passwordOnlyController];
-  ctrl.address = askPassController.address;
-  ctrl.callback = ^(BOOL promptCancelled) {
-    if (promptCancelled)
+  [[GBMainWindowController instance] sheetQueueAddBlock:^{
+    [self loadCredentialsFromKeychain]; // if got some password while being in a queue
+    if (self.password)
     {
-      [askPassController cancel];
+      [[GBMainWindowController instance] sheetQueueEndBlock];
+      return;
     }
-    else
-    {
-      askPassController.password = ctrl.password;
-      [askPassController storeCredentialsInKeychain];
-    }
-    [ctrl close];
-  };
-  [ctrl showWindow:self];
-  [NSApp requestUserAttention:NSCriticalRequest];
+    
+    GBAskPassCredentialsController* ctrl = [GBAskPassCredentialsController passwordOnlyController];
+    ctrl.address = askPassController.address;
+    ctrl.callback = ^(BOOL promptCancelled) {
+      if (promptCancelled)
+      {
+        [askPassController cancel];
+      }
+      else
+      {
+        askPassController.password = ctrl.password;
+        [askPassController storeCredentialsInKeychain];
+      }
+      [[GBMainWindowController instance] dismissSheet:ctrl];
+    };
+    dispatch_async(dispatch_get_main_queue(), ^{ 
+      [NSApp beginSheet:[ctrl window]
+         modalForWindow:[[GBMainWindowController instance] window]
+          modalDelegate:nil
+         didEndSelector:nil
+            contextInfo:nil];
+    });
+    [NSApp requestUserAttention:NSCriticalRequest];
+  }];
 }
 
 - (void) setPreviousKeychainItemRef:(SecKeychainItemRef)newPreviousKeychainItemRef

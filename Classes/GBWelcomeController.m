@@ -1,38 +1,22 @@
 #import "GBWelcomeController.h"
-#import "NSWindowController+OAWindowControllerHelpers.h"
 
 @implementation GBWelcomeController
 
-@synthesize windowHoldingSheet;
-
 - (IBAction) clone:sender
 {
-  [self endSheet];
-  [NSApp tryToPerform:@selector(cloneRepository:) with:sender];
+  [self performCompletionHandler:NO];
+  [NSApp sendAction:@selector(cloneRepository:) to:nil from:sender];
 }
 
 - (IBAction) open:sender
 {
-  [self endSheet];
-  [NSApp tryToPerform:@selector(openDocument:) with:sender];
+  [self performCompletionHandler:NO];
+  [NSApp sendAction:@selector(openDocument:) to:nil from:sender];
 }
 
 - (IBAction) cancel:sender
 {
-  [self endSheet];
-}
-
-
-- (void) runSheetInWindow:(NSWindow*)window
-{
-  self.windowHoldingSheet = window;
-  [window beginSheetForController:self];
-}
-
-- (void) endSheet
-{
-  [self.windowHoldingSheet endSheetForController:self];
-  self.windowHoldingSheet = nil;
+  [self performCompletionHandler:NO];
 }
 
 @end

@@ -8,6 +8,7 @@
 #import "GBRepositoryToolbarController.h"
 #import "GBRepositoryViewController.h"
 #import "GBCloneWindowController.h"
+#import "GBMainWindowController.h"
 
 #import "NSFileManager+OAFileManagerHelpers.h"
 #import "NSArray+OAArrayHelpers.h"
@@ -116,12 +117,15 @@
   openPanel.allowsMultipleSelection = YES;
   openPanel.canChooseFiles = YES;
   openPanel.canChooseDirectories = YES;
-  [openPanel beginSheetModalForWindow:self.window completionHandler:^(NSInteger result){
-    if (result == NSFileHandlingPanelOKButton)
-    {
+  [[GBMainWindowController instance] sheetQueueAddBlock:^{
+    [openPanel beginSheetModalForWindow:[[GBMainWindowController instance] window] completionHandler:^(NSInteger result){
       [openPanel orderOut:self]; // to let a license sheet pop out correctly
-      [self openURLs:[openPanel URLs] inGroup:aGroup atIndex:insertionIndex];
-    }
+      [[GBMainWindowController instance] sheetQueueEndBlock];
+      if (result == NSFileHandlingPanelOKButton)
+      {
+        [self openURLs:[openPanel URLs] inGroup:aGroup atIndex:insertionIndex];
+      }
+    }];
   }];
 }
 
@@ -201,7 +205,7 @@
     }
   };
   
-  [ctrl runSheetInWindow:self.window];
+  [ctrl start];
 }
 
 - (void) cloningRepositoryControllerDidFail:(GBRepositoryCloningController*)cloningRepoCtrl

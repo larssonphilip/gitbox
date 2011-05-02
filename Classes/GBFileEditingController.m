@@ -13,11 +13,6 @@
 
 @synthesize textView;
 
-@synthesize target;
-@synthesize finishSelector;
-@synthesize cancelSelector;
-@synthesize windowHoldingSheet;
-
 + (GBFileEditingController*) controller
 {
   return [[[self alloc] initWithWindowNibName:@"GBFileEditingController"] autorelease];
@@ -36,20 +31,14 @@
 {
   NSData* data = [[self.textView string] dataUsingEncoding:NSUTF8StringEncoding];
   [[NSFileManager defaultManager] writeData:data toPath:[self.URL path]];
-  
-  if (finishSelector) [self.target performSelector:finishSelector withObject:self];
-  
-  [self.windowHoldingSheet endSheetForController:self];
-  self.windowHoldingSheet = nil;
   contentPrepared = NO;
+  [self performCompletionHandler:NO];
 }
 
 - (IBAction) onCancel:(id)sender
 {
-  if (cancelSelector) [self.target performSelector:cancelSelector withObject:self];
-  [self.windowHoldingSheet endSheetForController:self];
-  self.windowHoldingSheet = nil;
   contentPrepared = NO;
+  [self performCompletionHandler:YES];
 }
 
 - (void) prepareContent
@@ -75,11 +64,6 @@
   }  
 }
 
-- (void) runSheetInWindow:(NSWindow*)window
-{
-  self.windowHoldingSheet = window;
-  [window beginSheetForController:self];
-}
 
 
 

@@ -13,6 +13,7 @@
 #import "GBUserNameEmailController.h"
 #import "GBStageShortcutHintDetector.h"
 #import "GBStageMessageHistoryController.h"
+#import "GBMainWindowController.h"
 
 #import "GBCellWithView.h"
 
@@ -276,7 +277,10 @@
   fileEditor.title = @".gitignore";
   fileEditor.URL = [[self.stage.repository url] URLByAppendingPathComponent:@".gitignore"];
   fileEditor.linesToAppend = paths;
-  [fileEditor runSheetInWindow:[[self view] window]];
+  fileEditor.completionHandler = ^(BOOL cancelled) {
+    [[GBMainWindowController instance] dismissSheet:fileEditor];
+  };
+  [[GBMainWindowController instance] presentSheet:fileEditor];
 }
 - (BOOL) validateStageIgnoreFile:(id)sender
 {
@@ -295,10 +299,12 @@
   [alert setInformativeText:NSLocalizedString(@"All non-committed changes will be lost.",@"Stage")];
   [alert setAlertStyle:NSWarningAlertStyle];
   [alert retain];
-  [alert beginSheetModalForWindow:[[self view] window]
-                    modalDelegate:self
-                   didEndSelector:@selector(stageRevertFileAlertDidEnd:returnCode:contextInfo:)
-                      contextInfo:[[self selectedChanges] copy]];
+  [[GBMainWindowController instance] sheetQueueAddBlock:^{
+    [alert beginSheetModalForWindow:[[self view] window]
+                      modalDelegate:self
+                     didEndSelector:@selector(stageRevertFileAlertDidEnd:returnCode:contextInfo:)
+                        contextInfo:[[self selectedChanges] copy]];
+  }];
 }
 - (BOOL) validateStageRevertFile:(id)sender
 {
@@ -315,6 +321,7 @@
   [changes autorelease];
   [NSApp endSheet:[[self view] window]];
   [[alert window] orderOut:self];
+  [[GBMainWindowController instance] sheetQueueEndBlock];
   [alert autorelease];
 }
 
@@ -327,10 +334,12 @@
   [alert setInformativeText:NSLocalizedString(@"All non-committed changes will be lost.", @"Stage")];
   [alert setAlertStyle:NSWarningAlertStyle];
   [alert retain];
-  [alert beginSheetModalForWindow:[[self view] window]
-                    modalDelegate:self
-                   didEndSelector:@selector(stageDeleteFileAlertDidEnd:returnCode:contextInfo:)
-                      contextInfo:[[self selectedChanges] copy]];  
+  [[GBMainWindowController instance] sheetQueueAddBlock:^{
+    [alert beginSheetModalForWindow:[[self view] window]
+                      modalDelegate:self
+                     didEndSelector:@selector(stageDeleteFileAlertDidEnd:returnCode:contextInfo:)
+                        contextInfo:[[self selectedChanges] copy]];
+  }];
 }
 
 - (BOOL) validateStageDeleteFile:(id)sender
@@ -351,6 +360,7 @@
   [NSApp endSheet:[[self view] window]];
   [[alert window] orderOut:self];
   [alert autorelease];
+  [[GBMainWindowController instance] sheetQueueEndBlock];
 }
 
 
@@ -778,11 +788,15 @@
 
   GBUserNameEmailController* ctrl = [[[GBUserNameEmailController alloc] initWithWindowNibName:@"GBUserNameEmailController"] autorelease];
   [ctrl fillWithAddressBookData];
-  ctrl.finishBlock = ^{
-    self.alreadyValidatedUserNameAndEmail = YES;
-    [[GBGitConfig userConfig] setName:ctrl.userName email:ctrl.userEmail withBlock:block];
+  ctrl.completionHandler = ^(BOOL cancelled){
+    if (!cancelled)
+    {
+      self.alreadyValidatedUserNameAndEmail = YES;
+      [[GBGitConfig userConfig] setName:ctrl.userName email:ctrl.userEmail withBlock:block];
+    }
+    [[GBMainWindowController instance] dismissSheet:ctrl];
   };
-  [ctrl runSheetInWindow:[[self view] window]];
+  [[GBMainWindowController instance] presentSheet:ctrl];
 }
 
 

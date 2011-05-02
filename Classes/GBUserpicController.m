@@ -93,7 +93,7 @@
     
   }
   
-  // 3. TODO: Gravatar image
+  // 3. Gravatar image
   
   {
     NSString* md5hexdigest = [email md5hexdigest];

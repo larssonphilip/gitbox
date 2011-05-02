@@ -3,6 +3,7 @@
 #import "GBCommitViewController.h"
 #import "GBUserpicController.h"
 #import "GBRepositoryController.h"
+#import "GBMainWindowController.h"
 
 #import "NSArray+OAArrayHelpers.h"
 #import "NSSplitView+OASplitViewHelpers.h"
@@ -450,21 +451,19 @@
   [panel setNameFieldStringValue:[change defaultNameForExtractedFile]];
   [panel setPrompt:NSLocalizedString(@"Save", @"Commit")];
   [panel setDelegate:self];
-  [panel beginSheetModalForWindow:[[self view] window] completionHandler:^(NSInteger result){
-    if (result == NSFileHandlingPanelOKButton)
-    {
-      [change extractFileWithTargetURL:[panel URL]];
-      NSString* path = [[panel URL] path];
-      [NSObject performBlock:^{
-        [[NSWorkspace sharedWorkspace] selectFile:path inFileViewerRootedAtPath:nil];
-      } afterDelay:0.7];
-      
-//      dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 700000000), dispatch_get_main_queue(), ^{
-//        [[NSWorkspace sharedWorkspace] selectFile:path inFileViewerRootedAtPath:nil];  
-//      });
-    }
+  [[GBMainWindowController instance] sheetQueueAddBlock:^{
+    [panel beginSheetModalForWindow:[[self view] window] completionHandler:^(NSInteger result){
+      if (result == NSFileHandlingPanelOKButton)
+      {
+        [change extractFileWithTargetURL:[panel URL]];
+        NSString* path = [[panel URL] path];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 700000000), dispatch_get_main_queue(), ^{
+          [[NSWorkspace sharedWorkspace] selectFile:path inFileViewerRootedAtPath:nil];  
+        });
+      }
+      [[GBMainWindowController instance] sheetQueueEndBlock];
+    }];
   }];
-  
 }
 
 - (BOOL) validateStageExtractFile:_

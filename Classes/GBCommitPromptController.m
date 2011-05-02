@@ -1,3 +1,32 @@
+
+
+
+
+
+
+
+
+
+
+// OBSOLETE
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #import "GBCommitPromptController.h"
 
 #import "GBCommit.h"
@@ -51,11 +80,11 @@
   [self addMessageToHistory];
   [self rewindMessageHistory];
   
-  if (self.finishBlock) self.finishBlock();
+//  if (self.finishBlock) self.finishBlock();
   
   [self.branchHintLabel setStringValue:@""];
   [self.textView setString:@""];
-  [self endSheet];
+//  [self endSheet];
 }
 
 - (IBAction) onCancel:(id)sender
@@ -63,8 +92,8 @@
   [self rewindMessageHistory];
   [self resetMagicFlags];
   self.value = [[[self.textView string] copy] autorelease];
-  if (self.cancelBlock) self.cancelBlock();
-  [self endSheet];
+//  if (self.cancelBlock) self.cancelBlock();
+//  [self endSheet];
 }
 
 

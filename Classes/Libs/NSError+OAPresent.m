@@ -4,7 +4,7 @@
 
 - (void) present
 {
-  [NSApp tryToPerform:@selector(presentError:) with:self];
+  [NSApp sendAction:@selector(presentError:) to:nil from:self];
 }
 
 @end

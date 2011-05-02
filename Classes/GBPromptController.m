@@ -1,6 +1,5 @@
 #import "GBPromptController.h"
 #import "NSString+OAStringHelpers.h"
-#import "NSWindowController+OAWindowControllerHelpers.h"
 
 @implementation GBPromptController
 
@@ -10,16 +9,11 @@
 @synthesize promptText;
 @synthesize buttonText;
 @synthesize value;
-@synthesize finishBlock;
-@synthesize cancelBlock;
 
 @synthesize requireNonNilValue;
 @synthesize requireNonEmptyString;
 @synthesize requireSingleLine;
 @synthesize requireStripWhitespace;
-@synthesize callbackDelay;
-
-@synthesize windowHoldingSheet;
 
 + (GBPromptController*) controller
 {
@@ -48,27 +42,7 @@
   self.promptText = nil;
   self.buttonText = nil;
   self.value = nil;
-  self.finishBlock = nil;
-  self.cancelBlock = nil;
   [super dealloc];
-}
-
-- (void) performCallbackAndRelease:(void(^)())block
-{
-  block();
-  [self autorelease];
-}
-
-- (void) performCallbackNowOrLater:(void(^)())block
-{
-  if (!block) return;
-  if (self.callbackDelay <= 0.0)
-  {
-    block();
-    return;
-  }
-  [self retain];
-  [self performSelector:@selector(performCallbackAndRelease:) withObject:block afterDelay:self.callbackDelay];
 }
 
 - (IBAction) onOK:(id)sender
@@ -86,20 +60,18 @@
   if (requireNonNilValue && !self.value) self.value = @"";
   if (requireNonEmptyString && (!self.value || [self.value isEmptyString])) return;
   
-  [self performCallbackNowOrLater:self.finishBlock];
+  [[self retain] autorelease];
+  [self performCompletionHandler:NO];
   self.value = @"";
-  [self endSheet];
 }
 
 - (IBAction) onCancel:(id)sender
 {
-  [self performCallbackNowOrLater:self.cancelBlock];
-  [self endSheet];
+  [self performCompletionHandler:YES];
 }
 
-- (void) runSheetInWindow:(NSWindow*)window
+- (void)windowDidBecomeKey:(NSNotification *)notification
 {
-  self.windowHoldingSheet = window;
   if (self.requireSingleLine)
   {
     NSWindow* win = [self window];
@@ -109,16 +81,7 @@
     [win setContentMaxSize:maxSize];
     [[self.textField cell] setUsesSingleLineMode:YES];
   }
-  [window beginSheetForController:self];
   [self.textField setStringValue:self.value];
-}
-
-- (void) endSheet
-{
-  self.finishBlock = nil;
-  self.cancelBlock = nil;
-  [self.windowHoldingSheet endSheetForController:self];
-  self.windowHoldingSheet = nil;
 }
 
 @end

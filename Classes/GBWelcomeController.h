@@ -1,12 +1,8 @@
-@interface GBWelcomeController : NSWindowController<NSWindowDelegate>
-
-@property(assign) NSWindow* windowHoldingSheet;
+#import "GBWindowControllerWithCallback.h"
+@interface GBWelcomeController : GBWindowControllerWithCallback<NSWindowDelegate>
 
 - (IBAction) clone:_;
 - (IBAction) open:_;
 - (IBAction) cancel:_;
-
-- (void) runSheetInWindow:(NSWindow*)window;
-- (void) endSheet;
 
 @end

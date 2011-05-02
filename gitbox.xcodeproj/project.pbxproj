@@ -46,6 +46,8 @@
 		200A484112F0034A004DF940 /* GBSidebarSubmoduleMissingIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 200A484012F0034A004DF940 /* GBSidebarSubmoduleMissingIcon.png */; };
 		200A484212F0034A004DF940 /* GBSidebarSubmoduleMissingIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 200A484012F0034A004DF940 /* GBSidebarSubmoduleMissingIcon.png */; };
 		200B08B511B6E359004C09A8 /* GBLocalRemoteAssociationTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 200B08B411B6E359004C09A8 /* GBLocalRemoteAssociationTask.m */; };
+		200DE075136A9F9100D18A5B /* GBWindowControllerWithCallback.m in Sources */ = {isa = PBXBuildFile; fileRef = 200DE074136A9F9100D18A5B /* GBWindowControllerWithCallback.m */; };
+		200DE076136A9F9100D18A5B /* GBWindowControllerWithCallback.m in Sources */ = {isa = PBXBuildFile; fileRef = 200DE074136A9F9100D18A5B /* GBWindowControllerWithCallback.m */; };
 		2010732F11A7E9C300EFDE56 /* app.icns in Resources */ = {isa = PBXBuildFile; fileRef = 2010732E11A7E9C300EFDE56 /* app.icns */; };
 		201073B611A80A4600EFDE56 /* GBRemotesTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 201073B511A80A4600EFDE56 /* GBRemotesTask.m */; };
 		2016439112CC0F35005C69DA /* author.png in Resources */ = {isa = PBXBuildFile; fileRef = 2016439012CC0F2E005C69DA /* author.png */; };
@@ -462,6 +464,8 @@
 		200A484012F0034A004DF940 /* GBSidebarSubmoduleMissingIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GBSidebarSubmoduleMissingIcon.png; path = Images/GBSidebarSubmoduleMissingIcon.png; sourceTree = SOURCE_ROOT; };
 		200B08B311B6E359004C09A8 /* GBLocalRemoteAssociationTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBLocalRemoteAssociationTask.h; sourceTree = "<group>"; };
 		200B08B411B6E359004C09A8 /* GBLocalRemoteAssociationTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBLocalRemoteAssociationTask.m; sourceTree = "<group>"; };
+		200DE073136A9F9100D18A5B /* GBWindowControllerWithCallback.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBWindowControllerWithCallback.h; sourceTree = "<group>"; };
+		200DE074136A9F9100D18A5B /* GBWindowControllerWithCallback.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBWindowControllerWithCallback.m; sourceTree = "<group>"; };
 		2010732E11A7E9C300EFDE56 /* app.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = app.icns; sourceTree = "<group>"; };
 		201073B411A80A4600EFDE56 /* GBRemotesTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBRemotesTask.h; sourceTree = "<group>"; };
 		201073B511A80A4600EFDE56 /* GBRemotesTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBRemotesTask.m; sourceTree = "<group>"; };
@@ -1345,6 +1349,8 @@
 				2043A83011C900A0001ED307 /* GBPreferencesController.m */,
 				20915F7E12875C92005E0D82 /* GBPreferencesController.xib */,
 				20915F8B12876062005E0D82 /* GBPreferencesController-appstore.xib */,
+				200DE073136A9F9100D18A5B /* GBWindowControllerWithCallback.h */,
+				200DE074136A9F9100D18A5B /* GBWindowControllerWithCallback.m */,
 			);
 			name = "Prompts and aux window controllers";
 			sourceTree = "<group>";
@@ -1833,6 +1839,7 @@
 				20330C141365B72A006B2457 /* GBAskPassBooleanPromptController.m in Sources */,
 				203FF1D01365C2ED000624D6 /* GBAskPassCredentialsController.m in Sources */,
 				20AC93901367473800FEACF9 /* GBAskPass.m in Sources */,
+				200DE076136A9F9100D18A5B /* GBWindowControllerWithCallback.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1962,6 +1969,7 @@
 				20330C131365B72A006B2457 /* GBAskPassBooleanPromptController.m in Sources */,
 				203FF1CF1365C2ED000624D6 /* GBAskPassCredentialsController.m in Sources */,
 				20AC938F1367473800FEACF9 /* GBAskPass.m in Sources */,
+				200DE075136A9F9100D18A5B /* GBWindowControllerWithCallback.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
