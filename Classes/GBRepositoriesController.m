@@ -210,7 +210,6 @@
 
 - (void) cloningRepositoryControllerDidFail:(GBRepositoryCloningController*)cloningRepoCtrl
 {
-  [cloningRepoCtrl removeObserverForAllSelectors:self];
 }
 
 - (void) cloningRepositoryControllerDidCancel:(GBRepositoryCloningController*)cloningRepoCtrl
@@ -250,7 +249,6 @@
   
   self.rootController.selectedObjects = selectedObjects;
 }
-
 
 
 

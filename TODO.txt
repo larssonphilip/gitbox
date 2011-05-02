@@ -116,6 +116,7 @@ Misc items done:
 + bug: when auth dialog is closed, askpass ctrl is deallocated, but the task is still alive.
 + bug: should present askpass in a sheet
 + bug: askpass should check keychain in its queued block to cover a case when previous window has got relevant credentials
++ bug: when clone error occured close button does not remove non-finished repo from list.
 
 -----------------------------------------------------------
 
@@ -181,7 +182,6 @@ Gitbox 1.3 Bug fixes:
 - bug: do ls-remote and fetch when repo is added to check the authentication and especially SSH known_hosts alert.
 - bug: when cancel button is pressed, should not ask for auth again until explicit user action is invoked.
 - bug: update the stage when it is selected or when the main window is activated (maybe without refresh) - this should deal with sometimes missed FSEvents
-- bug: when clone error occured close button does not remove non-finished repo from list.
 
 - bug: when closing a repo while it performs a task, it crashes miserably.
 - (right now jump controller is disabled because of that) bug: minor issue: when quickly iterating through sidebar when repos are autofetched, the selection sometimes jumps. We should reset jump controller's block when selection is changed elsewhere.

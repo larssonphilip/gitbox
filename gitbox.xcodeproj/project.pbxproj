@@ -580,7 +580,7 @@
 		2051376D13446443008614D4 /* OAFSEventStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAFSEventStream.m; sourceTree = "<group>"; };
 		2054FFE7125DE75800692C77 /* GBRepositoryCloningViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBRepositoryCloningViewController.xib; sourceTree = "<group>"; };
 		2054FFEE125DE9D200692C77 /* GBRepositoryCloningViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBRepositoryCloningViewController.h; sourceTree = "<group>"; };
-		2054FFEF125DE9D200692C77 /* GBRepositoryCloningViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBRepositoryCloningViewController.m; sourceTree = "<group>"; };
+		2054FFEF125DE9D200692C77 /* GBRepositoryCloningViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = GBRepositoryCloningViewController.m; sourceTree = "<group>"; tabWidth = 2; usesTabs = 0; };
 		2057964011ADD3AA004715FE /* GBCommitCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBCommitCell.h; sourceTree = "<group>"; };
 		2057964111ADD3AA004715FE /* GBCommitCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBCommitCell.m; sourceTree = "<group>"; };
 		2057979911ADEEEE004715FE /* GBStageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBStageCell.h; sourceTree = "<group>"; };
@@ -634,7 +634,7 @@
 		20820CD3134E331F00AD55AF /* interactive.rb */ = {isa = PBXFileReference; lastKnownFileType = text.script.ruby; path = interactive.rb; sourceTree = "<group>"; };
 		20820CD4134E331F00AD55AF /* response.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = response.txt; sourceTree = "<group>"; };
 		2082B7C2126587CA00667A7F /* GBRepositoryCloningController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBRepositoryCloningController.h; sourceTree = "<group>"; };
-		2082B7C3126587CA00667A7F /* GBRepositoryCloningController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBRepositoryCloningController.m; sourceTree = "<group>"; };
+		2082B7C3126587CA00667A7F /* GBRepositoryCloningController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = GBRepositoryCloningController.m; sourceTree = "<group>"; tabWidth = 2; usesTabs = 0; };
 		2084C75D1297425F009295C8 /* OALicenseNumberCheck.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OALicenseNumberCheck.h; sourceTree = "<group>"; };
 		2084C8671299A078009295C8 /* calc_hard_links.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = calc_hard_links.rb; sourceTree = "<group>"; };
 		2084C8681299A078009295C8 /* git-remove-hardlinks.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = "git-remove-hardlinks.rb"; sourceTree = "<group>"; };
