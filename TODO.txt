@@ -12,6 +12,79 @@ Bug fixes:
 
 ✓ 
 
+--
+
+
+Gitbox 1.3 Features:
+
++ submodules: display "download" button in the sidebar item
+- submodules: when submodule folder is removed, properly update its status
+- submodules: cloning repo ctrl is not deallocated
+- submodules: wrap submodules clone/pull task with GBAskPassController
+- submodules: cancelling of a cloning repo ctrl does not work (crash)
+- submodules: remember collapsed status of submodules in user defaults
+- submodules: reload submodules status on fsevents and update the sidebar if changed
+- submodules: when reloading submodules merge or reload all of them - think hard on that!
+- submodules: remember submodules in prefs plist because we don't update all of them on startup
+
+- submodules: case 1: user clones a repo which has some submodules => needs init, display "download" button for submodules in sidebar
+- submodules: case 2: user pulls a repo which has some submodules updated => needs pull
+- submodules: case 3: user pulls a repo which has some submodules updated, but his submodule itself is checked out on some branch => needs fetch, not pull
+- submodules: case 4: user clones the repo inside the repo => needs to display as a non-tracked submodule which can be tracked
+- submodules: case 5: user tries to commit a submodule which has the HEAD non-pushed (or dirty directory) - show warning or ask to push manually; show button "show module"
+
+- sidebar: "Duplicate..." menu item to make a quick clone + copy of .git/config.
+- sidebar: double click opens item in finder (patraque 987)
+- sidebar: edit repo name and store it in .git/vendor/gitbox/info.plist
+
+
+Gitbox 1.3 Enhancements:
+
+- recessed icon for no selection view and multiple selection view (similar to Lion Mail.app)
+- sidebar: before dropping over parent node, highlight appropriate index inside, not the parent
+- sidebar: when multiple repos are selected, new group should wrap them.
+- stage: for deleted file rename menu item "Revert File..." to "Restore File..."
+
+- enhancement: fsevents: push dotgit-only pause when doing stage updates, fetch, config updates or other internal changes.
+- enhancement: fsevents: on folder update, while .git is on pause, update stage *without* updating the index, so we don't generate more .git/ events
+
+- enhancement: maintain scroll position in history (per repo) when iterating over the repos
+- enhancement: maintain selection of the file when switching commits
+- enhancement: maintain quicklook contents when switching commits
+
+- enhancement: when quickly clicking on a parent commit, it is interpreted as double-click + selection.
+
+- refactoring: clean up starting/stopping repo ctrl in GBRepositoriesController
+- refactoring: history: highlight difference by using two SHA-1 and traversing loaded items; later tag all the commits for nice tree-like graphics
+
+- maybe try to replace pull with merge+fetch+merge and perform fetch on another queue to make staging work independently (also for push)
+- [NSApp requestUserAttention:] when new commits are fetched (automatically or not).
+
+- also override presentError: on main window controller to put error in a queued sheet
+  
+? when error is not surpressed for automatic tasks, remember the first such error and present it when the repo is selected by user
+- sidebar: open in Xcode if the repo has an xcode project (submenu with projects list if have multiple project files)
+- history: parse commits in background hook instead of a main thread didFinish
+- changes: parse changes in background hook instead of a main thread didFinish
+
+Gitbox 1.3 Bug fixes:
+
+- (right now jump controller is disabled because of that) bug: minor issue: when quickly iterating through sidebar when repos are autofetched, the selection sometimes jumps. We should reset jump controller's block when selection is changed elsewhere.
+- bug: when fetch is clicked, should fetch everything (see email discussion)
+
+- bug: configured remote server without(?) pushed branches, while the current branch associated with non-existant remote, is not displayed in remotes dropdown menu.
+
+? bug: still has an issue with autofetch filling up the autofetch queue: some tasks must be leaking or callback blocks are not called correctly
+
+? bug: responder chain: sometimes selected view loses focus during autofetch or something.
+? bug: responder chain: when entering a commit message, sidebar can be updated and responder chain is changed so that text message does not get the events
+? bug: crash when opening a diff tool and probably updating the stage at the same time.
+? sidebar: postpone reloading the sidebar while editing a group name
+
+
+
+-------------------------------------------------------------------------------
+
 
 
 Gitbox 1.2.5 Release Notes (WIP)
@@ -90,6 +163,9 @@ Misc items done:
 + bug: restore all the Main Menu actions: pull/push etc.
 + optional selector setWindow: for GBMainWindowItem (so they can present sheets etc.)
 
++ common sheet queue for main window to append and prepend sheets. 
+  + can simply use OABlockQueue as it will let to avoid presenting a sheet when the previous one has already produced necessary data (like for Keychain).
+
 + bug: restore toolbar buttons and menus
 + bug: rename does not work on a clicked item (when outside of the selection)
 + bug: openDocument is not completed
@@ -102,6 +178,7 @@ Misc items done:
 
 + bug: top-level controllers should be in responder chain to make global operations accessible when nothing is selected (or nothing is contained): like openDocument, cloneRepository etc.
 
++ enhancement: perform task startup, parsing and finalization in the concurrent dispatch queue for not blocking the main thread.
 + bug: restore clone controller
 + bug: restore FSEvents mechanism
 + bug: handle repository renaming; repositories controller should subscribe to every repoCtrl and listen when they move
@@ -168,85 +245,23 @@ Misc items done:
 
 -----------------------------------------------------------
 
-Gitbox 1.3 Features:
-
-+ submodules: display "download" button in the sidebar item
-- submodules: when submodule folder is removed, properly update its status
-- submodules: cloning repo ctrl is not deallocated
-- submodules: wrap submodules clone/pull task with GBAskPassController
-- submodules: cancelling of a cloning repo ctrl does not work (crash)
-- submodules: remember collapsed status of submodules in user defaults
-- submodules: reload submodules status on fsevents and update the sidebar if changed
-- submodules: when reloading submodules merge or reload all of them - think hard on that!
-- submodules: remember submodules in prefs plist because we don't update all of them on startup
-
-- submodules: case 1: user clones a repo which has some submodules => needs init, display "download" button for submodules in sidebar
-- submodules: case 2: user pulls a repo which has some submodules updated => needs pull
-- submodules: case 3: user pulls a repo which has some submodules updated, but his submodule itself is checked out on some branch => needs fetch, not pull
-- submodules: case 4: user clones the repo inside the repo => needs to display as a non-tracked submodule which can be tracked
-- submodules: case 5: user tries to commit a submodule which has the HEAD non-pushed (or dirty directory) - show warning or ask to push manually; show button "show module"
-
-- sidebar: "Duplicate..." menu item to make a quick clone + copy of .git/config.
-- sidebar: double click opens item in finder (patraque 987)
-- sidebar: edit repo name and store it in .git/vendor/gitbox/info.plist
-
-
-Gitbox 1.3 Enhancements:
-
-- recessed icon for no selection view and multiple selection view (similar to Lion Mail.app)
-- sidebar: before dropping over parent node, highlight appropriate index inside, not the parent
-- sidebar: when multiple repos are selected, new group should wrap them.
-- stage: for deleted file rename menu item "Revert File..." to "Restore File..."
-
-+ enhancement: perform task startup, parsing and finalization in the concurrent dispatch queue for not blocking the main thread.
-- enhancement: fsevents: push dotgit-only pause when doing stage updates, fetch, config updates or other internal changes.
-- enhancement: fsevents: on folder update, while .git is on pause, update stage *without* updating the index, so we don't generate more .git/ events
-
-- enhancement: maintain scroll position in history (per repo) when iterating over the repos
-- enhancement: maintain selection of the file when switching commits
-- enhancement: maintain quicklook contents when switching commits
-
-- enhancement: when quickly clicking on a parent commit, it is interpreted as double-click + selection.
-
-- refactoring: clean up starting/stopping repo ctrl in GBRepositoriesController
-- refactoring: history: highlight difference by using two SHA-1 and traversing loaded items; later tag all the commits for nice tree-like graphics
-
-- maybe try to replace pull with merge+fetch+merge and perform fetch on another queue to make staging work independently (also for push)
-- [NSApp requestUserAttention:] when new commits are fetched (automatically or not).
-
-+ common sheet queue for main window to append and prepend sheets. 
-  + can simply use OABlockQueue as it will let to avoid presenting a sheet when the previous one has already produced necessary data (like for Keychain).
-  - also override presentError: on main window controller to put error in a queued sheet
-  
-? when error is not surpressed for automatic tasks, remember the first such error and present it when the repo is selected by user
-- sidebar: open in Xcode if the repo has an xcode project (submenu with projects list if have multiple project files)
-- history: parse commits in background hook instead of a main thread didFinish
-- changes: parse changes in background hook instead of a main thread didFinish
-
-Gitbox 1.3 Bug fixes:
+Gitbox 1.2.5 TODO:
 
 - bug: do ls-remote and fetch when repo is added to check the authentication and especially SSH known_hosts alert.
 - bug: update the stage when it is selected or when the main window is activated (maybe without refresh) - this should deal with sometimes missed FSEvents
 - bug: when dragged in a repo, Edit Servers... and other sheets do not work. When Gitbox is relaunched, it becomes fine.
-
 - bug: when closing a repo while it performs a task, it crashes miserably.
-- (right now jump controller is disabled because of that) bug: minor issue: when quickly iterating through sidebar when repos are autofetched, the selection sometimes jumps. We should reset jump controller's block when selection is changed elsewhere.
-- bug: when fetch is clicked, should fetch everything (see email discussion)
-
-- bug: configured remote server without(?) pushed branches, while the current branch associated with non-existant remote, is not displayed in remotes dropdown menu.
-
-? bug: still has an issue with autofetch filling up the autofetch queue: some tasks must be leaking or callback blocks are not called correctly
-
-? bug: responder chain: sometimes selected view loses focus during autofetch or something.
-? bug: responder chain: when entering a commit message, sidebar can be updated and responder chain is changed so that text message does not get the events
-? bug: crash when opening a diff tool and probably updating the stage at the same time.
-? sidebar: postpone reloading the sidebar while editing a group name
+- submit to AppStore!
 
 
 
 
 
---
+
+-----------------------------------------------------------
+
+
+Gitbox Next:
 
 Features:
 
@@ -426,6 +441,28 @@ To read:
 - read carefully: https://git.wiki.kernel.org/index.php/GitSurvey2010
 - reactions to macappstore: http://www.tuaw.com/2010/10/21/developer-reactions-to-the-mac-app-store/#continued
 - why mercurial: http://www.ninthdivision.com/blog/2011/01/why-mercurial/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
