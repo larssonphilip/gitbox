@@ -126,6 +126,7 @@ Bug fixes:
 
 Misc items done:
 
++ bug: do ls-remote and fetch when repo is added to check the authentication and especially SSH known_hosts alert.
 + general: put autofetch requests into separate, but shared, OABlockQueue
 + general: fix networking behaviour: try to load the remote branches and reload them when pull/fetch (was done in 1.2)
 
@@ -247,7 +248,6 @@ Misc items done:
 
 Gitbox 1.2.5 TODO:
 
-- bug: do ls-remote and fetch when repo is added to check the authentication and especially SSH known_hosts alert.
 - bug: update the stage when it is selected or when the main window is activated (maybe without refresh) - this should deal with sometimes missed FSEvents
 - bug: when dragged in a repo, Edit Servers... and other sheets do not work. When Gitbox is relaunched, it becomes fine.
 - bug: when closing a repo while it performs a task, it crashes miserably.

@@ -105,6 +105,7 @@
 @synthesize viewController;
 @synthesize selectedCommit;
 @synthesize lastCommitBranchName;
+@synthesize needsInitialFetch;
 @synthesize blockTable;
 //@synthesize updatesQueue;
 @synthesize autofetchQueue;
@@ -962,48 +963,30 @@
 
 
 
+- (void) initialFetchIfNeededWithBlock:(void(^)())aBlock
+{
+  if (!self.needsInitialFetch)
+  {
+    if (aBlock) aBlock();
+    return;
+  }
+  
+  aBlock = [[aBlock copy] autorelease];
+  
+  self.needsInitialFetch = NO;
 
-
-//- (void) initialUpdateWithBlock:(void(^)())block
-//{
-//  if (!self.repository)
-//  {
-//    if (block) block();
-//    return;
-//  }
-//  
-//  [self.blockMerger performTaskOnce:NSStringFromSelector(_cmd) withBlock:^(OABlockMergerBlock callbackBlock){
-//    [self pushFSEventsPause];
-//    [self pushSpinning];
-//    
-//    [self updateLocalRefsWithBlock:^{
-//      [self loadCommitsWithBlock:^{
-//        [self.repository initSubmodulesWithBlock:^{
-//          [self updateSubmodulesWithBlock:^{
-//            [self popSpinning];
-//            [self popFSEventsPause];
-//            
-//            self.isWaitingForAutofetch = NO; // resets YES set in -start method
-//            [self resetAutoFetchInterval];
-//            [self scheduleAutoFetch];
-//            
-//            callbackBlock();
-//          }];
-//        }];
-//      }];
-//    }];
-//
-//    
-//    if (!self.selectedCommit && self.repository.stage)
-//    {
-//      self.selectedCommit = self.repository.stage;
-//    }
-//    else
-//    {
-//      [self loadStageChanges];
-//    }
-//  } completionHandler:block];
-//}
+  [self pushSpinning];
+  [self pushDisabled];
+  [self pushFSEventsPause];
+  [self updateLocalRefsWithBlock:^{
+    [self updateRemoteRefsWithBlock:^{
+      if (aBlock) aBlock();
+      [self popSpinning];
+      [self popDisabled];
+      [self popFSEventsPause];
+    }];
+  }];
+}
 
 
 

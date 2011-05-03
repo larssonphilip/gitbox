@@ -26,6 +26,7 @@
 @property(nonatomic, retain) GBCommit* selectedCommit;
 @property(nonatomic, retain) OAFSEventStream* fsEventStream;
 @property(nonatomic, retain) NSString* lastCommitBranchName;
+@property(nonatomic, assign) BOOL needsInitialFetch;
 
 @property(nonatomic, assign) NSInteger isRemoteBranchesDisabled;
 @property(nonatomic, assign, readonly) NSInteger isDisabled;
@@ -42,6 +43,8 @@
 
 - (void) loadCommitsIfNeeded;
 - (void) updateRemoteRefs;
+
+- (void) initialFetchIfNeededWithBlock:(void(^)())aBlock;
 
 - (void) checkoutRef:(GBRef*) ref;
 - (void) checkoutRef:(GBRef*) ref withNewName:(NSString*)name;
