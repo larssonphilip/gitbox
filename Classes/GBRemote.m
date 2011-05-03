@@ -30,6 +30,20 @@
   self.alias = nil;
   self.URLString = nil;
   self.fetchRefspec = nil;
+  for (GBRef* aRef in self.branches)
+  {
+    if (aRef.remote == self)
+    {
+      aRef.remote = nil;
+    }
+  }
+  for (GBRef* aRef in self.newBranches)
+  {
+    if (aRef.remote == self)
+    {
+      aRef.remote = nil;
+    }
+  }
   self.branches = nil;
   self.newBranches = nil;
   [super dealloc];

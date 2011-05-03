@@ -249,7 +249,7 @@ Misc items done:
 
 Gitbox 1.2.5 TODO:
 
-- bug: crash in pushBranch:toRemoteBranch:withBlock: - aRemoteBranch.remote becomes invalid object!
++ bug: crash in pushBranch:toRemoteBranch:withBlock: - aRemoteBranch.remote becomes invalid object!
 - bug: when dragged in a repo, Edit Servers... and other sheets do not work. When Gitbox is relaunched, it becomes fine.
 - bug: when closing a repo while it performs a task, it crashes miserably.
 - submit to AppStore!
