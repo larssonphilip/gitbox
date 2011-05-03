@@ -186,7 +186,6 @@ Gitbox 1.3 Features:
 - sidebar: "Duplicate..." menu item to make a quick clone + copy of .git/config.
 - sidebar: double click opens item in finder (patraque 987)
 - sidebar: edit repo name and store it in .git/vendor/gitbox/info.plist
-- general: remember cancelled auth dialogs in .git/vendor/gitbox/info.plist
 
 Gitbox 1.3 Enhancements:
 
@@ -272,6 +271,7 @@ Features:
 - sidebar: wide-area bonjour sharing (dyndns? my dns server?)
 - sidebar: github
 
+- history: right click on stage to "show in finder" and other folder-related actions like in sidebar right click menu. Also, stash.
 - history: think how to efficiently preload total number of commits so that we can scroll through the whole history loading data for commits lazily when rows are displayed. This should be friendlier for searching by date, but the scroll indicator will be useless on huge repos like git.git. Maybe need to combine both approaches: commits limiting and lazy loading.
 - history: maintain selection of the commit when switching branches/tags etc.
 - history: bisect is basically not needed if you can checkout any commit and see all the other commits on the remote branch
