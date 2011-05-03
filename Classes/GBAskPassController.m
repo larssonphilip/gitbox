@@ -193,28 +193,38 @@
   self.currentPrompt = prompt;
   
   //NSLog(@"PROMPT: %@ [%@]", prompt, clientId);
+  NSString* noString = @"no";
+  NSString* yesString = @"yes";
+  
+  // Special case: when gitosis server is rebooting, SSH issues some strange ask pass invocations with no prompt.
+  if (!prompt || prompt.length < 1)
+  {
+    return @"";
+  }
   
   if ([[prompt lowercaseString] rangeOfString:@"yes/no"].length > 0)
   {
     if ([self isCancelled])
     {
-      return @"no";
+      return noString;
     }
     
     if (self.booleanResponse)
     {
-      return ([self.booleanResponse boolValue] ? @"yes" : @"no");
+      return ([self.booleanResponse boolValue] ? yesString : noString);
     }
     
     if (self.silent)
     {
       [self cancel];
-      return @"no";
+      return nil;
+
     }
     
     if (!repeatedPrompt)
     {
       [self.delegate askPass:self presentBooleanPrompt:prompt];
+      return nil;
     }
   }
   
@@ -241,7 +251,7 @@
     if (self.silent)
     {
       [self cancel];
-      return @"";
+      return nil;
     }
 
     if (!repeatedPrompt)
@@ -267,7 +277,7 @@
     if (self.silent)
     {
       [self cancel];
-      return @"";
+      return nil;
     }
     
     if (!repeatedPrompt)
