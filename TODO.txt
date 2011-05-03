@@ -75,6 +75,8 @@ Gitbox 1.3 Bug fixes:
 
 - bug: configured remote server without(?) pushed branches, while the current branch associated with non-existant remote, is not displayed in remotes dropdown menu.
 
+- rare bug: when deleting/moving a repo while it prepares a task, it crashes miserably.
+
 ? bug: still has an issue with autofetch filling up the autofetch queue: some tasks must be leaking or callback blocks are not called correctly
 
 ? bug: responder chain: sometimes selected view loses focus during autofetch or something.
@@ -246,14 +248,12 @@ Misc items done:
 + bug: general: when connecting over https (and maybe http), gitbox locks on password prompt.  [Nicolai Schulten <nicolai.schulten@byte-garden.de>]
 + appstore: iRate dialog to ask user to leave a rating note on Mac AppStore.
 + appstore: packed git bundle and unpacking into Application Support.
-
++ (not a bug now) bug: when dragged in a repo, Edit Servers... and other sheets do not work. When Gitbox is relaunched, it becomes fine.
 
 -----------------------------------------------------------
 
 Gitbox 1.2.5 TODO:
 
-- bug: when dragged in a repo, Edit Servers... and other sheets do not work. When Gitbox is relaunched, it becomes fine.
-- bug: when closing a repo while it performs a task, it crashes miserably.
 - submit to AppStore!
 
 
