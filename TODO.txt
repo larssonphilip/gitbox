@@ -117,6 +117,7 @@ Bug fixes:
 ✓ Fixed commit message wrapping; now multi-line commits are rendered correctly.
 ✓ Fixed staging when clicking on a message field: now Gitbox does not stage selected files when you navigate to the message field. Use Cmd+Return shortcut to stage selected changes and jump to the message field. 
 ✓ Fixed crash when staging or unstaging more than 4096 files.
+✓ Fixed rare crashes when Gitbox updates list of remote branches.
 ✓ Fixed spellchecker configuration in the commit message text field.
 ✓ Fixed license check when cloning a repository.
 ✓ Fixed various issues with authentication and Keychain.
@@ -126,6 +127,7 @@ Bug fixes:
 
 Misc items done:
 
++ bug: crash in pushBranch:toRemoteBranch:withBlock: - aRemoteBranch.remote becomes invalid object!
 + bug: update the stage when it is selected or when the main window is activated (maybe without refresh) - this should deal with sometimes missed FSEvents
 + bug: do ls-remote and fetch when repo is added to check the authentication and especially SSH known_hosts alert.
 + general: put autofetch requests into separate, but shared, OABlockQueue
@@ -249,7 +251,6 @@ Misc items done:
 
 Gitbox 1.2.5 TODO:
 
-+ bug: crash in pushBranch:toRemoteBranch:withBlock: - aRemoteBranch.remote becomes invalid object!
 - bug: when dragged in a repo, Edit Servers... and other sheets do not work. When Gitbox is relaunched, it becomes fine.
 - bug: when closing a repo while it performs a task, it crashes miserably.
 - submit to AppStore!
