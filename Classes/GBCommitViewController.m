@@ -276,7 +276,7 @@
   [string replaceOccurrencesOfString:@"$Author Name" 
                           withString:aCommit.authorName];
   
-  [string replaceOccurrencesOfString:@"$author@email" 
+  [string replaceOccurrencesOfString:@"<$author@email>" 
                           withString:aCommit.authorEmail];
   
   if ([aCommit.authorName isEqualToString:aCommit.committerName])
@@ -293,7 +293,7 @@
     [string replaceOccurrencesOfString:@"$Committer Name" 
                             withString:aCommit.committerName];
     
-    [string replaceOccurrencesOfString:@"$committer@email" 
+    [string replaceOccurrencesOfString:@"<$committer@email>" 
                             withString:aCommit.committerEmail];      
   }
 }

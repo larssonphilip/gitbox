@@ -69,6 +69,7 @@ Gitbox 1.3 Enhancements:
 
 Gitbox 1.3 Bug fixes:
 
+- bug: when removing spinning repo from sidebar (task is running), spinner remains in sidebar
 - (right now jump controller is disabled because of that) bug: minor issue: when quickly iterating through sidebar when repos are autofetched, the selection sometimes jumps. We should reset jump controller's block when selection is changed elsewhere.
 - bug: when fetch is clicked, should fetch everything (see email discussion)
 
