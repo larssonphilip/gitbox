@@ -1,6 +1,7 @@
 #import "GBToolbarController.h"
 
 #import "GBPromptController.h"
+#import "GBMainWindowController.h"
 
 #import "NSMenu+OAMenuHelpers.h"
 #import "NSArray+OAArrayHelpers.h"
@@ -23,6 +24,7 @@
 
 - (void) dealloc
 {
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
   if (toolbar.delegate == self) toolbar.delegate = nil;
   [toolbar release]; toolbar = nil;
   self.window = nil;
@@ -41,11 +43,18 @@
 {
   if (toolbar == aToolbar) return;
   
+  [[NSNotificationCenter defaultCenter] removeObserver:self name:NSWindowDidEndSheetNotification object:nil];
+  
   if ([toolbar delegate] == self) [toolbar setDelegate:nil];
   [toolbar release];
   toolbar = [aToolbar retain];
   [toolbar setDelegate:self];
   [self update];
+  
+  [[NSNotificationCenter defaultCenter] addObserver:self 
+                                           selector:@selector(didEndSheet:) 
+                                               name:NSWindowDidEndSheetNotification 
+                                             object:[[GBMainWindowController instance] window]];
 }
 
 
@@ -53,6 +62,22 @@
 {
   return [self toolbarItemForIdentifier:@"GBSidebarPadding"];
 }
+
+
+
+
+#pragma mark NSWindow notifications
+
+
+// When we reenable toolbar items while the sheet is presented, the enabled status is not set. 
+// So when the sheet finishes, some items can still be disabled. 
+// Here we make sure that we sync toolbar completely when sheet is finished.
+- (void) didEndSheet:(NSNotification*)notif
+{
+  if (self.toolbar) [self update];
+}
+
+
 
 
 
