@@ -18,8 +18,8 @@ Gitbox 1.2.5 Release Notes (WIP)
 
 New features:
 
-✓ Applying pull, push and other actions to many repositories at once.
 ✓ HTTP authentication and fully redesigned authentication UI.
+✓ Applying pull, push and other actions to multiple repositories at once.
 ✓ Clone dialog displays progress status.
 
 Enhancements:
@@ -190,7 +190,8 @@ Gitbox 1.3 Features:
 
 Gitbox 1.3 Enhancements:
 
-- appirater-like dialog to ask user to leave a rating note on Mac AppStore
+- appstore: appirater-like dialog to ask user to leave a rating note on Mac AppStore.
+- appstore: packed git bundle and unpacking into Application Support.
 
 - sidebar: before dropping over parent node, highlight appropriate index inside, not the parent
 - sidebar: when multiple repos are selected, new group should wrap them.
