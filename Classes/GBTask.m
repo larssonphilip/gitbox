@@ -28,52 +28,73 @@
 
 # pragma mark Executables
 
++ (NSString*) bundledGitVersion
+{
+  return @"1.7.3.2";
+}
 
 // TODO: future improvement here: do not remove bundled tar and unpack to Application Support folder instead of bundle to enable packed binary for the App Store.
 + (NSString*) pathToBundledBinary:(NSString*)name
 {
-  NSString* pathToPlaceholder = [[NSBundle mainBundle] pathForResource:@"git-placeholder" ofType:@"bundle"];
-  NSAssert(!!pathToPlaceholder, @"ERROR: pathToPlaceholder is nil!");
+  static NSString* cachedPathToGitBinary = nil;
+  if (cachedPathToGitBinary && [name isEqual:@"git"]) return cachedPathToGitBinary;
   
-  NSString* pathToBundle = [pathToPlaceholder stringByReplacingOccurrencesOfString:@"-placeholder" withString:@""];
-  if (![[NSFileManager defaultManager] fileExistsAtPath:pathToBundle])
+  NSArray* paths = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES);
+  
+  if ([paths count] < 1)
   {
-    pathToBundle = nil;
+    NSLog(@"GBTask: Application Support directory is not found using NSSearchPathForDirectoriesInDomains!");
+    return nil;
   }
-  if (!pathToBundle)
+  
+  NSString* applicationSupportPath = [paths objectAtIndex:0];
+  NSString* gitboxAppSupportPath = [applicationSupportPath stringByAppendingPathComponent:@"Gitbox"];
+  NSString* pathToBundle = [gitboxAppSupportPath stringByAppendingPathComponent:[NSString stringWithFormat:@"git-%@/git.bundle", [self bundledGitVersion]]];
+  
+  NSFileManager* fm = [[[NSFileManager alloc] init] autorelease];
+  
+  if (![fm fileExistsAtPath:pathToBundle])
   {
+    NSError* error = nil;
+    NSString* parentBundlePath = [pathToBundle stringByDeletingLastPathComponent];
+    if (![fm createDirectoryAtPath:parentBundlePath
+      withIntermediateDirectories:YES 
+                       attributes:nil 
+                            error:&error])
+    {
+      NSLog(@"ERROR: GBTask: cannot create directory %@", parentBundlePath);
+      NSAssert(0, @"GBTask: cannot create directory for extracted git.bundle!");
+      return nil;
+    }
+
     NSString* pathToTar = [[NSBundle mainBundle] pathForResource:@"git.bundle" ofType:@"tar"];
     if (!pathToTar)
     {
       NSLog(@"ERROR: Missing git.bundle.tar in the application package!");
+      NSAssert(0, @"Missing git.bundle.tar in the application package!");
+      return nil;
     }
-    
-    NSAssert(!!pathToTar, @"Missing git.bundle.tar in the application package!");    
     
     OATask* unpackTask = [OATask task];
     unpackTask.executableName = @"tar";
-    unpackTask.arguments = [NSArray arrayWithObjects:@"-xf", pathToTar, nil];
+    unpackTask.arguments = [NSArray arrayWithObjects:@"-xf", pathToTar, @"-C", parentBundlePath, nil];
     unpackTask.currentDirectoryPath = [pathToTar stringByDeletingLastPathComponent];
     [unpackTask launchAndWait];
     
-#if DEBUG
-    // Do not remove tar to avoid creation of it again on every run
-#else
-    [[NSFileManager defaultManager] removeItemAtPath:pathToTar error:NULL];
-#endif
-    // Note: asking nsbundle for the path again won't work: needs some time
-    //pathToBundle = [[NSBundle mainBundle] pathForResource:@"git" ofType:@"bundle"];
-    pathToBundle = [pathToPlaceholder stringByReplacingOccurrencesOfString:@"-placeholder" withString:@""];
+    // Note: asking nsbundle for the path again won't work: needs some time. (So we don't.)
   }
+  
   if (!pathToBundle)
   {
-    NSLog(@"ERROR: Missing git.bundle in the application package!");
+    NSLog(@"ERROR: pathToBundle is nil!");
+    NSAssert(0, @"pathToBundle is nil");
+    return nil;
   }
-
-  NSAssert(!!pathToBundle, @"Missing git.bundle in the application package!");
   
   NSBundle* gitBundle = [NSBundle bundleWithPath:pathToBundle];
   NSString* pathToBinary = [gitBundle pathForResource:name ofType:nil inDirectory:@"libexec/git-core"];
+  
+  if ([name isEqual:@"git"]) cachedPathToGitBinary = [pathToBinary retain];
   return pathToBinary;
 }
 
@@ -86,9 +107,10 @@
 
 # pragma mark Execution environment
 
+
 - (NSString*) launchPath
 {
-  return [GBTask pathToBundledBinary:@"git"];
+  return [GBTask pathToBundledBinary:self.executableName];
 }
 
 - (NSString*) currentDirectoryPath

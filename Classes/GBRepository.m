@@ -115,7 +115,7 @@
 
 + (NSString*) supportedGitVersion
 {
-  return @"1.7.3.2";
+  return [GBTask bundledGitVersion];
 }
 
 + (NSString*) gitVersion

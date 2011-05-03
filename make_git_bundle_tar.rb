@@ -4,6 +4,9 @@ if ENV['PROJECT_NAME'] && ENV['BUILT_PRODUCTS_DIR']
   resources_path = "#{ENV['BUILT_PRODUCTS_DIR']}/#{ENV['PROJECT_NAME']}.app/Contents/Resources"
   Dir.chdir(resources_path)
   if File.exists?("git.bundle.tar")
+    if File.exists?("git.bundle")
+      system("rm -rf git.bundle") # was copied by repetitive build
+    end
     puts "git.bundle.tar exists, skipping."
     exit 0
   end

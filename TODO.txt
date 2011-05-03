@@ -34,6 +34,7 @@ Enhancements:
 ✓ Scrollbars disappear when scrolling is finished.
 ✓ Error alerts are presented in sheets.
 ✓ Authentication dialog and error alerts are not displayed for background updates.
+✓ Optimized package size for App Store build (70 Mb -> 10 Mb)
 
 Bug fixes:
 
@@ -162,6 +163,8 @@ Misc items done:
 + bug: general: push over https (Github now supports pushing by HTTPS)
 + bug: general: when connecting over https (and maybe http), gitbox locks on password prompt.  [Nicolai Schulten <nicolai.schulten@byte-garden.de>]
 + appstore: iRate dialog to ask user to leave a rating note on Mac AppStore.
++ appstore: packed git bundle and unpacking into Application Support.
+
 
 -----------------------------------------------------------
 
@@ -187,9 +190,8 @@ Gitbox 1.3 Features:
 - sidebar: double click opens item in finder (patraque 987)
 - sidebar: edit repo name and store it in .git/vendor/gitbox/info.plist
 
-Gitbox 1.3 Enhancements:
 
-- appstore: packed git bundle and unpacking into Application Support.
+Gitbox 1.3 Enhancements:
 
 - sidebar: before dropping over parent node, highlight appropriate index inside, not the parent
 - sidebar: when multiple repos are selected, new group should wrap them.
