@@ -33,6 +33,10 @@
 
 - (void) configureRepositorycontroller:(GBRepositoryController*)repoCtrl;
 - (void) startRepositoryController:(GBRepositoryController*)repoCtrl;
+
+// Returns YES if allows additional repos, returns NO and opens license dialog otherwise.
+- (BOOL) validateAdditionalRepositories:(NSUInteger)additionalRepos;
+
 @end
 
 @implementation GBRepositoriesController
@@ -75,11 +79,6 @@
     self.repositoryToolbarController = [[[GBRepositoryToolbarController alloc] init] autorelease];
     
     self.fsEventStream = [[[OAFSEventStream alloc] init] autorelease];
-//#warning temporary hard-coded paths to the repos for OAFSEventStream
-//    [self.fsEventStream addPath:@"/Users/oleganza/Work/gitbox/app"];
-//    [self.fsEventStream addPath:@"/Users/oleganza/Work/gitbox/app/.git"];
-//    [self.fsEventStream addPath:@"/Users/oleganza/Work/oleganza/site"];
-//    [self.fsEventStream addPath:@"/Users/oleganza/Work/oleganza/site/.git"];
     self.fsEventStream.latency = 0.1;
     self.fsEventStream.enabled = YES;
   }
@@ -99,7 +98,6 @@
 
 
 
-
 #pragma mark Actions
 
 
@@ -108,6 +106,11 @@
 {
   NSAssert(self.window, @"GBRepositoriesController should have a window or sender should be a view");
   
+  if (![self validateAdditionalRepositories:1])
+  {
+    return;
+  }
+
   // Getting the context group before presenting a sheet to handle a clicked item in sidebar.
   NSUInteger insertionIndex = 0;
   GBRepositoriesGroup* aGroup = [self contextGroupAndIndex:&insertionIndex];
@@ -169,6 +172,11 @@
 
 - (IBAction) cloneRepository:(id)sender
 {
+  if (![self validateAdditionalRepositories:1])
+  {
+    return;
+  }
+
   // get the current selection context before showing any windows
   NSUInteger insertionIndex = 0;
   GBRepositoriesGroup* aGroup = [self contextGroupAndIndex:&insertionIndex];
@@ -265,32 +273,10 @@
 {
   if (!URLs) return NO;
   
-#if GITBOX_APP_STORE
-#else
-  
-  __block NSUInteger repos = 0;
-  [self.sidebarItem enumerateChildrenUsingBlock:^(GBSidebarItem *item, NSUInteger idx, BOOL *stop) {
-    if ([item.object isKindOfClass:[GBRepositoryController class]])
-    {
-      repos++;
-    }
-  }];
-  
-  if (([URLs count] + repos) > 3)
+  if (![self validateAdditionalRepositories:[URLs count]])
   {
-    NSString* license = [[NSUserDefaults standardUserDefaults] objectForKey:@"license"];
-    if (!OAValidateLicenseNumber(license))
-    {
-      [NSApp tryToPerform:@selector(showLicense:) with:self];
-      
-      NSString* license = [[NSUserDefaults standardUserDefaults] objectForKey:@"license"];
-      if (!OAValidateLicenseNumber(license))
-      {
-        return NO;
-      }
-    }
+    return NO;
   }
-#endif
   
   if (!aGroup) aGroup = self;
   if (insertionIndex == NSNotFound) insertionIndex = 0;
@@ -536,6 +522,39 @@
 - (void) repositoryControllerDidStop:(GBRepositoryController*)repoCtrl
 {
   [repoCtrl removeObserverForAllSelectors:self];
+}
+
+
+
+
+
+- (BOOL) validateAdditionalRepositories:(NSUInteger)additionalRepos
+{
+#if !GITBOX_APP_STORE
+	__block NSUInteger repos = 0;
+	[self.sidebarItem enumerateChildrenUsingBlock:^(GBSidebarItem *item, NSUInteger idx, BOOL *stop) {
+		if ([item.object isKindOfClass:[GBRepositoryController class]])
+		{
+			repos++;
+		}
+	}];
+	
+	if ((additionalRepos + repos) > 3)
+	{
+		NSString* license = [[NSUserDefaults standardUserDefaults] objectForKey:@"license"];
+		if (!OAValidateLicenseNumber(license))
+		{
+			[NSApp sendAction:@selector(showLicense:) to:nil from:self];
+			
+			NSString* license = [[NSUserDefaults standardUserDefaults] objectForKey:@"license"];
+			if (!OAValidateLicenseNumber(license))
+			{
+				return NO;
+			}
+		}
+	}
+#endif
+	return YES;
 }
 
 
