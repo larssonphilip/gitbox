@@ -47,6 +47,7 @@ Bug fixes:
 ✓ Fixed license check when cloning a repository.
 ✓ Fixed various issues with authentication and Keychain.
 ✓ Fixed toolbar items presentation when sheet is closed. (In rare cases buttons could remain disabled.)
+✓ When window is closed, click on a dock icon brings it back even if the app is active.
 
 
 Misc items done:
@@ -143,6 +144,24 @@ Misc items done:
 + bug: for automatic background tasks should not display error sheets to not block the UI.
 + bug: when cancel button is pressed, should not ask for auth again until explicit user action is invoked.
 + bug: count number of repos when cloning
++ CRASH: when sending setFailedCommunication using some dangling pointer (removed setFailedCommunication API)
++ bug: askpass is used only for ls-remotes, but should also be used for pull/push/fetch. Need nice design for such tasks.
++ bug: http auth uses askpass to ask for a username as well, need to support this.
++ bug: task.skipKeychainPassword is used only for ls-remote, but should be also used in git fetch, pull and push.
++ IMPORTANT: bug: sidebar: sometimes, when dropped the repo to the sidebar, it does not update the history. Maybe the updateQueue is flooded.
++ IMPORTANT: bug: general: should test all leaks of blocks, NSTasks and related file handles!
+
++ bug: general: gitbox uses FSevents listener per repo which creates many duplicate file descriptors for intermediate paths (see `lsof | grep Gitbox`), should try to use a single listener for all the opened repos. Maybe this will avoid duplication.
+
++ bug: general: crash with broken file descriptor after a night of running app: not fixed for [OATask launchInQueue:withBlock:]
++ bug: general: after cmd+W (while app is still in foreground), clicking on dock icon does not bring window back. (Standard docs are not helpful: should google more)
++ bug: sidebar: when adding a repo through a right-click, it does not respect clicked row or selected group.
++ bug: sidebar: when cloning finished, selection is changing quickly - ugly.
++ bug: sidebar: right-click menu works for a single item when have multiple selection
++ bug: general: remember last cloned URL
++ bug: general: push over https (Github now supports pushing by HTTPS)
++ bug: general: when connecting over https (and maybe http), gitbox locks on password prompt.  [Nicolai Schulten <nicolai.schulten@byte-garden.de>]
+
 
 -----------------------------------------------------------
 
@@ -204,14 +223,13 @@ Gitbox 1.3 Enhancements:
 
 Gitbox 1.3 Bug fixes:
 
-
 - bug: do ls-remote and fetch when repo is added to check the authentication and especially SSH known_hosts alert.
 - bug: update the stage when it is selected or when the main window is activated (maybe without refresh) - this should deal with sometimes missed FSEvents
+- bug: when dragged in a repo, Edit Servers... and other sheets do not work. When Gitbox is relaunched, it becomes fine.
 
 - bug: when closing a repo while it performs a task, it crashes miserably.
 - (right now jump controller is disabled because of that) bug: minor issue: when quickly iterating through sidebar when repos are autofetched, the selection sometimes jumps. We should reset jump controller's block when selection is changed elsewhere.
 - bug: when fetch is clicked, should fetch everything (see email discussion)
-- bug: when dragged in a repo, Edit Servers... and other sheets do not work. When Gitbox is relaunched, it becomes fine.
 
 - bug: configured remote server without(?) pushed branches, while the current branch associated with non-existant remote, is not displayed in remotes dropdown menu.
 
@@ -367,36 +385,19 @@ Error messages translation to English:
 
 Bugs:
 
-+ bug: askpass is used only for ls-remotes, but should also be used for pull/push/fetch. Need nice design for such tasks.
-+ bug: http auth uses askpass to ask for a username as well, need to support this.
-+ bug: task.skipKeychainPassword is used only for ls-remote, but should be also used in git fetch, pull and push.
 
 - bug: task may crash when folder is removed from disk because prepareTask asserts folder existance
 - bug: when local branch is selected on the right, switching left branch does not change it. Reported by Gwendal.
-- CRASH: when sending setFailedCommunication using some dangling pointer
-- IMPORTANT: bug: sidebar: sometimes, when dropped the repo to the sidebar, it does not update the history. Maybe the updateQueue is flooded.
-- IMPORTANT: bug: general: should test all leaks of blocks, NSTasks and related file handles!
 
-- bug: general: gitbox uses FSevents listener per repo which creates many duplicate file descriptors for intermediate paths (see `lsof | grep Gitbox`), should try to use a single listener for all the opened repos. Maybe this will avoid duplication.
-
-- bug: general: crash with broken file descriptor after a night of running app: not fixed for [OATask launchInQueue:withBlock:]
 - bug: general: when repo is inside dropbox folder, strange things happen (see mailbox: sometimes cannot commit or stage is blinking)
 - bug: general: when pushing and switching branches, gitbox tries to fetch immediately which blocks the interaction. Should add a delay to perform fetch only after user is done doing what he was doing
-- bug: general: after cmd+W (while app is still in foreground), clicking on dock icon does not bring window back. (Standard docs are not helpful: should google more)
 - bug: general: bare repository is not recognized as such: should provide read-only access
-- bug: general: remember last cloned URL
 - bug: general: when /Developer is symlinked to another partition, opendiff cannot launch FileMerge: "exception raised trying to run FileMerge: launch path not accessible" [Jeff Snell <jeffsnell@mac.com>]
-- bug: general: push over https (Github now supports pushing by HTTPS)
-- bug: general: when connecting over https (and maybe http), gitbox locks on password prompt.  [Nicolai Schulten <nicolai.schulten@byte-garden.de>]
 - bug: general: git repo in dropbox causes gitbox to refresh frequently [Tom Martin <tom@devart.org>]
 
 - bug: toolbar: sometimes some duplicate branch name appears in popdown menus.
 - bug: toolbar: when removing a single server, remote branch remains and log is clean.
 - bug: toolbar: android repo checked out on a commit has branch menus disabled.
-
-- bug: sidebar: when adding a repo through a right-click, it does not respect clicked row or selected group.
-- bug: sidebar: when cloning finished, selection is changing quickly - ugly.
-- bug: sidebar: right-click menu works for a single item when have multiple selection
 
 - bug: history: while fetching some remote, commits list is refreshed with wrong commits.
 - bug: history: when switching the branch or pulling/pushing, the list of commits flashes: should add a delay before reloading the commits.
