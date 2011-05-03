@@ -59,6 +59,7 @@ int GBAskPass(int argc, const char * argv[])
     NSString* result = nil;
     @try
     {
+      promptString = [promptString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
       result = [server resultForClient:clientId prompt:promptString environment:environment];
     }
     @catch (NSException * e)
