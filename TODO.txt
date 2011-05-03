@@ -161,7 +161,7 @@ Misc items done:
 + bug: general: remember last cloned URL
 + bug: general: push over https (Github now supports pushing by HTTPS)
 + bug: general: when connecting over https (and maybe http), gitbox locks on password prompt.  [Nicolai Schulten <nicolai.schulten@byte-garden.de>]
-
++ appstore: iRate dialog to ask user to leave a rating note on Mac AppStore.
 
 -----------------------------------------------------------
 
@@ -189,7 +189,6 @@ Gitbox 1.3 Features:
 
 Gitbox 1.3 Enhancements:
 
-- appstore: appirater-like dialog to ask user to leave a rating note on Mac AppStore.
 - appstore: packed git bundle and unpacking into Application Support.
 
 - sidebar: before dropping over parent node, highlight appropriate index inside, not the parent

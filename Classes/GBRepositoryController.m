@@ -32,6 +32,11 @@
 #import "GBFileEditingController.h"
 #import "NSWindowController+OAWindowControllerHelpers.h"
 
+#if GITBOX_APP_STORE || DEBUG_iRate
+#import "iRate.h"
+#endif
+
+
 #define GB_STRESS_TEST_AUTOFETCH 0
 
 @interface GBRepositoryController ()
@@ -635,6 +640,11 @@
       [self updateLocalRefsWithBlock:^{
         [self loadCommitsWithBlock:nil];
         [self popSpinning];
+        
+#if GITBOX_APP_STORE || DEBUG_iRate
+        [[iRate sharedInstance] logEvent:NO];
+#endif
+
       }];
     }];
     

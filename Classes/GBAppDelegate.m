@@ -15,6 +15,16 @@
 #import "OALicenseNumberCheck.h"
 #import "OATask.h"
 
+#define DEBUG_iRate 0
+
+#if DEBUG_iRate
+#warning Debugging iRate
+#endif
+
+#if GITBOX_APP_STORE || DEBUG_iRate
+#import "iRate.h"
+#endif
+
 @interface GBAppDelegate () <NSOpenSavePanelDelegate>
 
 @property(nonatomic, retain) GBRootController* rootController;
@@ -34,6 +44,10 @@
 @synthesize preferencesController;
 @synthesize licenseController;
 @synthesize URLsToOpenAfterLaunch;
+@synthesize licenseMenuItem;
+@synthesize checkForUpdatesMenuItem;
+@synthesize welcomeMenuItem;
+@synthesize rateInAppStoreMenuItem;
 
 - (void) dealloc
 {
@@ -42,16 +56,34 @@
   self.preferencesController = nil;
   self.licenseController = nil;
   self.URLsToOpenAfterLaunch = nil;
+  self.licenseMenuItem = nil;
+  self.checkForUpdatesMenuItem = nil;
+  self.welcomeMenuItem = nil;
+  self.rateInAppStoreMenuItem = nil;
+
   [super dealloc];
 }
 
-
++ (void)initialize
+{
+#if GITBOX_APP_STORE || DEBUG_iRate
+  // http://itunes.apple.com/us/app/gitbox/id403388357
+	[iRate sharedInstance].appStoreID = 403388357;
+  [iRate sharedInstance].eventsUntilPrompt = 100; // 100 commits before prompt
+#endif
+}
 
 
 
 #pragma mark Actions
 
 
+- (IBAction) rateInAppStore:_
+{
+#if GITBOX_APP_STORE || DEBUG_iRate  
+  [[iRate sharedInstance] openRatingsPageInAppStore];
+#endif
+}
 
 - (IBAction) showPreferences:_
 {
@@ -112,108 +144,20 @@
 
 - (void) applicationDidFinishLaunching:(NSNotification*) aNotification
 {
-    [GBAskPassServer sharedServer]; // preload the server
+  [GBAskPassServer sharedServer]; // preload the server
   
-#if DEBUG
-  NSLog(@"GBAskPassServer: %@", [GBAskPassServer sharedServer]);
-#endif
+  #if DEBUG
+    NSLog(@"GBAskPassServer: %@", [GBAskPassServer sharedServer]);
+  #endif
   
-  if (NO)
-  {
-    NSError* err = nil;
-    NSURL* url = [NSURL fileURLWithPath:[NSHomeDirectory() stringByAppendingPathComponent:@"Desktop/rails"]];
-    if (![[NSFileManager defaultManager] removeItemAtURL:url error:&err])
-    {
-      NSLog(@"error while removing %@: %@", url, err);
-    }
-    
-    NSLog(@"systemPathForExecutable:'git' = %@", [OATask systemPathForExecutable:@"git"]);
-    
-    OATask* task = [OATask task];
-    task.executableName = @"git";
-    
-    task.currentDirectoryPath = [NSHomeDirectory() stringByAppendingPathComponent:@"Desktop"];
-    //task.arguments = [NSArray arrayWithObjects:@"clone", @"git://github.com/rails/rails.git", @"--progress", nil];
-    task.arguments = [NSArray arrayWithObjects:@"clone", @"/Users/oleganza/Code/rails", @"--progress", @"--no-hardlinks", nil];
-    task.didReceiveDataBlock = ^{
-      NSLog(@"Received data. STDOUT: %d STDERR: %d", (int)[task.standardOutputData length], (int)[task.standardErrorData length]);
-    };
-    task.didTerminateBlock = ^{
-      NSLog(@"Did finish. STDOUT: %d STDERR: %d [status code: %d] %@", (int)[task.standardOutputData length], (int)[task.standardErrorData length], task.terminationStatus, task);
-    };
-    
-    [task launch];
-    return;
-  }
-  
-  
-  if (NO)
-  {
-    OATask* task = [OATask task];
-    task.executableName = @"ruby";
-    task.arguments = [NSArray arrayWithObject:[NSHomeDirectory() stringByAppendingPathComponent:@"Work/gitbox/app/Test/interactive.rb"]];
-    task.interactive = YES;
-    static int step = 0;
-    task.didReceiveDataBlock = ^{
-      NSString* str = [task UTF8OutputStripped];
-      NSLog(@"Received data: %@", str);
-      if ([str rangeOfString:@"Username:"].length > 0 && step == 0)
-      {
-        step = 1;
-        [task writeData:[@"Oleg\r" dataUsingEncoding:NSUTF8StringEncoding]];
-      }
-      if ([str rangeOfString:@"Password:"].length > 0 && step == 1)
-      {
-        step = 2;
-        [task writeData:[@"Secret\r" dataUsingEncoding:NSUTF8StringEncoding]];
-        
-        // This does not help (only /bin/sh interprets this):
-//        char ctrlD = (char)04; // end of transmit code
-//        [task writeData:[NSData dataWithBytes:&ctrlD length:1]];
-      }
-    };
-    task.didTerminateBlock = ^{
-      NSLog(@"Did finish. STDOUT: %@ [status code: %d] %@", [task UTF8OutputStripped], task.terminationStatus, task);
-    };
-    [task launch];
-    return;
-  }
-  
-  if (NO)
-  {
-    // Assuming cloned by HTTP https://github.com/oleganza/emrpc.git into ~/Desktop/emrpc
-    OATask* task = [OATask task];
-    task.interactive = YES;
-    task.executableName = @"git";
-    task.currentDirectoryPath = [NSHomeDirectory() stringByAppendingPathComponent:@"Desktop/emrpc"];
-    task.arguments = [NSArray arrayWithObject:@"push"];
-    static int step = 0;
-    task.didReceiveDataBlock = ^{
-      NSString* result = [task UTF8OutputStripped];
-      NSLog(@"Received data: %@", result);
-      if ([result rangeOfString:@"Username:"].length > 0 && step == 0)
-      {
-        step = 1;
-        [task writeData:[@"oleganza" dataUsingEncoding:NSUTF8StringEncoding]];
-        [task writeData:[@"\r" dataUsingEncoding:NSUTF8StringEncoding]];
-      }
-      if ([result rangeOfString:@"Password:"].length > 0 && step == 1)
-      {
-        step = 2;
-        [task writeData:[@"secret\r" dataUsingEncoding:NSUTF8StringEncoding]];
-        
-        // This does not help (only /bin/sh interprets this):
-        //        char ctrlD = (char)04; // end of transmit code
-        //        [task writeData:[NSData dataWithBytes:&ctrlD length:1]];
-      }
-    };
-    task.didTerminateBlock = ^{
-      NSLog(@"Did finish. STDOUT: %@ [status code: %d] %@", [task UTF8OutputStripped], task.terminationStatus, task);
-    };
-    [task launch];
-    return;
-  }
-  
+  #if DEBUG_iRate
+    #warning DEBUG: launching iRate dialog on start
+    double delayInSeconds = 1.0;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+      [[iRate sharedInstance] promptForRating];
+    });
+  #endif
   
   [[GBActivityController sharedActivityController] loadWindow]; // force load the activity controller to begin monitoring the tasks
   
@@ -224,13 +168,25 @@
   
   self.windowController = [GBMainWindowController instance];
   
+  void(^removeMenuItem)(NSMenuItem*) = ^(NSMenuItem* item) {
+    [[item menu] removeItem:item];
+  };
+  
   NSString* preferencesNibName = @"GBPreferencesController";
 #if GITBOX_APP_STORE
   preferencesNibName = @"GBPreferencesController-appstore";
-  NSMenu* firstMenu = [[[NSApp mainMenu] itemWithTag:1] submenu];
-  [firstMenu removeItem:[firstMenu itemWithTag:103]]; // License...
-  [firstMenu removeItem:[firstMenu itemWithTag:104]]; // Check For Updates...
+  
+  removeMenuItem(self.licenseMenuItem);
+  removeMenuItem(self.checkForUpdatesMenuItem);
+#else
+  removeMenuItem(self.rateInAppStoreMenuItem);
 #endif
+
+#if DEBUG
+#else
+  removeMenuItem(self.welcomeMenuItem);
+#endif
+
 
   self.preferencesController = [[[GBPreferencesController alloc] initWithWindowNibName:preferencesNibName] autorelease];
   [self.preferencesController loadWindow]; // force load Sparkle Updater

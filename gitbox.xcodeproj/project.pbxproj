@@ -172,6 +172,8 @@
 		206E0130130C605800018300 /* GBPlaceholderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 206E012D130C605400018300 /* GBPlaceholderViewController.m */; };
 		206E0131130C605800018300 /* GBPlaceholderViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 206E012E130C605500018300 /* GBPlaceholderViewController.xib */; };
 		206E0132130C605800018300 /* GBPlaceholderViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 206E012E130C605500018300 /* GBPlaceholderViewController.xib */; };
+		207D02FF13706AF8003C9D5F /* iRate.m in Sources */ = {isa = PBXBuildFile; fileRef = 207D02FD13706AF8003C9D5F /* iRate.m */; };
+		207D030013706F2D003C9D5F /* iRate.m in Sources */ = {isa = PBXBuildFile; fileRef = 207D02FD13706AF8003C9D5F /* iRate.m */; };
 		2082B7C4126587CA00667A7F /* GBRepositoryCloningController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2082B7C3126587CA00667A7F /* GBRepositoryCloningController.m */; };
 		2086DF52133BC20F00289144 /* OAMultipleSelection.m in Sources */ = {isa = PBXBuildFile; fileRef = 2086DF51133BC20F00289144 /* OAMultipleSelection.m */; };
 		2086DF53133BC20F00289144 /* OAMultipleSelection.m in Sources */ = {isa = PBXBuildFile; fileRef = 2086DF51133BC20F00289144 /* OAMultipleSelection.m */; };
@@ -535,7 +537,7 @@
 		2035639C11D3C14C00965765 /* GBLightScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBLightScrollView.h; sourceTree = "<group>"; };
 		2035639D11D3C14C00965765 /* GBLightScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBLightScrollView.m; sourceTree = "<group>"; };
 		2038F1DD11936B060087CE37 /* GBAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBAppDelegate.h; sourceTree = "<group>"; };
-		2038F1DE11936B060087CE37 /* GBAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBAppDelegate.m; sourceTree = "<group>"; };
+		2038F1DE11936B060087CE37 /* GBAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = GBAppDelegate.m; sourceTree = "<group>"; tabWidth = 2; usesTabs = 0; };
 		2038F1EA11936CA50087CE37 /* TODO.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TODO.txt; sourceTree = "<group>"; wrapsLines = 1; };
 		2038F30A11952FCF0087CE37 /* GBRepository.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBRepository.h; sourceTree = "<group>"; };
 		2038F30B11952FCF0087CE37 /* GBRepository.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = GBRepository.m; sourceTree = "<group>"; tabWidth = 2; usesTabs = 0; };
@@ -630,6 +632,8 @@
 		206E012C130C605300018300 /* GBPlaceholderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBPlaceholderViewController.h; sourceTree = "<group>"; };
 		206E012D130C605400018300 /* GBPlaceholderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBPlaceholderViewController.m; sourceTree = "<group>"; };
 		206E012E130C605500018300 /* GBPlaceholderViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GBPlaceholderViewController.xib; sourceTree = "<group>"; };
+		207D02FC13706AF8003C9D5F /* iRate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iRate.h; sourceTree = "<group>"; };
+		207D02FD13706AF8003C9D5F /* iRate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iRate.m; sourceTree = "<group>"; };
 		2080DC2912567B0800D05B33 /* GBChangeDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBChangeDelegate.h; sourceTree = "<group>"; };
 		20820CD3134E331F00AD55AF /* interactive.rb */ = {isa = PBXFileReference; lastKnownFileType = text.script.ruby; path = interactive.rb; sourceTree = "<group>"; };
 		20820CD4134E331F00AD55AF /* response.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = response.txt; sourceTree = "<group>"; };
@@ -1017,6 +1021,24 @@
 			name = Toolbars;
 			sourceTree = "<group>";
 		};
+		207D02FA13706AD7003C9D5F /* AppStore */ = {
+			isa = PBXGroup;
+			children = (
+				207D02FB13706AF8003C9D5F /* iRate */,
+			);
+			name = AppStore;
+			sourceTree = "<group>";
+		};
+		207D02FB13706AF8003C9D5F /* iRate */ = {
+			isa = PBXGroup;
+			children = (
+				207D02FC13706AF8003C9D5F /* iRate.h */,
+				207D02FD13706AF8003C9D5F /* iRate.m */,
+			);
+			name = iRate;
+			path = iRate/iRate;
+			sourceTree = SOURCE_ROOT;
+		};
 		20820CD2134E331E00AD55AF /* Test */ = {
 			isa = PBXGroup;
 			children = (
@@ -1394,6 +1416,7 @@
 		2A37F4ABFDCFA73011CA2CEA /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				207D02FA13706AD7003C9D5F /* AppStore */,
 				201E02DA11EA1ED3007E4420 /* License */,
 				20E698D813635AB9000A3A6F /* Authentication */,
 				2038F6C611A030FF0087CE37 /* Tasks */,
@@ -1840,6 +1863,7 @@
 				203FF1D01365C2ED000624D6 /* GBAskPassCredentialsController.m in Sources */,
 				20AC93901367473800FEACF9 /* GBAskPass.m in Sources */,
 				200DE076136A9F9100D18A5B /* GBWindowControllerWithCallback.m in Sources */,
+				207D02FF13706AF8003C9D5F /* iRate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1970,6 +1994,7 @@
 				203FF1CF1365C2ED000624D6 /* GBAskPassCredentialsController.m in Sources */,
 				20AC938F1367473800FEACF9 /* GBAskPass.m in Sources */,
 				200DE075136A9F9100D18A5B /* GBWindowControllerWithCallback.m in Sources */,
+				207D030013706F2D003C9D5F /* iRate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
