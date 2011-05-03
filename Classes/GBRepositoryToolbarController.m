@@ -185,28 +185,9 @@
   
   isDisabled = isDisabled || (self.repositoryController && [self.repositoryController.repository.localBranches count] < 1);
   
-  BOOL wasEnabled = [self.currentBranchPopUpButton isEnabled];
   [self.currentBranchPopUpButton setEnabled:!isDisabled && !isCurrentBranchDisabled];
   [self.otherBranchPopUpButton setEnabled:!isDisabled && !isRemoteBranchDisabled];
   
-//  if (isDisabled || isCurrentBranchDisabled)
-//  {
-//    if (wasEnabled)
-//    {
-//      NSLog(@"Toolbar: disabled branch menu: %d || %d", (int)isDisabled, (int)isCurrentBranchDisabled);
-//    }
-//    else
-//    {
-//      NSLog(@"Toolbar: disabled branch menu: %d || %d (was already disabled)", (int)isDisabled, (int)isCurrentBranchDisabled);
-//    }
-//  }
-//  else
-//  {
-//    NSLog(@"Toolbar: enabled branch menu %@ attachedSheet: %@", wasEnabled ? @"(was already enabled)" : @"", 
-//          
-//          [[[GBMainWindowController instance] window] attachedSheet]);
-//  }
-
   [self updateSyncButtons];
 }
 
