@@ -361,6 +361,7 @@ Features:
 
 Enhancements:
 
+- general: put preferences window into a sheet. Add support for global .gitconfig (at least, show name/email pair)
 - general: since push/pull happen in the same dispatch queue as any other git command, while sending a big pack of data we simply cannot load commits and changes anymore. Should put up different queues for different tasks: changes can be loaded and staged  separately from committing and branch manipulation, local branches can be edited while doing push.
 - general: eliminate unncesessary per-repo queued tasks (GBRepository launchTask:withBlock:). For instance, for loading commit changes.
 - general: do different initial updates for remembered repos and opened/cloned ones:
