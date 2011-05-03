@@ -1,0 +1,3 @@
+[submodule "iRate"]
+	path = iRate
+	url = https://github.com/demosthenese/iRate.git
