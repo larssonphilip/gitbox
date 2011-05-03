@@ -3,18 +3,37 @@ Gitbox 1.3 Release Notes (WIP)
 New features:
 
 ✓ Fantastic submodules support: automatic display for all submodules, one-click download and update.
+
+Enhancements:
+
+✓ 
+
+Bug fixes:
+
+✓ 
+
+
+
+Gitbox 1.2.5 Release Notes (WIP)
+
+New features:
+
 ✓ Applying pull, push and other actions to many repositories at once.
+✓ HTTP authentication and fully redesigned authentication UI.
+✓ Clone dialog displays progress status.
 
 Enhancements:
 
 ✓ Initial launch and autofetch performance improvements.
+✓ Many improvements in launching and monitoring git tasks. Fixed file descriptor consumption issues and random crashes. Activity window (cmd+0) displays tasks in real time.
 ✓ Several enhancements to right-click menus in sidebar.
 ✓ Clone dialog remembers last entered URL.
-✓ Progress is displayed while cloning.
 ✓ New commits are fetched when you start typing a commit message, so you can pull before making a commit.
 ✓ Sidebar badge shows the total count of nonpushed and nonmerged commits when it is bigger that 999.
 ✓ Renamed and copied files which were also modified now display "modified" status instead of "renamed" or "copied".
 ✓ Scrollbars disappear when scrolling is finished.
+✓ Error alerts are presented in sheets.
+✓ Authentication dialog and error alerts are not displayed for background updates.
 
 Bug fixes:
 
@@ -25,6 +44,10 @@ Bug fixes:
 ✓ Fixed staging when clicking on a message field: now Gitbox does not stage selected files when you navigate to the message field. Use Cmd+Return shortcut to stage selected changes and jump to the message field. 
 ✓ Fixed crash when staging or unstaging more than 4096 files.
 ✓ Fixed spellchecker configuration in the commit message text field.
+✓ Fixed license check when cloning a repository.
+✓ Fixed various issues with authentication and Keychain.
+✓ Fixed toolbar items presentation when sheet is closed. (In rare cases buttons could remain disabled.)
+
 
 Misc items done:
 
@@ -117,6 +140,9 @@ Misc items done:
 + bug: should present askpass in a sheet
 + bug: askpass should check keychain in its queued block to cover a case when previous window has got relevant credentials
 + bug: when clone error occured close button does not remove non-finished repo from list.
++ bug: for automatic background tasks should not display error sheets to not block the UI.
++ bug: when cancel button is pressed, should not ask for auth again until explicit user action is invoked.
++ bug: count number of repos when cloning
 
 -----------------------------------------------------------
 
@@ -178,9 +204,7 @@ Gitbox 1.3 Enhancements:
 
 Gitbox 1.3 Bug fixes:
 
-+ bug: for automatic background tasks should not display error sheets to not block the UI.
-+ bug: when cancel button is pressed, should not ask for auth again until explicit user action is invoked.
-- bug: count number of repos when cloning
+
 - bug: do ls-remote and fetch when repo is added to check the authentication and especially SSH known_hosts alert.
 - bug: update the stage when it is selected or when the main window is activated (maybe without refresh) - this should deal with sometimes missed FSEvents
 
@@ -293,6 +317,9 @@ Features:
   - branches, merging, diffing branches
   
 - site: guide
+
+- lion: animate insertion of commits in history
+- lion: animate insertion of repos in sidebar
 
 
 Enhancements:
