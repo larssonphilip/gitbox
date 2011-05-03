@@ -178,9 +178,9 @@ Gitbox 1.3 Enhancements:
 
 Gitbox 1.3 Bug fixes:
 
-- bug: for automatic background tasks should not display error sheets to not block the UI.
++ bug: for automatic background tasks should not display error sheets to not block the UI.
++ bug: when cancel button is pressed, should not ask for auth again until explicit user action is invoked.
 - bug: do ls-remote and fetch when repo is added to check the authentication and especially SSH known_hosts alert.
-- bug: when cancel button is pressed, should not ask for auth again until explicit user action is invoked.
 - bug: update the stage when it is selected or when the main window is activated (maybe without refresh) - this should deal with sometimes missed FSEvents
 
 - bug: when closing a repo while it performs a task, it crashes miserably.

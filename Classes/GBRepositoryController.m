@@ -1369,7 +1369,7 @@
 {
   //NSLog(@"GBRepositoryController: resetAutoFetchInterval in %@ (was: %f)", [self url], autoFetchInterval);
   NSTimeInterval plusMinusOne = (2*(0.5-drand48()));
-  autoFetchInterval = 1.0 + plusMinusOne*2;
+  autoFetchInterval = 15.0 + plusMinusOne*5.0;
   
 #if GB_STRESS_TEST_AUTOFETCH
   autoFetchInterval = drand48()*5.0;
@@ -1402,7 +1402,7 @@
   
   //NSLog(@"GBRepositoryController: autoFetch into %@ (delay: %f)", [self url], autoFetchInterval);
   while (autoFetchInterval > 60*60.0) autoFetchInterval -= 60.0;
-  autoFetchInterval = autoFetchInterval*(1.4 + drand48()*0.2);
+  autoFetchInterval = autoFetchInterval*(1.8 + drand48()*0.4);
   
   #if GB_STRESS_TEST_AUTOFETCH
   autoFetchInterval =  drand48()*10.0;

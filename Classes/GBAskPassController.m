@@ -293,7 +293,7 @@
 {
   self.cancelled = YES;
   self.bypassFailedAuthentication = YES;
-  //[self cleanupPreviousKeychainItem]; // when cancelled, clean up previously loaded keychain item (it is almost certainly is invalid)
+  [self cleanupPreviousKeychainItem]; // when cancelled, clean up previously loaded keychain item (it is almost certainly is invalid)
 }
 
 - (BOOL) loadCredentialsFromKeychain
@@ -435,11 +435,7 @@
 {
   if (self.previousKeychainItemRef)
   {
-    // If we have previously loaded keychain data and now storing another username, we should remove previous entry.
-    if (self.username && self.previousKeychainUsername && ![self.username isEqualToString:self.previousKeychainUsername])
-    {
-      SecKeychainItemDelete(self.previousKeychainItemRef);
-    }
+    SecKeychainItemDelete(self.previousKeychainItemRef);
     self.previousKeychainItemRef = NULL;
     self.previousUsername = nil;
   }
@@ -447,7 +443,14 @@
 
 - (BOOL) storeCredentialsInKeychain
 {
-  [self cleanupPreviousKeychainItem];
+  if (self.previousKeychainItemRef)
+  {
+    // If we have previously loaded keychain data and now storing another username, we should remove the previous entry.
+    if (self.username && self.previousKeychainUsername && ![self.username isEqualToString:self.previousKeychainUsername])
+    {
+      [self cleanupPreviousKeychainItem];
+    }
+  }
   
   const char* serviceCString = [self.keychainService cStringUsingEncoding:NSUTF8StringEncoding];
   const char* usernameCString = [self.username cStringUsingEncoding:NSUTF8StringEncoding];
