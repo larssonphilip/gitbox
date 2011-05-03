@@ -833,6 +833,7 @@
 #pragma mark GBMainWindowItem
 
 
+
 // toolbarController and viewController are properties assigned by parent controller
 
 - (NSString*) windowTitle
@@ -860,7 +861,13 @@
   }
 }
 
-
+- (void) windowDidBecomeKey
+{
+  // A short delay to work around stupid Xcode effect: when cmd+tabbing from Xcode to Gitbox, Xcode updates project file right before Gitbox is activated. If we immediately update the stage, we'll display temporary xcode project file.
+  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 500*USEC_PER_SEC), dispatch_get_main_queue(), ^{
+    [self loadStageChanges];
+  });
+}
 
 
 

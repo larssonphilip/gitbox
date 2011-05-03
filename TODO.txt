@@ -112,7 +112,7 @@ Enhancements:
 Bug fixes:
 
 ✓ Performance fix when staging and commiting quickly.
-✓ Fixed bugs related to filesystem events: sometimes modified files did not appear in the stage, now they do.
+✓ Fixed bugs related to filesystem events: sometimes modified files did not appear in the stage, now they always do.
 ✓ Fixed several bugs with staging partial files, reverting multiple files and other actions in stage.
 ✓ Fixed commit message wrapping; now multi-line commits are rendered correctly.
 ✓ Fixed staging when clicking on a message field: now Gitbox does not stage selected files when you navigate to the message field. Use Cmd+Return shortcut to stage selected changes and jump to the message field. 
@@ -126,6 +126,7 @@ Bug fixes:
 
 Misc items done:
 
++ bug: update the stage when it is selected or when the main window is activated (maybe without refresh) - this should deal with sometimes missed FSEvents
 + bug: do ls-remote and fetch when repo is added to check the authentication and especially SSH known_hosts alert.
 + general: put autofetch requests into separate, but shared, OABlockQueue
 + general: fix networking behaviour: try to load the remote branches and reload them when pull/fetch (was done in 1.2)
@@ -248,7 +249,6 @@ Misc items done:
 
 Gitbox 1.2.5 TODO:
 
-- bug: update the stage when it is selected or when the main window is activated (maybe without refresh) - this should deal with sometimes missed FSEvents
 - bug: when dragged in a repo, Edit Servers... and other sheets do not work. When Gitbox is relaunched, it becomes fine.
 - bug: when closing a repo while it performs a task, it crashes miserably.
 - submit to AppStore!

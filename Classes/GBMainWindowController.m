@@ -471,6 +471,10 @@
 
 - (void) windowDidBecomeKey:(NSNotification *)notification
 {
+  if (self.selectedWindowItem && [self.selectedWindowItem respondsToSelector:@selector(windowDidBecomeKey)])
+  {
+    [self.selectedWindowItem windowDidBecomeKey];
+  }
 }
 
 - (void) windowDidResignKey:(NSNotification *)notification

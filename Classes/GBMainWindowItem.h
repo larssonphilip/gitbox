@@ -8,4 +8,5 @@
 - (NSViewController*) viewController;
 - (void) willDeselectWindowItem;
 - (void) didSelectWindowItem;
+- (void) windowDidBecomeKey;
 @end
