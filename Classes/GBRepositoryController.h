@@ -63,6 +63,10 @@
 - (IBAction) pull:(id)sender;
 - (IBAction) push:(id)sender;
 
+- (IBAction) openInFinder:(id)sender;
+- (IBAction) openInTerminal:(id)sender;
+
+
 - (BOOL) validateFetch:(id)sender;
 - (BOOL) validatePull:(id)sender;
 - (BOOL) validatePush:(id)sender;
