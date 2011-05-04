@@ -69,6 +69,7 @@ Gitbox 1.3 Enhancements:
 
 Gitbox 1.3 Bug fixes:
 
+- bug: when a file has staged and unstaged parts, and only one instance is selected, after stage refresh, both become selected (should select by object id if it's in the list and fallback to path otherwise)
 - bug: when lengthy operation updates files, commit message field refreshes and drops the cursor to the last character [reported by mark hoffman]
 - cloning repository is not counted, thus letting user open another one when limit is reached
 - bug: when removing spinning repo from sidebar (task is running), spinner remains in sidebar
