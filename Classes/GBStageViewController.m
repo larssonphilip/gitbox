@@ -142,13 +142,7 @@
     if (change.delegate == (id)self) change.delegate = nil;
   }
   
-  // Remember the set of selected file URLs.
-  NSMutableSet* selectedURLs = [NSMutableSet set];
-  for (GBChange* aChange in [self selectedChanges])
-  {
-    if (aChange.srcURL) [selectedURLs addObject:aChange.srcURL];
-    if (aChange.dstURL) [selectedURLs addObject:aChange.dstURL];
-  }
+  NSArray* selectedChanges = [[[self selectedChanges] copy] autorelease];
   
   [super setChanges:aChanges];
   
@@ -158,16 +152,38 @@
   }
   
   // Restore selection
-  NSMutableArray* newSelectedChanges = [NSMutableArray array];
-  for (GBChange* aChange in [self.statusArrayController arrangedObjects])
+  NSMutableSet* newSelectedChanges = [NSMutableSet set];
+  NSArray* allChanges = [self.statusArrayController arrangedObjects];
+  for (GBChange* selectedChange in selectedChanges)
   {
-    if (aChange.fileURL && [selectedURLs containsObject:aChange.fileURL])
+    // new revision is normally 00000000000 for all changes, so we don't use it.
+    GBChange* changeByOldRevision = nil;
+    GBChange* changeByURL = nil;
+    for (GBChange* aChange in allChanges)
     {
-      [newSelectedChanges addObject:aChange];
+      if (aChange.fileURL && ((selectedChange.srcURL && [aChange.fileURL isEqual:selectedChange.srcURL]) || 
+                              (selectedChange.dstURL && [aChange.fileURL isEqual:selectedChange.dstURL])))
+      {
+        changeByURL = aChange;
+      }
+      if (aChange.oldRevision && selectedChange.oldRevision && [aChange.oldRevision isEqualToString:selectedChange.oldRevision])
+      {
+        changeByOldRevision = aChange;
+      }
+    }
+    if (changeByOldRevision)
+    {
+      NSLog(@"changeByOldRevision: %@ -> %@", selectedChange, changeByOldRevision);
+      [newSelectedChanges addObject:changeByOldRevision];
+    }
+    else if (changeByURL)
+    {
+      NSLog(@"changeByURL: %@ -> %@", selectedChange, changeByURL);
+      [newSelectedChanges addObject:changeByURL];
     }
   }
-  
-  [self.statusArrayController setSelectedObjects:newSelectedChanges];
+  NSLog(@"updated selection: %@ -> %@", selectedChanges, [newSelectedChanges allObjects]);
+  [self.statusArrayController setSelectedObjects:[newSelectedChanges allObjects]];
   
   [self updateViews];
 }

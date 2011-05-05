@@ -84,6 +84,15 @@
   self.delegate = aDelegate;
 }
 
+- (NSString*) description
+{
+  NSString* pathDesc = [self.fileURL absoluteString];
+  if (self.dstURL && self.srcURL && ![self.dstURL isEqual:self.srcURL])
+  {
+    pathDesc = [NSString stringWithFormat:@"%@->%@", [self.srcURL absoluteString], [self.dstURL absoluteString]];
+  }
+  return [NSString stringWithFormat:@"<GBChange:%p %@ %@->%@ [%@]>", self, pathDesc, [self.oldRevision substringToIndex:6], [self.newRevision substringToIndex:6], self.statusCode];
+}
 
 
 #pragma mark Interrogation
