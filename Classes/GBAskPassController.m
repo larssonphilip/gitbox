@@ -143,8 +143,7 @@
       //   Permission denied (publickey)
       //   fatal: Authentication failed
       
-      // Shouldn't I try to read from both output and error streams?
-      NSString* output = [[task UTF8Error] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+      NSString* output = [[task UTF8ErrorAndOutput] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
       if ([[output lowercaseString] rangeOfString:@"permission"].length > 0 || 
           [[output lowercaseString] rangeOfString:@"authentication"].length > 0)
       {

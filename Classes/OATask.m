@@ -333,12 +333,6 @@ NSString* OATaskDidDeallocateNotification  = @"OATaskDidDeallocateNotification";
     [self readStandardOutputAndStandardError];
     
     [self.nstask waitUntilExit];
-
-    // clean up file descriptors
-    [standardOutputHandleOrPipe release]; standardOutputHandleOrPipe = nil;
-    [standardErrorHandleOrPipe release]; standardErrorHandleOrPipe = nil;
-    [standardOutputFileHandle release]; standardOutputFileHandle = nil;
-    [standardErrorFileHandle release]; standardErrorFileHandle = nil;
         
     self.didReceiveDataBlock = nil;
     
@@ -908,6 +902,18 @@ NSString* OATaskDidDeallocateNotification  = @"OATaskDidDeallocateNotification";
   return [self.standardErrorData UTF8String];
 }
 
+// UTF-8 string for the standardError data concatenated with standardOutput data.
+- (NSString*) UTF8ErrorAndOutput
+{
+  if (self.standardErrorHandleOrPipe == self.standardOutputHandleOrPipe)
+  {
+    return [self UTF8Error];
+  }
+  NSString* s = [self UTF8Output];
+  return [[self UTF8Error] stringByAppendingString:s ? s : @""];
+}
+
+
 // Sets block as didTerminateBlock and sends launch: message.
 - (void) launchWithBlock:(void(^)())block
 {
@@ -937,7 +943,7 @@ NSString* OATaskDidDeallocateNotification  = @"OATaskDidDeallocateNotification";
 - (id) showError
 {
   [NSAlert message: [NSString stringWithFormat:NSLocalizedString(@"Command failed: %@", @"Task"), [self command]]
-       description:[[self UTF8Error] stringByAppendingFormat:NSLocalizedString(@"\nCode: %d", @"Task"), self.terminationStatus]];
+       description:[[self UTF8ErrorAndOutput] stringByAppendingFormat:NSLocalizedString(@"\nCode: %d", @"Task"), self.terminationStatus]];
   return self;
 }
 
