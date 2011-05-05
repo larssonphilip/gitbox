@@ -452,8 +452,20 @@
     }
   }
   
+  NSString* account = self.username;
+  if (!account || [account length] < 1)
+  {
+    // Try to get username from NSURL
+    NSURL* url = [NSURL URLWithString:self.address];
+    account = [url user];
+  }
+  if (!account || [account length] < 1)
+  {
+    account = @"default";
+  }
+  
   const char* serviceCString = [self.keychainService cStringUsingEncoding:NSUTF8StringEncoding];
-  const char* usernameCString = [self.username cStringUsingEncoding:NSUTF8StringEncoding];
+  const char* usernameCString = [account cStringUsingEncoding:NSUTF8StringEncoding];
   const char* passwordCString = [self.password cStringUsingEncoding:NSUTF8StringEncoding];
   
   if (serviceCString == NULL)
