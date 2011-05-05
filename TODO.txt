@@ -256,7 +256,7 @@ Gitbox 1.2.5 TODO:
 
 
 + bug: auth with username in URL displays the prompt again and again
-- bug: when pull with merge conflict, it says there is an error with the pull instead of saying that there was a conflict.
++ bug: when pull with merge conflict, it says there is an error with the pull instead of saying that there was a conflict.
 - bug: when a file has staged and unstaged parts, and only one instance is selected, after stage refresh, both become selected (should select by object id if it's in the list and fallback to path otherwise)
 - bug: when lengthy operation updates files, commit message field refreshes and drops the cursor to the last character [reported by mark hoffman]
 - cloning repository is not counted, thus letting user open another one when limit is reached
