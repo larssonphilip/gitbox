@@ -2,7 +2,7 @@ Gitbox 1.3 Release Notes (WIP)
 
 New features:
 
-✓ Fantastic submodules support: automatic display for all submodules, one-click download and update.
+✓ 
 
 Enhancements:
 
@@ -10,13 +10,16 @@ Enhancements:
 
 Bug fixes:
 
-✓ 
+✓ Stage selection is now correctly preserved in presence of partially staged files.
+
+
 
 --
 
 
 Gitbox 1.3 Features:
 
+✓ Fantastic submodules support: automatic display for all submodules, one-click download and update.
 + submodules: display "download" button in the sidebar item
 - submodules: when submodule folder is removed, properly update its status
 - submodules: cloning repo ctrl is not deallocated
