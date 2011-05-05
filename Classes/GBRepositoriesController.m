@@ -536,7 +536,8 @@
 #if !GITBOX_APP_STORE
 	__block NSUInteger repos = 0;
 	[self.sidebarItem enumerateChildrenUsingBlock:^(GBSidebarItem *item, NSUInteger idx, BOOL *stop) {
-		if ([item.object isKindOfClass:[GBRepositoryController class]])
+		if ([item.object isKindOfClass:[GBRepositoryController class]] ||
+        [item.object isKindOfClass:[GBRepositoryCloningController class]])
 		{
 			repos++;
 		}
