@@ -622,7 +622,10 @@
 {
   NSString* msg = [[self.stage.currentCommitMessage copy] autorelease];
   if (!msg) msg = @"";
-  [self.messageTextView setString:msg];
+  if (![[self.messageTextView string] isEqualToString:msg])
+  {
+    [self.messageTextView setString:msg]; // resets cursor position
+  }
   [self updateHeaderSizeAnimating:NO];
 }
 
