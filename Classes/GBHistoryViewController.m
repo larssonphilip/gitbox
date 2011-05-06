@@ -192,6 +192,20 @@
   [self updateStage];
 }
 
+- (void) repositoryControllerSearchDidStart:(GBRepositoryController*)repoCtrl
+{
+  // Animate search field and focus into it.
+}
+
+- (void) repositoryControllerSearchDidEnd:(GBRepositoryController*)repoCtrl
+{
+  // Hide search field
+}
+
+- (void) repositoryControllerSearchDidUpdateResults:(GBRepositoryController*)repoCtrl
+{
+  
+}
 
 
 

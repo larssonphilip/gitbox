@@ -467,6 +467,7 @@
 
 - (void) windowWillClose:(NSNotification *)notification
 {
+  [NSApp terminate:nil];
 }
 
 - (void) windowDidBecomeKey:(NSNotification *)notification
