@@ -1,6 +1,5 @@
 Search is basically a filter of commits by a search tokens.
 
-
 1. Простой git log -p с опциями форматирования как в GBHistoryTask позволит получить сразу кучу пирожков:
 - поиск по метаданным коммита: автор, sha, дата
 - поиск по именам файлов (включая папки)
@@ -23,6 +22,17 @@ Search is basically a filter of commits by a search tokens.
 - если кусок имени файла не подсвечен, но найден текст внутри файла, то все имя файла подсвечено.
 - в заголовке коммита подсвечены найденные куски.
 - в полном тексте коммита подсвечены найденные куски.
+
+3.5. UI architecture:
+
+  - GBRepositoryController:
+    - search:(id)sender
+    - cancelSearch:(id)sender
+    - setSearchString:
+    - GBRepositoryControllerSearchDidStart notification
+    - GBRepositoryControllerSearchDidEnd notification
+    - GBRepositoryControllerSearchResultsDidChange notification
+
 
 4. Синтаксис поиска: 
 - набор поисковых слов [^\s]+ через пробел ищется по правилу AND

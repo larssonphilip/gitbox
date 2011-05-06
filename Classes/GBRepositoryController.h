@@ -27,6 +27,8 @@
 @property(nonatomic, retain) OAFSEventStream* fsEventStream;
 @property(nonatomic, retain) NSString* lastCommitBranchName;
 @property(nonatomic, assign) BOOL needsInitialFetch;
+@property(nonatomic, copy)   NSString* searchString;
+@property(nonatomic, retain, readonly) NSArray* searchResults;
 
 @property(nonatomic, assign) NSInteger isRemoteBranchesDisabled;
 @property(nonatomic, assign, readonly) NSInteger isDisabled;
@@ -79,6 +81,11 @@
 - (IBAction) editRepositories:(id)sender;
 - (IBAction) editGitIgnore:(id)sender;
 - (IBAction) editGitConfig:(id)sender;
+
+
+- (IBAction) performFindPanelAction:(id)sender; // standard selector for cmd+F, cmd+G, cmd+E etc.
+- (IBAction) search:(id)sender; // posts notification repositoryControllerSearchDidStart:
+- (IBAction) cancelSearch:(id)sender; // posts notification repositoryControllerSearchDidEnd:
 
 
 @end

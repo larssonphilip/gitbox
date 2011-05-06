@@ -170,6 +170,8 @@
 		2082B7C4126587CA00667A7F /* GBRepositoryCloningController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2082B7C3126587CA00667A7F /* GBRepositoryCloningController.m */; };
 		2086DF52133BC20F00289144 /* OAMultipleSelection.m in Sources */ = {isa = PBXBuildFile; fileRef = 2086DF51133BC20F00289144 /* OAMultipleSelection.m */; };
 		2086DF53133BC20F00289144 /* OAMultipleSelection.m in Sources */ = {isa = PBXBuildFile; fileRef = 2086DF51133BC20F00289144 /* OAMultipleSelection.m */; };
+		208B31D11373D6F600EB4A18 /* GBSearchQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 208B31D01373D6F600EB4A18 /* GBSearchQuery.m */; };
+		208B31D21373D6F600EB4A18 /* GBSearchQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 208B31D01373D6F600EB4A18 /* GBSearchQuery.m */; };
 		20915EBC12874D2A005E0D82 /* default_gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 209A960011BC60BC006B0B5C /* default_gitignore */; };
 		20915EBD12874D2A005E0D82 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C1660FE840EACC02AAC07 /* InfoPlist.strings */; };
 		20915EBE12874D2A005E0D82 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD582B0DA1D0D100B32029 /* MainMenu.xib */; };
@@ -406,7 +408,7 @@
 		200433A112DA02CF00B045C0 /* GBGreyGradientView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBGreyGradientView.m; sourceTree = "<group>"; };
 		200435F412DC59E200B045C0 /* GBRepositoriesControllerLocalItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBRepositoriesControllerLocalItem.h; sourceTree = "<group>"; };
 		2009871711C4597800F35630 /* Payment.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Payment.txt; sourceTree = "<group>"; };
-		200A3FBE12E7AD6E004DF940 /* Search.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Search.txt; sourceTree = "<group>"; };
+		200A3FBE12E7AD6E004DF940 /* Search.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Search.txt; sourceTree = "<group>"; wrapsLines = 1; };
 		200A41AF12EB91B0004DF940 /* OABlockMerger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OABlockMerger.h; sourceTree = "<group>"; };
 		200A41B012EB91B0004DF940 /* OABlockMerger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OABlockMerger.m; sourceTree = "<group>"; };
 		200A41C712EB9B14004DF940 /* GBGitConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBGitConfig.h; sourceTree = "<group>"; };
@@ -508,7 +510,7 @@
 		2038F5B8119879FA0087CE37 /* GBRemotesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBRemotesController.h; sourceTree = "<group>"; };
 		2038F5B9119879FA0087CE37 /* GBRemotesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBRemotesController.m; sourceTree = "<group>"; };
 		2038F5F1119DB9CE0087CE37 /* GBChange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBChange.h; sourceTree = "<group>"; };
-		2038F5F2119DB9CE0087CE37 /* GBChange.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBChange.m; sourceTree = "<group>"; };
+		2038F5F2119DB9CE0087CE37 /* GBChange.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBChange.m; sourceTree = "<group>"; wrapsLines = 1; };
 		2038F602119DBBAB0087CE37 /* GBCommit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBCommit.h; sourceTree = "<group>"; };
 		2038F603119DBBAB0087CE37 /* GBCommit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBCommit.m; sourceTree = "<group>"; };
 		2038F67611A025AF0087CE37 /* GBRemote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBRemote.h; sourceTree = "<group>"; };
@@ -601,6 +603,8 @@
 		2086DF50133BC20F00289144 /* OAMultipleSelection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAMultipleSelection.h; sourceTree = "<group>"; };
 		2086DF51133BC20F00289144 /* OAMultipleSelection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAMultipleSelection.m; sourceTree = "<group>"; };
 		208A6B9712F879B600F3F608 /* DiffAndBlame.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = DiffAndBlame.txt; sourceTree = "<group>"; };
+		208B31CF1373D6F600EB4A18 /* GBSearchQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBSearchQuery.h; sourceTree = "<group>"; };
+		208B31D01373D6F600EB4A18 /* GBSearchQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBSearchQuery.m; sourceTree = "<group>"; };
 		20915F7E12875C92005E0D82 /* GBPreferencesController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBPreferencesController.xib; sourceTree = "<group>"; };
 		20915F8712875FDA005E0D82 /* prefix_appstore.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = prefix_appstore.pch; sourceTree = "<group>"; };
 		20915F8B12876062005E0D82 /* GBPreferencesController-appstore.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "GBPreferencesController-appstore.xib"; sourceTree = "<group>"; };
@@ -848,6 +852,8 @@
 				20164BC212D5F43B005C69DA /* GBRepositoriesGroup.m */,
 				20164BC512D5F46F005C69DA /* GBRepositoriesAndGroupsSerialization.h */,
 				20164BC612D5F46F005C69DA /* GBRepositoriesAndGroupsSerialization.m */,
+				208B31CF1373D6F600EB4A18 /* GBSearchQuery.h */,
+				208B31D01373D6F600EB4A18 /* GBSearchQuery.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -1739,6 +1745,7 @@
 				20AC93901367473800FEACF9 /* GBAskPass.m in Sources */,
 				200DE076136A9F9100D18A5B /* GBWindowControllerWithCallback.m in Sources */,
 				207D02FF13706AF8003C9D5F /* iRate.m in Sources */,
+				208B31D21373D6F600EB4A18 /* GBSearchQuery.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1870,6 +1877,7 @@
 				20AC938F1367473800FEACF9 /* GBAskPass.m in Sources */,
 				200DE075136A9F9100D18A5B /* GBWindowControllerWithCallback.m in Sources */,
 				207D030013706F2D003C9D5F /* iRate.m in Sources */,
+				208B31D11373D6F600EB4A18 /* GBSearchQuery.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

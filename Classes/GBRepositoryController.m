@@ -58,6 +58,8 @@
 @property(nonatomic, assign) NSUInteger commitsBadgeInteger; // will be cached on save and updated after history updates
 @property(nonatomic, assign) NSUInteger stageBadgeInteger; // will be cached on save and updated after stage updates
 
+@property(nonatomic, retain, readwrite) NSArray* searchResults; // list of found commits; setter posts a notification
+
 - (NSImage*) icon;
 
 - (void) pushDisabled;
@@ -126,6 +128,9 @@
 @synthesize commitsBadgeInteger;
 @synthesize stageBadgeInteger;
 
+@synthesize searchString;
+@synthesize searchResults;
+
 - (void) dealloc
 {
   NSLog(@"GBRepositoryController#dealloc: %@", self);
@@ -147,6 +152,10 @@
   folderMonitor.action = NULL;
   [folderMonitor release]; folderMonitor = nil;
   //NSLog(@">>> GBRepositoryController:%p dealloc done.", self);
+  
+  [searchString release]; searchString = nil;
+  [searchResults release]; searchResults = nil;
+
   [super dealloc];
 }
 
@@ -1360,6 +1369,80 @@
 
 
 
+#pragma mark Search in history
+
+
+
+- (void) setSearchString:(NSString *)newString
+{
+  if (searchString == newString) return;
+  
+  [searchString release];
+  searchString = [newString copy];
+  
+  // TODO: make sure the current search task finishes and we start a new one.
+}
+
+- (void) setSearchResults:(NSArray *)newResults
+{
+  if (searchResults == newResults) return;
+  
+  [searchResults release];
+  searchResults = [newResults retain];
+  
+  [self notifyWithSelector:@selector(repositoryControllerSearchDidUpdateResults:)];
+}
+
+// This method sends the tag method to determine what operation to perform. The list of possible tags is provided in “Constants.”
+- (IBAction) performFindPanelAction:(id)sender
+{
+//  typedef enum {
+//    NSFindPanelActionShowFindPanel = 1,
+//    NSFindPanelActionNext = 2,
+//    NSFindPanelActionPrevious = 3,
+//    NSFindPanelActionReplaceAll = 4,
+//    NSFindPanelActionReplace = 5,
+//    NSFindPanelActionReplaceAndFind = 6,
+//    NSFindPanelActionSetFindString = 7,
+//    NSFindPanelActionReplaceAllInSelection = 8
+//  } NSFindPanelAction;
+  
+  NSFindPanelAction action = [sender tag];
+  if (action == NSFindPanelActionShowFindPanel)
+  {
+    [self search:sender];
+  }
+  else if (action == NSFindPanelActionSetFindString)
+  {
+    [self search:sender];
+  }
+}
+
+- (IBAction) search:(id)sender // posts notification repositoryControllerSearchDidStart:
+{
+  if (!self.searchString) 
+  {
+    self.searchString = @"";
+    [self notifyWithSelector:@selector(repositoryControllerSearchDidStart:)];
+  }
+}
+
+- (IBAction) cancelSearch:(id)sender // posts notification repositoryControllerSearchDidEnd:
+{
+  if (self.searchString)
+  {
+    self.searchString = nil;
+    [self notifyWithSelector:@selector(repositoryControllerSearchDidEnd:)];
+  }  
+}
+
+
+
+
+
+
+
+
 
 
 #pragma mark Auto Fetch
@@ -1513,17 +1596,6 @@
 
 
 @end
-
-
-
-
-
-
-
-
-
-
-
 
 
 
