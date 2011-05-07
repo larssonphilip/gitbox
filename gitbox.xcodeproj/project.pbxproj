@@ -648,7 +648,7 @@
 		20A37BA4120DC1D90068AB8B /* GBSidebarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBSidebarController.h; sourceTree = "<group>"; };
 		20A37BA5120DC1D90068AB8B /* GBSidebarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBSidebarController.m; sourceTree = "<group>"; };
 		20A37BA7120DC27B0068AB8B /* GBMainWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBMainWindowController.h; sourceTree = "<group>"; };
-		20A37BA8120DC27B0068AB8B /* GBMainWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBMainWindowController.m; sourceTree = "<group>"; };
+		20A37BA8120DC27B0068AB8B /* GBMainWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBMainWindowController.m; sourceTree = "<group>"; wrapsLines = 1; };
 		20A37BAA120DC4510068AB8B /* GBToolbarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBToolbarController.h; sourceTree = "<group>"; };
 		20A37BAB120DC4510068AB8B /* GBToolbarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBToolbarController.m; sourceTree = "<group>"; };
 		20A37BB5120DC7640068AB8B /* GBSidebarController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBSidebarController.xib; sourceTree = "<group>"; };

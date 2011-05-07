@@ -467,6 +467,13 @@
 
 - (void) windowWillClose:(NSNotification *)notification
 {
+  // AppStore reviewer rejected 1.2.5 (tag 1.2.5.2) update on May, 6 2011 with the reference to 
+  // 6.1 Apps must comply with all terms and conditions explained in the Apple Macintosh Human Interface Guidelines.
+  /*
+   The user interface is not consistent with the Apple Human Interface Guidelines.
+   
+   We have found that when the user closes the main application window there is no menu item to re-open it. The app should implement a Window menu that lists the main window so it can be reopened. Alternatively, if the application is a single-window app, it might be appropriate to save data and quit the app when the main window is closed. For information on managing windows in Mac OS X, please review the following sections in App Review Board
+  */
   [NSApp terminate:nil];
 }
 
