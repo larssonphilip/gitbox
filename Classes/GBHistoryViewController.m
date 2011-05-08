@@ -7,6 +7,7 @@
 #import "GBHistoryViewController.h"
 #import "GBStageViewController.h"
 #import "GBCommitViewController.h"
+#import "GBSearchBarController.h"
 
 #import "GBCommitCell.h"
 
@@ -41,6 +42,7 @@
 
 @synthesize tableView;
 @synthesize logArrayController;
+@synthesize searchBarController;
 
 @synthesize stageController;
 @synthesize commitController;
@@ -57,6 +59,8 @@
   [commit release];
   self.detailView = nil;
   
+  [self.tableView setDelegate:nil];
+  [self.tableView setDataSource:nil];
   self.tableView = nil;
   self.logArrayController = nil;
 
@@ -64,6 +68,9 @@
   self.commitController = nil;
   self.stageAndCommits = nil;
   self.jumpController = nil;
+  self.searchBarController.delegate = nil;
+  self.searchBarController = nil;
+  
   [super dealloc];
 }
 
@@ -92,6 +99,17 @@
     // TODO: do a similar thing with stage and commit controllers (they currently load changes in updateViews method which is silly)
     [self.repositoryController loadCommitsIfNeeded];
     [self prepareChangesControllersIfNeeded];
+  }
+  
+  if (repoCtrl.searchString)
+  {
+    self.searchBarController.searchString = repoCtrl.searchString;
+    self.searchBarController.visible = YES;
+  }
+  else
+  {
+    self.searchBarController.searchString = @"";
+    self.searchBarController.visible = NO;
   }
   
   self.stageController.repositoryController = repoCtrl;
@@ -194,19 +212,38 @@
 
 - (void) repositoryControllerSearchDidStart:(GBRepositoryController*)repoCtrl
 {
-  // Animate search field and focus into it.
+  [self.searchBarController setSearchString:repoCtrl.searchString];
+  [self.searchBarController setVisible:YES animated:YES];
+  [self.searchBarController focus];
 }
 
 - (void) repositoryControllerSearchDidEnd:(GBRepositoryController*)repoCtrl
 {
-  // Hide search field
+  [self.searchBarController setSearchString:@""];
+  [self.searchBarController setVisible:NO animated:YES];
 }
 
 - (void) repositoryControllerSearchDidUpdateResults:(GBRepositoryController*)repoCtrl
 {
-  
+  // TODO: update list of commits with searchResults
 }
 
+
+
+
+#pragma mark GBSearchBarControllerDelegate
+
+
+- (void) searchBarControllerDidChangeString:(GBSearchBarController*)ctrl
+{
+  self.repositoryController.searchString = self.searchBarController.searchString;
+}
+
+- (void) searchBarControllerDidCancel:(GBSearchBarController*)ctrl
+{
+  self.repositoryController.searchString = nil;
+  [self.searchBarController setVisible:NO animated:YES];
+}
 
 
 
@@ -296,12 +333,29 @@
   }
 }
 
+- (BOOL) validateSelectLeftPane:(id)sender
+{
+  NSResponder* firstResponder = [[[self view] window] firstResponder];
+  //NSLog(@"GBSidebarItem: validateSelectRightPane: firstResponder = %@", firstResponder);
+  if (!(firstResponder == self || firstResponder == self.tableView))
+  {
+    return NO;
+  }
+  return YES;
+}
+
 - (BOOL) validateSelectRightPane:(id)sender
 {
+  NSResponder* firstResponder = [[[self view] window] firstResponder];
+  //NSLog(@"GBSidebarItem: validateSelectRightPane: firstResponder = %@", firstResponder);
+  if (!(firstResponder == self || firstResponder == self.tableView))
+  {
+    return NO;
+  }
+  
   // Note: first condition is for case when changes are not loaded yet and user quickly jumps to the next pane
   return !self.repositoryController.selectedCommit.changes  || ([self.repositoryController.selectedCommit.changes count] > 0);
 }
-
 
 
 

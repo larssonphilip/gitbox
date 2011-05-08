@@ -1423,8 +1423,8 @@
   if (!self.searchString) 
   {
     self.searchString = @"";
-    [self notifyWithSelector:@selector(repositoryControllerSearchDidStart:)];
   }
+  [self notifyWithSelector:@selector(repositoryControllerSearchDidStart:)];
 }
 
 - (IBAction) cancelSearch:(id)sender // posts notification repositoryControllerSearchDidEnd:

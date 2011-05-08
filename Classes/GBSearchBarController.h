@@ -1,24 +1,31 @@
-#include "GBHistoryViewController.h"
+@class GBSearchBarController;
 
-@class GBSearchBarView;
+@protocol GBSearchBarControllerDelegate<NSObject>
+@optional
+- (void) searchBarControllerDidChangeString:(GBSearchBarController*)ctrl;
+- (void) searchBarControllerDidCancel:(GBSearchBarController*)ctrl;
+@end
 
-@interface GBSearchBarController : NSViewController {
-	IBOutlet NSSearchField *searchField;
-  IBOutlet NSProgressIndicator *progressIndicator;
-  BOOL alreadyVisible;
-}
+@interface GBSearchBarTextField : NSSearchField
+@end
 
-@property(retain) NSView* parentView;
-@property(retain) NSView* siblingView;
-@property(retain) GBHistoryViewController* historyController;
+@interface GBSearchBarController : NSViewController
 
-- (IBAction) updateFilter:sender;
-- (BOOL) control:(NSControl*)control textView:(NSTextView*)textView doCommandBySelector:(SEL)commandSelector;
+@property(nonatomic, copy)   NSString* searchString;
+@property(nonatomic, assign) BOOL visible;
+@property(nonatomic, retain) IBOutlet NSView* contentView; // this outlet should be connected in the parent NIB
+@property(nonatomic, assign) IBOutlet id<GBSearchBarControllerDelegate> delegate;
 
-- (void) loadView;
-- (void) dealloc;
-
-- (void) setViewVisible:(BOOL)visible;
+- (void) setVisible:(BOOL)visible animated:(BOOL)animated;
+- (IBAction) searchFieldDidChange:(id)sender;
 - (void) setSpinnerAnimated:(BOOL)visible;
+
+- (void) focus;
+- (void) unfocus;
+
+// Private outlets for GBSearchBarController NIB.
+@property(nonatomic, retain) IBOutlet NSView* barView;
+@property(nonatomic, retain) IBOutlet GBSearchBarTextField *searchField;
+@property(nonatomic, retain) IBOutlet NSProgressIndicator *progressIndicator;
 
 @end

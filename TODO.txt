@@ -72,6 +72,9 @@ Gitbox 1.3 Enhancements:
 
 Gitbox 1.3 Bug fixes:
 
+
+- bug: search: cmd+F should select all text when already in search field
+- bug: search: left-right arrows are handled by table view
 - bug: refresh stage periodically when it is selected (and increase interval if nothing changes)
 + bug: when a file has staged and unstaged parts, and only one instance is selected, after stage refresh, both become selected (should select by object id if it's in the list and fallback to path otherwise)
   + remember a list of selected change objects
