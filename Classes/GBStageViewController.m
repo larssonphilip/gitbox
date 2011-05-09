@@ -173,16 +173,16 @@
     }
     if (changeByOldRevision)
     {
-      NSLog(@"changeByOldRevision: %@ -> %@", selectedChange, changeByOldRevision);
+      //NSLog(@"changeByOldRevision: %@ -> %@", selectedChange, changeByOldRevision);
       [newSelectedChanges addObject:changeByOldRevision];
     }
     else if (changeByURL)
     {
-      NSLog(@"changeByURL: %@ -> %@", selectedChange, changeByURL);
+      //NSLog(@"changeByURL: %@ -> %@", selectedChange, changeByURL);
       [newSelectedChanges addObject:changeByURL];
     }
   }
-  NSLog(@"updated selection: %@ -> %@", selectedChanges, [newSelectedChanges allObjects]);
+  //NSLog(@"updated selection: %@ -> %@", selectedChanges, [newSelectedChanges allObjects]);
   [self.statusArrayController setSelectedObjects:[newSelectedChanges allObjects]];
   
   [self updateViews];
