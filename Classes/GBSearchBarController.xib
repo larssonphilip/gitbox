@@ -47,7 +47,7 @@
 						<reference key="NSNextResponder" ref="1005"/>
 						<int key="NSvFlags">1321</int>
 						<object class="NSPSMatrix" key="NSDrawMatrix"/>
-						<string key="NSFrame">{{348, 9}, {16, 16}}</string>
+						<string key="NSFrame">{{349, 9}, {16, 16}}</string>
 						<reference key="NSSuperview" ref="1005"/>
 						<int key="NSViewLayerContentsRedrawPolicy">2</int>
 						<int key="NSpiFlags">28938</int>
@@ -56,7 +56,7 @@
 					<object class="NSSearchField" id="217188954">
 						<reference key="NSNextResponder" ref="1005"/>
 						<int key="NSvFlags">298</int>
-						<string key="NSFrame">{{8, 6}, {360, 22}}</string>
+						<string key="NSFrame">{{7, 6}, {362, 22}}</string>
 						<reference key="NSSuperview" ref="1005"/>
 						<reference key="NSNextKeyView" ref="851788163"/>
 						<int key="NSViewLayerContentsRedrawPolicy">2</int>
@@ -382,7 +382,7 @@
 							</object>
 						</object>
 					</object>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier" id="79715375">
+					<object class="IBClassDescriptionSource" key="sourceIdentifier" id="301705620">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">Classes/GBSearchBarController.h</string>
 					</object>
@@ -390,7 +390,7 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">GBSearchBarTextField</string>
 					<string key="superclassName">NSSearchField</string>
-					<reference key="sourceIdentifier" ref="79715375"/>
+					<reference key="sourceIdentifier" ref="301705620"/>
 				</object>
 				<object class="IBPartialClassDescription">
 					<string key="className">NSMenu</string>
