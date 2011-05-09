@@ -72,15 +72,8 @@ Gitbox 1.3 Enhancements:
 
 Gitbox 1.3 Bug fixes:
 
-
 - bug: search: cmd+F should select all text when already in search field
-- bug: search: left-right arrows are handled by table view
 - bug: refresh stage periodically when it is selected (and increase interval if nothing changes)
-+ bug: when a file has staged and unstaged parts, and only one instance is selected, after stage refresh, both become selected (should select by object id if it's in the list and fallback to path otherwise)
-  + remember a list of selected change objects
-  + for each remembered object try to find a matching in the new list.
-  + if not found, try to find by file name
-
 - bug: when removing spinning repo from sidebar (task is running), spinner remains in sidebar
 - (right now jump controller is disabled because of that) bug: minor issue: when quickly iterating through sidebar when repos are autofetched, the selection sometimes jumps. We should reset jump controller's block when selection is changed elsewhere.
 - bug: when fetch is clicked, should fetch everything (see email discussion)
@@ -96,185 +89,12 @@ Gitbox 1.3 Bug fixes:
 ? bug: crash when opening a diff tool and probably updating the stage at the same time.
 ? sidebar: postpone reloading the sidebar while editing a group name
 
-
-
--------------------------------------------------------------------------------
-
-
-
-Gitbox 1.2.5 Release Notes (WIP)
-
-New features:
-
-✓ HTTP authentication and fully redesigned authentication UI.
-✓ Applying pull, push and other actions to multiple repositories at once.
-✓ Clone dialog displays progress status.
-
-Enhancements:
-
-✓ Initial launch and autofetch performance improvements.
-✓ Many improvements in launching and monitoring git tasks. Fixed file descriptor consumption issues and random crashes. Activity window (cmd+0) displays tasks in real time.
-✓ Several enhancements to right-click menus in sidebar.
-✓ Clone dialog remembers last entered URL.
-✓ New commits are fetched when you start typing a commit message, so you can pull before making a commit.
-✓ Sidebar badge shows the total count of nonpushed and nonmerged commits when it is bigger that 999.
-✓ Renamed and copied files which were also modified now display "modified" status instead of "renamed" or "copied".
-✓ Scrollbars disappear when scrolling is finished.
-✓ Error alerts are presented in sheets.
-✓ Authentication dialog and error alerts are not displayed for background updates.
-✓ Optimized package size for App Store build (70 Mb -> 10 Mb)
-
-Bug fixes:
-
-✓ Performance fix when staging and commiting quickly.
-✓ Fixed bugs related to filesystem events: sometimes modified files did not appear in the stage, now they always do.
-✓ Fixed several bugs with staging partial files, reverting multiple files and other actions in stage.
-✓ Fixed commit message wrapping; now multi-line commits are rendered correctly.
-✓ Fixed staging when clicking on a message field: now Gitbox does not stage selected files when you navigate to the message field. Use Cmd+Return shortcut to stage selected changes and jump to the message field. 
-✓ Fixed crash when staging or unstaging more than 4096 files.
-✓ Fixed rare crashes when Gitbox updates list of remote branches.
-✓ Fixed spellchecker configuration in the commit message text field.
-✓ Fixed license check when cloning a repository.
-✓ Fixed various issues with authentication and Keychain.
-✓ Fixed toolbar items presentation when sheet is closed. (In rare cases buttons could remain disabled.)
-✓ When window is closed, click on a dock icon brings it back even if the app is active.
-
-
-Misc items done:
-
-+ bug: crash in pushBranch:toRemoteBranch:withBlock: - aRemoteBranch.remote becomes invalid object!
-+ bug: update the stage when it is selected or when the main window is activated (maybe without refresh) - this should deal with sometimes missed FSEvents
-+ bug: do ls-remote and fetch when repo is added to check the authentication and especially SSH known_hosts alert.
-+ general: put autofetch requests into separate, but shared, OABlockQueue
-+ general: fix networking behaviour: try to load the remote branches and reload them when pull/fetch (was done in 1.2)
-
-+ sidebar: add contextual menu with "add repo", "clone repo", "new group" to the folder
-+ sidebar: commit+push is ugly: it spins, then it stops spinning, then it changes the badge number and then spins again. (last spinning is fixed)
-+ sidebar: add contextual menu with "+" button menu to the root whole outline view
-+ sidebar: allow 3 repos for free so ppl who don't want to pay just now may start actually using without searching for keygen?
-
-+ clone: remember last cloned URL and prefill clone dialog
-
-+ submodules: collapsed badges are not accumulated in parent (in both submodules and top-level repo ctrl)
-+ submodules: after cloned, replace repo ctrl with the real repo ctrl
-+ submodules: GBSubmoduleCloningController which displays info + download button in the middle pane
-+ submodules: use [OABlockQueue prependBlock:...] for user actions
-+ submodules: when opened or cloned the submodule, init its repoCtrl so that other submodules and sidebar are updated 
-+ submodules: init after clone or pull to add .gitmodules info to .git/config
-
-+ bug: sidebar: autofetch fills updateQueue very much. Should not schedule new update if the previous one didn't fire yet.
-+ bug: sidebar: when launched the app, all repos start spinning together: should use two separate queues for disk tasks and networking
-+ bug: sidebar: quickly jumping through repos in sidebar is slow: avoid unnecessary updates and shell-outs when repo is selected.
-+ bug: sidebar: display folder icon even if the folder is missing
-
-+ bug: stage: refuse first responder when stage is empty.
-+ bug: stage: when selected all commits and clicked the text view, it does not immediately erase contents of the text view
-
-+ should use a single FSEvents monitor for all the repos
-
-+ make load/save for sidebar items
-+ bug: after removing some item from sidebar, responder chain is strange: cannot select next pane from sidebar
-+ bug: partially staged new file cannot be unstaged
-+ bug: when displaying the history, should load commits if needed
-+ bug: when selected group and repo, after selecting a repo, commits do not load automatically
-+ bug: whe updated stage or history, should update sidebarItem
-+ bug: toolbar is not in responder chain - pullOrPush does not work
-+ bug: restore all the Main Menu actions: pull/push etc.
-+ optional selector setWindow: for GBMainWindowItem (so they can present sheets etc.)
-
-+ common sheet queue for main window to append and prepend sheets. 
-  + can simply use OABlockQueue as it will let to avoid presenting a sheet when the previous one has already produced necessary data (like for Keychain).
-
-+ bug: restore toolbar buttons and menus
-+ bug: rename does not work on a clicked item (when outside of the selection)
-+ bug: openDocument is not completed
-
-+ bug: segfault when fetching multiple selection
-
-+ sidebar should simply transfer all the work to rootController without specific actions.
-+ For dropped item+index we can set properties on rootController like with clicked item, so it can know its context.
-+ Repository opeations should go into GBRepositoriesController and it should update rootController which triggers "didChangeContents" notifications.
-
-+ bug: top-level controllers should be in responder chain to make global operations accessible when nothing is selected (or nothing is contained): like openDocument, cloneRepository etc.
-
-+ enhancement: perform task startup, parsing and finalization in the concurrent dispatch queue for not blocking the main thread.
-+ bug: restore clone controller
-+ bug: restore FSEvents mechanism
-+ bug: handle repository renaming; repositories controller should subscribe to every repoCtrl and listen when they move
-+ bug: restore autofetch
-+ enhancement: need better way to organize async methods and complex patterns: load with reusing current message: OABlockTable
-+ multiple selection object to be inserted into responder chain and perform validation 
-+ on selection, load the regular stuff with spinner
-+ do not reset autofetch interval on local changes
-+ but do autofetch check whenever started typing commit message
-+ bug: cannot drop a repo into a newly created folder.
-+ history: calculate full number of differing commits by running background command: git rev-list A...B  --count (need to do that after each commit, branch checkout or pull/push/merge/fetch) [Doc: another special notation is "<commit1>...<commit2>" which is useful for merges. The resulting set of commits is the symmetric difference between the two operands.]
-
-+ support sidebar saved format v1.2 for gentle migration
-+ cache repos' badges within plist for immediate presentation on launch
-+ bug: commit message formatting: should detect manually-formatted commits (like in git.git) by comparing number of lines without punctuation to number of lines with punctuation (on both ends to also cover a case of lists).
-
-+ sidebar: delegate all sidebar right-click menu items to the sidebar controller and selected/clicked item. Fix Open in Terminal/Open in Finder commands.
-+ should use a single FSEvents monitor for all the repos
-+ bug: UI locks up. Maybe on iterative reading and notifications or because of activity window.
-+ bug: commit changes are loaded twice.
-+ do not remove waiting or running tasks from activity window
-+ bug: regression since 1.2: when clicking parent id should scroll to the selected commit
-+ bug: when repo has submodules with download buttons and it is expanded, upon removal, buttons are still in the view
-+ bug: Activity objects appear to be overretained. Possibly file handles are leaked. Should add logging to OATask when it is alive for more than 5 seconds.
-+ bug: crash when staging 26000 files: *** Terminating app due to uncaught exception 'NSInvalidArgumentException', reason: 'too many arguments (28408) -- limit is 4096'
-+ bug: do not flash scrollers when at the top of the scrollable area
-+ subtle bug: when repo has submodules with download buttons and it is expanded, when such submodule is selected, and right-click is used to remove its parent repo, its download button remains in the view
-+ bug: stage: enable spellcheck in the textview
-+ bug: autofetch does stage update after ls-remote, which it should not (except for only once after app restart)
-+ activities array is mutated due to OATask dealloc notification while it is enumerated.
-+ bug: responder chain: patraque#1028: when selected a change and dragged in a repo, "+" button menu has disabled items
-+ bug: do not merge stdout and stdin by default! But take care to display both of them in the activity window.
-+ bug: when the Gitbox is closed, pending askpass process crashes and causes "Gitbox did crash" dialog appear.
-+ bug: responder chain: merge button in toolbar does not work (maybe the same issue as with responder chain fuckup)
-  + fix: tie the rootController's responder chain not to the sidebar controller, but to the rootController itself. And window controller's next responder should be rootcontroller. Also don't forget about toolbar controller which also should be somewhere in the chain.
-+ auth bug: when username changed, gitbox tries to use username which has just failed forcing user to constantly enter the password. Should remove all records for the given repo when failed.
-+ bug: when auth dialog is closed, askpass ctrl is deallocated, but the task is still alive.
-+ bug: should present askpass in a sheet
-+ bug: askpass should check keychain in its queued block to cover a case when previous window has got relevant credentials
-+ bug: when clone error occured close button does not remove non-finished repo from list.
-+ bug: for automatic background tasks should not display error sheets to not block the UI.
-+ bug: when cancel button is pressed, should not ask for auth again until explicit user action is invoked.
-+ bug: count number of repos when cloning
-+ CRASH: when sending setFailedCommunication using some dangling pointer (removed setFailedCommunication API)
-+ bug: askpass is used only for ls-remotes, but should also be used for pull/push/fetch. Need nice design for such tasks.
-+ bug: http auth uses askpass to ask for a username as well, need to support this.
-+ bug: task.skipKeychainPassword is used only for ls-remote, but should be also used in git fetch, pull and push.
-+ IMPORTANT: bug: sidebar: sometimes, when dropped the repo to the sidebar, it does not update the history. Maybe the updateQueue is flooded.
-+ IMPORTANT: bug: general: should test all leaks of blocks, NSTasks and related file handles!
-
-+ bug: general: gitbox uses FSevents listener per repo which creates many duplicate file descriptors for intermediate paths (see `lsof | grep Gitbox`), should try to use a single listener for all the opened repos. Maybe this will avoid duplication.
-
-+ bug: general: crash with broken file descriptor after a night of running app: not fixed for [OATask launchInQueue:withBlock:]
-+ bug: general: after cmd+W (while app is still in foreground), clicking on dock icon does not bring window back. (Standard docs are not helpful: should google more)
-+ bug: sidebar: when adding a repo through a right-click, it does not respect clicked row or selected group.
-+ bug: sidebar: when cloning finished, selection is changing quickly - ugly.
-+ bug: sidebar: right-click menu works for a single item when have multiple selection
-+ bug: general: remember last cloned URL
-+ bug: general: push over https (Github now supports pushing by HTTPS)
-+ bug: general: when connecting over https (and maybe http), gitbox locks on password prompt.  [Nicolai Schulten <nicolai.schulten@byte-garden.de>]
-+ appstore: iRate dialog to ask user to leave a rating note on Mac AppStore.
-+ appstore: packed git bundle and unpacking into Application Support.
-+ (not a bug now) bug: when dragged in a repo, Edit Servers... and other sheets do not work. When Gitbox is relaunched, it becomes fine.
-
------------------------------------------------------------
-
-Gitbox 1.2.5 TODO:
-
-
-+ bug: auth with username in URL displays the prompt again and again
-+ bug: when pull with merge conflict, it says there is an error with the pull instead of saying that there was a conflict.
-+ cloning repository is not counted, thus letting user open another one when limit is reached
-+ bug: when lengthy operation updates files, commit message field refreshes and drops the cursor to the last character [reported by mark hoffman]
-+ submit to AppStore!
-  + test with clean start
-  + test with start after using 1.2
-
++ bug: search: left-right arrows are handled by table view
++ bug: search: tab should not jump to search field while it's hidden
++ bug: when a file has staged and unstaged parts, and only one instance is selected, after stage refresh, both become selected (should select by object id if it's in the list and fallback to path otherwise)
+  + remember a list of selected change objects
+  + for each remembered object try to find a matching in the new list.
+  + if not found, try to find by file name
 
 
 
@@ -483,6 +303,186 @@ To read:
 
 
 
+
+
+
+
+-------------------------------------------------------------------------------
+
+
+
+Gitbox 1.2.5 Release Notes (WIP)
+
+New features:
+
+✓ HTTP authentication and fully redesigned authentication UI.
+✓ Applying pull, push and other actions to multiple repositories at once.
+✓ Clone dialog displays progress status.
+
+Enhancements:
+
+✓ Initial launch and autofetch performance improvements.
+✓ Many improvements in launching and monitoring git tasks. Fixed file descriptor consumption issues and random crashes. Activity window (cmd+0) displays tasks in real time.
+✓ Several enhancements to right-click menus in sidebar.
+✓ Clone dialog remembers last entered URL.
+✓ New commits are fetched when you start typing a commit message, so you can pull before making a commit.
+✓ Sidebar badge shows the total count of nonpushed and nonmerged commits when it is bigger that 999.
+✓ Renamed and copied files which were also modified now display "modified" status instead of "renamed" or "copied".
+✓ Scrollbars disappear when scrolling is finished.
+✓ Error alerts are presented in sheets.
+✓ Authentication dialog and error alerts are not displayed for background updates.
+✓ Optimized package size for App Store build (70 Mb -> 10 Mb)
+
+Bug fixes:
+
+✓ Performance fix when staging and commiting quickly.
+✓ Fixed bugs related to filesystem events: sometimes modified files did not appear in the stage, now they always do.
+✓ Fixed several bugs with staging partial files, reverting multiple files and other actions in stage.
+✓ Fixed commit message wrapping; now multi-line commits are rendered correctly.
+✓ Fixed staging when clicking on a message field: now Gitbox does not stage selected files when you navigate to the message field. Use Cmd+Return shortcut to stage selected changes and jump to the message field. 
+✓ Fixed crash when staging or unstaging more than 4096 files.
+✓ Fixed rare crashes when Gitbox updates list of remote branches.
+✓ Fixed spellchecker configuration in the commit message text field.
+✓ Fixed license check when cloning a repository.
+✓ Fixed various issues with authentication and Keychain.
+✓ Fixed toolbar items presentation when sheet is closed. (In rare cases buttons could remain disabled.)
+✓ When window is closed, click on a dock icon brings it back even if the app is active.
+
+
+Misc items done:
+
++ bug: crash in pushBranch:toRemoteBranch:withBlock: - aRemoteBranch.remote becomes invalid object!
++ bug: update the stage when it is selected or when the main window is activated (maybe without refresh) - this should deal with sometimes missed FSEvents
++ bug: do ls-remote and fetch when repo is added to check the authentication and especially SSH known_hosts alert.
++ general: put autofetch requests into separate, but shared, OABlockQueue
++ general: fix networking behaviour: try to load the remote branches and reload them when pull/fetch (was done in 1.2)
+
++ sidebar: add contextual menu with "add repo", "clone repo", "new group" to the folder
++ sidebar: commit+push is ugly: it spins, then it stops spinning, then it changes the badge number and then spins again. (last spinning is fixed)
++ sidebar: add contextual menu with "+" button menu to the root whole outline view
++ sidebar: allow 3 repos for free so ppl who don't want to pay just now may start actually using without searching for keygen?
+
++ clone: remember last cloned URL and prefill clone dialog
+
++ submodules: collapsed badges are not accumulated in parent (in both submodules and top-level repo ctrl)
++ submodules: after cloned, replace repo ctrl with the real repo ctrl
++ submodules: GBSubmoduleCloningController which displays info + download button in the middle pane
++ submodules: use [OABlockQueue prependBlock:...] for user actions
++ submodules: when opened or cloned the submodule, init its repoCtrl so that other submodules and sidebar are updated 
++ submodules: init after clone or pull to add .gitmodules info to .git/config
+
++ bug: sidebar: autofetch fills updateQueue very much. Should not schedule new update if the previous one didn't fire yet.
++ bug: sidebar: when launched the app, all repos start spinning together: should use two separate queues for disk tasks and networking
++ bug: sidebar: quickly jumping through repos in sidebar is slow: avoid unnecessary updates and shell-outs when repo is selected.
++ bug: sidebar: display folder icon even if the folder is missing
+
++ bug: stage: refuse first responder when stage is empty.
++ bug: stage: when selected all commits and clicked the text view, it does not immediately erase contents of the text view
+
++ should use a single FSEvents monitor for all the repos
+
++ make load/save for sidebar items
++ bug: after removing some item from sidebar, responder chain is strange: cannot select next pane from sidebar
++ bug: partially staged new file cannot be unstaged
++ bug: when displaying the history, should load commits if needed
++ bug: when selected group and repo, after selecting a repo, commits do not load automatically
++ bug: whe updated stage or history, should update sidebarItem
++ bug: toolbar is not in responder chain - pullOrPush does not work
++ bug: restore all the Main Menu actions: pull/push etc.
++ optional selector setWindow: for GBMainWindowItem (so they can present sheets etc.)
+
++ common sheet queue for main window to append and prepend sheets. 
+  + can simply use OABlockQueue as it will let to avoid presenting a sheet when the previous one has already produced necessary data (like for Keychain).
+
++ bug: restore toolbar buttons and menus
++ bug: rename does not work on a clicked item (when outside of the selection)
++ bug: openDocument is not completed
+
++ bug: segfault when fetching multiple selection
+
++ sidebar should simply transfer all the work to rootController without specific actions.
++ For dropped item+index we can set properties on rootController like with clicked item, so it can know its context.
++ Repository opeations should go into GBRepositoriesController and it should update rootController which triggers "didChangeContents" notifications.
+
++ bug: top-level controllers should be in responder chain to make global operations accessible when nothing is selected (or nothing is contained): like openDocument, cloneRepository etc.
+
++ enhancement: perform task startup, parsing and finalization in the concurrent dispatch queue for not blocking the main thread.
++ bug: restore clone controller
++ bug: restore FSEvents mechanism
++ bug: handle repository renaming; repositories controller should subscribe to every repoCtrl and listen when they move
++ bug: restore autofetch
++ enhancement: need better way to organize async methods and complex patterns: load with reusing current message: OABlockTable
++ multiple selection object to be inserted into responder chain and perform validation 
++ on selection, load the regular stuff with spinner
++ do not reset autofetch interval on local changes
++ but do autofetch check whenever started typing commit message
++ bug: cannot drop a repo into a newly created folder.
++ history: calculate full number of differing commits by running background command: git rev-list A...B  --count (need to do that after each commit, branch checkout or pull/push/merge/fetch) [Doc: another special notation is "<commit1>...<commit2>" which is useful for merges. The resulting set of commits is the symmetric difference between the two operands.]
+
++ support sidebar saved format v1.2 for gentle migration
++ cache repos' badges within plist for immediate presentation on launch
++ bug: commit message formatting: should detect manually-formatted commits (like in git.git) by comparing number of lines without punctuation to number of lines with punctuation (on both ends to also cover a case of lists).
+
++ sidebar: delegate all sidebar right-click menu items to the sidebar controller and selected/clicked item. Fix Open in Terminal/Open in Finder commands.
++ should use a single FSEvents monitor for all the repos
++ bug: UI locks up. Maybe on iterative reading and notifications or because of activity window.
++ bug: commit changes are loaded twice.
++ do not remove waiting or running tasks from activity window
++ bug: regression since 1.2: when clicking parent id should scroll to the selected commit
++ bug: when repo has submodules with download buttons and it is expanded, upon removal, buttons are still in the view
++ bug: Activity objects appear to be overretained. Possibly file handles are leaked. Should add logging to OATask when it is alive for more than 5 seconds.
++ bug: crash when staging 26000 files: *** Terminating app due to uncaught exception 'NSInvalidArgumentException', reason: 'too many arguments (28408) -- limit is 4096'
++ bug: do not flash scrollers when at the top of the scrollable area
++ subtle bug: when repo has submodules with download buttons and it is expanded, when such submodule is selected, and right-click is used to remove its parent repo, its download button remains in the view
++ bug: stage: enable spellcheck in the textview
++ bug: autofetch does stage update after ls-remote, which it should not (except for only once after app restart)
++ activities array is mutated due to OATask dealloc notification while it is enumerated.
++ bug: responder chain: patraque#1028: when selected a change and dragged in a repo, "+" button menu has disabled items
++ bug: do not merge stdout and stdin by default! But take care to display both of them in the activity window.
++ bug: when the Gitbox is closed, pending askpass process crashes and causes "Gitbox did crash" dialog appear.
++ bug: responder chain: merge button in toolbar does not work (maybe the same issue as with responder chain fuckup)
+  + fix: tie the rootController's responder chain not to the sidebar controller, but to the rootController itself. And window controller's next responder should be rootcontroller. Also don't forget about toolbar controller which also should be somewhere in the chain.
++ auth bug: when username changed, gitbox tries to use username which has just failed forcing user to constantly enter the password. Should remove all records for the given repo when failed.
++ bug: when auth dialog is closed, askpass ctrl is deallocated, but the task is still alive.
++ bug: should present askpass in a sheet
++ bug: askpass should check keychain in its queued block to cover a case when previous window has got relevant credentials
++ bug: when clone error occured close button does not remove non-finished repo from list.
++ bug: for automatic background tasks should not display error sheets to not block the UI.
++ bug: when cancel button is pressed, should not ask for auth again until explicit user action is invoked.
++ bug: count number of repos when cloning
++ CRASH: when sending setFailedCommunication using some dangling pointer (removed setFailedCommunication API)
++ bug: askpass is used only for ls-remotes, but should also be used for pull/push/fetch. Need nice design for such tasks.
++ bug: http auth uses askpass to ask for a username as well, need to support this.
++ bug: task.skipKeychainPassword is used only for ls-remote, but should be also used in git fetch, pull and push.
++ IMPORTANT: bug: sidebar: sometimes, when dropped the repo to the sidebar, it does not update the history. Maybe the updateQueue is flooded.
++ IMPORTANT: bug: general: should test all leaks of blocks, NSTasks and related file handles!
+
++ bug: general: gitbox uses FSevents listener per repo which creates many duplicate file descriptors for intermediate paths (see `lsof | grep Gitbox`), should try to use a single listener for all the opened repos. Maybe this will avoid duplication.
+
++ bug: general: crash with broken file descriptor after a night of running app: not fixed for [OATask launchInQueue:withBlock:]
++ bug: general: after cmd+W (while app is still in foreground), clicking on dock icon does not bring window back. (Standard docs are not helpful: should google more)
++ bug: sidebar: when adding a repo through a right-click, it does not respect clicked row or selected group.
++ bug: sidebar: when cloning finished, selection is changing quickly - ugly.
++ bug: sidebar: right-click menu works for a single item when have multiple selection
++ bug: general: remember last cloned URL
++ bug: general: push over https (Github now supports pushing by HTTPS)
++ bug: general: when connecting over https (and maybe http), gitbox locks on password prompt.  [Nicolai Schulten <nicolai.schulten@byte-garden.de>]
++ appstore: iRate dialog to ask user to leave a rating note on Mac AppStore.
++ appstore: packed git bundle and unpacking into Application Support.
++ (not a bug now) bug: when dragged in a repo, Edit Servers... and other sheets do not work. When Gitbox is relaunched, it becomes fine.
+
+-----------------------------------------------------------
+
+Gitbox 1.2.5 TODO:
+
+
++ bug: auth with username in URL displays the prompt again and again
++ bug: when pull with merge conflict, it says there is an error with the pull instead of saying that there was a conflict.
++ cloning repository is not counted, thus letting user open another one when limit is reached
++ bug: when lengthy operation updates files, commit message field refreshes and drops the cursor to the last character [reported by mark hoffman]
++ submit to AppStore!
+  + test with clean start
+  + test with start after using 1.2
 
 
 

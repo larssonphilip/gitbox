@@ -101,8 +101,7 @@
     [self.barView setFrame:[self.view bounds]];
     [self.view addSubview:self.barView];
     
-    // Setting next responder causes funny conflict with keyboard navigation shortcuts
-    //[self.searchField setNextResponder:self.contentView];
+    [self.searchField setRefusesFirstResponder:YES];
   }
 }
 
@@ -143,6 +142,7 @@
 
 - (void) focus
 {
+  [self.searchField setRefusesFirstResponder:NO];
   [self.view.window makeFirstResponder:self.searchField];
   [self.searchField selectText:nil];
 }
@@ -173,7 +173,9 @@
   if (newVisible == visible) return;
   
   visible = newVisible;
-    
+  
+  [self.searchField setRefusesFirstResponder:!visible];
+  
   if (animated)
   {
     if (visible)
