@@ -309,6 +309,8 @@
 		20A37BAC120DC4510068AB8B /* GBToolbarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20A37BAB120DC4510068AB8B /* GBToolbarController.m */; };
 		20A37BB6120DC7640068AB8B /* GBSidebarController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 20A37BB5120DC7640068AB8B /* GBSidebarController.xib */; };
 		20A37BBE120DDBA60068AB8B /* GBMainWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 20A37BBD120DDBA60068AB8B /* GBMainWindowController.xib */; };
+		20A750E51377C42F00981C39 /* GBSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 20A750E41377C42F00981C39 /* GBSearch.m */; };
+		20A750E61377C42F00981C39 /* GBSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 20A750E41377C42F00981C39 /* GBSearch.m */; };
 		20A9407512FA07C100C3F6F4 /* GBRepositoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20A9407412FA07C100C3F6F4 /* GBRepositoryViewController.m */; };
 		20A9407612FA07C100C3F6F4 /* GBRepositoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20A9407412FA07C100C3F6F4 /* GBRepositoryViewController.m */; };
 		20A9408712FA0E5900C3F6F4 /* GBRepositoryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 20A9408612FA0E5900C3F6F4 /* GBRepositoryViewController.xib */; };
@@ -660,6 +662,8 @@
 		20A37BAB120DC4510068AB8B /* GBToolbarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBToolbarController.m; sourceTree = "<group>"; };
 		20A37BB5120DC7640068AB8B /* GBSidebarController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBSidebarController.xib; sourceTree = "<group>"; };
 		20A37BBD120DDBA60068AB8B /* GBMainWindowController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBMainWindowController.xib; sourceTree = "<group>"; };
+		20A750E31377C42F00981C39 /* GBSearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBSearch.h; sourceTree = "<group>"; };
+		20A750E41377C42F00981C39 /* GBSearch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBSearch.m; sourceTree = "<group>"; };
 		20A9407312FA07C100C3F6F4 /* GBRepositoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBRepositoryViewController.h; sourceTree = "<group>"; };
 		20A9407412FA07C100C3F6F4 /* GBRepositoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBRepositoryViewController.m; sourceTree = "<group>"; };
 		20A9408612FA0E5900C3F6F4 /* GBRepositoryViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBRepositoryViewController.xib; sourceTree = "<group>"; };
@@ -859,6 +863,8 @@
 				20164BC212D5F43B005C69DA /* GBRepositoriesGroup.m */,
 				20164BC512D5F46F005C69DA /* GBRepositoriesAndGroupsSerialization.h */,
 				20164BC612D5F46F005C69DA /* GBRepositoriesAndGroupsSerialization.m */,
+				20A750E31377C42F00981C39 /* GBSearch.h */,
+				20A750E41377C42F00981C39 /* GBSearch.m */,
 				208B31CF1373D6F600EB4A18 /* GBSearchQuery.h */,
 				208B31D01373D6F600EB4A18 /* GBSearchQuery.m */,
 			);
@@ -1759,6 +1765,7 @@
 				207D02FF13706AF8003C9D5F /* iRate.m in Sources */,
 				208B31D21373D6F600EB4A18 /* GBSearchQuery.m in Sources */,
 				208B3287137505D600EB4A18 /* GBSearchBarController.m in Sources */,
+				20A750E61377C42F00981C39 /* GBSearch.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1892,6 +1899,7 @@
 				207D030013706F2D003C9D5F /* iRate.m in Sources */,
 				208B31D11373D6F600EB4A18 /* GBSearchQuery.m in Sources */,
 				208B3285137505D600EB4A18 /* GBSearchBarController.m in Sources */,
+				20A750E51377C42F00981C39 /* GBSearch.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

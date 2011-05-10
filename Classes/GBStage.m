@@ -28,9 +28,13 @@
   [stagedChanges release]; stagedChanges = nil;
   [unstagedChanges release]; unstagedChanges = nil;
   [untrackedChanges release]; untrackedChanges = nil;
-  [untrackedChanges release]; untrackedChanges = nil;
   [currentCommitMessage release]; currentCommitMessage = nil;
   [super dealloc];
+}
+
+- (NSString*) description
+{
+  return [NSString stringWithFormat:@"<GBStage:%p %@ (%d staged, %d not staged, %d untracked)>", self, self.repository.url, (int)[self.stagedChanges count], (int)[self.unstagedChanges count], (int)[self.untrackedChanges count]];
 }
 
 

@@ -2,6 +2,7 @@
 #import "GBRepository.h"
 #import "GBCommittedChangesTask.h"
 #import "GBGitConfig.h"
+#import "GBSearchQuery.h"
 
 #import "GBCommitCell.h"
 #import "GBStageCell.h"
@@ -11,6 +12,12 @@
 #import "NSAttributedString+OAAttributedStringHelpers.h"
 #import "NSObject+OASelectorNotifications.h"
 #import "OABlockTable.h"
+
+@interface GBCommit ()
+@property(nonatomic, assign) BOOL matchesQuery;
+- (void) updateSearchAttributes;
+@end
+
 
 @implementation GBCommit
 
@@ -24,6 +31,9 @@
 @synthesize message;
 @synthesize parentIds;
 @synthesize changes;
+@synthesize rawTimestamp;
+@synthesize searchQuery;
+@synthesize matchesQuery;
 
 @synthesize syncStatus;
 @synthesize repository;
@@ -40,10 +50,14 @@
   [message release]; message = nil;
   [parentIds release]; parentIds = nil;
   [changes release]; changes = nil;
+  [searchQuery release]; searchQuery = nil;
   [super dealloc];
 }
 
-
+- (NSString*) description
+{
+  return [NSString stringWithFormat:@"<GBCommit:%p %@ %@: %@>", self, commitId, authorName, ([message length] > 20) ? [message substringToIndex:20] : message];
+}
 
 
 #pragma mark Interrogation
@@ -132,6 +146,45 @@
 {
   return [NSString stringWithFormat:@"%@ [commit %@]", [self subject], [self.commitId substringToIndex:8]];
 }
+
+
+
+#pragma mark Search
+
+
+- (void) setSearchQuery:(GBSearchQuery *)aQuery
+{
+  if (searchQuery == aQuery) return;
+  
+  [searchQuery release];
+  searchQuery = [aQuery retain];
+  
+  [self updateSearchAttributes];
+}
+
+- (void) updateSearchAttributes
+{
+  if (!self.searchQuery)
+  {
+    self.matchesQuery = NO;
+    return;
+  }
+  GBSearchQuery* q = self.searchQuery;
+  BOOL matches = NO;
+  matches = matches || [q matchesString:self.commitId];
+  matches = matches || [q matchesString:self.treeId];
+  matches = matches || [q matchesString:self.authorName];
+  matches = matches || [q matchesString:self.authorEmail];
+  matches = matches || [q matchesString:self.committerName];
+  matches = matches || [q matchesString:self.committerEmail];
+  matches = matches || [q matchesString:self.message];
+  
+  // TODO: collect precise ranges for each property
+  // TODO: match patch data as well
+  
+  self.matchesQuery = matches;
+}
+
 
 
 

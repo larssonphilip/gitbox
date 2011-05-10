@@ -27,11 +27,18 @@ NSRange GBSearchQueryRangeForTokenInString(id token, NSString* string);
   return q;
 }
 
+- (NSString*) description
+{
+  return [NSString stringWithFormat:@"<GBSearchQuery:%p %@>", self, self.sourceString];
+}
+
 // Returns YES if string contains one of the tokens of the receiver.
 - (BOOL) matchesString:(NSString*)string
 {
   if (!string) return NO;
   if (!self.tokens) return NO;
+  
+  // FIXME: this code needs refactoring: we should not try to find all of the tokens in the string.
   
   for (id token in self.tokens)
   {
@@ -41,6 +48,7 @@ NSRange GBSearchQueryRangeForTokenInString(id token, NSString* string);
   
   return YES;
 }
+
 
 // Returns an array of ranges (wrapped in NSValue objects) of the occurences of the query in a given string.
 - (NSArray*) rangesInString:(NSString*)string

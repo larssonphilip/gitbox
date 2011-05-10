@@ -4,6 +4,8 @@
 #import "GBStage.h"
 #import "GBChange.h"
 #import "GBSubmodule.h"
+#import "GBSearch.h"
+#import "GBSearchQuery.h"
 
 #import "GBRepositoriesController.h"
 #import "GBRepositoryController.h"
@@ -25,7 +27,6 @@
 #import "NSArray+OAArrayHelpers.h"
 #import "NSObject+OASelectorNotifications.h"
 #import "NSObject+OADispatchItemValidation.h"
-
 
 // will be obsolete when settings panel is done
 #import "GBRemotesController.h"
@@ -59,6 +60,7 @@
 @property(nonatomic, assign) NSUInteger stageBadgeInteger; // will be cached on save and updated after stage updates
 
 @property(nonatomic, retain, readwrite) NSArray* searchResults; // list of found commits; setter posts a notification
+@property(nonatomic, retain) GBSearch* currentSearch;
 
 - (NSImage*) icon;
 
@@ -130,6 +132,7 @@
 
 @synthesize searchString;
 @synthesize searchResults;
+@synthesize currentSearch;
 
 - (void) dealloc
 {
@@ -156,6 +159,9 @@
   [searchString release]; searchString = nil;
   [searchResults release]; searchResults = nil;
 
+  currentSearch.target = nil;
+  [currentSearch cancel];
+  [currentSearch release]; currentSearch = nil;
   [super dealloc];
 }
 
@@ -1380,16 +1386,48 @@
   [searchString release];
   searchString = [newString copy];
   
-  // TODO: make sure the current search task finishes and we start a new one.
+  self.currentSearch.target = nil;
+  [self.currentSearch cancel];
+  self.currentSearch = nil;
+  
+  if (searchString && [searchString length] > 0)
+  {
+    self.currentSearch = [GBSearch searchWithQuery:[GBSearchQuery queryWithString:searchString] 
+                                    repository:self.repository 
+                                        target:self 
+                                        action:@selector(searchDidUpdate:)];
+    
+    void* currentSearchRef = self.currentSearch;
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 800*USEC_PER_SEC), dispatch_get_main_queue(), ^{
+      if (currentSearchRef != self.currentSearch) return; // skip if search was changed
+      [self.currentSearch start];
+      [self notifyWithSelector:@selector(repositoryControllerSearchDidStartRunning:)];
+    });
+  }
+  else
+  {
+    self.searchResults = nil;
+    [self notifyWithSelector:@selector(repositoryControllerSearchDidStopRunning:)];
+  }
+}
+
+- (void) searchDidUpdate:(GBSearch*)aSearch
+{
+  if (aSearch != currentSearch) return;
+  self.searchResults = aSearch.commits;
+  if (![aSearch isRunning])
+  {
+    [self notifyWithSelector:@selector(repositoryControllerSearchDidStopRunning:)];
+  }
 }
 
 - (void) setSearchResults:(NSArray *)newResults
 {
-  if (searchResults == newResults) return;
-  
-  [searchResults release];
-  searchResults = [newResults retain];
-  
+  if (searchResults != newResults)
+  {
+    [searchResults release];
+    searchResults = [newResults retain];
+  }
   [self notifyWithSelector:@selector(repositoryControllerSearchDidUpdateResults:)];
 }
 

@@ -8,6 +8,7 @@ typedef enum {
 @class GBRepository;
 @class GBCommitCell;
 @class GBStage;
+@class GBSearchQuery;
 
 @interface GBCommit : NSObject
 
@@ -18,9 +19,11 @@ typedef enum {
 @property(nonatomic,copy) NSString* committerName;
 @property(nonatomic,copy) NSString* committerEmail;
 @property(nonatomic,copy) NSDate* date;
+@property(nonatomic,assign) int rawTimestamp;
 @property(nonatomic,copy) NSString* message;
 @property(nonatomic,copy) NSArray* parentIds;
 @property(nonatomic,retain) NSArray* changes;
+@property(nonatomic,retain) GBSearchQuery* searchQuery;
 
 @property(nonatomic,assign) GBCommitSyncStatus syncStatus;
 @property(nonatomic,assign) GBRepository* repository;
@@ -39,6 +42,8 @@ typedef enum {
 - (NSString*) tooltipMessage;
 - (NSString*) subject; // first line of the commit message
 - (NSString*) subjectForReply; // composite subject for reply from Gitbox by email
+
+- (BOOL) matchesQuery;
 
 #pragma mark Mutation
 

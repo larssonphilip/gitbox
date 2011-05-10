@@ -161,6 +161,10 @@
 - (void) setSearchString:(NSString*)str
 {
   [self.searchField setStringValue:str];
+  if ([str length] < 1)
+  {
+    [self setSpinning:NO];
+  }
 }
 
 - (void) setVisible:(BOOL)newVisible
@@ -220,7 +224,7 @@
 
 }
 
-- (void) setSpinnerAnimated:(BOOL)animated;
+- (void) setSpinning:(BOOL)animated
 {
   // TODO: find if this is needed
   if ([[searchField stringValue] length] == 0)  return;

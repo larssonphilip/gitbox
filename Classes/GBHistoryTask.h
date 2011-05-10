@@ -2,20 +2,11 @@
 
 @class GBRef;
 @interface GBHistoryTask : GBTask
-{
-  GBRef* branch;
-  GBRef* joinedBranch;
-  GBRef* substructedBranch;
-  
-  NSUInteger limit;
-  NSUInteger skip;
-  
-  NSArray* commits;  
-}
 
 @property(nonatomic,retain) GBRef* branch;
 @property(nonatomic,retain) GBRef* joinedBranch;
 @property(nonatomic,retain) GBRef* substructedBranch;
+@property(nonatomic,assign) int beforeTimestamp;
 
 @property(nonatomic,assign) NSUInteger limit;
 @property(nonatomic,assign) NSUInteger skip;

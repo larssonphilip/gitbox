@@ -182,10 +182,10 @@
 #pragma mark GBRepositoryController
 
 
+// TODO: rename stageAndCommits to arrayControllerCommits
 
-- (void) repositoryControllerDidUpdateCommits:(GBRepositoryController*)repoCtrl
+- (void) syncCurrentCommit
 {
-  self.stageAndCommits = [self.repositoryController stageAndCommits];
   GBCommit* aCommit = self.commit;
   if (aCommit)
   {
@@ -197,6 +197,13 @@
       self.commit = aCommit;
     }
   }
+}
+
+- (void) repositoryControllerDidUpdateCommits:(GBRepositoryController*)repoCtrl
+{
+  // TODO: refactor this somehow so that we don't accidentaly display irrelevant data while in search mode (should move this into repository controller)
+  self.stageAndCommits = [self.repositoryController stageAndCommits];
+  [self syncCurrentCommit];
 }
 
 - (void) repositoryControllerDidSelectCommit:(GBRepositoryController*)repoCtrl
@@ -225,9 +232,27 @@
 
 - (void) repositoryControllerSearchDidUpdateResults:(GBRepositoryController*)repoCtrl
 {
-  // TODO: update list of commits with searchResults
+  NSArray* results = [self.repositoryController searchResults];
+  if (results)
+  {
+    self.stageAndCommits = results;
+  }
+  else
+  {
+    self.stageAndCommits = [self.repositoryController stageAndCommits];
+  }
+  [self syncCurrentCommit];
 }
 
+- (void) repositoryControllerSearchDidStartRunning:(GBRepositoryController*)repoCtrl
+{
+  [self.searchBarController setSpinning:YES];
+}
+
+- (void) repositoryControllerSearchDidStopRunning:(GBRepositoryController*)repoCtrl
+{
+  [self.searchBarController setSpinning:NO];
+}
 
 
 

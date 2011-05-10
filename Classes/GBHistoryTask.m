@@ -9,6 +9,7 @@
 @synthesize branch;
 @synthesize joinedBranch;
 @synthesize substructedBranch;
+@synthesize beforeTimestamp;
 
 @synthesize limit;
 @synthesize skip;
@@ -34,17 +35,14 @@
 - (NSArray*) arguments
 {
   // FIXME: should use %B in some later git version rather than %w(10000,4,4)...%b
-  NSMutableArray* args = [NSMutableArray arrayWithObjects:@"rev-list", 
-          @"--format=commit %H%ntree %T%nparents %P%nauthorName %an%nauthorEmail %ae%ncommitterName %cn%ncommitterEmail %ce%nauthorDate %ai%n%n%w(99999,4,4)%B",
-          [NSString stringWithFormat:@"--max-count=%d", self.limit],
-          [NSString stringWithFormat:@"--skip=%d", self.skip],
-          [self.branch commitish],
-          nil];
+  NSMutableArray* args = [NSMutableArray arrayWithObjects:@"rev-list", nil];
   
-//  NSLog(@"%@ rev-list arguments:", [self class]);
-//  NSLog(@"branch: %@", self.branch);
-//  NSLog(@"joinedBranch: %@", self.joinedBranch);
-//  NSLog(@"substructedBranch: %@", self.substructedBranch);
+  [args addObject:[self.branch commitish]];
+  
+  //  NSLog(@"%@ rev-list arguments:", [self class]);
+  //  NSLog(@"branch: %@", self.branch);
+  //  NSLog(@"joinedBranch: %@", self.joinedBranch);
+  //  NSLog(@"substructedBranch: %@", self.substructedBranch);
   
   if (self.joinedBranch)
   {
@@ -55,6 +53,33 @@
     [args addObject:@"--not"];
     [args addObject:[self.substructedBranch commitish]];
   }
+  
+  if (self.limit > 0)
+  {
+    [args addObject:[NSString stringWithFormat:@"--max-count=%d", self.limit]];
+  }
+  
+  if (self.skip > 0)
+  {
+    [args addObject:[NSString stringWithFormat:@"--skip=%d", self.skip]];
+  }
+  
+  if (self.beforeTimestamp)
+  {
+    [args addObject:[NSString stringWithFormat:@"--before=%d", self.beforeTimestamp]];
+  }
+  
+  [args addObject: @"--format=commit %H%n"
+   "tree %T%n"
+   "parents %P%n"
+   "authorName %an%n"
+   "authorEmail %ae%n"
+   "committerName %cn%n"
+   "committerEmail %ce%n"
+   "authorDate %ai%n"
+   "committerTimestamp %ct%n"
+   "%n"
+   "%w(99999,4,4)%B"];
   
    // adding explicit path argument to allow branch names with slashes
   [args addObject:@"--"];
@@ -197,7 +222,7 @@ authorDate 2010-05-01 20:23:10 -0700
       {
         commit.authorName = [line substringFromIndex:11]; // 'authorName ' skipped
       }
-      else HistoryScanError(@"Expected 'authorName ...' line");
+      else HistoryScanError(@"Expected 'authorName <name>' line");
       
       GBHistoryNextLine;
       
@@ -206,7 +231,7 @@ authorDate 2010-05-01 20:23:10 -0700
       {
         commit.authorEmail = [line substringFromIndex:12]; // 'authorEmail ' skipped
       }
-      else HistoryScanError(@"Expected 'authorEmail ...' line");
+      else HistoryScanError(@"Expected 'authorEmail <email>' line");
       
       GBHistoryNextLine;
       
@@ -215,7 +240,7 @@ authorDate 2010-05-01 20:23:10 -0700
       {
         commit.committerName = [line substringFromIndex:14]; // 'committerName ' skipped
       }
-      else HistoryScanError(@"Expected 'committerName ...' line");
+      else HistoryScanError(@"Expected 'committerName <name>' line");
       
       GBHistoryNextLine;
       
@@ -224,7 +249,7 @@ authorDate 2010-05-01 20:23:10 -0700
       {
         commit.committerEmail = [line substringFromIndex:15]; // 'committerEmail ' skipped
       }
-      else HistoryScanError(@"Expected 'committerEmail ...' line");
+      else HistoryScanError(@"Expected 'committerEmail <email>' line");
       
       GBHistoryNextLine;
       
@@ -233,7 +258,16 @@ authorDate 2010-05-01 20:23:10 -0700
       {
         commit.date = [NSDate dateWithString:[line substringFromIndex:11]]; // 'authorDate ' skipped
       }
-      else HistoryScanError(@"Expected 'authorDate ...' line");
+      else HistoryScanError(@"Expected 'authorDate <date>' line");
+      
+      GBHistoryNextLine;
+
+      // committerTimestamp 1302681533
+      if ([line hasPrefix:@"committerTimestamp "])
+      {
+        commit.rawTimestamp = [[line substringFromIndex:19] intValue]; // 'committerTimestamp ' skipped
+      }
+      else HistoryScanError(@"Expected 'committerTimestamp <timestamp>' line");
       
       GBHistoryNextLine;
       

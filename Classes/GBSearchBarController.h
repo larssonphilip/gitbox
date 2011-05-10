@@ -18,7 +18,7 @@
 
 - (void) setVisible:(BOOL)visible animated:(BOOL)animated;
 - (IBAction) searchFieldDidChange:(id)sender;
-- (void) setSpinnerAnimated:(BOOL)visible;
+- (void) setSpinning:(BOOL)visible;
 
 - (void) focus;
 - (void) unfocus;
