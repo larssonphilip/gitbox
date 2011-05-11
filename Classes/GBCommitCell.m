@@ -5,6 +5,7 @@
 #import "CGContext+OACGContextHelpers.h"
 
 @interface GBCommitCell ()
+@property(nonatomic, retain) NSDictionary* attributes;
 @property(nonatomic, retain) GBStage* stage;
 @property(nonatomic, assign) BOOL cachedStage;
 - (void) drawStageContentInFrame:(NSRect)cellFrame;
@@ -16,13 +17,14 @@
 @synthesize isForeground;
 @synthesize isFocused;
 @dynamic commit;
+@synthesize attributes;
 @synthesize stage;
 @synthesize cachedStage;
 
 - (void)dealloc
 {
-  // TODO: release commit, font, paragraph style etc.
   [stage release]; stage = nil;
+  [attributes release]; attributes = nil;
   [super dealloc];
 }
 
@@ -31,9 +33,41 @@
   return 40.0;
 }
 
+- (void) prepareAttributesIfNeeded
+{
+  if (self.attributes) return;
+  
+  // TODO: specify date formatters' templates to make sure that hours and minutes are zero-padded in any locale.
+  
+  NSDateFormatter* dateTimeFormatter = [[NSDateFormatter new] autorelease];
+  [dateTimeFormatter setDateStyle:NSDateFormatterMediumStyle];
+  [dateTimeFormatter setTimeStyle:NSDateFormatterShortStyle];
+  
+  NSDateFormatter* dateFormatter = [[NSDateFormatter new] autorelease];
+  [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+  [dateFormatter setTimeStyle:NSDateFormatterNoStyle];
+  
+  NSDateFormatter* timeFormatter = [[NSDateFormatter new] autorelease];
+  [timeFormatter setDateStyle:NSDateFormatterNoStyle];
+  [timeFormatter setTimeStyle:NSDateFormatterShortStyle];
+  
+  self.attributes = [NSDictionary dictionaryWithObjectsAndKeys:
+                     dateTimeFormatter, @"dateTimeFormatter", 
+                     dateFormatter,     @"dateFormatter", 
+                     timeFormatter,     @"timeFormatter", 
+                     nil];
+  
+}
+
+- (id) attribute:(NSString*)key
+{
+  return [self.attributes objectForKey:key];
+}
+
 + (GBCommitCell*) cell
 {
-  return [[[self alloc] initTextCell:@""] autorelease];
+  GBCommitCell* cell = [[[self alloc] initTextCell:@""] autorelease];
+  return cell;
 }
 
 - (void) setupCell
@@ -74,6 +108,8 @@
   GBCommitCell* cell = [[[self class] alloc] initWithCommit:self.commit];
   cell.isForeground = self.isForeground;
   cell.isFocused = self.isFocused;
+  [self prepareAttributesIfNeeded]; // ensure sharing attributes dictionary between multiple copies
+  cell.attributes = self.attributes;
   return cell;
 }
 
@@ -220,22 +256,20 @@
   
   if (commit.date)
   {
-    NSDateFormatter* dateFormatter = [[NSDateFormatter new] autorelease];
+    NSDateFormatter* dateFormatter = nil;
     if ([commit.date timeIntervalSinceNow] > -12*3600)
     {
-      [dateFormatter setDateStyle:NSDateFormatterNoStyle];
-      [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+      dateFormatter = [self attribute:@"timeFormatter"];
     }
     else
     {
-      [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
       if (innerRect.size.width < 250.0)
       {
-        [dateFormatter setTimeStyle:NSDateFormatterNoStyle];
+        dateFormatter = [self attribute:@"dateFormatter"];
       }
       else
       {
-        [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+        dateFormatter = [self attribute:@"dateTimeFormatter"];
       }
     }
     date = [dateFormatter stringFromDate:commit.date];
@@ -440,7 +474,11 @@
 
 //- (void)drawWithFrame:(NSRect)cellFrame inView:(NSView *)theControlView
 - (void) drawInteriorWithFrame:(NSRect)cellFrame inView:(NSView*)theControlView
-{  
+{
+  [self prepareAttributesIfNeeded];
+  
+  NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
+  
   NSWindow* window = [theControlView window];
   
   self.isFocused = ([window firstResponder] && [window firstResponder] == theControlView && 
@@ -513,6 +551,7 @@
   }
   
   [self drawContentInFrame:cellFrame];
+  [pool release];
 }
 
 
