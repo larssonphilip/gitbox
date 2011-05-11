@@ -446,8 +446,8 @@ dataCellForTableColumn:(NSTableColumn*)aTableColumn
 - (NSString*) tableView:(NSTableView*)aTableView
          toolTipForCell:(NSCell*)cell
                    rect:(NSRectPointer)rect
-            tableColumn:(NSTableColumn*)aTableColumn 
-                    row:(NSInteger)row 
+            tableColumn:(NSTableColumn*)aTableColumn
+                    row:(NSInteger)row
           mouseLocation:(NSPoint)mouseLocation
 {
   if ([cell isKindOfClass:[GBCommitCell class]])
