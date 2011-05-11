@@ -135,7 +135,6 @@
 		2054FFE8125DE75800692C77 /* GBRepositoryCloningViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2054FFE7125DE75800692C77 /* GBRepositoryCloningViewController.xib */; };
 		2054FFF0125DE9D200692C77 /* GBRepositoryCloningViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2054FFEF125DE9D200692C77 /* GBRepositoryCloningViewController.m */; };
 		2057964211ADD3AA004715FE /* GBCommitCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2057964111ADD3AA004715FE /* GBCommitCell.m */; };
-		2057979B11ADEEEE004715FE /* GBStageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2057979A11ADEEEE004715FE /* GBStageCell.m */; };
 		2057EF0E11A9B00F009EDF2F /* GBRemoteRefsTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 2057EF0D11A9B00F009EDF2F /* GBRemoteRefsTask.m */; };
 		2057EF6411ABDCCE009EDF2F /* GBRefreshIndexTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 2057EF6311ABDCCE009EDF2F /* GBRefreshIndexTask.m */; };
 		2057EF7611ABE5B5009EDF2F /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2057EF7511ABE5B5009EDF2F /* Sparkle.framework */; };
@@ -237,7 +236,6 @@
 		20915EFB12874D2A005E0D82 /* GBActivityController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2057F10F11ACF751009EDF2F /* GBActivityController.m */; };
 		20915EFC12874D2A005E0D82 /* GBActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 2057F11511ACFA60009EDF2F /* GBActivity.m */; };
 		20915EFD12874D2A005E0D82 /* GBCommitCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2057964111ADD3AA004715FE /* GBCommitCell.m */; };
-		20915EFE12874D2A005E0D82 /* GBStageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2057979A11ADEEEE004715FE /* GBStageCell.m */; };
 		20915EFF12874D2A005E0D82 /* GBHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2058E97F11AEE26F00F2853F /* GBHistoryViewController.m */; };
 		20915F0012874D2A005E0D82 /* NSView+OAViewHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 2058EA0711AEEE3200F2853F /* NSView+OAViewHelpers.m */; };
 		20915F0112874D2A005E0D82 /* GBBaseChangesController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2093A7C711AF0E8300239185 /* GBBaseChangesController.m */; };
@@ -548,8 +546,6 @@
 		2054FFEF125DE9D200692C77 /* GBRepositoryCloningViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = GBRepositoryCloningViewController.m; sourceTree = "<group>"; tabWidth = 2; usesTabs = 0; };
 		2057964011ADD3AA004715FE /* GBCommitCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBCommitCell.h; sourceTree = "<group>"; };
 		2057964111ADD3AA004715FE /* GBCommitCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBCommitCell.m; sourceTree = "<group>"; };
-		2057979911ADEEEE004715FE /* GBStageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBStageCell.h; sourceTree = "<group>"; };
-		2057979A11ADEEEE004715FE /* GBStageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBStageCell.m; sourceTree = "<group>"; };
 		2057EF0C11A9B00F009EDF2F /* GBRemoteRefsTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBRemoteRefsTask.h; sourceTree = "<group>"; };
 		2057EF0D11A9B00F009EDF2F /* GBRemoteRefsTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBRemoteRefsTask.m; sourceTree = "<group>"; };
 		2057EF6211ABDCCE009EDF2F /* GBRefreshIndexTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBRefreshIndexTask.h; sourceTree = "<group>"; };
@@ -1111,8 +1107,6 @@
 				2058E98311AEE30E00F2853F /* GBHistoryViewController.xib */,
 				2057964011ADD3AA004715FE /* GBCommitCell.h */,
 				2057964111ADD3AA004715FE /* GBCommitCell.m */,
-				2057979911ADEEEE004715FE /* GBStageCell.h */,
-				2057979A11ADEEEE004715FE /* GBStageCell.m */,
 				20C3B70B125BCCC600ABEDE7 /* GBCommitCellMarkerHighlighted.png */,
 				20C3B70D125BCCC600ABEDE7 /* GBCommitCellMarkerUnmerged.png */,
 				20C3B70F125BCCC600ABEDE7 /* GBCommitCellMarkerUnpushed.png */,
@@ -1675,7 +1669,6 @@
 				20915EFB12874D2A005E0D82 /* GBActivityController.m in Sources */,
 				20915EFC12874D2A005E0D82 /* GBActivity.m in Sources */,
 				20915EFD12874D2A005E0D82 /* GBCommitCell.m in Sources */,
-				20915EFE12874D2A005E0D82 /* GBStageCell.m in Sources */,
 				20915EFF12874D2A005E0D82 /* GBHistoryViewController.m in Sources */,
 				20915F0012874D2A005E0D82 /* NSView+OAViewHelpers.m in Sources */,
 				20915F0112874D2A005E0D82 /* GBBaseChangesController.m in Sources */,
@@ -1808,7 +1801,6 @@
 				2057F11011ACF751009EDF2F /* GBActivityController.m in Sources */,
 				2057F11611ACFA60009EDF2F /* GBActivity.m in Sources */,
 				2057964211ADD3AA004715FE /* GBCommitCell.m in Sources */,
-				2057979B11ADEEEE004715FE /* GBStageCell.m in Sources */,
 				2058E98011AEE26F00F2853F /* GBHistoryViewController.m in Sources */,
 				2058EA0811AEEE3200F2853F /* NSView+OAViewHelpers.m in Sources */,
 				2093A7C811AF0E8300239185 /* GBBaseChangesController.m in Sources */,

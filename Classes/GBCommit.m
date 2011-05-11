@@ -4,9 +4,6 @@
 #import "GBGitConfig.h"
 #import "GBSearchQuery.h"
 
-#import "GBCommitCell.h"
-#import "GBStageCell.h"
-
 #import "NSData+OADataHelpers.h"
 #import "NSString+OAGitHelpers.h"
 #import "NSAttributedString+OAAttributedStringHelpers.h"
@@ -82,22 +79,6 @@
 {
   // TODO: display committer in parentheses if != author
   return [NSString stringWithFormat:@"%@ <%@>", self.authorName, self.authorEmail];
-}
-
-- (Class) cellClass
-{
-  if ([self isStage])
-  {
-    return [GBStageCell class];
-  }
-  return [GBCommitCell class];
-}
-
-- (GBCommitCell*) cell
-{
-  GBCommitCell* cell = [[self cellClass] cell];
-  [cell setRepresentedObject:self];
-  return cell;
 }
 
 - (id) valueForUndefinedKey:(NSString*)key

@@ -1,17 +1,28 @@
 #import "GBCommit.h"
+#import "GBStage.h"
 #import "GBCommitCell.h"
 
 #import "CGContext+OACGContextHelpers.h"
+
+@interface GBCommitCell ()
+@property(nonatomic, retain) GBStage* stage;
+@property(nonatomic, assign) BOOL cachedStage;
+- (void) drawStageContentInFrame:(NSRect)cellFrame;
+@end
+
 
 @implementation GBCommitCell
 
 @synthesize isForeground;
 @synthesize isFocused;
 @dynamic commit;
+@synthesize stage;
+@synthesize cachedStage;
 
 - (void)dealloc
 {
   // TODO: release commit, font, paragraph style etc.
+  [stage release]; stage = nil;
   [super dealloc];
 }
 
@@ -66,16 +77,37 @@
   return cell;
 }
 
-
-
 - (GBCommit*) commit
 {
   return [self representedObject];
 }
 
+- (void) setCommit:(GBCommit *)aCommit
+{
+  [self setRepresentedObject:aCommit];
+}
+
+- (GBStage*) stage
+{
+  if (stage) return stage;
+  if (!cachedStage)
+  {
+    cachedStage = YES;
+    if ([self.commit isStage])
+    {
+      stage = [[self.commit asStage] retain];
+    }
+  }
+  return stage;
+}
 
 - (NSString*) tooltipString
 {
+  if (self.stage)
+  {
+    return NSLocalizedString(@"Working directory and stage status", @"");
+  }
+  
   GBCommitSyncStatus st = self.commit.syncStatus;
   NSString* statusPrefix = @"";
   if (st != GBCommitSyncStatusNormal)
@@ -160,6 +192,12 @@
 
 - (void) drawContentInFrame:(NSRect)cellFrame
 {
+  if (self.stage)
+  {
+    [self drawStageContentInFrame:cellFrame];
+    return;
+  }
+  
   {
 //    NSGradient* gradient = [[NSGradient alloc]
 //                            initWithStartingColor:[NSColor colorWithCalibratedWhite:1.0 alpha:1.0]
@@ -335,6 +373,70 @@
   [message drawInRect:messageRect withAttributes:messageAttributes];
   
 }
+
+
+- (void) drawStageContentInFrame:(NSRect)cellFrame
+{
+  NSString* title = self.stage.message;
+  
+  // Prepare colors and styles
+  
+  NSColor* textColor = [NSColor textColor];
+  
+  if ([self isHighlighted] && self.isFocused)
+  {
+    textColor = [NSColor alternateSelectedControlTextColor];
+  }
+  
+  NSMutableParagraphStyle* paragraphStyle = [[NSMutableParagraphStyle new] autorelease];
+  [paragraphStyle setLineBreakMode:NSLineBreakByTruncatingTail];
+  
+  NSFont* font = nil;
+  if ([self.stage isDirty])
+  {
+    font = [NSFont boldSystemFontOfSize:12.0];
+  }
+  else
+  {
+    font = [NSFont systemFontOfSize:12.0];
+  }
+  
+	NSMutableDictionary* titleAttributes = [[[NSMutableDictionary alloc] initWithObjectsAndKeys:
+                                           textColor, NSForegroundColorAttributeName,
+                                           font, NSFontAttributeName,
+                                           paragraphStyle, NSParagraphStyleAttributeName,
+                                           nil] autorelease];
+  
+  if ([self isHighlighted] && self.isFocused)
+  {
+    NSShadow* s = [[[NSShadow alloc] init] autorelease];
+    [s setShadowOffset:NSMakeSize(0, -1)];
+    [s setShadowColor:[NSColor colorWithCalibratedWhite:0.0 alpha:0.1]];
+    [titleAttributes setObject:s forKey:NSShadowAttributeName];
+  }
+  
+  
+  // Calculate heights
+  NSRect innerRect = NSInsetRect(cellFrame, 19.0, 1.0);
+  NSSize titleSize   = [title sizeWithAttributes:titleAttributes];
+  
+  // Calculate layout
+  
+  CGFloat x0 = innerRect.origin.x;
+  CGFloat y0 = innerRect.origin.y;
+  
+  NSRect titleRect = NSMakeRect(x0,
+                                y0 + cellFrame.size.height*0.5 - titleSize.height*0.5 - 1.0,
+                                innerRect.size.width, 
+                                titleSize.height);
+  
+  // draw
+  
+  [title drawInRect:titleRect withAttributes:titleAttributes];
+  
+}
+
+
 
 //- (void)drawWithFrame:(NSRect)cellFrame inView:(NSView *)theControlView
 - (void) drawInteriorWithFrame:(NSRect)cellFrame inView:(NSView*)theControlView

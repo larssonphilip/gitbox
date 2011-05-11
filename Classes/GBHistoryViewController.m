@@ -25,6 +25,7 @@
 @property(nonatomic, retain) GBCommitViewController* commitController;
 @property(nonatomic, retain) NSArray* stageAndCommits;
 @property(nonatomic, retain) OAFastJumpController* jumpController;
+@property(nonatomic, retain) GBCommitCell* commitCell;
 
 - (void) prepareChangesControllersIfNeeded;
 
@@ -49,6 +50,8 @@
 @synthesize stageAndCommits;
 @synthesize jumpController;
 
+@synthesize commitCell;
+
 #pragma mark Init
 
 
@@ -70,6 +73,8 @@
   self.jumpController = nil;
   self.searchBarController.delegate = nil;
   self.searchBarController = nil;
+  
+  [commitCell release]; commitCell = nil;
   
   [super dealloc];
 }
@@ -421,17 +426,21 @@
 dataCellForTableColumn:(NSTableColumn*)aTableColumn
                   row:(NSInteger)row
 {
-  // according to the documentation, tableView may ask for a tableView separator cell giving a nil table column, so odd...
+  // according to the documentation, tableView may ask for a tableView separator cell giving a nil table column for drawing full-width section
   if (aTableColumn == nil) return nil;
   
-  GBCommit* aCommit = [self.stageAndCommits objectAtIndex:row];
-  return [aCommit cell];
+  if (!self.commitCell)
+  {
+    self.commitCell = [GBCommitCell cell];
+  }
+  GBCommitCell* aCell = [[self.commitCell copy] autorelease];
+  [aCell setRepresentedObject:[self.stageAndCommits objectAtIndex:row]];
+  return aCell;
 }
 
 - (CGFloat)tableView:(NSTableView *)tableView heightOfRow:(NSInteger)row
 {
-  GBCommit* aCommit = [self.stageAndCommits objectAtIndex:row];
-  return [[aCommit cellClass] cellHeight];
+  return [GBCommitCell cellHeight];
 }
 
 - (NSString*) tableView:(NSTableView*)aTableView
@@ -445,7 +454,7 @@ dataCellForTableColumn:(NSTableColumn*)aTableColumn
   {
     return [(GBCommitCell*)cell tooltipString];
   }
-  return nil;
+  return @""; // empty string surpresses tooltip while nil does not.
 }
 
 

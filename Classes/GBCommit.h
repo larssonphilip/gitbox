@@ -35,8 +35,6 @@ typedef enum {
 - (GBStage*) asStage;
 - (BOOL) isMerge;
 - (NSString*) longAuthorLine;
-- (Class) cellClass;
-- (GBCommitCell*) cell;
 
 - (NSString*) fullDateString;
 - (NSString*) tooltipMessage;
