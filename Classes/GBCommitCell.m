@@ -33,23 +33,20 @@
   return 40.0;
 }
 
+- (NSDateFormatter*) dateFormatterWithTemplate:(NSString*)template
+{
+  NSDateFormatter* formatter = [[[NSDateFormatter alloc] init] autorelease];
+  [formatter setDateFormat:[NSDateFormatter dateFormatFromTemplate:template options:0 locale:[NSLocale currentLocale]]];
+  return formatter;
+}
+
 - (void) prepareAttributesIfNeeded
 {
   if (self.attributes) return;
   
-  // TODO: specify date formatters' templates to make sure that hours and minutes are zero-padded in any locale.
-  
-  NSDateFormatter* dateTimeFormatter = [[NSDateFormatter new] autorelease];
-  [dateTimeFormatter setDateStyle:NSDateFormatterMediumStyle];
-  [dateTimeFormatter setTimeStyle:NSDateFormatterShortStyle];
-  
-  NSDateFormatter* dateFormatter = [[NSDateFormatter new] autorelease];
-  [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-  [dateFormatter setTimeStyle:NSDateFormatterNoStyle];
-  
-  NSDateFormatter* timeFormatter = [[NSDateFormatter new] autorelease];
-  [timeFormatter setDateStyle:NSDateFormatterNoStyle];
-  [timeFormatter setTimeStyle:NSDateFormatterShortStyle];
+  NSDateFormatter* dateTimeFormatter = [self dateFormatterWithTemplate:@"MMM d, y HH:mm"];
+  NSDateFormatter* dateFormatter     = [self dateFormatterWithTemplate:@"MMM d, y"];
+  NSDateFormatter* timeFormatter     = [self dateFormatterWithTemplate:@"HH:mm"];
   
   self.attributes = [NSDictionary dictionaryWithObjectsAndKeys:
                      dateTimeFormatter, @"dateTimeFormatter", 
