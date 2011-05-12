@@ -58,6 +58,14 @@
   return [NSString stringWithFormat:@"<GBCommit:%p %@ %@: %@>", self, commitId, authorName, ([message length] > 20) ? [message substringToIndex:20] : message];
 }
 
++ (NSColor*) searchHighlightColor
+{
+  static NSColor* c = nil;
+  if (!c) c = [[NSColor colorWithCalibratedRed:1.0 green:1.0 blue:0.33 alpha:0.6] retain];
+  return c;
+}
+
+
 
 #pragma mark Interrogation
 

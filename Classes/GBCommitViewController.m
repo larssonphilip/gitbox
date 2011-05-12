@@ -18,7 +18,7 @@
 - (void) updateViews;
 - (void) updateCommitHeader;
 - (void) updateTemplate:(NSTextStorage*)storage withCommit:(GBCommit*)aCommit;
-- (void) updateMessageStorage:(NSTextStorage*)storage;
+- (void) updateMessageStorage:(NSMutableAttributedString*)storage;
 - (void) updateHeaderSize;
 - (void) tableViewDidResize:(id)notification;
 - (NSString*) mailtoLinkForEmail:(NSString*)email commit:(GBCommit*)aCommit;
@@ -108,20 +108,20 @@
     nil]];
   
   
-  // DOESN'T WORK
-  [self.messageTextView setAutomaticLinkDetectionEnabled:YES];
+  // DOESN'T WORK for programmatically filled views
+//  [self.messageTextView setAutomaticLinkDetectionEnabled:NO];
   
-  [self.messageTextView setLinkTextAttributes:
-   [NSDictionary dictionaryWithObjectsAndKeys:                                              
-    [NSColor colorWithCalibratedRed:50.0/255.0 green:100.0/255.0 blue:220.0/255.0 alpha:1.0],
-    NSForegroundColorAttributeName,
-    
-    [NSNumber numberWithInt:NSUnderlineStyleNone],
-    NSUnderlineStyleAttributeName,
-    
-    [NSCursor pointingHandCursor],
-    NSCursorAttributeName,
-    nil]];
+//  [self.messageTextView setLinkTextAttributes:
+//   [NSDictionary dictionaryWithObjectsAndKeys:                                              
+//    [NSColor colorWithCalibratedRed:50.0/255.0 green:100.0/255.0 blue:220.0/255.0 alpha:1.0],
+//    NSForegroundColorAttributeName,
+//    
+//    [NSNumber numberWithInt:NSUnderlineStyleNone],
+//    NSUnderlineStyleAttributeName,
+//    
+//    [NSCursor pointingHandCursor],
+//    NSCursorAttributeName,
+//    nil]];
 }
 
 
@@ -172,13 +172,15 @@
   }
   
   NSString* message = aCommit.message ? aCommit.message : @"";
-  [self.messageTextView setString:message];
-
   {
+    // this hoopla with replacing attributed string is needed because otherwise during search highlighted color is applied to the whole string, not the specified range.
+    NSMutableAttributedString* attrString = [[[NSMutableAttributedString alloc] initWithString:message] autorelease];
+    [attrString beginEditing];
+    [self updateMessageStorage:attrString];
+    [attrString endEditing];
+    
     NSTextStorage* storage = [self.messageTextView textStorage];
-    [storage beginEditing];
-    [self updateMessageStorage:storage];
-    [storage endEditing];
+    [storage setAttributedString:attrString];
   }
   
   NSString* email = aCommit.authorEmail;
@@ -196,9 +198,42 @@
   [self updateHeaderSize];
 }
 
-- (void) updateMessageStorage:(NSTextStorage*)storage
+- (void) updateMessageStorage:(NSMutableAttributedString*)storage
 {
   // I had an idea to paint "Signed-off-by: ..." line in grey, but I have a better use of my time right now. Oleg.
+  
+  [storage addAttribute:NSFontAttributeName value:[NSFont systemFontOfSize:12.0] range:NSMakeRange(0, [[storage string] length])];
+  
+  if (self.commit.searchQuery)
+  {
+    NSColor* highlightColor = [GBCommit searchHighlightColor];
+    NSMutableString* storageString = [storage mutableString];
+    for (NSValue* value in [self.commit.foundRangesByProperties objectForKey:@"message"])
+    {
+      NSRange range = [value rangeValue];
+      if (range.location != NSNotFound)
+      {
+        
+        [storage addAttribute:NSBackgroundColorAttributeName
+                        value:highlightColor
+                        range:range];
+        
+        // Find other occurrences of the same substring and highlight them.
+        // Note: this might not be very consistent with token case-sensitive option, but this does not affect search results - only highlighting.
+        NSString* substr = [storageString substringWithRange:range];
+        while(1)
+        {
+          NSRange remainingRange = NSMakeRange(range.location + range.length, [storageString length] - range.location - range.length);
+          if (remainingRange.length < 1) break;
+          range = [storageString rangeOfString:substr options:NSCaseInsensitiveSearch|NSDiacriticInsensitiveSearch range:remainingRange];
+          if (range.length < 1) break;
+          [storage addAttribute:NSBackgroundColorAttributeName
+                          value:highlightColor
+                          range:range];
+        }
+      }
+    }
+  }
 }
 
 - (void) updateTemplate:(NSTextStorage*)storage withCommit:(GBCommit*)aCommit
@@ -319,7 +354,7 @@
       } // each range
     } // each key
     
-    NSColor* highlightColor = [NSColor colorWithCalibratedRed:1.0 green:1.0 blue:0.33 alpha:0.6]; // light yellow
+    NSColor* highlightColor = [GBCommit searchHighlightColor];
     for (NSString* str in stringsToHighlight)
     {
       [storage addAttribute:NSBackgroundColorAttributeName

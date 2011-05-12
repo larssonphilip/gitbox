@@ -86,11 +86,15 @@
   }
   self.task.limit = self.limit;
   self.limit += 50; // so that we start quickly, but deeper in the history avoiding additional calls
+  self.limit = MIN(self.limit, 500);
   self.task.beforeTimestamp = self.lastTimestamp;
   
   [self.repository launchTask:self.task withBlock:^{
-    BOOL gotNewCommits = NO;
+    
     // TODO: put matching in the background queues
+    
+    BOOL gotNewCommits = NO;
+    
     for (GBCommit* commit in self.task.commits)
     {
       if (lastTimestamp <= 0 || commit.rawTimestamp < self.lastTimestamp)
