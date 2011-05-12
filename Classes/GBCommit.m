@@ -31,6 +31,7 @@
 @synthesize rawTimestamp;
 @synthesize searchQuery;
 @synthesize matchesQuery;
+@synthesize foundRangesByProperties;
 
 @synthesize syncStatus;
 @synthesize repository;
@@ -48,6 +49,7 @@
   [parentIds release]; parentIds = nil;
   [changes release]; changes = nil;
   [searchQuery release]; searchQuery = nil;
+  [foundRangesByProperties release]; foundRangesByProperties = nil;
   [super dealloc];
 }
 
@@ -147,23 +149,61 @@
 {
   if (!self.searchQuery)
   {
+    self.foundRangesByProperties = nil;
     self.matchesQuery = NO;
     return;
   }
   GBSearchQuery* q = self.searchQuery;
-  BOOL matches = NO;
-  matches = matches || [q matchesString:self.commitId];
-  matches = matches || [q matchesString:self.treeId];
-  matches = matches || [q matchesString:self.authorName];
-  matches = matches || [q matchesString:self.authorEmail];
-  matches = matches || [q matchesString:self.committerName];
-  matches = matches || [q matchesString:self.committerEmail];
-  matches = matches || [q matchesString:self.message];
   
-  // TODO: collect precise ranges for each property
-  // TODO: match patch data as well
+  NSMutableDictionary* rangesByProps = [NSMutableDictionary dictionary];
   
-  self.matchesQuery = matches;
+  BOOL(^addTokenRangeForStringWithName)(id, NSString*, NSString*) = ^(id token, NSString* string, NSString* name) {
+    NSRange range = [q rangeOfToken:token inString:string];
+    if (range.length > 0)
+    {
+      NSMutableArray* ranges = [rangesByProps objectForKey:name];
+      if (!ranges)
+      {
+        ranges = [NSMutableArray array];
+        [rangesByProps setObject:ranges forKey:name];
+      }
+      
+      // TODO: maybe try to find more ranges for the same token to add here
+      
+      [ranges addObject:[NSValue valueWithRange:range]];
+      return YES;
+    }
+    else
+    {
+      return NO;
+    }
+  };
+  
+  BOOL allTokensMatched = [q matchTokens:^(id token) {
+    
+    BOOL tokenMatched = NO;
+    NSRange range = NSMakeRange(NSNotFound, 0);
+    
+    range = [q rangeOfToken:token inString:self.commitId];
+    if (range.length > 0 && range.location == 0)
+    {
+      tokenMatched = YES;
+      [rangesByProps setObject:[NSValue valueWithRange:range] forKey:@"commitId"];
+    }
+        
+    tokenMatched = tokenMatched || addTokenRangeForStringWithName(token, self.authorName, @"authorName");
+    tokenMatched = tokenMatched || addTokenRangeForStringWithName(token, self.authorEmail, @"authorEmail");
+    tokenMatched = tokenMatched || addTokenRangeForStringWithName(token, self.committerName, @"committerName");
+    tokenMatched = tokenMatched || addTokenRangeForStringWithName(token, self.committerEmail, @"committerEmail");
+    tokenMatched = tokenMatched || addTokenRangeForStringWithName(token, self.message, @"message");
+    
+    // TODO: match filenames and patch lines too.
+    
+    return tokenMatched;
+  }];
+  
+  self.foundRangesByProperties = rangesByProps;
+  self.matchesQuery = allTokensMatched;
 }
 
 

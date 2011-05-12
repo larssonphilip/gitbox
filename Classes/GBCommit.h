@@ -24,6 +24,7 @@ typedef enum {
 @property(nonatomic,copy) NSArray* parentIds;
 @property(nonatomic,retain) NSArray* changes;
 @property(nonatomic,retain) GBSearchQuery* searchQuery;
+@property(nonatomic,retain) NSDictionary* foundRangesByProperties;
 
 @property(nonatomic,assign) GBCommitSyncStatus syncStatus;
 @property(nonatomic,assign) GBRepository* repository;
