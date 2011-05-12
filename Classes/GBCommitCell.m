@@ -49,9 +49,9 @@
   NSDateFormatter* timeFormatter     = [self dateFormatterWithTemplate:@"HH:mm"];
   
   self.attributes = [NSDictionary dictionaryWithObjectsAndKeys:
-                     dateTimeFormatter, @"dateTimeFormatter", 
-                     dateFormatter,     @"dateFormatter", 
-                     timeFormatter,     @"timeFormatter", 
+                     dateTimeFormatter, @"dateTimeFormatter",
+                     dateFormatter,     @"dateFormatter",
+                     timeFormatter,     @"timeFormatter",
                      nil];
   
 }
