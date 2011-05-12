@@ -7,9 +7,38 @@
   return [[[self alloc] initWithString:str] autorelease];
 }
 
-+ (id)attributedStringWithString:(NSString *)str attributes:(NSDictionary *)attrs
++ (id)attributedStringWithString:(NSString *)str attributes:(NSDictionary *)attributes
 {
-  return [[[self alloc] initWithString:str attributes:attrs] autorelease];
+  return [[[self alloc] initWithString:str attributes:attributes] autorelease];
+}
+
++ (NSMutableAttributedString*)attributedStringWithString:(NSString *)str attributes:(NSDictionary *)attributes highlightedRanges:(NSArray*)ranges highlightColor:(NSColor*)highlightColor
+{
+  NSMutableAttributedString* s = [[[NSMutableAttributedString alloc] initWithString:str] autorelease];
+  
+  [s beginEditing];
+  [s addAttributes:attributes range:NSMakeRange(0, [str length])];
+  [s endEditing];
+  
+  if (!highlightColor) return s;
+  
+  if (ranges && [ranges isKindOfClass:[NSValue class]]) // a single range instead of array, wrap it with an array
+  {
+    ranges = [NSArray arrayWithObject:ranges];
+  }
+  
+  [s beginEditing];
+  for (NSValue* rangeValue in ranges)
+  {
+    NSRange range = [rangeValue rangeValue];
+    if (range.location != NSNotFound)
+    {
+      [s addAttribute:NSBackgroundColorAttributeName value:highlightColor range:range];
+    }
+  }
+  [s endEditing];
+  
+  return s;
 }
 
 @end

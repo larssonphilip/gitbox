@@ -467,7 +467,7 @@
 		201E5F6611AA71E00061EFD6 /* NSObject+OAKeyValueObserving.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+OAKeyValueObserving.h"; sourceTree = "<group>"; };
 		201E5F6711AA71E00061EFD6 /* NSObject+OAKeyValueObserving.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+OAKeyValueObserving.m"; sourceTree = "<group>"; };
 		2025D3B811BF1F2D004715FA /* NSAttributedString+OAAttributedStringHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSAttributedString+OAAttributedStringHelpers.h"; sourceTree = "<group>"; };
-		2025D3B911BF1F2D004715FA /* NSAttributedString+OAAttributedStringHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSAttributedString+OAAttributedStringHelpers.m"; sourceTree = "<group>"; };
+		2025D3B911BF1F2D004715FA /* NSAttributedString+OAAttributedStringHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSAttributedString+OAAttributedStringHelpers.m"; sourceTree = "<group>"; wrapsLines = 1; };
 		20265C0111D68D3400709F6B /* OAPropertyListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAPropertyListController.h; sourceTree = "<group>"; };
 		20265C0211D68D3400709F6B /* OAPropertyListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAPropertyListController.m; sourceTree = "<group>"; };
 		20265C1211D68F1300709F6B /* OAFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAFile.h; sourceTree = "<group>"; };

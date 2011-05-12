@@ -1,8 +1,8 @@
 @interface NSAttributedString (OAAttributedStringHelpers)
 
 + (id)attributedStringWithString:(NSString *)str;
-+ (id)attributedStringWithString:(NSString *)str attributes:(NSDictionary *)attrs;
-
++ (id)attributedStringWithString:(NSString *)str attributes:(NSDictionary *)attributes;
++ (NSMutableAttributedString*)attributedStringWithString:(NSString *)str attributes:(NSDictionary *)attributes highlightedRanges:(NSArray*)ranges highlightColor:(NSColor*)highlightColor;
 @end
 
 

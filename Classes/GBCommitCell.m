@@ -3,6 +3,8 @@
 #import "GBCommitCell.h"
 
 #import "CGContext+OACGContextHelpers.h"
+#import "NSAttributedString+OAAttributedStringHelpers.h"
+
 
 @interface GBCommitCell ()
 @property(nonatomic, retain) NSDictionary* attributes;
@@ -400,11 +402,36 @@
   // draw
   
   [date drawInRect:dateRect withAttributes:dateAttributes];
-  [title drawInRect:titleRect withAttributes:titleAttributes];
-  [message drawInRect:messageRect withAttributes:messageAttributes];
   
+  if (!commit.searchQuery)
+  {
+    [title drawInRect:titleRect withAttributes:titleAttributes];
+    [message drawInRect:messageRect withAttributes:messageAttributes];
+  }
+  else
+  {
+    NSColor* highlightColor = [NSColor colorWithCalibratedRed:1.0 green:1.0 blue:0.33 alpha:0.6];
+    if ([self isHighlighted])
+    {
+      highlightColor = [NSColor colorWithCalibratedWhite:1.0 alpha:0.4];
+    }
+    
+    NSAttributedString* titleAttrString = [NSAttributedString attributedStringWithString:title 
+                                                                              attributes:titleAttributes 
+                                                                       highlightedRanges:[commit.foundRangesByProperties objectForKey:@"authorName"]
+                                                                          highlightColor:highlightColor];
+    NSAttributedString* messageAttrString = [NSAttributedString attributedStringWithString:message 
+                                                                              attributes:messageAttributes 
+                                                                       highlightedRanges:[commit.foundRangesByProperties objectForKey:@"message"]
+                                                                          highlightColor:highlightColor];
+    [titleAttrString drawInRect:titleRect];
+    [messageAttrString drawInRect:messageRect];
+  }
 }
 
+
+
+// Stage cell with status
 
 - (void) drawStageContentInFrame:(NSRect)cellFrame
 {
