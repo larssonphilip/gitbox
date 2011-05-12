@@ -224,6 +224,7 @@
   }
   
   // Replace placeholders
+  
   NSMutableString* string = [storage mutableString];
   
   
@@ -253,19 +254,12 @@
     [storage addAttribute:NSLinkAttributeName
                     value:[NSURL URLWithString:[NSString stringWithFormat:@"gitbox://internal/commits/%@", parentId]]
                 substring:placeholder];
-//    [storage addAttribute:NSKernAttributeName
-//                    value:[NSNumber numberWithDouble:0.1]
-//                substring:placeholder];
     [string replaceOccurrencesOfString:placeholder withString:parentId];    
   }
   
   [storage addAttribute:NSLinkAttributeName
                   value:[self mailtoLinkForEmail:aCommit.authorEmail commit:aCommit]
               substring:@"<$author@email>"];
-
-//  [storage addAttribute:NSKernAttributeName
-//                  value:[NSNumber numberWithDouble:0.1]
-//              substring:@"$commitId"];
 
   [string replaceOccurrencesOfString:@"$commitId" 
                           withString:aCommit.commitId];
@@ -296,6 +290,45 @@
     [string replaceOccurrencesOfString:@"<$committer@email>" 
                             withString:aCommit.committerEmail];      
   }
+  
+  if (self.commit.searchQuery)
+  {
+    NSMutableArray* stringsToHighlight = [NSMutableArray array];
+    
+    for (id key in [NSArray arrayWithObjects:@"commitId", @"authorName", @"authorEmail", @"committerName", @"committerEmail", nil])
+    {
+      NSArray* ranges = [self.commit.foundRangesByProperties objectForKey:key];
+      if (ranges && [ranges isKindOfClass:[NSValue class]])
+      {
+        ranges = [NSArray arrayWithObject:ranges];
+      }
+      
+      for (NSValue* val in ranges)
+      {
+        NSRange r = [val rangeValue];
+        NSString* s = [self.commit valueForKey:key];
+        if (s && r.location != NSNotFound && r.length > 0 && [s length] > 0)
+        {
+          // We don't check that range is within the string because we assume it was found in that string.
+          NSString* substring = [s substringWithRange:r];
+          if (substring)
+          {
+            [stringsToHighlight addObject:substring];
+          }
+        }
+      } // each range
+    } // each key
+    
+    NSColor* highlightColor = [NSColor colorWithCalibratedRed:1.0 green:1.0 blue:0.33 alpha:0.6]; // light yellow
+    for (NSString* str in stringsToHighlight)
+    {
+      [storage addAttribute:NSBackgroundColorAttributeName
+                      value:highlightColor
+                  substring:str];
+      
+    }
+    
+  } // if searchQuery
 }
 
 - (NSString*) mailtoLinkForEmail:(NSString*)email commit:(GBCommit*)aCommit

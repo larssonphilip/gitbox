@@ -410,7 +410,7 @@
   }
   else
   {
-    NSColor* highlightColor = [NSColor colorWithCalibratedRed:1.0 green:1.0 blue:0.33 alpha:0.6];
+    NSColor* highlightColor = [NSColor colorWithCalibratedRed:1.0 green:1.0 blue:0.33 alpha:0.6]; // light yellow
     if ([self isHighlighted])
     {
       highlightColor = [NSColor colorWithCalibratedWhite:1.0 alpha:0.4];
