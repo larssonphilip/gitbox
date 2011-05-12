@@ -11,6 +11,7 @@
 @property(nonatomic, assign) GBHistoryTask* task;
 @property(nonatomic, assign) int lastTimestamp;
 @property(nonatomic, assign) BOOL isRunning;
+@property(nonatomic, assign) NSUInteger limit;
 - (void) launchNextTask;
 @end
 
@@ -25,6 +26,7 @@
 @synthesize task;
 @synthesize lastTimestamp;
 @synthesize isRunning;
+@synthesize limit;
 
 - (void) dealloc
 {
@@ -52,6 +54,7 @@
 {
   self.commits = [NSMutableArray array];
   self.commitIds = [NSMutableSet set];
+  self.limit = 50;
   [self launchNextTask];
 }
 
@@ -81,7 +84,8 @@
   {
     self.task.joinedBranch = self.repository.currentRemoteBranch;
   }
-  self.task.limit = 300;
+  self.task.limit = self.limit;
+  self.limit += 50; // so that we start quickly, but deeper in the history avoiding additional calls
   self.task.beforeTimestamp = self.lastTimestamp;
   
   [self.repository launchTask:self.task withBlock:^{
