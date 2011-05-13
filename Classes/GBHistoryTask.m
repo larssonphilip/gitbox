@@ -10,6 +10,7 @@
 @synthesize joinedBranch;
 @synthesize substructedBranch;
 @synthesize beforeTimestamp;
+@synthesize includeDiff;
 
 @synthesize limit;
 @synthesize skip;
@@ -35,7 +36,7 @@
 - (NSArray*) arguments
 {
   // FIXME: should use %B in some later git version rather than %w(10000,4,4)...%b
-  NSMutableArray* args = [NSMutableArray arrayWithObjects:@"rev-list", nil];
+  NSMutableArray* args = [NSMutableArray arrayWithObjects:@"log", nil];
   
   [args addObject:[self.branch commitish]];
   
@@ -52,6 +53,11 @@
   {
     [args addObject:@"--not"];
     [args addObject:[self.substructedBranch commitish]];
+  }
+  
+  if (self.includeDiff)
+  {
+    [args addObject:[NSString stringWithFormat:@"--patch", self.limit]];
   }
   
   if (self.limit > 0)

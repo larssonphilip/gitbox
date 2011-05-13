@@ -7,6 +7,7 @@
 @property(nonatomic,retain) GBRef* joinedBranch;
 @property(nonatomic,retain) GBRef* substructedBranch;
 @property(nonatomic,assign) int beforeTimestamp;
+@property(nonatomic,assign) BOOL includeDiff;
 
 @property(nonatomic,assign) NSUInteger limit;
 @property(nonatomic,assign) NSUInteger skip;
