@@ -147,7 +147,7 @@
   [GBAskPassServer sharedServer]; // preload the server
   
   #if DEBUG
-    NSLog(@"GBAskPassServer: %@", [GBAskPassServer sharedServer]);
+    //NSLog(@"GBAskPassServer: %@", [GBAskPassServer sharedServer]);
   #endif
   
   #if DEBUG_iRate
