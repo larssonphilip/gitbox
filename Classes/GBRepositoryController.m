@@ -1397,12 +1397,8 @@
                                         target:self 
                                         action:@selector(searchDidUpdate:)];
     
-    void* currentSearchRef = self.currentSearch;
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 800*USEC_PER_SEC), dispatch_get_main_queue(), ^{
-      if (currentSearchRef != self.currentSearch) return; // skip if search was changed
-      [self.currentSearch start];
-      [self notifyWithSelector:@selector(repositoryControllerSearchDidStartRunning:)];
-    });
+    [self.currentSearch start];
+    [self notifyWithSelector:@selector(repositoryControllerSearchDidStartRunning:)];
   }
   else
   {

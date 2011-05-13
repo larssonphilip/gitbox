@@ -333,19 +333,30 @@ Binary files /dev/null and b/psd/history-markers.psd differ
       
       if (self.includeDiff)
       {
+        NSMutableArray* diffs = [NSMutableArray array];
         NSMutableString* diffLines = [NSMutableString string];
-        NSMutableString* diffPaths = [NSMutableString string];
+        
         while (lineIndex < [lines count] && ![line hasPrefix:@"commit "])
         {
           //diff --git a/psd/icon.psd b/psd/icon.psd
           if ([line hasPrefix:@"diff"])
           {
-            NSString* paths = [line stringByReplacingOccurrencesOfString:@"diff --git a/" withString:@""];
-            [diffPaths appendString:paths];
-            [diffPaths appendString:@"\n"];
+            diffLines = [NSMutableString string];
+            NSString* diffPaths = [line stringByReplacingOccurrencesOfString:@"diff --git a/" withString:@""];
+            
+            // TODO: parse two separate paths here by splitting by " b/".
+            // Since it is not reliable, we will replace these results by parsing --- and +++.
+            // But if --- and +++ are not available (that is for binary files), we'll keep this inaccurate data.
+            
+            [diffs addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+                              diffPaths, @"paths",
+                              diffLines, @"lines",
+                              nil]];
           }
           else if ([line hasPrefix:@"---"] || [line hasPrefix:@"+++"])
           {
+            // Collect 
+            
             // skip lines like:
             //--- a/GBMainWindowController.h
             //+++ b/GBMainWindowController.h
@@ -370,8 +381,7 @@ Binary files /dev/null and b/psd/history-markers.psd differ
           
         } // loop over diff
         
-        commit.diffPaths = diffPaths;
-        commit.diffLines = diffLines;
+        commit.diffs = diffs;
         
       } // if includeDiff
       

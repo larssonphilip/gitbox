@@ -23,8 +23,7 @@ typedef enum {
 @property(nonatomic,copy) NSString* message;
 @property(nonatomic,copy) NSArray* parentIds;
 @property(nonatomic,retain) NSArray* changes;
-@property(nonatomic,copy) NSString* diffPaths;
-@property(nonatomic,copy) NSString* diffLines;
+@property(nonatomic,copy) NSArray* diffs; // array of dicts {"paths": "File.h b/File2.h", "lines": "line1\nline2\n"}
 @property(nonatomic,retain) GBSearchQuery* searchQuery;
 @property(nonatomic,retain) NSDictionary* foundRangesByProperties;
 

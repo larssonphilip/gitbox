@@ -28,8 +28,7 @@
 @synthesize message;
 @synthesize parentIds;
 @synthesize changes;
-@synthesize diffPaths;
-@synthesize diffLines;
+@synthesize diffs;
 @synthesize rawTimestamp;
 @synthesize searchQuery;
 @synthesize matchesQuery;
@@ -50,8 +49,7 @@
   [message release]; message = nil;
   [parentIds release]; parentIds = nil;
   [changes release]; changes = nil;
-  [diffPaths release]; diffPaths = nil;
-  [diffLines release]; diffLines = nil;
+  [diffs release]; diffs = nil;
   [searchQuery release]; searchQuery = nil;
   [foundRangesByProperties release]; foundRangesByProperties = nil;
   [super dealloc];
@@ -180,7 +178,7 @@
         [rangesByProps setObject:ranges forKey:name];
       }
       
-      // Note: here we find only a single occurence for speed. 
+      // Note: here we find only a single occurence to reduce CPU load.
       // When highlighting particular commit, we'll find all occurences.
       
       [ranges addObject:[NSValue valueWithRange:range]];
@@ -210,8 +208,40 @@
     tokenMatched = tokenMatched || addTokenRangeForStringWithName(token, self.committerEmail, @"committerEmail");
     tokenMatched = tokenMatched || addTokenRangeForStringWithName(token, self.message, @"message");
     
-    tokenMatched = tokenMatched || addTokenRangeForStringWithName(token, self.diffPaths, @"diffPaths");
-    tokenMatched = tokenMatched || addTokenRangeForStringWithName(token, self.diffLines, @"diffLines");
+    NSMutableSet* pathsForDiffSubstrings = [rangesByProps objectForKey:@"diffs"];
+    if (!pathsForDiffSubstrings)
+    {
+      pathsForDiffSubstrings = [NSMutableSet set];
+      [rangesByProps setObject:pathsForDiffSubstrings forKey:@"diffs"];
+    }
+    
+    NSMutableSet* pathSubstrings = [rangesByProps objectForKey:@"paths"];
+    if (!pathSubstrings)
+    {
+      pathSubstrings = [NSMutableSet set];
+      [rangesByProps setObject:pathSubstrings forKey:@"paths"];
+    }
+    
+    for (NSDictionary* diffInfo in self.diffs)
+    {
+      NSString* diffPaths = [diffInfo objectForKey:@"paths"];
+      NSRange pathRange = [q rangeOfToken:token inString:diffPaths];
+      if (pathRange.length > 0)
+      {
+        tokenMatched = YES;
+        [pathSubstrings addObject:[diffPaths substringWithRange:pathRange]];
+      }
+      
+      NSString* diffLines = [diffInfo objectForKey:@"lines"];
+      NSRange diffRange = [q rangeOfToken:token inString:diffLines];
+      if (diffRange.length > 0)
+      {
+        tokenMatched = YES;
+        
+        // TODO: we have to parse correctly file paths to find which change contains the data and highlight it.
+        //[pathsForDiffSubstrings addObject:diffPaths];
+      }
+    } // for each diffInfo
     
     return tokenMatched;
   }];
