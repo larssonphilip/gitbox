@@ -47,11 +47,12 @@ Gitbox 1.3 Enhancements:
 + search: highlight occurences in message text view
 + search: highlight multiple occurences of the same string in message text view
 + search: parse patch (-p) - file names and patch lines
-- search: keep diff ranges per-diff to be able to highlight relevant files where the match is found
++ search: keep diff ranges per-diff to be able to highlight relevant files where the match is found
+- search: put the search field into the toolbar for better discoverability and context.
+
 - search: put the whole search status and visibleCommits property into GBRepositoryController to fix various bugs when repos are switched.
 - search: keep selection when search ends.
 - search: bug: when parent commit is clicked it can be missing in the history. Should either not highlight it, or reset search state.
-- search: put the search field into the toolbar for better discoverability and context.
 - search: cmd+F should select all text when already in search field (try enabling search bar for editor textview).
 - recessed icon for no selection view and multiple selection view (similar to Lion Mail.app)
 - sidebar: before dropping over parent node, highlight appropriate index inside, not the parent
