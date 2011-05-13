@@ -28,7 +28,8 @@
 @synthesize message;
 @synthesize parentIds;
 @synthesize changes;
-@synthesize diffs;
+@synthesize diffPaths;
+@synthesize diffLines;
 @synthesize rawTimestamp;
 @synthesize searchQuery;
 @synthesize matchesQuery;
@@ -49,7 +50,8 @@
   [message release]; message = nil;
   [parentIds release]; parentIds = nil;
   [changes release]; changes = nil;
-  [diffs release]; diffs = nil;
+  [diffPaths release]; diffPaths = nil;
+  [diffLines release]; diffLines = nil;
   [searchQuery release]; searchQuery = nil;
   [foundRangesByProperties release]; foundRangesByProperties = nil;
   [super dealloc];
@@ -178,7 +180,8 @@
         [rangesByProps setObject:ranges forKey:name];
       }
       
-      // TODO: maybe try to find more ranges for the same token to add here
+      // Note: here we find only a single occurence for speed. 
+      // When highlighting particular commit, we'll find all occurences.
       
       [ranges addObject:[NSValue valueWithRange:range]];
       return YES;
@@ -207,7 +210,8 @@
     tokenMatched = tokenMatched || addTokenRangeForStringWithName(token, self.committerEmail, @"committerEmail");
     tokenMatched = tokenMatched || addTokenRangeForStringWithName(token, self.message, @"message");
     
-    // TODO: match filenames and patch lines too.
+    tokenMatched = tokenMatched || addTokenRangeForStringWithName(token, self.diffPaths, @"diffPaths");
+    tokenMatched = tokenMatched || addTokenRangeForStringWithName(token, self.diffLines, @"diffLines");
     
     return tokenMatched;
   }];

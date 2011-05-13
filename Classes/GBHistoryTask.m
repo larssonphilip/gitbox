@@ -333,20 +333,16 @@ Binary files /dev/null and b/psd/history-markers.psd differ
       
       if (self.includeDiff)
       {
-        NSMutableArray* diffs = [NSMutableArray array];
-        NSMutableDictionary* diff = nil;
-        NSMutableString* diffLines = nil; 
+        NSMutableString* diffLines = [NSMutableString string];
+        NSMutableString* diffPaths = [NSMutableString string];
         while (lineIndex < [lines count] && ![line hasPrefix:@"commit "])
         {
           //diff --git a/psd/icon.psd b/psd/icon.psd
           if ([line hasPrefix:@"diff"])
           {
-            diff = [NSMutableDictionary dictionary];
             NSString* paths = [line stringByReplacingOccurrencesOfString:@"diff --git a/" withString:@""];
-            [diff setObject:paths forKey:@"paths"];
-            diffLines = [NSMutableString string];
-            [diff setObject:diffLines forKey:@"lines"];
-            [diffs addObject:diff];
+            [diffPaths appendString:paths];
+            [diffPaths appendString:@"\n"];
           }
           else if ([line hasPrefix:@"---"] || [line hasPrefix:@"+++"])
           {
@@ -374,7 +370,8 @@ Binary files /dev/null and b/psd/history-markers.psd differ
           
         } // loop over diff
         
-        commit.diffs = diffs;
+        commit.diffPaths = diffPaths;
+        commit.diffLines = diffLines;
         
       } // if includeDiff
       
