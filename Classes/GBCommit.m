@@ -1,4 +1,5 @@
 #import "GBCommit.h"
+#import "GBChange.h"
 #import "GBRepository.h"
 #import "GBCommittedChangesTask.h"
 #import "GBGitConfig.h"
@@ -58,13 +59,6 @@
 - (NSString*) description
 {
   return [NSString stringWithFormat:@"<GBCommit:%p %@ %@: %@>", self, commitId, authorName, ([message length] > 20) ? [message substringToIndex:20] : message];
-}
-
-+ (NSColor*) searchHighlightColor
-{
-  static NSColor* c = nil;
-  if (!c) c = [[NSColor colorWithCalibratedRed:1.0 green:1.0 blue:0.33 alpha:0.6] retain];
-  return c;
 }
 
 
@@ -208,28 +202,37 @@
     tokenMatched = tokenMatched || addTokenRangeForStringWithName(token, self.committerEmail, @"committerEmail");
     tokenMatched = tokenMatched || addTokenRangeForStringWithName(token, self.message, @"message");
     
-    NSMutableSet* pathsForDiffSubstrings = [rangesByProps objectForKey:@"diffs"];
-    if (!pathsForDiffSubstrings)
-    {
-      pathsForDiffSubstrings = [NSMutableSet set];
-      [rangesByProps setObject:pathsForDiffSubstrings forKey:@"diffs"];
-    }
-    
-    NSMutableSet* pathSubstrings = [rangesByProps objectForKey:@"paths"];
+    // Set of matched path substrings
+    NSMutableSet* pathSubstrings = [rangesByProps objectForKey:@"pathSubstringsSet"];
     if (!pathSubstrings)
     {
       pathSubstrings = [NSMutableSet set];
-      [rangesByProps setObject:pathSubstrings forKey:@"paths"];
+      [rangesByProps setObject:pathSubstrings forKey:@"pathSubstringsSet"];
+    }
+    
+    // Set of paths containing matched text in diff lines
+    NSMutableSet* pathsForDiffSubstrings = [rangesByProps objectForKey:@"diffPathsSet"];
+    if (!pathsForDiffSubstrings)
+    {
+      pathsForDiffSubstrings = [NSMutableSet set];
+      [rangesByProps setObject:pathsForDiffSubstrings forKey:@"diffPathsSet"];
     }
     
     for (NSDictionary* diffInfo in self.diffs)
     {
-      NSString* diffPaths = [diffInfo objectForKey:@"paths"];
-      NSRange pathRange = [q rangeOfToken:token inString:diffPaths];
+      NSString* srcPath = [diffInfo objectForKey:@"srcPath"];
+      NSString* dstPath = [diffInfo objectForKey:@"dstPath"];
+      NSRange pathRange = [q rangeOfToken:token inString:srcPath];
       if (pathRange.length > 0)
       {
         tokenMatched = YES;
-        [pathSubstrings addObject:[diffPaths substringWithRange:pathRange]];
+        [pathSubstrings addObject:[srcPath substringWithRange:pathRange]];
+      }
+      pathRange = [q rangeOfToken:token inString:dstPath];
+      if (pathRange.length > 0)
+      {
+        tokenMatched = YES;
+        [pathSubstrings addObject:[dstPath substringWithRange:pathRange]];
       }
       
       NSString* diffLines = [diffInfo objectForKey:@"lines"];
@@ -238,8 +241,14 @@
       {
         tokenMatched = YES;
         
-        // TODO: we have to parse correctly file paths to find which change contains the data and highlight it.
-        //[pathsForDiffSubstrings addObject:diffPaths];
+        if (srcPath)
+        {
+          [pathsForDiffSubstrings addObject:srcPath];
+        }
+        if (dstPath)
+        {
+          [pathsForDiffSubstrings addObject:dstPath];
+        }
       }
     } // for each diffInfo
     
@@ -289,6 +298,20 @@
           return [[[a fileURL] path] localizedCaseInsensitiveCompare:[[b fileURL] path]];
         }];
         self.changes = theChanges;
+        if (self.searchQuery)
+        {
+          for (GBChange* aChange in self.changes)
+          {
+            aChange.searchQuery = self.searchQuery;
+            aChange.highlightedPathSubstrings = [self.foundRangesByProperties objectForKey:@"pathSubstringsSet"];
+            
+            NSSet* diffPathsSet = [self.foundRangesByProperties objectForKey:@"diffPathsSet"];
+            NSString* srcPath = [aChange.srcURL relativePath];
+            NSString* dstPath = [aChange.dstURL relativePath];
+            aChange.containsHighlightedDiffLines = (srcPath && [diffPathsSet containsObject:srcPath]) || \
+                                                   (dstPath && [diffPathsSet containsObject:dstPath]);
+          }
+        }
         [self notifyWithSelector:@selector(commitDidUpdateChanges:)];
         [OABlockTable callBlockForName:name];
       }];

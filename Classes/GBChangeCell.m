@@ -1,3 +1,4 @@
+#import "GBStyle.h"
 #import "GBChange.h"
 #import "GBChangeCell.h"
 #import "GBChangesTableView.h"
@@ -6,8 +7,8 @@
 #define kIconImageWidth		16.0
 
 @interface GBChangeCell ()
-
 @property(nonatomic, copy) NSParagraphStyle* truncatingParagraphStyle;
+- (void) drawPath:(NSString*)aPath inRect:(NSRect)aRect withAttributes:(NSDictionary*)attributes;
 @end
 
 
@@ -229,8 +230,7 @@
       currentFrame.size.width -= srcSize.width;
       
       // TODO: shrink the path in a smart way
-      [srcPath drawInRect:srcRect withAttributes:attributes];
-      
+      [self drawPath:srcPath inRect:srcRect withAttributes:attributes];
 
       // Draw arrow
 
@@ -268,7 +268,7 @@
       // Draw dst
       
       // TODO: shrink the path in a smart way
-      [dstPath drawInRect:currentFrame withAttributes:attributes];
+      [self drawPath:dstPath inRect:currentFrame withAttributes:attributes];
     }
     else
     {
@@ -278,7 +278,7 @@
         url = dstURL;
       }
       
-      [[url relativePath] drawInRect:currentFrame withAttributes:attributes];
+      [self drawPath:[url relativePath] inRect:currentFrame withAttributes:attributes];
     }
         
   }
@@ -286,7 +286,56 @@
 //  [super drawInteriorWithFrame:cellFrame inView:theControlView];
 }
 
-
+- (void) drawPath:(NSString*)aPath inRect:(NSRect)aRect withAttributes:(NSDictionary*)attributes
+{
+  if (!aPath) return;
+  
+  GBChange* aChange = [self change];
+  if (aChange.searchQuery)
+  {
+    NSColor* highlightColor = [GBStyle searchHighlightColor];
+    if ([self isHighlighted])
+    {
+      highlightColor = [GBStyle searchSelectedHighlightColor];
+    }
+    
+    NSMutableAttributedString* attributedString = [[[NSMutableAttributedString alloc] initWithString:aPath] autorelease];
+    [attributedString beginEditing];
+    
+    // Set base attributes
+    NSRange fullRange = NSMakeRange(0, [aPath length]);
+    [attributedString addAttributes:attributes range:fullRange];
+    
+    // Highlight matched path substrings
+    for (NSString* substring in aChange.highlightedPathSubstrings)
+    {
+      NSRange range = [aPath rangeOfString:substring options:NSCaseInsensitiveSearch|NSDiacriticInsensitiveSearch];
+      if (range.length > 0)
+      {
+        [attributedString addAttribute:NSBackgroundColorAttributeName value:highlightColor range:range];
+      }
+    }
+    
+    // Highlight matches in diff by drawing underline
+    if (aChange.containsHighlightedDiffLines)
+    {
+      NSColor* highlightColor = [GBStyle searchHighlightUnderlineColor];
+      if ([self isHighlighted])
+      {
+        highlightColor = [GBStyle searchSelectedHighlightUnderlineColor];
+      }
+      [attributedString addAttribute:NSUnderlineColorAttributeName value:highlightColor range:fullRange];
+      [attributedString addAttribute:NSUnderlineStyleAttributeName value:[NSNumber numberWithInt:NSUnderlineStyleThick] range:fullRange];
+    }
+    
+    [attributedString endEditing];
+    [attributedString drawInRect:aRect];
+  }
+  else
+  {
+    [aPath drawInRect:aRect withAttributes:attributes];
+  }  
+}
 
 
 // Overrides NSActionCell/NSTextFieldCell's behaviour when pressed cell is not highlighted, but selected

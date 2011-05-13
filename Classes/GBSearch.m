@@ -86,8 +86,8 @@
     self.task.joinedBranch = self.repository.currentRemoteBranch;
   }
   self.task.limit = self.limit;
-  self.limit += 50; // so that we start quickly, but deeper in the history avoiding additional calls
-  self.limit = MIN(self.limit, 500);
+  self.limit += 50; // so that we start quickly, but avoid very frequent calls when looking deeper in the history.
+  self.limit = MIN(self.limit, 300);
   self.task.beforeTimestamp = self.lastTimestamp;
   
   [self.repository launchTask:self.task withBlock:^{

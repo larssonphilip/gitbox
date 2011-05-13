@@ -1,3 +1,4 @@
+#import "GBStyle.h"
 #import "GBCommit.h"
 #import "GBStage.h"
 #import "GBCommitCell.h"
@@ -410,10 +411,10 @@
   }
   else
   {
-    NSColor* highlightColor = [GBCommit searchHighlightColor];
+    NSColor* highlightColor = [GBStyle searchHighlightColor];
     if ([self isHighlighted])
     {
-      highlightColor = [NSColor colorWithCalibratedWhite:1.0 alpha:0.4];
+      highlightColor = [GBStyle searchSelectedHighlightColor];
     }
     
     NSAttributedString* titleAttrString = [NSAttributedString attributedStringWithString:title 

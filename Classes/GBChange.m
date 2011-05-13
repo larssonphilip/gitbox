@@ -3,6 +3,7 @@
 #import "GBExtractFileTask.h"
 
 #import "GBChangeCell.h"
+#import "GBSearchQuery.h"
 
 #import "OATask.h"
 
@@ -34,6 +35,10 @@
 @synthesize cachedSrcIcon;
 @synthesize cachedDstIcon;
 @synthesize quicklookItemURL;
+@synthesize searchQuery;
+@synthesize highlightedPathSubstrings;
+@synthesize containsHighlightedDiffLines;
+
 
 @synthesize staged;
 @synthesize delegate;
@@ -57,6 +62,8 @@
   self.cachedSrcIcon = nil;
   self.cachedDstIcon = nil;
   self.quicklookItemURL = nil;
+  [searchQuery release]; searchQuery = nil;
+  [highlightedPathSubstrings release]; highlightedPathSubstrings = nil;
   [super dealloc];
 }
 

@@ -335,7 +335,7 @@ Binary files /dev/null and b/psd/history-markers.psd differ
       {
         NSMutableArray* diffs = [NSMutableArray array];
         NSMutableString* diffLines = [NSMutableString string];
-        
+        NSMutableDictionary* diffInfo = nil;
         while (lineIndex < [lines count] && ![line hasPrefix:@"commit "])
         {
           //diff --git a/psd/icon.psd b/psd/icon.psd
@@ -344,23 +344,42 @@ Binary files /dev/null and b/psd/history-markers.psd differ
             diffLines = [NSMutableString string];
             NSString* diffPaths = [line stringByReplacingOccurrencesOfString:@"diff --git a/" withString:@""];
             
-            // TODO: parse two separate paths here by splitting by " b/".
-            // Since it is not reliable, we will replace these results by parsing --- and +++.
-            // But if --- and +++ are not available (that is for binary files), we'll keep this inaccurate data.
+            diffInfo = [NSMutableDictionary dictionary];
+            [diffs addObject:diffInfo];
+            [diffInfo setObject:diffLines forKey:@"lines"];
             
-            [diffs addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-                              diffPaths, @"paths",
-                              diffLines, @"lines",
-                              nil]];
+            // Parse two separate paths here by splitting by " b/".
+            // Since it is not reliable (paths may have unescaped spaces), we will replace these results by parsing --- and +++.
+            // But if --- and +++ are not available (which is the case for binary files), we'll keep this inaccurate data.
+            
+            NSArray* diffPathsArray = [diffPaths componentsSeparatedByString:@" b/"];
+            if ([diffPathsArray count] > 0)
+            {
+              NSString* srcPath = [diffPathsArray objectAtIndex:0];
+              if ([srcPath length] > 0)
+              {
+                [diffInfo setObject:srcPath forKey:@"srcPath"];
+              }
+              if ([diffPathsArray count] > 1)
+              {
+                NSString* dstPath = [diffPathsArray objectAtIndex:1];
+                if ([dstPath length] > 0)
+                {
+                  [diffInfo setObject:dstPath forKey:@"dstPath"];
+                }
+              }
+            }
+            
           }
-          else if ([line hasPrefix:@"---"] || [line hasPrefix:@"+++"])
+          else if ([line hasPrefix:@"---"]) //--- a/Classes/GBMainWindowController.h
           {
-            // Collect 
-            
-            // skip lines like:
-            //--- a/GBMainWindowController.h
-            //+++ b/GBMainWindowController.h
-            //NSLog(@"Skipping diff line: %@", line);
+            NSString* path = [line stringByReplacingOccurrencesOfString:@"--- a/" withString:@""];
+            [diffInfo setObject:path forKey:@"srcPath"];
+          }
+          else if ([line hasPrefix:@"+++"]) //+++ b/Classes/GBMainWindowController.h
+          {
+            NSString* path = [line stringByReplacingOccurrencesOfString:@"+++ b/" withString:@""];
+            [diffInfo setObject:path forKey:@"dstPath"];
           }
           else if ([line hasPrefix:@"-"] || [line hasPrefix:@"+"])
           {

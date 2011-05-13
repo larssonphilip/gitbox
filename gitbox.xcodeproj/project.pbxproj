@@ -323,6 +323,8 @@
 		20AAFACD1347CD9700A8E31F /* OABlockTable.m in Sources */ = {isa = PBXBuildFile; fileRef = 20AAFACB1347CD9700A8E31F /* OABlockTable.m */; };
 		20AC938F1367473800FEACF9 /* GBAskPass.m in Sources */ = {isa = PBXBuildFile; fileRef = 20AC938E1367473800FEACF9 /* GBAskPass.m */; };
 		20AC93901367473800FEACF9 /* GBAskPass.m in Sources */ = {isa = PBXBuildFile; fileRef = 20AC938E1367473800FEACF9 /* GBAskPass.m */; };
+		20AEF702137DD6770067AF9B /* GBStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = 20AEF701137DD6770067AF9B /* GBStyle.m */; };
+		20AEF703137DD6770067AF9B /* GBStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = 20AEF701137DD6770067AF9B /* GBStyle.m */; };
 		20B1621211944C0F00A709CF /* NSFileManager+OAFileManagerHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B1621111944C0F00A709CF /* NSFileManager+OAFileManagerHelpers.m */; };
 		20B399FA11B7F30600D6A3C4 /* GBLocalRefsTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B399F911B7F30600D6A3C4 /* GBLocalRefsTask.m */; };
 		20B8B70C11A489F1006D6442 /* GBChangesBaseTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B8B70B11A489F1006D6442 /* GBChangesBaseTask.m */; };
@@ -673,6 +675,8 @@
 		20AAFACB1347CD9700A8E31F /* OABlockTable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OABlockTable.m; sourceTree = "<group>"; };
 		20AC938D1367473800FEACF9 /* GBAskPass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBAskPass.h; sourceTree = "<group>"; };
 		20AC938E1367473800FEACF9 /* GBAskPass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBAskPass.m; sourceTree = "<group>"; };
+		20AEF700137DD6770067AF9B /* GBStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBStyle.h; sourceTree = "<group>"; };
+		20AEF701137DD6770067AF9B /* GBStyle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBStyle.m; sourceTree = "<group>"; };
 		20B1621011944C0F00A709CF /* NSFileManager+OAFileManagerHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSFileManager+OAFileManagerHelpers.h"; sourceTree = "<group>"; };
 		20B1621111944C0F00A709CF /* NSFileManager+OAFileManagerHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSFileManager+OAFileManagerHelpers.m"; sourceTree = "<group>"; };
 		20B399F811B7F30600D6A3C4 /* GBLocalRefsTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBLocalRefsTask.h; sourceTree = "<group>"; };
@@ -836,6 +840,8 @@
 		2038F30811952FAE0087CE37 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				20AEF700137DD6770067AF9B /* GBStyle.h */,
+				20AEF701137DD6770067AF9B /* GBStyle.m */,
 				200A41C712EB9B14004DF940 /* GBGitConfig.h */,
 				200A41C812EB9B14004DF940 /* GBGitConfig.m */,
 				2038F30A11952FCF0087CE37 /* GBRepository.h */,
@@ -1217,14 +1223,14 @@
 			name = "AppKit Extensions";
 			sourceTree = "<group>";
 		};
-		20A9716D12C6CD6A00E2B7B9 /* Unused for the good reason */ = {
+		20A9716D12C6CD6A00E2B7B9 /* Unused for good reason */ = {
 			isa = PBXGroup;
 			children = (
 				2002AE09124A9BAB0072075C /* OAOptionalDelegateMessage.h */,
 				2093A85C11AF33B500239185 /* WhiteNSView.h */,
 				2093A85D11AF33B500239185 /* WhiteNSView.m */,
 			);
-			name = "Unused for the good reason";
+			name = "Unused for good reason";
 			sourceTree = "<group>";
 		};
 		20A9718112C6CDFE00E2B7B9 /* Concurrency Helpers */ = {
@@ -1261,7 +1267,7 @@
 			isa = PBXGroup;
 			children = (
 				20A9718212C6CE1500E2B7B9 /* UI Helpers */,
-				20A9716D12C6CD6A00E2B7B9 /* Unused for the good reason */,
+				20A9716D12C6CD6A00E2B7B9 /* Unused for good reason */,
 				20A9716412C6CD1F00E2B7B9 /* Foundation Extensions */,
 				20A9716B12C6CD4B00E2B7B9 /* AppKit Extensions */,
 				20A9718112C6CDFE00E2B7B9 /* Concurrency Helpers */,
@@ -1759,6 +1765,7 @@
 				208B31D21373D6F600EB4A18 /* GBSearchQuery.m in Sources */,
 				208B3287137505D600EB4A18 /* GBSearchBarController.m in Sources */,
 				20A750E61377C42F00981C39 /* GBSearch.m in Sources */,
+				20AEF703137DD6770067AF9B /* GBStyle.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1892,6 +1899,7 @@
 				208B31D11373D6F600EB4A18 /* GBSearchQuery.m in Sources */,
 				208B3285137505D600EB4A18 /* GBSearchBarController.m in Sources */,
 				20A750E51377C42F00981C39 /* GBSearch.m in Sources */,
+				20AEF702137DD6770067AF9B /* GBStyle.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

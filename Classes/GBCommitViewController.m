@@ -1,5 +1,6 @@
 #import "GBCommit.h"
 #import "GBChange.h"
+#import "GBStyle.h"
 #import "GBCommitViewController.h"
 #import "GBUserpicController.h"
 #import "GBRepositoryController.h"
@@ -206,7 +207,7 @@
   
   if (self.commit.searchQuery)
   {
-    NSColor* highlightColor = [GBCommit searchHighlightColor];
+    NSColor* highlightColor = [GBStyle searchHighlightColor];
     NSMutableString* storageString = [storage mutableString];
     for (NSValue* value in [self.commit.foundRangesByProperties objectForKey:@"message"])
     {
@@ -354,7 +355,7 @@
       } // each range
     } // each key
     
-    NSColor* highlightColor = [GBCommit searchHighlightColor];
+    NSColor* highlightColor = [GBStyle searchHighlightColor];
     for (NSString* str in stringsToHighlight)
     {
       [storage addAttribute:NSBackgroundColorAttributeName

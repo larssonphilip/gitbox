@@ -4,6 +4,7 @@
 @class GBChangeCell;
 @class GBRepository;
 @class GBCommit;
+@class GBSearchQuery;
 @interface GBChange : NSObject<NSPasteboardWriting, QLPreviewItem>
 
 @property(nonatomic,retain) NSURL* srcURL;
@@ -14,6 +15,9 @@
 @property(nonatomic,copy)   NSString* oldRevision;
 @property(nonatomic,copy)   NSString* newRevision;
 @property(nonatomic,copy)   NSString* commitId;
+@property(nonatomic,retain) GBSearchQuery* searchQuery;
+@property(nonatomic,copy)   NSSet* highlightedPathSubstrings;
+@property(nonatomic,assign) BOOL containsHighlightedDiffLines;
 
 // Important: staged property & delegate are only used for checkbox binding in UI.
 @property(nonatomic,assign) BOOL staged;
