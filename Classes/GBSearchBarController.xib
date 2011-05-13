@@ -133,7 +133,8 @@
 								<int key="NSPeriodicDelay">400</int>
 								<int key="NSPeriodicInterval">75</int>
 							</object>
-							<int key="NSMaximumRecents">255</int>
+							<string key="NSRecentsAutosaveName">historysearch</string>
+							<int key="NSMaximumRecents">50</int>
 						</object>
 					</object>
 				</object>
