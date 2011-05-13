@@ -28,6 +28,7 @@
 @synthesize message;
 @synthesize parentIds;
 @synthesize changes;
+@synthesize diffs;
 @synthesize rawTimestamp;
 @synthesize searchQuery;
 @synthesize matchesQuery;
@@ -48,6 +49,7 @@
   [message release]; message = nil;
   [parentIds release]; parentIds = nil;
   [changes release]; changes = nil;
+  [diffs release]; diffs = nil;
   [searchQuery release]; searchQuery = nil;
   [foundRangesByProperties release]; foundRangesByProperties = nil;
   [super dealloc];

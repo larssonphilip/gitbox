@@ -23,6 +23,7 @@ typedef enum {
 @property(nonatomic,copy) NSString* message;
 @property(nonatomic,copy) NSArray* parentIds;
 @property(nonatomic,retain) NSArray* changes;
+@property(nonatomic,retain) NSArray* diffs;
 @property(nonatomic,retain) GBSearchQuery* searchQuery;
 @property(nonatomic,retain) NSDictionary* foundRangesByProperties;
 

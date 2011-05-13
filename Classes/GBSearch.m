@@ -78,6 +78,7 @@
   self.task = [GBHistoryTask task];
   self.isRunning = YES;
   
+  self.task.includeDiff = YES;
   self.task.repository = self.repository;
   self.task.branch = self.repository.currentLocalRef;
   if ([self.repository doesRefExist:self.repository.currentRemoteBranch])

@@ -4,6 +4,9 @@
 #import "GBHistoryTask.h"
 #import "NSData+OADataHelpers.h"
 
+@interface GBHistoryTask ()
+@end
+
 @implementation GBHistoryTask
 
 @synthesize branch;
@@ -96,9 +99,9 @@
   return args;
 }
 
-- (void) didFinish
+- (void) didFinishInBackground
 {
-  [super didFinish];
+  [super didFinishInBackground];
   if ([self isError])
   {
     self.commits = [NSArray array];
@@ -131,6 +134,20 @@ authorDate 2010-05-01 22:05:14 -0700
 
     Signed-off-by: Junio C Hamano <gitster@pobox.com>
  
+diff --git a/GBAppDelegate.m b/GBAppDelegate.m
+index d350d28..4dc0ac7 100644
+--- a/GBAppDelegate.m
++++ b/GBAppDelegate.m
+@@ -294,7 +294,10 @@
+
+ - (void)applicationDidBecomeActive:(NSNotification *)aNotification
+ {
+-  [self.windowController showWindow:self];
++  if (![NSApp keyWindow])
++  {
++    [self.windowController showWindow:self];
++  }
+ }
  
 commit ddb27a5a6b5ed74c70d56c96592b32eed415d72b
 commit ddb27a5a6b5ed74c70d56c96592b32eed415d72b
@@ -148,6 +165,14 @@ authorDate 2010-05-01 20:23:10 -0700
     index-pack: fix trivial typo in usage string
     git-submodule.sh: properly initialize shell variables
  
+diff --git a/icon.psd b/icon.psd
+deleted file mode 100644
+index a1e8c9b..0000000
+Binary files a/icon.psd and /dev/null differ
+diff --git a/psd/history-markers.psd b/psd/history-markers.psd
+new file mode 100644
+index 0000000..831d92d
+Binary files /dev/null and b/psd/history-markers.psd differ
  
  */
 
@@ -304,6 +329,54 @@ authorDate 2010-05-01 20:23:10 -0700
       commit.message = [commit.message stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
       commit.repository = self.repository;
       [list addObject:commit];
+      
+      
+      if (self.includeDiff)
+      {
+        NSMutableArray* diffs = [NSMutableArray array];
+        NSMutableDictionary* diff = nil;
+        NSMutableString* diffLines = nil; 
+        while (lineIndex < [lines count] && ![line hasPrefix:@"commit "])
+        {
+          //diff --git a/psd/icon.psd b/psd/icon.psd
+          if ([line hasPrefix:@"diff"])
+          {
+            diff = [NSMutableDictionary dictionary];
+            NSString* paths = [line stringByReplacingOccurrencesOfString:@"diff --git a/" withString:@""];
+            [diff setObject:paths forKey:@"paths"];
+            diffLines = [NSMutableString string];
+            [diff setObject:diffLines forKey:@"lines"];
+            [diffs addObject:diff];
+          }
+          else if ([line hasPrefix:@"---"] || [line hasPrefix:@"+++"])
+          {
+            // skip lines like:
+            //--- a/GBMainWindowController.h
+            //+++ b/GBMainWindowController.h
+            //NSLog(@"Skipping diff line: %@", line);
+          }
+          else if ([line hasPrefix:@"-"] || [line hasPrefix:@"+"])
+          {
+            [diffLines appendString:[line substringFromIndex:1]];
+            [diffLines appendString:@"\n"];
+          }
+          else
+          {
+            // skip non-changed diff lines and header lines like:
+            //new file mode 100644
+            //index 0000000..a1e8c9b
+            //Binary files /dev/null and b/psd/icon.psd differ
+            //@@ -151,27 +152,29 @@
+            //NSLog(@"Skipping diff line: %@", line);
+          }
+            
+          GBHistoryNextLine;
+          
+        } // loop over diff
+        
+        commit.diffs = diffs;
+        
+      } // if includeDiff
       
     }// if ! empty line
     else
