@@ -8,6 +8,7 @@
 
 @interface GBChangeCell ()
 @property(nonatomic, copy) NSParagraphStyle* truncatingParagraphStyle;
+@property(nonatomic, assign) BOOL isDragging;
 - (void) drawPath:(NSString*)aPath inRect:(NSRect)aRect withAttributes:(NSDictionary*)attributes;
 @end
 
@@ -18,6 +19,7 @@
 @synthesize truncatingParagraphStyle;
 
 @synthesize isFocused;
+@synthesize isDragging;
 @dynamic change;
 
 - (void) dealloc
@@ -67,7 +69,7 @@
 - (void) drawInteriorWithFrame:(NSRect)cellFrame inView:(GBChangesTableView*)theControlView
 {
   if (![theControlView isKindOfClass:[GBChangesTableView class]]) return;
-  BOOL isDragging = theControlView.preparesImageForDragging;
+  self.isDragging = theControlView.preparesImageForDragging;
   
   NSRect currentFrame = cellFrame; // this will shrink as we draw stuff from left to right
   
@@ -291,7 +293,7 @@
   if (!aPath) return;
   
   GBChange* aChange = [self change];
-  if (aChange.searchQuery)
+  if (aChange.searchQuery && !self.isDragging)
   {
     NSColor* highlightColor = [GBStyle searchHighlightColor];
     if ([self isHighlighted])
