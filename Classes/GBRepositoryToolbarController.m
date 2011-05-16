@@ -21,7 +21,7 @@
 @property(nonatomic, readonly) NSSegmentedControl* pullPushControl;
 @property(nonatomic, readonly) NSButton* pullButton;
 @property(nonatomic, readonly) NSPopUpButton* otherBranchPopUpButton;
-
+@property(nonatomic, readonly) NSSearchField* searchField;
 
 - (void) updateDisabledState;
 - (void) updateBranchMenus;
@@ -39,6 +39,7 @@
 @dynamic pullPushControl;
 @dynamic pullButton;
 @dynamic otherBranchPopUpButton;
+@dynamic searchField;
 
 - (void) dealloc
 {
@@ -68,11 +69,14 @@
 
 - (BOOL) wantsSettingsButton
 {
-  return NO;
+  return NO; // TODO: change to YES when settings are implemented
 }
 
 
+
+
 #pragma mark Controls properties
+
 
 
 - (NSPopUpButton*) currentBranchPopUpButton
@@ -100,6 +104,10 @@
   return (id)[[self toolbarItemForIdentifier:@"GBOtherBranch"] view];
 }
 
+- (NSSearchField*) searchField
+{
+  return (id)[[self toolbarItemForIdentifier:@"GBSearch"] view];
+}
 
 
 
@@ -166,6 +174,8 @@
     [self appendItemWithIdentifier:@"GBPullPush"];
   }
   [self appendItemWithIdentifier:@"GBOtherBranch"];
+  [self appendItemWithIdentifier:NSToolbarFlexibleSpaceItemIdentifier];
+  [self appendItemWithIdentifier:@"GBSearch"];
   
   [self updateBranchMenus];
   [self updateDisabledState];
