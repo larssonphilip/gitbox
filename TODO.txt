@@ -52,8 +52,11 @@ Gitbox 1.3 Enhancements:
 + search: put the search field into the toolbar for better discoverability and context.
 + search: cache first 500 loaded items until refs are reloaded or search is finished.
 
+- search: recognize specialized searches like "file:GBCommit.m", "author:oleg", "diff:someFunction" etc.
+- search: recognized pasted file path (with or without file:// prefix)
 - search: keep selection when search ends.
 - search: bug: when parent commit is clicked it can be missing in the history. Should either not highlight it, or reset search state.
+- search: some background highlight for underlined text in the list of changes.
 
 - search: cmd+F should select all text when already in search field (try enabling search bar for editor textview).
 - general: recessed icon for no selection view and multiple selection view (similar to Lion Mail.app)

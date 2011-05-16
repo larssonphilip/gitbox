@@ -308,6 +308,21 @@
     NSRange fullRange = NSMakeRange(0, [aPath length]);
     [attributedString addAttributes:attributes range:fullRange];
     
+    // Highlight matches in diff by drawing underline
+    if (aChange.containsHighlightedDiffLines)
+    {
+      NSColor* lineColor = [GBStyle searchHighlightUnderlineColor];
+      NSColor* bgColor = [GBStyle searchHighlightUnderlineBackgroundColor];
+      if ([self isHighlighted])
+      {
+        lineColor = [GBStyle searchSelectedHighlightUnderlineColor];
+        bgColor = [GBStyle searchSelectedHighlightUnderlineBackgroundColor];
+      }
+      [attributedString addAttribute:NSBackgroundColorAttributeName value:bgColor range:fullRange];
+      [attributedString addAttribute:NSUnderlineColorAttributeName  value:lineColor range:fullRange];
+      [attributedString addAttribute:NSUnderlineStyleAttributeName  value:[NSNumber numberWithInt:NSUnderlineStyleThick] range:fullRange];
+    }
+	  
     // Highlight matched path substrings
     for (NSString* substring in aChange.highlightedPathSubstrings)
     {
@@ -318,18 +333,7 @@
       }
     }
     
-    // Highlight matches in diff by drawing underline
-    if (aChange.containsHighlightedDiffLines)
-    {
-      NSColor* highlightColor = [GBStyle searchHighlightUnderlineColor];
-      if ([self isHighlighted])
-      {
-        highlightColor = [GBStyle searchSelectedHighlightUnderlineColor];
-      }
-      [attributedString addAttribute:NSUnderlineColorAttributeName value:highlightColor range:fullRange];
-      [attributedString addAttribute:NSUnderlineStyleAttributeName value:[NSNumber numberWithInt:NSUnderlineStyleThick] range:fullRange];
-    }
-    
+    [attributedString fixAttributesInRange:fullRange];
     [attributedString endEditing];
     [attributedString drawInRect:aRect];
   }
