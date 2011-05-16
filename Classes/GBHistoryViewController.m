@@ -269,19 +269,19 @@
 
 
 
-#pragma mark GBSearchBarControllerDelegate
-
-
-- (void) searchBarControllerDidChangeString:(GBSearchBarController*)ctrl
-{
-  self.repositoryController.searchString = self.searchBarController.searchString;
-}
-
-- (void) searchBarControllerDidCancel:(GBSearchBarController*)ctrl
-{
-  self.repositoryController.searchString = nil;
-  [self.searchBarController setVisible:NO animated:YES];
-}
+//#pragma mark GBSearchBarControllerDelegate
+//
+//
+//- (void) searchBarControllerDidChangeString:(GBSearchBarController*)ctrl
+//{
+//  self.repositoryController.searchString = self.searchBarController.searchString;
+//}
+//
+//- (void) searchBarControllerDidCancel:(GBSearchBarController*)ctrl
+//{
+//  self.repositoryController.searchString = nil;
+//  [self.searchBarController setVisible:NO animated:YES];
+//}
 
 
 
