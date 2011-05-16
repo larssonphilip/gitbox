@@ -5,7 +5,7 @@
 + (NSColor*) searchHighlightColor
 {
   static NSColor* c = nil;
-  if (!c) c = [[NSColor colorWithCalibratedRed:1.0 green:1.0 blue:0.33 alpha:0.6] retain];
+  if (!c) c = [[NSColor colorWithCalibratedRed:1.0 green:1.0 blue:0.25 alpha:0.7] retain];
   return c;
 }
 
