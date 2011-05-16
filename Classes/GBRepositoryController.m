@@ -1407,7 +1407,7 @@
   
   self.currentSearch.target = nil;
   [self.currentSearch cancel];
-  id searchCache = self.currentSearch.searchCache;
+  id searchCache = [[self.currentSearch.searchCache retain] autorelease];
   self.currentSearch = nil;
   
   if (searchString && [searchString length] > 0)
