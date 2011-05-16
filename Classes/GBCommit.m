@@ -157,6 +157,10 @@
     self.matchesQuery = NO;
     return;
   }
+  
+  self.foundRangesByProperties = nil;
+  self.matchesQuery = NO;
+
   GBSearchQuery* q = self.searchQuery;
   
   NSMutableDictionary* rangesByProps = [NSMutableDictionary dictionary];
