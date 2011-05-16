@@ -2,7 +2,7 @@ Gitbox 1.3 Release Notes (WIP)
 
 New features:
 
-✓ 
+✓ Full history search: find commits by metadata, file name and even text in the diff.
 
 Enhancements:
 
@@ -48,16 +48,19 @@ Gitbox 1.3 Enhancements:
 + search: highlight multiple occurences of the same string in message text view
 + search: parse patch (-p) - file names and patch lines
 + search: keep diff ranges per-diff to be able to highlight relevant files where the match is found
+- search: put the whole search status and visibleCommits property into GBRepositoryController to fix various bugs when repos are switched.
 - search: put the search field into the toolbar for better discoverability and context.
 
-- search: put the whole search status and visibleCommits property into GBRepositoryController to fix various bugs when repos are switched.
 - search: keep selection when search ends.
 - search: bug: when parent commit is clicked it can be missing in the history. Should either not highlight it, or reset search state.
 - search: cmd+F should select all text when already in search field (try enabling search bar for editor textview).
 - recessed icon for no selection view and multiple selection view (similar to Lion Mail.app)
 - sidebar: before dropping over parent node, highlight appropriate index inside, not the parent
 - sidebar: when multiple repos are selected, new group should wrap them.
+
 - stage: for deleted file rename menu item "Revert File..." to "Restore File..."
+- stage: use --force flag for adding/removing to fix several issues with .gitignore
+- stage: add option "Delete from stage only" for "git rm --force --cached <filepath>".
 
 - enhancement: fsevents: push dotgit-only pause when doing stage updates, fetch, config updates or other internal changes.
 - enhancement: fsevents: on folder update, while .git is on pause, update stage *without* updating the index, so we don't generate more .git/ events
