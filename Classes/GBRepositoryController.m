@@ -59,6 +59,7 @@
 @property(nonatomic, assign) NSUInteger commitsBadgeInteger; // will be cached on save and updated after history updates
 @property(nonatomic, assign) NSUInteger stageBadgeInteger; // will be cached on save and updated after stage updates
 
+@property(nonatomic, assign, readwrite) double searchProgress;
 @property(nonatomic, retain, readwrite) NSArray* searchResults; // list of found commits; setter posts a notification
 @property(nonatomic, retain) GBSearch* currentSearch;
 
@@ -133,6 +134,8 @@
 @synthesize searchString;
 @synthesize searchResults;
 @synthesize currentSearch;
+@synthesize searchProgress;
+
 
 - (void) dealloc
 {
@@ -233,6 +236,17 @@
   return [NSImage imageNamed:NSImageNameFolder];
 }
 
+- (NSArray*) visibleCommits
+{
+  if ([self isSearching])
+  {
+    return self.searchResults;
+  }
+  else
+  {
+    return [self stageAndCommits];
+  }
+}
 
 - (NSArray*) stageAndCommits
 {
@@ -1379,6 +1393,11 @@
 
 
 
+- (BOOL) isSearching
+{
+  return !!self.searchString;
+}
+
 - (void) setSearchString:(NSString *)newString
 {
   if (searchString == newString) return;
@@ -1424,7 +1443,7 @@
     [searchResults release];
     searchResults = [newResults retain];
   }
-  [self notifyWithSelector:@selector(repositoryControllerSearchDidUpdateResults:)];
+  [self notifyWithSelector:@selector(repositoryControllerDidUpdateCommits:)];
 }
 
 // This method sends the tag method to determine what operation to perform. The list of possible tags is provided in “Constants.”

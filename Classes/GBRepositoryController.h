@@ -27,8 +27,11 @@
 @property(nonatomic, retain) OAFSEventStream* fsEventStream;
 @property(nonatomic, retain) NSString* lastCommitBranchName;
 @property(nonatomic, assign) BOOL needsInitialFetch;
+
+@property(nonatomic, assign, readonly, getter=isSearching) BOOL searching;
 @property(nonatomic, copy)   NSString* searchString;
 @property(nonatomic, retain, readonly) NSArray* searchResults;
+@property(nonatomic, assign, readonly) double searchProgress;
 
 @property(nonatomic, assign) NSInteger isRemoteBranchesDisabled;
 @property(nonatomic, assign, readonly) NSInteger isDisabled;
@@ -37,6 +40,9 @@
 + (id) repositoryControllerWithURL:(NSURL*)url;
 
 - (id) initWithURL:(NSURL*)aURL;
+
+// Returns a list of search results or stageAndCommits depending on the current state.
+- (NSArray*) visibleCommits;
 
 - (NSArray*) stageAndCommits;
 

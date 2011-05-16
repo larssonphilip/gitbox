@@ -23,7 +23,8 @@
 
 @property(nonatomic, retain) GBStageViewController* stageController;
 @property(nonatomic, retain) GBCommitViewController* commitController;
-@property(nonatomic, retain) NSArray* stageAndCommits;
+@property(nonatomic, retain) NSArray* visibleCommits;
+@property(nonatomic, retain) NSArray* arrayControllerCommits;
 @property(nonatomic, retain) OAFastJumpController* jumpController;
 @property(nonatomic, retain) GBCommitCell* commitCell;
 
@@ -43,11 +44,12 @@
 
 @synthesize tableView;
 @synthesize logArrayController;
+@synthesize arrayControllerCommits;
 @synthesize searchBarController;
 
 @synthesize stageController;
 @synthesize commitController;
-@synthesize stageAndCommits;
+@dynamic visibleCommits;
 @synthesize jumpController;
 
 @synthesize commitCell;
@@ -69,12 +71,12 @@
 
   self.stageController = nil;
   self.commitController = nil;
-  self.stageAndCommits = nil;
   self.jumpController = nil;
   self.searchBarController.delegate = nil;
   self.searchBarController = nil;
   
   [commitCell release]; commitCell = nil;
+  [arrayControllerCommits release]; arrayControllerCommits = nil;
   
   [super dealloc];
 }
@@ -97,7 +99,7 @@
   
   [repositoryController addObserverForAllSelectors:self];
   
-  self.stageAndCommits = [self.repositoryController stageAndCommits];
+  self.visibleCommits = [self.repositoryController visibleCommits];
   
   if (repoCtrl)
   {
@@ -139,7 +141,7 @@
     }
     else
     {
-      NSUInteger anIndex = [self.stageAndCommits indexOfObject:aCommit];
+      NSUInteger anIndex = [self.visibleCommits indexOfObject:aCommit];
       if (anIndex != NSNotFound)
       {
         [self.tableView selectRowIndexes:[NSIndexSet indexSetWithIndex:anIndex] byExtendingSelection:NO];
@@ -187,28 +189,38 @@
 #pragma mark GBRepositoryController
 
 
-// TODO: rename stageAndCommits to arrayControllerCommits
-
-- (void) syncCurrentCommit
+- (NSArray*) visibleCommits
 {
+  return self.arrayControllerCommits;
+}
+
+- (void) setVisibleCommits:(NSArray *)cs
+{
+  self.arrayControllerCommits = cs;
   GBCommit* aCommit = self.commit;
   if (aCommit)
   {
     // Find the new commit instance for the current commit.
-    NSUInteger index = [self.stageAndCommits indexOfObject:aCommit];
-    if (index != NSNotFound)
+    if (cs)
     {
-      aCommit = [self.stageAndCommits objectAtIndex:index];
-      self.commit = aCommit;
+      NSUInteger index = [cs indexOfObject:aCommit];
+      if (index != NSNotFound)
+      {
+        aCommit = [cs objectAtIndex:index];
+        self.commit = aCommit;
+      }
+    }
+    else
+    {
+      self.commit = nil;
     }
   }
 }
 
+
 - (void) repositoryControllerDidUpdateCommits:(GBRepositoryController*)repoCtrl
 {
-  // TODO: refactor this somehow so that we don't accidentaly display irrelevant data while in search mode (should move this into repository controller)
-  self.stageAndCommits = [self.repositoryController stageAndCommits];
-  [self syncCurrentCommit];
+  self.visibleCommits = [self.repositoryController visibleCommits];
 }
 
 - (void) repositoryControllerDidSelectCommit:(GBRepositoryController*)repoCtrl
@@ -233,20 +245,6 @@
 {
   [self.searchBarController setSearchString:@""];
   [self.searchBarController setVisible:NO animated:YES];
-}
-
-- (void) repositoryControllerSearchDidUpdateResults:(GBRepositoryController*)repoCtrl
-{
-  NSArray* results = [self.repositoryController searchResults];
-  if (results)
-  {
-    self.stageAndCommits = results;
-  }
-  else
-  {
-    self.stageAndCommits = [self.repositoryController stageAndCommits];
-  }
-  [self syncCurrentCommit];
 }
 
 - (void) repositoryControllerSearchDidStartRunning:(GBRepositoryController*)repoCtrl
@@ -396,7 +394,7 @@
 
 - (void) updateStage
 {
-  if ([self.stageAndCommits count] > 0)
+  if ([self.visibleCommits count] > 0)
   {
     [self.tableView reloadDataForRowIndexes:[NSIndexSet indexSetWithIndex:0] columnIndexes:[NSIndexSet indexSetWithIndex:0]];
   }
@@ -434,7 +432,7 @@ dataCellForTableColumn:(NSTableColumn*)aTableColumn
     self.commitCell = [GBCommitCell cell];
   }
   GBCommitCell* aCell = [[self.commitCell copy] autorelease];
-  [aCell setRepresentedObject:[self.stageAndCommits objectAtIndex:row]];
+  [aCell setRepresentedObject:[self.visibleCommits objectAtIndex:row]];
   return aCell;
 }
 
