@@ -12,6 +12,7 @@
 @property(nonatomic, assign) int lastTimestamp;
 @property(nonatomic, assign) BOOL isRunning;
 @property(nonatomic, assign) NSUInteger limit;
+@property(nonatomic, assign) BOOL usedCachedCommits;
 - (void) launchNextTask;
 @end
 
@@ -19,6 +20,7 @@
 @synthesize query;
 @synthesize repository;
 @synthesize commits;
+@synthesize searchCache;
 @synthesize target;
 @synthesize action;
 @synthesize commitIds;
@@ -27,6 +29,7 @@
 @synthesize lastTimestamp;
 @synthesize isRunning;
 @synthesize limit;
+@synthesize usedCachedCommits;
 
 - (void) dealloc
 {
@@ -34,6 +37,8 @@
   self.repository = nil;
   self.commits = nil;
   self.commitIds = nil;
+  
+  [searchCache release]; searchCache = nil;
   
   [self.task terminate];
   self.task = nil;
@@ -55,6 +60,7 @@
   self.commits = [NSMutableArray array];
   self.commitIds = [NSMutableSet set];
   self.limit = 50;
+  
   [self launchNextTask];
 }
 
@@ -70,10 +76,67 @@
 #pragma mark Private
 
 
+- (void) processCommits:(NSArray*) theCommits
+{
+  // TODO: put matching in the background queues
+  
+  BOOL gotNewCommits = NO;
+  
+  if (!self.searchCache)
+  {
+    self.searchCache = [NSMutableArray array];
+  }
+  if ([(NSArray*)self.searchCache count] < 300 && theCommits)
+  {
+    [self.searchCache addObjectsFromArray:theCommits];
+  }
+  
+  for (GBCommit* commit in theCommits)
+  {
+    if (lastTimestamp <= 0 || commit.rawTimestamp < self.lastTimestamp)
+    {
+      self.lastTimestamp = commit.rawTimestamp;
+      gotNewCommits = YES;
+    }
+    if (![self.commitIds containsObject:commit.commitId])
+    {
+      commit.searchQuery = self.query;
+      if ([commit matchesQuery])
+      {
+        [self.commitIds addObject:commit.commitId];
+        [self.commits addObject:commit];
+      }
+    }
+  }
+  
+  self.isRunning = gotNewCommits;
+  [self.target performSelector:self.action withObject:self];
+  
+  self.task = nil;
+  
+  if (gotNewCommits)
+  {
+    [self launchNextTask];
+  }
+}
+
+
 - (void) launchNextTask
 {
   if (self.task) return;
   if (self.cancelled) return;
+  
+  if (!self.usedCachedCommits)
+  {
+    self.usedCachedCommits = YES;
+    if (self.searchCache)
+    {
+      NSArray* cachedCommits = [[self.searchCache retain] autorelease];
+      self.searchCache = nil;
+      [self processCommits:cachedCommits];
+      return;
+    }
+  }
   
   self.task = [GBHistoryTask task];
   self.isRunning = YES;
@@ -91,38 +154,7 @@
   self.task.beforeTimestamp = self.lastTimestamp;
   
   [self.repository launchTask:self.task withBlock:^{
-    
-    // TODO: put matching in the background queues
-    
-    BOOL gotNewCommits = NO;
-    
-    for (GBCommit* commit in self.task.commits)
-    {
-      if (lastTimestamp <= 0 || commit.rawTimestamp < self.lastTimestamp)
-      {
-        self.lastTimestamp = commit.rawTimestamp;
-        gotNewCommits = YES;
-      }
-      if (![self.commitIds containsObject:commit.commitId])
-      {
-        commit.searchQuery = self.query;
-        if ([commit matchesQuery])
-        {
-          [self.commitIds addObject:commit.commitId];
-          [self.commits addObject:commit];
-        }
-      }
-    }
-
-    self.isRunning = gotNewCommits;
-    [self.target performSelector:self.action withObject:self];
-    
-    self.task = nil;
-    
-    if (gotNewCommits)
-    {
-      [self launchNextTask];
-    }
+    [self processCommits:self.task.commits];
   }];
 }
 

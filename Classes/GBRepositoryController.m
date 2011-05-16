@@ -1407,6 +1407,7 @@
   
   self.currentSearch.target = nil;
   [self.currentSearch cancel];
+  id searchCache = self.currentSearch.searchCache;
   self.currentSearch = nil;
   
   if (searchString && [searchString length] > 0)
@@ -1416,6 +1417,7 @@
                                         target:self 
                                         action:@selector(searchDidUpdate:)];
     
+    self.currentSearch.searchCache = searchCache;
     [self.currentSearch start];
     [self notifyWithSelector:@selector(repositoryControllerSearchDidStartRunning:)];
   }
