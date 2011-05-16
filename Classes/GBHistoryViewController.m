@@ -236,24 +236,34 @@
 
 - (void) repositoryControllerSearchDidStart:(GBRepositoryController*)repoCtrl
 {
-  [self.searchBarController setSearchString:repoCtrl.searchString];
-  [self.searchBarController setVisible:YES animated:YES];
-  [self.searchBarController focus];
+  // TODO: replace searchBarController with searchStatusController
+//  [self.searchBarController setSearchString:repoCtrl.searchString];
+//  [self.searchBarController setVisible:YES animated:YES];
+//  [self.searchBarController focus];
 }
 
 - (void) repositoryControllerSearchDidEnd:(GBRepositoryController*)repoCtrl
 {
-  [self.searchBarController setSearchString:@""];
-  [self.searchBarController setVisible:NO animated:YES];
+  // TODO: replace searchBarController with searchStatusController
+//  [self.searchBarController setSearchString:@""];
+//  [self.searchBarController setVisible:NO animated:YES];
+  [self.view.window makeFirstResponder:self.tableView];
+}
+
+- (void) repositoryControllerSearchDidTab:(GBRepositoryController*)repoCtrl
+{
+  [self.view.window makeFirstResponder:self.tableView];
 }
 
 - (void) repositoryControllerSearchDidStartRunning:(GBRepositoryController*)repoCtrl
 {
+  // TODO: replace searchBarController with searchStatusController
   [self.searchBarController setSpinning:YES];
 }
 
 - (void) repositoryControllerSearchDidStopRunning:(GBRepositoryController*)repoCtrl
 {
+  // TODO: replace searchBarController with searchStatusController
   [self.searchBarController setSpinning:NO];
 }
 

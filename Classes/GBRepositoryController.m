@@ -1421,7 +1421,7 @@
   }
   else
   {
-    self.searchResults = nil;
+    self.searchResults = [self stageAndCommits];
     [self notifyWithSelector:@selector(repositoryControllerSearchDidStopRunning:)];
   }
 }
@@ -1473,11 +1473,15 @@
 
 - (IBAction) search:(id)sender // posts notification repositoryControllerSearchDidStart:
 {
-  if (!self.searchString) 
+  BOOL wasNotSearching = ![self isSearching];
+  if (!self.searchString)
   {
     self.searchString = @"";
   }
   [self notifyWithSelector:@selector(repositoryControllerSearchDidStart:)];
+  
+  // When entering search mode, but before typing in a string, we want to display previous content.
+  if (wasNotSearching) self.searchResults = [self stageAndCommits];
 }
 
 - (IBAction) cancelSearch:(id)sender // posts notification repositoryControllerSearchDidEnd:

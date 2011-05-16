@@ -89,6 +89,8 @@
 {
   if (!itemIdentifier) return nil;
   
+  //NSLog(@"items = %@; id = %@", [[self.toolbar items] valueForKey:@"itemIdentifier"], itemIdentifier);
+  
   for (NSToolbarItem* item in [self.toolbar items])
   {
     if ([[item itemIdentifier] isEqual:itemIdentifier])

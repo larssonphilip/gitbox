@@ -14,7 +14,7 @@
 #import "NSArray+OAArrayHelpers.h"
 #import "NSString+OAStringHelpers.h"
 
-@interface GBRepositoryToolbarController ()
+@interface GBRepositoryToolbarController () <NSTextFieldDelegate>
 
 @property(nonatomic, readonly) NSPopUpButton* currentBranchPopUpButton;
 @property(nonatomic, readonly) NSButton* settingsButton;
@@ -64,7 +64,10 @@
   repositoryController = repoCtrl;
   
   [repositoryController addObserverForAllSelectors:self];
+
   [self update];
+  
+  [self.searchField setStringValue:repositoryController.searchString ? repositoryController.searchString : @""];
 }
 
 - (BOOL) wantsSettingsButton
@@ -122,26 +125,86 @@
 {
   [self update];
 }
+
 - (void) repositoryControllerDidChangeSpinningStatus:(GBRepositoryController*)repoCtrl
 {
   [self update];
 }
+
 - (void) repositoryControllerDidCheckoutBranch:(GBRepositoryController*)repoCtrl
 {
   [self update];
 }
+
 - (void) repositoryControllerDidChangeRemoteBranch:(GBRepositoryController*)repoCtrl
 {
   [self update];
 }
+
 - (void) repositoryControllerDidCommit:(GBRepositoryController*)repoCtrl
 {
   [self update];
 }
+
 - (void) repositoryControllerDidUpdateRefs:(GBRepositoryController*)repoCtrl
 {
   [self update];
 }
+
+- (void) repositoryControllerSearchDidStart:(GBRepositoryController*)repoCtrl
+{
+  [self.searchField setStringValue:repoCtrl.searchString ? repoCtrl.searchString : @""];
+  [self.searchField setRefusesFirstResponder:NO]; // some cargo cult line appeared when I was trying to make Cmd+F select all text while the field is first responder.
+  [self.window makeFirstResponder:self.searchField];
+  [self.searchField selectText:nil];
+}
+
+- (void) repositoryControllerSearchDidEnd:(GBRepositoryController*)repoCtrl
+{
+  [self.searchField setStringValue:@""];
+}
+
+
+
+
+#pragma mark Search delegate and action
+
+
+- (IBAction)searchFieldDidChange:(id)sender
+{
+  self.repositoryController.searchString = [self.searchField stringValue];
+}
+
+
+// handling of ESC key
+- (BOOL) control:(NSControl*)control textView:(NSTextView*)textView doCommandBySelector:(SEL)commandSelector
+{
+  NSSearchField* searchField = self.searchField;
+  if (control == searchField)
+  {
+    if (commandSelector == @selector(cancelOperation:))
+    {
+      [self.repositoryController cancelSearch:self];
+      return YES;
+    }
+    // when Cmd+F is pressed, should select all text.
+    // In fact, this code is not executed because of a funny way editor textview surpresses all find panel actions
+    if (commandSelector == @selector(performFindPanelAction:))
+    {
+      [self.searchField selectText:nil];
+      return YES;
+    }
+    
+    if (commandSelector == @selector(insertTab:))
+    {
+      [self.repositoryController notifyWithSelector:@selector(repositoryControllerSearchDidTab:)];
+      return YES;
+    }    
+  }
+  return NO;
+}
+
+
 
 
 
@@ -176,6 +239,21 @@
   [self appendItemWithIdentifier:@"GBOtherBranch"];
   [self appendItemWithIdentifier:NSToolbarFlexibleSpaceItemIdentifier];
   [self appendItemWithIdentifier:@"GBSearch"];
+  
+  NSSearchField* searchField = self.searchField;
+  
+  if (repositoryController)
+  {
+    [searchField setDelegate:self];
+    [searchField setAction:@selector(searchFieldDidChange:)];
+    [searchField setTarget:self];
+  }
+  else if ([searchField delegate] == nil || [searchField delegate] == self)
+  {
+    [searchField setDelegate:nil];
+    [searchField setAction:NULL];
+    [searchField setTarget:nil];
+  }
   
   [self updateBranchMenus];
   [self updateDisabledState];
