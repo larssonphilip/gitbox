@@ -108,14 +108,12 @@
     [self prepareChangesControllersIfNeeded];
   }
   
-  if (repoCtrl.searchString)
+  if ([repoCtrl isSearching])
   {
-    self.searchBarController.searchString = repoCtrl.searchString;
     self.searchBarController.visible = YES;
   }
   else
   {
-    self.searchBarController.searchString = @"";
     self.searchBarController.visible = NO;
   }
   
@@ -170,6 +168,7 @@
     {
       [self.stageController loadInView:self.detailView];
       [self.stageController setNextResponder:self];
+      // First rule of key view loop management: key view loop management breaks the key view loop.
       //[self.tableView setNextKeyView:self.stageController.tableView];
     }
     else
@@ -221,6 +220,7 @@
 - (void) repositoryControllerDidUpdateCommits:(GBRepositoryController*)repoCtrl
 {
   self.visibleCommits = [self.repositoryController visibleCommits];
+  [self.searchBarController setVisible:[self.repositoryController isSearching] animated:YES];
 }
 
 - (void) repositoryControllerDidSelectCommit:(GBRepositoryController*)repoCtrl
@@ -234,19 +234,9 @@
   [self updateStage];
 }
 
-- (void) repositoryControllerSearchDidStart:(GBRepositoryController*)repoCtrl
-{
-  // TODO: replace searchBarController with searchStatusController
-//  [self.searchBarController setSearchString:repoCtrl.searchString];
-//  [self.searchBarController setVisible:YES animated:YES];
-//  [self.searchBarController focus];
-}
-
 - (void) repositoryControllerSearchDidEnd:(GBRepositoryController*)repoCtrl
 {
-  // TODO: replace searchBarController with searchStatusController
-//  [self.searchBarController setSearchString:@""];
-//  [self.searchBarController setVisible:NO animated:YES];
+  [self.searchBarController setVisible:NO animated:YES];
   [self.view.window makeFirstResponder:self.tableView];
 }
 
@@ -257,13 +247,11 @@
 
 - (void) repositoryControllerSearchDidStartRunning:(GBRepositoryController*)repoCtrl
 {
-  // TODO: replace searchBarController with searchStatusController
   [self.searchBarController setSpinning:YES];
 }
 
 - (void) repositoryControllerSearchDidStopRunning:(GBRepositoryController*)repoCtrl
 {
-  // TODO: replace searchBarController with searchStatusController
   [self.searchBarController setSpinning:NO];
 }
 

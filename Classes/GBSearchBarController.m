@@ -1,79 +1,24 @@
 #import "GBSearchBarController.h"
 #import "NSObject+OASelectorNotifications.h"
 
-//@interface GBSearchBarTextView : NSTextView
-//@end
-//@implementation GBSearchBarTextView
-//- (IBAction) performFindPanelAction:(id)sender
-//{
-//  //  typedef enum {
-//  //    NSFindPanelActionShowFindPanel = 1,
-//  //    NSFindPanelActionNext = 2,
-//  //    NSFindPanelActionPrevious = 3,
-//  //    NSFindPanelActionReplaceAll = 4,
-//  //    NSFindPanelActionReplace = 5,
-//  //    NSFindPanelActionReplaceAndFind = 6,
-//  //    NSFindPanelActionSetFindString = 7,
-//  //    NSFindPanelActionReplaceAllInSelection = 8
-//  //  } NSFindPanelAction;
-//  
-//  NSFindPanelAction action = [sender tag];
-//  if (action == NSFindPanelActionShowFindPanel || 
-//      action == NSFindPanelActionSetFindString)
-//  {
-//    [self selectAll:nil];
-//  }
-//}
-//- (BOOL)tryToPerform:(SEL)anAction with:(id)anObject
-//{
-//  return [super tryToPerform:anAction with:anObject];
-//}
-//- (void)doCommandBySelector:(SEL)aSelector
-//{
-//  [super doCommandBySelector:aSelector];
-//}
-//@end
-
-
-@interface GBSearchBarTextField ()
-//@property(nonatomic,retain) GBSearchBarTextView* myTextView;
-@end
-
-@implementation GBSearchBarTextField : NSSearchField
-//@synthesize myTextView;
-//- (void) dealloc
-//{
-//  self.myTextView = nil;
-//  [super dealloc];
-//}
-//- (NSText *)currentEditor
-//{
-//  NSText* text = [super currentEditor];
-//  [text setNextResponder:self];
-//  NSLog(@"GBSearchbArTextField currentEditor: responder chain for editor: %@", [text OAResponderChain]);
-//  return text;
-//}
-//- (BOOL)acceptsFirstResponder
-//{
-//  return YES;
-//}
-@end
-
-
 @interface GBSearchBarController () <NSTextFieldDelegate>
+- (void) updateStatusLabel;
 @end
 
 @implementation GBSearchBarController
 
 @synthesize visible;
+@synthesize spinning;
+@synthesize progress;
 @dynamic searchString;
 @synthesize contentView;
 @synthesize delegate;
+@synthesize resultsCount;
 
 @synthesize barView;
 @synthesize searchField;
 @synthesize progressIndicator;
-
+@synthesize statusLabel;
 
 
 #pragma mark Init
@@ -86,6 +31,7 @@
   self.contentView = nil;
   self.searchField = nil;
   self.progressIndicator = nil;
+  self.statusLabel = nil;
   [super dealloc];
 }
 
@@ -102,6 +48,7 @@
     [self.view addSubview:self.barView];
     
     [self.searchField setRefusesFirstResponder:YES];
+    [self updateStatusLabel];
   }
 }
 
@@ -142,6 +89,7 @@
 
 - (void) focus
 {
+  if (!self.searchField) return;
   [self.searchField setRefusesFirstResponder:NO];
   [self.view.window makeFirstResponder:self.searchField];
   [self.searchField selectText:nil];
@@ -149,6 +97,7 @@
 
 - (void) unfocus
 {
+  if (!self.searchField) return;
   [self.view.window makeFirstResponder:self.contentView];
 }
 
@@ -165,6 +114,7 @@
   {
     [self setSpinning:NO];
   }
+  [self updateStatusLabel];
 }
 
 - (void) setVisible:(BOOL)newVisible
@@ -222,24 +172,45 @@
     [self.contentView setFrameSize:newSize];
   }
 
+  [self updateStatusLabel];
 }
 
-- (void) setSpinning:(BOOL)animated
+- (void) setSpinning:(BOOL)flag
 {
-  // TODO: find if this is needed
-  if ([[searchField stringValue] length] == 0)  return;
+  spinning = flag;
   
-  if (animated)
+  if (flag)
   {
-    [searchField.cell setCancelButtonCell:nil];
-    [progressIndicator startAnimation:self];
+    [self.searchField.cell setCancelButtonCell:nil];
+    [self.progressIndicator startAnimation:self];
   }
   else
   {
-    [searchField.cell resetCancelButtonCell];
-    [progressIndicator stopAnimation:self];
+    [self.searchField.cell resetCancelButtonCell];
+    [self.progressIndicator stopAnimation:self];
   }
+  
+  [self updateStatusLabel];
 }
 
+
+- (void) updateStatusLabel
+{
+  if (self.resultsCount < 1)
+  {
+    if (spinning)
+    {
+      [self.statusLabel setStringValue:NSLocalizedString(@"Searching in history...", @"")];
+    }
+    else
+    {
+      [self.statusLabel setStringValue:NSLocalizedString(@"No results", @"")];
+    }
+  }
+  else
+  {
+    [self.statusLabel setStringValue:[NSString stringWithFormat:(self.resultsCount == 1) ? NSLocalizedString(@"Found %d commit%@", nil) : NSLocalizedString(@"Found %d commits%@", nil), spinning ? @"..." : @""]];
+  }
+}
 
 @end

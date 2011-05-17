@@ -1403,7 +1403,7 @@
   if (searchString == newString) return;
   
   [searchString release];
-  searchString = [newString copy];
+  searchString = [[newString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] copy];
   
   self.currentSearch.target = nil;
   [self.currentSearch cancel];

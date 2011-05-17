@@ -46,7 +46,7 @@
 					<object class="NSCustomView" id="456490790">
 						<reference key="NSNextResponder" ref="1005"/>
 						<int key="NSvFlags">-2147483382</int>
-						<string key="NSFrame">{{0, 508}, {407, 40}}</string>
+						<string key="NSFrame">{{0, 525}, {407, 23}}</string>
 						<reference key="NSSuperview" ref="1005"/>
 						<string key="NSClassName">NSView</string>
 					</object>
@@ -446,7 +446,7 @@
 				</object>
 				<object class="NSMutableArray" key="dict.values">
 					<bool key="EncodedWithXMLCoder">YES</bool>
-					<string>{{140, 116}, {407, 548}}</string>
+					<string>{{534, 91}, {407, 548}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>{628, 654}</string>
 					<string>{{217, 442}, {480, 272}}</string>
