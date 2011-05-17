@@ -52,13 +52,10 @@ Gitbox 1.3 Enhancements:
 + search: put the search field into the toolbar for better discoverability and context.
 + search: cache first 500 loaded items until refs are reloaded or search is finished.
 
-- search: recognize specialized searches like "file:GBCommit.m", "author:oleg", "diff:someFunction" etc.
-- search: recognized pasted file path (with or without file:// prefix)
 - search: keep selection when search ends.
 - search: bug: when parent commit is clicked it can be missing in the history. Should either not highlight it, or reset search state.
-- search: some background highlight for underlined text in the list of changes.
++ search: some background highlight for underlined text in the list of changes.
 
-- search: cmd+F should select all text when already in search field (try enabling search bar for editor textview).
 - general: recessed icon for no selection view and multiple selection view (similar to Lion Mail.app)
 - sidebar: before dropping over parent node, highlight appropriate index inside, not the parent
 - sidebar: when multiple repos are selected, new group should wrap them.
@@ -140,7 +137,7 @@ Features:
 - general: handling URL schema: gitbox://git@sss.pierlis.com/repo.git#commits/sha1
 - general: obfuscated license check
 - general: polish the icon
-- general: built-in terminal in a floating HUD-style window. Should keep the shell task during lifetime of the repo and switch when the repo is switched. Cmd+Shift+Return as a hotkey to toggle the terminal window.
+- general: built-in terminal in a splitview pane in the bottom below both history and commit/stage views. Should keep the shell task during lifetime of the repo and switch when the repo is switched. Cmd+Shift+Return as a hotkey to toggle the terminal window.
 - general: advanced git feature: remove the file from repo by rewriting the whole history
 - general: advanced git feature: extract history from a folder (e.g. useful for creating submodule)
 
@@ -160,12 +157,11 @@ Features:
 - history: undo for ref checkout
 - history: undo for branch reset
 - history: maybe: easy/hidden rebase to keep history clean? (actually, need a "rebase continue" and "cancel")
-- history: find-as-you-type search in stage
+- history: find-as-you-type search in stage (?)
 - history: probably get rid of dates, and design it in a more cheesy fashion
 - history: navigate to the sha1
 - history: navigate back and forward (History main menu)
 - history: reset a branch to a selected commit
-- history: checkout a commit
 - history: extract commit into new folder
 - history: check out a branch from the commit item
 - history: add "load more" cell in the bottom of the log
@@ -173,7 +169,11 @@ Features:
 - history: tag and branch badges in history
 - history: tag badges in history
 - history: create a tag + undo
-- history: align date and time so that the same dates are aligned
+
+- search: recognize specialized searches like "file:GBCommit.m", "author:oleg", "diff:someFunction" etc.
+- search: recognized pasted file path (with or without file:// prefix)
+- search: cmd+F should select all text when already in search field (try enabling search bar for editor textview).
+- search: load total count of commits to be scanned to present a progress circle instead of a spinner
 
 - changes: compare image files in an double-pane image viewer
 - changes: built-in diff view for better UTF8 support (FileMerge is stupid)
