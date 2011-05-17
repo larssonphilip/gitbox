@@ -221,6 +221,7 @@
 {
   self.visibleCommits = [self.repositoryController visibleCommits];
   [self.searchBarController setVisible:[self.repositoryController isSearching] animated:NO];
+  self.searchBarController.resultsCount = [[self.repositoryController searchResults] count];
 }
 
 - (void) repositoryControllerDidSelectCommit:(GBRepositoryController*)repoCtrl

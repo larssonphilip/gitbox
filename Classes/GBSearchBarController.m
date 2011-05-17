@@ -193,6 +193,26 @@
   [self updateStatusLabel];
 }
 
+- (void) setResultsCount:(NSUInteger)cnt
+{
+	resultsCount = cnt;
+	[self updateStatusLabel];
+}
+
+- (void) setProgress:(double)newProgress
+{
+	progress = newProgress;
+	if (progress >= 0.01 && progress <= 0.99)
+	{
+		[self.progressIndicator setIndeterminate:NO];
+	}
+	else
+	{
+		[self.progressIndicator setIndeterminate:YES];
+	}
+	[self updateStatusLabel];
+}
+
 
 - (void) updateStatusLabel
 {
@@ -200,16 +220,16 @@
   {
     if (spinning)
     {
-      [self.statusLabel setStringValue:NSLocalizedString(@"Searching in history...", @"")];
+      [self.statusLabel setStringValue:NSLocalizedString(@"Searching...", @"GBSearchBar")];
     }
     else
     {
-      [self.statusLabel setStringValue:NSLocalizedString(@"No results", @"")];
+      [self.statusLabel setStringValue:NSLocalizedString(@"No results", @"GBSearchBar")];
     }
   }
   else
   {
-    [self.statusLabel setStringValue:[NSString stringWithFormat:(self.resultsCount == 1) ? NSLocalizedString(@"Found %d commit%@", nil) : NSLocalizedString(@"Found %d commits%@", nil), spinning ? @"..." : @""]];
+    [self.statusLabel setStringValue:[NSString stringWithFormat:(self.resultsCount == 1) ? NSLocalizedString(@"%d commit", @"GBSearchBar") : NSLocalizedString(@"%d commits", @"GBSearchBar"), self.resultsCount]];
   }
 }
 
