@@ -220,7 +220,7 @@
 - (void) repositoryControllerDidUpdateCommits:(GBRepositoryController*)repoCtrl
 {
   self.visibleCommits = [self.repositoryController visibleCommits];
-  [self.searchBarController setVisible:[self.repositoryController isSearching] animated:YES];
+  [self.searchBarController setVisible:[self.repositoryController isSearching] animated:NO];
 }
 
 - (void) repositoryControllerDidSelectCommit:(GBRepositoryController*)repoCtrl
@@ -236,7 +236,7 @@
 
 - (void) repositoryControllerSearchDidEnd:(GBRepositoryController*)repoCtrl
 {
-  [self.searchBarController setVisible:NO animated:YES];
+  [self.searchBarController setVisible:NO animated:NO];
   [self.view.window makeFirstResponder:self.tableView];
 }
 
