@@ -78,7 +78,7 @@
 						<reference key="NSNextResponder" ref="1005"/>
 						<int key="NSvFlags">1289</int>
 						<object class="NSPSMatrix" key="NSDrawMatrix"/>
-						<string key="NSFrame">{{343, 4}, {16, 16}}</string>
+						<string key="NSFrame">{{344, 4}, {16, 16}}</string>
 						<reference key="NSSuperview" ref="1005"/>
 						<int key="NSViewLayerContentsRedrawPolicy">2</int>
 						<int key="NSpiFlags">28938</int>
@@ -87,7 +87,6 @@
 				</object>
 				<string key="NSFrameSize">{376, 23}</string>
 				<reference key="NSSuperview"/>
-				<reference key="NSNextKeyView"/>
 				<int key="NSViewLayerContentsRedrawPolicy">2</int>
 				<string key="NSClassName">GBGreyGradientView</string>
 			</object>
