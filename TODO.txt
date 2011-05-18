@@ -4,12 +4,14 @@ Gitbox 1.3 Release Notes (WIP)
 New features:
 
 ✓ Full history search: find commits by metadata, file name and even text in the diff.
+✓ Force push to replace remote branch head with current commit (hold Cmd+Shift before pressing "P" or push button)
 
 Enhancements:
 
 ✓ Improved scrolling performance of the list of commits.
 ✓ App is not terminated when the main window is closed. Window can be retrieved by clicking an icon in the Dock or "Main Window" menu item.
 ✓ Fetch menu item gets Option+U shortcut, fetches from all remote servers.
+
 
 Bug fixes:
 
