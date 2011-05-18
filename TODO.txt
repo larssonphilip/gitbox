@@ -96,6 +96,8 @@ Gitbox 1.3 Bug fixes:
 - (right now jump controller is disabled because of that) bug: minor issue: when quickly iterating through sidebar when repos are autofetched, the selection sometimes jumps. We should reset jump controller's block when selection is changed elsewhere.
 - bug: when fetch is clicked, should fetch everything (see email discussion)
 
+- bug: cmd+Z causes crash: after typing in searchfield and unfocusing from it.
+
 - bug: configured remote server without(?) pushed branches, while the current branch associated with non-existant remote, is not displayed in remotes dropdown menu.
 
 - bug: stage: when having multiple selection and expanding it with keyboard, stage updates cause internal rest, so the selection does not change the same way when continuing pressing keystrokes. Should probably not replace stage content when it did not really change.
