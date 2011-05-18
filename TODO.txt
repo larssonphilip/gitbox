@@ -10,7 +10,7 @@ Enhancements:
 
 ✓ Improved scrolling performance of the list of commits.
 ✓ App is not terminated when the main window is closed. Window can be retrieved by clicking an icon in the Dock or "Main Window" menu item.
-✓ Fetch menu item gets Option+U shortcut, fetches from all remote servers.
+✓ Fetch menu item gets Option+U shortcut, fetches from all remote servers (same for toolbar item).
 
 
 Bug fixes:
@@ -25,7 +25,7 @@ Bug fixes:
 
 Gitbox 1.3 todo:
 
-- toolbar: Option/Alt key lets to fetch instead of pull
++ toolbar: Option/Alt key lets to fetch instead of pull
 + toolbar: Shift+Cmd key lets force push
 
 ? search: match commits in a group of parallel queues for not blocking main thread - seems like parsing in background is enough
