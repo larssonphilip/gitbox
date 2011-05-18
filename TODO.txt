@@ -97,6 +97,7 @@ Features:
 
 - toolbar: force push a branch (when push fails, present a normal error message with a question to push with force)
 
+- sidebar: progress circle for pushing/pulling/fetching
 - sidebar: bonjour sharing
 - sidebar: wide-area bonjour sharing (dyndns? my dns server?)
 - sidebar: github
