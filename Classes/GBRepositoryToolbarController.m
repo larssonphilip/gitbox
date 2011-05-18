@@ -303,6 +303,12 @@
     [control setLabel:NSLocalizedString(@"← pull", @"Toolbar") forSegment:0];
     [control setLabel:NSLocalizedString(@"push →", @"Toolbar") forSegment:1];
     NSUInteger modifierFlags = [[NSApp currentEvent] modifierFlags];
+    
+    if (modifierFlags & NSAlternateKeyMask)
+    {
+      [control setLabel:NSLocalizedString(@"← fetch", @"Toolbar") forSegment:0];
+    }
+    
     if ((modifierFlags & NSShiftKeyMask) && (modifierFlags & NSCommandKeyMask))
     {
       [control setLabel:NSLocalizedString(@"force →", @"Toolbar") forSegment:1];
@@ -674,7 +680,15 @@
   NSInteger segment = [segmentedControl selectedSegment];
   if (segment == 0)
   {
-    [self.repositoryController pull:segmentedControl];
+    NSUInteger modifierFlags = [[NSApp currentEvent] modifierFlags];
+    if (modifierFlags & NSAlternateKeyMask)
+    {
+      [self.repositoryController fetch:segmentedControl];
+    }
+    else
+    {
+      [self.repositoryController pull:segmentedControl];
+    }
   }
   else if (segment == 1)
   {
