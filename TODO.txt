@@ -297,7 +297,7 @@ Bugs:
 
 - bug: site: paypal payment option does not allow coupon? [Luis Martins <luis.martins@multiweb.pt>]
 - bug: general: when a long process modifies the working directory, the FSEvents wait till the very end, but should refresh each 2 seconds or so.
-- maybe a bug: stage: if the stage view is not selected, commit: action is not available
+- maybe bug: stage: if the stage view is not selected, commit: action is not available
 
 
 Some thoughts (possibly stupid):
