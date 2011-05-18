@@ -7,10 +7,12 @@ New features:
 Enhancements:
 
 ✓ Improved scrolling performance of the list of commits.
+✓ App is not terminated when the main window is closed. Window can be retrieved by clicking an icon in the Dock or "Main Window" menu item.
 
 Bug fixes:
 
 ✓ Stage selection is now correctly preserved in presence of partially staged files.
+✓ Fixed crash when Cmd+Z was pressed outside of any text field.
 
 
 
@@ -88,6 +90,7 @@ Gitbox 1.3 Enhancements:
 
 Gitbox 1.3 Bug fixes:
 
++ bug: cmd+Z causes crash: after typing in searchfield and unfocusing from it.
 + bug: search: while non-selected repo is searching, spinner should not be affected by it - introduce methods isInSearchMode, isSearching for search mode and search spinner status.
 - bug: search: when commits are updated, the selected one does not show the proper view in the commitviewcontroller.
 - bug: when selected a collapsed group and added a folder, the selected group is not expanded
@@ -95,8 +98,6 @@ Gitbox 1.3 Bug fixes:
 - bug: when removing spinning repo from sidebar (task is running), spinner remains in sidebar
 - (right now jump controller is disabled because of that) bug: minor issue: when quickly iterating through sidebar when repos are autofetched, the selection sometimes jumps. We should reset jump controller's block when selection is changed elsewhere.
 - bug: when fetch is clicked, should fetch everything (see email discussion)
-
-- bug: cmd+Z causes crash: after typing in searchfield and unfocusing from it.
 
 - bug: configured remote server without(?) pushed branches, while the current branch associated with non-existant remote, is not displayed in remotes dropdown menu.
 
