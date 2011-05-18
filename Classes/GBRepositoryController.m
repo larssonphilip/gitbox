@@ -725,7 +725,7 @@
   [self pushSpinning];
   [self pushDisabled];
   [self pushFSEventsPause];
-  [self.repository fetchCurrentBranchWithBlock:^{
+  [self.repository fetchAllWithBlock:^{
     [self.repository.lastError present];
     [self updateLocalRefsWithBlock:^{
       [self loadCommitsWithBlock:^{

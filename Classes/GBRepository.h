@@ -82,6 +82,8 @@
 - (void) commitWithMessage:(NSString*) message block:(void(^)())block;
 
 - (void) pullOrMergeWithBlock:(void(^)())block;
+- (void) fetchAllWithBlock:(void(^)())block;
+- (void) fetchAllSilently:(BOOL)silently withBlock:(void(^)())block;
 - (void) fetchRemote:(GBRemote*)aRemote withBlock:(void(^)())block;
 - (void) fetchRemote:(GBRemote*)aRemote silently:(BOOL)silently withBlock:(void(^)())block;
 - (void) fetchCurrentBranchWithBlock:(void(^)())block;

@@ -8,6 +8,7 @@ Enhancements:
 
 ✓ Improved scrolling performance of the list of commits.
 ✓ App is not terminated when the main window is closed. Window can be retrieved by clicking an icon in the Dock or "Main Window" menu item.
+✓ Fetch menu item gets Option+U shortcut, fetches from all remote servers.
 
 Bug fixes:
 
@@ -19,7 +20,38 @@ Bug fixes:
 --
 
 
-Gitbox 1.3 Features:
+Gitbox 1.3 todo:
+
+? search: match commits in a group of parallel queues for not blocking main thread - seems like parsing in background is enough
++ search: highlight occurences in message text view
++ search: highlight multiple occurences of the same string in message text view
++ search: parse patch (-p) - file names and patch lines
++ search: keep diff ranges per-diff to be able to highlight relevant files where the match is found
++ search: put the whole search status and visibleCommits property into GBRepositoryController to fix various bugs when repos are switched.
++ search: put the search field into the toolbar for better discoverability and context.
++ search: cache first 500 loaded items until refs are reloaded or search is finished.
+
++ search: some background highlight for underlined text in the list of changes.
+
++ bug: cmd+Z causes crash: after typing in searchfield and unfocusing from it.
++ bug: search: while non-selected repo is searching, spinner should not be affected by it - introduce methods isInSearchMode, isSearching for search mode and search spinner status.
++ bug: when fetch is clicked, should fetch everything (see email discussion)
++ bug: search: left-right arrows are handled by table view
++ bug: search: tab should not jump to search field while it's hidden
++ bug: when a file has staged and unstaged parts, and only one instance is selected, after stage refresh, both become selected (should select by object id if it's in the list and fallback to path otherwise)
+  + remember a list of selected change objects
+  + for each remembered object try to find a matching in the new list.
+  + if not found, try to find by file name
+
+
+
+
+-----------------------------------------------------------
+
+
+Gitbox Next:
+
+Features:
 
 ✓ Fantastic submodules support: automatic display for all submodules, one-click download and update.
 + submodules: display "download" button in the sidebar item
@@ -41,92 +73,6 @@ Gitbox 1.3 Features:
 - sidebar: "Duplicate..." menu item to make a quick clone + copy of .git/config.
 - sidebar: double click opens item in finder (patraque 987)
 - sidebar: edit repo name and store it in .git/vendor/gitbox/info.plist
-
-
-Gitbox 1.3 Enhancements:
-
-? search: match commits in a group of parallel queues for not blocking main thread - seems like parsing in background is enough
-+ search: highlight occurences in message text view
-+ search: highlight multiple occurences of the same string in message text view
-+ search: parse patch (-p) - file names and patch lines
-+ search: keep diff ranges per-diff to be able to highlight relevant files where the match is found
-+ search: put the whole search status and visibleCommits property into GBRepositoryController to fix various bugs when repos are switched.
-+ search: put the search field into the toolbar for better discoverability and context.
-+ search: cache first 500 loaded items until refs are reloaded or search is finished.
-
-- search: keep selection when search ends.
-- search: bug: when parent commit is clicked it can be missing in the history. Should either not highlight it, or reset search state.
-+ search: some background highlight for underlined text in the list of changes.
-
-- general: recessed icon for no selection view and multiple selection view (similar to Lion Mail.app)
-- sidebar: before dropping over parent node, highlight appropriate index inside, not the parent
-- sidebar: when multiple repos are selected, new group should wrap them.
-
-- stage: for deleted file rename menu item "Revert File..." to "Restore File..."
-- stage: use --force flag for adding/removing to fix several issues with .gitignore
-- stage: add option "Delete from stage only" for "git rm --force --cached <filepath>".
-
-- enhancement: fsevents: push dotgit-only pause when doing stage updates, fetch, config updates or other internal changes.
-- enhancement: fsevents: on folder update, while .git is on pause, update stage *without* updating the index, so we don't generate more .git/ events
-
-- enhancement: maintain scroll position in history (per repo) when iterating over the repos
-- enhancement: maintain selection of the file when switching commits
-- enhancement: maintain quicklook contents when switching commits
-
-- enhancement: when quickly clicking on a parent commit, it is interpreted as double-click + selection.
-
-- refactoring: clean up starting/stopping repo ctrl in GBRepositoriesController
-- refactoring: history: highlight difference by using two SHA-1 and traversing loaded items
-- history: mark all commits for nice tree-like visualization of two branches
-
-- maybe try to replace pull with merge+fetch+merge and perform fetch on another queue to make staging work independently (also for push)
-- [NSApp requestUserAttention:] when new commits are fetched (automatically or not).
-
-- also override presentError: on main window controller to put error in a queued sheet
-  
-? when error is not surpressed for automatic tasks, remember the first such error and present it when the repo is selected by user
-- sidebar: open in Xcode if the repo has an xcode project (submenu with projects list if have multiple project files)
-- changes: parse changes in background hook instead of a main thread didFinish
-
-Gitbox 1.3 Bug fixes:
-
-+ bug: cmd+Z causes crash: after typing in searchfield and unfocusing from it.
-+ bug: search: while non-selected repo is searching, spinner should not be affected by it - introduce methods isInSearchMode, isSearching for search mode and search spinner status.
-- bug: search: when commits are updated, the selected one does not show the proper view in the commitviewcontroller.
-- bug: when selected a collapsed group and added a folder, the selected group is not expanded
-- bug: refresh stage periodically when it is selected (and increase interval if nothing changes)
-- bug: when removing spinning repo from sidebar (task is running), spinner remains in sidebar
-- (right now jump controller is disabled because of that) bug: minor issue: when quickly iterating through sidebar when repos are autofetched, the selection sometimes jumps. We should reset jump controller's block when selection is changed elsewhere.
-- bug: when fetch is clicked, should fetch everything (see email discussion)
-
-- bug: configured remote server without(?) pushed branches, while the current branch associated with non-existant remote, is not displayed in remotes dropdown menu.
-
-- bug: stage: when having multiple selection and expanding it with keyboard, stage updates cause internal rest, so the selection does not change the same way when continuing pressing keystrokes. Should probably not replace stage content when it did not really change.
-- rare bug: when deleting/moving a repo while it prepares a task, it crashes miserably.
-
-? bug: still has an issue with autofetch filling up the autofetch queue: some tasks must be leaking or callback blocks are not called correctly
-
-? bug: responder chain: sometimes selected view loses focus during autofetch or something.
-? bug: responder chain: when entering a commit message, sidebar can be updated and responder chain is changed so that text message does not get the events
-? bug: crash when opening a diff tool and probably updating the stage at the same time.
-? sidebar: postpone reloading the sidebar while editing a group name
-
-+ bug: search: left-right arrows are handled by table view
-+ bug: search: tab should not jump to search field while it's hidden
-+ bug: when a file has staged and unstaged parts, and only one instance is selected, after stage refresh, both become selected (should select by object id if it's in the list and fallback to path otherwise)
-  + remember a list of selected change objects
-  + for each remembered object try to find a matching in the new list.
-  + if not found, try to find by file name
-
-
-
-
------------------------------------------------------------
-
-
-Gitbox Next:
-
-Features:
 
 - general: svn support ('git svn clone', 'git svn rebase' and 'git svn dcommit')
 - general: mercurial support
@@ -228,6 +174,40 @@ Features:
 
 Enhancements:
 
+- search: keep selection when search ends.
+- search: bug: when parent commit is clicked it can be missing in the history. Should either not highlight it, or reset search state.
+
+- general: recessed icon for no selection view and multiple selection view (similar to Lion Mail.app)
+- sidebar: before dropping over parent node, highlight appropriate index inside, not the parent
+- sidebar: when multiple repos are selected, new group should wrap them.
+
+- stage: for deleted file rename menu item "Revert File..." to "Restore File..."
+- stage: use --force flag for adding/removing to fix several issues with .gitignore
+- stage: add option "Delete from stage only" for "git rm --force --cached <filepath>".
+
+- enhancement: fsevents: push dotgit-only pause when doing stage updates, fetch, config updates or other internal changes.
+- enhancement: fsevents: on folder update, while .git is on pause, update stage *without* updating the index, so we don't generate more .git/ events
+
+- enhancement: maintain scroll position in history (per repo) when iterating over the repos
+- enhancement: maintain selection of the file when switching commits
+- enhancement: maintain quicklook contents when switching commits
+
+- enhancement: when quickly clicking on a parent commit, it is interpreted as double-click + selection.
+
+- refactoring: clean up starting/stopping repo ctrl in GBRepositoriesController
+- refactoring: history: highlight difference by using two SHA-1 and traversing loaded items
+- history: mark all commits for nice tree-like visualization of two branches
+
+- maybe try to replace pull with merge+fetch+merge and perform fetch on another queue to make staging work independently (also for push)
+- [NSApp requestUserAttention:] when new commits are fetched (automatically or not).
+
+- also override presentError: on main window controller to put error in a queued sheet
+  
+? when error is not surpressed for automatic tasks, remember the first such error and present it when the repo is selected by user
+- sidebar: open in Xcode if the repo has an xcode project (submenu with projects list if have multiple project files)
+- changes: parse changes in background hook instead of a main thread didFinish
+
+
 - general: put preferences window into a sheet. Add support for global .gitconfig (at least, show name/email pair)
 - general: since push/pull happen in the same dispatch queue as any other git command, while sending a big pack of data we simply cannot load commits and changes anymore. Should put up different queues for different tasks: changes can be loaded and staged  separately from committing and branch manipulation, local branches can be edited while doing push.
 - general: eliminate unncesessary per-repo queued tasks (GBRepository launchTask:withBlock:). For instance, for loading commit changes.
@@ -271,6 +251,25 @@ Error messages translation to English:
 
 
 Bugs:
+
+
+- bug: search: when commits are updated, the selected one does not show the proper view in the commitviewcontroller.
+- bug: when selected a collapsed group and added a folder, the selected group is not expanded
+- bug: refresh stage periodically when it is selected (and increase interval if nothing changes)
+- bug: when removing spinning repo from sidebar (task is running), spinner remains in sidebar
+- (right now jump controller is disabled because of that) bug: minor issue: when quickly iterating through sidebar when repos are autofetched, the selection sometimes jumps. We should reset jump controller's block when selection is changed elsewhere.
+
+- bug: configured remote server without(?) pushed branches, while the current branch associated with non-existant remote, is not displayed in remotes dropdown menu.
+
+- bug: stage: when having multiple selection and expanding it with keyboard, stage updates cause internal rest, so the selection does not change the same way when continuing pressing keystrokes. Should probably not replace stage content when it did not really change.
+- rare bug: when deleting/moving a repo while it prepares a task, it crashes miserably.
+
+? bug: still has an issue with autofetch filling up the autofetch queue: some tasks must be leaking or callback blocks are not called correctly
+
+? bug: responder chain: sometimes selected view loses focus during autofetch or something.
+? bug: responder chain: when entering a commit message, sidebar can be updated and responder chain is changed so that text message does not get the events
+? bug: crash when opening a diff tool and probably updating the stage at the same time.
+? sidebar: postpone reloading the sidebar while editing a group name
 
 
 - bug: task may crash when folder is removed from disk because prepareTask asserts folder existance

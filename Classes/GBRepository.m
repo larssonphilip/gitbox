@@ -961,6 +961,25 @@
   }];
 }
 
+- (void) fetchAllWithBlock:(void(^)())block
+{
+  [self fetchAllSilently:NO withBlock:block];
+}
+
+- (void) fetchAllSilently:(BOOL)silently withBlock:(void(^)())block
+{
+  [OABlockGroup groupBlock:^(OABlockGroup *group) {
+    for (GBRemote* aRemote in self.remotes)
+    {
+      [group enter];
+      [self fetchRemote:aRemote silently:silently withBlock:^{
+        [group leave];
+      }];
+    }
+  } continuation:block];
+}
+
+
 - (void) fetchRemote:(GBRemote*)aRemote withBlock:(void(^)())block
 {
 	[self fetchRemote:aRemote silently:NO withBlock:block];
