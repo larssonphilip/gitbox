@@ -248,6 +248,7 @@
 
 - (void) repositoryControllerSearchDidStartRunning:(GBRepositoryController*)repoCtrl
 {
+  [self.searchBarController setVisible:YES animated:YES];
   [self.searchBarController setSpinning:YES];
 }
 
