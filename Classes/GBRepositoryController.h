@@ -73,6 +73,7 @@
 - (IBAction) fetch:(id)sender;
 - (IBAction) pull:(id)sender;
 - (IBAction) push:(id)sender;
+- (IBAction) forcePush:(id)sender;
 
 - (IBAction) openInFinder:(id)sender;
 - (IBAction) openInTerminal:(id)sender;

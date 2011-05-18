@@ -91,7 +91,8 @@
 - (void) pullBranch:(GBRef*)aRemoteBranch withBlock:(void(^)())block;
 - (void) fetchBranch:(GBRef*)aRemoteBranch withBlock:(void(^)())block;
 - (void) pushWithBlock:(void(^)())block;
-- (void) pushBranch:(GBRef*)aLocalBranch toRemoteBranch:(GBRef*)aRemoteBranch withBlock:(void(^)())block;
+- (void) pushWithForce:(BOOL)force block:(void(^)())block;
+- (void) pushBranch:(GBRef*)aLocalBranch toRemoteBranch:(GBRef*)aRemoteBranch forced:(BOOL)forced withBlock:(void(^)())block;
 
 
 #pragma mark Util

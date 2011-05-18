@@ -35,11 +35,13 @@
 @implementation GBRepositoryToolbarController
 
 @synthesize repositoryController;
+
 @dynamic currentBranchPopUpButton;
 @dynamic pullPushControl;
 @dynamic pullButton;
 @dynamic otherBranchPopUpButton;
 @dynamic searchField;
+
 
 - (void) dealloc
 {
@@ -111,7 +113,6 @@
 {
   return (id)[[self toolbarItemForIdentifier:@"GBSearch"] view];
 }
-
 
 
 
@@ -206,6 +207,12 @@
 
 
 
+- (void)flagsChanged:(NSEvent *)theEvent
+{
+  [self updateSyncButtons];
+}
+
+
 
 
 #pragma mark Updates
@@ -295,6 +302,12 @@
   {
     [control setLabel:NSLocalizedString(@"← pull", @"Toolbar") forSegment:0];
     [control setLabel:NSLocalizedString(@"push →", @"Toolbar") forSegment:1];
+    NSUInteger modifierFlags = [[NSApp currentEvent] modifierFlags];
+    if (modifierFlags & (NSShiftKeyMask | NSCommandKeyMask))
+    {
+      [control setLabel:NSLocalizedString(@"force →", @"Toolbar") forSegment:1];
+    }
+    
     [self.pullButton setTitle:NSLocalizedString(@"← pull   ", @"Toolbar")];
   }
   
@@ -665,7 +678,15 @@
   }
   else if (segment == 1)
   {
-    [self.repositoryController push:segmentedControl];
+    NSUInteger modifierFlags = [[NSApp currentEvent] modifierFlags];
+    if (modifierFlags & (NSShiftKeyMask | NSCommandKeyMask))
+    {
+      [self.repositoryController forcePush:segmentedControl];
+    }
+    else
+    {
+      [self.repositoryController push:segmentedControl];
+    }
   }
   else
   {

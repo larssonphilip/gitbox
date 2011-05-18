@@ -759,13 +759,13 @@
   }];
 }
 
-- (IBAction) push:(id)sender
+- (void) pushWithForce:(BOOL)forced
 {
   [self resetAutoFetchInterval];
   [self pushSpinning];
   [self pushDisabled];
   [self pushFSEventsPause];
-  [self.repository pushWithBlock:^{
+  [self.repository pushWithForce:forced block:^{
     [self updateLocalRefsWithBlock:^{
       [self loadCommitsWithBlock:^{
         [self updateRemoteRefsWithBlock:^{
@@ -776,6 +776,16 @@
     }];
     [self popDisabled];
   }];
+}
+
+- (IBAction) push:(id)sender
+{
+  [self pushWithForce:NO];
+}
+
+- (IBAction) forcePush:(id)sender
+{
+  [self pushWithForce:YES];
 }
 
 

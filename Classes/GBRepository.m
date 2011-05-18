@@ -1054,10 +1054,15 @@
 
 - (void) pushWithBlock:(void(^)())block
 {
-  [self pushBranch:self.currentLocalRef toRemoteBranch:self.currentRemoteBranch withBlock:block];
+  [self pushWithForce:NO block:block];
 }
 
-- (void) pushBranch:(GBRef*)aLocalBranch toRemoteBranch:(GBRef*)aRemoteBranch withBlock:(void(^)())block
+- (void) pushWithForce:(BOOL)forced block:(void(^)())block
+{
+  [self pushBranch:self.currentLocalRef toRemoteBranch:self.currentRemoteBranch forced:(BOOL)forced withBlock:block];
+}
+
+- (void) pushBranch:(GBRef*)aLocalBranch toRemoteBranch:(GBRef*)aRemoteBranch forced:(BOOL)forced withBlock:(void(^)())block
 {
   block = [[block copy] autorelease];
   if (!aLocalBranch || !aRemoteBranch)
@@ -1069,7 +1074,12 @@
   [GBAskPassController launchedControllerWithAddress:aRemoteBranch.remote.URLString taskFactory:^{
     GBTask* task = [self task];
     NSString* refspec = [NSString stringWithFormat:@"%@:%@", aLocalBranch.name, aRemoteBranch.name];
-    task.arguments = [NSArray arrayWithObjects:@"push", @"--tags", aRemoteBranch.remoteAlias, refspec, nil];
+    
+    task.arguments = [NSArray arrayWithObjects:@"push", @"--tags", nil];
+    if (forced) task.arguments = [task.arguments arrayByAddingObject:@"--force"];
+    task.arguments = [task.arguments arrayByAddingObject:aRemoteBranch.remoteAlias];
+    task.arguments = [task.arguments arrayByAddingObject:refspec];
+    
     task.dispatchQueue = self.dispatchQueue;
     task.didTerminateBlock = ^{
       if ([task isError])
