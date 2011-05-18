@@ -226,6 +226,8 @@
 
 - (void) update
 {
+  BOOL isSearchFieldFirstResponder = ([self.window firstResponder] && [self.window firstResponder] == [self.searchField currentEditor]);
+  
   [super update];
   
   if ([self wantsSettingsButton])
@@ -264,6 +266,11 @@
   
   [self updateBranchMenus];
   [self updateDisabledState];
+  
+  if (isSearchFieldFirstResponder)
+  {
+    [self.window makeFirstResponder:self.searchField];
+  }
 }
 
 - (void) updateDisabledState
