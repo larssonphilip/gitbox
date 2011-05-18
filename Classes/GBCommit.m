@@ -149,18 +149,41 @@
   [self updateSearchAttributes];
 }
 
+- (void) updateSearchAttributesForChanges
+{
+  for (GBChange* aChange in self.changes)
+  {
+    aChange.searchQuery = self.searchQuery;
+    
+    if (self.searchQuery)
+    {
+      aChange.highlightedPathSubstrings = [self.foundRangesByProperties objectForKey:@"pathSubstringsSet"];
+      
+      NSSet* diffPathsSet = [self.foundRangesByProperties objectForKey:@"diffPathsSet"];
+      NSString* srcPath = [aChange.srcURL relativePath];
+      NSString* dstPath = [aChange.dstURL relativePath];
+      aChange.containsHighlightedDiffLines = (srcPath && [diffPathsSet containsObject:srcPath]) || \
+      (dstPath && [diffPathsSet containsObject:dstPath]);
+    }
+    else
+    {
+      aChange.highlightedPathSubstrings = nil;
+      aChange.containsHighlightedDiffLines = NO;
+    }
+  }
+}
+
 - (void) updateSearchAttributes
 {
+  self.foundRangesByProperties = nil;
+  self.matchesQuery = NO;
+  
   if (!self.searchQuery)
   {
-    self.foundRangesByProperties = nil;
-    self.matchesQuery = NO;
+    [self updateSearchAttributesForChanges];
     return;
   }
   
-  self.foundRangesByProperties = nil;
-  self.matchesQuery = NO;
-
   GBSearchQuery* q = self.searchQuery;
   
   NSMutableDictionary* rangesByProps = [NSMutableDictionary dictionary];
@@ -261,6 +284,8 @@
   
   self.foundRangesByProperties = rangesByProps;
   self.matchesQuery = allTokensMatched;
+  
+  [self updateSearchAttributesForChanges];
 }
 
 
@@ -302,20 +327,7 @@
           return [[[a fileURL] path] localizedCaseInsensitiveCompare:[[b fileURL] path]];
         }];
         self.changes = theChanges;
-        if (self.searchQuery)
-        {
-          for (GBChange* aChange in self.changes)
-          {
-            aChange.searchQuery = self.searchQuery;
-            aChange.highlightedPathSubstrings = [self.foundRangesByProperties objectForKey:@"pathSubstringsSet"];
-            
-            NSSet* diffPathsSet = [self.foundRangesByProperties objectForKey:@"diffPathsSet"];
-            NSString* srcPath = [aChange.srcURL relativePath];
-            NSString* dstPath = [aChange.dstURL relativePath];
-            aChange.containsHighlightedDiffLines = (srcPath && [diffPathsSet containsObject:srcPath]) || \
-                                                   (dstPath && [diffPathsSet containsObject:dstPath]);
-          }
-        }
+        [self updateSearchAttributesForChanges];
         [self notifyWithSelector:@selector(commitDidUpdateChanges:)];
         [OABlockTable callBlockForName:name];
       }];
