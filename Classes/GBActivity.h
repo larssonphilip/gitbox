@@ -15,4 +15,6 @@
 
 - (NSString*) line;
 - (void) appendData:(NSData*)chunk;
+- (void) trimIfNeeded;
+
 @end

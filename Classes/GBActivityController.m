@@ -273,6 +273,8 @@ static GBActivityController* sharedGBActivityController;
       activity.status = [NSString stringWithFormat:@"%@ [%d]", NSLocalizedString(@"Finished", @"Task"), status];
     }
     
+    [activity trimIfNeeded];
+    
     [self syncActivityOutput];
   });
 }

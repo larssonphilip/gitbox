@@ -53,6 +53,21 @@
   self.dataLength = l ? [NSString stringWithFormat:@"%d", (int)l] : @"";
 }
 
+- (void) trimIfNeeded
+{
+  int trimLimit = 100*1024;
+  if (self.data && [self.data length] > trimLimit)
+  {
+    NSUInteger skippedBytes = ([self.data length] - trimLimit);
+    [self.data setData:[self.data subdataWithRange:NSMakeRange(0, 10000)]];
+    
+    NSData* noticeData = [[NSString stringWithFormat:@"\n\n[skipped %d bytes]\n", skippedBytes] dataUsingEncoding:NSUTF8StringEncoding];
+    [self.data appendData:noticeData];
+    self.textOutput = [self.data UTF8String];
+  }
+}
+
+
 
 #pragma mark Interrogation
 
