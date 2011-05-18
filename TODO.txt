@@ -1,53 +1,30 @@
 
-Gitbox 1.3 Release Notes (WIP)
+Gitbox 1.4 Release Notes
 
 New features:
 
-✓ Full history search: find commits by metadata, file name and even text in the diff.
-✓ Force push to replace remote branch head with current commit (hold Cmd+Shift before pressing "P" or push button)
+✓ 
+✓ 
 
 Enhancements:
 
-✓ Improved scrolling performance of the list of commits.
-✓ App is not terminated when the main window is closed. Window can be retrieved by clicking an icon in the Dock or "Main Window" menu item.
-✓ Fetch menu item gets Option+U shortcut, fetches from all remote servers (same for toolbar item).
+✓ 
+✓ 
+✓ 
 
 
 Bug fixes:
 
-✓ Stage selection is now correctly preserved in presence of partially staged files.
-✓ Fixed crash when Cmd+Z was pressed outside of any text field.
-
+✓ 
+✓ 
+✓ 
 
 
 --
 
 
-Gitbox 1.3 todo:
+Gitbox 1.4 misc items:
 
-+ toolbar: Option/Alt key lets to fetch instead of pull
-+ toolbar: Shift+Cmd key lets force push
-
-? search: match commits in a group of parallel queues for not blocking main thread - seems like parsing in background is enough
-+ search: highlight occurences in message text view
-+ search: highlight multiple occurences of the same string in message text view
-+ search: parse patch (-p) - file names and patch lines
-+ search: keep diff ranges per-diff to be able to highlight relevant files where the match is found
-+ search: put the whole search status and visibleCommits property into GBRepositoryController to fix various bugs when repos are switched.
-+ search: put the search field into the toolbar for better discoverability and context.
-+ search: cache first 500 loaded items until refs are reloaded or search is finished.
-
-+ search: some background highlight for underlined text in the list of changes.
-
-+ bug: cmd+Z causes crash: after typing in searchfield and unfocusing from it.
-+ bug: search: while non-selected repo is searching, spinner should not be affected by it - introduce methods isInSearchMode, isSearching for search mode and search spinner status.
-+ bug: when fetch is clicked, should fetch everything (see email discussion)
-+ bug: search: left-right arrows are handled by table view
-+ bug: search: tab should not jump to search field while it's hidden
-+ bug: when a file has staged and unstaged parts, and only one instance is selected, after stage refresh, both become selected (should select by object id if it's in the list and fallback to path otherwise)
-  + remember a list of selected change objects
-  + for each remembered object try to find a matching in the new list.
-  + if not found, try to find by file name
 
 
 
@@ -330,8 +307,55 @@ To read:
 
 
 
+-------------------------------------------------------------------------------
 
 
+Gitbox 1.3 Release Notes
+
+New features:
+
+✓ Full history search: find commits by metadata, file name and even text in the diff.
+✓ Force push to replace remote branch head with current commit (hold Cmd+Shift before pressing "P" or push button)
+
+Enhancements:
+
+✓ Improved scrolling performance of the list of commits.
+✓ App is not terminated when the main window is closed. Window can be retrieved by clicking an icon in the Dock or "Main Window" menu item.
+✓ Fetch menu item gets Option+U shortcut, fetches from all remote servers (same for toolbar item).
+
+
+Bug fixes:
+
+✓ Stage selection is now correctly preserved in presence of partially staged files.
+✓ Fixed crash when Cmd+Z was pressed outside of any text field.
+
+
+
+Misc items done for 1.3:
+
++ toolbar: Option/Alt key lets to fetch instead of pull
++ toolbar: Shift+Cmd key lets force push
+
+? search: match commits in a group of parallel queues for not blocking main thread - seems like parsing in background is enough
++ search: highlight occurences in message text view
++ search: highlight multiple occurences of the same string in message text view
++ search: parse patch (-p) - file names and patch lines
++ search: keep diff ranges per-diff to be able to highlight relevant files where the match is found
++ search: put the whole search status and visibleCommits property into GBRepositoryController to fix various bugs when repos are switched.
++ search: put the search field into the toolbar for better discoverability and context.
++ search: cache first 500 loaded items until refs are reloaded or search is finished.
+
++ search: some background highlight for underlined text in the list of changes.
+
++ bug: cmd+Z causes crash: after typing in searchfield and unfocusing from it.
++ bug: search: while non-selected repo is searching, spinner should not be affected by it - introduce methods isInSearchMode, isSearching for search mode and search spinner status.
++ bug: when fetch is clicked, should fetch everything (see email discussion)
++ bug: search: left-right arrows are handled by table view
++ bug: search: tab should not jump to search field while it's hidden
++ bug: when a file has staged and unstaged parts, and only one instance is selected, after stage refresh, both become selected (should select by object id if it's in the list and fallback to path otherwise)
+  + remember a list of selected change objects
+  + for each remembered object try to find a matching in the new list.
+  + if not found, try to find by file name
 
 
 
@@ -342,7 +366,7 @@ To read:
 
 
 
-Gitbox 1.2.5 Release Notes (WIP)
+Gitbox 1.2.5 Release Notes
 
 New features:
 
@@ -380,7 +404,7 @@ Bug fixes:
 ✓ When window is closed, click on a dock icon brings it back even if the app is active.
 
 
-Misc items done:
+Misc items done for 1.2.5:
 
 + bug: crash in pushBranch:toRemoteBranch:withBlock: - aRemoteBranch.remote becomes invalid object!
 + bug: update the stage when it is selected or when the main window is activated (maybe without refresh) - this should deal with sometimes missed FSEvents
