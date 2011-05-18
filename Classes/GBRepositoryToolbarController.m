@@ -303,7 +303,7 @@
     [control setLabel:NSLocalizedString(@"← pull", @"Toolbar") forSegment:0];
     [control setLabel:NSLocalizedString(@"push →", @"Toolbar") forSegment:1];
     NSUInteger modifierFlags = [[NSApp currentEvent] modifierFlags];
-    if (modifierFlags & (NSShiftKeyMask | NSCommandKeyMask))
+    if ((modifierFlags & NSShiftKeyMask) && (modifierFlags & NSCommandKeyMask))
     {
       [control setLabel:NSLocalizedString(@"force →", @"Toolbar") forSegment:1];
     }
@@ -679,7 +679,7 @@
   else if (segment == 1)
   {
     NSUInteger modifierFlags = [[NSApp currentEvent] modifierFlags];
-    if (modifierFlags & (NSShiftKeyMask | NSCommandKeyMask))
+    if ((modifierFlags & NSShiftKeyMask) && (modifierFlags & NSCommandKeyMask))
     {
       [self.repositoryController forcePush:segmentedControl];
     }
