@@ -6,13 +6,14 @@
 @property(nonatomic, retain) IBOutlet NSMenuItem* welcomeMenuItem;
 @property(nonatomic, retain) IBOutlet NSMenuItem* rateInAppStoreMenuItem;
 
-- (IBAction) rateInAppStore:_;
-- (IBAction) showActivityWindow:_;
-- (IBAction) showOnlineHelp:_;
-- (IBAction) showLicense:_;
-- (IBAction) releaseNotes:_;
-- (IBAction) showDiffToolPreferences:_;
-- (IBAction) checkForUpdates:_;
-- (IBAction) showPreferences:_;
+- (IBAction) rateInAppStore:(id)sender;
+- (IBAction) showMainWindow:(id)sender;
+- (IBAction) showActivityWindow:(id)sender;
+- (IBAction) showOnlineHelp:(id)sender;
+- (IBAction) showLicense:(id)sender;
+- (IBAction) releaseNotes:(id)sender;
+- (IBAction) showDiffToolPreferences:(id)sender;
+- (IBAction) checkForUpdates:(id)sender;
+- (IBAction) showPreferences:(id)sender;
 
 @end

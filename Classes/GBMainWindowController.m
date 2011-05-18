@@ -474,7 +474,9 @@
    
    We have found that when the user closes the main application window there is no menu item to re-open it. The app should implement a Window menu that lists the main window so it can be reopened. Alternatively, if the application is a single-window app, it might be appropriate to save data and quit the app when the main window is closed. For information on managing windows in Mac OS X, please review the following sections in App Review Board
   */
-  [NSApp terminate:nil];
+  
+  // As of May 18, 2011 there is "Main Window" menu item with showMainWindow: action.
+  //[NSApp terminate:nil];
 }
 
 - (void) windowDidBecomeKey:(NSNotification *)notification

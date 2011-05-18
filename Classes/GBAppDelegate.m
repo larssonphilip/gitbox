@@ -78,30 +78,35 @@
 #pragma mark Actions
 
 
-- (IBAction) rateInAppStore:_
+- (IBAction) rateInAppStore:(id)sender
 {
 #if GITBOX_APP_STORE || DEBUG_iRate  
   [[iRate sharedInstance] openRatingsPageInAppStore];
 #endif
 }
 
-- (IBAction) showPreferences:_
+- (IBAction) showMainWindow:(id)sender
 {
-  [self.preferencesController showWindow:_];
+  [self.windowController showWindow:self];
 }
 
-- (IBAction) checkForUpdates:_
+- (IBAction) showPreferences:(id)sender
 {
-  [self.preferencesController.updater checkForUpdates:_];
+  [self.preferencesController showWindow:sender];
 }
 
-- (IBAction) showOnlineHelp:_
+- (IBAction) checkForUpdates:(id)sender
+{
+  [self.preferencesController.updater checkForUpdates:sender];
+}
+
+- (IBAction) showOnlineHelp:sender
 {
   NSString* urlString = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"GBHelpURL"];
   [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:urlString]];
 }
 
-- (IBAction) showLicense:_
+- (IBAction) showLicense:(id)sender
 {
   if (self.licenseController) return; // avoid entering the modal mode twice if user hits License... menu again.
   
@@ -113,7 +118,7 @@
   [self.windowController.sidebarController updateBuyButton];
 }
 
-- (IBAction) releaseNotes:_
+- (IBAction) releaseNotes:(id)sender
 {
   NSString* urlString = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"GBReleaseNotesURL"];
   [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:urlString]];
@@ -124,7 +129,7 @@
   [[GBActivityController sharedActivityController] showWindow:sender];
 }
 
-- (IBAction) showDiffToolPreferences:(id)_
+- (IBAction) showDiffToolPreferences:(id)sender
 {
   [self.preferencesController showWindow:nil];
 }
