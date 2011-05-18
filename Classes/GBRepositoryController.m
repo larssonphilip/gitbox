@@ -349,8 +349,15 @@
 #pragma mark Actions
 
 
+- (IBAction) undo:(id)sender
+{
+  // TODO: perform some undoes
+}
 
-
+- (IBAction) redo:(id)sender
+{
+  // TODO: perform some redoes
+}
 
 - (IBAction) openInFinder:(id)sender
 {
