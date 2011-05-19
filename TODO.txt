@@ -39,6 +39,7 @@ Gitbox 1.4 misc items:
 - general: unified settings sheet
 - sidebar: progress circle for pushing/pulling/fetching
 
+- bug: crushing when diff tool is selected, but the executable was removed (or the system was migrated to Lion)
 - bug: search: when commits are updated, the selected one does not show the proper view in the commitviewcontroller.
 - bug: when selected a collapsed group and added a folder, the selected group is not expanded
 - bug: refresh stage periodically when it is selected (and increase interval if nothing changes)
