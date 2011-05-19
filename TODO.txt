@@ -36,13 +36,13 @@ Gitbox 1.4 misc items:
 - history: push single commit
 - history: checkout commit with a right click
 
-- unified settings sheet
+- general: unified settings sheet
 - sidebar: progress circle for pushing/pulling/fetching
 
 - bug: search: when commits are updated, the selected one does not show the proper view in the commitviewcontroller.
 - bug: when selected a collapsed group and added a folder, the selected group is not expanded
 - bug: refresh stage periodically when it is selected (and increase interval if nothing changes)
-
+  - reproduce: select some repo, make changes in Xcode3 project for another repo, then switch to gitbox and select that another repo - project file still on the stage.
 - bug: stage: when having multiple selection and expanding it with keyboard, stage updates cause internal rest, so the selection does not change the same way when continuing pressing keystrokes. Should probably not replace stage content when it did not really change.
 - bug: task may crash when folder is removed from disk because prepareTask asserts folder existance
 
@@ -141,6 +141,8 @@ Features:
 - changes: stash list: as a local branch menu item?
 - changes: stash/apply stash from the menu, context menu
 
+- stage: if more than 5 items, show additional row in the bottom with a line separator, "%d items" grey title and a checkbox which selects all the items and supports 3 states: on, off, mixed.
+- stage: main menu: rename "commit cmd+return" into "Stage Selected Items cmd+return" when not focused in the commit message field.
 - stage: individual chunks commit
 - stage: undo for commit (like amend)
 - stage: amend latest commit if it is not pushed yet
