@@ -45,7 +45,8 @@ Gitbox 1.4 misc items:
   - reproduce: select some repo, make changes in Xcode3 project for another repo, then switch to gitbox and select that another repo - project file still on the stage.
 - bug: stage: when having multiple selection and expanding it with keyboard, stage updates cause internal rest, so the selection does not change the same way when continuing pressing keystrokes. Should probably not replace stage content when it did not really change.
 - bug: task may crash when folder is removed from disk because prepareTask asserts folder existance
-
+  - test if the task can run in this case without exceptions
+    - if not, then call all the callbacks without running the nstask
 + stage: use --force flag for adding/removing to fix several issues with .gitignore
 
 
