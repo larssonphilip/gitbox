@@ -198,7 +198,7 @@
     return;
   }
   
-  [self launchTaskByChunksWithArguments:[NSArray arrayWithObjects:@"add", nil]
+  [self launchTaskByChunksWithArguments:[NSArray arrayWithObjects:@"add", @"--force", nil]
                                   paths:pathsToAdd
                                   block:block
                            taskCallback:^(GBTask *task) {
