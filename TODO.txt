@@ -28,10 +28,6 @@ Gitbox 1.4 misc items:
 - search: keep selection when search ends.
 - search: bug: when parent commit is clicked it can be missing in the history. Should either not highlight it, or reset search state.
 
-- stage: add option "Delete from stage only" for "git rm --force --cached <filepath>".
-
-- stage: right click menu: "file history" which inserts file path into search field
-
 - history: merge single commit
 - history: push single commit
 - history: checkout commit with a right click
@@ -39,7 +35,7 @@ Gitbox 1.4 misc items:
 - general: unified settings sheet
 - sidebar: progress circle for pushing/pulling/fetching
 
-- bug: crushing when diff tool is selected, but the executable was removed (or the system was migrated to Lion)
+- bug: crash when diff tool is selected, but the executable was removed (or the system was migrated to Lion)
 - bug: search: when commits are updated, the selected one does not show the proper view in the commitviewcontroller.
 - bug: when selected a collapsed group and added a folder, the selected group is not expanded
 - bug: refresh stage periodically when it is selected (and increase interval if nothing changes)
@@ -48,6 +44,10 @@ Gitbox 1.4 misc items:
 - bug: task may crash when folder is removed from disk because prepareTask asserts folder existance
   - test if the task can run in this case without exceptions
     - if not, then call all the callbacks without running the nstask
+
+- stage: add option "Delete from stage only" for "git rm --force --cached <filepath>".
+- stage: right click menu: "file history" which inserts file path into search field
+
 + stage: use --force flag for adding/removing to fix several issues with .gitignore
 
 
