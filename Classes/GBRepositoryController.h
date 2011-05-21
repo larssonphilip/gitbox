@@ -70,6 +70,8 @@
 
 - (void) commitWithMessage:(NSString*)message;
 
+- (void) addOpenMenuItemsToMenu:(NSMenu*)aMenu;
+
 - (IBAction) fetch:(id)sender;
 - (IBAction) pull:(id)sender;
 - (IBAction) push:(id)sender;

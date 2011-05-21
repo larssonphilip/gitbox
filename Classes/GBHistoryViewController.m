@@ -54,6 +54,10 @@
 
 @synthesize commitCell;
 
+
+
+
+
 #pragma mark Init
 
 
@@ -310,6 +314,60 @@
 
 
 
+#pragma mark Menus
+
+
+
+
+- (NSMenu*) menuForStage:(GBStage*)aStage
+{
+  NSMenu* aMenu = [[[NSMenu alloc] initWithTitle:@""] autorelease];
+  
+  [self.repositoryController addOpenMenuItemsToMenu:aMenu];
+  
+  [aMenu addItem:[NSMenuItem separatorItem]];
+  
+  
+  
+//  [menu addItem:[[[NSMenuItem alloc] 
+//                  initWithTitle:NSLocalizedString(@"Add Repository...", @"Sidebar") action:@selector(openDocument:) keyEquivalent:@""] autorelease]];
+//  [menu addItem:[[[NSMenuItem alloc] 
+//                  initWithTitle:NSLocalizedString(@"Clone Repository...", @"Sidebar") action:@selector(cloneRepository:) keyEquivalent:@""] autorelease]];
+//  
+//  [menu addItem:[NSMenuItem separatorItem]];
+//  
+//  [menu addItem:[[[NSMenuItem alloc] 
+//                  initWithTitle:NSLocalizedString(@"New Group", @"Sidebar") action:@selector(addGroup:) keyEquivalent:@""] autorelease]];
+//  
+//  [menu addItem:[NSMenuItem separatorItem]];
+//  
+//  [menu addItem:[[[NSMenuItem alloc] 
+//                  initWithTitle:NSLocalizedString(@"Remove from Sidebar", @"Sidebar") action:@selector(remove:) keyEquivalent:@""] autorelease]];
+  return aMenu;
+}
+
+- (NSMenu*) menuForCommit:(GBCommit*)aCommit
+{
+  NSMenu* aMenu = [[[NSMenu alloc] initWithTitle:@""] autorelease];
+  
+  
+  //  [menu addItem:[[[NSMenuItem alloc] 
+  //                  initWithTitle:NSLocalizedString(@"Add Repository...", @"Sidebar") action:@selector(openDocument:) keyEquivalent:@""] autorelease]];
+  //  [menu addItem:[[[NSMenuItem alloc] 
+  //                  initWithTitle:NSLocalizedString(@"Clone Repository...", @"Sidebar") action:@selector(cloneRepository:) keyEquivalent:@""] autorelease]];
+  //  
+  //  [menu addItem:[NSMenuItem separatorItem]];
+  //  
+  //  [menu addItem:[[[NSMenuItem alloc] 
+  //                  initWithTitle:NSLocalizedString(@"New Group", @"Sidebar") action:@selector(addGroup:) keyEquivalent:@""] autorelease]];
+  //  
+  //  [menu addItem:[NSMenuItem separatorItem]];
+  //  
+  //  [menu addItem:[[[NSMenuItem alloc] 
+  //                  initWithTitle:NSLocalizedString(@"Remove from Sidebar", @"Sidebar") action:@selector(remove:) keyEquivalent:@""] autorelease]];
+  return aMenu;
+}
+
 
 
 
@@ -456,7 +514,19 @@ dataCellForTableColumn:(NSTableColumn*)aTableColumn
 }
 
 
-
+// method from GBHistoryTableView
+- (NSMenu*) tableView:(NSTableView*)aTableView menuForTableColumn:(NSTableColumn*)aTableColumn row:(NSInteger)row
+{
+  GBCommit* aCommit = [self.visibleCommits objectAtIndex:row];
+  if ([aCommit isStage])
+  {
+    return [self menuForStage:[aCommit asStage]];
+  }
+  else
+  {
+    return [self menuForCommit:aCommit];
+  }
+}
 
 
 

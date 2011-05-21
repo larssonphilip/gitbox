@@ -859,7 +859,14 @@
   [[GBMainWindowController instance] presentSheet:fileEditor];
 }
 
-
+- (IBAction) openInXcode:(NSMenuItem*)sender
+{
+  if ([sender respondsToSelector:@selector(representedObject)])
+  {
+    NSURL* xcodeprojURL = [sender representedObject];
+    [[NSWorkspace sharedWorkspace] openURL:xcodeprojURL];
+  }
+}
 
 
 - (BOOL) validateUserInterfaceItem:(id<NSValidatedUserInterfaceItem>)anItem
@@ -925,33 +932,80 @@
 
 
 
+- (void) addOpenMenuItemsToMenu:(NSMenu*)aMenu
+{
+  [aMenu addItem:[[[NSMenuItem alloc] 
+                  initWithTitle:NSLocalizedString(@"Open in Finder", @"Sidebar") action:@selector(openInFinder:) keyEquivalent:@""] autorelease]];
+  [aMenu addItem:[[[NSMenuItem alloc] 
+                  initWithTitle:NSLocalizedString(@"Open in Terminal", @"Sidebar") action:@selector(openInTerminal:) keyEquivalent:@""] autorelease]];
+  
+  NSMutableArray* xcodeProjectURLs = [NSMutableArray array];
+  
+  NSArray* URLs = [[[[NSFileManager alloc] init] autorelease] contentsOfDirectoryAtURL:self.url includingPropertiesForKeys:nil options:NSDirectoryEnumerationSkipsHiddenFiles error:NULL];
+  
+  for (NSURL* fileURL in URLs)
+  {
+    if ([[[fileURL path] pathExtension] isEqual:@"xcodeproj"])
+    {
+      [xcodeProjectURLs addObject:fileURL];
+    }
+  }
+  
+  if ([xcodeProjectURLs count] > 0)
+  {
+    if ([xcodeProjectURLs count] == 1)
+    {
+      NSMenuItem* item = [[[NSMenuItem alloc] 
+                           initWithTitle:NSLocalizedString(@"Open in Xcode", @"Sidebar") action:@selector(openInXcode:) keyEquivalent:@""] autorelease];
+      [item setRepresentedObject:[xcodeProjectURLs objectAtIndex:0]];
+      [aMenu addItem:item];
+    }
+    else
+    {
+      NSMenuItem* xcodeMenuItem = [[[NSMenuItem alloc] 
+                           initWithTitle:NSLocalizedString(@"Open in Xcode", @"Sidebar") action:NULL keyEquivalent:@""] autorelease];
+      
+      NSMenu* xcodeMenu = [[[NSMenu alloc] init] autorelease];
+      [xcodeMenu setTitle:[xcodeMenuItem title]];
+      
+      for (NSURL* xcodeProjectURL in xcodeProjectURLs)
+      {
+        NSMenuItem* item = [[[NSMenuItem alloc] 
+                             initWithTitle:[[[xcodeProjectURL path] lastPathComponent] stringByReplacingOccurrencesOfString:@".xcodeproj" withString:@""] action:@selector(openInXcode:) keyEquivalent:@""] autorelease];
+        [item setRepresentedObject:xcodeProjectURL];
+        [aMenu addItem:item];
+      }
+      
+      [xcodeMenuItem setSubmenu:xcodeMenu];
+      [aMenu addItem:xcodeMenuItem];
+    }
+  }
+}
+
 
 - (NSMenu*) sidebarItemMenu
 {
-  NSMenu* menu = [[[NSMenu alloc] initWithTitle:@""] autorelease];
+  NSMenu* aMenu = [[[NSMenu alloc] initWithTitle:@""] autorelease];
+
+  [self addOpenMenuItemsToMenu:aMenu];
   
-  [menu addItem:[[[NSMenuItem alloc] 
-                  initWithTitle:NSLocalizedString(@"Open in Finder", @"Sidebar") action:@selector(openInFinder:) keyEquivalent:@""] autorelease]];
-  [menu addItem:[[[NSMenuItem alloc] 
-                  initWithTitle:NSLocalizedString(@"Open in Terminal", @"Sidebar") action:@selector(openInTerminal:) keyEquivalent:@""] autorelease]];
+  [aMenu addItem:[NSMenuItem separatorItem]];
   
-  [menu addItem:[NSMenuItem separatorItem]];
-  
-  [menu addItem:[[[NSMenuItem alloc] 
+  [aMenu addItem:[[[NSMenuItem alloc] 
                   initWithTitle:NSLocalizedString(@"Add Repository...", @"Sidebar") action:@selector(openDocument:) keyEquivalent:@""] autorelease]];
-  [menu addItem:[[[NSMenuItem alloc] 
+  [aMenu addItem:[[[NSMenuItem alloc] 
                   initWithTitle:NSLocalizedString(@"Clone Repository...", @"Sidebar") action:@selector(cloneRepository:) keyEquivalent:@""] autorelease]];
   
-  [menu addItem:[NSMenuItem separatorItem]];
+  [aMenu addItem:[NSMenuItem separatorItem]];
   
-  [menu addItem:[[[NSMenuItem alloc] 
+  [aMenu addItem:[[[NSMenuItem alloc] 
                   initWithTitle:NSLocalizedString(@"New Group", @"Sidebar") action:@selector(addGroup:) keyEquivalent:@""] autorelease]];
   
-  [menu addItem:[NSMenuItem separatorItem]];
+  [aMenu addItem:[NSMenuItem separatorItem]];
   
-  [menu addItem:[[[NSMenuItem alloc] 
+  [aMenu addItem:[[[NSMenuItem alloc] 
                   initWithTitle:NSLocalizedString(@"Remove from Sidebar", @"Sidebar") action:@selector(remove:) keyEquivalent:@""] autorelease]];
-  return menu;
+  return aMenu;
 }
 
 
