@@ -973,7 +973,7 @@
         NSMenuItem* item = [[[NSMenuItem alloc] 
                              initWithTitle:[[[xcodeProjectURL path] lastPathComponent] stringByReplacingOccurrencesOfString:@".xcodeproj" withString:@""] action:@selector(openInXcode:) keyEquivalent:@""] autorelease];
         [item setRepresentedObject:xcodeProjectURL];
-        [aMenu addItem:item];
+        [xcodeMenu addItem:item];
       }
       
       [xcodeMenuItem setSubmenu:xcodeMenu];
