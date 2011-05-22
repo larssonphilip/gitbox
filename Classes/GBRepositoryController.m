@@ -875,7 +875,53 @@
 }
 
 
+- (IBAction) stashChanges:(id)sender
+{
+  // TODO: present comment prompt to enter the name of the stash, provide good default text like:
+  // "GBRepository.m, TODO.txt and 5 more files"
+}
 
+- (BOOL) validateStashChanges:(id)sender
+{
+  return [self.repository.stage isDirty];
+}
+
+- (IBAction) applyStash:(NSMenuItem*)sender
+{
+  if ([sender respondsToSelector:@selector(representedObject)])
+  {
+    // TODO: apply the stash
+  }
+}
+
+// This is a noop menu action to catch validation callback
+- (IBAction) applyStashMenu:(id)sender
+{
+}
+
+- (BOOL) validateApplyStashMenu:(id)sender
+{
+  // TODO: load changes and update the menu
+  // Return NO if no stashes are found.
+  return YES;
+}
+
+- (IBAction) removeOldStashes:(NSMenuItem*)sender
+{
+  // TODO: present a confirmation dialog
+  // TODO: remove stashes that are 30 days old.
+}
+
+
+- (IBAction) resetChanges:(id)sender
+{
+  // TODO: present confirmation dialog which explains how reset works
+}
+
+- (BOOL) validateResetChanges:(id)sender
+{
+  return [self.repository.stage isDirty];
+}
 
 
 
@@ -956,14 +1002,14 @@
     if ([xcodeProjectURLs count] == 1)
     {
       NSMenuItem* item = [[[NSMenuItem alloc] 
-                           initWithTitle:NSLocalizedString(@"Open in Xcode", @"Sidebar") action:@selector(openInXcode:) keyEquivalent:@""] autorelease];
+                           initWithTitle:NSLocalizedString(@"Open Xcode Project", @"Sidebar") action:@selector(openInXcode:) keyEquivalent:@""] autorelease];
       [item setRepresentedObject:[xcodeProjectURLs objectAtIndex:0]];
       [aMenu addItem:item];
     }
     else
     {
       NSMenuItem* xcodeMenuItem = [[[NSMenuItem alloc] 
-                           initWithTitle:NSLocalizedString(@"Open in Xcode", @"Sidebar") action:NULL keyEquivalent:@""] autorelease];
+                           initWithTitle:NSLocalizedString(@"Open Xcode Project", @"Sidebar") action:NULL keyEquivalent:@""] autorelease];
       
       NSMenu* xcodeMenu = [[[NSMenu alloc] init] autorelease];
       [xcodeMenu setTitle:[xcodeMenuItem title]];

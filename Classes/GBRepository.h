@@ -55,6 +55,7 @@
 - (BOOL) doesRefExist:(GBRef*) ref;
 - (BOOL) doesHaveSubmodules;
 - (NSURL*) URLForSubmoduleAtPath:(NSString*)path;
+- (void) loadStashesWithBlock:(void(^)(NSArray*))block;
 
 
 #pragma mark Update

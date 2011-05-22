@@ -8,6 +8,8 @@
 #import "GBHistoryTask.h"
 #import "GBLocalRefsTask.h"
 #import "GBSubmodulesTask.h"
+#import "GBStashListTask.h"
+
 #import "GBGitConfig.h"
 #import "GBAskPassController.h"
 #import "GBMainWindowController.h"
@@ -462,6 +464,18 @@
   return [NSURL URLWithString:urlString];
 }
 
+- (void) loadStashesWithBlock:(void(^)(NSArray*))block
+{
+  if (!block) return;
+  
+  block = [[block copy] autorelease];
+  
+  GBStashListTask* task = [[[GBStashListTask alloc] init] autorelease];
+  task.repository = self;
+  [self launchTask:task withBlock:^{
+    block(task.stashes);
+  }];
+}
 
 
 

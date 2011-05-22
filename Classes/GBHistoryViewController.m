@@ -1,6 +1,7 @@
 #import "GBCommit.h"
 #import "GBStage.h"
 #import "GBRepository.h"
+#import "GBStash.h"
 
 #import "GBRepositoryController.h"
 #import "GBToolbarController.h"
@@ -18,6 +19,7 @@
 #import "NSObject+OADispatchItemValidation.h"
 #import "NSView+OAViewHelpers.h"
 #import "NSTableView+OATableViewHelpers.h"
+#import "NSMenu+OAMenuHelpers.h"
 
 @interface GBHistoryViewController ()
 
@@ -328,21 +330,42 @@
   [aMenu addItem:[NSMenuItem separatorItem]];
   
   
+  [aMenu addItem:[[[NSMenuItem alloc] 
+                  initWithTitle:NSLocalizedString(@"Stash Changes...", @"Sidebar") action:@selector(stashChanges:) keyEquivalent:@""] autorelease]];
+
+  NSMenuItem* stashesItem = [[[NSMenuItem alloc] 
+                              initWithTitle:NSLocalizedString(@"Apply Stash", @"Sidebar") action:@selector(applyStashMenu:) keyEquivalent:@""] autorelease];
   
-//  [menu addItem:[[[NSMenuItem alloc] 
-//                  initWithTitle:NSLocalizedString(@"Add Repository...", @"Sidebar") action:@selector(openDocument:) keyEquivalent:@""] autorelease]];
-//  [menu addItem:[[[NSMenuItem alloc] 
-//                  initWithTitle:NSLocalizedString(@"Clone Repository...", @"Sidebar") action:@selector(cloneRepository:) keyEquivalent:@""] autorelease]];
-//  
-//  [menu addItem:[NSMenuItem separatorItem]];
-//  
-//  [menu addItem:[[[NSMenuItem alloc] 
-//                  initWithTitle:NSLocalizedString(@"New Group", @"Sidebar") action:@selector(addGroup:) keyEquivalent:@""] autorelease]];
-//  
-//  [menu addItem:[NSMenuItem separatorItem]];
-//  
-//  [menu addItem:[[[NSMenuItem alloc] 
-//                  initWithTitle:NSLocalizedString(@"Remove from Sidebar", @"Sidebar") action:@selector(remove:) keyEquivalent:@""] autorelease]];
+  NSMenu* stashesItemSubmenu = [NSMenu menuWithTitle:[stashesItem title]];
+  [stashesItem setSubmenu:stashesItemSubmenu];
+  [aMenu addItem:stashesItem];
+  
+  [self.repositoryController.repository loadStashesWithBlock:^(NSArray *stashes) {
+    if ([stashes count] == 0)
+    {
+      [stashesItem setEnabled:NO];
+    }
+    else
+    {
+      [stashesItem setEnabled:YES];
+      
+      [stashesItemSubmenu removeAllItems];
+      
+      for (GBStash* stash in stashes)
+      {
+        NSMenuItem* item = [[[NSMenuItem alloc] 
+                             initWithTitle:stash.menuTitle action:@selector(applyStash:) keyEquivalent:@""] autorelease];
+        [item setRepresentedObject:stash];
+        [stashesItemSubmenu addItem:item];
+      }
+    }
+  }];
+  
+  [aMenu addItem:[NSMenuItem separatorItem]];
+  
+  [aMenu addItem:[[[NSMenuItem alloc]
+                  initWithTitle:NSLocalizedString(@"Reset Changes...", @"Sidebar") action:@selector(resetChanges:) keyEquivalent:@""] autorelease]];
+
   return aMenu;
 }
 

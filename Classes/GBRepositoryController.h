@@ -85,6 +85,11 @@
 - (BOOL) validatePull:(id)sender;
 - (BOOL) validatePush:(id)sender;
 
+- (IBAction) stashChanges:(id)sender;
+- (IBAction) applyStash:(NSMenuItem*)sender;
+- (IBAction) removeOldStashes:(NSMenuItem*)sender;
+- (IBAction) resetChanges:(id)sender;
+
 
 // will be obsolete when settings UI is done
 - (IBAction) editRepositories:(id)sender;

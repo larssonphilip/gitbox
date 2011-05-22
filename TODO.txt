@@ -28,6 +28,20 @@ Gitbox 1.4 misc items:
 - search: keep selection when search ends.
 - search: bug: when parent commit is clicked it can be missing in the history. Should either not highlight it, or reset search state.
 
+- history: contextual menus:
+  - stage: 
+    + open in finder
+    + open in terminal
+    + open in xcode
+    - reset stage
+    - stash changes
+  - commit:
+    - 
+  
+- history: right click on stage to "show in finder" and other folder-related actions like in sidebar right click menu. Also, stash.
+- changes: stash list: as a local branch menu item?
+- changes: stash/apply stash from the menu, context menu
+
 - history: merge single commit
 - history: push single commit
 - history: checkout commit with a right click
@@ -100,7 +114,6 @@ Features:
 - sidebar: wide-area bonjour sharing (dyndns? my dns server?)
 - sidebar: github
 
-- history: right click on stage to "show in finder" and other folder-related actions like in sidebar right click menu. Also, stash.
 - history: think how to efficiently preload total number of commits so that we can scroll through the whole history loading data for commits lazily when rows are displayed. This should be friendlier for searching by date, but the scroll indicator will be useless on huge repos like git.git. Maybe need to combine both approaches: commits limiting and lazy loading.
 - history: maintain selection of the commit when switching branches/tags etc.
 - history: bisect is basically not needed if you can checkout any commit and see all the other commits on the remote branch
@@ -140,9 +153,8 @@ Features:
 - changes: blame in the same quicklook-like panel
 - changes: merging in the same quicklook-like panel
 - changes: rerere - for recording how the conflict was resolved
-- changes: stash list: as a local branch menu item?
-- changes: stash/apply stash from the menu, context menu
 
+- stage: show a hint "use cmd+A and cmd+return" when multiple items appear on stage
 - stage: if more than 5 items, show additional row in the bottom with a line separator, "%d items" grey title and a checkbox which selects all the items and supports 3 states: on, off, mixed.
 - stage: main menu: rename "commit cmd+return" into "Stage Selected Items cmd+return" when not focused in the commit message field.
 - stage: individual chunks commit

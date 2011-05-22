@@ -361,6 +361,10 @@
 		20C899B712B95DDF002F600F /* OANonScrollingScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 20C899B512B95DDF002F600F /* OANonScrollingScrollView.m */; };
 		20CE6D65138824D2001D9707 /* GBHistoryTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 20CE6D64138824D2001D9707 /* GBHistoryTableView.m */; };
 		20CE6D66138824D2001D9707 /* GBHistoryTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 20CE6D64138824D2001D9707 /* GBHistoryTableView.m */; };
+		20CE6DEB1389447E001D9707 /* GBStashListTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 20CE6DEA1389447E001D9707 /* GBStashListTask.m */; };
+		20CE6DEC1389447E001D9707 /* GBStashListTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 20CE6DEA1389447E001D9707 /* GBStashListTask.m */; };
+		20CE6E0A13895CC3001D9707 /* GBStash.m in Sources */ = {isa = PBXBuildFile; fileRef = 20CE6E0913895CC3001D9707 /* GBStash.m */; };
+		20CE6E0B13895CC3001D9707 /* GBStash.m in Sources */ = {isa = PBXBuildFile; fileRef = 20CE6E0913895CC3001D9707 /* GBStash.m */; };
 		20DD4DC3134B4F7300E6E6B7 /* NSObject+OAResponderChain.m in Sources */ = {isa = PBXBuildFile; fileRef = 20DD4DC2134B4F7300E6E6B7 /* NSObject+OAResponderChain.m */; };
 		20E698D61360C0A4000A3A6F /* GBAuthViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 20E698D51360C0A4000A3A6F /* GBAuthViewController.xib */; };
 		20E698D71360C0A4000A3A6F /* GBAuthViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 20E698D51360C0A4000A3A6F /* GBAuthViewController.xib */; };
@@ -736,6 +740,10 @@
 		20CCCE011344AA2B00096AF7 /* FSEvents.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = FSEvents.txt; sourceTree = "<group>"; };
 		20CE6D63138824D2001D9707 /* GBHistoryTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBHistoryTableView.h; sourceTree = "<group>"; };
 		20CE6D64138824D2001D9707 /* GBHistoryTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBHistoryTableView.m; sourceTree = "<group>"; };
+		20CE6DE91389447E001D9707 /* GBStashListTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBStashListTask.h; sourceTree = "<group>"; };
+		20CE6DEA1389447E001D9707 /* GBStashListTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBStashListTask.m; sourceTree = "<group>"; };
+		20CE6E0813895CC3001D9707 /* GBStash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBStash.h; sourceTree = "<group>"; };
+		20CE6E0913895CC3001D9707 /* GBStash.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBStash.m; sourceTree = "<group>"; };
 		20DD4DC1134B4F7300E6E6B7 /* NSObject+OAResponderChain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+OAResponderChain.h"; sourceTree = "<group>"; };
 		20DD4DC2134B4F7300E6E6B7 /* NSObject+OAResponderChain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+OAResponderChain.m"; sourceTree = "<group>"; };
 		20E698D51360C0A4000A3A6F /* GBAuthViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GBAuthViewController.xib; sourceTree = "<group>"; };
@@ -873,6 +881,8 @@
 				20A750E41377C42F00981C39 /* GBSearch.m */,
 				208B31CF1373D6F600EB4A18 /* GBSearchQuery.h */,
 				208B31D01373D6F600EB4A18 /* GBSearchQuery.m */,
+				20CE6E0813895CC3001D9707 /* GBStash.h */,
+				20CE6E0913895CC3001D9707 /* GBStash.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -882,6 +892,8 @@
 			children = (
 				206A07BC11A33519003BB9E3 /* OATask.h */,
 				206A07BD11A33519003BB9E3 /* OATask.m */,
+				201E27411350C26F00DF6D94 /* OAPseudoTTY.h */,
+				201E27421350C26F00DF6D94 /* OAPseudoTTY.m */,
 				2057F11411ACFA60009EDF2F /* GBActivity.h */,
 				2057F11511ACFA60009EDF2F /* GBActivity.m */,
 				2038F6C311A030F70087CE37 /* GBTask.h */,
@@ -916,8 +928,8 @@
 				20BF14111279533900A30EE6 /* GBCloneTask.m */,
 				70EEC8CE12DFE33E00DD1555 /* GBSubmodulesTask.h */,
 				70EEC8CF12DFE33E00DD1555 /* GBSubmodulesTask.m */,
-				201E27411350C26F00DF6D94 /* OAPseudoTTY.h */,
-				201E27421350C26F00DF6D94 /* OAPseudoTTY.m */,
+				20CE6DE91389447E001D9707 /* GBStashListTask.h */,
+				20CE6DEA1389447E001D9707 /* GBStashListTask.m */,
 			);
 			name = Tasks;
 			sourceTree = "<group>";
@@ -1773,6 +1785,8 @@
 				20A750E61377C42F00981C39 /* GBSearch.m in Sources */,
 				20AEF703137DD6770067AF9B /* GBStyle.m in Sources */,
 				20CE6D66138824D2001D9707 /* GBHistoryTableView.m in Sources */,
+				20CE6DEC1389447E001D9707 /* GBStashListTask.m in Sources */,
+				20CE6E0B13895CC3001D9707 /* GBStash.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1908,6 +1922,8 @@
 				20A750E51377C42F00981C39 /* GBSearch.m in Sources */,
 				20AEF702137DD6770067AF9B /* GBStyle.m in Sources */,
 				20CE6D65138824D2001D9707 /* GBHistoryTableView.m in Sources */,
+				20CE6DEB1389447E001D9707 /* GBStashListTask.m in Sources */,
+				20CE6E0A13895CC3001D9707 /* GBStash.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
