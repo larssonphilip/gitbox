@@ -257,7 +257,7 @@
 - (void) menuDidClose:(NSMenu*)aMenu
 {
 	// Action is sent after menu is closed, so we have to let it run first and then update the responder chain.
-	dispatch_async(dispatch_get_main_queue(), ^() {
+	dispatch_async(dispatch_get_main_queue(), ^{
 		self.rootController.clickedSidebarItem = nil;
 	});
 }

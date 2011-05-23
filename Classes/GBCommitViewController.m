@@ -248,14 +248,14 @@
                           @"	 	Committed by $Committer Name <$committer@email>",
                           nil])
   {
-    [storage updateAttribute:NSParagraphStyleAttributeName forSubstring:line withBlock:^(NSParagraphStyle* style){
+    [storage updateAttribute:NSParagraphStyleAttributeName forSubstring:line withBlock:^(id style){
       NSMutableParagraphStyle* mutableStyle = [[style mutableCopy] autorelease];
       if (!mutableStyle)
       {
         mutableStyle = [[[NSMutableParagraphStyle alloc] init] autorelease];
       }
       [mutableStyle setLineBreakMode:NSLineBreakByTruncatingTail];
-      return mutableStyle;
+      return (id)mutableStyle;
     }];
   }
   

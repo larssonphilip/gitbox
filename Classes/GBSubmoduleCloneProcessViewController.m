@@ -52,7 +52,7 @@
 
 - (IBAction) download:_
 {
-  [self.repositoryController start];
+  //[self.repositoryController start];
 }
 
 - (IBAction) cancel:_

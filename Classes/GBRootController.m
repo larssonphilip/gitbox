@@ -263,7 +263,7 @@
 
 - (void) setSelectedSidebarItem:(GBSidebarItem *)newSelectedSidebarItem
 {
-  self.selectedObject = (id<GBSidebarItemObject,GBMainWindowItem>)newSelectedSidebarItem.object;
+  self.selectedObject = (id<GBSidebarItemObject,GBMainWindowItem, NSCoding>)newSelectedSidebarItem.object;
 }
 
 - (NSArray*) selectedItemIndexes
@@ -310,7 +310,7 @@
 
 - (void) setClickedSidebarItem:(GBSidebarItem*)anItem
 {
-  self.clickedObject = (id<GBSidebarItemObject,GBMainWindowItem>)anItem.object;
+  self.clickedObject = (id<GBSidebarItemObject,GBMainWindowItem,NSCoding>)anItem.object;
 }
 
 - (NSArray*) clickedOrSelectedSidebarItems

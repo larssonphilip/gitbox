@@ -971,7 +971,7 @@
       }
       if (block) block();
     };
-    return task;
+    return (id)task;
   }];
 }
 
@@ -1028,7 +1028,7 @@
       if (block) block();
       self.lastError = nil;
     };
-    return task;
+    return (id)task;
   }];
 }
 
@@ -1062,7 +1062,7 @@
       if (block) block();
       self.lastError = nil;
     };
-    return task;
+    return (id)task;
   }];
 }
 
@@ -1121,7 +1121,7 @@
       }
       if (block) block();
     };
-    return task;
+    return (id)task;
   }];
 }
 

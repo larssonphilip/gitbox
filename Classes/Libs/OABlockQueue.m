@@ -26,7 +26,7 @@
 {
   self.name = nil;
   self.queue = nil;
-  [self dealloc];
+  [super dealloc];
 }
 
 - (id) init

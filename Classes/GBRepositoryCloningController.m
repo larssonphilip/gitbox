@@ -141,7 +141,7 @@
         [self notifyWithSelector:@selector(cloningRepositoryControllerDidFinish:)];
       }
     };
-    return task;
+    return (id)task;
   }];
 }
 

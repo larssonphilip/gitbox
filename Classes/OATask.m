@@ -537,9 +537,9 @@ NSString* OATaskDidDeallocateNotification  = @"OATaskDidDeallocateNotification";
     NSString* exec = self.executableName;
     dispatch_queue_t originQueue = dispatch_get_current_queue();
     dispatch_retain(originQueue);
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^() {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
       NSString* aPath = [[self class] systemPathForExecutable:exec];
-      dispatch_async(originQueue, ^() {
+      dispatch_async(originQueue, ^{
         if (aPath)
         {
           self.launchPath = aPath;

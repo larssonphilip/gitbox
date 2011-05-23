@@ -178,7 +178,7 @@
         if (block) block();
       }
     };
-    return aTask;
+    return (id)aTask;
   }];
 }
 

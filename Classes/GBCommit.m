@@ -323,7 +323,7 @@
       task.commit = self;
       task.repository = self.repository;
       [task launchWithBlock:^{
-        NSArray* theChanges = [task.changes sortedArrayUsingComparator:^(GBChange* a,GBChange* b){
+        NSArray* theChanges = [task.changes sortedArrayUsingComparator:^(id a,id b){
           return [[[a fileURL] path] localizedCaseInsensitiveCompare:[[b fileURL] path]];
         }];
         self.changes = theChanges;
