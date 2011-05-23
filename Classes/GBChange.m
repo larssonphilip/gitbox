@@ -667,7 +667,7 @@
 
 - (NSString*) previewItemTitle
 {
-  return [[[self fileURL] absoluteString] lastPathComponent];
+  return [[[[self fileURL] absoluteString] lastPathComponent] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 }
 
 
