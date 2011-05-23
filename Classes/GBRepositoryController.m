@@ -949,6 +949,11 @@
 
 
 
+- (IBAction) duplicateRepository:(id)sender
+{
+  // TODO: present open panel and then clone the repo there and copy .git/config
+}
+
 
 
 
@@ -1071,6 +1076,11 @@
   [aMenu addItem:[[[NSMenuItem alloc] 
                   initWithTitle:NSLocalizedString(@"New Group", @"Sidebar") action:@selector(addGroup:) keyEquivalent:@""] autorelease]];
   
+  [aMenu addItem:[NSMenuItem separatorItem]];
+
+  [aMenu addItem:[[[NSMenuItem alloc] 
+                   initWithTitle:NSLocalizedString(@"Duplicate Repository...", @"Sidebar") action:@selector(duplicateRepository:) keyEquivalent:@""] autorelease]];
+
   [aMenu addItem:[NSMenuItem separatorItem]];
   
   [aMenu addItem:[[[NSMenuItem alloc] 
