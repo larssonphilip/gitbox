@@ -8,4 +8,6 @@
 @property(nonatomic, readonly) NSString* message;
 @property(nonatomic, readonly) NSString* menuTitle;
 
++ (NSTimeInterval) oldStashesTreshold;
+
 @end

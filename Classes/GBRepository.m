@@ -1125,7 +1125,35 @@
   }];
 }
 
-
+- (void) rebaseWithBlock:(void(^)())block
+{
+  block = [[block copy] autorelease];
+  
+  if (!self.currentRemoteBranch)
+  {
+    if (block) block();
+  }
+  
+  GBRef* otherBranch = self.currentRemoteBranch;
+  
+  [self fetchRemote:otherBranch.remote withBlock:^{
+    
+    GBTask* taskContinue = [self task];
+    taskContinue.arguments = [NSArray arrayWithObjects:@"rebase", @"--continue", nil];
+    [self launchTask:taskContinue withBlock:^{
+      GBTask* task = [self task];
+      task.arguments = [NSArray arrayWithObjects:@"rebase", [otherBranch nameWithRemoteAlias], nil];
+      [self launchTask:task withBlock:^{
+        if ([task isError])
+        {
+          [self alertWithMessage: @"Rebase failed" description:[task UTF8ErrorAndOutput]];
+        }
+        if (block) block();
+      }];
+      
+    }];
+  }];
+}
 
 
 

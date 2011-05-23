@@ -788,6 +788,26 @@
   [self pushWithForce:YES];
 }
 
+- (IBAction) rebase:(id)sender
+{
+  [self resetAutoFetchInterval];
+  [self pushSpinning];
+  [self pushDisabled];
+  [self pushFSEventsPause];
+  [self.repository rebaseWithBlock:^{
+    [self loadStageChangesWithBlock:^{
+      [self updateLocalRefsWithBlock:^{
+        [self updateSubmodulesWithBlock:^{
+          [self loadCommitsWithBlock:nil];
+          [self updateRemoteRefsWithBlock:nil];
+          [self popFSEventsPause];
+          [self popSpinning];
+        }];
+      }];
+      [self popDisabled];
+    }];
+  }];
+}
 
 - (BOOL) validateFetch:(id)sender
 {
@@ -868,6 +888,10 @@
   }
 }
 
+- (BOOL) validateOpenInXcode:(NSMenuItem*)sender
+{
+  return YES;
+}
 
 - (BOOL) validateUserInterfaceItem:(id<NSValidatedUserInterfaceItem>)anItem
 {
@@ -899,10 +923,10 @@
 {
 }
 
-- (BOOL) validateApplyStashMenu:(id)sender
+- (BOOL) validateApplyStashMenu:(NSMenuItem*)sender
 {
   // TODO: load changes and update the menu
-  // Return NO if no stashes are found.
+  // Return NO if no stashes are found and hide the menu item.
   return YES;
 }
 

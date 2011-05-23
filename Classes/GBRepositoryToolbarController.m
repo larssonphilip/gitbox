@@ -315,9 +315,9 @@
     {
       [control setLabel:NSLocalizedString(@"← fetch", @"Toolbar") forSegment:0];
     }
-    
-    if ((modifierFlags & NSShiftKeyMask) && (modifierFlags & NSCommandKeyMask))
+    else if ((modifierFlags & NSShiftKeyMask) && (modifierFlags & NSCommandKeyMask))
     {
+      [control setLabel:NSLocalizedString(@"← rebase", @"Toolbar") forSegment:0];
       [control setLabel:NSLocalizedString(@"force →", @"Toolbar") forSegment:1];
     }
     
@@ -691,6 +691,10 @@
     if (modifierFlags & NSAlternateKeyMask)
     {
       [self.repositoryController fetch:segmentedControl];
+    }
+    else if ((modifierFlags & NSShiftKeyMask) && (modifierFlags & NSCommandKeyMask))
+    {
+      [self.repositoryController rebase:segmentedControl];
     }
     else
     {

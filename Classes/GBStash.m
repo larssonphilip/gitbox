@@ -15,6 +15,11 @@
   [super dealloc];
 }
 
++ (NSTimeInterval) oldStashesTreshold
+{
+  return 30.0*24*3600;
+}
+
 - (NSString*) message
 {
   return [[self.rawMessage 

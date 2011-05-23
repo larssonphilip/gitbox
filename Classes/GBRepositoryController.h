@@ -76,10 +76,11 @@
 - (IBAction) pull:(id)sender;
 - (IBAction) push:(id)sender;
 - (IBAction) forcePush:(id)sender;
+- (IBAction) rebase:(id)sender;
 
 - (IBAction) openInFinder:(id)sender;
 - (IBAction) openInTerminal:(id)sender;
-
+- (IBAction) openInXcode:(NSMenuItem*)sender;
 
 - (BOOL) validateFetch:(id)sender;
 - (BOOL) validatePull:(id)sender;
@@ -87,9 +88,9 @@
 
 - (IBAction) stashChanges:(id)sender;
 - (IBAction) applyStash:(NSMenuItem*)sender;
+- (IBAction) applyStashMenu:(id)sender;
 - (IBAction) removeOldStashes:(NSMenuItem*)sender;
 - (IBAction) resetChanges:(id)sender;
-
 
 // will be obsolete when settings UI is done
 - (IBAction) editRepositories:(id)sender;

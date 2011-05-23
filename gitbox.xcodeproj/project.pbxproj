@@ -744,6 +744,7 @@
 		20CE6DEA1389447E001D9707 /* GBStashListTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBStashListTask.m; sourceTree = "<group>"; };
 		20CE6E0813895CC3001D9707 /* GBStash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBStash.h; sourceTree = "<group>"; };
 		20CE6E0913895CC3001D9707 /* GBStash.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBStash.m; sourceTree = "<group>"; };
+		20CE6F0C1389C355001D9707 /* HistoryManipulation.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = HistoryManipulation.txt; sourceTree = "<group>"; };
 		20DD4DC1134B4F7300E6E6B7 /* NSObject+OAResponderChain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+OAResponderChain.h"; sourceTree = "<group>"; };
 		20DD4DC2134B4F7300E6E6B7 /* NSObject+OAResponderChain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+OAResponderChain.m"; sourceTree = "<group>"; };
 		20E698D51360C0A4000A3A6F /* GBAuthViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GBAuthViewController.xib; sourceTree = "<group>"; };
@@ -1038,6 +1039,7 @@
 				20CCCE011344AA2B00096AF7 /* FSEvents.txt */,
 				2059D4FC133FD697008D3556 /* Github.txt */,
 				203E517B12F4A18700D1A668 /* GraphVisualization.txt */,
+				20CE6F0C1389C355001D9707 /* HistoryManipulation.txt */,
 				20C9A55F12E85ED100DBA3E1 /* Mercurial.txt */,
 				2009871711C4597800F35630 /* Payment.txt */,
 				20A09DDF12A121FD00294730 /* Quotes.txt */,

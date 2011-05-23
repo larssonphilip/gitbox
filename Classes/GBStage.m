@@ -64,6 +64,13 @@
   return [self.stagedChanges count] > 0;
 }
 
+// Returns a good default human-readable message like "somefile.c, other.txt, Makefile and 5 others"
+- (NSString*) defaultStashMessage
+{
+  // TODO: compose a default message out of the modified files
+  // TODO: use only file names, skip duplicates
+  return @"";
+}
 
 
 
@@ -381,7 +388,7 @@
   
   if (modifications + newFiles <= 0)
   {
-    return NSLocalizedString(@"Working directory clean", @"Stage");
+    return NSLocalizedString(@"Working directory clean", @"GBStage");
   }
   
   NSMutableArray* titles = [NSMutableArray array];
@@ -390,11 +397,11 @@
   {
     if (modifications == 1)
     {
-      [titles addObject:[NSString stringWithFormat:NSLocalizedString(@"%d modified file",@""), modifications]];
+      [titles addObject:[NSString stringWithFormat:NSLocalizedString(@"%d modified file",@"GBStage"), modifications]];
     }
     else
     {
-      [titles addObject:[NSString stringWithFormat:NSLocalizedString(@"%d modified files",@""), modifications]];
+      [titles addObject:[NSString stringWithFormat:NSLocalizedString(@"%d modified files",@"GBStage"), modifications]];
     }
 
   }
@@ -402,11 +409,11 @@
   {
     if (newFiles == 1)
     {
-      [titles addObject:[NSString stringWithFormat:NSLocalizedString(@"%d new file",@""), newFiles]];
+      [titles addObject:[NSString stringWithFormat:NSLocalizedString(@"%d new file",@"GBStage"), newFiles]];
     }
     else
     {
-      [titles addObject:[NSString stringWithFormat:NSLocalizedString(@"%d new files",@""), newFiles]];
+      [titles addObject:[NSString stringWithFormat:NSLocalizedString(@"%d new files",@"GBStage"), newFiles]];
     }
   }  
   

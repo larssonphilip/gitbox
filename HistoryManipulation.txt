@@ -1,0 +1,31 @@
+
+Extract submodule/folder:
+    http://stackoverflow.com/questions/359424/detach-subdirectory-into-separate-git-repository
+
+    You want to clone your repository and then use git filter-branch to mark everything but the subdirectory you want in your new repo to be garbage-collected. To clone your local repository:
+
+     $ git clone --no-hardlinks /XYZ /ABC
+    The --no-hardlinks switch makes git use real file copies instead of hardlinking when cloning a local repository. The garbage collection and pruning actions will only work on blobs (file contents), not links.
+
+    Then just filter-branch and reset to exclude the other files, so they can be pruned:
+
+     $ git filter-branch --subdirectory-filter ABC HEAD
+     $ git reset --hard
+     $ git gc --aggressive
+     $ git prune
+    and now you have a local git repository of the ABC sub-directory with all its history preserved.
+
+    EDIT -- For most uses, git filter-branch should have the added parameter -- --all. (Yes that's really dash dash space dash dash all. This needs to be the last parameters for the command.) As Matli discovered, this keeps the project branches and tags included in the the new repo.
+
+
+Remove file from all branches:
+
+    http://help.github.com/removing-sensitive-data/
+
+    git filter-branch --index-filter 'git rm --cached --ignore-unmatch Rakefile' HEAD
+     rm -rf .git/refs/original/
+    git reflog expire --expire=now --all
+    git gc --prune=now
+    git gc --aggressive --prune=now
+
+

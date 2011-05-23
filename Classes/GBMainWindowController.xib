@@ -11,7 +11,7 @@
 			<string key="NS.object.0">851</string>
 		</object>
 		<array class="NSMutableArray" key="IBDocument.EditedObjectIDs">
-			<integer value="100444"/>
+			<integer value="100169"/>
 		</array>
 		<array key="IBDocument.PluginDependencies">
 			<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -597,7 +597,7 @@
 							<object class="NSSegmentedControl" key="NSToolbarItemView" id="723410101">
 								<reference key="NSNextResponder"/>
 								<int key="NSvFlags">268</int>
-								<string key="NSFrame">{{0, 14}, {132, 25}}</string>
+								<string key="NSFrame">{{0, 14}, {142, 25}}</string>
 								<reference key="NSSuperview"/>
 								<bool key="NSEnabled">YES</bool>
 								<object class="NSSegmentedCell" key="NSCell" id="909504413">
@@ -611,12 +611,12 @@
 									<reference key="NSControlView" ref="723410101"/>
 									<array class="NSMutableArray" key="NSSegmentImages">
 										<object class="NSSegmentItem">
-											<double key="NSSegmentItemWidth">60</double>
+											<double key="NSSegmentItemWidth">65</double>
 											<string key="NSSegmentItemLabel">← pull</string>
 											<int key="NSSegmentItemImageScaling">0</int>
 										</object>
 										<object class="NSSegmentItem">
-											<double key="NSSegmentItemWidth">65</double>
+											<double key="NSSegmentItemWidth">70</double>
 											<string key="NSSegmentItemLabel">push →</string>
 											<int key="NSSegmentItemTag">1</int>
 											<int key="NSSegmentItemImageScaling">0</int>
@@ -630,7 +630,7 @@
 							<nil key="NSToolbarItemTarget"/>
 							<nil key="NSToolbarItemAction"/>
 							<string key="NSToolbarItemMinSize">{132, 25}</string>
-							<string key="NSToolbarItemMaxSize">{132, 32}</string>
+							<string key="NSToolbarItemMaxSize">{144, 32}</string>
 							<bool key="NSToolbarItemEnabled">YES</bool>
 							<bool key="NSToolbarItemAutovalidates">YES</bool>
 							<int key="NSToolbarItemTag">0</int>
@@ -1639,19 +1639,35 @@
 					<string key="className">GBRepositoryController</string>
 					<string key="superclassName">NSResponder</string>
 					<dictionary class="NSMutableDictionary" key="actions">
+						<string key="applyStash:">NSMenuItem</string>
+						<string key="applyStashMenu:">id</string>
 						<string key="cancelSearch:">id</string>
 						<string key="editGitConfig:">id</string>
 						<string key="editGitIgnore:">id</string>
 						<string key="editRepositories:">id</string>
 						<string key="fetch:">id</string>
+						<string key="forcePush:">id</string>
 						<string key="openInFinder:">id</string>
 						<string key="openInTerminal:">id</string>
+						<string key="openInXcode:">NSMenuItem</string>
 						<string key="performFindPanelAction:">id</string>
 						<string key="pull:">id</string>
 						<string key="push:">id</string>
+						<string key="rebase:">id</string>
+						<string key="removeOldStashes:">NSMenuItem</string>
+						<string key="resetChanges:">id</string>
 						<string key="search:">id</string>
+						<string key="stashChanges:">id</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="actionInfosByName">
+						<object class="IBActionInfo" key="applyStash:">
+							<string key="name">applyStash:</string>
+							<string key="candidateClassName">NSMenuItem</string>
+						</object>
+						<object class="IBActionInfo" key="applyStashMenu:">
+							<string key="name">applyStashMenu:</string>
+							<string key="candidateClassName">id</string>
+						</object>
 						<object class="IBActionInfo" key="cancelSearch:">
 							<string key="name">cancelSearch:</string>
 							<string key="candidateClassName">id</string>
@@ -1672,6 +1688,10 @@
 							<string key="name">fetch:</string>
 							<string key="candidateClassName">id</string>
 						</object>
+						<object class="IBActionInfo" key="forcePush:">
+							<string key="name">forcePush:</string>
+							<string key="candidateClassName">id</string>
+						</object>
 						<object class="IBActionInfo" key="openInFinder:">
 							<string key="name">openInFinder:</string>
 							<string key="candidateClassName">id</string>
@@ -1679,6 +1699,10 @@
 						<object class="IBActionInfo" key="openInTerminal:">
 							<string key="name">openInTerminal:</string>
 							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="openInXcode:">
+							<string key="name">openInXcode:</string>
+							<string key="candidateClassName">NSMenuItem</string>
 						</object>
 						<object class="IBActionInfo" key="performFindPanelAction:">
 							<string key="name">performFindPanelAction:</string>
@@ -1692,8 +1716,24 @@
 							<string key="name">push:</string>
 							<string key="candidateClassName">id</string>
 						</object>
+						<object class="IBActionInfo" key="rebase:">
+							<string key="name">rebase:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="removeOldStashes:">
+							<string key="name">removeOldStashes:</string>
+							<string key="candidateClassName">NSMenuItem</string>
+						</object>
+						<object class="IBActionInfo" key="resetChanges:">
+							<string key="name">resetChanges:</string>
+							<string key="candidateClassName">id</string>
+						</object>
 						<object class="IBActionInfo" key="search:">
 							<string key="name">search:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="stashChanges:">
+							<string key="name">stashChanges:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 					</dictionary>
