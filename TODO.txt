@@ -32,7 +32,6 @@ Gitbox 1.4 misc items:
   - "continue rebase" button (instead of pull/push and remote branch dropdown button)
   - "abort rebase" button
 - menu: Repository -> openInXcode: - construct submenu and hide/unhide the item
-- menu: Repository -> duplicateRepository:
 - menu: History -> checkoutBranchMenu: to construct a list of branches
 - menu: History -> checkoutRemoteBranchMenu: to construct a list of branches
 - menu: History -> checkoutTag: to construct a list of tags
