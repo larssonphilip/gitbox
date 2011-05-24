@@ -844,6 +844,18 @@
   }];
 }
 
+- (void) createNewTagWithName:(NSString*)name block:(void(^)())block
+{
+  block = [[block copy] autorelease];
+  GBTask* checkoutTask = [self task];
+  checkoutTask.arguments = [NSArray arrayWithObjects:@"tag", name, nil];
+  [self launchTask:checkoutTask withBlock:^{
+    [checkoutTask showErrorIfNeeded];
+    [self configureTrackingRemoteBranch:self.currentRemoteBranch withLocalName:name block:block];
+  }];
+}
+
+
 - (void) commitWithMessage:(NSString*) message block:(void(^)())block
 {
   block = [[block copy] autorelease];

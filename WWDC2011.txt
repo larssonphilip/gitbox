@@ -6,5 +6,6 @@ Questions for WWDC 2011:
 4. [NSApp postEvent:] as a workaround for retained pipes/fds after [NSTask waitUntilExit] in the secondary thread.
 5. AppleScript interaction (send data, get data)
 6. LLDB fucks up output from NSTasks.
-7. 
+7. How to organize menus. Especially when they are duplicated in main menu, contextual menu and toolbar.
+8. LLVM Clang produces funny segfault issues (self is invalid pointer in the block)
 

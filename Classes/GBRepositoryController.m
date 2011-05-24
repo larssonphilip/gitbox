@@ -431,6 +431,15 @@
   }];
 }
 
+- (void) createNewTagWithName:(NSString*)name
+{
+  [self resetAutoFetchInterval];
+  [self checkoutHelper:^(void(^block)()){
+    [self.repository createNewTagWithName:name block:block];
+  }];
+}
+
+
 - (void) selectRemoteBranch:(GBRef*) remoteBranch
 {
   [self resetAutoFetchInterval];
@@ -890,13 +899,52 @@
 
 - (BOOL) validateOpenInXcode:(NSMenuItem*)sender
 {
-  return YES;
+  NSMutableArray* xcodeProjectURLs = [NSMutableArray array];
+  
+  NSArray* URLs = [[[[NSFileManager alloc] init] autorelease] contentsOfDirectoryAtURL:self.url includingPropertiesForKeys:nil options:NSDirectoryEnumerationSkipsHiddenFiles error:NULL];
+  
+  for (NSURL* fileURL in URLs)
+  {
+    if ([[[fileURL path] pathExtension] isEqual:@"xcodeproj"])
+    {
+      [xcodeProjectURLs addObject:fileURL];
+    }
+  }
+  
+  if ([xcodeProjectURLs count] > 0)
+  {
+    [sender setTitle:NSLocalizedString(@"Open Xcode Project", @"Sidebar")];
+    if ([xcodeProjectURLs count] == 1)
+    {
+      [sender setRepresentedObject:[xcodeProjectURLs objectAtIndex:0]];
+      [sender setSubmenu:nil];
+    }
+    else
+    {
+      NSMenu* xcodeMenu = [[[NSMenu alloc] init] autorelease];
+      [xcodeMenu setTitle:[sender title]];
+      
+      for (NSURL* xcodeProjectURL in xcodeProjectURLs)
+      {
+        NSMenuItem* item = [[[NSMenuItem alloc] 
+                             initWithTitle:[[[xcodeProjectURL path] lastPathComponent] stringByReplacingOccurrencesOfString:@".xcodeproj" withString:@""] action:@selector(openInXcode:) keyEquivalent:@""] autorelease];
+        [item setRepresentedObject:xcodeProjectURL];
+        [xcodeMenu addItem:item];
+      }
+      
+      [sender setSubmenu:xcodeMenu];
+    }
+    
+    [sender setHidden:NO];
+  }
+  else
+  {
+    [sender setHidden:YES];
+  }
+  
+  return ![sender isHidden];
 }
 
-- (BOOL) validateUserInterfaceItem:(id<NSValidatedUserInterfaceItem>)anItem
-{
-  return [self dispatchUserInterfaceItemValidation:anItem];
-}
 
 
 - (IBAction) stashChanges:(id)sender
@@ -946,6 +994,17 @@
 {
   return [self.repository.stage isDirty];
 }
+
+
+
+
+- (BOOL) validateUserInterfaceItem:(id<NSValidatedUserInterfaceItem>)anItem
+{
+  return [self dispatchUserInterfaceItemValidation:anItem];
+}
+
+
+
 
 
 
@@ -1006,48 +1065,8 @@
                   initWithTitle:NSLocalizedString(@"Open in Finder", @"Sidebar") action:@selector(openInFinder:) keyEquivalent:@""] autorelease]];
   [aMenu addItem:[[[NSMenuItem alloc] 
                   initWithTitle:NSLocalizedString(@"Open in Terminal", @"Sidebar") action:@selector(openInTerminal:) keyEquivalent:@""] autorelease]];
-  
-  NSMutableArray* xcodeProjectURLs = [NSMutableArray array];
-  
-  NSArray* URLs = [[[[NSFileManager alloc] init] autorelease] contentsOfDirectoryAtURL:self.url includingPropertiesForKeys:nil options:NSDirectoryEnumerationSkipsHiddenFiles error:NULL];
-  
-  for (NSURL* fileURL in URLs)
-  {
-    if ([[[fileURL path] pathExtension] isEqual:@"xcodeproj"])
-    {
-      [xcodeProjectURLs addObject:fileURL];
-    }
-  }
-  
-  if ([xcodeProjectURLs count] > 0)
-  {
-    if ([xcodeProjectURLs count] == 1)
-    {
-      NSMenuItem* item = [[[NSMenuItem alloc] 
-                           initWithTitle:NSLocalizedString(@"Open Xcode Project", @"Sidebar") action:@selector(openInXcode:) keyEquivalent:@""] autorelease];
-      [item setRepresentedObject:[xcodeProjectURLs objectAtIndex:0]];
-      [aMenu addItem:item];
-    }
-    else
-    {
-      NSMenuItem* xcodeMenuItem = [[[NSMenuItem alloc] 
-                           initWithTitle:NSLocalizedString(@"Open Xcode Project", @"Sidebar") action:NULL keyEquivalent:@""] autorelease];
-      
-      NSMenu* xcodeMenu = [[[NSMenu alloc] init] autorelease];
-      [xcodeMenu setTitle:[xcodeMenuItem title]];
-      
-      for (NSURL* xcodeProjectURL in xcodeProjectURLs)
-      {
-        NSMenuItem* item = [[[NSMenuItem alloc] 
-                             initWithTitle:[[[xcodeProjectURL path] lastPathComponent] stringByReplacingOccurrencesOfString:@".xcodeproj" withString:@""] action:@selector(openInXcode:) keyEquivalent:@""] autorelease];
-        [item setRepresentedObject:xcodeProjectURL];
-        [xcodeMenu addItem:item];
-      }
-      
-      [xcodeMenuItem setSubmenu:xcodeMenu];
-      [aMenu addItem:xcodeMenuItem];
-    }
-  }
+  [aMenu addItem:[[[NSMenuItem alloc] 
+                   initWithTitle:NSLocalizedString(@"Open Xcode Project", @"Sidebar") action:@selector(openInXcode:) keyEquivalent:@""] autorelease]];
 }
 
 

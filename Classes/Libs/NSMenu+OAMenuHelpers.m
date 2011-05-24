@@ -11,6 +11,7 @@
 {
   NSMenu* menu = [[[self alloc] init] autorelease];
   if (title) [menu setTitle:title];
+  [menu setAutoenablesItems:YES];
   return menu;  
 }
 
@@ -24,6 +25,14 @@
   NSMenuItem* item = [[[self alloc] init] autorelease];
   if (title) [item setTitle:title];
   if (menu) [item setSubmenu:menu];
+  return item;
+}
+
++ (NSMenuItem*) menuItemWithTitle:(NSString*)title action:(SEL)action
+{
+  NSMenuItem* item = [[[self alloc] init] autorelease];
+  if (title) [item setTitle:title];
+  if (action) [item setAction:action];
   return item;
 }
 

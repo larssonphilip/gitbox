@@ -79,6 +79,7 @@
 - (void) checkoutRef:(GBRef*)ref withBlock:(void(^)())block;
 - (void) checkoutRef:(GBRef*)ref withNewName:(NSString*)name block:(void(^)())block;
 - (void) checkoutNewBranchWithName:(NSString*)name block:(void(^)())block;
+- (void) createNewTagWithName:(NSString*)name block:(void(^)())block;
 
 - (void) commitWithMessage:(NSString*) message block:(void(^)())block;
 

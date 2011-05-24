@@ -57,6 +57,7 @@
 - (void) checkoutRef:(GBRef*) ref;
 - (void) checkoutRef:(GBRef*) ref withNewName:(NSString*)name;
 - (void) checkoutNewBranchWithName:(NSString*)name;
+- (void) createNewTagWithName:(NSString*)name;
 - (void) selectRemoteBranch:(GBRef*) remoteBranch;
 - (void) createAndSelectRemoteBranchWithName:(NSString*)name remote:(GBRemote*)aRemote;
 

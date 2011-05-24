@@ -9,4 +9,5 @@
 
 @interface NSMenuItem (OAMenuHelpers)
 + (NSMenuItem*) menuItemWithTitle:(NSString*)title submenu:(NSMenu*)menu;
++ (NSMenuItem*) menuItemWithTitle:(NSString*)title action:(SEL)action;
 @end

@@ -3,12 +3,17 @@ Gitbox 1.4 Release Notes
 
 New features:
 
-✓ 
-✓ 
+✓ Menu command: New Tag. (wip) Tags are displayed in history.
+✓ Open Xcode Project menu item in Main Menu, sidebar and history contextual menus.
+✓ (wip) Stashing changes and managing a list of stashes.
+✓ (wip) Resetting stage changes
+✓ (wip) Resetting branch to selected commit.
+✓ (wip) New command: Merge Commit which lets to pull partially
+✓ (wip) Rebase command and continue/abort UI in case of conflict.
 
 Enhancements:
 
-✓ 
+✓ Main Menu updated with new History and Stage menus. Improved layout, added new commands.
 ✓ 
 ✓ 
 
@@ -25,19 +30,23 @@ Bug fixes:
 
 Gitbox 1.4 misc items:
 
+- boolean prompt with title and description.
+- reset stage in all menus
+- reset branch in all menus
+- stashes
+
+-------------
+
 - search: keep selection when search ends.
 - search: bug: when parent commit is clicked it can be missing in the history. Should either not highlight it, or reset search state.
 
-- menu: Repository -> rebase:
-  - "continue rebase" button (instead of pull/push and remote branch dropdown button)
-  - "abort rebase" button
-- menu: Repository -> openInXcode: - construct submenu and hide/unhide the item
-- menu: History -> checkoutBranchMenu: to construct a list of branches
-- menu: History -> checkoutRemoteBranchMenu: to construct a list of branches
-- menu: History -> checkoutTag: to construct a list of tags
-- menu: History -> checkoutCommit:
-- menu: History -> newCommit:
-- menu: History -> newTag:
++ menu: Repository -> openInXcode: - construct submenu and hide/unhide the item
++ menu: History -> checkoutBranchMenu: to construct a list of branches
++ menu: History -> checkoutRemoteBranchMenu: to construct a list of branches
++ menu: History -> checkoutTagMenu: to construct a list of tags
++ menu: History -> checkoutCommit:
++ menu: History -> newCommit:
++ menu: History -> newTag:
 - menu: History -> mergeCommit:
 - menu: History -> cherryPickCommit:
 - menu: History -> extractFolder:
@@ -49,6 +58,13 @@ Gitbox 1.4 misc items:
 - menu: Stage -> applyStash:
 - menu: Stage -> resetChanges: (same as resetBranch, but uses HEAD, not the selected commit)
 
+- toolbar: show tag name instead of its SHA1
+- toolbar: allow to unset remote branch (useful when other branch has a lot of commits and clutters the history)
+
+- menu: Repository -> rebase:
+  - "continue rebase" button in place of commit message field
+  - "abort rebase" button
+
 
 - history: contextual menus:
   - stage: 
@@ -59,7 +75,11 @@ Gitbox 1.4 misc items:
     - stash changes
   - commit:
     - 
-  
+
+- search: find by tag name too
+
+- bug: maybe NSURL bookmark data becomes broken and leads to "outside of repository" errors.
+
 - history: right click on stage to "show in finder" and other folder-related actions like in sidebar right click menu. Also, stash.
 - changes: stash list: as a local branch menu item?
 - changes: stash/apply stash from the menu, context menu

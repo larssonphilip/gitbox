@@ -81,7 +81,7 @@
     [win setContentMaxSize:maxSize];
     [[self.textField cell] setUsesSingleLineMode:YES];
   }
-  [self.textField setStringValue:self.value];
+  [self.textField setStringValue:self.value ? self.value : @""];
 }
 
 @end

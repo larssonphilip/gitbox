@@ -347,7 +347,7 @@
   GBRepository* repo = self.repositoryController.repository;
   
   // Local branches
-  NSMenu* newMenu = [[NSMenu new] autorelease];
+  NSMenu* newMenu = [NSMenu menu];
   NSPopUpButton* button = self.currentBranchPopUpButton;
   
   if ([button pullsDown])
@@ -378,7 +378,7 @@
     NSMenuItem* item = [[NSMenuItem new] autorelease];
     [item setTitle:localBranch.name];
     [item setAction:@selector(checkoutBranch:)];
-    [item setTarget:self];
+    [item setTarget:nil];
     [item setRepresentedObject:localBranch];
     if ([localBranch.name isEqual:repo.currentLocalRef.name])
     {
@@ -389,72 +389,28 @@
   
   [newMenu addItem:[NSMenuItem separatorItem]];
   
+  
   // Checkout Tag
   
-  NSMenu* tagsMenu = [NSMenu menu];
-  for (GBRef* tag in repo.tags)
+  if ([repo.tags count] > 0)
   {
-    NSMenuItem* item = [[NSMenuItem new] autorelease];
-    [item setTitle:tag.name];
-    [item setAction:@selector(checkoutBranch:)];
-    [item setTarget:self];
-    [item setRepresentedObject:tag];
-    if ([tag.name isEqual:repo.currentLocalRef.name] && repo.currentLocalRef.isTag)
-    {
-      [item setState:NSOnState];
-    }
-    [tagsMenu addItem:item];
-  }
-  if ([[tagsMenu itemArray] count] > 0)
-  {
-    [newMenu addItem:[NSMenuItem menuItemWithTitle:NSLocalizedString(@"Checkout Tag", @"Command") submenu:tagsMenu]];
+    [newMenu addItem:[NSMenuItem menuItemWithTitle:NSLocalizedString(@"Checkout Tag", @"Command") action:@selector(checkoutTagMenu:)]];
   }
   
   
   // Checkout Remote Branch
-  
-  NSMenu* remoteBranchesMenu = [NSMenu menu];
-  if ([repo.remotes count] > 1) // display submenus for each remote
+
+  BOOL hasOneRemoteBranch = NO;
+  for (GBRemote* remote in repo.remotes)
   {
-    for (GBRemote* remote in repo.remotes)
+    if ([remote.branches count] > 0)
     {
-      if ([remote.branches count] > 0)
-      {
-        NSMenu* remoteMenu = [[NSMenu new] autorelease];
-        for (GBRef* branch in remote.branches)
-        {
-          if ([repo doesRefExist:branch])
-          {
-            NSMenuItem* item = [[NSMenuItem new] autorelease];
-            [item setTitle:branch.name];
-            [item setAction:@selector(checkoutRemoteBranch:)];
-            [item setTarget:self];
-            [item setRepresentedObject:branch];
-            [remoteMenu addItem:item];
-          }
-        }
-        [remoteBranchesMenu addItem:[NSMenuItem menuItemWithTitle:remote.alias submenu:remoteMenu]];
-      }
+      hasOneRemoteBranch = YES;
     }
   }
-  else if ([repo.remotes count] == 1) // display a flat list of "origin/master"-like titles
+  if (hasOneRemoteBranch)
   {
-    for (GBRef* branch in [[repo.remotes firstObject] branches])
-    {
-      if ([repo doesRefExist:branch])
-      {
-        NSMenuItem* item = [[NSMenuItem new] autorelease];
-        [item setTitle:[branch nameWithRemoteAlias]];
-        [item setAction:@selector(checkoutRemoteBranch:)];
-        [item setTarget:self];
-        [item setRepresentedObject:branch];    
-        [remoteBranchesMenu addItem:item];
-      }
-    }
-  }
-  if ([[remoteBranchesMenu itemArray] count] > 0)
-  {
-    [newMenu addItem:[NSMenuItem menuItemWithTitle:NSLocalizedString(@"Checkout Remote Branch", @"Command") submenu:remoteBranchesMenu]];
+    [newMenu addItem:[NSMenuItem menuItemWithTitle:NSLocalizedString(@"Checkout Remote Branch", @"Command") action:@selector(checkoutRemoteBranchMenu:)]];
   }
   
   
@@ -471,17 +427,14 @@
   }
   
   
-  
   [newMenu addItem:[NSMenuItem separatorItem]];
   
   
   // Checkout New Branch
   
-  NSMenuItem* checkoutNewBranchItem = [[NSMenuItem new] autorelease];
-  [checkoutNewBranchItem setTitle:NSLocalizedString(@"New Branch...", @"Command")];
-  [checkoutNewBranchItem setTarget:self];
-  [checkoutNewBranchItem setAction:@selector(checkoutNewBranch:)];
-  [newMenu addItem:checkoutNewBranchItem];
+  [newMenu addItem:[NSMenuItem menuItemWithTitle:NSLocalizedString(@"New Branch...", @"Command") action:@selector(newBranch:)]];
+  [newMenu addItem:[NSMenuItem menuItemWithTitle:NSLocalizedString(@"New Tag...", @"Command") action:@selector(newTag:)]];
+  
   
   // Select current branch
   
@@ -746,7 +699,7 @@
   [[GBMainWindowController instance] presentSheet:ctrl];
 }
 
-- (IBAction) checkoutNewBranch:(id)sender
+- (IBAction) newBranch:(id)sender
 {
   GBPromptController* ctrl = [GBPromptController controller];
   
@@ -757,6 +710,22 @@
   ctrl.requireStripWhitespace = YES;
   ctrl.completionHandler = ^(BOOL cancelled){
     if (!cancelled) [self.repositoryController checkoutNewBranchWithName:ctrl.value];
+    [[GBMainWindowController instance] dismissSheet:ctrl];
+  };
+  [[GBMainWindowController instance] presentSheet:ctrl];
+}
+
+- (IBAction) newTag:(id)sender
+{
+  GBPromptController* ctrl = [GBPromptController controller];
+  
+  ctrl.title = NSLocalizedString(@"New Tag", @"");
+  ctrl.promptText = NSLocalizedString(@"Tag Name:", @"");
+  ctrl.buttonText = NSLocalizedString(@"OK", @"");
+  ctrl.requireSingleLine = YES;
+  ctrl.requireStripWhitespace = YES;
+  ctrl.completionHandler = ^(BOOL cancelled){
+    if (!cancelled) [self.repositoryController createNewTagWithName:ctrl.value];
     [[GBMainWindowController instance] dismissSheet:ctrl];
   };
   [[GBMainWindowController instance] presentSheet:ctrl];
@@ -775,7 +744,7 @@
   }
   
   ctrl.promptText = NSLocalizedString(@"Commit ID:", @"");
-  ctrl.buttonText = NSLocalizedString(@"OK", @"");
+  ctrl.buttonText = NSLocalizedString(@"Checkout", @"");
   ctrl.requireSingleLine = YES;
   ctrl.requireStripWhitespace = YES;
   ctrl.completionHandler = ^(BOOL cancelled){
@@ -811,6 +780,124 @@
     [[GBMainWindowController instance] dismissSheet:ctrl];
   };
   [[GBMainWindowController instance] presentSheet:ctrl];
+}
+
+
+
+
+// noop methods to trigger validation callbacks
+
+- (IBAction) checkoutBranchMenu:(NSMenuItem*)sender
+{
+}
+
+- (IBAction) checkoutRemoteBranchMenu:(NSMenuItem*)sender
+{
+}
+
+- (IBAction) checkoutTagMenu:(NSMenuItem*)sender
+{
+}
+
+
+- (BOOL) validateCheckoutBranchMenu:(NSMenuItem*)sender
+{
+  [sender setSubmenu:[NSMenu menuWithTitle:[sender title]]];
+  
+	NSMenu* aMenu = [sender submenu];
+	GBRepository* repo = self.repositoryController.repository;
+	BOOL hasOneItem = NO;
+	for (GBRef* localBranch in repo.localBranches)
+	{
+		NSMenuItem* item = [[NSMenuItem new] autorelease];
+		[item setTitle:localBranch.name];
+		[item setAction:@selector(checkoutBranch:)];
+		[item setRepresentedObject:localBranch];
+		if ([localBranch.name isEqual:repo.currentLocalRef.name])
+		{
+			[item setState:NSOnState];
+		}
+		[aMenu addItem:item];
+		hasOneItem = YES;
+	}
+	
+	return hasOneItem;
+}
+
+
+- (BOOL) validateCheckoutRemoteBranchMenu:(NSMenuItem*)sender
+{
+  [sender setSubmenu:[NSMenu menuWithTitle:[sender title]]];
+	NSMenu* aMenu = [sender submenu];
+	GBRepository* repo = self.repositoryController.repository;
+  BOOL hasOneItem = NO;
+  
+  if ([repo.remotes count] > 1) // display submenus for each remote
+  {
+    for (GBRemote* remote in repo.remotes)
+    {
+      if ([remote.branches count] > 0)
+      {
+        NSMenu* remoteMenu = [[NSMenu new] autorelease];
+        for (GBRef* branch in remote.branches)
+        {
+          if ([repo doesRefExist:branch])
+          {
+            NSMenuItem* item = [[NSMenuItem new] autorelease];
+            [item setTitle:branch.name];
+            [item setAction:@selector(checkoutRemoteBranch:)];
+            [item setTarget:self];
+            [item setRepresentedObject:branch];
+            [remoteMenu addItem:item];
+            hasOneItem = YES;
+          }
+        }
+        [aMenu addItem:[NSMenuItem menuItemWithTitle:remote.alias submenu:remoteMenu]];
+      }
+    }
+  }
+  else if ([repo.remotes count] == 1) // display a flat list of "origin/master"-like titles
+  {
+    for (GBRef* branch in [[repo.remotes firstObject] branches])
+    {
+      if ([repo doesRefExist:branch])
+      {
+        NSMenuItem* item = [[NSMenuItem new] autorelease];
+        [item setTitle:[branch nameWithRemoteAlias]];
+        [item setAction:@selector(checkoutRemoteBranch:)];
+        [item setTarget:self];
+        [item setRepresentedObject:branch];    
+        [aMenu addItem:item];
+        hasOneItem = YES;
+      }
+    }
+  }
+  return hasOneItem;
+}
+
+- (BOOL) validateCheckoutTagMenu:(NSMenuItem*)sender
+{
+  [sender setSubmenu:[NSMenu menuWithTitle:[sender title]]];
+	NSMenu* aMenu = [sender submenu];
+  [aMenu removeAllItems];
+	GBRepository* repo = self.repositoryController.repository;
+  BOOL hasOneItem = NO;
+  for (GBRef* tag in repo.tags)
+  {
+    NSMenuItem* item = [[NSMenuItem new] autorelease];
+    [item setTitle:tag.name];
+    [item setAction:@selector(checkoutBranch:)];
+    [item setTarget:self];
+    [item setRepresentedObject:tag];
+    if ([tag.name isEqual:repo.currentLocalRef.name] && repo.currentLocalRef.isTag)
+    {
+      [item setState:NSOnState];
+    }
+    [aMenu addItem:item];
+    hasOneItem = YES;
+  }
+
+  return hasOneItem;
 }
 
 

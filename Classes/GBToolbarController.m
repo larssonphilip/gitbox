@@ -6,7 +6,7 @@
 #import "NSMenu+OAMenuHelpers.h"
 #import "NSArray+OAArrayHelpers.h"
 #import "NSString+OAStringHelpers.h"
-
+#import "NSObject+OADispatchItemValidation.h"
 
 @interface GBToolbarController ()
 @property(nonatomic, readonly) NSToolbarItem* sidebarPaddingItem;
@@ -163,6 +163,15 @@
 //}
 
 
+
+#pragma mark NSUserInterfaceValidations
+
+
+
+- (BOOL) validateUserInterfaceItem:(id<NSValidatedUserInterfaceItem>)anItem
+{
+  return [self dispatchUserInterfaceItemValidation:anItem];
+}
 
 
 
