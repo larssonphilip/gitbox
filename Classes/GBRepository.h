@@ -97,6 +97,8 @@
 - (void) pushBranch:(GBRef*)aLocalBranch toRemoteBranch:(GBRef*)aRemoteBranch forced:(BOOL)forced withBlock:(void(^)())block;
 - (void) rebaseWithBlock:(void(^)())block;
 
+- (void) resetStageWithBlock:(void(^)())block;
+
 
 #pragma mark Util
 

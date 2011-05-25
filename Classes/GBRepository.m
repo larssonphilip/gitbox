@@ -1158,7 +1158,7 @@
       [self launchTask:task withBlock:^{
         if ([task isError])
         {
-          [self alertWithMessage: @"Rebase failed" description:[task UTF8ErrorAndOutput]];
+          [self alertWithMessage:NSLocalizedString(@"Rebase failed",nil) description:[task UTF8ErrorAndOutput]];
         }
         if (block) block();
       }];
@@ -1168,6 +1168,20 @@
 }
 
 
+- (void) resetStageWithBlock:(void(^)())block
+{
+  block = [[block copy] autorelease];
+    
+  GBTask* task = [self task];
+  task.arguments = [NSArray arrayWithObjects:@"reset", @"--hard", nil];
+  [self launchTask:task withBlock:^{
+    if ([task isError])
+    {
+      [self alertWithMessage:NSLocalizedString(@"Reset failed",nil) description:[task UTF8ErrorAndOutput]];
+    }
+    if (block) block();
+  }];
+}
 
 
 

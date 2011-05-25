@@ -25,6 +25,7 @@
 #import "OABlockTable.h"
 #import "GBFolderMonitor.h"
 #import "NSArray+OAArrayHelpers.h"
+#import "NSAlert+OAAlertHelpers.h"
 #import "NSObject+OASelectorNotifications.h"
 #import "NSObject+OADispatchItemValidation.h"
 
@@ -987,7 +988,18 @@
 
 - (IBAction) resetChanges:(id)sender
 {
-  // TODO: present confirmation dialog which explains how reset works
+  [[GBMainWindowController instance] criticalConfirmationWithMessage:NSLocalizedString(@"Are you sure you want to reset all changes?",nil) 
+                                                         description:NSLocalizedString(@"All modifications in working directory and stage will be discarded using git reset --hard. You can’t undo this action.", nil) 
+                                                                  ok:NSLocalizedString(@"Reset",nil)
+                                                          completion:^(BOOL result){
+                                                            if (result)
+                                                            {
+                                                              [self.repository resetStageWithBlock:^{
+                                                                [self loadStageChangesWithBlock:^{
+                                                                }];
+                                                              }];
+                                                            }
+                                                          }];
 }
 
 - (BOOL) validateResetChanges:(id)sender

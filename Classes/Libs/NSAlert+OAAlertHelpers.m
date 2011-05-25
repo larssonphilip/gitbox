@@ -30,7 +30,7 @@
                                 defaultButton:buttonTitle
                               alternateButton:nil
                                   otherButton:nil
-                    informativeTextWithFormat:description ? description : @""];
+                    informativeTextWithFormat:@"%@", description ? description : @""];
   return [alert runModal];  
 }
 
@@ -42,7 +42,7 @@
                                    defaultButton:okTitle
                                  alternateButton:NSLocalizedString(@"Cancel", @"")
                                      otherButton:nil
-                       informativeTextWithFormat:description ? description : @""];
+                       informativeTextWithFormat:@"%@", description ? description : @""];
   
   if (!aWindow)
   {

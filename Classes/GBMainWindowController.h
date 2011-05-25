@@ -29,6 +29,7 @@
 - (void) dismissSheet;
 - (void) sheetQueueAddBlock:(void(^)())aBlock;
 - (void) sheetQueueEndBlock;
+- (void) criticalConfirmationWithMessage:(NSString*)msg description:(NSString*)desc ok:(NSString*)okOrNil completion:(void(^)(BOOL))completion;
 
 @end
 
