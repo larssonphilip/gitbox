@@ -3,12 +3,17 @@ Gitbox 1.4 Release Notes
 
 New features:
 
-✓ Menu command: New Tag. (wip) Tags are displayed in history.
+✓ (wip) edit branches and tags in a single repository settings window.
+✓ (wip) progress indicator for pulls, push and fetch.
+
+New menu commands:
+
+✓ New Tag. (wip) Tags are displayed in history.
 ✓ Open Xcode Project menu item in Main Menu, sidebar and history contextual menus.
 ✓ (wip) Stashing changes and managing a list of stashes.
-✓ (wip) Resetting stage changes
-✓ (wip) Resetting branch to selected commit.
-✓ (wip) New command: Merge Commit which lets to pull partially
+✓ Reset stage changes (git reset --hard).
+✓ (wip) Reset branch to selected commit.
+✓ (wip) Merge Commit which lets to pull partially
 ✓ (wip) Rebase command and continue/abort UI in case of conflict.
 
 Enhancements:
@@ -56,7 +61,7 @@ Gitbox 1.4 misc items:
 - menu: Stage -> stashChanges:
 - menu: Stage -> applyStashMenu:
 - menu: Stage -> applyStash:
-- menu: Stage -> resetChanges: (same as resetBranch, but uses HEAD, not the selected commit)
++ menu: Stage -> resetChanges: (same as resetBranch, but uses HEAD, not the selected commit)
 
 - toolbar: show tag name instead of its SHA1
 - toolbar: allow to unset remote branch (useful when other branch has a lot of commits and clutters the history)
@@ -80,7 +85,7 @@ Gitbox 1.4 misc items:
 
 - bug: maybe NSURL bookmark data becomes broken and leads to "outside of repository" errors.
 
-- history: right click on stage to "show in finder" and other folder-related actions like in sidebar right click menu. Also, stash.
++ history: right click on stage to "show in finder" and other folder-related actions like in sidebar right click menu. Also, stash.
 - changes: stash list: as a local branch menu item?
 - changes: stash/apply stash from the menu, context menu
 
