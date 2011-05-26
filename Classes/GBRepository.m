@@ -1184,6 +1184,22 @@
 }
 
 
+- (void) stashChangesWithMessage:(NSString*)message block:(void(^)())block
+{
+  block = [[block copy] autorelease];
+  
+  GBTask* task = [self task];
+  task.arguments = [NSArray arrayWithObjects:@"stash", @"save", message, nil];
+  [self launchTask:task withBlock:^{
+    if ([task isError])
+    {
+      [self alertWithMessage:[NSString stringWithFormat:NSLocalizedString(@"Failed to stash “%@”",nil), message] description:[task UTF8ErrorAndOutput]];
+    }
+    if (block) block();
+  }];
+}
+
+
 - (void) removeStashes:(NSArray*)theStashes withBlock:(void(^)())block
 {
   [OABlockGroup groupBlock:^(OABlockGroup *group) {

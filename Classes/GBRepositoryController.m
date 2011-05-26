@@ -18,6 +18,8 @@
 #import "GBSidebarCell.h"
 #import "GBSidebarItem.h"
 
+#import "GBPromptController.h"
+
 #import "OAFSEventStream.h"
 #import "NSString+OAStringHelpers.h"
 #import "NSError+OAPresent.h"
@@ -862,11 +864,7 @@
   GBRemotesController* remotesController = [GBRemotesController controller];
   
   remotesController.repository = self.repository;
-  remotesController.completionHandler = ^(BOOL cancelled){
-    [[GBMainWindowController instance] dismissSheet:remotesController];
-  };
-  
-  [[GBMainWindowController instance] presentSheet:remotesController];
+  [remotesController presentSheetInMainWindow];
 }
 
 - (IBAction) editGitIgnore:(id)sender
@@ -874,10 +872,7 @@
   GBFileEditingController* fileEditor = [GBFileEditingController controller];
   fileEditor.title = @".gitignore";
   fileEditor.URL = [self.url URLByAppendingPathComponent:@".gitignore"];
-  fileEditor.completionHandler = ^(BOOL cancelled){
-    [[GBMainWindowController instance] dismissSheet:fileEditor];
-  };
-  [[GBMainWindowController instance] presentSheet:fileEditor];
+  [fileEditor presentSheetInMainWindow];
 }
 
 - (IBAction) editGitConfig:(id)sender
@@ -885,10 +880,7 @@
   GBFileEditingController* fileEditor = [GBFileEditingController controller];
   fileEditor.title = @".git/config";
   fileEditor.URL = [self.url URLByAppendingPathComponent:@".git/config"];
-  fileEditor.completionHandler = ^(BOOL cancelled){
-    [[GBMainWindowController instance] dismissSheet:fileEditor];
-  };
-  [[GBMainWindowController instance] presentSheet:fileEditor];
+  [fileEditor presentSheetInMainWindow];
 }
 
 - (IBAction) openInXcode:(NSMenuItem*)sender
@@ -952,8 +944,25 @@
 
 - (IBAction) stashChanges:(id)sender
 {
-  // TODO: present comment prompt to enter the name of the stash, provide good default text like:
-  // "GBRepository.m, TODO.txt and 5 more files"
+  NSString* defaultMessage = [self.repository.stage defaultStashMessage];
+  
+  GBPromptController* ctrl = [GBPromptController controller];
+  
+  ctrl.title = NSLocalizedString(@"Stash", @"");
+  ctrl.promptText = NSLocalizedString(@"Comment:", @"");
+  ctrl.buttonText = NSLocalizedString(@"Stash", @"");
+  ctrl.value = defaultMessage;
+  ctrl.requireSingleLine = YES;
+  ctrl.requireNonEmptyString = YES;
+  ctrl.completionHandler = ^(BOOL cancelled){
+    if (!cancelled)
+    {
+      [self.repository stashChangesWithMessage:ctrl.value block:^{
+      }];
+    }
+  };
+  [ctrl presentSheetInMainWindow];
+  
 }
 
 - (BOOL) validateStashChanges:(id)sender
