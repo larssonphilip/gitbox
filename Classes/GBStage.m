@@ -67,9 +67,37 @@
 // Returns a good default human-readable message like "somefile.c, other.txt, Makefile and 5 others"
 - (NSString*) defaultStashMessage
 {
-  // TODO: compose a default message out of the modified files
-  // TODO: use only file names, skip duplicates
-  return @"";
+  // Displaying only file names, skipping duplicates.
+  
+  NSArray* stashableChanges = [(self.stagedChanges ? self.stagedChanges : [NSArray array]) arrayByAddingObjectsFromArray:(self.unstagedChanges ? self.unstagedChanges : [NSArray array])];
+  
+  int totalChanges = [stashableChanges count];
+  
+  NSMutableSet* uniqueNames = [NSMutableSet set]; // also would produce some sort of randomness to avoid displaying same top files.
+  
+  for (GBChange* change in stashableChanges)
+  {
+    NSString* name = [[[change fileURL] absoluteString] lastPathComponent];
+    [uniqueNames addObject:name];
+  }
+  
+  NSArray* list = [uniqueNames allObjects];
+  
+  if ([list count] < 1) return NSLocalizedString(@"No changes", @"GBStage");
+  
+  if ([list count] <= 4)
+  {
+    // Simply list all files
+    list = [list sortedArrayUsingSelector:@selector(self)];
+    return [list componentsJoinedByString:@", "];
+  }
+  
+  // Show first N files and then count of the rest (which will be > 1)
+  int visibleFiles = 2;
+  
+  return [NSString stringWithFormat:NSLocalizedString(@"%@ and %d more files", @"GBStage"), 
+          [[[list subarrayWithRange:NSMakeRange(0, visibleFiles)] sortedArrayUsingSelector:@selector(self)] componentsJoinedByString:@", "],
+          totalChanges - visibleFiles];
 }
 
 
