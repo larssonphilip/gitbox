@@ -1189,11 +1189,35 @@
   block = [[block copy] autorelease];
   
   GBTask* task = [self task];
+  
+  message = [message stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
   task.arguments = [NSArray arrayWithObjects:@"stash", @"save", message, nil];
   [self launchTask:task withBlock:^{
     if ([task isError])
     {
       [self alertWithMessage:[NSString stringWithFormat:NSLocalizedString(@"Failed to stash “%@”",nil), message] description:[task UTF8ErrorAndOutput]];
+    }
+    if (block) block();
+  }];
+}
+
+
+- (void) applyStash:(GBStash*)aStash withBlock:(void(^)())block
+{
+  block = [[block copy] autorelease];
+  
+  if (!aStash)
+  {
+    if (block) block();
+    return;
+  }
+  
+  GBTask* task = [self task];
+  task.arguments = [NSArray arrayWithObjects:@"stash", @"apply", aStash.ref, nil];
+  [self launchTask:task withBlock:^{
+    if ([task isError])
+    {
+      [self alertWithMessage:[NSString stringWithFormat:NSLocalizedString(@"Failed to apply stash “%@”",nil), aStash.message] description:[task UTF8ErrorAndOutput]];
     }
     if (block) block();
   }];

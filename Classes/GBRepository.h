@@ -8,6 +8,7 @@
 @class GBCommit;
 @class GBStage;
 @class GBChange;
+@class GBStash;
 @class GBTask;
 @class OATask;
 
@@ -98,7 +99,9 @@
 - (void) rebaseWithBlock:(void(^)())block;
 - (void) resetStageWithBlock:(void(^)())block;
 - (void) stashChangesWithMessage:(NSString*)message block:(void(^)())block;
+- (void) applyStash:(GBStash*)aStash withBlock:(void(^)())block;
 - (void) removeStashes:(NSArray*)theStashes withBlock:(void(^)())block;
+
 
 
 #pragma mark Util

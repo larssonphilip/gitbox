@@ -107,7 +107,7 @@ line = nil; \
         GBNextLine;
       }
       
-      stash.rawMessage = [rawBodyLines componentsJoinedByString:@"\n"];
+      stash.rawMessage = [[rawBodyLines componentsJoinedByString:@"\n"] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
       
       [list addObject:stash];
       

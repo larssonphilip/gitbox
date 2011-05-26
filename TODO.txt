@@ -45,6 +45,7 @@ Gitbox 1.4 misc items:
 - search: keep selection when search ends.
 - search: bug: when parent commit is clicked it can be missing in the history. Should either not highlight it, or reset search state.
 
+stash: bug: newline is not trimmed from message
 + menu: Repository -> openInXcode: - construct submenu and hide/unhide the item
 + menu: History -> checkoutBranchMenu: to construct a list of branches
 + menu: History -> checkoutRemoteBranchMenu: to construct a list of branches
@@ -58,9 +59,9 @@ Gitbox 1.4 misc items:
 - menu: History -> removeFileFromHistory:
 - menu: History -> resetBranch:
 - menu: Stage -> commit: - rename to "Stage and Edit Commit Message"
-- menu: Stage -> stashChanges:
-- menu: Stage -> applyStashMenu:
-- menu: Stage -> applyStash:
++ menu: Stage -> stashChanges:
++ menu: Stage -> applyStashMenu:
++ menu: Stage -> applyStash:
 + menu: Stage -> resetChanges: (same as resetBranch, but uses HEAD, not the selected commit)
 
 - toolbar: show tag name instead of its SHA1

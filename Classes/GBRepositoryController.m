@@ -974,7 +974,10 @@
 {
   if ([sender respondsToSelector:@selector(representedObject)])
   {
-    // TODO: apply the stash
+    GBStash* stash = [sender representedObject];
+    
+    [self.repository applyStash:stash withBlock:^{
+    }];
   }
 }
 
