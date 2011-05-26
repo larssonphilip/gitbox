@@ -20,6 +20,12 @@
   return 30.0*24*3600;
 }
 
+- (BOOL) isOldStash
+{
+  if (!self.date) return NO;
+  return [[NSDate date] timeIntervalSinceDate:self.date] > [[self class] oldStashesTreshold];
+}
+
 - (NSString*) message
 {
   return [[self.rawMessage 

@@ -2,6 +2,7 @@
 #import "GBRef.h"
 #import "GBRemote.h"
 #import "GBStage.h"
+#import "GBStash.h"
 #import "GBChange.h"
 #import "GBSubmodule.h"
 #import "GBSearch.h"
@@ -28,6 +29,7 @@
 #import "NSAlert+OAAlertHelpers.h"
 #import "NSObject+OASelectorNotifications.h"
 #import "NSObject+OADispatchItemValidation.h"
+#import "NSMenu+OAMenuHelpers.h"
 
 // will be obsolete when settings panel is done
 #import "GBRemotesController.h"
@@ -975,14 +977,80 @@
 - (BOOL) validateApplyStashMenu:(NSMenuItem*)sender
 {
   // TODO: load changes and update the menu
-  // Return NO if no stashes are found and hide the menu item.
-  return YES;
+  // Return NO if no stashes are found and disable the menu item.
+  
+  NSMenu* aMenu = [NSMenu menuWithTitle:[sender title]];
+  [sender setSubmenu:aMenu];
+  
+  [self.repository loadStashesWithBlock:^(NSArray *stashes) {
+    if ([stashes count] == 0)
+    {
+      [sender setEnabled:NO];
+    }
+    else
+    {
+      [sender setEnabled:YES];
+      
+      [[sender submenu] removeAllItems];
+      
+      int i = 0;
+      BOOL showRemoveOldStashesItem = NO;
+      for (GBStash* stash in stashes)
+      {
+        i++;
+        if (i > 30) break; // don't show too much of obsolete stuff
+        NSMenuItem* item = [[[NSMenuItem alloc] 
+                             initWithTitle:stash.menuTitle action:@selector(applyStash:) keyEquivalent:@""] autorelease];
+        [item setRepresentedObject:stash];
+        [[sender submenu] addItem:item];
+        showRemoveOldStashesItem = showRemoveOldStashesItem || [stash isOldStash];
+      }
+      
+      if (showRemoveOldStashesItem)
+      {
+        [[sender submenu] addItem:[NSMenuItem separatorItem]];
+        [[sender submenu] addItem:[[[NSMenuItem alloc] 
+                                    initWithTitle:[NSString stringWithFormat:NSLocalizedString(@"Remove stashes older than %d days...",nil), (int)round([GBStash oldStashesTreshold]/24.0/3600.0)] action:@selector(removeOldStashes:) keyEquivalent:@""] autorelease]];
+      }
+    }
+  }];
+  
+  return NO; // disable before the stashes are loaded
 }
 
 - (IBAction) removeOldStashes:(NSMenuItem*)sender
 {
-  // TODO: present a confirmation dialog
-  // TODO: remove stashes that are 30 days old.
+  [self.repository loadStashesWithBlock:^(NSArray *stashes) {
+    
+    NSMutableArray* stashesToRemove = [NSMutableArray array];
+    for (GBStash* stash in stashes)
+    {
+      if ([stash isOldStash])
+      {
+        [stashesToRemove addObject:stash];
+      }
+    }
+    
+    if ([stashesToRemove count] < 1) return; // nothing to remove
+    
+    NSString* message = [NSString stringWithFormat:NSLocalizedString(@"Are you sure you want to remove %d stashes out of %d?", nil), (int)[stashesToRemove count], (int)[stashes count]];
+    
+    if ([stashesToRemove count] == [stashes count])
+    {
+      message = [NSString stringWithFormat:NSLocalizedString(@"Are you sure you want to remove all %d stashes?", nil), (int)[stashesToRemove count]];
+    }
+    
+    [[GBMainWindowController instance] criticalConfirmationWithMessage:message 
+                                                           description:NSLocalizedString(@"Old stashes will be removed permanently. You can’t undo this action.", nil) 
+                                                                    ok:NSLocalizedString(@"Remove",nil)
+                                                            completion:^(BOOL result){
+                                                              if (result)
+                                                              {
+                                                                [self.repository removeStashes:stashesToRemove withBlock:^{
+                                                                }];
+                                                              }
+                                                            }];
+  }];
 }
 
 

@@ -9,5 +9,6 @@
 @property(nonatomic, readonly) NSString* menuTitle;
 
 + (NSTimeInterval) oldStashesTreshold;
+- (BOOL) isOldStash;
 
 @end

@@ -336,31 +336,8 @@
   NSMenuItem* stashesItem = [[[NSMenuItem alloc] 
                               initWithTitle:NSLocalizedString(@"Apply Stash", @"Sidebar") action:@selector(applyStashMenu:) keyEquivalent:@""] autorelease];
   
-  NSMenu* stashesItemSubmenu = [NSMenu menuWithTitle:[stashesItem title]];
-  [stashesItem setSubmenu:stashesItemSubmenu];
   [aMenu addItem:stashesItem];
-  
-  [self.repositoryController.repository loadStashesWithBlock:^(NSArray *stashes) {
-    if ([stashes count] == 0)
-    {
-      [stashesItem setEnabled:NO];
-    }
-    else
-    {
-      [stashesItem setEnabled:YES];
-      
-      [stashesItemSubmenu removeAllItems];
-      
-      for (GBStash* stash in stashes)
-      {
-        NSMenuItem* item = [[[NSMenuItem alloc] 
-                             initWithTitle:stash.menuTitle action:@selector(applyStash:) keyEquivalent:@""] autorelease];
-        [item setRepresentedObject:stash];
-        [stashesItemSubmenu addItem:item];
-      }
-    }
-  }];
-  
+    
   [aMenu addItem:[NSMenuItem separatorItem]];
   
   [aMenu addItem:[[[NSMenuItem alloc]

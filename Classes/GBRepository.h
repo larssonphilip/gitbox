@@ -96,8 +96,8 @@
 - (void) pushWithForce:(BOOL)force block:(void(^)())block;
 - (void) pushBranch:(GBRef*)aLocalBranch toRemoteBranch:(GBRef*)aRemoteBranch forced:(BOOL)forced withBlock:(void(^)())block;
 - (void) rebaseWithBlock:(void(^)())block;
-
 - (void) resetStageWithBlock:(void(^)())block;
+- (void) removeStashes:(NSArray*)theStashes withBlock:(void(^)())block;
 
 
 #pragma mark Util

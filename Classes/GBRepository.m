@@ -2,7 +2,7 @@
 #import "GBRef.h"
 #import "GBRemote.h"
 #import "GBStage.h"
-
+#import "GBStash.h"
 #import "GBTask.h"
 #import "GBRemotesTask.h"
 #import "GBHistoryTask.h"
@@ -1182,6 +1182,27 @@
     if (block) block();
   }];
 }
+
+
+- (void) removeStashes:(NSArray*)theStashes withBlock:(void(^)())block
+{
+  [OABlockGroup groupBlock:^(OABlockGroup *group) {
+    for (GBStash* stash in theStashes)
+    {
+      [group enter];
+      GBTask* task = [self task];
+      task.arguments = [NSArray arrayWithObjects:@"stash", @"drop", stash.ref, nil];
+      [self launchTask:task withBlock:^{
+        if ([task isError])
+        {
+          [self alertWithMessage:[NSString stringWithFormat:NSLocalizedString(@"Failed to remove stash %@",nil), stash.ref] description:[task UTF8ErrorAndOutput]];
+        }
+        [group leave];
+      }];
+    }
+  } continuation:block];
+}
+
 
 
 
