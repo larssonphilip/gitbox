@@ -2,13 +2,13 @@
 <archive type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="7.10">
 	<data>
 		<int key="IBDocument.SystemTarget">1060</int>
-		<string key="IBDocument.SystemVersion">10D573</string>
-		<string key="IBDocument.InterfaceBuilderVersion">788</string>
-		<string key="IBDocument.AppKitVersion">1038.29</string>
-		<string key="IBDocument.HIToolboxVersion">460.00</string>
+		<string key="IBDocument.SystemVersion">10J869</string>
+		<string key="IBDocument.InterfaceBuilderVersion">851</string>
+		<string key="IBDocument.AppKitVersion">1038.35</string>
+		<string key="IBDocument.HIToolboxVersion">461.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin</string>
-			<string key="NS.object.0">788</string>
+			<string key="NS.object.0">851</string>
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -96,8 +96,8 @@
 							<reference key="NSSuperview" ref="29751446"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSTextFieldCell" key="NSCell" id="791747284">
-								<int key="NSCellFlags">-1804993023</int>
-								<int key="NSCellFlags2">272629760</int>
+								<int key="NSCellFlags">-1803944383</int>
+								<int key="NSCellFlags2">272630784</int>
 								<string key="NSContents"/>
 								<reference key="NSSupport" ref="500241282"/>
 								<reference key="NSControlView" ref="344102752"/>
@@ -401,9 +401,9 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{426, 561}, {412, 117}}</string>
+					<string>{{399, 545}, {412, 117}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{426, 561}, {412, 117}}</string>
+					<string>{{399, 545}, {412, 117}}</string>
 					<boolean value="NO"/>
 					<string>{196, 240}</string>
 					<string>{{202, 428}, {480, 270}}</string>
@@ -442,7 +442,7 @@
 				<bool key="EncodedWithXMLCoder">YES</bool>
 				<object class="IBPartialClassDescription">
 					<string key="className">GBPromptController</string>
-					<string key="superclassName">NSWindowController</string>
+					<string key="superclassName">GBWindowControllerWithCallback</string>
 					<object class="NSMutableDictionary" key="actions">
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
@@ -488,47 +488,79 @@
 					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">GBPromptController.h</string>
+						<string key="minorKey">Classes/GBPromptController.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">GBWindowControllerWithCallback</string>
+					<string key="superclassName">NSWindowController</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">Classes/GBWindowControllerWithCallback.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
 					<string key="className">NSMenu</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">NSMenu+OAMenuHelpers.h</string>
+						<string key="minorKey">Classes/Libs/NSMenu+OAMenuHelpers.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
 					<string key="className">NSObject</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">NSObject+OADispatchItemValidation.h</string>
+						<string key="minorKey">Classes/Libs/NSObject+OADispatchItemValidation.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
 					<string key="className">NSObject</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">NSObject+OAKeyValueObserving.h</string>
+						<string key="minorKey">Classes/Libs/NSObject+OAKeyValueObserving.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">NSObject</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">Classes/Libs/NSObject+OAPerformBlockAfterDelay.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">NSObject</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">Classes/Libs/NSObject+OAResponderChain.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">NSObject</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">Classes/Libs/NSObject+OASelectorNotifications.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">NSObject</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">Classes/Libs/OAPropertyListRepresentation.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
 					<string key="className">NSView</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">NSView+OAViewHelpers.h</string>
+						<string key="minorKey">Classes/Libs/NSView+OAViewHelpers.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
 					<string key="className">NSWindow</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier" id="383724839">
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">NSWindowController+OAWindowControllerHelpers.h</string>
+						<string key="minorKey">Classes/Libs/NSWindowController+OAWindowControllerHelpers.h</string>
 					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">NSWindowController</string>
-					<reference key="sourceIdentifier" ref="383724839"/>
 				</object>
 			</object>
 			<object class="NSMutableArray" key="referencedPartialClassDescriptionsV3.2+">
@@ -630,6 +662,13 @@
 					<object class="IBClassDescriptionSource" key="sourceIdentifier" id="849962851">
 						<string key="majorKey">IBFrameworkSource</string>
 						<string key="minorKey">AppKit.framework/Headers/NSMenu.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">NSObject</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBFrameworkSource</string>
+						<string key="minorKey">AddressBook.framework/Headers/ABActions.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
@@ -880,6 +919,69 @@
 					<string key="className">NSObject</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBFrameworkSource</string>
+						<string key="minorKey">ImageKit.framework/Headers/IKImageBrowserView.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">NSObject</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBFrameworkSource</string>
+						<string key="minorKey">ImageKit.framework/Headers/IKSaveOptions.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">NSObject</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBFrameworkSource</string>
+						<string key="minorKey">ImageKit.framework/Headers/ImageKitDeprecated.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">NSObject</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBFrameworkSource</string>
+						<string key="minorKey">PDFKit.framework/Headers/PDFDocument.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">NSObject</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBFrameworkSource</string>
+						<string key="minorKey">PDFKit.framework/Headers/PDFView.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">NSObject</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBFrameworkSource</string>
+						<string key="minorKey">QuartzComposer.framework/Headers/QCCompositionParameterView.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">NSObject</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBFrameworkSource</string>
+						<string key="minorKey">QuartzComposer.framework/Headers/QCCompositionPickerView.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">NSObject</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBFrameworkSource</string>
+						<string key="minorKey">QuartzFilters.framework/Headers/QuartzFilterManager.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">NSObject</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBFrameworkSource</string>
+						<string key="minorKey">QuickLookUI.framework/Headers/QLPreviewPanel.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">NSObject</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBFrameworkSource</string>
 						<string key="minorKey">Sparkle.framework/Headers/SUAppcast.h</string>
 					</object>
 				</object>
@@ -1001,7 +1103,7 @@
 			<integer value="3000" key="NS.object.0"/>
 		</object>
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
-		<string key="IBDocument.LastKnownRelativeProjectPath">gitbox.xcodeproj</string>
+		<string key="IBDocument.LastKnownRelativeProjectPath">../gitbox.xcodeproj</string>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 	</data>
 </archive>

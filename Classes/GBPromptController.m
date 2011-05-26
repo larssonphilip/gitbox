@@ -79,8 +79,20 @@
     NSSize maxSize = [win contentMaxSize];
     maxSize.height = minSize.height;
     [win setContentMaxSize:maxSize];
-    [[self.textField cell] setUsesSingleLineMode:YES];
+    
+    // Note: when the field is wrapping in NIB, these options do not help. 
+    // So we set NIB to have single-line scrolling textfield and override it in multiline mode.
+//    [[self.textField cell] setLineBreakMode:NSLineBreakByClipping];
+//    [[self.textField cell] setUsesSingleLineMode:NO];
+//    [[self.textField cell] setWraps:NO];
+//    [[self.textField cell] setScrollable:YES];
   }
+  else
+  {
+    [[self.textField cell] setLineBreakMode:NSLineBreakByWordWrapping];
+    [[self.textField cell] setWraps:YES];
+  }
+
   [self.textField setStringValue:self.value ? self.value : @""];
 }
 
