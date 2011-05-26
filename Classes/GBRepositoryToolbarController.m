@@ -694,9 +694,8 @@
   ctrl.requireStripWhitespace = YES;
   ctrl.completionHandler = ^(BOOL cancelled){
     if (!cancelled) [self.repositoryController checkoutRef:remoteBranch withNewName:ctrl.value];
-    [[GBMainWindowController instance] dismissSheet:ctrl];
   };
-  [[GBMainWindowController instance] presentSheet:ctrl];
+  [ctrl presentSheetInMainWindow];
 }
 
 - (IBAction) newBranch:(id)sender
@@ -710,9 +709,8 @@
   ctrl.requireStripWhitespace = YES;
   ctrl.completionHandler = ^(BOOL cancelled){
     if (!cancelled) [self.repositoryController checkoutNewBranchWithName:ctrl.value];
-    [[GBMainWindowController instance] dismissSheet:ctrl];
   };
-  [[GBMainWindowController instance] presentSheet:ctrl];
+  [ctrl presentSheetInMainWindow];
 }
 
 - (IBAction) newTag:(id)sender
@@ -726,9 +724,8 @@
   ctrl.requireStripWhitespace = YES;
   ctrl.completionHandler = ^(BOOL cancelled){
     if (!cancelled) [self.repositoryController createNewTagWithName:ctrl.value];
-    [[GBMainWindowController instance] dismissSheet:ctrl];
   };
-  [[GBMainWindowController instance] presentSheet:ctrl];
+  [ctrl presentSheetInMainWindow];
 }
 
 - (IBAction) checkoutCommit:(id)sender
@@ -749,9 +746,8 @@
   ctrl.requireStripWhitespace = YES;
   ctrl.completionHandler = ^(BOOL cancelled){
     if (!cancelled) [self.repositoryController checkoutRef:[GBRef refWithCommitId:ctrl.value]];
-    [[GBMainWindowController instance] dismissSheet:ctrl];
   };
-  [[GBMainWindowController instance] presentSheet:ctrl];
+  [ctrl presentSheetInMainWindow];
 }
 
 
@@ -777,26 +773,26 @@
   ctrl.value = defaultName;
   ctrl.completionHandler = ^(BOOL cancelled){
     if (!cancelled) [self.repositoryController createAndSelectRemoteBranchWithName:ctrl.value remote:remote];
-    [[GBMainWindowController instance] dismissSheet:ctrl];
   };
-  [[GBMainWindowController instance] presentSheet:ctrl];
+  [ctrl presentSheetInMainWindow];
 }
 
 
 
 
-// noop methods to trigger validation callbacks
-
 - (IBAction) checkoutBranchMenu:(NSMenuItem*)sender
 {
+  // noop method to trigger validation callbacks
 }
 
 - (IBAction) checkoutRemoteBranchMenu:(NSMenuItem*)sender
 {
+  // noop method to trigger validation callbacks
 }
 
 - (IBAction) checkoutTagMenu:(NSMenuItem*)sender
 {
+  // noop method to trigger validation callbacks
 }
 
 
