@@ -71,6 +71,9 @@ stash: bug: newline is not trimmed from message
   - "continue rebase" button in place of commit message field
   - "abort rebase" button
 
+- bug: askpass crashes with "task" selector when tries to update a repo with missing/invalid ssh key.
+- bug: crash when deleting a repo from disk.
+- bug: (rare) suddenly the search field became disabled. See how enabling/disabling work across repo switching to fix it.
 
 - history: contextual menus:
   + stage: 

@@ -350,38 +350,60 @@
 {
   NSMenu* aMenu = [[[NSMenu alloc] initWithTitle:@""] autorelease];
  
+//   - checkout commit
+//   - ---------------
+//   - [ ] [R] [Y] [G] [B] [P]  // color corners
+//   - ---------------
+//   - new tag
+//   - new branch
+//   - ---------------
+//   - merge
+//   - cherry pick
+//   - apply as patch
+//   - ---------------
+//   - reset branch
+
+  [aMenu addItem:[NSMenuItem menuItemWithTitle:NSLocalizedString(@"Checkout", @"Sidebar") 
+                                        action:@selector(checkoutCommit:) 
+                                        object:aCommit]];
   
-  /*
-   
-   - checkout commit
-   - ---------------
-   - [ ] [R] [Y] [G] [B] [P]  // color corners
-   - ---------------
-   - new tag
-   - new branch
-   - ---------------
-   - merge
-   - cherry pick
-   - apply as patch
-   - ---------------
-   - reset branch
-   
-   */
+  [aMenu addItem:[NSMenuItem separatorItem]];
   
-  //  [menu addItem:[[[NSMenuItem alloc] 
-  //                  initWithTitle:NSLocalizedString(@"Add Repository...", @"Sidebar") action:@selector(openDocument:) keyEquivalent:@""] autorelease]];
-  //  [menu addItem:[[[NSMenuItem alloc] 
-  //                  initWithTitle:NSLocalizedString(@"Clone Repository...", @"Sidebar") action:@selector(cloneRepository:) keyEquivalent:@""] autorelease]];
-  //  
-  //  [menu addItem:[NSMenuItem separatorItem]];
-  //  
-  //  [menu addItem:[[[NSMenuItem alloc] 
-  //                  initWithTitle:NSLocalizedString(@"New Group", @"Sidebar") action:@selector(addGroup:) keyEquivalent:@""] autorelease]];
-  //  
-  //  [menu addItem:[NSMenuItem separatorItem]];
-  //  
-  //  [menu addItem:[[[NSMenuItem alloc] 
-  //                  initWithTitle:NSLocalizedString(@"Remove from Sidebar", @"Sidebar") action:@selector(remove:) keyEquivalent:@""] autorelease]];
+  // TODO: add a color markers view
+  [aMenu addItem:[NSMenuItem menuItemWithTitle:@"   "
+                                        action:@selector(applyColorMarker:) 
+                                        object:aCommit]];
+  
+  [aMenu addItem:[NSMenuItem separatorItem]];
+  
+  [aMenu addItem:[NSMenuItem menuItemWithTitle:NSLocalizedString(@"New Tag...", @"Sidebar") 
+                                        action:@selector(newTag:) 
+                                        object:aCommit]];
+
+  [aMenu addItem:[NSMenuItem menuItemWithTitle:NSLocalizedString(@"New Branch...", @"Sidebar") 
+                                        action:@selector(newBranch:) 
+                                        object:aCommit]];
+  
+  [aMenu addItem:[NSMenuItem separatorItem]];
+  
+  [aMenu addItem:[NSMenuItem menuItemWithTitle:NSLocalizedString(@"Merge", @"Sidebar") 
+                                        action:@selector(mergeCommit:) 
+                                        object:aCommit]];
+
+  [aMenu addItem:[NSMenuItem menuItemWithTitle:NSLocalizedString(@"Cherry Pick", @"Sidebar") 
+                                        action:@selector(cherryPickCommit:) 
+                                        object:aCommit]];
+  
+  [aMenu addItem:[NSMenuItem menuItemWithTitle:NSLocalizedString(@"Apply as Patch", @"Sidebar") 
+                                        action:@selector(applyAsPatchCommit:) 
+                                        object:aCommit]];
+  
+  [aMenu addItem:[NSMenuItem separatorItem]];
+  
+  [aMenu addItem:[NSMenuItem menuItemWithTitle:NSLocalizedString(@"Reset Branch", @"Sidebar") 
+                                        action:@selector(resetBranchToCommit:) 
+                                        object:aCommit]];
+
   return aMenu;
 }
 

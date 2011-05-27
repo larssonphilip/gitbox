@@ -36,4 +36,13 @@
   return item;
 }
 
++ (NSMenuItem*) menuItemWithTitle:(NSString*)title action:(SEL)action object:(NSObject*)object
+{
+  NSMenuItem* item = [[[self alloc] init] autorelease];
+  if (title) [item setTitle:title];
+  if (action) [item setAction:action];
+  [item setRepresentedObject:object];
+  return item;
+}
+
 @end
