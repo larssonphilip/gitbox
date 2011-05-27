@@ -352,13 +352,19 @@
  
   
   /*
-   - reset branch
+   
    - checkout commit
-   - merge commit
-   - cherry pick commit
+   - ---------------
+   - [ ] [R] [Y] [G] [B] [P]  // color corners
+   - ---------------
    - new tag
    - new branch
-   
+   - ---------------
+   - merge
+   - cherry pick
+   - apply as patch
+   - ---------------
+   - reset branch
    
    */
   
