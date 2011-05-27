@@ -349,7 +349,18 @@
 - (NSMenu*) menuForCommit:(GBCommit*)aCommit
 {
   NSMenu* aMenu = [[[NSMenu alloc] initWithTitle:@""] autorelease];
+ 
   
+  /*
+   - reset branch
+   - checkout commit
+   - merge commit
+   - cherry pick commit
+   - new tag
+   - new branch
+   
+   
+   */
   
   //  [menu addItem:[[[NSMenuItem alloc] 
   //                  initWithTitle:NSLocalizedString(@"Add Repository...", @"Sidebar") action:@selector(openDocument:) keyEquivalent:@""] autorelease]];

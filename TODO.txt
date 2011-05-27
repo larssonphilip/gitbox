@@ -35,12 +35,11 @@ Bug fixes:
 
 Gitbox 1.4 misc items:
 
-- boolean prompt with title and description.
-- reset stage in all menus
++ reset stage in all menus
++ stashes
 - reset branch in all menus
-- stashes
 
--------------
+----------------------------
 
 - search: keep selection when search ends.
 - search: bug: when parent commit is clicked it can be missing in the history. Should either not highlight it, or reset search state.
@@ -74,12 +73,12 @@ stash: bug: newline is not trimmed from message
 
 
 - history: contextual menus:
-  - stage: 
+  + stage: 
     + open in finder
     + open in terminal
     + open in xcode
-    - reset stage
-    - stash changes
+    + reset stage
+    + stash changes
   - commit:
     - 
 
