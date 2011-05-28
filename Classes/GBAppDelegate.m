@@ -11,6 +11,7 @@
 #import "NSFileManager+OAFileManagerHelpers.h"
 #import "NSWindowController+OAWindowControllerHelpers.h"
 #import "NSObject+OASelectorNotifications.h"
+#import "NSData+OADataHelpers.h"
 
 #import "OALicenseNumberCheck.h"
 #import "OATask.h"
@@ -34,6 +35,8 @@
 @property(nonatomic, retain) NSMutableArray* URLsToOpenAfterLaunch;
 
 - (void) saveItems;
+
+- (void) testUTF8Healing;
 
 @end
 
@@ -150,6 +153,9 @@
 - (void) applicationDidFinishLaunching:(NSNotification*) aNotification
 {
   [GBAskPassServer sharedServer]; // preload the server
+    
+//#warning UNIT TESTING!
+//  [self testUTF8Healing];
   
   #if DEBUG
     //NSLog(@"GBAskPassServer: %@", [GBAskPassServer sharedServer]);
@@ -274,7 +280,46 @@
 
 
 
+- (void) testUTF8Healing
+{
+  srand(1);
+  
+  char bytes[] = {0xc0, 0x86};
+  
+  NSData* data = [NSData dataWithBytes:(void*)bytes length:2];
+  NSLog(@"data = %@, string = %@ %@", data, [data UTF8String], [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease]);
 
+  
+  int failures = 10;
+  while (1)
+  {
+    int length = rand() % 10 + 1;
+		NSMutableData* data = [NSMutableData dataWithLength:length];
+    unsigned char* bytes = (unsigned char*)[data mutableBytes];
+    for (int i = 0; i < length; i++)
+    {
+      bytes[i] = (unsigned char)(((NSUInteger)rand()) % 256);
+    }
+    NSString* str = [data UTF8String];
+    if (!str)
+    {
+      NSMutableString* hexString = [NSMutableString string];
+      for (int i = 0; i < length; i++)
+      {
+        [hexString appendFormat:@"%x ", (NSUInteger)((unsigned char)(bytes[i]))];
+      }      
+      NSLog(@"FAILED to heal UTF-8 chars in %d bytes: %@", [data length], hexString);
+      
+      // repeat one more time to enable breakpoints
+      [data UTF8String];
+      
+      failures--;
+      if (failures <= 0) {
+        exit(1);
+      }
+    }
+  }
+}
 
 
 
