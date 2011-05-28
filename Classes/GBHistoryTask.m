@@ -191,6 +191,14 @@ Binary files /dev/null and b/psd/history-markers.psd differ
   NSString* stringData = [data UTF8String];
   NSArray* lines = [stringData componentsSeparatedByString:@"\n"];
   
+#if DEBUG
+  if ([data length] > 0 && stringData == nil)
+  {
+    NSLog(@"GBHistoryTask: could not convert %d bytes of data to UTF8 string. See the log on Desktop.", [data length]);
+    [data writeToURL:[NSURL fileURLWithPath:[[NSString stringWithFormat:@"~/Desktop/Gitbox_GBHistoryTaskBrokenInput-%@.txt", [NSDate date]] stringByExpandingTildeInPath]] atomically:YES];
+  }
+#endif
+  
   NSUInteger lineIndex = 0;
   NSString* line = nil;
 #define GBHistoryNextLine { \
