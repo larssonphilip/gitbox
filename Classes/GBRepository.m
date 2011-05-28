@@ -791,7 +791,7 @@
   }
   
   NSString* escapedName = [name stringWithEscapingConfigKeyPart];
-  NSLog(@"escapedName = %@", escapedName);
+  //NSLog(@"escapedName = %@", escapedName);
   [self.config setString:ref.remoteAlias
                   forKey:[NSString stringWithFormat:@"branch.%@.remote", escapedName] withBlock:^{
                     
