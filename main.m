@@ -1,10 +1,6 @@
 #import <Cocoa/Cocoa.h>
 
-#if GITBOX_APP_STORE
-  #import "OAAppStoreReceipt.h"
-#else
-  #import "OALicenseNumberCheck.h"
-#endif
+#import "OALicenseNumberCheck.h"
 
 #import "GBAskPass.h"
 #import "GBAskPassServer.h"

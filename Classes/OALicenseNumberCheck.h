@@ -1,10 +1,60 @@
 #import <Foundation/Foundation.h>
 #import <Security/Security.h>
 #import <CommonCrypto/CommonDigest.h>
+#import "OAAppStoreReceipt.h"
+
+NS_INLINE BOOL OAMASCopyReceiptFromTo(NSString* from, NSString* to)
+{
+  if (!from) return NO;
+  if (!to) return NO;
+  
+  return [[NSFileManager defaultManager] copyItemAtPath:from toPath:to error:NULL];
+}
+
+NS_INLINE BOOL OAValidateExternalMASReceipt()
+{
+  NSString* receiptPath = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:@"Contents/_MASReceipt/receipt"];
+  
+  NSArray* appsupportpaths = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES);
+  
+  NSString* applicationSupportPath = nil;
+  
+  if ([appsupportpaths count] > 0)
+  {
+    applicationSupportPath = [appsupportpaths objectAtIndex:0];
+  }
+  
+  NSString* receiptPath2 = [applicationSupportPath stringByAppendingPathComponent:@"Gitbox/MASReceipt"];
+  NSString* receiptPath3 = @"/Applications/Gitbox.app/Contents/_MASReceipt/receipt";
+  
+  if (!OAValidateAppStoreReceiptAtPath(receiptPath))
+  {
+    if (!OAValidateAppStoreReceiptAtPath(receiptPath2))
+    {
+      if (!OAValidateAppStoreReceiptAtPath(receiptPath3))
+      {
+        //NSLog(@"Gitbox main: AppStore receipt not found.", receiptPath);
+        return NO;
+      }
+      else
+      {
+        // Valid receipt is found in default installation in /Applications/Gitbox.app. Copy to Application Support.
+        OAMASCopyReceiptFromTo(receiptPath3, receiptPath2);
+      }
+    }
+  }
+  else
+  {
+    // Valid receipt is found in current bundle. Copy to Application Support.
+    OAMASCopyReceiptFromTo(receiptPath, receiptPath2);
+  }
+  return YES;
+}
+
 
 NS_INLINE BOOL OAValidateLicenseNumber(NSString* licenseNumber)
 {
-	if (!licenseNumber) return NO;
+	if (!licenseNumber) return OAValidateExternalMASReceipt();
 	
   licenseNumber = [licenseNumber stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
   
@@ -14,7 +64,7 @@ NS_INLINE BOOL OAValidateLicenseNumber(NSString* licenseNumber)
 	
 	NSUInteger requiredSize = N + M*H;
 	
-	if ([licenseNumber length] != requiredSize) return NO;
+	if ([licenseNumber length] != requiredSize) return OAValidateExternalMASReceipt();
 		
 	NSString* (^partialChecksum)(NSString*, NSString*, NSUInteger) = ^(NSString* prefix, NSString* key, NSUInteger hexsize) {
 		NSString*(^md5HexDigest)(NSString*) = NULL;
@@ -55,7 +105,6 @@ NS_INLINE BOOL OAValidateLicenseNumber(NSString* licenseNumber)
 	if (![c8 isEqualToString:partialChecksum(prefix, [key8 stringByAppendingFormat:@"%d", 2], H)]) return NO;
 	
 	// TODO: add more keys later
-	
   
 	return YES;
 }
