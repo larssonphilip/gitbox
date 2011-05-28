@@ -15,6 +15,7 @@
 @property(nonatomic, copy, readwrite) NSString* previousPassword;
 @property(nonatomic, copy) id(^taskFactory)();
 @property(nonatomic, readonly) NSString* keychainService;
+@property(nonatomic, assign) int numberOfSilentFailures;
 
 // Special properties to remove failing entry from the Keychain.
 @property(nonatomic, assign) SecKeychainItemRef previousKeychainItemRef;
@@ -43,6 +44,7 @@
 @synthesize previousUsername;
 @synthesize previousPassword;
 @synthesize taskFactory;
+@synthesize numberOfSilentFailures;
 
 @synthesize previousKeychainItemRef;
 @synthesize previousKeychainUsername;
@@ -147,6 +149,13 @@
       if ([[output lowercaseString] rangeOfString:@"permission"].length > 0 || 
           [[output lowercaseString] rangeOfString:@"authentication"].length > 0)
       {
+        self.numberOfSilentFailures += 1;
+        if (self.numberOfSilentFailures > 10)
+        {
+          NSLog(@"GBAskPassController: repeated error detected: %@ (giving up and calling task's block)", output);
+          [self bypass];
+          return;
+        }
         self.failureMessage = output;
         self.previousUsername = self.username;
         self.previousPassword = self.password;
@@ -166,7 +175,7 @@
       }
       else // unknown error, bypass
       {
-        NSLog(@"GBAskPassController: unknown error: %@ (calling task's block)", output);
+        NSLog(@"GBAskPassController: unknown error: %@ (giving up and calling task's block)", output);
         [self bypass];
         return;
       }
