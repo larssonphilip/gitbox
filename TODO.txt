@@ -25,18 +25,16 @@ Enhancements:
 
 Bug fixes:
 
+✓ Fixed search bug: in some repositories search returned no results because of a bug in UTF8 decoder.
+✓ Fixed rare crashes when deleting repository from disk.
+✓ Fixed crash when FileMerge is not found or OS was reinstalled.
 ✓ Adding and removing items from stage is always forced.
-✓ 
-✓ 
-
 
 --
 
 
 Gitbox 1.4 misc items:
 
-+ reset stage in all menus
-+ stashes
 - reset branch in all menus
 
 ----------------------------
@@ -45,17 +43,6 @@ Gitbox 1.4 misc items:
 - search: bug: when parent commit is clicked it can be missing in the history. Should either not highlight it, or reset search state.
 
 stash: bug: newline is not trimmed from message
-+ menu: Repository -> openInXcode: - construct submenu and hide/unhide the item
-+ menu: History -> checkoutBranchMenu: to construct a list of branches
-+ menu: History -> checkoutRemoteBranchMenu: to construct a list of branches
-+ menu: History -> checkoutTagMenu: to construct a list of tags
-+ menu: History -> checkoutCommit:
-+ menu: History -> newCommit:
-+ menu: History -> newTag:
-+ menu: Stage -> stashChanges:
-+ menu: Stage -> applyStashMenu:
-+ menu: Stage -> applyStash:
-+ menu: Stage -> resetChanges: (same as resetBranch, but uses HEAD, not the selected commit)
 
 - menu: History -> mergeCommit:
 - menu: History -> cherryPickCommit:
@@ -76,12 +63,6 @@ stash: bug: newline is not trimmed from message
 - bug: (rare) suddenly the search field became disabled. See how enabling/disabling work across repo switching to fix it.
 
 - history: contextual menus:
-  + stage: 
-    + open in finder
-    + open in terminal
-    + open in xcode
-    + reset stage
-    + stash changes
   - commit:
     - 
 
@@ -89,7 +70,6 @@ stash: bug: newline is not trimmed from message
 
 - bug: maybe NSURL bookmark data becomes broken and leads to "outside of repository" errors.
 
-+ history: right click on stage to "show in finder" and other folder-related actions like in sidebar right click menu. Also, stash.
 - changes: stash list: as a local branch menu item?
 - changes: stash/apply stash from the menu, context menu
 
@@ -100,20 +80,43 @@ stash: bug: newline is not trimmed from message
 - general: unified settings sheet
 - sidebar: progress circle for pushing/pulling/fetching
 
-- bug: crash when diff tool is selected, but the executable was removed (or the system was migrated to Lion)
 - bug: search: when commits are updated, the selected one does not show the proper view in the commitviewcontroller.
 - bug: when selected a collapsed group and added a folder, the selected group is not expanded
 - bug: refresh stage periodically when it is selected (and increase interval if nothing changes)
   - reproduce: select some repo, make changes in Xcode3 project for another repo, then switch to gitbox and select that another repo - project file still on the stage.
 - bug: stage: when having multiple selection and expanding it with keyboard, stage updates cause internal rest, so the selection does not change the same way when continuing pressing keystrokes. Should probably not replace stage content when it did not really change.
-- bug: task may crash when folder is removed from disk because prepareTask asserts folder existance
-  - test if the task can run in this case without exceptions
-    - if not, then call all the callbacks without running the nstask
 
 - stage: add option "Delete from stage only" for "git rm --force --cached <filepath>".
 - stage: right click menu: "file history" which inserts file path into search field
 
++ reset stage in all menus
++ stashes
+
++ menu: Repository -> openInXcode: - construct submenu and hide/unhide the item
++ menu: History -> checkoutBranchMenu: to construct a list of branches
++ menu: History -> checkoutRemoteBranchMenu: to construct a list of branches
++ menu: History -> checkoutTagMenu: to construct a list of tags
++ menu: History -> checkoutCommit:
++ menu: History -> newCommit:
++ menu: History -> newTag:
++ menu: Stage -> stashChanges:
++ menu: Stage -> applyStashMenu:
++ menu: Stage -> applyStash:
++ menu: Stage -> resetChanges: (same as resetBranch, but uses HEAD, not the selected commit)
+
++ history: contextual menus:
+  + stage: 
+    + open in finder
+    + open in terminal
+    + open in xcode
+    + reset stage
+    + stash changes
++ history: right click on stage to "show in finder" and other folder-related actions like in sidebar right click menu. Also, stash.
 + stage: use --force flag for adding/removing to fix several issues with .gitignore
++ bug: crash when diff tool is selected, but the executable was removed (or the system was migrated to Lion)
++ bug: task may crash when folder is removed from disk because prepareTask asserts folder existance
+  + test if the task can run in this case without exceptions
+    + if not, then call all the callbacks without running the nstask
 
 
 -----------------------------------------------------------

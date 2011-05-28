@@ -237,7 +237,16 @@ NSString* OATaskDidDeallocateNotification  = @"OATaskDidDeallocateNotification";
     NSLog(@"ERROR: terminationStatus is requested for still running task! Returning 0.");
     return 0;
   }
-  return [self.nstask terminationStatus];
+  int s = 0;
+  @try {
+    s = [self.nstask terminationStatus];
+  } 
+  @catch (NSException* exception)
+  {
+    NSLog(@"ERROR: OATask failed to get terminationStatus; perhaps the task did raise when launched.");
+    s = 0;
+  }
+  return s;
 }
 
 - (void) setDispatchQueue:(dispatch_queue_t)aDispatchQueue
@@ -324,16 +333,26 @@ NSString* OATaskDidDeallocateNotification  = @"OATaskDidDeallocateNotification";
     
     [self prepareTask];
     
-    [self.nstask launch];
-	  
+    BOOL didRaise = NO;
+    
+    @try
+    {
+      [self.nstask launch];
+    }
+    @catch (NSException *exception)
+    {
+      didRaise = YES;
+      NSLog(@"OATask: caught exception raised in launchAndWait: %@", exception);
+    }
+    
     dispatch_async(self.originDispatchQueue, ^{
       [[NSNotificationCenter defaultCenter] postNotificationName:OATaskDidEnterQueueNotification object:self];
     });
     
-    [self readStandardOutputAndStandardError];
+    if (!didRaise) [self readStandardOutputAndStandardError];
     
-    [self.nstask waitUntilExit];
-        
+    if (!didRaise) [self.nstask waitUntilExit];
+    
     self.didReceiveDataBlock = nil;
     
     [self didFinishInBackground];
@@ -436,10 +455,17 @@ NSString* OATaskDidDeallocateNotification  = @"OATaskDidDeallocateNotification";
   [[NSNotificationCenter defaultCenter] postNotificationName:OATaskDidEnterQueueNotification object:self];
 
   [self prepareTask];
-  [self.nstask launch];
   
-  [self readStandardOutputAndStandardError];
-  [self.nstask waitUntilExit];
+  @try
+  {
+    [self.nstask launch];
+    [self readStandardOutputAndStandardError];
+    [self.nstask waitUntilExit];
+  }
+  @catch (NSException *exception)
+  {
+    NSLog(@"OATask: caught exception raised in launchAndWait: %@", exception);
+  }
   
   self.didReceiveDataBlock = nil;
   
@@ -591,10 +617,12 @@ NSString* OATaskDidDeallocateNotification  = @"OATaskDidDeallocateNotification";
   
   NSString* cwd = self.currentDirectoryPath;
   NSFileManager* fm = [[[NSFileManager alloc] init] autorelease];
-  if (![fm fileExistsAtPath:cwd])
-  {
-    NSAssert(0, ([NSString stringWithFormat:@"Current directory does not exist: %@", cwd]));
-  }
+  
+  // NSTask will raise from -launch when path is invalid.
+//  if (![fm fileExistsAtPath:cwd])
+//  {
+//    NSAssert(0, ([NSString stringWithFormat:@"Current directory does not exist: %@", cwd]));
+//  }
   
   [self.nstask setCurrentDirectoryPath:self.currentDirectoryPath];
   [self.nstask setLaunchPath:    self.launchPath];
