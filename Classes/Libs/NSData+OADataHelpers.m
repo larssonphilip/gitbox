@@ -4,13 +4,54 @@
 
 - (NSString*) UTF8String
 {
-  return [[[NSString alloc] initWithData:[self dataByHealingUTF8Stream] encoding:NSUTF8StringEncoding] autorelease];
+  // First we try strict decoding to avoid iconv overhead when not needed (majority of cases).
+  NSString* str = [[[NSString alloc] initWithData:self encoding:NSUTF8StringEncoding] autorelease];
+  if (!str)
+  {
+    // Here data contains invalid characters, so we'll try to clean them up.
+    return [[[NSString alloc] initWithData:[self dataByHealingUTF8Stream] encoding:NSUTF8StringEncoding] autorelease];
+  }
+  return str;
 }
 
-// Replaces all broken sequences by � character and returns NSData with valid UTF-8 bytes.
 - (NSData*) dataByHealingUTF8Stream
 {
-  if ([self length] == 0) return self;
+  NSUInteger length = [self length];
+  
+  if (length == 0) return self;
+
+// Doesn't really help.
+//
+// // Converting from UTF-8 to UTF-8 would heal invalid characters
+//  iconv_t convertor = iconv_open("UTF-8", "UTF-8"); 
+//  
+//  // Set discard invalid characters.
+//	int one = 1;
+//	iconvctl(convertor, ICONV_SET_DISCARD_ILSEQ, &one);
+//	
+//	size_t inbytesleft = length;
+//  size_t outbytesleft = length;
+//    
+//	char* inbuf  = (char *)[self bytes];
+//	char* outbuf = malloc(sizeof(char) * length);
+//	char* outptr = outbuf;
+//	if (iconv(convertor, &inbuf, &inbytesleft, &outptr, &outbytesleft) == (size_t)-1)
+//  {
+//    iconv_close(convertor);
+//    free(outbuf);
+//		NSLog(@"NSData: failed to convert using iconv!");
+//		return nil;
+//	}
+//	NSData* result = [NSData dataWithBytes:outbuf length:length - outbytesleft];
+//	iconv_close(convertor);
+//	free(outbuf);
+//	return result;
+
+  // Replaces all broken sequences by � character and returns NSData with valid UTF-8 bytes.
+  
+#if DEBUG
+  int warningsCounter = 10;
+#endif
   
   //  bits
   //  7   	U+007F      0xxxxxxx
@@ -34,7 +75,6 @@
   
   NSMutableData* resultData = [NSMutableData dataWithCapacity:[self length]];
   
-  NSUInteger length = [self length];
   const char *bytes = [self bytes];
   
   
@@ -57,6 +97,7 @@
   {
     char byte = bytes[byteIndex];
     
+    // ASCII character is always a UTF-8 character
     if ((byte & b10000000) == b00000000) // 0xxxxxxx
     {
       CheckBuffer();
@@ -71,9 +112,20 @@
       char byte2 = bytes[++byteIndex];
       if ((byte2 & b11000000) == b10000000)
       {
-        CheckBuffer();
-        buffer[bufferIndex++] = byte;
-        buffer[bufferIndex++] = byte2;
+        // This 2-byte character still can be invalid. Check if we can create a string with it.
+        unsigned char tuple[] = {byte, byte2};
+        CFStringRef cfstr = CFStringCreateWithBytes(kCFAllocatorDefault, tuple, 2, kCFStringEncodingUTF8, false);
+        if (cfstr)
+        {
+          CFRelease(cfstr);
+          CheckBuffer();
+          buffer[bufferIndex++] = byte;
+          buffer[bufferIndex++] = byte2;
+        }
+        else
+        {
+          invalidByte = YES;
+        }
       }
       else
       {
@@ -91,10 +143,21 @@
       if ((byte2 & b11000000) == b10000000 && 
           (byte3 & b11000000) == b10000000)
       {
-        CheckBuffer();
-        buffer[bufferIndex++] = byte;
-        buffer[bufferIndex++] = byte2;
-        buffer[bufferIndex++] = byte3;
+        // This 3-byte character still can be invalid. Check if we can create a string with it.
+        unsigned char tuple[] = {byte, byte2, byte3};
+        CFStringRef cfstr = CFStringCreateWithBytes(kCFAllocatorDefault, tuple, 3, kCFStringEncodingUTF8, false);
+        if (cfstr)
+        {
+          CFRelease(cfstr);
+          CheckBuffer();
+          buffer[bufferIndex++] = byte;
+          buffer[bufferIndex++] = byte2;
+          buffer[bufferIndex++] = byte3;
+        }
+        else
+        {
+          invalidByte = YES;
+        }
       }
       else
       {
@@ -114,11 +177,22 @@
           (byte3 & b11000000) == b10000000 && 
           (byte4 & b11000000) == b10000000)
       {
-        CheckBuffer();
-        buffer[bufferIndex++] = byte;
-        buffer[bufferIndex++] = byte2;
-        buffer[bufferIndex++] = byte3;
-        buffer[bufferIndex++] = byte4;
+        // This 4-byte character still can be invalid. Check if we can create a string with it.
+        unsigned char tuple[] = {byte, byte2, byte3, byte4};
+        CFStringRef cfstr = CFStringCreateWithBytes(kCFAllocatorDefault, tuple, 4, kCFStringEncodingUTF8, false);
+        if (cfstr)
+        {
+          CFRelease(cfstr);
+          CheckBuffer();
+          buffer[bufferIndex++] = byte;
+          buffer[bufferIndex++] = byte2;
+          buffer[bufferIndex++] = byte3;
+          buffer[bufferIndex++] = byte4;
+        }
+        else
+        {
+          invalidByte = YES;
+        }
       }
       else
       {
@@ -140,12 +214,23 @@
           (byte4 & b11000000) == b10000000 && 
           (byte5 & b11000000) == b10000000)
       {
-        CheckBuffer();
-        buffer[bufferIndex++] = byte;
-        buffer[bufferIndex++] = byte2;
-        buffer[bufferIndex++] = byte3;
-        buffer[bufferIndex++] = byte4;
-        buffer[bufferIndex++] = byte5;
+        // This 5-byte character still can be invalid. Check if we can create a string with it.
+        unsigned char tuple[] = {byte, byte2, byte3, byte4, byte5};
+        CFStringRef cfstr = CFStringCreateWithBytes(kCFAllocatorDefault, tuple, 5, kCFStringEncodingUTF8, false);
+        if (cfstr)
+        {
+          CFRelease(cfstr);
+          CheckBuffer();
+          buffer[bufferIndex++] = byte;
+          buffer[bufferIndex++] = byte2;
+          buffer[bufferIndex++] = byte3;
+          buffer[bufferIndex++] = byte4;
+          buffer[bufferIndex++] = byte5;
+        }
+        else
+        {
+          invalidByte = YES;
+        }
       }
       else
       {
@@ -169,13 +254,25 @@
           (byte5 & b11000000) == b10000000 &&
           (byte6 & b11000000) == b10000000)
       {
-        CheckBuffer();
-        buffer[bufferIndex++] = byte;
-        buffer[bufferIndex++] = byte2;
-        buffer[bufferIndex++] = byte3;
-        buffer[bufferIndex++] = byte4;
-        buffer[bufferIndex++] = byte5;
-        buffer[bufferIndex++] = byte6;
+        // This 6-byte character still can be invalid. Check if we can create a string with it.
+        unsigned char tuple[] = {byte, byte2, byte3, byte4, byte5, byte6};
+        CFStringRef cfstr = CFStringCreateWithBytes(kCFAllocatorDefault, tuple, 6, kCFStringEncodingUTF8, false);
+        if (cfstr)
+        {
+          CFRelease(cfstr);
+          CheckBuffer();
+          buffer[bufferIndex++] = byte;
+          buffer[bufferIndex++] = byte2;
+          buffer[bufferIndex++] = byte3;
+          buffer[bufferIndex++] = byte4;
+          buffer[bufferIndex++] = byte5;
+          buffer[bufferIndex++] = byte6;
+        }
+        else
+        {
+          invalidByte = YES;
+        }
+        
       }
       else
       {
@@ -189,6 +286,13 @@
     
     if (invalidByte)
     {
+#if DEBUG
+      if (warningsCounter)
+      {
+        warningsCounter--;
+        //NSLog(@"NSData dataByHealingUTF8Stream: broken byte encountered at index %d", byteIndex);
+      }
+#endif
       invalidByte = NO;
       FlushBuffer();
       [resultData appendData:replacementCharacterData];
