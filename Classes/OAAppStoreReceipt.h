@@ -99,6 +99,7 @@ NS_INLINE NSData * OAAppleRootCert()
 
 NS_INLINE NSDictionary* OADictionaryWithAppStoreReceipt(NSString* path)
 {
+  if (!path) return nil;
 	NSData* rootCertData = OAAppleRootCert();
 	
   if (!rootCertData) return nil;
@@ -344,6 +345,8 @@ NS_INLINE BOOL OAValidateAppStoreReceiptAtPath(NSString* path)
 #if OA_APPSTORE_IGNORE_RECEIPT
 	return YES;
 #endif
+  
+  if (!path) return NO;
 	
 #if OA_APPSTORE_SAMPLE_RECEIPT
   path = OA_APPSTORE_SAMPLE_RECEIPT_PATH;
