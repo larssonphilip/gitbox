@@ -615,8 +615,8 @@ NSString* OATaskDidDeallocateNotification  = @"OATaskDidDeallocateNotification";
   
   if (!self.currentDirectoryPath) self.currentDirectoryPath = NSHomeDirectory();
   
-  NSString* cwd = self.currentDirectoryPath;
-  NSFileManager* fm = [[[NSFileManager alloc] init] autorelease];
+//  NSString* cwd = self.currentDirectoryPath;
+//  NSFileManager* fm = [[[NSFileManager alloc] init] autorelease];
   
   // NSTask will raise from -launch when path is invalid.
 //  if (![fm fileExistsAtPath:cwd])
