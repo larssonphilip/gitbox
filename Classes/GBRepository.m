@@ -946,9 +946,19 @@
 
 - (void) mergeBranch:(GBRef*)aBranch withBlock:(void(^)())block
 {
+  [self mergeCommitish:[aBranch nameWithRemoteAlias] withBlock:block];
+}
+
+- (void) mergeCommitish:(NSString*)commitish withBlock:(void(^)())block
+{
+  if (!commitish)
+  {
+    if (block) block();
+    return;
+  }
   block = [[block copy] autorelease];
   GBTask* task = [self task];
-  task.arguments = [NSArray arrayWithObjects:@"merge", [aBranch nameWithRemoteAlias], nil];
+  task.arguments = [NSArray arrayWithObjects:@"merge", commitish, nil];
   [self launchTask:task withBlock:^{
     if ([task isError])
     {

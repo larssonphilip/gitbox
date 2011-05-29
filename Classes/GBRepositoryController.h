@@ -92,6 +92,8 @@
 - (IBAction) applyStashMenu:(id)sender;
 - (IBAction) removeOldStashes:(NSMenuItem*)sender;
 - (IBAction) resetChanges:(id)sender;
+- (IBAction) mergeCommit:(NSMenuItem*)sender;
+- (IBAction) resetBranchToCommit:(NSMenuItem*)sender;
 
 // will be obsolete when settings UI is done
 - (IBAction) editRepositories:(id)sender;

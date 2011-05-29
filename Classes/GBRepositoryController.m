@@ -1088,52 +1088,67 @@
 }
 
 
+- (IBAction) mergeCommit:(NSMenuItem*)sender
+{
+  if (![sender respondsToSelector:@selector(representedObject)]) return;
+  
+  GBCommit* aCommit = [sender representedObject];
+  if (!aCommit) aCommit = self.selectedCommit;
+  
+  [self.repository mergeCommitish:aCommit.commitId withBlock:^{
+  }];
+}
+
+- (BOOL) validateMergeCommit:(NSMenuItem*)sender
+{
+  return [self.repository.currentLocalRef isLocalBranch] && self.selectedCommit && ![self.selectedCommit isStage];
+}
+
+
 - (IBAction) resetBranchToCommit:(NSMenuItem*)sender
 {
-  if ([sender respondsToSelector:@selector(representedObject)])
+  if (![sender respondsToSelector:@selector(representedObject)]) return;
+  
+  GBCommit* aCommit = [sender representedObject];
+  if (!aCommit) aCommit = self.selectedCommit;
+  
+  NSString* branchName = [self.repository.currentLocalRef name];
+  NSString* shortCommitID = [[aCommit commitId] substringToIndex:6];
+  NSString* shortCommitDescription = [aCommit shortSubject];
+  
+  NSString* stashMessage = [NSString stringWithFormat:NSLocalizedString(@"WIP on %@ before reset to %@", nil), branchName, shortCommitID];
+  NSString* message = [NSString stringWithFormat:NSLocalizedString(@"Reset branch %@ to commit %@ “%@”?",nil), branchName, shortCommitID, shortCommitDescription];
+
+  NSString* description = NSLocalizedString(@"", nil);
+
+  if ([self.repository.stage isStashable])
   {
-    GBCommit* aCommit = [sender representedObject];
-    
-    NSString* branchName = [self.repository.currentLocalRef name];
-    NSString* shortCommitID = [[aCommit commitId] substringToIndex:6];
-    NSString* shortCommitDescription = [aCommit shortSubject];
-    
-    NSString* stashMessage = [NSString stringWithFormat:NSLocalizedString(@"WIP on %@ before reset to %@", nil), branchName, shortCommitID];
-    NSString* message = [NSString stringWithFormat:NSLocalizedString(@"Reset branch %@ to commit %@ “%@”?",nil), branchName, shortCommitID, shortCommitDescription];
-
-    NSString* description = NSLocalizedString(@"", nil);
-
-    if ([self.repository.stage isStashable])
-    {
-      description = NSLocalizedString(@"Modifications in working directory will be stashed away. You can bring them back using Stage → Apply Stash.", nil);
-    }
-    
-    void(^block)() = ^{
-      [self.repository stashChangesWithMessage:stashMessage block:^{
-        [self.repository resetToCommit:aCommit withBlock:^{
-          [self loadStageChangesWithBlock:^{
-          }];
-        }];
-      }];
-    };
-    
-    block = [[block copy] autorelease];
-    
-    [[GBMainWindowController instance] criticalConfirmationWithMessage:message 
-                                                           description:description
-                                                                    ok:NSLocalizedString(@"Reset",nil)
-                                                            completion:^(BOOL result){
-                                                              if (result)
-                                                              {
-                                                                block();
-                                                              }
-                                                            }];
+    description = NSLocalizedString(@"Modifications in working directory will be stashed away. You can bring them back using Stage → Apply Stash.", nil);
   }
+  
+  void(^block)() = ^{
+    [self.repository stashChangesWithMessage:stashMessage block:^{
+      [self.repository resetToCommit:aCommit withBlock:^{
+      }];
+    }];
+  };
+  
+  block = [[block copy] autorelease];
+  
+  [[GBMainWindowController instance] criticalConfirmationWithMessage:message 
+                                                         description:description
+                                                                  ok:NSLocalizedString(@"Reset",nil)
+                                                          completion:^(BOOL result){
+                                                            if (result)
+                                                            {
+                                                              block();
+                                                            }
+                                                          }];
 }
 
 - (BOOL) validateResetBranchToCommit:(NSMenuItem*)sender
 {
-  return [self.repository.currentLocalRef isLocalBranch];
+  return [self.repository.currentLocalRef isLocalBranch] && self.selectedCommit && ![self.selectedCommit isStage];
 }
 
 

@@ -91,6 +91,7 @@
 - (void) fetchRemote:(GBRemote*)aRemote silently:(BOOL)silently withBlock:(void(^)())block;
 - (void) fetchCurrentBranchWithBlock:(void(^)())block;
 - (void) mergeBranch:(GBRef*)aBranch withBlock:(void(^)())block;
+- (void) mergeCommitish:(NSString*)commitish withBlock:(void(^)())block;
 - (void) pullBranch:(GBRef*)aRemoteBranch withBlock:(void(^)())block;
 - (void) fetchBranch:(GBRef*)aRemoteBranch withBlock:(void(^)())block;
 - (void) pushWithBlock:(void(^)())block;

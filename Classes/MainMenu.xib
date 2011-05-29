@@ -12,7 +12,7 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="1029"/>
+			<integer value="1061"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -838,7 +838,7 @@
 								</object>
 								<object class="NSMenuItem" id="726664459">
 									<reference key="NSMenu" ref="107797663"/>
-									<string key="NSTitle">Merge Commit...</string>
+									<string key="NSTitle">Merge Commit</string>
 									<string key="NSKeyEquiv"/>
 									<int key="NSMnemonicLoc">2147483647</int>
 									<reference key="NSOnImage" ref="1033313550"/>
@@ -2423,6 +2423,22 @@ ciBHZW5lcmFsClB1YmxpYyBMaWNlbnNlIGluc3RlYWQgb2YgdGhpcyBMaWNlbnNlLgo</bytes>
 					</object>
 					<int key="connectionID">1100</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">mergeCommit:</string>
+						<reference key="source" ref="1014"/>
+						<reference key="destination" ref="726664459"/>
+					</object>
+					<int key="connectionID">1101</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">resetBranchToCommit:</string>
+						<reference key="source" ref="1014"/>
+						<reference key="destination" ref="298208487"/>
+					</object>
+					<int key="connectionID">1102</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -3908,7 +3924,7 @@ ciBHZW5lcmFsClB1YmxpYyBMaWNlbnNlIGluc3RlYWQgb2YgdGhpcyBMaWNlbnNlLgo</bytes>
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">1100</int>
+			<int key="maxID">1102</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -4611,6 +4627,7 @@ ciBHZW5lcmFsClB1YmxpYyBMaWNlbnNlIGluc3RlYWQgb2YgdGhpcyBMaWNlbnNlLgo</bytes>
 							<string>editRepositories:</string>
 							<string>fetch:</string>
 							<string>forcePush:</string>
+							<string>mergeCommit:</string>
 							<string>openInFinder:</string>
 							<string>openInTerminal:</string>
 							<string>openInXcode:</string>
@@ -4619,6 +4636,7 @@ ciBHZW5lcmFsClB1YmxpYyBMaWNlbnNlIGluc3RlYWQgb2YgdGhpcyBMaWNlbnNlLgo</bytes>
 							<string>push:</string>
 							<string>rebase:</string>
 							<string>removeOldStashes:</string>
+							<string>resetBranchToCommit:</string>
 							<string>resetChanges:</string>
 							<string>search:</string>
 							<string>stashChanges:</string>
@@ -4633,6 +4651,7 @@ ciBHZW5lcmFsClB1YmxpYyBMaWNlbnNlIGluc3RlYWQgb2YgdGhpcyBMaWNlbnNlLgo</bytes>
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>
+							<string>NSMenuItem</string>
 							<string>id</string>
 							<string>id</string>
 							<string>NSMenuItem</string>
@@ -4640,6 +4659,7 @@ ciBHZW5lcmFsClB1YmxpYyBMaWNlbnNlIGluc3RlYWQgb2YgdGhpcyBMaWNlbnNlLgo</bytes>
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>
+							<string>NSMenuItem</string>
 							<string>NSMenuItem</string>
 							<string>id</string>
 							<string>id</string>
@@ -4658,6 +4678,7 @@ ciBHZW5lcmFsClB1YmxpYyBMaWNlbnNlIGluc3RlYWQgb2YgdGhpcyBMaWNlbnNlLgo</bytes>
 							<string>editRepositories:</string>
 							<string>fetch:</string>
 							<string>forcePush:</string>
+							<string>mergeCommit:</string>
 							<string>openInFinder:</string>
 							<string>openInTerminal:</string>
 							<string>openInXcode:</string>
@@ -4666,6 +4687,7 @@ ciBHZW5lcmFsClB1YmxpYyBMaWNlbnNlIGluc3RlYWQgb2YgdGhpcyBMaWNlbnNlLgo</bytes>
 							<string>push:</string>
 							<string>rebase:</string>
 							<string>removeOldStashes:</string>
+							<string>resetBranchToCommit:</string>
 							<string>resetChanges:</string>
 							<string>search:</string>
 							<string>stashChanges:</string>
@@ -4705,6 +4727,10 @@ ciBHZW5lcmFsClB1YmxpYyBMaWNlbnNlIGluc3RlYWQgb2YgdGhpcyBMaWNlbnNlLgo</bytes>
 								<string key="candidateClassName">id</string>
 							</object>
 							<object class="IBActionInfo">
+								<string key="name">mergeCommit:</string>
+								<string key="candidateClassName">NSMenuItem</string>
+							</object>
+							<object class="IBActionInfo">
 								<string key="name">openInFinder:</string>
 								<string key="candidateClassName">id</string>
 							</object>
@@ -4734,6 +4760,10 @@ ciBHZW5lcmFsClB1YmxpYyBMaWNlbnNlIGluc3RlYWQgb2YgdGhpcyBMaWNlbnNlLgo</bytes>
 							</object>
 							<object class="IBActionInfo">
 								<string key="name">removeOldStashes:</string>
+								<string key="candidateClassName">NSMenuItem</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">resetBranchToCommit:</string>
 								<string key="candidateClassName">NSMenuItem</string>
 							</object>
 							<object class="IBActionInfo">
