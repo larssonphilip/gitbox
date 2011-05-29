@@ -390,7 +390,7 @@
                                         action:@selector(mergeCommit:) 
                                         object:aCommit]];
 
-  [aMenu addItem:[NSMenuItem menuItemWithTitle:NSLocalizedString(@"Cherry Pick", @"Sidebar") 
+  [aMenu addItem:[NSMenuItem menuItemWithTitle:NSLocalizedString(@"Cherry-pick", @"Sidebar") 
                                         action:@selector(cherryPickCommit:) 
                                         object:aCommit]];
   

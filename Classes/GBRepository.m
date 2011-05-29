@@ -968,6 +968,38 @@
   }];
 }
 
+- (void) cherryPickCommit:(GBCommit*)aCommit creatingCommit:(BOOL)creatingCommit withBlock:(void(^)())block
+{
+  if (!aCommit)
+  {
+    if (block) block();
+    return;
+  }
+  
+  block = [[block copy] autorelease];
+  GBTask* task = [self task];
+  if (creatingCommit)
+  {
+    task.arguments = [NSArray arrayWithObjects:@"cherry-pick", aCommit.commitId, nil];
+  }
+  else
+  {
+    task.arguments = [NSArray arrayWithObjects:@"cherry-pick", @"--no-commit", aCommit.commitId, nil];
+  }
+
+  [self launchTask:task withBlock:^{
+    if (!creatingCommit || [task isError])
+    {
+      self.stage.currentCommitMessage = aCommit.message;
+    }
+    if ([task isError])
+    {
+      [self alertWithMessage: @"Cherry-pick failed" description:[task UTF8ErrorAndOutput]];
+    }
+    if (block) block();
+  }];
+}
+
 - (void) pullBranch:(GBRef*)aRemoteBranch withBlock:(void(^)())block
 {
   block = [[block copy] autorelease];
@@ -1185,6 +1217,7 @@
   GBTask* task = [self task];
   task.arguments = [NSArray arrayWithObjects:@"reset", @"--hard", @"HEAD", nil];
   [self launchTask:task withBlock:^{
+    self.stage.currentCommitMessage = nil;
     if ([task isError])
     {
       [self alertWithMessage:NSLocalizedString(@"Reset failed",nil) description:[task UTF8ErrorAndOutput]];
@@ -1201,6 +1234,7 @@
   GBTask* task = [self task];
   task.arguments = [NSArray arrayWithObjects:@"reset", @"--hard", aCommit.commitId, nil];
   [self launchTask:task withBlock:^{
+    self.stage.currentCommitMessage = nil;
     if ([task isError])
     {
       [self alertWithMessage:NSLocalizedString(@"Branch reset failed",nil) description:[task UTF8ErrorAndOutput]];

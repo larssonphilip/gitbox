@@ -44,7 +44,7 @@ Gitbox 1.4 misc items:
 
 stash: bug: newline is not trimmed from message
 
-- show commit ID in menuitem "Merge Commit e8f67c7b" (same for "Reset Branch to 8be7f1")
+- show commit ID in menuitem "new tag", "new branch", "checkout" and possibly others.
 
 - menu: History -> cherryPickCommit:
 - menu: History -> extractFolder:

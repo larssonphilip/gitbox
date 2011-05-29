@@ -92,6 +92,7 @@
 - (void) fetchCurrentBranchWithBlock:(void(^)())block;
 - (void) mergeBranch:(GBRef*)aBranch withBlock:(void(^)())block;
 - (void) mergeCommitish:(NSString*)commitish withBlock:(void(^)())block;
+- (void) cherryPickCommit:(GBCommit*)aCommit creatingCommit:(BOOL)creatingCommit withBlock:(void(^)())block;
 - (void) pullBranch:(GBRef*)aRemoteBranch withBlock:(void(^)())block;
 - (void) fetchBranch:(GBRef*)aRemoteBranch withBlock:(void(^)())block;
 - (void) pushWithBlock:(void(^)())block;

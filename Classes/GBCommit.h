@@ -42,6 +42,7 @@ typedef enum {
 - (NSString*) subject; // first line of the commit message
 - (NSString*) shortSubject; // first line of the commit message, truncated if needed
 - (NSString*) subjectForReply; // composite subject for reply from Gitbox by email
+- (NSString*) subjectOrCommitIDForMenuItem; // Like 'Merge "adding support for undo/redo"' or 'Merge commit fe6412b5'
 
 - (BOOL) matchesQuery;
 

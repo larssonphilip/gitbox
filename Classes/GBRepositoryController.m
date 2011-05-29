@@ -1101,9 +1101,64 @@
 
 - (BOOL) validateMergeCommit:(NSMenuItem*)sender
 {
+  if (self.selectedCommit)
+  {
+    [sender setTitle:[NSString stringWithFormat:NSLocalizedString(@"Merge %@", nil), [self.selectedCommit subjectOrCommitIDForMenuItem]]];
+  }
+  else
+  {
+    [sender setTitle:NSLocalizedString(@"Merge Commit", nil)];
+  }
   return [self.repository.currentLocalRef isLocalBranch] && self.selectedCommit && ![self.selectedCommit isStage];
 }
 
+- (IBAction) cherryPickCommit:(NSMenuItem*)sender
+{
+  if (![sender respondsToSelector:@selector(representedObject)]) return;
+  
+  GBCommit* aCommit = [sender representedObject];
+  if (!aCommit) aCommit = self.selectedCommit;
+  
+  [self.repository cherryPickCommit:aCommit creatingCommit:YES withBlock:^{
+  }];
+}
+
+- (BOOL) validateCherryPickCommit:(NSMenuItem*)sender
+{
+  if (self.selectedCommit)
+  {
+    [sender setTitle:[NSString stringWithFormat:NSLocalizedString(@"Cherry-pick %@", nil), [self.selectedCommit subjectOrCommitIDForMenuItem]]];
+  }
+  else
+  {
+    [sender setTitle:NSLocalizedString(@"Cherry-pick Commit", nil)];
+  }
+  return [self.repository.currentLocalRef isLocalBranch] && self.selectedCommit && ![self.selectedCommit isStage] && ![self.selectedCommit isMerge];
+}
+
+- (IBAction) applyAsPatchCommit:(NSMenuItem*)sender
+{
+  if (![sender respondsToSelector:@selector(representedObject)]) return;
+  
+  GBCommit* aCommit = [sender representedObject];
+  if (!aCommit) aCommit = self.selectedCommit;
+  
+  [self.repository cherryPickCommit:aCommit creatingCommit:NO withBlock:^{
+  }];
+}
+
+- (BOOL) validateApplyAsPatchCommit:(NSMenuItem*)sender
+{
+  if (self.selectedCommit)
+  {
+    [sender setTitle:[NSString stringWithFormat:NSLocalizedString(@"Apply %@ as Patch", nil), [self.selectedCommit subjectOrCommitIDForMenuItem]]];
+  }
+  else
+  {
+    [sender setTitle:NSLocalizedString(@"Apply Commit as Patch", nil)];
+  }
+  return [self.repository.currentLocalRef isLocalBranch] && self.selectedCommit && ![self.selectedCommit isStage] && ![self.selectedCommit isMerge];
+}
 
 - (IBAction) resetBranchToCommit:(NSMenuItem*)sender
 {
@@ -1148,7 +1203,16 @@
 
 - (BOOL) validateResetBranchToCommit:(NSMenuItem*)sender
 {
-  return [self.repository.currentLocalRef isLocalBranch] && self.selectedCommit && ![self.selectedCommit isStage];
+  if (self.selectedCommit)
+  {
+    [sender setTitle:[NSString stringWithFormat:NSLocalizedString(@"Reset Branch to %@", nil), [self.selectedCommit subjectOrCommitIDForMenuItem]]];
+  }
+  else
+  {
+    [sender setTitle:NSLocalizedString(@"Reset Branch to Commit", nil)];
+  }
+  
+  return ([self.repository.currentLocalRef isLocalBranch] && self.selectedCommit && ![self.selectedCommit isStage]);
 }
 
 

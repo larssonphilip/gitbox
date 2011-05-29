@@ -146,7 +146,17 @@
   return [NSString stringWithFormat:@"%@ [commit %@]", [self subject], [self.commitId substringToIndex:8]];
 }
 
-
+- (NSString*) subjectOrCommitIDForMenuItem // Like 'Merge "adding support for undo/redo"' or 'Merge commit fe6412b5'
+{
+  if ([self isMerge])
+  {
+    return [NSString stringWithFormat:NSLocalizedString(@"commit %@", @"GBCommit"), [self.commitId substringToIndex:6]];
+  }
+  else
+  {
+    return [NSString stringWithFormat:NSLocalizedString(@"“%@”", @""), [self shortSubject]];
+  }
+}
 
 #pragma mark Search
 
