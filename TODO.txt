@@ -89,6 +89,7 @@ stash: bug: newline is not trimmed from message
 - stage: add option "Delete from stage only" for "git rm --force --cached <filepath>".
 - stage: right click menu: "file history" which inserts file path into search field
 
+
 + reset stage in all menus
 + stashes
 

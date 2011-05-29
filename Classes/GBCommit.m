@@ -129,6 +129,18 @@
   return [self.message substringToIndex:range.location];
 }
 
+- (NSString*) shortSubject
+{
+  NSString* subj = [self subject];
+  int limit = 40;
+  if ([subj length] > limit)
+  {
+    subj = [[subj substringToIndex:limit - 10] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    subj = [subj stringByAppendingString:@"..."];
+  }
+  return subj;
+}
+
 - (NSString*) subjectForReply
 {
   return [NSString stringWithFormat:@"%@ [commit %@]", [self subject], [self.commitId substringToIndex:8]];

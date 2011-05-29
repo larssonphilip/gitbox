@@ -967,7 +967,7 @@
 
 - (BOOL) validateStashChanges:(id)sender
 {
-  return [self.repository.stage isDirty];
+  return [self.repository.stage isStashable];
 }
 
 - (IBAction) applyStash:(NSMenuItem*)sender
@@ -1068,7 +1068,7 @@
 
 - (IBAction) resetChanges:(id)sender
 {
-  [[GBMainWindowController instance] criticalConfirmationWithMessage:NSLocalizedString(@"Are you sure you want to reset all changes?",nil) 
+  [[GBMainWindowController instance] criticalConfirmationWithMessage:NSLocalizedString(@"Reset all changes?",nil) 
                                                          description:NSLocalizedString(@"All modifications in working directory and stage will be discarded using git reset --hard. You can’t undo this action.", nil) 
                                                                   ok:NSLocalizedString(@"Reset",nil)
                                                           completion:^(BOOL result){
@@ -1084,10 +1084,57 @@
 
 - (BOOL) validateResetChanges:(id)sender
 {
-  return [self.repository.stage isDirty];
+  return [self.repository.stage isStashable];
 }
 
 
+- (IBAction) resetBranchToCommit:(NSMenuItem*)sender
+{
+  if ([sender respondsToSelector:@selector(representedObject)])
+  {
+    GBCommit* aCommit = [sender representedObject];
+    
+    NSString* branchName = [self.repository.currentLocalRef name];
+    NSString* shortCommitID = [[aCommit commitId] substringToIndex:6];
+    NSString* shortCommitDescription = [aCommit shortSubject];
+    
+    NSString* stashMessage = [NSString stringWithFormat:NSLocalizedString(@"WIP on %@ before reset to %@", nil), branchName, shortCommitID];
+    NSString* message = [NSString stringWithFormat:NSLocalizedString(@"Reset branch %@ to commit %@ “%@”?",nil), branchName, shortCommitID, shortCommitDescription];
+
+    NSString* description = NSLocalizedString(@"", nil);
+
+    if ([self.repository.stage isStashable])
+    {
+      description = NSLocalizedString(@"Modifications in working directory will be stashed away. You can bring them back using Stage → Apply Stash.", nil);
+    }
+    
+    void(^block)() = ^{
+      [self.repository stashChangesWithMessage:stashMessage block:^{
+        [self.repository resetToCommit:aCommit withBlock:^{
+          [self loadStageChangesWithBlock:^{
+          }];
+        }];
+      }];
+    };
+    
+    block = [[block copy] autorelease];
+    
+    [[GBMainWindowController instance] criticalConfirmationWithMessage:message 
+                                                           description:description
+                                                                    ok:NSLocalizedString(@"Reset",nil)
+                                                            completion:^(BOOL result){
+                                                              if (result)
+                                                              {
+                                                                block();
+                                                              }
+                                                            }];
+  }
+}
+
+- (BOOL) validateResetBranchToCommit:(NSMenuItem*)sender
+{
+  return [self.repository.currentLocalRef isLocalBranch];
+}
 
 
 - (BOOL) validateUserInterfaceItem:(id<NSValidatedUserInterfaceItem>)anItem

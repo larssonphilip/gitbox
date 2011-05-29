@@ -59,6 +59,11 @@
   return ([self.stagedChanges count] + [self.unstagedChanges count]) > 0;
 }
 
+- (BOOL) isStashable
+{
+  return ([self.stagedChanges count] + [self.unstagedChanges count]) > 0;
+}
+
 - (BOOL) isCommitable
 {
   return [self.stagedChanges count] > 0;

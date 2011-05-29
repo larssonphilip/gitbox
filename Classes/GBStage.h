@@ -12,6 +12,7 @@
 @property(nonatomic, assign) BOOL hasStagedChanges;
 
 - (BOOL) isDirty;
+- (BOOL) isStashable;
 - (BOOL) isCommitable;
 
 - (NSUInteger) totalPendingChanges;

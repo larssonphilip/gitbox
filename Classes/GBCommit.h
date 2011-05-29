@@ -40,6 +40,7 @@ typedef enum {
 - (NSString*) fullDateString;
 - (NSString*) tooltipMessage;
 - (NSString*) subject; // first line of the commit message
+- (NSString*) shortSubject; // first line of the commit message, truncated if needed
 - (NSString*) subjectForReply; // composite subject for reply from Gitbox by email
 
 - (BOOL) matchesQuery;

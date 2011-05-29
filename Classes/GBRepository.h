@@ -98,6 +98,7 @@
 - (void) pushBranch:(GBRef*)aLocalBranch toRemoteBranch:(GBRef*)aRemoteBranch forced:(BOOL)forced withBlock:(void(^)())block;
 - (void) rebaseWithBlock:(void(^)())block;
 - (void) resetStageWithBlock:(void(^)())block;
+- (void) resetToCommit:(GBCommit*)aCommit withBlock:(void(^)())block;
 - (void) stashChangesWithMessage:(NSString*)message block:(void(^)())block;
 - (void) applyStash:(GBStash*)aStash withBlock:(void(^)())block;
 - (void) removeStashes:(NSArray*)theStashes withBlock:(void(^)())block;

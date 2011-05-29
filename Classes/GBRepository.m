@@ -1173,7 +1173,7 @@
   block = [[block copy] autorelease];
     
   GBTask* task = [self task];
-  task.arguments = [NSArray arrayWithObjects:@"reset", @"--hard", nil];
+  task.arguments = [NSArray arrayWithObjects:@"reset", @"--hard", @"HEAD", nil];
   [self launchTask:task withBlock:^{
     if ([task isError])
     {
@@ -1181,6 +1181,22 @@
     }
     if (block) block();
   }];
+}
+
+
+- (void) resetToCommit:(GBCommit*)aCommit withBlock:(void(^)())block
+{
+  block = [[block copy] autorelease];
+  
+  GBTask* task = [self task];
+  task.arguments = [NSArray arrayWithObjects:@"reset", @"--hard", aCommit.commitId, nil];
+  [self launchTask:task withBlock:^{
+    if ([task isError])
+    {
+      [self alertWithMessage:NSLocalizedString(@"Branch reset failed",nil) description:[task UTF8ErrorAndOutput]];
+    }
+    if (block) block();
+  }];  
 }
 
 

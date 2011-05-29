@@ -400,7 +400,7 @@
   
   [aMenu addItem:[NSMenuItem separatorItem]];
   
-  [aMenu addItem:[NSMenuItem menuItemWithTitle:NSLocalizedString(@"Reset Branch", @"Sidebar") 
+  [aMenu addItem:[NSMenuItem menuItemWithTitle:NSLocalizedString(@"Reset Branch...", @"Sidebar") 
                                         action:@selector(resetBranchToCommit:) 
                                         object:aCommit]];
 
