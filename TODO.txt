@@ -35,11 +35,6 @@ Bug fixes:
 
 Gitbox 1.4 misc items:
 
-- reset branch in all menus
-
-----------------------------
-
-
 - menu: History -> extractFolder:
 - menu: History -> removeFileFromHistory:
 - menu: Stage -> commit: - rename to "Stage and Edit Commit Message"
@@ -47,22 +42,12 @@ Gitbox 1.4 misc items:
 - toolbar: show tag name instead of its SHA1
 - toolbar: allow to unset remote branch (useful when other branch has a lot of commits and clutters the history)
 
-- menu: Repository -> rebase:
-  - "continue rebase" button in place of commit message field
-  - "abort rebase" button
-
-
-- history: contextual menus:
-  - commit:
-    - 
-
+- stage: "continue" and "abort" for rebase state in place of commit message field
 - search: find by tag name too
 
-
 - history: push single commit
-
 - general: unified settings sheet
-- sidebar: progress circle for pushing/pulling/fetching
+- sidebar: progress indicator for pushing/pulling/fetching
 
 - bug: search: keep selection when search ends.
 - bug: search: when parent commit is clicked it can be missing in the history. Should either not highlight it, or reset search state.
@@ -79,6 +64,8 @@ Gitbox 1.4 misc items:
 
 - stage: add option "Delete from stage only" for "git rm --force --cached <filepath>".
 - stage: right click menu: "file history" which inserts file path into search field
+
+--------
 
 + bug: crash when deleting a repo from disk.
 + changes: stash list: as a local branch menu item?
