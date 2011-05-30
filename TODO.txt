@@ -39,14 +39,7 @@ Gitbox 1.4 misc items:
 
 ----------------------------
 
-- search: keep selection when search ends.
-- search: bug: when parent commit is clicked it can be missing in the history. Should either not highlight it, or reset search state.
 
-stash: bug: newline is not trimmed from message
-
-- show commit ID in menuitem "new tag", "new branch", "checkout" and possibly others.
-
-- menu: History -> cherryPickCommit:
 - menu: History -> extractFolder:
 - menu: History -> removeFileFromHistory:
 - menu: Stage -> commit: - rename to "Stage and Edit Commit Message"
@@ -58,9 +51,6 @@ stash: bug: newline is not trimmed from message
   - "continue rebase" button in place of commit message field
   - "abort rebase" button
 
-- bug: askpass crashes with "task" selector when tries to update a repo with missing/invalid ssh key.
-- bug: crash when deleting a repo from disk.
-- bug: (rare) suddenly the search field became disabled. See how enabling/disabling work across repo switching to fix it.
 
 - history: contextual menus:
   - commit:
@@ -68,17 +58,18 @@ stash: bug: newline is not trimmed from message
 
 - search: find by tag name too
 
-- bug: maybe NSURL bookmark data becomes broken and leads to "outside of repository" errors.
 
-- changes: stash list: as a local branch menu item?
-- changes: stash/apply stash from the menu, context menu
-
-- history: merge single commit
 - history: push single commit
-- history: checkout commit with a right click
 
 - general: unified settings sheet
 - sidebar: progress circle for pushing/pulling/fetching
+
+- bug: search: keep selection when search ends.
+- bug: search: when parent commit is clicked it can be missing in the history. Should either not highlight it, or reset search state.
+- bug: sometimes right-click on a commit does not set selectedCommit before validation callbacks.
+- bug: askpass crashes with "task" selector when tries to update a repo with missing/invalid ssh key.
+- bug: (rare) suddenly the search field became disabled. See how enabling/disabling work across repo switching to fix it.
+- bug: maybe NSURL bookmark data becomes broken and leads to "outside of repository" errors.
 
 - bug: search: when commits are updated, the selected one does not show the proper view in the commitviewcontroller.
 - bug: when selected a collapsed group and added a folder, the selected group is not expanded
@@ -89,10 +80,19 @@ stash: bug: newline is not trimmed from message
 - stage: add option "Delete from stage only" for "git rm --force --cached <filepath>".
 - stage: right click menu: "file history" which inserts file path into search field
 
++ bug: crash when deleting a repo from disk.
++ changes: stash list: as a local branch menu item?
++ changes: stash/apply stash from the menu, context menu
+
++ history: merge single commit
++ history: checkout commit with a right click
+
++ stash: bug: newline is not trimmed from message
+≠ show commit ID in menuitem "new tag", "new branch", "checkout" and possibly others.
++ menu: History -> cherryPickCommit:
 
 + reset stage in all menus
 + stashes
-
 
 + menu: Repository -> openInXcode: - construct submenu and hide/unhide the item
 + menu: History -> checkoutBranchMenu: to construct a list of branches
