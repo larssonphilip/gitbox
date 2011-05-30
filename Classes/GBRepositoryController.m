@@ -1205,11 +1205,11 @@
 {
   if (self.selectedCommit)
   {
-    [sender setTitle:[NSString stringWithFormat:NSLocalizedString(@"Reset Branch to %@", nil), [self.selectedCommit subjectOrCommitIDForMenuItem]]];
+    [sender setTitle:[NSString stringWithFormat:NSLocalizedString(@"Reset Branch to %@...", nil), [self.selectedCommit subjectOrCommitIDForMenuItem]]];
   }
   else
   {
-    [sender setTitle:NSLocalizedString(@"Reset Branch to Commit", nil)];
+    [sender setTitle:NSLocalizedString(@"Reset Branch to Commit...", nil)];
   }
   
   return ([self.repository.currentLocalRef isLocalBranch] && self.selectedCommit && ![self.selectedCommit isStage]);

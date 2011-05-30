@@ -135,7 +135,23 @@
   int limit = 40;
   if ([subj length] > limit)
   {
-    subj = [[subj substringToIndex:limit - 10] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    NSCharacterSet* charset = [NSCharacterSet whitespaceAndNewlineCharacterSet];
+    NSArray* components = [subj componentsSeparatedByCharactersInSet:charset];
+    NSMutableString* subj2 = [NSMutableString string];
+    for (NSString* c in components)
+    {
+      if (([subj2 length] + [c length]) < (limit - 10))
+      {
+        [subj2 appendFormat:@"%@ ", c];
+      }
+      else break;
+    }
+    subj = subj2;
+    if ([subj length] > limit)
+    {
+      subj = [subj substringToIndex:limit - 3];
+    }
+    subj = [subj stringByTrimmingCharactersInSet:charset];
     subj = [subj stringByAppendingString:@"..."];
   }
   return subj;
