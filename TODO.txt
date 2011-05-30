@@ -35,6 +35,7 @@ Bug fixes:
 
 Gitbox 1.4 misc items:
 
+- when doing commit checkout, select current local branch in the right branch menu so it is easier to compare and checkout later commits (especially during bisection search).
 - reset branch in all menus
 
 ----------------------------
