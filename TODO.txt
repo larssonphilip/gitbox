@@ -53,7 +53,6 @@ Gitbox 1.4 misc items:
 
 - bug: search: keep selection when search ends.
 - bug: search: when parent commit is clicked it can be missing in the history. Should either not highlight it, or reset search state.
-- bug: sometimes right-click on a commit does not set selectedCommit before validation callbacks.
 - bug: askpass crashes with "task" selector when tries to update a repo with missing/invalid ssh key.
 - bug: (rare) suddenly the search field became disabled. See how enabling/disabling work across repo switching to fix it.
 - bug: maybe NSURL bookmark data becomes broken and leads to "outside of repository" errors.
@@ -69,6 +68,7 @@ Gitbox 1.4 misc items:
 
 --------
 
++ bug: sometimes right-click on a commit does not set selectedCommit before validation callbacks.
 + bug: crash when deleting a repo from disk.
 + changes: stash list: as a local branch menu item?
 + changes: stash/apply stash from the menu, context menu

@@ -460,6 +460,8 @@
 {
   [super windowDidLoad];
   
+  //[[self window] setAcceptsMouseMovedEvents:YES];
+  
   self.rootController.window = [self window];
   
   [self.window setTitle:NSLocalizedString(@"No selection", @"Window")];

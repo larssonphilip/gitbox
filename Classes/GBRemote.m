@@ -196,10 +196,10 @@
     BOOL foundAnExistingBranch = NO;
     for (GBRef* existingRef in self.branches)
     {
-      if (updatedRef.name && existingRef.name && [updatedRef.name isEqualTo:existingRef.name])
+      if (updatedRef.name && existingRef.name && [updatedRef.name isEqual:existingRef.name])
       {
         foundAnExistingBranch = YES;
-        if (![updatedRef.commitId isEqualTo:existingRef.commitId])
+        if (![updatedRef.commitId isEqual:existingRef.commitId])
         {
           //NSLog(@"NEEDS FETCH? refs are different: %@ -> %@ [%@]", existingRef, updatedRef, self.alias);
           return YES;

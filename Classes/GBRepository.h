@@ -106,7 +106,6 @@
 - (void) removeStashes:(NSArray*)theStashes withBlock:(void(^)())block;
 
 
-
 #pragma mark Util
 
 - (id) task;

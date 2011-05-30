@@ -5,6 +5,8 @@
 #import "GBGitConfig.h"
 #import "GBSearchQuery.h"
 
+#import "GBColorLabelPicker.h"
+
 #import "NSData+OADataHelpers.h"
 #import "NSString+OAGitHelpers.h"
 #import "NSAttributedString+OAAttributedStringHelpers.h"
@@ -37,6 +39,7 @@
 
 @synthesize syncStatus;
 @synthesize repository;
+@synthesize colorLabel;
 
 - (void) dealloc
 {
@@ -327,6 +330,47 @@
 }
 
 
+
+- (NSString*) colorLabel
+{
+  if (colorLabel) return colorLabel;
+  
+  NSDictionary* dict = [[NSUserDefaults standardUserDefaults] dictionaryForKey:@"GBColorLabelsForCommits"];
+  
+  if (!commitId) return GBColorLabelClear;
+  
+  NSString* label = [dict objectForKey:commitId];
+  
+  if (!label) label = GBColorLabelClear;
+  
+  colorLabel = [label retain];
+  
+  return colorLabel;
+}
+
+- (void) setColorLabel:(NSString *)newLabel
+{
+  if (!commitId) return;
+  if (!newLabel) newLabel = GBColorLabelClear;
+  if ([colorLabel isEqual:newLabel]) return;
+  
+  [colorLabel release];
+  colorLabel = [newLabel retain];
+  
+  NSMutableDictionary* dict = [[[[NSUserDefaults standardUserDefaults] dictionaryForKey:@"GBColorLabelsForCommits"] mutableCopy] autorelease];
+  
+  if (!dict) dict = [NSMutableDictionary dictionary];
+  
+  if ([colorLabel isEqual:GBColorLabelClear])
+  {
+    [dict removeObjectForKey:commitId];
+  }
+  else
+  {
+    [dict setObject:colorLabel forKey:commitId];
+  }
+  [[NSUserDefaults standardUserDefaults] setObject:dict forKey:@"GBColorLabelsForCommits"];
+}
 
 
 #pragma mark Mutation

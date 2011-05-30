@@ -134,6 +134,28 @@
 		2051376F13446443008614D4 /* OAFSEventStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 2051376D13446443008614D4 /* OAFSEventStream.m */; };
 		2054FFE8125DE75800692C77 /* GBRepositoryCloningViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2054FFE7125DE75800692C77 /* GBRepositoryCloningViewController.xib */; };
 		2054FFF0125DE9D200692C77 /* GBRepositoryCloningViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2054FFEF125DE9D200692C77 /* GBRepositoryCloningViewController.m */; };
+		20566CA513941EA1005186AF /* GBColorLabelPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 20566CA413941EA1005186AF /* GBColorLabelPicker.m */; };
+		20566CA613941EA1005186AF /* GBColorLabelPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 20566CA413941EA1005186AF /* GBColorLabelPicker.m */; };
+		20566CB313942BD3005186AF /* GBColorLabelBlue.png in Resources */ = {isa = PBXBuildFile; fileRef = 20566CAB13942BD3005186AF /* GBColorLabelBlue.png */; };
+		20566CB413942BD3005186AF /* GBColorLabelClear.png in Resources */ = {isa = PBXBuildFile; fileRef = 20566CAC13942BD3005186AF /* GBColorLabelClear.png */; };
+		20566CB513942BD3005186AF /* GBColorLabelGray.png in Resources */ = {isa = PBXBuildFile; fileRef = 20566CAD13942BD3005186AF /* GBColorLabelGray.png */; };
+		20566CB613942BD3005186AF /* GBColorLabelGreen.png in Resources */ = {isa = PBXBuildFile; fileRef = 20566CAE13942BD3005186AF /* GBColorLabelGreen.png */; };
+		20566CB713942BD3005186AF /* GBColorLabelOrange.png in Resources */ = {isa = PBXBuildFile; fileRef = 20566CAF13942BD3005186AF /* GBColorLabelOrange.png */; };
+		20566CB813942BD3005186AF /* GBColorLabelPurple.png in Resources */ = {isa = PBXBuildFile; fileRef = 20566CB013942BD3005186AF /* GBColorLabelPurple.png */; };
+		20566CB913942BD3005186AF /* GBColorLabelRed.png in Resources */ = {isa = PBXBuildFile; fileRef = 20566CB113942BD3005186AF /* GBColorLabelRed.png */; };
+		20566CBA13942BD3005186AF /* GBColorLabelYellow.png in Resources */ = {isa = PBXBuildFile; fileRef = 20566CB213942BD3005186AF /* GBColorLabelYellow.png */; };
+		20566CBB13942BD3005186AF /* GBColorLabelBlue.png in Resources */ = {isa = PBXBuildFile; fileRef = 20566CAB13942BD3005186AF /* GBColorLabelBlue.png */; };
+		20566CBC13942BD3005186AF /* GBColorLabelClear.png in Resources */ = {isa = PBXBuildFile; fileRef = 20566CAC13942BD3005186AF /* GBColorLabelClear.png */; };
+		20566CBD13942BD3005186AF /* GBColorLabelGray.png in Resources */ = {isa = PBXBuildFile; fileRef = 20566CAD13942BD3005186AF /* GBColorLabelGray.png */; };
+		20566CBE13942BD3005186AF /* GBColorLabelGreen.png in Resources */ = {isa = PBXBuildFile; fileRef = 20566CAE13942BD3005186AF /* GBColorLabelGreen.png */; };
+		20566CBF13942BD3005186AF /* GBColorLabelOrange.png in Resources */ = {isa = PBXBuildFile; fileRef = 20566CAF13942BD3005186AF /* GBColorLabelOrange.png */; };
+		20566CC013942BD3005186AF /* GBColorLabelPurple.png in Resources */ = {isa = PBXBuildFile; fileRef = 20566CB013942BD3005186AF /* GBColorLabelPurple.png */; };
+		20566CC113942BD3005186AF /* GBColorLabelRed.png in Resources */ = {isa = PBXBuildFile; fileRef = 20566CB113942BD3005186AF /* GBColorLabelRed.png */; };
+		20566CC213942BD3005186AF /* GBColorLabelYellow.png in Resources */ = {isa = PBXBuildFile; fileRef = 20566CB213942BD3005186AF /* GBColorLabelYellow.png */; };
+		20566D1313943620005186AF /* GBColorLabelHighlight.png in Resources */ = {isa = PBXBuildFile; fileRef = 20566D1113943620005186AF /* GBColorLabelHighlight.png */; };
+		20566D1413943620005186AF /* GBColorLabelSelection.png in Resources */ = {isa = PBXBuildFile; fileRef = 20566D1213943620005186AF /* GBColorLabelSelection.png */; };
+		20566D1513943620005186AF /* GBColorLabelHighlight.png in Resources */ = {isa = PBXBuildFile; fileRef = 20566D1113943620005186AF /* GBColorLabelHighlight.png */; };
+		20566D1613943620005186AF /* GBColorLabelSelection.png in Resources */ = {isa = PBXBuildFile; fileRef = 20566D1213943620005186AF /* GBColorLabelSelection.png */; };
 		2057964211ADD3AA004715FE /* GBCommitCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2057964111ADD3AA004715FE /* GBCommitCell.m */; };
 		2057EF0E11A9B00F009EDF2F /* GBRemoteRefsTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 2057EF0D11A9B00F009EDF2F /* GBRemoteRefsTask.m */; };
 		2057EF6411ABDCCE009EDF2F /* GBRefreshIndexTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 2057EF6311ABDCCE009EDF2F /* GBRefreshIndexTask.m */; };
@@ -556,6 +578,18 @@
 		2054FFE7125DE75800692C77 /* GBRepositoryCloningViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBRepositoryCloningViewController.xib; sourceTree = "<group>"; };
 		2054FFEE125DE9D200692C77 /* GBRepositoryCloningViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBRepositoryCloningViewController.h; sourceTree = "<group>"; };
 		2054FFEF125DE9D200692C77 /* GBRepositoryCloningViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = GBRepositoryCloningViewController.m; sourceTree = "<group>"; tabWidth = 2; usesTabs = 0; };
+		20566CA313941EA1005186AF /* GBColorLabelPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBColorLabelPicker.h; sourceTree = "<group>"; };
+		20566CA413941EA1005186AF /* GBColorLabelPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBColorLabelPicker.m; sourceTree = "<group>"; };
+		20566CAB13942BD3005186AF /* GBColorLabelBlue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GBColorLabelBlue.png; path = Images/GBColorLabelBlue.png; sourceTree = SOURCE_ROOT; };
+		20566CAC13942BD3005186AF /* GBColorLabelClear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GBColorLabelClear.png; path = Images/GBColorLabelClear.png; sourceTree = SOURCE_ROOT; };
+		20566CAD13942BD3005186AF /* GBColorLabelGray.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GBColorLabelGray.png; path = Images/GBColorLabelGray.png; sourceTree = SOURCE_ROOT; };
+		20566CAE13942BD3005186AF /* GBColorLabelGreen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GBColorLabelGreen.png; path = Images/GBColorLabelGreen.png; sourceTree = SOURCE_ROOT; };
+		20566CAF13942BD3005186AF /* GBColorLabelOrange.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GBColorLabelOrange.png; path = Images/GBColorLabelOrange.png; sourceTree = SOURCE_ROOT; };
+		20566CB013942BD3005186AF /* GBColorLabelPurple.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GBColorLabelPurple.png; path = Images/GBColorLabelPurple.png; sourceTree = SOURCE_ROOT; };
+		20566CB113942BD3005186AF /* GBColorLabelRed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GBColorLabelRed.png; path = Images/GBColorLabelRed.png; sourceTree = SOURCE_ROOT; };
+		20566CB213942BD3005186AF /* GBColorLabelYellow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GBColorLabelYellow.png; path = Images/GBColorLabelYellow.png; sourceTree = SOURCE_ROOT; };
+		20566D1113943620005186AF /* GBColorLabelHighlight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GBColorLabelHighlight.png; path = Images/GBColorLabelHighlight.png; sourceTree = SOURCE_ROOT; };
+		20566D1213943620005186AF /* GBColorLabelSelection.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GBColorLabelSelection.png; path = Images/GBColorLabelSelection.png; sourceTree = SOURCE_ROOT; };
 		2057964011ADD3AA004715FE /* GBCommitCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBCommitCell.h; sourceTree = "<group>"; };
 		2057964111ADD3AA004715FE /* GBCommitCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBCommitCell.m; sourceTree = "<group>"; };
 		2057EF0C11A9B00F009EDF2F /* GBRemoteRefsTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBRemoteRefsTask.h; sourceTree = "<group>"; };
@@ -955,6 +989,18 @@
 				209C192312B802C900F56A54 /* GBCellWithView.m */,
 				200433A012DA02CF00B045C0 /* GBGreyGradientView.h */,
 				200433A112DA02CF00B045C0 /* GBGreyGradientView.m */,
+				20566CA313941EA1005186AF /* GBColorLabelPicker.h */,
+				20566CA413941EA1005186AF /* GBColorLabelPicker.m */,
+				20566CAB13942BD3005186AF /* GBColorLabelBlue.png */,
+				20566CAC13942BD3005186AF /* GBColorLabelClear.png */,
+				20566CAD13942BD3005186AF /* GBColorLabelGray.png */,
+				20566CAE13942BD3005186AF /* GBColorLabelGreen.png */,
+				20566CAF13942BD3005186AF /* GBColorLabelOrange.png */,
+				20566CB013942BD3005186AF /* GBColorLabelPurple.png */,
+				20566CB113942BD3005186AF /* GBColorLabelRed.png */,
+				20566CB213942BD3005186AF /* GBColorLabelYellow.png */,
+				20566D1113943620005186AF /* GBColorLabelHighlight.png */,
+				20566D1213943620005186AF /* GBColorLabelSelection.png */,
 			);
 			name = "Shared Views";
 			sourceTree = "<group>";
@@ -1567,6 +1613,16 @@
 				203FF1DE1365C96E000624D6 /* GBAskPassCredentialsControllerPasswordOnly.xib in Resources */,
 				208B3288137505D600EB4A18 /* GBSearchBarController.xib in Resources */,
 				205C289B138C2ABD0039D19D /* GBConfirmationController.xib in Resources */,
+				20566CB313942BD3005186AF /* GBColorLabelBlue.png in Resources */,
+				20566CB413942BD3005186AF /* GBColorLabelClear.png in Resources */,
+				20566CB513942BD3005186AF /* GBColorLabelGray.png in Resources */,
+				20566CB613942BD3005186AF /* GBColorLabelGreen.png in Resources */,
+				20566CB713942BD3005186AF /* GBColorLabelOrange.png in Resources */,
+				20566CB813942BD3005186AF /* GBColorLabelPurple.png in Resources */,
+				20566CB913942BD3005186AF /* GBColorLabelRed.png in Resources */,
+				20566CBA13942BD3005186AF /* GBColorLabelYellow.png in Resources */,
+				20566D1313943620005186AF /* GBColorLabelHighlight.png in Resources */,
+				20566D1413943620005186AF /* GBColorLabelSelection.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1618,6 +1674,16 @@
 				203FF1DD1365C96E000624D6 /* GBAskPassCredentialsControllerPasswordOnly.xib in Resources */,
 				208B3286137505D600EB4A18 /* GBSearchBarController.xib in Resources */,
 				205C289A138C2ABD0039D19D /* GBConfirmationController.xib in Resources */,
+				20566CBB13942BD3005186AF /* GBColorLabelBlue.png in Resources */,
+				20566CBC13942BD3005186AF /* GBColorLabelClear.png in Resources */,
+				20566CBD13942BD3005186AF /* GBColorLabelGray.png in Resources */,
+				20566CBE13942BD3005186AF /* GBColorLabelGreen.png in Resources */,
+				20566CBF13942BD3005186AF /* GBColorLabelOrange.png in Resources */,
+				20566CC013942BD3005186AF /* GBColorLabelPurple.png in Resources */,
+				20566CC113942BD3005186AF /* GBColorLabelRed.png in Resources */,
+				20566CC213942BD3005186AF /* GBColorLabelYellow.png in Resources */,
+				20566D1513943620005186AF /* GBColorLabelHighlight.png in Resources */,
+				20566D1613943620005186AF /* GBColorLabelSelection.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1802,6 +1868,7 @@
 				20CE6DEC1389447E001D9707 /* GBStashListTask.m in Sources */,
 				20CE6E0B13895CC3001D9707 /* GBStash.m in Sources */,
 				205C2897138C2A9F0039D19D /* GBConfirmationController.m in Sources */,
+				20566CA513941EA1005186AF /* GBColorLabelPicker.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1940,6 +2007,7 @@
 				20CE6DEB1389447E001D9707 /* GBStashListTask.m in Sources */,
 				20CE6E0A13895CC3001D9707 /* GBStash.m in Sources */,
 				205C2896138C2A9F0039D19D /* GBConfirmationController.m in Sources */,
+				20566CA613941EA1005186AF /* GBColorLabelPicker.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

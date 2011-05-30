@@ -13,6 +13,7 @@
 #import "GBCommitCell.h"
 
 #import "OAFastJumpController.h"
+#import "GBColorLabelPicker.h"
 
 #import "NSArray+OAArrayHelpers.h"
 #import "NSObject+OASelectorNotifications.h"
@@ -346,22 +347,14 @@
   return aMenu;
 }
 
+- (IBAction) colorPickerDidChange:(GBColorLabelPicker*)picker
+{
+  ((GBCommit*)picker.representedObject).colorLabel = picker.value;
+}
+
 - (NSMenu*) menuForCommit:(GBCommit*)aCommit
 {
   NSMenu* aMenu = [[[NSMenu alloc] initWithTitle:@""] autorelease];
- 
-//   - checkout commit
-//   - ---------------
-//   - [ ] [R] [Y] [G] [B] [P]  // color corners
-//   - ---------------
-//   - new tag
-//   - new branch
-//   - ---------------
-//   - merge
-//   - cherry pick
-//   - apply as patch
-//   - ---------------
-//   - reset branch
 
   [aMenu addItem:[NSMenuItem menuItemWithTitle:NSLocalizedString(@"Checkout...", @"Sidebar") 
                                         action:@selector(checkoutCommit:) 
@@ -369,10 +362,11 @@
   
   [aMenu addItem:[NSMenuItem separatorItem]];
   
-  // TODO: add a color markers view
-  [aMenu addItem:[NSMenuItem menuItemWithTitle:@"   "
-                                        action:@selector(applyColorMarker:) 
-                                        object:aCommit]];
+  NSMenuItem* colorLabelItem = [NSMenuItem menuItemWithTitle:@"" action:@selector(colorPickerDidChange:) object:aCommit];
+  GBColorLabelPicker* picker = [GBColorLabelPicker pickerWithTarget:nil action:@selector(colorPickerDidChange:) object:aCommit];
+  picker.value = aCommit.colorLabel;
+  [colorLabelItem setView:picker];
+  [aMenu addItem:colorLabelItem];
   
   [aMenu addItem:[NSMenuItem separatorItem]];
   
@@ -557,6 +551,7 @@ dataCellForTableColumn:(NSTableColumn*)aTableColumn
 - (NSMenu*) tableView:(NSTableView*)aTableView menuForTableColumn:(NSTableColumn*)aTableColumn row:(NSInteger)row
 {
   GBCommit* aCommit = [self.visibleCommits objectAtIndex:row];
+  self.repositoryController.selectedCommit = aCommit;
   if ([aCommit isStage])
   {
     return [self menuForStage:[aCommit asStage]];

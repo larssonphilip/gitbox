@@ -30,6 +30,8 @@ typedef enum {
 @property(nonatomic,assign) GBCommitSyncStatus syncStatus;
 @property(nonatomic,assign) GBRepository* repository;
 
+@property(nonatomic,copy) NSString* colorLabel;
+
 #pragma mark Interrogation
 
 - (BOOL) isStage;
