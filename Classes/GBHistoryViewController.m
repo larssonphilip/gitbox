@@ -363,7 +363,7 @@
 //   - ---------------
 //   - reset branch
 
-  [aMenu addItem:[NSMenuItem menuItemWithTitle:NSLocalizedString(@"Checkout", @"Sidebar") 
+  [aMenu addItem:[NSMenuItem menuItemWithTitle:NSLocalizedString(@"Checkout...", @"Sidebar") 
                                         action:@selector(checkoutCommit:) 
                                         object:aCommit]];
   
