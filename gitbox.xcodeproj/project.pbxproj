@@ -156,6 +156,20 @@
 		20566D1413943620005186AF /* GBColorLabelSelection.png in Resources */ = {isa = PBXBuildFile; fileRef = 20566D1213943620005186AF /* GBColorLabelSelection.png */; };
 		20566D1513943620005186AF /* GBColorLabelHighlight.png in Resources */ = {isa = PBXBuildFile; fileRef = 20566D1113943620005186AF /* GBColorLabelHighlight.png */; };
 		20566D1613943620005186AF /* GBColorLabelSelection.png in Resources */ = {isa = PBXBuildFile; fileRef = 20566D1213943620005186AF /* GBColorLabelSelection.png */; };
+		20566DE01394469A005186AF /* GBColorLabelBlueCorner.png in Resources */ = {isa = PBXBuildFile; fileRef = 20566DD91394469A005186AF /* GBColorLabelBlueCorner.png */; };
+		20566DE11394469A005186AF /* GBColorLabelGrayCorner.png in Resources */ = {isa = PBXBuildFile; fileRef = 20566DDA1394469A005186AF /* GBColorLabelGrayCorner.png */; };
+		20566DE21394469A005186AF /* GBColorLabelGreenCorner.png in Resources */ = {isa = PBXBuildFile; fileRef = 20566DDB1394469A005186AF /* GBColorLabelGreenCorner.png */; };
+		20566DE31394469A005186AF /* GBColorLabelOrangeCorner.png in Resources */ = {isa = PBXBuildFile; fileRef = 20566DDC1394469A005186AF /* GBColorLabelOrangeCorner.png */; };
+		20566DE41394469A005186AF /* GBColorLabelPurpleCorner.png in Resources */ = {isa = PBXBuildFile; fileRef = 20566DDD1394469A005186AF /* GBColorLabelPurpleCorner.png */; };
+		20566DE51394469A005186AF /* GBColorLabelRedCorner.png in Resources */ = {isa = PBXBuildFile; fileRef = 20566DDE1394469A005186AF /* GBColorLabelRedCorner.png */; };
+		20566DE61394469A005186AF /* GBColorLabelYellowCorner.png in Resources */ = {isa = PBXBuildFile; fileRef = 20566DDF1394469A005186AF /* GBColorLabelYellowCorner.png */; };
+		20566DE71394469A005186AF /* GBColorLabelBlueCorner.png in Resources */ = {isa = PBXBuildFile; fileRef = 20566DD91394469A005186AF /* GBColorLabelBlueCorner.png */; };
+		20566DE81394469A005186AF /* GBColorLabelGrayCorner.png in Resources */ = {isa = PBXBuildFile; fileRef = 20566DDA1394469A005186AF /* GBColorLabelGrayCorner.png */; };
+		20566DE91394469A005186AF /* GBColorLabelGreenCorner.png in Resources */ = {isa = PBXBuildFile; fileRef = 20566DDB1394469A005186AF /* GBColorLabelGreenCorner.png */; };
+		20566DEA1394469A005186AF /* GBColorLabelOrangeCorner.png in Resources */ = {isa = PBXBuildFile; fileRef = 20566DDC1394469A005186AF /* GBColorLabelOrangeCorner.png */; };
+		20566DEB1394469A005186AF /* GBColorLabelPurpleCorner.png in Resources */ = {isa = PBXBuildFile; fileRef = 20566DDD1394469A005186AF /* GBColorLabelPurpleCorner.png */; };
+		20566DEC1394469A005186AF /* GBColorLabelRedCorner.png in Resources */ = {isa = PBXBuildFile; fileRef = 20566DDE1394469A005186AF /* GBColorLabelRedCorner.png */; };
+		20566DED1394469A005186AF /* GBColorLabelYellowCorner.png in Resources */ = {isa = PBXBuildFile; fileRef = 20566DDF1394469A005186AF /* GBColorLabelYellowCorner.png */; };
 		2057964211ADD3AA004715FE /* GBCommitCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2057964111ADD3AA004715FE /* GBCommitCell.m */; };
 		2057EF0E11A9B00F009EDF2F /* GBRemoteRefsTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 2057EF0D11A9B00F009EDF2F /* GBRemoteRefsTask.m */; };
 		2057EF6411ABDCCE009EDF2F /* GBRefreshIndexTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 2057EF6311ABDCCE009EDF2F /* GBRefreshIndexTask.m */; };
@@ -590,6 +604,13 @@
 		20566CB213942BD3005186AF /* GBColorLabelYellow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GBColorLabelYellow.png; path = Images/GBColorLabelYellow.png; sourceTree = SOURCE_ROOT; };
 		20566D1113943620005186AF /* GBColorLabelHighlight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GBColorLabelHighlight.png; path = Images/GBColorLabelHighlight.png; sourceTree = SOURCE_ROOT; };
 		20566D1213943620005186AF /* GBColorLabelSelection.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GBColorLabelSelection.png; path = Images/GBColorLabelSelection.png; sourceTree = SOURCE_ROOT; };
+		20566DD91394469A005186AF /* GBColorLabelBlueCorner.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GBColorLabelBlueCorner.png; path = Images/GBColorLabelBlueCorner.png; sourceTree = SOURCE_ROOT; };
+		20566DDA1394469A005186AF /* GBColorLabelGrayCorner.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GBColorLabelGrayCorner.png; path = Images/GBColorLabelGrayCorner.png; sourceTree = SOURCE_ROOT; };
+		20566DDB1394469A005186AF /* GBColorLabelGreenCorner.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GBColorLabelGreenCorner.png; path = Images/GBColorLabelGreenCorner.png; sourceTree = SOURCE_ROOT; };
+		20566DDC1394469A005186AF /* GBColorLabelOrangeCorner.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GBColorLabelOrangeCorner.png; path = Images/GBColorLabelOrangeCorner.png; sourceTree = SOURCE_ROOT; };
+		20566DDD1394469A005186AF /* GBColorLabelPurpleCorner.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GBColorLabelPurpleCorner.png; path = Images/GBColorLabelPurpleCorner.png; sourceTree = SOURCE_ROOT; };
+		20566DDE1394469A005186AF /* GBColorLabelRedCorner.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GBColorLabelRedCorner.png; path = Images/GBColorLabelRedCorner.png; sourceTree = SOURCE_ROOT; };
+		20566DDF1394469A005186AF /* GBColorLabelYellowCorner.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GBColorLabelYellowCorner.png; path = Images/GBColorLabelYellowCorner.png; sourceTree = SOURCE_ROOT; };
 		2057964011ADD3AA004715FE /* GBCommitCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBCommitCell.h; sourceTree = "<group>"; };
 		2057964111ADD3AA004715FE /* GBCommitCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBCommitCell.m; sourceTree = "<group>"; };
 		2057EF0C11A9B00F009EDF2F /* GBRemoteRefsTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBRemoteRefsTask.h; sourceTree = "<group>"; };
@@ -1001,6 +1022,13 @@
 				20566CB213942BD3005186AF /* GBColorLabelYellow.png */,
 				20566D1113943620005186AF /* GBColorLabelHighlight.png */,
 				20566D1213943620005186AF /* GBColorLabelSelection.png */,
+				20566DD91394469A005186AF /* GBColorLabelBlueCorner.png */,
+				20566DDA1394469A005186AF /* GBColorLabelGrayCorner.png */,
+				20566DDB1394469A005186AF /* GBColorLabelGreenCorner.png */,
+				20566DDC1394469A005186AF /* GBColorLabelOrangeCorner.png */,
+				20566DDD1394469A005186AF /* GBColorLabelPurpleCorner.png */,
+				20566DDE1394469A005186AF /* GBColorLabelRedCorner.png */,
+				20566DDF1394469A005186AF /* GBColorLabelYellowCorner.png */,
 			);
 			name = "Shared Views";
 			sourceTree = "<group>";
@@ -1623,6 +1651,13 @@
 				20566CBA13942BD3005186AF /* GBColorLabelYellow.png in Resources */,
 				20566D1313943620005186AF /* GBColorLabelHighlight.png in Resources */,
 				20566D1413943620005186AF /* GBColorLabelSelection.png in Resources */,
+				20566DE01394469A005186AF /* GBColorLabelBlueCorner.png in Resources */,
+				20566DE11394469A005186AF /* GBColorLabelGrayCorner.png in Resources */,
+				20566DE21394469A005186AF /* GBColorLabelGreenCorner.png in Resources */,
+				20566DE31394469A005186AF /* GBColorLabelOrangeCorner.png in Resources */,
+				20566DE41394469A005186AF /* GBColorLabelPurpleCorner.png in Resources */,
+				20566DE51394469A005186AF /* GBColorLabelRedCorner.png in Resources */,
+				20566DE61394469A005186AF /* GBColorLabelYellowCorner.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1684,6 +1719,13 @@
 				20566CC213942BD3005186AF /* GBColorLabelYellow.png in Resources */,
 				20566D1513943620005186AF /* GBColorLabelHighlight.png in Resources */,
 				20566D1613943620005186AF /* GBColorLabelSelection.png in Resources */,
+				20566DE71394469A005186AF /* GBColorLabelBlueCorner.png in Resources */,
+				20566DE81394469A005186AF /* GBColorLabelGrayCorner.png in Resources */,
+				20566DE91394469A005186AF /* GBColorLabelGreenCorner.png in Resources */,
+				20566DEA1394469A005186AF /* GBColorLabelOrangeCorner.png in Resources */,
+				20566DEB1394469A005186AF /* GBColorLabelPurpleCorner.png in Resources */,
+				20566DEC1394469A005186AF /* GBColorLabelRedCorner.png in Resources */,
+				20566DED1394469A005186AF /* GBColorLabelYellowCorner.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

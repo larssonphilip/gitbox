@@ -30,6 +30,7 @@
 @property(nonatomic, retain) NSArray* arrayControllerCommits;
 @property(nonatomic, retain) OAFastJumpController* jumpController;
 @property(nonatomic, retain) GBCommitCell* commitCell;
+@property(nonatomic, retain) NSMenu* currentMenu;
 
 - (void) prepareChangesControllersIfNeeded;
 
@@ -56,7 +57,7 @@
 @synthesize jumpController;
 
 @synthesize commitCell;
-
+@synthesize currentMenu;
 
 
 
@@ -84,6 +85,9 @@
   
   [commitCell release]; commitCell = nil;
   [arrayControllerCommits release]; arrayControllerCommits = nil;
+  
+  if ([currentMenu delegate] == self) [currentMenu setDelegate:nil];
+  [currentMenu release]; currentMenu = nil;
   
   [super dealloc];
 }
@@ -349,13 +353,17 @@
 
 - (IBAction) colorPickerDidChange:(GBColorLabelPicker*)picker
 {
+  [self.currentMenu cancelTracking];
+  self.currentMenu = nil;
   ((GBCommit*)picker.representedObject).colorLabel = picker.value;
 }
 
 - (NSMenu*) menuForCommit:(GBCommit*)aCommit
 {
   NSMenu* aMenu = [[[NSMenu alloc] initWithTitle:@""] autorelease];
-
+  
+  self.currentMenu = aMenu;
+  
   [aMenu addItem:[NSMenuItem menuItemWithTitle:NSLocalizedString(@"Checkout...", @"Sidebar") 
                                         action:@selector(checkoutCommit:) 
                                         object:aCommit]];
