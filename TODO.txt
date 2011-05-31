@@ -25,14 +25,13 @@ Bug fixes:
 
 Gitbox 1.4 misc items:
 
-
 - sidebar: progress indicator for pushing/pulling/fetching
-- toolbar: allow to unset remote branch (useful when other branch has a lot of commits and clutters the history)
 - menu: Stage -> commit: - rename to "Stage and Edit Commit Message"
 
 - show "Tag:" or "Tags:" line in commit header (with tag names separated by comma)
 - delete tag using right click on a commit
 
+- toolbar: allow to unset remote branch (useful when other branch has a lot of commits and clutters the history)
 ? when doing commit checkout, select current local branch in the right branch menu so it is easier to compare and checkout later commits (especially during bisection search).
 
 - history: push a single commit
