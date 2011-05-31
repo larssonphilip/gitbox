@@ -35,7 +35,7 @@ Gitbox 1.4 misc items:
 - toolbar: allow to unset remote branch (useful when other branch has a lot of commits and clutters the history)
 - menu: Stage -> commit: - rename to "Stage and Edit Commit Message"
 
-
+- show "Tag:" or "Tags:" line in commit header (with tag names separated by comma)
 
 - history: push a single commit
 - general: unified settings sheet
