@@ -482,8 +482,6 @@
                                             shadow, NSShadowAttributeName,
                                            nil] autorelease];
   
-  BOOL alternateImage = ([self isHighlighted] && self.isFocused);
-  
   for (GBRef* tag in tags)
   {
     NSString* tagName = tag.name;
@@ -509,9 +507,20 @@
                                   rect.origin.y + (rect.size.height - badgeHeight), 
                                   badgeWidth, 
                                   badgeHeight);
+
+    NSDrawThreePartImage(imageRect, 
+                         [NSImage imageNamed:@"GBBadgeTagLeft.png"], 
+                         [NSImage imageNamed:@"GBBadgeTagCenter.png"], 
+                         [NSImage imageNamed:@"GBBadgeTagRight.png"],
+                         NO, // vertical
+                         NSCompositeSourceOver, 
+                         1.0, 
+                         YES // flipped
+                         );
     
-    [[NSColor darkGrayColor] set];
-    NSRectFill(imageRect); // debug mode
+    
+//    [[NSColor darkGrayColor] set];
+//    NSRectFill(imageRect); // debug mode
     
     
     // draw text

@@ -23,6 +23,12 @@
 
 /* Begin PBXBuildFile section */
 		2000325411FC75050069C70D /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2000325311FC75050069C70D /* IOKit.framework */; };
+		2003F9AB139526C900471731 /* GBBadgeTagCenter.png in Resources */ = {isa = PBXBuildFile; fileRef = 2003F9A8139526C900471731 /* GBBadgeTagCenter.png */; };
+		2003F9AC139526C900471731 /* GBBadgeTagCenter.png in Resources */ = {isa = PBXBuildFile; fileRef = 2003F9A8139526C900471731 /* GBBadgeTagCenter.png */; };
+		2003F9AD139526C900471731 /* GBBadgeTagLeft.png in Resources */ = {isa = PBXBuildFile; fileRef = 2003F9A9139526C900471731 /* GBBadgeTagLeft.png */; };
+		2003F9AE139526C900471731 /* GBBadgeTagLeft.png in Resources */ = {isa = PBXBuildFile; fileRef = 2003F9A9139526C900471731 /* GBBadgeTagLeft.png */; };
+		2003F9AF139526C900471731 /* GBBadgeTagRight.png in Resources */ = {isa = PBXBuildFile; fileRef = 2003F9AA139526C900471731 /* GBBadgeTagRight.png */; };
+		2003F9B0139526C900471731 /* GBBadgeTagRight.png in Resources */ = {isa = PBXBuildFile; fileRef = 2003F9AA139526C900471731 /* GBBadgeTagRight.png */; };
 		200433A212DA02CF00B045C0 /* GBGreyGradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = 200433A112DA02CF00B045C0 /* GBGreyGradientView.m */; };
 		200433A312DA02CF00B045C0 /* GBGreyGradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = 200433A112DA02CF00B045C0 /* GBGreyGradientView.m */; };
 		200A41B112EB91B0004DF940 /* OABlockMerger.m in Sources */ = {isa = PBXBuildFile; fileRef = 200A41B012EB91B0004DF940 /* OABlockMerger.m */; };
@@ -455,6 +461,9 @@
 		1DDD582B0DA1D0D100B32029 /* MainMenu.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
 		2000325311FC75050069C70D /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
 		2002AE09124A9BAB0072075C /* OAOptionalDelegateMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAOptionalDelegateMessage.h; sourceTree = "<group>"; };
+		2003F9A8139526C900471731 /* GBBadgeTagCenter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GBBadgeTagCenter.png; path = Images/GBBadgeTagCenter.png; sourceTree = SOURCE_ROOT; };
+		2003F9A9139526C900471731 /* GBBadgeTagLeft.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GBBadgeTagLeft.png; path = Images/GBBadgeTagLeft.png; sourceTree = SOURCE_ROOT; };
+		2003F9AA139526C900471731 /* GBBadgeTagRight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GBBadgeTagRight.png; path = Images/GBBadgeTagRight.png; sourceTree = SOURCE_ROOT; };
 		200432AE12D8A1AE00B045C0 /* Submodules.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Submodules.txt; sourceTree = "<group>"; };
 		200433A012DA02CF00B045C0 /* GBGreyGradientView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBGreyGradientView.h; sourceTree = "<group>"; };
 		200433A112DA02CF00B045C0 /* GBGreyGradientView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBGreyGradientView.m; sourceTree = "<group>"; };
@@ -593,7 +602,7 @@
 		2054FFEE125DE9D200692C77 /* GBRepositoryCloningViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBRepositoryCloningViewController.h; sourceTree = "<group>"; };
 		2054FFEF125DE9D200692C77 /* GBRepositoryCloningViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = GBRepositoryCloningViewController.m; sourceTree = "<group>"; tabWidth = 2; usesTabs = 0; };
 		20566CA313941EA1005186AF /* GBColorLabelPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBColorLabelPicker.h; sourceTree = "<group>"; };
-		20566CA413941EA1005186AF /* GBColorLabelPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBColorLabelPicker.m; sourceTree = "<group>"; };
+		20566CA413941EA1005186AF /* GBColorLabelPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = GBColorLabelPicker.m; sourceTree = "<group>"; tabWidth = 2; usesTabs = 0; };
 		20566CAB13942BD3005186AF /* GBColorLabelBlue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GBColorLabelBlue.png; path = Images/GBColorLabelBlue.png; sourceTree = SOURCE_ROOT; };
 		20566CAC13942BD3005186AF /* GBColorLabelClear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GBColorLabelClear.png; path = Images/GBColorLabelClear.png; sourceTree = SOURCE_ROOT; };
 		20566CAD13942BD3005186AF /* GBColorLabelGray.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GBColorLabelGray.png; path = Images/GBColorLabelGray.png; sourceTree = SOURCE_ROOT; };
@@ -748,7 +757,7 @@
 		20B1621011944C0F00A709CF /* NSFileManager+OAFileManagerHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSFileManager+OAFileManagerHelpers.h"; sourceTree = "<group>"; };
 		20B1621111944C0F00A709CF /* NSFileManager+OAFileManagerHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSFileManager+OAFileManagerHelpers.m"; sourceTree = "<group>"; };
 		20B399F811B7F30600D6A3C4 /* GBLocalRefsTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBLocalRefsTask.h; sourceTree = "<group>"; };
-		20B399F911B7F30600D6A3C4 /* GBLocalRefsTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBLocalRefsTask.m; sourceTree = "<group>"; };
+		20B399F911B7F30600D6A3C4 /* GBLocalRefsTask.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = GBLocalRefsTask.m; sourceTree = "<group>"; tabWidth = 2; usesTabs = 0; };
 		20B8B70A11A489F1006D6442 /* GBChangesBaseTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBChangesBaseTask.h; sourceTree = "<group>"; };
 		20B8B70B11A489F1006D6442 /* GBChangesBaseTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBChangesBaseTask.m; sourceTree = "<group>"; };
 		20B8B70D11A48BF1006D6442 /* GBStagedChangesTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBStagedChangesTask.h; sourceTree = "<group>"; };
@@ -1217,6 +1226,9 @@
 				20C3B70B125BCCC600ABEDE7 /* GBCommitCellMarkerHighlighted.png */,
 				20C3B70D125BCCC600ABEDE7 /* GBCommitCellMarkerUnmerged.png */,
 				20C3B70F125BCCC600ABEDE7 /* GBCommitCellMarkerUnpushed.png */,
+				2003F9A8139526C900471731 /* GBBadgeTagCenter.png */,
+				2003F9A9139526C900471731 /* GBBadgeTagLeft.png */,
+				2003F9AA139526C900471731 /* GBBadgeTagRight.png */,
 				208B3282137505D600EB4A18 /* GBSearchBarController.h */,
 				208B3283137505D600EB4A18 /* GBSearchBarController.m */,
 				208B3284137505D600EB4A18 /* GBSearchBarController.xib */,
@@ -1658,6 +1670,9 @@
 				20566DE41394469A005186AF /* GBColorLabelPurpleCorner.png in Resources */,
 				20566DE51394469A005186AF /* GBColorLabelRedCorner.png in Resources */,
 				20566DE61394469A005186AF /* GBColorLabelYellowCorner.png in Resources */,
+				2003F9AC139526C900471731 /* GBBadgeTagCenter.png in Resources */,
+				2003F9AE139526C900471731 /* GBBadgeTagLeft.png in Resources */,
+				2003F9B0139526C900471731 /* GBBadgeTagRight.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1726,6 +1741,9 @@
 				20566DEB1394469A005186AF /* GBColorLabelPurpleCorner.png in Resources */,
 				20566DEC1394469A005186AF /* GBColorLabelRedCorner.png in Resources */,
 				20566DED1394469A005186AF /* GBColorLabelYellowCorner.png in Resources */,
+				2003F9AB139526C900471731 /* GBBadgeTagCenter.png in Resources */,
+				2003F9AD139526C900471731 /* GBBadgeTagLeft.png in Resources */,
+				2003F9AF139526C900471731 /* GBBadgeTagRight.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

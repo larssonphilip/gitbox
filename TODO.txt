@@ -23,7 +23,6 @@ Enhancements:
 ✓ 
 ✓ 
 
-
 Bug fixes:
 
 ✓ Fixed search bug: in some repositories search returned no results because of a bug in UTF8 decoder.
@@ -35,6 +34,9 @@ Bug fixes:
 
 
 Gitbox 1.4 misc items:
+
+- bug: "New Tag..." contextual menu creates a tag for the wrong commit
+- bug: "New Branch..." contextual menu creates a tag for the wrong commit
 
 - when doing commit checkout, select current local branch in the right branch menu so it is easier to compare and checkout later commits (especially during bisection search).
 
@@ -69,6 +71,8 @@ Gitbox 1.4 misc items:
 
 --------
 
++ color label: unset when clicked again
++ bug: "git show-ref" returns commit IDs or tag object IDs. Tag ID != commit ID.
 + bug: sometimes right-click on a commit does not set selectedCommit before validation callbacks.
 + bug: crash when deleting a repo from disk.
 + changes: stash list: as a local branch menu item?
@@ -284,7 +288,6 @@ Enhancements:
 - general: think on the best and consistent way to terminate tasks
 - general: remember activity window visibility
 
-≠ (interactive pty mode does not work nice without bash in the middle) general: try to implement NSTask dialog to handle all sorts of prompts and password requests in place without SSH_ASKPASS and other shit
 
 - settings: Add "Edit Global Ignored Files..."  menu item to edit ~/.gitignore
 
@@ -476,6 +479,8 @@ Bug fixes:
 
 
 Misc items done for 1.2.5:
+
+≠ (interactive pty mode does not work nice without bash in the middle) general: try to implement NSTask dialog to handle all sorts of prompts and password requests in place without SSH_ASKPASS and other shit
 
 + bug: crash in pushBranch:toRemoteBranch:withBlock: - aRemoteBranch.remote becomes invalid object!
 + bug: update the stage when it is selected or when the main window is activated (maybe without refresh) - this should deal with sometimes missed FSEvents

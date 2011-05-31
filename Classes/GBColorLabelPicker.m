@@ -185,6 +185,11 @@ NSString* const GBColorLabelGray   = @"GBColorLabelGray";
 
 - (void) didClickValue:(NSString*)aValue
 {
+  if (self.value && aValue && [self.value isEqualToString:aValue])
+  {
+    // The same value is clicked - unset it.
+    aValue = GBColorLabelClear;
+  }
   self.value = aValue;
   if (self.action) [NSApp sendAction:self.action to:self.target from:self];
 }
