@@ -1,69 +1,53 @@
 
 Gitbox 1.4 Release Notes
 
-New features:
-
-✓ (wip) edit branches and tags in a single repository settings window.
-✓ (wip) progress indicator for pulls, push and fetch.
-✓ Color tags for commits (useful when searching for a regression, think "git bisect")
-
-New menu commands:
-
-✓ New Tag. (wip) Tags are displayed in history.
-✓ Stashing changes and managing a list of stashes.
-✓ Reset stage changes (git reset --hard).
-✓ Reset branch to selected commit. Stashes away local changes if any.
-✓ Merge Commit (which also lets you to perform partial pull).
-✓ Open Xcode Project menu item in Main Menu, sidebar and history contextual menus.
+✓ Adding tags to commits. Existing tags are displayed in the history view.
 ✓ (wip) Rebase command and continue/abort UI in case of conflict.
-
-Enhancements:
-
-✓ Main Menu updated with new History and Stage menus. Improved layout, added new commands.
-✓ 
-✓ 
+✓ Stash and apply stashed changes.
+✓ Reset stage changes (git reset --hard).
+✓ Reset branch to selected commit. Stashes local changes before performing operation.
+✓ Merge selected commit (which also lets you perform partial pull).
+✓ Colored corners for commits (useful when searching for a regression, think "git bisect").
+✓ Open Xcode Project menu item.
+✓ Main menu redesigned, added contextual menu to the list of commits.
+✓ (wip) progress indicator for pulls, push and fetch.
 
 Bug fixes:
 
-✓ Fixed search bug: in some repositories search returned no results because of a bug in UTF8 decoder.
+✓ Fixed search bug: in some repositories search was returning no results because of a UTF8 decoding bug.
 ✓ Fixed rare crashes when deleting repository from disk.
 ✓ Fixed crash when FileMerge is not found or OS was reinstalled.
 ✓ Adding and removing items from stage is always forced.
 
 --
 
-
 Gitbox 1.4 misc items:
 
 - bug: "New Tag..." contextual menu creates a tag for the wrong commit
 - bug: "New Branch..." contextual menu creates a tag for the wrong commit
-
+- bug: toolbar: show tag name instead of its SHA1
+- stage: "continue" and "abort" for rebase state in place of commit message field
+- bug: refresh stage periodically when it is selected (and increase interval if nothing changes)
+	- reproduce: select some repo, make changes in Xcode3 project for another repo, then switch to gitbox and select that another repo - project file still on the stage.
+- search: find by tag name too
 - when doing commit checkout, select current local branch in the right branch menu so it is easier to compare and checkout later commits (especially during bisection search).
-
-- menu: History -> extractFolder:
-- menu: History -> removeFileFromHistory:
+- sidebar: progress indicator for pushing/pulling/fetching
+- toolbar: allow to unset remote branch (useful when other branch has a lot of commits and clutters the history)
 - menu: Stage -> commit: - rename to "Stage and Edit Commit Message"
 
-- toolbar: show tag name instead of its SHA1
-- toolbar: allow to unset remote branch (useful when other branch has a lot of commits and clutters the history)
 
-- stage: "continue" and "abort" for rebase state in place of commit message field
-- search: find by tag name too
 
-- history: push single commit
+- history: push a single commit
 - general: unified settings sheet
-- sidebar: progress indicator for pushing/pulling/fetching
 
 - bug: search: keep selection when search ends.
-- bug: search: when parent commit is clicked it can be missing in the history. Should either not highlight it, or reset search state.
 - bug: askpass crashes with "task" selector when tries to update a repo with missing/invalid ssh key.
+- bug: search: when parent commit is clicked it can be missing in the history. Should either not highlight it, or reset search state.
 - bug: (rare) suddenly the search field became disabled. See how enabling/disabling work across repo switching to fix it.
 - bug: maybe NSURL bookmark data becomes broken and leads to "outside of repository" errors.
 
 - bug: search: when commits are updated, the selected one does not show the proper view in the commitviewcontroller.
 - bug: when selected a collapsed group and added a folder, the selected group is not expanded
-- bug: refresh stage periodically when it is selected (and increase interval if nothing changes)
-  - reproduce: select some repo, make changes in Xcode3 project for another repo, then switch to gitbox and select that another repo - project file still on the stage.
 - bug: stage: when having multiple selection and expanding it with keyboard, stage updates cause internal rest, so the selection does not change the same way when continuing pressing keystrokes. Should probably not replace stage content when it did not really change.
 
 - stage: add option "Delete from stage only" for "git rm --force --cached <filepath>".
@@ -116,6 +100,12 @@ Gitbox 1.4 misc items:
   + test if the task can run in this case without exceptions
     + if not, then call all the callbacks without running the nstask
 
++ (old) sidebar: when starting an app, sidebar appears to be collapsed at first and then repos appear. Should be more smooth.
++ history: feature: checkout a commit from history context menu
++ sidebar: open in Xcode if the repo has an xcode project (submenu with projects list if have multiple project files)
++ history: tag badges in history
++ history: navigate to the sha1 (done with search)
++ history: reset a branch to a selected commit
 
 -----------------------------------------------------------
 
@@ -124,6 +114,11 @@ Gitbox Next:
 
 Features:
 
+
+- menu: History -> extractFolder:
+- menu: History -> removeFileFromHistory:
+
+- edit branches and tags in a single repository settings window.
 ✓ Fantastic submodules support: automatic display for all submodules, one-click download and update.
 + submodules: display "download" button in the sidebar item
 - submodules: when submodule folder is removed, properly update its status
@@ -167,23 +162,19 @@ Features:
 - sidebar: github
 
 - history: think how to efficiently preload total number of commits so that we can scroll through the whole history loading data for commits lazily when rows are displayed. This should be friendlier for searching by date, but the scroll indicator will be useless on huge repos like git.git. Maybe need to combine both approaches: commits limiting and lazy loading.
+- history: gray + shadows style for selected commit
 - history: maintain selection of the commit when switching branches/tags etc.
-- history: bisect is basically not needed if you can checkout any commit and see all the other commits on the remote branch
 - history: undo for pull
 - history: undo for ref checkout
 - history: undo for branch reset
-- history: maybe: easy/hidden rebase to keep history clean? (actually, need a "rebase continue" and "cancel")
-- history: find-as-you-type search in stage (?)
+? history: find-as-you-type search in stage 
 - history: probably get rid of dates, and design it in a more cheesy fashion
-- history: navigate to the sha1
 - history: navigate back and forward (History main menu)
-- history: reset a branch to a selected commit
+
 - history: extract commit into new folder
-- history: check out a branch from the commit item
 - history: add "load more" cell in the bottom of the log
 - history: show branch/tag names in history using "label" (+color in green/blue to connect with green/blue "pills")
-- history: tag and branch badges in history
-- history: tag badges in history
+- history: branch badges in history
 - history: create a tag + undo
 
 - search: recognized pasted file path (with or without file:// prefix)
@@ -268,7 +259,6 @@ Enhancements:
 - also override presentError: on main window controller to put error in a queued sheet
   
 ? when error is not surpressed for automatic tasks, remember the first such error and present it when the repo is selected by user
-- sidebar: open in Xcode if the repo has an xcode project (submenu with projects list if have multiple project files)
 - changes: parse changes in background hook instead of a main thread didFinish
 
 
@@ -282,35 +272,27 @@ Enhancements:
 - general: Add common OS X to the global ~/.gitignore https://github.com/github/gitignore
 - general: check behavior when opendiff is missing
 - general: check that opendiff is selected by default on new start + it is not selected if it is missing
-- general: unpack git.bundle into Application Support/Gitbox/gitbox-{APP_VERSION}-git.bundle
 - general: on start, touch a file inside gitbox-{APP_VERSION}-git.bundle and remove all bundles where such file is more than 1 month old.
 - general: if git.bundle.tar is not found inside .app, present the UI to download it from gitboxapp.com (in anticipation to FSF's fight with Apple)
 - general: think on the best and consistent way to terminate tasks
 - general: remember activity window visibility
 
+- settings: edit global .gitignore (or whatever files is set up in ~/.gitconfig) in Preferences window.
 
-- settings: Add "Edit Global Ignored Files..."  menu item to edit ~/.gitignore
+- toolbar: show confirmation prompt when trying to push branch "X" into "origin/Y" (that is when branch name differ)
+- toolbar: think on how to checkout a branch into a different folder. Make it useful as a default.
+
+- sidebar: choose a custom name for a repo? or use an image?
+
+- back/forward buttons allow undo/redo commit selection (clicking on parents)
+- swipe left/right with three fingers to navigate through commits or history of jumping
+- stage: should display a branch hint if the different branch is selected (commit text field)
+- stage: autocomplete file names when TAB pressed.
 
 Error messages translation to English:
 - failed pull: need commit first: "error: Your local changes to 'TODO.txt' would be overwritten by merge.  Aborting. Please, commit your changes or stash them before you can merge. Updating c3c800f..87bc4f4"
 - failed merge
 - failed push (actually, should prevent from pushing when some commits are fetched)
-
-- toolbar: show confirmation prompt when trying to push branch "X" into "origin/Y" (that is when branch name differ)
-- toolbar: think on how to checkout a branch into a different folder. Make it useful as a default.
-
-- sidebar: when starting an app, sidebar appears to be collapsed at first and then repos appear. Should be more smooth.
-- sidebar: choose a custom name for a repo? or use an image?
-
-- history: feature: checkout a commit from history context menu
-- history: find in commits
-- history: find/nav bar sliding down in the history:
-  - filters commits by sha-1, modified filenames and text
-  - back/forward buttons allow undo/redo commit selection (clicking on parents)
-  - swipe left/right with three fingers to navigate through commits or history of jumping
-- stage: should display a branch hint if the different branch is selected (commit text field)
-- stage: autocomplete file names when TAB pressed.
-
 
 
 Bugs:
@@ -430,6 +412,8 @@ Misc items done for 1.3:
   + remember a list of selected change objects
   + for each remembered object try to find a matching in the new list.
   + if not found, try to find by file name
+≠ history: find/nav bar sliding down in the history:
++ filters commits by sha-1, modified filenames and text
 
 
 
@@ -481,7 +465,7 @@ Bug fixes:
 Misc items done for 1.2.5:
 
 ≠ (interactive pty mode does not work nice without bash in the middle) general: try to implement NSTask dialog to handle all sorts of prompts and password requests in place without SSH_ASKPASS and other shit
-
++ general: unpack git.bundle into Application Support/Gitbox/gitbox-{APP_VERSION}-git.bundle
 + bug: crash in pushBranch:toRemoteBranch:withBlock: - aRemoteBranch.remote becomes invalid object!
 + bug: update the stage when it is selected or when the main window is activated (maybe without refresh) - this should deal with sometimes missed FSEvents
 + bug: do ls-remote and fetch when repo is added to check the authentication and especially SSH known_hosts alert.
