@@ -19,7 +19,9 @@
 
 - (NSArray*) arguments
 {
-  return [NSArray arrayWithObjects:@"show-ref", nil];
+//  --dereference
+//                Dereference tags into object IDs as well. They will be shown with "^{}" appended.
+  return [NSArray arrayWithObjects:@"show-ref", @"--dereference", nil];
 }
 
 - (void) didFinish
@@ -50,8 +52,14 @@
   0bbaa4118237a65f4cb55f9a88f6f3ce208add27 refs/tags/0.9.5
   5db1343563acba25d95e19c7c8f6ee370c843d98 refs/tags/0.9.6
   b1f9554e636f1a707c4405c0851fd8aa9d321e82 refs/tags/0.9.7
-  cac7493f1ec3c45655f861dcf6db2b99fe5b1cda refs/tags/1.0
+  cac7493f1ec3c45655f861dcf6db2b99fe5b1cda refs/tags/1.0         <- if variant with "^{}" is missing, then using this as commit ID
+  c2d1cfbe2d930f302571e674a6f196e416e7ebc4 refs/tags/v1.6.1      <- it has "^{}" variant, so it is not a commit ID, but tag ID
+  f19ba84343b114ac1cfc254aae729773833fd3f3 refs/tags/v1.6.1^{}   <- this is real commit ID
+   
   */
+  
+  GBRef* prevTag = nil;
+  
   for (NSString* line in [[self UTF8OutputStripped] componentsSeparatedByString:@"\n"])
   {
     if (line && [line length] > 0)
@@ -63,7 +71,18 @@
         NSString* commitId = [commitAndRef objectAtIndex:0];
         NSString* refName = [commitAndRef objectAtIndex:1];
         
-        if ([refName hasPrefix:@"refs/HEAD"])
+        BOOL hasStrangeSuffix = ([refName rangeOfString:@"^{}"].length > 0);
+        
+        if (hasStrangeSuffix)
+        {
+          refName = [refName stringByReplacingOccurrencesOfString:@"^{}" withString:@""];
+        }
+        
+        if ([commitId length] != 40)
+        {
+          NSLog(@"ERROR: GBLocalRefsTask: invalid commit ID: %@ for ref %@", commitId, refName);
+        }
+        else if ([refName hasPrefix:@"refs/HEAD"])
         {
           // skip
         }
@@ -86,7 +105,17 @@
           ref.commitId = commitId;
           ref.name = [refName substringFromIndex:[@"refs/tags/" length]];
           ref.isTag = YES;
-          [theTags addObject:ref];
+          
+          if (prevTag.name && [prevTag.name isEqualToString:ref.name] && hasStrangeSuffix)
+          {
+            // Apply correct dereferenced commitId.
+            prevTag.commitId = commitId;
+          }
+          else
+          {
+            prevTag = ref;
+            [theTags addObject:ref];
+          }
         }
         else if ([refName hasPrefix:@"refs/remotes/"])
         {
