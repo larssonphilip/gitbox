@@ -489,6 +489,17 @@
     NSString* tagName = tag.name;
     NSSize size = [tagName sizeWithAttributes:attrs];
     
+    const CGFloat paddingLeft = 8.0;
+    const CGFloat paddingRight = 8.0;
+    const CGFloat spacingRight = 3.0;
+    
+    CGFloat badgeWidth = paddingLeft + size.width + paddingRight + spacingRight;
+    
+    CGFloat badgeWidthMin = paddingLeft + paddingRight + spacingRight;
+    CGFloat badgeWidthMax = floor(0.333*rect.size.width);
+    badgeWidth = MIN(badgeWidth, badgeWidthMax);
+    
+    if (badgeWidth <= badgeWidthMin) return rect;
     
   }
   
