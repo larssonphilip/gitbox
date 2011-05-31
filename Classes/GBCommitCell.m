@@ -428,6 +428,28 @@
     [titleAttrString drawInRect:titleRect];
     [messageAttrString drawInRect:messageRect];
   }
+  
+  NSString* colorLabel = self.commit.colorLabel;
+  
+  if (colorLabel)
+  {
+    NSImage* cornerImage = [NSImage imageNamed:[NSString stringWithFormat:@"%@Corner.png", colorLabel]];
+    if (cornerImage)
+    {
+      NSSize imageSize = [cornerImage size];
+      NSRect imageRect = NSMakeRect(cellFrame.origin.x + cellFrame.size.width - imageSize.width,
+                                    cellFrame.origin.y,
+                                    imageSize.width, 
+                                    imageSize.height);
+      [cornerImage drawInRect:imageRect
+                   fromRect:(NSRect){.size = imageRect.size, .origin = NSZeroPoint}
+                  operation:NSCompositeSourceOver
+                   fraction:1.0 
+             respectFlipped:YES
+                      hints:nil];
+    }
+  }
+  
 }
 
 
