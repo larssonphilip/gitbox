@@ -25,8 +25,6 @@ Bug fixes:
 
 Gitbox 1.4 misc items:
 
-- bug: refresh stage periodically when it is selected (and increase interval if nothing changes)
-	- reproduce: select some repo, make changes in Xcode3 project for another repo, then switch to gitbox and select that another repo - project file still on the stage.
 
 - sidebar: progress indicator for pushing/pulling/fetching
 - toolbar: allow to unset remote branch (useful when other branch has a lot of commits and clutters the history)
@@ -54,6 +52,9 @@ Gitbox 1.4 misc items:
 - stage: right click menu: "file history" which inserts file path into search field
 
 --------
+
++ [using double stage update without more complex algorithms] bug: refresh stage periodically when it is selected (and increase interval if nothing changes)
+	- reproduce: select some repo, make changes in Xcode3 project for another repo, then switch to gitbox and select that another repo - project file still on the stage.
 
 + stage: "continue" and "abort" for rebase state in place of commit message field
 + bug: rebase is supported for local branch
