@@ -373,11 +373,12 @@
   
   [tags release];
   tags = [newTags retain];
-  
+    
   self.tagsByCommitID = [NSMutableDictionary dictionary];
   for (GBRef* tag in tags)
   {
     if (tag.commitId) [self.tagsByCommitID setObject:tag forKey:tag.commitId];
+    else NSLog(@"WARNING: GBRepository setTags: tag.commitId is nil: %@", tag);
   }
 }
 
@@ -417,7 +418,7 @@
 
 - (NSArray*) tagsForCommit:(GBCommit*)aCommit
 {
-  if (![self tagForCommit:aCommit]) return nil; // quick lookup in dictionary
+  if (![self tagForCommit:aCommit] && [self.tags count] < 1) return nil; // quick lookup in dictionary
   NSMutableArray* result = [NSMutableArray array];
   for (GBRef* tag in self.tags)
   {
