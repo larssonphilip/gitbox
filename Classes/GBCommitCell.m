@@ -482,6 +482,8 @@
                                             shadow, NSShadowAttributeName,
                                            nil] autorelease];
   
+  BOOL alt = [self isHighlighted] && [self isFocused];
+  
   for (GBRef* tag in tags)
   {
     NSString* tagName = tag.name;
@@ -496,7 +498,7 @@
     CGFloat badgeWidth = paddingLeft + ceil(size.width) + paddingRight;
     
     CGFloat badgeWidthMin = paddingLeft + paddingRight;
-    CGFloat badgeWidthMax = floor(0.33333*rect.size.width) - spacingRight;
+    CGFloat badgeWidthMax = floor(0.4*rect.size.width) - spacingRight;
     badgeWidth = MIN(badgeWidth, badgeWidthMax);
     
     if (badgeWidth <= (badgeWidthMin + 5)) return rect;
@@ -514,7 +516,7 @@
                          [NSImage imageNamed:@"GBBadgeTagRight.png"],
                          NO, // vertical
                          NSCompositeSourceOver, 
-                         1.0, 
+                         alt ? 0.6 : 0.95,  // alpha
                          YES // flipped
                          );
     
