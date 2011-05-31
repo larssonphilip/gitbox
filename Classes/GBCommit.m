@@ -141,10 +141,12 @@
     NSCharacterSet* charset = [NSCharacterSet whitespaceAndNewlineCharacterSet];
     NSArray* components = [subj componentsSeparatedByCharactersInSet:charset];
     NSMutableString* subj2 = [NSMutableString string];
+    BOOL addedFirstComp = NO; 
     for (NSString* c in components)
     {
-      if (([subj2 length] + [c length]) < (limit - 10))
+      if (!addedFirstComp || ([subj2 length] + [c length]) < (limit - 10))
       {
+        addedFirstComp = YES;
         [subj2 appendFormat:@"%@ ", c];
       }
       else break;

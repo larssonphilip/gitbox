@@ -407,7 +407,8 @@
   
   // clear existing commits before switching
   repo.localBranchCommits = nil;
-  [self notifyWithSelector:@selector(repositoryControllerDidUpdateCommits:)];
+  // keep old commits visible
+  // [self notifyWithSelector:@selector(repositoryControllerDidUpdateCommits:)];
   
   checkoutBlock(^{
     
@@ -836,6 +837,32 @@
     }];
   }];
 }
+
+- (IBAction) rebaseCancel:(id)sender
+{
+  [self.repository rebaseCancelWithBlock:^{
+  }];
+}
+
+- (IBAction) rebaseSkip:(id)sender
+{
+  [self.repository rebaseSkipWithBlock:^{
+  }];
+}
+
+- (IBAction) rebaseContinue:(id)sender
+{
+  // When stage is empty git wants "--skip" instead of --continue
+  if (![self.repository.stage isDirty])
+  {
+    [self.repository rebaseSkipWithBlock:^{}];
+  }
+  else
+  {
+    [self.repository rebaseContinueWithBlock:^{}];
+  }
+}
+
 
 - (BOOL) validateFetch:(id)sender
 {

@@ -181,6 +181,9 @@
             }];
              */
             // remove this line when updateSubmodulesWithBlock is uncommented.
+            
+            [self.repository updateConflictState];
+            
             if (block) block();
             [self notifyWithSelector:@selector(commitDidUpdateChanges:)];
           }]; // untracked

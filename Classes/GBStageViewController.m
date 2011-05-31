@@ -78,6 +78,12 @@
 @synthesize shortcutHintDetector;
 @synthesize messageHistoryController;
 
+@synthesize rebaseStatusLabel;
+@synthesize rebaseCancelButton;
+@synthesize rebaseSkipButton;
+@synthesize rebaseContinueButton;
+
+
 @synthesize alreadyValidatedUserNameAndEmail;
 @synthesize overridenHeaderHeight;
 
@@ -98,6 +104,12 @@
   self.shortcutHintDetector.view = nil;
   self.shortcutHintDetector = nil;
   self.messageHistoryController = nil;
+  
+  self.rebaseStatusLabel = nil;
+  self.rebaseCancelButton = nil;
+  self.rebaseSkipButton = nil;
+  self.rebaseContinueButton = nil;
+  
   [super dealloc];
 }
 
@@ -434,7 +446,11 @@
   else
   {
     [self.repositoryController stageChanges:[self selectedChanges] withBlock:^{
-      [[self.messageTextView window] makeFirstResponder:self.messageTextView];
+      
+      if (![self.repositoryController.repository isRebaseConflict])
+      {
+        [[self.messageTextView window] makeFirstResponder:self.messageTextView];
+      }
     }];
   }
 }
@@ -447,6 +463,10 @@
 
 - (IBAction) reallyCommit:(id)sender
 {
+  if ([self.repositoryController.repository isRebaseConflict])
+  {
+    return;
+  }
   NSString* msg = [self validCommitMessage];
   if (!msg) return;
   [self.repositoryController commitWithMessage:msg];
@@ -643,6 +663,15 @@
     [self.messageTextView setString:msg]; // resets cursor position
   }
   [self updateHeaderSizeAnimating:NO];
+  
+  BOOL rebaseConflict = ([self.repositoryController.repository isRebaseConflict]);
+  
+  [self.rebaseStatusLabel setHidden:!rebaseConflict];
+  [self.rebaseCancelButton setHidden:!rebaseConflict];
+  [self.rebaseSkipButton setHidden:!rebaseConflict];
+  [self.rebaseContinueButton setHidden:!rebaseConflict];
+  
+  [[self.messageTextView enclosingScrollView] setHidden:rebaseConflict];
 }
 
 - (void) updateHeaderSizeAnimating:(BOOL)animating

@@ -299,17 +299,23 @@
   NSSegmentedControl* control = self.pullPushControl;
   GBRepository* repo = self.repositoryController.repository;
   
+  NSUInteger modifierFlags = [[NSApp currentEvent] modifierFlags];
+  
   if (repo.currentRemoteBranch && [repo.currentRemoteBranch isLocalBranch])
   {
     [control setLabel:NSLocalizedString(@"← merge", @"Toolbar") forSegment:0];
     [control setLabel:@" " forSegment:1];
     [self.pullButton setTitle:NSLocalizedString(@"← merge   ", @"Toolbar")];
+    
+    if ((modifierFlags & NSShiftKeyMask) && (modifierFlags & NSCommandKeyMask))
+    {
+      [self.pullButton setTitle:NSLocalizedString(@"← rebase   ", @"Toolbar")];
+    }
   }
   else
   {
     [control setLabel:NSLocalizedString(@"← pull", @"Toolbar") forSegment:0];
     [control setLabel:NSLocalizedString(@"push →", @"Toolbar") forSegment:1];
-    NSUInteger modifierFlags = [[NSApp currentEvent] modifierFlags];
     
     if (modifierFlags & NSAlternateKeyMask)
     {
@@ -635,23 +641,29 @@
 
 
 
-- (IBAction) pullOrPush:(NSSegmentedControl*)segmentedControl
+- (IBAction) pullOrPush:(id)sender
 {
-  NSInteger segment = [segmentedControl selectedSegment];
+  NSInteger segment = 0;
+  
+  if ([sender isKindOfClass:[NSSegmentedControl class]])
+  {
+    segment = [(NSSegmentedControl*)sender selectedSegment];
+  }
+  
   if (segment == 0)
   {
     NSUInteger modifierFlags = [[NSApp currentEvent] modifierFlags];
     if (modifierFlags & NSAlternateKeyMask)
     {
-      [self.repositoryController fetch:segmentedControl];
+      [self.repositoryController fetch:sender];
     }
     else if ((modifierFlags & NSShiftKeyMask) && (modifierFlags & NSCommandKeyMask))
     {
-      [self.repositoryController rebase:segmentedControl];
+      [self.repositoryController rebase:sender];
     }
     else
     {
-      [self.repositoryController pull:segmentedControl];
+      [self.repositoryController pull:sender];
     }
   }
   else if (segment == 1)
@@ -659,11 +671,11 @@
     NSUInteger modifierFlags = [[NSApp currentEvent] modifierFlags];
     if ((modifierFlags & NSShiftKeyMask) && (modifierFlags & NSCommandKeyMask))
     {
-      [self.repositoryController forcePush:segmentedControl];
+      [self.repositoryController forcePush:sender];
     }
     else
     {
-      [self.repositoryController push:segmentedControl];
+      [self.repositoryController push:sender];
     }
   }
   else

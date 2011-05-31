@@ -19,33 +19,33 @@ Bug fixes:
 ✓ Fixed rare crashes when deleting repository from disk.
 ✓ Fixed crash when FileMerge is not found or OS was reinstalled.
 ✓ Adding and removing items from stage is always forced.
+✓ Tag name was not displayed when checking out a tag.
 
 --
 
 Gitbox 1.4 misc items:
 
-- bug: toolbar: show tag name instead of its SHA1
-- bug: when checking out a branch or a tag, selection is lost, all commits disappear
-- stage: "continue" and "abort" for rebase state in place of commit message field
 - bug: refresh stage periodically when it is selected (and increase interval if nothing changes)
 	- reproduce: select some repo, make changes in Xcode3 project for another repo, then switch to gitbox and select that another repo - project file still on the stage.
-- search: find by tag name too
-- when doing commit checkout, select current local branch in the right branch menu so it is easier to compare and checkout later commits (especially during bisection search).
+
 - sidebar: progress indicator for pushing/pulling/fetching
 - toolbar: allow to unset remote branch (useful when other branch has a lot of commits and clutters the history)
 - menu: Stage -> commit: - rename to "Stage and Edit Commit Message"
 
 - show "Tag:" or "Tags:" line in commit header (with tag names separated by comma)
+- delete tag using right click on a commit
+
+? when doing commit checkout, select current local branch in the right branch menu so it is easier to compare and checkout later commits (especially during bisection search).
 
 - history: push a single commit
 - general: unified settings sheet
 
+- search: find by tag name too
 - bug: search: keep selection when search ends.
 - bug: askpass crashes with "task" selector when tries to update a repo with missing/invalid ssh key.
 - bug: search: when parent commit is clicked it can be missing in the history. Should either not highlight it, or reset search state.
 - bug: (rare) suddenly the search field became disabled. See how enabling/disabling work across repo switching to fix it.
 - bug: maybe NSURL bookmark data becomes broken and leads to "outside of repository" errors.
-
 - bug: search: when commits are updated, the selected one does not show the proper view in the commitviewcontroller.
 - bug: when selected a collapsed group and added a folder, the selected group is not expanded
 - bug: stage: when having multiple selection and expanding it with keyboard, stage updates cause internal rest, so the selection does not change the same way when continuing pressing keystrokes. Should probably not replace stage content when it did not really change.
@@ -54,6 +54,11 @@ Gitbox 1.4 misc items:
 - stage: right click menu: "file history" which inserts file path into search field
 
 --------
+
++ stage: "continue" and "abort" for rebase state in place of commit message field
++ bug: rebase is supported for local branch
++ bug: toolbar: show tag name instead of its SHA1
++ bug: when checking out a branch or a tag, selection is lost, all commits disappear
 
 + bug: "New Tag..." contextual menu creates a tag for the wrong commit
 + bug: "New Branch..." contextual menu creates a tag for the wrong commit

@@ -31,6 +31,7 @@
 @property(nonatomic, assign) dispatch_queue_t dispatchQueue;
 @property(nonatomic, assign, readwrite) NSUInteger commitsDiffCount;
 @property(nonatomic, retain) NSMutableDictionary* tagsByCommitID;
+@property(nonatomic, assign, readwrite, getter=isRebaseConflict) BOOL rebaseConflict;
 
 - (void) loadCurrentLocalRefWithBlock:(void(^)())block;
 - (void) loadLocalRefsWithBlock:(void(^)())block;
@@ -62,6 +63,8 @@
 @synthesize unmergedCommitsCount; // obsolete
 @synthesize unpushedCommitsCount; // obsolete
 @synthesize commitsDiffCount;
+
+@synthesize rebaseConflict;
 
 @synthesize tagsByCommitID;
 
@@ -614,11 +617,16 @@
   else // assuming SHA1 ref
   {
     ref.commitId = HEAD;
+    
+    // Try to find a tag for this commit id.
+    
+    GBRef* tag = [self.tagsByCommitID objectForKey:ref.commitId];
+    if (tag) ref = tag;
   }
   
   if (ref.name)
   {
-    // try to find an existing ref in the list
+    // Try to find an existing ref in the list
     NSArray* refsList = self.localBranches;
     if ([ref isTag]) refsList = self.tags;
     GBRef* existingRef = [refsList objectWithValue:ref.name forKey:@"name"];
@@ -632,9 +640,17 @@
     }
   }
   self.currentLocalRef = ref;
+  
+  [self updateConflictState];
+  
   if (block) block();
 }
 
+
+- (void) updateConflictState
+{
+  self.rebaseConflict = ([[NSFileManager defaultManager] fileExistsAtPath:[[self.dotGitURL path] stringByAppendingPathComponent:@"rebase-apply"]]);
+}
 
 
 - (void) updateLocalBranchCommitsWithBlock:(void(^)())block
@@ -1251,6 +1267,50 @@
     }];
   }];
 }
+
+
+- (void) rebaseCancelWithBlock:(void(^)())block
+{
+  block = [[block copy] autorelease];
+  GBTask* task = [self task];
+  task.arguments = [NSArray arrayWithObjects:@"rebase", @"--abort", nil];
+  [self launchTask:task withBlock:^{
+    if ([task isError])
+    {
+      [self alertWithMessage:NSLocalizedString(@"Failed to cancel rebase",nil) description:[task UTF8ErrorAndOutput]];
+    }
+    if (block) block();
+  }];
+}
+
+- (void) rebaseSkipWithBlock:(void(^)())block
+{
+  block = [[block copy] autorelease];
+  GBTask* task = [self task];
+  task.arguments = [NSArray arrayWithObjects:@"rebase", @"--skip", nil];
+  [self launchTask:task withBlock:^{
+    if ([task isError])
+    {
+      [self alertWithMessage:NSLocalizedString(@"Rebase failed",nil) description:[task UTF8ErrorAndOutput]];
+    }
+    if (block) block();
+  }];
+}
+
+- (void) rebaseContinueWithBlock:(void(^)())block
+{
+  block = [[block copy] autorelease];
+  GBTask* task = [self task];
+  task.arguments = [NSArray arrayWithObjects:@"rebase", @"--continue", nil];
+  [self launchTask:task withBlock:^{
+    if ([task isError])
+    {
+      [self alertWithMessage:NSLocalizedString(@"Rebase failed",nil) description:[task UTF8ErrorAndOutput]];
+    }
+    if (block) block();
+  }];
+}
+
 
 
 - (void) resetStageWithBlock:(void(^)())block

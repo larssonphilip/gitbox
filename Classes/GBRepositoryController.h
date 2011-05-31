@@ -78,6 +78,9 @@
 - (IBAction) push:(id)sender;
 - (IBAction) forcePush:(id)sender;
 - (IBAction) rebase:(id)sender;
+- (IBAction) rebaseCancel:(id)sender;
+- (IBAction) rebaseSkip:(id)sender;
+- (IBAction) rebaseContinue:(id)sender;
 
 - (IBAction) openInFinder:(id)sender;
 - (IBAction) openInTerminal:(id)sender;

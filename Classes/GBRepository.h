@@ -32,6 +32,7 @@
 @property(nonatomic, assign) NSUInteger unmergedCommitsCount; // obsolete
 @property(nonatomic, assign) NSUInteger unpushedCommitsCount; // obsolete
 @property(nonatomic, assign, readonly) NSUInteger commitsDiffCount;
+@property(nonatomic, assign, readonly, getter=isRebaseConflict) BOOL rebaseConflict;
 
 + (id) repositoryWithURL:(NSURL*)url;
 
@@ -73,6 +74,7 @@
 
 - (void) updateSubmodulesWithBlock:(void(^)())block;
 
+- (void) updateConflictState;
 
 
 #pragma mark Mutation
@@ -100,6 +102,9 @@
 - (void) pushWithForce:(BOOL)force block:(void(^)())block;
 - (void) pushBranch:(GBRef*)aLocalBranch toRemoteBranch:(GBRef*)aRemoteBranch forced:(BOOL)forced withBlock:(void(^)())block;
 - (void) rebaseWithBlock:(void(^)())block;
+- (void) rebaseCancelWithBlock:(void(^)())block;
+- (void) rebaseSkipWithBlock:(void(^)())block;
+- (void) rebaseContinueWithBlock:(void(^)())block;
 - (void) resetStageWithBlock:(void(^)())block;
 - (void) resetToCommit:(GBCommit*)aCommit withBlock:(void(^)())block;
 - (void) stashChangesWithMessage:(NSString*)message block:(void(^)())block;
