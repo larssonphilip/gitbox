@@ -5,6 +5,7 @@ New features:
 
 ✓ (wip) edit branches and tags in a single repository settings window.
 ✓ (wip) progress indicator for pulls, push and fetch.
+✓ Color tags for commits (useful when searching for a regression, think "git bisect")
 
 New menu commands:
 
