@@ -612,7 +612,7 @@
 		20566DDE1394469A005186AF /* GBColorLabelRedCorner.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GBColorLabelRedCorner.png; path = Images/GBColorLabelRedCorner.png; sourceTree = SOURCE_ROOT; };
 		20566DDF1394469A005186AF /* GBColorLabelYellowCorner.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GBColorLabelYellowCorner.png; path = Images/GBColorLabelYellowCorner.png; sourceTree = SOURCE_ROOT; };
 		2057964011ADD3AA004715FE /* GBCommitCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBCommitCell.h; sourceTree = "<group>"; };
-		2057964111ADD3AA004715FE /* GBCommitCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBCommitCell.m; sourceTree = "<group>"; };
+		2057964111ADD3AA004715FE /* GBCommitCell.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = GBCommitCell.m; sourceTree = "<group>"; tabWidth = 2; usesTabs = 0; };
 		2057EF0C11A9B00F009EDF2F /* GBRemoteRefsTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBRemoteRefsTask.h; sourceTree = "<group>"; };
 		2057EF0D11A9B00F009EDF2F /* GBRemoteRefsTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBRemoteRefsTask.m; sourceTree = "<group>"; };
 		2057EF6211ABDCCE009EDF2F /* GBRefreshIndexTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBRefreshIndexTask.h; sourceTree = "<group>"; };

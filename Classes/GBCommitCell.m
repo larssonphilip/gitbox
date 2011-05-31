@@ -482,7 +482,7 @@
                                             shadow, NSShadowAttributeName,
                                            nil] autorelease];
   
-  BOOL alternativeImage = ([self isHighlighted] && self.isFocused);
+  BOOL alternateImage = ([self isHighlighted] && self.isFocused);
   
   for (GBRef* tag in tags)
   {
@@ -493,13 +493,21 @@
     const CGFloat paddingRight = 8.0;
     const CGFloat spacingRight = 3.0;
     
-    CGFloat badgeWidth = paddingLeft + size.width + paddingRight + spacingRight;
+    CGFloat badgeWidth = paddingLeft + size.width + paddingRight;
     
-    CGFloat badgeWidthMin = paddingLeft + paddingRight + spacingRight;
-    CGFloat badgeWidthMax = floor(0.333*rect.size.width);
+    CGFloat badgeWidthMin = paddingLeft + paddingRight;
+    CGFloat badgeWidthMax = floor(0.333*rect.size.width) - spacingRight;
     badgeWidth = MIN(badgeWidth, badgeWidthMax);
     
     if (badgeWidth <= badgeWidthMin) return rect;
+    
+    // TODO: draw image
+    
+    // TODO: draw text
+    
+    //NSRect textRect = NSMakeRect(<#CGFloat x#>, <#CGFloat y#>, <#CGFloat w#>, <#CGFloat h#>)
+    
+    // TODO: shift rect, repeat
     
   }
   
