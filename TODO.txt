@@ -6,6 +6,7 @@ Gitbox 1.4 Release Notes
 ✓ Stash and apply stashed changes.
 ✓ Reset stage changes (git reset --hard).
 ✓ Reset branch to selected commit. Stashes local changes before performing operation.
+✓ New branch checkout from selected commit.
 ✓ Merge selected commit (which also lets you perform partial pull).
 ✓ Colored corners for commits (useful when searching for a regression, think "git bisect").
 ✓ Open Xcode Project menu item.
@@ -23,9 +24,8 @@ Bug fixes:
 
 Gitbox 1.4 misc items:
 
-- bug: "New Tag..." contextual menu creates a tag for the wrong commit
-- bug: "New Branch..." contextual menu creates a tag for the wrong commit
 - bug: toolbar: show tag name instead of its SHA1
+- bug: when checking out a branch or a tag, selection is lost, all commits disappear
 - stage: "continue" and "abort" for rebase state in place of commit message field
 - bug: refresh stage periodically when it is selected (and increase interval if nothing changes)
 	- reproduce: select some repo, make changes in Xcode3 project for another repo, then switch to gitbox and select that another repo - project file still on the stage.
@@ -55,6 +55,8 @@ Gitbox 1.4 misc items:
 
 --------
 
++ bug: "New Tag..." contextual menu creates a tag for the wrong commit
++ bug: "New Branch..." contextual menu creates a tag for the wrong commit
 + color label: unset when clicked again
 + bug: "git show-ref" returns commit IDs or tag object IDs. Tag ID != commit ID.
 + bug: sometimes right-click on a commit does not set selectedCommit before validation callbacks.

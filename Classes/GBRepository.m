@@ -874,24 +874,26 @@
   }
 }
 
-- (void) checkoutNewBranchWithName:(NSString*)name block:(void(^)())block
+- (void) checkoutNewBranchWithName:(NSString*)name commit:(GBCommit*)aCommit block:(void(^)())block
 {
   block = [[block copy] autorelease];
   GBTask* checkoutTask = [self task];
-  checkoutTask.arguments = [NSArray arrayWithObjects:@"checkout", @"-b", name, nil];
+  // Note: if commit is nil, then the command will be simply "git tag <name>"
+  checkoutTask.arguments = [NSArray arrayWithObjects:@"checkout", @"-b", name, aCommit.commitId, nil];
   [self launchTask:checkoutTask withBlock:^{
     [checkoutTask showErrorIfNeeded];
     [self configureTrackingRemoteBranch:self.currentRemoteBranch withLocalName:name block:block];
   }];
 }
 
-- (void) createNewTagWithName:(NSString*)name block:(void(^)())block
+- (void) createNewTagWithName:(NSString*)name commit:(GBCommit*)aCommit block:(void(^)())block
 {
   block = [[block copy] autorelease];
-  GBTask* checkoutTask = [self task];
-  checkoutTask.arguments = [NSArray arrayWithObjects:@"tag", name, nil];
-  [self launchTask:checkoutTask withBlock:^{
-    [checkoutTask showErrorIfNeeded];
+  GBTask* aTask = [self task];
+  // Note: if commit is nil, then the command will be simply "git tag <name>"
+  aTask.arguments = [NSArray arrayWithObjects:@"tag", name, aCommit.commitId, nil]; 
+  [self launchTask:aTask withBlock:^{
+    [aTask showErrorIfNeeded];
     [self configureTrackingRemoteBranch:self.currentRemoteBranch withLocalName:name block:block];
   }];
 }

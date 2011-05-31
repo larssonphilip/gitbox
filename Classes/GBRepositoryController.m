@@ -253,6 +253,20 @@
   }
 }
 
+- (GBCommit*) contextCommit // returns a selected commit or a first commit in the list (not the stage!)
+{
+  if (self.selectedCommit && ![self.selectedCommit isStage])
+  {
+    return self.selectedCommit;
+  }
+  NSArray* cs = [self stageAndCommits];
+  if ([cs count] >= 2)
+  {
+    return [cs objectAtIndex:1];
+  }
+  return nil;
+}
+
 - (NSArray*) stageAndCommits
 {
   return [self.repository stageAndCommits];
@@ -428,19 +442,19 @@
   }];
 }
 
-- (void) checkoutNewBranchWithName:(NSString*)name
+- (void) checkoutNewBranchWithName:(NSString*)name commit:(GBCommit*)aCommit
 {
   [self resetAutoFetchInterval];
   [self checkoutHelper:^(void(^block)()){
-    [self.repository checkoutNewBranchWithName:name block:block];
+    [self.repository checkoutNewBranchWithName:name commit:aCommit block:block];
   }];
 }
 
-- (void) createNewTagWithName:(NSString*)name
+- (void) createNewTagWithName:(NSString*)name commit:(GBCommit*)aCommit
 {
   [self resetAutoFetchInterval];
   [self checkoutHelper:^(void(^block)()){
-    [self.repository createNewTagWithName:name block:block];
+    [self.repository createNewTagWithName:name commit:aCommit block:block];
   }];
 }
 

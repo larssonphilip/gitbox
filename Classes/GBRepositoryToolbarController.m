@@ -432,8 +432,8 @@
   
   // Checkout New Branch
   
-  [newMenu addItem:[NSMenuItem menuItemWithTitle:NSLocalizedString(@"New Branch...", @"Command") action:@selector(newBranch:)]];
   [newMenu addItem:[NSMenuItem menuItemWithTitle:NSLocalizedString(@"New Tag...", @"Command") action:@selector(newTag:)]];
+  [newMenu addItem:[NSMenuItem menuItemWithTitle:NSLocalizedString(@"New Branch...", @"Command") action:@selector(newBranch:)]];  
   
   
   // Select current branch
@@ -701,31 +701,43 @@
 - (IBAction) newBranch:(id)sender
 {
   GBPromptController* ctrl = [GBPromptController controller];
+  GBCommit* aCommit = [self.repositoryController contextCommit];
   
   ctrl.title = NSLocalizedString(@"New Branch", @"");
-  ctrl.promptText = NSLocalizedString(@"Branch Name:", @"");
-  ctrl.buttonText = NSLocalizedString(@"OK", @"");
+  ctrl.promptText = [NSString stringWithFormat:NSLocalizedString(@"Branch name for commit %@:", @""), [aCommit subjectOrCommitIDForMenuItem]];
+  ctrl.buttonText = NSLocalizedString(@"Checkout", @"");
   ctrl.requireSingleLine = YES;
   ctrl.requireStripWhitespace = YES;
   ctrl.completionHandler = ^(BOOL cancelled){
-    if (!cancelled) [self.repositoryController checkoutNewBranchWithName:ctrl.value];
+    if (!cancelled) [self.repositoryController checkoutNewBranchWithName:ctrl.value commit:aCommit];
   };
   [ctrl presentSheetInMainWindow];
+}
+
+- (BOOL) validateNewBranch:(id)sender
+{
+  return !![self.repositoryController contextCommit];
 }
 
 - (IBAction) newTag:(id)sender
 {
   GBPromptController* ctrl = [GBPromptController controller];
+  GBCommit* aCommit = [self.repositoryController contextCommit];
   
   ctrl.title = NSLocalizedString(@"New Tag", @"");
-  ctrl.promptText = NSLocalizedString(@"Tag Name:", @"");
+  ctrl.promptText = [NSString stringWithFormat:NSLocalizedString(@"Tag for commit %@:", @""), [aCommit subjectOrCommitIDForMenuItem]];
   ctrl.buttonText = NSLocalizedString(@"OK", @"");
   ctrl.requireSingleLine = YES;
   ctrl.requireStripWhitespace = YES;
   ctrl.completionHandler = ^(BOOL cancelled){
-    if (!cancelled) [self.repositoryController createNewTagWithName:ctrl.value];
+    if (!cancelled) [self.repositoryController createNewTagWithName:ctrl.value commit:aCommit];
   };
   [ctrl presentSheetInMainWindow];
+}
+
+- (BOOL) validateNewTag:(id)sender
+{
+  return !![self.repositoryController contextCommit];
 }
 
 - (IBAction) checkoutCommit:(id)sender

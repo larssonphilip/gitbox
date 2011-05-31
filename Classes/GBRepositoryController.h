@@ -43,8 +43,8 @@
 
 // Returns a list of search results or stageAndCommits depending on the current state.
 - (NSArray*) visibleCommits;
-
 - (NSArray*) stageAndCommits;
+- (GBCommit*) contextCommit; // returns a selected commit or a first commit in the list (not the stage!)
 
 - (void) start;
 - (void) stop;
@@ -56,8 +56,8 @@
 
 - (void) checkoutRef:(GBRef*) ref;
 - (void) checkoutRef:(GBRef*) ref withNewName:(NSString*)name;
-- (void) checkoutNewBranchWithName:(NSString*)name;
-- (void) createNewTagWithName:(NSString*)name;
+- (void) checkoutNewBranchWithName:(NSString*)name commit:(GBCommit*)aCommit;
+- (void) createNewTagWithName:(NSString*)name commit:(GBCommit*)aCommit;
 - (void) selectRemoteBranch:(GBRef*) remoteBranch;
 - (void) createAndSelectRemoteBranchWithName:(NSString*)name remote:(GBRemote*)aRemote;
 
