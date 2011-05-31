@@ -1,8 +1,8 @@
 
 Gitbox 1.4 Release Notes
 
-✓ Adding tags to commits. Existing tags are displayed in the history view.
-✓ (wip) Rebase command and continue/abort UI in case of conflict.
+✓ Adding tags to commits. Tags are displayed in the history and commit views.
+✓ Rebase command and continue/skip UI in case of conflict.
 ✓ Stash and apply stashed changes.
 ✓ Reset stage changes (git reset --hard).
 ✓ Reset branch to selected commit. Stashes local changes before performing operation.
@@ -18,19 +18,18 @@ Bug fixes:
 ✓ Fixed search bug: in some repositories search was returning no results because of a UTF8 decoding bug.
 ✓ Fixed rare crashes when deleting repository from disk.
 ✓ Fixed crash when FileMerge is not found or OS was reinstalled.
-✓ Adding and removing items from stage is always forced.
-✓ Tag name was not displayed when checking out a tag.
+✓ Fixed bug with stage changes not updated properly.
+✓ Adding and removing items from stage is always forced. Fixes an issue with removing ignored files.
+✓ Tag name was not displayed in the branch menu when tag is checked out.
 
 --
 
 Gitbox 1.4 misc items:
 
 - sidebar: progress indicator for pushing/pulling/fetching
+
 - menu: Stage -> commit: - rename to "Stage and Edit Commit Message"
-
-- show "Tag:" or "Tags:" line in commit header (with tag names separated by comma)
 - delete tag using right click on a commit
-
 - toolbar: allow to unset remote branch (useful when other branch has a lot of commits and clutters the history)
 ? when doing commit checkout, select current local branch in the right branch menu so it is easier to compare and checkout later commits (especially during bisection search).
 
@@ -52,6 +51,7 @@ Gitbox 1.4 misc items:
 
 --------
 
++ show "Tag:" or "Tags:" line in commit header (with tag names separated by comma)
 + [using double stage update without more complex algorithms] bug: refresh stage periodically when it is selected (and increase interval if nothing changes)
 	- reproduce: select some repo, make changes in Xcode3 project for another repo, then switch to gitbox and select that another repo - project file still on the stage.
 

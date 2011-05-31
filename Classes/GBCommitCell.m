@@ -467,7 +467,7 @@
 - (NSRect) drawTagBadgesAndReturnRemainingRect:(NSRect)rect
 {
   
-  NSArray* tags = [self.commit.repository tagsForCommit:self.commit];
+  NSArray* tags = [[self.commit.repository tagsForCommit:self.commit] sortedArrayUsingSelector:@selector(name)];
   
   if ([tags count] < 1) return rect;
   

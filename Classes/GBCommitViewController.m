@@ -1,4 +1,5 @@
 #import "GBCommit.h"
+#import "GBRepository.h"
 #import "GBChange.h"
 #import "GBStyle.h"
 #import "GBCommitViewController.h"
@@ -246,6 +247,7 @@
                           @"	Date: 	$authorDate",
                           @"	Author: 	$Author Name <$author@email>",
                           @"	 	Committed by $Committer Name <$committer@email>",
+                          @"	Tags: 	$tags",
                           nil])
   {
     [storage updateAttribute:NSParagraphStyleAttributeName forSubstring:line withBlock:^(id style){
@@ -325,6 +327,26 @@
     
     [string replaceOccurrencesOfString:@"<$committer@email>" 
                             withString:aCommit.committerEmail];      
+  }
+  
+  NSArray* tags = [self.repositoryController.repository tagsForCommit:self.commit];
+  
+  if ([tags count] > 0)
+  {
+    if ([tags count] == 1)
+    {
+      [string replaceOccurrencesOfString:@"Tags:" 
+                              withString:@"Tag:"];
+    }
+    
+    NSString* tagsString = [[[tags valueForKey:@"name"] sortedArrayUsingSelector:@selector(self)] componentsJoinedByString:@", "];
+    [string replaceOccurrencesOfString:@"$tags" 
+                            withString:tagsString];
+  }
+  else
+  {
+    [string replaceOccurrencesOfString:@"\n	Tags: 	$tags"
+                            withString:@""];
   }
   
   if (self.commit.searchQuery)
