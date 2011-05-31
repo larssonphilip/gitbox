@@ -489,26 +489,43 @@
     NSString* tagName = tag.name;
     NSSize size = [tagName sizeWithAttributes:attrs];
     
-    const CGFloat paddingLeft = 8.0;
-    const CGFloat paddingRight = 8.0;
-    const CGFloat spacingRight = 3.0;
+    const CGFloat paddingLeft  = 6.0;
+    const CGFloat paddingRight = 6.0;
+    const CGFloat spacingRight = 4.0;
+    const CGFloat badgeHeight  = 14.0;
+    const CGFloat textHeight   = 14.0;
     
     CGFloat badgeWidth = paddingLeft + size.width + paddingRight;
     
     CGFloat badgeWidthMin = paddingLeft + paddingRight;
     CGFloat badgeWidthMax = floor(0.333*rect.size.width) - spacingRight;
-    badgeWidth = MIN(badgeWidth, badgeWidthMax);
+    badgeWidth = floor(MIN(badgeWidth, badgeWidthMax));
     
     if (badgeWidth <= badgeWidthMin) return rect;
     
-    // TODO: draw image
+    // draw image
     
-    // TODO: draw text
+    NSRect imageRect = NSMakeRect(rect.origin.x, 
+                                  rect.origin.y + (rect.size.height - badgeHeight), 
+                                  badgeWidth, 
+                                  badgeHeight);
     
-    //NSRect textRect = NSMakeRect(<#CGFloat x#>, <#CGFloat y#>, <#CGFloat w#>, <#CGFloat h#>)
+    [[NSColor darkGrayColor] set];
+    NSRectFill(imageRect); // debug mode
     
-    // TODO: shift rect, repeat
     
+    // draw text
+
+    NSRect textRect = NSMakeRect(rect.origin.x + paddingLeft, 
+                                 rect.origin.y + (rect.size.height - textHeight), 
+                                 badgeWidth - paddingLeft - paddingRight, 
+                                 textHeight);
+    
+    [tagName drawInRect:textRect withAttributes:attrs];
+    
+    CGFloat offset = badgeWidth + spacingRight;
+    rect.origin.x += offset;
+    rect.size.width -= offset;
   }
   
   return rect;
