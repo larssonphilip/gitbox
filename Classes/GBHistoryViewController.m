@@ -86,7 +86,7 @@
   [commitCell release]; commitCell = nil;
   [arrayControllerCommits release]; arrayControllerCommits = nil;
   
-  if ([currentMenu delegate] == self) [currentMenu setDelegate:nil];
+  if ([currentMenu delegate] == (id)self) [currentMenu setDelegate:nil];
   [currentMenu release]; currentMenu = nil;
   
   [super dealloc];
