@@ -299,6 +299,7 @@ Error messages translation to English:
 
 Bugs:
 
+- bug: async loaded avatar is displayed when commit was changed. Should check if the avatar is still relevant before applying.
 - bug: when removing spinning repo from sidebar (task is running), spinner remains in sidebar
 - (right now jump controller is disabled because of that) bug: minor issue: when quickly iterating through sidebar when repos are autofetched, the selection sometimes jumps. We should reset jump controller's block when selection is changed elsewhere.
 
