@@ -495,13 +495,13 @@
     const CGFloat badgeHeight  = 14.0;
     const CGFloat textHeight   = 14.0;
     
-    CGFloat badgeWidth = paddingLeft + size.width + paddingRight;
+    CGFloat badgeWidth = paddingLeft + ceil(size.width) + paddingRight;
     
     CGFloat badgeWidthMin = paddingLeft + paddingRight;
-    CGFloat badgeWidthMax = floor(0.333*rect.size.width) - spacingRight;
-    badgeWidth = floor(MIN(badgeWidth, badgeWidthMax));
+    CGFloat badgeWidthMax = floor(0.33333*rect.size.width) - spacingRight;
+    badgeWidth = MIN(badgeWidth, badgeWidthMax);
     
-    if (badgeWidth <= badgeWidthMin) return rect;
+    if (badgeWidth <= (badgeWidthMin + 5)) return rect;
     
     // draw image
     
@@ -518,7 +518,7 @@
 
     NSRect textRect = NSMakeRect(rect.origin.x + paddingLeft, 
                                  rect.origin.y + (rect.size.height - textHeight), 
-                                 badgeWidth - paddingLeft - paddingRight, 
+                                 badgeWidth - paddingLeft - paddingRight*0.75, // allow 25% overlap with right padding
                                  textHeight);
     
     [tagName drawInRect:textRect withAttributes:attrs];
