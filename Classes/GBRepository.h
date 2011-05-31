@@ -57,7 +57,8 @@
 - (BOOL) doesHaveSubmodules;
 - (NSURL*) URLForSubmoduleAtPath:(NSString*)path;
 - (void) loadStashesWithBlock:(void(^)(NSArray*))block;
-
+- (GBRef*) tagForCommit:(GBCommit*)aCommit;
+- (NSArray*) tagsForCommit:(GBCommit*)aCommit;
 
 #pragma mark Update
 

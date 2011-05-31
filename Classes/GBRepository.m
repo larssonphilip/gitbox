@@ -30,6 +30,7 @@
 @property(nonatomic, retain) GBGitConfig* config;
 @property(nonatomic, assign) dispatch_queue_t dispatchQueue;
 @property(nonatomic, assign, readwrite) NSUInteger commitsDiffCount;
+@property(nonatomic, retain) NSMutableDictionary* tagsByCommitID;
 
 - (void) loadCurrentLocalRefWithBlock:(void(^)())block;
 - (void) loadLocalRefsWithBlock:(void(^)())block;
@@ -62,6 +63,8 @@
 @synthesize unpushedCommitsCount; // obsolete
 @synthesize commitsDiffCount;
 
+@synthesize tagsByCommitID;
+
 
 #pragma mark Init
 
@@ -73,17 +76,21 @@
   
   [url release]; url = nil;
   [URLBookmarkData release]; URLBookmarkData = nil;
-  self.dotGitURL = nil;
-  self.localBranches = nil;
-  self.remotes = nil;
-  self.tags = nil;
-  self.stage = nil;
-  self.currentLocalRef = nil;
-  self.currentRemoteBranch = nil;
-  self.localBranchCommits = nil;
-  self.blockTable = nil;
-  self.config = nil;
-  self.submodules = nil;
+  [dotGitURL release]; dotGitURL = nil;
+  [localBranches release]; localBranches = nil;
+  [remotes release]; remotes = nil;
+  [tags release]; tags = nil;
+  [stage release]; stage = nil;
+  
+  [currentLocalRef release]; currentLocalRef = nil;
+  [currentRemoteBranch release]; currentRemoteBranch = nil;
+  [localBranchCommits release]; localBranchCommits = nil;
+  
+  [blockTable release]; blockTable = nil;
+  [config release]; config = nil;
+  
+  [submodules release]; submodules = nil;
+  [tagsByCommitID release]; tagsByCommitID = nil;
   
   if (self.dispatchQueue) dispatch_release(self.dispatchQueue);
   self.dispatchQueue = nil;
@@ -360,6 +367,20 @@
   return [[tags retain] autorelease];
 }
 
+- (void) setTags:(NSArray *)newTags
+{
+  if (tags == newTags) return;
+  
+  [tags release];
+  tags = [newTags retain];
+  
+  self.tagsByCommitID = [NSMutableDictionary dictionary];
+  for (GBRef* tag in tags)
+  {
+    if (tag.commitId) [self.tagsByCommitID setObject:tag forKey:tag.commitId];
+  }
+}
+
 - (NSArray*) remotes
 {
   if (!remotes) self.remotes = [NSArray array];
@@ -388,6 +409,25 @@
   return [NSString stringWithFormat:@"<GBRepository:%p %@>", self, self.url];
 }
 
+- (GBRef*) tagForCommit:(GBCommit*)aCommit
+{
+  if (!aCommit.commitId) return nil;
+  return [self.tagsByCommitID objectForKey:aCommit.commitId];
+}
+
+- (NSArray*) tagsForCommit:(GBCommit*)aCommit
+{
+  if (![self tagForCommit:aCommit]) return nil; // quick lookup in dictionary
+  NSMutableArray* result = [NSMutableArray array];
+  for (GBRef* tag in self.tags)
+  {
+    if ([tag.commitId isEqual:aCommit.commitId])
+    {
+      [result addObject:tag];
+    }
+  }
+  return result;
+}
 
 
 

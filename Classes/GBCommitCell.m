@@ -1,5 +1,7 @@
 #import "GBStyle.h"
 #import "GBCommit.h"
+#import "GBRef.h"
+#import "GBRepository.h"
 #import "GBStage.h"
 #import "GBCommitCell.h"
 
@@ -12,6 +14,7 @@
 @property(nonatomic, retain) GBStage* stage;
 @property(nonatomic, assign) BOOL cachedStage;
 - (void) drawStageContentInFrame:(NSRect)cellFrame;
+- (NSRect) drawTagBadgesAndReturnRemainingRect:(NSRect)rect;
 @end
 
 
@@ -51,10 +54,14 @@
   NSDateFormatter* dateFormatter     = [self dateFormatterWithTemplate:@"MMM d, y"];
   NSDateFormatter* timeFormatter     = [self dateFormatterWithTemplate:@"HH:mm"];
   
+  NSMutableParagraphStyle* truncatingParagraphStyle = [[NSMutableParagraphStyle new] autorelease];
+  [truncatingParagraphStyle setLineBreakMode:NSLineBreakByTruncatingTail];
+
   self.attributes = [NSDictionary dictionaryWithObjectsAndKeys:
                      dateTimeFormatter, @"dateTimeFormatter",
                      dateFormatter,     @"dateFormatter",
                      timeFormatter,     @"timeFormatter",
+                     truncatingParagraphStyle,    @"truncatingParagraphStyle",
                      nil];
   
 }
@@ -306,8 +313,7 @@
   }
     
   
-  NSMutableParagraphStyle* paragraphStyle = [[NSMutableParagraphStyle new] autorelease];
-  [paragraphStyle setLineBreakMode:NSLineBreakByTruncatingTail];
+  NSParagraphStyle* paragraphStyle = [self attribute:@"truncatingParagraphStyle"];
   
   
 	NSMutableDictionary* titleAttributes = [[[NSMutableDictionary alloc] initWithObjectsAndKeys:
@@ -402,6 +408,9 @@
   
   // draw
   
+  titleRect = [self drawTagBadgesAndReturnRemainingRect:titleRect];
+  
+  
   [date drawInRect:dateRect withAttributes:dateAttributes];
   
   if (!commit.searchQuery)
@@ -430,7 +439,6 @@
   }
   
   NSString* colorLabel = self.commit.colorLabel;
-  
   if (colorLabel)
   {
     NSImage* cornerImage = [NSImage imageNamed:[NSString stringWithFormat:@"%@Corner.png", colorLabel]];
@@ -449,8 +457,50 @@
                       hints:nil];
     }
   }
-  
 }
+
+
+
+
+
+
+- (NSRect) drawTagBadgesAndReturnRemainingRect:(NSRect)rect
+{
+  
+  NSArray* tags = [self.commit.repository tagsForCommit:self.commit];
+  
+  if ([tags count] < 1) return rect;
+  
+  NSShadow* shadow = [[[NSShadow alloc] init] autorelease];
+  [shadow setShadowOffset:NSMakeSize(0, -1)];
+  [shadow setShadowColor:[NSColor colorWithCalibratedWhite:0.0 alpha:0.3]];
+  
+	NSMutableDictionary* attrs = [[[NSMutableDictionary alloc] initWithObjectsAndKeys:
+                                           [NSColor whiteColor], NSForegroundColorAttributeName,
+                                           [NSFont boldSystemFontOfSize:11.0], NSFontAttributeName,
+                                           [self attribute:@"truncatingParagraphStyle"], NSParagraphStyleAttributeName,
+                                            shadow, NSShadowAttributeName,
+                                           nil] autorelease];
+  
+  BOOL alternativeImage = ([self isHighlighted] && self.isFocused);
+  
+  for (GBRef* tag in tags)
+  {
+    NSString* tagName = tag.name;
+    NSSize size = [tagName sizeWithAttributes:attrs];
+    
+    
+  }
+  
+  return rect;
+}
+
+
+
+
+
+
+
 
 
 
@@ -469,8 +519,7 @@
     textColor = [NSColor alternateSelectedControlTextColor];
   }
   
-  NSMutableParagraphStyle* paragraphStyle = [[NSMutableParagraphStyle new] autorelease];
-  [paragraphStyle setLineBreakMode:NSLineBreakByTruncatingTail];
+  NSParagraphStyle* paragraphStyle = [self attribute:@"truncatingParagraphStyle"];
   
   NSFont* font = nil;
   if ([self.stage isDirty])
