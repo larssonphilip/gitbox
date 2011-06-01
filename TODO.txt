@@ -36,7 +36,7 @@ Gitbox 1.4 misc items:
 - history: push a single commit
 - general: unified settings sheet
 
-- search: find by tag name too
+
 - bug: search: keep selection when search ends.
 - bug: askpass crashes with "task" selector when tries to update a repo with missing/invalid ssh key.
 - bug: search: when parent commit is clicked it can be missing in the history. Should either not highlight it, or reset search state.
@@ -188,8 +188,22 @@ Features:
 - search: load total count of commits to be scanned to present a progress circle instead of a spinner
 - search: recognize specialized searches like "file:GBCommit.m", "author:oleg", "diff:someFunction" etc.
 - search: recognize quoted text to be searched as a whole
-- search: recognize regular expression using 'regexp:' suffix (also works with field selector: "diff:")
+- search: recognize regular expression using 'regexp:' suffix (also works with field selector: "diff:regexp:")
 - search: cmd+F should select all text when already in search field (try enabling search bar for editor textview).
+
+- search: "colored", "label:*", "label:any", "label:all" to match commits with color tag
+- search: "tagged" to match all commits with at least one tag
+- search: "label:red", "label:orange", "label:yellow", "label:green" etc. to match commits with a specific color tag
+- search: "label:clear", "white", "label:none", "label:no" to match commits without color tag
+- search: "diff:..." for content in the diff
+- search: "file:..." for filename
+- search: "author:..." for author name and email
+- search: "committer:..." for committer name and email
+- search: "tag:..." for tag name
+- search: "message:..." for message text
+- search: "[!-]<token>" for negation (should not match)
+- search: "<field>:[!-]<value>" for negation (should not match)
+- search: find by tag name too
 
 - changes: compare image files in an double-pane image viewer
 - changes: built-in diff view for better UTF8 support (FileMerge is stupid)
