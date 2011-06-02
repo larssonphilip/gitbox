@@ -251,6 +251,8 @@
   
   NSSearchField* searchField = self.searchField;
   
+  [searchField setEnabled:YES];
+  
   if (repositoryController)
   {
     [searchField setDelegate:self];
@@ -289,6 +291,8 @@
   
   [self.currentBranchPopUpButton setEnabled:!isDisabled && !isCurrentBranchDisabled];
   [self.otherBranchPopUpButton setEnabled:!isDisabled && !isRemoteBranchDisabled];
+  
+  [self.searchField setEnabled:YES];
   
   [self updateSyncButtons];
 }
