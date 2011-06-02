@@ -2,7 +2,7 @@
 Gitbox 1.5 Release Notes
 
 ✓ Stage All menu command with Command+Shift+Return shortcut.
-✓ 
+✓ Highlighted links in commit messages.
 ✓ 
 ✓ 
 
