@@ -12,6 +12,12 @@
   return cell;
 }
 
+// Doesn't work
+//+ (BOOL)prefersTrackingUntilMouseUp
+//{
+//  return YES; // do not apply click if mouse moved out
+//}
+
 - (void) drawInteriorWithFrame:(NSRect)cellFrame inView:(GBChangesTableView*)theControlView
 {
   if (theControlView.preparesImageForDragging)
@@ -40,5 +46,19 @@
 {
   return YES;
 }
+
+// Is not called for real clicks
+//- (void)performClick:(id)sender
+//{
+//  NSLog(@"clicked stage checkbox");
+//  [super performClick:sender];
+//}
+
+// Is not called when "cmd" is pressed.
+//- (BOOL)trackMouse:(NSEvent *)theEvent inRect:(NSRect)cellFrame ofView:(NSView *)controlView untilMouseUp:(BOOL)untilMouseUp
+//{
+//  NSLog(@"stage checkbox tracking: %@", theEvent);
+//  return [super trackMouse:theEvent inRect:cellFrame ofView:controlView untilMouseUp:untilMouseUp];
+//}
 
 @end
