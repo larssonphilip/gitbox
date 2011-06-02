@@ -4,7 +4,7 @@ Gitbox 1.5 Release Notes
 ✓ Sidebar progress indicators for push, pull, fetch and clone.
 ✓ Stage All menu command with Command+Shift+Return shortcut.
 ✓ Highlighted links in commit messages.
-✓ 
+✓ Updated bundled Git to version 1.7.5.4
 
 Bug fixes:
 
@@ -16,8 +16,6 @@ Bug fixes:
 
 Gitbox 1.5 misc items:
 
-
-- bugfix: in older git --progress was not propagated properly from "push" command. Should update to 1.7.5
 - general: unified settings sheet
 
 - stage: overlay view describing shortcuts to stage all
@@ -41,6 +39,8 @@ Gitbox 1.5 misc items:
 
 --------
 
++ Sidebar progress indicators for push, pull, fetch and clone.
++ bugfix: in older git --progress was not propagated properly from "push" command. Should update to 1.7.5
 + menu: Stage All: cmd+shift+return (acts as cmd+a + cmd+return) (add to main menu and contextual menus)
 ≠ menu: Stage -> commit: - rename to "Stage and Edit Commit Message"
 + bug: *** Terminating app due to uncaught exception 'NSInternalInconsistencyException', reason: 'GBExtractFileTask: self.objectId is nil'

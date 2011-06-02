@@ -223,6 +223,8 @@
 		208B3288137505D600EB4A18 /* GBSearchBarController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 208B3284137505D600EB4A18 /* GBSearchBarController.xib */; };
 		208D086313981084002C8072 /* GBTaskWithProgress.m in Sources */ = {isa = PBXBuildFile; fileRef = 208D086213981084002C8072 /* GBTaskWithProgress.m */; };
 		208D086413981084002C8072 /* GBTaskWithProgress.m in Sources */ = {isa = PBXBuildFile; fileRef = 208D086213981084002C8072 /* GBTaskWithProgress.m */; };
+		208D0A3A13983C99002C8072 /* git.bundle.tar in Resources */ = {isa = PBXBuildFile; fileRef = 208D0A3913983C99002C8072 /* git.bundle.tar */; };
+		208D0A3B13983C99002C8072 /* git.bundle.tar in Resources */ = {isa = PBXBuildFile; fileRef = 208D0A3913983C99002C8072 /* git.bundle.tar */; };
 		20915EBC12874D2A005E0D82 /* default_gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 209A960011BC60BC006B0B5C /* default_gitignore */; };
 		20915EBD12874D2A005E0D82 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C1660FE840EACC02AAC07 /* InfoPlist.strings */; };
 		20915EBE12874D2A005E0D82 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD582B0DA1D0D100B32029 /* MainMenu.xib */; };
@@ -241,7 +243,6 @@
 		20915ECD12874D2A005E0D82 /* GBCertificateUpdateController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 201E030111EE083D007E4420 /* GBCertificateUpdateController.xib */; };
 		20915ECE12874D2A005E0D82 /* GBSidebarController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 20A37BB5120DC7640068AB8B /* GBSidebarController.xib */; };
 		20915ECF12874D2A005E0D82 /* GBMainWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 20A37BBD120DDBA60068AB8B /* GBMainWindowController.xib */; };
-		20915ED012874D2A005E0D82 /* git.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 20FAA18F123F831400E8FA0E /* git.bundle */; };
 		20915ED112874D2A005E0D82 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 203976631251A63700770D13 /* Credits.rtf */; };
 		20915ED212874D2A005E0D82 /* GBCommitCellMarkerHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 20C3B70B125BCCC600ABEDE7 /* GBCommitCellMarkerHighlighted.png */; };
 		20915ED412874D2A005E0D82 /* GBCommitCellMarkerUnmerged.png in Resources */ = {isa = PBXBuildFile; fileRef = 20C3B70D125BCCC600ABEDE7 /* GBCommitCellMarkerUnmerged.png */; };
@@ -426,7 +427,6 @@
 		20EF8BED12E6603600F3438A /* GBSubmodulesTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 70EEC8CF12DFE33E00DD1555 /* GBSubmodulesTask.m */; };
 		20EF8BF012E6605100F3438A /* GBSubmodule.m in Sources */ = {isa = PBXBuildFile; fileRef = 70865D2A12D25F5F00033683 /* GBSubmodule.m */; };
 		20EF8C4812E6605D00F3438A /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20EF88D612E34F9300F3438A /* Quartz.framework */; };
-		20FAA190123F831400E8FA0E /* git.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 20FAA18F123F831400E8FA0E /* git.bundle */; };
 		70865D2B12D25F5F00033683 /* GBSubmodule.m in Sources */ = {isa = PBXBuildFile; fileRef = 70865D2A12D25F5F00033683 /* GBSubmodule.m */; };
 		70EEC8D012DFE33E00DD1555 /* GBSubmodulesTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 70EEC8CF12DFE33E00DD1555 /* GBSubmodulesTask.m */; };
 		8D15AC320486D014006FF6A4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A37F4B0FDCFA73011CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
@@ -693,6 +693,7 @@
 		208B3284137505D600EB4A18 /* GBSearchBarController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBSearchBarController.xib; sourceTree = "<group>"; };
 		208D086113981084002C8072 /* GBTaskWithProgress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBTaskWithProgress.h; sourceTree = "<group>"; };
 		208D086213981084002C8072 /* GBTaskWithProgress.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBTaskWithProgress.m; sourceTree = "<group>"; };
+		208D0A3913983C99002C8072 /* git.bundle.tar */ = {isa = PBXFileReference; lastKnownFileType = archive.tar; path = git.bundle.tar; sourceTree = "<group>"; };
 		20915F7E12875C92005E0D82 /* GBPreferencesController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBPreferencesController.xib; sourceTree = "<group>"; };
 		20915F8712875FDA005E0D82 /* prefix_appstore.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = prefix_appstore.pch; sourceTree = "<group>"; };
 		20915F8B12876062005E0D82 /* GBPreferencesController-appstore.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "GBPreferencesController-appstore.xib"; sourceTree = "<group>"; };
@@ -831,7 +832,6 @@
 		20EF861412E217B900F3438A /* Authentication.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Authentication.txt; sourceTree = "<group>"; };
 		20EF88D612E34F9300F3438A /* Quartz.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quartz.framework; path = System/Library/Frameworks/Quartz.framework; sourceTree = SDKROOT; };
 		20EF88D812E34F9300F3438A /* QuickLook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickLook.framework; path = System/Library/Frameworks/QuickLook.framework; sourceTree = SDKROOT; };
-		20FAA18F123F831400E8FA0E /* git.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = git.bundle; sourceTree = "<group>"; };
 		2564AD2C0F5327BB00F57823 /* prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = prefix.pch; sourceTree = "<group>"; };
 		2A37F4B0FDCFA73011CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		2A37F4C4FDCFA73011CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
@@ -1519,8 +1519,8 @@
 			isa = PBXGroup;
 			children = (
 				2016439012CC0F2E005C69DA /* author.png */,
+				208D0A3913983C99002C8072 /* git.bundle.tar */,
 				203976631251A63700770D13 /* Credits.rtf */,
-				20FAA18F123F831400E8FA0E /* git.bundle */,
 				2010732E11A7E9C300EFDE56 /* app.icns */,
 				8D15AC360486D014006FF6A4 /* info.plist */,
 				089C1660FE840EACC02AAC07 /* InfoPlist.strings */,
@@ -1550,7 +1550,6 @@
 				20915EBB12874D2A005E0D82 /* Resources */,
 				20915EDA12874D2A005E0D82 /* Sources */,
 				20915F2912874D2A005E0D82 /* Frameworks */,
-				2022A5D81370910700A3EA69 /* Run Script: prepare git.bundle.tar */,
 			);
 			buildRules = (
 			);
@@ -1570,7 +1569,6 @@
 				8D15AC300486D014006FF6A4 /* Sources */,
 				8D15AC330486D014006FF6A4 /* Frameworks */,
 				2057EF8D11ABE63F009EDF2F /* CopyFiles */,
-				20B01BD1125908F600F28111 /* Run Script: prepare git.bundle.tar */,
 			);
 			buildRules = (
 			);
@@ -1633,7 +1631,6 @@
 				20915ECD12874D2A005E0D82 /* GBCertificateUpdateController.xib in Resources */,
 				20915ECE12874D2A005E0D82 /* GBSidebarController.xib in Resources */,
 				20915ECF12874D2A005E0D82 /* GBMainWindowController.xib in Resources */,
-				20915ED012874D2A005E0D82 /* git.bundle in Resources */,
 				20915ED112874D2A005E0D82 /* Credits.rtf in Resources */,
 				20915ED212874D2A005E0D82 /* GBCommitCellMarkerHighlighted.png in Resources */,
 				20915ED412874D2A005E0D82 /* GBCommitCellMarkerUnmerged.png in Resources */,
@@ -1679,6 +1676,7 @@
 				2003F9AC139526C900471731 /* GBBadgeTagCenter.png in Resources */,
 				2003F9AE139526C900471731 /* GBBadgeTagLeft.png in Resources */,
 				2003F9B0139526C900471731 /* GBBadgeTagRight.png in Resources */,
+				208D0A3A13983C99002C8072 /* git.bundle.tar in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1704,7 +1702,6 @@
 				201E030211EE083D007E4420 /* GBCertificateUpdateController.xib in Resources */,
 				20A37BB6120DC7640068AB8B /* GBSidebarController.xib in Resources */,
 				20A37BBE120DDBA60068AB8B /* GBMainWindowController.xib in Resources */,
-				20FAA190123F831400E8FA0E /* git.bundle in Resources */,
 				203976651251A63700770D13 /* Credits.rtf in Resources */,
 				20C3B710125BCCC600ABEDE7 /* GBCommitCellMarkerHighlighted.png in Resources */,
 				20C3B712125BCCC600ABEDE7 /* GBCommitCellMarkerUnmerged.png in Resources */,
@@ -1750,26 +1747,13 @@
 				2003F9AB139526C900471731 /* GBBadgeTagCenter.png in Resources */,
 				2003F9AD139526C900471731 /* GBBadgeTagLeft.png in Resources */,
 				2003F9AF139526C900471731 /* GBBadgeTagRight.png in Resources */,
+				208D0A3B13983C99002C8072 /* git.bundle.tar in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		2022A5D81370910700A3EA69 /* Run Script: prepare git.bundle.tar */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Run Script: prepare git.bundle.tar";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = $PROJECT_DIR/make_git_bundle_tar.rb;
-		};
 		2057F0DA11ACF16B009EDF2F /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1782,20 +1766,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
 			shellScript = "set -o errexit\n\n[ $BUILD_STYLE = Release ] || { echo Sparkle target requires \"'Release'\" build configuration; false; }\n\nVERSION=$(defaults read \"$BUILT_PRODUCTS_DIR/$PROJECT_NAME.app/Contents/Info\" CFBundleVersion)\nDOWNLOAD_BASE_URL=\"http://gitboxapp.com/downloads\"\nRELEASENOTES_URL=\"http://gitboxapp.com/release-notes/$VERSION.html\"\n\n#ARCHIVE_FILENAME=\"$PROJECT_NAME-$VERSION.tar.gz\"\nARCHIVE_FILENAME=\"$PROJECT_NAME-$VERSION.zip\"\nDOWNLOAD_URL=\"$DOWNLOAD_BASE_URL/$ARCHIVE_FILENAME\"\nKEYCHAIN_PRIVKEY_NAME=\"gitbox sparkle private key\"\n\nSITE_PATH=\"$PROJECT_DIR/../site\"\n\nWD=$PWD\ncd \"$BUILT_PRODUCTS_DIR\"\nrm -f \"$PROJECT_NAME\"*.zip\nrm -f \"$PROJECT_NAME\"*.tar.gz\n#tar -czf $ARCHIVE_FILENAME $PROJECT_NAME.app\nditto -ck --keepParent --rsrc \"$PROJECT_NAME.app\" \"$ARCHIVE_FILENAME\"\n\n\nSIZE=$(stat -f %z \"$ARCHIVE_FILENAME\")\nPUBDATE=$(LC_TIME=en_US date +\"%a, %d %b %G %T %z\")\nSIGNATURE=$(\n\topenssl dgst -sha1 -binary < \"$ARCHIVE_FILENAME\" \\\n\t| openssl dgst -dss1 -sign <(security find-generic-password -g -s \"$KEYCHAIN_PRIVKEY_NAME\" 2>&1 1>/dev/null | perl -pe '($_) = /\"(.+)\"/; s/\\\\012/\\n/g' | perl -MXML::LibXML -e 'print XML::LibXML->new()->parse_file(\"-\")->findvalue(q(//string[preceding-sibling::key[1] = \"NOTE\"]))') \\\n\t| openssl enc -base64\n)\n\n[ $SIGNATURE ] || { echo Unable to load signing private key with name \"'$KEYCHAIN_PRIVKEY_NAME'\" from keychain; false; }\n\ncat <<EOF\n\t\t<item>\n\t\t\t<title>Gitbox $VERSION</title>\n\t\t\t<sparkle:releaseNotesLink>$RELEASENOTES_URL</sparkle:releaseNotesLink>\n\t\t\t<pubDate>$PUBDATE</pubDate>\n\t\t\t<enclosure\n\t\t\t\turl=\"$DOWNLOAD_URL\"\n\t\t\t\tsparkle:version=\"$VERSION\"\n\t\t\t\ttype=\"application/octet-stream\"\n\t\t\t\tlength=\"$SIZE\"\n\t\t\t\tsparkle:dsaSignature=\"$SIGNATURE\"\n\t\t\t/>\n\t\t</item>\nEOF\n\ntouch $SITE_PATH/public/release-notes/$VERSION.html\nmv $BUILT_PRODUCTS_DIR/$ARCHIVE_FILENAME $SITE_PATH/public/downloads/$ARCHIVE_FILENAME\n\n";
-		};
-		20B01BD1125908F600F28111 /* Run Script: prepare git.bundle.tar */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Run Script: prepare git.bundle.tar";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = $PROJECT_DIR/make_git_bundle_tar.rb;
 		};
 /* End PBXShellScriptBuildPhase section */
 

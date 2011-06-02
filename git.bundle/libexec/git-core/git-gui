@@ -1,8 +1,0 @@
-#!/bin/sh
-if test "z$*" = zversion ||
-   test "z$*" = z--version
-then
-	echo 'git-gui version 0.13.0'
-else
-	exec '/usr/local/Cellar/git/1.7.3.2/share/git-gui/lib/Git Gui.app/Contents/MacOS/Wish' "$0" "$@"
-fi
