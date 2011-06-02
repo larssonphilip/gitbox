@@ -11,7 +11,8 @@ Bug fixes:
 ✓ 
 ✓ 
 ✓ Fixed rare crash when extracting a file from history.
-✓ 
+✓ Fixed rare bug with incorrect user picture loading.
+✓
 --
 
 Gitbox 1.5 misc items:
@@ -44,7 +45,7 @@ Gitbox 1.5 misc items:
 + menu: Stage All: cmd+shift+return (acts as cmd+a + cmd+return) (add to main menu and contextual menus)
 ≠ menu: Stage -> commit: - rename to "Stage and Edit Commit Message"
 + bug: *** Terminating app due to uncaught exception 'NSInternalInconsistencyException', reason: 'GBExtractFileTask: self.objectId is nil'
-
++ bug: async loaded avatar is displayed when commit was changed. Should check if the avatar is still relevant before applying.
 
 -----------------------------------------------------------
 
@@ -250,7 +251,6 @@ Error messages translation to English:
 
 Bugs:
 
-- bug: async loaded avatar is displayed when commit was changed. Should check if the avatar is still relevant before applying.
 - bug: when removing spinning repo from sidebar (task is running), spinner remains in sidebar
 - (right now jump controller is disabled because of that) bug: minor issue: when quickly iterating through sidebar when repos are autofetched, the selection sometimes jumps. We should reset jump controller's block when selection is changed elsewhere.
 

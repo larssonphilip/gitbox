@@ -174,7 +174,7 @@
   
   [self.authorImage setImage:nil];
   [self.userpicController loadImageForEmail:email withBlock:^{
-    if (email && [aCommit.authorEmail isEqualToString:email]) // make sure we are still displaying the email we've asked for
+    if (email && [self.commit.authorEmail isEqualToString:email]) // make sure we are still displaying the email we've asked for
     {
       NSImage* image = [self.userpicController imageForEmail:email];
       [self.authorImage setImage:image];
