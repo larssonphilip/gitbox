@@ -267,6 +267,12 @@
   [self performSelector:@selector(saveItems) withObject:nil afterDelay:0.0];
 }
 
+- (void) rootControllerDidChangeSelection:(GBRootController*)aRootController
+{
+  // Saves contents a bit later
+  [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(saveItems) object:nil];
+  [self performSelector:@selector(saveItems) withObject:nil afterDelay:1.0];
+}
 
 - (void) saveItems
 {
