@@ -21,7 +21,9 @@
 
 - (void) callProgressBlock
 {
-	dispatch_async(dispatch_get_main_queue(), ^{ if (self.progressUpdateBlock) self.progressUpdateBlock(); });
+  dispatch_async(dispatch_get_main_queue(), ^{ 
+    if (self.progressUpdateBlock) self.progressUpdateBlock(); 
+  });
 }
 
 + (double) progressWithPrefix:(NSString*)prefix line:(NSString*)line
