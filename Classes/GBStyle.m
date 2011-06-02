@@ -2,46 +2,40 @@
 
 @implementation GBStyle
 
+#define RETURN_COLOR(r, g, b, a) \
+  static NSColor* c = nil;\
+  if (!c) c = [[NSColor colorWithCalibratedRed:r green:g blue:b alpha:a] retain];\
+  return c;
+
+
 + (NSColor*) searchHighlightColor
 {
-  static NSColor* c = nil;
-  if (!c) c = [[NSColor colorWithCalibratedRed:1.0 green:1.0 blue:0.25 alpha:0.7] retain];
-  return c;
+  RETURN_COLOR(1.0, 1.0, 0.25, 0.7);
 }
 
 + (NSColor*) searchSelectedHighlightColor
 {
-  static NSColor* c = nil;
-  if (!c) c = [[NSColor colorWithCalibratedWhite:1.0 alpha:0.4] retain];
-  return c;
+  RETURN_COLOR(1.0, 1.0, 1.0, 0.4);
 }
 
 + (NSColor*) searchHighlightUnderlineColor
 {
-  static NSColor* c = nil;
-  if (!c) c = [[NSColor colorWithCalibratedRed:1.0 green:1.0 blue:0.2 alpha:1.0] retain];
-  return c;
+  RETURN_COLOR(1.0, 1.0, 0.2, 1.0);
 }
 
 + (NSColor*) searchSelectedHighlightUnderlineColor
 {
-  static NSColor* c = nil;
-  if (!c) c = [[NSColor colorWithCalibratedWhite:1.0 alpha:0.6] retain];
-  return c;
+  RETURN_COLOR(1.0, 1.0, 1.0, 0.6);
 }
 
 + (NSColor*) searchHighlightUnderlineBackgroundColor
 {
-  static NSColor* c = nil;
-  if (!c) c = [[NSColor colorWithCalibratedRed:1.0 green:1.0 blue:0.95 alpha:1.0] retain];
-  return c;
+  RETURN_COLOR(1.0, 1.0, 0.95, 1.0);
 }
 
 + (NSColor*) searchSelectedHighlightUnderlineBackgroundColor
 {
-  static NSColor* c = nil;
-  if (!c) c = [[NSColor colorWithCalibratedWhite:1.0 alpha:0.15] retain];
-  return c;
+  RETURN_COLOR(1.0, 1.0, 1.0, 0.15);
 }
 
 @end
