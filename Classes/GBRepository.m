@@ -4,6 +4,7 @@
 #import "GBStage.h"
 #import "GBStash.h"
 #import "GBTask.h"
+#import "GBTaskWithProgress.h"
 #import "GBRemotesTask.h"
 #import "GBHistoryTask.h"
 #import "GBLocalRefsTask.h"
@@ -22,6 +23,7 @@
 #import "NSArray+OAArrayHelpers.h"
 #import "NSString+OAGitHelpers.h"
 #import "NSAlert+OAAlertHelpers.h"
+#import "NSObject+OASelectorNotifications.h"
 
 @interface GBRepository ()
 
@@ -68,6 +70,9 @@
 
 @synthesize tagsByCommitID;
 
+@synthesize currentTaskProgress;
+@synthesize currentTaskProgressStatus;
+
 
 #pragma mark Init
 
@@ -94,6 +99,8 @@
   
   [submodules release]; submodules = nil;
   [tagsByCommitID release]; tagsByCommitID = nil;
+  
+  [currentTaskProgressStatus release]; currentTaskProgressStatus = nil;
   
   if (self.dispatchQueue) dispatch_release(self.dispatchQueue);
   self.dispatchQueue = nil;
@@ -1068,16 +1075,20 @@
     return;
   }
   [GBAskPassController launchedControllerWithAddress:aRemoteBranch.remote.URLString taskFactory:^{
-    GBTask* task = [self task];
+    GBTask* task = [self taskWithProgress];
     task.arguments = [NSArray arrayWithObjects:@"pull", 
                            @"--tags", 
                            @"--force", 
+                           @"--progress",
                            aRemoteBranch.remoteAlias, 
                            [NSString stringWithFormat:@"%@:refs/remotes/%@", 
                             aRemoteBranch.name, [aRemoteBranch nameWithRemoteAlias]],
                            nil];
     task.dispatchQueue = self.dispatchQueue;
     task.didTerminateBlock = ^{
+      self.currentTaskProgress = 0.0;
+      self.currentTaskProgressStatus = nil;
+
       if ([task isError])
       {
         [self alertWithMessage: @"Pull failed" description:[task UTF8ErrorAndOutput]];
@@ -1121,16 +1132,20 @@
     return;
   }
   [GBAskPassController launchedControllerWithAddress:aRemote.URLString silent:silently taskFactory:^{
-    GBTask* task = [self task];
+    GBTask* task = [self taskWithProgress];
     task.arguments = [NSArray arrayWithObjects:@"fetch", 
                        @"--tags",
                        @"--force",
                        @"--prune",
+                       @"--progress",
                        aRemote.alias,
                        [aRemote defaultFetchRefspec], // Declaring a proper refspec is necessary to make autofetch expectations about remote alias to work. git show-ref should always return refs for alias XYZ.
                        nil];
     task.dispatchQueue = self.dispatchQueue;
     task.didTerminateBlock = ^{
+      self.currentTaskProgress = 0.0;
+      self.currentTaskProgressStatus = nil;
+
       if ([task isError])
       {
         self.lastError = [self errorWithCode:GBErrorCodeFetchFailed
@@ -1155,16 +1170,19 @@
     return;
   }
   [GBAskPassController launchedControllerWithAddress:aRemoteBranch.remote.URLString taskFactory:^{
-    GBTask* task = [self task];
+    GBTask* task = [self taskWithProgress];
     task.arguments = [NSArray arrayWithObjects:@"fetch", 
                       @"--tags", 
                       @"--force", 
+                      @"--progress",
                       aRemoteBranch.remoteAlias, 
                       [NSString stringWithFormat:@"%@:refs/remotes/%@", 
                        aRemoteBranch.name, [aRemoteBranch nameWithRemoteAlias]],
                       nil];
     task.dispatchQueue = self.dispatchQueue;
     task.didTerminateBlock = ^{
+      self.currentTaskProgress = 0.0;
+      self.currentTaskProgressStatus = nil;
       if ([task isError])
       {
         self.lastError = [self errorWithCode:GBErrorCodeFetchFailed
@@ -1199,16 +1217,19 @@
   }
   GBRemote* aRemote = aRemoteBranch.remote;
   [GBAskPassController launchedControllerWithAddress:aRemoteBranch.remote.URLString taskFactory:^{
-    GBTask* task = [self task];
+    GBTask* task = [self taskWithProgress];
     NSString* refspec = [NSString stringWithFormat:@"%@:%@", aLocalBranch.name, aRemoteBranch.name];
     
-    task.arguments = [NSArray arrayWithObjects:@"push", @"--tags", nil];
+    task.arguments = [NSArray arrayWithObjects:@"push", @"--tags", @"--progress", nil];
     if (forced) task.arguments = [task.arguments arrayByAddingObject:@"--force"];
     task.arguments = [task.arguments arrayByAddingObject:aRemoteBranch.remoteAlias];
     task.arguments = [task.arguments arrayByAddingObject:refspec];
     
     task.dispatchQueue = self.dispatchQueue;
     task.didTerminateBlock = ^{
+      self.currentTaskProgress = 0.0;
+      self.currentTaskProgressStatus = nil;
+
       if ([task isError])
       {
         [self alertWithMessage: @"Push failed" description:[task UTF8ErrorAndOutput]];
@@ -1417,6 +1438,25 @@
   GBTask* task = [[GBTask new] autorelease];
   task.repository = self;
   return task;
+}
+
+- (id) taskWithProgress
+{
+  GBTaskWithProgress* task = [[GBTaskWithProgress new] autorelease];
+  task.repository = self;
+  task.progressUpdateBlock = ^{
+    self.currentTaskProgress = task.progress;
+    self.currentTaskProgressStatus = task.status;
+    
+    if (task.progress >= 99.9)
+    {
+      self.currentTaskProgress = 0.0;
+      self.currentTaskProgressStatus = @"";
+    }
+    
+    [self notifyWithSelector:@selector(repositoryDidUpdateProgress:)];
+  };
+  return task;  
 }
 
 - (void) launchTask:(OATask*)aTask withBlock:(void(^)())block

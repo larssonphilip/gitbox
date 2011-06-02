@@ -1,9 +1,9 @@
 
 Gitbox 1.5 Release Notes
 
+✓ Sidebar progress indicators for push, pull, fetch and clone.
 ✓ Stage All menu command with Command+Shift+Return shortcut.
 ✓ Highlighted links in commit messages.
-✓ 
 ✓ 
 
 Bug fixes:
@@ -16,7 +16,8 @@ Bug fixes:
 
 Gitbox 1.5 misc items:
 
-- sidebar: progress indicator for pulls, push and fetch.
+
+- bugfix: in older git --progress was not propagated properly from "push" command. Should update to 1.7.5
 - general: unified settings sheet
 
 - stage: overlay view describing shortcuts to stage all

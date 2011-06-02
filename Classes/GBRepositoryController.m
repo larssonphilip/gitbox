@@ -202,9 +202,11 @@
 {
   if (repository == aRepository) return;
   [repository.stage removeObserverForAllSelectors:self];
+  [repository removeObserverForAllSelectors:self];
   [repository release];
   repository = [aRepository retain];
   [repository.stage addObserverForAllSelectors:self];
+  [repository addObserverForAllSelectors:self];
 }
 
 - (OAFSEventStream*) fsEventStream
@@ -1694,7 +1696,15 @@
 
 
 
+#pragma mark GBRepository Notifications
 
+
+- (void)repositoryDidUpdateProgress:(GBRepository*)aRepo
+{
+  self.sidebarItem.progress = aRepo.currentTaskProgress;
+  //NSLog(@"progress: %f (%@)", self.sidebarItem.progress, aRepo.currentTaskProgressStatus);
+  [self.sidebarItem update];
+}
 
 
 

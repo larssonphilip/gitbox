@@ -34,6 +34,9 @@
 @property(nonatomic, assign, readonly) NSUInteger commitsDiffCount;
 @property(nonatomic, assign, readonly, getter=isRebaseConflict) BOOL rebaseConflict;
 
+@property(nonatomic, assign) double currentTaskProgress;
+@property(nonatomic, copy) NSString* currentTaskProgressStatus;
+
 + (id) repositoryWithURL:(NSURL*)url;
 
 + (NSString*) gitVersion;
@@ -115,6 +118,7 @@
 #pragma mark Util
 
 - (id) task;
+- (id) taskWithProgress;
 - (void) launchTask:(OATask*)aTask withBlock:(void(^)())block;
 - (id) launchTaskAndWait:(GBTask*)aTask;
 - (NSURL*) gitURLWithSuffix:(NSString*)suffix;
