@@ -565,14 +565,31 @@
 
 - (void) stageChange:(GBChange*)aChange
 {
+  BOOL cmdPressed = ([[NSApp currentEvent] modifierFlags] & NSCommandKeyMask);
   if (![self.changes containsObject:aChange]) return;
-  [self.repositoryController stageChanges:[NSArray arrayWithObject:aChange]];
+  
+  if (cmdPressed)
+  {
+    [self.repositoryController stageChanges:self.changes];
+  }
+  else
+  {
+    [self.repositoryController stageChanges:[NSArray arrayWithObject:aChange]];
+  }
 }
 
 - (void) unstageChange:(GBChange*)aChange
 {
+  BOOL cmdPressed = ([[NSApp currentEvent] modifierFlags] & NSCommandKeyMask);
   if (![self.changes containsObject:aChange]) return;
-  [self.repositoryController unstageChanges:[NSArray arrayWithObject:aChange]];
+  if (cmdPressed)
+  {
+    [self.repositoryController unstageChanges:self.changes];
+  }
+  else
+  {
+    [self.repositoryController unstageChanges:[NSArray arrayWithObject:aChange]];
+  }
 }
 
 
@@ -784,10 +801,19 @@
   return YES;
 }
 
+//- (NSIndexSet *)tableView:(NSTableView *)aTableView selectionIndexesForProposedSelection:(NSIndexSet *)proposedSelectionIndexes
+//{
+//  return [proposedSelectionIndexes indexesPassingTest:^(NSUInteger index, BOOL* stop){
+//    return (BOOL)(index != 0);
+//  }];
+//}
+
 // This avoids changing selection when checkbox is clicked.
+// NOTE: this method is not called because parent class implements tableView:selectionIndexesForProposedSelection:
 - (BOOL)tableView:(NSTableView *)aTableView shouldSelectRow:(NSInteger)rowIndex
 {
   NSEvent *currentEvent = [[aTableView window] currentEvent];
+  //NSLog(@"stage table view: event type = %d", [currentEvent type]);
   if([currentEvent type] != NSLeftMouseDown) return YES;
   // you may also check for the NSLeftMouseDragged event
   // (changing the selection by holding down the mouse button and moving the mouse over another row)
