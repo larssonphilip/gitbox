@@ -221,6 +221,8 @@
 		208B3286137505D600EB4A18 /* GBSearchBarController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 208B3284137505D600EB4A18 /* GBSearchBarController.xib */; };
 		208B3287137505D600EB4A18 /* GBSearchBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 208B3283137505D600EB4A18 /* GBSearchBarController.m */; };
 		208B3288137505D600EB4A18 /* GBSearchBarController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 208B3284137505D600EB4A18 /* GBSearchBarController.xib */; };
+		208D086313981084002C8072 /* GBTaskWithProgress.m in Sources */ = {isa = PBXBuildFile; fileRef = 208D086213981084002C8072 /* GBTaskWithProgress.m */; };
+		208D086413981084002C8072 /* GBTaskWithProgress.m in Sources */ = {isa = PBXBuildFile; fileRef = 208D086213981084002C8072 /* GBTaskWithProgress.m */; };
 		20915EBC12874D2A005E0D82 /* default_gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 209A960011BC60BC006B0B5C /* default_gitignore */; };
 		20915EBD12874D2A005E0D82 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C1660FE840EACC02AAC07 /* InfoPlist.strings */; };
 		20915EBE12874D2A005E0D82 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD582B0DA1D0D100B32029 /* MainMenu.xib */; };
@@ -689,6 +691,8 @@
 		208B3282137505D600EB4A18 /* GBSearchBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBSearchBarController.h; sourceTree = "<group>"; };
 		208B3283137505D600EB4A18 /* GBSearchBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBSearchBarController.m; sourceTree = "<group>"; };
 		208B3284137505D600EB4A18 /* GBSearchBarController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBSearchBarController.xib; sourceTree = "<group>"; };
+		208D086113981084002C8072 /* GBTaskWithProgress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBTaskWithProgress.h; sourceTree = "<group>"; };
+		208D086213981084002C8072 /* GBTaskWithProgress.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBTaskWithProgress.m; sourceTree = "<group>"; };
 		20915F7E12875C92005E0D82 /* GBPreferencesController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBPreferencesController.xib; sourceTree = "<group>"; };
 		20915F8712875FDA005E0D82 /* prefix_appstore.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = prefix_appstore.pch; sourceTree = "<group>"; };
 		20915F8B12876062005E0D82 /* GBPreferencesController-appstore.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "GBPreferencesController-appstore.xib"; sourceTree = "<group>"; };
@@ -970,6 +974,8 @@
 				2057F11511ACFA60009EDF2F /* GBActivity.m */,
 				2038F6C311A030F70087CE37 /* GBTask.h */,
 				2038F6C411A030F70087CE37 /* GBTask.m */,
+				208D086113981084002C8072 /* GBTaskWithProgress.h */,
+				208D086213981084002C8072 /* GBTaskWithProgress.m */,
 				20B8B70A11A489F1006D6442 /* GBChangesBaseTask.h */,
 				20B8B70B11A489F1006D6442 /* GBChangesBaseTask.m */,
 				2059E82611AB3C2C00E4CF0B /* GBCommittedChangesTask.h */,
@@ -1929,6 +1935,7 @@
 				20CE6E0B13895CC3001D9707 /* GBStash.m in Sources */,
 				205C2897138C2A9F0039D19D /* GBConfirmationController.m in Sources */,
 				20566CA513941EA1005186AF /* GBColorLabelPicker.m in Sources */,
+				208D086313981084002C8072 /* GBTaskWithProgress.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2068,6 +2075,7 @@
 				20CE6E0A13895CC3001D9707 /* GBStash.m in Sources */,
 				205C2896138C2A9F0039D19D /* GBConfirmationController.m in Sources */,
 				20566CA613941EA1005186AF /* GBColorLabelPicker.m in Sources */,
+				208D086413981084002C8072 /* GBTaskWithProgress.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
