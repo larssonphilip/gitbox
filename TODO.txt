@@ -13,12 +13,19 @@ Bug fixes:
 ✓ Fixed rare crash when extracting a file from history.
 ✓ Fixed rare bug with incorrect user picture loading.
 ✓
+
+
 --
 
 Gitbox 1.5 misc items:
 
-- general: unified settings sheet
-
+- settings: unified settings sheet:
+  - tab: general - stats, repo URLs, git gc, sharing options etc.
+  - tab: local branches and tags
+  - tab: remote servers and branches
+  - tab: ignored files
+  - tab: raw config
+  
 - stage: overlay view describing shortcuts to stage all
 - stage: cmd+click should select all
 - delete tag using right click on a commit
