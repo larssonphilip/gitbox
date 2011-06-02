@@ -4,9 +4,13 @@
 
 #define RETURN_COLOR(r, g, b, a) \
   static NSColor* c = nil;\
-  if (!c) c = [[NSColor colorWithCalibratedRed:r green:g blue:b alpha:a] retain];\
+  if (!c) c = [[NSColor colorWithCalibratedRed:(r) green:(g) blue:(b) alpha:(a)] retain];\
   return c;
 
++ (NSColor*) linkColor
+{
+  RETURN_COLOR(50.0/255.0, 100.0/255.0, 220.0/255.0, 1.0);
+}
 
 + (NSColor*) searchHighlightColor
 {

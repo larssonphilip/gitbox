@@ -24,6 +24,7 @@
 - (void) updateHeaderSize;
 - (void) tableViewDidResize:(id)notification;
 - (NSString*) mailtoLinkForEmail:(NSString*)email commit:(GBCommit*)aCommit;
+- (void) highlightURLsInAttributedString:(NSMutableAttributedString*)textStorage;
 @end
 
 @implementation GBCommitViewController
@@ -97,33 +98,17 @@
   [self.tableView setDraggingSourceOperationMask:NSDragOperationCopy forLocal:NO];
   [self.tableView setVerticalMotionCanBeginDrag:YES];
   
-  [self.headerTextView setLinkTextAttributes:
-   [NSDictionary dictionaryWithObjectsAndKeys:                                              
-    [NSColor colorWithCalibratedRed:50.0/255.0 green:100.0/255.0 blue:220.0/255.0 alpha:1.0],
-    NSForegroundColorAttributeName,
-    
-    [NSNumber numberWithInt:NSUnderlineStyleNone],
-    NSUnderlineStyleAttributeName,
-    
-    [NSCursor pointingHandCursor],
-    NSCursorAttributeName,
-    nil]];
+  NSDictionary* linkAttrs = [NSDictionary dictionaryWithObjectsAndKeys:                                              
+                              [GBStyle linkColor], NSForegroundColorAttributeName, 
+                              [NSNumber numberWithInt:NSUnderlineStyleNone], NSUnderlineStyleAttributeName,
+                              [NSCursor pointingHandCursor], NSCursorAttributeName, 
+                             nil];
   
-  
+  [self.headerTextView setLinkTextAttributes:linkAttrs];
+  [self.messageTextView setLinkTextAttributes:linkAttrs];
+
   // DOESN'T WORK for programmatically filled views
-//  [self.messageTextView setAutomaticLinkDetectionEnabled:NO];
-  
-//  [self.messageTextView setLinkTextAttributes:
-//   [NSDictionary dictionaryWithObjectsAndKeys:                                              
-//    [NSColor colorWithCalibratedRed:50.0/255.0 green:100.0/255.0 blue:220.0/255.0 alpha:1.0],
-//    NSForegroundColorAttributeName,
-//    
-//    [NSNumber numberWithInt:NSUnderlineStyleNone],
-//    NSUnderlineStyleAttributeName,
-//    
-//    [NSCursor pointingHandCursor],
-//    NSCursorAttributeName,
-//    nil]];
+  //  [self.messageTextView setAutomaticLinkDetectionEnabled:NO];
 }
 
 
@@ -203,6 +188,8 @@
 - (void) updateMessageStorage:(NSMutableAttributedString*)storage
 {
   // I had an idea to paint "Signed-off-by: ..." line in grey, but I have a better use of my time right now. Oleg.
+  
+  [self highlightURLsInAttributedString:storage];
   
   [storage addAttribute:NSFontAttributeName value:[NSFont systemFontOfSize:12.0] range:NSMakeRange(0, [[storage string] length])];
   
@@ -665,6 +652,112 @@
     [aPanel setNameFieldStringValue:uniqueName];
   }
 }
+
+
+
+
+
+
+#pragma mark Private
+
+
+
+- (void) highlightURLsInAttributedString:(NSMutableAttributedString*)textStorage
+{
+  NSString* string = [textStorage string];
+  NSRange searchRange = NSMakeRange(0, [string length]);
+  NSRange foundRange = NSMakeRange(NSNotFound, 0);
+  [textStorage beginEditing];
+  do
+  {
+    @try
+    {
+      NSRange wwwRange   = [string rangeOfString:@"www."     options:0 range:searchRange];
+      NSRange httpsRange = [string rangeOfString:@"https://" options:0 range:searchRange];
+      NSRange httpRange  = [string rangeOfString:@"http://"  options:0 range:searchRange];
+      NSRange ftpRange   = [string rangeOfString:@"ftp://"   options:0 range:searchRange];
+      
+      foundRange = wwwRange;
+      
+      if (httpsRange.location < foundRange.location) foundRange = httpsRange;
+      if (httpRange.location < foundRange.location)  foundRange = httpRange;
+      if (ftpRange.location < foundRange.location)   foundRange = ftpRange;
+      
+      if (foundRange.length > 0)
+      {
+        // Restrict the searchRange so that it won't find the same string again
+        searchRange.location = (foundRange.location+1);
+        searchRange.length = [string length] - searchRange.location;
+        
+        // We assume the URL ends with whitespace
+        NSRange endOfURLRange = [string rangeOfCharacterFromSet:[NSCharacterSet whitespaceAndNewlineCharacterSet] options:0 range:searchRange];
+        
+        // The URL could also end at the end of the text.  The next line fixes it in case it does
+        if (endOfURLRange.length==0)
+        {
+          endOfURLRange.location = [string length]-1;
+        }
+        
+        // Set foundRange's length to the length of the URL
+        foundRange.length = endOfURLRange.location - foundRange.location;
+        
+        NSString* urlString = [string substringWithRange:foundRange];
+         
+        // Trim trailing punctuation.
+        NSString* urlString2 = [urlString stringByTrimmingCharactersInSet:[NSCharacterSet punctuationCharacterSet]];
+        
+        if (foundRange.length > [urlString2 length]) // have trimmed something
+        {
+          // if the slash "/" was trimmed, put it back.
+          if ([[urlString substringWithRange:NSMakeRange([urlString2 length], 1)] isEqualToString:@"/"])
+          {
+            urlString2 = [urlString2 stringByAppendingString:@"/"];
+          }
+        }
+        urlString = urlString2;
+        foundRange.length = [urlString length];
+        
+        if ([urlString rangeOfString:@"www"].location == 0) 
+        {
+          if ([urlString length] < [@"www.t.co" length]) // min domain name: www.t.co
+          {
+            urlString = nil;
+          }
+          else
+          {
+            urlString = [NSString stringWithFormat:@"http://%@", urlString];  
+          }
+        }
+        
+        if (urlString)
+        {
+          // Grab the URL from the text
+          NSURL* theURL = [NSURL URLWithString:urlString];
+          
+          if (theURL)
+          {
+            // Make the link attributes
+            NSDictionary* linkAttributes = [NSDictionary dictionaryWithObjectsAndKeys: 
+                                            theURL, NSLinkAttributeName,
+                                            //[NSNumber numberWithInt:NSSingleUnderlineStyle], NSUnderlineStyleAttributeName,
+                                            nil];
+            
+            // Finally, apply those attributes to the URL in the text
+            [textStorage addAttributes:linkAttributes range:foundRange];
+          } // not url
+        } // nil string
+      } // is found range
+    } // try
+    @catch (NSException * e)
+    {
+      NSLog(@"ERROR: GBStageViewController: exception caught while highlighting URLs inside text view. %@", e);
+      foundRange.length = 0;
+      break;
+    }    
+  } while (foundRange.length != 0); //repeat the do block until it no longer finds anything
+  [textStorage endEditing];
+}
+
 
 
 @end

@@ -1,4 +1,5 @@
 @interface GBStyle : NSObject
++ (NSColor*) linkColor;
 + (NSColor*) searchHighlightColor;
 + (NSColor*) searchSelectedHighlightColor;
 + (NSColor*) searchHighlightUnderlineColor;
