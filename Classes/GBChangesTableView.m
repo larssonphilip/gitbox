@@ -34,4 +34,11 @@
   }
 }
 
+// Not called for real clicks.
+//- (void)performClickOnCellAtColumn:(NSInteger)column row:(NSInteger)row
+//{
+//  NSLog(@"changes table view clicked: column %d, row %d", column, row);
+//  [super performClickOnCellAtColumn:column row:row];
+//}
+
 @end
