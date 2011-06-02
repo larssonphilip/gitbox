@@ -69,17 +69,17 @@
 
 - (void) setStaged:(BOOL) flag
 {
-  if (flag != staged)
+  if (flag == staged) return;
+  
+  staged = flag;
+  
+  if (flag)
   {
-    staged = flag;
-    if (flag)
-    {
-      [delegate stageChange:self];
-    }
-    else
-    {
-      [delegate unstageChange:self];
-    }
+    [delegate stageChange:self];
+  }
+  else
+  {
+    [delegate unstageChange:self];
   }
 }
 
