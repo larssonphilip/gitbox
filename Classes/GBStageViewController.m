@@ -238,6 +238,20 @@
 #pragma mark Actions
 
 
+- (IBAction) stageAll:(id)sender
+{
+  [self.repositoryController stageChanges:self.stage.changes withBlock:^{
+    if (![self.repositoryController.repository isRebaseConflict])
+    {
+      [[self.messageTextView window] makeFirstResponder:self.messageTextView];
+    }
+  }];
+}
+
+- (BOOL) validateStageAll:(id)sender
+{
+  return [self.stage.changes count] > 0;
+}
 
 - (IBAction) stageDoStage:(id)sender
 {

@@ -19,6 +19,7 @@
 - (IBAction) stageDoStage:(id)sender;
 - (IBAction) stageDoUnstage:(id)sender;
 - (IBAction) stageDoStageUnstage:(id)sender;
+- (IBAction) stageAll:(id)sender;
 - (IBAction) stageIgnoreFile:(id)sender;
 - (IBAction) stageRevertFile:(id)sender;
 - (IBAction) stageDeleteFile:(id)sender;

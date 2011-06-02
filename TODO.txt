@@ -1,7 +1,7 @@
 
 Gitbox 1.5 Release Notes
 
-✓ 
+✓ Stage All menu command with Command+Shift+Return shortcut.
 ✓ 
 ✓ 
 ✓ 
@@ -19,13 +19,11 @@ Gitbox 1.5 misc items:
 - sidebar: progress indicator for pulls, push and fetch.
 - general: unified settings sheet
 
-- menu: Stage All: cmd+shift+return (acts as cmd+a + cmd+return) (add to main menu and contextual menus)
 - stage: overlay view describing shortcuts to stage all
 - stage: cmd+click should select all
-- menu: Stage -> commit: - rename to "Stage and Edit Commit Message"
 - delete tag using right click on a commit
 - toolbar: allow to unset remote branch (useful when other branch has a lot of commits and clutters the history)
-? when doing commit checkout, select current local branch in the right branch menu so it is easier to compare and checkout later commits (especially during bisection search).
+? when doing a commit checkout, select current local branch in the right branch menu so it is easier to compare and checkout later commits (especially during bisection search).
 
 - bug: search: keep selection when search ends.
 - bug: askpass crashes with "task" selector when tries to update a repo with missing/invalid ssh key.
@@ -42,6 +40,8 @@ Gitbox 1.5 misc items:
 
 --------
 
++ menu: Stage All: cmd+shift+return (acts as cmd+a + cmd+return) (add to main menu and contextual menus)
+≠ menu: Stage -> commit: - rename to "Stage and Edit Commit Message"
 + bug: *** Terminating app due to uncaught exception 'NSInternalInconsistencyException', reason: 'GBExtractFileTask: self.objectId is nil'
 
 

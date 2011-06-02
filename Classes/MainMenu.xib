@@ -12,7 +12,7 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="1061"/>
+			<integer value="1029"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -897,6 +897,15 @@
 									<reference key="NSMenu" ref="1071047966"/>
 									<string key="NSTitle">Stage/Unstage</string>
 									<string key="NSKeyEquiv">s</string>
+									<int key="NSMnemonicLoc">2147483647</int>
+									<reference key="NSOnImage" ref="1033313550"/>
+									<reference key="NSMixedImage" ref="310636482"/>
+								</object>
+								<object class="NSMenuItem" id="651806000">
+									<reference key="NSMenu" ref="1071047966"/>
+									<string key="NSTitle">Stage All</string>
+									<string type="base64-UTF8" key="NSKeyEquiv">DQ</string>
+									<int key="NSKeyEquivModMask">1179648</int>
 									<int key="NSMnemonicLoc">2147483647</int>
 									<reference key="NSOnImage" ref="1033313550"/>
 									<reference key="NSMixedImage" ref="310636482"/>
@@ -2437,6 +2446,14 @@ ciBHZW5lcmFsClB1YmxpYyBMaWNlbnNlIGluc3RlYWQgb2YgdGhpcyBMaWNlbnNlLgo</bytes>
 					</object>
 					<int key="connectionID">1106</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">stageAll:</string>
+						<reference key="source" ref="1014"/>
+						<reference key="destination" ref="651806000"/>
+					</object>
+					<int key="connectionID">1108</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -3246,6 +3263,7 @@ ciBHZW5lcmFsClB1YmxpYyBMaWNlbnNlIGluc3RlYWQgb2YgdGhpcyBMaWNlbnNlLgo</bytes>
 							<reference ref="551169239"/>
 							<reference ref="428195100"/>
 							<reference ref="643193493"/>
+							<reference ref="651806000"/>
 						</object>
 						<reference key="parent" ref="409821691"/>
 					</object>
@@ -3467,6 +3485,11 @@ ciBHZW5lcmFsClB1YmxpYyBMaWNlbnNlIGluc3RlYWQgb2YgdGhpcyBMaWNlbnNlLgo</bytes>
 						<reference key="object" ref="387345557"/>
 						<reference key="parent" ref="107797663"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">1107</int>
+						<reference key="object" ref="651806000"/>
+						<reference key="parent" ref="1071047966"/>
+					</object>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="flattenedProperties">
@@ -3526,6 +3549,7 @@ ciBHZW5lcmFsClB1YmxpYyBMaWNlbnNlIGluc3RlYWQgb2YgdGhpcyBMaWNlbnNlLgo</bytes>
 					<string>1084.IBPluginDependency</string>
 					<string>1085.IBPluginDependency</string>
 					<string>1104.IBPluginDependency</string>
+					<string>1107.IBPluginDependency</string>
 					<string>124.IBPluginDependency</string>
 					<string>124.ImportedFromIB2</string>
 					<string>125.IBEditorWindowLastContentRect</string>
@@ -3694,7 +3718,7 @@ ciBHZW5lcmFsClB1YmxpYyBMaWNlbnNlIGluc3RlYWQgb2YgdGhpcyBMaWNlbnNlLgo</bytes>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{333, 548}, {193, 193}}</string>
+					<string>{{342, 527}, {207, 213}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -3725,6 +3749,7 @@ ciBHZW5lcmFsClB1YmxpYyBMaWNlbnNlIGluc3RlYWQgb2YgdGhpcyBMaWNlbnNlLgo</bytes>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>{{505, 695}, {64, 6}}</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -3776,7 +3801,7 @@ ciBHZW5lcmFsClB1YmxpYyBMaWNlbnNlIGluc3RlYWQgb2YgdGhpcyBMaWNlbnNlLgo</bytes>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="1"/>
 					<string>{{525, 802}, {197, 73}}</string>
-					<string>{{11, 741}, {587, 20}}</string>
+					<string>{{20, 740}, {587, 20}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="1"/>
 					<string>{74, 862}</string>
@@ -3906,7 +3931,7 @@ ciBHZW5lcmFsClB1YmxpYyBMaWNlbnNlIGluc3RlYWQgb2YgdGhpcyBMaWNlbnNlLgo</bytes>
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">1106</int>
+			<int key="maxID">1108</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -4619,6 +4644,9 @@ ciBHZW5lcmFsClB1YmxpYyBMaWNlbnNlIGluc3RlYWQgb2YgdGhpcyBMaWNlbnNlLgo</bytes>
 							<string>pull:</string>
 							<string>push:</string>
 							<string>rebase:</string>
+							<string>rebaseCancel:</string>
+							<string>rebaseContinue:</string>
+							<string>rebaseSkip:</string>
 							<string>removeOldStashes:</string>
 							<string>resetBranchToCommit:</string>
 							<string>resetChanges:</string>
@@ -4641,6 +4669,9 @@ ciBHZW5lcmFsClB1YmxpYyBMaWNlbnNlIGluc3RlYWQgb2YgdGhpcyBMaWNlbnNlLgo</bytes>
 							<string>id</string>
 							<string>id</string>
 							<string>NSMenuItem</string>
+							<string>id</string>
+							<string>id</string>
+							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>
@@ -4674,6 +4705,9 @@ ciBHZW5lcmFsClB1YmxpYyBMaWNlbnNlIGluc3RlYWQgb2YgdGhpcyBMaWNlbnNlLgo</bytes>
 							<string>pull:</string>
 							<string>push:</string>
 							<string>rebase:</string>
+							<string>rebaseCancel:</string>
+							<string>rebaseContinue:</string>
+							<string>rebaseSkip:</string>
 							<string>removeOldStashes:</string>
 							<string>resetBranchToCommit:</string>
 							<string>resetChanges:</string>
@@ -4752,6 +4786,18 @@ ciBHZW5lcmFsClB1YmxpYyBMaWNlbnNlIGluc3RlYWQgb2YgdGhpcyBMaWNlbnNlLgo</bytes>
 							</object>
 							<object class="IBActionInfo">
 								<string key="name">rebase:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">rebaseCancel:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">rebaseContinue:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">rebaseSkip:</string>
 								<string key="candidateClassName">id</string>
 							</object>
 							<object class="IBActionInfo">
@@ -5035,6 +5081,7 @@ ciBHZW5lcmFsClB1YmxpYyBMaWNlbnNlIGluc3RlYWQgb2YgdGhpcyBMaWNlbnNlLgo</bytes>
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>commit:</string>
 							<string>reallyCommit:</string>
+							<string>stageAll:</string>
 							<string>stageDeleteFile:</string>
 							<string>stageDoStage:</string>
 							<string>stageDoStageUnstage:</string>
@@ -5044,6 +5091,7 @@ ciBHZW5lcmFsClB1YmxpYyBMaWNlbnNlIGluc3RlYWQgb2YgdGhpcyBMaWNlbnNlLgo</bytes>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>
@@ -5060,6 +5108,7 @@ ciBHZW5lcmFsClB1YmxpYyBMaWNlbnNlIGluc3RlYWQgb2YgdGhpcyBMaWNlbnNlLgo</bytes>
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>commit:</string>
 							<string>reallyCommit:</string>
+							<string>stageAll:</string>
 							<string>stageDeleteFile:</string>
 							<string>stageDoStage:</string>
 							<string>stageDoStageUnstage:</string>
@@ -5075,6 +5124,10 @@ ciBHZW5lcmFsClB1YmxpYyBMaWNlbnNlIGluc3RlYWQgb2YgdGhpcyBMaWNlbnNlLgo</bytes>
 							</object>
 							<object class="IBActionInfo">
 								<string key="name">reallyCommit:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">stageAll:</string>
 								<string key="candidateClassName">id</string>
 							</object>
 							<object class="IBActionInfo">
@@ -5109,12 +5162,20 @@ ciBHZW5lcmFsClB1YmxpYyBMaWNlbnNlIGluc3RlYWQgb2YgdGhpcyBMaWNlbnNlLgo</bytes>
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>commitButton</string>
 							<string>messageTextView</string>
+							<string>rebaseCancelButton</string>
+							<string>rebaseContinueButton</string>
+							<string>rebaseSkipButton</string>
+							<string>rebaseStatusLabel</string>
 							<string>shortcutHintLabel</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>NSButton</string>
 							<string>NSTextView</string>
+							<string>NSButton</string>
+							<string>NSButton</string>
+							<string>NSButton</string>
+							<string>NSTextField</string>
 							<string>NSTextField</string>
 						</object>
 					</object>
@@ -5124,6 +5185,10 @@ ciBHZW5lcmFsClB1YmxpYyBMaWNlbnNlIGluc3RlYWQgb2YgdGhpcyBMaWNlbnNlLgo</bytes>
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>commitButton</string>
 							<string>messageTextView</string>
+							<string>rebaseCancelButton</string>
+							<string>rebaseContinueButton</string>
+							<string>rebaseSkipButton</string>
+							<string>rebaseStatusLabel</string>
 							<string>shortcutHintLabel</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
@@ -5135,6 +5200,22 @@ ciBHZW5lcmFsClB1YmxpYyBMaWNlbnNlIGluc3RlYWQgb2YgdGhpcyBMaWNlbnNlLgo</bytes>
 							<object class="IBToOneOutletInfo">
 								<string key="name">messageTextView</string>
 								<string key="candidateClassName">NSTextView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">rebaseCancelButton</string>
+								<string key="candidateClassName">NSButton</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">rebaseContinueButton</string>
+								<string key="candidateClassName">NSButton</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">rebaseSkipButton</string>
+								<string key="candidateClassName">NSButton</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">rebaseStatusLabel</string>
+								<string key="candidateClassName">NSTextField</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">shortcutHintLabel</string>

@@ -259,6 +259,15 @@
 						<reference key="NSOnImage" ref="1044813253"/>
 						<reference key="NSMixedImage" ref="164999429"/>
 					</object>
+					<object class="NSMenuItem" id="444672448">
+						<reference key="NSMenu" ref="406243151"/>
+						<string key="NSTitle">Stage All</string>
+						<string type="base64-UTF8" key="NSKeyEquiv">DQ</string>
+						<int key="NSKeyEquivModMask">1179648</int>
+						<int key="NSMnemonicLoc">2147483647</int>
+						<reference key="NSOnImage" ref="1044813253"/>
+						<reference key="NSMixedImage" ref="164999429"/>
+					</object>
 					<object class="NSMenuItem" id="267540823">
 						<reference key="NSMenu" ref="406243151"/>
 						<bool key="NSIsDisabled">YES</bool>
@@ -272,7 +281,7 @@
 					<object class="NSMenuItem" id="895120728">
 						<reference key="NSMenu" ref="406243151"/>
 						<string key="NSTitle">Show Difference</string>
-						<string key="NSKeyEquiv"/>
+						<string key="NSKeyEquiv">d</string>
 						<int key="NSMnemonicLoc">2147483647</int>
 						<reference key="NSOnImage" ref="1044813253"/>
 						<reference key="NSMixedImage" ref="164999429"/>
@@ -911,6 +920,14 @@
 					</object>
 					<int key="connectionID">129</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">stageAll:</string>
+						<reference key="source" ref="1003"/>
+						<reference key="destination" ref="444672448"/>
+					</object>
+					<int key="connectionID">131</int>
+				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<array key="orderedObjects">
@@ -965,6 +982,7 @@
 							<reference ref="298280379"/>
 							<reference ref="735007963"/>
 							<reference ref="267540823"/>
+							<reference ref="444672448"/>
 						</array>
 						<reference key="parent" ref="0"/>
 						<string key="objectName">stageMenu</string>
@@ -1186,6 +1204,11 @@
 						<reference key="object" ref="3584061"/>
 						<reference key="parent" ref="564339286"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">130</int>
+						<reference key="object" ref="444672448"/>
+						<reference key="parent" ref="406243151"/>
+					</object>
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
@@ -1232,8 +1255,9 @@
 				<object class="NSAffineTransform" key="13.IBViewBoundsToFrameTransform">
 					<bytes key="NSTransformStruct">P4AAAL+AAAAAAAAAw4cAAA</bytes>
 				</object>
+				<string key="130.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="14.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-				<string key="15.IBEditorWindowLastContentRect">{{530, 166}, {162, 163}}</string>
+				<string key="15.IBEditorWindowLastContentRect">{{530, 146}, {204, 183}}</string>
 				<string key="15.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="16.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="17.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -1265,7 +1289,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">129</int>
+			<int key="maxID">131</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -1500,6 +1524,7 @@
 					<dictionary class="NSMutableDictionary" key="actions">
 						<string key="commit:">id</string>
 						<string key="reallyCommit:">id</string>
+						<string key="stageAll:">id</string>
 						<string key="stageDeleteFile:">id</string>
 						<string key="stageDoStage:">id</string>
 						<string key="stageDoStageUnstage:">id</string>
@@ -1514,6 +1539,10 @@
 						</object>
 						<object class="IBActionInfo" key="reallyCommit:">
 							<string key="name">reallyCommit:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="stageAll:">
+							<string key="name">stageAll:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBActionInfo" key="stageDeleteFile:">
