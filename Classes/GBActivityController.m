@@ -110,7 +110,7 @@ static GBActivityController* sharedGBActivityController;
 
 - (void) addActivity:(GBActivity*)activity
 {
-  static int maxNumberOfActivities = 100;  
+  static int maxNumberOfActivities = 500;  
   
   if ([self.activities count] > maxNumberOfActivities + (maxNumberOfActivities/10)) // a little overlap to avoid refreshing the array too often
   {
