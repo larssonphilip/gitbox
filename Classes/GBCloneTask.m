@@ -4,7 +4,6 @@
 #import "NSData+OADataHelpers.h"
 
 @interface GBCloneTask ()
-@property(nonatomic, retain) NSDate* lastProgressUpdate;
 @end
 
 @implementation GBCloneTask
@@ -12,7 +11,6 @@
 @synthesize sourceURL;
 @synthesize targetURL;
 @synthesize progressUpdateBlock;
-@synthesize lastProgressUpdate;
 @synthesize status;
 @synthesize progress;
 
@@ -21,7 +19,6 @@
   self.sourceURL = nil;
   self.targetURL = nil;
   self.progressUpdateBlock = nil;
-  self.lastProgressUpdate = nil;
   self.status = nil;
   [super dealloc];
 }
@@ -80,10 +77,6 @@
 
 - (void) didReceiveStandardErrorData:(NSData*)dataChunk
 {
-//  NSDate* now = [NSDate date];
-//  if (lastProgressUpdate && [now timeIntervalSinceDate:lastProgressUpdate] < 0.1) return; // skip updates every 0.1 sec for performance.
-//  self.lastProgressUpdate = now;
-  
   static double compressingRatio = 0.1;
   static double resolvingDeltasRatio = 0.1;
   static double receivingRatio = 0.8;
@@ -128,7 +121,8 @@
     newProgress = (compressingRatio + receivingRatio)*100.0 + resolvingDeltasRatio*partialProgress;
   }
   
-  if (round(newProgress) == round(self.progress)) return;
+  // To avoid heavy load on main thread, call the block only when progress changes by 0.5%.
+  if (round(newProgress*2) == round(self.progress*2)) return;
   
   self.progress = newProgress;
   [self callProgressBlock];
