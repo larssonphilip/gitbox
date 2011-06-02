@@ -649,6 +649,12 @@
     return;
   }
   
+  if (!objectId)
+  {
+    if (aBlock) aBlock(NO);
+    return;
+  }
+  
   GBExtractFileTask* task = [GBExtractFileTask task];
   task.folder = @"QuickLook";
   task.repository = self.repository;
@@ -681,6 +687,8 @@
 
 - (NSURL*) temporaryURLForObjectId:(NSString*)objectId optionalURL:(NSURL*)url commitId:(NSString*)aCommitId
 {
+  if (!objectId) return nil;
+  
   GBExtractFileTask* task = [GBExtractFileTask task];
   task.repository = self.repository;
   task.commitId = aCommitId;

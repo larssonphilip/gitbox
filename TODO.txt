@@ -10,33 +10,19 @@ Bug fixes:
 
 ✓ 
 ✓ 
-✓ 
+✓ Fixed rare crash when extracting a file from history.
 ✓ 
 --
 
 Gitbox 1.5 misc items:
 
-- ✓ (wip) progress indicator for pulls, push and fetch.
-- sidebar: progress indicator for pushing/pulling/fetching
+- sidebar: progress indicator for pulls, push and fetch.
+- general: unified settings sheet
 
 - menu: Stage -> commit: - rename to "Stage and Edit Commit Message"
 - delete tag using right click on a commit
 - toolbar: allow to unset remote branch (useful when other branch has a lot of commits and clutters the history)
 ? when doing commit checkout, select current local branch in the right branch menu so it is easier to compare and checkout later commits (especially during bisection search).
-
-- history: push a single commit
-- general: unified settings sheet
-
-- bug: *** Terminating app due to uncaught exception 'NSInternalInconsistencyException', reason: 'GBExtractFileTask: self.objectId is nil'
-*** Call stack at first throw:
-(
-	0   CoreFoundation                      0x00007fff80a2d7b4 __exceptionPreprocess + 180
-	1   libobjc.A.dylib                     0x00007fff8219f0f3 objc_exception_throw + 45
-	2   CoreFoundation                      0x00007fff80a2d5d7 +[NSException raise:format:arguments:] + 103
-	3   Foundation                          0x00007fff81acb776 -[NSAssertionHandler handleFailureInMethod:object:file:lineNumber:description:] + 198
-	4   Gitbox                              0x000000010001c7cb -[GBExtractFileTask prettyFileName] + 136
-	5   Gitbox                              0x000000010001cbcd -[GBExtractFileTask targetURL] + 139
-	6   Gitbox                              0x000000010001ca38 -[GBExtractFileTask willPrepareTask] + 33
 
 - bug: search: keep selection when search ends.
 - bug: askpass crashes with "task" selector when tries to update a repo with missing/invalid ssh key.
@@ -47,10 +33,14 @@ Gitbox 1.5 misc items:
 - bug: when selected a collapsed group and added a folder, the selected group is not expanded
 - bug: stage: when having multiple selection and expanding it with keyboard, stage updates cause internal rest, so the selection does not change the same way when continuing pressing keystrokes. Should probably not replace stage content when it did not really change.
 
+- history: push a single commit
 - stage: add option "Delete from stage only" for "git rm --force --cached <filepath>".
 - stage: right click menu: "file history" which inserts file path into search field
 
 --------
+
++ bug: *** Terminating app due to uncaught exception 'NSInternalInconsistencyException', reason: 'GBExtractFileTask: self.objectId is nil'
+
 
 -----------------------------------------------------------
 
