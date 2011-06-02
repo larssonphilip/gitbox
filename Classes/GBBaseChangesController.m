@@ -242,7 +242,7 @@ dataCellForTableColumn:(NSTableColumn*)aTableColumn
   return nil;
 }
 
-- (NSIndexSet *)tableView:(NSTableView *)tableView selectionIndexesForProposedSelection:(NSIndexSet *)proposedSelectionIndexes
+- (NSIndexSet *)tableView:(NSTableView *)aTableView selectionIndexesForProposedSelection:(NSIndexSet *)proposedSelectionIndexes
 {
   return [proposedSelectionIndexes indexesPassingTest:^(NSUInteger index, BOOL* stop){
     return (BOOL)(index != 0);
