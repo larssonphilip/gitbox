@@ -2,6 +2,7 @@
 #import "GBWindowControllerWithCallback.h"
 
 @class GBRepository;
+@class GBRepositorySettingsViewController;
 
 @interface GBRepositorySettingsController : GBWindowControllerWithCallback<NSWindowDelegate>
 
@@ -12,5 +13,10 @@
 
 - (IBAction) cancel:(id)sender;
 - (IBAction) save:(id)sender;
+
+
+// Protected
+
+- (void) viewControllerDidChangeDirtyStatus:(GBRepositorySettingsViewController*)ctrl;
 
 @end
