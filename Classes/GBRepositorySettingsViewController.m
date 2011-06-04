@@ -37,12 +37,12 @@
   [[self view] setNextResponder:self];
 }
 
-- (void) userDidCancel
+- (void) cancel
 {
   // override in subclasses to do some cleanup when window is closed
 }
 
-- (void) userDidSave
+- (void) save
 {
   // override in subclasses to save date after the window is closed
 }

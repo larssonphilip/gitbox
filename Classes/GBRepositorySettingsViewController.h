@@ -11,7 +11,7 @@
 - (id)initWithRepository:(GBRepository*)repo;
 
 - (void) viewDidLoad;
-- (void) userDidCancel;
-- (void) userDidSave;
+- (void) cancel;
+- (void) save;
 
 @end

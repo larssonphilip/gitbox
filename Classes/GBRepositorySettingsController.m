@@ -3,6 +3,7 @@
 #import "GBRepository.h"
 
 #import "GBRepositorySummaryController.h"
+#import "GBRepositoryBranchesAndTagsController.h"
 
 
 @interface GBRepositorySettingsController () <NSTabViewDelegate>
@@ -44,15 +45,30 @@
   // Not the best place to init controllers, but at least we have the repository here.
   self.viewControllers = [NSArray arrayWithObjects:
                           [[[GBRepositorySummaryController alloc] initWithRepository:self.repository] autorelease],
+                          [[[GBRepositoryBranchesAndTagsController alloc] initWithRepository:self.repository] autorelease],
                           nil];
+  
+  for (GBRepositorySettingsViewController* ctrl in self.viewControllers)
+  {
+    ctrl.settingsController = self;
+  }
   
   [super presentSheetInMainWindow];
 }
 
 - (void) performCompletionHandler:(BOOL)cancelled
 {
-  // TODO: go through all view controllers and save or cancel them if needed
-  
+  for (GBRepositorySettingsViewController* ctrl in self.viewControllers)
+  {
+    if (cancelled)
+    {
+      [ctrl cancel];
+    }
+    else
+    {
+      [ctrl save];
+    }
+  }
   [super performCompletionHandler:cancelled];
 }
 

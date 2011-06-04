@@ -237,6 +237,10 @@
 		208D0B9E139A9E37002C8072 /* GBRepositorySummaryController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 208D0B9C139A9E37002C8072 /* GBRepositorySummaryController.xib */; };
 		208D0BAF139A9FF8002C8072 /* Icon512.png in Resources */ = {isa = PBXBuildFile; fileRef = 208D0BAE139A9FF8002C8072 /* Icon512.png */; };
 		208D0BB0139A9FF8002C8072 /* Icon512.png in Resources */ = {isa = PBXBuildFile; fileRef = 208D0BAE139A9FF8002C8072 /* Icon512.png */; };
+		208D0C5D139AB3F6002C8072 /* GBRepositoryBranchesAndTagsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 208D0C5C139AB3F6002C8072 /* GBRepositoryBranchesAndTagsController.m */; };
+		208D0C5E139AB3F6002C8072 /* GBRepositoryBranchesAndTagsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 208D0C5C139AB3F6002C8072 /* GBRepositoryBranchesAndTagsController.m */; };
+		208D0C75139AB5D3002C8072 /* GBRepositoryBranchesAndTagsController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 208D0C74139AB5D3002C8072 /* GBRepositoryBranchesAndTagsController.xib */; };
+		208D0C76139AB5D3002C8072 /* GBRepositoryBranchesAndTagsController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 208D0C74139AB5D3002C8072 /* GBRepositoryBranchesAndTagsController.xib */; };
 		20915EBC12874D2A005E0D82 /* default_gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 209A960011BC60BC006B0B5C /* default_gitignore */; };
 		20915EBD12874D2A005E0D82 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C1660FE840EACC02AAC07 /* InfoPlist.strings */; };
 		20915EBE12874D2A005E0D82 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD582B0DA1D0D100B32029 /* MainMenu.xib */; };
@@ -715,6 +719,9 @@
 		208D0B8E139A9763002C8072 /* GBRepositorySummaryController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBRepositorySummaryController.m; sourceTree = "<group>"; };
 		208D0B9C139A9E37002C8072 /* GBRepositorySummaryController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBRepositorySummaryController.xib; sourceTree = "<group>"; };
 		208D0BAE139A9FF8002C8072 /* Icon512.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon512.png; sourceTree = SOURCE_ROOT; };
+		208D0C5B139AB3F6002C8072 /* GBRepositoryBranchesAndTagsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBRepositoryBranchesAndTagsController.h; sourceTree = "<group>"; };
+		208D0C5C139AB3F6002C8072 /* GBRepositoryBranchesAndTagsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBRepositoryBranchesAndTagsController.m; sourceTree = "<group>"; };
+		208D0C74139AB5D3002C8072 /* GBRepositoryBranchesAndTagsController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBRepositoryBranchesAndTagsController.xib; sourceTree = "<group>"; };
 		20915F7E12875C92005E0D82 /* GBPreferencesController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBPreferencesController.xib; sourceTree = "<group>"; };
 		20915F8712875FDA005E0D82 /* prefix_appstore.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = prefix_appstore.pch; sourceTree = "<group>"; };
 		20915F8B12876062005E0D82 /* GBPreferencesController-appstore.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "GBPreferencesController-appstore.xib"; sourceTree = "<group>"; };
@@ -1154,6 +1161,9 @@
 				208D0B8D139A9763002C8072 /* GBRepositorySummaryController.h */,
 				208D0B8E139A9763002C8072 /* GBRepositorySummaryController.m */,
 				208D0B9C139A9E37002C8072 /* GBRepositorySummaryController.xib */,
+				208D0C5B139AB3F6002C8072 /* GBRepositoryBranchesAndTagsController.h */,
+				208D0C5C139AB3F6002C8072 /* GBRepositoryBranchesAndTagsController.m */,
+				208D0C74139AB5D3002C8072 /* GBRepositoryBranchesAndTagsController.xib */,
 			);
 			name = "Repository Settings";
 			sourceTree = "<group>";
@@ -1718,6 +1728,7 @@
 				208D0AB1139844FC002C8072 /* GBRepositorySettingsController.xib in Resources */,
 				208D0B9D139A9E37002C8072 /* GBRepositorySummaryController.xib in Resources */,
 				208D0BAF139A9FF8002C8072 /* Icon512.png in Resources */,
+				208D0C75139AB5D3002C8072 /* GBRepositoryBranchesAndTagsController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1792,6 +1803,7 @@
 				208D0AB2139844FC002C8072 /* GBRepositorySettingsController.xib in Resources */,
 				208D0B9E139A9E37002C8072 /* GBRepositorySummaryController.xib in Resources */,
 				208D0BB0139A9FF8002C8072 /* Icon512.png in Resources */,
+				208D0C76139AB5D3002C8072 /* GBRepositoryBranchesAndTagsController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1953,6 +1965,7 @@
 				208D0AB513984512002C8072 /* GBRepositorySettingsController.m in Sources */,
 				208D0B76139A7419002C8072 /* GBRepositorySettingsViewController.m in Sources */,
 				208D0B8F139A9763002C8072 /* GBRepositorySummaryController.m in Sources */,
+				208D0C5D139AB3F6002C8072 /* GBRepositoryBranchesAndTagsController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2096,6 +2109,7 @@
 				208D0AB613984512002C8072 /* GBRepositorySettingsController.m in Sources */,
 				208D0B77139A7419002C8072 /* GBRepositorySettingsViewController.m in Sources */,
 				208D0B90139A9763002C8072 /* GBRepositorySummaryController.m in Sources */,
+				208D0C5E139AB3F6002C8072 /* GBRepositoryBranchesAndTagsController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
