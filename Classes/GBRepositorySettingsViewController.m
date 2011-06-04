@@ -37,6 +37,11 @@
   [[self view] setNextResponder:self];
 }
 
+- (void) viewDidAppear
+{
+  // override in subclasses to do view updates
+}
+
 - (void) cancel
 {
   // override in subclasses to do some cleanup when window is closed

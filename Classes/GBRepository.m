@@ -1428,6 +1428,33 @@
 }
 
 
+- (void) removeRefs:(NSArray*)refs withBlock:(void(^)())block
+{
+  [OABlockGroup groupBlock:^(OABlockGroup *group) {
+    for (GBRef* ref in refs)
+    {
+      [group enter];
+      GBTask* task = [self task];
+      if ([ref isTag])
+      {
+        task.arguments = [NSArray arrayWithObjects:@"tag", @"-d", ref.name, nil];
+      }
+      else
+      {
+        task.arguments = [NSArray arrayWithObjects:@"branch", @"-D", ref.name, nil];
+      }
+      
+      [self launchTask:task withBlock:^{
+        if ([task isError])
+        {
+          [self alertWithMessage:[NSString stringWithFormat:NSLocalizedString(@"Failed to remove ref %@",nil), ref.name] description:[task UTF8ErrorAndOutput]];
+        }
+        [group leave];
+      }];
+    }
+  } continuation:block];
+}
+
 
 
 #pragma mark Utility methods

@@ -2,8 +2,12 @@
 
 @interface GBRepositoryBranchesAndTagsController : GBRepositorySettingsViewController
 
-@property(nonatomic, retain) NSArray* branchesBinding;
-@property(nonatomic, retain) NSArray* tagsBinding;
+@property(nonatomic, retain) NSMutableArray* branchesBinding;
+@property(nonatomic, retain) NSMutableArray* tagsBinding;
+
+@property(nonatomic, retain) IBOutlet NSArrayController* branchesController;
+@property(nonatomic, retain) IBOutlet NSArrayController* tagsController;
+
 
 - (IBAction) deleteBranch:(id)sender;
 - (IBAction) deleteTag:(id)sender;

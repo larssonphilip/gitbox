@@ -38,9 +38,9 @@
   return NSLocalizedString(@"Summary", @"");
 }
 
-- (void) viewDidLoad
+- (void) viewDidAppear
 {
-  [super viewDidLoad];
+  [super viewDidAppear];
   
   [self.parentFolderLabel setStringValue:[self parentFolder]];
   [self.titleLabel setStringValue:[self repoTitle]];
@@ -50,7 +50,6 @@
   // TODO: support multiple URLs
   // TODO: add more labels for useless stats like number of commits, tags, creation date, size on disk, committers etc.
 }
-
 
 
 

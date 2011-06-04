@@ -147,6 +147,10 @@
     [vc viewDidLoad];
   }
   
+  // TODO: select another controller if client asked. Avoid double calling of viewDidAppear.
+  
+  [[self.viewControllers objectAtIndex:0] viewDidAppear];
+  
   self.dirty = YES;
   self.dirty = NO;
 }
@@ -158,7 +162,14 @@
 
 - (void)tabView:(NSTabView *)aTabView didSelectTabViewItem:(NSTabViewItem *)tabViewItem
 {
-  
+  for (GBRepositorySettingsViewController* c in self.viewControllers)
+  {
+    if ([c view] == [tabViewItem view])
+    {
+      [c viewDidAppear];
+      break;
+    }
+  }
 }
 
 
