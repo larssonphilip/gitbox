@@ -20,6 +20,10 @@
 
 #import "GBPromptController.h"
 
+#import "GBRepositorySettingsController.h"
+#import "GBRemotesController.h" // will be obsolete when settings panel is done
+#import "GBFileEditingController.h" // will be obsolete when settings panel is done
+
 #import "OAFSEventStream.h"
 #import "NSString+OAStringHelpers.h"
 #import "NSError+OAPresent.h"
@@ -32,11 +36,8 @@
 #import "NSObject+OASelectorNotifications.h"
 #import "NSObject+OADispatchItemValidation.h"
 #import "NSMenu+OAMenuHelpers.h"
-
-// will be obsolete when settings panel is done
-#import "GBRemotesController.h"
-#import "GBFileEditingController.h"
 #import "NSWindowController+OAWindowControllerHelpers.h"
+
 
 #if GITBOX_APP_STORE || DEBUG_iRate
 #import "iRate.h"
@@ -901,6 +902,15 @@
 
 
 
+- (IBAction) openSettings:(id)sender
+{
+  GBRepositorySettingsController* ctrl = [[[GBRepositorySettingsController alloc] initWithWindowNibName:@"GBRepositorySettingsController"] autorelease];
+  
+  // TODO: maybe should pass repositoryController instead of repository.
+  
+  ctrl.repository = self.repository;
+  [ctrl presentSheetInMainWindow];
+}
 
 - (IBAction) editRepositories:(id)sender
 {

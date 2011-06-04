@@ -74,7 +74,7 @@
 
 - (BOOL) wantsSettingsButton
 {
-  return NO; // TODO: change to YES when settings are implemented
+  return YES;
 }
 
 

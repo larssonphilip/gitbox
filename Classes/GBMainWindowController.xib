@@ -97,7 +97,7 @@
 										<int key="NSfFlags">1044</int>
 									</object>
 									<reference key="NSControlView" ref="879644211"/>
-									<int key="NSButtonFlags">-1228128001</int>
+									<int key="NSButtonFlags">-2033434369</int>
 									<int key="NSButtonFlags2">163</int>
 									<object class="NSCustomResource" key="NSNormalImage" id="298263677">
 										<string key="NSClassName">NSImage</string>
@@ -236,7 +236,7 @@
 							<nil key="NSToolbarItemImage"/>
 							<nil key="NSToolbarItemTarget"/>
 							<nil key="NSToolbarItemAction"/>
-							<string key="NSToolbarItemMinSize">{142, 25}</string>
+							<string key="NSToolbarItemMinSize">{132, 25}</string>
 							<string key="NSToolbarItemMaxSize">{142, 32}</string>
 							<bool key="NSToolbarItemEnabled">YES</bool>
 							<bool key="NSToolbarItemAutovalidates">YES</bool>
@@ -264,6 +264,10 @@
 									<reference key="NSControlView" ref="139175786"/>
 									<int key="NSButtonFlags">-2034220801</int>
 									<int key="NSButtonFlags2">163</int>
+									<object class="NSCustomResource" key="NSNormalImage" id="95900304">
+										<string key="NSClassName">NSImage</string>
+										<string key="NSResourceName">GBToolbarPlus</string>
+									</object>
 									<string key="NSAlternateContents"/>
 									<string key="NSKeyEquivalent"/>
 									<int key="NSPeriodicDelay">400</int>
@@ -275,10 +279,7 @@
 										<string key="NSKeyEquiv"/>
 										<int key="NSKeyEquivModMask">1048576</int>
 										<int key="NSMnemonicLoc">2147483647</int>
-										<object class="NSCustomResource" key="NSImage" id="835604134">
-											<string key="NSClassName">NSImage</string>
-											<string key="NSResourceName">GBToolbarPlus</string>
-										</object>
+										<reference key="NSImage" ref="95900304"/>
 										<object class="NSCustomResource" key="NSOnImage" id="1056477376">
 											<string key="NSClassName">NSImage</string>
 											<string key="NSResourceName">NSMenuCheckmark</string>
@@ -355,7 +356,7 @@
 									<bool key="NSAltersState">YES</bool>
 								</object>
 							</object>
-							<reference key="NSToolbarItemImage" ref="835604134"/>
+							<reference key="NSToolbarItemImage" ref="95900304"/>
 							<nil key="NSToolbarItemTarget"/>
 							<nil key="NSToolbarItemAction"/>
 							<string key="NSToolbarItemMinSize">{30, 25}</string>
@@ -981,6 +982,14 @@
 					</object>
 					<int key="connectionID">100445</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">openSettings:</string>
+						<reference key="source" ref="613418571"/>
+						<reference key="destination" ref="384795696"/>
+					</object>
+					<int key="connectionID">100446</int>
+				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<array key="orderedObjects">
@@ -1529,7 +1538,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">100445</int>
+			<int key="maxID">100446</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -1632,6 +1641,153 @@
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">Classes/GBRepositoriesGroup.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">GBRepositoryController</string>
+					<string key="superclassName">NSResponder</string>
+					<dictionary class="NSMutableDictionary" key="actions">
+						<string key="applyAsPatchCommit:">NSMenuItem</string>
+						<string key="applyStash:">NSMenuItem</string>
+						<string key="applyStashMenu:">id</string>
+						<string key="cancelSearch:">id</string>
+						<string key="cherryPickCommit:">NSMenuItem</string>
+						<string key="editGitConfig:">id</string>
+						<string key="editGitIgnore:">id</string>
+						<string key="editRepositories:">id</string>
+						<string key="fetch:">id</string>
+						<string key="forcePush:">id</string>
+						<string key="mergeCommit:">NSMenuItem</string>
+						<string key="openInFinder:">id</string>
+						<string key="openInTerminal:">id</string>
+						<string key="openInXcode:">NSMenuItem</string>
+						<string key="openSettings:">id</string>
+						<string key="performFindPanelAction:">id</string>
+						<string key="pull:">id</string>
+						<string key="push:">id</string>
+						<string key="rebase:">id</string>
+						<string key="rebaseCancel:">id</string>
+						<string key="rebaseContinue:">id</string>
+						<string key="rebaseSkip:">id</string>
+						<string key="removeOldStashes:">NSMenuItem</string>
+						<string key="resetBranchToCommit:">NSMenuItem</string>
+						<string key="resetChanges:">id</string>
+						<string key="search:">id</string>
+						<string key="stashChanges:">id</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="actionInfosByName">
+						<object class="IBActionInfo" key="applyAsPatchCommit:">
+							<string key="name">applyAsPatchCommit:</string>
+							<string key="candidateClassName">NSMenuItem</string>
+						</object>
+						<object class="IBActionInfo" key="applyStash:">
+							<string key="name">applyStash:</string>
+							<string key="candidateClassName">NSMenuItem</string>
+						</object>
+						<object class="IBActionInfo" key="applyStashMenu:">
+							<string key="name">applyStashMenu:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="cancelSearch:">
+							<string key="name">cancelSearch:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="cherryPickCommit:">
+							<string key="name">cherryPickCommit:</string>
+							<string key="candidateClassName">NSMenuItem</string>
+						</object>
+						<object class="IBActionInfo" key="editGitConfig:">
+							<string key="name">editGitConfig:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="editGitIgnore:">
+							<string key="name">editGitIgnore:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="editRepositories:">
+							<string key="name">editRepositories:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="fetch:">
+							<string key="name">fetch:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="forcePush:">
+							<string key="name">forcePush:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="mergeCommit:">
+							<string key="name">mergeCommit:</string>
+							<string key="candidateClassName">NSMenuItem</string>
+						</object>
+						<object class="IBActionInfo" key="openInFinder:">
+							<string key="name">openInFinder:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="openInTerminal:">
+							<string key="name">openInTerminal:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="openInXcode:">
+							<string key="name">openInXcode:</string>
+							<string key="candidateClassName">NSMenuItem</string>
+						</object>
+						<object class="IBActionInfo" key="openSettings:">
+							<string key="name">openSettings:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="performFindPanelAction:">
+							<string key="name">performFindPanelAction:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="pull:">
+							<string key="name">pull:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="push:">
+							<string key="name">push:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="rebase:">
+							<string key="name">rebase:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="rebaseCancel:">
+							<string key="name">rebaseCancel:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="rebaseContinue:">
+							<string key="name">rebaseContinue:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="rebaseSkip:">
+							<string key="name">rebaseSkip:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="removeOldStashes:">
+							<string key="name">removeOldStashes:</string>
+							<string key="candidateClassName">NSMenuItem</string>
+						</object>
+						<object class="IBActionInfo" key="resetBranchToCommit:">
+							<string key="name">resetBranchToCommit:</string>
+							<string key="candidateClassName">NSMenuItem</string>
+						</object>
+						<object class="IBActionInfo" key="resetChanges:">
+							<string key="name">resetChanges:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="search:">
+							<string key="name">search:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="stashChanges:">
+							<string key="name">stashChanges:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+					</dictionary>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">Classes/GBRepositoryController.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
