@@ -1156,7 +1156,8 @@
 {
   if (self.selectedCommit)
   {
-    [sender setTitle:[NSString stringWithFormat:NSLocalizedString(@"Merge %@", nil), [self.selectedCommit subjectOrCommitIDForMenuItem]]];
+    [sender setTitle:NSLocalizedString(@"Merge", nil)];
+    //[sender setTitle:[NSString stringWithFormat:NSLocalizedString(@"Merge %@", nil), [self.selectedCommit subjectOrCommitIDForMenuItem]]];
   }
   else
   {
@@ -1180,7 +1181,8 @@
 {
   if (self.selectedCommit)
   {
-    [sender setTitle:[NSString stringWithFormat:NSLocalizedString(@"Cherry-pick %@", nil), [self.selectedCommit subjectOrCommitIDForMenuItem]]];
+    [sender setTitle:NSLocalizedString(@"Cherry-pick", nil)];
+//    [sender setTitle:[NSString stringWithFormat:NSLocalizedString(@"Cherry-pick %@", nil), [self.selectedCommit subjectOrCommitIDForMenuItem]]];
   }
   else
   {
@@ -1204,7 +1206,8 @@
 {
   if (self.selectedCommit)
   {
-    [sender setTitle:[NSString stringWithFormat:NSLocalizedString(@"Apply %@ as Patch", nil), [self.selectedCommit subjectOrCommitIDForMenuItem]]];
+    [sender setTitle:NSLocalizedString(@"Apply as Patch", nil)];
+//    [sender setTitle:[NSString stringWithFormat:NSLocalizedString(@"Apply %@ as Patch", nil), [self.selectedCommit subjectOrCommitIDForMenuItem]]];
   }
   else
   {
@@ -1258,7 +1261,8 @@
 {
   if (self.selectedCommit)
   {
-    [sender setTitle:[NSString stringWithFormat:NSLocalizedString(@"Reset Branch to %@...", nil), [self.selectedCommit subjectOrCommitIDForMenuItem]]];
+    [sender setTitle:NSLocalizedString(@"Reset Branch...", nil)];
+//    [sender setTitle:[NSString stringWithFormat:NSLocalizedString(@"Reset Branch to %@...", nil), [self.selectedCommit subjectOrCommitIDForMenuItem]]];
   }
   else
   {
