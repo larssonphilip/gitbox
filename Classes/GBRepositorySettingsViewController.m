@@ -52,4 +52,10 @@
   // override in subclasses to save date after the window is closed
 }
 
+- (void) criticalConfirmationWithMessage:(NSString*)message description:(NSString*)desc ok:(NSString*)okOrNil completion:(void(^)(BOOL))completion
+{
+  [self.settingsController criticalConfirmationWithMessage:message description:desc ok:okOrNil completion:completion];
+}
+
+
 @end

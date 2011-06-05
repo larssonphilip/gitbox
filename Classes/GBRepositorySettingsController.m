@@ -173,4 +173,36 @@
 }
 
 
+
+#pragma mark Confirmation sheet
+
+
+- (void) criticalConfirmationWithMessage:(NSString*)message description:(NSString*)desc ok:(NSString*)okOrNil completion:(void(^)(BOOL))completion
+{
+  completion = [[completion copy] autorelease];
+  
+  NSAlert* alert = [[[NSAlert alloc] init] autorelease];
+  
+  if (message) [alert setMessageText:message];
+  if (desc) [alert setInformativeText:desc];
+  [alert setAlertStyle:NSCriticalAlertStyle];
+  
+  [alert addButtonWithTitle:okOrNil ? okOrNil : NSLocalizedString(@"OK", nil)];
+  [alert addButtonWithTitle:NSLocalizedString(@"Cancel", nil)];
+  
+  [completion retain];
+  [alert beginSheetModalForWindow:[self window]
+                    modalDelegate:self 
+                   didEndSelector:@selector(alertDidEnd:returnCode:contextInfo:) 
+                      contextInfo:completion];
+}
+
+- (void) alertDidEnd:(NSAlert*)alert returnCode:(NSInteger)returnCode contextInfo:(void(^)(BOOL))completion
+{
+  if (completion) completion(returnCode == NSAlertFirstButtonReturn);
+  [completion release];
+}
+
+
+
 @end

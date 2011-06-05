@@ -18,5 +18,6 @@
 // Protected
 
 - (void) viewControllerDidChangeDirtyStatus:(GBRepositorySettingsViewController*)ctrl;
+- (void) criticalConfirmationWithMessage:(NSString*)message description:(NSString*)desc ok:(NSString*)okOrNil completion:(void(^)(BOOL))completion;
 
 @end

@@ -8,6 +8,8 @@
 @property(nonatomic, retain) IBOutlet NSArrayController* branchesController;
 @property(nonatomic, retain) IBOutlet NSArrayController* tagsController;
 
+@property(nonatomic, retain) IBOutlet NSButton* deleteBranchButton;
+@property(nonatomic, retain) IBOutlet NSButton* deleteTagButton;
 
 - (IBAction) deleteBranch:(id)sender;
 - (IBAction) deleteTag:(id)sender;
