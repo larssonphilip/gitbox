@@ -10,9 +10,7 @@
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin</string>
 			<string key="NS.object.0">851</string>
 		</object>
-		<array class="NSMutableArray" key="IBDocument.EditedObjectIDs">
-			<integer value="82"/>
-		</array>
+		<array class="NSMutableArray" key="IBDocument.EditedObjectIDs"/>
 		<array key="IBDocument.PluginDependencies">
 			<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 		</array>
@@ -331,7 +329,7 @@
 				</array>
 			</object>
 			<object class="NSCustomView" id="180439244">
-				<reference key="NSNextResponder"/>
+				<nil key="NSNextResponder"/>
 				<int key="NSvFlags">266</int>
 				<array class="NSMutableArray" key="NSSubviews">
 					<object class="NSTextField" id="67489498">
@@ -594,7 +592,6 @@
 					</object>
 				</array>
 				<string key="NSFrameSize">{400, 39}</string>
-				<reference key="NSSuperview"/>
 				<string key="NSClassName">GBGreyGradientView</string>
 			</object>
 		</array>
@@ -1387,7 +1384,7 @@
 						<string key="cherryPickCommit:">NSMenuItem</string>
 						<string key="editGitConfig:">id</string>
 						<string key="editGitIgnore:">id</string>
-						<string key="editRepositories:">id</string>
+						<string key="editRemotes:">id</string>
 						<string key="fetch:">id</string>
 						<string key="forcePush:">id</string>
 						<string key="mergeCommit:">NSMenuItem</string>
@@ -1436,8 +1433,8 @@
 							<string key="name">editGitIgnore:</string>
 							<string key="candidateClassName">id</string>
 						</object>
-						<object class="IBActionInfo" key="editRepositories:">
-							<string key="name">editRepositories:</string>
+						<object class="IBActionInfo" key="editRemotes:">
+							<string key="name">editRemotes:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBActionInfo" key="fetch:">

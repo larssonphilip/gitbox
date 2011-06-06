@@ -105,7 +105,7 @@
 - (IBAction) editBranchesAndTags:(id)sender;
 
 // will be obsolete when settings UI is done
-- (IBAction) editRepositories:(id)sender;
+- (IBAction) editRemotes:(id)sender;
 - (IBAction) editGitIgnore:(id)sender;
 - (IBAction) editGitConfig:(id)sender;
 

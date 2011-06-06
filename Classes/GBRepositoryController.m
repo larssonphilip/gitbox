@@ -914,7 +914,7 @@
   [ctrl presentSheetInMainWindow];
 }
 
-- (IBAction) editRepositories:(id)sender
+- (IBAction) editRemotes:(id)sender
 {
   GBRemotesController* remotesController = [GBRemotesController controller];
   
