@@ -89,9 +89,7 @@
 
 - (NSString*) repoURLString
 {
-  NSArray* remotes = self.repository.remotes;
-  if ([remotes count] < 1) return @"";
-  NSString* url = [[remotes objectAtIndex:0] URLString];
+  NSString* url = [[self.repository firstRemote] URLString];
   return url ? url : @"";
 }
 

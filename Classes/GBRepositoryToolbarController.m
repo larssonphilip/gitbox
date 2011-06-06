@@ -440,10 +440,12 @@
   [newMenu addItem:[NSMenuItem separatorItem]];
   
   
-  // Checkout New Branch
+  // Create and edit branches and tags
   
   [newMenu addItem:[NSMenuItem menuItemWithTitle:NSLocalizedString(@"New Tag...", @"Command") action:@selector(newTag:)]];
   [newMenu addItem:[NSMenuItem menuItemWithTitle:NSLocalizedString(@"New Branch...", @"Command") action:@selector(newBranch:)]];  
+  
+  [newMenu addItem:[NSMenuItem menuItemWithTitle:NSLocalizedString(@"Edit Branches and Tags...", @"Command") action:@selector(editBranchesAndTags:)]];  
   
   
   // Select current branch

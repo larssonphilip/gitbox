@@ -5,20 +5,30 @@
 #import "GBRepositorySummaryController.h"
 #import "GBRepositoryBranchesAndTagsController.h"
 
+NSString* const GBRepositorySettingsSummary         = @"GBRepositorySettingsSummary";
+NSString* const GBRepositorySettingsBranchesAndTags = @"GBRepositorySettingsBranchesAndTags";
+NSString* const GBRepositorySettingsRemoteServers   = @"GBRepositorySettingsRemoteServers";
+NSString* const GBRepositorySettingsIgnoredFiles    = @"GBRepositorySettingsIgnoredFiles";
+NSString* const GBRepositorySettingsGitConfig       = @"GBRepositorySettingsGitConfig";
 
 @interface GBRepositorySettingsController () <NSTabViewDelegate>
 @property(nonatomic, retain) NSArray* viewControllers;
 @property(nonatomic, assign, getter=isDirty) BOOL dirty;
+@property(nonatomic, assign, getter=areTabsPrepared) BOOL tabsPrepared;
+- (void) syncSelectedTab;
+- (void) selectTabViewItemAtIndex:(NSInteger)i;
 @end
 
 @implementation GBRepositorySettingsController
 
 @synthesize repository;
+@synthesize selectedTab;
 @synthesize cancelButton;
 @synthesize saveButton;
 @synthesize tabView;
 @synthesize viewControllers;
 @synthesize dirty;
+@synthesize tabsPrepared;
 
 - (void) dealloc
 {
@@ -32,10 +42,19 @@
   [super dealloc];
 }
 
++ (id) controllerWithTab:(NSString*)tab repository:(GBRepository*)repo
+{
+  GBRepositorySettingsController* ctrl = [[[GBRepositorySettingsController alloc] initWithWindowNibName:@"GBRepositorySettingsController"] autorelease];
+  ctrl.repository = repo;
+  ctrl.selectedTab = tab;
+  return ctrl;
+}
+
 - (id)initWithWindow:(NSWindow *)aWindow
 {
   if ((self = [super initWithWindow:aWindow]))
   {
+    selectedTab = [GBRepositorySettingsSummary copy];
   }
   return self;
 }
@@ -99,6 +118,16 @@
   }
 }
 
+- (void) setSelectedTab:(NSString*)tabName
+{
+  if (!tabName) tabName = GBRepositorySettingsSummary;
+  if (selectedTab == tabName) return;
+  
+  [selectedTab release];
+  selectedTab = [tabName copy];
+  
+  [self syncSelectedTab];
+}
 
 
 
@@ -147,12 +176,12 @@
     [vc viewDidLoad];
   }
   
-  // TODO: select another controller if client asked. Avoid double calling of viewDidAppear.
-  
-  [[self.viewControllers objectAtIndex:0] viewDidAppear];
-  
   self.dirty = YES;
   self.dirty = NO;
+  
+  self.tabsPrepared = YES;
+  
+  [self syncSelectedTab];
 }
 
 
@@ -203,6 +232,48 @@
   [completion release];
 }
 
+
+
+
+#pragma mark Private
+
+
+
+- (void) syncSelectedTab
+{
+  if (![self areTabsPrepared]) return;
+  
+  // Note: selectTabViewItem notifies the delegate
+  if (selectedTab == GBRepositorySettingsSummary)
+  {
+    [self selectTabViewItemAtIndex:0];
+  }
+  else if (selectedTab == GBRepositorySettingsBranchesAndTags)
+  {
+    [self selectTabViewItemAtIndex:1];
+  }
+  else if (selectedTab == GBRepositorySettingsRemoteServers)
+  {
+    [self selectTabViewItemAtIndex:2];
+  }
+  else if (selectedTab == GBRepositorySettingsIgnoredFiles)
+  {
+    [self selectTabViewItemAtIndex:3];
+  }
+  else if (selectedTab == GBRepositorySettingsGitConfig)
+  {
+    [self selectTabViewItemAtIndex:4];
+  }
+}
+
+
+- (void) selectTabViewItemAtIndex:(NSInteger)i
+{
+  if (i >= 0 && i < [[self.tabView tabViewItems] count])
+  {
+    [self.tabView selectTabViewItem:[self.tabView tabViewItemAtIndex:i]];
+  }
+}
 
 
 @end

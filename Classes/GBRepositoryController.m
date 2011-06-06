@@ -904,11 +904,13 @@
 
 - (IBAction) openSettings:(id)sender
 {
-  GBRepositorySettingsController* ctrl = [[[GBRepositorySettingsController alloc] initWithWindowNibName:@"GBRepositorySettingsController"] autorelease];
-  
-  // TODO: maybe should pass repositoryController instead of repository.
-  
-  ctrl.repository = self.repository;
+  GBRepositorySettingsController* ctrl = [GBRepositorySettingsController controllerWithTab:nil repository:self.repository];
+  [ctrl presentSheetInMainWindow];
+}
+
+- (IBAction) editBranchesAndTags:(id)sender
+{
+  GBRepositorySettingsController* ctrl = [GBRepositorySettingsController controllerWithTab:GBRepositorySettingsBranchesAndTags repository:self.repository];
   [ctrl presentSheetInMainWindow];
 }
 

@@ -528,6 +528,13 @@
   }];
 }
 
+- (GBRemote*) firstRemote
+{
+  if ([self.remotes count] < 1) return nil;
+  return [self.remotes objectAtIndex:0];
+}
+
+
 
 
 #pragma mark Update

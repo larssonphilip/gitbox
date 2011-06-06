@@ -27,7 +27,6 @@ Gitbox 1.5 misc items:
   - tab: raw config
 
 - settings: more stats and symmary info
-- settings: add "Edit Branches and Tags..." menu item to the left branch selector
 - settings: add "Edit Servers..." menu item to the right branch selector
 
 - stage: overlay view describing shortcuts to stage all
@@ -51,6 +50,7 @@ Gitbox 1.5 misc items:
 
 --------
 
++ settings: add "Edit Branches and Tags..." menu item to the left branch selector
 + Sidebar progress indicators for push, pull, fetch and clone.
 + bugfix: in older git --progress was not propagated properly from "push" command. Should update to 1.7.5
 + menu: Stage All: cmd+shift+return (acts as cmd+a + cmd+return) (add to main menu and contextual menus)

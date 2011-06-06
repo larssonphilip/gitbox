@@ -63,6 +63,8 @@
 - (void) loadStashesWithBlock:(void(^)(NSArray*))block;
 - (GBRef*) tagForCommit:(GBCommit*)aCommit;
 - (NSArray*) tagsForCommit:(GBCommit*)aCommit;
+- (GBRemote*) firstRemote;
+
 
 #pragma mark Update
 
