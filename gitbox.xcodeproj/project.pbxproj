@@ -352,6 +352,10 @@
 		2093AAAA11B15E1500239185 /* NSSplitView+OASplitViewHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 2093AAA911B15E1500239185 /* NSSplitView+OASplitViewHelpers.m */; };
 		2093AC8711B2EB9100239185 /* GBCommitPromptController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2093AC8611B2EB9100239185 /* GBCommitPromptController.m */; };
 		2093AC9111B2EBFF00239185 /* GBCommitPromptController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2093AC9011B2EBFF00239185 /* GBCommitPromptController.xib */; };
+		2096FDBE139D323B00B79D46 /* GBRepositoryRemotesController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2096FDBD139D323B00B79D46 /* GBRepositoryRemotesController.m */; };
+		2096FDBF139D323B00B79D46 /* GBRepositoryRemotesController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2096FDBD139D323B00B79D46 /* GBRepositoryRemotesController.m */; };
+		2096FDC2139D36E800B79D46 /* GBRepositoryRemotesController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2096FDC1139D36E800B79D46 /* GBRepositoryRemotesController.xib */; };
+		2096FDC3139D36E800B79D46 /* GBRepositoryRemotesController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2096FDC1139D36E800B79D46 /* GBRepositoryRemotesController.xib */; };
 		2097EB2F12DDF4680070AE89 /* GBSidebarOutlineView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2097EB2E12DDF4680070AE89 /* GBSidebarOutlineView.m */; };
 		2097EB3012DDF4680070AE89 /* GBSidebarOutlineView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2097EB2E12DDF4680070AE89 /* GBSidebarOutlineView.m */; };
 		2097EB5B12DDF7D30070AE89 /* GBChangesTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2097EB5A12DDF7D30070AE89 /* GBChangesTableView.m */; };
@@ -742,6 +746,9 @@
 		2093AC8511B2EB9100239185 /* GBCommitPromptController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBCommitPromptController.h; sourceTree = "<group>"; };
 		2093AC8611B2EB9100239185 /* GBCommitPromptController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBCommitPromptController.m; sourceTree = "<group>"; };
 		2093AC9011B2EBFF00239185 /* GBCommitPromptController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBCommitPromptController.xib; sourceTree = "<group>"; };
+		2096FDBC139D323B00B79D46 /* GBRepositoryRemotesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBRepositoryRemotesController.h; sourceTree = "<group>"; };
+		2096FDBD139D323B00B79D46 /* GBRepositoryRemotesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBRepositoryRemotesController.m; sourceTree = "<group>"; };
+		2096FDC1139D36E800B79D46 /* GBRepositoryRemotesController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBRepositoryRemotesController.xib; sourceTree = "<group>"; };
 		2097EB2D12DDF4680070AE89 /* GBSidebarOutlineView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBSidebarOutlineView.h; sourceTree = "<group>"; };
 		2097EB2E12DDF4680070AE89 /* GBSidebarOutlineView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBSidebarOutlineView.m; sourceTree = "<group>"; };
 		2097EB5912DDF7D30070AE89 /* GBChangesTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBChangesTableView.h; sourceTree = "<group>"; };
@@ -1164,6 +1171,9 @@
 				208D0C5B139AB3F6002C8072 /* GBRepositoryBranchesAndTagsController.h */,
 				208D0C5C139AB3F6002C8072 /* GBRepositoryBranchesAndTagsController.m */,
 				208D0C74139AB5D3002C8072 /* GBRepositoryBranchesAndTagsController.xib */,
+				2096FDBC139D323B00B79D46 /* GBRepositoryRemotesController.h */,
+				2096FDBD139D323B00B79D46 /* GBRepositoryRemotesController.m */,
+				2096FDC1139D36E800B79D46 /* GBRepositoryRemotesController.xib */,
 			);
 			name = "Repository Settings";
 			sourceTree = "<group>";
@@ -1729,6 +1739,7 @@
 				208D0B9D139A9E37002C8072 /* GBRepositorySummaryController.xib in Resources */,
 				208D0BAF139A9FF8002C8072 /* Icon512.png in Resources */,
 				208D0C75139AB5D3002C8072 /* GBRepositoryBranchesAndTagsController.xib in Resources */,
+				2096FDC2139D36E800B79D46 /* GBRepositoryRemotesController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1804,6 +1815,7 @@
 				208D0B9E139A9E37002C8072 /* GBRepositorySummaryController.xib in Resources */,
 				208D0BB0139A9FF8002C8072 /* Icon512.png in Resources */,
 				208D0C76139AB5D3002C8072 /* GBRepositoryBranchesAndTagsController.xib in Resources */,
+				2096FDC3139D36E800B79D46 /* GBRepositoryRemotesController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1966,6 +1978,7 @@
 				208D0B76139A7419002C8072 /* GBRepositorySettingsViewController.m in Sources */,
 				208D0B8F139A9763002C8072 /* GBRepositorySummaryController.m in Sources */,
 				208D0C5D139AB3F6002C8072 /* GBRepositoryBranchesAndTagsController.m in Sources */,
+				2096FDBE139D323B00B79D46 /* GBRepositoryRemotesController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2110,6 +2123,7 @@
 				208D0B77139A7419002C8072 /* GBRepositorySettingsViewController.m in Sources */,
 				208D0B90139A9763002C8072 /* GBRepositorySummaryController.m in Sources */,
 				208D0C5E139AB3F6002C8072 /* GBRepositoryBranchesAndTagsController.m in Sources */,
+				2096FDBF139D323B00B79D46 /* GBRepositoryRemotesController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
