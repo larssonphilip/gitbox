@@ -1,9 +1,8 @@
 
 How to sandbox
 
-1. Sign and add entitlements for each binary with "inherit" option.
+1. Sign and add entitlements for each git binary with "inherit" option.
 2.1. Ask user for .ssh folder or:
 2.2. Import once .ssh and have it internally.
 3. Replace DO with unix sockets inside the sandbox (or get temp exception for mach-lookup with static name)
-4. 
-
+4. File radar to get remembered access rights
