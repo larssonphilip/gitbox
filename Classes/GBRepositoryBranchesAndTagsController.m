@@ -2,6 +2,10 @@
 #import "GBRepositoryBranchesAndTagsController.h"
 
 @interface GBRepositoryBranchesAndTagsController ()
+
+@property(nonatomic, retain) NSMutableArray* branchesToDelete;
+@property(nonatomic, retain) NSMutableArray* tagsToDelete;
+
 @end
 
 @implementation GBRepositoryBranchesAndTagsController
@@ -15,6 +19,9 @@
 @synthesize deleteBranchButton;
 @synthesize deleteTagButton;
 
+@synthesize branchesToDelete;
+@synthesize tagsToDelete;
+
 - (void) dealloc
 {
   [branchesBinding release]; branchesBinding = nil;
@@ -23,6 +30,9 @@
   [tagsController release]; tagsController = nil;
   [deleteBranchButton release]; deleteBranchButton = nil;
   [deleteTagButton release]; deleteTagButton = nil;
+  [branchesToDelete release]; branchesToDelete = nil;
+  [tagsToDelete release]; tagsToDelete = nil;
+  
   [super dealloc];
 }
 
@@ -32,6 +42,9 @@
   {
     self.branchesBinding = [NSMutableArray array];
     self.tagsBinding = [NSMutableArray array];
+    
+    self.branchesToDelete = [NSMutableArray array];
+    self.tagsToDelete = [NSMutableArray array];
   }
   return self;
 }
@@ -62,6 +75,20 @@
   }
 }
 
+- (void) cancel
+{
+  self.branchesToDelete = [NSMutableArray array];
+  self.tagsToDelete = [NSMutableArray array];
+}
+
+- (void) save
+{
+  [self.repository removeRefs:[self.branchesToDelete arrayByAddingObjectsFromArray:self.tagsToDelete] withBlock:^{
+    self.branchesToDelete = [NSMutableArray array];
+    self.tagsToDelete = [NSMutableArray array];
+  }];
+}
+
 - (void) viewDidAppear
 {
   [super viewDidAppear];
@@ -74,7 +101,11 @@
 
 - (IBAction) deleteBranch:(id)sender
 {
-  // TODO: support undo + show the undo button
+  self.dirty = YES;
+  [self.branchesToDelete addObjectsFromArray:[self.branchesController selectedObjects]];
+  [self.branchesController remove:sender];
+  
+#if 0
   int c = [[self.branchesController selectedObjects] count];
   NSString* message = [NSString stringWithFormat:NSLocalizedString(@"Delete %d branches?", @"GBSettings"), c];
   if (c == 1)
@@ -89,10 +120,16 @@
                                [self.repository removeRefs:[self.branchesController selectedObjects] withBlock:^{}];
                                [self.branchesController remove:sender];
                              }];
+#endif
 }
 
 - (IBAction) deleteTag:(id)sender
 {
+  self.dirty = YES;
+  [self.tagsToDelete addObjectsFromArray:[self.tagsController selectedObjects]];
+  [self.tagsController remove:sender];
+
+#if 0
   int c = [[self.tagsController selectedObjects] count];
   NSString* message = [NSString stringWithFormat:NSLocalizedString(@"Delete %d tags?", @"GBSettings"), c];
   if (c == 1)
@@ -107,7 +144,7 @@
                                [self.repository removeRefs:[self.tagsController selectedObjects] withBlock:^{}];
                                [self.tagsController remove:sender];
                              }];
-  
+#endif
 }
 
 

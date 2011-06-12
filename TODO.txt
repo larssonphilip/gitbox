@@ -26,8 +26,6 @@ Gitbox 1.5 misc items:
 - settings: more stats and symmary info
 - settings: add "Edit Servers..." menu item to the right branch selector
 
-- settings: use consitently cancel/save buttons in settings for every view including tags&branches.
-
 - stage: overlay view describing shortcuts to stage all
 - stage: cmd+click should select all
 - delete tag using right click on a commit
@@ -50,6 +48,7 @@ Gitbox 1.5 misc items:
 
 --------
 
++ settings: use consitently cancel/save buttons in settings for every view including tags&branches.
 + settings: tab: general - stats, repo URLs, git gc, sharing options etc.
 + settings: tab: local branches and tags
 + settings: add "Edit Branches and Tags..." menu item to the left branch selector

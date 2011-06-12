@@ -12,7 +12,7 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="1"/>
+			<integer value="9"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -139,16 +139,16 @@
 							<object class="NSTextField" id="194251963">
 								<reference key="NSNextResponder" ref="71415132"/>
 								<int key="NSvFlags">266</int>
-								<string key="NSFrame">{{150, 338}, {333, 29}}</string>
+								<string key="NSFrame">{{150, 319}, {333, 29}}</string>
 								<reference key="NSSuperview" ref="71415132"/>
 								<bool key="NSEnabled">YES</bool>
 								<object class="NSTextFieldCell" key="NSCell" id="621532024">
 									<int key="NSCellFlags">67239488</int>
 									<int key="NSCellFlags2">272631808</int>
 									<string key="NSContents">app</string>
-									<object class="NSFont" key="NSSupport">
-										<string key="NSName">LucidaGrande-Bold</string>
-										<double key="NSSize">24</double>
+									<object class="NSFont" key="NSSupport" id="870783543">
+										<string key="NSName">LucidaGrande</string>
+										<double key="NSSize">13</double>
 										<int key="NSfFlags">16</int>
 									</object>
 									<reference key="NSControlView" ref="194251963"/>
@@ -159,21 +159,20 @@
 							<object class="NSTextField" id="842844416">
 								<reference key="NSNextResponder" ref="71415132"/>
 								<int key="NSvFlags">266</int>
-								<string key="NSFrame">{{150, 369}, {333, 19}}</string>
+								<string key="NSFrame">{{150, 347}, {333, 19}}</string>
 								<reference key="NSSuperview" ref="71415132"/>
 								<bool key="NSEnabled">YES</bool>
 								<object class="NSTextFieldCell" key="NSCell" id="682256513">
 									<int key="NSCellFlags">67239488</int>
 									<int key="NSCellFlags2">272631808</int>
 									<string key="NSContents">gitbox</string>
-									<object class="NSFont" key="NSSupport">
-										<string key="NSName">LucidaGrande</string>
-										<double key="NSSize">16</double>
-										<int key="NSfFlags">16</int>
-									</object>
+									<reference key="NSSupport" ref="870783543"/>
 									<reference key="NSControlView" ref="842844416"/>
 									<reference key="NSBackgroundColor" ref="973652687"/>
-									<reference key="NSTextColor" ref="270672856"/>
+									<object class="NSColor" key="NSTextColor">
+										<int key="NSColorSpace">1</int>
+										<bytes key="NSRGB">MC4zOTc5NTkxODM3IDAuMzk3OTU5MTgzNyAwLjM5Nzk1OTE4MzcAA</bytes>
+									</object>
 								</object>
 							</object>
 							<object class="NSImageView" id="895112417">
@@ -191,7 +190,7 @@
 										<string>NeXT TIFF v4.0 pasteboard type</string>
 									</object>
 								</object>
-								<string key="NSFrame">{{78, 331}, {64, 64}}</string>
+								<string key="NSFrame">{{97, 324}, {48, 48}}</string>
 								<reference key="NSSuperview" ref="71415132"/>
 								<bool key="NSEnabled">YES</bool>
 								<object class="NSImageCell" key="NSCell" id="656258506">
@@ -447,7 +446,7 @@
 				</object>
 				<object class="NSMutableArray" key="dict.values">
 					<bool key="EncodedWithXMLCoder">YES</bool>
-					<string>{{143, 90}, {600, 400}}</string>
+					<string>{{360, 318}, {600, 400}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>{628, 654}</string>
 					<string>{{217, 442}, {480, 272}}</string>
