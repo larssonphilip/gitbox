@@ -26,6 +26,8 @@ Gitbox 1.5 misc items:
 - settings: more stats and symmary info
 - settings: add "Edit Servers..." menu item to the right branch selector
 
+- settings: use consitently cancel/save buttons in settings for every view including tags&branches.
+
 - stage: overlay view describing shortcuts to stage all
 - stage: cmd+click should select all
 - delete tag using right click on a commit
@@ -41,6 +43,7 @@ Gitbox 1.5 misc items:
 - bug: when selected a collapsed group and added a folder, the selected group is not expanded
 - bug: stage: when having multiple selection and expanding it with keyboard, stage updates cause internal rest, so the selection does not change the same way when continuing pressing keystrokes. Should probably not replace stage content when it did not really change.
 
+- history: disable merge/cherry-pick/apply commands when don't make sense
 - history: push a single commit
 - stage: add option "Delete from stage only" for "git rm --force --cached <filepath>".
 - stage: right click menu: "file history" which inserts file path into search field
