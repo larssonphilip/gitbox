@@ -83,6 +83,29 @@
 }
 
 
+- (void)swipeWithEvent:(NSEvent *)event
+{
+  if ([event type] == NSEventTypeSwipe)
+  {
+    CGFloat deltaX = [event deltaX];
+    
+    // reverse deltaX this if the default user writing direction is right-to-left
+    if ([NSLocale characterDirectionForLanguage:[[NSLocale autoupdatingCurrentLocale] localeIdentifier]] ==
+          NSLocaleLanguageDirectionRightToLeft)
+    {
+      deltaX *= -1;
+    }
+    
+    if (deltaX > 0.99 || [event deltaY] > 0.99)
+    {
+      [self.repositoryController previousCommit:nil];
+    }
+    else if (deltaX < -0.99 || [event deltaY] < -0.99)
+    {
+      [self.repositoryController nextCommit:nil];
+    }
+  }
+}
 
 
 

@@ -867,6 +867,52 @@
 }
 
 
+- (IBAction) nextCommit:(id)sender
+{
+  // TODO: go forward in history of selected commits
+
+  NSArray* list = [self visibleCommits];
+  
+  NSInteger i = 0;
+  if (self.selectedCommit)
+  {
+    i = (NSInteger)[list indexOfObject:self.selectedCommit];
+  }
+  
+  if (i == NSNotFound) i = 0;
+  
+  i++;
+  
+  if (i < [list count] && i >= 0)
+  {
+    self.selectedCommit = [list objectAtIndex:(NSUInteger)i];
+  }
+}
+
+- (IBAction) previousCommit:(id)sender
+{
+  // TODO: go backward in history of selected commits
+  
+  NSArray* list = [self visibleCommits];
+  
+  NSInteger i = 0;
+  if (self.selectedCommit)
+  {
+    i = (NSInteger)[list indexOfObject:self.selectedCommit];
+  }
+  
+  if (i == NSNotFound) i = 0;
+  
+  i--;
+  
+  if (i < [list count] && i >= 0)
+  {
+    self.selectedCommit = [list objectAtIndex:(NSUInteger)i];
+  }
+}
+
+
+
 - (BOOL) validateFetch:(id)sender
 {
   return self.repository.currentRemoteBranch &&

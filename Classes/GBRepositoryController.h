@@ -90,6 +90,9 @@
 - (BOOL) validatePull:(id)sender;
 - (BOOL) validatePush:(id)sender;
 
+- (IBAction) nextCommit:(id)sender;
+- (IBAction) previousCommit:(id)sender;
+
 - (IBAction) stashChanges:(id)sender;
 - (IBAction) applyStash:(NSMenuItem*)sender;
 - (IBAction) applyStashMenu:(id)sender;

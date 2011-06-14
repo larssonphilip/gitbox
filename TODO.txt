@@ -99,7 +99,7 @@ Features:
 - general: csv import support
 - general: gitosis integration
 - general: shell command to open gitbox
-- general: bonjour publishing and cloning (see http://github.com/chad/gitjour; NSNetService)
+- general: bonjour publishing and cloning (see http://github.com/chad/gitjour; NSNetService, CryptoExercise sample code)
 - general: github integration: handling other repos/branches, pull requests and initial setup commands
 - general: handling URL schema: gitbox://git@sss.pierlis.com/repo.git#commits/sha1
 - general: obfuscated license check
