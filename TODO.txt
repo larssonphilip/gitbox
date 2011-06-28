@@ -1,3 +1,72 @@
+quick list:
+- "remove all stashes"
+- seems like in 1.4 new git binaries fix issue with "outside repository" because of some case-sensitivity in paths (email is flagged)
+- plr crashed gitbox with objectAtIndex exception
+- should use "git rm --cached" with ignored committed files and fix other oddities in this case
+- github-mac:// URL scheme so that the "Clone in Mac"
+- bug: sidebar with multiple Xcode projects shows itself recursively
+- try sandbox 
+- idea: show the subtree for selected commit and its parents
+- merge conflict stage badly needs better UI
+- bug: file "Icon\r" was committed somehow.
+
+
+*** Terminating app due to uncaught exception 'NSInvalidArgumentException', reason: '*** -[__NSArrayM insertObject:atIndex:]: object cannot be nil'
+*** First throw call stack:
+(
+	0   CoreFoundation                      0x00007fff8f707cf6 __exceptionPreprocess + 198
+	1   libobjc.A.dylib                     0x00007fff8d891d5e objc_exception_throw + 43
+	2   CoreFoundation                      0x00007fff8f6aeb48 -[__NSArrayM insertObject:atIndex:] + 296
+	3   Gitbox                              0x000000010003cac9 -[GBHistoryTask arguments] + 249
+	4   Gitbox                              0x000000010003496a -[OATask(Porcelain) command] + 106
+	5   Gitbox                              0x0000000100041270 -[GBActivityController taskDidLaunch:] + 384
+	6   Foundation                          0x00007fff8d14abba __-[NSNotificationCenter addObserver:selector:name:object:]_block_invoke_1 + 47
+	7   CoreFoundation                      0x00007fff8f6b088a _CFXNotificationPost + 2698
+	8   Foundation                          0x00007fff8d136e6f -[NSNotificationCenter postNotificationName:object:userInfo:] + 65
+	9   Gitbox                              0x000000010002ef97 -[OATask launch] + 631
+	10  Gitbox                              0x00000001000348fa -[OATask(Porcelain) launchInQueue:withBlock:] + 138
+	11  Gitbox                              0x0000000100014c33 -[GBRepository launchTask:withBlock:] + 99
+	12  Gitbox                              0x000000010000a0a5 -[GBRepository updateLocalBranchCommitsWithBlock:] + 645
+	13  Gitbox                              0x0000000100086b05 __-[GBRepositoryController loadCommitsWithBlock:]_block_invoke_2 + 165
+	14  Gitbox                              0x00000001000cc168 __OABlockConcat_block_invoke_1 + 88
+	15  Gitbox                              0x00000001000cc4dc -[OABlockTable callBlockForName:] + 220
+	16  Gitbox                              0x0000000100085433 __-[GBRepositoryController updateLocalRefsWithBlock:]_block_invoke_2 + 467
+	17  Gitbox                              0x00000001000086df __-[GBRepository updateLocalRefsWithBlock:]_block_invoke_4 + 63
+	18  Gitbox                              0x0000000100016693 __-[GBRef loadConfiguredRemoteBranchWithBlock:]_block_invoke_1 + 147
+	19  Gitbox                              0x000000010002f57a __-[OATask launch]_block_invoke_3 + 186
+	
+	
+
+
+
+
+
+*** Terminating app due to uncaught exception 'NSRangeException', reason: '*** -[__NSArrayM objectAtIndex:]: index 2 beyond bounds for empty array'
+*** First throw call stack:
+(
+	0   CoreFoundation                      0x00007fff96d3acf6 __exceptionPreprocess + 198
+	1   libobjc.A.dylib                     0x00007fff92b36d5e objc_exception_throw + 43
+	2   CoreFoundation                      0x00007fff96cc8352 -[__NSArrayM objectAtIndex:] + 274
+	3   Gitbox                              0x0000000100024ef7 -[GBBaseChangesController selectedChanges] + 124
+	4   Gitbox                              0x0000000100027091 -[GBStageViewController validateCommit:] + 65
+	5   Gitbox                              0x0000000100027293 -[GBStageViewController validateReallyCommit:] + 27
+	6   Gitbox                              0x0000000100027d92 -[GBStageViewController updateCommitButtonEnabledState] + 47
+	7   Gitbox                              0x0000000100028c9d -[GBStageViewController updateHeaderSizeAnimating:] + 1639
+	8   Gitbox                              0x0000000100027bfb -[GBStageViewController updateHeader] + 206
+	9   Gitbox                              0x0000000100028cca -[GBStageViewController updateViews] + 29
+	10  Gitbox                              0x0000000100029791 -[GBStageViewController setChanges:] + 1985
+	11  CoreFoundation                      0x00007fff96d2a48d -[NSObject performSelector:withObject:] + 61
+	12  Gitbox                              0x000000010006900b -[NSObject(OASelectorNotifications) OADispatchSelectorNotification:] + 343
+	13  Foundation                          0x00007fff8f2aabba __-[NSNotificationCenter addObserver:selector:name:object:]_block_invoke_1 + 47
+	14  CoreFoundation                      0x00007fff96ce388a _CFXNotificationPost + 2698
+	15  Gitbox                              0x00000001000153fe __-[GBStage loadChangesWithBlock:]_block_invoke_7 + 66
+	16  Gitbox                              0x0000000100016b16 __-[OATask launch]_block_invoke_3 + 85
+	17  libdispatch.dylib                   0x00007fff94a8e90a _dispatch_call_block_and_release + 18
+	18  libdispatch.dylib                   0x00007fff94a9077a _dispatch_main_queue_callback_4CF + 308
+
+
+
+
 
 Gitbox 1.5 Release Notes
 
