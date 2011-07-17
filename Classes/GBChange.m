@@ -29,8 +29,8 @@
 @synthesize statusCode;
 @synthesize status;
 @synthesize statusScore;
-@synthesize oldRevision;
-@synthesize newRevision;
+@synthesize srcRevision;
+@synthesize dstRevision;
 @synthesize commitId;
 @synthesize cachedSrcIcon;
 @synthesize cachedDstIcon;
@@ -56,8 +56,8 @@
   self.dstURL = nil;
   self.statusCode = nil;
   self.status = nil;
-  self.oldRevision = nil;
-  self.newRevision = nil;
+  self.srcRevision = nil;
+  self.dstRevision = nil;
   self.commitId = nil;
   self.cachedSrcIcon = nil;
   self.cachedDstIcon = nil;
@@ -98,7 +98,7 @@
   {
     pathDesc = [NSString stringWithFormat:@"%@->%@", [self.srcURL absoluteString], [self.dstURL absoluteString]];
   }
-  return [NSString stringWithFormat:@"<GBChange:%p %@ %@->%@ [%@]>", self, pathDesc, [self.oldRevision substringToIndex:6], [self.newRevision substringToIndex:6], self.statusCode];
+  return [NSString stringWithFormat:@"<GBChange:%p %@ %@->%@ [%@]>", self, pathDesc, [self.srcRevision substringToIndex:6], [self.dstRevision substringToIndex:6], self.statusCode];
 }
 
 
@@ -276,7 +276,7 @@
 - (BOOL) isUntrackedFile
 {
   // Both commits are nulls, this is untracked file
-  return (![self.oldRevision nonZeroCommitId] && ![self.newRevision nonZeroCommitId]);
+  return (![self.srcRevision nonZeroCommitId] && ![self.dstRevision nonZeroCommitId]);
 }
 
 - (BOOL) isMovedOrRenamedFile
@@ -343,8 +343,8 @@
     return;
   }
   
-  NSString* leftCommitId = [self.oldRevision nonZeroCommitId];
-  NSString* rightCommitId = [self.newRevision nonZeroCommitId];
+  NSString* leftCommitId = [self.srcRevision nonZeroCommitId];
+  NSString* rightCommitId = [self.dstRevision nonZeroCommitId];
   
   if (!leftCommitId)
   {
@@ -439,7 +439,7 @@
   NSLog(@"TODO: validateShowDifference: validate availability of the diff tool");
   if ([self isDeletedFile]) return NO;
   if ([self isUntrackedFile]) return NO;
-  if (![self.oldRevision nonZeroCommitId]) return NO;
+  if (![self.srcRevision nonZeroCommitId]) return NO;
   return YES;
 }
 
@@ -475,11 +475,11 @@
   NSString* suffix = self.commitId;
   if (!suffix)
   {
-    suffix = [self.newRevision nonZeroCommitId];
+    suffix = [self.dstRevision nonZeroCommitId];
   }
   if (!suffix)
   {
-    suffix = [self.oldRevision nonZeroCommitId];
+    suffix = [self.srcRevision nonZeroCommitId];
   }
   
   if (!suffix) return nil;
@@ -503,11 +503,11 @@
 
 - (void) extractFileWithTargetURL:(NSURL*)aTargetURL;
 {
-  NSString* objectId = [self.newRevision nonZeroCommitId];
+  NSString* objectId = [self.dstRevision nonZeroCommitId];
   
   if (!objectId)
   {
-    objectId = [self.oldRevision nonZeroCommitId];
+    objectId = [self.srcRevision nonZeroCommitId];
   }
   
   if (objectId)
@@ -544,10 +544,10 @@
   {
     if (self.commitId)
     {
-      NSString* objectId = [self.newRevision nonZeroCommitId];
+      NSString* objectId = [self.dstRevision nonZeroCommitId];
       if (!objectId)
       {
-        objectId = [self.oldRevision nonZeroCommitId];
+        objectId = [self.srcRevision nonZeroCommitId];
       }
       NSURL* aURL  = [self temporaryURLForObjectId:objectId optionalURL:[self fileURL] commitId:self.commitId];
       return [[aURL absoluteURL] pasteboardPropertyListForType:type];
@@ -556,7 +556,7 @@
     {
       if ([self isDeletedFile])
       {
-        NSString* objectId = [self.oldRevision nonZeroCommitId];
+        NSString* objectId = [self.srcRevision nonZeroCommitId];
         if (!objectId) return nil;
         NSURL* aURL  = [self temporaryURLForObjectId:objectId optionalURL:[self fileURL] commitId:self.commitId];
         return [[aURL absoluteURL] pasteboardPropertyListForType:type];
@@ -620,17 +620,17 @@
   
   if (self.commitId)
   {
-    objectId = [self.newRevision nonZeroCommitId];
+    objectId = [self.dstRevision nonZeroCommitId];
     if (!objectId)
     {
-      objectId = [self.oldRevision nonZeroCommitId];
+      objectId = [self.srcRevision nonZeroCommitId];
     }
   }
   else // not committed change: on stage
   {
     if ([self isDeletedFile])
     {
-      objectId = [self.oldRevision nonZeroCommitId];
+      objectId = [self.srcRevision nonZeroCommitId];
     }
     else
     {

@@ -99,8 +99,8 @@
     [self initializeChange:aChange];
     aChange.repository = self.repository;
     aChange.statusCode = @"A";
-    aChange.oldRevision = @"0000000000000000000000000000000000000000";
-    aChange.newRevision = newRevision;
+    aChange.srcRevision = @"0000000000000000000000000000000000000000";
+    aChange.dstRevision = newRevision;
     aChange.srcURL = [NSURL URLWithString:[srcPath stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding] relativeToURL:self.repository.url];
     [aChanges addObject:aChange];
     //NSLog(@"Added change %@ %@->%@ %@", statusCode, oldRevision, newRevision, srcPath);

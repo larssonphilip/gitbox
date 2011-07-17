@@ -178,7 +178,7 @@
       {
         changeByURL = aChange;
       }
-      if (aChange.oldRevision && selectedChange.oldRevision && [aChange.oldRevision isEqualToString:selectedChange.oldRevision])
+      if (aChange.srcRevision && selectedChange.srcRevision && [aChange.srcRevision isEqualToString:selectedChange.srcRevision])
       {
         changeByOldRevision = aChange;
       }

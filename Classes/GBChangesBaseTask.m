@@ -182,8 +182,8 @@
     aChange.repository = self.repository;
     aChange.statusScore = statusScore; // should set statusScore before setting a statusCode for correct calculation
     aChange.statusCode = statusCode;
-    aChange.oldRevision = oldRevision;
-    aChange.newRevision = newRevision;
+    aChange.srcRevision = oldRevision;
+    aChange.dstRevision = newRevision;
     aChange.srcURL = [NSURL URLWithString:[srcPath stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding] relativeToURL:self.repository.url];
     if (dstPath)
     {

@@ -12,8 +12,8 @@
 @property(nonatomic,copy)   NSString* statusCode;
 @property(nonatomic,copy)   NSString* status;
 @property(nonatomic,assign) NSInteger statusScore;
-@property(nonatomic,copy)   NSString* oldRevision;
-@property(nonatomic,copy)   NSString* newRevision;
+@property(nonatomic,copy)   NSString* srcRevision;
+@property(nonatomic,copy)   NSString* dstRevision;
 @property(nonatomic,copy)   NSString* commitId;
 @property(nonatomic,retain) GBSearchQuery* searchQuery;
 @property(nonatomic,copy)   NSSet* highlightedPathSubstrings;
