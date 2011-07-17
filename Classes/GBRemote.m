@@ -9,6 +9,7 @@
 
 
 @interface GBRemote ()
+@property(nonatomic,retain) NSArray* transientBranches;
 @property(nonatomic,assign) BOOL isUpdatingRemoteBranches;
 - (BOOL) doesNeedFetchNewBranches:(NSArray*)theBranches andTags:(NSArray*)theTags;
 @end
@@ -19,7 +20,7 @@
 @synthesize URLString;
 @synthesize fetchRefspec;
 @synthesize branches;
-@synthesize newBranches;
+@synthesize transientBranches;
 
 @synthesize repository;
 @synthesize isUpdatingRemoteBranches;
@@ -37,7 +38,7 @@
       aRef.remote = nil;
     }
   }
-  for (GBRef* aRef in self.newBranches)
+  for (GBRef* aRef in self.transientBranches)
   {
     if (aRef.remote == self)
     {
@@ -45,7 +46,7 @@
     }
   }
   self.branches = nil;
-  self.newBranches = nil;
+  self.transientBranches = nil;
   [super dealloc];
 }
 
@@ -59,10 +60,10 @@
   return [[branches retain] autorelease];
 }
 
-- (NSArray*) newBranches
+- (NSArray*) transientBranches
 {
-  if (!newBranches) self.newBranches = [NSArray array];
-  return [[newBranches retain] autorelease];
+  if (!transientBranches) self.transientBranches = [NSArray array];
+  return [[transientBranches retain] autorelease];
 }
 
 
@@ -83,21 +84,21 @@
 
 - (NSArray*) pushedAndNewBranches
 {
-  return [self.branches arrayByAddingObjectsFromArray:self.newBranches];
+  return [self.branches arrayByAddingObjectsFromArray:self.transientBranches];
 }
 
 - (void) updateNewBranches
 {
   NSArray* names = [self.branches valueForKey:@"name"];
   NSMutableArray* updatedNewBranches = [NSMutableArray array];
-  for (GBRef* aBranch in self.newBranches)
+  for (GBRef* aBranch in self.transientBranches)
   {
     if (aBranch.name && ![names containsObject:aBranch.name])
     {
       [updatedNewBranches addObject:aBranch];
     }
   }
-  self.newBranches = updatedNewBranches;
+  self.transientBranches = updatedNewBranches;
 }
 
 - (void) updateBranches
@@ -113,7 +114,7 @@
 {
   if (self.alias && [otherRemote.alias isEqualToString:self.alias])
   {
-    self.newBranches = otherRemote.newBranches;
+    self.transientBranches = otherRemote.transientBranches;
     [self updateBranches];
     return YES;
   }
@@ -139,7 +140,7 @@
 
 - (void) addNewBranch:(GBRef*)branch
 {
-  self.newBranches = [self.newBranches arrayByAddingObject:branch];
+  self.transientBranches = [self.transientBranches arrayByAddingObject:branch];
 }
 
 - (void) updateBranchesWithBlock:(void(^)())block

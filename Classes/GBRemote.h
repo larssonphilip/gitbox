@@ -6,7 +6,6 @@
 @property(nonatomic,copy) NSString* URLString;
 @property(nonatomic,copy) NSString* fetchRefspec;
 @property(nonatomic,retain) NSArray* branches;
-@property(nonatomic,retain) NSArray* newBranches;
 
 @property(nonatomic,assign) BOOL needsFetch;
 @property(nonatomic,assign) GBRepository* repository;
