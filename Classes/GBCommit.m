@@ -257,7 +257,7 @@
   BOOL allTokensMatched = [q matchTokens:^(id token) {
     
     BOOL tokenMatched = NO;
-    NSRange range = NSMakeRange(NSNotFound, 0);
+	  NSRange range = (NSRange){NSNotFound, 0};
     
     range = [q rangeOfToken:token inString:self.commitId];
     if (range.length > 0 && range.location == 0)
