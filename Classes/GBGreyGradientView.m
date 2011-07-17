@@ -23,9 +23,9 @@
   
   if (!self.gradient)
   {
-    self.gradient = [[NSGradient alloc]
+    self.gradient = [[[NSGradient alloc]
                              initWithStartingColor:[NSColor colorWithCalibratedWhite:231.0/255.0 alpha:1.0]
-                             endingColor:[NSColor colorWithCalibratedWhite:208.0/255.0 alpha:1.0]];
+                             endingColor:[NSColor colorWithCalibratedWhite:208.0/255.0 alpha:1.0]] autorelease];
   }
   
   [self.gradient drawInRect:bounds angle:270];
