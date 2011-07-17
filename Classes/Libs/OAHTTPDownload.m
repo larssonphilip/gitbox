@@ -150,7 +150,7 @@ NSString* const OAHTTPDownloadHTTPCodeErrorDomain = @"com.oleganza.OAHTTPDownloa
 	
 	if (self.byteOffset > 0)
 	{
-		NSMutableURLRequest* mutableRequest = [self.request mutableCopy];
+		NSMutableURLRequest* mutableRequest = [[self.request mutableCopy] autorelease];
 		[mutableRequest setValue:[NSString stringWithFormat:@"bytes=%u-", self.byteOffset] forHTTPHeaderField:@"Range"];
 		self.request = mutableRequest;
 	}
@@ -601,7 +601,7 @@ NSString* const OAHTTPDownloadHTTPCodeErrorDomain = @"com.oleganza.OAHTTPDownloa
 			return;
 		}
 		
-		self.fileHandleForWriting = [[NSFileHandle fileHandleForWritingAtPath:filePath] retain];
+		self.fileHandleForWriting = [NSFileHandle fileHandleForWritingAtPath:filePath];
 		[self.fileHandleForWriting seekToEndOfFile]; // works in all cases: either the file is empty, or has some data.
 	}
 	else
