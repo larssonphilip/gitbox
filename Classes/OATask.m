@@ -596,8 +596,7 @@ NSString* OATaskDidDeallocateNotification  = @"OATaskDidDeallocateNotification";
   
   [self willPrepareTask];
     
-  self.nstask = [[NSTask alloc] init];
-  [self.nstask release];
+  self.nstask = [[[NSTask alloc] init] autorelease];
   
   if (!self.launchPath && self.executableName)
   {
