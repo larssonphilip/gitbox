@@ -54,6 +54,8 @@
 		200B08B511B6E359004C09A8 /* GBLocalRemoteAssociationTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 200B08B411B6E359004C09A8 /* GBLocalRemoteAssociationTask.m */; };
 		200DE075136A9F9100D18A5B /* GBWindowControllerWithCallback.m in Sources */ = {isa = PBXBuildFile; fileRef = 200DE074136A9F9100D18A5B /* GBWindowControllerWithCallback.m */; };
 		200DE076136A9F9100D18A5B /* GBWindowControllerWithCallback.m in Sources */ = {isa = PBXBuildFile; fileRef = 200DE074136A9F9100D18A5B /* GBWindowControllerWithCallback.m */; };
+		20106C5413D377060018A65F /* GitRepository.m in Sources */ = {isa = PBXBuildFile; fileRef = 20106C5313D377060018A65F /* GitRepository.m */; };
+		20106C5513D377060018A65F /* GitRepository.m in Sources */ = {isa = PBXBuildFile; fileRef = 20106C5313D377060018A65F /* GitRepository.m */; };
 		2010732F11A7E9C300EFDE56 /* app.icns in Resources */ = {isa = PBXBuildFile; fileRef = 2010732E11A7E9C300EFDE56 /* app.icns */; };
 		201073B611A80A4600EFDE56 /* GBRemotesTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 201073B511A80A4600EFDE56 /* GBRemotesTask.m */; };
 		2016439112CC0F35005C69DA /* author.png in Resources */ = {isa = PBXBuildFile; fileRef = 2016439012CC0F2E005C69DA /* author.png */; };
@@ -513,6 +515,8 @@
 		200B08B411B6E359004C09A8 /* GBLocalRemoteAssociationTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBLocalRemoteAssociationTask.m; sourceTree = "<group>"; };
 		200DE073136A9F9100D18A5B /* GBWindowControllerWithCallback.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBWindowControllerWithCallback.h; sourceTree = "<group>"; };
 		200DE074136A9F9100D18A5B /* GBWindowControllerWithCallback.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBWindowControllerWithCallback.m; sourceTree = "<group>"; };
+		20106C5213D377060018A65F /* GitRepository.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GitRepository.h; sourceTree = "<group>"; };
+		20106C5313D377060018A65F /* GitRepository.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GitRepository.m; sourceTree = "<group>"; };
 		2010732E11A7E9C300EFDE56 /* app.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = app.icns; sourceTree = "<group>"; };
 		201073B411A80A4600EFDE56 /* GBRemotesTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBRemotesTask.h; sourceTree = "<group>"; };
 		201073B511A80A4600EFDE56 /* GBRemotesTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBRemotesTask.m; sourceTree = "<group>"; };
@@ -943,6 +947,15 @@
 				20586A7E12FD4FAD00729DB1 /* Gitbox.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		20106C5113D3760A0018A65F /* LibGit2 */ = {
+			isa = PBXGroup;
+			children = (
+				20106C5213D377060018A65F /* GitRepository.h */,
+				20106C5313D377060018A65F /* GitRepository.m */,
+			);
+			name = LibGit2;
 			sourceTree = "<group>";
 		};
 		201E02DA11EA1ED3007E4420 /* License */ = {
@@ -1550,6 +1563,7 @@
 				201E02DA11EA1ED3007E4420 /* License */,
 				20E698D813635AB9000A3A6F /* Authentication */,
 				2038F6C611A030FF0087CE37 /* Tasks */,
+				20106C5113D3760A0018A65F /* LibGit2 */,
 				2038F30811952FAE0087CE37 /* Models */,
 				206CAC72122EB619009284FE /* Model Controllers */,
 				20A9713612C6C6B900E2B7B9 /* Main Window */,
@@ -1981,6 +1995,7 @@
 				208D0B8F139A9763002C8072 /* GBRepositorySummaryController.m in Sources */,
 				208D0C5D139AB3F6002C8072 /* GBRepositoryBranchesAndTagsController.m in Sources */,
 				2096FDBE139D323B00B79D46 /* GBRepositoryRemotesController.m in Sources */,
+				20106C5513D377060018A65F /* GitRepository.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2126,6 +2141,7 @@
 				208D0B90139A9763002C8072 /* GBRepositorySummaryController.m in Sources */,
 				208D0C5E139AB3F6002C8072 /* GBRepositoryBranchesAndTagsController.m in Sources */,
 				2096FDBF139D323B00B79D46 /* GBRepositoryRemotesController.m in Sources */,
+				20106C5413D377060018A65F /* GitRepository.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2266,13 +2282,18 @@
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/libgit2/include";
+				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/libgit2/build";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = (
 					"-DDEBUG=1",
 					"-DAPP_VERSION=${APP_VERSION}",
 				);
-				OTHER_LDFLAGS = "-lcrypto";
+				OTHER_LDFLAGS = (
+					"-lgit2",
+					"-lcrypto",
+				);
 				PREBINDING = NO;
 				SDKROOT = macosx10.6;
 				VALID_ARCHS = x86_64;
@@ -2288,10 +2309,15 @@
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/libgit2/include";
+				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/libgit2/build";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = "-DAPP_VERSION=${APP_VERSION}";
-				OTHER_LDFLAGS = "-lcrypto";
+				OTHER_LDFLAGS = (
+					"-lgit2",
+					"-lcrypto",
+				);
 				PREBINDING = NO;
 				SDKROOT = macosx10.6;
 				VALID_ARCHS = x86_64;

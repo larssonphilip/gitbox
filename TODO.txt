@@ -3,13 +3,15 @@ quick list:
 - seems like in 1.4 new git binaries fix issue with "outside repository" because of some case-sensitivity in paths (email is flagged)
 - plr crashed gitbox with objectAtIndex exception
 - should use "git rm --cached" with ignored committed files and fix other oddities in this case
-- github-mac:// URL scheme so that the "Clone in Mac"
+- github-mac:// URL scheme so that the "Clone in Mac" E.g. github-mac://openRepo/https://github.com/libgit2/rugged
+
 - bug: sidebar with multiple Xcode projects shows itself recursively
 - try sandbox 
 - idea: show the subtree for selected commit and its parents
 - merge conflict stage badly needs better UI
 - bug: file "Icon\r" was committed somehow.
-
+- add license for Sparkle to Legal window
+- add license for libgit2 to Legal window
 
 *** Terminating app due to uncaught exception 'NSInvalidArgumentException', reason: '*** -[__NSArrayM insertObject:atIndex:]: object cannot be nil'
 *** First throw call stack:
