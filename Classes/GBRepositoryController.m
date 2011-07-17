@@ -1618,7 +1618,7 @@
 
 - (void) updateSubmodulesWithBlock:(void(^)())aBlock
 {
-#warning disabled submodules for beta testing
+#warning TODO: disabled submodules for beta testing
   
   if (aBlock) aBlock();
   return;
