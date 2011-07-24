@@ -10,7 +10,7 @@ NSInteger const OAHTTPDownloadErrorCodeContentType = 100;
 NSString* const OAHTTPDownloadErrorDomain = @"com.oleganza.OAHTTPDownloadErrorDomain";
 NSString* const OAHTTPDownloadHTTPCodeErrorDomain = @"com.oleganza.OAHTTPDownloadErrorDomain.HTTP";
 
-@interface OAHTTPDownload ()
+@interface OAHTTPDownload () <NSURLConnectionDelegate>
 @property(nonatomic,retain) NSMutableData* receivedData;
 @property(nonatomic,retain) NSFileHandle* fileHandleForWriting;
 - (void) log:(NSString*)msg;
