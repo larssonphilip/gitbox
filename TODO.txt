@@ -13,6 +13,9 @@ quick list:
 - add license for Sparkle to Legal window
 - add license for libgit2 to Legal window
 
+- feature: "checkpoint" commit to remember current state
+- feature: "uncommit" to quickly rollback non-pushed commit back to the working directory
+
 *** Terminating app due to uncaught exception 'NSInvalidArgumentException', reason: '*** -[__NSArrayM insertObject:atIndex:]: object cannot be nil'
 *** First throw call stack:
 (
@@ -23,7 +26,7 @@ quick list:
 	4   Gitbox                              0x000000010003496a -[OATask(Porcelain) command] + 106
 	5   Gitbox                              0x0000000100041270 -[GBActivityController taskDidLaunch:] + 384
 	6   Foundation                          0x00007fff8d14abba __-[NSNotificationCenter addObserver:selector:name:object:]_block_invoke_1 + 47
-	7   CoreFoundation                      0x00007fff8f6b088a _CFXNotificationPost + 2698
+	7   CoreFoundation                      0x00007fff8f6b088a _CFXNotificationPost + 2698 
 	8   Foundation                          0x00007fff8d136e6f -[NSNotificationCenter postNotificationName:object:userInfo:] + 65
 	9   Gitbox                              0x000000010002ef97 -[OATask launch] + 631
 	10  Gitbox                              0x00000001000348fa -[OATask(Porcelain) launchInQueue:withBlock:] + 138

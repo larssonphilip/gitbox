@@ -373,6 +373,9 @@
 		209C16581290636300B343A5 /* NSError+OAPresent.m in Sources */ = {isa = PBXBuildFile; fileRef = 209C16561290636300B343A5 /* NSError+OAPresent.m */; };
 		209C192412B802C900F56A54 /* GBCellWithView.m in Sources */ = {isa = PBXBuildFile; fileRef = 209C192312B802C900F56A54 /* GBCellWithView.m */; };
 		209C192512B802C900F56A54 /* GBCellWithView.m in Sources */ = {isa = PBXBuildFile; fileRef = 209C192312B802C900F56A54 /* GBCellWithView.m */; };
+		209CE44413D61FAC009E85A2 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 209CE44313D61FAC009E85A2 /* libz.dylib */; };
+		209CE44513D61FD0009E85A2 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 209CE44313D61FAC009E85A2 /* libz.dylib */; };
+		209CE4C513D61FF2009E85A2 /* libgit2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 20CBF1CD13D61EB80071E79D /* libgit2.a */; };
 		20A37BA6120DC1D90068AB8B /* GBSidebarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20A37BA5120DC1D90068AB8B /* GBSidebarController.m */; };
 		20A37BA9120DC27B0068AB8B /* GBMainWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20A37BA8120DC27B0068AB8B /* GBMainWindowController.m */; };
 		20A37BAC120DC4510068AB8B /* GBToolbarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20A37BAB120DC4510068AB8B /* GBToolbarController.m */; };
@@ -430,6 +433,7 @@
 		20C8972312B89BC2002F600F /* OATextFieldAndView.m in Sources */ = {isa = PBXBuildFile; fileRef = 20C8972112B89BC2002F600F /* OATextFieldAndView.m */; };
 		20C899B612B95DDF002F600F /* OANonScrollingScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 20C899B512B95DDF002F600F /* OANonScrollingScrollView.m */; };
 		20C899B712B95DDF002F600F /* OANonScrollingScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 20C899B512B95DDF002F600F /* OANonScrollingScrollView.m */; };
+		20CBF1CE13D61EB80071E79D /* libgit2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 20CBF1CD13D61EB80071E79D /* libgit2.a */; };
 		20CE6D65138824D2001D9707 /* GBHistoryTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 20CE6D64138824D2001D9707 /* GBHistoryTableView.m */; };
 		20CE6D66138824D2001D9707 /* GBHistoryTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 20CE6D64138824D2001D9707 /* GBHistoryTableView.m */; };
 		20CE6DEB1389447E001D9707 /* GBStashListTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 20CE6DEA1389447E001D9707 /* GBStashListTask.m */; };
@@ -770,6 +774,7 @@
 		209C16561290636300B343A5 /* NSError+OAPresent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSError+OAPresent.m"; sourceTree = "<group>"; };
 		209C192212B802C900F56A54 /* GBCellWithView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBCellWithView.h; sourceTree = "<group>"; };
 		209C192312B802C900F56A54 /* GBCellWithView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBCellWithView.m; sourceTree = "<group>"; };
+		209CE44313D61FAC009E85A2 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		20A09D67129F8F3900294730 /* fastspring-1-1000-licenses.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "fastspring-1-1000-licenses.txt"; sourceTree = "<group>"; };
 		20A09D68129F8F3900294730 /* fastspring-1001-2000-licenses.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "fastspring-1001-2000-licenses.txt"; sourceTree = "<group>"; };
 		20A09D69129F8F3900294730 /* free-promo-1-100-licenses.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "free-promo-1-100-licenses.txt"; sourceTree = "<group>"; };
@@ -853,6 +858,7 @@
 		20C899B512B95DDF002F600F /* OANonScrollingScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = OANonScrollingScrollView.m; path = ../OANonScrollingScrollView.m; sourceTree = "<group>"; };
 		20C9A55D12E85E0800DBA3E1 /* Subversion.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Subversion.txt; sourceTree = "<group>"; };
 		20C9A55F12E85ED100DBA3E1 /* Mercurial.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Mercurial.txt; sourceTree = "<group>"; };
+		20CBF1CD13D61EB80071E79D /* libgit2.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgit2.a; path = libgit2/build/libgit2.a; sourceTree = "<group>"; };
 		20CCCE011344AA2B00096AF7 /* FSEvents.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = FSEvents.txt; sourceTree = "<group>"; };
 		20CE6D63138824D2001D9707 /* GBHistoryTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBHistoryTableView.h; sourceTree = "<group>"; };
 		20CE6D64138824D2001D9707 /* GBHistoryTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBHistoryTableView.m; sourceTree = "<group>"; };
@@ -895,6 +901,8 @@
 				2030C609128B6108005F751C /* Foundation.framework in Frameworks */,
 				20EF8BEB12E6602D00F3438A /* QuickLook.framework in Frameworks */,
 				20EF8C4812E6605D00F3438A /* Quartz.framework in Frameworks */,
+				209CE44513D61FD0009E85A2 /* libz.dylib in Frameworks */,
+				209CE4C513D61FF2009E85A2 /* libgit2.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -910,6 +918,8 @@
 				2030C608128B6107005F751C /* Foundation.framework in Frameworks */,
 				20EF88D712E34F9300F3438A /* Quartz.framework in Frameworks */,
 				20EF88D912E34F9300F3438A /* QuickLook.framework in Frameworks */,
+				20CBF1CE13D61EB80071E79D /* libgit2.a in Frameworks */,
+				209CE44413D61FAC009E85A2 /* libz.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -919,6 +929,7 @@
 		1058C7A6FEA54F5311CA2CBB /* Linked Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				20330BFB13636D4F006B2457 /* Foundation.framework */,
 				2057EF7511ABE5B5009EDF2F /* Sparkle.framework */,
 				1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */,
 				20EF88D612E34F9300F3438A /* Quartz.framework */,
@@ -1607,8 +1618,9 @@
 		2A37F4C3FDCFA73011CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				209CE44313D61FAC009E85A2 /* libz.dylib */,
+				20CBF1CD13D61EB80071E79D /* libgit2.a */,
 				1058C7A6FEA54F5311CA2CBB /* Linked Frameworks */,
-				20330BFB13636D4F006B2457 /* Foundation.framework */,
 				1058C7A8FEA54F5311CA2CBB /* Other Frameworks */,
 			);
 			name = Frameworks;
@@ -2206,6 +2218,10 @@
 				GCC_PREFIX_HEADER = prefix_appstore.pch;
 				INFOPLIST_FILE = info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/libgit2/build\"",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.6.6;
 				PRODUCT_NAME = Gitbox;
 			};
@@ -2226,6 +2242,10 @@
 				GCC_PREFIX_HEADER = prefix_appstore.pch;
 				INFOPLIST_FILE = info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/libgit2/build\"",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.6.6;
 				PRODUCT_NAME = Gitbox;
 			};
@@ -2249,6 +2269,10 @@
 				GCC_PREFIX_HEADER = prefix.pch;
 				INFOPLIST_FILE = info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/libgit2/build\"",
+				);
 				PRODUCT_NAME = Gitbox;
 			};
 			name = Debug;
@@ -2268,6 +2292,10 @@
 				GCC_PREFIX_HEADER = prefix.pch;
 				INFOPLIST_FILE = info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/libgit2/build\"",
+				);
 				PRODUCT_NAME = Gitbox;
 			};
 			name = Release;
@@ -2283,17 +2311,14 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/libgit2/include";
-				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/libgit2/build";
+				LIBRARY_SEARCH_PATHS = "";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = (
 					"-DDEBUG=1",
 					"-DAPP_VERSION=${APP_VERSION}",
 				);
-				OTHER_LDFLAGS = (
-					"-lgit2",
-					"-lcrypto",
-				);
+				OTHER_LDFLAGS = "-lcrypto";
 				PREBINDING = NO;
 				SDKROOT = macosx10.6;
 				VALID_ARCHS = x86_64;
@@ -2303,21 +2328,18 @@
 		C05733CD08A9546B00998B17 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				APP_VERSION = 1.4;
+				APP_VERSION = 1.4.1;
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/libgit2/include";
-				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/libgit2/build";
+				LIBRARY_SEARCH_PATHS = "";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = "-DAPP_VERSION=${APP_VERSION}";
-				OTHER_LDFLAGS = (
-					"-lgit2",
-					"-lcrypto",
-				);
+				OTHER_LDFLAGS = "-lcrypto";
 				PREBINDING = NO;
 				SDKROOT = macosx10.6;
 				VALID_ARCHS = x86_64;
