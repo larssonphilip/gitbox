@@ -5,6 +5,7 @@ quick list:
 - should use "git rm --cached" with ignored committed files and fix other oddities in this case
 - github-mac:// URL scheme so that the "Clone in Mac" E.g. github-mac://openRepo/https://github.com/libgit2/rugged
 
+- change DO to unix domain sockets
 - bug: sidebar with multiple Xcode projects shows itself recursively
 - try sandbox 
 - idea: show the subtree for selected commit and its parents
@@ -80,13 +81,17 @@ Gitbox 1.5 Release Notes
 ✓ Highlighted links in commit messages.
 ✓ Updated bundled Git to version 1.7.5.4
 
+Enhancements:
+
+✓ Support for both overlay and legacy scrollbars in OS X Lion.
+
 Bug fixes:
 
 ✓ 
 ✓ 
 ✓ Fixed rare crash when extracting a file from history.
 ✓ Fixed rare bug with incorrect user picture loading.
-✓
+✓ Fixed crashes in history parser
 
 
 --

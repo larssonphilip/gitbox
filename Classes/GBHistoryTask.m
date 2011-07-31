@@ -23,93 +23,93 @@
 
 - (NSUInteger) limit
 {
-  if (limit <= 0) limit = 1000;
-  return limit;
+	if (limit <= 0) limit = 1000;
+	return limit;
 }
 
 - (void) dealloc
 {
-  self.branch = nil;
-  self.joinedBranch = nil;
-  self.substructedBranch = nil;
-  self.commits = nil;
-  [super dealloc];
+	self.branch = nil;
+	self.joinedBranch = nil;
+	self.substructedBranch = nil;
+	self.commits = nil;
+	[super dealloc];
 }
 
 - (NSArray*) arguments
 {
-  // FIXME: should use %B in some later git version rather than %w(10000,4,4)...%b
-  NSMutableArray* args = [NSMutableArray arrayWithObjects:@"log", nil];
-  
-  [args addObject:[self.branch commitish]];
-  
-  //  NSLog(@"%@ rev-list arguments:", [self class]);
-  //  NSLog(@"branch: %@", self.branch);
-  //  NSLog(@"joinedBranch: %@", self.joinedBranch);
-  //  NSLog(@"substructedBranch: %@", self.substructedBranch);
-  
-  if (self.joinedBranch)
-  {
-    [args addObject:[self.joinedBranch commitish]];
-  }
-  if (self.substructedBranch)
-  {
-    [args addObject:@"--not"];
-    [args addObject:[self.substructedBranch commitish]];
-  }
-  
-  if (self.includeDiff)
-  {
-    [args addObject:[NSString stringWithFormat:@"--patch", self.limit]];
-  }
-  
-  if (self.limit > 0)
-  {
-    [args addObject:[NSString stringWithFormat:@"--max-count=%d", self.limit]];
-  }
-  
-  if (self.skip > 0)
-  {
-    [args addObject:[NSString stringWithFormat:@"--skip=%d", self.skip]];
-  }
-  
-  if (self.beforeTimestamp)
-  {
-    [args addObject:[NSString stringWithFormat:@"--before=%d", self.beforeTimestamp]];
-  }
-  
-  [args addObject: @"--format=commit %H%n"
-   "tree %T%n"
-   "parents %P%n"
-   "authorName %an%n"
-   "authorEmail %ae%n"
-   "committerName %cn%n"
-   "committerEmail %ce%n"
-   "authorDate %ai%n"
-   "committerTimestamp %ct%n"
-   "%n"
-   "%w(99999,4,4)%B"];
-  
-   // adding explicit path argument to allow branch names with slashes
-  [args addObject:@"--"];
-  [args addObject:@"."];
-  
-//  NSLog(@"arguments: %@", [[args subarrayWithRange:NSMakeRange(4, [args count] - 4)] componentsJoinedByString:@" "]);
-//  NSLog(@"--");
-  return args;
+	// FIXME: should use %B in some later git version rather than %w(10000,4,4)...%b
+	NSMutableArray* args = [NSMutableArray arrayWithObjects:@"log", nil];
+	
+	[args addObject:[self.branch commitish]];
+	
+	//  NSLog(@"%@ rev-list arguments:", [self class]);
+	//  NSLog(@"branch: %@", self.branch);
+	//  NSLog(@"joinedBranch: %@", self.joinedBranch);
+	//  NSLog(@"substructedBranch: %@", self.substructedBranch);
+	
+	if (self.joinedBranch)
+	{
+		[args addObject:[self.joinedBranch commitish]];
+	}
+	if (self.substructedBranch)
+	{
+		[args addObject:@"--not"];
+		[args addObject:[self.substructedBranch commitish]];
+	}
+	
+	if (self.includeDiff)
+	{
+		[args addObject:[NSString stringWithFormat:@"--patch", self.limit]];
+	}
+	
+	if (self.limit > 0)
+	{
+		[args addObject:[NSString stringWithFormat:@"--max-count=%d", self.limit]];
+	}
+	
+	if (self.skip > 0)
+	{
+		[args addObject:[NSString stringWithFormat:@"--skip=%d", self.skip]];
+	}
+	
+	if (self.beforeTimestamp)
+	{
+		[args addObject:[NSString stringWithFormat:@"--before=%d", self.beforeTimestamp]];
+	}
+	
+	[args addObject: @"--format=commit %H%n"
+	 "tree %T%n"
+	 "parents %P%n"
+	 "authorName %an%n"
+	 "authorEmail %ae%n"
+	 "committerName %cn%n"
+	 "committerEmail %ce%n"
+	 "authorDate %ai%n"
+	 "committerTimestamp %ct%n"
+	 "%n"
+	 "%w(99999,4,4)%B"];
+	
+	// adding explicit path argument to allow branch names with slashes
+	[args addObject:@"--"];
+	[args addObject:@"."];
+	
+	//  NSLog(@"arguments: %@", [[args subarrayWithRange:NSMakeRange(4, [args count] - 4)] componentsJoinedByString:@" "]);
+	//  NSLog(@"--");
+	return args;
 }
 
 - (void) didFinishInBackground
 {
-  [super didFinishInBackground];
-  if ([self isError])
-  {
-    self.commits = [NSArray array];
-  }
-  else
-  {
-    self.commits = [self commitsFromRawFormatData:self.output];
-  }
+	[super didFinishInBackground];
+	if ([self isError])
+	{
+		self.commits = [NSArray array];
+	}
+	else
+	{
+		self.commits = [self commitsFromRawFormatData:self.output];
+	}
 }
 
 
@@ -185,22 +185,22 @@ Binary files /dev/null and b/psd/history-markers.psd differ
   NSLog(@"INPUT: %@", stringData); \
   return list; \
 }
-  
-  NSMutableArray* list = [NSMutableArray arrayWithCapacity:self.limit];
-  
-  NSString* stringData = [data UTF8String];
-  NSArray* lines = [stringData componentsSeparatedByString:@"\n"];
-  
+	
+	NSMutableArray* list = [NSMutableArray arrayWithCapacity:self.limit];
+	
+	NSString* stringData = [data UTF8String];
+	NSArray* lines = [stringData componentsSeparatedByString:@"\n"];
+	
 #if DEBUG
-  if ([data length] > 0 && stringData == nil)
-  {
-    NSLog(@"GBHistoryTask: could not convert %d bytes of data to UTF8 string. See the log on Desktop.", [data length]);
-    [data writeToURL:[NSURL fileURLWithPath:[[NSString stringWithFormat:@"~/Desktop/Gitbox_GBHistoryTaskBrokenInput-%@.txt", [NSDate date]] stringByExpandingTildeInPath]] atomically:YES];
-  }
+	if ([data length] > 0 && stringData == nil)
+	{
+		NSLog(@"GBHistoryTask: could not convert %d bytes of data to UTF8 string. See the log on Desktop.", [data length]);
+		[data writeToURL:[NSURL fileURLWithPath:[[NSString stringWithFormat:@"~/Desktop/Gitbox_GBHistoryTaskBrokenInput-%@.txt", [NSDate date]] stringByExpandingTildeInPath]] atomically:YES];
+	}
 #endif
   
-  NSUInteger lineIndex = 0;
-  NSString* line = nil;
+	NSUInteger lineIndex = 0;
+	NSString* line = nil;
 #define GBHistoryNextLine { \
   lineIndex++; \
   if (lineIndex < [lines count]) { \
@@ -209,219 +209,219 @@ Binary files /dev/null and b/psd/history-markers.psd differ
     line = nil; \
   } \
 }
-  NSCharacterSet* whitespaceCharacterSet = [NSCharacterSet whitespaceCharacterSet];
-  while (lineIndex < [lines count])
-  {
-    NSAutoreleasePool* pool = [NSAutoreleasePool new];
-    
-    line = [lines objectAtIndex:lineIndex];
-    
-    if ([line length] > 0)
-    {
-      GBCommit* commit = [[GBCommit new] autorelease];
-      
-      // commit 4d235c8044a638108b67e22f94b2876657130fc8
-      if ([line hasPrefix:@"commit "])
-      {
-        commit.commitId = [line substringFromIndex:7]; // 'commit ' skipped
-      }
-      else HistoryScanError(@"Expected 'commit <sha1>' line");
-
-      GBHistoryNextLine;
-      
-      if ([line hasPrefix:@"commit "]) // skip additional commit line
-      {
-        GBHistoryNextLine;
-      }
-      
-      // tree 715659d7f232f1ecbe19674a16c9b03067f6c9e1
-      if ([line hasPrefix:@"tree "])
-      {
-        commit.treeId = [line substringFromIndex:5]; // 'tree ' skipped
-      }
-      else HistoryScanError(@"Expected 'tree <sha1>' line");
-      
-      GBHistoryNextLine;
-      
-      // parents 8d0ea3117597933610e02907d14b443f8996ca3b[<space> <sha1>[<space> <sha1>[...]]] 
-      if ([line hasPrefix:@"parents "])
-      {
-        commit.parentIds = [[line substringFromIndex:8] componentsSeparatedByString:@" "]; // 'parents ' skipped
-        if ([commit.parentIds count] == 1 && [[commit.parentIds objectAtIndex:0] isEqualToString:@""])
-        {
-          commit.parentIds = [NSArray array];
-        }
-      }
-      else HistoryScanError(@"Expected 'parents <sha1>[ <sha1>[...]]' line");
-      
-      GBHistoryNextLine;
-      
-      // authorName Junio C Hamano
-      if ([line hasPrefix:@"authorName "])
-      {
-        commit.authorName = [line substringFromIndex:11]; // 'authorName ' skipped
-      }
-      else HistoryScanError(@"Expected 'authorName <name>' line");
-      
-      GBHistoryNextLine;
-      
-      // authorEmail gitster@pobox.com
-      if ([line hasPrefix:@"authorEmail "])
-      {
-        commit.authorEmail = [line substringFromIndex:12]; // 'authorEmail ' skipped
-      }
-      else HistoryScanError(@"Expected 'authorEmail <email>' line");
-      
-      GBHistoryNextLine;
-      
-      // committerName Junio C Hamano
-      if ([line hasPrefix:@"committerName "])
-      {
-        commit.committerName = [line substringFromIndex:14]; // 'committerName ' skipped
-      }
-      else HistoryScanError(@"Expected 'committerName <name>' line");
-      
-      GBHistoryNextLine;
-      
-      // committerEmail gitster@pobox.com
-      if ([line hasPrefix:@"committerEmail "])
-      {
-        commit.committerEmail = [line substringFromIndex:15]; // 'committerEmail ' skipped
-      }
-      else HistoryScanError(@"Expected 'committerEmail <email>' line");
-      
-      GBHistoryNextLine;
-      
-      // authorDate 2010-05-01 20:23:10 -0700
-      if ([line hasPrefix:@"authorDate "])
-      {
-        commit.date = [NSDate dateWithString:[line substringFromIndex:11]]; // 'authorDate ' skipped
-      }
-      else HistoryScanError(@"Expected 'authorDate <date>' line");
-      
-      GBHistoryNextLine;
-
-      // committerTimestamp 1302681533
-      if ([line hasPrefix:@"committerTimestamp "])
-      {
-        commit.rawTimestamp = [[line substringFromIndex:19] intValue]; // 'committerTimestamp ' skipped
-      }
-      else HistoryScanError(@"Expected 'committerTimestamp <timestamp>' line");
-      
-      GBHistoryNextLine;
-      
-      // Skip initial empty lines
-      while (line && [line length] <= 0)
-      {
-        GBHistoryNextLine;
-      }
-      NSMutableArray* rawBodyLines = [NSMutableArray array];
-      while (line && [line length] <= 0 || [line hasPrefix:@"    "])
-      {
-        [rawBodyLines addObject:[line stringByTrimmingCharactersInSet:whitespaceCharacterSet]];
-  //      if ([line length] > 0)
-  //      {
-  //        [rawBodyLines addObject:[line stringByTrimmingCharactersInSet:whitespaceCharacterSet]];
-  //      }
-        GBHistoryNextLine;
-      }
-      
-      commit.message = [rawBodyLines componentsJoinedByString:@"\n"];
-      
-      // Stupid git removes LFs between "Signed-off-by" signatures. We fix this by this hack
-      // (which is not that awful, actually):
-      commit.message = [commit.message stringByReplacingOccurrencesOfString:@"> Signed-off-by:"
-                                                                 withString:@">\nSigned-off-by:"];
-      
-      
-      commit.message = [commit.message stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-      commit.repository = self.repository;
-      [list addObject:commit];
-      
-      
-      if (self.includeDiff)
-      {
-        NSMutableArray* diffs = [NSMutableArray array];
-        NSMutableString* diffLines = [NSMutableString string];
-        NSMutableDictionary* diffInfo = nil;
-        while (lineIndex < [lines count] && ![line hasPrefix:@"commit "])
-        {
-          //diff --git a/psd/icon.psd b/psd/icon.psd
-          if ([line hasPrefix:@"diff"])
-          {
-            diffLines = [NSMutableString string];
-            NSString* diffPaths = [line stringByReplacingOccurrencesOfString:@"diff --git a/" withString:@""];
-            
-            diffInfo = [NSMutableDictionary dictionary];
-            [diffs addObject:diffInfo];
-            [diffInfo setObject:diffLines forKey:@"lines"];
-            
-            // Parse two separate paths here by splitting by " b/".
-            // Since it is not reliable (paths may have unescaped spaces), we will replace these results by parsing --- and +++.
-            // But if --- and +++ are not available (which is the case for binary files), we'll keep this inaccurate data.
-            
-            NSArray* diffPathsArray = [diffPaths componentsSeparatedByString:@" b/"];
-            if ([diffPathsArray count] > 0)
-            {
-              NSString* srcPath = [diffPathsArray objectAtIndex:0];
-              if ([srcPath length] > 0)
-              {
-                [diffInfo setObject:srcPath forKey:@"srcPath"];
-              }
-              if ([diffPathsArray count] > 1)
-              {
-                NSString* dstPath = [diffPathsArray objectAtIndex:1];
-                if ([dstPath length] > 0)
-                {
-                  [diffInfo setObject:dstPath forKey:@"dstPath"];
-                }
-              }
-            }
-            
-          }
-          else if ([line hasPrefix:@"---"]) //--- a/Classes/GBMainWindowController.h
-          {
-            NSString* path = [line stringByReplacingOccurrencesOfString:@"--- a/" withString:@""];
-            [diffInfo setObject:path forKey:@"srcPath"];
-          }
-          else if ([line hasPrefix:@"+++"]) //+++ b/Classes/GBMainWindowController.h
-          {
-            NSString* path = [line stringByReplacingOccurrencesOfString:@"+++ b/" withString:@""];
-            [diffInfo setObject:path forKey:@"dstPath"];
-          }
-          else if ([line hasPrefix:@"-"] || [line hasPrefix:@"+"])
-          {
-            [diffLines appendString:[line substringFromIndex:1]];
-            [diffLines appendString:@"\n"];
-          }
-          else
-          {
-            // skip non-changed diff lines and header lines like:
-            //new file mode 100644
-            //index 0000000..a1e8c9b
-            //Binary files /dev/null and b/psd/icon.psd differ
-            //@@ -151,27 +152,29 @@
-            //NSLog(@"Skipping diff line: %@", line);
-          }
-            
-          GBHistoryNextLine;
-          
-        } // loop over diff
-        
-        commit.diffs = diffs;
-        
-      } // if includeDiff
-      
-    }// if ! empty line
-    else
-    {
-      GBHistoryNextLine;
-    }
-
-    [pool drain];
-  }
-  
-  return list;
+	NSCharacterSet* whitespaceCharacterSet = [NSCharacterSet whitespaceCharacterSet];
+	while (lineIndex < [lines count])
+	{
+		NSAutoreleasePool* pool = [NSAutoreleasePool new];
+		
+		line = [lines objectAtIndex:lineIndex];
+		
+		if ([line length] > 0)
+		{
+			GBCommit* commit = [[GBCommit new] autorelease];
+			
+			// commit 4d235c8044a638108b67e22f94b2876657130fc8
+			if ([line hasPrefix:@"commit "])
+			{
+				commit.commitId = [line substringFromIndex:7]; // 'commit ' skipped
+			}
+			else HistoryScanError(@"Expected 'commit <sha1>' line");
+			
+			GBHistoryNextLine;
+			
+			if ([line hasPrefix:@"commit "]) // skip additional commit line
+			{
+				GBHistoryNextLine;
+			}
+			
+			// tree 715659d7f232f1ecbe19674a16c9b03067f6c9e1
+			if ([line hasPrefix:@"tree "])
+			{
+				commit.treeId = [line substringFromIndex:5]; // 'tree ' skipped
+			}
+			else HistoryScanError(@"Expected 'tree <sha1>' line");
+			
+			GBHistoryNextLine;
+			
+			// parents 8d0ea3117597933610e02907d14b443f8996ca3b[<space> <sha1>[<space> <sha1>[...]]] 
+			if ([line hasPrefix:@"parents "])
+			{
+				commit.parentIds = [[line substringFromIndex:8] componentsSeparatedByString:@" "]; // 'parents ' skipped
+				if ([commit.parentIds count] == 1 && [[commit.parentIds objectAtIndex:0] isEqualToString:@""])
+				{
+					commit.parentIds = [NSArray array];
+				}
+			}
+			else HistoryScanError(@"Expected 'parents <sha1>[ <sha1>[...]]' line");
+			
+			GBHistoryNextLine;
+			
+			// authorName Junio C Hamano
+			if ([line hasPrefix:@"authorName "])
+			{
+				commit.authorName = [line substringFromIndex:11]; // 'authorName ' skipped
+			}
+			else HistoryScanError(@"Expected 'authorName <name>' line");
+			
+			GBHistoryNextLine;
+			
+			// authorEmail gitster@pobox.com
+			if ([line hasPrefix:@"authorEmail "])
+			{
+				commit.authorEmail = [line substringFromIndex:12]; // 'authorEmail ' skipped
+			}
+			else HistoryScanError(@"Expected 'authorEmail <email>' line");
+			
+			GBHistoryNextLine;
+			
+			// committerName Junio C Hamano
+			if ([line hasPrefix:@"committerName "])
+			{
+				commit.committerName = [line substringFromIndex:14]; // 'committerName ' skipped
+			}
+			else HistoryScanError(@"Expected 'committerName <name>' line");
+			
+			GBHistoryNextLine;
+			
+			// committerEmail gitster@pobox.com
+			if ([line hasPrefix:@"committerEmail "])
+			{
+				commit.committerEmail = [line substringFromIndex:15]; // 'committerEmail ' skipped
+			}
+			else HistoryScanError(@"Expected 'committerEmail <email>' line");
+			
+			GBHistoryNextLine;
+			
+			// authorDate 2010-05-01 20:23:10 -0700
+			if ([line hasPrefix:@"authorDate "])
+			{
+				commit.date = [NSDate dateWithString:[line substringFromIndex:11]]; // 'authorDate ' skipped
+			}
+			else HistoryScanError(@"Expected 'authorDate <date>' line");
+			
+			GBHistoryNextLine;
+			
+			// committerTimestamp 1302681533
+			if ([line hasPrefix:@"committerTimestamp "])
+			{
+				commit.rawTimestamp = [[line substringFromIndex:19] intValue]; // 'committerTimestamp ' skipped
+			}
+			else HistoryScanError(@"Expected 'committerTimestamp <timestamp>' line");
+			
+			GBHistoryNextLine;
+			
+			// Skip initial empty lines
+			while (line && [line length] <= 0)
+			{
+				GBHistoryNextLine;
+			}
+			NSMutableArray* rawBodyLines = [NSMutableArray array];
+			while (line && [line length] <= 0 || [line hasPrefix:@"    "])
+			{
+				[rawBodyLines addObject:[line stringByTrimmingCharactersInSet:whitespaceCharacterSet]];
+				//      if ([line length] > 0)
+				//      {
+				//        [rawBodyLines addObject:[line stringByTrimmingCharactersInSet:whitespaceCharacterSet]];
+				//      }
+				GBHistoryNextLine;
+			}
+			
+			commit.message = [rawBodyLines componentsJoinedByString:@"\n"];
+			
+			// Stupid git removes LFs between "Signed-off-by" signatures. We fix this by this hack
+			// (which is not that awful, actually):
+			commit.message = [commit.message stringByReplacingOccurrencesOfString:@"> Signed-off-by:"
+																	   withString:@">\nSigned-off-by:"];
+			
+			
+			commit.message = [commit.message stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+			commit.repository = self.repository;
+			[list addObject:commit];
+			
+			
+			if (self.includeDiff)
+			{
+				NSMutableArray* diffs = [NSMutableArray array];
+				NSMutableString* diffLines = [NSMutableString string];
+				NSMutableDictionary* diffInfo = nil;
+				while (lineIndex < [lines count] && ![line hasPrefix:@"commit "])
+				{
+					//diff --git a/psd/icon.psd b/psd/icon.psd
+					if ([line hasPrefix:@"diff"])
+					{
+						diffLines = [NSMutableString string];
+						NSString* diffPaths = [line stringByReplacingOccurrencesOfString:@"diff --git a/" withString:@""];
+						
+						diffInfo = [NSMutableDictionary dictionary];
+						[diffs addObject:diffInfo];
+						[diffInfo setObject:diffLines forKey:@"lines"];
+						
+						// Parse two separate paths here by splitting by " b/".
+						// Since it is not reliable (paths may have unescaped spaces), we will replace these results by parsing --- and +++.
+						// But if --- and +++ are not available (which is the case for binary files), we'll keep this inaccurate data.
+						
+						NSArray* diffPathsArray = [diffPaths componentsSeparatedByString:@" b/"];
+						if ([diffPathsArray count] > 0)
+						{
+							NSString* srcPath = [diffPathsArray objectAtIndex:0];
+							if ([srcPath length] > 0)
+							{
+								[diffInfo setObject:srcPath forKey:@"srcPath"];
+							}
+							if ([diffPathsArray count] > 1)
+							{
+								NSString* dstPath = [diffPathsArray objectAtIndex:1];
+								if ([dstPath length] > 0)
+								{
+									[diffInfo setObject:dstPath forKey:@"dstPath"];
+								}
+							}
+						}
+						
+					}
+					else if ([line hasPrefix:@"---"]) //--- a/Classes/GBMainWindowController.h
+					{
+						NSString* path = [line stringByReplacingOccurrencesOfString:@"--- a/" withString:@""];
+						[diffInfo setObject:path forKey:@"srcPath"];
+					}
+					else if ([line hasPrefix:@"+++"]) //+++ b/Classes/GBMainWindowController.h
+					{
+						NSString* path = [line stringByReplacingOccurrencesOfString:@"+++ b/" withString:@""];
+						[diffInfo setObject:path forKey:@"dstPath"];
+					}
+					else if ([line hasPrefix:@"-"] || [line hasPrefix:@"+"])
+					{
+						[diffLines appendString:[line substringFromIndex:1]];
+						[diffLines appendString:@"\n"];
+					}
+					else
+					{
+						// skip non-changed diff lines and header lines like:
+						//new file mode 100644
+						//index 0000000..a1e8c9b
+						//Binary files /dev/null and b/psd/icon.psd differ
+						//@@ -151,27 +152,29 @@
+						//NSLog(@"Skipping diff line: %@", line);
+					}
+					
+					GBHistoryNextLine;
+					
+				} // loop over diff
+				
+				commit.diffs = diffs;
+				
+			} // if includeDiff
+			
+		}// if ! empty line
+		else
+		{
+			GBHistoryNextLine;
+		}
+		
+		[pool release];
+	}
+	
+	return list;
 }
 
 @end

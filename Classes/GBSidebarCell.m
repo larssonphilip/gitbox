@@ -20,56 +20,56 @@
 
 + (CGFloat) cellHeight
 {
-  return 20.0;
+	return 20.0;
 }
 
 - (void) setupCell
 {
-  [self setSelectable:YES];
-  [self setEditable:YES];
-  [self setUsesSingleLineMode:YES];
-  [self setSendsActionOnEndEditing:YES];
-  [self setFont:[NSFont systemFontOfSize:[NSFont smallSystemFontSize]]];
-  [self setLineBreakMode:NSLineBreakByTruncatingTail];
+	[self setSelectable:YES];
+	[self setEditable:YES];
+	[self setUsesSingleLineMode:YES];
+	[self setSendsActionOnEndEditing:YES];
+	[self setFont:[NSFont systemFontOfSize:[NSFont smallSystemFontSize]]];
+	[self setLineBreakMode:NSLineBreakByTruncatingTail];
 }
 
 - (id)initTextCell:(NSString*)string
 {
-  if ((self = [super initTextCell:string])) [self setupCell];
-  return self;
+	if ((self = [super initTextCell:string])) [self setupCell];
+	return self;
 }
 
 - (id)initImageCell:(NSImage*)img
 {
-  if ((self = [super initImageCell:img])) [self setupCell];
-  return self;
+	if ((self = [super initImageCell:img])) [self setupCell];
+	return self;
 }
 
 - (id)initWithCoder:(NSCoder*)coder
 {
-  if ((self = [super initWithCoder:coder])) [self setupCell];
-  return self;
+	if ((self = [super initWithCoder:coder])) [self setupCell];
+	return self;
 }
 
 - (id) initWithItem:(GBSidebarItem*)anItem
 {
-  if ((self = [self initTextCell:@""]))
-  {
-    self.sidebarItem = anItem;
-  }
-  return self;
+	if ((self = [self initTextCell:@""]))
+	{
+		self.sidebarItem = anItem;
+	}
+	return self;
 }
 
 - (id) copyWithZone:(NSZone *)zone
 {
-  GBSidebarCell* cell = [[[self class] alloc] initWithItem:self.sidebarItem];
-  
-  [cell setStringValue:[self stringValue]]; // <- this is important to make editing work
-  cell.outlineView = self.outlineView;
-  cell.isForeground = self.isForeground;
-  cell.isFocused = self.isFocused;
-  cell.isDragged = self.isDragged;
-  return cell;
+	GBSidebarCell* cell = [[[self class] alloc] initWithItem:self.sidebarItem];
+	
+	[cell setStringValue:[self stringValue]]; // <- this is important to make editing work
+	cell.outlineView = self.outlineView;
+	cell.isForeground = self.isForeground;
+	cell.isFocused = self.isFocused;
+	cell.isDragged = self.isDragged;
+	return cell;
 }
 
 
@@ -80,62 +80,62 @@
 
 - (NSImage*) image
 {
-  return self.sidebarItem.image;
+	return self.sidebarItem.image;
 }
 
 - (NSRect) drawExtraFeaturesAndReturnRemainingRect:(NSRect)rect
 {
-  // Displaying spinner or badge
-  
-  NSRect rect2 = [self drawSpinnerIfNeededInRectAndReturnRemainingRect:rect];
-  
-  if (rect2.size.width == rect.size.width && rect2.size.height == rect.size.height)
-  {
-    rect2 = [self drawBadgeIfNeededInRectAndReturnRemainingRect:rect];
-  }
-  return rect2;
+	// Displaying spinner or badge
+	
+	NSRect rect2 = [self drawSpinnerIfNeededInRectAndReturnRemainingRect:rect];
+	
+	if (rect2.size.width == rect.size.width && rect2.size.height == rect.size.height)
+	{
+		rect2 = [self drawBadgeIfNeededInRectAndReturnRemainingRect:rect];
+	}
+	return rect2;
 }
 
 
 
 - (void) drawTextInRect:(NSRect)rect
 {
-  BOOL isHighlighted = [self isHighlighted];
-  
-  NSColor* textColor = [NSColor blackColor];
-  
-  if (isHighlighted)
-  {
-    textColor = [NSColor alternateSelectedControlTextColor];
-  }
-  
-  NSMutableParagraphStyle* paragraphStyle = [[NSMutableParagraphStyle new] autorelease];
-  [paragraphStyle setLineBreakMode:NSLineBreakByTruncatingTail];
-  
-  static CGFloat fontSize = 11.0; // 12.0
-  NSFont* font = isHighlighted ? [NSFont boldSystemFontOfSize:fontSize] : [NSFont systemFontOfSize:fontSize];
-  
-  NSMutableDictionary* attributes = [[[NSMutableDictionary alloc] initWithObjectsAndKeys:
-                                      textColor, NSForegroundColorAttributeName,
-                                      font, NSFontAttributeName,
-                                      paragraphStyle, NSParagraphStyleAttributeName,
-                                      nil] autorelease];
-  
-  if (isHighlighted)
-  {
-    NSShadow* s = [[[NSShadow alloc] init] autorelease];
-    [s setShadowOffset:NSMakeSize(0, -1)];
-    [s setShadowColor:[NSColor colorWithCalibratedWhite:0.0 alpha:0.3]];
-    [attributes setObject:s forKey:NSShadowAttributeName];
-  }
-  
-  static CGFloat offset = 0; //-2;
-  //if ([self isFlipped]) offset = -offset;
-  rect.origin.y += offset;
-  rect.size.height += fabs(offset);
-  
-  NSString* title = self.sidebarItem.title;
-  [title drawInRect:rect withAttributes:attributes];
+	BOOL isHighlighted = [self isHighlighted];
+	
+	NSColor* textColor = [NSColor blackColor];
+	
+	if (isHighlighted)
+	{
+		textColor = [NSColor alternateSelectedControlTextColor];
+	}
+	
+	NSMutableParagraphStyle* paragraphStyle = [[NSMutableParagraphStyle new] autorelease];
+	[paragraphStyle setLineBreakMode:NSLineBreakByTruncatingTail];
+	
+	static CGFloat fontSize = 11.0; // 12.0
+	NSFont* font = isHighlighted ? [NSFont boldSystemFontOfSize:fontSize] : [NSFont systemFontOfSize:fontSize];
+	
+	NSMutableDictionary* attributes = [[[NSMutableDictionary alloc] initWithObjectsAndKeys:
+										textColor, NSForegroundColorAttributeName,
+										font, NSFontAttributeName,
+										paragraphStyle, NSParagraphStyleAttributeName,
+										nil] autorelease];
+	
+	if (isHighlighted)
+	{
+		NSShadow* s = [[[NSShadow alloc] init] autorelease];
+		[s setShadowOffset:NSMakeSize(0, -1)];
+		[s setShadowColor:[NSColor colorWithCalibratedWhite:0.0 alpha:0.3]];
+		[attributes setObject:s forKey:NSShadowAttributeName];
+	}
+	
+	static CGFloat offset = 0; //-2;
+	//if ([self isFlipped]) offset = -offset;
+	rect.origin.y += offset;
+	rect.size.height += fabs(offset);
+	
+	NSString* title = self.sidebarItem.title;
+	[title drawInRect:rect withAttributes:attributes];
 }
 
 
@@ -148,26 +148,27 @@
 
 - (void) drawInteriorWithFrame:(NSRect)cellFrame inView:(GBSidebarOutlineView*)theControlView
 {
-  if (![theControlView isKindOfClass:[GBSidebarOutlineView class]]) return;
-  self.outlineView = theControlView;
-  self.isDragged = [self.outlineView preparesImageForDragging];
-  NSWindow* window = [self.outlineView window];
-  self.isFocused = ([window firstResponder] && [window firstResponder] == theControlView && 
-                    [window isMainWindow] && [window isKeyWindow]);
-  self.isForeground = [window isMainWindow];
-
-  // Debug:
-  //[[NSColor colorWithCalibratedRed:0.0 green:0.5 blue:1.0 alpha:0.3] set];
-  //[NSBezierPath fillRect:cellFrame];
-  
-  // 1. Draw the icon
-  NSRect rect = [self drawIconAndReturnRemainingRect:cellFrame];
-  
-  // 2. Draw extra features on the left: badge, spinner, button, sharing icon etc.
-  rect = [self drawExtraFeaturesAndReturnRemainingRect:rect];
-  
-  // 3. Fill remaining space with text
-  [self drawTextInRect:rect];
+	if (![theControlView isKindOfClass:[GBSidebarOutlineView class]]) return;
+	
+	self.outlineView = theControlView;
+	self.isDragged = [self.outlineView preparesImageForDragging];
+	NSWindow* window = [self.outlineView window];
+	self.isFocused = ([window firstResponder] && [window firstResponder] == theControlView && 
+					  [window isMainWindow] && [window isKeyWindow]);
+	self.isForeground = [window isMainWindow];
+	
+	// Debug:
+	//[[NSColor colorWithCalibratedRed:0.0 green:0.5 blue:1.0 alpha:0.3] set];
+	//[NSBezierPath fillRect:cellFrame];
+	
+	// 1. Draw the icon
+	NSRect rect = [self drawIconAndReturnRemainingRect:cellFrame];
+	
+	// 2. Draw extra features on the left: badge, spinner, button, sharing icon etc.
+	rect = [self drawExtraFeaturesAndReturnRemainingRect:rect];
+	
+	// 3. Fill remaining space with text
+	[self drawTextInRect:rect];
 }
 
 
@@ -180,27 +181,27 @@
 
 - (NSText *)setUpFieldEditorAttributes:(NSText *)textObj
 {
-  textObj = [super setUpFieldEditorAttributes:textObj];
-  return textObj;
+	textObj = [super setUpFieldEditorAttributes:textObj];
+	return textObj;
 }
 
 - (NSRect) editorFrameForSuggestedRect:(NSRect)aRect
 {
-  NSRect textFrame, imageFrame;
-  NSDivideRect (aRect, &imageFrame, &textFrame, 6 + kGBSidebarCellIconWidth, NSMinXEdge);
-  textFrame.origin.y += 3.0;
-  textFrame.size.height -= 6;
-  return textFrame;
+	NSRect textFrame, imageFrame;
+	NSDivideRect (aRect, &imageFrame, &textFrame, 6 + kGBSidebarCellIconWidth, NSMinXEdge);
+	textFrame.origin.y += 3.0;
+	textFrame.size.height -= 6;
+	return textFrame;
 }
 
 - (void)editWithFrame:(NSRect)aRect inView:(NSView *)controlView editor:(NSText *)textObj delegate:(id)anObject event:(NSEvent *)theEvent
 {
-  [super editWithFrame:[self editorFrameForSuggestedRect:aRect] inView: controlView editor:textObj delegate:anObject event: theEvent];
+	[super editWithFrame:[self editorFrameForSuggestedRect:aRect] inView: controlView editor:textObj delegate:anObject event: theEvent];
 }
 
 - (void)selectWithFrame:(NSRect)aRect inView:(NSView *)controlView editor:(NSText *)textObj delegate:(id)anObject start:(NSInteger)selStart length:(NSInteger)selLength
 {
-  [super selectWithFrame:[self editorFrameForSuggestedRect:aRect] inView: controlView editor:textObj delegate:anObject start:selStart length:selLength];
+	[super selectWithFrame:[self editorFrameForSuggestedRect:aRect] inView: controlView editor:textObj delegate:anObject start:selStart length:selLength];
 }
 
 
@@ -212,81 +213,81 @@
 
 - (NSRect) drawIconAndReturnRemainingRect:(NSRect)rect
 {
-  NSImage* image = [self image];
-  
-  NSSize imageSize = NSMakeSize(kGBSidebarCellIconWidth, kGBSidebarCellIconWidth);
-  [image setSize:imageSize];
-  
-  NSRect imageFrame;
-  NSRect rect2;
-  
-  NSDivideRect(rect, &imageFrame, &rect2, 6 + imageSize.width, NSMinXEdge);
-  
-  imageFrame.origin.x += 3;
-  imageFrame.size = imageSize;
-  
-  if ([self.outlineView isFlipped])
-  {
-    imageFrame.origin.y += imageFrame.size.height + 2;
-  }
-  else
-  {
-    imageFrame.origin.y += 1;
-  }
-  [image compositeToPoint:imageFrame.origin operation:NSCompositeSourceOver];
-  
-  rect2.origin.x += 2;
-  rect2.origin.y += 3;
-  rect2.size.height -= 3;
-  rect2.size.width -= [GBLightScroller width] + 1; // make some room for scrollbar
-  
-  return rect2;
+	NSImage* image = [self image];
+	
+	NSSize imageSize = NSMakeSize(kGBSidebarCellIconWidth, kGBSidebarCellIconWidth);
+	[image setSize:imageSize];
+	
+	NSRect imageFrame;
+	NSRect rect2;
+	
+	NSDivideRect(rect, &imageFrame, &rect2, 6 + imageSize.width, NSMinXEdge);
+	
+	imageFrame.origin.x += 3;
+	imageFrame.size = imageSize;
+	
+	if ([self.outlineView isFlipped])
+	{
+		imageFrame.origin.y += imageFrame.size.height + 2;
+	}
+	else
+	{
+		imageFrame.origin.y += 1;
+	}
+	[image compositeToPoint:imageFrame.origin operation:NSCompositeSourceOver];
+	
+	rect2.origin.x += 2;
+	rect2.origin.y += 3;
+	rect2.size.height -= 3;
+	rect2.size.width -= [GBLightScroller width] + 1; // make some room for scrollbar
+	
+	return rect2;
 }
 
 
 - (NSRect) drawSpinnerIfNeededInRectAndReturnRemainingRect:(NSRect)rect
 {
-  if (![self.sidebarItem visibleSpinning])
-  {
-    [self.sidebarItem setView:nil forKey:@"GBSidebarCellPogressIndicator"];
-    return rect;
-  }
- 
-  NSProgressIndicator* spinner = (NSProgressIndicator*)[self.sidebarItem viewForKey:@"GBSidebarCellPogressIndicator"];
-  if (!spinner)
-  {
-    spinner = [[[NSProgressIndicator alloc] initWithFrame:NSMakeRect(0, 0, 16.0, 16.0)] autorelease];
-    [spinner setStyle:NSProgressIndicatorSpinningStyle];
-    [spinner setControlSize:NSSmallControlSize];
-    [self.sidebarItem setView:spinner forKey:@"GBSidebarCellPogressIndicator"];
-  }
-  
-  if (!spinner) return rect;
-  
-  double progress = [self.sidebarItem visibleProgress];
-  [spinner setIndeterminate:progress <= 0.1 || progress >= 99.9];
-  [spinner setDoubleValue:progress];
-  [spinner startAnimation:nil];
-  [spinner setHidden:NO];
-  [self.outlineView addSubview:spinner];
-
-  static CGFloat leftPadding = 2.0;
-  static CGFloat rightPadding = 2.0;
-  static CGFloat yOffset = -1.0;
-  NSRect spinnerFrame = [spinner frame];
-  spinnerFrame.origin.x = rect.origin.x + (rect.size.width - spinnerFrame.size.width - rightPadding);
-  spinnerFrame.origin.y = rect.origin.y + yOffset;
-  [spinner setFrame:spinnerFrame];
-  
-  rect.size.width = spinnerFrame.origin.x - rect.origin.x - leftPadding;
-  
-  return rect;
+	if (![self.sidebarItem visibleSpinning])
+	{
+		[self.sidebarItem setView:nil forKey:@"GBSidebarCellPogressIndicator"];
+		return rect;
+	}
+	
+	NSProgressIndicator* spinner = (NSProgressIndicator*)[self.sidebarItem viewForKey:@"GBSidebarCellPogressIndicator"];
+	if (!spinner)
+	{
+		spinner = [[[NSProgressIndicator alloc] initWithFrame:NSMakeRect(0, 0, 16.0, 16.0)] autorelease];
+		[spinner setStyle:NSProgressIndicatorSpinningStyle];
+		[spinner setControlSize:NSSmallControlSize];
+		[self.sidebarItem setView:spinner forKey:@"GBSidebarCellPogressIndicator"];
+	}
+	
+	if (!spinner) return rect;
+	
+	double progress = [self.sidebarItem visibleProgress];
+	[spinner setIndeterminate:progress <= 0.1 || progress >= 99.9];
+	[spinner setDoubleValue:progress];
+	[spinner startAnimation:nil];
+	[spinner setHidden:NO];
+	[self.outlineView addSubview:spinner];
+	
+	static CGFloat leftPadding = 2.0;
+	static CGFloat rightPadding = 2.0;
+	static CGFloat yOffset = -1.0;
+	NSRect spinnerFrame = [spinner frame];
+	spinnerFrame.origin.x = rect.origin.x + (rect.size.width - spinnerFrame.size.width - rightPadding);
+	spinnerFrame.origin.y = rect.origin.y + yOffset;
+	[spinner setFrame:spinnerFrame];
+	
+	rect.size.width = spinnerFrame.origin.x - rect.origin.x - leftPadding;
+	
+	return rect;
 }
 
 
 - (NSRect) drawBadgeIfNeededInRectAndReturnRemainingRect:(NSRect)rect
 {
-  static CGFloat leftPadding = 2.0;
+	static CGFloat leftPadding = 2.0;
 	NSInteger badgeValue = [self.sidebarItem visibleBadgeInteger];
 	
 	if (badgeValue > 0)
@@ -299,7 +300,7 @@
 		}
 	}
     
-  return rect;
+	return rect;
 }
 
 

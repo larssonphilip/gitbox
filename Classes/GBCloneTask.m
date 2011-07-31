@@ -42,7 +42,7 @@
 - (NSArray*) arguments
 {
   NSString* folder = [[self.targetURL path] lastPathComponent];
-  NSAssert(folder, ([NSString stringWithFormat:@"Target URL should have last path component (self.targetURL = %@)", self.targetURL]));
+  NSAssert(folder, @"Target URL should have last path component (self.targetURL = %@)", self.targetURL);
   NSAssert(self.sourceURL, @"Source URL should be present");
   return [NSArray arrayWithObjects:@"clone", [self.sourceURL absoluteString], folder, @"--progress", nil];
 }
