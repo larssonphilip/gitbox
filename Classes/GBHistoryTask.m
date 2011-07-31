@@ -41,18 +41,21 @@
 	// FIXME: should use %B in some later git version rather than %w(10000,4,4)...%b
 	NSMutableArray* args = [NSMutableArray arrayWithObjects:@"log", nil];
 	
-	[args addObject:[self.branch commitish]];
+	if ([self.branch commitish])
+	{
+		[args addObject:[self.branch commitish]];
+	}
 	
 	//  NSLog(@"%@ rev-list arguments:", [self class]);
 	//  NSLog(@"branch: %@", self.branch);
 	//  NSLog(@"joinedBranch: %@", self.joinedBranch);
 	//  NSLog(@"substructedBranch: %@", self.substructedBranch);
 	
-	if (self.joinedBranch)
+	if ([self.joinedBranch commitish])
 	{
 		[args addObject:[self.joinedBranch commitish]];
 	}
-	if (self.substructedBranch)
+	if ([self.substructedBranch commitish])
 	{
 		[args addObject:@"--not"];
 		[args addObject:[self.substructedBranch commitish]];
@@ -60,7 +63,7 @@
 	
 	if (self.includeDiff)
 	{
-		[args addObject:[NSString stringWithFormat:@"--patch", self.limit]];
+		[args addObject:@"--patch"];
 	}
 	
 	if (self.limit > 0)
