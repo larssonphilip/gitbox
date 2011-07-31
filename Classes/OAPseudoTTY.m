@@ -29,7 +29,7 @@
       [NSException raise:@"OpenPtyErrorException"
                   format:@"%s", strerror(errno)];
     }
-    self.name = [[[NSString alloc] initWithCString:devname] autorelease];
+    self.name = [[[NSString alloc] initWithCString:devname encoding:NSUTF8StringEncoding] autorelease];
     self.slaveFileHandle = [[[NSFileHandle alloc] initWithFileDescriptor:slavefd] autorelease];
     self.masterFileHandle = [[[NSFileHandle alloc] initWithFileDescriptor:masterfd
                                               closeOnDealloc:YES] autorelease];

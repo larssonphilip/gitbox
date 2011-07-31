@@ -101,7 +101,7 @@ line = nil; \
         GBNextLine;
       }
       NSMutableArray* rawBodyLines = [NSMutableArray array];
-      while (line && [line length] <= 0 || [line hasPrefix:@"    "])
+      while ((line && [line length] <= 0) || [line hasPrefix:@"    "])
       {
         [rawBodyLines addObject:[line stringByTrimmingCharactersInSet:whitespaceCharacterSet]];
         GBNextLine;

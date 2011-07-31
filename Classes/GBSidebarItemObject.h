@@ -1,5 +1,5 @@
 @class GBSidebarItem;
-@protocol GBSidebarItemObject <NSObject>
+@protocol GBSidebarItemObject <NSObject, NSCoding>
 
 - (GBSidebarItem*) sidebarItem;
 - (id) sidebarItemContentsPropertyList;

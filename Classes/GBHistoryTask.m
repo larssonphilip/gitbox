@@ -197,7 +197,7 @@ Binary files /dev/null and b/psd/history-markers.psd differ
 #if DEBUG
 	if ([data length] > 0 && stringData == nil)
 	{
-		NSLog(@"GBHistoryTask: could not convert %d bytes of data to UTF8 string. See the log on Desktop.", [data length]);
+		NSLog(@"GBHistoryTask: could not convert %lu bytes of data to UTF8 string. See the log on Desktop.", [data length]);
 		[data writeToURL:[NSURL fileURLWithPath:[[NSString stringWithFormat:@"~/Desktop/Gitbox_GBHistoryTaskBrokenInput-%@.txt", [NSDate date]] stringByExpandingTildeInPath]] atomically:YES];
 	}
 #endif
@@ -319,7 +319,7 @@ Binary files /dev/null and b/psd/history-markers.psd differ
 				GBHistoryNextLine;
 			}
 			NSMutableArray* rawBodyLines = [NSMutableArray array];
-			while (line && [line length] <= 0 || [line hasPrefix:@"    "])
+			while ((line && [line length] <= 0) || [line hasPrefix:@"    "])
 			{
 				[rawBodyLines addObject:[line stringByTrimmingCharactersInSet:whitespaceCharacterSet]];
 				//      if ([line length] > 0)

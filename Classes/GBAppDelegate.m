@@ -314,7 +314,7 @@
       {
         [hexString appendFormat:@"%x ", (NSUInteger)((unsigned char)(bytes[i]))];
       }      
-      NSLog(@"FAILED to heal UTF-8 chars in %d bytes: %@", [data length], hexString);
+      NSLog(@"FAILED to heal UTF-8 chars in %lu bytes: %@", [data length], hexString);
       
       // repeat one more time to enable breakpoints
       [data UTF8String];
