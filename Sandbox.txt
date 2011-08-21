@@ -7,4 +7,4 @@ How to sandbox
 3. Replace DO with unix sockets inside the sandbox (or get temp exception for mach-lookup with static name).
 4. File radar to get remembered access rights.
 5. File radar about launching external diff tools with temp files
-6. File radar about drag and drop from history
+6. File radar about drag and drop from history (should be working automatically)

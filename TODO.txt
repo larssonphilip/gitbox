@@ -1,7 +1,6 @@
 Quick List:
 
 - seems like in 1.4 new git binaries fix issue with "outside repository" because of some case-sensitivity in paths (email is flagged)
-- plr crashed gitbox with objectAtIndex exception
 - should use "git rm --cached" with ignored committed files and fix other oddities in this case
 - github-mac:// URL scheme so that the "Clone in Mac" E.g. github-mac://openRepo/https://github.com/libgit2/rugged
 
@@ -44,12 +43,9 @@ Gitbox 1.5 misc items:
 - settings: tab: ignored files
 - settings: tab: raw config
 
-- settings: more stats and symmary info
+- settings: more stats and summary info
 - settings: add "Edit Servers..." menu item to the right branch selector
 
-- history: disable merge/cherry-pick/apply commands when don't make sense
-
-- lion bug: sidebar width is not remembered across launches (and probably other window attributes)
 - stage: overlay view describing shortcuts to stage all
 - stage: cmd+click should select all
 - delete tag using right click on a commit
@@ -72,6 +68,9 @@ Gitbox 1.5 misc items:
 
 --------
 
++ lion bug: sidebar width is not remembered across launches (and probably other window attributes)
++ history: disable merge/cherry-pick/apply commands when don't make sense
++ plr crashed gitbox with objectAtIndex exception
 + settings: use consitently cancel/save buttons in settings for every view including tags&branches.
 + settings: tab: general - stats, repo URLs, git gc, sharing options etc.
 + settings: tab: local branches and tags

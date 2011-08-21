@@ -1239,7 +1239,10 @@
   {
     [sender setTitle:NSLocalizedString(@"Merge Commit", nil)];
   }
-  return [self.repository.currentLocalRef isLocalBranch] && self.selectedCommit && ![self.selectedCommit isStage];
+  return [self.repository.currentLocalRef isLocalBranch] && 
+          self.selectedCommit && 
+        ![self.selectedCommit isStage] &&
+          self.selectedCommit.syncStatus == GBCommitSyncStatusUnmerged;
 }
 
 - (IBAction) cherryPickCommit:(NSMenuItem*)sender
@@ -1264,7 +1267,11 @@
   {
     [sender setTitle:NSLocalizedString(@"Cherry-pick Commit", nil)];
   }
-  return [self.repository.currentLocalRef isLocalBranch] && self.selectedCommit && ![self.selectedCommit isStage] && ![self.selectedCommit isMerge];
+  return [self.repository.currentLocalRef isLocalBranch] && 
+          self.selectedCommit && 
+          ![self.selectedCommit isStage] && 
+          ![self.selectedCommit isMerge] && 
+          self.selectedCommit.syncStatus == GBCommitSyncStatusUnmerged;
 }
 
 - (IBAction) applyAsPatchCommit:(NSMenuItem*)sender
@@ -1289,7 +1296,11 @@
   {
     [sender setTitle:NSLocalizedString(@"Apply Commit as Patch", nil)];
   }
-  return [self.repository.currentLocalRef isLocalBranch] && self.selectedCommit && ![self.selectedCommit isStage] && ![self.selectedCommit isMerge];
+  return [self.repository.currentLocalRef isLocalBranch] && 
+          self.selectedCommit && 
+        ![self.selectedCommit isStage] && 
+        ![self.selectedCommit isMerge] && 
+          self.selectedCommit.syncStatus == GBCommitSyncStatusUnmerged;
 }
 
 - (IBAction) resetBranchToCommit:(NSMenuItem*)sender
