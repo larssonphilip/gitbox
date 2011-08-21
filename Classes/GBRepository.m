@@ -1418,7 +1418,7 @@
 - (void) removeStashes:(NSArray*)theStashes withBlock:(void(^)())block
 {
   [OABlockGroup groupBlock:^(OABlockGroup *group) {
-    for (GBStash* stash in theStashes)
+    for (GBStash* stash in [theStashes reversedArray]) // using reversed Array so that stash.ref remains valid (it is relative to the top of the stash stack)
     {
       [group enter];
       GBTask* task = [self task];

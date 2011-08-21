@@ -993,6 +993,13 @@
   }
 }
 
+// Different action name is used to prevent the item from validating using validateOpenInXcode
+- (IBAction) openOneProjectInXcode:(NSMenuItem*)sender
+{
+  [self openInXcode:sender];
+}
+
+
 - (BOOL) validateOpenInXcode:(NSMenuItem*)sender
 {
   NSMutableArray* xcodeProjectURLs = [NSMutableArray array];
@@ -1023,7 +1030,7 @@
       for (NSURL* xcodeProjectURL in xcodeProjectURLs)
       {
         NSMenuItem* item = [[[NSMenuItem alloc] 
-                             initWithTitle:[[[xcodeProjectURL path] lastPathComponent] stringByReplacingOccurrencesOfString:@".xcodeproj" withString:@""] action:@selector(openInXcode:) keyEquivalent:@""] autorelease];
+                             initWithTitle:[[[xcodeProjectURL path] lastPathComponent] stringByReplacingOccurrencesOfString:@".xcodeproj" withString:@""] action:@selector(openOneProjectInXcode:) keyEquivalent:@""] autorelease];
         [item setRepresentedObject:xcodeProjectURL];
         [xcodeMenu addItem:item];
       }
@@ -1107,7 +1114,7 @@
       [[sender submenu] removeAllItems];
       
       int i = 0;
-      BOOL showRemoveOldStashesItem = NO;
+      BOOL showRemoveOldStashesItem = YES;
       for (GBStash* stash in stashes)
       {
         i++;
@@ -1119,16 +1126,37 @@
         showRemoveOldStashesItem = showRemoveOldStashesItem || [stash isOldStash];
       }
       
-      if (showRemoveOldStashesItem)
+      if (YES)
       {
         [[sender submenu] addItem:[NSMenuItem separatorItem]];
         [[sender submenu] addItem:[[[NSMenuItem alloc] 
-                                    initWithTitle:[NSString stringWithFormat:NSLocalizedString(@"Remove stashes older than %d days...",nil), (int)round([GBStash oldStashesTreshold]/24.0/3600.0)] action:@selector(removeOldStashes:) keyEquivalent:@""] autorelease]];
+                                    initWithTitle:NSLocalizedString(@"Remove all stashes...",nil) action:@selector(removeAllStashes:) keyEquivalent:@""] autorelease]];
       }
     }
   }];
   
   return NO; // disable before the stashes are loaded
+}
+
+- (IBAction) removeAllStashes:(NSMenuItem*)sender
+{
+  [self.repository loadStashesWithBlock:^(NSArray *stashes) {
+    
+    if ([stashes count] < 1) return; // nothing to remove
+    
+    NSString* message = [NSString stringWithFormat:NSLocalizedString(@"Are you sure you want to remove all %d stashes?", nil), (int)[stashes count]];
+    
+    [[GBMainWindowController instance] criticalConfirmationWithMessage:message 
+                                                           description:NSLocalizedString(@"All stashes will be removed permanently. You can’t undo this action.", nil) 
+                                                                    ok:NSLocalizedString(@"Remove",nil)
+                                                            completion:^(BOOL result){
+                                                              if (result)
+                                                              {
+                                                                [self.repository removeStashes:stashes withBlock:^{
+                                                                }];
+                                                              }
+                                                            }];
+  }];
 }
 
 - (IBAction) removeOldStashes:(NSMenuItem*)sender
