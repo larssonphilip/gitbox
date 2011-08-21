@@ -17,7 +17,6 @@
 
 @property(nonatomic, retain) GBRepository* repository;
 @property(nonatomic, retain, readonly) NSURL* url;
-//@property(nonatomic, retain) OABlockQueue* updatesQueue;
 @property(nonatomic, retain) OABlockQueue* autofetchQueue;
 @property(nonatomic, retain) GBSidebarItem* sidebarItem;
 @property(nonatomic, assign) NSWindow* window;
