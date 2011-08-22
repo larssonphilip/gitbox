@@ -23,10 +23,11 @@ Gitbox 1.5 Release Notes
 ✓ Sidebar progress indicators for push, pull, fetch and clone.
 ✓ Stage All menu command with Command+Shift+Return shortcut.
 ✓ Highlighted links in commit messages.
-✓ Updated bundled Git to version 1.7.5.4.
 
 ✓ Support for both overlay and legacy scrollbars in OS X Lion.
 ✓ Added menu command to remove all stashes.
+✓ Updated bundled Git to version 1.7.5.4.
+✓ Menu command for removing all stashes
 
 ✓ Fixed bug with menu item for opening multiple Xcode projects.
 ✓ Fixed bug with remembering window and sidebar sizes on OS X Lion.
