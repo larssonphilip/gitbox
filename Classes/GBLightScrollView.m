@@ -29,6 +29,12 @@
 			[[self contentView] setFrame:cFrame];
 		}
 	}
+	else
+	{
+		NSRect cFrame = [[self contentView] frame];
+		cFrame.size.width += 1; // quick fix for the weird behaviour of nsoutlineview
+		[[self contentView] setFrame:cFrame];
+	}
 	
 	if (![GBLightScroller isModernScroller])
 	{
