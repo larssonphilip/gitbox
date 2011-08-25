@@ -2133,16 +2133,17 @@
 
 - (NSArray*) writableTypesForPasteboard:(NSPasteboard *)pasteboard
 {
-	return [[NSArray arrayWithObjects:NSPasteboardTypeString, (NSString*)kUTTypeFileURL, nil] 
+	return [[NSArray arrayWithObjects:NSPasteboardTypeString, nil, (NSString*)kUTTypeFileURL, nil] 
 			arrayByAddingObjectsFromArray:[[self url] writableTypesForPasteboard:pasteboard]];
 }
 
 - (id)pasteboardPropertyListForType:(NSString *)type
 {
-	if ([type isEqualToString:(NSString*)kUTTypeFileURL])
-	{
-		return [[self url] absoluteURL];
-	}
+	// On Lion, crashes with error "Property list cannot contain CFURL objects"
+//	if ([type isEqualToString:(NSString*)kUTTypeFileURL])
+//	{
+//		return [[self url] absoluteURL];
+//	}
 	if ([type isEqualToString:NSPasteboardTypeString])
 	{
 		return [[self url] path];
