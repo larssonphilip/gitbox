@@ -1,7 +1,6 @@
 Quick List:
 
 - seems like in 1.4 new git binaries fix issue with "outside repository" because of some case-sensitivity in paths (email is flagged)
-- should use "git rm --cached" with ignored committed files and fix other oddities in this case
 - github-mac:// URL scheme so that the "Clone in Mac" E.g. github-mac://openRepo/https://github.com/libgit2/rugged
 
 - change DO to unix domain sockets (or waiting for a file in specific location)
@@ -31,6 +30,7 @@ Gitbox 1.5 Release Notes
 
 ✓ Fixed bug with menu item for opening multiple Xcode projects.
 ✓ Fixed bug with remembering window and sidebar sizes on OS X Lion.
+✓ Fixed bug with committing or restoring removed files.
 ✓ Fixed rare crash when extracting a file from history.
 ✓ Fixed rare bug with incorrect user picture loading.
 ✓ Fixed crashes in history parser
@@ -69,6 +69,7 @@ Gitbox 1.5 misc items:
 
 --------
 
++ (in fact, using relative paths to fix that) should use "git rm --cached" with ignored committed files and fix other oddities in this case
 + lion bug: sidebar width is not remembered across launches (and probably other window attributes)
 + history: disable merge/cherry-pick/apply commands when don't make sense
 + plr crashed gitbox with objectAtIndex exception
