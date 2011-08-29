@@ -5,7 +5,7 @@
 
 - (NSArray*) arguments
 {
-  return [@"diff-index --cached -C -M --ignore-submodules HEAD" componentsSeparatedByString:@" "];
+  return [@"diff-index --cached -C -M HEAD" componentsSeparatedByString:@" "];
 }
 
 - (void) initializeChange:(GBChange*)change
