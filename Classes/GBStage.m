@@ -260,11 +260,11 @@
 		[aChange setStagedSilently:YES];
 		if ([aChange isDeletedFile])
 		{
-			[pathsToDelete addObject:[aChange.srcURL path]];
+			[pathsToDelete addObject:aChange.srcURL.relativePath];
 		}
 		else
 		{
-			[pathsToAdd addObject:[aChange.fileURL path]];
+			[pathsToAdd addObject:aChange.fileURL.relativePath];
 		}
 	}
 	
@@ -288,11 +288,11 @@
 		[aChange setStagedSilently:NO];
 		if ([aChange isAddedFile])
 		{
-			[addedPaths addObject:aChange.fileURL.path];
+			[addedPaths addObject:aChange.fileURL.relativePath];
 		}
 		else
 		{
-			[otherPaths addObject:aChange.fileURL.path];
+			[otherPaths addObject:aChange.fileURL.relativePath];
 		}
 	}
 	
