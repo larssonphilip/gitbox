@@ -339,7 +339,7 @@
 	for (GBChange* aChange in theChanges)
 	{
 		[aChange setStagedSilently:NO];
-		[paths addObject:aChange.fileURL.path];
+		[paths addObject:aChange.fileURL.relativePath];
 	}
 	
 	[self launchTaskByChunksWithArguments:[NSArray arrayWithObjects:@"checkout", @"HEAD", @"--", nil]
@@ -361,11 +361,11 @@
 		{
 			if ([aChange isUntrackedFile])
 			{
-				[URLsToTrash addObject:[aChange fileURL]];
+				[URLsToTrash addObject:aChange.fileURL];
 			}
 			else
 			{
-				[pathsToGitRm addObject:[[aChange fileURL] path]];
+				[pathsToGitRm addObject:aChange.fileURL.relativePath];
 			}
 		}
 	}
@@ -388,7 +388,7 @@
 	
 	if ([pathsToGitRm count] > 0)
 	{
-		[self launchTaskByChunksWithArguments:[NSArray arrayWithObjects:@"rm", @"-f", nil]
+		[self launchTaskByChunksWithArguments:[NSArray arrayWithObjects:@"rm", @"--force", nil]
 										paths:pathsToGitRm
 										block:trashingBlock
 								 taskCallback:nil];
