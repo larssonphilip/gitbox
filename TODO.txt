@@ -5,6 +5,7 @@ Quick List:
 
 - change DO to unix domain sockets (or waiting for a file in specific location)
 - try sandbox 
+
 - idea: show the subtree for selected commit and its parents
 - merge conflict stage badly needs better UI
 - bug: file "Icon\r" was committed somehow.
@@ -16,7 +17,7 @@ Quick List:
 - feature: "amend commit"
 - feature: "revert commit"
 - idea: ping the gitboxapp.com when someone pushes the repo to notify appropriate listeners to fetch
-
+- double refresh of the stage causes items to disappear (it must be an index.lock issue, should relaunch )
 
 Gitbox 1.5 Release Notes
 
@@ -52,6 +53,7 @@ Gitbox 1.5 misc items:
 - stage: cmd+click should select all
 - delete tag using right click on a commit
 - toolbar: allow to unset remote branch (useful when other branch has a lot of commits and clutters the history)
+
 ? when doing a commit checkout, select current local branch in the right branch menu so it is easier to compare and checkout later commits (especially during bisection search).
 
 - bug: search: keep selection when search ends.
@@ -63,6 +65,7 @@ Gitbox 1.5 misc items:
 - bug: when selected a collapsed group and added a folder, the selected group is not expanded
 - bug: stage: when having multiple selection and expanding it with keyboard, stage updates cause internal rest, so the selection does not change the same way when continuing pressing keystrokes. Should probably not replace stage content when it did not really change.
 - bug: when a file is committed, modified and in gitignore, it could be very hard to pull ("cannot merge, dirty working dir" error)
+- bug: when tag is deleted, it is not removed from the server (should push-remove too)
 
 - history: push a single commit
 - stage: add option "Delete from stage only" for "git rm --force --cached <filepath>".
