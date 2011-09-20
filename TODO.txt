@@ -17,6 +17,7 @@ Quick List:
 - feature: "revert commit"
 - idea: ping the gitboxapp.com when someone pushes the repo to notify appropriate listeners to fetch
 
+- bug: first screenshot show "fetch/rebase" buttons instead of 
 
 Gitbox 1.5 Release Notes
 
