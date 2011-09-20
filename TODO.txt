@@ -14,7 +14,8 @@ Quick List:
 
 - feature: "checkpoint" commit to remember current state
 - feature: "uncommit" to quickly rollback non-pushed commit back to the working directory
-
+- feature: "amend commit"
+- feature: "revert commit"
 - idea: ping the gitboxapp.com when someone pushes the repo to notify appropriate listeners to fetch
 
 
