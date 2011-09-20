@@ -4,7 +4,7 @@
 
 - (NSArray*) arguments
 {
-  return [@"diff-files -C -M --ignore-submodules" componentsSeparatedByString:@" "];
+  return [@"diff-files -C -M" componentsSeparatedByString:@" "];
 }
 
 @end
