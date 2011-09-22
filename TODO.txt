@@ -18,6 +18,7 @@ Quick List:
 - feature: "revert commit"
 - idea: ping the gitboxapp.com when someone pushes the repo to notify appropriate listeners to fetch
 - double refresh of the stage causes items to disappear (it must be an index.lock issue, should relaunch )
+- bug: first screenshot show "fetch/rebase" buttons instead of 
 
 Gitbox 1.5 Release Notes
 
