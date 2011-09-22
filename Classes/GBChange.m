@@ -287,7 +287,7 @@
 
 - (NSComparisonResult) compareByPath:(GBChange*) other
 {
-	return [self.srcURL.relativePath compare:other.srcURL.relativePath];
+	return [self.srcURL.relativePath localizedStandardCompare:other.srcURL.relativePath];
 }
 
 - (NSString*) pathForIgnore
