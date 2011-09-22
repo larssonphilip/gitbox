@@ -21,6 +21,8 @@ Quick List:
 + bug: first screenshot show "fetch/rebase" buttons instead of 
 - bug: when committing a file, the focus is dropped somewhere (i guess while gitbox is fetching the branch when text field is focused into)
 + bug: files on the stage are not Finder-sorted
+- bug: when commiting a file from a long list, scrollview is not scrolled to the very top
+- bug: when staging one of the same files, the last one is selected, not the one with the same name
 
 Gitbox 1.5 Release Notes
 

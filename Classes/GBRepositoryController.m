@@ -1771,7 +1771,7 @@
 		[self pushFSEventsPause];
 		isLoadingChanges++;
 		[self.repository.stage loadChangesWithBlock:^{
-			[self.repository.stage loadChangesWithBlock:^{
+			//[self.repository.stage loadChangesWithBlock:^{
 				isLoadingChanges--;
 				[self updateSubmodulesWithBlock:^{
 					self.isLoadedStageChangesOnce = YES;
@@ -1779,7 +1779,7 @@
 				}];
 				[self.sidebarItem update];
 				[self popFSEventsPause];
-			}];
+			//}];
 		}];
 	}];
 }
