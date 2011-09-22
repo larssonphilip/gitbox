@@ -19,6 +19,7 @@ Quick List:
 - idea: ping the gitboxapp.com when someone pushes the repo to notify appropriate listeners to fetch
 - double refresh of the stage causes items to disappear (it must be an index.lock issue, should relaunch )
 - bug: first screenshot show "fetch/rebase" buttons instead of 
+- bug: when committing a file, the focus is dropped somewhere (i guess while gitbox is fetching the branch when text field is focused into)
 
 Gitbox 1.5 Release Notes
 
