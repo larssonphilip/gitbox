@@ -1,4 +1,5 @@
 #import "GitRepository.h"
+#import "GitConfig.h"
 #import <git2.h>
 
 @interface GitRepository ()
@@ -68,6 +69,11 @@
 		NSLog(@"GitRepository error occured: %s (self.URL = %@)", git_lasterror(), self.URL);
 		self.repository = nil;
 	}
+}
+
+- (GitConfig*) config
+{
+	return [[[GitConfig alloc] initWithRepositoryURL:self.URL] autorelease];
 }
 
 @end

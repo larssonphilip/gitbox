@@ -1,5 +1,6 @@
 #import "GBErrors.h"
 
+@class GitRepository;
 @class GBRepository;
 @class GBRemote;
 
@@ -22,6 +23,7 @@
 @property(nonatomic, retain) NSArray* remotes;
 @property(nonatomic, retain) NSArray* tags;
 @property(nonatomic, retain) NSArray* submodules;
+@property(nonatomic, retain) GitRepository* libgitRepository;
 
 @property(nonatomic, retain) GBStage* stage;
 @property(nonatomic, retain) GBRef* currentLocalRef;

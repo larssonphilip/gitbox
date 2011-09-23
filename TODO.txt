@@ -2,7 +2,6 @@ Quick List:
 
 - bug: file "Icon\r" was committed somehow.
 
-- feature: "checkpoint" commit to remember current state (and push to a private branch on the server)
 - feature: "uncommit" to quickly rollback non-pushed commit back to the working directory
 - feature: "amend commit"
 - feature: "revert commit"
@@ -23,7 +22,7 @@ Gitbox 1.5 Release Notes
 ✓ Support for both overlay and legacy scrollbars in OS X Lion.
 ✓ Added menu command to remove all stashes.
 ✓ Updated bundled Git to version 1.7.5.4.
-✓ Menu command for removing all stashes
+✓ Menu command for removing all stashes.
 
 ✓ Fixed bug with menu item for opening multiple Xcode projects.
 ✓ Fixed bug with remembering window and sidebar sizes on OS X Lion.
@@ -67,6 +66,7 @@ Gitbox 1.5 misc items:
 
 --------
 
++ feature: "checkpoint" commit to remember current state (and push to a private branch on the server)
 + github-mac:// URL scheme so that the "Clone in Mac" E.g. github-mac://openRepo/https://github.com/libgit2/rugged
 + add license for Sparkle to Legal window
 + add license for libgit2 to Legal window
