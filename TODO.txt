@@ -5,7 +5,7 @@ Quick List:
 
 - bug: file "Icon\r" was committed somehow.
 
-- feature: "checkpoint" commit to remember current state
+- feature: "checkpoint" commit to remember current state (and push to a private branch on the server)
 - feature: "uncommit" to quickly rollback non-pushed commit back to the working directory
 - feature: "amend commit"
 - feature: "revert commit"
