@@ -3,24 +3,14 @@ Quick List:
 - seems like in 1.4 new git binaries fix issue with "outside repository" because of some case-sensitivity in paths (email is flagged)
 - github-mac:// URL scheme so that the "Clone in Mac" E.g. github-mac://openRepo/https://github.com/libgit2/rugged
 
-- change DO to unix domain sockets (or waiting for a file in specific location)
-- try sandbox 
-
-- idea: show the subtree for selected commit and its parents
-- merge conflict stage badly needs better UI
 - bug: file "Icon\r" was committed somehow.
-- add license for Sparkle to Legal window
-- add license for libgit2 to Legal window
 
 - feature: "checkpoint" commit to remember current state
 - feature: "uncommit" to quickly rollback non-pushed commit back to the working directory
 - feature: "amend commit"
 - feature: "revert commit"
-- idea: ping the gitboxapp.com when someone pushes the repo to notify appropriate listeners to fetch
 - double refresh of the stage causes items to disappear (it must be an index.lock issue, should relaunch )
-+ bug: first screenshot show "fetch/rebase" buttons instead of 
-- bug: when committing a file, the focus is dropped somewhere (i guess while gitbox is fetching the branch when text field is focused into)
-+ bug: files on the stage are not Finder-sorted
+
 - bug: when commiting a file from a long list, scrollview is not scrolled to the very top
 - bug: when staging one of the same files, the last one is selected, not the one with the same name
 
@@ -30,6 +20,7 @@ Gitbox 1.5 Release Notes
 ✓ Stage All menu command with Command+Shift+Return shortcut.
 ✓ Highlighted links in commit messages.
 
+✓ Files are sorted by natural order (2.txt comes before 10.txt)
 ✓ Support for both overlay and legacy scrollbars in OS X Lion.
 ✓ Added menu command to remove all stashes.
 ✓ Updated bundled Git to version 1.7.5.4.
@@ -41,7 +32,6 @@ Gitbox 1.5 Release Notes
 ✓ Fixed rare crash when extracting a file from history.
 ✓ Fixed rare bug with incorrect user picture loading.
 ✓ Fixed crashes in history parser
-
 
 --
 
@@ -78,6 +68,11 @@ Gitbox 1.5 misc items:
 
 --------
 
++ add license for Sparkle to Legal window
++ add license for libgit2 to Legal window
++ bug: when committing a file, the focus is dropped somewhere (i guess while gitbox is fetching the branch when text field is focused into)
++ bug: files on the stage are not Finder-sorted
++ bug: first screenshot show "fetch/rebase" buttons instead of
 + (in fact, using relative paths to fix that) should use "git rm --cached" with ignored committed files and fix other oddities in this case
 + lion bug: sidebar width is not remembered across launches (and probably other window attributes)
 + history: disable merge/cherry-pick/apply commands when don't make sense
@@ -96,10 +91,21 @@ Gitbox 1.5 misc items:
 -----------------------------------------------------------
 
 
+Gitbox 1.6:
+
+- change DO to unix domain sockets (or waiting for a file in specific location)
+- try sandbox 
+
+
 Gitbox Next:
 
 Features:
 
+
+- idea: show the subtree for selected commit and its parents
+- merge conflict stage badly needs better UI
+
+- idea: ping the gitboxapp.com when someone pushes the repo to notify appropriate listeners to fetch
 
 - menu: History -> extractFolder:
 - menu: History -> removeFileFromHistory:

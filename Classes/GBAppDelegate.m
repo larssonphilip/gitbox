@@ -35,12 +35,13 @@
 @property(nonatomic, retain) NSMutableArray* URLsToOpenAfterLaunch;
 
 - (void) saveItems;
-
 - (void) testUTF8Healing;
 
 @end
 
 @implementation GBAppDelegate
+
+@synthesize licenseTextView;
 
 @synthesize rootController;
 @synthesize windowController;
@@ -54,25 +55,26 @@
 
 - (void) dealloc
 {
-  self.rootController = nil;
-  self.windowController = nil;
-  self.preferencesController = nil;
-  self.licenseController = nil;
-  self.URLsToOpenAfterLaunch = nil;
-  self.licenseMenuItem = nil;
-  self.checkForUpdatesMenuItem = nil;
-  self.welcomeMenuItem = nil;
-  self.rateInAppStoreMenuItem = nil;
-
-  [super dealloc];
+	self.licenseTextView = nil;
+	self.rootController = nil;
+	self.windowController = nil;
+	self.preferencesController = nil;
+	self.licenseController = nil;
+	self.URLsToOpenAfterLaunch = nil;
+	self.licenseMenuItem = nil;
+	self.checkForUpdatesMenuItem = nil;
+	self.welcomeMenuItem = nil;
+	self.rateInAppStoreMenuItem = nil;
+	
+	[super dealloc];
 }
 
 + (void)initialize
 {
 #if GITBOX_APP_STORE || DEBUG_iRate
-  // http://itunes.apple.com/us/app/gitbox/id403388357
+	// http://itunes.apple.com/us/app/gitbox/id403388357
 	[iRate sharedInstance].appStoreID = 403388357;
-  [iRate sharedInstance].eventsUntilPrompt = 100; // 100 commits before prompt
+	[iRate sharedInstance].eventsUntilPrompt = 20; // 20 commits before prompt
 #endif
 }
 
@@ -84,57 +86,57 @@
 - (IBAction) rateInAppStore:(id)sender
 {
 #if GITBOX_APP_STORE || DEBUG_iRate  
-  [[iRate sharedInstance] openRatingsPageInAppStore];
+	[[iRate sharedInstance] openRatingsPageInAppStore];
 #endif
 }
 
 - (IBAction) showMainWindow:(id)sender
 {
-  [self.windowController showWindow:self];
+	[self.windowController showWindow:self];
 }
 
 - (IBAction) showPreferences:(id)sender
 {
-  [self.preferencesController showWindow:sender];
+	[self.preferencesController showWindow:sender];
 }
 
 - (IBAction) checkForUpdates:(id)sender
 {
-  [self.preferencesController.updater checkForUpdates:sender];
+	[self.preferencesController.updater checkForUpdates:sender];
 }
 
 - (IBAction) showOnlineHelp:sender
 {
-  NSString* urlString = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"GBHelpURL"];
-  [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:urlString]];
+	NSString* urlString = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"GBHelpURL"];
+	[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:urlString]];
 }
 
 - (IBAction) showLicense:(id)sender
 {
-  if (self.licenseController) return; // avoid entering the modal mode twice if user hits License... menu again.
-  
-  self.licenseController = [[[GBLicenseController alloc] initWithWindowNibName:@"GBLicenseController"] autorelease];
-  [NSApp runModalForWindow:[self.licenseController window]];
-  self.licenseController = nil;
-  
-  // update buy button status
-  [self.windowController.sidebarController updateBuyButton];
+	if (self.licenseController) return; // avoid entering the modal mode twice if user hits License... menu again.
+	
+	self.licenseController = [[[GBLicenseController alloc] initWithWindowNibName:@"GBLicenseController"] autorelease];
+	[NSApp runModalForWindow:[self.licenseController window]];
+	self.licenseController = nil;
+	
+	// update buy button status
+	[self.windowController.sidebarController updateBuyButton];
 }
 
 - (IBAction) releaseNotes:(id)sender
 {
-  NSString* urlString = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"GBReleaseNotesURL"];
-  [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:urlString]];
+	NSString* urlString = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"GBReleaseNotesURL"];
+	[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:urlString]];
 }
 
 - (IBAction) showActivityWindow:(id)sender
 {
-  [[GBActivityController sharedActivityController] showWindow:sender];
+	[[GBActivityController sharedActivityController] showWindow:sender];
 }
 
 - (IBAction) showDiffToolPreferences:(id)sender
 {
-  [self.preferencesController showWindow:nil];
+	[self.preferencesController showWindow:nil];
 }
 
 
@@ -152,103 +154,105 @@
 
 - (void) applicationDidFinishLaunching:(NSNotification*) aNotification
 {
-  [GBAskPassServer sharedServer]; // preload the server
+	[GBAskPassServer sharedServer]; // preload the server
     
-//#warning UNIT TESTING!
-//  [self testUTF8Healing];
-  
-  #if DEBUG
+	//#warning UNIT TESTING!
+	//  [self testUTF8Healing];
+	
+#if DEBUG
     //NSLog(@"GBAskPassServer: %@", [GBAskPassServer sharedServer]);
-  #endif
-  
-  #if DEBUG_iRate
-    #warning DEBUG: launching iRate dialog on start
+#endif
+	
+#if DEBUG_iRate
+#warning DEBUG: launching iRate dialog on start
     double delayInSeconds = 1.0;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-      [[iRate sharedInstance] promptForRating];
+		[[iRate sharedInstance] promptForRating];
     });
-  #endif
-  
-  [[GBActivityController sharedActivityController] loadWindow]; // force load the activity controller to begin monitoring the tasks
-  
-  self.rootController = [[GBRootController new] autorelease];
-  id plist = [[NSUserDefaults standardUserDefaults] objectForKey:@"GBSidebarItems"];
-  [self.rootController sidebarItemLoadContentsFromPropertyList:plist];
-  [self.rootController addObserverForAllSelectors:self];
-  
-  self.windowController = [GBMainWindowController instance];
-  
-  void(^removeMenuItem)(NSMenuItem*) = ^(NSMenuItem* item) {
-    [[item menu] removeItem:item];
-  };
-  
-  NSString* preferencesNibName = @"GBPreferencesController";
-#if GITBOX_APP_STORE
-  preferencesNibName = @"GBPreferencesController-appstore";
-  
-  removeMenuItem(self.licenseMenuItem);
-  removeMenuItem(self.checkForUpdatesMenuItem);
-#else
-  removeMenuItem(self.rateInAppStoreMenuItem);
 #endif
-
+	
+	[[GBActivityController sharedActivityController] loadWindow]; // force load the activity controller to begin monitoring the tasks
+	
+	self.rootController = [[GBRootController new] autorelease];
+	id plist = [[NSUserDefaults standardUserDefaults] objectForKey:@"GBSidebarItems"];
+	[self.rootController sidebarItemLoadContentsFromPropertyList:plist];
+	[self.rootController addObserverForAllSelectors:self];
+	
+	self.windowController = [GBMainWindowController instance];
+	
+	void(^removeMenuItem)(NSMenuItem*) = ^(NSMenuItem* item) {
+		[[item menu] removeItem:item];
+	};
+	
+	NSString* preferencesNibName = @"GBPreferencesController";
+#if GITBOX_APP_STORE
+	preferencesNibName = @"GBPreferencesController-appstore";
+	
+	removeMenuItem(self.licenseMenuItem);
+	removeMenuItem(self.checkForUpdatesMenuItem);
+#else
+	removeMenuItem(self.rateInAppStoreMenuItem);
+#endif
+	
 #if DEBUG
 #else
-  removeMenuItem(self.welcomeMenuItem);
+	removeMenuItem(self.welcomeMenuItem);
 #endif
-
-
-  self.preferencesController = [[[GBPreferencesController alloc] initWithWindowNibName:preferencesNibName] autorelease];
-  [self.preferencesController loadWindow]; // force load Sparkle Updater
-
-  self.windowController.rootController = self.rootController;
-  [self.windowController showWindow:self];
-  
-  NSArray* urls = [[self.URLsToOpenAfterLaunch retain] autorelease];
-  self.URLsToOpenAfterLaunch = nil;
-  [self.rootController openURLs:urls];
-  
-  if (![[NSUserDefaults standardUserDefaults] objectForKey:@"WelcomeWasDisplayed"])
-  {
-    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:YES] forKey:@"WelcomeWasDisplayed"];
-    [self.windowController showWelcomeWindow:self];
-  }
+	
+	
+	self.licenseTextView.string = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"GitboxLicense" ofType:@"txt"] encoding:NSUTF8StringEncoding error:NULL];
+	
+	self.preferencesController = [[[GBPreferencesController alloc] initWithWindowNibName:preferencesNibName] autorelease];
+	[self.preferencesController loadWindow]; // force load Sparkle Updater
+	
+	self.windowController.rootController = self.rootController;
+	[self.windowController showWindow:self];
+	
+	NSArray* urls = [[self.URLsToOpenAfterLaunch retain] autorelease];
+	self.URLsToOpenAfterLaunch = nil;
+	[self.rootController openURLs:urls];
+	
+	if (![[NSUserDefaults standardUserDefaults] objectForKey:@"WelcomeWasDisplayed"])
+	{
+		[[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:YES] forKey:@"WelcomeWasDisplayed"];
+		[self.windowController showWelcomeWindow:self];
+	}
 }
 
 - (void) applicationWillTerminate:(NSNotification*)aNotification
 {
-  [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(saveItems) object:nil];
-  [self saveItems];
+	[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(saveItems) object:nil];
+	[self saveItems];
 }
 
 
 - (BOOL) application:(NSApplication*)theApplication openFile:(NSString*)aPath
 {
-  NSURL* aURL = [NSURL fileURLWithPath:aPath];
-  if (!self.rootController) // not yet initialized
-  {
-    if (!self.URLsToOpenAfterLaunch) self.URLsToOpenAfterLaunch = [NSMutableArray array];
-    [self.URLsToOpenAfterLaunch addObject:aURL];
-    return YES;
-  }
-  return [self.rootController openURLs:[NSArray arrayWithObject:aURL]];
+	NSURL* aURL = [NSURL fileURLWithPath:aPath];
+	if (!self.rootController) // not yet initialized
+	{
+		if (!self.URLsToOpenAfterLaunch) self.URLsToOpenAfterLaunch = [NSMutableArray array];
+		[self.URLsToOpenAfterLaunch addObject:aURL];
+		return YES;
+	}
+	return [self.rootController openURLs:[NSArray arrayWithObject:aURL]];
 }
 
 // Show the window if there's no key window at the moment. 
 - (void)applicationDidBecomeActive:(NSNotification *)aNotification
 {
-  if (![NSApp keyWindow])
-  {
-    [self.windowController showWindow:self];
-  }
+	if (![NSApp keyWindow])
+	{
+		[self.windowController showWindow:self];
+	}
 }
 
 // This method is called when Dock icon is clicked. This brings window to front if the app was active.
 - (BOOL) applicationShouldOpenUntitledFile:(NSApplication*) app
 {
-  [self.windowController showWindow:self];	
-  return NO;
+	[self.windowController showWindow:self];	
+	return NO;
 }
 
 
@@ -262,24 +266,24 @@
 
 - (void) rootControllerDidChangeContents:(GBRootController*)aRootController
 {
-  // Saves contents on the next cycle.
-  [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(saveItems) object:nil];
-  [self performSelector:@selector(saveItems) withObject:nil afterDelay:0.0];
+	// Saves contents on the next cycle.
+	[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(saveItems) object:nil];
+	[self performSelector:@selector(saveItems) withObject:nil afterDelay:0.0];
 }
 
 - (void) rootControllerDidChangeSelection:(GBRootController*)aRootController
 {
-  // Saves contents a bit later
-  [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(saveItems) object:nil];
-  [self performSelector:@selector(saveItems) withObject:nil afterDelay:1.0];
+	// Saves contents a bit later
+	[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(saveItems) object:nil];
+	[self performSelector:@selector(saveItems) withObject:nil afterDelay:1.0];
 }
 
 - (void) saveItems
 {
-  if (!self.rootController) return;
-  id plist = [self.rootController sidebarItemContentsPropertyList];
-  [[NSUserDefaults standardUserDefaults] setObject:plist forKey:@"GBSidebarItems"];
-  [[NSUserDefaults standardUserDefaults] synchronize];
+	if (!self.rootController) return;
+	id plist = [self.rootController sidebarItemContentsPropertyList];
+	[[NSUserDefaults standardUserDefaults] setObject:plist forKey:@"GBSidebarItems"];
+	[[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 
@@ -288,43 +292,43 @@
 
 - (void) testUTF8Healing
 {
-  srand(1);
-  
-  char bytes[] = {0xc0, 0x86};
-  
-  NSData* data = [NSData dataWithBytes:(void*)bytes length:2];
-  NSLog(@"data = %@, string = %@ %@", data, [data UTF8String], [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease]);
-
-  
-  int failures = 10;
-  while (1)
-  {
-    int length = rand() % 10 + 1;
+	srand(1);
+	
+	char bytes[] = {0xc0, 0x86};
+	
+	NSData* data = [NSData dataWithBytes:(void*)bytes length:2];
+	NSLog(@"data = %@, string = %@ %@", data, [data UTF8String], [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease]);
+	
+	
+	int failures = 10;
+	while (1)
+	{
+		int length = rand() % 10 + 1;
 		NSMutableData* data = [NSMutableData dataWithLength:length];
-    unsigned char* bytes = (unsigned char*)[data mutableBytes];
-    for (int i = 0; i < length; i++)
-    {
-      bytes[i] = (unsigned char)(((NSUInteger)rand()) % 256);
-    }
-    NSString* str = [data UTF8String];
-    if (!str)
-    {
-      NSMutableString* hexString = [NSMutableString string];
-      for (int i = 0; i < length; i++)
-      {
-        [hexString appendFormat:@"%x ", (NSUInteger)((unsigned char)(bytes[i]))];
-      }      
-      NSLog(@"FAILED to heal UTF-8 chars in %lu bytes: %@", [data length], hexString);
-      
-      // repeat one more time to enable breakpoints
-      [data UTF8String];
-      
-      failures--;
-      if (failures <= 0) {
-        exit(1);
-      }
-    }
-  }
+		unsigned char* bytes = (unsigned char*)[data mutableBytes];
+		for (int i = 0; i < length; i++)
+		{
+			bytes[i] = (unsigned char)(((NSUInteger)rand()) % 256);
+		}
+		NSString* str = [data UTF8String];
+		if (!str)
+		{
+			NSMutableString* hexString = [NSMutableString string];
+			for (int i = 0; i < length; i++)
+			{
+				[hexString appendFormat:@"%x ", (NSUInteger)((unsigned char)(bytes[i]))];
+			}      
+			NSLog(@"FAILED to heal UTF-8 chars in %lu bytes: %@", [data length], hexString);
+			
+			// repeat one more time to enable breakpoints
+			[data UTF8String];
+			
+			failures--;
+			if (failures <= 0) {
+				exit(1);
+			}
+		}
+	}
 }
 
 

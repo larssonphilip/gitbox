@@ -58,6 +58,8 @@
 		20106C5513D377060018A65F /* GitRepository.m in Sources */ = {isa = PBXBuildFile; fileRef = 20106C5313D377060018A65F /* GitRepository.m */; };
 		2010732F11A7E9C300EFDE56 /* app.icns in Resources */ = {isa = PBXBuildFile; fileRef = 2010732E11A7E9C300EFDE56 /* app.icns */; };
 		201073B611A80A4600EFDE56 /* GBRemotesTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 201073B511A80A4600EFDE56 /* GBRemotesTask.m */; };
+		201419F3142C8D0300AA55E8 /* GitboxLicense.txt in Resources */ = {isa = PBXBuildFile; fileRef = 201419F2142C8D0300AA55E8 /* GitboxLicense.txt */; };
+		201419F4142C8D0300AA55E8 /* GitboxLicense.txt in Resources */ = {isa = PBXBuildFile; fileRef = 201419F2142C8D0300AA55E8 /* GitboxLicense.txt */; };
 		2016439112CC0F35005C69DA /* author.png in Resources */ = {isa = PBXBuildFile; fileRef = 2016439012CC0F2E005C69DA /* author.png */; };
 		2016439212CC0F35005C69DA /* author.png in Resources */ = {isa = PBXBuildFile; fileRef = 2016439012CC0F2E005C69DA /* author.png */; };
 		201643AD12CC121B005C69DA /* GBCommitViewControllerHeader.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 201643AC12CC121B005C69DA /* GBCommitViewControllerHeader.rtf */; };
@@ -523,6 +525,7 @@
 		201073B411A80A4600EFDE56 /* GBRemotesTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBRemotesTask.h; sourceTree = "<group>"; };
 		201073B511A80A4600EFDE56 /* GBRemotesTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBRemotesTask.m; sourceTree = "<group>"; };
 		20126E71139FE57B00A6FE0B /* Sandbox.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Sandbox.txt; sourceTree = "<group>"; };
+		201419F2142C8D0300AA55E8 /* GitboxLicense.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = GitboxLicense.txt; sourceTree = SOURCE_ROOT; };
 		2016439012CC0F2E005C69DA /* author.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = author.png; sourceTree = "<group>"; };
 		201643AC12CC121B005C69DA /* GBCommitViewControllerHeader.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = GBCommitViewControllerHeader.rtf; path = ../GBCommitViewControllerHeader.rtf; sourceTree = "<group>"; };
 		2016464C12D0C2F6005C69DA /* GBUserpicController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBUserpicController.h; sourceTree = "<group>"; };
@@ -978,6 +981,7 @@
 				2030C445128B5B6E005F751C /* OAAppStoreReceipt.h */,
 				2084C75D1297425F009295C8 /* OALicenseNumberCheck.h */,
 				2030C65B128C98C9005F751C /* OAObfuscatedLicenseCheck.h */,
+				201419F2142C8D0300AA55E8 /* GitboxLicense.txt */,
 			);
 			name = License;
 			sourceTree = "<group>";
@@ -1766,6 +1770,7 @@
 				208D0BAF139A9FF8002C8072 /* Icon512.png in Resources */,
 				208D0C75139AB5D3002C8072 /* GBRepositoryBranchesAndTagsController.xib in Resources */,
 				2096FDC2139D36E800B79D46 /* GBRepositoryRemotesController.xib in Resources */,
+				201419F4142C8D0300AA55E8 /* GitboxLicense.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1841,6 +1846,7 @@
 				208D0BB0139A9FF8002C8072 /* Icon512.png in Resources */,
 				208D0C76139AB5D3002C8072 /* GBRepositoryBranchesAndTagsController.xib in Resources */,
 				2096FDC3139D36E800B79D46 /* GBRepositoryRemotesController.xib in Resources */,
+				201419F3142C8D0300AA55E8 /* GitboxLicense.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

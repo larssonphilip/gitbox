@@ -1,6 +1,8 @@
 
 @interface GBAppDelegate : NSObject <NSApplicationDelegate>
 
+@property(nonatomic, retain) IBOutlet NSTextView* licenseTextView;
+
 @property(nonatomic, retain) IBOutlet NSMenuItem* licenseMenuItem;
 @property(nonatomic, retain) IBOutlet NSMenuItem* checkForUpdatesMenuItem;
 @property(nonatomic, retain) IBOutlet NSMenuItem* welcomeMenuItem;
