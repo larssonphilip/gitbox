@@ -169,6 +169,14 @@
 	[newGroup.sidebarItem edit];
 }
 
+- (void) cloneRepositoryAtURLString:(NSString*)URLString
+{
+	if (URLString)
+	{
+		[GBCloneWindowController setLastURLString:URLString];
+	}
+	[self cloneRepository:nil];
+}
 
 - (IBAction) cloneRepository:(id)sender
 {

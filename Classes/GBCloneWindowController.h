@@ -12,4 +12,6 @@
 - (IBAction) cancel:(id)sender;
 - (IBAction) ok:(id)sender;
 
++ (void) setLastURLString:(NSString*)urlString;
+
 @end

@@ -1,8 +1,5 @@
 Quick List:
 
-- seems like in 1.4 new git binaries fix issue with "outside repository" because of some case-sensitivity in paths (email is flagged)
-- github-mac:// URL scheme so that the "Clone in Mac" E.g. github-mac://openRepo/https://github.com/libgit2/rugged
-
 - bug: file "Icon\r" was committed somehow.
 
 - feature: "checkpoint" commit to remember current state (and push to a private branch on the server)
@@ -20,6 +17,7 @@ Gitbox 1.5 Release Notes
 ✓ Sidebar progress indicators for push, pull, fetch and clone.
 ✓ Stage All menu command with Command+Shift+Return shortcut.
 ✓ Highlighted links in commit messages.
+✓ Support for "Clone in Mac" button on Github (github-mac://)
 
 ✓ Files are sorted by natural order (2.txt comes before 10.txt)
 ✓ Support for both overlay and legacy scrollbars in OS X Lion.
@@ -69,6 +67,7 @@ Gitbox 1.5 misc items:
 
 --------
 
++ github-mac:// URL scheme so that the "Clone in Mac" E.g. github-mac://openRepo/https://github.com/libgit2/rugged
 + add license for Sparkle to Legal window
 + add license for libgit2 to Legal window
 + bug: when committing a file, the focus is dropped somewhere (i guess while gitbox is fetching the branch when text field is focused into)
@@ -240,6 +239,8 @@ Features:
 
 
 Enhancements:
+
+? seems like in 1.4 new git binaries fix issue with "outside repository" because of some case-sensitivity in paths (email is flagged)
 
 - general: recessed icon for no selection view and multiple selection view (similar to Lion Mail.app)
 - sidebar: before dropping over parent node, highlight appropriate index inside, not the parent

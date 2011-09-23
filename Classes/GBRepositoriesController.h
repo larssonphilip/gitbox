@@ -17,6 +17,7 @@
 - (IBAction) openDocument:(id)sender;
 - (IBAction) addGroup:(id)sender;
 - (IBAction) remove:(id)sender;
+- (void) cloneRepositoryAtURLString:(NSString*)URLString;
 - (IBAction) cloneRepository:(id)sender;
 
 - (BOOL) openURLs:(NSArray*)URLs;

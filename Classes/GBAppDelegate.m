@@ -1,5 +1,6 @@
 #import "GBAppDelegate.h"
 #import "GBRootController.h"
+#import "GBRepositoriesController.h"
 #import "GBMainWindowController.h"
 #import "GBActivityController.h"
 #import "GBPreferencesController.h"
@@ -172,6 +173,8 @@
     });
 #endif
 	
+	[[NSAppleEventManager sharedAppleEventManager] setEventHandler:self andSelector:@selector(handleUrl:withReplyEvent:) forEventClass:kInternetEventClass andEventID:kAEGetURL];
+	
 	[[GBActivityController sharedActivityController] loadWindow]; // force load the activity controller to begin monitoring the tasks
 	
 	self.rootController = [[GBRootController new] autorelease];
@@ -287,6 +290,26 @@
 }
 
 
+
+
+
+#pragma mark Apple Events URL handling
+
+
+- (void)handleUrl:(NSAppleEventDescriptor *)event withReplyEvent:(NSAppleEventDescriptor *)replyEvent
+{
+	NSString *urlString = [[event paramDescriptorForKeyword:keyDirectObject] stringValue];
+	
+	if ([urlString rangeOfString:@"github-mac://"].location == 0)
+	{
+		NSString* repoURLString = [urlString stringByReplacingOccurrencesOfString:@"github-mac://openRepo/" withString:@""];
+		[self.rootController.repositoriesController cloneRepositoryAtURLString:repoURLString];
+	}
+	else
+	{
+		NSLog(@"GBAppDelegate: unknown URL: %@", urlString);
+	}
+}
 
 
 
