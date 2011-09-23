@@ -13,6 +13,7 @@ Quick List:
 
 - bug: when commiting a file from a long list, scrollview is not scrolled to the very top
 - bug: when staging one of the same files, the last one is selected, not the one with the same name
+- bug: history vc is shifted down after quickly entering non-existent string and cancelling
 
 Gitbox 1.5 Release Notes
 
