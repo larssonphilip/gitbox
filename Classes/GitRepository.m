@@ -59,8 +59,17 @@
 		self.repository = NULL;
 		return;
 	}
-	git_repository* repo = NULL;	
-	if (!git_repository_open(&repo, [[[URL absoluteURL] path] cStringUsingEncoding:NSUTF8StringEncoding]))
+	git_repository* repo = NULL;
+		
+	NSString* path = URL.absoluteURL.path;
+	
+	BOOL isBare = NO; // TODO: check if the repo is bare or contains working files
+	if (!isBare)
+	{
+		path = [path stringByAppendingPathComponent:@".git"];
+	}
+	
+	if (!git_repository_open(&repo, [path cStringUsingEncoding:NSUTF8StringEncoding]))
 	{
 		self.repository = repo;
 	}
