@@ -13,15 +13,21 @@
 
 @implementation GBRepositorySummaryController
 
-@synthesize parentFolderLabel;
-@synthesize titleLabel;
 @synthesize pathLabel;
 @synthesize originLabel;
+@synthesize remoteLabel1;
+@synthesize remoteField1;
+@synthesize remoteLabel2;
+@synthesize remoteField2;
+@synthesize remoteLabel3;
+@synthesize remoteField3;
+@synthesize remainingView;
+@synthesize sizeField;
+@synthesize numberOfCommitsField;
+@synthesize numberOfContributorsField;
 
 - (void) dealloc
 {
-	self.parentFolderLabel = nil;
-	self.titleLabel = nil;
 	self.pathLabel = nil;
 	self.originLabel = nil;  
 	[super dealloc];
@@ -44,22 +50,54 @@
 {
 	[super viewDidAppear];
 	
-	[self.parentFolderLabel setStringValue:[self parentFolder]];
-	[self.titleLabel setStringValue:[self repoTitle]];
-	[self.pathLabel setStringValue:[self repoPath]];
-	[self.originLabel setStringValue:[self repoURLString]];
+	[self.pathLabel setStringValue:self.repoPath];
 	
-//	[self.repository.libgitRepository.config enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-//		NSLog(@"Config: %@ => %@", key, obj);
-//	}];
+	NSArray* remotes = self.repository.remotes;
+	if (remotes.count == 0)
+	{
+		
+	}
+	else if (remotes.count == 1)
+	{
+		
+	}
+	else
+	{
+		
+	}
+	
+	[self.originLabel setStringValue:self.repoURLString];
+	
+	[self.repository.libgitRepository.config enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+		NSLog(@"Config: %@ => %@", key, obj);
+	}];
+	
+	// TODO: add label and strings for:
+	// - path + disclosure button like in Xcode locations preference
+	// - every remote URL (if none, pre)
 	
 	// TODO: support multiple URLs
-	// TODO: add more labels for useless stats like number of commits, tags, creation date, size on disk, committers etc.
+	// TODO: add more labels for useless stats like:
+	// - number of commits, tags, 
+	// - creation date, 
+	// - size on disk, 
+	// - committers etc.
 }
 
 
+- (void) save
+{
+	// TODO: save the remote addresses
+}
+
 
 #pragma mark Private
+
+
+- (void) hideRemoteAddressFieldsCount:(int)numberOfFieldsToHide
+{
+	
+}
 
 
 - (NSString*) parentFolder
@@ -97,6 +135,11 @@
 {
 	NSString* url = [[self.repository firstRemote] URLString];
 	return url ? url : @"";
+}
+
+- (IBAction)optimizeRepository:(id)sender
+{
+	// TODO: launch "git gc"
 }
 
 @end

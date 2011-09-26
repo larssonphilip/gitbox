@@ -2,9 +2,20 @@
 
 @interface GBRepositorySummaryController : GBRepositorySettingsViewController
 
-@property(nonatomic, retain) IBOutlet NSTextField* parentFolderLabel;
-@property(nonatomic, retain) IBOutlet NSTextField* titleLabel;
 @property(nonatomic, retain) IBOutlet NSTextField* pathLabel;
 @property(nonatomic, retain) IBOutlet NSTextField* originLabel;
+
+@property (assign) IBOutlet NSTextField *remoteLabel1;
+@property (assign) IBOutlet NSTextField *remoteField1;
+@property (assign) IBOutlet NSTextField *remoteLabel2;
+@property (assign) IBOutlet NSTextField *remoteField2;
+@property (assign) IBOutlet NSTextField *remoteLabel3;
+@property (assign) IBOutlet NSTextField *remoteField3;
+@property (assign) IBOutlet NSView *remainingView;
+@property (assign) IBOutlet NSTextField *sizeField;
+@property (assign) IBOutlet NSTextField *numberOfCommitsField;
+@property (assign) IBOutlet NSTextField *numberOfContributorsField;
+
+- (IBAction)optimizeRepository:(id)sender;
 
 @end
