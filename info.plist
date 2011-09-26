@@ -4,29 +4,6 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
-	<key>CFBundleURLTypes</key>
-	<array>
-		<dict>
-			<key>CFBundleURLName</key>
-			<string>Gitbox repository</string>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>gitbox</string>
-			</array>
-		</dict>
-		<dict>
-			<key>CFBundleURLName</key>
-			<string>Git repository</string>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>github-mac</string>
-			</array>
-		</dict>
-	</array>
 	<key>CFBundleDocumentTypes</key>
 	<array>
 		<dict>
@@ -58,16 +35,39 @@
 	<string>${PRODUCT_NAME}</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
-	<key>CFBundleSignature</key>
-	<string>????</string>
-	<key>CFBundleVersion</key>
-	<string>${APP_VERSION}</string>
 	<key>CFBundleShortVersionString</key>
 	<string>${APP_VERSION}</string>
-	<key>GBPurchaseURL</key>
-	<string>http://gitboxapp.com/buy.html</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>Gitbox repository</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>gitbox</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>Git repository</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>github-mac</string>
+			</array>
+		</dict>
+	</array>
+	<key>CFBundleVersion</key>
+	<string>${APP_VERSION}</string>
 	<key>GBHelpURL</key>
 	<string>http://gitboxapp.com/help.html</string>
+	<key>GBPurchaseURL</key>
+	<string>http://gitboxapp.com/buy.html</string>
 	<key>GBReleaseNotesURL</key>
 	<string>http://gitboxapp.com/release-notes/${APP_VERSION}.html</string>
 	<key>LSApplicationCategoryType</key>
@@ -75,16 +75,22 @@
 	<key>LSMinimumSystemVersion</key>
 	<string>${MACOSX_DEPLOYMENT_TARGET}</string>
 	<key>NSHumanReadableCopyright</key>
-	<string>Gitbox ${APP_VERSION} © 2010, Oleg Andreev</string>
+	<string>Gitbox ${APP_VERSION} © 2011, Oleg Andreev</string>
 	<key>NSMainNibFile</key>
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
+	<key>NSServices</key>
+	<array/>
+	<key>SUEnableAutomaticChecks</key>
+	<true/>
 	<key>SUFeedURL</key>
 	<string>http://gitboxapp.com/updates.xml</string>
 	<key>SUPublicDSAKeyFile</key>
 	<string>sparkle_dsa_pub.pem</string>
-	<key>SUEnableAutomaticChecks</key>
-	<true/>
+	<key>UTExportedTypeDeclarations</key>
+	<array/>
+	<key>UTImportedTypeDeclarations</key>
+	<array/>
 </dict>
 </plist>
