@@ -16,6 +16,7 @@
 @property (assign) IBOutlet NSTextField *numberOfCommitsField;
 @property (assign) IBOutlet NSTextField *numberOfContributorsField;
 
-- (IBAction)optimizeRepository:(id)sender;
+- (IBAction)optimizeRepository:(NSButton*)sender;
+- (IBAction)openInFinder:(id)sender;
 
 @end

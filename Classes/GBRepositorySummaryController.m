@@ -1,6 +1,7 @@
 #import "GBRepository.h"
 #import "GBRemote.h"
 #import "GBRepositorySummaryController.h"
+#import "GBTaskWithProgress.h"
 #import "GitRepository.h"
 #import "GitConfig.h"
 
@@ -9,6 +10,8 @@
 - (NSString*) repoTitle;
 - (NSString*) repoPath;
 - (NSString*) repoURLString;
+- (NSString*) repoURLString:(NSUInteger)anIndex;
+- (void) hideRemoteAddressFieldsCount:(int)numberOfFieldsToHide;
 @end
 
 @implementation GBRepositorySummaryController
@@ -55,11 +58,16 @@
 	NSArray* remotes = self.repository.remotes;
 	if (remotes.count == 0)
 	{
-		
+		self.remoteLabel1.stringValue = NSLocalizedString(@"Remote address:", @"");
+		self.remoteField1.stringValue = @"";
+		[self hideRemoteAddressFieldsCount:2];
 	}
 	else if (remotes.count == 1)
 	{
-		
+		self.remoteLabel1.stringValue = NSLocalizedString(@"Remote address:", @"");
+		self.remoteField1.stringValue = [[remotes objectAtIndex:0] URLString];
+
+		[self hideRemoteAddressFieldsCount:2];
 	}
 	else
 	{
@@ -96,7 +104,18 @@
 
 - (void) hideRemoteAddressFieldsCount:(int)numberOfFieldsToHide
 {
+	CGFloat remainingViewOffset = 0.0;
+	if (numberOfFieldsToHide >= 1)
+	{
+		// hide the last one
+	}
+	if (numberOfFieldsToHide >= 2)
+	{
+		// hide the pre-last one
+	}
 	
+	NSRect rect = self.remainingView.frame;
+	rect.size.height += remainingViewOffset;
 }
 
 
@@ -137,9 +156,28 @@
 	return url ? url : @"";
 }
 
-- (IBAction)optimizeRepository:(id)sender
+- (IBAction) optimizeRepository:(NSButton*)button
 {
-	// TODO: launch "git gc"
+	// TODO: launch "git gc", monitor status
+	
+	NSString* originalTitle = button.title;
+	[button setEnabled:NO];
+	button.title = NSLocalizedString(@"Optimizing...", @"");
+	
+	GBTaskWithProgress* gitgcTask = [GBTaskWithProgress taskWithRepository:self.repository];
+	gitgcTask.arguments = [NSArray arrayWithObject:@"gc"];
+	gitgcTask.progressUpdateBlock = ^{
+		button.title = [NSString stringWithFormat:@"%@ %d%", NSLocalizedString(@"Optimizing...", @""), (int)roundf(gitgcTask.progress*100.0)];
+	};
+	[gitgcTask launchWithBlock:^{
+		[button setEnabled:YES];
+		button.title = originalTitle;
+	}];
+}
+
+- (IBAction)openInFinder:(id)sender
+{
+	[[NSWorkspace sharedWorkspace] openURL:self.repository.url];
 }
 
 @end
