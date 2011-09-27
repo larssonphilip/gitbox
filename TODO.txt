@@ -11,6 +11,8 @@ Quick List:
 - bug: when staging one of the same files, the last one is selected, not the one with the same name
 - bug: history vc is shifted down after quickly entering non-existent string and cancelling
 
+- check if opendiff exists before launching. Do something about the fact that OS X Lion does not ship with opendiff and FileMerge.app
+
 Gitbox 1.5 Release Notes
 
 ✓ Sidebar progress indicators for push, pull, fetch and clone.
