@@ -14,6 +14,7 @@
 + (NSArray*) contentsOfDirectoryAtURL:(NSURL*)url;
 - (NSArray*) contentsOfDirectoryAtURL:(NSURL*)url;
 
++ (void) calculateSizeAtURL:(NSURL*)aURL completionHandler:(void(^)())completionHandler;
 
 #pragma mark Mutation
 
