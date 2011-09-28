@@ -59,9 +59,9 @@
 	return NSLocalizedString(@"Summary", @"");
 }
 
-- (void) viewDidAppear
+- (void) viewDidLoad
 {
-	[super viewDidAppear];
+	[super viewDidLoad];
 	
 	[self.pathLabel setStringValue:self.repoPath];
 	
@@ -120,7 +120,7 @@
 	
 	NSRect rect = self.remainingView.frame;
 	rect.size.height += remainingViewOffset;
-	
+	self.remainingView.frame = rect;
 	
 	[self.repository.libgitRepository.config enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
 		NSLog(@"Config: %@ => %@", key, obj);
