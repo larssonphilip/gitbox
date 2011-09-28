@@ -115,7 +115,7 @@
 		[f setHidden:YES];
 		f = [self.fields objectAtIndex:i];
 		[f setHidden:YES];
-		remainingViewOffset += 38 + 17;
+		remainingViewOffset += 32;
 	}
 	
 	NSRect rect = self.remainingView.frame;

@@ -64,6 +64,46 @@
   return URLs;
 }
 
++ (void) calculateSizeAtURL:(NSURL*)aURL completionHandler:(void(^)())completionHandler
+{
+	NSFileManager* fm = [[NSFileManager alloc] init] autorelease];
+	
+	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+		
+		BOOL isDir = NO;
+		if (![fm fileExistsAtPath:aURL.path isDirectory:&isDir])
+		{
+			if (completionHandler) completionHandler(0);
+			return;
+		}
+		
+		completionHandler = [[completionHandler copy] autorelease];
+		
+		unsigned long long bytes = 0;
+		
+		if (isDir)
+		{
+			NSPipe *pipe = [NSPipe pipe];
+			NSTask *t = [[[NSTask alloc] init] autorelease];
+			[t setLaunchPath:@"/usr/bin/du"];
+			[t setArguments:[NSArray arrayWithObjects:@"-k", @"-d", @"0", path, nil]];
+			[t setStandardOutput:pipe];
+			[t setStandardError:[NSPipe pipe]];
+			[t launch];
+			[t waitUntilExit];
+			
+			NSString *sizeString = [[[NSString alloc] initWithData:[[pipe fileHandleForReading] availableData] encoding:NSASCIIStringEncoding] autorelease];
+			sizeString = [[sizeString componentsSeparatedByString:@" "] objectAtIndex:0];
+			bytes = [sizeString unsignedLongLongValue]*1024;
+		}
+		else
+		{
+			bytes = [[fm attributesOfItemAtPath:aURL.path error:nil] fileSize];
+		}
+		if (completionHandler) completionHandler(bytes);
+	});
+}
+
 
 
 #pragma mark Mutation
