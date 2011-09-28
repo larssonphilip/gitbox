@@ -213,9 +213,9 @@
 	button.title = aTitle;
 	
 	GBTaskWithProgress* gitgcTask = [GBTaskWithProgress taskWithRepository:self.repository];
-	gitgcTask.arguments = [NSArray arrayWithObject:@"gc"];
+	gitgcTask.arguments = [NSArray arrayWithObjects:@"gc", @"--progress", nil];
 	gitgcTask.progressUpdateBlock = ^{
-		button.title = [NSString stringWithFormat:@"%@ %d%", aTitle, (int)roundf(gitgcTask.progress*100.0)];
+		button.title = [NSString stringWithFormat:@"%@ %d%%", aTitle, (int)roundf(gitgcTask.progress)];
 	};
 	[gitgcTask launchWithBlock:^{
 		[button setEnabled:YES];
