@@ -12,6 +12,8 @@ Quick List:
 - bug: history vc is shifted down after quickly entering non-existent string and cancelling
 
 - check if opendiff exists before launching. Do something about the fact that OS X Lion does not ship with opendiff and FileMerge.app
+- crash: if filemerge is missing, cannot safely instantiate NSTask with "opendiff". Display an alert to install Xcode.
+
 
 Gitbox 1.5 Release Notes
 
@@ -25,6 +27,7 @@ Gitbox 1.5 Release Notes
 ✓ Added menu command to remove all stashes.
 ✓ Updated bundled Git to version 1.7.5.4.
 ✓ Menu command for removing all stashes.
+✓ Added "Optimize Repository" button to repository settings (aka "git gc")
 
 ✓ Fixed bug with menu item for opening multiple Xcode projects.
 ✓ Fixed bug with remembering window and sidebar sizes on OS X Lion.
