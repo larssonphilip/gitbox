@@ -2,9 +2,9 @@
 <archive type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="7.10">
 	<data>
 		<int key="IBDocument.SystemTarget">1060</int>
-		<string key="IBDocument.SystemVersion">11B2118</string>
+		<string key="IBDocument.SystemVersion">11B26</string>
 		<string key="IBDocument.InterfaceBuilderVersion">1617</string>
-		<string key="IBDocument.AppKitVersion">1138.1</string>
+		<string key="IBDocument.AppKitVersion">1138</string>
 		<string key="IBDocument.HIToolboxVersion">566.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -95,10 +95,10 @@
 																<string>public.url</string>
 															</object>
 														</object>
-														<string key="NSFrameSize">{598, 172}</string>
+														<string key="NSFrame">{{0, 42}, {598, 130}}</string>
 														<reference key="NSSuperview" ref="137897422"/>
 														<reference key="NSWindow"/>
-														<reference key="NSNextKeyView" ref="310496143"/>
+														<reference key="NSNextKeyView" ref="443666965"/>
 														<string key="NSReuseIdentifierKey">_NS:3760</string>
 														<object class="NSTextContainer" key="NSTextContainer" id="65436907">
 															<object class="NSLayoutManager" key="NSLayoutManager">
@@ -229,7 +229,6 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 												<string key="NSFrame">{{584, 1}, {15, 191}}</string>
 												<reference key="NSSuperview" ref="560735196"/>
 												<reference key="NSWindow"/>
-												<reference key="NSNextKeyView"/>
 												<string key="NSReuseIdentifierKey">_NS:3774</string>
 												<reference key="NSTarget" ref="560735196"/>
 												<string key="NSAction">_doScroller:</string>
@@ -254,7 +253,7 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 										<string key="NSFrame">{{20, 71}, {600, 193}}</string>
 										<reference key="NSSuperview" ref="425537506"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView" ref="443666965"/>
+										<reference key="NSNextKeyView" ref="137897422"/>
 										<string key="NSReuseIdentifierKey">_NS:148</string>
 										<int key="NSsFlags">133138</int>
 										<reference key="NSVScroller" ref="310496143"/>
@@ -299,7 +298,6 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 										<string key="NSFrame">{{187, 29}, {160, 32}}</string>
 										<reference key="NSSuperview" ref="425537506"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView"/>
 										<string key="NSReuseIdentifierKey">_NS:161</string>
 										<bool key="NSEnabled">YES</bool>
 										<object class="NSButtonCell" key="NSCell" id="740875914">
@@ -598,9 +596,9 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 					<object class="IBOutletConnection" key="connection">
 						<string key="label">gitignoreTextView</string>
 						<reference key="source" ref="1001"/>
-						<reference key="destination" ref="560735196"/>
+						<reference key="destination" ref="4681948"/>
 					</object>
-					<int key="connectionID">77</int>
+					<int key="connectionID">78</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -916,7 +914,7 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">77</int>
+			<int key="maxID">78</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -983,7 +981,7 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>NSScrollView</string>
+							<string>NSTextView</string>
 							<string>NSTextField</string>
 							<string>NSTextField</string>
 							<string>NSView</string>
@@ -1018,7 +1016,7 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<object class="IBToOneOutletInfo">
 								<string key="name">gitignoreTextView</string>
-								<string key="candidateClassName">NSScrollView</string>
+								<string key="candidateClassName">NSTextView</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">originLabel</string>

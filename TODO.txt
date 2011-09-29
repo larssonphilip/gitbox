@@ -37,8 +37,11 @@ Gitbox 1.5 misc items:
 - bug: check if opendiff exists before launching. Do something about the fact that OS X Lion does not ship with opendiff and FileMerge.app
 - bug: crash: if filemerge is missing, cannot safely instantiate NSTask with "opendiff". Display an alert to install Xcode.
 
-- settings/summary: set dirty flag when remote URLs are updated
-- settings/summary: set dirty flag when .gitignore content is updated
+- GBTaskWithProgress: report animated "..." string with progress
+- GBRepositorySettingsController: push/popDisabled for long-running tasks
+
++ settings/summary: set dirty flag when remote URLs are updated
++ settings/summary: set dirty flag when .gitignore content is updated
 - settings/summary: save edited remote URLs
 - settings/summary: save .gitignore
 - settings/summary: calculate number of commits and contributors

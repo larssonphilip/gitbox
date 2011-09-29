@@ -40,6 +40,7 @@
 
 - (void) dealloc
 {
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	self.remotes = nil;
 	self.labels = nil;
 	self.fields = nil;
@@ -75,7 +76,9 @@
 	for (NSTextField* field in fields)
 	{
 		field.tag = -1;
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateText:) name:NSControlTextDidChangeNotification object:field];
 	}
+	if (self.gitignoreTextView) [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateText:) name:NSTextDidChangeNotification object:self.gitignoreTextView];
 	
 	self.remotes = self.repository.remotes;
 	
@@ -272,6 +275,11 @@
 - (IBAction)openInFinder:(id)sender
 {
 	[[NSWorkspace sharedWorkspace] openURL:self.repository.url];
+}
+
+- (void) didUpdateText:(NSNotification*)notif
+{
+	self.dirty = YES;
 }
 
 @end

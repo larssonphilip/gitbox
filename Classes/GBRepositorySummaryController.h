@@ -14,7 +14,7 @@
 @property (assign) IBOutlet NSView *remainingView;
 @property (assign) IBOutlet NSTextField *sizeField;
 @property (assign) IBOutlet NSTextField *statsLineField;
-@property (assign) IBOutlet NSScrollView *gitignoreTextView;
+@property (assign) IBOutlet NSTextView *gitignoreTextView;
 
 - (IBAction)optimizeRepository:(NSButton*)sender;
 - (IBAction)openInFinder:(id)sender;
