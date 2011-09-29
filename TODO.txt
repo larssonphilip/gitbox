@@ -26,7 +26,7 @@ Gitbox 1.5 misc items:
 - bug: file "Icon\r" was committed somehow.
 
 - feature: "uncommit" to quickly rollback non-pushed commit back to the working directory
-- feature: "amend commit"
+- feature: "amend commit" - see uncommit
 - feature: "revert commit"
 - double refresh of the stage causes items to disappear (it must be an index.lock issue, should relaunch )
 
