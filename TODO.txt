@@ -126,6 +126,7 @@ Features:
 - submodules: reload submodules status on fsevents and update the sidebar if changed
 - submodules: when reloading submodules merge or reload all of them - think hard on that!
 - submodules: remember submodules in prefs plist because we don't update all of them on startup
+- submodules: rename "update" button to "checkout", so it's clear what it does.
 
 - submodules: case 1: user clones a repo which has some submodules => needs init, display "download" button for submodules in sidebar
 - submodules: case 2: user pulls a repo which has some submodules updated => needs pull
