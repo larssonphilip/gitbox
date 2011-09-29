@@ -258,7 +258,9 @@
 	GBTaskWithProgress* gitgcTask = [GBTaskWithProgress taskWithRepository:self.repository];
 	gitgcTask.arguments = [NSArray arrayWithObjects:@"gc", @"--progress", nil];
 	gitgcTask.progressUpdateBlock = ^{
-		button.title = [NSString stringWithFormat:@"%@ %d%%", aTitle, (int)roundf(gitgcTask.progress)];
+		int percentage = (int)roundf(gitgcTask.progress);
+		if (percentage == 100) percentage = 99; // do not show "100%" for remaining of time.
+		button.title = [NSString stringWithFormat:@"%@ %d%%", aTitle, percentage];
 	};
 	[gitgcTask launchWithBlock:^{
 		[button setEnabled:YES];
