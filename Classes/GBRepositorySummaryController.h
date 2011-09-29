@@ -13,8 +13,8 @@
 @property (assign) IBOutlet NSTextField *remoteField3;
 @property (assign) IBOutlet NSView *remainingView;
 @property (assign) IBOutlet NSTextField *sizeField;
-@property (assign) IBOutlet NSTextField *numberOfCommitsField;
-@property (assign) IBOutlet NSTextField *numberOfContributorsField;
+@property (assign) IBOutlet NSTextField *statsLineField;
+@property (assign) IBOutlet NSScrollView *gitignoreTextView;
 
 - (IBAction)optimizeRepository:(NSButton*)sender;
 - (IBAction)openInFinder:(id)sender;

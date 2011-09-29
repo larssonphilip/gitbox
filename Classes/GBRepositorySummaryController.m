@@ -35,8 +35,8 @@
 @synthesize remoteField3;
 @synthesize remainingView;
 @synthesize sizeField;
-@synthesize numberOfCommitsField;
-@synthesize numberOfContributorsField;
+@synthesize statsLineField;
+@synthesize gitignoreTextView;
 
 - (void) dealloc
 {
@@ -118,29 +118,28 @@
 		[f setHidden:YES];
 		f = [self.fields objectAtIndex:i];
 		[f setHidden:YES];
-		remainingViewOffset += 32;
+		remainingViewOffset += 40+22;
 	}
 	
 	NSRect rect = self.remainingView.frame;
 	rect.size.height += remainingViewOffset;
 	self.remainingView.frame = rect;
 	
-	[self.repository.libgitRepository.config enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-		NSLog(@"Config: %@ => %@", key, obj);
-	}];
+//	[self.repository.libgitRepository.config enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+//		NSLog(@"Config: %@ => %@", key, obj);
+//	}];
 	
 	[self calculateSize];
 	
 	// TODO: add label and strings for:
-	// - path + disclosure button like in Xcode locations preference
-	// - every remote URL (if none, pre)
-	
-	// TODO: support multiple URLs
-	// TODO: add more labels for useless stats like:
+	// ≠ path + disclosure button like in Xcode locations preference
+	// + every remote URL
+	// + size on disk
 	// - number of commits, tags, 
-	// - creation date, 
-	// - size on disk, 
 	// - committers etc.
+	// - creation date, 
+	
+	
 }
 
 
