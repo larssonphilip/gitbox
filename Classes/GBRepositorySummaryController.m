@@ -4,16 +4,18 @@
 #import "GBTaskWithProgress.h"
 #import "GitRepository.h"
 #import "GitConfig.h"
+#import "NSFileManager+OAFileManagerHelpers.h"
 
 @interface GBRepositorySummaryController ()
 @property(nonatomic, retain) NSArray* remotes;
 @property(nonatomic, retain) NSArray* labels;
 @property(nonatomic, retain) NSArray* fields;
+@property(nonatomic, assign) BOOL calculatingSize;
 
 - (NSString*) parentFolder;
 - (NSString*) repoTitle;
 - (NSString*) repoPath;
-- (void) hideRemoteAddressFieldsCount:(int)numberOfFieldsToHide;
+- (void) calculateSize;
 @end
 
 @implementation GBRepositorySummaryController
@@ -21,6 +23,7 @@
 @synthesize remotes;
 @synthesize labels;
 @synthesize fields;
+@synthesize calculatingSize;
 
 @synthesize pathLabel;
 @synthesize originLabel;
@@ -126,6 +129,8 @@
 		NSLog(@"Config: %@ => %@", key, obj);
 	}];
 	
+	[self calculateSize];
+	
 	// TODO: add label and strings for:
 	// - path + disclosure button like in Xcode locations preference
 	// - every remote URL (if none, pre)
@@ -151,21 +156,60 @@
 #pragma mark Private
 
 
-- (void) hideRemoteAddressFieldsCount:(int)numberOfFieldsToHide
+- (void) calculateSize
 {
-	CGFloat remainingViewOffset = 0.0;
-	if (numberOfFieldsToHide >= 1)
+	if (calculatingSize)
 	{
-		// hide the last one
-	}
-	if (numberOfFieldsToHide >= 2)
-	{
-		// hide the pre-last one
+		// Try again after 2 and 4 seconds.
+		double delayInSeconds = 2.0;
+		dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+		dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+			if (calculatingSize)
+			{
+				double delayInSeconds = 2.0;
+				dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+				dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+					if (calculatingSize) return;
+					[self calculatingSize];
+				});
+				return;
+			}
+			[self calculatingSize];
+		});
+		return;
 	}
 	
-	NSRect rect = self.remainingView.frame;
-	rect.size.height += remainingViewOffset;
+	calculatingSize = YES;
+	
+	self.sizeField.stringValue = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"Size on disk:", @""), @""];
+	
+	[NSFileManager calculateSizeAtURL:self.repository.url completionHandler:^(long long bytes){
+		double bytesf = (double)bytes;
+		double kbytes = bytesf / 1024.0;
+		double mbytes = kbytes / 1024.0;
+		double gbytes = mbytes / 1024.0;
+		
+		NSString* sizeString = [NSString stringWithFormat:@"%qi %@", bytes, NSLocalizedString(@"bytes", @"")];
+		
+		if (gbytes >= 1.0)
+		{
+			sizeString = [NSString stringWithFormat:@"%0.1f %@", gbytes, NSLocalizedString(@"Gb", @"")];
+		}
+		else if (mbytes >= 1.0)
+		{
+			sizeString = [NSString stringWithFormat:@"%0.1f %@", mbytes, NSLocalizedString(@"Mb", @"")];
+		}
+		else if (kbytes >= 1.0)
+		{
+			sizeString = [NSString stringWithFormat:@"%0.1f %@", kbytes, NSLocalizedString(@"Kb", @"")];
+		}
+		
+		self.sizeField.stringValue = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"Size on disk:", @""), sizeString];
+		
+		calculatingSize = NO;
+	}];
 }
+
 
 
 - (NSString*) parentFolder
@@ -220,6 +264,7 @@
 	[gitgcTask launchWithBlock:^{
 		[button setEnabled:YES];
 		button.title = originalTitle;
+		[self calculateSize];
 	}];
 }
 
