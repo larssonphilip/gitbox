@@ -105,22 +105,22 @@
   [self.branchesToDelete addObjectsFromArray:[self.branchesController selectedObjects]];
   [self.branchesController remove:sender];
   
-#if 0
-  int c = [[self.branchesController selectedObjects] count];
-  NSString* message = [NSString stringWithFormat:NSLocalizedString(@"Delete %d branches?", @"GBSettings"), c];
-  if (c == 1)
-  {
-    message = [NSString stringWithFormat:NSLocalizedString(@"Delete branch “%@”?", @"GBSettings"), [[[self.branchesController selectedObjects] objectAtIndex:0] name]];
-  }
-  [self criticalConfirmationWithMessage:message
-                            description:NSLocalizedString(@"You cannot undo this action.", @"GBSettings") 
-                                     ok:NSLocalizedString(@"Delete", @"GBSettings") 
-                             completion:^(BOOL result){
-                               if (!result) return;
-                               [self.repository removeRefs:[self.branchesController selectedObjects] withBlock:^{}];
-                               [self.branchesController remove:sender];
-                             }];
-#endif
+//#if 0
+//  int c = [[self.branchesController selectedObjects] count];
+//  NSString* message = [NSString stringWithFormat:NSLocalizedString(@"Delete %d branches?", @"GBSettings"), c];
+//  if (c == 1)
+//  {
+//    message = [NSString stringWithFormat:NSLocalizedString(@"Delete branch “%@”?", @"GBSettings"), [[[self.branchesController selectedObjects] objectAtIndex:0] name]];
+//  }
+//  [self criticalConfirmationWithMessage:message
+//                            description:NSLocalizedString(@"You cannot undo this action.", @"GBSettings") 
+//                                     ok:NSLocalizedString(@"Delete", @"GBSettings") 
+//                             completion:^(BOOL result){
+//                               if (!result) return;
+//                               [self.repository removeRefs:[self.branchesController selectedObjects] withBlock:^{}];
+//                               [self.branchesController remove:sender];
+//                             }];
+//#endif
 }
 
 - (IBAction) deleteTag:(id)sender
@@ -129,22 +129,22 @@
   [self.tagsToDelete addObjectsFromArray:[self.tagsController selectedObjects]];
   [self.tagsController remove:sender];
 
-#if 0
-  int c = [[self.tagsController selectedObjects] count];
-  NSString* message = [NSString stringWithFormat:NSLocalizedString(@"Delete %d tags?", @"GBSettings"), c];
-  if (c == 1)
-  {
-    message = [NSString stringWithFormat:NSLocalizedString(@"Delete tag “%@”?", @"GBSettings"), [[[self.tagsController selectedObjects] objectAtIndex:0] name]];
-  }
-  [self criticalConfirmationWithMessage:message
-                            description:NSLocalizedString(@"You cannot undo this action.", @"GBSettings") 
-                                     ok:NSLocalizedString(@"Delete", @"GBSettings") 
-                             completion:^(BOOL result){
-                               if (!result) return;
-                               [self.repository removeRefs:[self.tagsController selectedObjects] withBlock:^{}];
-                               [self.tagsController remove:sender];
-                             }];
-#endif
+//#if 0
+//  int c = [[self.tagsController selectedObjects] count];
+//  NSString* message = [NSString stringWithFormat:NSLocalizedString(@"Delete %d tags?", @"GBSettings"), c];
+//  if (c == 1)
+//  {
+//    message = [NSString stringWithFormat:NSLocalizedString(@"Delete tag “%@”?", @"GBSettings"), [[[self.tagsController selectedObjects] objectAtIndex:0] name]];
+//  }
+//  [self criticalConfirmationWithMessage:message
+//                            description:NSLocalizedString(@"You cannot undo this action.", @"GBSettings") 
+//                                     ok:NSLocalizedString(@"Delete", @"GBSettings") 
+//                             completion:^(BOOL result){
+//                               if (!result) return;
+//                               [self.repository removeRefs:[self.tagsController selectedObjects] withBlock:^{}];
+//                               [self.tagsController remove:sender];
+//                             }];
+//#endif
 }
 
 
