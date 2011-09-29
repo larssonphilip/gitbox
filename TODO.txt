@@ -1,20 +1,3 @@
-Quick List:
-
-- bug: file "Icon\r" was committed somehow.
-
-- feature: "uncommit" to quickly rollback non-pushed commit back to the working directory
-- feature: "amend commit"
-- feature: "revert commit"
-- double refresh of the stage causes items to disappear (it must be an index.lock issue, should relaunch )
-
-- bug: when commiting a file from a long list, scrollview is not scrolled to the very top
-- bug: when staging one of the same files, the last one is selected, not the one with the same name
-- bug: history vc is shifted down after quickly entering non-existent string and cancelling
-
-- check if opendiff exists before launching. Do something about the fact that OS X Lion does not ship with opendiff and FileMerge.app
-- crash: if filemerge is missing, cannot safely instantiate NSTask with "opendiff". Display an alert to install Xcode.
-
-
 Gitbox 1.5 Release Notes
 
 ✓ Sidebar progress indicators for push, pull, fetch and clone.
@@ -40,12 +23,33 @@ Gitbox 1.5 Release Notes
 
 Gitbox 1.5 misc items:
 
-- settings: tab: remote servers and branches
-- settings: tab: ignored files
-- settings: tab: raw config
+- bug: file "Icon\r" was committed somehow.
 
-- settings: more stats and summary info
-- settings: add "Edit Servers..." menu item to the right branch selector
+- feature: "uncommit" to quickly rollback non-pushed commit back to the working directory
+- feature: "amend commit"
+- feature: "revert commit"
+- double refresh of the stage causes items to disappear (it must be an index.lock issue, should relaunch )
+
+- bug: when commiting a file from a long list, scrollview is not scrolled to the very top
+- bug: when staging one of the same files, the last one is selected, not the one with the same name
+- bug: history vc is shifted down after quickly entering non-existent string and cancelling
+
+- bug: check if opendiff exists before launching. Do something about the fact that OS X Lion does not ship with opendiff and FileMerge.app
+- bug: crash: if filemerge is missing, cannot safely instantiate NSTask with "opendiff". Display an alert to install Xcode.
+
+- settings/summary: set dirty flag when remote URLs are updated
+- settings/summary: set dirty flag when .gitignore content is updated
+- settings/summary: save edited remote URLs
+- settings/summary: save .gitignore
+- settings/summary: calculate number of commits and contributors
+
+- settings/branches: display better headers.
+- settings/branches: maybe show remote branches too.
+
+- settings/servers: single table with two columns - alias and URL
+- settings/advanced: show a text view with .git/config contents
+
+- toolbar: add "Edit Servers..." menu item to the right branch selector, should open settings/servers
 
 - stage: overlay view describing shortcuts to stage all
 - stage: cmd+click should select all
