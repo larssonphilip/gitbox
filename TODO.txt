@@ -24,11 +24,12 @@ Gitbox 1.5 Release Notes
 Gitbox 1.5 misc items:
 
 - bug: file "Icon\r" was committed somehow.
+- bug: double click on multiple files opens FileMerge window per file.
 
 - feature: "uncommit" to quickly rollback non-pushed commit back to the working directory
 - feature: "amend commit" - see uncommit
 - feature: "revert commit"
-- double refresh of the stage causes items to disappear (it must be an index.lock issue, should relaunch )
+- double refresh of the stage causes items to disappear (it must be an index.lock issue, should relaunch)
 
 - bug: when commiting a file from a long list, scrollview is not scrolled to the very top
 - bug: when staging one of the same files, the last one is selected, not the one with the same name
