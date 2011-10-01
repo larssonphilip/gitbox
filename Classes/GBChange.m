@@ -416,6 +416,36 @@
 		return;
 	}
 	
+	
+	if (task.executableName && ! task.launchPath)
+	{
+		NSString* launchPath = [OATask systemPathForExecutable:task.executableName];
+		
+		if (launchPath)
+		{
+			task.launchPath = launchPath;
+		}
+		else
+		{
+			NSLog(@"GBChange: path for %@ not found", task.executableName);
+			NSString* message = [NSString stringWithFormat:
+								 NSLocalizedString(@"Cannot find path to %@.", @"Change"), diffTool];
+			
+			NSString* advice = [NSString stringWithFormat:NSLocalizedString(@"Please install the executable %@ or choose another diff tool in Preferences.", @"Change"), task.executableName];
+			
+			if ([task.executableName isEqualToString:@"opendiff"])
+			{
+				advice = NSLocalizedString(@"Please install Xcode (it contains FileMerge.app) or choose another diff tool in Preferences.", @"Change");
+			}
+
+			if ([NSAlert prompt:message description:advice ok:NSLocalizedString(@"Open Preferences",@"App")])
+			{
+			  [NSApp sendAction:@selector(showDiffToolPreferences:) to:nil from:self];
+			}
+			if (block) block();
+			return;
+		}
+	}	
 	task.currentDirectoryPath = self.repository.path;
 	task.arguments = [NSArray arrayWithObjects:[leftURL path], [rightURL path], nil];
 	// opendiff will quit in 5 secs
