@@ -1230,6 +1230,7 @@
 		return;
 	}
 	GBRemote* aRemote = aRemoteBranch.remote;
+#warning FIXME: this looks like the only place where we use ref.remote and sometimes crash because remote is deallocated leaving some refs with unsafe unretained link to it.
 	[GBAskPassController launchedControllerWithAddress:aRemoteBranch.remote.URLString taskFactory:^{
 		GBTask* task = [self taskWithProgress];
 		NSString* refspec = [NSString stringWithFormat:@"%@:%@", aLocalBranch.name, aRemoteBranch.name];
