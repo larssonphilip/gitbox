@@ -324,7 +324,7 @@
 
 - (void) doubleClick:(id)sender
 {
-	[self launchDiffWithBlock:^{}];
+	[self.delegate doubleClickChange:self];
 }
 
 - (void) launchDiffWithBlock:(void(^)())block

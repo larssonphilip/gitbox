@@ -17,11 +17,14 @@ Gitbox 1.5 Release Notes
 ✓ Fixed bug with committing or restoring removed files.
 ✓ Fixed rare crash when extracting a file from history.
 ✓ Fixed rare bug with incorrect user picture loading.
-✓ Fixed crashes in history parser
+✓ Fixed crashes in history parser.
+✓ Fixed crash when trying to launch missing diff tool.
 
 --
 
 Gitbox 1.5 misc items:
+
+- warn before creating a commit when switched off the branch (issue with Pierlo and submodules)
 
 - bug: file "Icon\r" was committed somehow.
 - bug: double click on multiple files opens FileMerge window per file.
@@ -36,7 +39,7 @@ Gitbox 1.5 misc items:
 - bug: history vc is shifted down after quickly entering non-existent string and cancelling
 
 - bug: check if opendiff exists before launching. Do something about the fact that OS X Lion does not ship with opendiff and FileMerge.app
-- bug: crash: if filemerge is missing, cannot safely instantiate NSTask with "opendiff". Display an alert to install Xcode.
+
 
 - GBTaskWithProgress: report animated "..." string with progress
 - GBRepositorySettingsController: push/popDisabled for long-running tasks
@@ -79,6 +82,7 @@ Gitbox 1.5 misc items:
 
 --------
 
++ bug: crash: if filemerge is missing, cannot safely instantiate NSTask with "opendiff". Display an alert to install Xcode.
 + feature: "checkpoint" commit to remember current state (and push to a private branch on the server)
 + github-mac:// URL scheme so that the "Clone in Mac" E.g. github-mac://openRepo/https://github.com/libgit2/rugged
 + add license for Sparkle to Legal window

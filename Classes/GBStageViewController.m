@@ -606,6 +606,19 @@
   }
 }
 
+- (void) doubleClickChange:(GBChange *)aChange
+{
+	static BOOL alreadyClicked = NO;
+	if (alreadyClicked) return;
+	alreadyClicked = YES;
+	[aChange launchDiffWithBlock:^{
+	}];
+	
+	// reset flag on the next cycle when all doubleClicks are processed.
+	dispatch_async(dispatch_get_main_queue(), ^{
+		alreadyClicked = NO;
+	});
+}
 
 
 
