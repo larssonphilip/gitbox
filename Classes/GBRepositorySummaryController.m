@@ -37,6 +37,7 @@
 @synthesize sizeField;
 @synthesize statsLineField;
 @synthesize gitignoreTextView;
+@synthesize optimizeProgressIndicator;
 
 - (void) dealloc
 {
@@ -253,21 +254,38 @@
 
 - (IBAction) optimizeRepository:(NSButton*)button
 {
-	NSString* originalTitle = button.title;
 	[button setEnabled:NO];
-	NSString* aTitle = NSLocalizedString(@"Optimizing...", @"");
-	button.title = aTitle;
 	
 	GBTaskWithProgress* gitgcTask = [GBTaskWithProgress taskWithRepository:self.repository];
 	gitgcTask.arguments = [NSArray arrayWithObjects:@"gc", @"--progress", nil];
+	[self.optimizeProgressIndicator setIndeterminate:YES];
+	[self.optimizeProgressIndicator startAnimation:nil];
+	__block int oldPercentage = 0;
 	gitgcTask.progressUpdateBlock = ^{
-		int percentage = (int)roundf(gitgcTask.progress);
-		if (percentage == 100) percentage = 99; // do not show "100%" for remaining of time.
-		button.title = [NSString stringWithFormat:@"%@ %d%%", aTitle, percentage];
+		double progress = gitgcTask.progress;
+		
+		self.optimizeProgressIndicator.doubleValue = progress;
+		
+		BOOL newIndeterminate = (progress < 2.0 || progress > 99.0);
+		if (newIndeterminate != self.optimizeProgressIndicator.isIndeterminate)
+		{
+			[self.optimizeProgressIndicator stopAnimation:nil];
+			if (newIndeterminate)
+			{
+				self.optimizeProgressIndicator.doubleValue = 0.0;
+				[self.optimizeProgressIndicator setIndeterminate:newIndeterminate];
+				[self.optimizeProgressIndicator startAnimation:nil];
+			}
+			else
+			{
+				[self.optimizeProgressIndicator setIndeterminate:newIndeterminate];
+			}
+		}
 	};
 	[gitgcTask launchWithBlock:^{
 		[button setEnabled:YES];
-		button.title = originalTitle;
+		[self.optimizeProgressIndicator stopAnimation:nil];
+		[self.optimizeProgressIndicator setIndeterminate:YES];
 		[self calculateSize];
 	}];
 }

@@ -2,9 +2,9 @@
 <archive type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="7.10">
 	<data>
 		<int key="IBDocument.SystemTarget">1060</int>
-		<string key="IBDocument.SystemVersion">11B26</string>
+		<string key="IBDocument.SystemVersion">11B2118</string>
 		<string key="IBDocument.InterfaceBuilderVersion">1617</string>
-		<string key="IBDocument.AppKitVersion">1138</string>
+		<string key="IBDocument.AppKitVersion">1138.1</string>
 		<string key="IBDocument.HIToolboxVersion">566.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -15,6 +15,7 @@
 			<string>NSTextField</string>
 			<string>NSCustomObject</string>
 			<string>NSScrollView</string>
+			<string>NSProgressIndicator</string>
 			<string>NSCustomView</string>
 			<string>NSButtonCell</string>
 			<string>NSTextView</string>
@@ -59,6 +60,17 @@
 								<int key="NSvFlags">274</int>
 								<object class="NSMutableArray" key="NSSubviews">
 									<bool key="EncodedWithXMLCoder">YES</bool>
+									<object class="NSProgressIndicator" id="999760296">
+										<reference key="NSNextResponder" ref="425537506"/>
+										<int key="NSvFlags">1316</int>
+										<object class="NSPSMatrix" key="NSDrawMatrix"/>
+										<string key="NSFrame">{{349, 39}, {16, 16}}</string>
+										<reference key="NSSuperview" ref="425537506"/>
+										<reference key="NSWindow"/>
+										<string key="NSReuseIdentifierKey">_NS:3954</string>
+										<int key="NSpiFlags">28938</int>
+										<double key="NSMaxValue">100</double>
+									</object>
 									<object class="NSScrollView" id="560735196">
 										<reference key="NSNextResponder" ref="425537506"/>
 										<int key="NSvFlags">274</int>
@@ -98,7 +110,7 @@
 														<string key="NSFrame">{{0, 42}, {598, 130}}</string>
 														<reference key="NSSuperview" ref="137897422"/>
 														<reference key="NSWindow"/>
-														<reference key="NSNextKeyView" ref="443666965"/>
+														<reference key="NSNextKeyView" ref="310496143"/>
 														<string key="NSReuseIdentifierKey">_NS:3760</string>
 														<object class="NSTextContainer" key="NSTextContainer" id="65436907">
 															<object class="NSLayoutManager" key="NSLayoutManager">
@@ -229,6 +241,7 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 												<string key="NSFrame">{{584, 1}, {15, 191}}</string>
 												<reference key="NSSuperview" ref="560735196"/>
 												<reference key="NSWindow"/>
+												<reference key="NSNextKeyView" ref="297703353"/>
 												<string key="NSReuseIdentifierKey">_NS:3774</string>
 												<reference key="NSTarget" ref="560735196"/>
 												<string key="NSAction">_doScroller:</string>
@@ -253,7 +266,7 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 										<string key="NSFrame">{{20, 71}, {600, 193}}</string>
 										<reference key="NSSuperview" ref="425537506"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView" ref="137897422"/>
+										<reference key="NSNextKeyView" ref="443666965"/>
 										<string key="NSReuseIdentifierKey">_NS:148</string>
 										<int key="NSsFlags">133138</int>
 										<reference key="NSVScroller" ref="310496143"/>
@@ -298,6 +311,7 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 										<string key="NSFrame">{{187, 29}, {160, 32}}</string>
 										<reference key="NSSuperview" ref="425537506"/>
 										<reference key="NSWindow"/>
+										<reference key="NSNextKeyView"/>
 										<string key="NSReuseIdentifierKey">_NS:161</string>
 										<bool key="NSEnabled">YES</bool>
 										<object class="NSButtonCell" key="NSCell" id="740875914">
@@ -600,6 +614,14 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 					</object>
 					<int key="connectionID">78</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">optimizeProgressIndicator</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="999760296"/>
+					</object>
+					<int key="connectionID">80</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -718,6 +740,7 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 							<reference ref="279098757"/>
 							<reference ref="975146395"/>
 							<reference ref="560735196"/>
+							<reference ref="999760296"/>
 						</object>
 						<reference key="parent" ref="71415132"/>
 					</object>
@@ -831,6 +854,11 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 						<reference key="object" ref="4681948"/>
 						<reference key="parent" ref="560735196"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">79</int>
+						<reference key="object" ref="999760296"/>
+						<reference key="parent" ref="425537506"/>
+					</object>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="flattenedProperties">
@@ -866,10 +894,12 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 					<string>73.IBPluginDependency</string>
 					<string>74.IBPluginDependency</string>
 					<string>75.IBPluginDependency</string>
+					<string>79.IBPluginDependency</string>
 					<string>9.IBPluginDependency</string>
 				</object>
 				<object class="NSMutableArray" key="dict.values">
 					<bool key="EncodedWithXMLCoder">YES</bool>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -914,7 +944,7 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">78</int>
+			<int key="maxID">80</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -967,6 +997,7 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>gitignoreTextView</string>
+							<string>optimizeProgressIndicator</string>
 							<string>originLabel</string>
 							<string>pathLabel</string>
 							<string>remainingView</string>
@@ -982,6 +1013,7 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>NSTextView</string>
+							<string>NSProgressIndicator</string>
 							<string>NSTextField</string>
 							<string>NSTextField</string>
 							<string>NSView</string>
@@ -1000,6 +1032,7 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>gitignoreTextView</string>
+							<string>optimizeProgressIndicator</string>
 							<string>originLabel</string>
 							<string>pathLabel</string>
 							<string>remainingView</string>
@@ -1017,6 +1050,10 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 							<object class="IBToOneOutletInfo">
 								<string key="name">gitignoreTextView</string>
 								<string key="candidateClassName">NSTextView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">optimizeProgressIndicator</string>
+								<string key="candidateClassName">NSProgressIndicator</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">originLabel</string>
