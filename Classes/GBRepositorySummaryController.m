@@ -260,7 +260,6 @@
 	gitgcTask.arguments = [NSArray arrayWithObjects:@"gc", @"--progress", nil];
 	[self.optimizeProgressIndicator setIndeterminate:YES];
 	[self.optimizeProgressIndicator startAnimation:nil];
-	__block int oldPercentage = 0;
 	gitgcTask.progressUpdateBlock = ^{
 		double progress = gitgcTask.progress;
 		
@@ -282,7 +281,10 @@
 			}
 		}
 	};
+	
+	[self pushDisabled];
 	[gitgcTask launchWithBlock:^{
+		[self popDisabled];
 		[button setEnabled:YES];
 		[self.optimizeProgressIndicator stopAnimation:nil];
 		[self.optimizeProgressIndicator setIndeterminate:YES];

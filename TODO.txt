@@ -30,16 +30,21 @@ Gitbox 1.5 misc items:
 - feature: "amend commit" - see uncommit
 - feature: "revert commit"
 - double refresh of the stage causes items to disappear (it must be an index.lock issue, should relaunch)
+  $ git update-index --refresh => status:1
+    Output:
+		Classes/GBRepositorySettingsController.m: needs update
+		Classes/GBRepositorySummaryController.m: needs update
+		TODO.txt: needs update
+
 
 - bug: when commiting a file from a long list, scrollview is not scrolled to the very top
 - bug/minor: when staging one of the same files, the last one is selected, not the one with the same name
 - bug: history vc is shifted down after quickly entering non-existent string and cancelling
 
-- GBRepositorySettingsController: push/popDisabled for long-running tasks
 
 + settings/summary: set dirty flag when remote URLs are updated
 + settings/summary: set dirty flag when .gitignore content is updated
-- settings/summary: push/pop disabled when doing long-running op.
++ settings/summary: push/pop disabled when doing long-running op.
 - settings/summary: save edited remote URLs
 - settings/summary: save .gitignore
 - settings/summary: calculate number of commits and contributors
@@ -87,6 +92,8 @@ process is running and remove the file manually to continue.
 + bug: double click on multiple files opens FileMerge window per file.
 + bug: check if opendiff exists before launching. Do something about the fact that OS X Lion does not ship with opendiff and FileMerge.app
 + added spinner for "git gc"
++ GBRepositorySettingsController: push/popDisabled for long-running tasks
+
 
 --------
 

@@ -131,17 +131,22 @@ NSString* const GBRepositorySettingsGitConfig       = @"GBRepositorySettingsGitC
   [self syncSelectedTab];
 }
 
+- (void) didUpdateDisabledStatus
+{
+	[self.cancelButton setEnabled:disabled < 1];
+	[self.saveButton setEnabled:disabled < 1];
+}
+
 - (void) pushDisabled
 {
 	self.disabled++;
-	[self.cancelButton setEnabled:disabled < 1];
-	[self.saveButton setEnabled:disabled < 1];
+	[self didUpdateDisabledStatus];
 }
 
 - (void) popDisabled
 {
 	self.disabled--;
-	[self.cancelButton setEnabled:disabled < 1];
+	[self didUpdateDisabledStatus];
 }
 
 
