@@ -26,9 +26,6 @@ Gitbox 1.5 misc items:
 
 - warn before creating a commit when on detached head (not on a branch) (issue with Pierlo and submodules)
 
-- bug: file "Icon\r" was committed somehow.
-- bug: double click on multiple files opens FileMerge window per file.
-
 - feature: "uncommit" to quickly rollback non-pushed commit back to the working directory
 - feature: "amend commit" - see uncommit
 - feature: "revert commit"
@@ -38,14 +35,11 @@ Gitbox 1.5 misc items:
 - bug/minor: when staging one of the same files, the last one is selected, not the one with the same name
 - bug: history vc is shifted down after quickly entering non-existent string and cancelling
 
-+ bug: check if opendiff exists before launching. Do something about the fact that OS X Lion does not ship with opendiff and FileMerge.app
-
-
-+ added spinner for "git gc"
 - GBRepositorySettingsController: push/popDisabled for long-running tasks
 
 + settings/summary: set dirty flag when remote URLs are updated
 + settings/summary: set dirty flag when .gitignore content is updated
+- settings/summary: push/pop disabled when doing long-running op.
 - settings/summary: save edited remote URLs
 - settings/summary: save .gitignore
 - settings/summary: calculate number of commits and contributors
@@ -79,6 +73,20 @@ Gitbox 1.5 misc items:
 - history: push a single commit
 - stage: add option "Delete from stage only" for "git rm --force --cached <filepath>".
 - stage: right click menu: "file history" which inserts file path into search field
+
+- index.lock issue:
+
+fatal: Unable to create '/Users/oleganza/Work/gitbox/app/.git/index.lock': File exists.
+
+If no other git process is currently running, this probably means a
+git process crashed in this repository earlier. Make sure no other git
+process is running and remove the file manually to continue.
+
+- bug: file "Icon\r" was committed somehow.
+
++ bug: double click on multiple files opens FileMerge window per file.
++ bug: check if opendiff exists before launching. Do something about the fact that OS X Lion does not ship with opendiff and FileMerge.app
++ added spinner for "git gc"
 
 --------
 
