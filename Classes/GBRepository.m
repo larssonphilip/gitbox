@@ -1088,7 +1088,17 @@
 		block();
 		return;
 	}
-	[GBAskPassController launchedControllerWithAddress:aRemoteBranch.remote.URLString taskFactory:^{
+	NSString* alias = aRemoteBranch.remoteAlias;
+	GBRemote* aRemote = [self remoteForAlias:alias];
+	
+	if (!aRemote)
+	{
+		NSLog(@"Error: cannot find remote for alias '%@'", alias);
+		if (block) block();
+		return;
+	}
+
+	[GBAskPassController launchedControllerWithAddress:aRemote.URLString taskFactory:^{
 		GBTask* task = [self taskWithProgress];
 		task.arguments = [NSArray arrayWithObjects:@"pull", 
 						  @"--tags", 
@@ -1183,7 +1193,16 @@
 		if (block) block();
 		return;
 	}
-	[GBAskPassController launchedControllerWithAddress:aRemoteBranch.remote.URLString taskFactory:^{
+	NSString* alias = aRemoteBranch.remoteAlias;
+	GBRemote* aRemote = [self remoteForAlias:alias];
+	
+	if (!aRemote)
+	{
+		NSLog(@"Error: cannot find remote for alias '%@'", alias);
+		if (block) block();
+		return;
+	}
+	[GBAskPassController launchedControllerWithAddress:aRemote.URLString taskFactory:^{
 		GBTask* task = [self taskWithProgress];
 		task.arguments = [NSArray arrayWithObjects:@"fetch", 
 						  @"--tags", 
@@ -1229,9 +1248,18 @@
 		if (block) block();
 		return;
 	}
-	GBRemote* aRemote = aRemoteBranch.remote;
-#warning FIXME: this looks like the only place where we use ref.remote and sometimes crash because remote is deallocated leaving some refs with unsafe unretained link to it.
-	[GBAskPassController launchedControllerWithAddress:aRemoteBranch.remote.URLString taskFactory:^{
+		
+	NSString* alias = aRemoteBranch.remoteAlias;
+	GBRemote* aRemote = [self remoteForAlias:alias];
+	
+	if (!aRemote)
+	{
+		NSLog(@"Error: cannot find remote for alias '%@'", alias);
+		if (block) block();
+		return;
+	}
+	
+	[GBAskPassController launchedControllerWithAddress:aRemote.URLString taskFactory:^{
 		GBTask* task = [self taskWithProgress];
 		NSString* refspec = [NSString stringWithFormat:@"%@:%@", aLocalBranch.name, aRemoteBranch.name];
 		
@@ -1281,11 +1309,14 @@
 	if (!self.currentRemoteBranch)
 	{
 		if (block) block();
+		return;
 	}
 	
 	GBRef* otherBranch = self.currentRemoteBranch;
 	
-	[self fetchRemote:otherBranch.remote withBlock:^{
+	GBRemote* aRemote = [self remoteForAlias:otherBranch.remoteAlias];
+	
+	[self fetchRemote:aRemote withBlock:^{
 		
 		GBTask* taskContinue = [self task];
 		taskContinue.arguments = [NSArray arrayWithObjects:@"rebase", @"--continue", nil];
