@@ -47,39 +47,39 @@
 
 - (void) dealloc
 {
-  [[NSNotificationCenter defaultCenter] removeObserver:self];
-  [rootController release]; rootController = nil;
-  [defaultToolbarController release]; defaultToolbarController = nil;
-  [toolbarController release]; toolbarController = nil;
-  [detailViewController release]; detailViewController = nil;
-  [defaultDetailViewController release]; defaultDetailViewController = nil;
-  [selectedWindowItem release]; selectedWindowItem = nil;
-  [sheetQueue release]; sheetQueue = nil;
-  self.sidebarController = nil;
-  self.welcomeController = nil;
-  self.splitView = nil;
-  self.jumpController = nil;
-  [currentSheet release]; currentSheet = nil;
-  [super dealloc];
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	[rootController release]; rootController = nil;
+	[defaultToolbarController release]; defaultToolbarController = nil;
+	[toolbarController release]; toolbarController = nil;
+	[detailViewController release]; detailViewController = nil;
+	[defaultDetailViewController release]; defaultDetailViewController = nil;
+	[selectedWindowItem release]; selectedWindowItem = nil;
+	[sheetQueue release]; sheetQueue = nil;
+	self.sidebarController = nil;
+	self.welcomeController = nil;
+	self.splitView = nil;
+	self.jumpController = nil;
+	[currentSheet release]; currentSheet = nil;
+	[super dealloc];
 }
 
 - (id) initWithWindow:(NSWindow*)aWindow
 {
-  if ((self = [super initWithWindow:aWindow]))
-  {
-    self.sidebarController = [[[GBSidebarController alloc] initWithNibName:@"GBSidebarController" bundle:nil] autorelease];
-    self.defaultToolbarController = [[[GBToolbarController alloc] init] autorelease];
-    self.defaultDetailViewController = [[[GBPlaceholderViewController alloc] initWithNibName:@"GBPlaceholderViewController" bundle:nil] autorelease];
-    self.defaultDetailViewController.title = NSLocalizedString(@"No selection", @"Window");
-    self.jumpController = [OAFastJumpController controller];
-    self.sheetQueue = [OABlockQueue queueWithName:@"GBMainWindowController.sheetQueue" concurrency:1];
-  }
-  return self;
+	if ((self = [super initWithWindow:aWindow]))
+	{
+		self.sidebarController = [[[GBSidebarController alloc] initWithNibName:@"GBSidebarController" bundle:nil] autorelease];
+		self.defaultToolbarController = [[[GBToolbarController alloc] init] autorelease];
+		self.defaultDetailViewController = [[[GBPlaceholderViewController alloc] initWithNibName:@"GBPlaceholderViewController" bundle:nil] autorelease];
+		self.defaultDetailViewController.title = NSLocalizedString(@"No selection", @"Window");
+		self.jumpController = [OAFastJumpController controller];
+		self.sheetQueue = [OABlockQueue queueWithName:@"GBMainWindowController.sheetQueue" concurrency:1];
+	}
+	return self;
 }
 
 + (id) instance
 {
-  static id volatile instance = nil;
+	static id volatile instance = nil;
 	static dispatch_once_t once = 0;
 	dispatch_once( &once, ^{ instance = [[self alloc] initWithWindowNibName:@"GBMainWindowController"]; });
 	return instance;
@@ -94,172 +94,172 @@
 
 - (void) setRootController:(GBRootController *)newRootController
 {
-  if (newRootController == rootController) return;
-  
-  NSResponder* responder = [self nextResponder];
-  if (rootController)
-  {
-    responder = [[[rootController externalNextResponder] retain] autorelease];
-    [rootController setExternalNextResponder:nil];
-  }
-  
-  rootController.window = nil;
-  [rootController removeObserverForAllSelectors:self];
-  [rootController release];
-  rootController = [newRootController retain];
-  rootController.window = [self isWindowLoaded] ? [self window] : nil;
-  [rootController addObserverForAllSelectors:self];
-  
-  if (rootController)
-  {
-    [rootController setExternalNextResponder:responder];
-    [self setNextResponder:rootController];
-  }
-  else
-  {
-    [self setNextResponder:responder];
-  }
+	if (newRootController == rootController) return;
+	
+	NSResponder* responder = [self nextResponder];
+	if (rootController)
+	{
+		responder = [[[rootController externalNextResponder] retain] autorelease];
+		[rootController setExternalNextResponder:nil];
+	}
+	
+	rootController.window = nil;
+	[rootController removeObserverForAllSelectors:self];
+	[rootController release];
+	rootController = [newRootController retain];
+	rootController.window = [self isWindowLoaded] ? [self window] : nil;
+	[rootController addObserverForAllSelectors:self];
+	
+	if (rootController)
+	{
+		[rootController setExternalNextResponder:responder];
+		[self setNextResponder:rootController];
+	}
+	else
+	{
+		[self setNextResponder:responder];
+	}
 }
 
 
 - (void) setToolbarController:(GBToolbarController *)newToolbarController
 {
-  if (!newToolbarController) newToolbarController = self.defaultToolbarController;
-  
-  if (newToolbarController == toolbarController) return;
-  
-  // Responder chain:
-  // 1. window -> app delegate (nil toolbar controller)
-  // 2. window -> toolbarController -> app delegate
-
-  NSResponder* responder = [self nextResponder];
-  if (toolbarController)
-  {
-    responder = [[[toolbarController nextResponder] retain] autorelease];
-    [toolbarController setNextResponder:nil];
-    toolbarController.window = nil;
-  }
-  
-//  NSLog(@"window nextResponder: %@", [[self window] nextResponder]);
-//  NSLog(@"self nextResponder: %@", [self nextResponder]);
-//  NSLog(@"DEBUG: window -> %@ -> %@ (current next responder: %@; new toolbar controller: %@)", 
-//        toolbarController, responder, [self nextResponder], newToolbarController);
-  
-  if (newToolbarController)
-  {
-    [newToolbarController setNextResponder:responder];
-    [self setNextResponder:newToolbarController];
-  }
-  else
-  {
-    [self setNextResponder:responder];
-  }
-  
-  toolbarController.toolbar = nil;
-  [toolbarController release];
-  toolbarController = [newToolbarController retain];
-  toolbarController.toolbar = [[self window] toolbar];
-  toolbarController.window = [self window];
+	if (!newToolbarController) newToolbarController = self.defaultToolbarController;
+	
+	if (newToolbarController == toolbarController) return;
+	
+	// Responder chain:
+	// 1. window -> app delegate (nil toolbar controller)
+	// 2. window -> toolbarController -> app delegate
+	
+	NSResponder* responder = [self nextResponder];
+	if (toolbarController)
+	{
+		responder = [[[toolbarController nextResponder] retain] autorelease];
+		[toolbarController setNextResponder:nil];
+		toolbarController.window = nil;
+	}
+	
+	//  NSLog(@"window nextResponder: %@", [[self window] nextResponder]);
+	//  NSLog(@"self nextResponder: %@", [self nextResponder]);
+	//  NSLog(@"DEBUG: window -> %@ -> %@ (current next responder: %@; new toolbar controller: %@)", 
+	//        toolbarController, responder, [self nextResponder], newToolbarController);
+	
+	if (newToolbarController)
+	{
+		[newToolbarController setNextResponder:responder];
+		[self setNextResponder:newToolbarController];
+	}
+	else
+	{
+		[self setNextResponder:responder];
+	}
+	
+	toolbarController.toolbar = nil;
+	[toolbarController release];
+	toolbarController = [newToolbarController retain];
+	toolbarController.toolbar = [[self window] toolbar];
+	toolbarController.window = [self window];
 }
 
 
 - (void) setDetailViewController:(NSViewController*)newViewController
 {
-  if (!newViewController) newViewController = self.defaultDetailViewController;
-  
-  if (newViewController == detailViewController) return;
-  
-  [detailViewController unloadView];
-  [detailViewController release];
-  detailViewController = [newViewController retain];
-  [detailViewController loadInView:[self detailView]];
-  [self.detailViewController setNextResponder:self.sidebarController];
+	if (!newViewController) newViewController = self.defaultDetailViewController;
+	
+	if (newViewController == detailViewController) return;
+	
+	[detailViewController unloadView];
+	[detailViewController release];
+	detailViewController = [newViewController retain];
+	[detailViewController loadInView:[self detailView]];
+	[self.detailViewController setNextResponder:self.sidebarController];
 }
 
 
 - (void) setSelectedWindowItem:(id<GBMainWindowItem>)anObject
 {
-  if (selectedWindowItem == anObject) return;
-
-  [selectedWindowItem release];
-  selectedWindowItem = [anObject retain];
-  
-  GBToolbarController* newToolbarController = nil;
-  NSViewController* newDetailController = nil;
-  NSString* windowTitle = nil;
-  NSURL* windowRepresentedURL = nil;
-  NSString* detailViewTitle = nil;
-  
-  if (anObject)
-  {
-    if ([anObject respondsToSelector:@selector(toolbarController)])
-    {
-      newToolbarController = [anObject toolbarController];
-    }
-    if ([anObject respondsToSelector:@selector(viewController)])
-    {
-      newDetailController = [anObject viewController];
-    }
-    if ([anObject respondsToSelector:@selector(windowTitle)])
-    {
-      windowTitle = [anObject windowTitle];
-    }
-    if ([anObject respondsToSelector:@selector(windowRepresentedURL)])
-    {
-      windowRepresentedURL = [anObject windowRepresentedURL];
-    }
-  }
-  else
-  {
-    if (self.rootController.selectedObjects && [self.rootController.selectedObjects count] > 0)
-    {
-      windowTitle = NSLocalizedString(@"Multiple selection", @"Window");
-      detailViewTitle = NSLocalizedString(@"Multiple selection", @"Window");
-    }
-  }
-  
-  if (!detailViewTitle)
-  {
-    if (!windowTitle)
-    {
-      windowTitle = NSLocalizedString(@"No selection", @"Window");
-    }
-    if (!detailViewTitle)
-    {
-      detailViewTitle = NSLocalizedString(@"No selection", @"Window");
-    }
-  }
-  
-  if (!detailViewTitle)
-  {
-    detailViewTitle = windowTitle;
-  }
-  
-  if (!detailViewTitle)
-  {
-    detailViewTitle = @"";
-  }
-  
-  if (!windowTitle)
-  {
-    windowTitle = @"";
-  }
-  
-  if (!newDetailController)
-  {
-    self.defaultDetailViewController.title = detailViewTitle;
-    newDetailController = self.defaultDetailViewController;
-  }
-  
-  [self.window setTitle:windowTitle];
-  [self.window setRepresentedURL:windowRepresentedURL];
-  
-  // A problem here: detailViewController itself updates its content when selection changes.
-  //[self.jumpController delayBlockIfNeeded:^{
+	if (selectedWindowItem == anObject) return;
+	
+	[selectedWindowItem release];
+	selectedWindowItem = [anObject retain];
+	
+	GBToolbarController* newToolbarController = nil;
+	NSViewController* newDetailController = nil;
+	NSString* windowTitle = nil;
+	NSURL* windowRepresentedURL = nil;
+	NSString* detailViewTitle = nil;
+	
+	if (anObject)
+	{
+		if ([anObject respondsToSelector:@selector(toolbarController)])
+		{
+			newToolbarController = [anObject toolbarController];
+		}
+		if ([anObject respondsToSelector:@selector(viewController)])
+		{
+			newDetailController = [anObject viewController];
+		}
+		if ([anObject respondsToSelector:@selector(windowTitle)])
+		{
+			windowTitle = [anObject windowTitle];
+		}
+		if ([anObject respondsToSelector:@selector(windowRepresentedURL)])
+		{
+			windowRepresentedURL = [anObject windowRepresentedURL];
+		}
+	}
+	else
+	{
+		if (self.rootController.selectedObjects && [self.rootController.selectedObjects count] > 0)
+		{
+			windowTitle = NSLocalizedString(@"Multiple selection", @"Window");
+			detailViewTitle = NSLocalizedString(@"Multiple selection", @"Window");
+		}
+	}
+	
+	if (!detailViewTitle)
+	{
+		if (!windowTitle)
+		{
+			windowTitle = NSLocalizedString(@"No selection", @"Window");
+		}
+		if (!detailViewTitle)
+		{
+			detailViewTitle = NSLocalizedString(@"No selection", @"Window");
+		}
+	}
+	
+	if (!detailViewTitle)
+	{
+		detailViewTitle = windowTitle;
+	}
+	
+	if (!detailViewTitle)
+	{
+		detailViewTitle = @"";
+	}
+	
+	if (!windowTitle)
+	{
+		windowTitle = @"";
+	}
+	
+	if (!newDetailController)
+	{
+		self.defaultDetailViewController.title = detailViewTitle;
+		newDetailController = self.defaultDetailViewController;
+	}
+	
+	[self.window setTitle:windowTitle];
+	[self.window setRepresentedURL:windowRepresentedURL];
+	
+	// A problem here: detailViewController itself updates its content when selection changes.
+	//[self.jumpController delayBlockIfNeeded:^{
     self.toolbarController = newToolbarController;
     self.detailViewController = newDetailController;
     [self updateToolbarAlignment];
-  //}];
+	//}];
 }
 
 
@@ -276,16 +276,16 @@
 
 - (void) rootControllerDidChangeSelection:(GBRootController*)aRootController
 {
-  self.selectedWindowItem = aRootController.selectedObject;
+	self.selectedWindowItem = aRootController.selectedObject;
 }
 
 - (void) rootControllerDidChangeContents:(GBRootController*)aRootController
 {
-  // Reset selected object for the case when viewController changes
+	// Reset selected object for the case when viewController changes
 #warning This code causes losing the focus in stage area when submodules are updated.
-//  self.selectedWindowItem = nil;
-  self.selectedWindowItem = aRootController.selectedObject;
-  [self.jumpController flush];
+	//  self.selectedWindowItem = nil;
+	self.selectedWindowItem = aRootController.selectedObject;
+	[self.jumpController flush];
 }
 
 
@@ -304,13 +304,13 @@
 
 - (IBAction) editGlobalGitConfig:(id)_
 {
-  GBFileEditingController* fileEditor = [GBFileEditingController controller];
-  fileEditor.title = @"~/.gitconfig";
-  fileEditor.URL = [NSURL fileURLWithPath:[NSHomeDirectory() stringByAppendingPathComponent:@".gitconfig"]];
-  fileEditor.completionHandler = ^(BOOL cancelled) {
-    [self dismissSheet:fileEditor];
-  };
-  [self presentSheet:fileEditor];
+	GBFileEditingController* fileEditor = [GBFileEditingController controller];
+	fileEditor.title = @"~/.gitconfig";
+	fileEditor.URL = [NSURL fileURLWithPath:[NSHomeDirectory() stringByAppendingPathComponent:@".gitconfig"]];
+	fileEditor.completionHandler = ^(BOOL cancelled) {
+		[self dismissSheet:fileEditor];
+	};
+	[self presentSheet:fileEditor];
 }
 
 
@@ -318,26 +318,26 @@
 
 - (IBAction) showWelcomeWindow:(id)sender
 {
-  if (!self.welcomeController)
-  {
-    self.welcomeController = [[[GBWelcomeController alloc] initWithWindowNibName:@"GBWelcomeController"] autorelease];
-  }
-  self.welcomeController.completionHandler = ^(BOOL cancelled){
-    [self dismissSheet];
-  };
-  [self presentSheet:[self.welcomeController window]];
+	if (!self.welcomeController)
+	{
+		self.welcomeController = [[[GBWelcomeController alloc] initWithWindowNibName:@"GBWelcomeController"] autorelease];
+	}
+	self.welcomeController.completionHandler = ^(BOOL cancelled){
+		[self dismissSheet];
+	};
+	[self presentSheet:[self.welcomeController window]];
 }
 
 - (IBAction) selectPreviousPane:(id)sender
 {
-  [self.jumpController flush];
-  [self.sidebarController tryToPerform:@selector(selectPane:) with:self];
+	[self.jumpController flush];
+	[self.sidebarController tryToPerform:@selector(selectPane:) with:self];
 }
 
 - (IBAction) selectNextPane:(id)sender
 {
-  [self.jumpController flush];
-  [self.detailViewController tryToPerform:@selector(selectPane:) with:self];
+	[self.jumpController flush];
+	[self.detailViewController tryToPerform:@selector(selectPane:) with:self];
 }
 
 
@@ -348,90 +348,92 @@
 
 - (void) presentSheet:(id)aWindowOrWindowController
 {
-  if (!aWindowOrWindowController) return;
-  NSWindow* aWindow = aWindowOrWindowController;
-  if (![aWindowOrWindowController isKindOfClass:[NSWindow class]])
-  {
-    aWindow = [aWindowOrWindowController window];
-  }
-  if (!aWindow) return;
-  [self.sheetQueue addBlock:^{
-    self.currentSheet = aWindow;
-    // skipping current cycle to avoid collision with previously opened sheet which is closing right now
-    dispatch_async(dispatch_get_main_queue(), ^{ 
-      [NSApp beginSheet:self.currentSheet
-         modalForWindow:[self window]
-          modalDelegate:nil
-         didEndSelector:nil
-            contextInfo:nil];
-    });
-  }];
+	if (!aWindowOrWindowController) return;
+	NSWindow* aWindow = aWindowOrWindowController;
+	if (![aWindowOrWindowController isKindOfClass:[NSWindow class]])
+	{
+		aWindow = [aWindowOrWindowController window];
+	}
+	if (!aWindow) return;
+	[self.sheetQueue addBlock:^{
+		self.currentSheet = aWindow;
+		// skipping current cycle to avoid collision with previously opened sheet which is closing right now
+		dispatch_async(dispatch_get_main_queue(), ^{ 
+			[NSApp beginSheet:self.currentSheet
+			   modalForWindow:[self window]
+				modalDelegate:nil
+			   didEndSelector:nil
+				  contextInfo:nil];
+		});
+	}];
 }
 
 - (void) dismissSheet:(id)aWindowOrWindowController
 {
-  if (!aWindowOrWindowController) return;
-  NSWindow* aWindow = aWindowOrWindowController;
-  if (![aWindowOrWindowController isKindOfClass:[NSWindow class]])
-  {
-    aWindow = [aWindowOrWindowController window];
-  }
-  
-  if (!aWindow) return;
-  [NSApp endSheet:aWindow];
-  [aWindow orderOut:nil];
-  [self.sheetQueue endBlock];
-//  [self dismissSheet];
+	if (!aWindowOrWindowController) return;
+	NSWindow* aWindow = aWindowOrWindowController;
+	if (![aWindowOrWindowController isKindOfClass:[NSWindow class]])
+	{
+		aWindow = [aWindowOrWindowController window];
+	}
+	
+	if (!aWindow) return;
+	[aWindow retain];
+	[NSApp endSheet:aWindow];
+	[aWindow orderOut:nil];
+	[aWindow release];
+	[self.sheetQueue endBlock];
+	//  [self dismissSheet];
 }
 
 - (void) dismissSheet
 {
-  [self dismissSheet:self.currentSheet];
-  self.currentSheet = nil;
-//  if (!self.currentSheet) return;
-//  [NSApp endSheet:self.currentSheet];
-//  [self.currentSheet orderOut:nil];
-//  self.currentSheet = nil;
-//  [self.sheetQueue endBlock];
+	[self dismissSheet:self.currentSheet];
+	self.currentSheet = nil;
+	//  if (!self.currentSheet) return;
+	//  [NSApp endSheet:self.currentSheet];
+	//  [self.currentSheet orderOut:nil];
+	//  self.currentSheet = nil;
+	//  [self.sheetQueue endBlock];
 }
 
 - (void) sheetQueueAddBlock:(void(^)())aBlock
 {
-  [self.sheetQueue addBlock:aBlock];
+	[self.sheetQueue addBlock:aBlock];
 }
 
 - (void) sheetQueueEndBlock
 {
-  [self.sheetQueue endBlock];
+	[self.sheetQueue endBlock];
 }
 
 - (void) criticalConfirmationWithMessage:(NSString*)message description:(NSString*)desc ok:(NSString*)okOrNil completion:(void(^)(BOOL))completion
 {
-  completion = [[completion copy] autorelease];
-  
-  NSAlert* alert = [[[NSAlert alloc] init] autorelease];
-  
-  if (message) [alert setMessageText:message];
-  if (desc) [alert setInformativeText:desc];
-  [alert setAlertStyle:NSCriticalAlertStyle];
-  
-  [alert addButtonWithTitle:okOrNil ? okOrNil : NSLocalizedString(@"OK", nil)];
-  [alert addButtonWithTitle:NSLocalizedString(@"Cancel", nil)];
-
-  [self sheetQueueAddBlock:^{
-    [completion retain];
-    [alert beginSheetModalForWindow:[self window]
-                      modalDelegate:self 
-                     didEndSelector:@selector(alertDidEnd:returnCode:contextInfo:) 
-                        contextInfo:completion];
-  }];
+	completion = [[completion copy] autorelease];
+	
+	NSAlert* alert = [[[NSAlert alloc] init] autorelease];
+	
+	if (message) [alert setMessageText:message];
+	if (desc) [alert setInformativeText:desc];
+	[alert setAlertStyle:NSCriticalAlertStyle];
+	
+	[alert addButtonWithTitle:okOrNil ? okOrNil : NSLocalizedString(@"OK", nil)];
+	[alert addButtonWithTitle:NSLocalizedString(@"Cancel", nil)];
+	
+	[self sheetQueueAddBlock:^{
+		[completion retain];
+		[alert beginSheetModalForWindow:[self window]
+						  modalDelegate:self 
+						 didEndSelector:@selector(alertDidEnd:returnCode:contextInfo:) 
+							contextInfo:completion];
+	}];
 }
 
 - (void) alertDidEnd:(NSAlert*)alert returnCode:(NSInteger)returnCode contextInfo:(void(^)(BOOL))completion
 {
-  [self sheetQueueEndBlock];
-  if (completion) completion(returnCode == NSAlertFirstButtonReturn);
-  [completion release];
+	[self sheetQueueEndBlock];
+	if (completion) completion(returnCode == NSAlertFirstButtonReturn);
+	[completion release];
 }
 
 
@@ -443,7 +445,7 @@
 // If the selector is not implemented, returns YES.
 - (BOOL) validateUserInterfaceItem:(id<NSValidatedUserInterfaceItem>)anItem
 {
-  return [self dispatchUserInterfaceItemValidation:anItem];
+	return [self dispatchUserInterfaceItemValidation:anItem];
 }
 
 
@@ -459,34 +461,34 @@
 
 - (void) windowDidLoad
 {
-  [super windowDidLoad];
-  
-  //[[self window] setAcceptsMouseMovedEvents:YES];
-  
-  self.rootController.window = [self window];
-  
-  [self.window setTitle:NSLocalizedString(@"No selection", @"Window")];
-  [self.window setRepresentedURL:nil];
-  
-  // Order is important for responder chain to be correct from start
-  [self.sidebarController loadInView:[self sidebarView]];
-  self.sidebarController.rootController = self.rootController;
-  
-  
-  [[self window] setInitialFirstResponder:self.sidebarController.outlineView];
-  [[self window] makeFirstResponder:self.sidebarController.outlineView];
-  
-  self.selectedWindowItem = self.rootController.selectedObject;
-  
-  if (!self.toolbarController)
-  {
-    self.toolbarController = self.defaultToolbarController;
-  }
-  if (!self.detailViewController)
-  {
-    self.detailViewController = self.defaultDetailViewController;
-  }
-  [self updateToolbarAlignment];
+	[super windowDidLoad];
+	
+	//[[self window] setAcceptsMouseMovedEvents:YES];
+	
+	self.rootController.window = [self window];
+	
+	[self.window setTitle:NSLocalizedString(@"No selection", @"Window")];
+	[self.window setRepresentedURL:nil];
+	
+	// Order is important for responder chain to be correct from start
+	[self.sidebarController loadInView:[self sidebarView]];
+	self.sidebarController.rootController = self.rootController;
+	
+	
+	[[self window] setInitialFirstResponder:self.sidebarController.outlineView];
+	[[self window] makeFirstResponder:self.sidebarController.outlineView];
+	
+	self.selectedWindowItem = self.rootController.selectedObject;
+	
+	if (!self.toolbarController)
+	{
+		self.toolbarController = self.defaultToolbarController;
+	}
+	if (!self.detailViewController)
+	{
+		self.detailViewController = self.defaultDetailViewController;
+	}
+	[self updateToolbarAlignment];
 }
 
 
@@ -498,24 +500,24 @@
 
 - (void) windowWillClose:(NSNotification *)notification
 {
-  // AppStore reviewer rejected 1.2.5 (tag 1.2.5.2) update on May, 6 2011 with the reference to 
-  // 6.1 Apps must comply with all terms and conditions explained in the Apple Macintosh Human Interface Guidelines.
-  /*
-   The user interface is not consistent with the Apple Human Interface Guidelines.
-   
-   We have found that when the user closes the main application window there is no menu item to re-open it. The app should implement a Window menu that lists the main window so it can be reopened. Alternatively, if the application is a single-window app, it might be appropriate to save data and quit the app when the main window is closed. For information on managing windows in Mac OS X, please review the following sections in App Review Board
-  */
-  
-  // As of May 18, 2011 there is "Main Window" menu item with showMainWindow: action.
-  //[NSApp terminate:nil];
+	// AppStore reviewer rejected 1.2.5 (tag 1.2.5.2) update on May, 6 2011 with the reference to 
+	// 6.1 Apps must comply with all terms and conditions explained in the Apple Macintosh Human Interface Guidelines.
+	/*
+	 The user interface is not consistent with the Apple Human Interface Guidelines.
+	 
+	 We have found that when the user closes the main application window there is no menu item to re-open it. The app should implement a Window menu that lists the main window so it can be reopened. Alternatively, if the application is a single-window app, it might be appropriate to save data and quit the app when the main window is closed. For information on managing windows in Mac OS X, please review the following sections in App Review Board
+	 */
+	
+	// As of May 18, 2011 there is "Main Window" menu item with showMainWindow: action.
+	//[NSApp terminate:nil];
 }
 
 - (void) windowDidBecomeKey:(NSNotification *)notification
 {
-  if (self.selectedWindowItem && [self.selectedWindowItem respondsToSelector:@selector(windowDidBecomeKey)])
-  {
-    [self.selectedWindowItem windowDidBecomeKey];
-  }
+	if (self.selectedWindowItem && [self.selectedWindowItem respondsToSelector:@selector(windowDidBecomeKey)])
+	{
+		[self.selectedWindowItem windowDidBecomeKey];
+	}
 }
 
 - (void) windowDidResignKey:(NSNotification *)notification
@@ -531,64 +533,64 @@
 
 - (CGFloat)splitView:(NSSplitView*) aSplitView constrainMinCoordinate:(CGFloat)proposedMin ofSubviewAt:(NSInteger)dividerIndex
 {
-  static CGFloat sidebarMinWidth = 120.0;
-  
-  if (dividerIndex == 0)
-  {
-    return sidebarMinWidth;
-  }
-  
-  return 0;
+	static CGFloat sidebarMinWidth = 120.0;
+	
+	if (dividerIndex == 0)
+	{
+		return sidebarMinWidth;
+	}
+	
+	return 0;
 }
 
 - (CGFloat)splitView:(NSSplitView*) aSplitView constrainMaxCoordinate:(CGFloat)proposedMax ofSubviewAt:(NSInteger)dividerIndex
 {
-  //NSLog(@"constrainMaxCoordinate: %f, index: %d", proposedMax, dividerIndex);
-  
-  CGFloat totalWidth = splitView.frame.size.width;
-  if (dividerIndex == 0)
-  {
-    return round(MIN(500, 0.5*totalWidth));
-  }
-  return proposedMax;
+	//NSLog(@"constrainMaxCoordinate: %f, index: %d", proposedMax, dividerIndex);
+	
+	CGFloat totalWidth = splitView.frame.size.width;
+	if (dividerIndex == 0)
+	{
+		return round(MIN(500, 0.5*totalWidth));
+	}
+	return proposedMax;
 }
 
 - (void) splitView:(NSSplitView*)aSplitView resizeSubviewsWithOldSize:(NSSize)oldSize
 {
-  if ([splitView subviews].count != 2)
-  {
-    NSLog(@"WARNING: for some reason, the split view does not contain exactly 2 subviews. Disabling autoresizing.");
-    return;
-  }
-  
-  NSSize splitViewSize = splitView.frame.size;
-  
-  NSView* sourceView = [self sidebarView];
-  NSSize sourceViewSize = sourceView.frame.size;
-  sourceViewSize.height = splitViewSize.height;
-  [sourceView setFrameSize:sourceViewSize];
-  
-  NSSize flexibleSize = NSZeroSize;
-  flexibleSize.height = splitViewSize.height;
-  flexibleSize.width = splitViewSize.width - [splitView dividerThickness] - sourceViewSize.width;
-  
-  NSRect detailViewFrame = [[self detailView] frame];
-  
-  detailViewFrame.size = flexibleSize;
-  detailViewFrame.origin = [sourceView frame].origin;
-  detailViewFrame.origin.x += sourceViewSize.width + [splitView dividerThickness];
-  
-  [[self detailView] setFrame:detailViewFrame];
+	if ([splitView subviews].count != 2)
+	{
+		NSLog(@"WARNING: for some reason, the split view does not contain exactly 2 subviews. Disabling autoresizing.");
+		return;
+	}
+	
+	NSSize splitViewSize = splitView.frame.size;
+	
+	NSView* sourceView = [self sidebarView];
+	NSSize sourceViewSize = sourceView.frame.size;
+	sourceViewSize.height = splitViewSize.height;
+	[sourceView setFrameSize:sourceViewSize];
+	
+	NSSize flexibleSize = NSZeroSize;
+	flexibleSize.height = splitViewSize.height;
+	flexibleSize.width = splitViewSize.width - [splitView dividerThickness] - sourceViewSize.width;
+	
+	NSRect detailViewFrame = [[self detailView] frame];
+	
+	detailViewFrame.size = flexibleSize;
+	detailViewFrame.origin = [sourceView frame].origin;
+	detailViewFrame.origin.x += sourceViewSize.width + [splitView dividerThickness];
+	
+	[[self detailView] setFrame:detailViewFrame];
 }
 
 - (BOOL)splitView:(NSSplitView *)splitView canCollapseSubview:(NSView *)subview
 {
-  return NO;
+	return NO;
 }
 
 - (void)splitViewDidResizeSubviews:(NSNotification *)aNotification
 {
-  [self updateToolbarAlignment]; 
+	[self updateToolbarAlignment]; 
 }
 
 
@@ -599,23 +601,23 @@
 
 - (NSView*) sidebarView
 {
-  if ([[self.splitView subviews] count] < 1) return nil;
-  return [[self.splitView subviews] objectAtIndex:0];
+	if ([[self.splitView subviews] count] < 1) return nil;
+	return [[self.splitView subviews] objectAtIndex:0];
 }
 
 - (NSView*) detailView
 {
-  if ([[self.splitView subviews] count] < 2) return nil;
-  return [[self.splitView subviews] objectAtIndex:1];
+	if ([[self.splitView subviews] count] < 2) return nil;
+	return [[self.splitView subviews] objectAtIndex:1];
 }
 
 - (void) updateToolbarAlignment
 {
-  NSView* aView = [self sidebarView];
-  if (aView)
-  {
-    self.toolbarController.sidebarWidth = [aView frame].size.width;
-  }
+	NSView* aView = [self sidebarView];
+	if (aView)
+	{
+		self.toolbarController.sidebarWidth = [aView frame].size.width;
+	}
 }
 
 
