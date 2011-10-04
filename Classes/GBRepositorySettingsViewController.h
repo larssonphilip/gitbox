@@ -12,6 +12,11 @@
 
 - (void) viewDidLoad;
 - (void) viewDidAppear;
+
+- (BOOL) isDisabled;
+- (void) pushDisabled;
+- (void) popDisabled;
+
 - (void) cancel;
 - (void) save;
 

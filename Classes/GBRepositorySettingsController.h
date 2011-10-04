@@ -17,12 +17,15 @@ extern NSString* const GBRepositorySettingsGitConfig;
 @property(nonatomic, retain) IBOutlet NSButton* cancelButton;
 @property(nonatomic, retain) IBOutlet NSButton* saveButton;
 @property(nonatomic, retain) IBOutlet NSTabView* tabView;
+@property(nonatomic, assign, readonly, getter=isDisabled) BOOL disabled;
 
 + (id) controllerWithTab:(NSString*)tab repository:(GBRepository*)repo;
 
 - (IBAction) cancel:(id)sender;
 - (IBAction) save:(id)sender;
 
+- (void) pushDisabled;
+- (void) popDisabled;
 
 // Protected
 

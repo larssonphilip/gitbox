@@ -2,6 +2,9 @@
 #import "GBRepositorySettingsViewController.h"
 #import "GBRepository.h"
 
+@interface GBRepositorySettingsViewController ()
+@end
+
 @implementation GBRepositorySettingsViewController
 
 @synthesize settingsController;
@@ -51,6 +54,22 @@
 {
   // override in subclasses to save date after the window is closed
 }
+
+- (BOOL) isDisabled
+{
+	return self.settingsController.isDisabled;
+}
+
+- (void) pushDisabled
+{
+	[self.settingsController pushDisabled];
+}
+
+- (void) popDisabled
+{
+	[self.settingsController popDisabled];
+}
+
 
 - (void) criticalConfirmationWithMessage:(NSString*)message description:(NSString*)desc ok:(NSString*)okOrNil completion:(void(^)(BOOL))completion
 {

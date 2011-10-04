@@ -15,6 +15,7 @@ NSString* const GBRepositorySettingsGitConfig       = @"GBRepositorySettingsGitC
 @property(nonatomic, retain) NSArray* viewControllers;
 @property(nonatomic, assign, getter=isDirty) BOOL dirty;
 @property(nonatomic, assign, getter=areTabsPrepared) BOOL tabsPrepared;
+@property(nonatomic, assign, readwrite, getter=isDisabled) BOOL disabled;
 - (void) syncSelectedTab;
 - (void) selectTabViewItemAtIndex:(NSInteger)i;
 @end
@@ -29,6 +30,7 @@ NSString* const GBRepositorySettingsGitConfig       = @"GBRepositorySettingsGitC
 @synthesize viewControllers;
 @synthesize dirty;
 @synthesize tabsPrepared;
+@synthesize disabled;
 
 - (void) dealloc
 {
@@ -128,6 +130,20 @@ NSString* const GBRepositorySettingsGitConfig       = @"GBRepositorySettingsGitC
   
   [self syncSelectedTab];
 }
+
+- (void) pushDisabled
+{
+	self.disabled++;
+	[self.cancelButton setEnabled:disabled < 1];
+	[self.saveButton setEnabled:disabled < 1];
+}
+
+- (void) popDisabled
+{
+	self.disabled--;
+	[self.cancelButton setEnabled:disabled < 1];
+}
+
 
 
 
