@@ -87,14 +87,14 @@
 	
 	if (linesCount == 0)
 	{
-		self.remoteLabel1.stringValue = NSLocalizedString(@"Remote address:", @"");
+		self.remoteLabel1.stringValue = NSLocalizedString(@"Remote address", @"");
 		self.remoteField1.stringValue = @"";
 		self.remoteField1.tag = 0;
 		linesCount = 1;
 	}
 	else if (linesCount == 1)
 	{
-		self.remoteLabel1.stringValue = NSLocalizedString(@"Remote address:", @"");
+		self.remoteLabel1.stringValue = NSLocalizedString(@"Remote address", @"");
 		NSString* str = [[remotes objectAtIndex:0] URLString];
 		self.remoteField1.stringValue = str ? str : @"";
 		self.remoteField1.tag = 0;
@@ -107,7 +107,7 @@
 			NSTextField* label = [self.labels objectAtIndex:i];
 			GBRemote* remote   = [self.remotes objectAtIndex:i];
 			
-			label.stringValue = [NSString stringWithFormat:NSLocalizedString(@"Remote address (%@):", @""), remote.alias];
+			label.stringValue = [NSString stringWithFormat:NSLocalizedString(@"Remote address (%@)", @""), remote.alias];
 			NSString* str = [remote URLString];
 			field.stringValue = str ? str : @"";
 			field.tag = i;
@@ -188,9 +188,9 @@
 	
 	[NSFileManager calculateSizeAtURL:self.repository.url completionHandler:^(long long bytes){
 		double bytesf = (double)bytes;
-		double kbytes = bytesf / 1024.0;
-		double mbytes = kbytes / 1024.0;
-		double gbytes = mbytes / 1024.0;
+		double kbytes = bytesf / 1000.0;
+		double mbytes = kbytes / 1000.0;
+		double gbytes = mbytes / 1000.0;
 		
 		NSString* sizeString = [NSString stringWithFormat:@"%qi %@", bytes, NSLocalizedString(@"bytes", @"")];
 		
