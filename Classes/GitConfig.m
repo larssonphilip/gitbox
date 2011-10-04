@@ -19,7 +19,7 @@
 		{
 #warning TODO: Check if ~/.gitconfig file exists. If it doesn't, create one and retry.
 			
-			NSLog(@"GitConfig error while opening global config: %d", error);
+			NSLog(@"GitConfig error while opening global config: %d [%s]", error, git_lasterror());
 			[self release];
 			return nil;
 		}
@@ -36,7 +36,7 @@
 		
 		if (error != GIT_SUCCESS)
 		{
-			NSLog(@"GitConfig error while opening %@: %d", path, error);
+			NSLog(@"GitConfig error while opening %@: %d [%s]", path, error, git_lasterror());
 			config = NULL;
 			[self release];
 			return nil;
@@ -54,7 +54,7 @@
 		
 		if (error != GIT_SUCCESS)
 		{
-			NSLog(@"GitConfig error while opening %@: %d", path, error);
+			NSLog(@"GitConfig error while opening %@: %d [%s]", path, error, git_lasterror());
 			[self release];
 			return nil;
 		}
@@ -101,7 +101,16 @@
 	git_error error = git_config_set_string(config, [key cStringUsingEncoding:NSUTF8StringEncoding], [string cStringUsingEncoding:NSUTF8StringEncoding]);
 	if (error != GIT_SUCCESS)
 	{
-		NSLog(@"GitConfig error when setting a key %@ with value %@", string, key);
+		NSLog(@"GitConfig error when setting a key %@ with value %@ [%s]", key, string, git_lasterror());
+	}
+}
+
+- (void) removeStringForKey:(NSString*)key
+{
+	git_error error = git_config_delete(config, [key cStringUsingEncoding:NSUTF8StringEncoding]);
+	if (error != GIT_SUCCESS)
+	{
+		NSLog(@"GitConfig error when deleting a key %@ [%s]", key, git_lasterror());
 	}
 }
 
