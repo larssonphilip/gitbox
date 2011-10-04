@@ -16,6 +16,7 @@
 - (NSString*) repoTitle;
 - (NSString*) repoPath;
 - (void) calculateSize;
+- (void) iterateRemoteLines:(void(^)(NSUInteger i, GBRemote* aRemote, NSTextField* field, NSTextField* label))aBlock;
 @end
 
 @implementation GBRepositorySummaryController
@@ -79,7 +80,14 @@
 		field.tag = -1;
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateText:) name:NSControlTextDidChangeNotification object:field];
 	}
-	if (self.gitignoreTextView) [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateText:) name:NSTextDidChangeNotification object:self.gitignoreTextView];
+	
+	if (self.gitignoreTextView)
+	{
+		[[NSNotificationCenter defaultCenter] addObserver:self
+												 selector:@selector(didUpdateText:)
+													 name:NSTextDidChangeNotification
+												   object:self.gitignoreTextView];
+	}
 	
 	self.remotes = self.repository.remotes;
 	
@@ -101,17 +109,12 @@
 	}
 	else
 	{
-		for (NSUInteger i = 0; i < linesCount; i++)
-		{
-			NSTextField* field = [self.fields objectAtIndex:i];
-			NSTextField* label = [self.labels objectAtIndex:i];
-			GBRemote* remote   = [self.remotes objectAtIndex:i];
-			
+		[self iterateRemoteLines:^(NSUInteger i, GBRemote *remote, NSTextField *field, NSTextField *label) {
 			label.stringValue = [NSString stringWithFormat:NSLocalizedString(@"Remote address (%@)", @""), remote.alias];
 			NSString* str = [remote URLString];
 			field.stringValue = str ? str : @"";
 			field.tag = i;
-		}
+		}];
 	}
 	
 	CGFloat remainingViewOffset = 0.0;
@@ -149,10 +152,49 @@
 
 - (void) save
 {
-	// TODO: save the remote addresses
-	// self.remotes
+	// Save the remote addresses
 	
+	GitConfig* config = self.repository.libgitRepository.config;
 	
+	NSUInteger linesCount = MIN(remotes.count, self.fields.count);
+	
+	if (linesCount == 0) // no remotes yet, let's add a new one.
+	{
+		if (self.remoteField1.stringValue.length > 0)
+		{
+			[config setString:self.remoteField1.stringValue forKey:@"remote.origin.url"];
+			[config setString:@"+refs/heads/*:refs/remotes/origin/*" forKey:@"remote.origin.fetch"];
+		}
+		// no else: if remote URL already exists, we'll have something in self.remotes
+	}
+	else
+	{
+		[self iterateRemoteLines:^(NSUInteger i, GBRemote *remote, NSTextField *field, NSTextField *label) {
+			if (field.stringValue.length > 0)
+			{
+				[config setString:field.stringValue 
+						   forKey:[NSString stringWithFormat:@"remote.%@.url", remote.alias]];
+			}
+			else // empty string - remove entries
+			{
+				[config removeStringForKey:[NSString stringWithFormat:@"remote.%@.url", remote.alias]];
+				[config removeStringForKey:[NSString stringWithFormat:@"remote.%@.fetch", remote.alias]];
+			}
+		}];
+	}
+
+}
+
+- (void) iterateRemoteLines:(void(^)(NSUInteger i, GBRemote* aRemote, NSTextField* field, NSTextField* label))aBlock
+{
+	NSUInteger linesCount = MIN(self.remotes.count, self.fields.count);
+	for (NSUInteger i = 0; i < linesCount; i++)
+	{
+		NSTextField* field = [self.fields objectAtIndex:i];
+		NSTextField* label = [self.labels objectAtIndex:i];
+		GBRemote* remote   = [self.remotes objectAtIndex:i];
+		aBlock(i, remote, field, label);
+	}
 }
 
 

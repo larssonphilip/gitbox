@@ -45,7 +45,7 @@ Gitbox 1.5 misc items:
 + settings/summary: set dirty flag when remote URLs are updated
 + settings/summary: set dirty flag when .gitignore content is updated
 + settings/summary: push/pop disabled when doing long-running op.
-- settings/summary: save edited remote URLs
++ settings/summary: save edited remote URLs
 - settings/summary: save .gitignore
 - settings/summary: calculate number of commits and contributors
 
