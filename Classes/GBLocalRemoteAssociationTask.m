@@ -87,11 +87,6 @@
     }
     ref.remoteAlias = self.remoteAlias;
     ref.name = self.remoteBranchName;
-    GBRemote* remote = [self.repository remoteForAlias:ref.remoteAlias];
-    if (remote)
-    {
-      ref.remote = remote;
-    }
     self.remoteBranch = ref;
   }  
   

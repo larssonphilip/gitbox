@@ -31,20 +31,6 @@
 	self.alias = nil;
 	self.URLString = nil;
 	self.fetchRefspec = nil;
-	for (GBRef* aRef in self.branches)
-	{
-		if (aRef.remote == self)
-		{
-			aRef.remote = nil;
-		}
-	}
-	for (GBRef* aRef in self.transientBranches)
-	{
-		if (aRef.remote == self)
-		{
-			aRef.remote = nil;
-		}
-	}
 	self.branches = nil;
 	self.transientBranches = nil;
 	[super dealloc];
@@ -97,10 +83,6 @@
 		{
 			[updatedNewBranches addObject:aBranch];
 		}
-		else
-		{
-			aBranch.remote = nil;
-		}
 	}
 	self.transientBranches = updatedNewBranches;
 }
@@ -108,25 +90,13 @@
 - (void) updateBranches
 {
 	[self updateNewBranches];
-	for (GBRef* branch in [self pushedAndNewBranches])
-	{
-		branch.remote = self;
-	}
 }
 
 - (BOOL) copyInterestingDataFromRemoteIfApplicable:(GBRemote*)otherRemote
 {
 	if (self.alias && [otherRemote.alias isEqualToString:self.alias])
 	{
-		for (GBRef* ref in self.transientBranches)
-		{
-			ref.remote = nil;
-		}
 		self.transientBranches = otherRemote.transientBranches;
-		for (GBRef* ref in self.transientBranches)
-		{
-			ref.remote = self;
-		}
 		[self updateBranches];
 		return YES;
 	}

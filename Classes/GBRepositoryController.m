@@ -481,7 +481,6 @@
 	remoteBranch.repository = self.repository;
 	remoteBranch.name = name;
 	remoteBranch.remoteAlias = aRemote.alias;
-	remoteBranch.remote = aRemote;
 	[aRemote addNewBranch:remoteBranch];
 	[self selectRemoteBranch:remoteBranch];
 }

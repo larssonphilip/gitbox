@@ -9,7 +9,6 @@
 
 @property(nonatomic, assign) BOOL isTag;
 @property(nonatomic, assign) GBRepository* repository;
-@property(nonatomic, assign) GBRemote* remote;
 
 + (GBRef*) refWithCommitId:(NSString*)commitId;
 
@@ -20,6 +19,8 @@
 - (BOOL) isRemoteBranch;
 - (NSString*) displayName;
 - (NSString*) commitish;
+
+- (GBRemote*) remote;
 
 - (void) loadConfiguredRemoteBranchWithBlock:(void(^)())block;
 

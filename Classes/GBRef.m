@@ -13,7 +13,6 @@
 
 @synthesize isTag;
 @synthesize repository;
-@synthesize remote;
 
 + (GBRef*) refWithCommitId:(NSString*)commitId
 {
@@ -55,6 +54,12 @@
   }
 
   return NO;
+}
+
+- (GBRemote*) remote
+{
+	if (!self.remoteAlias) return nil;
+	return [self.repository remoteForAlias:self.remoteAlias];
 }
 
 - (NSString*) nameWithRemoteAlias
