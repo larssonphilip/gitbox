@@ -565,8 +565,11 @@
 	
 	// Add new remote
 	
+	BOOL isEmptyMenu = NO;
+	
 	if (remoteBranchesMenu.itemArray.count <= 1) // ignore dummy item
 	{
+		isEmptyMenu = YES;
 		NSMenuItem* newRemoteItem = [NSMenuItem menuItemWithTitle:NSLocalizedString(@"Add Server...", @"Command") submenu:nil];
 		[newRemoteItem setAction:@selector(editRemotes:)];
 		[newRemoteItem setTarget:nil];
@@ -612,6 +615,20 @@
 			[remoteBranchesMenu addItem:item];
 		}
 	} // if > 1 local branches
+	
+	if (!isEmptyMenu)
+	{
+		[remoteBranchesMenu addItem:[NSMenuItem separatorItem]];
+		
+		NSMenuItem* item = nil;
+		
+		item = [NSMenuItem menuItemWithTitle:NSLocalizedString(@"Edit Branches...", @"Command") action:@selector(editBranchesAndTags:)];
+		item.indentationLevel = 1;
+		[remoteBranchesMenu addItem:item];
+		item = [NSMenuItem menuItemWithTitle:NSLocalizedString(@"Edit Servers...", @"Command") action:@selector(editRemotes:)];
+		item.indentationLevel = 1;
+		[remoteBranchesMenu addItem:item];
+	}
 	
 	
 	// Finish with a button for the menu
