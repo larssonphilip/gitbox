@@ -1,10 +1,12 @@
 #import "GBRepository.h"
+#import "GBRemote.h"
 #import "GBRepositoryBranchesAndTagsController.h"
 
 @interface GBRepositoryBranchesAndTagsController ()
 
 @property(nonatomic, retain) NSMutableArray* branchesToDelete;
 @property(nonatomic, retain) NSMutableArray* tagsToDelete;
+@property(nonatomic, retain) NSMutableArray* remoteBranchesToDelete;
 
 @end
 
@@ -12,140 +14,148 @@
 
 @synthesize branchesBinding;
 @synthesize tagsBinding;
+@synthesize remoteBranchesBinding;
 
 @synthesize branchesController;
 @synthesize tagsController;
+@synthesize remoteBranchesController;
 
 @synthesize deleteBranchButton;
 @synthesize deleteTagButton;
+@synthesize deleteRemoteBranchButton;
 
 @synthesize branchesToDelete;
 @synthesize tagsToDelete;
+@synthesize remoteBranchesToDelete;
 
 - (void) dealloc
 {
-  [branchesBinding release]; branchesBinding = nil;
-  [tagsBinding release]; tagsBinding = nil;
-  [branchesController release]; branchesController = nil;
-  [tagsController release]; tagsController = nil;
-  [deleteBranchButton release]; deleteBranchButton = nil;
-  [deleteTagButton release]; deleteTagButton = nil;
-  [branchesToDelete release]; branchesToDelete = nil;
-  [tagsToDelete release]; tagsToDelete = nil;
-  
-  [super dealloc];
+	[branchesBinding release];       branchesBinding = nil;
+	[tagsBinding release];           tagsBinding = nil;
+	[remoteBranchesBinding release]; remoteBranchesBinding = nil;
+	
+	[branchesController release];       branchesController = nil;
+	[tagsController release];           tagsController = nil;
+	[remoteBranchesController release]; remoteBranchesController = nil;
+	
+	[deleteBranchButton release];       deleteBranchButton = nil;
+	[deleteTagButton release];          deleteTagButton = nil;
+	[deleteRemoteBranchButton release]; deleteRemoteBranchButton = nil;
+	
+	[branchesToDelete release];       branchesToDelete = nil;
+	[tagsToDelete release];           tagsToDelete = nil;
+	[remoteBranchesToDelete release]; remoteBranchesToDelete = nil;
+	
+	[super dealloc];
 }
 
 - (id) initWithRepository:(GBRepository*)repo
 {
-  if ((self = [super initWithRepository:repo]))
-  {
-    self.branchesBinding = [NSMutableArray array];
-    self.tagsBinding = [NSMutableArray array];
-    
-    self.branchesToDelete = [NSMutableArray array];
-    self.tagsToDelete = [NSMutableArray array];
-  }
-  return self;
+	if ((self = [super initWithRepository:repo]))
+	{
+		self.branchesBinding       = [NSMutableArray array];
+		self.tagsBinding           = [NSMutableArray array];
+		self.remoteBranchesBinding = [NSMutableArray array];
+		
+		self.branchesToDelete       = [NSMutableArray array];
+		self.tagsToDelete           = [NSMutableArray array];
+		self.remoteBranchesToDelete = [NSMutableArray array];
+	}
+	return self;
 }
 
 - (NSString*) title
 {
-  return NSLocalizedString(@"Branches and Tags", @"");
+	return NSLocalizedString(@"Branches and Tags", @"");
 }
 
 - (void) updateButtonTitles
 {
-  if ([[self.branchesController selectedObjects] count] < 2)
-  {
-    [self.deleteBranchButton setTitle:NSLocalizedString(@"  Delete Branch...", @"GBSettings")];
-  }
-  else
-  {
-    [self.deleteBranchButton setTitle:NSLocalizedString(@"  Delete Branches...", @"GBSettings")];
-  }
-  
-  if ([[self.tagsController selectedObjects] count] < 2)
-  {
-    [self.deleteTagButton setTitle:NSLocalizedString(@"  Delete Tag...", @"GBSettings")];
-  }
-  else
-  {
-    [self.deleteTagButton setTitle:NSLocalizedString(@"  Delete Tags...", @"GBSettings")];
-  }
+	if ([[self.branchesController selectedObjects] count] < 2)
+	{
+		[self.deleteBranchButton setTitle:NSLocalizedString(@"  Delete Branch...", @"GBSettings")];
+	}
+	else
+	{
+		[self.deleteBranchButton setTitle:NSLocalizedString(@"  Delete Branches...", @"GBSettings")];
+	}
+	
+	if ([[self.tagsController selectedObjects] count] < 2)
+	{
+		[self.deleteTagButton setTitle:NSLocalizedString(@"  Delete Tag...", @"GBSettings")];
+	}
+	else
+	{
+		[self.deleteTagButton setTitle:NSLocalizedString(@"  Delete Tags...", @"GBSettings")];
+	}
+	
+	if ([[self.remoteBranchesController selectedObjects] count] < 2)
+	{
+		[self.deleteRemoteBranchButton setTitle:NSLocalizedString(@"  Delete Branch...", @"GBSettings")];
+	}
+	else
+	{
+		[self.deleteRemoteBranchButton setTitle:NSLocalizedString(@"  Delete Branches...", @"GBSettings")];
+	}
 }
 
 - (void) cancel
 {
-  self.branchesToDelete = [NSMutableArray array];
-  self.tagsToDelete = [NSMutableArray array];
+	self.branchesToDelete       = [NSMutableArray array];
+	self.tagsToDelete           = [NSMutableArray array];
+	self.remoteBranchesToDelete = [NSMutableArray array];
 }
 
 - (void) save
 {
-  [self.repository removeRefs:[self.branchesToDelete arrayByAddingObjectsFromArray:self.tagsToDelete] withBlock:^{
-    self.branchesToDelete = [NSMutableArray array];
-    self.tagsToDelete = [NSMutableArray array];
-  }];
+	// TODO: delete remote tags
+	// TODO: delete remote branches
+	[self.repository removeRefs:[self.branchesToDelete arrayByAddingObjectsFromArray:self.tagsToDelete] withBlock:^{
+		self.branchesToDelete       = [NSMutableArray array];
+		self.tagsToDelete           = [NSMutableArray array];
+		self.remoteBranchesToDelete = [NSMutableArray array];
+	}];
 }
 
 - (void) viewDidAppear
 {
-  [super viewDidAppear];
-  
-  self.branchesBinding = [[[self.repository localBranches] mutableCopy] autorelease];
-  self.tagsBinding = [[[self.repository tags] mutableCopy] autorelease];
-  
-  [self updateButtonTitles];
+	[super viewDidAppear];
+	
+	self.branchesBinding = [[self.repository.localBranches mutableCopy] autorelease];
+	self.tagsBinding = [[self.repository.tags mutableCopy] autorelease];
+	
+	NSMutableArray* rs = [NSMutableArray array];
+	for (GBRemote* remote in self.repository.remotes)
+	{
+		[rs addObjectsFromArray:remote.branches];
+	}
+	
+	self.remoteBranchesBinding = rs;
+	
+	[self updateButtonTitles];
 }
 
 - (IBAction) deleteBranch:(id)sender
 {
-  self.dirty = YES;
-  [self.branchesToDelete addObjectsFromArray:[self.branchesController selectedObjects]];
-  [self.branchesController remove:sender];
-  
-//#if 0
-//  int c = [[self.branchesController selectedObjects] count];
-//  NSString* message = [NSString stringWithFormat:NSLocalizedString(@"Delete %d branches?", @"GBSettings"), c];
-//  if (c == 1)
-//  {
-//    message = [NSString stringWithFormat:NSLocalizedString(@"Delete branch “%@”?", @"GBSettings"), [[[self.branchesController selectedObjects] objectAtIndex:0] name]];
-//  }
-//  [self criticalConfirmationWithMessage:message
-//                            description:NSLocalizedString(@"You cannot undo this action.", @"GBSettings") 
-//                                     ok:NSLocalizedString(@"Delete", @"GBSettings") 
-//                             completion:^(BOOL result){
-//                               if (!result) return;
-//                               [self.repository removeRefs:[self.branchesController selectedObjects] withBlock:^{}];
-//                               [self.branchesController remove:sender];
-//                             }];
-//#endif
+	self.dirty = YES;
+	[self.branchesToDelete addObjectsFromArray:[self.branchesController selectedObjects]];
+	[self.branchesController remove:sender];
 }
 
 - (IBAction) deleteTag:(id)sender
 {
-  self.dirty = YES;
-  [self.tagsToDelete addObjectsFromArray:[self.tagsController selectedObjects]];
-  [self.tagsController remove:sender];
-
-//#if 0
-//  int c = [[self.tagsController selectedObjects] count];
-//  NSString* message = [NSString stringWithFormat:NSLocalizedString(@"Delete %d tags?", @"GBSettings"), c];
-//  if (c == 1)
-//  {
-//    message = [NSString stringWithFormat:NSLocalizedString(@"Delete tag “%@”?", @"GBSettings"), [[[self.tagsController selectedObjects] objectAtIndex:0] name]];
-//  }
-//  [self criticalConfirmationWithMessage:message
-//                            description:NSLocalizedString(@"You cannot undo this action.", @"GBSettings") 
-//                                     ok:NSLocalizedString(@"Delete", @"GBSettings") 
-//                             completion:^(BOOL result){
-//                               if (!result) return;
-//                               [self.repository removeRefs:[self.tagsController selectedObjects] withBlock:^{}];
-//                               [self.tagsController remove:sender];
-//                             }];
-//#endif
+	self.dirty = YES;
+	[self.tagsToDelete addObjectsFromArray:[self.tagsController selectedObjects]];
+	[self.tagsController remove:sender];
 }
+
+- (IBAction) deleteRemoteBranch:(id)sender
+{
+	self.dirty = YES;
+	[self.remoteBranchesToDelete addObjectsFromArray:[self.remoteBranchesController selectedObjects]];
+	[self.remoteBranchesController remove:sender];
+}
+
 
 
 
@@ -154,8 +164,8 @@
 
 - (void)tableViewSelectionDidChange:(NSNotification *)aNotification
 {
-  // TODO: rename the buttons to plural/singular
-  [self updateButtonTitles];
+	// TODO: rename the buttons to plural/singular
+	[self updateButtonTitles];
 }
 
 
