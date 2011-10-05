@@ -444,7 +444,7 @@
 	
 	[newMenu addItem:[NSMenuItem menuItemWithTitle:NSLocalizedString(@"New Tag...", @"Command") action:@selector(newTag:)]];
 	[newMenu addItem:[NSMenuItem menuItemWithTitle:NSLocalizedString(@"New Branch...", @"Command") action:@selector(newBranch:)]];  
-	
+	[newMenu addItem:[NSMenuItem separatorItem]];
 	[newMenu addItem:[NSMenuItem menuItemWithTitle:NSLocalizedString(@"Edit Branches and Tags...", @"Command") action:@selector(editBranchesAndTags:)]];  
 	
 	

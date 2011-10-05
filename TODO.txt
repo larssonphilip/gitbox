@@ -55,7 +55,7 @@ Gitbox 1.5 misc items:
 - settings/servers: single table with two columns - alias and URL
 - settings/advanced: show a text view with .git/config contents
 
-- toolbar: add "Edit Servers..." menu item to the right branch selector, should open settings/servers
++ toolbar: add "Edit Servers..." menu item to the right branch selector, should open settings/servers
 
 - stage: overlay view describing shortcuts to stage all
 - stage: cmd+click should select all
@@ -142,7 +142,7 @@ Features:
 - menu: History -> extractFolder:
 - menu: History -> removeFileFromHistory:
 
-- edit branches and tags in a single repository settings window.
++ edit branches and tags in a single repository settings window.
 ✓ Fantastic submodules support: automatic display for all submodules, one-click download and update.
 + submodules: display "download" button in the sidebar item
 - submodules: when submodule folder is removed, properly update its status
