@@ -60,7 +60,7 @@
 								<int key="NSvFlags">274</int>
 								<object class="NSMutableArray" key="NSSubviews">
 									<bool key="EncodedWithXMLCoder">YES</bool>
-									<object class="NSProgressIndicator" id="921684613">
+									<object class="NSProgressIndicator" id="979111051">
 										<reference key="NSNextResponder" ref="425537506"/>
 										<int key="NSvFlags">1316</int>
 										<object class="NSPSMatrix" key="NSDrawMatrix"/>
@@ -132,7 +132,7 @@
 															<int key="NSTCFlags">1</int>
 														</object>
 														<object class="NSTextViewSharedData" key="NSSharedData">
-															<int key="NSFlags">67121127</int>
+															<int key="NSFlags">11523</int>
 															<int key="NSTextCheckingTypes">0</int>
 															<nil key="NSMarkedAttributes"/>
 															<object class="NSColor" key="NSBackgroundColor" id="831860464">
@@ -191,7 +191,12 @@
 																</object>
 															</object>
 															<nil key="NSDefaultParagraphStyle"/>
-															<nil key="NSTextFinder"/>
+															<object class="NSTextFinder" key="NSTextFinder">
+																<reference key="NSTextFinderClient" ref="4681948"/>
+																<int key="NSTextFinderStyle">1</int>
+																<bool key="NSIncrementalSearchingEnabled">NO</bool>
+																<bool key="NSIncrementalSearchingShouldDimContentView">YES</bool>
+															</object>
 															<int key="NSPreferredTextFinderStyle">1</int>
 														</object>
 														<int key="NSTVFlags">6</int>
@@ -472,7 +477,7 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 								<bool key="NSEnabled">YES</bool>
 								<object class="NSTextFieldCell" key="NSCell" id="432727844">
 									<int key="NSCellFlags">-1804468671</int>
-									<int key="NSCellFlags2">272634944</int>
+									<int key="NSCellFlags2">272630848</int>
 									<string key="NSContents">git@oleganza.com:gitbox/app.git</string>
 									<reference key="NSSupport" ref="799710387"/>
 									<string key="NSCellIdentifier">_NS:248</string>
@@ -618,7 +623,7 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 					<object class="IBOutletConnection" key="connection">
 						<string key="label">optimizeProgressIndicator</string>
 						<reference key="source" ref="1001"/>
-						<reference key="destination" ref="921684613"/>
+						<reference key="destination" ref="979111051"/>
 					</object>
 					<int key="connectionID">80</int>
 				</object>
@@ -740,7 +745,7 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 							<reference ref="279098757"/>
 							<reference ref="975146395"/>
 							<reference ref="560735196"/>
-							<reference ref="921684613"/>
+							<reference ref="979111051"/>
 						</object>
 						<reference key="parent" ref="71415132"/>
 					</object>
@@ -856,7 +861,7 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">79</int>
-						<reference key="object" ref="921684613"/>
+						<reference key="object" ref="979111051"/>
 						<reference key="parent" ref="425537506"/>
 					</object>
 				</object>

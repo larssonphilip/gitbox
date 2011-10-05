@@ -1,3 +1,4 @@
+#import "GBTask.h"
 #import "GBRepository.h"
 #import "GBRemote.h"
 #import "GBRepositorySummaryController.h"
@@ -16,6 +17,7 @@
 - (NSString*) repoTitle;
 - (NSString*) repoPath;
 - (void) calculateSize;
+- (void) calculateCommits;
 - (void) iterateRemoteLines:(void(^)(NSUInteger i, GBRemote* aRemote, NSTextField* field, NSTextField* label))aBlock;
 @end
 
@@ -132,11 +134,24 @@
 	rect.size.height += remainingViewOffset;
 	self.remainingView.frame = rect;
 	
+	NSError* error = nil;
+	NSString* gitignoreContents = [NSString stringWithContentsOfFile:[self.repository.path stringByAppendingPathComponent:@".gitignore"] encoding:NSUTF8StringEncoding error:&error];
+	
+	if (!gitignoreContents)
+	{
+		NSLog(@"GBRepositorySummaryController: Error while reading .gitignore: %@", error);
+	}
+	
+	[self.gitignoreTextView setString:gitignoreContents];
+	
 //	[self.repository.libgitRepository.config enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
 //		NSLog(@"Config: %@ => %@", key, obj);
 //	}];
 	
 	[self calculateSize];
+	
+	self.statsLineField.stringValue = @"";
+	[self calculateCommits];
 	
 	// TODO: add label and strings for:
 	// ≠ path + disclosure button like in Xcode locations preference
@@ -182,7 +197,16 @@
 			}
 		}];
 	}
-
+	
+	NSError* error = nil;
+	NSString* gitignore = [[self.gitignoreTextView.string copy] autorelease];
+	if (![gitignore writeToFile:[self.repository.path stringByAppendingPathComponent:@".gitignore"] 
+					atomically:YES 
+					  encoding:NSUTF8StringEncoding 
+						 error:&error])
+	{
+		NSLog(@"Error: .gitignore update failed: %@", error);
+	}
 }
 
 - (void) iterateRemoteLines:(void(^)(NSUInteger i, GBRemote* aRemote, NSTextField* field, NSTextField* label))aBlock
@@ -252,6 +276,54 @@
 		self.sizeField.stringValue = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"Size on disk:", @""), sizeString];
 		
 		calculatingSize = NO;
+	}];
+}
+
+- (NSString*) inflectNumeric:(NSInteger)i singular:(NSString*)singular plural:(NSString*)plural
+{
+	if (i == 1) return singular;
+	return plural;
+}
+
+
+- (void) calculateCommits
+{
+	GBTask* task = [GBTask taskWithRepository:self.repository];
+	task.arguments = [NSArray arrayWithObjects:@"log", @"--format=\"%H %ae\"", nil];
+	[task launchWithBlock:^{
+		self.statsLineField.stringValue = @"";
+		
+		NSString* output = task.UTF8OutputStripped;
+		if (output.length == 0) return;
+		
+		NSArray* lines = [output componentsSeparatedByString:@"\n"];
+		if (lines.count == 0) return;
+		
+		NSMutableArray* stats = [NSMutableArray array];
+		
+		[stats addObject:[NSString stringWithFormat:@"%d %@", lines.count, [self inflectNumeric:lines.count singular:@"commit" plural:@"commits"]]];
+		
+		NSMutableSet* emails = [NSMutableSet set];
+		
+		for (NSString* line in lines)
+		{
+			NSArray* comps = [line componentsSeparatedByString:@" "];
+			if (comps.count >= 2)
+			{
+				[emails addObject:[comps objectAtIndex:1]];
+			}
+		}
+		
+		if (emails.count > 0)
+		{
+			[stats addObject:[NSString stringWithFormat:@"%d %@", emails.count, [self inflectNumeric:emails.count singular:@"contributor" plural:@"contributors"]]];
+		}
+		
+		if (stats.count > 0)
+		{
+			NSString* statsString = [stats componentsJoinedByString:@", "];
+			self.statsLineField.stringValue = statsString;
+		}
 	}];
 }
 
