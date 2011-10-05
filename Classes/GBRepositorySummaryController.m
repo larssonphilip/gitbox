@@ -289,7 +289,11 @@
 - (void) calculateCommits
 {
 	GBTask* task = [GBTask taskWithRepository:self.repository];
-	task.arguments = [NSArray arrayWithObjects:@"log", @"--format=\"%H %ae\"", nil];
+	
+	NSMutableArray* args = [NSMutableArray arrayWithObject:@"log"];
+	[args addObjectsFromArray:[self.repository.localBranches valueForKey:@"name"]];
+	[args addObject:@"--format=\"%H %ae\""];
+	task.arguments = args;
 	[task launchWithBlock:^{
 		self.statsLineField.stringValue = @"";
 		

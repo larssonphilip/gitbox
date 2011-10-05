@@ -48,6 +48,7 @@ Gitbox 1.5 misc items:
 + settings/summary: save edited remote URLs
 + settings/summary: save .gitignore
 + settings/summary: calculate number of commits and contributors
++ settings/summary: calculate number of commits for all branches, not just the current one
 
 - settings/branches: display better headers.
 - settings/branches: maybe show remote branches too.
