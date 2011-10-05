@@ -4,6 +4,7 @@ Gitbox 1.5 Release Notes
 ✓ Stage All menu command with Command+Shift+Return shortcut.
 ✓ Highlighted links in commit messages.
 ✓ Support for "Clone in Mac" button on Github (github-mac://)
+✓ Unified Repository Settings with quick access to URL, ignored files, editing of branches and tags
 
 ✓ Files are sorted by natural order (2.txt comes before 10.txt)
 ✓ Support for both overlay and legacy scrollbars in OS X Lion.
@@ -37,10 +38,9 @@ Gitbox 1.5 misc items:
 		TODO.txt: needs update
 
 
-- bug: when commiting a file from a long list, scrollview is not scrolled to the very top
+- bug: when committing a file from a long list, scrollview is not scrolled to the very top
 - bug/minor: when staging one of the same files, the last one is selected, not the one with the same name
 - bug: history vc is shifted down after quickly entering non-existent string and cancelling
-
 
 + settings/summary: set dirty flag when remote URLs are updated
 + settings/summary: set dirty flag when .gitignore content is updated
@@ -49,9 +49,8 @@ Gitbox 1.5 misc items:
 + settings/summary: save .gitignore
 + settings/summary: calculate number of commits and contributors
 + settings/summary: calculate number of commits for all branches, not just the current one
-
-- settings/branches: display better headers.
-- settings/branches: maybe show remote branches too.
++ settings/branches: display better headers.
++ settings/branches: maybe show remote branches too.
 
 - settings/servers: single table with two columns - alias and URL
 - settings/advanced: show a text view with .git/config contents
@@ -63,7 +62,7 @@ Gitbox 1.5 misc items:
 - delete tag using right click on a commit
 - toolbar: allow to unset remote branch (useful when other branch has a lot of commits and clutters the history)
 
-? when doing a commit checkout, select current local branch in the right branch menu so it is easier to compare and checkout later commits (especially during bisection search).
+- when doing a commit checkout, select current local branch in the right branch menu so it is easier to compare and checkout later commits (especially during bisection search). - just allow checking out a local branch even if have only one (right now displays local branches if > 1)
 
 - bug: search: keep selection when search ends.
 - bug: askpass crashes with "task" selector when tries to update a repo with missing/invalid ssh key.
@@ -74,7 +73,6 @@ Gitbox 1.5 misc items:
 - bug: when selected a collapsed group and added a folder, the selected group is not expanded
 - bug: stage: when having multiple selection and expanding it with keyboard, stage updates cause internal rest, so the selection does not change the same way when continuing pressing keystrokes. Should probably not replace stage content when it did not really change.
 - bug: when a file is committed, modified and in gitignore, it could be very hard to pull ("cannot merge, dirty working dir" error)
-- bug: when tag is deleted, it is not removed from the server (should push-remove too)
 
 - history: push a single commit
 - stage: add option "Delete from stage only" for "git rm --force --cached <filepath>".
@@ -90,6 +88,7 @@ process is running and remove the file manually to continue.
 
 - bug: file "Icon\r" was committed somehow.
 
++ bug: when tag is deleted, it is not removed from the server (should push-remove too)
 + bug: double click on multiple files opens FileMerge window per file.
 + bug: check if opendiff exists before launching. Do something about the fact that OS X Lion does not ship with opendiff and FileMerge.app
 + added spinner for "git gc"

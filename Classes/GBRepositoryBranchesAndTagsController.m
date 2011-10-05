@@ -108,12 +108,12 @@
 
 - (void) save
 {
-	// TODO: delete remote tags
-	// TODO: delete remote branches
-	[self.repository removeRefs:[self.branchesToDelete arrayByAddingObjectsFromArray:self.tagsToDelete] withBlock:^{
-		self.branchesToDelete       = [NSMutableArray array];
-		self.tagsToDelete           = [NSMutableArray array];
-		self.remoteBranchesToDelete = [NSMutableArray array];
+	[self.repository removeRemoteRefs:[self.remoteBranchesToDelete arrayByAddingObjectsFromArray:self.tagsToDelete] withBlock:^{
+		[self.repository removeRefs:[self.branchesToDelete arrayByAddingObjectsFromArray:self.tagsToDelete] withBlock:^{
+			self.branchesToDelete       = [NSMutableArray array];
+			self.tagsToDelete           = [NSMutableArray array];
+			self.remoteBranchesToDelete = [NSMutableArray array];
+		}];
 	}];
 }
 
@@ -164,7 +164,6 @@
 
 - (void)tableViewSelectionDidChange:(NSNotification *)aNotification
 {
-	// TODO: rename the buttons to plural/singular
 	[self updateButtonTitles];
 }
 

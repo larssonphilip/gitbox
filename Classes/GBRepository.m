@@ -1493,13 +1493,59 @@
 			[self launchTask:task withBlock:^{
 				if ([task isError])
 				{
-					[self alertWithMessage:[NSString stringWithFormat:NSLocalizedString(@"Failed to remove ref %@",nil), ref.name] description:[task UTF8ErrorAndOutput]];
+					[self alertWithMessage:[NSString stringWithFormat:ref.isTag ? 
+											NSLocalizedString(@"Failed to remove tag %@",nil) : 
+											NSLocalizedString(@"Failed to remove branch %@",nil), ref.name] 
+							   description:[task UTF8ErrorAndOutput]];
 				}
 				[group leave];
 			}];
 		}
 	} continuation:block];
 }
+
+- (void) removeRemoteRefs:(NSArray*)refs withBlock:(void(^)())block
+{
+	// git push origin :refs/tags/12345
+	// git push origin :refs/heads/branch
+	
+	[OABlockGroup groupBlock:^(OABlockGroup *group) {
+		for (GBRef* ref in refs)
+		{
+			if ([ref isTag])
+			{
+				for (GBRemote* aRemote in self.remotes)
+				{
+					[group enter];
+					GBTask* task = [self task];
+					task.arguments = [NSArray arrayWithObjects:@"push", aRemote.alias, [NSString stringWithFormat:@":refs/tags/%@", ref.name], nil];
+					[self launchTask:task withBlock:^{
+						if ([task isError])
+						{
+							[self alertWithMessage:[NSString stringWithFormat:NSLocalizedString(@"Failed to remove tag %@",nil), ref.name] description:[task UTF8ErrorAndOutput]];
+						}
+						[group leave];
+					}];
+				}
+			}
+			else
+			{
+				[group enter];
+				GBTask* task = [self task];
+				task.arguments = [NSArray arrayWithObjects:@"push", ref.remoteAlias, [NSString stringWithFormat:@":refs/heads/%@", ref.name], nil];
+				[self launchTask:task withBlock:^{
+					if ([task isError])
+					{
+						[self alertWithMessage:[NSString stringWithFormat:NSLocalizedString(@"Failed to remove branch %@",nil), ref.name] description:[task UTF8ErrorAndOutput]];
+					}
+					[group leave];
+				}];
+			}
+		}
+	} continuation:block];
+	
+}
+
 
 
 

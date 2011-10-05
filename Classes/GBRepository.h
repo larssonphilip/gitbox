@@ -118,6 +118,7 @@
 - (void) applyStash:(GBStash*)aStash withBlock:(void(^)())block;
 - (void) removeStashes:(NSArray*)theStashes withBlock:(void(^)())block;
 - (void) removeRefs:(NSArray*)refs withBlock:(void(^)())block;
+- (void) removeRemoteRefs:(NSArray*)refs withBlock:(void(^)())block;
 
 
 
