@@ -7,7 +7,6 @@
 extern NSString* const GBRepositorySettingsSummary;
 extern NSString* const GBRepositorySettingsBranchesAndTags;
 extern NSString* const GBRepositorySettingsRemoteServers;
-extern NSString* const GBRepositorySettingsIgnoredFiles;
 extern NSString* const GBRepositorySettingsGitConfig;
 
 @interface GBRepositorySettingsController : GBWindowControllerWithCallback<NSWindowDelegate>

@@ -1210,6 +1210,9 @@
 				2096FDBC139D323B00B79D46 /* GBRepositoryRemotesController.h */,
 				2096FDBD139D323B00B79D46 /* GBRepositoryRemotesController.m */,
 				2096FDC1139D36E800B79D46 /* GBRepositoryRemotesController.xib */,
+				2038F5B8119879FA0087CE37 /* GBRemotesController.h */,
+				2038F5B9119879FA0087CE37 /* GBRemotesController.m */,
+				2058FA4711982F5100FB018D /* GBRemotesController.xib */,
 			);
 			name = "Repository Settings";
 			sourceTree = "<group>";
@@ -1526,9 +1529,6 @@
 				209A935D11BA934C006B0B5C /* GBFileEditingController.h */,
 				209A935E11BA934C006B0B5C /* GBFileEditingController.m */,
 				209A935911BA92B6006B0B5C /* GBFileEditingController.xib */,
-				2038F5B8119879FA0087CE37 /* GBRemotesController.h */,
-				2038F5B9119879FA0087CE37 /* GBRemotesController.m */,
-				2058FA4711982F5100FB018D /* GBRemotesController.xib */,
 				2057F10E11ACF751009EDF2F /* GBActivityController.h */,
 				2057F10F11ACF751009EDF2F /* GBActivityController.m */,
 				2057F10411ACF4C0009EDF2F /* GBActivityController.xib */,

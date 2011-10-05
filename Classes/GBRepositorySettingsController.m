@@ -4,11 +4,11 @@
 
 #import "GBRepositorySummaryController.h"
 #import "GBRepositoryBranchesAndTagsController.h"
+#import "GBRepositoryRemotesController.h"
 
 NSString* const GBRepositorySettingsSummary         = @"GBRepositorySettingsSummary";
 NSString* const GBRepositorySettingsBranchesAndTags = @"GBRepositorySettingsBranchesAndTags";
 NSString* const GBRepositorySettingsRemoteServers   = @"GBRepositorySettingsRemoteServers";
-NSString* const GBRepositorySettingsIgnoredFiles    = @"GBRepositorySettingsIgnoredFiles";
 NSString* const GBRepositorySettingsGitConfig       = @"GBRepositorySettingsGitConfig";
 
 @interface GBRepositorySettingsController () <NSTabViewDelegate>
@@ -67,6 +67,7 @@ NSString* const GBRepositorySettingsGitConfig       = @"GBRepositorySettingsGitC
 	self.viewControllers = [NSArray arrayWithObjects:
 							[[[GBRepositorySummaryController alloc] initWithRepository:self.repository] autorelease],
 							[[[GBRepositoryBranchesAndTagsController alloc] initWithRepository:self.repository] autorelease],
+							[[[GBRepositoryRemotesController alloc] initWithRepository:self.repository] autorelease],
 							nil];
 	
 	for (GBRepositorySettingsViewController* ctrl in self.viewControllers)
@@ -277,13 +278,9 @@ NSString* const GBRepositorySettingsGitConfig       = @"GBRepositorySettingsGitC
 	{
 		[self selectTabViewItemAtIndex:2];
 	}
-	else if (selectedTab == GBRepositorySettingsIgnoredFiles)
-	{
-		[self selectTabViewItemAtIndex:3];
-	}
 	else if (selectedTab == GBRepositorySettingsGitConfig)
 	{
-		[self selectTabViewItemAtIndex:4];
+		[self selectTabViewItemAtIndex:3];
 	}
 }
 
