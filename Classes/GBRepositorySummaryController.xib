@@ -67,6 +67,7 @@
 										<string key="NSFrame">{{349, 39}, {16, 16}}</string>
 										<reference key="NSSuperview" ref="425537506"/>
 										<reference key="NSWindow"/>
+										<reference key="NSNextKeyView" ref="874682420"/>
 										<string key="NSReuseIdentifierKey">_NS:3954</string>
 										<int key="NSpiFlags">28938</int>
 										<double key="NSMaxValue">100</double>
@@ -132,7 +133,7 @@
 															<int key="NSTCFlags">1</int>
 														</object>
 														<object class="NSTextViewSharedData" key="NSSharedData">
-															<int key="NSFlags">11523</int>
+															<int key="NSFlags">67120387</int>
 															<int key="NSTextCheckingTypes">0</int>
 															<nil key="NSMarkedAttributes"/>
 															<object class="NSColor" key="NSBackgroundColor" id="831860464">
@@ -191,12 +192,7 @@
 																</object>
 															</object>
 															<nil key="NSDefaultParagraphStyle"/>
-															<object class="NSTextFinder" key="NSTextFinder">
-																<reference key="NSTextFinderClient" ref="4681948"/>
-																<int key="NSTextFinderStyle">1</int>
-																<bool key="NSIncrementalSearchingEnabled">NO</bool>
-																<bool key="NSIncrementalSearchingShouldDimContentView">YES</bool>
-															</object>
+															<nil key="NSTextFinder"/>
 															<int key="NSPreferredTextFinderStyle">1</int>
 														</object>
 														<int key="NSTVFlags">6</int>
@@ -343,7 +339,7 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 										<reference key="NSNextKeyView" ref="279098757"/>
 										<bool key="NSEnabled">YES</bool>
 										<object class="NSTextFieldCell" key="NSCell" id="292999357">
-											<int key="NSCellFlags">67239488</int>
+											<int key="NSCellFlags">69336641</int>
 											<int key="NSCellFlags2">4196352</int>
 											<string key="NSContents">789 commits</string>
 											<reference key="NSSupport" ref="799710387"/>
@@ -358,10 +354,10 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 										<string key="NSFrame">{{17, 39}, {171, 17}}</string>
 										<reference key="NSSuperview" ref="425537506"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView" ref="874682420"/>
+										<reference key="NSNextKeyView" ref="979111051"/>
 										<bool key="NSEnabled">YES</bool>
 										<object class="NSTextFieldCell" key="NSCell" id="535554138">
-											<int key="NSCellFlags">67239488</int>
+											<int key="NSCellFlags">69336641</int>
 											<int key="NSCellFlags2">4196352</int>
 											<string key="NSContents">Size on disk: 140.3 Mb</string>
 											<reference key="NSSupport" ref="799710387"/>
