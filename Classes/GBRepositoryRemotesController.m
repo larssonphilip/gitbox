@@ -39,8 +39,7 @@
 
 - (void) save
 {
-	// TODO: sync remotes
-	// [self syncRemotesDictionariesWithRepository];
+	[self syncRemotesDictionariesWithRepository];
 }
 
 - (void) viewDidAppear
@@ -48,8 +47,6 @@
 	[super viewDidAppear];
 	
 	self.remotesDictionaries = [self remotesDictionariesForRepository:self.repository];
-	
-	//[self addObserver:self forKeyPath:@"remotesDictionaries" options:NSKeyValueObservingOptionNew context:nil];
 }
 
 
@@ -161,14 +158,3 @@
 }
 
 @end
-
-@implementation GBRepositoryRemotesArrayController
-@synthesize remotesController;
-- (void)objectDidEndEditing:(id)editor
-{
-	[super objectDidEndEditing:editor];
-	self.remotesController.dirty = YES;
-}
-
-@end
-

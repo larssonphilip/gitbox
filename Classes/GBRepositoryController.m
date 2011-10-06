@@ -959,18 +959,14 @@
 
 - (IBAction) editRemotes:(id)sender
 {
-	GBRemotesController* remotesController = [GBRemotesController controller];
-	
-	remotesController.repository = self.repository;
-	[remotesController presentSheetInMainWindow];
+	GBRepositorySettingsController* ctrl = [GBRepositorySettingsController controllerWithTab:GBRepositorySettingsRemoteServers repository:self.repository];
+	[ctrl presentSheetInMainWindow];
 }
 
 - (IBAction) editGitIgnore:(id)sender
 {
-	GBFileEditingController* fileEditor = [GBFileEditingController controller];
-	fileEditor.title = @".gitignore";
-	fileEditor.URL = [self.url URLByAppendingPathComponent:@".gitignore"];
-	[fileEditor presentSheetInMainWindow];
+	GBRepositorySettingsController* ctrl = [GBRepositorySettingsController controllerWithTab:nil repository:self.repository];
+	[ctrl presentSheetInMainWindow];
 }
 
 - (IBAction) editGitConfig:(id)sender

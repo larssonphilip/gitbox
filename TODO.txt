@@ -52,7 +52,9 @@ Gitbox 1.5 misc items:
 + settings/branches: display better headers.
 + settings/branches: maybe show remote branches too.
 
-- settings/servers: single table with two columns - alias and URL
++ settings/servers: single table with two columns - alias and URL.
+- settings/servers: show placeholders for new entry or focus into it. 
+- settings: open new settings window for "Ignore file..." command.
 - settings/advanced: show a text view with .git/config contents
 
 + toolbar: add "Edit Servers..." menu item to the right branch selector, should open settings/servers

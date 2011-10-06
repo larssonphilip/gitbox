@@ -111,12 +111,12 @@ NSString* const GBRepositorySettingsGitConfig       = @"GBRepositorySettingsGitC
 	
 	if (dirty)
 	{
-		[self.cancelButton setHidden:NO];
-		[self.saveButton setTitle:NSLocalizedString(@"Save", nil)];
+		//[self.cancelButton setHidden:NO];
+		[self.saveButton setTitle:NSLocalizedString(@"OK", nil)];
 	}
 	else
 	{
-		[self.cancelButton setHidden:YES];
+		//[self.cancelButton setHidden:YES];
 		[self.saveButton setTitle:NSLocalizedString(@"OK", nil)];
 	}
 }

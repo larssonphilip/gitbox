@@ -414,6 +414,8 @@
 		20B8B83911A4A72A006D6442 /* GBPromptController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 20B8B83811A4A72A006D6442 /* GBPromptController.xib */; };
 		20B8B83D11A4A776006D6442 /* GBPromptController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B8B83C11A4A776006D6442 /* GBPromptController.m */; };
 		20B8B84811A4AAF2006D6442 /* NSString+OAStringHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B8B84711A4AAF2006D6442 /* NSString+OAStringHelpers.m */; };
+		20BD5DCD143E2623003B4F2F /* GBToolbarMinus.png in Resources */ = {isa = PBXBuildFile; fileRef = 20BD5DCC143E2623003B4F2F /* GBToolbarMinus.png */; };
+		20BD5DCE143E2623003B4F2F /* GBToolbarMinus.png in Resources */ = {isa = PBXBuildFile; fileRef = 20BD5DCC143E2623003B4F2F /* GBToolbarMinus.png */; };
 		20BF14121279533900A30EE6 /* GBCloneTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 20BF14111279533900A30EE6 /* GBCloneTask.m */; };
 		20BF18701280C11C00A30EE6 /* GBAllStagedFilesTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 20BF186F1280C11C00A30EE6 /* GBAllStagedFilesTask.m */; };
 		20BF1954128224E500A30EE6 /* GBUserNameEmailController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20BF1953128224E500A30EE6 /* GBUserNameEmailController.m */; };
@@ -832,6 +834,7 @@
 		20B8B83C11A4A776006D6442 /* GBPromptController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBPromptController.m; sourceTree = "<group>"; };
 		20B8B84611A4AAF2006D6442 /* NSString+OAStringHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+OAStringHelpers.h"; sourceTree = "<group>"; };
 		20B8B84711A4AAF2006D6442 /* NSString+OAStringHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+OAStringHelpers.m"; sourceTree = "<group>"; };
+		20BD5DCC143E2623003B4F2F /* GBToolbarMinus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GBToolbarMinus.png; path = Images/GBToolbarMinus.png; sourceTree = SOURCE_ROOT; };
 		20BF14101279533900A30EE6 /* GBCloneTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBCloneTask.h; sourceTree = "<group>"; };
 		20BF14111279533900A30EE6 /* GBCloneTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBCloneTask.m; sourceTree = "<group>"; };
 		20BF186E1280C11C00A30EE6 /* GBAllStagedFilesTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBAllStagedFilesTask.h; sourceTree = "<group>"; };
@@ -1148,6 +1151,7 @@
 				20A37BAA120DC4510068AB8B /* GBToolbarController.h */,
 				20A37BAB120DC4510068AB8B /* GBToolbarController.m */,
 				20164ABE12D49BD7005C69DA /* GBToolbarPlus.png */,
+				20BD5DCC143E2623003B4F2F /* GBToolbarMinus.png */,
 				20164A5112D3D8EA005C69DA /* GBToolbarGear.png */,
 				206E01281304940F00018300 /* GBRepositoryToolbarController.h */,
 				206E01291304941000018300 /* GBRepositoryToolbarController.m */,
@@ -1781,6 +1785,7 @@
 				208D0C75139AB5D3002C8072 /* GBRepositoryBranchesAndTagsController.xib in Resources */,
 				2096FDC2139D36E800B79D46 /* GBRepositoryRemotesController.xib in Resources */,
 				201419F4142C8D0300AA55E8 /* GitboxLicense.txt in Resources */,
+				20BD5DCE143E2623003B4F2F /* GBToolbarMinus.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1857,6 +1862,7 @@
 				208D0C76139AB5D3002C8072 /* GBRepositoryBranchesAndTagsController.xib in Resources */,
 				2096FDC3139D36E800B79D46 /* GBRepositoryRemotesController.xib in Resources */,
 				201419F3142C8D0300AA55E8 /* GitboxLicense.txt in Resources */,
+				20BD5DCD143E2623003B4F2F /* GBToolbarMinus.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
