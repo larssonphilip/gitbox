@@ -5,7 +5,6 @@
 #import "GBPlaceholderViewController.h"
 #import "GBWelcomeController.h"
 
-#import "GBRemotesController.h"
 #import "GBFileEditingController.h"
 
 #import "OABlockQueue.h"

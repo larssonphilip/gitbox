@@ -177,9 +177,9 @@
 	// ≠ path + disclosure button like in Xcode locations preference
 	// + every remote URL
 	// + size on disk
-	// - number of commits, tags, 
+	// + number of commits, tags, 
 	// - committers etc.
-	// - creation date, 
+	// - creation date
 	
 	
 }

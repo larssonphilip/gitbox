@@ -2,7 +2,6 @@
 #import "GBRepositoryViewController.h"
 #import "GBRepositoryController.h"
 #import "GBHistoryViewController.h"
-#import "GBRemotesController.h"
 #import "NSView+OAViewHelpers.h"
 #import "NSWindowController+OAWindowControllerHelpers.h"
 #import "NSObject+OADispatchItemValidation.h"

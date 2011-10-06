@@ -5,6 +5,7 @@
 #import "GBRepositorySummaryController.h"
 #import "GBRepositoryBranchesAndTagsController.h"
 #import "GBRepositoryRemotesController.h"
+#import "GBRepositoryConfigController.h"
 
 NSString* const GBRepositorySettingsSummary         = @"GBRepositorySettingsSummary";
 NSString* const GBRepositorySettingsBranchesAndTags = @"GBRepositorySettingsBranchesAndTags";
@@ -72,6 +73,7 @@ NSString* const GBRepositorySettingsGitConfig       = @"GBRepositorySettingsGitC
 							[[[GBRepositorySummaryController alloc] initWithRepository:self.repository] autorelease],
 							[[[GBRepositoryBranchesAndTagsController alloc] initWithRepository:self.repository] autorelease],
 							[[[GBRepositoryRemotesController alloc] initWithRepository:self.repository] autorelease],
+							[[[GBRepositoryConfigController alloc] initWithRepository:self.repository] autorelease],
 							nil];
 	
 	for (GBRepositorySettingsViewController* ctrl in self.viewControllers)

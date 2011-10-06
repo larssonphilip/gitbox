@@ -29,7 +29,7 @@
 
 - (NSString*) title
 {
-	return NSLocalizedString(@"Servers", @"");
+	return NSLocalizedString(@"Remote Repositories", @"");
 }
 
 - (void) cancel

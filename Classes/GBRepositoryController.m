@@ -21,7 +21,6 @@
 #import "GBPromptController.h"
 
 #import "GBRepositorySettingsController.h"
-#import "GBRemotesController.h" // will be obsolete when settings panel is done
 #import "GBFileEditingController.h" // will be obsolete when settings panel is done
 
 #import "OAFSEventStream.h"

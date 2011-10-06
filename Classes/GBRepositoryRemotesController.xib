@@ -115,7 +115,7 @@
 							<int key="NSCellFlags">-2080244224</int>
 							<int key="NSCellFlags2">134217728</int>
 							<string key="NSContents"/>
-							<object class="NSFont" key="NSSupport" id="822024185">
+							<object class="NSFont" key="NSSupport" id="347065459">
 								<string key="NSName">LucidaGrande-Bold</string>
 								<double key="NSSize">13</double>
 								<int key="NSfFlags">2072</int>
@@ -145,7 +145,7 @@
 							<int key="NSCellFlags">-2080244224</int>
 							<int key="NSCellFlags2">134217728</int>
 							<string key="NSContents"/>
-							<reference key="NSSupport" ref="822024185"/>
+							<reference key="NSSupport" ref="347065459"/>
 							<reference key="NSControlView" ref="521272524"/>
 							<int key="NSButtonFlags">-2031337217</int>
 							<int key="NSButtonFlags2">162</int>
@@ -375,7 +375,7 @@
 						<object class="NSTextFieldCell" key="NSCell" id="580638436">
 							<int key="NSCellFlags">68288064</int>
 							<int key="NSCellFlags2">272630784</int>
-							<string key="NSContents">Remote servers</string>
+							<string key="NSContents">Remote Repositories</string>
 							<reference key="NSSupport" ref="630026045"/>
 							<string key="NSCellIdentifier">_NS:3936</string>
 							<reference key="NSControlView" ref="764018875"/>

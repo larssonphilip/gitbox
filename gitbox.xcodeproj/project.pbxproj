@@ -124,7 +124,6 @@
 		2038F3E1119546E90087CE37 /* NSArray+OAArrayHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 2038F3E0119546E90087CE37 /* NSArray+OAArrayHelpers.m */; };
 		2038F41D11954E000087CE37 /* NSAlert+OAAlertHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 2038F41C11954E000087CE37 /* NSAlert+OAAlertHelpers.m */; };
 		2038F558119751150087CE37 /* NSData+OADataHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 2038F557119751150087CE37 /* NSData+OADataHelpers.m */; };
-		2038F5BA119879FA0087CE37 /* GBRemotesController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2038F5B9119879FA0087CE37 /* GBRemotesController.m */; };
 		2038F5F3119DB9CE0087CE37 /* GBChange.m in Sources */ = {isa = PBXBuildFile; fileRef = 2038F5F2119DB9CE0087CE37 /* GBChange.m */; };
 		2038F604119DBBAB0087CE37 /* GBCommit.m in Sources */ = {isa = PBXBuildFile; fileRef = 2038F603119DBBAB0087CE37 /* GBCommit.m */; };
 		2038F67811A025AF0087CE37 /* GBRemote.m in Sources */ = {isa = PBXBuildFile; fileRef = 2038F67711A025AF0087CE37 /* GBRemote.m */; };
@@ -198,7 +197,6 @@
 		2058E98011AEE26F00F2853F /* GBHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2058E97F11AEE26F00F2853F /* GBHistoryViewController.m */; };
 		2058E98411AEE30E00F2853F /* GBHistoryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2058E98311AEE30E00F2853F /* GBHistoryViewController.xib */; };
 		2058EA0811AEEE3200F2853F /* NSView+OAViewHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 2058EA0711AEEE3200F2853F /* NSView+OAViewHelpers.m */; };
-		2058FA4811982F5100FB018D /* GBRemotesController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2058FA4711982F5100FB018D /* GBRemotesController.xib */; };
 		2059792211A877A500E11A56 /* GBExtractFileTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 2059792111A877A500E11A56 /* GBExtractFileTask.m */; };
 		2059E6D111AACB5C00E4CF0B /* GBHistoryTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 2059E6D011AACB5C00E4CF0B /* GBHistoryTask.m */; };
 		2059E82811AB3C2C00E4CF0B /* GBCommittedChangesTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 2059E82711AB3C2C00E4CF0B /* GBCommittedChangesTask.m */; };
@@ -250,7 +248,6 @@
 		20915EBC12874D2A005E0D82 /* default_gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 209A960011BC60BC006B0B5C /* default_gitignore */; };
 		20915EBD12874D2A005E0D82 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C1660FE840EACC02AAC07 /* InfoPlist.strings */; };
 		20915EBE12874D2A005E0D82 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD582B0DA1D0D100B32029 /* MainMenu.xib */; };
-		20915EBF12874D2A005E0D82 /* GBRemotesController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2058FA4711982F5100FB018D /* GBRemotesController.xib */; };
 		20915EC012874D2A005E0D82 /* GBPromptController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 20B8B83811A4A72A006D6442 /* GBPromptController.xib */; };
 		20915EC112874D2A005E0D82 /* app.icns in Resources */ = {isa = PBXBuildFile; fileRef = 2010732E11A7E9C300EFDE56 /* app.icns */; };
 		20915EC212874D2A005E0D82 /* sparkle_dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = 2057F0D611ACF075009EDF2F /* sparkle_dsa_pub.pem */; };
@@ -280,7 +277,6 @@
 		20915EE012874D2A005E0D82 /* NSArray+OAArrayHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 2038F3E0119546E90087CE37 /* NSArray+OAArrayHelpers.m */; };
 		20915EE112874D2A005E0D82 /* NSAlert+OAAlertHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 2038F41C11954E000087CE37 /* NSAlert+OAAlertHelpers.m */; };
 		20915EE212874D2A005E0D82 /* NSData+OADataHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 2038F557119751150087CE37 /* NSData+OADataHelpers.m */; };
-		20915EE312874D2A005E0D82 /* GBRemotesController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2038F5B9119879FA0087CE37 /* GBRemotesController.m */; };
 		20915EE412874D2A005E0D82 /* GBChange.m in Sources */ = {isa = PBXBuildFile; fileRef = 2038F5F2119DB9CE0087CE37 /* GBChange.m */; };
 		20915EE512874D2A005E0D82 /* GBCommit.m in Sources */ = {isa = PBXBuildFile; fileRef = 2038F603119DBBAB0087CE37 /* GBCommit.m */; };
 		20915EE612874D2A005E0D82 /* GBRemote.m in Sources */ = {isa = PBXBuildFile; fileRef = 2038F67711A025AF0087CE37 /* GBRemote.m */; };
@@ -416,6 +412,10 @@
 		20B8B84811A4AAF2006D6442 /* NSString+OAStringHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B8B84711A4AAF2006D6442 /* NSString+OAStringHelpers.m */; };
 		20BD5DCD143E2623003B4F2F /* GBToolbarMinus.png in Resources */ = {isa = PBXBuildFile; fileRef = 20BD5DCC143E2623003B4F2F /* GBToolbarMinus.png */; };
 		20BD5DCE143E2623003B4F2F /* GBToolbarMinus.png in Resources */ = {isa = PBXBuildFile; fileRef = 20BD5DCC143E2623003B4F2F /* GBToolbarMinus.png */; };
+		20BD5DD1143E483C003B4F2F /* GBRepositoryConfigController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20BD5DD0143E483C003B4F2F /* GBRepositoryConfigController.m */; };
+		20BD5DD2143E483C003B4F2F /* GBRepositoryConfigController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20BD5DD0143E483C003B4F2F /* GBRepositoryConfigController.m */; };
+		20BD5DD4143E48AD003B4F2F /* GBRepositoryConfigController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 20BD5DD3143E48AD003B4F2F /* GBRepositoryConfigController.xib */; };
+		20BD5DD5143E48AD003B4F2F /* GBRepositoryConfigController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 20BD5DD3143E48AD003B4F2F /* GBRepositoryConfigController.xib */; };
 		20BF14121279533900A30EE6 /* GBCloneTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 20BF14111279533900A30EE6 /* GBCloneTask.m */; };
 		20BF18701280C11C00A30EE6 /* GBAllStagedFilesTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 20BF186F1280C11C00A30EE6 /* GBAllStagedFilesTask.m */; };
 		20BF1954128224E500A30EE6 /* GBUserNameEmailController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20BF1953128224E500A30EE6 /* GBUserNameEmailController.m */; };
@@ -608,8 +608,6 @@
 		2038F41C11954E000087CE37 /* NSAlert+OAAlertHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSAlert+OAAlertHelpers.m"; sourceTree = "<group>"; };
 		2038F556119751150087CE37 /* NSData+OADataHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+OADataHelpers.h"; sourceTree = "<group>"; };
 		2038F557119751150087CE37 /* NSData+OADataHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+OADataHelpers.m"; sourceTree = "<group>"; };
-		2038F5B8119879FA0087CE37 /* GBRemotesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBRemotesController.h; sourceTree = "<group>"; };
-		2038F5B9119879FA0087CE37 /* GBRemotesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBRemotesController.m; sourceTree = "<group>"; };
 		2038F5F1119DB9CE0087CE37 /* GBChange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBChange.h; sourceTree = "<group>"; };
 		2038F5F2119DB9CE0087CE37 /* GBChange.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBChange.m; sourceTree = "<group>"; wrapsLines = 1; };
 		2038F602119DBBAB0087CE37 /* GBCommit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBCommit.h; sourceTree = "<group>"; };
@@ -685,7 +683,6 @@
 		2058E98311AEE30E00F2853F /* GBHistoryViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBHistoryViewController.xib; sourceTree = "<group>"; };
 		2058EA0611AEEE3200F2853F /* NSView+OAViewHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSView+OAViewHelpers.h"; sourceTree = "<group>"; };
 		2058EA0711AEEE3200F2853F /* NSView+OAViewHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSView+OAViewHelpers.m"; sourceTree = "<group>"; };
-		2058FA4711982F5100FB018D /* GBRemotesController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBRemotesController.xib; sourceTree = "<group>"; };
 		2059792011A877A500E11A56 /* GBExtractFileTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBExtractFileTask.h; sourceTree = "<group>"; };
 		2059792111A877A500E11A56 /* GBExtractFileTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBExtractFileTask.m; sourceTree = "<group>"; };
 		2059D4FC133FD697008D3556 /* Github.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Github.txt; sourceTree = "<group>"; };
@@ -835,6 +832,9 @@
 		20B8B84611A4AAF2006D6442 /* NSString+OAStringHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+OAStringHelpers.h"; sourceTree = "<group>"; };
 		20B8B84711A4AAF2006D6442 /* NSString+OAStringHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+OAStringHelpers.m"; sourceTree = "<group>"; };
 		20BD5DCC143E2623003B4F2F /* GBToolbarMinus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GBToolbarMinus.png; path = Images/GBToolbarMinus.png; sourceTree = SOURCE_ROOT; };
+		20BD5DCF143E483B003B4F2F /* GBRepositoryConfigController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBRepositoryConfigController.h; sourceTree = "<group>"; };
+		20BD5DD0143E483C003B4F2F /* GBRepositoryConfigController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBRepositoryConfigController.m; sourceTree = "<group>"; };
+		20BD5DD3143E48AD003B4F2F /* GBRepositoryConfigController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GBRepositoryConfigController.xib; sourceTree = "<group>"; };
 		20BF14101279533900A30EE6 /* GBCloneTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBCloneTask.h; sourceTree = "<group>"; };
 		20BF14111279533900A30EE6 /* GBCloneTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBCloneTask.m; sourceTree = "<group>"; };
 		20BF186E1280C11C00A30EE6 /* GBAllStagedFilesTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBAllStagedFilesTask.h; sourceTree = "<group>"; };
@@ -1214,9 +1214,9 @@
 				2096FDBC139D323B00B79D46 /* GBRepositoryRemotesController.h */,
 				2096FDBD139D323B00B79D46 /* GBRepositoryRemotesController.m */,
 				2096FDC1139D36E800B79D46 /* GBRepositoryRemotesController.xib */,
-				2038F5B8119879FA0087CE37 /* GBRemotesController.h */,
-				2038F5B9119879FA0087CE37 /* GBRemotesController.m */,
-				2058FA4711982F5100FB018D /* GBRemotesController.xib */,
+				20BD5DCF143E483B003B4F2F /* GBRepositoryConfigController.h */,
+				20BD5DD0143E483C003B4F2F /* GBRepositoryConfigController.m */,
+				20BD5DD3143E48AD003B4F2F /* GBRepositoryConfigController.xib */,
 			);
 			name = "Repository Settings";
 			sourceTree = "<group>";
@@ -1719,7 +1719,6 @@
 				20915EBC12874D2A005E0D82 /* default_gitignore in Resources */,
 				20915EBD12874D2A005E0D82 /* InfoPlist.strings in Resources */,
 				20915EBE12874D2A005E0D82 /* MainMenu.xib in Resources */,
-				20915EBF12874D2A005E0D82 /* GBRemotesController.xib in Resources */,
 				20915EC012874D2A005E0D82 /* GBPromptController.xib in Resources */,
 				20915EC112874D2A005E0D82 /* app.icns in Resources */,
 				20915EC212874D2A005E0D82 /* sparkle_dsa_pub.pem in Resources */,
@@ -1786,6 +1785,7 @@
 				2096FDC2139D36E800B79D46 /* GBRepositoryRemotesController.xib in Resources */,
 				201419F4142C8D0300AA55E8 /* GitboxLicense.txt in Resources */,
 				20BD5DCE143E2623003B4F2F /* GBToolbarMinus.png in Resources */,
+				20BD5DD5143E48AD003B4F2F /* GBRepositoryConfigController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1796,7 +1796,6 @@
 				209A963E11BC630C006B0B5C /* default_gitignore in Resources */,
 				2038F1B3119366660087CE37 /* InfoPlist.strings in Resources */,
 				2038F1B7119366960087CE37 /* MainMenu.xib in Resources */,
-				2058FA4811982F5100FB018D /* GBRemotesController.xib in Resources */,
 				20B8B83911A4A72A006D6442 /* GBPromptController.xib in Resources */,
 				2010732F11A7E9C300EFDE56 /* app.icns in Resources */,
 				2057F0D711ACF075009EDF2F /* sparkle_dsa_pub.pem in Resources */,
@@ -1863,6 +1862,7 @@
 				2096FDC3139D36E800B79D46 /* GBRepositoryRemotesController.xib in Resources */,
 				201419F3142C8D0300AA55E8 /* GitboxLicense.txt in Resources */,
 				20BD5DCD143E2623003B4F2F /* GBToolbarMinus.png in Resources */,
+				20BD5DD4143E48AD003B4F2F /* GBRepositoryConfigController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1897,7 +1897,6 @@
 				20915EE012874D2A005E0D82 /* NSArray+OAArrayHelpers.m in Sources */,
 				20915EE112874D2A005E0D82 /* NSAlert+OAAlertHelpers.m in Sources */,
 				20915EE212874D2A005E0D82 /* NSData+OADataHelpers.m in Sources */,
-				20915EE312874D2A005E0D82 /* GBRemotesController.m in Sources */,
 				20915EE412874D2A005E0D82 /* GBChange.m in Sources */,
 				20915EE512874D2A005E0D82 /* GBCommit.m in Sources */,
 				20915EE612874D2A005E0D82 /* GBRemote.m in Sources */,
@@ -2028,6 +2027,7 @@
 				2096FDBE139D323B00B79D46 /* GBRepositoryRemotesController.m in Sources */,
 				20106C5513D377060018A65F /* GitRepository.m in Sources */,
 				201419F9142CA60C00AA55E8 /* GitConfig.m in Sources */,
+				20BD5DD2143E483C003B4F2F /* GBRepositoryConfigController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2043,7 +2043,6 @@
 				2038F3E1119546E90087CE37 /* NSArray+OAArrayHelpers.m in Sources */,
 				2038F41D11954E000087CE37 /* NSAlert+OAAlertHelpers.m in Sources */,
 				2038F558119751150087CE37 /* NSData+OADataHelpers.m in Sources */,
-				2038F5BA119879FA0087CE37 /* GBRemotesController.m in Sources */,
 				2038F5F3119DB9CE0087CE37 /* GBChange.m in Sources */,
 				2038F604119DBBAB0087CE37 /* GBCommit.m in Sources */,
 				2038F67811A025AF0087CE37 /* GBRemote.m in Sources */,
@@ -2175,6 +2174,7 @@
 				2096FDBF139D323B00B79D46 /* GBRepositoryRemotesController.m in Sources */,
 				20106C5413D377060018A65F /* GitRepository.m in Sources */,
 				201419F8142CA60C00AA55E8 /* GitConfig.m in Sources */,
+				20BD5DD1143E483C003B4F2F /* GBRepositoryConfigController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
