@@ -115,7 +115,7 @@
 							<int key="NSCellFlags">-2080244224</int>
 							<int key="NSCellFlags2">134217728</int>
 							<string key="NSContents"/>
-							<object class="NSFont" key="NSSupport" id="176012487">
+							<object class="NSFont" key="NSSupport" id="822024185">
 								<string key="NSName">LucidaGrande-Bold</string>
 								<double key="NSSize">13</double>
 								<int key="NSfFlags">2072</int>
@@ -145,7 +145,7 @@
 							<int key="NSCellFlags">-2080244224</int>
 							<int key="NSCellFlags2">134217728</int>
 							<string key="NSContents"/>
-							<reference key="NSSupport" ref="176012487"/>
+							<reference key="NSSupport" ref="822024185"/>
 							<reference key="NSControlView" ref="521272524"/>
 							<int key="NSButtonFlags">-2031337217</int>
 							<int key="NSButtonFlags2">162</int>
@@ -225,6 +225,7 @@
 														<double key="NSSize">13</double>
 														<int key="NSfFlags">1044</int>
 													</object>
+													<string key="NSPlaceholderString">alias</string>
 													<reference key="NSControlView" ref="88184429"/>
 													<object class="NSColor" key="NSBackgroundColor" id="918202423">
 														<int key="NSColorSpace">6</int>
@@ -261,6 +262,7 @@
 													<int key="NSCellFlags2">2048</int>
 													<string key="NSContents">Text Cell</string>
 													<reference key="NSSupport" ref="630026045"/>
+													<string key="NSPlaceholderString">Address</string>
 													<reference key="NSControlView" ref="88184429"/>
 													<reference key="NSBackgroundColor" ref="918202423"/>
 													<reference key="NSTextColor" ref="8778168"/>
@@ -465,22 +467,6 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: arrangedObjects.URLString</string>
-						<reference key="source" ref="489195113"/>
-						<reference key="destination" ref="24399369"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="489195113"/>
-							<reference key="NSDestination" ref="24399369"/>
-							<string key="NSLabel">value: arrangedObjects.URLString</string>
-							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">arrangedObjects.URLString</string>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">32</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
 						<string key="label">value: arrangedObjects.alias</string>
 						<reference key="source" ref="176154716"/>
 						<reference key="destination" ref="24399369"/>
@@ -490,10 +476,34 @@
 							<string key="NSLabel">value: arrangedObjects.alias</string>
 							<string key="NSBinding">value</string>
 							<string key="NSKeyPath">arrangedObjects.alias</string>
+							<object class="NSDictionary" key="NSOptions">
+								<string key="NS.key.0">NSNullPlaceholder</string>
+								<string key="NS.object.0">alias</string>
+							</object>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
-					<int key="connectionID">34</int>
+					<int key="connectionID">37</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: arrangedObjects.URLString</string>
+						<reference key="source" ref="489195113"/>
+						<reference key="destination" ref="24399369"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="489195113"/>
+							<reference key="NSDestination" ref="24399369"/>
+							<string key="NSLabel">value: arrangedObjects.URLString</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">arrangedObjects.URLString</string>
+							<object class="NSDictionary" key="NSOptions">
+								<string key="NS.key.0">NSNullPlaceholder</string>
+								<string key="NS.object.0">address</string>
+							</object>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">41</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -749,7 +759,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">36</int>
+			<int key="maxID">41</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
