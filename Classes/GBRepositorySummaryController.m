@@ -141,8 +141,28 @@
 	{
 		NSLog(@"GBRepositorySummaryController: Error while reading .gitignore: %@", error);
 	}
+	else
+	{
+		NSArray* paths = [self.userInfo objectForKey:@"pathsForGitIgnore"];
+		
+		if (paths.count > 0)
+		{
+			gitignoreContents = [gitignoreContents stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+			NSUInteger length = gitignoreContents.length;
+			NSString* additionalSpace = (length > 0 ? @"\n" : @"");
+			NSString* appendix = [paths componentsJoinedByString:@"\n"];
+			gitignoreContents = [gitignoreContents stringByAppendingFormat:@"%@%@\n", additionalSpace, appendix];
+			[self.gitignoreTextView setString:gitignoreContents];
+			NSRange selectionRange = NSMakeRange(length + additionalSpace.length, appendix.length);
+			[self.gitignoreTextView setSelectedRange:selectionRange];
+			[self.gitignoreTextView scrollRangeToVisible:selectionRange];
+		}
+		else
+		{
+			[self.gitignoreTextView setString:gitignoreContents];
+		}
+	}
 	
-	[self.gitignoreTextView setString:gitignoreContents];
 	
 //	[self.repository.libgitRepository.config enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
 //		NSLog(@"Config: %@ => %@", key, obj);

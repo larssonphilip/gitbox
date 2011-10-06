@@ -13,6 +13,7 @@ NSString* const GBRepositorySettingsGitConfig       = @"GBRepositorySettingsGitC
 
 @interface GBRepositorySettingsController () <NSTabViewDelegate>
 @property(nonatomic, retain) NSArray* viewControllers;
+@property(nonatomic, retain, readwrite) NSMutableDictionary* userInfo;
 @property(nonatomic, assign, getter=isDirty) BOOL dirty;
 @property(nonatomic, assign, getter=areTabsPrepared) BOOL tabsPrepared;
 @property(nonatomic, assign, readwrite, getter=isDisabled) BOOL disabled;
@@ -23,6 +24,7 @@ NSString* const GBRepositorySettingsGitConfig       = @"GBRepositorySettingsGitC
 @implementation GBRepositorySettingsController
 
 @synthesize repository;
+@synthesize userInfo;
 @synthesize selectedTab;
 @synthesize cancelButton;
 @synthesize saveButton;
@@ -35,6 +37,7 @@ NSString* const GBRepositorySettingsGitConfig       = @"GBRepositorySettingsGitC
 - (void) dealloc
 {
 	[repository release]; repository = nil;
+	[userInfo release]; userInfo = nil;
 	[viewControllers release]; viewControllers = nil;
 	
 	[cancelButton release]; cancelButton = nil;
@@ -57,6 +60,7 @@ NSString* const GBRepositorySettingsGitConfig       = @"GBRepositorySettingsGitC
 	if ((self = [super initWithWindow:aWindow]))
 	{
 		selectedTab = [GBRepositorySettingsSummary copy];
+		self.userInfo = [NSMutableDictionary dictionary];
 	}
 	return self;
 }

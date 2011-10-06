@@ -70,6 +70,10 @@
 	[self.settingsController popDisabled];
 }
 
+- (NSMutableDictionary*) userInfo
+{
+	return self.settingsController.userInfo;
+}
 
 - (void) criticalConfirmationWithMessage:(NSString*)message description:(NSString*)desc ok:(NSString*)okOrNil completion:(void(^)(BOOL))completion
 {

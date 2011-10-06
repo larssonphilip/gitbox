@@ -12,6 +12,7 @@ extern NSString* const GBRepositorySettingsGitConfig;
 @interface GBRepositorySettingsController : GBWindowControllerWithCallback<NSWindowDelegate>
 
 @property(nonatomic, retain) GBRepository* repository;
+@property(nonatomic, retain, readonly) NSMutableDictionary* userInfo;
 @property(nonatomic, copy)   NSString* selectedTab;
 @property(nonatomic, retain) IBOutlet NSButton* cancelButton;
 @property(nonatomic, retain) IBOutlet NSButton* saveButton;

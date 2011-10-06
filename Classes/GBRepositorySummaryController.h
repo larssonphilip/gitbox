@@ -1,9 +1,6 @@
 #import "GBRepositorySettingsViewController.h"
 
-@interface GBRepositorySummaryController : GBRepositorySettingsViewController {
-	NSProgressIndicator *optimizeProgressIndicator;
-}
-
+@interface GBRepositorySummaryController : GBRepositorySettingsViewController
 
 @property(nonatomic, retain) IBOutlet NSTextField* pathLabel;
 @property(nonatomic, retain) IBOutlet NSTextField* originLabel;
