@@ -26,7 +26,6 @@ Gitbox 1.5 Release Notes
 
 Gitbox 1.5 misc items:
 
-- toolbar: allow to unset remote branch (useful when other branch has a lot of commits and clutters the history)
 - delete tag using right click on a commit
 - bug: when committing a file from a long list, scrollview is not scrolled to the very top
 - bug: history vc is shifted down after quickly entering non-existent string and cancelling
@@ -71,6 +70,8 @@ process is running and remove the file manually to continue.
 - history: push a single commit
 - stage: add option "Delete from stage only" for "git rm --force --cached <filepath>".
 - bug: file "Icon\r" was committed somehow.
+
++ toolbar: allow to unset remote branch (useful when other branch has a lot of commits and clutters the history)
 
 + when doing a commit checkout, select current local branch in the right branch menu so it is easier to compare and checkout later commits (especially during bisection search). - just allow checking out a local branch even if have only one (right now displays local branches if > 1)
 
