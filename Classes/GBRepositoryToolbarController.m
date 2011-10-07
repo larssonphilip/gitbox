@@ -580,7 +580,11 @@
 	
 	// Local branch for merging
 	
-	if ([repo.localBranches count] > 1)
+	// We display local branches in two cases:
+	// 1. We have more than one local branch.
+	// 2. Or we are not on any branch right now.
+	
+	if (repo.localBranches.count > 1 || !repo.currentLocalRef.name)
 	{
 		if (remoteBranchesMenu.itemArray.count > 1) // ignore dummy item
 		{
@@ -601,11 +605,11 @@
 			[item setAction:@selector(selectRemoteBranch:)];
 			[item setTarget:self];
 			[item setRepresentedObject:localBranch];
-			if ([localBranch isEqual:repo.currentRemoteBranch])
+			if (repo.currentRemoteBranch && [localBranch isEqual:repo.currentRemoteBranch])
 			{
 				[item setState:NSOnState];
 			}
-			if ([localBranch isEqual:repo.currentLocalRef])
+			if (repo.currentLocalRef && [localBranch isEqual:repo.currentLocalRef])
 			{
 				[item setEnabled:NO];
 				[item setAction:@selector(thisItemIsActuallyDisabled)];
