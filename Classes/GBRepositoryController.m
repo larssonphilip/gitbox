@@ -463,6 +463,7 @@
 - (void) selectRemoteBranch:(GBRef*) remoteBranch
 {
 	[self resetAutoFetchInterval];
+	
 	self.repository.currentRemoteBranch = remoteBranch;
 	[self.repository configureTrackingRemoteBranch:remoteBranch 
 									 withLocalName:self.repository.currentLocalRef.name 

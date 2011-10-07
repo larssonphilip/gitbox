@@ -804,6 +804,12 @@
 - (IBAction) selectRemoteBranch:(id)sender
 {
 	GBRef* remoteBranch = [sender representedObject];
+	
+	if (remoteBranch && [self.repositoryController.repository.currentRemoteBranch isEqual:remoteBranch])
+	{
+		remoteBranch = nil; // reset branch if selected current branch
+	}
+	
 	[self.repositoryController selectRemoteBranch:remoteBranch];
 }
 

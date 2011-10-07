@@ -10,6 +10,8 @@
 #import "GBLocalRefsTask.h"
 #import "GBSubmodulesTask.h"
 #import "GBStashListTask.h"
+#import "GitRepository.h"
+#import "GitConfig.h"
 
 #import "GBGitConfig.h"
 #import "GBAskPassController.h"
@@ -862,13 +864,21 @@
 {
 	block = [[block copy] autorelease];
 	
-	if (!ref || ![ref isRemoteBranch] || !name)
+	if ((ref && ![ref isRemoteBranch]) || !name)
 	{
 		if (block) block();
 		return;
 	}
 	
 	NSString* escapedName = [name stringWithEscapingConfigKeyPart];
+	
+	if (!ref)
+	{
+		[self.libgitRepository.config removeStringForKey:[NSString stringWithFormat:@"branch.%@.merge", escapedName]];
+		if (block) block();
+		return;
+	}
+	
 	//NSLog(@"escapedName = %@", escapedName);
 	[self.config setString:ref.remoteAlias
 					forKey:[NSString stringWithFormat:@"branch.%@.remote", escapedName] withBlock:^{
