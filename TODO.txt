@@ -25,8 +25,31 @@ Gitbox 1.5 Release Notes
 
 Gitbox 1.5 misc items:
 
-
 - warn before creating a commit when on detached head (not on a branch) (issue with Pierlo and submodules)
+- toolbar: allow to unset remote branch (useful when other branch has a lot of commits and clutters the history)
+- when doing a commit checkout, select current local branch in the right branch menu so it is easier to compare and checkout later commits (especially during bisection search). - just allow checking out a local branch even if have only one (right now displays local branches if > 1)
+- delete tag using right click on a commit
+- bug: when committing a file from a long list, scrollview is not scrolled to the very top
+- bug: history vc is shifted down after quickly entering non-existent string and cancelling
+- bug: askpass crashes with "task" selector when tries to update a repo with missing/invalid ssh key.
+- bug: search: keep selection when search ends.
+- bug: search: when commits are updated, the selected one does not show the proper view in the commitviewcontroller.
+- bug: when selected a collapsed group and added a folder, the selected group is not expanded
+- bug: stage: when having multiple selection and expanding it with keyboard, stage updates cause internal rest, so the selection does not change the same way when continuing pressing keystrokes. Should probably not replace stage content when it did not really change.
+- bug: when a file is committed, modified and in gitignore, it could be very hard to pull ("cannot merge, dirty working dir" error)
+
+- stage: right click menu: "file history" which inserts file path into search field
+- index.lock issue:
+
+fatal: Unable to create '/Users/oleganza/Work/gitbox/app/.git/index.lock': File exists.
+
+If no other git process is currently running, this probably means a
+git process crashed in this repository earlier. Make sure no other git
+process is running and remove the file manually to continue.
+
+
+
+--
 
 - feature: "uncommit" to quickly rollback non-pushed commit back to the working directory
 - feature: "amend commit" - see uncommit
@@ -38,40 +61,15 @@ Gitbox 1.5 misc items:
 		Classes/GBRepositorySummaryController.m: needs update
 		TODO.txt: needs update
 
-
-- bug: when committing a file from a long list, scrollview is not scrolled to the very top
 - bug/minor: when staging one of the same files, the last one is selected, not the one with the same name
-- bug: history vc is shifted down after quickly entering non-existent string and cancelling
 
 - stage: overlay view describing shortcuts to stage all
 - stage: cmd+click should select all
-- delete tag using right click on a commit
-- toolbar: allow to unset remote branch (useful when other branch has a lot of commits and clutters the history)
-
-- when doing a commit checkout, select current local branch in the right branch menu so it is easier to compare and checkout later commits (especially during bisection search). - just allow checking out a local branch even if have only one (right now displays local branches if > 1)
-
-- bug: search: keep selection when search ends.
-- bug: askpass crashes with "task" selector when tries to update a repo with missing/invalid ssh key.
 - bug: search: when parent commit is clicked it can be missing in the history. Should either not highlight it, or reset search state.
 - bug: (rare) suddenly the search field became disabled. See how enabling/disabling work across repo switching to fix it.
 - bug: maybe NSURL bookmark data becomes broken and leads to "outside of repository" errors.
-- bug: search: when commits are updated, the selected one does not show the proper view in the commitviewcontroller.
-- bug: when selected a collapsed group and added a folder, the selected group is not expanded
-- bug: stage: when having multiple selection and expanding it with keyboard, stage updates cause internal rest, so the selection does not change the same way when continuing pressing keystrokes. Should probably not replace stage content when it did not really change.
-- bug: when a file is committed, modified and in gitignore, it could be very hard to pull ("cannot merge, dirty working dir" error)
-
 - history: push a single commit
 - stage: add option "Delete from stage only" for "git rm --force --cached <filepath>".
-- stage: right click menu: "file history" which inserts file path into search field
-
-- index.lock issue:
-
-fatal: Unable to create '/Users/oleganza/Work/gitbox/app/.git/index.lock': File exists.
-
-If no other git process is currently running, this probably means a
-git process crashed in this repository earlier. Make sure no other git
-process is running and remove the file manually to continue.
-
 - bug: file "Icon\r" was committed somehow.
 
 + settings: bug: origin URL is cleared when saving after git-gc without going to the remotes settings.
