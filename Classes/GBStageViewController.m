@@ -60,6 +60,7 @@
 
 - (BOOL) validateCommit:(id)sender;
 - (BOOL) validateReallyCommit:(id)sender;
+- (BOOL) validateBranch;
 - (NSString*) validCommitMessage;
 - (void) validateUserNameAndEmailIfNeededWithBlock:(void(^)())block;
 
@@ -499,7 +500,7 @@
 
 - (BOOL) validateReallyCommit:(id)sender
 {
-	return [self validateCommit:sender] && [self validCommitMessage];
+	return [self validateCommit:sender] && [self validCommitMessage] && [self validateBranch];
 }
 
 - (NSString*) validCommitMessage
@@ -511,6 +512,28 @@
 		msg = nil;
 	}
 	return msg;
+}
+
+- (BOOL) validateBranch
+{
+//	NSString* message = NSLocalizedString(@"Please switch to a branch.", @"");
+	BOOL isValid = !!self.repositoryController.repository.currentLocalRef.name;
+//	if (isValid)
+//	{
+//		if ([self.rebaseStatusLabel.stringValue isEqualToString:message])
+//		{
+//			self.rebaseStatusLabel.stringValue = @"";
+//		}
+//	}
+//	else
+//	{
+//		//if (!self.rebaseStatusLabel.stringValue || [self.rebaseStatusLabel.stringValue isEqualToString:@""])
+//		{
+//			self.rebaseStatusLabel.stringValue = message;
+//			[self.rebaseStatusLabel setHidden:NO];
+//		}
+//	}
+	return isValid;
 }
 
 - (IBAction) previousMessage:(id)_
