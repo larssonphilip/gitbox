@@ -51,13 +51,17 @@ process is running and remove the file manually to continue.
 
 --
 
+- bottom bar: sidebar: plus button
+- bottom bar: sidebar: gear menu
+- bottom bar: sidebar: search by name
+
+- bottom bar: history: gear menu
+
 - bottom bar: stage: Stage All
 - bottom bar: stage: Unstage All
 - bottom bar: stage: Stash
 - bottom bar: stage: Quick Look
 - bottom bar: stage: Diff
-
-- bottom bar: history: gear menu
 
 - show stashes right in the history; menu: delete, apply
 - feature: "uncommit" to quickly rollback non-pushed commit back to the working directory
@@ -144,7 +148,12 @@ process is running and remove the file manually to continue.
 Gitbox 1.6:
 
 - change DO to unix domain sockets (or waiting for a file in specific location)
-- try sandbox 
+- bundle ssh
+- sign and add entitlements to git binaries
+- sign and add entitlements to ssh binaries
+- ask for hard disk access on startup
+- add entitlements to access ~/.ssh/
+- try sandbox
 
 
 Gitbox Next:
@@ -179,11 +188,11 @@ Features:
 - submodules: case 4: user clones the repo inside the repo => needs to display as a non-tracked submodule which can be tracked
 - submodules: case 5: user tries to commit a submodule which has the HEAD non-pushed (or dirty directory) - show warning or ask to push manually; show button "show module"
 
-- sidebar: "Duplicate..." menu item to make a quick clone + copy of .git/config.
+? sidebar: "Duplicate..." menu item to make a quick clone + copy of .git/config.
 - sidebar: double click opens item in finder (patraque 987)
-- sidebar: edit repo name and store it in .git/vendor/gitbox/info.plist
+- sidebar: edit repo name and store it in .git/vendor/gitbox/info.plist - too confusing? maybe just rename local folder?
 
-- general: svn support ('git svn clone', 'git svn rebase' and 'git svn dcommit')
+- general: svn support ('git svn clone', 'git svn rebase' and 'git svn dcommit') - see also e-mail conversation with some script which ports tags and branches
 - general: mercurial support
 - general: browse the server with SSH and select a repository
 - general: csv import support
