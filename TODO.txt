@@ -26,6 +26,7 @@ Gitbox 1.5 Release Notes
 Gitbox 1.5 misc items:
 
 - warn before creating a commit when on detached head (not on a branch) (issue with Pierlo and submodules)
+- check other uses of setNextResponder: in view controllers - should be unset in dealloc (sometimes undoManager messages go to dangling pointer)
 - toolbar: allow to unset remote branch (useful when other branch has a lot of commits and clutters the history)
 - when doing a commit checkout, select current local branch in the right branch menu so it is easier to compare and checkout later commits (especially during bisection search). - just allow checking out a local branch even if have only one (right now displays local branches if > 1)
 - delete tag using right click on a commit
