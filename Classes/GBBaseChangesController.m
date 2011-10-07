@@ -30,17 +30,17 @@
 
 - (void) dealloc
 {
-  [NSObject cancelPreviousPerformRequestsWithTarget:self];
-  [[NSNotificationCenter defaultCenter] removeObserver:self];
-  [commit release]; commit = nil;
-  
-  self.tableView = nil;
-  self.statusArrayController = nil;
-  self.headerView = nil;
-  [changes release]; changes = nil;
-  self.changesWithHeaderForBindings = nil;
-  self.quicklookPanel = nil;
-  [super dealloc];
+	[NSObject cancelPreviousPerformRequestsWithTarget:self];
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	[commit release]; commit = nil;
+	
+	self.tableView = nil;
+	self.statusArrayController = nil;
+	self.headerView = nil;
+	[changes release]; changes = nil;
+	self.changesWithHeaderForBindings = nil;
+	self.quicklookPanel = nil;
+	[super dealloc];
 }
 
 
@@ -51,30 +51,30 @@
 
 - (void) setRepositoryController:(GBRepositoryController*)repoCtrl
 {
-  if (repositoryController == repoCtrl) return;
-  
-  [repositoryController removeObserverForAllSelectors:self];
-  
-  repositoryController = repoCtrl;
-  
-  [repositoryController addObserverForAllSelectors:self];
-  
-  [self updateChanges];
+	if (repositoryController == repoCtrl) return;
+	
+	[repositoryController removeObserverForAllSelectors:self];
+	
+	repositoryController = repoCtrl;
+	
+	[repositoryController addObserverForAllSelectors:self];
+	
+	[self updateChanges];
 }
 
 
 - (void) setCommit:(GBCommit*)aCommit
 {
-  if (commit == aCommit) return;
-  
-  [commit removeObserverForAllSelectors:self];
-  
-  [commit release];
-  commit = [aCommit retain];
-
-  [commit addObserverForAllSelectors:self];
-
-  self.changes = commit.changes;
+	if (commit == aCommit) return;
+	
+	[commit removeObserverForAllSelectors:self];
+	
+	[commit release];
+	commit = [aCommit retain];
+	
+	[commit addObserverForAllSelectors:self];
+	
+	self.changes = commit.changes;
 }
 
 
@@ -86,9 +86,26 @@
 
 - (void) commitDidUpdateChanges:(GBCommit*)aCommit
 {
-  if (aCommit != self.commit) return;
-  self.changes = aCommit.changes;
+	if (aCommit != self.commit) return;
+	self.changes = aCommit.changes;
 }
+
+
+#pragma mark GBChangeDelegate
+
+
+- (void) stageChange:(GBChange*)aChange
+{	
+}
+
+- (void) unstageChange:(GBChange*)aChange
+{	
+}
+
+- (void) doubleClickChange:(GBChange*)aChange
+{
+}
+
 
 
 
@@ -100,41 +117,51 @@
 
 - (void) setChanges:(NSArray*)theChanges
 {
-  if (theChanges && changes == theChanges) return;
-  
-  [changes release];
-  changes = [theChanges retain];
-  
-  // Refusing first responder when empty causes problems with jumping into the pane before it loaded the items
-  // [self.tableView setRefusesFirstResponder:[changes count] < 1]; 
-  
-  [self updateChanges];
-  
-  // do we ever need that? [self.statusArrayController arrangeObjects:self.changes];
+	if (theChanges && changes == theChanges) return;
+	
+	for (GBChange* change in self.changes)
+	{
+		if (change.delegate == (id)self) change.delegate = nil;
+	}
+	
+	[changes release];
+	changes = [theChanges retain];
+	
+	for (GBChange* change in self.changes)
+	{
+		change.delegate = self;
+	}
+	
+	// Refusing first responder when empty causes problems with jumping into the pane before it loaded the items
+	// [self.tableView setRefusesFirstResponder:[changes count] < 1]; 
+	
+	[self updateChanges];
+	
+	// do we ever need that? [self.statusArrayController arrangeObjects:self.changes];
 }
 
 
 - (NSArray*) selectedChanges
 {
-  NSInteger clickedRow = [self.tableView clickedRow] - 1; // compensate for header view
-  if (clickedRow < 0)
-  {
-    return [self.statusArrayController selectedObjects];
-  }
-  else
-  {
-    // if clicked item is contained in selected objects, we take the selection
-    GBChange* clickedChange = [self.changes objectAtIndex:(NSUInteger)clickedRow];
-    NSArray* selectedChanges = [self.statusArrayController selectedObjects];
-    if ([selectedChanges containsObject:clickedChange])
-    {
-      return selectedChanges;
-    }
-    else
-    {
-      return [NSArray arrayWithObject:clickedChange];
-    }
-  }
+	NSInteger clickedRow = [self.tableView clickedRow] - 1; // compensate for header view
+	if (clickedRow < 0)
+	{
+		return [self.statusArrayController selectedObjects];
+	}
+	else
+	{
+		// if clicked item is contained in selected objects, we take the selection
+		GBChange* clickedChange = [self.changes objectAtIndex:(NSUInteger)clickedRow];
+		NSArray* selectedChanges = [self.statusArrayController selectedObjects];
+		if ([selectedChanges containsObject:clickedChange])
+		{
+			return selectedChanges;
+		}
+		else
+		{
+			return [NSArray arrayWithObject:clickedChange];
+		}
+	}
 }
 
 
@@ -142,16 +169,16 @@
 // override in subclass (optional)
 - (NSCell*) headerCell
 {
-  GBCellWithView* cell = [GBCellWithView cellWithView:self.headerView];
-  cell.verticalOffset = -[self.tableView intercellSpacing].height;
-  return cell;
+	GBCellWithView* cell = [GBCellWithView cellWithView:self.headerView];
+	cell.verticalOffset = -[self.tableView intercellSpacing].height;
+	return cell;
 }
 
 // override in subclass (optional)
 - (CGFloat) headerHeight
 {
-  if (!self.headerView) return 100.0;
-  return [self.headerView frame].size.height;
+	if (!self.headerView) return 100.0;
+	return [self.headerView frame].size.height;
 }
 
 
@@ -184,48 +211,48 @@
 dataCellForTableColumn:(NSTableColumn*)aTableColumn
                   row:(NSInteger)rowIndex
 {
-  if (rowIndex == 0)
-  {
-    if (!aTableColumn) // return a cell spanning all the columns
-    {
-      return [self headerCell];
-    }
-    else
-    {
-      return nil;
-    }
-  }
-  
-  if (!aTableColumn) return nil;
-  
-  rowIndex--; // adjust index for natural list of changes.
-  
-  GBChange* change = [self.changes objectAtIndex:rowIndex];
-  
-  if ([aTableColumn.identifier isEqualToString:@"pathStatus"])
-  {
-    //return [[[NSTextFieldCell alloc] initTextCell:[[change fileURL] relativePath]] autorelease];
-    return [change cell];
-  }
-  else if ([aTableColumn.identifier isEqualToString:@"staged"])
-  {
-    GBChangeCheckboxCell* checkBoxCell = [GBChangeCheckboxCell checkboxCell];
-    [checkBoxCell setRepresentedObject:change];
-    return checkBoxCell;
-  }
-  
-  NSAssert(NO, @"Unknown table column: %@", [aTableColumn identifier]);
-  return nil;
+	if (rowIndex == 0)
+	{
+		if (!aTableColumn) // return a cell spanning all the columns
+		{
+			return [self headerCell];
+		}
+		else
+		{
+			return nil;
+		}
+	}
+	
+	if (!aTableColumn) return nil;
+	
+	rowIndex--; // adjust index for natural list of changes.
+	
+	GBChange* change = [self.changes objectAtIndex:rowIndex];
+	
+	if ([aTableColumn.identifier isEqualToString:@"pathStatus"])
+	{
+		//return [[[NSTextFieldCell alloc] initTextCell:[[change fileURL] relativePath]] autorelease];
+		return [change cell];
+	}
+	else if ([aTableColumn.identifier isEqualToString:@"staged"])
+	{
+		GBChangeCheckboxCell* checkBoxCell = [GBChangeCheckboxCell checkboxCell];
+		[checkBoxCell setRepresentedObject:change];
+		return checkBoxCell;
+	}
+	
+	NSAssert(NO, @"Unknown table column: %@", [aTableColumn identifier]);
+	return nil;
 }
 
 - (CGFloat)tableView:(NSTableView *)tableView heightOfRow:(NSInteger)rowIndex
 {
-  if (rowIndex == 0)
-  {
-    return [self headerHeight];
-  }
-  rowIndex--;
-  return [GBChangeCell cellHeight];
+	if (rowIndex == 0)
+	{
+		return [self headerHeight];
+	}
+	rowIndex--;
+	return [GBChangeCell cellHeight];
 }
 
 - (NSString*) tableView:(NSTableView*)aTableView
@@ -235,31 +262,31 @@ dataCellForTableColumn:(NSTableColumn*)aTableColumn
                     row:(NSInteger)row 
           mouseLocation:(NSPoint)mouseLocation
 {
-//  if ([cell isKindOfClass:[GBChangeCell class]])
-//  {
-//    return [(GBCommitCell*)cell tooltipString];
-//  }
-  return nil;
+	//  if ([cell isKindOfClass:[GBChangeCell class]])
+	//  {
+	//    return [(GBCommitCell*)cell tooltipString];
+	//  }
+	return nil;
 }
 
 - (NSIndexSet *)tableView:(NSTableView *)aTableView selectionIndexesForProposedSelection:(NSIndexSet *)proposedSelectionIndexes
 {
-  return [proposedSelectionIndexes indexesPassingTest:^(NSUInteger index, BOOL* stop){
-    return (BOOL)(index != 0);
-  }];
+	return [proposedSelectionIndexes indexesPassingTest:^(NSUInteger index, BOOL* stop){
+		return (BOOL)(index != 0);
+	}];
 }
 
 - (void)tableViewSelectionDidChange:(NSNotification *)aNotification
 {
-  [[QLPreviewPanel sharedPreviewPanel] updateController];
-  [self.quicklookPanel reloadData];
+	[[QLPreviewPanel sharedPreviewPanel] updateController];
+	[self.quicklookPanel reloadData];
 }
 
 - (BOOL) tableView:(NSTableView*)aTableView writeRowsWithIndexes:(NSIndexSet*)indexSet toPasteboard:(NSPasteboard*)pasteboard
 {
-  NSArray* items = [[self.changesWithHeaderForBindings objectsAtIndexes:indexSet] valueForKey:@"pasteboardItem"];
-  [pasteboard writeObjects:items];
-  return YES;
+	NSArray* items = [[self.changesWithHeaderForBindings objectsAtIndexes:indexSet] valueForKey:@"pasteboardItem"];
+	[pasteboard writeObjects:items];
+	return YES;
 }
 
 
@@ -271,41 +298,41 @@ dataCellForTableColumn:(NSTableColumn*)aTableColumn
 
 - (IBAction) stageShowDifference:_
 {
-  [[[[self selectedChanges] firstObject] nilIfBusy] launchDiffWithBlock:^{
-    
-  }];
+	[[[[self selectedChanges] firstObject] nilIfBusy] launchDiffWithBlock:^{
+		
+	}];
 }
-  - (BOOL) validateStageShowDifference:_
-  {
+- (BOOL) validateStageShowDifference:_
+{
     if ([[self selectedChanges] count] != 1) return NO;
     return [[[[self selectedChanges] firstObject] nilIfBusy] validateShowDifference];
-  }
+}
 
 
 - (IBAction) stageRevealInFinder:_
 {
-  [[[[self selectedChanges] firstObject] nilIfBusy] revealInFinder];
+	[[[[self selectedChanges] firstObject] nilIfBusy] revealInFinder];
 }
-  - (BOOL) validateStageRevealInFinder:_
-  {
+- (BOOL) validateStageRevealInFinder:_
+{
     if ([[self selectedChanges] count] != 1) return NO;
     return [[[[self selectedChanges] firstObject] nilIfBusy] validateRevealInFinder];
-  }
+}
 
 
 - (IBAction) selectPane:(id)sender
 {
-  [[[self view] window] makeFirstResponder:self.tableView];
+	[[[self view] window] makeFirstResponder:self.tableView];
 }
 
 - (IBAction) selectLeftPane:(id)sender
 {
-  [[self nextResponder] tryToPerform:@selector(selectPreviousPane:) with:self];
+	[[self nextResponder] tryToPerform:@selector(selectPreviousPane:) with:self];
 }
 
 - (BOOL) validateSelectLeftPane:(id)sender
 {
-  return YES;
+	return YES;
 }
 
 - (IBAction) selectRightPane:(id)sender
@@ -314,17 +341,17 @@ dataCellForTableColumn:(NSTableColumn*)aTableColumn
 
 - (BOOL) validateSelectRightPane:(id)sender
 {
-  return NO;
+	return NO;
 }
 
 
 
 - (IBAction) selectFirstLineIfNeeded:(id)sender
 {
-  if (![[self selectedChanges] firstObject])
-  {
-    [self.statusArrayController setSelectionIndex:1];
-  }
+	if (![[self selectedChanges] firstObject])
+	{
+		[self.statusArrayController setSelectionIndex:1];
+	}
 }
 
 
@@ -337,7 +364,7 @@ dataCellForTableColumn:(NSTableColumn*)aTableColumn
 // If the selector is not implemented, returns YES.
 - (BOOL) validateUserInterfaceItem:(id<NSValidatedUserInterfaceItem>)anItem
 {
-  return [self dispatchUserInterfaceItemValidation:anItem];
+	return [self dispatchUserInterfaceItemValidation:anItem];
 }
 
 
@@ -350,29 +377,29 @@ dataCellForTableColumn:(NSTableColumn*)aTableColumn
 
 - (BOOL)acceptsPreviewPanelControl:(QLPreviewPanel *)panel;
 {
-  return YES;
+	return YES;
 }
 
 - (void)beginPreviewPanelControl:(QLPreviewPanel *)panel
 {
-  // This document is now responsible of the preview panel
-  // It is allowed to set the delegate, data source and refresh panel.
-  self.quicklookPanel = panel;
-  panel.delegate = self;
-  panel.dataSource = self;
+	// This document is now responsible of the preview panel
+	// It is allowed to set the delegate, data source and refresh panel.
+	self.quicklookPanel = panel;
+	panel.delegate = self;
+	panel.dataSource = self;
 }
 
 - (void)endPreviewPanelControl:(QLPreviewPanel *)panel
 {
-  // This document loses its responsisibility on the preview panel
-  // Until the next call to -beginPreviewPanelControl: it must not
-  // change the panel's delegate, data source or refresh it.
-  self.quicklookPanel = nil;
-  if (panel.delegate == self)
-  {
-    panel.delegate = nil;
-    panel.dataSource = nil;
-  }
+	// This document loses its responsisibility on the preview panel
+	// Until the next call to -beginPreviewPanelControl: it must not
+	// change the panel's delegate, data source or refresh it.
+	self.quicklookPanel = nil;
+	if (panel.delegate == self)
+	{
+		panel.delegate = nil;
+		panel.dataSource = nil;
+	}
 }
 
 
@@ -385,25 +412,25 @@ dataCellForTableColumn:(NSTableColumn*)aTableColumn
 
 - (NSInteger)numberOfPreviewItemsInPreviewPanel:(QLPreviewPanel *)panel
 {
-  return [[self selectedChanges] count];
+	return [[self selectedChanges] count];
 }
 
 - (id<QLPreviewItem>)previewPanel:(QLPreviewPanel *)panel previewItemAtIndex:(NSInteger)index
 {
-  GBChange* change = [[self selectedChanges] objectAtIndex:index];
-  id<QLPreviewItem> item = [change QLPreviewItem];
-  if (![item previewItemURL])
-  {
-    [change prepareQuicklookItemWithBlock:^(BOOL didExtractFile){
-      if (didExtractFile)
-      {
-        //NSLog(@"RELOADING QUICKLOOK WITH URL: %@", [item previewItemURL]);
-        [self.quicklookPanel refreshCurrentPreviewItem];
-      }
-    }];
-  }
-  //NSLog(@"RETURNING URL FOR QUICKLOOK: %@", [item previewItemURL]);
-  return item;
+	GBChange* change = [[self selectedChanges] objectAtIndex:index];
+	id<QLPreviewItem> item = [change QLPreviewItem];
+	if (![item previewItemURL])
+	{
+		[change prepareQuicklookItemWithBlock:^(BOOL didExtractFile){
+			if (didExtractFile)
+			{
+				//NSLog(@"RELOADING QUICKLOOK WITH URL: %@", [item previewItemURL]);
+				[self.quicklookPanel refreshCurrentPreviewItem];
+			}
+		}];
+	}
+	//NSLog(@"RETURNING URL FOR QUICKLOOK: %@", [item previewItemURL]);
+	return item;
 }
 
 
@@ -417,51 +444,51 @@ dataCellForTableColumn:(NSTableColumn*)aTableColumn
 
 - (BOOL)previewPanel:(QLPreviewPanel *)panel handleEvent:(NSEvent *)event
 {
-  // redirect all key down events to the table view
-  if ([event type] == NSKeyDown)
-  {
-    [self.tableView keyDown:event];
-    return YES;
-  }
-  return NO;
+	// redirect all key down events to the table view
+	if ([event type] == NSKeyDown)
+	{
+		[self.tableView keyDown:event];
+		return YES;
+	}
+	return NO;
 }
 
 // This delegate method provides the rect on screen from which the panel will zoom.
 - (NSRect)previewPanel:(QLPreviewPanel *)panel sourceFrameOnScreenForPreviewItem:(id <QLPreviewItem>)item
 {
-  NSUInteger index = [[self changes] indexOfObject:item];
-  
-  if (index == NSNotFound)
-  {
-    return NSZeroRect;
-  }
-  
-  NSRect rowRect = [self.tableView frameOfCellAtColumn:0 row:(index + 1)]; // +1 for the embedded header
-  
-  // check that the icon rect is visible on screen
-  NSRect visibleRect = [self.tableView visibleRect];
-  
-  if (!NSIntersectsRect(visibleRect, rowRect))
-  {
-    return NSZeroRect;
-  }
-  
-  // convert icon rect to screen coordinates
-  rowRect = [self.tableView convertRectToBase:rowRect];
-  rowRect.origin = [[self.tableView window] convertBaseToScreen:rowRect.origin];
-  
-  NSRect imageRect = rowRect;
-  imageRect.size.width = 16.0;
-  imageRect.origin.x += 4.0;
-  
-  return imageRect;
+	NSUInteger index = [[self changes] indexOfObject:item];
+	
+	if (index == NSNotFound)
+	{
+		return NSZeroRect;
+	}
+	
+	NSRect rowRect = [self.tableView frameOfCellAtColumn:0 row:(index + 1)]; // +1 for the embedded header
+	
+	// check that the icon rect is visible on screen
+	NSRect visibleRect = [self.tableView visibleRect];
+	
+	if (!NSIntersectsRect(visibleRect, rowRect))
+	{
+		return NSZeroRect;
+	}
+	
+	// convert icon rect to screen coordinates
+	rowRect = [self.tableView convertRectToBase:rowRect];
+	rowRect.origin = [[self.tableView window] convertBaseToScreen:rowRect.origin];
+	
+	NSRect imageRect = rowRect;
+	imageRect.size.width = 16.0;
+	imageRect.origin.x += 4.0;
+	
+	return imageRect;
 }
 
 // This delegate method provides a transition image between the table view and the preview panel
 - (id)previewPanel:(QLPreviewPanel *)panel transitionImageForPreviewItem:(id <QLPreviewItem>)item contentRect:(NSRect *)contentRect
 {
-  GBChange* aChange = (GBChange*)item;
-  return [aChange icon];
+	GBChange* aChange = (GBChange*)item;
+	return [aChange icon];
 }
 
 

@@ -3,10 +3,11 @@
 
 #import <Quartz/Quartz.h>
 #import <QuickLook/QuickLook.h>
+#import "GBChangeDelegate.h"
 
 @class GBRepositoryController;
 @class GBCommit;
-@interface GBBaseChangesController : NSViewController<NSTableViewDelegate, NSUserInterfaceValidations, QLPreviewPanelDataSource, QLPreviewPanelDelegate>
+@interface GBBaseChangesController : NSViewController<NSTableViewDelegate, NSUserInterfaceValidations, QLPreviewPanelDataSource, QLPreviewPanelDelegate, GBChangeDelegate>
 
 // Public API
 
