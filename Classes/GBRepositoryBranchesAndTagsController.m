@@ -117,9 +117,9 @@
 	}];
 }
 
-- (void) viewDidAppear
+- (void) viewDidLoad
 {
-	[super viewDidAppear];
+	[super viewDidLoad];
 	
 	self.branchesBinding = [[self.repository.localBranches mutableCopy] autorelease];
 	self.tagsBinding = [[self.repository.tags mutableCopy] autorelease];

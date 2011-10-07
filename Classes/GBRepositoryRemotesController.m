@@ -42,9 +42,9 @@
 	[self syncRemotesDictionariesWithRepository];
 }
 
-- (void) viewDidAppear
+- (void) viewDidLoad
 {
-	[super viewDidAppear];
+	[super viewDidLoad];
 	
 	self.remotesDictionaries = [self remotesDictionariesForRepository:self.repository];
 }

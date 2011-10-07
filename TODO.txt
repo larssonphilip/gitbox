@@ -3,8 +3,8 @@ Gitbox 1.5 Release Notes
 ✓ Sidebar progress indicators for push, pull, fetch and clone.
 ✓ Stage All menu command with Command+Shift+Return shortcut.
 ✓ Highlighted links in commit messages.
-✓ Support for "Clone in Mac" button on Github (github-mac://)
-✓ Unified Repository Settings with quick access to URL, ignored files, editing of branches and tags
+✓ Support for "Clone in Mac" button on Github (github-mac://).
+✓ Single view for editing branches and tags.
 
 ✓ Files are sorted by natural order (2.txt comes before 10.txt)
 ✓ Support for both overlay and legacy scrollbars in OS X Lion.
@@ -25,6 +25,7 @@ Gitbox 1.5 Release Notes
 
 Gitbox 1.5 misc items:
 
+
 - warn before creating a commit when on detached head (not on a branch) (issue with Pierlo and submodules)
 
 - feature: "uncommit" to quickly rollback non-pushed commit back to the working directory
@@ -41,23 +42,6 @@ Gitbox 1.5 misc items:
 - bug: when committing a file from a long list, scrollview is not scrolled to the very top
 - bug/minor: when staging one of the same files, the last one is selected, not the one with the same name
 - bug: history vc is shifted down after quickly entering non-existent string and cancelling
-
-+ settings/summary: set dirty flag when remote URLs are updated
-+ settings/summary: set dirty flag when .gitignore content is updated
-+ settings/summary: push/pop disabled when doing long-running op.
-+ settings/summary: save edited remote URLs
-+ settings/summary: save .gitignore
-+ settings/summary: calculate number of commits and contributors
-+ settings/summary: calculate number of commits for all branches, not just the current one
-+ settings/branches: display better headers.
-+ settings/branches: maybe show remote branches too.
-
-+ settings/servers: single table with two columns - alias and URL.
-+ settings/servers: show placeholders for new entry or focus into it. 
-+ settings: open new settings window for "Ignore file..." command.
-+ settings/advanced: show a text view with .git/config contents
-
-+ toolbar: add "Edit Servers..." menu item to the right branch selector, should open settings/servers
 
 - stage: overlay view describing shortcuts to stage all
 - stage: cmd+click should select all
@@ -89,6 +73,26 @@ git process crashed in this repository earlier. Make sure no other git
 process is running and remove the file manually to continue.
 
 - bug: file "Icon\r" was committed somehow.
+
++ settings: bug: origin URL is cleared when saving after git-gc without going to the remotes settings.
+
++ settings/summary: set dirty flag when remote URLs are updated
++ settings/summary: set dirty flag when .gitignore content is updated
++ settings/summary: push/pop disabled when doing long-running op.
++ settings/summary: save edited remote URLs
++ settings/summary: save .gitignore
++ settings/summary: calculate number of commits and contributors
++ settings/summary: calculate number of commits for all branches, not just the current one
++ settings/branches: display better headers.
++ settings/branches: maybe show remote branches too.
+
++ settings/servers: single table with two columns - alias and URL.
++ settings/servers: show placeholders for new entry or focus into it. 
++ settings: open new settings window for "Ignore file..." command.
++ settings/advanced: show a text view with .git/config contents
+
++ toolbar: add "Edit Servers..." menu item to the right branch selector, should open settings/servers
+
 
 + bug: when tag is deleted, it is not removed from the server (should push-remove too)
 + bug: double click on multiple files opens FileMerge window per file.
