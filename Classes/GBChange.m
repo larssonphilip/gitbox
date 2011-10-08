@@ -466,7 +466,7 @@
 
 - (BOOL) validateShowDifference
 {
-	NSLog(@"TODO: validateShowDifference: validate availability of the diff tool");
+	//NSLog(@"TODO: validateShowDifference: validate availability of the diff tool");
 	if ([self isDeletedFile]) return NO;
 	if ([self isUntrackedFile]) return NO;
 	if (![self.srcRevision nonZeroCommitId]) return NO;
