@@ -239,7 +239,8 @@
 	rect2.origin.x += 2;
 	rect2.origin.y += 3;
 	rect2.size.height -= 3;
-	rect2.size.width -= [GBLightScroller width] + 1; // make some room for scrollbar
+		
+	rect2.size.width -= ([GBLightScroller isModernScroller] ? 5.0 : ([GBLightScroller width] + 1.0));
 	
 	return rect2;
 }
