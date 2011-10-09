@@ -26,7 +26,7 @@ Gitbox 1.5 Release Notes
 
 Gitbox 1.5 misc items:
 
-- leaks on loading stage items and committed changes
+≠ leaks on loading stage items and committed changes [was due NSZombies enabled]
 - delete tag using right click on a commit
 - bug: when committing a file from a long list, scrollview is not scrolled to the very top
 - bug: history vc is shifted down after quickly entering non-existent string and cancelling
