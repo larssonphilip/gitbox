@@ -237,6 +237,14 @@
 
 
 
+#pragma mark GBRepositoryController
+
+
+- (void) repositoryControllerDidUpdateStageChanges:(GBRepositoryController*)repoCtrl
+{
+	self.changes = repoCtrl.repository.stage.changes;
+}
+
 
 
 

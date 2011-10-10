@@ -1825,10 +1825,11 @@
 		isLoadingChanges++;
 		[self.repository.stage loadChangesWithBlock:^{
 			//[self.repository.stage loadChangesWithBlock:^{
-				isLoadingChanges--;
 				[self updateSubmodulesWithBlock:^{
+					isLoadingChanges--;
 					self.isLoadedStageChangesOnce = YES;
 					[self.blockTable callBlockForName:@"loadStageChanges"];
+					[self notifyWithSelector:@selector(repositoryControllerDidUpdateStageChanges:)];
 				}];
 				[self.sidebarItem update];
 				[self popFSEventsPause];
