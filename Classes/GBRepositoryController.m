@@ -481,12 +481,6 @@
 	[self removeRefs:[NSArray arrayWithObject:ref]];
 }
 
-- (NSUndoManager*) undoManager
-{
-	NSLog(@"Asked for undoManager");
-	return [[undoManager retain] autorelease];
-}
-
 - (void) removeRefs:(NSArray*)refs
 {
 	if (refs.count == 0) return;
