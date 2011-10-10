@@ -35,13 +35,16 @@ Gitbox 1.5 misc items:
 ± bug: search: keep selection when search ends. [looks like it works just right, no?]
 + stage: right click menu: "file history" which inserts file path into search field
 
-- bug: after staging some files, we sometimes lose updates and UI is not updated with enabled checkboxes or their correct state.
-- bug: search: when commits are updated, the selected one does not show the proper view in the commitviewcontroller.
+± bug: after staging some files, we sometimes lose updates and UI is not updated with enabled checkboxes or their correct state. [seems like fixed with additional notification]
+
 - bug: when selected a collapsed group and added a folder, the selected group is not expanded
 - bug: askpass crashes with "task" selector when tries to update a repo with missing/invalid ssh key.
 - bug: stage: when having multiple selection and expanding it with keyboard, stage updates cause internal rest, so the selection does not change the same way when continuing pressing keystrokes. Should probably not replace stage content when it did not really change.
+
 - bug: when a file is committed, modified and in gitignore, it could be very hard to pull ("cannot merge, dirty working dir" error)
 
+
+- bug: search: when commits are updated, the selected one does not show the proper view in the commitviewcontroller. [not important]
 
 - index.lock issue:
 
