@@ -27,9 +27,9 @@ Gitbox 1.5 Release Notes
 Gitbox 1.5 misc items:
 
 ≠ leaks on loading stage items and committed changes [was due NSZombies enabled]
-- delete tag using right click on a commit
-- bug: when committing a file from a long list, scrollview is not scrolled to the very top
++ delete tag using right click on a commit
 - bug: history vc is shifted down after quickly entering non-existent string and cancelling
+- bug: when committing a file from a long list, scrollview is not scrolled to the very top
 - bug: askpass crashes with "task" selector when tries to update a repo with missing/invalid ssh key.
 - bug: search: keep selection when search ends.
 - bug: search: when commits are updated, the selected one does not show the proper view in the commitviewcontroller.
@@ -228,7 +228,7 @@ Features:
 - history: add "load more" cell in the bottom of the log
 - history: show branch/tag names in history using "label" (+color in green/blue to connect with green/blue "pills")
 - history: branch badges in history
-- history: create a tag + undo
++ history: create a tag + undo
 
 - search: recognized pasted file path (with or without file:// prefix)
 - search: load total count of commits to be scanned to present a progress circle instead of a spinner
