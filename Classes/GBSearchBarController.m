@@ -143,10 +143,11 @@
 	}
 	
 	CGFloat searchBarHeight = self.view.frame.size.height;
+	CGFloat containerHeight = self.view.superview.frame.size.height;
 	
 	// move off-screen
 	NSPoint newOrigin = self.view.frame.origin;
-	if (visible)  newOrigin.y = [self.view superview].frame.size.height;
+	if (visible)  newOrigin.y = containerHeight;
 	[self.view setFrameOrigin:newOrigin];
 	[self.view setHidden:NO];
 	
@@ -165,9 +166,10 @@
 		}
 		// slide down or up
 		[NSAnimationContext beginGrouping];
-		[[NSAnimationContext currentContext] setDuration: 0.1];
+		NSTimeInterval duration = 0.05;
+		[[NSAnimationContext currentContext] setDuration: duration];
+				
 		[[self.view animator] setFrameOrigin:newOrigin];
-		// shrink or grow the contentView
 		[[self.contentView animator] setFrameSize:newSize];
 		
 		if ([[NSAnimationContext currentContext] respondsToSelector:@selector(setCompletionHandler:)])
