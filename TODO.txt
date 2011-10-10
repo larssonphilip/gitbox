@@ -6,7 +6,7 @@ Gitbox 1.5 Release Notes
 ✓ Support for "Clone in Mac" button on Github (github-mac://).
 ✓ Single view for editing branches and tags.
 
-✓ Files are sorted by natural order (2.txt comes before 10.txt)
+✓ Files are sorted in natural order (2.txt comes before 10.txt)
 ✓ Support for both overlay and legacy scrollbars in OS X Lion.
 ✓ Added menu command to remove all stashes.
 ✓ Updated bundled Git to version 1.7.5.4.
@@ -21,6 +21,7 @@ Gitbox 1.5 Release Notes
 ✓ Fixed rare bug with incorrect user picture loading.
 ✓ Fixed crashes in history parser.
 ✓ Fixed crash when trying to launch missing diff tool.
+✓ Fixed multiple animation bugs on Lion.
 
 --
 
@@ -28,8 +29,9 @@ Gitbox 1.5 misc items:
 
 ≠ leaks on loading stage items and committed changes [was due NSZombies enabled]
 + delete tag using right click on a commit
-- bug: history vc is shifted down after quickly entering non-existent string and cancelling
-- bug: when committing a file from a long list, scrollview is not scrolled to the very top
+± bug: history vc is shifted down after quickly entering non-existent string and cancelling [alleviated by faster animation]
++ bug: when committing a file from a long list, scrollview is not scrolled to the very top
+- bug: after staging some files, we sometimes lose updates and UI is not updated with enabled checkboxes or their correct state.
 - bug: askpass crashes with "task" selector when tries to update a repo with missing/invalid ssh key.
 - bug: search: keep selection when search ends.
 - bug: search: when commits are updated, the selected one does not show the proper view in the commitviewcontroller.

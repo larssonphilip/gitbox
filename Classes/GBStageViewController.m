@@ -664,7 +664,9 @@
 		self.stage.currentCommitMessage = @"";
 	}
 	[self updateHeaderSizeAnimating:YES];
-	[self.tableView scrollToBeginningOfDocument:nil];
+	
+	// Scrolls in animation helper, see below.
+	//[self.tableView scrollToBeginningOfDocument:nil];
 	
 	// before we made a commit, lets try to fetch updates from the server so that user can avoid making a commit before pulling.
 	[self.repositoryController updateRemoteRefs];
@@ -1060,6 +1062,17 @@
 		self.controller.headerCell.isViewManagementDisabled = NO;
 		[[self.controller.tableView enclosingScrollView] setFrame:[self.controller.view bounds]];
 		[self.controller.tableView noteHeightOfRowsWithIndexesChanged:[NSIndexSet indexSetWithIndex:0]];
+		
+		if (self.controller.commitButton.isHidden == NO)
+		{
+			NSTableView* aTableView = self.controller.tableView;
+			double delayInSeconds = 0.1;
+			dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+			dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+				[aTableView scrollToBeginningOfDocument:nil];
+			});
+			
+		}
 		self.controller.headerAnimation = nil;
 		self.controller = nil; // detach controller so we don't modify it accidentally
 		//NSLog(@"%d: headerView frame = %@", __LINE__, NSStringFromRect(self.controller.headerView.frame));
@@ -1097,7 +1110,7 @@
 		
 		self.controller.overridenHeaderHeight = self.headerFrame.size.height;
 		
-		self.tableViewFrame = [[self.controller view] bounds];
+		self.tableViewFrame = self.controller.view.bounds;
 		
 		{
 			NSRect f = self.tableViewFrame;
