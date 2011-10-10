@@ -513,7 +513,7 @@
 
 - (void) windowDidBecomeKey:(NSNotification *)notification
 {
-	if (self.selectedWindowItem && [self.selectedWindowItem respondsToSelector:@selector(windowDidBecomeKey)])
+	if ([self.selectedWindowItem respondsToSelector:@selector(windowDidBecomeKey)])
 	{
 		[self.selectedWindowItem windowDidBecomeKey];
 	}
@@ -522,6 +522,16 @@
 - (void) windowDidResignKey:(NSNotification *)notification
 {
 }
+
+- (NSUndoManager *)windowWillReturnUndoManager:(NSWindow *)window
+{
+	if ([self.selectedWindowItem respondsToSelector:@selector(undoManager)])
+	{
+		return self.selectedWindowItem.undoManager;
+	}
+	return nil;
+}
+
 
 
 
