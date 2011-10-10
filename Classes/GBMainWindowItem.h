@@ -9,4 +9,5 @@
 - (void) willDeselectWindowItem;
 - (void) didSelectWindowItem;
 - (void) windowDidBecomeKey;
+- (NSUndoManager*) undoManager;
 @end
