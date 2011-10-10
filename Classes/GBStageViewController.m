@@ -44,6 +44,7 @@
 @property(nonatomic, retain) GBCellWithView* headerCell;
 @property(nonatomic, retain) GBStageShortcutHintDetector* shortcutHintDetector;
 @property(nonatomic, retain) GBStageMessageHistoryController* messageHistoryController;
+@property(nonatomic, retain) NSUndoManager* textViewUndoManager;
 @property(nonatomic, assign) BOOL alreadyValidatedUserNameAndEmail;
 @property(nonatomic, assign) CGFloat overridenHeaderHeight;
 
@@ -79,6 +80,7 @@
 @synthesize shortcutHintLabel;
 @synthesize shortcutHintDetector;
 @synthesize messageHistoryController;
+@synthesize textViewUndoManager;
 
 @synthesize rebaseStatusLabel;
 @synthesize rebaseCancelButton;
@@ -106,6 +108,7 @@
 	self.shortcutHintDetector.view = nil;
 	self.shortcutHintDetector = nil;
 	self.messageHistoryController = nil;
+	self.textViewUndoManager = nil;
 	
 	self.rebaseStatusLabel = nil;
 	self.rebaseCancelButton = nil;
@@ -646,6 +649,15 @@
 
 #pragma mark NSTextViewDelegate
 
+
+- (NSUndoManager*) undoManagerForTextView:(NSTextView *)aTextView
+{
+	if (!self.textViewUndoManager)
+	{
+		self.textViewUndoManager = [[[NSUndoManager alloc] init] autorelease];
+	}
+	return self.textViewUndoManager;
+}
 
 - (void) textView:(NSTextView*)aTextView willBecomeFirstResponder:(BOOL)result
 {
