@@ -56,7 +56,8 @@
 - (void) checkoutRef:(GBRef*) ref;
 - (void) checkoutRef:(GBRef*) ref withNewName:(NSString*)name;
 - (void) checkoutNewBranchWithName:(NSString*)name commit:(GBCommit*)aCommit;
-- (void) createNewTagWithName:(NSString*)name commit:(GBCommit*)aCommit;
+- (void) createTagWithName:(NSString*)name commitId:(NSString*)commitId;
+- (void) deleteTagWithName:(NSString*)tagName commitId:(NSString*)commitId;
 - (void) selectRemoteBranch:(GBRef*) remoteBranch;
 - (void) createAndSelectRemoteBranchWithName:(NSString*)name remote:(GBRemote*)aRemote;
 
@@ -71,6 +72,8 @@
 - (void) commitWithMessage:(NSString*)message;
 
 - (void) addOpenMenuItemsToMenu:(NSMenu*)aMenu;
+
+- (void) removeRefs:(NSArray*)refs;
 
 - (IBAction) fetch:(id)sender;
 - (IBAction) pull:(id)sender;
@@ -102,15 +105,12 @@
 - (IBAction) applyAsPatchCommit:(NSMenuItem*)sender;
 - (IBAction) resetBranchToCommit:(NSMenuItem*)sender;
 
+- (IBAction) newTag:(id)sender;
+- (IBAction) deleteTag:(id)sender;
 
 - (IBAction) openSettings:(id)sender;
 - (IBAction) editBranchesAndTags:(id)sender;
-
-// will be obsolete when settings UI is done
 - (IBAction) editRemotes:(id)sender;
-- (IBAction) editGitIgnore:(id)sender;
-- (IBAction) editGitConfig:(id)sender;
-
 
 - (IBAction) performFindPanelAction:(id)sender; // standard selector for cmd+F, cmd+G, cmd+E etc.
 - (IBAction) search:(id)sender; // posts notification repositoryControllerSearchDidStart:

@@ -2,6 +2,7 @@
 #import "GBStage.h"
 #import "GBRepository.h"
 #import "GBStash.h"
+#import "GBRef.h"
 
 #import "GBRepositoryController.h"
 #import "GBToolbarController.h"
@@ -233,6 +234,12 @@
 	self.visibleCommits = [self.repositoryController visibleCommits];
 	[self.searchBarController setVisible:[self.repositoryController isSearching] animated:NO];
 	self.searchBarController.resultsCount = [[self.repositoryController searchResults] count];
+	[self.tableView setNeedsDisplay:YES];
+}
+
+- (void) repositoryControllerDidUpdateRefs:(GBRepositoryController*)repoCtrl
+{
+	[self.tableView setNeedsDisplay:YES];
 }
 
 - (void) repositoryControllerDidSelectCommit:(GBRepositoryController*)repoCtrl
@@ -368,6 +375,33 @@
 	[aMenu addItem:[NSMenuItem menuItemWithTitle:NSLocalizedString(@"New Tag...", @"Sidebar") 
 										  action:@selector(newTag:) 
 										  object:aCommit]];
+	
+	NSArray* tags = aCommit.tags;
+	
+	if (tags.count > 0)
+	{
+		if (tags.count == 1)
+		{
+			GBRef* tag = [tags objectAtIndex:0];
+			[aMenu addItem:[NSMenuItem menuItemWithTitle:[NSString stringWithFormat:NSLocalizedString(@"Delete Tag %@...", @"Sidebar"), tag.name]
+												  action:@selector(deleteTag:)
+												  object:tag]];
+		}
+		else
+		{
+			NSString* submenuTitle = NSLocalizedString(@"Delete Tag", @"");
+			NSMenu* submenu = [[[NSMenu alloc] initWithTitle:submenuTitle] autorelease];
+			
+			for (GBRef* aTag in tags)
+			{
+				[submenu addItem:[NSMenuItem menuItemWithTitle:aTag.name
+														action:@selector(deleteTag:)
+														object:aTag]];
+			}
+			NSMenuItem* submenuItem = [NSMenuItem menuItemWithTitle:submenuTitle submenu:submenu];
+			[aMenu addItem:submenuItem];
+		}
+	}
 	
 	[aMenu addItem:[NSMenuItem menuItemWithTitle:NSLocalizedString(@"New Branch...", @"Sidebar") 
 										  action:@selector(newBranch:) 

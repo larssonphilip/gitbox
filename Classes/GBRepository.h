@@ -90,7 +90,7 @@
 - (void) checkoutRef:(GBRef*)ref withBlock:(void(^)())block;
 - (void) checkoutRef:(GBRef*)ref withNewName:(NSString*)name block:(void(^)())block;
 - (void) checkoutNewBranchWithName:(NSString*)name commit:(GBCommit*)aCommit block:(void(^)())block;
-- (void) createNewTagWithName:(NSString*)name commit:(GBCommit*)aCommit block:(void(^)())block;
+- (void) createTagWithName:(NSString*)name commitId:(NSString*)aCommitId block:(void(^)())block;
 
 - (void) commitWithMessage:(NSString*) message block:(void(^)())block;
 

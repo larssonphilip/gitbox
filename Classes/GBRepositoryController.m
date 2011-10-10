@@ -68,6 +68,8 @@
 @property(nonatomic, retain, readwrite) NSArray* searchResults; // list of found commits; setter posts a notification
 @property(nonatomic, retain) GBSearch* currentSearch;
 
+@property(nonatomic, retain) NSUndoManager* undoManager;
+
 - (NSImage*) icon;
 
 - (void) pushDisabled;
@@ -140,6 +142,7 @@
 @synthesize currentSearch;
 @synthesize searchProgress;
 
+@synthesize undoManager;
 
 - (void) dealloc
 {
@@ -168,6 +171,7 @@
 	currentSearch.target = nil;
 	[currentSearch cancel];
 	[currentSearch release]; currentSearch = nil;
+	[undoManager release]; undoManager = nil;
 	[super dealloc];
 }
 
@@ -192,6 +196,7 @@
 		self.selectedCommit = self.repository.stage;
 		self.folderMonitor = [[[GBFolderMonitor alloc] init] autorelease];
 		self.folderMonitor.path = [[aURL path] stringByStandardizingPath];
+		self.undoManager = [[[NSUndoManager alloc] init] autorelease];
 	}
 	return self;
 }
@@ -203,6 +208,7 @@
 	[repository removeObserverForAllSelectors:self];
 	[repository release];
 	repository = [aRepository retain];
+	self.undoManager = [[[NSUndoManager alloc] init] autorelease];
 	[repository.stage addObserverForAllSelectors:self];
 	[repository addObserverForAllSelectors:self];
 }
@@ -451,13 +457,85 @@
 	}];
 }
 
-- (void) createNewTagWithName:(NSString*)name commit:(GBCommit*)aCommit
+- (void) createTagWithName:(NSString*)tagName commitId:(NSString*)commitId
 {
+	[[self.undoManager prepareWithInvocationTarget:self] deleteTagWithName:tagName commitId:commitId];
+	[self.undoManager setActionName:[NSString stringWithFormat:NSLocalizedString(@"New Tag %@", @""), tagName]];
 	[self resetAutoFetchInterval];
 	[self checkoutHelper:^(void(^block)()){
-		[self.repository createNewTagWithName:name commit:aCommit block:block];
+		[self.repository createTagWithName:tagName commitId:commitId block:block];
 	}];
 }
+
+- (void) deleteTagWithName:(NSString*)tagName commitId:(NSString*)commitId
+{
+	[[self.undoManager prepareWithInvocationTarget:self] createTagWithName:tagName commitId:commitId];
+	[self.undoManager setActionName:[NSString stringWithFormat:NSLocalizedString(@"Delete Tag %@", @""), tagName]];
+	
+	GBRef* ref = [[GBRef new] autorelease];
+	ref.repository = self.repository;
+	ref.commitId = commitId;
+	ref.name = tagName;
+	ref.isTag = YES;
+	
+	[self removeRefs:[NSArray arrayWithObject:ref]];
+}
+
+- (NSUndoManager*) undoManager
+{
+	NSLog(@"Asked for undoManager");
+	return [[undoManager retain] autorelease];
+}
+
+- (void) removeRefs:(NSArray*)refs
+{
+	if (refs.count == 0) return;
+	
+	[self pushSpinning];
+	[self pushDisabled];
+	
+	[self.repository removeRemoteRefs:refs withBlock:^{
+		[self.repository removeRefs:refs withBlock:^{
+			[self notifyWithSelector:@selector(repositoryControllerDidUpdateRefs:)];
+			[self updateLocalRefsWithBlock:^{
+				
+				[self popDisabled];
+				[self popSpinning];
+				
+				[self notifyWithSelector:@selector(repositoryControllerDidUpdateRefs:)];
+				[self notifyWithSelector:@selector(repositoryControllerDidUpdateCommits:)];
+			}];
+		}];
+	}];
+}
+
+- (IBAction) newTag:(id)sender
+{
+	GBPromptController* ctrl = [GBPromptController controller];
+	GBCommit* aCommit = self.contextCommit;
+	
+	ctrl.title = NSLocalizedString(@"New Tag", @"");
+	ctrl.promptText = [NSString stringWithFormat:NSLocalizedString(@"Tag for %@:", @""), [aCommit subjectOrCommitIDForMenuItem]];
+	ctrl.buttonText = NSLocalizedString(@"Add", @"");
+	ctrl.requireSingleLine = YES;
+	ctrl.requireStripWhitespace = YES;
+	ctrl.completionHandler = ^(BOOL cancelled){
+		if (!cancelled) [self createTagWithName:ctrl.value commitId:aCommit.commitId];
+	};
+	[ctrl presentSheetInMainWindow];
+}
+
+- (BOOL) validateNewTag:(id)sender
+{
+	return !!self.contextCommit;
+}
+
+- (IBAction) deleteTag:(NSMenuItem*)sender
+{
+	GBRef* tag = sender.representedObject;
+	[self deleteTagWithName:tag.name commitId:tag.commitId];
+}
+
 
 
 - (void) selectRemoteBranch:(GBRef*) remoteBranch
@@ -961,20 +1039,6 @@
 {
 	GBRepositorySettingsController* ctrl = [GBRepositorySettingsController controllerWithTab:GBRepositorySettingsRemoteServers repository:self.repository];
 	[ctrl presentSheetInMainWindow];
-}
-
-- (IBAction) editGitIgnore:(id)sender
-{
-	GBRepositorySettingsController* ctrl = [GBRepositorySettingsController controllerWithTab:nil repository:self.repository];
-	[ctrl presentSheetInMainWindow];
-}
-
-- (IBAction) editGitConfig:(id)sender
-{
-	GBFileEditingController* fileEditor = [GBFileEditingController controller];
-	fileEditor.title = @".git/config";
-	fileEditor.URL = [self.url URLByAppendingPathComponent:@".git/config"];
-	[fileEditor presentSheetInMainWindow];
 }
 
 - (IBAction) openInXcode:(NSMenuItem*)sender

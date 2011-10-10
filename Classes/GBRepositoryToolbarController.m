@@ -757,26 +757,6 @@
 	return !![self.repositoryController contextCommit];
 }
 
-- (IBAction) newTag:(id)sender
-{
-	GBPromptController* ctrl = [GBPromptController controller];
-	GBCommit* aCommit = [self.repositoryController contextCommit];
-	
-	ctrl.title = NSLocalizedString(@"New Tag", @"");
-	ctrl.promptText = [NSString stringWithFormat:NSLocalizedString(@"Tag for %@:", @""), [aCommit subjectOrCommitIDForMenuItem]];
-	ctrl.buttonText = NSLocalizedString(@"Create", @"");
-	ctrl.requireSingleLine = YES;
-	ctrl.requireStripWhitespace = YES;
-	ctrl.completionHandler = ^(BOOL cancelled){
-		if (!cancelled) [self.repositoryController createNewTagWithName:ctrl.value commit:aCommit];
-	};
-	[ctrl presentSheetInMainWindow];
-}
-
-- (BOOL) validateNewTag:(id)sender
-{
-	return !![self.repositoryController contextCommit];
-}
 
 - (IBAction) checkoutCommit:(id)sender
 {

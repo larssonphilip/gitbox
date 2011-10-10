@@ -437,7 +437,7 @@
 
 - (NSArray*) tagsForCommit:(GBCommit*)aCommit
 {
-	if (![self tagForCommit:aCommit] && [self.tags count] < 1) return nil; // quick lookup in dictionary
+	if (![self tagForCommit:aCommit] && self.tags.count < 1) return nil; // quick lookup in dictionary
 	NSMutableArray* result = [NSMutableArray array];
 	for (GBRef* tag in self.tags)
 	{
@@ -933,12 +933,12 @@
 	}];
 }
 
-- (void) createNewTagWithName:(NSString*)name commit:(GBCommit*)aCommit block:(void(^)())block
+- (void) createTagWithName:(NSString*)name commitId:(NSString*)aCommitId block:(void(^)())block
 {
 	block = [[block copy] autorelease];
 	GBTask* aTask = [self task];
 	// Note: if commit is nil, then the command will be simply "git tag <name>"
-	aTask.arguments = [NSArray arrayWithObjects:@"tag", name, aCommit.commitId, nil]; 
+	aTask.arguments = [NSArray arrayWithObjects:@"tag", name, aCommitId, nil]; 
 	[self launchTask:aTask withBlock:^{
 		[aTask showErrorIfNeeded];
 		[self configureTrackingRemoteBranch:self.currentRemoteBranch withLocalName:name block:block];
@@ -1486,6 +1486,10 @@
 
 - (void) removeRefs:(NSArray*)refs withBlock:(void(^)())block
 {
+	NSMutableArray* newtags = [[self.tags mutableCopy] autorelease];
+	[newtags removeObjectsInArray:refs];
+	self.tags = newtags;
+	
 	[OABlockGroup groupBlock:^(OABlockGroup *group) {
 		for (GBRef* ref in refs)
 		{

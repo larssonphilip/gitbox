@@ -12,7 +12,6 @@
 - (IBAction) checkoutTagMenu:(NSMenuItem*)sender;
 
 - (IBAction) newBranch:(id)sender;
-- (IBAction) newTag:(id)sender;
 - (IBAction) checkoutCommit:(id)sender;
 
 @end
