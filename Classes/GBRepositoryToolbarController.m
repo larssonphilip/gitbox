@@ -160,6 +160,19 @@
 	[self.searchField selectText:nil];
 }
 
+- (void) repositoryControllerSearchDidStartRunning:(GBRepositoryController*)repoCtrl
+{
+	if (self.searchField.stringValue != repoCtrl.searchString && 
+		(repoCtrl.searchString &&
+		![self.searchField.stringValue isEqualToString:repoCtrl.searchString]))
+	{
+		[self.searchField setStringValue:repoCtrl.searchString ? repoCtrl.searchString : @""];
+		[self.searchField setRefusesFirstResponder:NO]; // some cargo cult line appeared when I was trying to make Cmd+F select all text while the field is first responder.
+		[self.window makeFirstResponder:self.searchField];
+		[self.searchField selectText:nil];
+	}
+}
+
 - (void) repositoryControllerSearchDidEnd:(GBRepositoryController*)repoCtrl
 {
 	[self.searchField setStringValue:@""];
