@@ -179,6 +179,15 @@
 	}
 }
 
+- (NSArray*) tags
+{
+	return [self.repository tagsForCommit:self];
+}
+
+
+
+
+
 #pragma mark Search
 
 

@@ -48,6 +48,9 @@ typedef enum {
 
 - (BOOL) matchesQuery;
 
+- (NSArray*) tags;
+
+
 #pragma mark Mutation
 
 - (void) loadChangesIfNeededWithBlock:(void(^)())block;
