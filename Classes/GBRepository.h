@@ -114,6 +114,7 @@
 - (void) rebaseContinueWithBlock:(void(^)())block;
 - (void) resetStageWithBlock:(void(^)())block;
 - (void) resetToCommit:(GBCommit*)aCommit withBlock:(void(^)())block;
+- (void) revertCommit:(GBCommit*)aCommit withBlock:(void(^)())block;
 - (void) stashChangesWithMessage:(NSString*)message block:(void(^)())block;
 - (void) applyStash:(GBStash*)aStash withBlock:(void(^)())block;
 - (void) removeStashes:(NSArray*)theStashes withBlock:(void(^)())block;

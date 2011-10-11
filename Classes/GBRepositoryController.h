@@ -104,6 +104,7 @@
 - (IBAction) cherryPickCommit:(NSMenuItem*)sender;
 - (IBAction) applyAsPatchCommit:(NSMenuItem*)sender;
 - (IBAction) resetBranchToCommit:(NSMenuItem*)sender;
+- (IBAction) revertCommit:(NSMenuItem*)sender;
 
 - (IBAction) newTag:(id)sender;
 - (IBAction) deleteTag:(id)sender;

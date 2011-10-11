@@ -1423,6 +1423,22 @@
 	}];  
 }
 
+- (void) revertCommit:(GBCommit*)aCommit withBlock:(void(^)())block
+{
+	block = [[block copy] autorelease];
+	
+	GBTask* task = [self task];
+	task.arguments = [NSArray arrayWithObjects:@"revert", @"--no-edit", aCommit.commitId, nil];
+	[self launchTask:task withBlock:^{
+		self.stage.currentCommitMessage = nil;
+		if ([task isError])
+		{
+			[self alertWithMessage:NSLocalizedString(@"Commit revert failed",nil) description:[task UTF8ErrorAndOutput]];
+		}
+		if (block) block();
+	}];  
+}
+
 
 - (void) stashChangesWithMessage:(NSString*)message block:(void(^)())block
 {

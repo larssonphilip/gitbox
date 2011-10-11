@@ -435,6 +435,10 @@
 										  action:@selector(checkoutCommit:) 
 										  object:aCommit]];
 
+	[aMenu addItem:[NSMenuItem menuItemWithTitle:NSLocalizedString(@"Revert Commit...", @"Sidebar") 
+										  action:@selector(revertCommit:) 
+										  object:aCommit]];
+	
 	[aMenu addItem:[NSMenuItem menuItemWithTitle:NSLocalizedString(@"Reset Branch...", @"Sidebar") 
 										  action:@selector(resetBranchToCommit:) 
 										  object:aCommit]];

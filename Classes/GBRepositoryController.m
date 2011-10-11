@@ -1410,6 +1410,61 @@
 	return ([self.repository.currentLocalRef isLocalBranch] && self.selectedCommit && ![self.selectedCommit isStage]);
 }
 
+- (IBAction) revertCommit:(NSMenuItem*)sender
+{
+	if (![sender respondsToSelector:@selector(representedObject)]) return;
+	
+	GBCommit* aCommit = [sender representedObject];
+	if (!aCommit) aCommit = self.selectedCommit;
+	
+	NSString* branchName = [self.repository.currentLocalRef name];
+	NSString* shortCommitID = [[aCommit commitId] substringToIndex:6];
+	NSString* shortCommitDescription = [aCommit shortSubject];
+	
+	NSString* stashMessage = [NSString stringWithFormat:NSLocalizedString(@"WIP on %@ before reverting %@", nil), branchName, shortCommitID];
+	NSString* message = [NSString stringWithFormat:NSLocalizedString(@"Revert commit %@ “%@”?",nil), shortCommitID, shortCommitDescription];
+	
+	NSString* description = NSLocalizedString(@"", nil);
+	
+	if ([self.repository.stage isStashable])
+	{
+		description = NSLocalizedString(@"Modifications in working directory will be stashed away. You can bring them back using Stage → Apply Stash.", nil);
+	}
+	
+	void(^block)() = ^{
+		[self.repository stashChangesWithMessage:stashMessage block:^{
+			[self.repository revertCommit:aCommit withBlock:^{
+			}];
+		}];
+	};
+	
+	block = [[block copy] autorelease];
+	
+	[[GBMainWindowController instance] criticalConfirmationWithMessage:message 
+														   description:description
+																	ok:NSLocalizedString(@"Revert",nil)
+															completion:^(BOOL result){
+																if (result)
+																{
+																	block();
+																}
+															}];
+}
+
+- (BOOL) validateRevertCommit:(NSMenuItem*)sender
+{
+	if (self.selectedCommit)
+	{
+		[sender setTitle:NSLocalizedString(@"Revert Commit...", nil)];
+	}
+	else
+	{
+		[sender setTitle:NSLocalizedString(@"Revert Commit...", nil)];
+	}
+	
+	return ([self.repository.currentLocalRef isLocalBranch] && self.selectedCommit && ![self.selectedCommit isStage]);
+}
+
 
 - (BOOL) validateUserInterfaceItem:(id<NSValidatedUserInterfaceItem>)anItem
 {
