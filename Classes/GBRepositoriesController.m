@@ -165,6 +165,7 @@
 	
 	self.rootController.selectedObject = newGroup;
 	
+	[aGroup.sidebarItem expand];
 	[newGroup.sidebarItem expand];
 	[newGroup.sidebarItem edit];
 }
@@ -306,6 +307,11 @@
 				[self startRepositoryController:repoCtrl];
 				insertionIndex++;
 			}
+			else
+			{
+				[repoCtrl.sidebarItem expand];
+			}
+			
 			if (repoCtrl)
 			{
 				[newRepoControllers addObject:repoCtrl];

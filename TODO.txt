@@ -24,12 +24,12 @@ Gitbox 1.5 Release Notes
 ✓ Fixed crashes in history parser.
 ✓ Fixed crash when trying to launch missing diff tool.
 ✓ Fixed multiple animation bugs on Lion.
+✓ Fixed issues with automatic expantion of groups in the sidebar.
 
 --
 
 Gitbox 1.5 misc items:
 
-- bug: when selected a collapsed group and added a folder, the selected group is not expanded
 - bug: askpass crashes with "task" selector when tries to update a repo with missing/invalid ssh key.
 - bug: stage: when having multiple selection and expanding it with keyboard, stage updates cause internal rest, so the selection does not change the same way when continuing pressing keystrokes. Should probably not replace stage content when it did not really change.
 
@@ -84,7 +84,7 @@ process is running and remove the file manually to continue.
 - stage: add option "Delete from stage only" for "git rm --force --cached <filepath>".
 - bug: file "Icon\r" was committed somehow.
 
-
++ bug: when selected a collapsed group and added a folder, the selected group is not expanded
 ≠ leaks on loading stage items and committed changes [was due NSZombies enabled]
 + delete tag using right click on a commit
 ± bug: history vc is shifted down after quickly entering non-existent string and cancelling [alleviated by faster animation]
