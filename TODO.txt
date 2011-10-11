@@ -30,11 +30,11 @@ Gitbox 1.5 Release Notes
 
 Gitbox 1.5 misc items:
 
-- bug: askpass crashes with "task" selector when tries to update a repo with missing/invalid ssh key.
-- bug: stage: when having multiple selection and expanding it with keyboard, stage updates cause internal rest, so the selection does not change the same way when continuing pressing keystrokes. Should probably not replace stage content when it did not really change.
 
 - bug: when a file is committed, modified and in gitignore, it could be very hard to pull ("cannot merge, dirty working dir" error)
 
+- bug: askpass crashes with "task" selector when tries to update a repo with missing/invalid ssh key.
+- bug: stage: when having multiple selection and expanding it with keyboard, stage updates cause internal rest, so the selection does not change the same way when continuing pressing keystrokes. Should probably not replace stage content when it did not really change.
 
 - bug: search: when commits are updated, the selected one does not show the proper view in the commitviewcontroller. [not important]
 
