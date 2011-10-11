@@ -32,7 +32,6 @@
 - (CGFloat) headerHeight;
 
 - (IBAction) selectFirstLineIfNeeded:(id)sender;
-- (IBAction) showFileHistory:_;
 - (IBAction) stageShowDifference:_;
 - (IBAction) stageRevealInFinder:_;
 - (IBAction) selectLeftPane:(id)sender;

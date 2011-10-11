@@ -5,7 +5,6 @@ Gitbox 1.5 Release Notes
 ✓ Highlighted links in commit messages.
 ✓ Support for "Clone in Mac" button on Github (github-mac://).
 ✓ Single view for editing branches and tags.
-✓ Menu item "Show File History" which shows all the commits relevant to a selected file.
 
 ✓ Files are sorted in natural order (2.txt comes before 10.txt)
 ✓ Support for both overlay and legacy scrollbars in OS X Lion.
@@ -33,7 +32,6 @@ Gitbox 1.5 misc items:
 ± bug: history vc is shifted down after quickly entering non-existent string and cancelling [alleviated by faster animation]
 + bug: when committing a file from a long list, scrollview is not scrolled to the very top
 ± bug: search: keep selection when search ends. [looks like it works just right, no?]
-+ stage: right click menu: "file history" which inserts file path into search field
 
 ± bug: after staging some files, we sometimes lose updates and UI is not updated with enabled checkboxes or their correct state. [seems like fixed with additional notification]
 
@@ -46,9 +44,9 @@ Gitbox 1.5 misc items:
 
 - bug: when a file is committed, modified and in gitignore, it could be very hard to pull ("cannot merge, dirty working dir" error)
 
-
 - bug: search: when commits are updated, the selected one does not show the proper view in the commitviewcontroller. [not important]
 
+- stage: right click menu: "file history" which inserts file path into search field
 - index.lock issue:
 
 fatal: Unable to create '/Users/oleganza/Work/gitbox/app/.git/index.lock': File exists.

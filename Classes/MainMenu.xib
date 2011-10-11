@@ -1022,15 +1022,6 @@
 									<reference key="NSOnImage" ref="1033313550"/>
 									<reference key="NSMixedImage" ref="310636482"/>
 								</object>
-								<object class="NSMenuItem" id="1068230874">
-									<reference key="NSMenu" ref="697599868"/>
-									<string key="NSTitle">Show File History</string>
-									<string key="NSKeyEquiv">d</string>
-									<int key="NSKeyEquivModMask">1048576</int>
-									<int key="NSMnemonicLoc">2147483647</int>
-									<reference key="NSOnImage" ref="1033313550"/>
-									<reference key="NSMixedImage" ref="310636482"/>
-								</object>
 								<object class="NSMenuItem" id="1073068891">
 									<reference key="NSMenu" ref="697599868"/>
 									<string key="NSTitle">Show in Finder</string>
@@ -2480,14 +2471,6 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 					</object>
 					<int key="connectionID">1112</int>
 				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">showFileHistory:</string>
-						<reference key="source" ref="1014"/>
-						<reference key="destination" ref="1068230874"/>
-					</object>
-					<int key="connectionID">1115</int>
-				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -2791,7 +2774,6 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 							<reference ref="450130592"/>
 							<reference ref="1073068891"/>
 							<reference ref="1021479604"/>
-							<reference ref="1068230874"/>
 						</object>
 						<reference key="parent" ref="720821069"/>
 					</object>
@@ -3512,11 +3494,6 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 						<reference key="object" ref="255809180"/>
 						<reference key="parent" ref="110575045"/>
 					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">1113</int>
-						<reference key="object" ref="1068230874"/>
-						<reference key="parent" ref="697599868"/>
-					</object>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="flattenedProperties">
@@ -3574,7 +3551,6 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 					<string>1104.IBPluginDependency</string>
 					<string>1107.IBPluginDependency</string>
 					<string>1109.IBPluginDependency</string>
-					<string>1113.IBPluginDependency</string>
 					<string>124.IBPluginDependency</string>
 					<string>125.IBPluginDependency</string>
 					<string>126.IBPluginDependency</string>
@@ -3813,7 +3789,6 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>{{387, 278}, {465, 273}}</string>
 					<boolean value="NO"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -3844,7 +3819,7 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">1115</int>
+			<int key="maxID">1112</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -4046,13 +4021,11 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>selectFirstLineIfNeeded:</string>
 							<string>selectLeftPane:</string>
-							<string>showFileHistory:</string>
 							<string>stageRevealInFinder:</string>
 							<string>stageShowDifference:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>
@@ -4065,7 +4038,6 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>selectFirstLineIfNeeded:</string>
 							<string>selectLeftPane:</string>
-							<string>showFileHistory:</string>
 							<string>stageRevealInFinder:</string>
 							<string>stageShowDifference:</string>
 						</object>
@@ -4077,10 +4049,6 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 							</object>
 							<object class="IBActionInfo">
 								<string key="name">selectLeftPane:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">showFileHistory:</string>
 								<string key="candidateClassName">id</string>
 							</object>
 							<object class="IBActionInfo">
@@ -4550,13 +4518,13 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 							<string>applyStashMenu:</string>
 							<string>cancelSearch:</string>
 							<string>cherryPickCommit:</string>
-							<string>deleteTag:</string>
 							<string>editBranchesAndTags:</string>
+							<string>editGitConfig:</string>
+							<string>editGitIgnore:</string>
 							<string>editRemotes:</string>
 							<string>fetch:</string>
 							<string>forcePush:</string>
 							<string>mergeCommit:</string>
-							<string>newTag:</string>
 							<string>nextCommit:</string>
 							<string>openInFinder:</string>
 							<string>openInTerminal:</string>
@@ -4588,8 +4556,8 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>
-							<string>NSMenuItem</string>
 							<string>id</string>
+							<string>NSMenuItem</string>
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>
@@ -4619,13 +4587,13 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 							<string>applyStashMenu:</string>
 							<string>cancelSearch:</string>
 							<string>cherryPickCommit:</string>
-							<string>deleteTag:</string>
 							<string>editBranchesAndTags:</string>
+							<string>editGitConfig:</string>
+							<string>editGitIgnore:</string>
 							<string>editRemotes:</string>
 							<string>fetch:</string>
 							<string>forcePush:</string>
 							<string>mergeCommit:</string>
-							<string>newTag:</string>
 							<string>nextCommit:</string>
 							<string>openInFinder:</string>
 							<string>openInTerminal:</string>
@@ -4668,11 +4636,15 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 								<string key="candidateClassName">NSMenuItem</string>
 							</object>
 							<object class="IBActionInfo">
-								<string key="name">deleteTag:</string>
+								<string key="name">editBranchesAndTags:</string>
 								<string key="candidateClassName">id</string>
 							</object>
 							<object class="IBActionInfo">
-								<string key="name">editBranchesAndTags:</string>
+								<string key="name">editGitConfig:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">editGitIgnore:</string>
 								<string key="candidateClassName">id</string>
 							</object>
 							<object class="IBActionInfo">
@@ -4690,10 +4662,6 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 							<object class="IBActionInfo">
 								<string key="name">mergeCommit:</string>
 								<string key="candidateClassName">NSMenuItem</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">newTag:</string>
-								<string key="candidateClassName">id</string>
 							</object>
 							<object class="IBActionInfo">
 								<string key="name">nextCommit:</string>
@@ -4943,6 +4911,7 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 							<string>checkoutRemoteBranchMenu:</string>
 							<string>checkoutTagMenu:</string>
 							<string>newBranch:</string>
+							<string>newTag:</string>
 							<string>pullOrPush:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
@@ -4951,6 +4920,7 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 							<string>id</string>
 							<string>NSMenuItem</string>
 							<string>NSMenuItem</string>
+							<string>id</string>
 							<string>id</string>
 							<string>NSSegmentedControl</string>
 						</object>
@@ -4964,6 +4934,7 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 							<string>checkoutRemoteBranchMenu:</string>
 							<string>checkoutTagMenu:</string>
 							<string>newBranch:</string>
+							<string>newTag:</string>
 							<string>pullOrPush:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
@@ -4986,6 +4957,10 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 							</object>
 							<object class="IBActionInfo">
 								<string key="name">newBranch:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">newTag:</string>
 								<string key="candidateClassName">id</string>
 							</object>
 							<object class="IBActionInfo">
