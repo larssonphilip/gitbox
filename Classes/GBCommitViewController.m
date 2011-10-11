@@ -122,18 +122,25 @@
 
 - (void) updateViews
 {
-	[self.commit loadChangesIfNeededWithBlock:nil];
+	[self.commit loadChangesIfNeededWithBlock:^{}];
 	
 	[[NSNotificationCenter defaultCenter] removeObserver:self
 													name:NSViewFrameDidChangeNotification 
 												  object:self.tableView];
 	[self updateCommitHeader];
 	[self.tableView setPostsFrameChangedNotifications:YES];
-	
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(tableViewDidResize:)
 												 name:NSViewFrameDidChangeNotification
 											   object:self.tableView];
+	
+	// Fix for Lion: scroll to the top when switching commit
+	{
+		NSScrollView* scrollView = self.tableView.enclosingScrollView;
+		NSClipView* clipView = scrollView.contentView;
+		[clipView scrollToPoint:NSMakePoint(0, 0)];
+		[scrollView reflectScrolledClipView:clipView];
+	}
 }
 
 - (void) updateCommitHeader
@@ -180,16 +187,15 @@
 		{
 			NSImage* image = [self.userpicController imageForEmail:email];
 			[self.authorImage setImage:image];
-			self.authorImage.layer.masksToBounds = YES;
-			self.authorImage.layer.cornerRadius = 3.0;
-			[self updateHeaderSize];
 		}
 		self.authorImage.layer.masksToBounds = YES;
 		self.authorImage.layer.cornerRadius = 3.0;
-	}];
-	self.authorImage.layer.masksToBounds = YES;
-	self.authorImage.layer.cornerRadius = 3.0;
-	
+		CGColorRef borderColorRef = CGColorCreateGenericGray(0.0, 0.15);
+		self.authorImage.layer.borderColor = borderColorRef;
+		CGColorRelease(borderColorRef);
+		self.authorImage.layer.borderWidth = 1.0;
+		[self updateHeaderSize];
+	}];	
 	[self updateHeaderSize];
 }
 
