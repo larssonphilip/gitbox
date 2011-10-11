@@ -1030,6 +1030,15 @@
 									<reference key="NSOnImage" ref="1033313550"/>
 									<reference key="NSMixedImage" ref="310636482"/>
 								</object>
+								<object class="NSMenuItem" id="1068230874">
+									<reference key="NSMenu" ref="697599868"/>
+									<string key="NSTitle">Show File History</string>
+									<string key="NSKeyEquiv">d</string>
+									<int key="NSKeyEquivModMask">1048576</int>
+									<int key="NSMnemonicLoc">2147483647</int>
+									<reference key="NSOnImage" ref="1033313550"/>
+									<reference key="NSMixedImage" ref="310636482"/>
+								</object>
 								<object class="NSMenuItem" id="1073068891">
 									<reference key="NSMenu" ref="697599868"/>
 									<string key="NSTitle">Show in Finder</string>
@@ -2790,6 +2799,7 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 							<reference ref="450130592"/>
 							<reference ref="1073068891"/>
 							<reference ref="1021479604"/>
+							<reference ref="1068230874"/>
 						</object>
 						<reference key="parent" ref="720821069"/>
 					</object>
@@ -4045,11 +4055,13 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>selectFirstLineIfNeeded:</string>
 							<string>selectLeftPane:</string>
+							<string>showFileHistory:</string>
 							<string>stageRevealInFinder:</string>
 							<string>stageShowDifference:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>
@@ -4062,6 +4074,7 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>selectFirstLineIfNeeded:</string>
 							<string>selectLeftPane:</string>
+							<string>showFileHistory:</string>
 							<string>stageRevealInFinder:</string>
 							<string>stageShowDifference:</string>
 						</object>
@@ -4073,6 +4086,10 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 							</object>
 							<object class="IBActionInfo">
 								<string key="name">selectLeftPane:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">showFileHistory:</string>
 								<string key="candidateClassName">id</string>
 							</object>
 							<object class="IBActionInfo">

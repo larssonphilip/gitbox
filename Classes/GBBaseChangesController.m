@@ -296,6 +296,21 @@ dataCellForTableColumn:(NSTableColumn*)aTableColumn
 #pragma mark Actions
 
 
+- (IBAction) showFileHistory:_
+{
+	NSString* filename = [(GBChange*)self.selectedChanges.firstObject srcURL].path.lastPathComponent;
+	if (filename.length > 0)
+	{
+		[self.repositoryController search:nil];
+		self.repositoryController.searchString = filename;
+	}
+}
+- (BOOL) validateShowFileHistory:_
+{
+    if ([[self selectedChanges] count] != 1) return NO;
+    return [[[[self selectedChanges] firstObject] nilIfBusy] validateShowDifference];
+}
+
 - (IBAction) stageShowDifference:_
 {
 	[[[[self selectedChanges] firstObject] nilIfBusy] launchDiffWithBlock:^{
