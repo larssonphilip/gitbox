@@ -14,6 +14,7 @@
 #import "NSObject+OAPerformBlockAfterDelay.h"
 #import "NSAttributedString+OAAttributedStringHelpers.h"
 
+#import <QuartzCore/QuartzCore.h>
 
 @interface GBCommitViewController ()
 @property(nonatomic,retain) GBUserpicController* userpicController;
@@ -173,14 +174,21 @@
 	NSString* email = aCommit.authorEmail;
 	
 	[self.authorImage setImage:nil];
+
 	[self.userpicController loadImageForEmail:email withBlock:^{
 		if (email && [self.commit.authorEmail isEqualToString:email]) // make sure we are still displaying the email we've asked for
 		{
 			NSImage* image = [self.userpicController imageForEmail:email];
 			[self.authorImage setImage:image];
+			self.authorImage.layer.masksToBounds = YES;
+			self.authorImage.layer.cornerRadius = 3.0;
 			[self updateHeaderSize];
 		}
+		self.authorImage.layer.masksToBounds = YES;
+		self.authorImage.layer.cornerRadius = 3.0;
 	}];
+	self.authorImage.layer.masksToBounds = YES;
+	self.authorImage.layer.cornerRadius = 3.0;
 	
 	[self updateHeaderSize];
 }
