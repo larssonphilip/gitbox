@@ -1815,8 +1815,8 @@
 {
 #warning TODO: disabled submodules for beta testing
 	
-//	if (aBlock) aBlock();
-//	return;
+	if (aBlock) aBlock();
+	return;
 	
 	[self.blockTable addBlock:aBlock forName:@"updateSubmodules" proceedIfClear:^{
 		[self.repository updateSubmodulesWithBlock:^{
