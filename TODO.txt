@@ -29,18 +29,6 @@ Gitbox 1.5 Release Notes
 
 Gitbox 1.5 misc items:
 
-≠ leaks on loading stage items and committed changes [was due NSZombies enabled]
-+ delete tag using right click on a commit
-± bug: history vc is shifted down after quickly entering non-existent string and cancelling [alleviated by faster animation]
-+ bug: when committing a file from a long list, scrollview is not scrolled to the very top
-± bug: search: keep selection when search ends. [looks like it works just right, no?]
-+ stage: right click menu: "file history" which inserts file path into search field
-
-± bug: after staging some files, we sometimes lose updates and UI is not updated with enabled checkboxes or their correct state. [seems like fixed with additional notification]
-
-- "delete tag" should go without "..." and should be relocated somewhere far from "new tag" or "new branch"
-- also, add Delete Tag to the main menu
-
 - bug: when selected a collapsed group and added a folder, the selected group is not expanded
 - bug: askpass crashes with "task" selector when tries to update a repo with missing/invalid ssh key.
 - bug: stage: when having multiple selection and expanding it with keyboard, stage updates cause internal rest, so the selection does not change the same way when continuing pressing keystrokes. Should probably not replace stage content when it did not really change.
@@ -95,6 +83,19 @@ process is running and remove the file manually to continue.
 - history: push a single commit
 - stage: add option "Delete from stage only" for "git rm --force --cached <filepath>".
 - bug: file "Icon\r" was committed somehow.
+
+
+≠ leaks on loading stage items and committed changes [was due NSZombies enabled]
++ delete tag using right click on a commit
+± bug: history vc is shifted down after quickly entering non-existent string and cancelling [alleviated by faster animation]
++ bug: when committing a file from a long list, scrollview is not scrolled to the very top
+± bug: search: keep selection when search ends. [looks like it works just right, no?]
++ stage: right click menu: "file history" which inserts file path into search field
+
+± bug: after staging some files, we sometimes lose updates and UI is not updated with enabled checkboxes or their correct state. [seems like fixed with additional notification]
+
++ "delete tag" should go without "..." and should be relocated somewhere far from "new tag" or "new branch"
++ also, add Delete Tag to the main menu
 
 + feature: "revert commit"
 + fix sidebar right padding when classic scrollbars are selected

@@ -376,33 +376,6 @@
 										  action:@selector(newTag:) 
 										  object:aCommit]];
 	
-	NSArray* tags = aCommit.tags;
-	
-	if (tags.count > 0)
-	{
-		if (tags.count == 1)
-		{
-			GBRef* tag = [tags objectAtIndex:0];
-			[aMenu addItem:[NSMenuItem menuItemWithTitle:[NSString stringWithFormat:NSLocalizedString(@"Delete Tag %@...", @"Sidebar"), tag.name]
-												  action:@selector(deleteTag:)
-												  object:tag]];
-		}
-		else
-		{
-			NSString* submenuTitle = NSLocalizedString(@"Delete Tag", @"");
-			NSMenu* submenu = [[[NSMenu alloc] initWithTitle:submenuTitle] autorelease];
-			
-			for (GBRef* aTag in tags)
-			{
-				[submenu addItem:[NSMenuItem menuItemWithTitle:aTag.name
-														action:@selector(deleteTag:)
-														object:aTag]];
-			}
-			NSMenuItem* submenuItem = [NSMenuItem menuItemWithTitle:submenuTitle submenu:submenu];
-			[aMenu addItem:submenuItem];
-		}
-	}
-	
 	[aMenu addItem:[NSMenuItem menuItemWithTitle:NSLocalizedString(@"New Branch...", @"Sidebar") 
 										  action:@selector(newBranch:) 
 										  object:aCommit]];
@@ -433,6 +406,12 @@
 	
 	[aMenu addItem:[NSMenuItem menuItemWithTitle:NSLocalizedString(@"Checkout...", @"Sidebar") 
 										  action:@selector(checkoutCommit:) 
+										  object:aCommit]];
+	
+	[aMenu addItem:[NSMenuItem separatorItem]];
+	
+	[aMenu addItem:[NSMenuItem menuItemWithTitle:NSLocalizedString(@"Delete Tag", @"Sidebar")
+										  action:@selector(deleteTagMenu:)
 										  object:aCommit]];
 
 	[aMenu addItem:[NSMenuItem menuItemWithTitle:NSLocalizedString(@"Revert Commit...", @"Sidebar") 

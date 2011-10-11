@@ -538,13 +538,46 @@
 - (IBAction) deleteTagMenu:(id)sender
 {
 	// dummy, see validateDeleteTagMenu:
+	[self deleteTag:sender];
 }
 
 - (BOOL) validateDeleteTagMenu:(NSMenuItem*)sender
 {
-	// TODO: return NO and hide item if no commit is selected or there're no tags on it.
-	// TODO: if have 1 tag, rename to "Delete Tag ABC" and change the action and representedObject.
-	// TODO: if have more tags, rename to "Delete Tag >" and add a submenu.
+	GBCommit* aCommit = self.contextCommit;
+	NSArray* tags = aCommit.tags;
+	
+	if (tags.count > 0)
+	{
+		[sender setHidden:NO];
+		
+		if (tags.count == 1)
+		{
+			GBRef* tag = [tags objectAtIndex:0];
+			
+			[sender setSubmenu:nil];
+			[sender setTitle:[NSString stringWithFormat:NSLocalizedString(@"Delete Tag %@", @"Sidebar"), tag.name]];
+			[sender setRepresentedObject:tag];
+		}
+		else
+		{
+			NSString* submenuTitle = NSLocalizedString(@"Delete Tag", @"");
+			NSMenu* submenu = [[[NSMenu alloc] initWithTitle:submenuTitle] autorelease];
+			
+			for (GBRef* aTag in tags)
+			{
+				[submenu addItem:[NSMenuItem menuItemWithTitle:aTag.name
+														action:@selector(deleteTag:)
+														object:aTag]];
+			}
+			[sender setSubmenu:submenu];
+			[sender setTitle:submenuTitle];
+			[sender setRepresentedObject:nil];
+		}
+	}
+	else
+	{
+		[sender setHidden:YES];
+	}
 	return YES;
 }
 
