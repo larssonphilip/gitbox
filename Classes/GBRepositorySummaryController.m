@@ -399,7 +399,7 @@
 	[self.optimizeProgressIndicator setIndeterminate:YES];
 	[self.optimizeProgressIndicator startAnimation:nil];
 	gitgcTask.progressUpdateBlock = ^{
-		double progress = gitgcTask.progress;
+		double progress = gitgcTask.extendedProgress;
 		
 		self.optimizeProgressIndicator.doubleValue = progress;
 		
@@ -410,7 +410,7 @@
 			if (newIndeterminate)
 			{
 				self.optimizeProgressIndicator.doubleValue = 0.0;
-				[self.optimizeProgressIndicator setIndeterminate:newIndeterminate];
+				[self.optimizeProgressIndicator setIndeterminate:YES];
 				[self.optimizeProgressIndicator startAnimation:nil];
 			}
 			else
