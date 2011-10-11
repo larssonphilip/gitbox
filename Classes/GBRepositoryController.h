@@ -108,6 +108,7 @@
 
 - (IBAction) newTag:(id)sender;
 - (IBAction) deleteTag:(id)sender;
+- (IBAction) deleteTagMenu:(id)sender;
 
 - (IBAction) openSettings:(id)sender;
 - (IBAction) editBranchesAndTags:(id)sender;

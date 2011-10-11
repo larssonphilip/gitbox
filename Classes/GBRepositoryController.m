@@ -530,6 +530,23 @@
 	[self deleteTagWithName:tag.name commitId:tag.commitId];
 }
 
+- (BOOL) validateDeleteTag:(id)sender
+{
+	return !!self.contextCommit;
+}
+
+- (IBAction) deleteTagMenu:(id)sender
+{
+	// dummy, see validateDeleteTagMenu:
+}
+
+- (BOOL) validateDeleteTagMenu:(NSMenuItem*)sender
+{
+	// TODO: return NO and hide item if no commit is selected or there're no tags on it.
+	// TODO: if have 1 tag, rename to "Delete Tag ABC" and change the action and representedObject.
+	// TODO: if have more tags, rename to "Delete Tag >" and add a submenu.
+	return YES;
+}
 
 
 - (void) selectRemoteBranch:(GBRef*) remoteBranch
