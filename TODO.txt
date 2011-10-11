@@ -30,6 +30,18 @@ Gitbox 1.5 Release Notes
 
 Gitbox 1.5 misc items:
 
+- history: undo for commit (sort of "amend commit")
+- history: undo for push
+- history: undo for force push
+- history: undo for pull
+- history: undo for branch reset
+- history: undo for ref checkout
+- history: undo for branch creation
+- history: undo for remote branch creation
+- stage: undo for staging/unstaging
+
+
+- bug: submodules' loading causes stage refresh delays or similar glitches.
 
 - bug: when a file is committed, modified and in gitignore, it could be very hard to pull ("cannot merge, dirty working dir" error)
 
@@ -64,8 +76,6 @@ process is running and remove the file manually to continue.
 - bottom bar: stage: Diff
 
 - show stashes right in the history; menu: delete, apply
-- feature: "uncommit" to quickly rollback non-pushed commit back to the working directory
-- feature: "amend commit" - see uncommit
 - double refresh of the stage causes items to disappear (it must be an index.lock issue, should relaunch)
   $ git update-index --refresh => status:1
     Output:
@@ -230,9 +240,6 @@ Features:
 - history: think how to efficiently preload total number of commits so that we can scroll through the whole history loading data for commits lazily when rows are displayed. This should be friendlier for searching by date, but the scroll indicator will be useless on huge repos like git.git. Maybe need to combine both approaches: commits limiting and lazy loading.
 - history: gray + shadows style for selected commit
 - history: maintain selection of the commit when switching branches/tags etc.
-- history: undo for pull
-- history: undo for ref checkout
-- history: undo for branch reset
 ? history: find-as-you-type search in stage 
 - history: probably get rid of dates, and design it in a more cheesy fashion
 - history: navigate back and forward (History main menu)
@@ -281,7 +288,6 @@ Features:
 - stage: if more than 5 items, show additional row in the bottom with a line separator, "%d items" grey title and a checkbox which selects all the items and supports 3 states: on, off, mixed.
 - stage: main menu: rename "commit cmd+return" into "Stage Selected Items cmd+return" when not focused in the commit message field.
 - stage: individual chunks commit
-- stage: undo for commit (like amend)
 - stage: amend latest commit if it is not pushed yet
 - stage: conflict: highlight conflicted changes, allow to choose one of the versions 
 - stage: conflict: allow visual merge for conflicted files
