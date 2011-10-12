@@ -1428,12 +1428,12 @@
 	}];
 }
 
-- (void) resetSoftWithBlock:(void(^)())block
+- (void) resetSoftToCommit:(NSString*)commitish withBlock:(void(^)())block
 {
 	block = [[block copy] autorelease];
 	
 	GBTask* task = [self task];
-	task.arguments = [NSArray arrayWithObjects:@"reset", @"--soft", @"HEAD^", nil];
+	task.arguments = [NSArray arrayWithObjects:@"reset", @"--soft", commitish, nil];
 	[self launchTask:task withBlock:^{
 		self.stage.currentCommitMessage = nil;
 		if ([task isError])

@@ -1,5 +1,6 @@
 Gitbox 1.5 Release Notes
 
+✓ Undo/Redo commits and tags.
 ✓ Sidebar progress indicators for push, pull, fetch and clone.
 ✓ Stage All menu command with Command+Shift+Return shortcut.
 ✓ Highlighted links in commit messages.
@@ -31,7 +32,7 @@ Gitbox 1.5 Release Notes
 
 Gitbox 1.5 misc items:
 
-- history: undo for commit (sort of "amend commit")
++ history: undo for commit (sort of "amend commit")
 - history: undo for push
 - history: undo for force push
 - history: undo for pull

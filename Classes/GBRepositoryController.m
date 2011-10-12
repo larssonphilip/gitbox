@@ -32,6 +32,7 @@
 #import "GBFolderMonitor.h"
 #import "NSArray+OAArrayHelpers.h"
 #import "NSAlert+OAAlertHelpers.h"
+#import "NSString+OAStringHelpers.h"
 #import "NSObject+OASelectorNotifications.h"
 #import "NSObject+OADispatchItemValidation.h"
 #import "NSMenu+OAMenuHelpers.h"
@@ -104,6 +105,8 @@
 - (void) unscheduleAutoFetch;
 
 - (BOOL) isConnectionAvailable;
+
+- (void) undoCommitWithMessage:(NSString*)message commitId:(NSString*)commitId undo:(BOOL)undo;
 
 @end
 
@@ -833,8 +836,8 @@
 				NSString* aCommitId = self.repository.currentLocalRef.commitId;
 				if (aCommitId)
 				{
-					//[[self.undoManager prepareWithInvocationTarget:self] undoCommitWithMessage:message commitId:aCommitId];
-					//[self.undoManager setActionName:NSLocalizedString(@"New commit", @"")];
+					[[self.undoManager prepareWithInvocationTarget:self] undoCommitWithMessage:message commitId:aCommitId undo:YES];
+					[self.undoManager setActionName:[NSString stringWithFormat:NSLocalizedString(@"Commit “%@”", @""), [message prettyTrimmedStringToLength:15]]];
 				}
 				else
 				{
@@ -855,8 +858,11 @@
 	}];
 }
 
-- (void) undoCommitWithMessage:(NSString*)message commitId:(NSString*)commitId
+- (void) undoCommitWithMessage:(NSString*)message commitId:(NSString*)aCommitId undo:(BOOL)undo
 {
+	if (self.isCommitting) return;
+	self.isCommitting = YES;
+
 	// For redo to work, we need to be able to revert portions of the stage (imagine several undone commits in the same working directory)
 	// Undo commit1: want to go to a state right before doing commit1
 	// Undo commit2: want to go to a state right before doing commit2 - need to stash all changes
@@ -868,14 +874,28 @@
 	
 	// TODO: reset --soft commitId^
 	// TODO: register undo for "reset --soft commitId"
-	
-	[[self.undoManager prepareWithInvocationTarget:self] redoCommitWithMessage:message commitId:commitId];
-	[self.undoManager setActionName:NSLocalizedString(@"New commit", @"")];
-}
 
-- (void) redoCommitWithMessage:(NSString*)message commitId:(NSString*)commitId
-{
-	// TODO:
+	NSString* prevMessage = self.repository.stage.currentCommitMessage;
+	[[self.undoManager prepareWithInvocationTarget:self] undoCommitWithMessage:prevMessage commitId:aCommitId undo:!undo];
+	[self.undoManager setActionName:[NSString stringWithFormat:NSLocalizedString(@"Commit “%@”", @""), [message prettyTrimmedStringToLength:15]]];
+
+	[self pushSpinning];
+	[self pushFSEventsPause];
+	[self.repository resetSoftToCommit:undo ? [NSString stringWithFormat:@"%@^", aCommitId] : aCommitId withBlock:^{
+		self.isCommitting = NO;
+		
+		[self updateLocalRefsWithBlock:^{
+			
+			[self loadCommitsWithBlock:nil];
+			[self popSpinning];
+			
+			self.repository.stage.currentCommitMessage = message;
+			
+			[self notifyWithSelector:@selector(repositoryControllerDidCommit:)];
+			[self loadStageChanges];
+		}];
+		[self popFSEventsPause];
+	}];
 }
 
 

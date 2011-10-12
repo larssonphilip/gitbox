@@ -22,6 +22,8 @@
 
 - (NSString*) md5hexdigest;
 
+- (NSString*) prettyTrimmedStringToLength:(NSUInteger)limit;
+
 @end
 
 

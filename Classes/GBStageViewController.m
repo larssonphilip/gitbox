@@ -597,6 +597,14 @@
 	[self.tableView setNextKeyView:self.messageTextView];
 	[[self.tableView enclosingScrollView] setFrame:[self.view bounds]];
 	[self.stage loadChangesIfNeededWithBlock:nil];
+	
+	// Fix for Lion: scroll to the top when switching commit
+	{
+		NSScrollView* scrollView = self.tableView.enclosingScrollView;
+		NSClipView* clipView = scrollView.contentView;
+		[clipView scrollToPoint:NSMakePoint(0, 0)];
+		[scrollView reflectScrolledClipView:clipView];
+	}
 }
 
 
