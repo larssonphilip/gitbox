@@ -345,12 +345,7 @@
 	
 	NSString* leftCommitId = [self.srcRevision nonZeroCommitId];
 	NSString* rightCommitId = [self.dstRevision nonZeroCommitId];
-	
-	if (!leftCommitId)
-	{
-		return;
-	}
-	
+		
 	NSURL* leftURL  = [self temporaryURLForObjectId:leftCommitId optionalURL:self.srcURL commitId:nil];
 	NSURL* rightURL = (rightCommitId ? [self temporaryURLForObjectId:rightCommitId optionalURL:[self fileURL] commitId:nil] : [self fileURL]);
 	
@@ -469,7 +464,7 @@
 	//NSLog(@"TODO: validateShowDifference: validate availability of the diff tool");
 	if ([self isDeletedFile]) return NO;
 	if ([self isUntrackedFile]) return NO;
-	if (![self.srcRevision nonZeroCommitId]) return NO;
+	//if (![self.srcRevision nonZeroCommitId]) return NO; // too strict
 	return YES;
 }
 
@@ -717,7 +712,18 @@
 
 - (NSURL*) temporaryURLForObjectId:(NSString*)objectId optionalURL:(NSURL*)url commitId:(NSString*)aCommitId
 {
-	if (!objectId) return nil;
+	if (!objectId) 
+	{
+		// Create an empty textual file
+		NSURL* url = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:@"Empty"]];
+		NSError* error = nil;
+		[@"" writeToURL:url atomically:NO encoding:NSUTF8StringEncoding error:&error];
+		if (error)
+		{
+			NSLog(@"Error while creating empty temp file: %@", error);
+		}
+		return url;
+	}
 	
 	GBExtractFileTask* task = [GBExtractFileTask task];
 	task.repository = self.repository;

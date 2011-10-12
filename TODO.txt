@@ -25,6 +25,7 @@ Gitbox 1.5 Release Notes
 ✓ Fixed crash when trying to launch missing diff tool.
 ✓ Fixed multiple animation bugs on Lion.
 ✓ Fixed issues with automatic expantion of groups in the sidebar.
+✓ Fixed opening diff for added files.
 
 --
 
@@ -40,10 +41,8 @@ Gitbox 1.5 misc items:
 - history: undo for remote branch creation
 - stage: undo for staging/unstaging
 
-
-- bug: submodules' loading causes stage refresh delays or similar glitches.
-
 - bug: when a file is committed, modified and in gitignore, it could be very hard to pull ("cannot merge, dirty working dir" error)
+- bug: submodules' loading causes stage refresh delays or similar glitches.
 
 - bug: askpass crashes with "task" selector when tries to update a repo with missing/invalid ssh key.
 - bug: stage: when having multiple selection and expanding it with keyboard, stage updates cause internal rest, so the selection does not change the same way when continuing pressing keystrokes. Should probably not replace stage content when it did not really change.
@@ -94,6 +93,8 @@ process is running and remove the file manually to continue.
 - stage: add option "Delete from stage only" for "git rm --force --cached <filepath>".
 - bug: file "Icon\r" was committed somehow.
 
+
++ less strict validation for diff tool: allow diff and show in history for "added" files
 + bug: when selected a collapsed group and added a folder, the selected group is not expanded
 ≠ leaks on loading stage items and committed changes [was due NSZombies enabled]
 + delete tag using right click on a commit
