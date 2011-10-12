@@ -819,6 +819,7 @@
 {
 	if (self.isCommitting) return;
 	self.isCommitting = YES;
+	
 	[self pushSpinning];
 	[self pushFSEventsPause];
 	[self.repository commitWithMessage:message block:^{
@@ -828,6 +829,19 @@
 			[self updateLocalRefsWithBlock:^{
 				[self loadCommitsWithBlock:nil];
 				[self popSpinning];
+				
+				NSString* aCommitId = self.repository.currentLocalRef.commitId;
+				if (aCommitId)
+				{
+					//[[self.undoManager prepareWithInvocationTarget:self] undoCommitWithMessage:message commitId:aCommitId];
+					//[self.undoManager setActionName:NSLocalizedString(@"New commit", @"")];
+				}
+				else
+				{
+					NSLog(@"Cannot find current ref's commit id. Clearing up undo stack.");
+					[self.undoManager removeAllActions];
+				}
+
 				
 #if GITBOX_APP_STORE || DEBUG_iRate
 				[[iRate sharedInstance] logEvent:NO];
@@ -840,6 +854,30 @@
 		[self notifyWithSelector:@selector(repositoryControllerDidCommit:)];
 	}];
 }
+
+- (void) undoCommitWithMessage:(NSString*)message commitId:(NSString*)commitId
+{
+	// For redo to work, we need to be able to revert portions of the stage (imagine several undone commits in the same working directory)
+	// Undo commit1: want to go to a state right before doing commit1
+	// Undo commit2: want to go to a state right before doing commit2 - need to stash all changes
+	// Redo commit2: switch back to commit2 and go to a state right before doing commit1
+	
+	// Note: stash does not remember staged/unstaged state which is bad.
+	// Note: cherry-pick stages the modified files which is good.
+	// Note: git reset --soft does the trick for both undo and redo - yay!
+	
+	// TODO: reset --soft commitId^
+	// TODO: register undo for "reset --soft commitId"
+	
+	[[self.undoManager prepareWithInvocationTarget:self] redoCommitWithMessage:message commitId:commitId];
+	[self.undoManager setActionName:NSLocalizedString(@"New commit", @"")];
+}
+
+- (void) redoCommitWithMessage:(NSString*)message commitId:(NSString*)commitId
+{
+	// TODO:
+}
+
 
 - (void) fetchRemote:(GBRemote*)aRemote withBlock:(void(^)())block
 {

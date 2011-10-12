@@ -102,6 +102,7 @@
 - (void) fetchCurrentBranchWithBlock:(void(^)())block;
 - (void) mergeBranch:(GBRef*)aBranch withBlock:(void(^)())block;
 - (void) mergeCommitish:(NSString*)commitish withBlock:(void(^)())block;
+- (void) cherryPickCommitId:(NSString*)aCommitId creatingCommit:(BOOL)creatingCommit message:(NSString*)message withBlock:(void(^)())block;
 - (void) cherryPickCommit:(GBCommit*)aCommit creatingCommit:(BOOL)creatingCommit withBlock:(void(^)())block;
 - (void) pullBranch:(GBRef*)aRemoteBranch withBlock:(void(^)())block;
 - (void) fetchBranch:(GBRef*)aRemoteBranch withBlock:(void(^)())block;
@@ -114,6 +115,7 @@
 - (void) rebaseContinueWithBlock:(void(^)())block;
 - (void) resetStageWithBlock:(void(^)())block;
 - (void) resetToCommit:(GBCommit*)aCommit withBlock:(void(^)())block;
+- (void) resetSoftWithBlock:(void(^)())block;
 - (void) revertCommit:(GBCommit*)aCommit withBlock:(void(^)())block;
 - (void) stashChangesWithMessage:(NSString*)message block:(void(^)())block;
 - (void) applyStash:(GBStash*)aStash withBlock:(void(^)())block;

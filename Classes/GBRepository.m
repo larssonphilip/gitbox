@@ -1058,9 +1058,9 @@
 	}];
 }
 
-- (void) cherryPickCommit:(GBCommit*)aCommit creatingCommit:(BOOL)creatingCommit withBlock:(void(^)())block
+- (void) cherryPickCommitId:(NSString*)aCommitId creatingCommit:(BOOL)creatingCommit message:(NSString*)message withBlock:(void(^)())block
 {
-	if (!aCommit)
+	if (!aCommitId)
 	{
 		if (block) block();
 		return;
@@ -1070,17 +1070,17 @@
 	GBTask* task = [self task];
 	if (creatingCommit)
 	{
-		task.arguments = [NSArray arrayWithObjects:@"cherry-pick", aCommit.commitId, nil];
+		task.arguments = [NSArray arrayWithObjects:@"cherry-pick", aCommitId, nil];
 	}
 	else
 	{
-		task.arguments = [NSArray arrayWithObjects:@"cherry-pick", @"--no-commit", aCommit.commitId, nil];
+		task.arguments = [NSArray arrayWithObjects:@"cherry-pick", @"--no-commit", aCommitId, nil];
 	}
 	
 	[self launchTask:task withBlock:^{
 		if (!creatingCommit || [task isError])
 		{
-			self.stage.currentCommitMessage = aCommit.message;
+			self.stage.currentCommitMessage = message;
 		}
 		if ([task isError])
 		{
@@ -1088,6 +1088,11 @@
 		}
 		if (block) block();
 	}];
+}
+
+- (void) cherryPickCommit:(GBCommit*)aCommit creatingCommit:(BOOL)creatingCommit withBlock:(void(^)())block
+{
+	[self cherryPickCommitId:aCommit.commitId creatingCommit:creatingCommit message:aCommit.message withBlock:block];
 }
 
 - (void) pullBranch:(GBRef*)aRemoteBranch withBlock:(void(^)())block
@@ -1420,7 +1425,23 @@
 			[self alertWithMessage:NSLocalizedString(@"Branch reset failed",nil) description:[task UTF8ErrorAndOutput]];
 		}
 		if (block) block();
-	}];  
+	}];
+}
+
+- (void) resetSoftWithBlock:(void(^)())block
+{
+	block = [[block copy] autorelease];
+	
+	GBTask* task = [self task];
+	task.arguments = [NSArray arrayWithObjects:@"reset", @"--soft", @"HEAD^", nil];
+	[self launchTask:task withBlock:^{
+		self.stage.currentCommitMessage = nil;
+		if ([task isError])
+		{
+			[self alertWithMessage:NSLocalizedString(@"Branch reset failed",nil) description:[task UTF8ErrorAndOutput]];
+		}
+		if (block) block();
+	}];
 }
 
 - (void) revertCommit:(GBCommit*)aCommit withBlock:(void(^)())block

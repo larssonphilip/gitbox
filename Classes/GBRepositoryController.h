@@ -24,7 +24,7 @@
 @property(nonatomic, retain) GBRepositoryViewController* viewController;
 @property(nonatomic, retain) GBCommit* selectedCommit;
 @property(nonatomic, retain) OAFSEventStream* fsEventStream;
-@property(nonatomic, retain) NSString* lastCommitBranchName;
+@property(nonatomic, copy) NSString* lastCommitBranchName;
 @property(nonatomic, assign) BOOL needsInitialFetch;
 
 @property(nonatomic, assign, readonly, getter=isSearching) BOOL searching;
