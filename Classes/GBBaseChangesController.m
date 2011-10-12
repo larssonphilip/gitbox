@@ -153,13 +153,18 @@
 		// if clicked item is contained in selected objects, we take the selection
 		GBChange* clickedChange = [self.changes objectAtIndex:(NSUInteger)clickedRow];
 		NSArray* selectedChanges = [self.statusArrayController selectedObjects];
-		if ([selectedChanges containsObject:clickedChange])
+		
+		if (clickedChange && [selectedChanges containsObject:clickedChange])
 		{
 			return selectedChanges;
 		}
-		else
+		else if (clickedChange)
 		{
 			return [NSArray arrayWithObject:clickedChange];
+		}
+		else
+		{
+			return [NSArray array];
 		}
 	}
 }
