@@ -1,6 +1,6 @@
 Gitbox 1.5 Release Notes
 
-✓ Undo/Redo for commit, push, pull, merge and other git operations (including dangerous Reset Branch, Revert File etc.)
+✓ Undo/Redo for commit, push, pull, merge and other git operations /* (including dangerous Reset Branch, Revert File etc.) */
 ✓ Sidebar progress indicators for push, pull, fetch and clone.
 ✓ Stage All menu command with Command+Shift+Return shortcut.
 ✓ Highlighted links in commit messages.
