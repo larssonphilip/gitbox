@@ -43,6 +43,9 @@ Gitbox 1.5 misc items:
 - stage: undo for "Revert File"
 - stage: undo for "Delete File"
 
+- bug: when committed multiple times, undo item has (null) title
+- bug: new tag should be pushed to all remotes ASAP OR it should be colored green and count as a pending item
+
 - bug: when a file is committed, modified and in gitignore, it could be very hard to pull ("cannot merge, dirty working dir" error)
 - bug: submodules' loading causes stage refresh delays or similar glitches.
 
