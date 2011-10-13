@@ -18,7 +18,7 @@
 - (BOOL) isLocalBranch;
 - (BOOL) isRemoteBranch;
 - (NSString*) displayName;
-- (NSString*) commitish;
+- (NSString*) commitish; // returns symbolic name if possible or commit ID
 
 - (GBRemote*) remote;
 
