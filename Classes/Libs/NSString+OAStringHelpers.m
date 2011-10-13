@@ -135,7 +135,7 @@
 {
 	if (self.length == 0) return @"...";
 	NSString* s = [self stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-	if ([[s substringFromIndex:self.length-1] isEqualToString:@"."]) return [s stringByAppendingString:@".."];
+	if ([[s substringFromIndex:s.length-1] isEqualToString:@"."]) return [s stringByAppendingString:@".."];
 	return [s stringByAppendingString:@"..."];
 }
 
