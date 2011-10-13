@@ -106,6 +106,7 @@
 
 - (BOOL) isConnectionAvailable;
 
+- (void) undoPushWithForce:(BOOL)forced commitId:(NSString*)commitId;
 - (void) undoCommitWithMessage:(NSString*)message commitId:(NSString*)commitId undo:(BOOL)undo;
 
 @end
@@ -152,7 +153,6 @@
 	NSLog(@"GBRepositoryController#dealloc: %@", self);
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	//NSLog(@">>> GBRepositoryController:%p dealloc...", self);
-	self.repository = nil; // so we unsubscribe correctly
 	sidebarItem.object = nil;
 	[sidebarItem release]; sidebarItem = nil;
 	if (toolbarController.repositoryController == self) toolbarController.repositoryController = nil;
@@ -175,6 +175,9 @@
 	[currentSearch cancel];
 	[currentSearch release]; currentSearch = nil;
 	[undoManager release]; undoManager = nil;
+	
+	self.repository = nil; // so we unsubscribe correctly
+	
 	[super dealloc];
 }
 
@@ -207,11 +210,15 @@
 - (void) setRepository:(GBRepository*)aRepository
 {
 	if (repository == aRepository) return;
+	self.undoManager = nil;
 	[repository.stage removeObserverForAllSelectors:self];
 	[repository removeObserverForAllSelectors:self];
 	[repository release];
 	repository = [aRepository retain];
-	self.undoManager = [[[NSUndoManager alloc] init] autorelease];
+	if (repository)
+	{
+		self.undoManager = [[[NSUndoManager alloc] init] autorelease];
+	}
 	[repository.stage addObserverForAllSelectors:self];
 	[repository addObserverForAllSelectors:self];
 }
@@ -972,22 +979,13 @@
 	}];
 }
 
-- (void) pushWithForce:(BOOL)forced
+- (void) helperPushBranch:(GBRef*)srcRef toRemoteBranch:(GBRef *)dstRef forced:(BOOL)forced
 {
-	if (self.isDisabled) return;
-	
-	if (self.repository.currentRemoteBranch)
-	{
-		NSString* commitId = self.repository.currentRemoteBranch.commitId;
-		[[self.undoManager prepareWithInvocationTarget:self] undoPushWithForce:forced commitId:commitId];
-		[self.undoManager setActionName:forced ? NSLocalizedString(@"Force Push", @"") : NSLocalizedString(@"Push", @"")];
-	}
-	
 	[self resetAutoFetchInterval];
 	[self pushSpinning];
 	[self pushDisabled];
 	[self pushFSEventsPause];
-	[self.repository pushWithForce:forced block:^{
+	[self.repository pushBranch:srcRef toRemoteBranch:dstRef forced:forced withBlock:^{
 		[self updateLocalRefsWithBlock:^{
 			[self loadCommitsWithBlock:^{
 				[self updateRemoteRefsWithBlock:^{
@@ -1000,6 +998,22 @@
 	}];
 }
 
+- (void) pushWithForce:(BOOL)forced
+{
+	if (self.isDisabled) return;
+	
+	// FIXME: for configuredRemoteBranch we don't have commitId, should retrieve it upon branch creation OR find it right here in existing list of remote branches
+	if (self.repository.currentRemoteBranch)
+	{
+		GBRef* resolvedRef = [self.repository existingRefForRef:self.repository.currentRemoteBranch];
+		[[self.undoManager prepareWithInvocationTarget:self] undoPushWithForce:forced
+																	  commitId:resolvedRef.commitId];
+		[self.undoManager setActionName:forced ? NSLocalizedString(@"Force Push", @"") : NSLocalizedString(@"Push", @"")];
+	}
+
+	[self helperPushBranch:self.repository.currentLocalRef toRemoteBranch:self.repository.currentRemoteBranch forced:forced];
+}
+
 - (void) undoPushWithForce:(BOOL)forced commitId:(NSString*)commitId
 {
 	if (self.isDisabled) return;
@@ -1010,7 +1024,11 @@
 		[self.undoManager setActionName:forced ? NSLocalizedString(@"Force Push", @"") : NSLocalizedString(@"Push", @"")];
 	}
 	
+	GBRef* srcRef = [[[GBRef alloc] init] autorelease];
+	srcRef.commitId = commitId;
+	srcRef.repository = self.repository;
 	
+	[self helperPushBranch:srcRef toRemoteBranch:self.repository.currentRemoteBranch forced:YES]; // when undoing push, we need --force flag.
 }
 
 - (IBAction) push:(id)sender
