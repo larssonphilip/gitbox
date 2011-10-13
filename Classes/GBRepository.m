@@ -490,6 +490,44 @@
 	return nil;
 }
 
+- (GBRef*) existingRefForRef:(GBRef*)aRef
+{
+	if (!aRef) return nil;
+	
+	if (aRef.isRemoteBranch)
+	{
+		GBRemote* remote = [self remoteForAlias:aRef.remoteAlias];
+		for (GBRef* branch in remote.branches)
+		{
+			if ([branch isEqual:aRef])
+			{
+				return branch;
+			}
+		}
+	}
+	else if (aRef.isLocalBranch)
+	{
+		for (GBRef* localRef in self.localBranches)
+		{
+			if ([localRef isEqual:aRef])
+			{
+				return localRef;
+			}
+		}
+	}
+	else if (aRef.isTag)
+	{
+		for (GBRef* tag in self.tags)
+		{
+			if ([tag isEqual:aRef])
+			{
+				return tag;
+			}
+		}
+	}
+	return nil;
+}
+
 - (BOOL) doesRefExist:(GBRef*)ref
 {
 	// For now, the only case when ref can be created in UI, but does not have any commit id is a new remote branch.
@@ -1255,6 +1293,7 @@
 	[self pushBranch:self.currentLocalRef toRemoteBranch:self.currentRemoteBranch forced:(BOOL)forced withBlock:block];
 }
 
+// if aLocalBranch.commitish == nil, then it's a "push delete"
 - (void) pushBranch:(GBRef*)aLocalBranch toRemoteBranch:(GBRef*)aRemoteBranch forced:(BOOL)forced withBlock:(void(^)())block
 {
 	block = [[block copy] autorelease];
@@ -1265,7 +1304,7 @@
 	}
 		
 	NSString* alias = aRemoteBranch.remoteAlias;
-	GBRemote* aRemote = [self remoteForAlias:alias];
+	GBRemote* aRemote = aRemoteBranch.remote;
 	
 	if (!aRemote)
 	{
@@ -1276,7 +1315,8 @@
 	
 	[GBAskPassController launchedControllerWithAddress:aRemote.URLString taskFactory:^{
 		GBTask* task = [self taskWithProgress];
-		NSString* refspec = [NSString stringWithFormat:@"%@:%@", aLocalBranch.name, aRemoteBranch.name];
+		NSString* commitish = aLocalBranch.commitish;
+		NSString* refspec = [NSString stringWithFormat:@"%@:%@", commitish ? commitish : @"", aRemoteBranch.name];
 		
 		task.arguments = [NSArray arrayWithObjects:@"push", @"--tags", @"--progress", nil];
 		if (forced) task.arguments = [task.arguments arrayByAddingObject:@"--force"];

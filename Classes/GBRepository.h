@@ -59,6 +59,7 @@
 - (NSArray*) commits;
 - (NSUInteger) totalPendingChanges;
 - (GBRemote*) remoteForAlias:(NSString*)remoteAlias;
+- (GBRef*) existingRefForRef:(GBRef*)aRef;
 - (BOOL) doesRefExist:(GBRef*) ref;
 - (BOOL) doesHaveSubmodules;
 - (NSURL*) URLForSubmoduleAtPath:(NSString*)path;
