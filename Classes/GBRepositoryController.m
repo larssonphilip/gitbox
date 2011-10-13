@@ -930,6 +930,8 @@
 
 - (IBAction) fetch:(id)sender
 {
+	if (self.isDisabled) return;
+	
 	[self resetAutoFetchInterval];
 	[self pushSpinning];
 	[self pushDisabled];
@@ -949,6 +951,8 @@
 
 - (IBAction) pull:(id)sender // or merge
 {
+	if (self.isDisabled) return;
+	
 	[self resetAutoFetchInterval];
 	[self pushSpinning];
 	[self pushDisabled];
@@ -970,6 +974,15 @@
 
 - (void) pushWithForce:(BOOL)forced
 {
+	if (self.isDisabled) return;
+	
+	if (self.repository.currentRemoteBranch)
+	{
+		NSString* commitId = self.repository.currentRemoteBranch.commitId;
+		[[self.undoManager prepareWithInvocationTarget:self] undoPushWithForce:forced commitId:commitId];
+		[self.undoManager setActionName:forced ? NSLocalizedString(@"Force Push", @"") : NSLocalizedString(@"Push", @"")];
+	}
+	
 	[self resetAutoFetchInterval];
 	[self pushSpinning];
 	[self pushDisabled];
@@ -987,6 +1000,19 @@
 	}];
 }
 
+- (void) undoPushWithForce:(BOOL)forced commitId:(NSString*)commitId
+{
+	if (self.isDisabled) return;
+
+	if (self.repository.currentRemoteBranch)
+	{
+		[[self.undoManager prepareWithInvocationTarget:self] pushWithForce:forced];
+		[self.undoManager setActionName:forced ? NSLocalizedString(@"Force Push", @"") : NSLocalizedString(@"Push", @"")];
+	}
+	
+	
+}
+
 - (IBAction) push:(id)sender
 {
 	[self pushWithForce:NO];
@@ -999,6 +1025,8 @@
 
 - (IBAction) rebase:(id)sender
 {
+	if (isDisabled) return;
+	
 	[self resetAutoFetchInterval];
 	[self pushSpinning];
 	[self pushDisabled];
