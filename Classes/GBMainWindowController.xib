@@ -2,10 +2,10 @@
 <archive type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1060</int>
-		<string key="IBDocument.SystemVersion">11B2118</string>
+		<string key="IBDocument.SystemVersion">11C74</string>
 		<string key="IBDocument.InterfaceBuilderVersion">1938</string>
-		<string key="IBDocument.AppKitVersion">1138.1</string>
-		<string key="IBDocument.HIToolboxVersion">566.00</string>
+		<string key="IBDocument.AppKitVersion">1138.23</string>
+		<string key="IBDocument.HIToolboxVersion">567.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin</string>
 			<string key="NS.object.0">1938</string>
@@ -891,7 +891,6 @@
 									<string key="NSFrame">{{198, 0}, {601, 435}}</string>
 									<reference key="NSSuperview" ref="50605990"/>
 									<reference key="NSWindow"/>
-									<reference key="NSNextKeyView"/>
 									<string key="NSClassName">NSView</string>
 								</object>
 							</array>
@@ -914,7 +913,7 @@
 				<string key="NSMaxSize">{10000000000000, 10000000000000}</string>
 				<string key="NSFrameAutosaveName">gitboxwindow</string>
 				<int key="NSWindowCollectionBehavior">128</int>
-				<bool key="NSWindowIsRestorable">YES</bool>
+				<bool key="NSWindowIsRestorable">NO</bool>
 			</object>
 		</array>
 		<object class="IBObjectContainer" key="IBDocument.Objects">
@@ -1667,6 +1666,8 @@
 						<string key="applyStashMenu:">id</string>
 						<string key="cancelSearch:">id</string>
 						<string key="cherryPickCommit:">NSMenuItem</string>
+						<string key="deleteTag:">id</string>
+						<string key="deleteTagMenu:">id</string>
 						<string key="editBranchesAndTags:">id</string>
 						<string key="editGitConfig:">id</string>
 						<string key="editGitIgnore:">id</string>
@@ -1674,6 +1675,7 @@
 						<string key="fetch:">id</string>
 						<string key="forcePush:">id</string>
 						<string key="mergeCommit:">NSMenuItem</string>
+						<string key="newTag:">id</string>
 						<string key="nextCommit:">id</string>
 						<string key="openInFinder:">id</string>
 						<string key="openInTerminal:">id</string>
@@ -1690,6 +1692,7 @@
 						<string key="removeOldStashes:">NSMenuItem</string>
 						<string key="resetBranchToCommit:">NSMenuItem</string>
 						<string key="resetChanges:">id</string>
+						<string key="revertCommit:">NSMenuItem</string>
 						<string key="search:">id</string>
 						<string key="stashChanges:">id</string>
 					</dictionary>
@@ -1713,6 +1716,14 @@
 						<object class="IBActionInfo" key="cherryPickCommit:">
 							<string key="name">cherryPickCommit:</string>
 							<string key="candidateClassName">NSMenuItem</string>
+						</object>
+						<object class="IBActionInfo" key="deleteTag:">
+							<string key="name">deleteTag:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="deleteTagMenu:">
+							<string key="name">deleteTagMenu:</string>
+							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBActionInfo" key="editBranchesAndTags:">
 							<string key="name">editBranchesAndTags:</string>
@@ -1741,6 +1752,10 @@
 						<object class="IBActionInfo" key="mergeCommit:">
 							<string key="name">mergeCommit:</string>
 							<string key="candidateClassName">NSMenuItem</string>
+						</object>
+						<object class="IBActionInfo" key="newTag:">
+							<string key="name">newTag:</string>
+							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBActionInfo" key="nextCommit:">
 							<string key="name">nextCommit:</string>
@@ -1805,6 +1820,10 @@
 						<object class="IBActionInfo" key="resetChanges:">
 							<string key="name">resetChanges:</string>
 							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="revertCommit:">
+							<string key="name">revertCommit:</string>
+							<string key="candidateClassName">NSMenuItem</string>
 						</object>
 						<object class="IBActionInfo" key="search:">
 							<string key="name">search:</string>
