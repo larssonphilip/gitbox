@@ -85,4 +85,27 @@
 	return [[[GitConfig alloc] initWithRepositoryURL:self.URL] autorelease];
 }
 
+- (NSString*) commitIdForRefName:(NSString*)refName
+{
+	if (!refName) return nil;
+	
+	git_reference* ref = NULL;
+	if (GIT_SUCCESS == git_reference_lookup(&ref, self.repository, [refName cStringUsingEncoding:NSUTF8StringEncoding]))
+	{
+		git_reference* resolvedRef = NULL;
+		if (GIT_SUCCESS == git_reference_resolve(&resolvedRef, ref))
+		{
+			const git_oid* oid = git_reference_oid(resolvedRef);
+			if (oid)
+			{
+				char out[41];
+				git_oid_fmt(out, oid);
+				out[40] = '\0';
+				return [NSString stringWithCString:out encoding:NSUTF8StringEncoding];
+			}
+		}
+	}
+	return nil;
+}
+
 @end

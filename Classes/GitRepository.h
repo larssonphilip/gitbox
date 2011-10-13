@@ -7,4 +7,5 @@
 @property(nonatomic, retain) NSURL* URL;
 + (GitRepository*) repositoryWithURL:(NSURL*)url;
 - (GitConfig*) config;
+- (NSString*) commitIdForRefName:(NSString*)refName;
 @end
