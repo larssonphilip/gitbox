@@ -1,6 +1,6 @@
 #!/bin/sh
 
-git submodule update --init
+#git submodule update --init
 pushd libgit2
 mkdir -p build
 cd build
