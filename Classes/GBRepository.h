@@ -117,6 +117,7 @@
 - (void) resetStageWithBlock:(void(^)())block;
 - (void) resetToCommit:(GBCommit*)aCommit withBlock:(void(^)())block;
 - (void) resetSoftToCommit:(NSString*)commitish withBlock:(void(^)())block;
+- (void) resetMixedToCommit:(NSString*)commitish withBlock:(void(^)())block;
 - (void) revertCommit:(GBCommit*)aCommit withBlock:(void(^)())block;
 - (void) stashChangesWithMessage:(NSString*)message block:(void(^)())block;
 - (void) applyStash:(GBStash*)aStash withBlock:(void(^)())block;
@@ -124,6 +125,7 @@
 - (void) removeRefs:(NSArray*)refs withBlock:(void(^)())block;
 - (void) removeRemoteRefs:(NSArray*)refs withBlock:(void(^)())block;
 
+- (void) doGitCommand:(NSArray*)arguments withBlock:(void(^)())block;
 
 
 #pragma mark Util

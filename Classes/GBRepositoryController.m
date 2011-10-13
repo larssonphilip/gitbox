@@ -107,6 +107,7 @@
 - (BOOL) isConnectionAvailable;
 
 - (void) undoPushWithForce:(BOOL)forced commitId:(NSString*)commitId;
+- (void) undoPullOverCommitId:(NSString*) commitId title:(NSString*)title;
 - (void) undoCommitWithMessage:(NSString*)message commitId:(NSString*)commitId undo:(BOOL)undo;
 
 @end
@@ -960,6 +961,14 @@
 {
 	if (self.isDisabled) return;
 	
+	GBRef* ref = self.repository.currentLocalRef;
+	ref = ref.commitId ? ref : [self.repository existingRefForRef:ref];
+	if (ref.commitId)
+	{
+		NSString* title = self.repository.currentRemoteBranch.isRemoteBranch ? NSLocalizedString(@"Pull", @"") : NSLocalizedString(@"Merge", @"");
+		[[self.undoManager prepareWithInvocationTarget:self] undoPullOverCommitId:ref.commitId title:title];
+		[self.undoManager setActionName:title];
+	}
 	[self resetAutoFetchInterval];
 	[self pushSpinning];
 	[self pushDisabled];
@@ -978,6 +987,41 @@
 		}];
 	}];
 }
+
+- (void) undoPullOverCommitId:(NSString*) commitId title:(NSString*)title
+{
+	if (self.isDisabled) return;
+
+	[[self.undoManager prepareWithInvocationTarget:self] pull:nil];
+	[self.undoManager setActionName:title];
+	
+	[self resetAutoFetchInterval];
+	[self pushSpinning];
+	[self pushDisabled];
+	[self pushFSEventsPause];
+	
+	// Note: stash and unstash to preserve modifications.
+	//       if we use reset --mixed or --soft, we will keep added objects from the pull. We don't want them.
+	[self.repository doGitCommand:[NSArray arrayWithObjects:@"stash", nil] withBlock:^{
+		[self.repository doGitCommand:[NSArray arrayWithObjects:@"reset", @"--hard", commitId, nil] withBlock:^{
+			[self.repository doGitCommand:[NSArray arrayWithObjects:@"stash", @"apply", nil] withBlock:^{
+				[self loadStageChangesWithBlock:^{
+					[self updateLocalRefsWithBlock:^{
+						[self updateSubmodulesWithBlock:^{
+							[self loadCommitsWithBlock:nil];
+							[self updateRemoteRefsWithBlock:nil];
+							[self popFSEventsPause];
+							[self popSpinning];
+						}];
+					}];
+					[self popDisabled];
+				}];
+			}];
+		}];
+	}];
+}
+
+
 
 - (void) helperPushBranch:(GBRef*)srcRef toRemoteBranch:(GBRef *)dstRef forced:(BOOL)forced
 {

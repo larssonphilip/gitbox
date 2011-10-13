@@ -1484,6 +1484,21 @@
 	}];
 }
 
+- (void) resetMixedToCommit:(NSString*)commitish withBlock:(void(^)())block
+{
+	block = [[block copy] autorelease];
+	
+	GBTask* task = [self task];
+	task.arguments = [NSArray arrayWithObjects:@"reset", @"--mixed", commitish, nil];
+	[self launchTask:task withBlock:^{
+		if ([task isError])
+		{
+			[self alertWithMessage:NSLocalizedString(@"Branch reset failed",nil) description:[task UTF8ErrorAndOutput]];
+		}
+		if (block) block();
+	}];
+}
+
 - (void) revertCommit:(GBCommit*)aCommit withBlock:(void(^)())block
 {
 	block = [[block copy] autorelease];
@@ -1500,6 +1515,22 @@
 	}];  
 }
 
+
+- (void) doGitCommand:(NSArray*)arguments withBlock:(void(^)())block
+{
+	if (!arguments)
+	{
+		if (block) block();
+		return;
+	}
+	block = [[block copy] autorelease];
+	GBTask* task = [self task];
+	task.arguments = arguments;
+	[self launchTask:task withBlock:^{
+		if (block) block();
+	}];
+}
+ 
 
 - (void) stashChangesWithMessage:(NSString*)message block:(void(^)())block
 {

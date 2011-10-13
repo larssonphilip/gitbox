@@ -35,7 +35,7 @@ Gitbox 1.5 misc items:
 + history: undo for commit (sort of "amend commit")
 + history: undo for push
 + history: undo for force push
-- history: undo for pull
++ history: undo for pull
 - history: undo for branch reset
 - history: undo for ref checkout
 - history: undo for branch creation
