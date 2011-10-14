@@ -1,6 +1,6 @@
 Gitbox 1.5 Release Notes
 
-✓ Undo/Redo for commit, push, pull, merge and other git operations /* (including dangerous Reset Branch, Revert File etc.) */
+✓ Undo/Redo for commit, push, pull and merge.
 ✓ Sidebar progress indicators for push, pull, fetch and clone.
 ✓ Stage All menu command with Command+Shift+Return shortcut.
 ✓ Highlighted links in commit messages.
@@ -36,13 +36,13 @@ Gitbox 1.5 misc items:
 + history: undo for push
 + history: undo for force push
 + history: undo for pull
-- history: undo for branch reset
+- history: undo for branch reset - these two require something to be done about stashing the modified files
+- history: undo for stage reset
 - history: undo for ref checkout
 - history: undo for branch creation
 - history: undo for remote branch creation
 - stage: undo for "Revert File"
 - stage: undo for "Delete File"
-
 
 - bug: new tag should be pushed to all remotes ASAP OR it should be colored green and count as a pending item
 - bug: when a file is committed, modified and in gitignore, it could be very hard to pull ("cannot merge, dirty working dir" error)
@@ -52,6 +52,7 @@ Gitbox 1.5 misc items:
 
 - bug: search: when commits are updated, the selected one does not show the proper view in the commitviewcontroller. [not important]
 
+- double-section badge in the sidebar for local modifications and remote ones.
 - index.lock issue:
 
 fatal: Unable to create '/Users/oleganza/Work/gitbox/app/.git/index.lock': File exists.
