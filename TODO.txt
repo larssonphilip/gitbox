@@ -36,8 +36,10 @@ Gitbox 1.5 misc items:
 + history: undo for push
 + history: undo for force push
 + history: undo for pull
-- history: undo for branch reset - these two require something to be done about stashing the modified files
+- history: undo for branch reset
 - history: undo for stage reset
+  - for these two notify user that pending changes will be stashed away before performing the operation.
+  
 - history: undo for ref checkout
 - history: undo for branch creation
 - history: undo for remote branch creation
@@ -51,12 +53,12 @@ Gitbox 1.5 misc items:
   - when finished checking changes, reload local refs and remotes and issue another notification.
   
 - bug: when remote server is added, need to fetch all remotes immediately.
-- bug: should reset undo stack after rest branch or similar destructive operations
+- bug: should reset undo stack after reset branch or similar destructive operations
 
 - bug: when pulling a lot of commits, undo leaves a lot of crap in the stage. Try with Gitbox and July 2011 state.
 
-- bug: new tag should be pushed to all remotes ASAP OR it should be colored green and count as a pending item
-- bug: when a file is committed, modified and in gitignore, it could be very hard to pull ("cannot merge, dirty working dir" error)
+- bug: new tag should be pushed to all remotes ASAP OR it should be colored green and count as a pending item (latter is better)
+- bug: when the file is committed, modified and in gitignore, it could be very hard to pull ("cannot merge, dirty working dir" error)
 - bug: submodules' loading causes stage refresh delays or similar glitches.
 - bug: askpass crashes with "task" selector when tries to update a repo with missing/invalid ssh key.
 - bug: stage: when having multiple selection and expanding it with keyboard, stage updates cause internal rest, so the selection does not change the same way when continuing pressing keystrokes. Should probably not replace stage content when it did not really change.
