@@ -30,7 +30,7 @@
 
 + (NSString*) bundledGitVersion
 {
-	return @"1.7.7.rc3.5.g01437";
+	return @"1.7.7.rc3.7.g26c6e2";
 }
 
 // TODO: future improvement here: do not remove bundled tar and unpack to Application Support folder instead of bundle to enable packed binary for the App Store.

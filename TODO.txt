@@ -11,7 +11,8 @@ Gitbox 1.5 Release Notes
 
 ✓ Files are sorted in natural order (2.txt comes before 10.txt)
 ✓ Support for both overlay and legacy scrollbars in OS X Lion.
-✓ Updated bundled Git to version 1.7.5.4.
+✓ Updated bundled Git to version 1.7.7
+✓ Now stash moves away untracked files as well as modified ones.
 ✓ Menu command for removing all stashes.
 ✓ Added "Optimize Repository" button to repository settings (aka "git gc").
 ✓ Commit button is disabled when no branch is selected.
@@ -49,7 +50,7 @@ Gitbox 1.5 misc items:
   - each time there's change - issue notification of the changed contents.
   - when finished checking changes, reload local refs and remotes and issue another notification.
   
-
+- bug: when remote server is added, need to fetch all remotes immediately.
 - bug: should reset undo stack after rest branch or similar destructive operations
 
 - bug: when pulling a lot of commits, undo leaves a lot of crap in the stage. Try with Gitbox and July 2011 state.
@@ -107,7 +108,8 @@ process is running and remove the file manually to continue.
 - stage: add option "Delete from stage only" for "git rm --force --cached <filepath>".
 - bug: file "Icon\r" was committed somehow.
 
-
++ upgrade to git 1.7.7
++ turn on stashing with untracked files
 ≠ bug: when committed multiple times, undo item has (null) title [was a temp bug with unfinished push function]
 + less strict validation for diff tool: allow diff and show in history for "added" files
 + bug: when selected a collapsed group and added a folder, the selected group is not expanded

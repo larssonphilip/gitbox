@@ -1002,7 +1002,7 @@
 	
 	// Note: stash and unstash to preserve modifications.
 	//       if we use reset --mixed or --soft, we will keep added objects from the pull. We don't want them.
-	[self.repository doGitCommand:[NSArray arrayWithObjects:@"stash", nil] withBlock:^{
+	[self.repository doGitCommand:[NSArray arrayWithObjects:@"stash", @"--include-untracked", nil] withBlock:^{
 		[self.repository doGitCommand:[NSArray arrayWithObjects:@"reset", @"--hard", commitId, nil] withBlock:^{
 			[self.repository doGitCommand:[NSArray arrayWithObjects:@"stash", @"apply", nil] withBlock:^{
 				[self loadStageChangesWithBlock:^{
