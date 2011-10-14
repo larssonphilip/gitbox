@@ -43,6 +43,12 @@ Gitbox 1.5 misc items:
 - stage: undo for "Revert File"
 - stage: undo for "Delete File"
 
+- possible fix for stage refreshes:
+  - have a single "queue" for stage refreshes, everybody should simply queue their requests.
+  - when local folder is updated, refresh index immediately; after refresh make a 0.3 sec pause and refresh again unless there are no changes in the stage.
+  - each time there's change - issue notification of the changed contents.
+  - when finished checking changes, reload local refs and remotes and issue another notification.
+  
 
 - bug: should reset undo stack after rest branch or similar destructive operations
 
