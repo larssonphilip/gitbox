@@ -1,0 +1,40 @@
+
+Since we cannot reliably check for stage updates once, here's a plan to improve the situation:
+
+- GBStage will be the only object which checks stage changes (git diff-index, git diff-files and git ls-files)
+- The API to trigger an update won't be block-based, but will be unconditional. However, there will be porcelain layer to queue blocks for basic notifications.
+- Stage can be in process of updating or idle. It ignores requests for update when it's already updating (+ small amount of time after finishing to adjust for delays from FS notifications).
+- Stage will load all the changes at least twice: first, to get up to date data, then second time to verify that updates are finished. 
+- If new results are different, then it will repeat again. 
+- If results are identical, it will go back to idle mode.
+
+
+State Machine:
+
+GBStageStateIdle:
+- setNeedsUpdate => GBStageStateUpdating
+
+GBStageStateUpdating: 
+- setNeedsUpdate => GBStageStateUpdating
+- identical results retrieved => GBStageStateFinishing
+
+GBStageStateFinishing: 
+- setNeedsUpdate => GBStageStateFinishing
+- latency timeout => GBStageStateIdle
+
+
+
+Basic API:
+
+- (void) setNeedsUpdate; // triggers updates if they are not running yet
+
+NSString* GBStageDidUpdateNotification; // called each time there's an update
+NSString* GBStageDidFinishUpdatingNotification; // called at the very end of updates when stage becomes idle
+
+
+Block API (could be unnecessary):
+
+- (void) updateChangesAndCallOnFirstUpdate:(void(^)())block;
+- (void) updateChangesAndCallWhenFinished:(void(^)())block;
+
+
