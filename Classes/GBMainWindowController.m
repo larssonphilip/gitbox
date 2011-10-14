@@ -250,6 +250,11 @@
 		newDetailController = self.defaultDetailViewController;
 	}
 	
+#if 0
+#warning BETA: personal build
+	windowTitle = [windowTitle stringByAppendingString:@" (beta build for Troy Murray aka @talltroym)"];
+#endif
+	
 	[self.window setTitle:windowTitle];
 	[self.window setRepresentedURL:windowRepresentedURL];
 	
