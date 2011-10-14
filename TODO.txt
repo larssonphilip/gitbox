@@ -11,7 +11,6 @@ Gitbox 1.5 Release Notes
 
 ✓ Files are sorted in natural order (2.txt comes before 10.txt)
 ✓ Support for both overlay and legacy scrollbars in OS X Lion.
-✓ Added menu command to remove all stashes.
 ✓ Updated bundled Git to version 1.7.5.4.
 ✓ Menu command for removing all stashes.
 ✓ Added "Optimize Repository" button to repository settings (aka "git gc").
