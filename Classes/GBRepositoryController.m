@@ -1463,6 +1463,7 @@
 															completion:^(BOOL result){
 																if (result)
 																{
+																	[self.undoManager removeAllActions];
 																	[self.repository resetStageWithBlock:^{
 																		[self loadStageChangesWithBlock:^{
 																		}];
@@ -1585,6 +1586,7 @@
 	}
 	
 	void(^block)() = ^{
+		[self.undoManager removeAllActions];
 		[self.repository stashChangesWithMessage:stashMessage block:^{
 			[self.repository resetToCommit:aCommit withBlock:^{
 			}];

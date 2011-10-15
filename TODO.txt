@@ -46,7 +46,7 @@ Gitbox 1.5 misc items:
 - stage: undo for "Revert File"
 - stage: undo for "Delete File"
 
-- bug: should reset undo stack after reset branch or similar destructive operations
+
 
 - bug: when pulling a lot of commits, undo leaves a lot of crap in the stage. Try with Gitbox and July 2011 state.
 
@@ -111,6 +111,7 @@ process is running and remove the file manually to continue.
   
 + bug: when remote server is added, need to fetch all remotes immediately.
 
++ bug: should reset undo stack after reset branch or similar destructive operations
 + upgrade to git 1.7.7
 + turn on stashing with untracked files
 ≠ bug: when committed multiple times, undo item has (null) title [was a temp bug with unfinished push function]
