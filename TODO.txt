@@ -16,6 +16,7 @@ Gitbox 1.5 Release Notes
 ✓ Menu command for removing all stashes.
 ✓ Added "Optimize Repository" button to repository settings (aka "git gc").
 ✓ Commit button is disabled when no branch is selected.
+✓ Improved stability of the stage view.
 
 ✓ Fixed bug with menu item for opening multiple Xcode projects.
 ✓ Fixed bug with remembering window and sidebar sizes on OS X Lion.
