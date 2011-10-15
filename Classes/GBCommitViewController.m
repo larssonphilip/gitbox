@@ -122,7 +122,10 @@
 
 - (void) updateViews
 {
-	[self.commit loadChangesIfNeededWithBlock:^{}];
+	if (self.commit.changes.count < 1)
+	{
+		[self.commit loadChangesWithBlock:^{}];
+	}
 	
 	[[NSNotificationCenter defaultCenter] removeObserver:self
 													name:NSViewFrameDidChangeNotification 

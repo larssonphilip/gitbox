@@ -34,7 +34,6 @@
 @property(nonatomic, assign) NSUInteger unmergedCommitsCount; // obsolete
 @property(nonatomic, assign) NSUInteger unpushedCommitsCount; // obsolete
 @property(nonatomic, assign, readonly) NSUInteger commitsDiffCount;
-@property(nonatomic, assign, readonly, getter=isRebaseConflict) BOOL rebaseConflict;
 
 @property(nonatomic, assign) double currentTaskProgress;
 @property(nonatomic, copy) NSString* currentTaskProgressStatus;
@@ -81,8 +80,6 @@
 - (void) updateCommitsDiffCountWithBlock:(void(^)())block;
 
 - (void) updateSubmodulesWithBlock:(void(^)())block;
-
-- (void) updateConflictState;
 
 
 #pragma mark Mutation

@@ -34,7 +34,7 @@ NSString* GBStageDidFinishUpdatingNotification; // called at the very end of upd
 
 Block API (could be unnecessary):
 
-- (void) updateChangesAndCallOnFirstUpdate:(void(^)())block;
-- (void) updateChangesAndCallWhenFinished:(void(^)())block;
+- (void) updateChangesAndCallOnFirstUpdate:(void(^)())block; // sets needsUpdate and adds block to the queue to be called on DidUpdateNotification
+- (void) updateChangesAndCallWhenFinished:(void(^)())block; // sets needsUpdate and adds block to the queue to be called on DidUpdateNotification
 
 

@@ -247,9 +247,8 @@
 	self.commit = self.repositoryController.selectedCommit;
 }
 
-- (void) repositoryController:(GBRepositoryController*)repoCtrl didUpdateChangesForCommit:(GBCommit*)aCommit
+- (void) repositoryControllerDidUpdateStage:(GBRepositoryController*)repoCtrl
 {
-	if (aCommit != (GBCommit*)(self.repositoryController.repository.stage)) return;
 	[self updateStage];
 }
 

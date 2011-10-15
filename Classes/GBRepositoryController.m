@@ -354,6 +354,17 @@
 	if (!repo) return;
 	if (![self checkRepositoryExistance]) return;
 	
+	NSDate* now = [NSDate date];
+	
+	NSTimeInterval interval = [now timeIntervalSinceDate:repo.stage.lastUpdateDate];
+	
+	//NSLog(@"FS Monitor: Time since last update: %0.3f sec", interval);
+	
+	if (interval < self.fsEventStream.latency*2.0)
+	{
+		NSLog(@"FS Monitor: Ignoring update within %0.3f sec due to latency: %0.3f sec [%@]", interval, self.fsEventStream.latency, repo.url);
+		return;
+	}
 	if (monitor.dotgitIsUpdated)
 	{
 		[self pushFSEventsPause];
@@ -2077,16 +2088,13 @@
 		[self pushFSEventsPause];
 		isLoadingChanges++;
 		[self.repository.stage loadChangesWithBlock:^{
-			//[self.repository.stage loadChangesWithBlock:^{
-				[self updateSubmodulesWithBlock:^{
-					isLoadingChanges--;
-					self.isLoadedStageChangesOnce = YES;
-					[self.blockTable callBlockForName:@"loadStageChanges"];
-					[self notifyWithSelector:@selector(repositoryControllerDidUpdateStageChanges:)];
-				}];
-				[self.sidebarItem update];
-				[self popFSEventsPause];
-			//}];
+			[self updateSubmodulesWithBlock:^{
+				isLoadingChanges--;
+				self.isLoadedStageChangesOnce = YES;
+				[self.blockTable callBlockForName:@"loadStageChanges"];
+			}];
+			[self.sidebarItem update];
+			[self popFSEventsPause];
 		}];
 	}];
 }
@@ -2118,20 +2126,11 @@
 #pragma mark GBCommit Notifications
 
 
-- (void) commitDidUpdateChanges:(GBCommit*)aCommit
+- (void) stageDidUpdateChanges:(GBStage*)aStage
 {
-	// Avoid publishing changes if another staging is running
-	// or another loading task is running.
-	if (!isStaging && isLoadingChanges <= 1)
-	{
-		[self notifyWithSelector:@selector(repositoryController:didUpdateChangesForCommit:) withObject:aCommit];
-	}
-	
-	if ((GBCommit*)(self.repository.stage) == aCommit)
-	{
-		self.stageBadgeInteger = [self.repository.stage totalPendingChanges];
-		[self.sidebarItem update];
-	}
+	self.stageBadgeInteger = self.repository.stage.totalPendingChanges;
+	[self.sidebarItem update];
+	[self notifyWithSelector:@selector(repositoryControllerDidUpdateStage:)];
 }
 
 
@@ -2343,7 +2342,7 @@
 {
 	//NSLog(@"GBRepositoryController: resetAutoFetchInterval in %@ (was: %f)", [self url], autoFetchInterval);
 	NSTimeInterval plusMinusOne = (2*(0.5-drand48()));
-	autoFetchInterval = 15.0 + plusMinusOne*5.0;
+	autoFetchInterval = 30.0 + plusMinusOne*5.0;
 	
 #if GB_STRESS_TEST_AUTOFETCH
 	autoFetchInterval = drand48()*5.0;

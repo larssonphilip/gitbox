@@ -389,17 +389,6 @@
 
 
 
-- (void) loadChangesIfNeededWithBlock:(void(^)())block
-{
-	if (self.changes && [self.changes count] > 0)
-	{
-		if (block) block();
-		return;
-	}
-	
-	[self loadChangesWithBlock:block];
-}
-
 - (void) loadChangesWithBlock:(void(^)())block
 {
 	block = [[block copy] autorelease];

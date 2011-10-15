@@ -88,6 +88,8 @@
 	NSMutableArray* addedAliases = [[newAliases mutableCopy] autorelease];
 	[addedAliases removeObjectsInArray:oldAliases];
 	
+	BOOL didChange = NO;
+	
 	for (NSString* alias in removedAliases)
 	{
 		GBTask* task = [self.repository task];
@@ -96,6 +98,7 @@
 						  [NSString stringWithFormat:@"remote.%@", alias], 
 						  nil];
 		[self.repository launchTaskAndWait:task];
+		didChange = YES;
 	}
 	
 	for (NSString* alias in addedAliases)
@@ -126,6 +129,7 @@
 							  nil];
 			
 			[self.repository launchTaskAndWait:task];
+			didChange = YES;
 		}
 	}
 	
@@ -153,7 +157,17 @@
 							  newURLString,
 							  nil];
 			[self.repository launchTaskAndWait:task];
+			didChange = YES;
 		}
+	}
+	
+	if (didChange)
+	{
+		double delayInSeconds = 0.0;
+		dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+		dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+			[NSApp sendAction:@selector(fetch:) to:nil from:nil];
+		});
 	}
 }
 

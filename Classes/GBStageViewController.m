@@ -240,11 +240,10 @@
 #pragma mark GBRepositoryController
 
 
-- (void) repositoryControllerDidUpdateStageChanges:(GBRepositoryController*)repoCtrl
+- (void) repositoryControllerDidUpdateStage:(GBRepositoryController*)repoCtrl
 {
-	self.changes = repoCtrl.repository.stage.changes;
+	self.changes = self.stage.changes;
 }
-
 
 
 
@@ -254,7 +253,7 @@
 - (IBAction) stageAll:(id)sender
 {
 	[self.repositoryController stageChanges:self.stage.changes withBlock:^{
-		if (![self.repositoryController.repository isRebaseConflict])
+		if (!self.stage.isRebaseConflict)
 		{
 			[[self.messageTextView window] makeFirstResponder:self.messageTextView];
 		}
@@ -470,7 +469,7 @@
 	{
 		[self.repositoryController stageChanges:[self selectedChanges] withBlock:^{
 			
-			if (![self.repositoryController.repository isRebaseConflict])
+			if (!self.stage.isRebaseConflict)
 			{
 				[[self.messageTextView window] makeFirstResponder:self.messageTextView];
 			}
@@ -486,7 +485,7 @@
 
 - (IBAction) reallyCommit:(id)sender
 {
-	if ([self.repositoryController.repository isRebaseConflict])
+	if (self.stage.isRebaseConflict)
 	{
 		return;
 	}
@@ -596,7 +595,10 @@
 	[self updateHeader];
 	[self.tableView setNextKeyView:self.messageTextView];
 	[[self.tableView enclosingScrollView] setFrame:[self.view bounds]];
-	[self.stage loadChangesIfNeededWithBlock:nil];
+	if (!self.stage.changes)
+	{
+		[self.stage loadChangesWithBlock:^{}];
+	}
 	
 	// Fix for Lion: scroll to the top when switching commit
 	{
@@ -758,7 +760,7 @@
 	}
 	[self updateHeaderSizeAnimating:NO];
 	
-	BOOL rebaseConflict = ([self.repositoryController.repository isRebaseConflict]);
+	BOOL rebaseConflict = self.stage.isRebaseConflict;
 	
 	[self.rebaseStatusLabel setHidden:!rebaseConflict];
 	[self.rebaseCancelButton setHidden:!rebaseConflict];

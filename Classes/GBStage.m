@@ -12,51 +12,78 @@
 #import "NSArray+OAArrayHelpers.h"
 #import "NSObject+OASelectorNotifications.h"
 
+@interface GBStage ()
+@property(nonatomic, assign, getter=isUpdating) BOOL updating;
+@property(nonatomic, retain) NSMutableArray* pendingBlocksForUpdateNotification;
+@property(nonatomic, retain) NSMutableArray* pendingBlocksForFinishUpdateNotification;
+@property(nonatomic, assign, getter=isRebaseConflict) BOOL rebaseConflict;
+@property(nonatomic, copy) NSData* previousChangesData;
+@property(nonatomic, retain) NSDate* lastUpdateDate;
+- (void) arrangeChanges;
+- (void) launchTaskByChunksWithArguments:(NSArray*)args paths:(NSArray*)allPaths block:(void(^)())block taskCallback:(void(^)(GBTask*))taskCallback;
+- (void) flushBlocks:(NSMutableArray*)mutableArray;
+@end
+
+
 @implementation GBStage
+
+@synthesize updating;
 
 @synthesize stagedChanges;
 @synthesize unstagedChanges;
 @synthesize untrackedChanges;
 @synthesize currentCommitMessage;
+@synthesize rebaseConflict;
+@synthesize previousChangesData;
+@synthesize lastUpdateDate;
 
-@synthesize hasStagedChanges;
+@synthesize pendingBlocksForUpdateNotification;
+@synthesize pendingBlocksForFinishUpdateNotification;
+
 
 #pragma mark Init
 
 - (void) dealloc
 {
-	[stagedChanges release]; stagedChanges = nil;
-	[unstagedChanges release]; unstagedChanges = nil;
-	[untrackedChanges release]; untrackedChanges = nil;
-	[currentCommitMessage release]; currentCommitMessage = nil;
+	[stagedChanges release];
+	[unstagedChanges release];
+	[untrackedChanges release];
+	[currentCommitMessage release];
+	[pendingBlocksForUpdateNotification release];
+	[pendingBlocksForFinishUpdateNotification release];
+	[previousChangesData release];
+	[lastUpdateDate release];
 	[super dealloc];
+}
+
+- (id) init
+{
+	if ((self = [super init]))
+	{
+		self.pendingBlocksForUpdateNotification = [NSMutableArray array];
+		self.pendingBlocksForFinishUpdateNotification = [NSMutableArray array];
+		self.lastUpdateDate = [NSDate distantPast];
+	}
+	return self;
 }
 
 - (NSString*) description
 {
-	return [NSString stringWithFormat:@"<GBStage:%p %@ (%d staged, %d not staged, %d untracked)>", self, self.repository.url, (int)[self.stagedChanges count], (int)[self.unstagedChanges count], (int)[self.untrackedChanges count]];
+	return [NSString stringWithFormat:@"<GBStage:%p %@ (%d staged, %d not staged, %d untracked)>", 
+			self, 
+			self.repository.url, 
+			(int)self.stagedChanges.count, 
+			(int)self.unstagedChanges.count, 
+			(int)self.untrackedChanges.count];
 }
 
 
 #pragma mark Interrogation
 
 
-- (NSArray*) sortedChanges
-{
-	NSMutableArray* allChanges = [NSMutableArray array];
-	
-	[allChanges addObjectsFromArray:self.stagedChanges];
-	[allChanges addObjectsFromArray:self.unstagedChanges];
-	[allChanges addObjectsFromArray:self.untrackedChanges];
-	
-	[allChanges sortUsingSelector:@selector(compareByPath:)];
-	
-	return allChanges;
-}
-
 - (BOOL) isDirty
 {
-	return ([self.stagedChanges count] + [self.unstagedChanges count]) > 0;
+	return (self.stagedChanges.count + self.unstagedChanges.count) > 0;
 }
 
 - (BOOL) isStashable
@@ -66,7 +93,7 @@
 
 - (BOOL) isCommitable
 {
-	return [self.stagedChanges count] > 0;
+	return self.stagedChanges.count > 0;
 }
 
 // Returns a good default human-readable message like "somefile.c, other.txt, Makefile and 5 others"
@@ -76,13 +103,13 @@
 	
 	NSArray* stashableChanges = [(self.stagedChanges ? self.stagedChanges : [NSArray array]) arrayByAddingObjectsFromArray:(self.unstagedChanges ? self.unstagedChanges : [NSArray array])];
 	
-	int totalChanges = [stashableChanges count];
+	int totalChanges = stashableChanges.count;
 	
 	NSMutableSet* uniqueNames = [NSMutableSet set]; // also would produce some sort of randomness to avoid displaying same top files.
 	
 	for (GBChange* change in stashableChanges)
 	{
-		NSString* name = [[[change fileURL] absoluteString] lastPathComponent];
+		NSString* name = change.fileURL.absoluteString.lastPathComponent;
 		[uniqueNames addObject:name];
 	}
 	
@@ -108,31 +135,89 @@
 
 
 
+
+
+#pragma mark GBCommit overrides
+
+
+- (BOOL) isStage
+{
+	return YES;
+}
+
+- (GBStage*) asStage
+{
+	return self;
+}
+
+
+- (NSString*) message
+{
+	NSUInteger modifications = self.stagedChanges.count + self.unstagedChanges.count;
+	NSUInteger newFiles = self.untrackedChanges.count;
+	
+	if (modifications + newFiles <= 0)
+	{
+		return NSLocalizedString(@"Working directory clean", @"GBStage");
+	}
+	
+	NSMutableArray* titles = [NSMutableArray array];
+	
+	if (modifications > 0)
+	{
+		if (modifications == 1)
+		{
+			[titles addObject:[NSString stringWithFormat:NSLocalizedString(@"%d modified file",@"GBStage"), modifications]];
+		}
+		else
+		{
+			[titles addObject:[NSString stringWithFormat:NSLocalizedString(@"%d modified files",@"GBStage"), modifications]];
+		}
+		
+	}
+	if (newFiles > 0)
+	{
+		if (newFiles == 1)
+		{
+			[titles addObject:[NSString stringWithFormat:NSLocalizedString(@"%d new file",@"GBStage"), newFiles]];
+		}
+		else
+		{
+			[titles addObject:[NSString stringWithFormat:NSLocalizedString(@"%d new files",@"GBStage"), newFiles]];
+		}
+	}  
+	
+	return [titles componentsJoinedByString:@", "];
+}
+
+- (NSUInteger) totalPendingChanges
+{
+	NSUInteger modifications = self.stagedChanges.count + self.unstagedChanges.count;
+	NSUInteger newFiles = self.untrackedChanges.count;
+	return modifications + newFiles;
+}
+
+
+
+
+
 #pragma mark Actions
 
 
-- (void) update
+- (void) updateConflictState
 {
-	self.hasStagedChanges = (self.stagedChanges && [self.stagedChanges count] > 0);
-	self.changes = [self sortedChanges];
-	[self notifyWithSelector:@selector(commitDidUpdateChanges:)];
+	self.rebaseConflict = ([[NSFileManager defaultManager] fileExistsAtPath:[self.repository.dotGitURL.path stringByAppendingPathComponent:@"rebase-apply"]]);
 }
 
-- (void) loadChangesIfNeededWithBlock:(void(^)())block
+- (void) updateStage
 {
-	if (self.changes) // for stage it's enough to have non-nil array, even empty.
-	{
-		if (block) block();
-		return;
-	}
+	if (updating) return;
 	
-	[super loadChangesIfNeededWithBlock:block];
-}
-
-
-- (void) loadChangesWithBlock:(void(^)())block
-{
-	block = [[block copy] autorelease];
+	updating = YES;
+	
+	__block BOOL shouldRetry = NO; // set this to YES in some inner block if error is encountered
+	
+	NSMutableData* accumulatedData = [NSMutableData data];
 	
 	GBTask* refreshIndexTask = [GBRefreshIndexTask taskWithRepository:self.repository];
 	[self.repository launchTask:refreshIndexTask withBlock:^{
@@ -142,10 +227,11 @@
 			
 			[OABlockGroup groupBlock:^(OABlockGroup* blockGroup){
 				
-				if ([stagedChangesTask terminationStatus] == 0)
+				if (stagedChangesTask.terminationStatus == 0)
 				{
 					self.stagedChanges = stagedChangesTask.changes;
-					//[self update];
+					NSData* data = stagedChangesTask.output;
+					if (data) [accumulatedData appendData:data];
 				}
 				else
 				{
@@ -154,7 +240,8 @@
 					[blockGroup enter];
 					[self.repository launchTask:stagedChangesTask2 withBlock:^{
 						self.stagedChanges = stagedChangesTask2.changes;
-						//[self update];
+						NSData* data = stagedChangesTask2.output;
+						if (data) [accumulatedData appendData:data];
 						[blockGroup leave];
 					}];
 				}
@@ -164,54 +251,89 @@
 				GBUnstagedChangesTask* unstagedChangesTask = [GBUnstagedChangesTask taskWithRepository:self.repository];
 				[self.repository launchTask:unstagedChangesTask withBlock:^{
 					self.unstagedChanges = unstagedChangesTask.changes;
-					//[self update];
 					
+					NSData* data = unstagedChangesTask.output;
+					if (data) [accumulatedData appendData:data];
+
 					GBUntrackedChangesTask* untrackedChangesTask = [GBUntrackedChangesTask taskWithRepository:self.repository];
 					[self.repository launchTask:untrackedChangesTask withBlock:^{
 						self.untrackedChanges = untrackedChangesTask.changes;
-						[self update];
-                        
-						/*
-						 // TODO: parse changes as GBSubmoduleStatusChange (subclass of GBChange)
-						 [self.repository updateSubmodulesWithBlock:^{
-						 // TODO: remove GBChanges for submodule previously added by ls-files (GBAllStagedFilesTask) or other task.
-						 // TODO: add GBChanges for submodules if needed (add later)
-						 [self update];
-						 if (block) block();
-						 }];
-						 */
-						// remove this line when updateSubmodulesWithBlock is uncommented.
 						
-						[self.repository updateConflictState];
+						NSData* data = untrackedChangesTask.output;
+						if (data) [accumulatedData appendData:data];
 						
-						if (block) block();
-						[self notifyWithSelector:@selector(commitDidUpdateChanges:)];
+						self.lastUpdateDate = [NSDate date];
+						[self arrangeChanges];
+						[self updateConflictState];
+						updating = NO;
+						
+						// Now, we can calculate if we have different data or not.
+						
+						shouldRetry = shouldRetry || !self.previousChangesData || ![self.previousChangesData isEqualToData:accumulatedData];
+						
+						if (shouldRetry)
+						{
+							self.previousChangesData = accumulatedData;
+							
+							[self flushBlocks:self.pendingBlocksForUpdateNotification];
+							[self notifyWithSelector:@selector(stageDidUpdateChanges:)];
+							[self updateStage];
+						}
+						else
+						{
+							self.previousChangesData = nil;
+							
+							// Here we flush both arrays of blocks, but do not issue stageDidUpdateChanges: notification because content did not change.
+							[self flushBlocks:self.pendingBlocksForUpdateNotification];
+							[self flushBlocks:self.pendingBlocksForFinishUpdateNotification];
+							[self notifyWithSelector:@selector(stageDidFinishUpdatingChanges:)];
+						}
+						
 					}]; // untracked
 				}]; // unstaged
-				
-			}];
-			
+			}]; // group
 		}]; // staged
 	}]; // refresh-index
 }
 
-// helper method to process more than 4096 files in chunks
-- (void) launchTaskByChunksWithArguments:(NSArray*)args paths:(NSArray*)allPaths block:(void(^)())block taskCallback:(void(^)(GBTask*))taskCallback
+- (void) updateChangesAndCallOnFirstUpdate:(void(^)())block // sends updateStage and adds block to the queue to be called on DidUpdateNotification
 {
-	taskCallback = [[taskCallback copy] autorelease];
-	[OABlockGroup groupBlock:^(OABlockGroup *group) {
-		for (NSArray* paths in [allPaths arrayOfChunksBySize:1000])
-		{
-			[group enter];
-			GBTask* task = [self.repository task];
-			task.arguments = [args arrayByAddingObjectsFromArray:paths];
-			[self.repository launchTask:task withBlock:^{
-				if (taskCallback) taskCallback(task);
-				[group leave];
-			}];
-		}
-	} continuation:block];
+	block = [[block copy] autorelease];
+	if (block) [self.pendingBlocksForUpdateNotification addObject:block];
+	[self updateStage];
 }
+
+- (void) updateChangesAndCallWhenFinished:(void(^)())block // sends updateStage and adds block to the queue to be called on DidfinishUpdateNotification
+{
+	block = [[block copy] autorelease];
+	if (block) [self.pendingBlocksForFinishUpdateNotification addObject:block];
+	[self updateStage];
+}
+
+
+
+// TODO: review this method usage
+- (void) loadChangesWithBlock:(void(^)())block
+{
+	[self updateChangesAndCallWhenFinished:block]; //safer option. Improve performance by carefully getting rid of blocks in loadStageChangesWithBlock:
+}
+
+
+
+
+
+
+
+
+
+
+
+
+#pragma mark Stage Modification Methods
+
+
+
+
 
 - (void) stageDeletedPaths:(NSArray*)pathsToDelete withBlock:(void(^)())block
 {
@@ -328,7 +450,7 @@
 
 - (void) revertChanges:(NSArray*)theChanges withBlock:(void(^)())block
 {
-	if ([theChanges count] <= 0)
+	if (theChanges.count <= 0)
 	{
 		if (block) block();
 		return;
@@ -357,7 +479,7 @@
 	
 	for (GBChange* aChange in theChanges)
 	{
-		if (!aChange.staged && [aChange fileURL])
+		if (!aChange.staged && aChange.fileURL)
 		{
 			if ([aChange isUntrackedFile])
 			{
@@ -404,63 +526,60 @@
 
 
 
-#pragma mark GBCommit overrides
+
+#pragma mark Private
 
 
-- (BOOL) isStage
+
+// helper method to process more than 4096 files in chunks
+- (void) launchTaskByChunksWithArguments:(NSArray*)args paths:(NSArray*)allPaths block:(void(^)())block taskCallback:(void(^)(GBTask*))taskCallback
 {
-	return YES;
+	taskCallback = [[taskCallback copy] autorelease];
+	[OABlockGroup groupBlock:^(OABlockGroup *group) {
+		for (NSArray* paths in [allPaths arrayOfChunksBySize:1000])
+		{
+			[group enter];
+			GBTask* task = [self.repository task];
+			task.arguments = [args arrayByAddingObjectsFromArray:paths];
+			[self.repository launchTask:task withBlock:^{
+				if (taskCallback) taskCallback(task);
+				[group leave];
+			}];
+		}
+	} continuation:block];
 }
 
-- (GBStage*) asStage
-{
-	return self;
-}
 
-- (NSString*) message
+
+- (void) arrangeChanges
 {
-	NSUInteger modifications = [self.stagedChanges count] + [self.unstagedChanges count];
-	NSUInteger newFiles = [self.untrackedChanges count];
+	NSMutableArray* sortedChanges = [NSMutableArray array];
+	[sortedChanges addObjectsFromArray:self.stagedChanges];
+	[sortedChanges addObjectsFromArray:self.unstagedChanges];
+	[sortedChanges addObjectsFromArray:self.untrackedChanges];
+	[sortedChanges sortUsingSelector:@selector(compareByPath:)];
 	
-	if (modifications + newFiles <= 0)
+	self.changes = sortedChanges;
+}
+
+
+
+- (void) update // obsolete
+{
+	[self arrangeChanges];
+}
+
+- (void) flushBlocks:(NSMutableArray*)mutableArray
+{
+	if (!mutableArray) return;
+	
+	NSArray* blocks = [mutableArray copy];
+	[mutableArray removeAllObjects];
+	for (void(^block)() in blocks)
 	{
-		return NSLocalizedString(@"Working directory clean", @"GBStage");
+		block();
 	}
-	
-	NSMutableArray* titles = [NSMutableArray array];
-	
-	if (modifications > 0)
-	{
-		if (modifications == 1)
-		{
-			[titles addObject:[NSString stringWithFormat:NSLocalizedString(@"%d modified file",@"GBStage"), modifications]];
-		}
-		else
-		{
-			[titles addObject:[NSString stringWithFormat:NSLocalizedString(@"%d modified files",@"GBStage"), modifications]];
-		}
-		
-	}
-	if (newFiles > 0)
-	{
-		if (newFiles == 1)
-		{
-			[titles addObject:[NSString stringWithFormat:NSLocalizedString(@"%d new file",@"GBStage"), newFiles]];
-		}
-		else
-		{
-			[titles addObject:[NSString stringWithFormat:NSLocalizedString(@"%d new files",@"GBStage"), newFiles]];
-		}
-	}  
-	
-	return [titles componentsJoinedByString:@", "];
-}
-
-- (NSUInteger) totalPendingChanges
-{
-	NSUInteger modifications = [self.stagedChanges count] + [self.unstagedChanges count];
-	NSUInteger newFiles = [self.untrackedChanges count];
-	return modifications + newFiles;
+	[blocks release];
 }
 
 @end

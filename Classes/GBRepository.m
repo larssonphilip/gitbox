@@ -37,7 +37,6 @@
 @property(nonatomic, assign) dispatch_queue_t dispatchQueue;
 @property(nonatomic, assign, readwrite) NSUInteger commitsDiffCount;
 @property(nonatomic, retain) NSMutableDictionary* tagsByCommitID;
-@property(nonatomic, assign, readwrite, getter=isRebaseConflict) BOOL rebaseConflict;
 
 - (void) loadCurrentLocalRefWithBlock:(void(^)())block;
 - (void) loadLocalRefsWithBlock:(void(^)())block;
@@ -70,8 +69,6 @@
 @synthesize unmergedCommitsCount; // obsolete
 @synthesize unpushedCommitsCount; // obsolete
 @synthesize commitsDiffCount;
-
-@synthesize rebaseConflict;
 
 @synthesize tagsByCommitID;
 
@@ -450,13 +447,6 @@
 }
 
 
-
-
-#pragma mark Interrogation
-
-
-
-
 - (NSString*) path
 {
 	return [url path];
@@ -584,6 +574,8 @@
 
 
 
+
+
 #pragma mark Update
 
 
@@ -702,16 +694,12 @@
 	}
 	self.currentLocalRef = ref;
 	
-	[self updateConflictState];
+	[self.stage updateConflictState];
 	
 	if (block) block();
 }
 
 
-- (void) updateConflictState
-{
-	self.rebaseConflict = ([[NSFileManager defaultManager] fileExistsAtPath:[[self.dotGitURL path] stringByAppendingPathComponent:@"rebase-apply"]]);
-}
 
 
 - (void) updateLocalBranchCommitsWithBlock:(void(^)())block
