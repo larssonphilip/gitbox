@@ -94,6 +94,7 @@ process is running and remove the file manually to continue.
 
 - bug/minor: when staging one of the same files, the last one is selected, not the one with the same name
 
+- stage: after select all + stage/unstage should select all changes (even if some "new" changes appeared). Probably we should keep track of unselected changes vs. selected, so we select all new relevant changes.
 - stage: overlay view describing shortcuts to stage all
 - stage: cmd+click should select all
 - bug: search: when parent commit is clicked it can be missing in the history. Should either not highlight it, or reset search state.
