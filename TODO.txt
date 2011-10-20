@@ -110,6 +110,11 @@ process is running and remove the file manually to continue.
 - ui: same filter search field in the sidebar, like in the menu? 
 - ui: tree for the stage items
 
+- branch-lists.psd: 
+  - do not need local branch list because it's not quick-access thing
+  - align target branch column with the target branch button
+  - render target branch list as belogning only to a history, not the whole window
+
 - changes: show mode change as a gray "0755 -> 0644" to the right of the file name. (If only mode has changed, then show it in place of the status)
 
 + possible fix for stage refreshes:
