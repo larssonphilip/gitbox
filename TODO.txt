@@ -110,6 +110,8 @@ process is running and remove the file manually to continue.
 - ui: same filter search field in the sidebar, like in the menu? 
 - ui: tree for the stage items
 
+- changes: show mode change as a gray "0755 -> 0644" to the right of the file name. (If only mode has changed, then show it in place of the status)
+
 + possible fix for stage refreshes:
   + have a single "queue" for stage refreshes, everybody should simply queue their requests.
   + when local folder is updated, refresh index immediately; after refresh make a 0.3 sec pause and refresh again unless there are no changes in the stage.
