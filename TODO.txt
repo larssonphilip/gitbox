@@ -1,42 +1,26 @@
-Gitbox 1.5 Release Notes
 
-✓ Undo/Redo for commit, push, pull and merge.
-✓ Sidebar progress indicators for push, pull, fetch and clone.
-✓ Stage All menu command with Command+Shift+Return shortcut.
-✓ Highlighted links in commit messages.
-✓ Support for "Clone in Mac" button on Github (github-mac://).
-✓ Single view for editing branches and tags.
-✓ Reverting commits with a right-click.
-✓ Menu item "Show File History" which shows all the commits relevant to a selected file.
+Gitbox 1.6 Release Notes
 
-✓ Files are sorted in natural order (2.txt comes before 10.txt)
-✓ Support for both overlay and legacy scrollbars in OS X Lion.
-✓ Updated bundled Git to version 1.7.7
-✓ Now stash moves away untracked files as well as modified ones.
-✓ Menu command for removing all stashes.
-✓ Added "Optimize Repository" button to repository settings (aka "git gc").
-✓ Commit button is disabled when no branch is selected.
-✓ Improved stability of the stage view.
-
-✓ Fixed bug with menu item for opening multiple Xcode projects.
-✓ Fixed bug with remembering window and sidebar sizes on OS X Lion.
-✓ Fixed bug with committing or restoring removed files.
-✓ Fixed rare crash when extracting a file from history.
-✓ Fixed rare bug with incorrect user picture loading.
-✓ Fixed crashes in history parser.
-✓ Fixed crash when trying to launch missing diff tool.
-✓ Fixed multiple animation bugs on Lion.
-✓ Fixed issues with automatic expantion of groups in the sidebar.
-✓ Fixed opening diff for added files.
+✓ 
+✓ 
+✓ 
 
 --
 
-Gitbox 1.5 misc items:
+Gitbox 1.6 misc items:
 
-+ history: undo for commit (sort of "amend commit")
-+ history: undo for push
-+ history: undo for force push
-+ history: undo for pull
+- change DO to unix domain sockets (or waiting for a file in specific location)
+- bundle ssh
+- sign and add entitlements to git binaries
+- sign and add entitlements to ssh binaries
+- ask for hard disk access on startup
+- add entitlements to access ~/.ssh/
+- try sandbox
+
+
+TODO: order this and put somewhere:
+
+
 - history: undo for branch reset
 - history: undo for stage reset
   - for these two notify user that pending changes will be stashed away before performing the operation.
@@ -68,9 +52,6 @@ git process crashed in this repository earlier. Make sure no other git
 process is running and remove the file manually to continue.
 
 - check other uses of setNextResponder: in view controllers - should be unset in dealloc (sometimes undoManager messages go to dangling pointer)
-
-
---
 
 - bottom bar: sidebar: plus button
 - bottom bar: sidebar: gear menu
@@ -104,6 +85,9 @@ process is running and remove the file manually to continue.
 - stage: add option "Delete from stage only" for "git rm --force --cached <filepath>".
 - bug: file "Icon\r" was committed somehow.
 
+- tags: make sure you cannot add a tag with a same name again
+- tags: sort tags by smart order: by alphabetical prefix first, then by version number in human order, then by suffix (should be handled by standard Finder-like sorting in NSString options)
+
 - ui: show alert Yes/No sheet window when trying to create a commit outside of a branch (instead of simply disabling the commit button)
 - ui: show spinner after some operation takes longer than expected
 - ui: cmd+return should stage all if nothing is selected, but have something on stage
@@ -118,104 +102,7 @@ process is running and remove the file manually to continue.
 
 - changes: show mode change as a gray "0755 -> 0644" to the right of the file name. (If only mode has changed, then show it in place of the status)
 
-+ possible fix for stage refreshes:
-  + have a single "queue" for stage refreshes, everybody should simply queue their requests.
-  + when local folder is updated, refresh index immediately; after refresh make a 0.3 sec pause and refresh again unless there are no changes in the stage.
-  + each time there's change - issue notification of the changed contents.
-  + when finished checking changes, reload local refs and remotes and issue another notification.
-  
-+ bug: when remote server is added, need to fetch all remotes immediately.
-
-+ bug: should reset undo stack after reset branch or similar destructive operations
-+ upgrade to git 1.7.7
-+ turn on stashing with untracked files
-≠ bug: when committed multiple times, undo item has (null) title [was a temp bug with unfinished push function]
-+ less strict validation for diff tool: allow diff and show in history for "added" files
-+ bug: when selected a collapsed group and added a folder, the selected group is not expanded
-≠ leaks on loading stage items and committed changes [was due NSZombies enabled]
-+ delete tag using right click on a commit
-± bug: history vc is shifted down after quickly entering non-existent string and cancelling [alleviated by faster animation]
-+ bug: when committing a file from a long list, scrollview is not scrolled to the very top
-± bug: search: keep selection when search ends. [looks like it works just right, no?]
-+ stage: right click menu: "file history" which inserts file path into search field
-
-± bug: after staging some files, we sometimes lose updates and UI is not updated with enabled checkboxes or their correct state. [seems like fixed with additional notification]
-
-+ "delete tag" should go without "..." and should be relocated somewhere far from "new tag" or "new branch"
-+ also, add Delete Tag to the main menu
-
-+ feature: "revert commit"
-+ fix sidebar right padding when classic scrollbars are selected
-+ toolbar: allow to unset remote branch (useful when other branch has a lot of commits and clutters the history)
-
-+ when doing a commit checkout, select current local branch in the right branch menu so it is easier to compare and checkout later commits (especially during bisection search). - just allow checking out a local branch even if have only one (right now displays local branches if > 1)
-
-+ warn before creating a commit when on detached head (not on a branch) (issue with Pierlo and submodules)
-+ settings: bug: origin URL is cleared when saving after git-gc without going to the remotes settings.
-
-+ settings/summary: set dirty flag when remote URLs are updated
-+ settings/summary: set dirty flag when .gitignore content is updated
-+ settings/summary: push/pop disabled when doing long-running op.
-+ settings/summary: save edited remote URLs
-+ settings/summary: save .gitignore
-+ settings/summary: calculate number of commits and contributors
-+ settings/summary: calculate number of commits for all branches, not just the current one
-+ settings/branches: display better headers.
-+ settings/branches: maybe show remote branches too.
-
-+ settings/servers: single table with two columns - alias and URL.
-+ settings/servers: show placeholders for new entry or focus into it. 
-+ settings: open new settings window for "Ignore file..." command.
-+ settings/advanced: show a text view with .git/config contents
-
-+ toolbar: add "Edit Servers..." menu item to the right branch selector, should open settings/servers
-
-
-+ bug: when tag is deleted, it is not removed from the server (should push-remove too)
-+ bug: double click on multiple files opens FileMerge window per file.
-+ bug: check if opendiff exists before launching. Do something about the fact that OS X Lion does not ship with opendiff and FileMerge.app
-+ added spinner for "git gc"
-+ GBRepositorySettingsController: push/popDisabled for long-running tasks
-
-
---------
-
-+ bug: crash: if filemerge is missing, cannot safely instantiate NSTask with "opendiff". Display an alert to install Xcode.
-+ feature: "checkpoint" commit to remember current state (and push to a private branch on the server)
-+ github-mac:// URL scheme so that the "Clone in Mac" E.g. github-mac://openRepo/https://github.com/libgit2/rugged
-+ add license for Sparkle to Legal window
-+ add license for libgit2 to Legal window
-+ bug: when committing a file, the focus is dropped somewhere (i guess while gitbox is fetching the branch when text field is focused into)
-+ bug: files on the stage are not Finder-sorted
-+ bug: first screenshot show "fetch/rebase" buttons instead of
-+ (in fact, using relative paths to fix that) should use "git rm --cached" with ignored committed files and fix other oddities in this case
-+ lion bug: sidebar width is not remembered across launches (and probably other window attributes)
-+ history: disable merge/cherry-pick/apply commands when don't make sense
-+ plr crashed gitbox with objectAtIndex exception
-+ settings: use consitently cancel/save buttons in settings for every view including tags&branches.
-+ settings: tab: general - stats, repo URLs, git gc, sharing options etc.
-+ settings: tab: local branches and tags
-+ settings: add "Edit Branches and Tags..." menu item to the left branch selector
-+ Sidebar progress indicators for push, pull, fetch and clone.
-+ bugfix: in older git --progress was not propagated properly from "push" command. Should update to 1.7.5
-+ menu: Stage All: cmd+shift+return (acts as cmd+a + cmd+return) (add to main menu and contextual menus)
-≠ menu: Stage -> commit: - rename to "Stage and Edit Commit Message"
-+ bug: *** Terminating app due to uncaught exception 'NSInternalInconsistencyException', reason: 'GBExtractFileTask: self.objectId is nil'
-+ bug: async loaded avatar is displayed when commit was changed. Should check if the avatar is still relevant before applying.
-
------------------------------------------------------------
-
-
-Gitbox 1.6:
-
-- change DO to unix domain sockets (or waiting for a file in specific location)
-- bundle ssh
-- sign and add entitlements to git binaries
-- sign and add entitlements to ssh binaries
-- ask for hard disk access on startup
-- add entitlements to access ~/.ssh/
-- try sandbox
-
+-------------------------------
 
 Gitbox Next:
 
@@ -474,6 +361,7 @@ To read:
 - why mercurial: http://www.ninthdivision.com/blog/2011/01/why-mercurial/
 
 
+-------------------------------------------------------------------------------
 
 
 
@@ -483,9 +371,147 @@ To read:
 
 
 
+
+Gitbox 1.5 Release Notes
+
+✓ Undo/Redo for commit, push, pull and merge.
+✓ Sidebar progress indicators for push, pull, fetch and clone.
+✓ Stage All menu command with Command+Shift+Return shortcut.
+✓ Highlighted links in commit messages.
+✓ Support for "Clone in Mac" button on Github (github-mac://).
+✓ Single view for editing branches and tags.
+✓ Reverting commits with a right-click.
+✓ Menu item "Show File History" which shows all the commits relevant to a selected file.
+
+✓ Files are sorted in natural order (2.txt comes before 10.txt)
+✓ Support for both overlay and legacy scrollbars in OS X Lion.
+✓ Updated bundled Git to version 1.7.7
+✓ Now stash moves away untracked files as well as modified ones.
+✓ Menu command for removing all stashes.
+✓ Added "Optimize Repository" button to repository settings (aka "git gc").
+✓ Commit button is disabled when no branch is selected.
+✓ Improved stability of the stage view.
+
+✓ Fixed bug with menu item for opening multiple Xcode projects.
+✓ Fixed bug with remembering window and sidebar sizes on OS X Lion.
+✓ Fixed bug with committing or restoring removed files.
+✓ Fixed rare crash when extracting a file from history.
+✓ Fixed rare bug with incorrect user picture loading.
+✓ Fixed crashes in history parser.
+✓ Fixed crash when trying to launch missing diff tool.
+✓ Fixed multiple animation bugs on Lion.
+✓ Fixed issues with automatic expantion of groups in the sidebar.
+✓ Fixed opening diff for added files.
+
+
+
+
+Gitbox 1.5 misc items:
+
+
++ history: undo for commit (sort of "amend commit")
++ history: undo for push
++ history: undo for force push
++ history: undo for pull
+
++ possible fix for stage refreshes:
+  + have a single "queue" for stage refreshes, everybody should simply queue their requests.
+  + when local folder is updated, refresh index immediately; after refresh make a 0.3 sec pause and refresh again unless there are no changes in the stage.
+  + each time there's change - issue notification of the changed contents.
+  + when finished checking changes, reload local refs and remotes and issue another notification.
+  
++ bug: when remote server is added, need to fetch all remotes immediately.
+
++ bug: should reset undo stack after reset branch or similar destructive operations
++ upgrade to git 1.7.7
++ turn on stashing with untracked files
+≠ bug: when committed multiple times, undo item has (null) title [was a temp bug with unfinished push function]
++ less strict validation for diff tool: allow diff and show in history for "added" files
++ bug: when selected a collapsed group and added a folder, the selected group is not expanded
+≠ leaks on loading stage items and committed changes [was due NSZombies enabled]
++ delete tag using right click on a commit
+± bug: history vc is shifted down after quickly entering non-existent string and cancelling [alleviated by faster animation]
++ bug: when committing a file from a long list, scrollview is not scrolled to the very top
+± bug: search: keep selection when search ends. [looks like it works just right, no?]
++ stage: right click menu: "file history" which inserts file path into search field
+
+± bug: after staging some files, we sometimes lose updates and UI is not updated with enabled checkboxes or their correct state. [seems like fixed with additional notification]
+
++ "delete tag" should go without "..." and should be relocated somewhere far from "new tag" or "new branch"
++ also, add Delete Tag to the main menu
+
++ feature: "revert commit"
++ fix sidebar right padding when classic scrollbars are selected
++ toolbar: allow to unset remote branch (useful when other branch has a lot of commits and clutters the history)
+
++ when doing a commit checkout, select current local branch in the right branch menu so it is easier to compare and checkout later commits (especially during bisection search). - just allow checking out a local branch even if have only one (right now displays local branches if > 1)
+
++ warn before creating a commit when on detached head (not on a branch) (issue with Pierlo and submodules)
++ settings: bug: origin URL is cleared when saving after git-gc without going to the remotes settings.
+
++ settings/summary: set dirty flag when remote URLs are updated
++ settings/summary: set dirty flag when .gitignore content is updated
++ settings/summary: push/pop disabled when doing long-running op.
++ settings/summary: save edited remote URLs
++ settings/summary: save .gitignore
++ settings/summary: calculate number of commits and contributors
++ settings/summary: calculate number of commits for all branches, not just the current one
++ settings/branches: display better headers.
++ settings/branches: maybe show remote branches too.
+
++ settings/servers: single table with two columns - alias and URL.
++ settings/servers: show placeholders for new entry or focus into it. 
++ settings: open new settings window for "Ignore file..." command.
++ settings/advanced: show a text view with .git/config contents
+
++ toolbar: add "Edit Servers..." menu item to the right branch selector, should open settings/servers
+
+
++ bug: when tag is deleted, it is not removed from the server (should push-remove too)
++ bug: double click on multiple files opens FileMerge window per file.
++ bug: check if opendiff exists before launching. Do something about the fact that OS X Lion does not ship with opendiff and FileMerge.app
++ added spinner for "git gc"
++ GBRepositorySettingsController: push/popDisabled for long-running tasks
+
++ bug: crash: if filemerge is missing, cannot safely instantiate NSTask with "opendiff". Display an alert to install Xcode.
++ feature: "checkpoint" commit to remember current state (and push to a private branch on the server)
++ github-mac:// URL scheme so that the "Clone in Mac" E.g. github-mac://openRepo/https://github.com/libgit2/rugged
++ add license for Sparkle to Legal window
++ add license for libgit2 to Legal window
++ bug: when committing a file, the focus is dropped somewhere (i guess while gitbox is fetching the branch when text field is focused into)
++ bug: files on the stage are not Finder-sorted
++ bug: first screenshot show "fetch/rebase" buttons instead of
++ (in fact, using relative paths to fix that) should use "git rm --cached" with ignored committed files and fix other oddities in this case
++ lion bug: sidebar width is not remembered across launches (and probably other window attributes)
++ history: disable merge/cherry-pick/apply commands when don't make sense
++ plr crashed gitbox with objectAtIndex exception
++ settings: use consitently cancel/save buttons in settings for every view including tags&branches.
++ settings: tab: general - stats, repo URLs, git gc, sharing options etc.
++ settings: tab: local branches and tags
++ settings: add "Edit Branches and Tags..." menu item to the left branch selector
++ Sidebar progress indicators for push, pull, fetch and clone.
++ bugfix: in older git --progress was not propagated properly from "push" command. Should update to 1.7.5
++ menu: Stage All: cmd+shift+return (acts as cmd+a + cmd+return) (add to main menu and contextual menus)
+≠ menu: Stage -> commit: - rename to "Stage and Edit Commit Message"
++ bug: *** Terminating app due to uncaught exception 'NSInternalInconsistencyException', reason: 'GBExtractFileTask: self.objectId is nil'
++ bug: async loaded avatar is displayed when commit was changed. Should check if the avatar is still relevant before applying.
 
 
 -------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 Gitbox 1.4 Release Notes
