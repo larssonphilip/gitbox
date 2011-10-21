@@ -86,7 +86,7 @@ process is running and remove the file manually to continue.
 - bug: file "Icon\r" was committed somehow.
 
 - tags: make sure you cannot add a tag with a same name again
-- tags: sort tags by smart order: by alphabetical prefix first, then by version number in human order, then by suffix (should be handled by standard Finder-like sorting in NSString options)
+- tags: sort tags by smart order: by alphabetical prefix first, then by version number in human order, then by suffix (should be handled by standard Finder-like sorting in NSString options; except that version without suffix should go before )
 
 - ui: show alert Yes/No sheet window when trying to create a commit outside of a branch (instead of simply disabling the commit button)
 - ui: show spinner after some operation takes longer than expected
@@ -176,13 +176,14 @@ Features:
 
 - search: recognized pasted file path (with or without file:// prefix)
 - search: load total count of commits to be scanned to present a progress circle instead of a spinner
-- search: recognize specialized searches like "file:GBCommit.m", "author:oleg", "diff:someFunction" etc.
 - search: recognize quoted text to be searched as a whole
+- search: find by tag name too
+- search: recognize specialized searches like "file:GBCommit.m", "author:oleg", "diff:someFunction" etc.
 - search: recognize regular expression using 'regexp:' suffix (also works with field selector: "diff:regexp:")
 - search: cmd+F should select all text when already in search field (try enabling search bar for editor textview).
 
 - search: "colored", "label:*", "label:any", "label:all" to match commits with color tag
-- search: "tagged" to match all commits with at least one tag
+- search: "tagged" to match all commits with at least one tag + all with a words "tagged" in them
 - search: "label:red", "label:orange", "label:yellow", "label:green" etc. to match commits with a specific color tag
 - search: "label:clear", "white", "label:none", "label:no" to match commits without color tag
 - search: "diff:..." for content in the diff
@@ -193,7 +194,6 @@ Features:
 - search: "message:..." for message text
 - search: "[!-]<token>" for negation (should not match)
 - search: "<field>:[!-]<value>" for negation (should not match)
-- search: find by tag name too
 
 - changes: compare image files in an double-pane image viewer
 - changes: built-in diff view for better UTF8 support (FileMerge is stupid)
