@@ -10,6 +10,7 @@ Gitbox 1.6 Release Notes
 Gitbox 1.6 misc items:
 
 - change DO to unix domain sockets (or waiting for a file in specific location)
+  - OR: get rid of the integrated dialog and pop it from the askpass (bad UX)
 - bundle ssh
 - sign and add entitlements to git binaries
 - sign and add entitlements to ssh binaries
@@ -17,6 +18,7 @@ Gitbox 1.6 misc items:
 - add entitlements to access ~/.ssh/
 - try sandbox
 
+- bug: when submodule is added to the sidebar and its parent repo is selected, update to a submodule's file triggers refresh of the parent, but not of the submodule (check how OAFSEventMonitor coalesces paths)
 
 TODO: order this and put somewhere:
 
