@@ -557,7 +557,7 @@
 		}
 	}];
 	
-	if ((additionalRepos + repos) > 3)
+	if ((additionalRepos + repos) > 1)
 	{
 		NSString* license = [[NSUserDefaults standardUserDefaults] objectForKey:@"license"];
 		if (!OAValidateLicenseNumber(license))
