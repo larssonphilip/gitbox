@@ -91,7 +91,9 @@ process is running and remove the file manually to continue.
 - tags: sort tags using SUStandardVersionComparator (from Sparkle)
 
 - ui: show alert Yes/No sheet window when trying to create a commit outside of a branch (instead of simply disabling the commit button)
-- ui: show spinner after some operation takes longer than expected
+- ui: show spinner after some operation takes longer than expected 
+- ui: implement spinner for indeterminate tasks (with color switch support) and wetransfer-like spinning progress sector (shows progress using sector + rotates it to present activity).
+- ui: for two above: implement OASuperActivityIndicator with stack API, spinning progress, color switch and lazy API (to avoid showing spinner for short tasks of 1-2 seconds).
 - ui: cmd+return should stage all if nothing is selected, but have something on stage
 - ui: filter search field in the dropdown menu for branch selection (like in Xcode 4.2)
 - ui: same filter search field in the sidebar, like in the menu? 
