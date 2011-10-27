@@ -34,6 +34,21 @@ Gitbox 1.6 misc items:
 - add entitlements to access ~/.ssh/
 - try sandbox
 
+
+Major Features:
+
+- Sandbox
+- Submodules
+- Visualized Branches, multiple selection
+- In-app diff
+  - staging hunks
+  - blame
+  - image diff
+- Subversion import
+- Conflict view in stage
+- Tree view in stage
+
+
 TODO: order this and put somewhere:
 
 
