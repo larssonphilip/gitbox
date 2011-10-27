@@ -15,7 +15,7 @@
 	{
 		git_error error = git_config_open_global(&config);
 		
-		NSLog(@"GitConfig initGlobalConfig: %p [%d, %s]", config, error, git_lasterror());
+		//NSLog(@"GitConfig initGlobalConfig: %p [%d, %s]", config, error, git_lasterror());
 		if (error != GIT_SUCCESS)
 		{
 #warning TODO: Check if ~/.gitconfig file exists. If it doesn't, create one and retry.
@@ -35,7 +35,7 @@
 		NSString* path = [repoURL.path stringByAppendingPathComponent:@".git/config"];
 		git_error error = git_config_open_ondisk(&config, [path cStringUsingEncoding:NSUTF8StringEncoding]);
 		
-		NSLog(@"GitConfig initWithRepositoryURL: %p [%d, %s] (%@)", config, error, git_lasterror(), path);
+		//NSLog(@"GitConfig initWithRepositoryURL: %p [%d, %s] (%@)", config, error, git_lasterror(), path);
 		
 		if (error != GIT_SUCCESS)
 		{
@@ -55,7 +55,7 @@
 		NSString* path = configURL.path;
 		git_error error = git_config_open_ondisk(&config, [path cStringUsingEncoding:NSUTF8StringEncoding]);
 		
-		NSLog(@"GitConfig initWithURL: %p [%d, %s] (%@)", config, error, git_lasterror(), path);
+		//NSLog(@"GitConfig initWithURL: %p [%d, %s] (%@)", config, error, git_lasterror(), path);
 		
 		if (error != GIT_SUCCESS)
 		{
@@ -70,14 +70,14 @@
 
 - (void) close
 {
-	NSLog(@"GitConfig close: %p", config);
+	//NSLog(@"GitConfig close: %p", config);
 	if (config) git_config_free(config);
 	config = NULL;
 }
 
 - (void)dealloc
 {
-	NSLog(@"GitConfig dealloc: %p", config);
+	//NSLog(@"GitConfig dealloc: %p", config);
 	if (config) git_config_free(config);
 	config = NULL;
 	
