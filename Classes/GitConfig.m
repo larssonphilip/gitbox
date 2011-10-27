@@ -18,7 +18,7 @@
 		if (error != GIT_SUCCESS)
 		{
 #warning TODO: Check if ~/.gitconfig file exists. If it doesn't, create one and retry.
-			
+			config = NULL;
 			NSLog(@"GitConfig error while opening global config: %d [%s]", error, git_lasterror());
 			[self release];
 			return nil;
@@ -55,6 +55,7 @@
 		if (error != GIT_SUCCESS)
 		{
 			NSLog(@"GitConfig error while opening %@: %d [%s]", path, error, git_lasterror());
+			config = NULL;
 			[self release];
 			return nil;
 		}
