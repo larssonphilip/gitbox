@@ -10,27 +10,10 @@ Gitbox 1.5.1 Release Notes
 Gitbox 1.5.1 misc items:
 
 - bug: libcurl on Snow Leopard is incompatible with Git 1.7.7; should bundle it with the rest and release new version on website immediately
-+ bug: crash when settings view is closed with "OK" button: [todo: test]
-
-*** error for object 0x114d1c370: pointer being freed was not allocated
- 
-
-Thread 0 Crashed:: Dispatch queue: com.apple.main-thread
-0   libsystem_kernel.dylib        	0x0000000102cf9ce2 __pthread_kill + 10
-1   libsystem_c.dylib             	0x0000000102bb87d2 pthread_kill + 95
-2   libsystem_c.dylib             	0x0000000102ba9a7a abort + 143
-3   libsystem_c.dylib             	0x0000000102c0884c free + 389
-4   com.oleganza.gitbox           	0x0000000100086abb backend_free + 59
-5   com.oleganza.gitbox           	0x0000000100085e7e git_config_free + 62
-6   com.oleganza.gitbox           	0x0000000100084384 -[GitConfig dealloc] + 33
-7   libobjc.A.dylib               	0x000000010133703c (anonymous namespace)::AutoreleasePoolPage::pop(void*) + 434
-8   com.apple.CoreFoundation      	0x0000000101458f75 _CFAutoreleasePoolPop + 37
-9   com.apple.Foundation          	0x0000000100d487a3 -[NSAutoreleasePool drain] + 154
-10  com.apple.AppKit              	0x00000001017506d1 -[NSApplication run] + 634
-11  com.apple.AppKit              	0x00000001019cf80c NSApplicationMain + 867
-12  com.oleganza.gitbox           	0x00000001000022bd main + 177
-13  com.oleganza.gitbox           	0x0000000100002204 start + 52
-
+  - try to change the path of the dylib to relative path in the git bundle.
++ bug: crash when settings view is closed with "OK" button.
+- DiffMerge support
+- p4merge support
 
 -----------------------------------------------------------
 
