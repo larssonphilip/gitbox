@@ -9,7 +9,7 @@ Gitbox 1.5.1 Release Notes
 
 Gitbox 1.5.1 misc items:
 
-- bug: libcurl on Snow Leopard is incompatible with Git 1.7.7; should bundle it with the rest.
+- bug: libcurl on Snow Leopard is incompatible with Git 1.7.7; should bundle it with the rest and release new version on website immediately
 
 
 -----------------------------------------------------------
