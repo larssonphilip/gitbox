@@ -1,16 +1,15 @@
 
 Gitbox 1.5.1 Release Notes
 
-✓ 
-✓ 
+✓ Fixed crash in settings when config file contains key without a value.
+✓ Fixed incompatibility issue with Snow Leopard with older libcurl library.
 ✓ 
 
 --
 
 Gitbox 1.5.1 misc items:
 
-- bug: libcurl on Snow Leopard is incompatible with Git 1.7.7; should bundle it with the rest and release new version on website immediately
-  - try to change the path of the dylib to relative path in the git bundle.
++ bug: libcurl on Snow Leopard is incompatible with Git 1.7.7; should bundle it with the rest and release new version on website immediately
 + bug: crash when settings view is closed with "OK" button.
 - DiffMerge support
 - p4merge support

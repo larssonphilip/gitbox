@@ -95,6 +95,8 @@
 		20265C0311D68D3400709F6B /* OAPropertyListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20265C0211D68D3400709F6B /* OAPropertyListController.m */; };
 		20265C1411D68F1300709F6B /* OAFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 20265C1311D68F1300709F6B /* OAFile.m */; };
 		20265E4B11E3EB9B00709F6B /* GBWelcomeController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 20265E4A11E3EB9B00709F6B /* GBWelcomeController.xib */; };
+		202A1FA8145B2CDF00953257 /* git.bundle-1.7.5.4.tar in Resources */ = {isa = PBXBuildFile; fileRef = 202A1FA7145B2CDF00953257 /* git.bundle-1.7.5.4.tar */; };
+		202A1FA9145B2CDF00953257 /* git.bundle-1.7.5.4.tar in Resources */ = {isa = PBXBuildFile; fileRef = 202A1FA7145B2CDF00953257 /* git.bundle-1.7.5.4.tar */; };
 		2030C44F128B5BA1005F751C /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2030C44E128B5BA1005F751C /* Security.framework */; };
 		2030C4DA128B60FA005F751C /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2030C44E128B5BA1005F751C /* Security.framework */; };
 		2030C608128B6107005F751C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2A37F4C5FDCFA73011CA2CEA /* Foundation.framework */; };
@@ -227,8 +229,8 @@
 		208B3288137505D600EB4A18 /* GBSearchBarController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 208B3284137505D600EB4A18 /* GBSearchBarController.xib */; };
 		208D086313981084002C8072 /* GBTaskWithProgress.m in Sources */ = {isa = PBXBuildFile; fileRef = 208D086213981084002C8072 /* GBTaskWithProgress.m */; };
 		208D086413981084002C8072 /* GBTaskWithProgress.m in Sources */ = {isa = PBXBuildFile; fileRef = 208D086213981084002C8072 /* GBTaskWithProgress.m */; };
-		208D0A3A13983C99002C8072 /* git.bundle.tar in Resources */ = {isa = PBXBuildFile; fileRef = 208D0A3913983C99002C8072 /* git.bundle.tar */; };
-		208D0A3B13983C99002C8072 /* git.bundle.tar in Resources */ = {isa = PBXBuildFile; fileRef = 208D0A3913983C99002C8072 /* git.bundle.tar */; };
+		208D0A3A13983C99002C8072 /* git.bundle-1.7.7.rc3.7.g26c6e2.tar in Resources */ = {isa = PBXBuildFile; fileRef = 208D0A3913983C99002C8072 /* git.bundle-1.7.7.rc3.7.g26c6e2.tar */; };
+		208D0A3B13983C99002C8072 /* git.bundle-1.7.7.rc3.7.g26c6e2.tar in Resources */ = {isa = PBXBuildFile; fileRef = 208D0A3913983C99002C8072 /* git.bundle-1.7.7.rc3.7.g26c6e2.tar */; };
 		208D0AB1139844FC002C8072 /* GBRepositorySettingsController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 208D0AB0139844FC002C8072 /* GBRepositorySettingsController.xib */; };
 		208D0AB2139844FC002C8072 /* GBRepositorySettingsController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 208D0AB0139844FC002C8072 /* GBRepositorySettingsController.xib */; };
 		208D0AB513984512002C8072 /* GBRepositorySettingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 208D0AB413984512002C8072 /* GBRepositorySettingsController.m */; };
@@ -570,6 +572,7 @@
 		20265C1211D68F1300709F6B /* OAFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAFile.h; sourceTree = "<group>"; };
 		20265C1311D68F1300709F6B /* OAFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAFile.m; sourceTree = "<group>"; };
 		20265E4A11E3EB9B00709F6B /* GBWelcomeController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBWelcomeController.xib; sourceTree = "<group>"; };
+		202A1FA7145B2CDF00953257 /* git.bundle-1.7.5.4.tar */ = {isa = PBXFileReference; lastKnownFileType = archive.tar; path = "git.bundle-1.7.5.4.tar"; sourceTree = "<group>"; };
 		2030C445128B5B6E005F751C /* OAAppStoreReceipt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAAppStoreReceipt.h; sourceTree = "<group>"; };
 		2030C44E128B5BA1005F751C /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		2030C65B128C98C9005F751C /* OAObfuscatedLicenseCheck.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAObfuscatedLicenseCheck.h; sourceTree = "<group>"; };
@@ -728,7 +731,7 @@
 		208B3284137505D600EB4A18 /* GBSearchBarController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBSearchBarController.xib; sourceTree = "<group>"; };
 		208D086113981084002C8072 /* GBTaskWithProgress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBTaskWithProgress.h; sourceTree = "<group>"; };
 		208D086213981084002C8072 /* GBTaskWithProgress.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBTaskWithProgress.m; sourceTree = "<group>"; };
-		208D0A3913983C99002C8072 /* git.bundle.tar */ = {isa = PBXFileReference; lastKnownFileType = archive.tar; path = git.bundle.tar; sourceTree = "<group>"; };
+		208D0A3913983C99002C8072 /* git.bundle-1.7.7.rc3.7.g26c6e2.tar */ = {isa = PBXFileReference; lastKnownFileType = archive.tar; path = "git.bundle-1.7.7.rc3.7.g26c6e2.tar"; sourceTree = "<group>"; };
 		208D0AB0139844FC002C8072 /* GBRepositorySettingsController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBRepositorySettingsController.xib; sourceTree = "<group>"; };
 		208D0AB313984512002C8072 /* GBRepositorySettingsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBRepositorySettingsController.h; sourceTree = "<group>"; };
 		208D0AB413984512002C8072 /* GBRepositorySettingsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBRepositorySettingsController.m; sourceTree = "<group>"; };
@@ -1620,7 +1623,8 @@
 			isa = PBXGroup;
 			children = (
 				2016439012CC0F2E005C69DA /* author.png */,
-				208D0A3913983C99002C8072 /* git.bundle.tar */,
+				202A1FA7145B2CDF00953257 /* git.bundle-1.7.5.4.tar */,
+				208D0A3913983C99002C8072 /* git.bundle-1.7.7.rc3.7.g26c6e2.tar */,
 				203976631251A63700770D13 /* Credits.rtf */,
 				2010732E11A7E9C300EFDE56 /* app.icns */,
 				8D15AC360486D014006FF6A4 /* info.plist */,
@@ -1779,7 +1783,7 @@
 				2003F9AC139526C900471731 /* GBBadgeTagCenter.png in Resources */,
 				2003F9AE139526C900471731 /* GBBadgeTagLeft.png in Resources */,
 				2003F9B0139526C900471731 /* GBBadgeTagRight.png in Resources */,
-				208D0A3A13983C99002C8072 /* git.bundle.tar in Resources */,
+				208D0A3A13983C99002C8072 /* git.bundle-1.7.7.rc3.7.g26c6e2.tar in Resources */,
 				208D0AB1139844FC002C8072 /* GBRepositorySettingsController.xib in Resources */,
 				208D0B9D139A9E37002C8072 /* GBRepositorySummaryController.xib in Resources */,
 				208D0BAF139A9FF8002C8072 /* Icon512.png in Resources */,
@@ -1788,6 +1792,7 @@
 				201419F4142C8D0300AA55E8 /* GitboxLicense.txt in Resources */,
 				20BD5DCE143E2623003B4F2F /* GBToolbarMinus.png in Resources */,
 				20BD5DD5143E48AD003B4F2F /* GBRepositoryConfigController.xib in Resources */,
+				202A1FA9145B2CDF00953257 /* git.bundle-1.7.5.4.tar in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1856,7 +1861,7 @@
 				2003F9AB139526C900471731 /* GBBadgeTagCenter.png in Resources */,
 				2003F9AD139526C900471731 /* GBBadgeTagLeft.png in Resources */,
 				2003F9AF139526C900471731 /* GBBadgeTagRight.png in Resources */,
-				208D0A3B13983C99002C8072 /* git.bundle.tar in Resources */,
+				208D0A3B13983C99002C8072 /* git.bundle-1.7.7.rc3.7.g26c6e2.tar in Resources */,
 				208D0AB2139844FC002C8072 /* GBRepositorySettingsController.xib in Resources */,
 				208D0B9E139A9E37002C8072 /* GBRepositorySummaryController.xib in Resources */,
 				208D0BB0139A9FF8002C8072 /* Icon512.png in Resources */,
@@ -1865,6 +1870,7 @@
 				201419F3142C8D0300AA55E8 /* GitboxLicense.txt in Resources */,
 				20BD5DCD143E2623003B4F2F /* GBToolbarMinus.png in Resources */,
 				20BD5DD4143E48AD003B4F2F /* GBRepositoryConfigController.xib in Resources */,
+				202A1FA8145B2CDF00953257 /* git.bundle-1.7.5.4.tar in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -28,8 +28,18 @@
 
 # pragma mark Executables
 
++ (BOOL) isSnowLeopard
+{
+	return !NSClassFromString(@"NSPopover");
+}
+
 + (NSString*) bundledGitVersion
 {
+	if ([self isSnowLeopard])
+	{
+		 // because Git 1.7.7 requires newer version of libcurl which is not installed by default on Snow Leopard without dev tools or with older dev tools.
+		return @"1.7.5.4";
+	}
 	return @"1.7.7.rc3.7.g26c6e2";
 }
 
@@ -67,7 +77,7 @@
 			return nil;
 		}
 		
-		NSString* pathToTar = [[NSBundle mainBundle] pathForResource:@"git.bundle" ofType:@"tar"];
+		NSString* pathToTar = [[NSBundle mainBundle] pathForResource:[NSString stringWithFormat:@"git.bundle-%@", [self bundledGitVersion]] ofType:@"tar"];
 		if (!pathToTar)
 		{
 			NSLog(@"ERROR: Missing git.bundle.tar in the application package!");
