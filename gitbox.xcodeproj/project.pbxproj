@@ -573,6 +573,7 @@
 		20265C1311D68F1300709F6B /* OAFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAFile.m; sourceTree = "<group>"; };
 		20265E4A11E3EB9B00709F6B /* GBWelcomeController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBWelcomeController.xib; sourceTree = "<group>"; };
 		202A1FA7145B2CDF00953257 /* git.bundle-1.7.5.4.tar */ = {isa = PBXFileReference; lastKnownFileType = archive.tar; path = "git.bundle-1.7.5.4.tar"; sourceTree = "<group>"; };
+		202A1FAA145B4D0C00953257 /* Marketing.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = Marketing.txt; sourceTree = "<group>"; };
 		2030C445128B5B6E005F751C /* OAAppStoreReceipt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAAppStoreReceipt.h; sourceTree = "<group>"; };
 		2030C44E128B5BA1005F751C /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		2030C65B128C98C9005F751C /* OAObfuscatedLicenseCheck.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAObfuscatedLicenseCheck.h; sourceTree = "<group>"; };
@@ -1252,6 +1253,7 @@
 				20C9A55D12E85E0800DBA3E1 /* Subversion.txt */,
 				20FBC7F41448C99200EA8582 /* StageRefreshing.txt */,
 				20C66EEA134467B00067D232 /* WWDC2011.txt */,
+				202A1FAA145B4D0C00953257 /* Marketing.txt */,
 			);
 			name = Documents;
 			sourceTree = "<group>";
