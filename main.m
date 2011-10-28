@@ -29,7 +29,7 @@ int main(int argc, const char *argv[])
     {
 		NSLog(@"Gitbox main: AppStore receipt not found or not valid at path %@", receiptPath);
 		
-		#if 1
+		#if 0
 		#warning DEBUG: ignoring missing AppStore receipt!
 		#else
 			exit(173);
