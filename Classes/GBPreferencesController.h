@@ -10,6 +10,7 @@
 @property(assign) BOOL isTextWranglerAvailable;
 @property(assign) BOOL isBBEditAvailable;
 @property(assign) BOOL isAraxisAvailable;
+@property(assign) BOOL isDiffMergeAvailable;
 
 - (NSArray*) diffTools;
 

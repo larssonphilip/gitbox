@@ -113,7 +113,8 @@
 			@"Changes", 
 			@"Araxis Merge",
 			@"BBEdit", 
-			@"TextWrangler", 
+			@"TextWrangler",
+			@"DiffMerge",
 			//NSLocalizedString(@"Other (full path to executable):", @"Change"), 
 			nil];
 }
@@ -387,6 +388,10 @@
 	else if ([diffTool isEqualToString:@"BBEdit"])
 	{
 		task.executableName = @"bbdiff";
+	}
+	else if ([diffTool isEqualToString:@"DiffMerge"])
+	{
+		task.executableName = @"diffmerge";
 	}
 	else if ([diffTool isEqualToString:@"Araxis Merge"])
 	{

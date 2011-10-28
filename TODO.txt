@@ -1,6 +1,7 @@
 
 Gitbox 1.5.1 Release Notes
 
+✓ Added integration with DiffMerge.
 ✓ Fixed crash in settings when config file contains key without a value.
 ✓ Fixed incompatibility issue with Snow Leopard with older libcurl library.
 ✓ 
@@ -9,10 +10,11 @@ Gitbox 1.5.1 Release Notes
 
 Gitbox 1.5.1 misc items:
 
+- bug: when no .gitignore exists, settings view should not create an empty one.
 + bug: libcurl on Snow Leopard is incompatible with Git 1.7.7; should bundle it with the rest and release new version on website immediately
 + bug: crash when settings view is closed with "OK" button.
-- DiffMerge support
-- p4merge support
++ DiffMerge support
+
 
 -----------------------------------------------------------
 
@@ -64,6 +66,7 @@ TODO: order this and put somewhere:
 - stage: undo for "Revert File"
 - stage: undo for "Delete File"
 
+- bug: stage does not notice renaming from ABC.txt to abc.txt - need to stage all with temp name, then rename and stage again.
 - new repo: instead of creating local .gitignore, check on launch if we have ~/.gitignore. If we don't, then create one with default .DS_Store entries.
 - bug: when pulling a lot of commits, undo leaves a lot of crap in the stage. Try with Gitbox and July 2011 state.
 - bug: when submodule is added to the sidebar and its parent repo is selected, update to a submodule's file triggers refresh of the parent, but not of the submodule (check how OAFSEventMonitor coalesces paths)
@@ -307,6 +310,9 @@ Enhancements:
   
 ? when error is not surpressed for automatic tasks, remember the first such error and present it when the repo is selected by user
 - changes: parse changes in background hook instead of a main thread didFinish
+
+
+- p4merge support - awful perforce crap
 
 
 - general: put preferences window into a sheet. Add support for global .gitconfig (at least, show name/email pair)
