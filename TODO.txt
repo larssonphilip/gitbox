@@ -4,13 +4,13 @@ Gitbox 1.5.1 Release Notes
 ✓ Added integration with DiffMerge.
 ✓ Fixed crash in settings when config file contains key without a value.
 ✓ Fixed incompatibility issue with Snow Leopard with older libcurl library.
-✓ 
+✓ Fixed bug when empty .gitignore is created after changing repository settings.
 
 --
 
 Gitbox 1.5.1 misc items:
 
-- bug: when no .gitignore exists, settings view should not create an empty one.
++ bug: when no .gitignore exists, settings view should not create an empty one.
 + bug: libcurl on Snow Leopard is incompatible with Git 1.7.7; should bundle it with the rest and release new version on website immediately
 + bug: crash when settings view is closed with "OK" button.
 + DiffMerge support
@@ -70,6 +70,7 @@ TODO: order this and put somewhere:
 - new repo: instead of creating local .gitignore, check on launch if we have ~/.gitignore. If we don't, then create one with default .DS_Store entries.
 - bug: when pulling a lot of commits, undo leaves a lot of crap in the stage. Try with Gitbox and July 2011 state.
 - bug: when submodule is added to the sidebar and its parent repo is selected, update to a submodule's file triggers refresh of the parent, but not of the submodule (check how OAFSEventMonitor coalesces paths)
+  - this well may be not submodule-related, but to completely failed FSEvent object on Gwendal's machine
 - bug: new tag should be pushed to all remotes ASAP OR it should be colored green and count as a pending item (latter is better)
 - bug: when the file is committed, modified and in gitignore, it could be very hard to pull ("cannot merge, dirty working dir" error)
 - bug: submodules' loading causes stage refresh delays or similar glitches.
@@ -286,6 +287,7 @@ Enhancements:
 
 - general: recessed icon for no selection view and multiple selection view (similar to Lion Mail.app)
 - sidebar: before dropping over parent node, highlight appropriate index inside, not the parent
+- sidebar: when multiple repos are selected, new group should wrap them.
 - sidebar: when multiple repos are selected, new group should wrap them.
 
 - stage: for deleted file rename menu item "Revert File..." to "Restore File..."

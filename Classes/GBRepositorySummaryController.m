@@ -219,8 +219,13 @@
 	}
 	
 	NSError* error = nil;
-	NSString* gitignore = [[self.gitignoreTextView.string copy] autorelease];
-	if (![gitignore writeToFile:[self.repository.path stringByAppendingPathComponent:@".gitignore"] 
+	NSString* gitignore = [[[self.gitignoreTextView.string copy] autorelease] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+	NSString* gitignorePath = [self.repository.path stringByAppendingPathComponent:@".gitignore"];
+	if (![[[[NSFileManager alloc] init] autorelease] fileExistsAtPath:gitignorePath] && gitignore.length == 0)
+	{
+		// avoid creating an empty file
+	}
+	else if (![gitignore writeToFile:gitignorePath
 					atomically:YES 
 					  encoding:NSUTF8StringEncoding 
 						 error:&error])
