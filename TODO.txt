@@ -288,7 +288,7 @@ Enhancements:
 - general: recessed icon for no selection view and multiple selection view (similar to Lion Mail.app)
 - sidebar: before dropping over parent node, highlight appropriate index inside, not the parent
 - sidebar: when multiple repos are selected, new group should wrap them.
-- sidebar: when multiple repos are selected, new group should wrap them.
+- sidebar: when dragged in folder which is not a git repo, but contains git repositories, should ask to create a group for them.
 
 - stage: for deleted file rename menu item "Revert File..." to "Restore File..."
 
