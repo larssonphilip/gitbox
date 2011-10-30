@@ -9,14 +9,16 @@ Gitbox 1.6 Release Notes
 
 Gitbox 1.6 misc items:
 
-- change DO to unix domain sockets (or waiting for a file in specific location)
-  - OR: get rid of the integrated dialog and pop it from the askpass (bad UX)
-- bundle ssh
-- sign and add entitlements to git binaries
-- sign and add entitlements to ssh binaries
-- ask for hard disk access on startup
-- add entitlements to access ~/.ssh/
-- try sandbox
+- Sandbox:
+	- change DO to unix domain sockets (or waiting for a file in specific location)
+	  - OR: get rid of the integrated dialog and pop it from the askpass (bad UX)
+	- bundle ssh
+	- sign and add entitlements to git binaries
+	- sign and add entitlements to ssh binaries
+	- ask for hard disk access on startup
+	  - FileMerge.app must have access to the extracted files - or can provide built-in diff viewer
+	  - add entitlements to access ~/.ssh/
+	
 
 
 Major Features:
