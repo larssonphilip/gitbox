@@ -1,24 +1,4 @@
 
-Gitbox 1.5.1 Release Notes
-
-✓ Added integration with DiffMerge.
-✓ Fixed crash in settings when config file contains key without a value.
-✓ Fixed incompatibility issue with Snow Leopard with older libcurl library.
-✓ Fixed bug when empty .gitignore is created after changing repository settings.
-
---
-
-Gitbox 1.5.1 misc items:
-
-+ bug: when no .gitignore exists, settings view should not create an empty one.
-+ bug: libcurl on Snow Leopard is incompatible with Git 1.7.7; should bundle it with the rest and release new version on website immediately
-+ bug: crash when settings view is closed with "OK" button.
-+ DiffMerge support
-
-
------------------------------------------------------------
-
-
 Gitbox 1.6 Release Notes
 
 ✓ 
@@ -49,8 +29,7 @@ Major Features:
   - blame
   - image diff
 - Subversion import
-- Conflict view in stage
-- Tree view in stage
+- Tree view in stage - does not add much value, but very tiresome.
 
 
 TODO: order this and put somewhere:
@@ -411,6 +390,17 @@ To read:
 
 
 
+Gitbox 1.5.1 Release Notes
+
+✓ Added integration with DiffMerge.
+✓ Fixed crash in settings when config file contains key without a value.
+✓ Fixed incompatibility issue with Snow Leopard with older libcurl library.
+✓ Fixed bug when empty .gitignore is created after changing repository settings.
+
+-------------------------------------------------------------------------------
+
+
+
 
 
 
@@ -700,12 +690,9 @@ Misc items done for 1.3:
 ≠ history: find/nav bar sliding down in the history:
 + filters commits by sha-1, modified filenames and text
 
-
-
-
-
-
 -------------------------------------------------------------------------------
+
+
 
 
 
