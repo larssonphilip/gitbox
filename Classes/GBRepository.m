@@ -1527,7 +1527,14 @@
 	GBTask* task = [self task];
 	
 	message = [message stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-	task.arguments = [NSArray arrayWithObjects:@"stash", @"save", @"--include-untracked", message, nil];
+	if (![GBTask isSnowLeopard])
+	{
+		task.arguments = [NSArray arrayWithObjects:@"stash", @"save", @"--include-untracked", message, nil];
+	}
+	else
+	{
+		task.arguments = [NSArray arrayWithObjects:@"stash", @"save", message, nil];
+	}
 	[self launchTask:task withBlock:^{
 		if ([task isError])
 		{

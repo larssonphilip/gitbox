@@ -400,7 +400,15 @@
 	[button setEnabled:NO];
 	
 	GBTaskWithProgress* gitgcTask = [GBTaskWithProgress taskWithRepository:self.repository];
-	gitgcTask.arguments = [NSArray arrayWithObjects:@"gc", @"--progress", nil];
+	if (![GBTask isSnowLeopard])
+	{
+		gitgcTask.arguments = [NSArray arrayWithObjects:@"gc", @"--progress", nil];
+	}
+	else
+	{
+		gitgcTask.arguments = [NSArray arrayWithObjects:@"gc", nil];
+	}
+		
 	[self.optimizeProgressIndicator setIndeterminate:YES];
 	[self.optimizeProgressIndicator startAnimation:nil];
 	gitgcTask.progressUpdateBlock = ^{
