@@ -11,6 +11,7 @@ Gitbox 1.6 misc items:
 
 - Sandbox:
 	- change DO to unix domain sockets (or waiting for a file in specific location)
+	  - use temp permission: 
 	  - OR: get rid of the integrated dialog and pop it from the askpass (bad UX)
 	- bundle ssh
 	- sign and add entitlements to git binaries
