@@ -9,7 +9,7 @@ Gitbox 1.6 Release Notes
 ✓ 
 ✓ 
 
-✓ When file is added to ignore list, it is also untracked (git rm --cached).
+✓ When the file is added to ignore list, it is also untracked (git rm --cached).
 ✓ 
 ✓ 
 
