@@ -326,11 +326,12 @@
 	NSArray* selChanges = [self selectedChanges];
 	if ([selChanges count] < 1) return;
 	NSArray* paths = [selChanges valueForKey:@"pathForIgnore"];
-	
-	GBRepositorySettingsController* ctrl = [GBRepositorySettingsController controllerWithTab:GBRepositorySettingsSummary 
-																				  repository:self.repositoryController.repository];
-	[ctrl.userInfo setObject:paths forKey:@"pathsForGitIgnore"];
-	[ctrl presentSheetInMainWindow];
+	[self.repositoryController removePathsFromStage:paths block:^{
+		GBRepositorySettingsController* ctrl = [GBRepositorySettingsController controllerWithTab:GBRepositorySettingsSummary 
+																					  repository:self.repositoryController.repository];
+		[ctrl.userInfo setObject:paths forKey:@"pathsForGitIgnore"];
+		[ctrl presentSheetInMainWindow];
+	}];
 }
 - (BOOL) validateStageIgnoreFile:(id)sender
 {

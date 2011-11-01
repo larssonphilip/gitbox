@@ -7,6 +7,7 @@
 #import "GBSubmodule.h"
 #import "GBSearch.h"
 #import "GBSearchQuery.h"
+#import "GBTask.h"
 
 #import "GBRepositoriesController.h"
 #import "GBRepositoryController.h"
@@ -1674,6 +1675,24 @@
 	}
 	
 	return ([self.repository.currentLocalRef isLocalBranch] && self.selectedCommit && ![self.selectedCommit isStage]);
+}
+
+
+- (void) removePathsFromStage:(NSArray*)paths block:(void(^)())block //  git rm --cached --ignore-unmatch --force
+{
+	if (!paths)
+	{
+		if (block) block();
+		return;
+	}
+	
+	block = [[block copy] autorelease];
+	
+	GBTask* task = self.repository.task;
+	task.arguments = [[NSArray arrayWithObjects:@"rm", @"--cached", @"--ignore-unmatch", @"--force", nil] arrayByAddingObjectsFromArray:paths];
+	[task launchWithBlock:^{
+		if (block) block();
+	}];
 }
 
 

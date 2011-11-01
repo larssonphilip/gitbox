@@ -105,6 +105,7 @@
 - (IBAction) applyAsPatchCommit:(NSMenuItem*)sender;
 - (IBAction) resetBranchToCommit:(NSMenuItem*)sender;
 - (IBAction) revertCommit:(NSMenuItem*)sender;
+- (void) removePathsFromStage:(NSArray*)paths block:(void(^)())block; //  git rm --cached --ignore-unmatch --force
 
 - (IBAction) newTag:(id)sender;
 - (IBAction) deleteTag:(id)sender;
