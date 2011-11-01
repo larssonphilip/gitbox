@@ -1,11 +1,15 @@
 
-Like that: https://skitch.com/oleganza/rm73q/app-gitbox
+- Graphical difference between 2 or more selected branches (1 current local + 1 or more target branches, local or remotes).
+- Different commits are highlighted with colored circles and connected with lines.
+- No extra lines for synced merge commits or previous old commits that are totally merged in all selected branches.
+- Current local branch is always drawn on the left, without extra indentation. Always green.
+- Other branches are always drawn with indentation (even if current branch has no highlighted commits).
+- All numerical values for colors, sizes and positions should be configurable in a single place.
+- 
 
-- Do not track branches, only parents.
-- Do not draw connections and lines for common commits.
-- Start drawing with the latest common commit, mark it in gray.
-- Blue line can be merged with green line multiple times in any direction.
-- One line will be drawn in case of fastforward (blue or green).
-- Two lines if branches both have unique commits.
-- Should also shift commit cells to the left/right to be more clear.
-- We should choose more contrast pair of colors. Say, orange and blue. Also think about daltonism.
+Additional perks:
+
+- draw branch color marker right in the toolbar button.
+- maybe should change green for orange to increase contrast.
+
+
