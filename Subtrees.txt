@@ -1,0 +1,38 @@
+
+Description:
+https://github.com/apenwarr/git-subtree/blob/master/git-subtree.txt
+
+My fork:
+git@github.com:oleganza/git-subtree.git
+
+Quick Start:
+http://tipstank.com/2011/02/21/git-subtree-notes-and-workflows/
+
+git-subtree is different from submodules in these aspects:
+
+1. It keeps contents and history of another repository right inside its parent repo.
+2. It synchronizes with external repo by rewriting each commit (merge, pull and push are supported).
+3. For now, it does not store info about remote repository in a file like .gitmodules. So if you want to merge from upstream repo or push there, you need to explicitely specify URL and branches.
+
+Pros:
+
+1. It might be nice to have all the content of a submodule inside your main repository just so you don't have to deal with additional access permissions, remote servers' outage etc.
+2. You can do development naturally in a single repository instead of jumping between multiple submodule repos.
+3. Less subtle issues like forgotten pushes or commits, or a confusion between when to "update" a submodule and to "add" it.
+
+Cons:
+
+1. Subtree is not suitable when you want to assemble a collection of distinct repositories, which may be optional. With subtrees users will need to download everything, while with submodules, they can choose what to download and when. For most projects it's a non-issue.
+2. Subtree interleaves its history with a main repository's history. It is absolutely not a problem for your own libraries, because their changes fit naturally in the rest of the changes (which might be really helpful for debugging). It might be annoying if you often merge with some external independent library and don't really care about their history. Fortunately, for this case there's a "merge --squash" option which merges all external commits as a single commit.
+
+UI:
+
+1. Adding subtree: clone, then remove .git and add to .gitsubtrees.
+2. .gitsubtrees file: list of all subtrees and their local branches (for "split" command) and corresponding remote URLs and branches.
+3. Drawing subtrees in a sidebar (like submodules), providing history filtered by subtree path. Branch controls:
+   - local branch works the same way
+   - target branch shows remote branches for external repo (defined in .gitsubtrees) and normal local branches for the main repo
+   - op button: pull/push when remote branch is selected
+   - op button: merge(squash when cmd-alt-shift is pressed)/split when local branch is selected
+
+

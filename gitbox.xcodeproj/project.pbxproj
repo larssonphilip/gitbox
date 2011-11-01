@@ -698,6 +698,7 @@
 		205C2894138C2A9F0039D19D /* GBConfirmationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBConfirmationController.h; sourceTree = "<group>"; };
 		205C2895138C2A9F0039D19D /* GBConfirmationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBConfirmationController.m; sourceTree = "<group>"; };
 		205C2899138C2ABD0039D19D /* GBConfirmationController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBConfirmationController.xib; sourceTree = "<group>"; };
+		205EDBBE14603A9400B3126C /* Subtrees.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = Subtrees.txt; sourceTree = "<group>"; };
 		206A07BC11A33519003BB9E3 /* OATask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OATask.h; sourceTree = "<group>"; };
 		206A07BD11A33519003BB9E3 /* OATask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OATask.m; sourceTree = "<group>"; };
 		206A088511A7AB36003BB9E3 /* OAActivityIndicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAActivityIndicator.h; sourceTree = "<group>"; };
@@ -1252,6 +1253,7 @@
 				200A47C612EF6F1A004DF940 /* Sidebar.txt */,
 				2049942212D6878A007ED992 /* SidebarGroups.txt */,
 				200432AE12D8A1AE00B045C0 /* Submodules.txt */,
+				205EDBBE14603A9400B3126C /* Subtrees.txt */,
 				20C9A55D12E85E0800DBA3E1 /* Subversion.txt */,
 				20FBC7F41448C99200EA8582 /* StageRefreshing.txt */,
 				20C66EEA134467B00067D232 /* WWDC2011.txt */,
