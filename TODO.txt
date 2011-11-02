@@ -70,19 +70,11 @@ TODO: order this and put somewhere:
 - bug: search: when commits are updated, the selected one does not show the proper view in the commitviewcontroller. [not important]
 
 - double-section badge in the sidebar for local modifications and remote ones.
-- index.lock issue:
-
-fatal: Unable to create '/Users/oleganza/Work/gitbox/app/.git/index.lock': File exists.
-
-If no other git process is currently running, this probably means a
-git process crashed in this repository earlier. Make sure no other git
-process is running and remove the file manually to continue.
-
 - check other uses of setNextResponder: in view controllers - should be unset in dealloc (sometimes undoManager messages go to dangling pointer)
 
 - bottom bar: sidebar: plus button
 - bottom bar: sidebar: gear menu
-- bottom bar: sidebar: search by name
+- bottom bar: sidebar: search by name - ?
 
 - bottom bar: history: gear menu
 
