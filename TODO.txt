@@ -1,3 +1,15 @@
+Major Features:
+
+- Sandbox
+- Submodules
+- Visualized Branches, multiple selection
+- In-app diff
+  - staging hunks
+  - blame
+  - image diff
+- Subversion import
+- Tree view in stage - does not add much value, but quite tiresome.
+
 
 Gitbox 1.6 Release Notes
 
@@ -5,7 +17,7 @@ Gitbox 1.6 Release Notes
 ✓ 
 ✓ 
 
-✓ 
+✓ Tags are sorted in natural order and with respect to version numbers.
 ✓ 
 ✓ 
 
@@ -27,21 +39,7 @@ Gitbox 1.6 misc items:
 	- ask for hard disk access on startup
 	  - FileMerge.app must have access to the extracted files - or can provide built-in diff viewer
 	  - add entitlements to access ~/.ssh/
-	
-
-
-Major Features:
-
-- Sandbox
-- Submodules
-- Visualized Branches, multiple selection
-- In-app diff
-  - staging hunks
-  - blame
-  - image diff
-- Subversion import
-- Tree view in stage - does not add much value, but very tiresome.
-
+	  
 
 TODO: order this and put somewhere:
 
@@ -105,7 +103,6 @@ TODO: order this and put somewhere:
 - bug: file "Icon\r" was committed somehow.
 
 - tags: make sure you cannot add a tag with a same name again
-- tags: sort tags using SUStandardVersionComparator (from Sparkle)
 
 - ui: show alert Yes/No sheet window when trying to create a commit outside of a branch (instead of simply disabling the commit button)
 - ui: show spinner after some operation takes longer than expected 
@@ -122,6 +119,12 @@ TODO: order this and put somewhere:
   - render target branch list as belogning only to a history, not the whole window
 
 - changes: show mode change as a gray "0755 -> 0644" to the right of the file name. (If only mode has changed, then show it in place of the status)
+
+
+Misc done for 1.6:
+
++ tags: sort tags using SUStandardVersionComparator (from Sparkle)
+
 
 -------------------------------
 

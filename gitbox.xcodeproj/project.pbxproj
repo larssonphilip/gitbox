@@ -142,6 +142,8 @@
 		203FF1D41365C31D000624D6 /* GBAskPassCredentialsController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 203FF1D21365C31D000624D6 /* GBAskPassCredentialsController.xib */; };
 		203FF1DD1365C96E000624D6 /* GBAskPassCredentialsControllerPasswordOnly.xib in Resources */ = {isa = PBXBuildFile; fileRef = 203FF1DC1365C96E000624D6 /* GBAskPassCredentialsControllerPasswordOnly.xib */; };
 		203FF1DE1365C96E000624D6 /* GBAskPassCredentialsControllerPasswordOnly.xib in Resources */ = {isa = PBXBuildFile; fileRef = 203FF1DC1365C96E000624D6 /* GBAskPassCredentialsControllerPasswordOnly.xib */; };
+		2041353214613009007BFE0B /* GBVersionComparator.m in Sources */ = {isa = PBXBuildFile; fileRef = 2041353114613009007BFE0B /* GBVersionComparator.m */; };
+		2041353314613009007BFE0B /* GBVersionComparator.m in Sources */ = {isa = PBXBuildFile; fileRef = 2041353114613009007BFE0B /* GBVersionComparator.m */; };
 		2043A83111C900A0001ED307 /* GBPreferencesController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2043A83011C900A0001ED307 /* GBPreferencesController.m */; };
 		2051376E13446443008614D4 /* OAFSEventStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 2051376D13446443008614D4 /* OAFSEventStream.m */; };
 		2051376F13446443008614D4 /* OAFSEventStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 2051376D13446443008614D4 /* OAFSEventStream.m */; };
@@ -635,6 +637,8 @@
 		203FF1CE1365C2ED000624D6 /* GBAskPassCredentialsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBAskPassCredentialsController.m; sourceTree = "<group>"; };
 		203FF1D21365C31D000624D6 /* GBAskPassCredentialsController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBAskPassCredentialsController.xib; sourceTree = "<group>"; };
 		203FF1DC1365C96E000624D6 /* GBAskPassCredentialsControllerPasswordOnly.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBAskPassCredentialsControllerPasswordOnly.xib; sourceTree = "<group>"; };
+		2041353014613009007BFE0B /* GBVersionComparator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBVersionComparator.h; sourceTree = "<group>"; };
+		2041353114613009007BFE0B /* GBVersionComparator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBVersionComparator.m; sourceTree = "<group>"; };
 		2043A82F11C900A0001ED307 /* GBPreferencesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBPreferencesController.h; sourceTree = "<group>"; };
 		2043A83011C900A0001ED307 /* GBPreferencesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBPreferencesController.m; sourceTree = "<group>"; };
 		2049942212D6878A007ED992 /* SidebarGroups.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SidebarGroups.txt; sourceTree = "<group>"; };
@@ -1041,6 +1045,8 @@
 				208B31D01373D6F600EB4A18 /* GBSearchQuery.m */,
 				20CE6E0813895CC3001D9707 /* GBStash.h */,
 				20CE6E0913895CC3001D9707 /* GBStash.m */,
+				2041353014613009007BFE0B /* GBVersionComparator.h */,
+				2041353114613009007BFE0B /* GBVersionComparator.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -2044,6 +2050,7 @@
 				20106C5513D377060018A65F /* GitRepository.m in Sources */,
 				201419F9142CA60C00AA55E8 /* GitConfig.m in Sources */,
 				20BD5DD2143E483C003B4F2F /* GBRepositoryConfigController.m in Sources */,
+				2041353314613009007BFE0B /* GBVersionComparator.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2191,6 +2198,7 @@
 				20106C5413D377060018A65F /* GitRepository.m in Sources */,
 				201419F8142CA60C00AA55E8 /* GitConfig.m in Sources */,
 				20BD5DD1143E483C003B4F2F /* GBRepositoryConfigController.m in Sources */,
+				2041353214613009007BFE0B /* GBVersionComparator.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -10,6 +10,7 @@
 #import "GBLocalRefsTask.h"
 #import "GBSubmodulesTask.h"
 #import "GBStashListTask.h"
+#import "GBVersionComparator.h"
 #import "GitRepository.h"
 #import "GitConfig.h"
 
@@ -635,8 +636,10 @@
 	task.repository = self;
 	[self launchTask:task withBlock:^{
 		self.localBranches = task.branches;
-		self.tags = task.tags;
-		
+		GBVersionComparator* comparator = [GBVersionComparator defaultComparator];
+		self.tags = [task.tags sortedArrayUsingComparator:^(id tag1, id tag2) {
+			return [comparator compareVersion:[tag1 name] toVersion:[tag2 name]];
+		}];
 		for (NSString* remoteAlias in task.remoteBranchesByRemoteAlias)
 		{
 			GBRemote* aRemote = [self.remotes objectWithValue:remoteAlias forKey:@"alias"];
