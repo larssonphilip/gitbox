@@ -22,7 +22,7 @@ Gitbox 1.6 Release Notes
 ✓ 
 
 ✓ When the file is added to ignore list, it is also untracked (git rm --cached).
-✓ 
+✓ Fixed bug with text fields in repository settings (value was not stored immediately)
 ✓ 
 
 --
@@ -43,6 +43,7 @@ Gitbox 1.6 misc items:
 
 TODO: order this and put somewhere:
 
+- bug: when settings is opened/closed, .gitignore is stripped
 
 - history: undo for branch reset
 - history: undo for stage reset
