@@ -13,7 +13,7 @@ Major Features:
 
 Gitbox 1.6 Release Notes
 
-✓ 
+- Fantastic submodules support: automatic display for all submodules, one-click download and update.
 ✓ 
 ✓ 
 
@@ -31,125 +31,11 @@ Gitbox 1.6 Release Notes
 
 Gitbox 1.6 misc items:
 
-- Sandbox:
-	- change DO to unix domain sockets (or waiting for a file in specific location)
-	  - use temp permission: 
-	  - OR: get rid of the integrated dialog and pop it from the askpass (bad UX)
-	- bundle ssh
-	- sign and add entitlements to git binaries
-	- sign and add entitlements to ssh binaries
-	- ask for hard disk access on startup
-	  - FileMerge.app must have access to the extracted files - or can provide built-in diff viewer
-	  - add entitlements to access ~/.ssh/
-	  
-
-TODO: order this and put somewhere:
-
-+ bug: when settings is opened/closed, .gitignore is stripped
-
-- history: undo for branch reset
-- history: undo for stage reset
-  - for these two notify user that pending changes will be stashed away before performing the operation.
-
-- history: undo for ref checkout
-- history: undo for branch creation
-- history: undo for remote branch creation
-- stage: undo for "Revert File"
-- stage: undo for "Delete File"
-
-- history: git-archive for a commit.
-- history: soft reset by keeping the working directory as is.
-
-- bug: stage does not notice renaming from ABC.txt to abc.txt - need to stage all with temp name, then rename and stage again.
-- new repo: instead of creating local .gitignore, check on launch if we have ~/.gitignore. If we don't, then create one with default .DS_Store entries.
-- bug: when pulling a lot of commits, undo leaves a lot of crap in the stage. Try with Gitbox and July 2011 state.
-- bug: when submodule is added to the sidebar and its parent repo is selected, update to a submodule's file triggers refresh of the parent, but not of the submodule (check how OAFSEventMonitor coalesces paths)
-  - this well may be not submodule-related, but to completely failed FSEvent object on Gwendal's machine
-- bug: new tag should be pushed to all remotes ASAP OR it should be colored green and count as a pending item (latter is better)
-- bug: when the file is committed, modified and in gitignore, it could be very hard to pull ("cannot merge, dirty working dir" error)
-- bug: submodules' loading causes stage refresh delays or similar glitches.
-- bug: askpass crashes with "task" selector when tries to update a repo with missing/invalid ssh key.
-- bug: stage: when having multiple selection and expanding it with keyboard, stage updates cause internal rest, so the selection does not change the same way when continuing pressing keystrokes. Should probably not replace stage content when it did not really change.
-
-- bug: search: when commits are updated, the selected one does not show the proper view in the commitviewcontroller. [not important]
-
-- double-section badge in the sidebar for local modifications and remote ones.
-- check other uses of setNextResponder: in view controllers - should be unset in dealloc (sometimes undoManager messages go to dangling pointer)
-
-- bottom bar: sidebar: plus button
-- bottom bar: sidebar: gear menu
-- bottom bar: sidebar: search by name - ?
-
-- bottom bar: history: gear menu
-
-- bottom bar: stage: Stage All
-- bottom bar: stage: Unstage All
-- bottom bar: stage: Stash
-- bottom bar: stage: Quick Look
-- bottom bar: stage: Diff
-
-- show stashes right in the history; menu: delete, apply
-- double refresh of the stage causes items to disappear (it must be an index.lock issue, should relaunch)
-  $ git update-index --refresh => status:1
-    Output:
-		Classes/GBRepositorySettingsController.m: needs update
-		Classes/GBRepositorySummaryController.m: needs update
-		TODO.txt: needs update
-
-- bug/minor: when staging one of the same files, the last one is selected, not the one with the same name
-
-- stage: after select all + stage/unstage should select all changes (even if some "new" changes appeared). Probably we should keep track of unselected changes vs. selected, so we select all new relevant changes.
-- stage: overlay view describing shortcuts to stage all
-- stage: cmd+click should select all
-- bug: search: when parent commit is clicked it can be missing in the history. Should either not highlight it, or reset search state.
-- bug: (rare) suddenly the search field became disabled. See how enabling/disabling work across repo switching to fix it.
-- bug: maybe NSURL bookmark data becomes broken and leads to "outside of repository" errors.
-- history: push a single commit
-- stage: add option "Delete from stage only" for "git rm --force --cached <filepath>".
-- bug: file "Icon\r" was committed somehow.
-
-- tags: make sure you cannot add a tag with a same name again
-
-- ui: show alert Yes/No sheet window when trying to create a commit outside of a branch (instead of simply disabling the commit button)
-- ui: show spinner after some operation takes longer than expected 
-- ui: implement spinner for indeterminate tasks (with color switch support) and wetransfer-like spinning progress sector (shows progress using sector + rotates it to present activity).
-- ui: for two above: implement OASuperActivityIndicator with stack API, spinning progress, color switch and lazy API (to avoid showing spinner for short tasks of 1-2 seconds).
-- ui: cmd+return should stage all if nothing is selected, but have something on stage
-- ui: filter search field in the dropdown menu for branch selection (like in Xcode 4.2)
-- ui: same filter search field in the sidebar, like in the menu? 
-- ui: tree for the stage items
-
-- branch-lists.psd: 
-  - do not need local branch list because it's not quick-access thing
-  - align target branch column with the target branch button
-  - render target branch list as belogning only to a history, not the whole window
-
-- changes: show mode change as a gray "0755 -> 0644" to the right of the file name. (If only mode has changed, then show it in place of the status)
-
-
-Misc done for 1.6:
-
-+ tags: sort tags using SUStandardVersionComparator (from Sparkle)
-
-
--------------------------------
-
-Gitbox Next:
-
-Features:
-
-
-- idea: show the subtree for selected commit and its parents
-- merge conflict stage badly needs better UI
-
-- idea: ping the gitboxapp.com when someone pushes the repo to notify appropriate listeners to fetch
-
-- menu: History -> extractFolder:
-- menu: History -> removeFileFromHistory:
 
 + edit branches and tags in a single repository settings window.
-✓ Fantastic submodules support: automatic display for all submodules, one-click download and update.
+
 + submodules: display "download" button in the sidebar item
+- submodules: submodule download controller
 - submodules: when submodule folder is removed, properly update its status
 - submodules: cloning repo ctrl is not deallocated
 - submodules: wrap submodules clone/pull task with GBAskPassController
@@ -165,6 +51,112 @@ Features:
 - submodules: case 3: user pulls a repo which has some submodules updated, but his submodule itself is checked out on some branch => needs fetch, not pull
 - submodules: case 4: user clones the repo inside the repo => needs to display as a non-tracked submodule which can be tracked
 - submodules: case 5: user tries to commit a submodule which has the HEAD non-pushed (or dirty directory) - show warning or ask to push manually; show button "show module"
+
+- submodules: maybe show intermediate folder item if submodule is inside a folder (placebo-like)
+- bug: when submodule is added to the sidebar and its parent repo is selected, update to a submodule's file triggers refresh of the parent, but not of the submodule (check how OAFSEventMonitor coalesces paths)
+  - this well may be not submodule-related, but to completely failed FSEvent object on Gwendal's machine
+- bug: submodules' loading causes stage refresh delays or similar glitches.
+
+
+-- the rest of the things --
+
+- double-section badge in the sidebar for local modifications and remote ones.
+
+- new repo: instead of creating local .gitignore, check on launch if we have ~/.gitignore. If we don't, then create one with default .DS_Store entries. Display short intro in the empty stage - "To start, add some files and commit them."
+
+- branch-lists.psd: 
+  - do not need local branch list because it's not a quick-access thing
+  - align target branch column with the target branch button
+  - render target branch list as belogning only to a history, not the whole window
+
+- branches: make GBHistoryViewController a split-view with branches in the right pane
+- branches: align toolbar items with GBHistoryViewController panes: current branch and buttons under the history pane, target branch over the branch list pane
+- branches: allow multiple selection of target branches and remember that
+- branches: show branch color icons in the pulldown toolbar buttons
+- branches: show branch color icons in the branch list (for selected branches only)
+
+- changes: show mode change as a gray "0755 -> 0644" to the right of the file name. (If only mode has changed, then show it in place of the status)
+
+- ui: show spinner after some operation takes longer than expected 
+- ui: implement spinner for indeterminate tasks (with color switch support) and wetransfer-like spinning progress sector (shows progress using sector + rotates it to present activity).
+- ui: for two above: implement OASuperActivityIndicator with stack API, spinning progress, color switch and lazy API (to avoid showing spinner for short tasks of 1-2 seconds).
+- ui: cmd+return should stage all if nothing is selected, but have something on stage (esp. when history view is highlighted)
+
+- tags: make sure you cannot add a tag with the same name again
+- bug: when removing spinning repo from sidebar (task is running), spinner remains in sidebar
+
+- new group should wrap selected repos and should be added in place of the first selected item.
+
+
+Misc done for 1.6:
+
+
++ ui: show alert Yes/No sheet window when trying to create a commit outside of a branch (instead of simply disabling the commit button)
++ tags: sort tags using SUStandardVersionComparator (from Sparkle)
++ bug: when settings is opened/closed, .gitignore is stripped
+
+
+-------------------------------
+
+Gitbox Next:
+
+Sandbox:
+
+- change DO to unix domain sockets (or waiting for a file in specific location)
+  - use temp permission: 
+  - OR: get rid of the integrated dialog and pop it from the askpass (bad UX)
+- bundle ssh
+- sign and add entitlements to git binaries
+- sign and add entitlements to ssh binaries
+- ask for hard disk access on startup
+  - FileMerge.app must have access to the extracted files - or can provide built-in diff viewer
+  - add entitlements to access ~/.ssh/
+
+
+	  
+Features:
+
+- toolbar: filter search field in the dropdown menu for branch selection (like in Xcode 4.2)
+- sidebar: same filter search field in the sidebar, like in the menu? 
+- changes: tree for the changes - note: it adds little functional value, but could suck a lot of time
+
+- bottom bar: sidebar: plus button
+- bottom bar: sidebar: gear menu
+- bottom bar: sidebar: search by name - ?
+
+- bottom bar: history: gear menu
+
+- bottom bar: stage: Stage All
+- bottom bar: stage: Unstage All
+- bottom bar: stage: Stash
+- bottom bar: stage: Quick Look
+- bottom bar: stage: Diff
+
+- show stashes right in the history; menu: delete, apply
+
+- history: push a single commit
+
+- history: undo for branch reset
+- history: undo for stage reset
+  - for these two notify user that pending changes will be stashed away before performing the operation.
+
+- history: undo for ref checkout
+- history: undo for branch creation
+- history: undo for remote branch creation
+- stage: undo for "Revert File"
+- stage: undo for "Delete File"
+
+- history: git-archive for a commit.
+- history: soft reset by keeping the working directory as is.
+
+- idea: show the subtree for selected commit and its parents
+- merge conflict stage badly needs better UI
+
+- idea: ping the gitboxapp.com when someone pushes the repo to notify appropriate listeners to fetch
+
+- menu: History -> extractFolder:
+- menu: History -> removeFileFromHistory:
+
 
 ? sidebar: "Duplicate..." menu item to make a quick clone + copy of .git/config.
 - sidebar: double click opens item in finder (patraque 987)
@@ -238,6 +230,7 @@ Features:
 - changes: merging in the same quicklook-like panel
 - changes: rerere - for recording how the conflict was resolved
 
+- stage: add option "Delete from stage only" for "git rm --force --cached <filepath>".
 - stage: show a hint "use cmd+A and cmd+return" when multiple items appear on stage
 - stage: if more than 5 items, show additional row in the bottom with a line separator, "%d items" grey title and a checkbox which selects all the items and supports 3 states: on, off, mixed.
 - stage: main menu: rename "commit cmd+return" into "Stage Selected Items cmd+return" when not focused in the commit message field.
@@ -274,7 +267,11 @@ Features:
 
 Enhancements:
 
-? seems like in 1.4 new git binaries fix issue with "outside repository" because of some case-sensitivity in paths (email is flagged)
+
+
+- stage: after select all + stage/unstage should select all changes (even if some "new" changes appeared). Probably we should keep track of unselected changes vs. selected, so we select all new relevant changes.
+- stage: overlay view describing shortcuts to stage all
+- stage: cmd+click should select all
 
 - general: recessed icon for no selection view and multiple selection view (similar to Lion Mail.app)
 - sidebar: before dropping over parent node, highlight appropriate index inside, not the parent
@@ -343,7 +340,23 @@ Error messages translation to English:
 
 Bugs:
 
-- bug: when removing spinning repo from sidebar (task is running), spinner remains in sidebar
+- check other uses of setNextResponder: in view controllers - should be unset in dealloc (sometimes undoManager messages go to dangling pointer)
+
+- bug: stage does not notice renaming from ABC.txt to abc.txt - need to stage all with temp name, then rename and stage again.
+- bug: when pulling a lot of commits, undo leaves a lot of crap in the stage. Try with Gitbox and July 2011 state.
+- bug: new tag should be pushed to all remotes ASAP OR it should be colored green and count as a pending item (latter is better)
+- bug: when the file is committed, modified and in gitignore, it could be very hard to pull ("cannot merge, dirty working dir" error)
+
+- bug: askpass crashes with "task" selector when tries to update a repo with missing/invalid ssh key.
+- bug: stage: when having multiple selection and expanding it with keyboard, stage updates cause internal rest, so the selection does not change the same way when continuing pressing keystrokes. Should probably not replace stage content when it did not really change.
+
+- bug: search: when commits are updated, the selected one does not show the proper view in the commitviewcontroller. [not important]
+- bug/minor: when staging one of the same files, the last one is selected, not the one with the same name
+- bug: search: when parent commit is clicked it can be missing in the history. Should either not highlight it, or reset search state.
+- bug: (rare) suddenly the search field became disabled. See how enabling/disabling work across repo switching to fix it.
+- bug: maybe NSURL bookmark data becomes broken and leads to "outside of repository" errors.
+- bug: file "Icon\r" was committed somehow.
+
 - (right now jump controller is disabled because of that) bug: minor issue: when quickly iterating through sidebar when repos are autofetched, the selection sometimes jumps. We should reset jump controller's block when selection is changed elsewhere.
 
 - bug: configured remote server without(?) pushed branches, while the current branch associated with non-existant remote, is not displayed in remotes dropdown menu.
