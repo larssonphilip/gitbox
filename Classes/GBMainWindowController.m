@@ -286,8 +286,10 @@
 - (void) rootControllerDidChangeContents:(GBRootController*)aRootController
 {
 	// Reset selected object for the case when viewController changes
-#warning This code causes losing the focus in stage area when submodules are updated.
+	
+	// Commented out to not lose a focus in stage area when submodules are updated.
 	//  self.selectedWindowItem = nil;
+	
 	self.selectedWindowItem = aRootController.selectedObject;
 	[self.jumpController flush];
 }
