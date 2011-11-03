@@ -64,6 +64,8 @@
   return URLs;
 }
 
+#warning FIXME: are you sure we should call completionHandler from background thread??
+
 + (void) calculateSizeAtURL:(NSURL*)aURL completionHandler:(void(^)())completionHandler
 {
 	NSFileManager* fm = [[[NSFileManager alloc] init] autorelease];
