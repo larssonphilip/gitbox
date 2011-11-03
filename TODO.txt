@@ -50,12 +50,15 @@ TODO: order this and put somewhere:
 - history: undo for branch reset
 - history: undo for stage reset
   - for these two notify user that pending changes will be stashed away before performing the operation.
-  
+
 - history: undo for ref checkout
 - history: undo for branch creation
 - history: undo for remote branch creation
 - stage: undo for "Revert File"
 - stage: undo for "Delete File"
+
+- history: git-archive for a commit.
+- history: soft reset by keeping the working directory as is.
 
 - bug: stage does not notice renaming from ABC.txt to abc.txt - need to stage all with temp name, then rename and stage again.
 - new repo: instead of creating local .gitignore, check on launch if we have ~/.gitignore. If we don't, then create one with default .DS_Store entries.
