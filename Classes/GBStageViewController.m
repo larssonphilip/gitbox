@@ -484,12 +484,8 @@
 	return [self.stage isCommitable] || [[self selectedChanges] count] > 0;
 }
 
-- (IBAction) reallyCommit:(id)sender
+- (void) reallyReallyCommit
 {
-	if (self.stage.isRebaseConflict)
-	{
-		return;
-	}
 	NSString* msg = [self validCommitMessage];
 	if (!msg) return;
 	[self.repositoryController commitWithMessage:msg];
@@ -509,9 +505,33 @@
 	[self updateCommitButtonEnabledState];
 }
 
+- (IBAction) reallyCommit:(id)sender
+{
+	if (self.stage.isRebaseConflict)
+	{
+		return;
+	}
+	
+	if (![self validateBranch])
+	{
+		[[GBMainWindowController instance] criticalConfirmationWithMessage:NSLocalizedString(@"Commit outside a branch?",nil) 
+															   description:NSLocalizedString(@"No local branch is selected. Do you really want to create a commit outside any branch?", nil) 
+																		ok:NSLocalizedString(@"Yes",nil)
+																completion:^(BOOL result){
+																	if (result)
+																	{
+																		[self reallyReallyCommit];
+																	}
+																}];
+		return;
+	}
+	
+	[self reallyReallyCommit];
+}
+
 - (BOOL) validateReallyCommit:(id)sender
 {
-	return [self validateCommit:sender] && [self validCommitMessage] && [self validateBranch];
+	return [self validateCommit:sender] && [self validCommitMessage];
 }
 
 - (NSString*) validCommitMessage
@@ -527,23 +547,7 @@
 
 - (BOOL) validateBranch
 {
-//	NSString* message = NSLocalizedString(@"Please switch to a branch.", @"");
 	BOOL isValid = !!self.repositoryController.repository.currentLocalRef.name;
-//	if (isValid)
-//	{
-//		if ([self.rebaseStatusLabel.stringValue isEqualToString:message])
-//		{
-//			self.rebaseStatusLabel.stringValue = @"";
-//		}
-//	}
-//	else
-//	{
-//		//if (!self.rebaseStatusLabel.stringValue || [self.rebaseStatusLabel.stringValue isEqualToString:@""])
-//		{
-//			self.rebaseStatusLabel.stringValue = message;
-//			[self.rebaseStatusLabel setHidden:NO];
-//		}
-//	}
 	return isValid;
 }
 
