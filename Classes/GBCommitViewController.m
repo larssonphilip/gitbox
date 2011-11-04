@@ -701,16 +701,29 @@
 	{
 		@try
 		{
-			NSRange wwwRange   = [string rangeOfString:@"www."     options:0 range:searchRange];
-			NSRange httpsRange = [string rangeOfString:@"https://" options:0 range:searchRange];
-			NSRange httpRange  = [string rangeOfString:@"http://"  options:0 range:searchRange];
-			NSRange ftpRange   = [string rangeOfString:@"ftp://"   options:0 range:searchRange];
-			
-			foundRange = wwwRange;
-			
-			if (httpsRange.location < foundRange.location) foundRange = httpsRange;
-			if (httpRange.location < foundRange.location)  foundRange = httpRange;
-			if (ftpRange.location < foundRange.location)   foundRange = ftpRange;
+			if ([NSRegularExpression class])
+			{
+				NSRegularExpression* regexp = [NSRegularExpression regularExpressionWithPattern:@"(\\w+://|www\\.)" options:0 error:NULL];
+				if (regexp)
+				{
+					foundRange = [regexp rangeOfFirstMatchInString:string options:0 range:searchRange];
+				}
+			}
+			else // Snow Leopard does not support regexps, try common schemes
+			{
+				NSRange wwwRange   = [string rangeOfString:@"www."     options:0 range:searchRange];
+				NSRange httpsRange = [string rangeOfString:@"https://" options:0 range:searchRange];
+				NSRange httpRange  = [string rangeOfString:@"http://"  options:0 range:searchRange];
+				NSRange rdarRange  = [string rangeOfString:@"rdar://"  options:0 range:searchRange];
+				NSRange ftpRange   = [string rangeOfString:@"ftp://"   options:0 range:searchRange];
+				
+				foundRange = wwwRange;
+				
+				if (httpsRange.location < foundRange.location) foundRange = httpsRange;
+				if (httpRange.location < foundRange.location)  foundRange = httpRange;
+				if (rdarRange.location < foundRange.location)  foundRange = rdarRange;
+				if (ftpRange.location < foundRange.location)   foundRange = ftpRange;
+			}
 			
 			if (foundRange.length > 0)
 			{
