@@ -694,7 +694,7 @@
 - (void) highlightURLsInAttributedString:(NSMutableAttributedString*)textStorage
 {
 	NSString* string = [textStorage string];
-	NSRange searchRange = NSMakeRange(0, [string length]);
+	NSRange searchRange = NSMakeRange(0, string.length);
 	NSRange foundRange = NSMakeRange(NSNotFound, 0);
 	[textStorage beginEditing];
 	do
@@ -729,15 +729,15 @@
 			{
 				// Restrict the searchRange so that it won't find the same string again
 				searchRange.location = (foundRange.location+1);
-				searchRange.length = [string length] - searchRange.location;
+				searchRange.length = string.length - searchRange.location;
 				
-				// We assume the URL ends with whitespace
+				// We assume the URL ends with a whitespace (punctuation will be trimmed below)
 				NSRange endOfURLRange = [string rangeOfCharacterFromSet:[NSCharacterSet whitespaceAndNewlineCharacterSet] options:0 range:searchRange];
 				
 				// The URL could also end at the end of the text.  The next line fixes it in case it does
-				if (endOfURLRange.length==0)
+				if (endOfURLRange.location == NSNotFound)
 				{
-					endOfURLRange.location = [string length]-1;
+					endOfURLRange.location = string.length;
 				}
 				
 				// Set foundRange's length to the length of the URL
@@ -748,16 +748,16 @@
 				// Trim trailing punctuation.
 				NSString* urlString2 = [urlString stringByTrimmingCharactersInSet:[NSCharacterSet punctuationCharacterSet]];
 				
-				if (foundRange.length > [urlString2 length]) // have trimmed something
+				if (foundRange.length > urlString2.length) // have trimmed something
 				{
 					// if the slash "/" was trimmed, put it back.
-					if ([[urlString substringWithRange:NSMakeRange([urlString2 length], 1)] isEqualToString:@"/"])
+					if ([[urlString substringWithRange:NSMakeRange(urlString2.length, 1)] isEqualToString:@"/"])
 					{
 						urlString2 = [urlString2 stringByAppendingString:@"/"];
 					}
 				}
 				urlString = urlString2;
-				foundRange.length = [urlString length];
+				foundRange.length = urlString.length;
 				
 				if ([urlString rangeOfString:@"www"].location == 0) 
 				{
