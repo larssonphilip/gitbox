@@ -727,6 +727,8 @@
 			
 			if (foundRange.length > 0)
 			{
+				NSUInteger minLength = foundRange.length;
+				
 				// Restrict the searchRange so that it won't find the same string again
 				searchRange.location = (foundRange.location+1);
 				searchRange.length = string.length - searchRange.location;
@@ -771,7 +773,7 @@
 					}
 				}
 				
-				if (urlString)
+				if (urlString && urlString.length >= minLength)
 				{
 					// Grab the URL from the text
 					NSURL* theURL = [NSURL URLWithString:urlString];
