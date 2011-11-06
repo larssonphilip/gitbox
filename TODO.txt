@@ -25,6 +25,7 @@ Gitbox 1.6 Release Notes
 ✓ Fixed bug with text fields in repository settings (value was not stored immediately)
 ✓ Fixed a bug with trimming whitespace from .gitignore
 ✓ Fixed link highlighting on Lion: now all kinds of schemas are recognized including rdar://.
+✓ Fixed text label in the license window.
 ✓ 
 
 --
