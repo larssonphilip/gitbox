@@ -61,22 +61,24 @@ Gitbox 1.6 misc items:
 - bug: submodules' loading causes stage refresh delays or similar glitches.
 
 
+-- multiple branches -- 
+
+- implement graph drawing as described in GraphVisualization.txt
+- branches: make GBHistoryViewController a split-view with branches in the right pane
+- branches: align toolbar items with GBHistoryViewController panes: current branch and buttons under the history pane, target branch over the branch list pane
+- branches: allow multiple selection of target branches (if .git/config cannot reliably configure multiple remote branches, save the first one and remember the rest in runtime)
+- branches: show branch color icons in the pulldown toolbar buttons
+  - for multiple branches, show icons together in a row, then branch names, comma-separated.
+- branches: show branch color icons in the branch list (for selected branches only)
+
+
+
+
 -- the rest of the things --
 
 - double-section badge in the sidebar for local modifications and remote ones.
 
 - new repo: instead of creating local .gitignore, check on launch if we have ~/.gitignore. If we don't, then create one with default .DS_Store entries. Display short intro in the empty stage - "To start, add some files and commit them."
-
-- branch-lists.psd: 
-  - do not need local branch list because it's not a quick-access thing
-  - align target branch column with the target branch button
-  - render target branch list as belogning only to a history, not the whole window
-
-- branches: make GBHistoryViewController a split-view with branches in the right pane
-- branches: align toolbar items with GBHistoryViewController panes: current branch and buttons under the history pane, target branch over the branch list pane
-- branches: allow multiple selection of target branches and remember that
-- branches: show branch color icons in the pulldown toolbar buttons
-- branches: show branch color icons in the branch list (for selected branches only)
 
 - changes: show mode change as a gray "0755 -> 0644" to the right of the file name. (If only mode has changed, then show it in place of the status)
 
