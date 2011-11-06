@@ -23,7 +23,6 @@
 @interface GBRepositoriesController () <NSOpenSavePanelDelegate>
 @property(nonatomic, retain) GBCloneWindowController* cloneWindowController;
 @property(nonatomic, retain) OAFSEventStream* fsEventStream;
-//@property(nonatomic, retain) OABlockQueue* localRepositoriesUpdatesQueue;
 @property(nonatomic, retain) OABlockQueue* autofetchQueue;
 
 - (void) removeObjects:(NSArray*)objects;
@@ -42,7 +41,6 @@
 @implementation GBRepositoriesController
 
 @synthesize rootController;
-//@synthesize localRepositoriesUpdatesQueue;
 @synthesize autofetchQueue;
 @synthesize repositoryViewController;
 @synthesize repositoryToolbarController;
@@ -52,7 +50,6 @@
 - (void) dealloc
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	//  self.localRepositoriesUpdatesQueue = nil;
 	self.autofetchQueue = nil;
 	self.cloneWindowController = nil;
 	self.fsEventStream = nil;
@@ -72,7 +69,6 @@
 		self.sidebarItem.draggable = NO;
 		self.sidebarItem.editable = NO;
 		
-		//    self.localRepositoriesUpdatesQueue = [OABlockQueue queueWithName:@"LocalUpdates" concurrency:1];
 		self.autofetchQueue = [OABlockQueue queueWithName:@"AutoFetch" concurrency:4];
 		
 		self.repositoryViewController = [[[GBRepositoryViewController alloc] initWithNibName:@"GBRepositoryViewController" bundle:nil] autorelease];
@@ -411,7 +407,6 @@
 	if (!repoCtrl) return;
 	repoCtrl.toolbarController = self.repositoryToolbarController;
 	repoCtrl.viewController = self.repositoryViewController;
-	//  repoCtrl.updatesQueue = self.localRepositoriesUpdatesQueue;
 	repoCtrl.autofetchQueue = self.autofetchQueue;
 }
 
@@ -423,23 +418,6 @@
 	repoCtrl.fsEventStream = self.fsEventStream;
 	[repoCtrl start];
 	[repoCtrl initialFetchIfNeededWithBlock:^{}];
-	
-	//  if (!queued)
-	//  {
-	//    [self.localRepositoriesUpdatesQueue prependBlock:^{
-	//      [repoCtrl initialUpdateWithBlock:^{
-	//        [self.localRepositoriesUpdatesQueue endBlock];
-	//      }];
-	//    }];
-	//  }
-	//  else
-	//  {
-	//    [self.localRepositoriesUpdatesQueue addBlock:^{
-	//      [repoCtrl initialUpdateWithBlock:^{
-	//        [self.localRepositoriesUpdatesQueue endBlock];
-	//      }];
-	//    }];
-	//  }
 }
 
 
