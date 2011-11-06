@@ -1,5 +1,4 @@
 #import "GBSidebarItem.h"
-#import "GBRepositoriesController.h"
 #import "GBRepositoryCloningViewController.h"
 #import "GBRepositoryCloningController.h"
 #import "GBCloneTask.h"
@@ -18,7 +17,6 @@
 
 @implementation GBRepositoryCloningController
 
-@synthesize repositoriesController;
 @synthesize sidebarItem;
 @synthesize window;
 @synthesize viewController;
@@ -36,7 +34,6 @@
 
 - (void) dealloc
 {
-	self.sidebarItem = nil;
 	self.window      = nil;
 	self.viewController = nil;
 	self.sourceURL   = nil;
@@ -131,13 +128,13 @@
 			
 			if ([t isError])
 			{
-				NSLog(@"GBCloningRepositoryController: did FAIL to clone at %@", self.targetURL);
-				NSLog(@"GBCloningRepositoryController: output: %@", [t UTF8ErrorAndOutput]);
+				NSLog(@"GBRepositoryCloningController: did FAIL to clone at %@", self.targetURL);
+				NSLog(@"GBRepositoryCloningController: output: %@", [t UTF8ErrorAndOutput]);
 				[self notifyWithSelector:@selector(cloningRepositoryControllerDidFail:)];
 			}
 			else
 			{
-				NSLog(@"GBCloningRepositoryController: did finish clone at %@", self.targetURL);
+				NSLog(@"GBRepositoryCloningController: did finish clone at %@", self.targetURL);
 				[self notifyWithSelector:@selector(cloningRepositoryControllerDidFinish:)];
 			}
 		};

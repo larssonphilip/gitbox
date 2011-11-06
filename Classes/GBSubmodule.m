@@ -25,28 +25,28 @@ NSString* const GBSubmoduleStatusNotUpToDate = @"GBSubmoduleStatusNotUpToDate";
 
 - (void) dealloc
 {
-  //NSLog(@"GBSubmodule#dealloc");
-  self.remoteURL = nil;
-  self.path      = nil;
-  self.status = nil;
-  self.sidebarItem.object = nil;
-  self.sidebarItem = nil;
-  self.repositoryController = nil;
-  
-  [super dealloc];
+	//NSLog(@"GBSubmodule#dealloc");
+	self.remoteURL = nil;
+	self.path      = nil;
+	self.status = nil;
+	self.sidebarItem.object = nil;
+	self.sidebarItem = nil;
+	self.repositoryController = nil;
+	
+	[super dealloc];
 }
 
 - (id)init
 {
-  if ((self = [super init]))
-  {
-    self.sidebarItem = [[[GBSidebarItem alloc] init] autorelease];
-    self.sidebarItem.object = self;
-    self.sidebarItem.draggable = YES;
-    self.sidebarItem.selectable = YES;
-    self.sidebarItem.cell = [[[GBSubmoduleCell alloc] initWithItem:self.sidebarItem] autorelease];
-  }
-  return self;
+	if ((self = [super init]))
+	{
+		self.sidebarItem = [[[GBSidebarItem alloc] init] autorelease];
+		self.sidebarItem.object = self;
+		self.sidebarItem.draggable = YES;
+		self.sidebarItem.selectable = YES;
+		self.sidebarItem.cell = [[[GBSubmoduleCell alloc] initWithItem:self.sidebarItem] autorelease];
+	}
+	return self;
 }
 
 
@@ -58,27 +58,27 @@ NSString* const GBSubmoduleStatusNotUpToDate = @"GBSubmoduleStatusNotUpToDate";
 
 - (NSURL*) localURL
 {
-  return [NSURL URLWithString:[self path] relativeToURL:[self.repository url]];
+	return [NSURL URLWithString:[self path] relativeToURL:[self.repository url]];
 }
 
 - (NSString*) localPath
 {
-  return [[self localURL] path];
+	return [[self localURL] path];
 }
 
 - (NSURL*) repositoryURL
 {
-  return [[self repository] url];
+	return [[self repository] url];
 }
 
 - (NSString*) repositoryPath
 {
-  return [[self repositoryURL] path];
+	return [[self repositoryURL] path];
 }
 
 - (BOOL) isCloned
 {
-  return ![self.status isEqualToString:GBSubmoduleStatusNotCloned];
+	return ![self.status isEqualToString:GBSubmoduleStatusNotCloned];
 }
 
 
@@ -88,9 +88,9 @@ NSString* const GBSubmoduleStatusNotUpToDate = @"GBSubmoduleStatusNotUpToDate";
 
 - (void) updateHeadWithBlock:(void(^)())block
 {
-  GBTask* task = [self.repository task];
-  task.arguments = [NSArray arrayWithObjects:@"submodule", @"update", @"--init", @"--", [self localPath], nil];
-  [self.repository launchTask:task withBlock:block];
+	GBTask* task = [self.repository task];
+	task.arguments = [NSArray arrayWithObjects:@"submodule", @"update", @"--init", @"--", [self localPath], nil];
+	[self.repository launchTask:task withBlock:block];
 }
 
 
@@ -102,27 +102,27 @@ NSString* const GBSubmoduleStatusNotUpToDate = @"GBSubmoduleStatusNotUpToDate";
 
 - (NSInteger) sidebarItemNumberOfChildren
 {
-  return [self.repositoryController sidebarItemNumberOfChildren];
+	return [self.repositoryController sidebarItemNumberOfChildren];
 }
 
- - (GBSidebarItem*) sidebarItemChildAtIndex:(NSInteger)anIndex
+- (GBSidebarItem*) sidebarItemChildAtIndex:(NSInteger)anIndex
 {
-  return [self.repositoryController sidebarItemChildAtIndex:anIndex];
+	return [self.repositoryController sidebarItemChildAtIndex:anIndex];
 }
 
 - (NSString*) sidebarItemTitle
 {
-  return [self path];
+	return [self path];
 }
 
 - (NSString*) sidebarItemTooltip
 {
-  return [[[self localURL] absoluteURL] path];
+	return [[[self localURL] absoluteURL] path];
 }
 
- - (BOOL) sidebarItemIsExpandable
+- (BOOL) sidebarItemIsExpandable
 {
-  return [self.repositoryController sidebarItemIsExpandable];
+	return [self.repositoryController sidebarItemIsExpandable];
 }
 
 - (NSUInteger) sidebarItemBadgeInteger
@@ -132,17 +132,17 @@ NSString* const GBSubmoduleStatusNotUpToDate = @"GBSubmoduleStatusNotUpToDate";
 
 - (BOOL) sidebarItemIsSpinning
 {
-  return [self.repositoryController sidebarItemIsSpinning];
+	return [self.repositoryController sidebarItemIsSpinning];
 }
 
 - (NSArray*) writableTypesForPasteboard:(NSPasteboard *)pasteboard
 {
-  return [[self localURL] writableTypesForPasteboard:pasteboard];
+	return [[self localURL] writableTypesForPasteboard:pasteboard];
 }
 
 - (id)pasteboardPropertyListForType:(NSString *)type
 {
-  return [[self localURL] pasteboardPropertyListForType:type];
+	return [[self localURL] pasteboardPropertyListForType:type];
 }
 
 
@@ -155,7 +155,7 @@ NSString* const GBSubmoduleStatusNotUpToDate = @"GBSubmoduleStatusNotUpToDate";
 
 - (id) sidebarItemContentsPropertyList
 {
-  return nil;
+	return nil;
 }
 
 - (void) sidebarItemLoadContentsFromPropertyList:(id)plist

@@ -39,10 +39,6 @@
 		200A43EA12EC2507004DF940 /* GBSubmoduleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 200A43E812EC2507004DF940 /* GBSubmoduleCell.m */; };
 		200A444B12EC2DCE004DF940 /* GBSubmoduleCloningController.m in Sources */ = {isa = PBXBuildFile; fileRef = 200A444A12EC2DCE004DF940 /* GBSubmoduleCloningController.m */; };
 		200A444C12EC2DCE004DF940 /* GBSubmoduleCloningController.m in Sources */ = {isa = PBXBuildFile; fileRef = 200A444A12EC2DCE004DF940 /* GBSubmoduleCloningController.m */; };
-		200A44FC12EC5A1C004DF940 /* GBSubmoduleCloneProcessViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 200A44FA12EC5A1C004DF940 /* GBSubmoduleCloneProcessViewController.m */; };
-		200A44FD12EC5A1C004DF940 /* GBSubmoduleCloneProcessViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 200A44FB12EC5A1C004DF940 /* GBSubmoduleCloneProcessViewController.xib */; };
-		200A44FE12EC5A1C004DF940 /* GBSubmoduleCloneProcessViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 200A44FA12EC5A1C004DF940 /* GBSubmoduleCloneProcessViewController.m */; };
-		200A44FF12EC5A1C004DF940 /* GBSubmoduleCloneProcessViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 200A44FB12EC5A1C004DF940 /* GBSubmoduleCloneProcessViewController.xib */; };
 		200A472012ECB265004DF940 /* GBSidebarRepositoryIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 200A471E12ECB265004DF940 /* GBSidebarRepositoryIcon.png */; };
 		200A472112ECB265004DF940 /* GBSidebarSubmoduleIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 200A471F12ECB265004DF940 /* GBSidebarSubmoduleIcon.png */; };
 		200A472212ECB265004DF940 /* GBSidebarRepositoryIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 200A471E12ECB265004DF940 /* GBSidebarRepositoryIcon.png */; };
@@ -54,6 +50,10 @@
 		200B08B511B6E359004C09A8 /* GBLocalRemoteAssociationTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 200B08B411B6E359004C09A8 /* GBLocalRemoteAssociationTask.m */; };
 		200C159914670F9E000F4C78 /* GitboxLicense.txt in Resources */ = {isa = PBXBuildFile; fileRef = 201419F2142C8D0300AA55E8 /* GitboxLicense.txt */; };
 		200C159A14670F9E000F4C78 /* GitboxLicense.txt in Resources */ = {isa = PBXBuildFile; fileRef = 201419F2142C8D0300AA55E8 /* GitboxLicense.txt */; };
+		200C159E14672EB2000F4C78 /* GBSubmoduleCloningViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 200C159C14672EB1000F4C78 /* GBSubmoduleCloningViewController.m */; };
+		200C159F14672EB2000F4C78 /* GBSubmoduleCloningViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 200C159C14672EB1000F4C78 /* GBSubmoduleCloningViewController.m */; };
+		200C15A014672EB2000F4C78 /* GBSubmoduleCloningViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 200C159D14672EB1000F4C78 /* GBSubmoduleCloningViewController.xib */; };
+		200C15A114672EB2000F4C78 /* GBSubmoduleCloningViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 200C159D14672EB1000F4C78 /* GBSubmoduleCloningViewController.xib */; };
 		200DE075136A9F9100D18A5B /* GBWindowControllerWithCallback.m in Sources */ = {isa = PBXBuildFile; fileRef = 200DE074136A9F9100D18A5B /* GBWindowControllerWithCallback.m */; };
 		200DE076136A9F9100D18A5B /* GBWindowControllerWithCallback.m in Sources */ = {isa = PBXBuildFile; fileRef = 200DE074136A9F9100D18A5B /* GBWindowControllerWithCallback.m */; };
 		20106C5413D377060018A65F /* GitRepository.m in Sources */ = {isa = PBXBuildFile; fileRef = 20106C5313D377060018A65F /* GitRepository.m */; };
@@ -231,8 +231,8 @@
 		208B3288137505D600EB4A18 /* GBSearchBarController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 208B3284137505D600EB4A18 /* GBSearchBarController.xib */; };
 		208D086313981084002C8072 /* GBTaskWithProgress.m in Sources */ = {isa = PBXBuildFile; fileRef = 208D086213981084002C8072 /* GBTaskWithProgress.m */; };
 		208D086413981084002C8072 /* GBTaskWithProgress.m in Sources */ = {isa = PBXBuildFile; fileRef = 208D086213981084002C8072 /* GBTaskWithProgress.m */; };
-		208D0A3A13983C99002C8072 /* git.bundle-1.7.7.rc3.7.g26c6e2.tar in Resources */ = {isa = PBXBuildFile; fileRef = 208D0A3913983C99002C8072 /* git.bundle-1.7.7.rc3.7.g26c6e2.tar */; };
-		208D0A3B13983C99002C8072 /* git.bundle-1.7.7.rc3.7.g26c6e2.tar in Resources */ = {isa = PBXBuildFile; fileRef = 208D0A3913983C99002C8072 /* git.bundle-1.7.7.rc3.7.g26c6e2.tar */; };
+		208D0A3A13983C99002C8072 /* git.bundle-1.7.7.2.3.g19dee.tar in Resources */ = {isa = PBXBuildFile; fileRef = 208D0A3913983C99002C8072 /* git.bundle-1.7.7.2.3.g19dee.tar */; };
+		208D0A3B13983C99002C8072 /* git.bundle-1.7.7.2.3.g19dee.tar in Resources */ = {isa = PBXBuildFile; fileRef = 208D0A3913983C99002C8072 /* git.bundle-1.7.7.2.3.g19dee.tar */; };
 		208D0AB1139844FC002C8072 /* GBRepositorySettingsController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 208D0AB0139844FC002C8072 /* GBRepositorySettingsController.xib */; };
 		208D0AB2139844FC002C8072 /* GBRepositorySettingsController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 208D0AB0139844FC002C8072 /* GBRepositorySettingsController.xib */; };
 		208D0AB513984512002C8072 /* GBRepositorySettingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 208D0AB413984512002C8072 /* GBRepositorySettingsController.m */; };
@@ -511,9 +511,6 @@
 		200A43E812EC2507004DF940 /* GBSubmoduleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBSubmoduleCell.m; sourceTree = "<group>"; };
 		200A444912EC2DCE004DF940 /* GBSubmoduleCloningController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBSubmoduleCloningController.h; sourceTree = "<group>"; };
 		200A444A12EC2DCE004DF940 /* GBSubmoduleCloningController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBSubmoduleCloningController.m; sourceTree = "<group>"; };
-		200A44F912EC5A1C004DF940 /* GBSubmoduleCloneProcessViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBSubmoduleCloneProcessViewController.h; sourceTree = "<group>"; };
-		200A44FA12EC5A1C004DF940 /* GBSubmoduleCloneProcessViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBSubmoduleCloneProcessViewController.m; sourceTree = "<group>"; };
-		200A44FB12EC5A1C004DF940 /* GBSubmoduleCloneProcessViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBSubmoduleCloneProcessViewController.xib; sourceTree = "<group>"; };
 		200A471E12ECB265004DF940 /* GBSidebarRepositoryIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GBSidebarRepositoryIcon.png; path = Images/GBSidebarRepositoryIcon.png; sourceTree = SOURCE_ROOT; };
 		200A471F12ECB265004DF940 /* GBSidebarSubmoduleIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GBSidebarSubmoduleIcon.png; path = Images/GBSidebarSubmoduleIcon.png; sourceTree = SOURCE_ROOT; };
 		200A47F812EF8F07004DF940 /* NSObject+OASelectorNotifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+OASelectorNotifications.h"; sourceTree = "<group>"; };
@@ -544,6 +541,9 @@
 		200C159614670E43000F4C78 /* Subversion.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = Subversion.txt; sourceTree = "<group>"; };
 		200C159714670E43000F4C78 /* TODO.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = TODO.txt; sourceTree = "<group>"; };
 		200C159814670E43000F4C78 /* WWDC2011.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = WWDC2011.txt; sourceTree = "<group>"; };
+		200C159B14672EB1000F4C78 /* GBSubmoduleCloningViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBSubmoduleCloningViewController.h; sourceTree = "<group>"; };
+		200C159C14672EB1000F4C78 /* GBSubmoduleCloningViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBSubmoduleCloningViewController.m; sourceTree = "<group>"; };
+		200C159D14672EB1000F4C78 /* GBSubmoduleCloningViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GBSubmoduleCloningViewController.xib; sourceTree = "<group>"; };
 		200DE073136A9F9100D18A5B /* GBWindowControllerWithCallback.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBWindowControllerWithCallback.h; sourceTree = "<group>"; };
 		200DE074136A9F9100D18A5B /* GBWindowControllerWithCallback.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBWindowControllerWithCallback.m; sourceTree = "<group>"; };
 		20106C5213D377060018A65F /* GitRepository.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GitRepository.h; sourceTree = "<group>"; };
@@ -746,7 +746,7 @@
 		208B3284137505D600EB4A18 /* GBSearchBarController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBSearchBarController.xib; sourceTree = "<group>"; };
 		208D086113981084002C8072 /* GBTaskWithProgress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBTaskWithProgress.h; sourceTree = "<group>"; };
 		208D086213981084002C8072 /* GBTaskWithProgress.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBTaskWithProgress.m; sourceTree = "<group>"; };
-		208D0A3913983C99002C8072 /* git.bundle-1.7.7.rc3.7.g26c6e2.tar */ = {isa = PBXFileReference; lastKnownFileType = archive.tar; path = "git.bundle-1.7.7.rc3.7.g26c6e2.tar"; sourceTree = "<group>"; };
+		208D0A3913983C99002C8072 /* git.bundle-1.7.7.2.3.g19dee.tar */ = {isa = PBXFileReference; lastKnownFileType = archive.tar; path = "git.bundle-1.7.7.2.3.g19dee.tar"; sourceTree = "<group>"; };
 		208D0AB0139844FC002C8072 /* GBRepositorySettingsController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBRepositorySettingsController.xib; sourceTree = "<group>"; };
 		208D0AB313984512002C8072 /* GBRepositorySettingsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBRepositorySettingsController.h; sourceTree = "<group>"; };
 		208D0AB413984512002C8072 /* GBRepositorySettingsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBRepositorySettingsController.m; sourceTree = "<group>"; };
@@ -1267,9 +1267,9 @@
 				2054FFEE125DE9D200692C77 /* GBRepositoryCloningViewController.h */,
 				2054FFEF125DE9D200692C77 /* GBRepositoryCloningViewController.m */,
 				2054FFE7125DE75800692C77 /* GBRepositoryCloningViewController.xib */,
-				200A44F912EC5A1C004DF940 /* GBSubmoduleCloneProcessViewController.h */,
-				200A44FA12EC5A1C004DF940 /* GBSubmoduleCloneProcessViewController.m */,
-				200A44FB12EC5A1C004DF940 /* GBSubmoduleCloneProcessViewController.xib */,
+				200C159B14672EB1000F4C78 /* GBSubmoduleCloningViewController.h */,
+				200C159C14672EB1000F4C78 /* GBSubmoduleCloningViewController.m */,
+				200C159D14672EB1000F4C78 /* GBSubmoduleCloningViewController.xib */,
 			);
 			name = "Main Pane";
 			sourceTree = "<group>";
@@ -1628,7 +1628,7 @@
 			children = (
 				2016439012CC0F2E005C69DA /* author.png */,
 				202A1FA7145B2CDF00953257 /* git.bundle-1.7.5.4.tar */,
-				208D0A3913983C99002C8072 /* git.bundle-1.7.7.rc3.7.g26c6e2.tar */,
+				208D0A3913983C99002C8072 /* git.bundle-1.7.7.2.3.g19dee.tar */,
 				203976631251A63700770D13 /* Credits.rtf */,
 				2010732E11A7E9C300EFDE56 /* app.icns */,
 				202F565D145D96EA006927F6 /* Gitbox.entitlements */,
@@ -1758,7 +1758,6 @@
 				20164A5312D3D8EA005C69DA /* GBToolbarGear.png in Resources */,
 				20164AC012D49BD7005C69DA /* GBToolbarPlus.png in Resources */,
 				2097EE2512DF2B4A0070AE89 /* GBSidebarGroupIcon.png in Resources */,
-				200A44FF12EC5A1C004DF940 /* GBSubmoduleCloneProcessViewController.xib in Resources */,
 				200A472212ECB265004DF940 /* GBSidebarRepositoryIcon.png in Resources */,
 				200A472312ECB265004DF940 /* GBSidebarSubmoduleIcon.png in Resources */,
 				200A484112F0034A004DF940 /* GBSidebarSubmoduleMissingIcon.png in Resources */,
@@ -1789,7 +1788,7 @@
 				2003F9AC139526C900471731 /* GBBadgeTagCenter.png in Resources */,
 				2003F9AE139526C900471731 /* GBBadgeTagLeft.png in Resources */,
 				2003F9B0139526C900471731 /* GBBadgeTagRight.png in Resources */,
-				208D0A3A13983C99002C8072 /* git.bundle-1.7.7.rc3.7.g26c6e2.tar in Resources */,
+				208D0A3A13983C99002C8072 /* git.bundle-1.7.7.2.3.g19dee.tar in Resources */,
 				208D0AB1139844FC002C8072 /* GBRepositorySettingsController.xib in Resources */,
 				208D0B9D139A9E37002C8072 /* GBRepositorySummaryController.xib in Resources */,
 				208D0BAF139A9FF8002C8072 /* Icon512.png in Resources */,
@@ -1799,6 +1798,7 @@
 				20BD5DD5143E48AD003B4F2F /* GBRepositoryConfigController.xib in Resources */,
 				202A1FA9145B2CDF00953257 /* git.bundle-1.7.5.4.tar in Resources */,
 				200C159A14670F9E000F4C78 /* GitboxLicense.txt in Resources */,
+				200C15A114672EB2000F4C78 /* GBSubmoduleCloningViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1836,7 +1836,6 @@
 				20164A5212D3D8EA005C69DA /* GBToolbarGear.png in Resources */,
 				20164ABF12D49BD7005C69DA /* GBToolbarPlus.png in Resources */,
 				2097EE2412DF2B4A0070AE89 /* GBSidebarGroupIcon.png in Resources */,
-				200A44FD12EC5A1C004DF940 /* GBSubmoduleCloneProcessViewController.xib in Resources */,
 				200A472012ECB265004DF940 /* GBSidebarRepositoryIcon.png in Resources */,
 				200A472112ECB265004DF940 /* GBSidebarSubmoduleIcon.png in Resources */,
 				200A484212F0034A004DF940 /* GBSidebarSubmoduleMissingIcon.png in Resources */,
@@ -1867,7 +1866,7 @@
 				2003F9AB139526C900471731 /* GBBadgeTagCenter.png in Resources */,
 				2003F9AD139526C900471731 /* GBBadgeTagLeft.png in Resources */,
 				2003F9AF139526C900471731 /* GBBadgeTagRight.png in Resources */,
-				208D0A3B13983C99002C8072 /* git.bundle-1.7.7.rc3.7.g26c6e2.tar in Resources */,
+				208D0A3B13983C99002C8072 /* git.bundle-1.7.7.2.3.g19dee.tar in Resources */,
 				208D0AB2139844FC002C8072 /* GBRepositorySettingsController.xib in Resources */,
 				208D0B9E139A9E37002C8072 /* GBRepositorySummaryController.xib in Resources */,
 				208D0BB0139A9FF8002C8072 /* Icon512.png in Resources */,
@@ -1877,6 +1876,7 @@
 				20BD5DD4143E48AD003B4F2F /* GBRepositoryConfigController.xib in Resources */,
 				202A1FA8145B2CDF00953257 /* git.bundle-1.7.5.4.tar in Resources */,
 				200C159914670F9E000F4C78 /* GitboxLicense.txt in Resources */,
+				200C15A014672EB2000F4C78 /* GBSubmoduleCloningViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2003,7 +2003,6 @@
 				200A41CA12EB9B14004DF940 /* GBGitConfig.m in Sources */,
 				200A43EA12EC2507004DF940 /* GBSubmoduleCell.m in Sources */,
 				200A444C12EC2DCE004DF940 /* GBSubmoduleCloningController.m in Sources */,
-				200A44FE12EC5A1C004DF940 /* GBSubmoduleCloneProcessViewController.m in Sources */,
 				200A47FA12EF8F07004DF940 /* NSObject+OASelectorNotifications.m in Sources */,
 				20A9407512FA07C100C3F6F4 /* GBRepositoryViewController.m in Sources */,
 				20586A8312FDDBFA00729DB1 /* GBRootController.m in Sources */,
@@ -2043,6 +2042,7 @@
 				201419F9142CA60C00AA55E8 /* GitConfig.m in Sources */,
 				20BD5DD2143E483C003B4F2F /* GBRepositoryConfigController.m in Sources */,
 				2041353314613009007BFE0B /* GBVersionComparator.m in Sources */,
+				200C159F14672EB2000F4C78 /* GBSubmoduleCloningViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2150,7 +2150,6 @@
 				200A41C912EB9B14004DF940 /* GBGitConfig.m in Sources */,
 				200A43E912EC2507004DF940 /* GBSubmoduleCell.m in Sources */,
 				200A444B12EC2DCE004DF940 /* GBSubmoduleCloningController.m in Sources */,
-				200A44FC12EC5A1C004DF940 /* GBSubmoduleCloneProcessViewController.m in Sources */,
 				200A47FB12EF8F07004DF940 /* NSObject+OASelectorNotifications.m in Sources */,
 				20A9407612FA07C100C3F6F4 /* GBRepositoryViewController.m in Sources */,
 				20586A8212FDDBFA00729DB1 /* GBRootController.m in Sources */,
@@ -2191,6 +2190,7 @@
 				201419F8142CA60C00AA55E8 /* GitConfig.m in Sources */,
 				20BD5DD1143E483C003B4F2F /* GBRepositoryConfigController.m in Sources */,
 				2041353214613009007BFE0B /* GBVersionComparator.m in Sources */,
+				200C159E14672EB2000F4C78 /* GBSubmoduleCloningViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

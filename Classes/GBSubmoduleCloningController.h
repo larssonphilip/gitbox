@@ -1,14 +1,27 @@
-#import "GBSidebarItemObject.h"
 #import "GBMainWindowItem.h"
+#import "GBSidebarItemObject.h"
 
 @class GBSubmodule;
-@interface GBSubmoduleCloningController : NSObject<GBSidebarItemObject, GBMainWindowItem>
+@class GBSidebarItem;
+@class GBSubmoduleCloningViewController;
+
+@interface GBSubmoduleCloningController : NSResponder<GBMainWindowItem, GBSidebarItemObject>
+
+@property(nonatomic, assign) GBSubmodule* submodule;
+@property(nonatomic, retain) NSWindow* window;
+@property(nonatomic, retain) GBSubmoduleCloningViewController* viewController;
 
 @property(nonatomic, retain) NSError* error;
 
-@property(nonatomic, assign) GBSubmodule* submodule;
+@property(nonatomic, assign, readonly) NSInteger isDisabled;
+@property(nonatomic, assign, readonly) NSInteger isSpinning;
 
+@property(nonatomic, assign) double sidebarItemProgress;
+@property(nonatomic, copy) NSString* progressStatus;
+
+- (void) startCloning;
 - (void) cancelCloning;
-- (BOOL) isDownloading;
+
+- (NSURL*) remoteURL;
 
 @end

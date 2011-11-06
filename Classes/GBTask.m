@@ -40,7 +40,7 @@
 		 // because Git 1.7.7 requires newer version of libcurl which is not installed by default on Snow Leopard without dev tools or with older dev tools.
 		return @"1.7.5.4";
 	}
-	return @"1.7.7.rc3.7.g26c6e2";
+	return @"1.7.7.2.3.g19dee";
 }
 
 // TODO: future improvement here: do not remove bundled tar and unpack to Application Support folder instead of bundle to enable packed binary for the App Store.

@@ -7,8 +7,6 @@
 
 @interface GBRepositoryCloningController : NSResponder<GBMainWindowItem, GBSidebarItemObject>
 
-@property(nonatomic, assign) GBRepositoriesController* repositoriesController;
-
 @property(nonatomic, retain) GBSidebarItem* sidebarItem;
 @property(nonatomic, retain) NSWindow* window;
 @property(nonatomic, retain) GBRepositoryCloningViewController* viewController;

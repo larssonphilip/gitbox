@@ -8,3 +8,10 @@ How to sandbox
 4. File radar to get remembered access rights.
 5. File radar about launching external diff tools with temp files
 6. File radar about drag and drop from history (should be working automatically)
+
+Major problem: under sandbox one cannot run any external tasks as they won't inherit sandbox by default. That means:
+
+- no external diff tool support (only if calling additional helper through apple events; that will be deprecated soon)
+- no shell out - bin/bash should be bundled and signed
+- Git should call bundled ssh and bash.
+

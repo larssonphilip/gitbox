@@ -177,7 +177,7 @@
 	[currentSearch cancel];
 	[currentSearch release]; currentSearch = nil;
 	[undoManager release]; undoManager = nil;
-	
+
 	self.repository = nil; // so we unsubscribe correctly
 	
 	[super dealloc];
@@ -213,6 +213,13 @@
 {
 	if (repository == aRepository) return;
 	self.undoManager = nil;
+	
+	for (GBSubmodule* submodule in repository.submodules)
+	{
+#warning TODO: unsubscribe from submodule's repoCtrl notifications
+		submodule.repositoryController = nil;
+	}
+	
 	[repository.stage removeObserverForAllSelectors:self];
 	[repository removeObserverForAllSelectors:self];
 	[repository release];
@@ -1801,23 +1808,23 @@
 
 - (NSInteger) sidebarItemNumberOfChildren
 {
-	return (NSInteger)[self.repository.submodules count];
+	return (NSInteger)self.repository.submodules.count;
 }
 
 - (GBSidebarItem*) sidebarItemChildAtIndex:(NSInteger)anIndex
 {
-	if (anIndex < 0 || anIndex >= [self.repository.submodules count]) return nil;
+	if (anIndex < 0 || anIndex >= self.repository.submodules.count) return nil;
 	return [[self.repository.submodules objectAtIndex:anIndex] sidebarItem];
 }
 
 - (NSString*) sidebarItemTitle
 {
-	return [[[self url] path] lastPathComponent];
+	return self.url.path.lastPathComponent;
 }
 
 - (NSString*) sidebarItemTooltip
 {
-	return [[[self url] absoluteURL] path];
+	return self.url.absoluteURL.path;
 }
 
 - (BOOL) sidebarItemIsExpandable
@@ -1999,6 +2006,13 @@
 //	return;
 	
 	[self.blockTable addBlock:aBlock forName:@"updateSubmodules" proceedIfClear:^{
+		
+		for (GBSubmodule* submodule in self.repository.submodules)
+		{
+			[submodule.repositoryController removeObserverForAllSelectors:self];
+			submodule.repositoryController = nil;
+		}
+		
 		[self.repository updateSubmodulesWithBlock:^{
 			
 			BOOL didChangeSubmodules = NO;
@@ -2027,12 +2041,10 @@
 					}
 					else
 					{
-						// TODO: instead of switching the repositoryController, should switch the object for sidebar item.
-						//GBSubmoduleCloningController* repoCtrl = [[GBSubmoduleCloningController new] autorelease];
-						//repoCtrl.submodule = submodule;
-						
-						//submodule.repositoryController = repoCtrl;
-						//submodule.repositoryController.delegate = self.delegate;
+						GBSubmoduleCloningController* repoCtrl = [[GBSubmoduleCloningController new] autorelease];
+						repoCtrl.submodule = submodule;
+						submodule.repositoryController = repoCtrl;
+						[repoCtrl addObserverForAllSelectors:self];
 					}
 				}
 			}
