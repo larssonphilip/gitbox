@@ -10,12 +10,17 @@ Work Outline:
 
 - GBHistoryTask: add API for array of branches; remove substructedBranch, joinedBranch API as obsolete
 - Define a data structure for each branch X:
+    - belongs to a branch X - yes/no
 	- point - yes/no
 	- top line - yes/no
 	- bottom line - yes/no
 	- for each other branch: parent curve to branch Y (goes down)
 	- for each other branch: child curve to branch Y (goes up)
-
+- Load all commits for all branches in a single GBHistoryTask
+- In the same task, in background queue do the commit markup:
+- Go through all commits starting with each branch and check "belongs to branch" flag (so, for 3 branches - 3 loops).
+- Go through all commits again once with look-ahead and look-before to fill in other flags.
+- Profit.
 
 Additional perks:
 
