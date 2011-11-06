@@ -5,7 +5,17 @@
 - Current local branch is always drawn on the left, without extra indentation. Always green.
 - Other branches are always drawn with indentation (even if current branch has no highlighted commits).
 - All numerical values for colors, sizes and positions should be configurable in a single place.
-- 
+
+Work Outline:
+
+- GBHistoryTask: add API for array of branches; remove substructedBranch, joinedBranch API as obsolete
+- Define a data structure for each branch X:
+	- point - yes/no
+	- top line - yes/no
+	- bottom line - yes/no
+	- for each other branch: parent curve to branch Y (goes down)
+	- for each other branch: child curve to branch Y (goes up)
+
 
 Additional perks:
 
