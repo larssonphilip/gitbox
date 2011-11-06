@@ -20,7 +20,7 @@ Work Outline:
 - In the same task, in background queue do the commit markup:
 - Go through all commits starting with each branch and check "belongs to branch" flag (so, for 3 branches - 3 loops).
 - Go through all commits again once with look-ahead and look-before to fill in other flags.
-- Profit.
+- Return commits to main thread, draw all pieces in table view cells.
 
 Additional perks:
 
