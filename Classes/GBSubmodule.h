@@ -33,6 +33,6 @@ extern NSString* const GBSubmoduleStatusNotUpToDate;
 
 #pragma mark Mutation
 
-- (void) pullWithBlock:(void(^)())block;
+- (void) updateHeadWithBlock:(void(^)())block;
 
 @end

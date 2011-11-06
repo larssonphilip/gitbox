@@ -86,7 +86,7 @@ NSString* const GBSubmoduleStatusNotUpToDate = @"GBSubmoduleStatusNotUpToDate";
 #pragma mark Mutation
 
 
-- (void) pullWithBlock:(void(^)())block
+- (void) updateHeadWithBlock:(void(^)())block
 {
   GBTask* task = [self.repository task];
   task.arguments = [NSArray arrayWithObjects:@"submodule", @"update", @"--init", @"--", [self localPath], nil];
