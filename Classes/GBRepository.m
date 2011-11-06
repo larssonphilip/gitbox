@@ -3,6 +3,7 @@
 #import "GBRemote.h"
 #import "GBStage.h"
 #import "GBStash.h"
+#import "GBSubmodule.h"
 #import "GBTask.h"
 #import "GBTaskWithProgress.h"
 #import "GBRemotesTask.h"
@@ -100,6 +101,10 @@
 	[blockTable release]; blockTable = nil;
 	[config release]; config = nil;
 	
+	for (GBSubmodule* submodule in submodules)
+	{
+		submodule.repository = nil;
+	}
 	[submodules release]; submodules = nil;
 	[tagsByCommitID release]; tagsByCommitID = nil;
 	
