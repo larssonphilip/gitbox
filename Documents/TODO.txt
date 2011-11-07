@@ -35,7 +35,7 @@ Gitbox 1.6 Release Notes
 ✓ Fixed a bug with trimming whitespace from .gitignore
 ✓ Fixed link highlighting on Lion: now all kinds of schemas are recognized including rdar://.
 ✓ Fixed several text labels.
-✓ 
+✓ Fixed an annoying bug in search field (when space is entered, all text was selected)
 
 --
 
