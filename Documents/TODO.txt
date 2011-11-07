@@ -25,7 +25,7 @@ Gitbox 1.6 Release Notes
 ✓ Fixed bug with text fields in repository settings (value was not stored immediately)
 ✓ Fixed a bug with trimming whitespace from .gitignore
 ✓ Fixed link highlighting on Lion: now all kinds of schemas are recognized including rdar://.
-✓ Fixed text label in the license window.
+✓ Fixed several text labels.
 ✓ 
 
 --
@@ -80,8 +80,8 @@ Gitbox 1.6 misc items:
 
 -- the rest of the things --
 
-- bug: try to add space after a word in search field - it selects the whole text which is amazingly annoying
-- remove "..." from "Delete Tag", "Delete Branch" buttons in the settings view.
+- bug: search: try to add space after a word in search field - it selects the whole text which is amazingly annoying
+
 - help to recover from "upstream rebase" or "force push" - detect that branch slipped and ask user to stash changes, reset branch and apply the changes back
 
 - search: make search over all branches instead of the current ones
@@ -105,6 +105,7 @@ Gitbox 1.6 misc items:
 Misc done for 1.6:
 
 
++ remove "..." from "Delete Tag", "Delete Branch" buttons in the settings view.
 + ui: show alert Yes/No sheet window when trying to create a commit outside of a branch (instead of simply disabling the commit button)
 + tags: sort tags using SUStandardVersionComparator (from Sparkle)
 + bug: when settings is opened/closed, .gitignore is stripped

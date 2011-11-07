@@ -73,29 +73,29 @@
 {
 	if ([[self.branchesController selectedObjects] count] < 2)
 	{
-		[self.deleteBranchButton setTitle:NSLocalizedString(@"  Delete Branch...", @"GBSettings")];
+		[self.deleteBranchButton setTitle:NSLocalizedString(@"Delete Branch", @"GBSettings")];
 	}
 	else
 	{
-		[self.deleteBranchButton setTitle:NSLocalizedString(@"  Delete Branches...", @"GBSettings")];
+		[self.deleteBranchButton setTitle:NSLocalizedString(@"Delete Branches", @"GBSettings")];
 	}
 	
 	if ([[self.tagsController selectedObjects] count] < 2)
 	{
-		[self.deleteTagButton setTitle:NSLocalizedString(@"  Delete Tag...", @"GBSettings")];
+		[self.deleteTagButton setTitle:NSLocalizedString(@"Delete Tag", @"GBSettings")];
 	}
 	else
 	{
-		[self.deleteTagButton setTitle:NSLocalizedString(@"  Delete Tags...", @"GBSettings")];
+		[self.deleteTagButton setTitle:NSLocalizedString(@"Delete Tags", @"GBSettings")];
 	}
 	
 	if ([[self.remoteBranchesController selectedObjects] count] < 2)
 	{
-		[self.deleteRemoteBranchButton setTitle:NSLocalizedString(@"  Delete Branch...", @"GBSettings")];
+		[self.deleteRemoteBranchButton setTitle:NSLocalizedString(@"Delete Branch", @"GBSettings")];
 	}
 	else
 	{
-		[self.deleteRemoteBranchButton setTitle:NSLocalizedString(@"  Delete Branches...", @"GBSettings")];
+		[self.deleteRemoteBranchButton setTitle:NSLocalizedString(@"Delete Branches", @"GBSettings")];
 	}
 }
 
