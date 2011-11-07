@@ -69,7 +69,7 @@ NSRange GBSearchQueryRangeForTokenInString(id token, NSString* string);
 	if (sourceString == str) return;
 	
 	[sourceString release];
-	sourceString = [[str stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] retain];
+	sourceString = [[str stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] copy];
 	
 	self.tokens = [self tokensForString:sourceString];
 }

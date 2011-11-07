@@ -2269,7 +2269,7 @@
 	if (searchString == newString) return;
 	
 	[searchString release];
-	searchString = [[newString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] copy];
+	searchString = [newString copy];
 	
 	self.currentSearch.target = nil;
 	[self.currentSearch cancel];
