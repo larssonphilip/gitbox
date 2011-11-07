@@ -1,3 +1,12 @@
+Gitbox 2.0:
+
+- Helvetica for author name and date
+- bigger font size and icons in the sidebar
+- grayscale icons in the sidebar
+- tree view in the stage
+- multiline commit preview aka Mail.app (configurable)
+
+
 Major Features:
 
 - Sandbox
