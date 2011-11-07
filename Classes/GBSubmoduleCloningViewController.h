@@ -2,10 +2,11 @@
 
 @interface GBSubmoduleCloningViewController : NSViewController
 
-@property(nonatomic, retain) IBOutlet NSTextField* messageLabel;
-@property(nonatomic, retain) IBOutlet NSTextField* errorLabel;
-@property(nonatomic, retain) IBOutlet NSButton* cancelButton;
-@property(nonatomic, retain) IBOutlet NSProgressIndicator* progressIndicator;
+@property(nonatomic, assign) IBOutlet NSTextField* messageLabel;
+@property(nonatomic, assign) IBOutlet NSTextField* errorLabel;
+@property(nonatomic, assign) IBOutlet NSButton* startButton;
+@property(nonatomic, assign) IBOutlet NSButton* cancelButton;
+@property(nonatomic, assign) IBOutlet NSProgressIndicator* progressIndicator;
 @property(nonatomic, assign) GBSubmoduleCloningController* repositoryController;
 
 - (IBAction) start:(id)sender;

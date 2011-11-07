@@ -10,6 +10,7 @@
 
 @synthesize messageLabel;
 @synthesize errorLabel;
+@synthesize startButton;
 @synthesize cancelButton;
 @synthesize progressIndicator;
 @synthesize repositoryController;
@@ -17,10 +18,6 @@
 - (void) dealloc
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	self.messageLabel = nil;
-	self.errorLabel = nil;
-	self.cancelButton = nil;
-	self.progressIndicator = nil;
 	[super dealloc];
 }
 
@@ -60,6 +57,7 @@
 	[self.errorLabel setStringValue:@""];
 	[self.cancelButton setTitle:NSLocalizedString(@"Cancel", @"")];
 	[self.cancelButton setEnabled:NO];
+	[self.startButton setEnabled:YES];
 
 	if ([self.repositoryController isStarted])
 	{
@@ -67,6 +65,7 @@
 		
 		[self.errorLabel setStringValue:@""];
 		[self.cancelButton setTitle:NSLocalizedString(@"Cancel", @"")];
+		[self.startButton setEnabled:NO];
 	}
 	
 	if (self.repositoryController.error)
