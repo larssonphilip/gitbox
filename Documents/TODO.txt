@@ -80,6 +80,7 @@ Gitbox 1.6 misc items:
 
 -- the rest of the things --
 
+- bug: try to add space after a word in search field - it selects the whole text which is amazingly annoying
 - remove "..." from "Delete Tag", "Delete Branch" buttons in the settings view.
 - help to recover from "upstream rebase" or "force push" - detect that branch slipped and ask user to stash changes, reset branch and apply the changes back
 
