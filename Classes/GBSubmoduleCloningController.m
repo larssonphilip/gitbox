@@ -75,6 +75,7 @@
 		
 		GBTaskWithProgress* t = [[GBTaskWithProgress new] autorelease];
 
+		t.repository = self.submodule.repository;
 		t.arguments = [NSArray arrayWithObjects:@"submodule", @"update", @"--progress", @"--", self.submodule.path, nil];
 		
 		if ([GBTask isSnowLeopard])

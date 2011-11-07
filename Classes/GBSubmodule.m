@@ -12,13 +12,13 @@ NSString* const GBSubmoduleStatusNotUpToDate = @"GBSubmoduleStatusNotUpToDate";
 
 @implementation GBSubmodule
 
+@synthesize repository;
+
 @synthesize remoteURL;
 @synthesize path;
 @synthesize status;
 @synthesize sidebarItem;
 @synthesize repositoryController;
-
-@synthesize repository;
 
 
 #pragma mark Object lifecycle

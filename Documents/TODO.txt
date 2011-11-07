@@ -36,7 +36,9 @@ Gitbox 1.6 misc items:
 + edit branches and tags in a single repository settings window.
 
 + submodules: display "download" button in the sidebar item
-- submodules: submodule download controller
++ submodules: submodule download controller
+- submodules: bug: when submodule is selected for the first time, view controller is not available
+- submodules: bug: when submodule starts downloading, download button is not removed from sidebar.
 - submodules: when submodule folder is removed, properly update its status
 - submodules: cloning repo ctrl is not deallocated
 - submodules: wrap submodules clone/pull task with GBAskPassController

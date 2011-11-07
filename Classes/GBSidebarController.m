@@ -602,7 +602,7 @@
 
 - (void) updateItem:(GBSidebarItem*)anItem
 {
-	// TODO: possible optimization: 
+	// Possible optimization: 
 	// Find out if this item is visible (all parents are expanded).
 	// If not, update the farthest collapsed parent.
 	if (!anItem) return;
