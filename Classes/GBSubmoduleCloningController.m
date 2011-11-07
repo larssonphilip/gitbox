@@ -19,7 +19,7 @@
 
 @implementation GBSubmoduleCloningController
 
-@synthesize submodule;
+@synthesize submodule=_submodule;
 @synthesize window;
 @synthesize viewController;
 
@@ -43,10 +43,11 @@
 	[super dealloc];
 }
 
-- (id) init
+- (id) initWithSubmodule:(GBSubmodule*)submodule
 {
 	if ((self = [super init]))
 	{
+		self.submodule = submodule;
 		self.viewController = [[[GBSubmoduleCloningViewController alloc] initWithNibName:@"GBSubmoduleCloningViewController" bundle:nil] autorelease];
 		self.viewController.repositoryController = self;
 	}

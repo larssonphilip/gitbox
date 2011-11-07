@@ -19,6 +19,8 @@
 @property(nonatomic, assign) double sidebarItemProgress;
 @property(nonatomic, copy) NSString* progressStatus;
 
+- (id) initWithSubmodule:(GBSubmodule*)submodule;
+
 - (void) startDownload;
 - (void) cancelDownload;
 

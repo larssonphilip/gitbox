@@ -2041,9 +2041,8 @@
 					}
 					else
 					{
-						GBSubmoduleCloningController* repoCtrl = [[GBSubmoduleCloningController new] autorelease];
-						repoCtrl.submodule = submodule;
-						submodule.repositoryController = repoCtrl;
+						GBSubmoduleCloningController* repoCtrl = [[[GBSubmoduleCloningController alloc] initWithSubmodule:submodule] autorelease];
+						submodule.repositoryController = (id)repoCtrl;
 						[repoCtrl addObserverForAllSelectors:self];
 					}
 				}
