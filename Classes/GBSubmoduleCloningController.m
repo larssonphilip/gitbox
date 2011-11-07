@@ -53,12 +53,17 @@
 	return self;
 }
 
+- (BOOL) isStarted
+{
+	return !!self.task;
+}
+
 - (NSURL*) remoteURL
 {
 	return self.submodule.remoteURL;
 }
 
-- (void) startCloning
+- (void) startDownload
 {
 	[GBAskPassController launchedControllerWithAddress:self.remoteURL.absoluteString taskFactory:^{
 		
@@ -139,7 +144,7 @@
 	}];
 }
 
-- (void) cancelCloning
+- (void) cancelDownload
 {
 	if (self.task)
 	{

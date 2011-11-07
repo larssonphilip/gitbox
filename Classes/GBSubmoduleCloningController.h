@@ -19,8 +19,10 @@
 @property(nonatomic, assign) double sidebarItemProgress;
 @property(nonatomic, copy) NSString* progressStatus;
 
-- (void) startCloning;
-- (void) cancelCloning;
+- (void) startDownload;
+- (void) cancelDownload;
+
+- (BOOL) isStarted;
 
 - (NSURL*) remoteURL;
 

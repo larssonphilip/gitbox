@@ -59,6 +59,9 @@ static NSString* const kGBSubmoduleCellButton = @"GBSubmoduleCellButton";
 		[[button cell] setControlSize:NSMiniControlSize];
 		[[button cell] setFont:[NSFont systemFontOfSize:[NSFont systemFontSizeForControlSize:[[button cell] controlSize]]]];
 		[self.sidebarItem setView:button forKey:kGBSubmoduleCellButton];
+		
+		[button setAction:@selector(download:)];
+		[button setTarget:self.sidebarItem.object];
 	}
 	
 	if (!button) return rect;

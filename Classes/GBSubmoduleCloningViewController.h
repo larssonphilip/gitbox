@@ -8,6 +8,7 @@
 @property(nonatomic, retain) IBOutlet NSProgressIndicator* progressIndicator;
 @property(nonatomic, assign) GBSubmoduleCloningController* repositoryController;
 
+- (IBAction) start:(id)sender;
 - (IBAction) cancel:(id)sender;
 
 @end

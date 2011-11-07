@@ -81,6 +81,13 @@ NSString* const GBSubmoduleStatusNotUpToDate = @"GBSubmoduleStatusNotUpToDate";
 	return ![self.status isEqualToString:GBSubmoduleStatusNotCloned];
 }
 
+- (IBAction) download:(id)sender
+{
+	if ([self.repositoryController respondsToSelector:@selector(startDownload)])
+	{
+		[self.repositoryController performSelector:@selector(startDownload)];
+	}
+}
 
 
 #pragma mark Mutation
@@ -102,12 +109,20 @@ NSString* const GBSubmoduleStatusNotUpToDate = @"GBSubmoduleStatusNotUpToDate";
 
 - (NSInteger) sidebarItemNumberOfChildren
 {
-	return [self.repositoryController sidebarItemNumberOfChildren];
+	if ([self.repositoryController respondsToSelector:@selector(sidebarItemNumberOfChildren)])
+	{
+		return [self.repositoryController sidebarItemNumberOfChildren];
+	}
+	return 0;
 }
 
 - (GBSidebarItem*) sidebarItemChildAtIndex:(NSInteger)anIndex
 {
-	return [self.repositoryController sidebarItemChildAtIndex:anIndex];
+	if ([self.repositoryController respondsToSelector:@selector(sidebarItemChildAtIndex:)])
+	{
+		return [self.repositoryController sidebarItemChildAtIndex:anIndex];
+	}
+	return nil;
 }
 
 - (NSString*) sidebarItemTitle
@@ -127,12 +142,20 @@ NSString* const GBSubmoduleStatusNotUpToDate = @"GBSubmoduleStatusNotUpToDate";
 
 - (NSUInteger) sidebarItemBadgeInteger
 {
-	return [self.repositoryController sidebarItemBadgeInteger];
+	if ([self.repositoryController respondsToSelector:@selector(sidebarItemBadgeInteger)])
+	{
+		return [self.repositoryController sidebarItemBadgeInteger];
+	}
+	return 0;
 }
 
 - (BOOL) sidebarItemIsSpinning
 {
-	return [self.repositoryController sidebarItemIsSpinning];
+	if ([self.repositoryController respondsToSelector:@selector(sidebarItemIsSpinning)])
+	{
+		return [self.repositoryController sidebarItemIsSpinning];
+	}
+	return NO;
 }
 
 - (NSArray*) writableTypesForPasteboard:(NSPasteboard *)pasteboard
@@ -146,6 +169,78 @@ NSString* const GBSubmoduleStatusNotUpToDate = @"GBSubmoduleStatusNotUpToDate";
 }
 
 
+
+#pragma mark GBMainWindowItem
+
+
+- (NSString*) windowTitle
+{
+	if ([self.repositoryController respondsToSelector:@selector(windowTitle)])
+	{
+		return [self.repositoryController windowTitle];
+	}
+	return nil;
+}
+
+- (NSURL*) windowRepresentedURL
+{
+	if ([self.repositoryController respondsToSelector:@selector(windowRepresentedURL)])
+	{
+		return [self.repositoryController windowRepresentedURL];
+	}
+	return nil;
+}
+
+- (id) toolbarController
+{
+	if ([self.repositoryController respondsToSelector:@selector(toolbarController)])
+	{
+		return [self.repositoryController toolbarController];
+	}
+	return nil;
+}
+
+- (id) viewController
+{
+	if ([self.repositoryController respondsToSelector:@selector(viewController)])
+	{
+		return [self.repositoryController viewController];
+	}
+	return nil;
+}
+
+- (void) willDeselectWindowItem
+{
+	if ([self.repositoryController respondsToSelector:@selector(willDeselectWindowItem)])
+	{
+		[self.repositoryController willDeselectWindowItem];
+	}
+}
+
+- (void) didSelectWindowItem
+{
+	if ([self.repositoryController respondsToSelector:@selector(didSelectWindowItem)])
+	{
+		[self.repositoryController didSelectWindowItem];
+	}
+}
+
+- (void) windowDidBecomeKey
+{
+	if ([self.repositoryController respondsToSelector:@selector(windowDidBecomeKey)])
+	{
+		[self.repositoryController windowDidBecomeKey];
+	}
+}
+
+- (NSUndoManager*) undoManager
+{
+	if ([self.repositoryController respondsToSelector:@selector(undoManager)])
+	{
+		return [self.repositoryController undoManager];
+	}
+	return nil;
+}
 
 
 

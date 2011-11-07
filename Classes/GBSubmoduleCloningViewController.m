@@ -42,23 +42,32 @@
 - (void) loadView
 {
 	[super loadView];
+	[self.progressIndicator setIndeterminate:NO];
 	[self update];
-	[self.progressIndicator setIndeterminate:YES];
-	[self.progressIndicator startAnimation:nil];
 }
 
 - (IBAction) cancel:(id)sender
 {
-	[self.repositoryController cancelCloning];
+	[self.repositoryController cancelDownload];
 }
 
 - (void) update
 {
 	NSURL* URL = self.repositoryController.remoteURL;
-	[self.messageLabel setStringValue:[NSString stringWithFormat:NSLocalizedString(@"Downloading submodule %@", @"Clone"), URL ? [URL absoluteString] : @""]];
+
+	[self.messageLabel setStringValue:[NSString stringWithFormat:NSLocalizedString(@"Download submodule %@", @"Clone"), URL ? [URL absoluteString] : @""]];
 	
 	[self.errorLabel setStringValue:@""];
 	[self.cancelButton setTitle:NSLocalizedString(@"Cancel", @"")];
+	[self.cancelButton setEnabled:NO];
+
+	if ([self.repositoryController isStarted])
+	{
+		[self.messageLabel setStringValue:[NSString stringWithFormat:NSLocalizedString(@"Downloading submodule %@", @"Clone"), URL ? [URL absoluteString] : @""]];
+		
+		[self.errorLabel setStringValue:@""];
+		[self.cancelButton setTitle:NSLocalizedString(@"Cancel", @"")];
+	}
 	
 	if (self.repositoryController.error)
 	{
@@ -68,7 +77,12 @@
 	}
 }
 
-
+- (IBAction) start:(id)sender
+{
+	[self.progressIndicator setIndeterminate:YES];
+	[self.progressIndicator startAnimation:nil];
+	[self.repositoryController startDownload];
+}
 
 
 
