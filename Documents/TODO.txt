@@ -76,6 +76,8 @@ Gitbox 1.6 misc items:
 
 -- the rest of the things --
 
+- help to recover from "upstream rebase" or "force push" - detect that branch slipped and ask user to stash changes, reset branch and apply the changes back
+
 - search: make search over all branches instead of the current ones
 - double-section badge in the sidebar for local modifications and remote ones.
 
@@ -114,6 +116,7 @@ Sandbox:
 - bundle ssh
 - sign and add entitlements to git binaries
 - sign and add entitlements to ssh binaries
+- sign and add entitlements to bash binaries (git launches some shell scripts)
 - ask for hard disk access on startup
   - FileMerge.app must have access to the extracted files - or can provide built-in diff viewer
   - add entitlements to access ~/.ssh/
