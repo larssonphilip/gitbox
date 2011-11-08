@@ -35,6 +35,7 @@
 - (void) dealloc
 {
 	self.window      = nil;
+	self.viewController.repositoryController = nil;
 	self.viewController = nil;
 	[self.task terminate];
 	self.task        = nil;
