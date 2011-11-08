@@ -47,6 +47,9 @@ Gitbox 1.6 misc items:
 + submodules: display "download" button in the sidebar item
 + submodules: submodule download controller
 
+- check that undo stack works after playling with submodules.
+- undo pull on clean working directory applies some older stashes. Should remember in invocation if working dir was dirty or not.
+
 - yet another refactoring:
   - move sidebar item setup into setSidebarItem, so we can set external item
   - subclass GBRepositoryController -> GBSubmoduleController for customizing sidebaritem
