@@ -46,6 +46,16 @@ Gitbox 1.6 misc items:
 
 + submodules: display "download" button in the sidebar item
 + submodules: submodule download controller
+
+- yet another refactoring:
+  - move sidebar item setup into setSidebarItem, so we can set external item
+  - subclass GBRepositoryController -> GBSubmoduleController for customizing sidebaritem
+  - do not store any controllers inside GBSubmodule object 
+  - do not store weak ref to parent repository inside GBSubmodule object - put there only the URLs
+  - update sidebar item and repository when update is finished
+  - maybe (!) store a weak ref to parent repo ctrl from GBSubmoduleController -> this would allow for submodule settings update when you change remote URL inside the submodule
+  
+  
 - submodules: bug: when submodule is selected for the first time, view controller is not available [rare issue with simultaneous sidebar update]
 - submodules: bug: when submodule starts downloading, download button is not removed from sidebar.
 - submodules: when submodule folder is removed, properly update its status
@@ -57,6 +67,8 @@ Gitbox 1.6 misc items:
 - submodules: when reloading submodules merge or reload all of them - think hard on that!
 - submodules: remember submodules in prefs plist because we don't update all of them on startup
 - submodules: rename "update" button to "checkout", so it's clear what it does.
+- submodules: automatically update submodule after repo pull/merge if they are were totally in sync before (that is no development happened there)
+
 
 - submodules: case 1: user clones a repo which has some submodules => needs init, display "download" button for submodules in sidebar
 - submodules: case 2: user pulls a repo which has some submodules updated => needs pull
