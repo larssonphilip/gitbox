@@ -461,6 +461,8 @@
 		20EF8BED12E6603600F3438A /* GBSubmodulesTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 70EEC8CF12DFE33E00DD1555 /* GBSubmodulesTask.m */; };
 		20EF8BF012E6605100F3438A /* GBSubmodule.m in Sources */ = {isa = PBXBuildFile; fileRef = 70865D2A12D25F5F00033683 /* GBSubmodule.m */; };
 		20EF8C4812E6605D00F3438A /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20EF88D612E34F9300F3438A /* Quartz.framework */; };
+		20FE4AA01469961800817E2C /* GBSubmoduleController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20FE4A9F1469961800817E2C /* GBSubmoduleController.m */; };
+		20FE4AA11469961800817E2C /* GBSubmoduleController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20FE4A9F1469961800817E2C /* GBSubmoduleController.m */; };
 		70865D2B12D25F5F00033683 /* GBSubmodule.m in Sources */ = {isa = PBXBuildFile; fileRef = 70865D2A12D25F5F00033683 /* GBSubmodule.m */; };
 		70EEC8D012DFE33E00DD1555 /* GBSubmodulesTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 70EEC8CF12DFE33E00DD1555 /* GBSubmodulesTask.m */; };
 		8D15AC320486D014006FF6A4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A37F4B0FDCFA73011CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
@@ -895,6 +897,8 @@
 		20EA6FCF131B0EB300B97430 /* OAPropertyListRepresentation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAPropertyListRepresentation.m; sourceTree = "<group>"; };
 		20EF88D612E34F9300F3438A /* Quartz.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quartz.framework; path = System/Library/Frameworks/Quartz.framework; sourceTree = SDKROOT; };
 		20EF88D812E34F9300F3438A /* QuickLook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickLook.framework; path = System/Library/Frameworks/QuickLook.framework; sourceTree = SDKROOT; };
+		20FE4A9E1469961800817E2C /* GBSubmoduleController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBSubmoduleController.h; sourceTree = "<group>"; };
+		20FE4A9F1469961800817E2C /* GBSubmoduleController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBSubmoduleController.m; sourceTree = "<group>"; };
 		2564AD2C0F5327BB00F57823 /* prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = prefix.pch; sourceTree = "<group>"; };
 		2A37F4B0FDCFA73011CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		2A37F4C4FDCFA73011CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
@@ -1173,6 +1177,8 @@
 				206CAC74122EBCAD009284FE /* GBRepositoriesController.m */,
 				206CAC6F122EB5F7009284FE /* GBRepositoryController.h */,
 				206CAC70122EB5F7009284FE /* GBRepositoryController.m */,
+				20FE4A9E1469961800817E2C /* GBSubmoduleController.h */,
+				20FE4A9F1469961800817E2C /* GBSubmoduleController.m */,
 				2082B7C2126587CA00667A7F /* GBRepositoryCloningController.h */,
 				2082B7C3126587CA00667A7F /* GBRepositoryCloningController.m */,
 				200A444912EC2DCE004DF940 /* GBSubmoduleCloningController.h */,
@@ -2043,6 +2049,7 @@
 				20BD5DD2143E483C003B4F2F /* GBRepositoryConfigController.m in Sources */,
 				2041353314613009007BFE0B /* GBVersionComparator.m in Sources */,
 				200C159F14672EB2000F4C78 /* GBSubmoduleCloningViewController.m in Sources */,
+				20FE4AA11469961800817E2C /* GBSubmoduleController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2191,6 +2198,7 @@
 				20BD5DD1143E483C003B4F2F /* GBRepositoryConfigController.m in Sources */,
 				2041353214613009007BFE0B /* GBVersionComparator.m in Sources */,
 				200C159E14672EB2000F4C78 /* GBSubmoduleCloningViewController.m in Sources */,
+				20FE4AA01469961800817E2C /* GBSubmoduleController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

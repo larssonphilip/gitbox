@@ -30,7 +30,7 @@
 - (GBRepositoriesGroup*) contextGroupAndIndex:(NSUInteger*)anIndexRef;
 - (GBRepositoriesGroup*) groupAndIndex:(NSUInteger*)anIndexRef forObject:(id<GBSidebarItemObject>)anObject;
 
-- (void) configureRepositorycontroller:(GBRepositoryController*)repoCtrl;
+- (void) configureRepositoryController:(GBRepositoryController*)repoCtrl;
 - (void) startRepositoryController:(GBRepositoryController*)repoCtrl;
 
 // Returns YES if allows additional repos, returns NO and opens license dialog otherwise.
@@ -402,7 +402,7 @@
 #pragma mark Private helpers
 
 
-- (void) configureRepositorycontroller:(GBRepositoryController*)repoCtrl
+- (void) configureRepositoryController:(GBRepositoryController*)repoCtrl
 {
 	if (!repoCtrl) return;
 	repoCtrl.toolbarController = self.repositoryToolbarController;
@@ -413,7 +413,7 @@
 - (void) startRepositoryController:(GBRepositoryController*)repoCtrl
 {
 	if (!repoCtrl) return;
-	[self configureRepositorycontroller:repoCtrl];
+	[self configureRepositoryController:repoCtrl];
 	[repoCtrl addObserverForAllSelectors:self];
 	repoCtrl.fsEventStream = self.fsEventStream;
 	[repoCtrl start];

@@ -4,18 +4,18 @@ Gitbox 2.0:
 - bigger font size and icons in the sidebar
 - grayscale icons in the sidebar
 - tree view in the stage
-- multiline commit preview aka Mail.app (configurable)
+- multiline commit message preview aka Mail.app (configurable)
 
 
 Major Features:
 
-- Sandbox
 - Submodules
 - Visualized Branches, multiple selection
 - In-app diff
   - staging hunks
   - blame
   - image diff
+- Sandbox
 - Subversion import
 - Tree view in stage - does not add much value, but quite tiresome.
 
@@ -47,9 +47,6 @@ Gitbox 1.6 misc items:
 + submodules: display "download" button in the sidebar item
 + submodules: submodule download controller
 
-- check that undo stack works after playling with submodules.
-- undo pull on clean working directory applies some older stashes. Should remember in invocation if working dir was dirty or not.
-
 - yet another refactoring:
   - move sidebar item setup into setSidebarItem, so we can set external item
   - subclass GBRepositoryController -> GBSubmoduleController for customizing sidebaritem
@@ -57,8 +54,7 @@ Gitbox 1.6 misc items:
   - do not store weak ref to parent repository inside GBSubmodule object - put there only the URLs
   - update sidebar item and repository when update is finished
   - maybe (!) store a weak ref to parent repo ctrl from GBSubmoduleController -> this would allow for submodule settings update when you change remote URL inside the submodule
-  
-  
+
 - submodules: bug: when submodule is selected for the first time, view controller is not available [rare issue with simultaneous sidebar update]
 - submodules: bug: when submodule starts downloading, download button is not removed from sidebar.
 - submodules: when submodule folder is removed, properly update its status
@@ -72,6 +68,7 @@ Gitbox 1.6 misc items:
 - submodules: rename "update" button to "checkout", so it's clear what it does.
 - submodules: automatically update submodule after repo pull/merge if they are were totally in sync before (that is no development happened there)
 
+- check that undo stack works after playling with submodules.
 
 - submodules: case 1: user clones a repo which has some submodules => needs init, display "download" button for submodules in sidebar
 - submodules: case 2: user pulls a repo which has some submodules updated => needs pull
@@ -103,6 +100,9 @@ Gitbox 1.6 misc items:
 
 
 -- the rest of the things --
+
+
+- undo pull on clean working directory applies some older stashes. Should remember in invocation if working dir was dirty or not.
 
 - bug: search: try to add space after a word in search field - it selects the whole text which is amazingly annoying
 
