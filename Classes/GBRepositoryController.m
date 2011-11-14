@@ -478,7 +478,7 @@
 	
 	//NSLog(@"FS Monitor: Time since last update: %0.3f sec", interval);
 	
-	if (interval < self.fsEventStream.latency*2.0)
+	if (interval < self.fsEventStream.latency*1.1)
 	{
 		NSLog(@"FS Monitor: Ignoring update within %0.3f sec due to latency: %0.3f sec [%@]", interval, self.fsEventStream.latency, repo.url);
 		return;

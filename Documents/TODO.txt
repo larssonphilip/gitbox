@@ -79,6 +79,8 @@ Gitbox 1.6 misc items:
 - submodules: settings view: sync private URL with both .git/config and submodule/.git/config
 - submodules: settings view: when editing repo's own URL, sync it with parent's submodule record in .git/config
 
+- submodules: do not forget to "git submodule add <url> <path>" after path update (same for remove, maybe)
+
 - submodules: maybe show intermediate folder item if submodule is inside a folder (placebo-like)
 - bug: when submodule is added to the sidebar and its parent repo is selected, update to a submodule's file triggers refresh of the parent, but not of the submodule (check how OAFSEventMonitor coalesces paths)
   - this well may be not submodule-related, but to completely failed FSEvent object on Gwendal's machine
@@ -100,6 +102,9 @@ Gitbox 1.6 misc items:
 
 -- the rest of the things --
 
+- bug: on launch, the sidebar badges are shifted to the edge (maybe when scroll bar is visible or not).
+- bug: after repo is removed, its spinner is still retained and is in the view. Should remove all views on [stop]. 
+- bug: if the repo is deleted while updating, OATask crashes - should just fail with error and big log entry.
 - disable "rebase" menu item if nothing to rebase (no green or no blue commits)
 - cannot stage files with question mark in them
 - undo pull on clean working directory applies some older stashes. Should remember in invocation if working dir was dirty or not.
