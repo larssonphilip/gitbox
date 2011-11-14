@@ -1,10 +1,10 @@
 #import "GBSubmodule.h"
 #import "GBRepository.h"
 #import "GBSidebarItem.h"
+#import "GBSubmoduleCell.h"
 #import "GBSubmoduleCloningViewController.h"
 #import "GBSubmoduleCloningController.h"
 #import "GBTaskWithProgress.h"
-#import "GBSidebarCell.h"
 #import "GBRepositoryController.h"
 #import "GBAskPassController.h"
 #import "NSString+OAStringHelpers.h"
@@ -15,6 +15,7 @@
 @property(nonatomic,retain) GBTaskWithProgress* task;
 @property(nonatomic, assign, readwrite) NSInteger isDisabled;
 @property(nonatomic, assign, readwrite) NSInteger isSpinning;
+@property(nonatomic, retain, readwrite) GBSidebarItem* sidebarItem;
 @end
 
 @implementation GBSubmoduleCloningController
@@ -30,7 +31,7 @@
 @synthesize isSpinning;
 @synthesize sidebarItemProgress;
 @synthesize progressStatus;
-
+@synthesize sidebarItem;
 
 - (void) dealloc
 {
@@ -41,6 +42,11 @@
 	self.task        = nil;
 	self.error       = nil;
 	self.progressStatus = nil;
+	
+	self.submodule = nil;
+	
+	if (self.sidebarItem.object == self) self.sidebarItem.object = nil;
+	self.sidebarItem = nil;
 	[super dealloc];
 }
 
@@ -49,6 +55,13 @@
 	if ((self = [super init]))
 	{
 		self.submodule = submodule;
+		
+		self.sidebarItem = [[[GBSidebarItem alloc] init] autorelease];
+		self.sidebarItem.object = self;
+		self.sidebarItem.draggable = NO;
+		self.sidebarItem.selectable = YES;
+		self.sidebarItem.cell = [[[GBSubmoduleCell alloc] initWithItem:self.sidebarItem] autorelease];
+		
 		self.viewController = [[[GBSubmoduleCloningViewController alloc] initWithNibName:@"GBSubmoduleCloningViewController" bundle:nil] autorelease];
 		self.viewController.repositoryController = self;
 	}
@@ -65,7 +78,7 @@
 	return self.submodule.remoteURL;
 }
 
-- (void) startDownload
+- (IBAction)startDownload:(id)sender
 {
 	[GBAskPassController launchedControllerWithAddress:self.remoteURL.absoluteString taskFactory:^{
 		
@@ -76,7 +89,7 @@
 		
 		GBTaskWithProgress* t = [[GBTaskWithProgress new] autorelease];
 
-		t.repository = self.submodule.repository;
+		t.repository = self.submodule.parentRepository;
 		t.arguments = [NSArray arrayWithObjects:@"submodule", @"update", @"--progress", @"--", self.submodule.path, nil];
 		
 		if ([GBTask isSnowLeopard])
@@ -147,7 +160,7 @@
 	}];
 }
 
-- (void) cancelDownload
+- (IBAction)cancelDownload:(id)sender
 {
 	if (self.task)
 	{
@@ -160,6 +173,8 @@
 	}
 	[self notifyWithSelector:@selector(submoduleCloningControllerDidCancel:)];
 }
+
+
 
 
 
@@ -188,19 +203,19 @@
 #pragma mark GBSidebarItemObject
 
 
-- (GBSidebarItem*) sidebarItem
-{
-	return self.submodule.sidebarItem;
-}
-
 - (NSString*) sidebarItemTitle
 {
-	return [self.submodule.localURL.path lastPathComponent];
+	return [self.submodule.path lastPathComponent];
 }
 
 - (NSString*) sidebarItemTooltip
 {
 	return self.submodule.localURL.absoluteURL.path;
+}
+
+- (BOOL) sidebarItemIsSpinning
+{
+	return self.isSpinning;
 }
 
 - (BOOL) sidebarItemIsExpandable
@@ -227,12 +242,6 @@
 {
 }
 
-- (BOOL) sidebarItemIsSpinning
-{
-	return self.isSpinning;
-}
-
-
 
 
 #pragma mark NSPasteboardWriting
@@ -246,7 +255,7 @@
 			arrayByAddingObjectsFromArray:[self.submodule.localURL writableTypesForPasteboard:pasteboard]];
 }
 
-- (id)pasteboardPropertyListForType:(NSString *)type
+- (id) pasteboardPropertyListForType:(NSString *)type
 {
 	if ([type isEqualToString:(NSString*)kUTTypeFileURL])
 	{
@@ -258,7 +267,6 @@
 	}
 	return [self.submodule.localURL pasteboardPropertyListForType:type];
 }
-
 
 
 

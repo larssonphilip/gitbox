@@ -66,7 +66,7 @@
 - (GBRef*) tagForCommit:(GBCommit*)aCommit;
 - (NSArray*) tagsForCommit:(GBCommit*)aCommit;
 - (GBRemote*) firstRemote;
-
+- (NSURL*) URLForRelativePath:(NSString*)relativePath;
 
 #pragma mark Update
 
@@ -79,7 +79,7 @@
 - (void) updateUnpushedCommitsWithBlock:(void(^)())block;
 - (void) updateCommitsDiffCountWithBlock:(void(^)())block;
 
-- (void) updateSubmodulesWithBlock:(void(^)())block;
+- (void) reloadSubmodulesWithBlock:(void(^)())block;
 
 
 #pragma mark Mutation

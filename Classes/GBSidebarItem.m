@@ -30,29 +30,29 @@
 
 - (void) dealloc
 {
-  self.UID = nil;
-  self.image = nil;
-  self.title = nil;
-  self.tooltip = nil;
-  self.cell = nil;
-  self.menu = nil;
-  //NSLog(@"GBSidebarItem#dealloc");
-  for (NSString* aKey in viewsDictionary)
-  {
-    //NSLog(@"GBSidebarItem#dealloc: removing view %@", aKey);
-    [[viewsDictionary objectForKey:aKey] removeFromSuperview];
-  }
-  [viewsDictionary release]; viewsDictionary = nil;
-  [super dealloc];
+	self.UID = nil;
+	self.image = nil;
+	self.title = nil;
+	self.tooltip = nil;
+	self.cell = nil;
+	self.menu = nil;
+	//NSLog(@"GBSidebarItem#dealloc");
+	for (NSString* aKey in viewsDictionary)
+	{
+		//NSLog(@"GBSidebarItem#dealloc: removing view %@", aKey);
+		[[viewsDictionary objectForKey:aKey] removeFromSuperview];
+	}
+	[viewsDictionary release]; viewsDictionary = nil;
+	[super dealloc];
 }
 
 - (id) init
 {
-  if ((self = [super init]))
-  {
-    self.viewsDictionary = [NSMutableDictionary dictionary];
-  }
-  return self;
+	if ((self = [super init]))
+	{
+		self.viewsDictionary = [NSMutableDictionary dictionary];
+	}
+	return self;
 }
 
 
@@ -63,201 +63,201 @@
 
 - (NSString*) description
 {
-  return [NSString stringWithFormat:@"<%@:%p title=%@ cell=%@ expanded=%d object=%@>",
-          [self class],
-          self,
-          [self title],
-          self.cell,
-          (int)self.isExpanded,
-          self.object
-          ];
+	return [NSString stringWithFormat:@"<%@:%p title=%@ cell=%@ expanded=%d object=%@>",
+			[self class],
+			self,
+			[self title],
+			self.cell,
+			(int)self.isExpanded,
+			self.object
+			];
 }
 
 
 - (NSString*) UID
 {
-  if (!UID)
-  {
-    self.UID = [NSString stringWithFormat:@"GBSidebarItem:%p", self];
-  }
-  return UID;
+	if (!UID)
+	{
+		self.UID = [NSString stringWithFormat:@"GBSidebarItem:%p", self];
+	}
+	return UID;
 }
 
 - (NSImage*) image
 {
-  if ([self.object respondsToSelector:@selector(sidebarItemImage)])
-  {
-    return [self.object sidebarItemImage];
-  }
-  return [[image retain] autorelease];
+	if ([self.object respondsToSelector:@selector(sidebarItemImage)])
+	{
+		return [self.object sidebarItemImage];
+	}
+	return [[image retain] autorelease];
 }
 
 - (NSString*) title
 {
-  if ([self.object respondsToSelector:@selector(sidebarItemTitle)])
-  {
-    return [self.object sidebarItemTitle];
-  }
-  return [[title retain] autorelease];
+	if ([self.object respondsToSelector:@selector(sidebarItemTitle)])
+	{
+		return [self.object sidebarItemTitle];
+	}
+	return [[title retain] autorelease];
 }
 
 - (NSString*) tooltip
 {
-  if ([self.object respondsToSelector:@selector(sidebarItemTooltip)])
-  {
-    return [self.object sidebarItemTooltip];
-  }
-  return [[tooltip retain] autorelease];
+	if ([self.object respondsToSelector:@selector(sidebarItemTooltip)])
+	{
+		return [self.object sidebarItemTooltip];
+	}
+	return [[tooltip retain] autorelease];
 }
 
 - (NSUInteger) badgeInteger
 {
-  if ([self.object respondsToSelector:@selector(sidebarItemBadgeInteger)])
-  {
-    return [self.object sidebarItemBadgeInteger];
-  }
-  return badgeInteger;
+	if ([self.object respondsToSelector:@selector(sidebarItemBadgeInteger)])
+	{
+		return [self.object sidebarItemBadgeInteger];
+	}
+	return badgeInteger;
 }
 
 - (NSUInteger) subtreeBadgeInteger
 {
-  __block NSUInteger i = self.badgeInteger;
-  [self enumerateChildrenUsingBlock:^(GBSidebarItem* obj, NSUInteger idx, BOOL *stop) {
-    i += obj.badgeInteger;
-  }];
-  return i;
+	__block NSUInteger i = self.badgeInteger;
+	[self enumerateChildrenUsingBlock:^(GBSidebarItem* obj, NSUInteger idx, BOOL *stop) {
+		i += obj.badgeInteger;
+	}];
+	return i;
 }
 
 - (NSUInteger) visibleBadgeInteger
 {
-  if ([self isExpanded])
-  {
-    return [self badgeInteger];
-  }
-  else
-  {
-    return [self subtreeBadgeInteger];
-  }
+	if ([self isExpanded])
+	{
+		return [self badgeInteger];
+	}
+	else
+	{
+		return [self subtreeBadgeInteger];
+	}
 }
 
 - (BOOL) isSpinning
 {
-  if ([self.object respondsToSelector:@selector(sidebarItemIsSpinning)])
-  {
-    return [self.object sidebarItemIsSpinning];
-  }
-  return spinning;
+	if ([self.object respondsToSelector:@selector(sidebarItemIsSpinning)])
+	{
+		return [self.object sidebarItemIsSpinning];
+	}
+	return spinning;
 }
 
 - (BOOL) isSubtreeSpinning // returns YES if receiver spins or any of the children spin
 {
-  __block BOOL spins = NO;
-  if ([self isSpinning]) return YES;
-  [self enumerateChildrenUsingBlock:^(GBSidebarItem* obj, NSUInteger idx, BOOL *stop) {
-    if ([obj isSpinning])
-    {
-      spins = YES;
-      *stop = YES;
-    }
-  }];
-  return spins;
+	__block BOOL spins = NO;
+	if ([self isSpinning]) return YES;
+	[self enumerateChildrenUsingBlock:^(GBSidebarItem* obj, NSUInteger idx, BOOL *stop) {
+		if ([obj isSpinning])
+		{
+			spins = YES;
+			*stop = YES;
+		}
+	}];
+	return spins;
 }
 
 - (BOOL) visibleSpinning // returns YES if the spinner should be visible depending on expanded state
 {
-  if ([self isExpanded])
-  {
-    return [self isSpinning];
-  }
-  else
-  {
-    return [self isSubtreeSpinning];
-  }
+	if ([self isExpanded])
+	{
+		return [self isSpinning];
+	}
+	else
+	{
+		return [self isSubtreeSpinning];
+	}
 }
 
 - (double) progress
 {
-  if ([self.object respondsToSelector:@selector(sidebarItemProgress)])
-  {
-    return [self.object sidebarItemProgress];
-  }
-  return progress;
+	if ([self.object respondsToSelector:@selector(sidebarItemProgress)])
+	{
+		return [self.object sidebarItemProgress];
+	}
+	return progress;
 }
 
 - (double) subtreeProgress
 {
-  // Return 0 if any of children spins with 0 progress.
-  // Return average among all spinning children.
-  
-  NSArray* items = [[self allChildren] arrayByAddingObject:self];
-  
-  double totalProgress = 0.0;
-  int totalSpinningChildren = 0;
-  
-  for (GBSidebarItem* item in items)
-  {
-    if ([item isSpinning])
-    {
-      double itemProgress = item.progress;
-      if (itemProgress <= 0.0)
-      {
-        return 0.0;
-      }
-      else
-      {
-        totalProgress += itemProgress;
-        totalSpinningChildren += 1;
-      }
-    }
-  }
-  
-  if (totalSpinningChildren <= 0) return 0.0;
-  
-  return totalProgress/totalSpinningChildren;
+	// Return 0 if any of children spins with 0 progress.
+	// Return average among all spinning children.
+	
+	NSArray* items = [[self allChildren] arrayByAddingObject:self];
+	
+	double totalProgress = 0.0;
+	int totalSpinningChildren = 0;
+	
+	for (GBSidebarItem* item in items)
+	{
+		if ([item isSpinning])
+		{
+			double itemProgress = item.progress;
+			if (itemProgress <= 0.0)
+			{
+				return 0.0;
+			}
+			else
+			{
+				totalProgress += itemProgress;
+				totalSpinningChildren += 1;
+			}
+		}
+	}
+	
+	if (totalSpinningChildren <= 0) return 0.0;
+	
+	return totalProgress/totalSpinningChildren;
 }
 
 - (double) visibleProgress // returns average progress of all children if all of the spinning ones have progress > 0 and < 100
 {
-  if ([self isExpanded])
-  {
-    return [self progress];
-  }
-  else
-  {
-    return [self subtreeProgress];
-  }
+	if ([self isExpanded])
+	{
+		return [self progress];
+	}
+	else
+	{
+		return [self subtreeProgress];
+	}
 }
 
 - (NSView*) viewForKey:(NSString*)aKey
 {
-  return [self.viewsDictionary objectForKey:aKey];
+	return [self.viewsDictionary objectForKey:aKey];
 }
 
 - (void) setView:(NSView*)aView forKey:(NSString*)aKey
 {
-  NSView* oldView = [self.viewsDictionary objectForKey:aKey];
-  
-  if (oldView == aView) return;
-  
-  [[oldView retain] autorelease];
-  [oldView removeFromSuperview];
-  if (aView)
-  {
-    [self.viewsDictionary setObject:aView forKey:aKey];
-  }
-  else
-  {
-    [self.viewsDictionary removeObjectForKey:aKey];
-  }
+	NSView* oldView = [self.viewsDictionary objectForKey:aKey];
+	
+	if (oldView == aView) return;
+	
+	[[oldView retain] autorelease];
+	[oldView removeFromSuperview];
+	if (aView)
+	{
+		[self.viewsDictionary setObject:aView forKey:aKey];
+	}
+	else
+	{
+		[self.viewsDictionary removeObjectForKey:aKey];
+	}
 }
 
 - (void) removeAllViews
 {
-  for (NSString* aKey in viewsDictionary)
-  {
-    //NSLog(@"GBSidebarItem#dealloc: removing view %@", aKey);
-    [[viewsDictionary objectForKey:aKey] removeFromSuperview];
-  }
+	for (NSString* aKey in viewsDictionary)
+	{
+		//NSLog(@"GBSidebarItem#dealloc: removing view %@", aKey);
+		[[viewsDictionary objectForKey:aKey] removeFromSuperview];
+	}
 }
 
 
@@ -271,127 +271,127 @@
 // Note: tryToPerform:with: is not used by [NSApp tryToPerform:with:] which uses respondsToSelector:/performSelector:withObject: instead.
 - (BOOL) tryToPerform:(SEL)anAction with:(id)argument
 {
-  if ([self.object respondsToSelector:anAction])
-  {
-    [self.object performSelector:anAction withObject:argument];
-    return YES;
-  }
-  return [super tryToPerform:anAction with:argument];
+	if ([self.object respondsToSelector:anAction])
+	{
+		[self.object performSelector:anAction withObject:argument];
+		return YES;
+	}
+	return [super tryToPerform:anAction with:argument];
 }
 
 - (BOOL) respondsToSelector:(SEL)selector
 {
-  if ([super respondsToSelector:selector]) return YES;
-  if (!self.object) return NO;
-  return [self.object respondsToSelector:selector];
+	if ([super respondsToSelector:selector]) return YES;
+	if (!self.object) return NO;
+	return [self.object respondsToSelector:selector];
 }
 
 - (id) performSelector:(SEL)selector withObject:(id)argument
 {
-  if ([super respondsToSelector:selector])
-  {
-    return [super performSelector:selector withObject:argument];
-  }
-  return [self.object performSelector:selector withObject:argument];
+	if ([super respondsToSelector:selector])
+	{
+		return [super performSelector:selector withObject:argument];
+	}
+	return [self.object performSelector:selector withObject:argument];
 }
 
 
 - (BOOL) isSelectable
 {
-  if ([self.object respondsToSelector:@selector(sidebarItemIsSelectable)])
-  {
-    return [self.object sidebarItemIsSelectable];
-  }
-  return selectable;
+	if ([self.object respondsToSelector:@selector(sidebarItemIsSelectable)])
+	{
+		return [self.object sidebarItemIsSelectable];
+	}
+	return selectable;
 }
 
 - (BOOL) isExpandable
 {
-  if ([self.object respondsToSelector:@selector(sidebarItemIsExpandable)])
-  {
-    return [self.object sidebarItemIsExpandable];
-  }
-  return expandable;
+	if ([self.object respondsToSelector:@selector(sidebarItemIsExpandable)])
+	{
+		return [self.object sidebarItemIsExpandable];
+	}
+	return expandable;
 }
 
 - (BOOL) isEditable
 {
-  if ([self.object respondsToSelector:@selector(sidebarItemIsEditable)])
-  {
-    return [self.object sidebarItemIsEditable];
-  }
-  return editable;
+	if ([self.object respondsToSelector:@selector(sidebarItemIsEditable)])
+	{
+		return [self.object sidebarItemIsEditable];
+	}
+	return editable;
 }
 
 - (BOOL) isDraggable
 {
-  if ([self.object respondsToSelector:@selector(sidebarItemIsDraggable)])
-  {
-    return [self.object sidebarItemIsDraggable];
-  }
-  return draggable;
+	if ([self.object respondsToSelector:@selector(sidebarItemIsDraggable)])
+	{
+		return [self.object sidebarItemIsDraggable];
+	}
+	return draggable;
 }
 
 - (BOOL) isExpanded
 {
-  return !self.collapsed;
+	return !self.collapsed;
 }
 
 - (void) setExpanded:(BOOL)expanded
 {
-  self.collapsed = !expanded;
+	self.collapsed = !expanded;
 }
 
 - (void) setCollapsed:(BOOL)value
 {
-  if (collapsed == value) return;
-  collapsed = value;
-  if (collapsed)
-  {
-    [self enumerateChildrenUsingBlock:^(GBSidebarItem* obj, NSUInteger idx, BOOL* stop) {
-      for (NSString* aKey in obj.viewsDictionary)
-      {
-        //NSLog(@"GBSidebarItem#setCollapsed: removing view %@ from child #%d %@", aKey, (int)idx, obj);
-        [[obj.viewsDictionary objectForKey:aKey] removeFromSuperview];
-      }
-    }];
-  }
+	if (collapsed == value) return;
+	collapsed = value;
+	if (collapsed)
+	{
+		[self enumerateChildrenUsingBlock:^(GBSidebarItem* obj, NSUInteger idx, BOOL* stop) {
+			for (NSString* aKey in obj.viewsDictionary)
+			{
+				//NSLog(@"GBSidebarItem#setCollapsed: removing view %@ from child #%d %@", aKey, (int)idx, obj);
+				[[obj.viewsDictionary objectForKey:aKey] removeFromSuperview];
+			}
+		}];
+	}
 }
 
 - (NSDragOperation) dragOperationForURLs:(NSArray*)URLs outlineView:(NSOutlineView*)anOutlineView
 {
-  if ([self.object respondsToSelector:@selector(sidebarItemDragOperationForURLs:outlineView:)])
-  {
-    return [self.object sidebarItemDragOperationForURLs:URLs outlineView:anOutlineView];
-  }
-  return NSDragOperationNone;
+	if ([self.object respondsToSelector:@selector(sidebarItemDragOperationForURLs:outlineView:)])
+	{
+		return [self.object sidebarItemDragOperationForURLs:URLs outlineView:anOutlineView];
+	}
+	return NSDragOperationNone;
 }
 
 - (NSDragOperation) dragOperationForItems:(NSArray*)items outlineView:(NSOutlineView*)anOutlineView
 {
-  if ([self.object respondsToSelector:@selector(sidebarItemDragOperationForItems:outlineView:)])
-  {
-    return [self.object sidebarItemDragOperationForItems:items outlineView:anOutlineView];
-  }
-  return NSDragOperationNone;
+	if ([self.object respondsToSelector:@selector(sidebarItemDragOperationForItems:outlineView:)])
+	{
+		return [self.object sidebarItemDragOperationForItems:items outlineView:anOutlineView];
+	}
+	return NSDragOperationNone;
 }
 
 - (BOOL) openURLs:(NSArray*)URLs atIndex:(NSUInteger)anIndex
 {
-  if ([self.object respondsToSelector:@selector(sidebarItemOpenURLs:atIndex:)])
-  {
-    return [self.object sidebarItemOpenURLs:URLs atIndex:anIndex];
-  }
-  return NO;
+	if ([self.object respondsToSelector:@selector(sidebarItemOpenURLs:atIndex:)])
+	{
+		return [self.object sidebarItemOpenURLs:URLs atIndex:anIndex];
+	}
+	return NO;
 }
 
 - (BOOL) moveItems:(NSArray*)items toIndex:(NSUInteger)anIndex
 {
-  if ([self.object respondsToSelector:@selector(sidebarItemMoveObjects:toIndex:)])
-  {
-    return [self.object sidebarItemMoveObjects:[items valueForKey:@"object"] toIndex:anIndex];
-  }
-  return NO;
+	if ([self.object respondsToSelector:@selector(sidebarItemMoveObjects:toIndex:)])
+	{
+		return [self.object sidebarItemMoveObjects:[items valueForKey:@"object"] toIndex:anIndex];
+	}
+	return NO;
 }
 
 
@@ -405,22 +405,22 @@
 
 - (void) edit
 {
-  [self.sidebarController editItem:self];
+	[self.sidebarController editItem:self];
 }
 
 - (void) expand
 {
-  [self.sidebarController expandItem:self];
+	[self.sidebarController expandItem:self];
 }
 
 - (void) collapse
 {
-  [self.sidebarController collapseItem:self];
+	[self.sidebarController collapseItem:self];
 }
 
 - (void) update
 {
-  [self.sidebarController updateItem:self];
+	[self.sidebarController updateItem:self];
 }
 
 
@@ -434,128 +434,128 @@
 
 - (NSInteger) numberOfChildren
 {
-  if ([self.object respondsToSelector:@selector(sidebarItemNumberOfChildren)])
-  {
-    return [self.object sidebarItemNumberOfChildren];
-  }
-  return 0;
+	if ([self.object respondsToSelector:@selector(sidebarItemNumberOfChildren)])
+	{
+		return [self.object sidebarItemNumberOfChildren];
+	}
+	return 0;
 }
 
 - (GBSidebarItem*) childAtIndex:(NSInteger)anIndex
 {
-  return [self.object sidebarItemChildAtIndex:anIndex];
+	return [self.object sidebarItemChildAtIndex:anIndex];
 }
 
 - (NSUInteger) indexOfChild:(GBSidebarItem*)aChild
 {
-  if (!aChild) return NSNotFound;
-  NSInteger num = [self numberOfChildren];
-  for (NSInteger i = 0; i < num; i++)
-  {
-    id c = [self childAtIndex:i];
-    if ([c isEqual:aChild]) return (NSUInteger)i;
-  }
-  return NSNotFound;
+	if (!aChild) return NSNotFound;
+	NSInteger num = [self numberOfChildren];
+	for (NSInteger i = 0; i < num; i++)
+	{
+		id c = [self childAtIndex:i];
+		if ([c isEqual:aChild]) return (NSUInteger)i;
+	}
+	return NSNotFound;
 }
 
 - (void) setStringValue:(NSString*)value
 {
-  if ([self.object respondsToSelector:@selector(sidebarItemSetStringValue:)])
-  {
-    [self.object sidebarItemSetStringValue:value];
-  }
+	if ([self.object respondsToSelector:@selector(sidebarItemSetStringValue:)])
+	{
+		[self.object sidebarItemSetStringValue:value];
+	}
 }
 
 - (GBSidebarItem*) findItemWithUID:(NSString*)aUID
 {
-  if (!aUID) return nil;
-  if ([aUID isEqualToString:self.UID]) return self;
-  NSInteger num = [self numberOfChildren];
-  for (NSInteger index = 0; index < num; index++)
-  {
-    GBSidebarItem* item = [self childAtIndex:index];
-    GBSidebarItem* itemWithUID = [item findItemWithUID:aUID];
-    if (itemWithUID) return itemWithUID;
-  }
-  return nil;
+	if (!aUID) return nil;
+	if ([aUID isEqualToString:self.UID]) return self;
+	NSInteger num = [self numberOfChildren];
+	for (NSInteger index = 0; index < num; index++)
+	{
+		GBSidebarItem* item = [self childAtIndex:index];
+		GBSidebarItem* itemWithUID = [item findItemWithUID:aUID];
+		if (itemWithUID) return itemWithUID;
+	}
+	return nil;
 }
 
 - (void) enumerateChildrenUsingBlock:(void(^)(GBSidebarItem* item, NSUInteger idx, BOOL *stop))block
 {
-  NSInteger num = [self numberOfChildren];
-  __block BOOL stop = NO;
-  for (NSInteger i = 0; i < num; i++)
-  {
-    GBSidebarItem* child = [self childAtIndex:i];
-    block(child, (NSUInteger)i, &stop);
-    if (stop) return;
-    [child enumerateChildrenUsingBlock:^(GBSidebarItem* item2, NSUInteger idx, BOOL *stopPointer2){
-      block(item2, idx, stopPointer2);
-      if (*stopPointer2) stop = YES;
-    }];
-    if (stop) return;
-  }
+	NSInteger num = [self numberOfChildren];
+	__block BOOL stop = NO;
+	for (NSInteger i = 0; i < num; i++)
+	{
+		GBSidebarItem* child = [self childAtIndex:i];
+		block(child, (NSUInteger)i, &stop);
+		if (stop) return;
+		[child enumerateChildrenUsingBlock:^(GBSidebarItem* item2, NSUInteger idx, BOOL *stopPointer2){
+			block(item2, idx, stopPointer2);
+			if (*stopPointer2) stop = YES;
+		}];
+		if (stop) return;
+	}
 }
 
 - (NSArray*) allChildren
 {
-  NSMutableArray* children = [NSMutableArray array];
-  [self enumerateChildrenUsingBlock:^(GBSidebarItem* item, NSUInteger idx, BOOL *stop){
-    [children addObject:item];
-  }];
-  return children;
+	NSMutableArray* children = [NSMutableArray array];
+	[self enumerateChildrenUsingBlock:^(GBSidebarItem* item, NSUInteger idx, BOOL *stop){
+		[children addObject:item];
+	}];
+	return children;
 }
 
 - (GBSidebarItem*) parentOfItem:(GBSidebarItem*)anItem
 {
-  if (!anItem) return nil;
-  
-  NSInteger num = [self numberOfChildren];
-  for (NSInteger i = 0; i < num; i++)
-  {
-    GBSidebarItem* child = [self childAtIndex:i];
-    if ([child isEqual:anItem]) return self;
-    GBSidebarItem* parent = [child parentOfItem:anItem];
-    if (parent) return parent;
-  }
-  
-  return nil;
+	if (!anItem) return nil;
+	
+	NSInteger num = [self numberOfChildren];
+	for (NSInteger i = 0; i < num; i++)
+	{
+		GBSidebarItem* child = [self childAtIndex:i];
+		if ([child isEqual:anItem]) return self;
+		GBSidebarItem* parent = [child parentOfItem:anItem];
+		if (parent) return parent;
+	}
+	
+	return nil;
 }
 
 - (NSMutableArray*) mutablePathToItem:(GBSidebarItem*)anItem
 {
-  if (!anItem) return nil;
-  if (self == anItem) return [NSMutableArray arrayWithObject:self];
-  
-  NSInteger num = [self numberOfChildren];
-  for (NSInteger i = 0; i < num; i++)
-  {
-    GBSidebarItem* child = [self childAtIndex:i];
-    NSMutableArray* list = [child mutablePathToItem:anItem];
-    if (list)
-    {
-      [list insertObject:self atIndex:0];
-      return list;
-    }
-  }
-  return nil;
+	if (!anItem) return nil;
+	if (self == anItem) return [NSMutableArray arrayWithObject:self];
+	
+	NSInteger num = [self numberOfChildren];
+	for (NSInteger i = 0; i < num; i++)
+	{
+		GBSidebarItem* child = [self childAtIndex:i];
+		NSMutableArray* list = [child mutablePathToItem:anItem];
+		if (list)
+		{
+			[list insertObject:self atIndex:0];
+			return list;
+		}
+	}
+	return nil;
 }
 
 // List of all parents of the item including itself
 // Returns nil if item is nil or not found inside receiver.
 - (NSArray*) pathToItem:(GBSidebarItem*)anItem
 {
-  return [self mutablePathToItem:anItem];
+	return [self mutablePathToItem:anItem];
 }
 
 - (NSMenu*) menu
 {
-  NSMenu* aMenu = menu;
-  if ([self.object respondsToSelector:@selector(sidebarItemMenu)])
-  {
-    aMenu = [self.object sidebarItemMenu];
-  }
-  return aMenu;
+	NSMenu* aMenu = menu;
+	if ([self.object respondsToSelector:@selector(sidebarItemMenu)])
+	{
+		aMenu = [self.object sidebarItemMenu];
+	}
+	return aMenu;
 }
 
 
@@ -568,27 +568,27 @@
 
 - (NSArray*) writableTypesForPasteboard:(NSPasteboard*)pasteboard
 {
-  NSArray* types = [NSArray arrayWithObject:GBSidebarItemPasteboardType];
-  NSArray* moreTypes = nil;
-  if ([self.object respondsToSelector:@selector(writableTypesForPasteboard:)])
-  {
-    moreTypes = [(id<NSPasteboardWriting>)self.object writableTypesForPasteboard:pasteboard];
-  }
-  if (moreTypes) types = [types arrayByAddingObjectsFromArray:moreTypes];
-  return types;
+	NSArray* types = [NSArray arrayWithObject:GBSidebarItemPasteboardType];
+	NSArray* moreTypes = nil;
+	if ([self.object respondsToSelector:@selector(writableTypesForPasteboard:)])
+	{
+		moreTypes = [(id<NSPasteboardWriting>)self.object writableTypesForPasteboard:pasteboard];
+	}
+	if (moreTypes) types = [types arrayByAddingObjectsFromArray:moreTypes];
+	return types;
 }
 
 - (id) pasteboardPropertyListForType:(NSString*)type
 {
-  if ([type isEqual:GBSidebarItemPasteboardType])
-  {
-    return self.UID;
-  }
-  if ([self.object respondsToSelector:@selector(pasteboardPropertyListForType:)])
-  {
-    return [(id<NSPasteboardWriting>)self.object pasteboardPropertyListForType:type];
-  }
-  return nil;
+	if ([type isEqual:GBSidebarItemPasteboardType])
+	{
+		return self.UID;
+	}
+	if ([self.object respondsToSelector:@selector(pasteboardPropertyListForType:)])
+	{
+		return [(id<NSPasteboardWriting>)self.object pasteboardPropertyListForType:type];
+	}
+	return nil;
 }
 
 

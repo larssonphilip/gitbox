@@ -1,11 +1,10 @@
 #import "GBSubmoduleCell.h"
 #import "GBSubmodule.h"
+#import "GBSubmoduleController.h"
 #import "GBSidebarItem.h"
-#import "GBRepositoryController.h"
 
 @interface GBSubmoduleCell ()
 @property(nonatomic, retain, readonly) GBSubmodule* submodule;
-- (GBRepositoryController*) repositoryController;
 - (NSRect) drawDownloadButtonAndReturnRemainingRect:(NSRect)rect;
 @end
 
@@ -60,7 +59,7 @@ static NSString* const kGBSubmoduleCellButton = @"GBSubmoduleCellButton";
 		[[button cell] setFont:[NSFont systemFontOfSize:[NSFont systemFontSizeForControlSize:[[button cell] controlSize]]]];
 		[self.sidebarItem setView:button forKey:kGBSubmoduleCellButton];
 		
-		[button setAction:@selector(download:)];
+		[button setAction:@selector(startDownload:)];
 		[button setTarget:self.sidebarItem.object];
 	}
 	
@@ -85,12 +84,8 @@ static NSString* const kGBSubmoduleCellButton = @"GBSubmoduleCellButton";
 
 - (GBSubmodule*) submodule
 {
-	return (GBSubmodule*)[self.sidebarItem object];
-}
-
-- (GBRepositoryController*) repositoryController
-{
-	return self.submodule.repositoryController;
+	GBSubmoduleController* controller = (GBSubmoduleController*)[self.sidebarItem object];
+	return controller.submodule;
 }
 
 @end

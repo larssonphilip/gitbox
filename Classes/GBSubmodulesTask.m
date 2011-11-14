@@ -90,7 +90,6 @@
     GBSubmodule *submodule = [[GBSubmodule new] autorelease];
     submodule.path         = submodulePath;
     submodule.remoteURL    = submoduleURL;
-    submodule.repository   = self.repository;
     
     if (!leadingChar || [leadingChar isEqualToString:@""])
     {

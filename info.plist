@@ -69,7 +69,7 @@
 	<key>GBPurchaseURL</key>
 	<string>http://gitboxapp.com/buy.html</string>
 	<key>GBReleaseNotesURL</key>
-	<string>http://gitboxapp.com/release-notes/${APP_VERSION}.html</string>
+	<string>http://gitboxapp.com/release-notes.html</string>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.developer-tools</string>
 	<key>LSMinimumSystemVersion</key>

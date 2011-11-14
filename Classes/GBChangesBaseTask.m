@@ -188,11 +188,9 @@
 		aChange.statusCode = statusCode;
 		aChange.srcRevision = oldRevision;
 		aChange.dstRevision = newRevision;
-		aChange.srcURL = [NSURL URLWithString:[srcPath stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding] relativeToURL:self.repository.url];
-		if (dstPath)
-		{
-			aChange.dstURL = [NSURL URLWithString:[dstPath stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding] relativeToURL:self.repository.url];
-		}
+		aChange.srcURL = [self.repository URLForRelativePath:srcPath];
+		aChange.dstURL = [self.repository URLForRelativePath:dstPath];
+		
 		[aChanges addObject:aChange];
 		//NSLog(@"Added change %@ %@->%@ %@", statusCode, oldRevision, newRevision, srcPath);
 	}

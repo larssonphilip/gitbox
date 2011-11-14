@@ -80,6 +80,7 @@
 // Contained objects should send this message so that rootController could notify its listeners about content changes (refresh sidebar etc.)
 - (void) contentsDidChange
 {
+#warning TODO: update selection by removing objects that are not longer in the tree of sidebar items.
 	[self notifyWithSelector:@selector(rootControllerDidChangeContents:)];
 }
 

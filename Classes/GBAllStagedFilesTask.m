@@ -101,7 +101,7 @@
     aChange.statusCode = @"A";
     aChange.srcRevision = @"0000000000000000000000000000000000000000";
     aChange.dstRevision = newRevision;
-    aChange.srcURL = [NSURL URLWithString:[srcPath stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding] relativeToURL:self.repository.url];
+	aChange.srcURL = [self.repository URLForRelativePath:srcPath];
     [aChanges addObject:aChange];
     //NSLog(@"Added change %@ %@->%@ %@", statusCode, oldRevision, newRevision, srcPath);
   }

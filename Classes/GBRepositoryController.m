@@ -13,6 +13,7 @@
 #import "GBRepositoryController.h"
 #import "GBRepositoryToolbarController.h"
 #import "GBRepositoryViewController.h"
+#import "GBSubmoduleController.h"
 #import "GBSubmoduleCloningController.h"
 #import "GBMainWindowController.h"
 
@@ -72,6 +73,9 @@
 
 @property(nonatomic, retain) NSUndoManager* undoManager;
 
+@property(nonatomic, retain) NSArray* submoduleControllers;
+@property(nonatomic, retain) NSArray* submodules;
+
 - (NSImage*) icon;
 
 - (void) pushDisabled;
@@ -98,7 +102,7 @@
 - (void) updateRemoteRefsSilently:(BOOL)silently withBlock:(void(^)())aBlock;
 - (void) updateBranchesForRemote:(GBRemote*)aRemote withBlock:(void(^)())aBlock;
 - (void) updateBranchesForRemote:(GBRemote*)aRemote silently:(BOOL)silently withBlock:(void(^)())aBlock;
-- (void) updateSubmodulesWithBlock:(void(^)())aBlock;
+- (void) reloadSubmodulesWithBlock:(void(^)())aBlock;
 - (void) fetchRemote:(GBRemote*)aRemote withBlock:(void(^)())aBlock;
 - (void) fetchRemote:(GBRemote*)aRemote silently:(BOOL)silently withBlock:(void(^)())aBlock;
 - (void) resetAutoFetchInterval;
@@ -150,6 +154,9 @@
 
 @synthesize undoManager;
 
+@synthesize submoduleControllers=_submoduleControllers;
+@synthesize submodules=_submodules;
+
 - (void) dealloc
 {
 	NSLog(@"GBRepositoryController#dealloc: %@", self);
@@ -178,6 +185,8 @@
 	[currentSearch release]; currentSearch = nil;
 	[undoManager release]; undoManager = nil;
 
+	self.submodules = nil;
+	self.submoduleControllers = nil;
 	self.repository = nil; // so we unsubscribe correctly
 	
 	[super dealloc];
@@ -214,12 +223,6 @@
 	if (repository == aRepository) return;
 	self.undoManager = nil;
 	
-	for (GBSubmodule* submodule in repository.submodules)
-	{
-#warning TODO: unsubscribe from submodule's repoCtrl notifications
-		submodule.repositoryController = nil;
-	}
-	
 	[repository.stage removeObserverForAllSelectors:self];
 	[repository removeObserverForAllSelectors:self];
 	[repository release];
@@ -230,7 +233,114 @@
 	}
 	[repository.stage addObserverForAllSelectors:self];
 	[repository addObserverForAllSelectors:self];
+	
+	self.submodules = repository.submodules;
 }
+
+- (void) setSubmodules:(NSArray *)submodules
+{
+	if (_submodules == submodules) return;
+	
+	// + 1. Keep existing submodule controller if its status did not change
+	// + 2. Remove submodule controller if it's not present.
+	// 3. Replace controller if status does not match.
+	// 4. Add submodule controller if not yet present.
+	
+	[_submodules release];
+	_submodules = [submodules retain];
+	
+	NSMutableArray* updatedSubmoduleControllers = [NSMutableArray array];
+	
+	for (GBSubmodule* updatedSubmodule in self.repository.submodules)
+	{
+		GBSubmoduleController* matchingController = nil;
+		GBSubmodule* matchingSubmodule = nil;
+		for (GBSubmoduleController* ctrl in self.submoduleControllers)
+		{
+			GBSubmodule* currentSubmodule = ctrl.submodule;
+			
+			if ([currentSubmodule.path isEqualToString:updatedSubmodule.path])
+			{
+				matchingController = ctrl;
+				matchingSubmodule = currentSubmodule;
+				break;
+			}
+		}
+		
+		if (!matchingController)
+		{
+			if ([updatedSubmodule isCloned])
+			{
+				// Create a new regular controller
+				GBSubmoduleController* ctrl = [GBSubmoduleController controllerWithSubmodule:updatedSubmodule];
+				[updatedSubmoduleControllers addObject:ctrl];
+				
+				ctrl.autofetchQueue = self.autofetchQueue;
+				ctrl.viewController = self.viewController;
+				ctrl.toolbarController = self.toolbarController;
+				ctrl.fsEventStream = self.fsEventStream;
+				
+				[ctrl start];
+			}
+			else
+			{
+				// Create a new cloning controller
+				GBSubmoduleCloningController* ctrl = [[[GBSubmoduleCloningController alloc] initWithSubmodule:updatedSubmodule] autorelease];
+				[updatedSubmoduleControllers addObject:ctrl];
+			}
+		}
+		else // there's a matching controller
+		{
+			if ([matchingSubmodule.status isEqualToString:updatedSubmodule.status]) // status is the same, nothing really to do here
+			{
+				matchingController.submodule = updatedSubmodule;
+				[updatedSubmoduleControllers addObject:matchingController];
+			}
+			else // status has changed, create a new controller, but reuse sidebarItem
+			{
+				if ([updatedSubmodule isCloned])
+				{
+					GBSubmoduleController* ctrl = [GBSubmoduleController controllerWithSubmodule:updatedSubmodule];
+					[updatedSubmoduleControllers addObject:ctrl];
+					ctrl.autofetchQueue = self.autofetchQueue;
+					ctrl.viewController = self.viewController;
+					ctrl.toolbarController = self.toolbarController;
+					ctrl.fsEventStream = self.fsEventStream;
+					#warning TODO: make sure sidebaItem draggable properties are restored
+					ctrl.sidebarItem = matchingController.sidebarItem;
+					ctrl.sidebarItem.object = ctrl;
+					[ctrl start];
+				}
+				else
+				{
+					GBSubmoduleCloningController* ctrl = [[[GBSubmoduleCloningController alloc] initWithSubmodule:updatedSubmodule] autorelease];
+					[updatedSubmoduleControllers addObject:ctrl];
+				}
+			}
+		}
+	} // for each new submodule
+	
+	self.submoduleControllers = updatedSubmoduleControllers;
+}
+
+- (void) setSubmoduleControllers:(NSArray *)submoduleControllers
+{
+	if (_submoduleControllers == submoduleControllers) return;
+	
+	for (GBSubmoduleController* ctrl in _submoduleControllers)
+	{
+		[ctrl removeObserverForAllSelectors:self];
+	}
+	
+	[_submoduleControllers release];
+	_submoduleControllers = [submoduleControllers retain];
+	
+	for (GBSubmoduleController* ctrl in _submoduleControllers)
+	{
+		[ctrl addObserverForAllSelectors:self];
+	}
+}
+
 
 - (OAFSEventStream*) fsEventStream
 {
@@ -450,7 +560,7 @@
 		
 		[self loadStageChangesWithBlock:^{
 			[self updateLocalRefsWithBlock:^{
-				[self updateSubmodulesWithBlock:^{
+				[self reloadSubmodulesWithBlock:^{
 					[self notifyWithSelector:@selector(repositoryControllerDidCheckoutBranch:)];
 					[self loadCommitsWithBlock:nil];
 					
@@ -995,7 +1105,7 @@
 	[self.repository pullOrMergeWithBlock:^{
 		[self loadStageChangesWithBlock:^{
 			[self updateLocalRefsWithBlock:^{
-				[self updateSubmodulesWithBlock:^{
+				[self reloadSubmodulesWithBlock:^{
 					[self loadCommitsWithBlock:nil];
 					[self updateRemoteRefsWithBlock:nil];
 					[self popFSEventsPause];
@@ -1026,7 +1136,7 @@
 			[self.repository doGitCommand:[NSArray arrayWithObjects:@"stash", @"apply", nil] withBlock:^{
 				[self loadStageChangesWithBlock:^{
 					[self updateLocalRefsWithBlock:^{
-						[self updateSubmodulesWithBlock:^{
+						[self reloadSubmodulesWithBlock:^{
 							[self loadCommitsWithBlock:nil];
 							[self updateRemoteRefsWithBlock:nil];
 							[self popFSEventsPause];
@@ -1115,7 +1225,7 @@
 	[self.repository rebaseWithBlock:^{
 		[self loadStageChangesWithBlock:^{
 			[self updateLocalRefsWithBlock:^{
-				[self updateSubmodulesWithBlock:^{
+				[self reloadSubmodulesWithBlock:^{
 					[self loadCommitsWithBlock:nil];
 					[self updateRemoteRefsWithBlock:nil];
 					[self popFSEventsPause];
@@ -1740,7 +1850,7 @@
 	{
 		self.isUpdatedSubmodulesOnce = YES;
 		[self pushSpinning];
-		[self updateSubmodulesWithBlock:^{
+		[self reloadSubmodulesWithBlock:^{
 			[self popSpinning];
 		}];
 	}
@@ -1808,13 +1918,13 @@
 
 - (NSInteger) sidebarItemNumberOfChildren
 {
-	return (NSInteger)self.repository.submodules.count;
+	return (NSInteger)self.submoduleControllers.count;
 }
 
 - (GBSidebarItem*) sidebarItemChildAtIndex:(NSInteger)anIndex
 {
-	if (anIndex < 0 || anIndex >= self.repository.submodules.count) return nil;
-	return [[self.repository.submodules objectAtIndex:anIndex] sidebarItem];
+	if (anIndex < 0 || anIndex >= self.submoduleControllers.count) return nil;
+	return [[self.submoduleControllers objectAtIndex:anIndex] sidebarItem];
 }
 
 - (NSString*) sidebarItemTitle
@@ -1998,7 +2108,32 @@
 	}];
 }
 
-- (void) updateSubmodulesWithBlock:(void(^)())aBlock
+- (BOOL) submodulesOutOfSync
+{
+	if (self.repository.submodules.count != self.submoduleControllers.count) return YES;
+	if (self.repository.submodules.count == 0) return NO;
+	
+	NSArray* existingPaths = [self.submoduleControllers valueForKeyPath:@"submodule.path"];
+	NSArray* newPaths = [self.submodules valueForKey:@"path"];
+	
+	if (![existingPaths isEqualToArray:newPaths]) return YES;
+	
+	// Now the only edge case is when submodules' statuses are out of sync
+	
+	for (NSUInteger i = 0; i < self.repository.submodules.count; i++)
+	{
+		GBSubmodule* existingSubmodule = [[self.submoduleControllers objectAtIndex:i] submodule];
+		GBSubmodule* nextSubmodule = [self.repository.submodules objectAtIndex:i];
+		
+		if (![existingSubmodule.status isEqual:nextSubmodule.status]) return YES;
+	}
+	
+	// All paths matched and statuses match too.
+	
+	return NO;
+}
+
+- (void) reloadSubmodulesWithBlock:(void(^)())aBlock
 {
 //#warning TODO: disabled submodules for beta testing
 //	
@@ -2006,47 +2141,47 @@
 //	return;
 	
 	[self.blockTable addBlock:aBlock forName:@"updateSubmodules" proceedIfClear:^{
-		
-		for (GBSubmodule* submodule in self.repository.submodules)
-		{
-			[submodule.repositoryController removeObserverForAllSelectors:self];
-			submodule.repositoryController = nil;
-		}
-		
-		[self.repository updateSubmodulesWithBlock:^{
+
+		[self.repository reloadSubmodulesWithBlock:^{
 			
-			BOOL didChangeSubmodules = NO;
-			for (GBSubmodule* submodule in [self.repository.submodules reversedArray])
-			{
-				// use some other condition like is it contained in the local array of submodules
-				if (!submodule.repositoryController) // repo controller is not set up yet
-				{
-					didChangeSubmodules = YES;
-					if ([submodule isCloned])
-					{
-						//GBRepositoryController* repoCtrl = [GBRepositoryController repositoryControllerWithURL:[submodule localURL]];
-						//submodule.repositoryController = repoCtrl;
-						//submodule.repositoryController.delegate = self.delegate;
-						//repoCtrl.updatesQueue = self.updatesQueue;
-						//repoCtrl.autofetchQueue = self.autofetchQueue;
-						//[repoCtrl start];
-						
-						// TODO: Should add self as an observer to monitor events such as moving to another URL or stopping the ctrl etc.
-						
-						//          [self.updatesQueue prependBlock:^{
-						//            [repoCtrl initialUpdateWithBlock:^{
-						//              [self.updatesQueue endBlock];
-						//            }];
-						//          }];
-					}
-					else
-					{
-						GBSubmoduleCloningController* repoCtrl = [[[GBSubmoduleCloningController alloc] initWithSubmodule:submodule] autorelease];
-						submodule.repositoryController = (id)repoCtrl;
-						[repoCtrl addObserverForAllSelectors:self];
-					}
-				}
-			}
+			// Figure out in advance if there's anything to send update notification about.
+			BOOL didChangeSubmodules = [self submodulesOutOfSync];
+			
+			self.submodules = self.repository.submodules;
+			
+			// Move this code in setSubmodules:
+			
+//			for (GBSubmodule* submodule in [self.repository.submodules reversedArray])
+//			{
+//				// use some other condition like is it contained in the local array of submodules
+//				if (!submodule.repositoryController) // repo controller is not set up yet
+//				{
+//					didChangeSubmodules = YES;
+//					if ([submodule isCloned])
+//					{
+//						//GBRepositoryController* repoCtrl = [GBRepositoryController repositoryControllerWithURL:[submodule localURL]];
+//						//submodule.repositoryController = repoCtrl;
+//						//submodule.repositoryController.delegate = self.delegate;
+//						//repoCtrl.updatesQueue = self.updatesQueue;
+//						//repoCtrl.autofetchQueue = self.autofetchQueue;
+//						//[repoCtrl start];
+//						
+//						// TODO: Should add self as an observer to monitor events such as moving to another URL or stopping the ctrl etc.
+//						
+//						//          [self.updatesQueue prependBlock:^{
+//						//            [repoCtrl initialUpdateWithBlock:^{
+//						//              [self.updatesQueue endBlock];
+//						//            }];
+//						//          }];
+//					}
+//					else
+//					{
+//						GBSubmoduleCloningController* repoCtrl = [[[GBSubmoduleCloningController alloc] initWithSubmodule:submodule] autorelease];
+//						submodule.repositoryController = (id)repoCtrl;
+//						[repoCtrl addObserverForAllSelectors:self];
+//					}
+//				}
+//			}
 			
 			[self.blockTable callBlockForName:@"updateSubmodules"];
 			
@@ -2120,7 +2255,7 @@
 		[self pushFSEventsPause];
 		isLoadingChanges++;
 		[self.repository.stage loadChangesWithBlock:^{
-			[self updateSubmodulesWithBlock:^{
+			[self reloadSubmodulesWithBlock:^{
 				isLoadingChanges--;
 				self.isLoadedStageChangesOnce = YES;
 				[self.blockTable callBlockForName:@"loadStageChanges"];

@@ -48,12 +48,11 @@ Gitbox 1.6 misc items:
 + submodules: submodule download controller
 
 - yet another refactoring:
-  - move sidebar item setup into setSidebarItem, so we can set external item
-  - subclass GBRepositoryController -> GBSubmoduleController for customizing sidebaritem
-  - do not store any controllers inside GBSubmodule object 
-  - do not store weak ref to parent repository inside GBSubmodule object - put there only the URLs
+  + subclass GBRepositoryController -> GBSubmoduleController for customizing sidebaritem
+  + do not store any controllers inside GBSubmodule object 
+  ≠ do not store weak ref to parent repository inside GBSubmodule object - put there only the URLs
   - update sidebar item and repository when update is finished
-  - maybe (!) store a weak ref to parent repo ctrl from GBSubmoduleController -> this would allow for submodule settings update when you change remote URL inside the submodule
+  - maybe (!) store a weak ref to parent repo ctrl from GBSubmoduleController -> this would allow for submodule settings update when you change remote URL inside the submodule; but maybe indirect access by repo URL will b enough (or similar)
 
 - submodules: bug: when submodule is selected for the first time, view controller is not available [rare issue with simultaneous sidebar update]
 - submodules: bug: when submodule starts downloading, download button is not removed from sidebar.
@@ -101,7 +100,8 @@ Gitbox 1.6 misc items:
 
 -- the rest of the things --
 
-
+- disable "rebase" menu item if nothing to rebase (no green or no blue commits)
+- cannot stage files with question mark in them
 - undo pull on clean working directory applies some older stashes. Should remember in invocation if working dir was dirty or not.
 
 - bug: search: try to add space after a word in search field - it selects the whole text which is amazingly annoying

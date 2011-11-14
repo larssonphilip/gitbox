@@ -56,7 +56,7 @@
 @synthesize localBranches;
 @synthesize remotes;
 @synthesize tags;
-@synthesize submodules;
+@synthesize submodules=_submodules;
 @synthesize libgitRepository;
 
 @synthesize stage;
@@ -101,11 +101,8 @@
 	[blockTable release]; blockTable = nil;
 	[config release]; config = nil;
 	
-	for (GBSubmodule* submodule in submodules)
-	{
-		submodule.repository = nil;
-	}
-	[submodules release]; submodules = nil;
+	self.submodules = nil; // smart setter
+	
 	[tagsByCommitID release]; tagsByCommitID = nil;
 	
 	[currentTaskProgressStatus release]; currentTaskProgressStatus = nil;
@@ -547,7 +544,7 @@
 
 - (BOOL) doesHaveSubmodules
 {
-	return [[NSFileManager defaultManager] fileExistsAtPath:[[self path] stringByAppendingPathComponent:@".gitmodules"]];
+	return [[NSFileManager defaultManager] fileExistsAtPath:[self.path stringByAppendingPathComponent:@".gitmodules"]];
 }
 
 - (NSURL*) URLForSubmoduleAtPath:(NSString*)submodulePath
@@ -577,6 +574,35 @@
 	return [self.remotes objectAtIndex:0];
 }
 
+- (NSURL*) URLForRelativePath:(NSString*)relativePath
+{
+	if (!relativePath) return nil;
+	// I've checked that this method returns file URL (isFileURL)
+	//	fileURL = file://localhost/Users/oleganza/
+	//	pathURL = ./Work/gitbox -- file://localhost/Users/oleganza/
+	//	pathURL isFileURL = 1
+	//	pathURL path = /Users/oleganza/Work/gitbox
+	//	pathURL absolute path = /Users/oleganza/Work/gitbox
+	return [NSURL URLWithString:[relativePath stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding] relativeToURL:self.url];
+}
+
+- (void) setSubmodules:(NSArray *)submodules
+{
+	if (_submodules == submodules) return;
+	
+	for (GBSubmodule* submodule in _submodules)
+	{
+		if (submodule.parentRepository == self) submodule.parentRepository = nil;
+	}
+	
+	[_submodules release];
+	_submodules = [submodules retain];
+	
+	for (GBSubmodule* submodule in _submodules)
+	{
+		submodule.parentRepository = self;
+	}
+}
 
 
 
@@ -838,7 +864,7 @@
 
 
 // A routine for configuring .gitmodules in .git/config. 
-// 99.99% of users don't want to think about it, so it is a private method used by updateSubmodulesWithBlock:
+// 99.99% of users don't want to think about it, so it is a private method used by reloadSubmodulesWithBlock:
 - (void) initSubmodulesWithBlock:(void(^)())block
 {
 	block = [[block copy] autorelease];
@@ -859,10 +885,10 @@
 }
 
 
-// Updates list of submodules (NOT what 'git submodule update' does!) for this repository. 
-// DOES NOT pull actual submodules or change their refs in any way. MK.
+// Reloads list of submodules for this repository. 
+// Does not pull actual submodules or change their refs in any way.
 
-- (void) updateSubmodulesWithBlock:(void (^)())block
+- (void) reloadSubmodulesWithBlock:(void (^)())block
 {
 	// Quick check for common case: if file .gitmodules does not exist, we have no submodules
 	if (![self doesHaveSubmodules])
@@ -876,9 +902,6 @@
 		[self initSubmodulesWithBlock:^{
 			GBSubmodulesTask* task = [GBSubmodulesTask taskWithRepository:self];
 			[self launchTask:task withBlock:^{
-				
-				// TODO: reuse submodules with the same name and update its status and URL
-				
 				self.submodules = task.submodules;
 				[self.blockTable callBlockForName:@"updateSubmodules"];
 			}];

@@ -43,11 +43,6 @@
 	[self update];
 }
 
-- (IBAction) cancel:(id)sender
-{
-	[self.repositoryController cancelDownload];
-}
-
 - (void) update
 {
 	NSURL* URL = self.repositoryController.remoteURL;
@@ -76,13 +71,6 @@
 	}
 }
 
-- (IBAction) start:(id)sender
-{
-	[self.progressIndicator setIndeterminate:YES];
-	[self.progressIndicator startAnimation:nil];
-	[self.repositoryController startDownload];
-}
-
 
 
 #pragma mark GBRepositoryCloningController notifications
@@ -90,6 +78,8 @@
 
 - (void) submoduleCloningControllerDidStart:(GBSubmoduleCloningController*)ctrl
 {
+	[self.progressIndicator setIndeterminate:YES];
+	[self.progressIndicator startAnimation:nil];
 	[self update];
 	[self.errorLabel setStringValue:NSLocalizedString(@"Preparing...", @"Clone")];
 }

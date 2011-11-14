@@ -7,7 +7,7 @@
 
 @interface GBSubmoduleCloningController : NSResponder<GBMainWindowItem, GBSidebarItemObject>
 
-@property(nonatomic, assign) GBSubmodule* submodule;
+@property(nonatomic, retain) GBSubmodule* submodule;
 @property(nonatomic, retain) NSWindow* window;
 @property(nonatomic, retain) GBSubmoduleCloningViewController* viewController;
 
@@ -19,10 +19,12 @@
 @property(nonatomic, assign) double sidebarItemProgress;
 @property(nonatomic, copy) NSString* progressStatus;
 
+@property(nonatomic, retain, readonly) GBSidebarItem* sidebarItem;
+
 - (id) initWithSubmodule:(GBSubmodule*)submodule;
 
-- (void) startDownload;
-- (void) cancelDownload;
+- (IBAction)startDownload:(id)sender;
+- (IBAction)cancelDownload:(id)sender;
 
 - (BOOL) isStarted;
 
