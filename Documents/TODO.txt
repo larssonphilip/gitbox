@@ -103,7 +103,7 @@ Gitbox 1.6 misc items:
 
 -- the rest of the things --
 
-- respect system settings of the sidebar icon size - small/medium/large
+- respect system settings of the sidebar icon size - small/medium/large (NSTableViewDefaultSizeMode = 1/2/3). Xcode does not respect it.
 
 - bug: on launch, the sidebar badges are shifted to the edge (maybe when scroll bar is visible or not). Same bug when submodules are loaded and expanded.
 - bug: after repo is removed, its spinner is still retained and is in the view. Should remove all views on [stop]. 
