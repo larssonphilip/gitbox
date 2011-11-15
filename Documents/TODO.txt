@@ -41,7 +41,7 @@ Gitbox 1.6 Release Notes
 
 Gitbox 1.6 misc items:
 
-- with a lot of submodules (or with added repos for submodules), the app may bounce disk notifications between repos neverending. Should filter out changes inside submodules in a folder monitor.
+- bug: with a lot of submodules (or with added repos for submodules), the app may bounce disk notifications between repos neverending. Should filter out changes inside submodules in a folder monitor.
 
 + edit branches and tags in a single repository settings window.
 
