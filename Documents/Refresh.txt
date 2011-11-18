@@ -1,4 +1,14 @@
 
+Gitbox needs to perform several updates to be in sync with the Git repository:
+
+1. Stage
+2. Submodules
+3. History
+4. Local refs
+5. Remote refs
+
+These tasks should be performed both on demand and independently of the UI. System should try to take FSEvents as hints, but still rely on its own timers and "isEqual" check for updated state (so it does not update again when nothing's changed)
+
 Since we cannot reliably check for stage updates once, here's a plan to improve the situation:
 
 - GBStage will be the only object which checks stage changes (git diff-index, git diff-files and git ls-files)

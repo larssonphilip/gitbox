@@ -537,7 +537,7 @@
 		200C159014670E43000F4C78 /* Settings.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = Settings.txt; sourceTree = "<group>"; };
 		200C159114670E43000F4C78 /* Sidebar.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = Sidebar.txt; sourceTree = "<group>"; };
 		200C159214670E43000F4C78 /* SidebarGroups.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = SidebarGroups.txt; sourceTree = "<group>"; };
-		200C159314670E43000F4C78 /* StageRefreshing.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = StageRefreshing.txt; sourceTree = "<group>"; };
+		200C159314670E43000F4C78 /* Refresh.txt */ = {isa = PBXFileReference; path = Refresh.txt; sourceTree = "<group>"; };
 		200C159414670E43000F4C78 /* Submodules.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = Submodules.txt; sourceTree = "<group>"; };
 		200C159514670E43000F4C78 /* Subtrees.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = Subtrees.txt; sourceTree = "<group>"; };
 		200C159614670E43000F4C78 /* Subversion.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = Subversion.txt; sourceTree = "<group>"; };
@@ -1001,7 +1001,7 @@
 				200C159014670E43000F4C78 /* Settings.txt */,
 				200C159114670E43000F4C78 /* Sidebar.txt */,
 				200C159214670E43000F4C78 /* SidebarGroups.txt */,
-				200C159314670E43000F4C78 /* StageRefreshing.txt */,
+				200C159314670E43000F4C78 /* Refresh.txt */,
 				200C159414670E43000F4C78 /* Submodules.txt */,
 				200C159514670E43000F4C78 /* Subtrees.txt */,
 				200C159614670E43000F4C78 /* Subversion.txt */,
