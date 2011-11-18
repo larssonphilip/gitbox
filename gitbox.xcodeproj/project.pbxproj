@@ -523,7 +523,7 @@
 		200C158114670E43000F4C78 /* Architecture.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = Architecture.txt; sourceTree = "<group>"; };
 		200C158214670E43000F4C78 /* AsyncPatterns.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = AsyncPatterns.txt; sourceTree = "<group>"; };
 		200C158314670E43000F4C78 /* Authentication.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = Authentication.txt; sourceTree = "<group>"; };
-		200C158414670E43000F4C78 /* description.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = description.txt; sourceTree = "<group>"; };
+		200C158414670E43000F4C78 /* Description.txt */ = {isa = PBXFileReference; path = Description.txt; sourceTree = "<group>"; };
 		200C158514670E43000F4C78 /* DiffAndBlame.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = DiffAndBlame.txt; sourceTree = "<group>"; };
 		200C158614670E43000F4C78 /* FSEvents.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = FSEvents.txt; sourceTree = "<group>"; };
 		200C158814670E43000F4C78 /* Github.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = Github.txt; sourceTree = "<group>"; };
@@ -987,7 +987,7 @@
 				200C158114670E43000F4C78 /* Architecture.txt */,
 				200C158214670E43000F4C78 /* AsyncPatterns.txt */,
 				200C158314670E43000F4C78 /* Authentication.txt */,
-				200C158414670E43000F4C78 /* description.txt */,
+				200C158414670E43000F4C78 /* Description.txt */,
 				200C158514670E43000F4C78 /* DiffAndBlame.txt */,
 				200C158614670E43000F4C78 /* FSEvents.txt */,
 				200C158814670E43000F4C78 /* Github.txt */,
