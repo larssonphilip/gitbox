@@ -48,6 +48,8 @@ Gitbox 1.6 misc items:
 + submodules: display "download" button in the sidebar item
 + submodules: submodule download controller
 
+- "git diff-files -C -M" causes submodules' .git folders to be updated and makes them updated themselves
+
 - yet another refactoring:
   + subclass GBRepositoryController -> GBSubmoduleController for customizing sidebaritem
   + do not store any controllers inside GBSubmodule object 
