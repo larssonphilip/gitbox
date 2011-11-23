@@ -134,6 +134,8 @@
 		2038F76D11A04A290087CE37 /* NSString+OAGitHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 2038F76C11A04A290087CE37 /* NSString+OAGitHelpers.m */; };
 		203976651251A63700770D13 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 203976631251A63700770D13 /* Credits.rtf */; };
 		203977E71252815000770D13 /* NSTableView+OATableViewHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 203977E61252815000770D13 /* NSTableView+OATableViewHelpers.m */; };
+		203C8B7D147D5A4200C3C637 /* GBRepositoryRefreshStateMachine.m in Sources */ = {isa = PBXBuildFile; fileRef = 203C8B7C147D5A4200C3C637 /* GBRepositoryRefreshStateMachine.m */; };
+		203C8B7E147D5A4200C3C637 /* GBRepositoryRefreshStateMachine.m in Sources */ = {isa = PBXBuildFile; fileRef = 203C8B7C147D5A4200C3C637 /* GBRepositoryRefreshStateMachine.m */; };
 		203F729B12A62E0200BE1A55 /* GBCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 203F729A12A62E0200BE1A55 /* GBCell.m */; };
 		203F729C12A62E0200BE1A55 /* GBCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 203F729A12A62E0200BE1A55 /* GBCell.m */; };
 		203FF1CF1365C2ED000624D6 /* GBAskPassCredentialsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 203FF1CE1365C2ED000624D6 /* GBAskPassCredentialsController.m */; };
@@ -523,7 +525,7 @@
 		200C158114670E43000F4C78 /* Architecture.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = Architecture.txt; sourceTree = "<group>"; };
 		200C158214670E43000F4C78 /* AsyncPatterns.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = AsyncPatterns.txt; sourceTree = "<group>"; };
 		200C158314670E43000F4C78 /* Authentication.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = Authentication.txt; sourceTree = "<group>"; };
-		200C158414670E43000F4C78 /* Description.txt */ = {isa = PBXFileReference; path = Description.txt; sourceTree = "<group>"; };
+		200C158414670E43000F4C78 /* Description.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = Description.txt; sourceTree = "<group>"; };
 		200C158514670E43000F4C78 /* DiffAndBlame.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = DiffAndBlame.txt; sourceTree = "<group>"; };
 		200C158614670E43000F4C78 /* FSEvents.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = FSEvents.txt; sourceTree = "<group>"; };
 		200C158814670E43000F4C78 /* Github.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = Github.txt; sourceTree = "<group>"; };
@@ -537,7 +539,7 @@
 		200C159014670E43000F4C78 /* Settings.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = Settings.txt; sourceTree = "<group>"; };
 		200C159114670E43000F4C78 /* Sidebar.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = Sidebar.txt; sourceTree = "<group>"; };
 		200C159214670E43000F4C78 /* SidebarGroups.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = SidebarGroups.txt; sourceTree = "<group>"; };
-		200C159314670E43000F4C78 /* Refresh.txt */ = {isa = PBXFileReference; path = Refresh.txt; sourceTree = "<group>"; };
+		200C159314670E43000F4C78 /* Refresh.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = Refresh.txt; sourceTree = "<group>"; };
 		200C159414670E43000F4C78 /* Submodules.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = Submodules.txt; sourceTree = "<group>"; };
 		200C159514670E43000F4C78 /* Subtrees.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = Subtrees.txt; sourceTree = "<group>"; };
 		200C159614670E43000F4C78 /* Subversion.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = Subversion.txt; sourceTree = "<group>"; };
@@ -648,6 +650,8 @@
 		203976641251A63700770D13 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
 		203977E51252815000770D13 /* NSTableView+OATableViewHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSTableView+OATableViewHelpers.h"; sourceTree = "<group>"; };
 		203977E61252815000770D13 /* NSTableView+OATableViewHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSTableView+OATableViewHelpers.m"; sourceTree = "<group>"; };
+		203C8B7B147D5A4200C3C637 /* GBRepositoryRefreshStateMachine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBRepositoryRefreshStateMachine.h; sourceTree = "<group>"; };
+		203C8B7C147D5A4200C3C637 /* GBRepositoryRefreshStateMachine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBRepositoryRefreshStateMachine.m; sourceTree = "<group>"; };
 		203F729912A62E0200BE1A55 /* GBCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBCell.h; sourceTree = "<group>"; };
 		203F729A12A62E0200BE1A55 /* GBCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBCell.m; sourceTree = "<group>"; };
 		203FF1CD1365C2ED000624D6 /* GBAskPassCredentialsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBAskPassCredentialsController.h; sourceTree = "<group>"; };
@@ -1077,6 +1081,8 @@
 				20CE6E0913895CC3001D9707 /* GBStash.m */,
 				2041353014613009007BFE0B /* GBVersionComparator.h */,
 				2041353114613009007BFE0B /* GBVersionComparator.m */,
+				203C8B7B147D5A4200C3C637 /* GBRepositoryRefreshStateMachine.h */,
+				203C8B7C147D5A4200C3C637 /* GBRepositoryRefreshStateMachine.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -2050,6 +2056,7 @@
 				2041353314613009007BFE0B /* GBVersionComparator.m in Sources */,
 				200C159F14672EB2000F4C78 /* GBSubmoduleCloningViewController.m in Sources */,
 				20FE4AA11469961800817E2C /* GBSubmoduleController.m in Sources */,
+				203C8B7E147D5A4200C3C637 /* GBRepositoryRefreshStateMachine.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2199,6 +2206,7 @@
 				2041353214613009007BFE0B /* GBVersionComparator.m in Sources */,
 				200C159E14672EB2000F4C78 /* GBSubmoduleCloningViewController.m in Sources */,
 				20FE4AA01469961800817E2C /* GBSubmoduleController.m in Sources */,
+				203C8B7D147D5A4200C3C637 /* GBRepositoryRefreshStateMachine.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
