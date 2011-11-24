@@ -3,9 +3,9 @@ Gitbox needs to perform several updates to be in sync with the Git repository:
 
 1. Stage
 2. Submodules
-3. History
-4. Local refs
-5. Remote refs
+3. Local refs
+4. Remote refs
+5. - History: depends on local + remote refs.
 
 These tasks should be performed both on demand and independently of the UI. 
 System should try to take FSEvents as hints, but still rely on its own timers and "isEqual" check for updated state 
@@ -38,6 +38,14 @@ GBStageStateUpdating:
 GBStageStateFinishing: 
 - setNeedsUpdate => GBStageStateFinishing
 - latency timeout => GBStageStateIdle
+
+
+Factors (GBRepositoryRefreshStateMachine):
+
+1. Internal "needs update" flag - when the app itself knows that something has changed.
+2. External notification "folder did update" - could be used or not used.
+3. The previous history of changes - when was the last time we have really update the state.
+4. Current timeout (multiplied by 1.5 each time it's increased)
 
 
 
