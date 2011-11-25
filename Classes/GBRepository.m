@@ -630,7 +630,7 @@
 
 - (void) loadRemotesIfNeededWithBlock:(void(^)())aBlock
 {
-	if (self.remotes && [self.remotes count] > 0) 
+	if (self.remotes.count > 0) 
 	{
 		if (aBlock) aBlock();
 		return;

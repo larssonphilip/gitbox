@@ -1841,6 +1841,11 @@
 	return [self url];
 }
 
+- (void) willDeselectWindowItem
+{
+	// TODO: tell monitor to ignore fs events
+}
+
 - (void) didSelectWindowItem
 {
 	self.toolbarController.repositoryController = self;
