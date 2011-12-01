@@ -18,7 +18,7 @@
 	NSMutableArray* untrackedChanges = [NSMutableArray array];
 	for (NSString* path in [[data UTF8String] componentsSeparatedByString:@"\n"])
 	{
-		if (path && [path length] > 0)
+		if (path.length > 0)
 		{
 			GBChange* change = [[GBChange new] autorelease];
 			path = [path stringByUnescapingGitFilename];

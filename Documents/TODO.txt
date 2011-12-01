@@ -43,6 +43,8 @@ Gitbox 1.6 misc items:
 
 - bug: with a lot of submodules (or with added repos for submodules), the app may bounce disk notifications between repos neverending. Should filter out changes inside submodules in a folder monitor.
 
+- bug: when filename on stage contains ":" file name is not displayed (null?)
+
 + edit branches and tags in a single repository settings window.
 
 + submodules: display "download" button in the sidebar item

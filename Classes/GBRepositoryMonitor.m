@@ -29,7 +29,7 @@ States:
 
 @end
 
-@implementation GBRepositoryRefreshStateMachine
+@implementation GBRepositoryMonitor
 
 @synthesize path=_path;
 @synthesize needsUpdateStage;
