@@ -4,6 +4,7 @@
 
 #import "NSData+OADataHelpers.h"
 #import "NSString+OAGitHelpers.h"
+#import "NSString+OAStringHelpers.h"
 
 @implementation GBUntrackedChangesTask
 
@@ -22,8 +23,7 @@
 		{
 			GBChange* change = [[GBChange new] autorelease];
 			path = [path stringByUnescapingGitFilename];
-			change.srcURL = [NSURL URLWithString:[path stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding] 
-								   relativeToURL:self.repository.url];
+			change.srcURL = [self.repository URLForRelativePath:path];
 			change.repository = self.repository;
 			change.statusCode = @"";
 			[untrackedChanges addObject:change];

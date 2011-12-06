@@ -24,6 +24,8 @@
 
 - (NSString*) prettyTrimmedStringToLength:(NSUInteger)limit;
 
+- (NSString *)stringByAddingAllPercentEscapesUsingEncoding:(NSStringEncoding)encoding;
+
 @end
 
 

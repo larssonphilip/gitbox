@@ -36,14 +36,13 @@ Gitbox 1.6 Release Notes
 ✓ Fixed link highlighting on Lion: now all kinds of schemas are recognized including rdar://.
 ✓ Fixed several text labels.
 ✓ Fixed an annoying bug in search field (when space is entered, all text was selected)
+✓ Fixed bug with presenting files containing ":" and other URL-unfriendly characters.
 
 --
 
 Gitbox 1.6 misc items:
 
 - bug: with a lot of submodules (or with added repos for submodules), the app may bounce disk notifications between repos neverending. Should filter out changes inside submodules in a folder monitor.
-
-- bug: when filename on stage contains ":" file name is not displayed (null?)
 
 + edit branches and tags in a single repository settings window.
 
@@ -144,7 +143,7 @@ Gitbox 1.6 misc items:
 
 Misc done for 1.6:
 
-
++ bug: when filename on stage contains ":" file name is not displayed (null?)
 + remove "..." from "Delete Tag", "Delete Branch" buttons in the settings view.
 + ui: show alert Yes/No sheet window when trying to create a commit outside of a branch (instead of simply disabling the commit button)
 + tags: sort tags using SUStandardVersionComparator (from Sparkle)

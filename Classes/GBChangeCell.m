@@ -279,14 +279,6 @@
 			{
 				url = dstURL;
 			}
-			
-			NSLog(@"DEBUG>> srcURL = %@ // %@", srcURL, [srcURL absoluteString]);
-			
-			if ([[srcURL path] rangeOfString:@":"].length > 0)
-			{
-				NSLog(@"DEBUG: srcURL = %@ // %@", srcURL, [srcURL relativePath]);
-			}
-			
 			[self drawPath:[url relativePath] inRect:currentFrame withAttributes:attributes];
 		}
         

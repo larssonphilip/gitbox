@@ -12,6 +12,7 @@
 #import "GBSubmodulesTask.h"
 #import "GBStashListTask.h"
 #import "GBVersionComparator.h"
+
 #import "GitRepository.h"
 #import "GitConfig.h"
 
@@ -28,6 +29,7 @@
 #import "NSData+OADataHelpers.h"
 #import "NSArray+OAArrayHelpers.h"
 #import "NSString+OAGitHelpers.h"
+#import "NSString+OAStringHelpers.h"
 #import "NSAlert+OAAlertHelpers.h"
 #import "NSObject+OASelectorNotifications.h"
 
@@ -583,7 +585,7 @@
 	//	pathURL isFileURL = 1
 	//	pathURL path = /Users/oleganza/Work/gitbox
 	//	pathURL absolute path = /Users/oleganza/Work/gitbox
-	return [NSURL URLWithString:[relativePath stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding] relativeToURL:self.url];
+	return [NSURL URLWithString:[relativePath stringByAddingAllPercentEscapesUsingEncoding:NSUTF8StringEncoding] relativeToURL:self.url];
 }
 
 - (void) setSubmodules:(NSArray *)submodules

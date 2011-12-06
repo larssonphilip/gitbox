@@ -179,6 +179,36 @@
 	return [buffer stringByAppendingEllipsis];
 }
 
+
+- (NSString *)stringByAddingAllPercentEscapesUsingEncoding:(NSStringEncoding)encoding
+{
+    NSString *escaped = [self stringByAddingPercentEscapesUsingEncoding:encoding];
+    if (encoding != NSUTF8StringEncoding)
+	{
+        NSLog(@"[NSString stringByAddingAllPercentEscapesUsingEncoding:] is not implemented for encoding that is not NSUTF8StringEncoding.");
+        exit(-1);
+    }
+    escaped = [escaped stringByReplacingOccurrencesOfString:@"$" withString:@"%24"];
+    escaped = [escaped stringByReplacingOccurrencesOfString:@"&" withString:@"%26"];
+    escaped = [escaped stringByReplacingOccurrencesOfString:@"+" withString:@"%2B"];
+    escaped = [escaped stringByReplacingOccurrencesOfString:@"," withString:@"%2C"];
+    escaped = [escaped stringByReplacingOccurrencesOfString:@"/" withString:@"%2F"];
+    escaped = [escaped stringByReplacingOccurrencesOfString:@":" withString:@"%3A"];
+    escaped = [escaped stringByReplacingOccurrencesOfString:@";" withString:@"%3B"];
+    escaped = [escaped stringByReplacingOccurrencesOfString:@"=" withString:@"%3D"];
+    escaped = [escaped stringByReplacingOccurrencesOfString:@"?" withString:@"%3F"];
+    escaped = [escaped stringByReplacingOccurrencesOfString:@"@" withString:@"%40"];
+    escaped = [escaped stringByReplacingOccurrencesOfString:@" " withString:@"%20"];
+    escaped = [escaped stringByReplacingOccurrencesOfString:@"\t" withString:@"%09"];
+    escaped = [escaped stringByReplacingOccurrencesOfString:@"#" withString:@"%23"];
+    escaped = [escaped stringByReplacingOccurrencesOfString:@"<" withString:@"%3C"];
+    escaped = [escaped stringByReplacingOccurrencesOfString:@">" withString:@"%3E"];
+    escaped = [escaped stringByReplacingOccurrencesOfString:@"\"" withString:@"%22"];
+    escaped = [escaped stringByReplacingOccurrencesOfString:@"\n" withString:@"%0A"];
+    return escaped;
+}
+
+
 @end
 
 @implementation NSMutableString (OAStringHelpers)

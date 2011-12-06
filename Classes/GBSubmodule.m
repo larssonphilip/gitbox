@@ -28,13 +28,7 @@ NSString* const GBSubmoduleStatusNotUpToDate = @"GBSubmoduleStatusNotUpToDate";
 
 - (NSURL*) localURL
 {
-// I've checked that this method returns file URL (isFileURL)
-//	fileURL = file://localhost/Users/oleganza/
-//	pathURL = ./Work/gitbox -- file://localhost/Users/oleganza/
-//	pathURL isFileURL = 1
-//	pathURL path = /Users/oleganza/Work/gitbox
-//	pathURL absolute path = /Users/oleganza/Work/gitbox
-	return [NSURL URLWithString:self.path relativeToURL:self.parentRepository.url];
+	return [self.parentRepository URLForRelativePath:self.path];
 }
 
 - (BOOL) isCloned

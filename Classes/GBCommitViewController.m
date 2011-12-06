@@ -396,8 +396,8 @@
 - (NSString*) mailtoLinkForEmail:(NSString*)email commit:(GBCommit*)aCommit
 {
 	return [NSString stringWithFormat:@"mailto:%@?subject=%@", 
-			[email stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],
-			[[aCommit subjectForReply] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+			[email stringByAddingAllPercentEscapesUsingEncoding:NSUTF8StringEncoding],
+			[[aCommit subjectForReply] stringByAddingAllPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
 }
 
 - (void) updateHeaderSize
