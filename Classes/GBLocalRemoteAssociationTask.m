@@ -71,7 +71,8 @@
       }
       else
       {
-        NSLog(@"ERROR: GBLocalRemoteAssociationTask: expected '<key> <value>', got: %@", line);
+        // It is okay to have an empty value for the key.
+        //NSLog(@"ERROR: GBLocalRemoteAssociationTask: expected '<key> <value>', got: %@", line);
       } // if line is valid
     } // if line not empty
   } // for loop
