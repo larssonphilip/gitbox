@@ -1271,7 +1271,7 @@
 				<nil key="NSUserInterfaceItemIdentifier"/>
 				<string key="NSWindowContentMinSize">{300, 200}</string>
 				<object class="NSView" key="NSWindowView" id="170047807">
-					<nil key="NSNextResponder"/>
+					<reference key="NSNextResponder"/>
 					<int key="NSvFlags">256</int>
 					<object class="NSMutableArray" key="NSSubviews">
 						<bool key="EncodedWithXMLCoder">YES</bool>
@@ -1288,8 +1288,9 @@
 										<object class="NSTextView" id="713596817">
 											<reference key="NSNextResponder" ref="561993810"/>
 											<int key="NSvFlags">2322</int>
-											<string key="NSFrame">{{0, 14}, {463, 4438}}</string>
+											<string key="NSFrameSize">{463, 4480}</string>
 											<reference key="NSSuperview" ref="561993810"/>
+											<reference key="NSWindow"/>
 											<reference key="NSNextKeyView" ref="566905771"/>
 											<object class="NSTextContainer" key="NSTextContainer" id="2642329">
 												<object class="NSLayoutManager" key="NSLayoutManager">
@@ -1645,7 +1646,7 @@ ClB1YmxpYyBMaWNlbnNlIGluc3RlYWQgb2YgdGhpcyBMaWNlbnNlLgo</bytes>
 																<object class="NSFont">
 																	<string key="NSName">Helvetica</string>
 																	<double key="NSSize">12</double>
-																	<int key="NSfFlags">16</int>
+																	<int key="NSfFlags">273</int>
 																</object>
 																<object class="NSParagraphStyle">
 																	<int key="NSAlignment">4</int>
@@ -1737,6 +1738,7 @@ ClB1YmxpYyBMaWNlbnNlIGluc3RlYWQgb2YgdGhpcyBMaWNlbnNlLgo</bytes>
 									</object>
 									<string key="NSFrameSize">{465, 273}</string>
 									<reference key="NSSuperview" ref="435171086"/>
+									<reference key="NSWindow"/>
 									<reference key="NSNextKeyView" ref="713596817"/>
 									<reference key="NSDocView" ref="713596817"/>
 									<reference key="NSBGColor" ref="946450204"/>
@@ -1773,16 +1775,18 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 									<int key="NSvFlags">256</int>
 									<string key="NSFrame">{{450, 0}, {15, 273}}</string>
 									<reference key="NSSuperview" ref="435171086"/>
+									<reference key="NSWindow"/>
 									<bool key="NSEnabled">YES</bool>
 									<reference key="NSTarget" ref="435171086"/>
 									<string key="NSAction">_doScroller:</string>
-									<double key="NSPercent">0.061320754716981132</double>
+									<double key="NSPercent">0.060937499999999999</double>
 								</object>
 								<object class="NSScroller" id="566905771">
 									<reference key="NSNextResponder" ref="435171086"/>
 									<int key="NSvFlags">-2147483392</int>
 									<string key="NSFrame">{{-100, -100}, {87, 18}}</string>
 									<reference key="NSSuperview" ref="435171086"/>
+									<reference key="NSWindow"/>
 									<reference key="NSNextKeyView" ref="561993810"/>
 									<int key="NSsFlags">1</int>
 									<reference key="NSTarget" ref="435171086"/>
@@ -1793,6 +1797,7 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 							</object>
 							<string key="NSFrameSize">{465, 273}</string>
 							<reference key="NSSuperview" ref="170047807"/>
+							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="561993810"/>
 							<int key="NSsFlags">133200</int>
 							<reference key="NSVScroller" ref="778952306"/>
@@ -1801,13 +1806,15 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 						</object>
 					</object>
 					<string key="NSFrameSize">{465, 273}</string>
+					<reference key="NSSuperview"/>
+					<reference key="NSWindow"/>
 					<reference key="NSNextKeyView" ref="435171086"/>
 				</object>
-				<string key="NSScreenRect">{{0, 0}, {1440, 878}}</string>
+				<string key="NSScreenRect">{{0, 0}, {2560, 1418}}</string>
 				<string key="NSMinSize">{300, 222}</string>
 				<string key="NSMaxSize">{10000000000000, 10000000000000}</string>
 				<string key="NSFrameAutosaveName">legalinfo</string>
-				<bool key="NSWindowIsRestorable">YES</bool>
+				<bool key="NSWindowIsRestorable">NO</bool>
 			</object>
 		</object>
 		<object class="IBObjectContainer" key="IBDocument.Objects">
