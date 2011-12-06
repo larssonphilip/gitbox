@@ -44,7 +44,7 @@ Gitbox 1.6 misc items:
 
 - bug: with a lot of submodules (or with added repos for submodules), the app may bounce disk notifications between repos neverending. Should filter out changes inside submodules in a folder monitor.
 
-+ edit branches and tags in a single repository settings window.
+- add checkbox "Clone Github repositories"
 
 + submodules: display "download" button in the sidebar item
 + submodules: submodule download controller
@@ -143,6 +143,7 @@ Gitbox 1.6 misc items:
 
 Misc done for 1.6:
 
++ edit branches and tags in a single repository settings window.
 + bug: when filename on stage contains ":" file name is not displayed (null?)
 + remove "..." from "Delete Tag", "Delete Branch" buttons in the settings view.
 + ui: show alert Yes/No sheet window when trying to create a commit outside of a branch (instead of simply disabling the commit button)
