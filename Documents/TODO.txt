@@ -57,6 +57,8 @@ Gitbox 1.6 misc items:
 - bug: "New Branch..." menu item has a sheet with "Checkout" button instead of "Create" // also the commit name is totally confusing 
 - bug: branch name is truncated in the settings view
 - crash: when adding a repository
+- normalize commit text with composition (NFC) 
+- bug: remote URL with a space inside: 1) trucates 2) saves back to .git/config. See Bugs Inbox.
 
 + submodules: display "download" button in the sidebar item
 + submodules: submodule download controller
