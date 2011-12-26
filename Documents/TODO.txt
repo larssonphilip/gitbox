@@ -46,6 +46,17 @@ Gitbox 1.6 misc items:
 
 - add checkbox "Clone Github repositories"
 
+- bug: problem with multiline commit messages - flattened
+- bug: about window or license window is not in focus
+- bug: adding file to gitignore when .gitignore does not exist fails.
+- bug: long error sheets when pull or push fails - with progress status
+- crash: The app crashes whenever I try to delete a remote branch, shortly after hitting the “Ok” button of the edit branch sheet
+- crash: on incorrect password or SSH key the askpass controller crashes with "task" selector
+- bug: dash in a folder name (first-level folder) confuses git command [luísbatista <mf3k.wd@gmail.com>]
+- feature: rename repositories
+- bug: "New Branch..." menu item has a sheet with "Checkout" button instead of "Create" // also the commit name is totally confusing 
+- bug: branch name is truncated in the settings view
+
 + submodules: display "download" button in the sidebar item
 + submodules: submodule download controller
 
@@ -105,6 +116,7 @@ Gitbox 1.6 misc items:
 
 
 -- the rest of the things --
+
 
 - integrate Growl notifications like in https://github.com/psionides/Gitifier
 - check out SSH NSTask from https://github.com/psionides/Gitifier
