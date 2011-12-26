@@ -106,6 +106,9 @@ Gitbox 1.6 misc items:
 
 -- the rest of the things --
 
+- integrate Growl notifications like in https://github.com/psionides/Gitifier
+- check out SSH NSTask from https://github.com/psionides/Gitifier
+
 - respect system settings of the sidebar icon size - small/medium/large (NSTableViewDefaultSizeMode = 1/2/3). Xcode does not respect it.
 - FS notifs: avoid ping-pong between repo and submodule by filtering out all sub-repo notifications. Or use FS events as an advice part of a regular scheduled update timer.
 - bug: on launch, the sidebar badges are shifted to the edge (maybe when scroll bar is visible or not). Same bug when submodules are loaded and expanded.
