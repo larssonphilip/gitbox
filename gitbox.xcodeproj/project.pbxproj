@@ -405,6 +405,8 @@
 		20AC93901367473800FEACF9 /* GBAskPass.m in Sources */ = {isa = PBXBuildFile; fileRef = 20AC938E1367473800FEACF9 /* GBAskPass.m */; };
 		20AEF702137DD6770067AF9B /* GBStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = 20AEF701137DD6770067AF9B /* GBStyle.m */; };
 		20AEF703137DD6770067AF9B /* GBStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = 20AEF701137DD6770067AF9B /* GBStyle.m */; };
+		20AFFB0314AAFD76002943E8 /* GBPeriodicalUpdater.m in Sources */ = {isa = PBXBuildFile; fileRef = 20AFFB0214AAFD76002943E8 /* GBPeriodicalUpdater.m */; };
+		20AFFB0414AAFD76002943E8 /* GBPeriodicalUpdater.m in Sources */ = {isa = PBXBuildFile; fileRef = 20AFFB0214AAFD76002943E8 /* GBPeriodicalUpdater.m */; };
 		20B1621211944C0F00A709CF /* NSFileManager+OAFileManagerHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B1621111944C0F00A709CF /* NSFileManager+OAFileManagerHelpers.m */; };
 		20B399FA11B7F30600D6A3C4 /* GBLocalRefsTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B399F911B7F30600D6A3C4 /* GBLocalRefsTask.m */; };
 		20B8B70C11A489F1006D6442 /* GBChangesBaseTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B8B70B11A489F1006D6442 /* GBChangesBaseTask.m */; };
@@ -650,7 +652,7 @@
 		203976641251A63700770D13 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
 		203977E51252815000770D13 /* NSTableView+OATableViewHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSTableView+OATableViewHelpers.h"; sourceTree = "<group>"; };
 		203977E61252815000770D13 /* NSTableView+OATableViewHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSTableView+OATableViewHelpers.m"; sourceTree = "<group>"; };
-		203C8B7B147D5A4200C3C637 /* GBRepositoryMonitor.h */ = {isa = PBXFileReference; fileEncoding = 4; path = GBRepositoryMonitor.h; sourceTree = "<group>"; };
+		203C8B7B147D5A4200C3C637 /* GBRepositoryMonitor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBRepositoryMonitor.h; sourceTree = "<group>"; };
 		203C8B7C147D5A4200C3C637 /* GBRepositoryMonitor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBRepositoryMonitor.m; sourceTree = "<group>"; };
 		203F729912A62E0200BE1A55 /* GBCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBCell.h; sourceTree = "<group>"; };
 		203F729A12A62E0200BE1A55 /* GBCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBCell.m; sourceTree = "<group>"; };
@@ -830,6 +832,8 @@
 		20AC938E1367473800FEACF9 /* GBAskPass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBAskPass.m; sourceTree = "<group>"; };
 		20AEF700137DD6770067AF9B /* GBStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBStyle.h; sourceTree = "<group>"; };
 		20AEF701137DD6770067AF9B /* GBStyle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBStyle.m; sourceTree = "<group>"; };
+		20AFFB0114AAFD76002943E8 /* GBPeriodicalUpdater.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBPeriodicalUpdater.h; sourceTree = "<group>"; };
+		20AFFB0214AAFD76002943E8 /* GBPeriodicalUpdater.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBPeriodicalUpdater.m; sourceTree = "<group>"; };
 		20B1621011944C0F00A709CF /* NSFileManager+OAFileManagerHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSFileManager+OAFileManagerHelpers.h"; sourceTree = "<group>"; };
 		20B1621111944C0F00A709CF /* NSFileManager+OAFileManagerHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSFileManager+OAFileManagerHelpers.m"; sourceTree = "<group>"; };
 		20B399F811B7F30600D6A3C4 /* GBLocalRefsTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBLocalRefsTask.h; sourceTree = "<group>"; };
@@ -1085,6 +1089,8 @@
 				203C8B7C147D5A4200C3C637 /* GBRepositoryMonitor.m */,
 				20C66EEE1344EEAF0067D232 /* GBFolderMonitor.h */,
 				20C66EEF1344EEAF0067D232 /* GBFolderMonitor.m */,
+				20AFFB0114AAFD76002943E8 /* GBPeriodicalUpdater.h */,
+				20AFFB0214AAFD76002943E8 /* GBPeriodicalUpdater.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -2057,6 +2063,7 @@
 				200C159F14672EB2000F4C78 /* GBSubmoduleCloningViewController.m in Sources */,
 				20FE4AA11469961800817E2C /* GBSubmoduleController.m in Sources */,
 				203C8B7E147D5A4200C3C637 /* GBRepositoryMonitor.m in Sources */,
+				20AFFB0414AAFD76002943E8 /* GBPeriodicalUpdater.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2207,6 +2214,7 @@
 				200C159E14672EB2000F4C78 /* GBSubmoduleCloningViewController.m in Sources */,
 				20FE4AA01469961800817E2C /* GBSubmoduleController.m in Sources */,
 				203C8B7D147D5A4200C3C637 /* GBRepositoryMonitor.m in Sources */,
+				20AFFB0314AAFD76002943E8 /* GBPeriodicalUpdater.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

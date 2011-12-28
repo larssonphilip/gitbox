@@ -5,11 +5,30 @@ Gitbox needs to perform several updates to be in sync with the Git repository:
 2. Submodules
 3. Local refs
 4. Remote refs
-5. - History: depends on local + remote refs.
+5. Commits (history): depends on local + remote refs and search state.
 
 These tasks should be performed both on demand and independently of the UI. 
 System should try to take FSEvents as hints, but still rely on its own timers and "isEqual" check for updated state 
 (so it does not update again when nothing's changed).
+
+
+Helper object: GBPeriodicalUpdater
+
+1. Force update: [updater setNeedsUpdate]
+2. Update routine: updater.block = ^{
+		[self updateStageChangesWithBlock:^{
+			if (changed) {
+				[updater setNeedsUpdate];
+			}
+			else 
+			{
+				[updater delayUpdate];
+			}
+		}];
+   }
+3. Custom delay: [updater delayUpdateByInterval:2.0];
+4. Multiplier: updater.delayMultiplier = 2.0;  // 2.0 is a default value
+5. Initial delay: updater.initialDelay = 1.0; // 1.0 is a default value
 
 
 

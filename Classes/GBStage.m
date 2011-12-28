@@ -563,12 +563,6 @@
 }
 
 
-
-- (void) update // obsolete
-{
-	[self arrangeChanges];
-}
-
 - (void) flushBlocks:(NSMutableArray*)mutableArray
 {
 	if (!mutableArray) return;
