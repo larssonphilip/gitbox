@@ -60,6 +60,7 @@ Gitbox 1.6 misc items:
 - bug: branch name is truncated in the settings view
 - crash: when adding a repository
 - bug: remote URL with a space inside: 1) trucates 2) saves back to .git/config. See Bugs Inbox.
+- bug: remove views from sidebar item when switching owner object
 
 + submodules: display "download" button in the sidebar item
 + submodules: submodule download controller

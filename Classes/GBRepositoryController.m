@@ -25,6 +25,8 @@
 #import "GBRepositorySettingsController.h"
 #import "GBFileEditingController.h" // will be obsolete when settings panel is done
 
+#import "GBPeriodicalUpdater.h"
+
 #import "OAFSEventStream.h"
 #import "NSString+OAStringHelpers.h"
 #import "NSError+OAPresent.h"
@@ -75,6 +77,11 @@
 
 @property(nonatomic, retain) NSArray* submoduleControllers;
 @property(nonatomic, retain) NSArray* submodules;
+
+@property(nonatomic, retain) GBPeriodicalUpdater* stageUpdater;
+@property(nonatomic, retain) GBPeriodicalUpdater* submodulesUpdater;
+@property(nonatomic, retain) GBPeriodicalUpdater* localRefsUpdater;
+@property(nonatomic, retain) GBPeriodicalUpdater* remoteRefsUpdater;
 
 - (NSImage*) icon;
 
@@ -157,6 +164,11 @@
 @synthesize submoduleControllers=_submoduleControllers;
 @synthesize submodules=_submodules;
 
+@synthesize stageUpdater;
+@synthesize submodulesUpdater;
+@synthesize localRefsUpdater;
+@synthesize remoteRefsUpdater;
+
 - (void) dealloc
 {
 	NSLog(@"GBRepositoryController#dealloc: %@", self);
@@ -189,6 +201,11 @@
 	self.submoduleControllers = nil;
 	self.repository = nil; // so we unsubscribe correctly
 	
+	self.stageUpdater      = nil;
+	self.submodulesUpdater = nil;
+	self.localRefsUpdater  = nil;
+	self.remoteRefsUpdater = nil;
+
 	[super dealloc];
 }
 
@@ -214,6 +231,15 @@
 		self.folderMonitor = [[[GBFolderMonitor alloc] init] autorelease];
 		self.folderMonitor.path = [[aURL path] stringByStandardizingPath];
 		self.undoManager = [[[NSUndoManager alloc] init] autorelease];
+		
+		self.stageUpdater      = [[[GBPeriodicalUpdater alloc] init] autorelease];
+		self.stageUpdater.updateBlock = ^{
+			
+		};
+		self.submodulesUpdater = [[[GBPeriodicalUpdater alloc] init] autorelease];
+		self.localRefsUpdater  = [[[GBPeriodicalUpdater alloc] init] autorelease];
+		self.remoteRefsUpdater = [[[GBPeriodicalUpdater alloc] init] autorelease];
+
 	}
 	return self;
 }
@@ -450,12 +476,19 @@
 {
 	NSLog(@"GBRepositoryController#stop: %@", self);
 	[self unscheduleAutoFetch];
+	
+	[self.stageUpdater stop];
+	[self.submodulesUpdater stop];
+	[self.localRefsUpdater stop];
+	[self.remoteRefsUpdater stop];
+	
 	if (self.toolbarController.repositoryController == self) self.toolbarController.repositoryController = nil;
 	if (self.viewController.repositoryController == self) self.viewController.repositoryController = nil;
 	self.folderMonitor.target = nil;
 	self.folderMonitor.action = NULL;
 	self.folderMonitor.path = nil;
 	self.repository = nil;
+	
 	//NSLog(@"!!! Stopped GBRepoCtrl:%p!", self);
 	[self notifyWithSelector:@selector(repositoryControllerDidStop:)];
 }

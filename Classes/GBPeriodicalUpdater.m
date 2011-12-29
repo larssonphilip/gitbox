@@ -1,6 +1,10 @@
 #import "GBPeriodicalUpdater.h"
+#import "OABlockOperations.h"
 
 @interface GBPeriodicalUpdater ()
+@property(nonatomic, copy) void(^callback)();
+@property(nonatomic, retain) NSDate* lastUpdateDate;
+@property(nonatomic, retain) NSDate* nextUpdateDate;
 @end
 
 @implementation GBPeriodicalUpdater {
@@ -11,12 +15,16 @@
 @synthesize updateBlock;
 @synthesize initialDelay;
 @synthesize delayMultiplier;
-@synthesize queue=_queue;
+@synthesize callback=_callback;
+@synthesize lastUpdateDate;
+@synthesize nextUpdateDate;
 
 - (void) dealloc
 {
 	[updateBlock release];
-	if (_queue) dispatch_release(_queue);
+	[_callback release];
+	[lastUpdateDate release];
+	[nextUpdateDate release];
 	[super dealloc];
 }
 
@@ -27,18 +35,46 @@
 		initialDelay = 1.0;
 		delayMultiplier = 2.0;
 		delayInterval = initialDelay;
-		self.queue = dispatch_get_main_queue();
 	}
 	return self;
 }
 
+- (NSTimeInterval) timeSinceLastUpdate
+{
+	if (!self.lastUpdateDate) return 999999.0;
+	
+	return -[self.lastUpdateDate timeIntervalSinceNow];
+}
+
+- (NSTimeInterval) timeUntilNextUpdate
+{
+	if (!self.nextUpdateDate) return 999999.0;
+	return [self.nextUpdateDate timeIntervalSinceNow];
+}
+
+- (void) stop
+{
+	self.updateBlock = nil;
+	self.callback = nil;
+	needsUpdateGeneration++;
+}
+
 - (void) setNeedsUpdate
 {
+	[self setNeedsUpdateWithBlock:nil];
+}
+
+- (void) setNeedsUpdateWithBlock:(void(^)())callback
+{
+	self.nextUpdateDate = [NSDate date];
+	self.callback = OABlockConcat(self.callback, callback);
+	
 	needsUpdateGeneration++;
 	int gen = needsUpdateGeneration;
-	dispatch_async(dispatch_get_main_queue(), ^{
+	dispatch_async(dispatch_get_current_queue(), ^{
 		if (gen != needsUpdateGeneration) return;
-		if (updateBlock) updateBlock();
+		if (self.updateBlock) self.updateBlock();
+		if (self.callback) self.callback();
 	});
 }
 
@@ -49,20 +85,11 @@
 
 - (void) delayUpdateByInterval:(NSTimeInterval)interval
 {
-	dispatch_async(dispatch_get_main_queue(), ^{
-		if (gen != needsUpdateGeneration) return;
-		if (updateBlock) updateBlock();
+	self.nextUpdateDate = [NSDate dateWithTimeIntervalSinceNow:interval];
+	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, interval * NSEC_PER_SEC), dispatch_get_current_queue(), ^{
+		[self setNeedsUpdate];
 	});
 	delayInterval = interval*delayMultiplier;
-}
-
-- (void) setQueue:(dispatch_queue_t)queue
-{
-	if (queue == _queue) return;
-	
-	if (_queue) dispatch_release(_queue);
-	_queue = queue;
-	if (_queue) dispatch_retain(_queue);
 }
 
 @end
