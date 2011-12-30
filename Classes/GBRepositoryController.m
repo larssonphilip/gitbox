@@ -233,6 +233,7 @@
 		self.folderMonitor = [[[GBFolderMonitor alloc] init] autorelease];
 		self.folderMonitor.path = [[aURL path] stringByStandardizingPath];
 		self.undoManager = [[[NSUndoManager alloc] init] autorelease];
+		[self setupPeriodicalUpdaters];
 	}
 	return self;
 }
