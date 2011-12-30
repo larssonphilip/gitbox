@@ -10,6 +10,8 @@
 @implementation GBPeriodicalUpdater {
 	NSTimeInterval delayInterval;
 	int needsUpdateGeneration;
+	BOOL inProgress;
+	BOOL needsUpdateWhileWasInProgress;
 }
 
 @synthesize updateBlock;
@@ -39,6 +41,13 @@
 	return self;
 }
 
++ (GBPeriodicalUpdater*) updaterWithBlock:(void(^)())block
+{
+	GBPeriodicalUpdater* u = [[[self alloc] init] autorelease];
+	u.updateBlock = block;
+	return u;
+}
+
 - (NSTimeInterval) timeSinceLastUpdate
 {
 	if (!self.lastUpdateDate) return 999999.0;
@@ -57,6 +66,7 @@
 	self.updateBlock = nil;
 	self.callback = nil;
 	needsUpdateGeneration++;
+	needsUpdateWhileWasInProgress = NO;
 }
 
 - (void) setNeedsUpdate
@@ -66,16 +76,37 @@
 
 - (void) setNeedsUpdateWithBlock:(void(^)())callback
 {
-	self.nextUpdateDate = [NSDate date];
 	self.callback = OABlockConcat(self.callback, callback);
 	
+	if (inProgress)
+	{
+		needsUpdateWhileWasInProgress = YES;
+		return;
+	}
+	
+	self.nextUpdateDate = [NSDate date];
 	needsUpdateGeneration++;
 	int gen = needsUpdateGeneration;
 	dispatch_async(dispatch_get_current_queue(), ^{
 		if (gen != needsUpdateGeneration) return;
+		
+		// set this flag here to let people call setNeedsUpdate multiple times during a cycle and cause only one update
+		inProgress = YES;
+		
 		if (self.updateBlock) self.updateBlock();
-		if (self.callback) self.callback();
 	});
+}
+
+- (void) didFinishUpdate
+{
+	inProgress = NO;
+	if (needsUpdateWhileWasInProgress)
+	{
+		needsUpdateWhileWasInProgress = NO;
+		[self setNeedsUpdate];
+	}
+	if (self.callback) self.callback();
+	self.callback = nil;
 }
 
 - (void) delayUpdate

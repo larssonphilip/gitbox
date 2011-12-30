@@ -209,18 +209,13 @@
 	self.rebaseConflict = ([[NSFileManager defaultManager] fileExistsAtPath:[self.repository.dotGitURL.path stringByAppendingPathComponent:@"rebase-apply"]]);
 }
 
-- (void) updateStage
+- (void) updateStageWithBlock:(void(^)(BOOL contentDidChange))block
 {
-	if (updating) return;
-	
-	updating = YES;
-	
-	__block BOOL shouldRetry = NO; // set this to YES in some inner block if error is encountered
-	
 	NSMutableData* accumulatedData = [NSMutableData data];
 	
-	GBTask* refreshIndexTask = [GBRefreshIndexTask taskWithRepository:self.repository];
-	[self.repository launchTask:refreshIndexTask withBlock:^{
+	block = [[block copy] autorelease];
+	
+	[self.repository launchTask:[GBRefreshIndexTask taskWithRepository:self.repository] withBlock:^{
 		
 		GBStagedChangesTask* stagedChangesTask = [GBStagedChangesTask taskWithRepository:self.repository];
 		[self.repository launchTask:stagedChangesTask withBlock:^{
@@ -254,7 +249,7 @@
 					
 					NSData* data = unstagedChangesTask.output;
 					if (data) [accumulatedData appendData:data];
-
+					
 					GBUntrackedChangesTask* untrackedChangesTask = [GBUntrackedChangesTask taskWithRepository:self.repository];
 					[self.repository launchTask:untrackedChangesTask withBlock:^{
 						self.untrackedChanges = untrackedChangesTask.changes;
@@ -269,25 +264,13 @@
 						
 						// Now, we can calculate if we have different data or not.
 						
-						shouldRetry = shouldRetry || !self.previousChangesData || ![self.previousChangesData isEqualToData:accumulatedData];
+						BOOL didChange = !self.previousChangesData || ![self.previousChangesData isEqualToData:accumulatedData];
 						
-						if (shouldRetry)
-						{
-							self.previousChangesData = accumulatedData;
-							
-							[self flushBlocks:self.pendingBlocksForUpdateNotification];
-							[self notifyWithSelector:@selector(stageDidUpdateChanges:)];
-							[self updateStage];
-						}
-						else
-						{
-							self.previousChangesData = nil;
-							
-							// Here we flush both arrays of blocks, but do not issue stageDidUpdateChanges: notification because content did not change.
-							[self flushBlocks:self.pendingBlocksForUpdateNotification];
-							[self flushBlocks:self.pendingBlocksForFinishUpdateNotification];
-							[self notifyWithSelector:@selector(stageDidFinishUpdatingChanges:)];
-						}
+						self.previousChangesData = accumulatedData;
+						
+						if (block) block(didChange);
+						
+						[self notifyWithSelector:@selector(stageDidUpdateChanges:)];
 						
 					}]; // untracked
 				}]; // unstaged
@@ -296,26 +279,14 @@
 	}]; // refresh-index
 }
 
-- (void) updateChangesAndCallOnFirstUpdate:(void(^)())block // sends updateStage and adds block to the queue to be called on DidUpdateNotification
-{
-	block = [[block copy] autorelease];
-	if (block) [self.pendingBlocksForUpdateNotification addObject:block];
-	[self updateStage];
-}
 
-- (void) updateChangesAndCallWhenFinished:(void(^)())block // sends updateStage and adds block to the queue to be called on DidfinishUpdateNotification
-{
-	block = [[block copy] autorelease];
-	if (block) [self.pendingBlocksForFinishUpdateNotification addObject:block];
-	[self updateStage];
-}
-
-
-
-// TODO: review this method usage
+// Legacy method, shouldn't be called from anywhere.
 - (void) loadChangesWithBlock:(void(^)())block
 {
-	[self updateChangesAndCallWhenFinished:block]; //safer option. Improve performance by carefully getting rid of blocks in loadStageChangesWithBlock:
+	block = [[block copy] autorelease];
+	[self updateStageWithBlock:^(BOOL f){
+		if (block) block();
+	}];
 }
 
 

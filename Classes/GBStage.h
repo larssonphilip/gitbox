@@ -5,8 +5,6 @@
 // Notification selectors:
 
 // - (void) stageDidUpdateChanges:(GBStage*)aStage;
-// - (void) stageDidFinishUpdatingChanges:(GBStage*)aStage;
-
 
 @interface GBStage : GBCommit
 
@@ -14,6 +12,7 @@
 @property(nonatomic, retain) NSArray* unstagedChanges;
 @property(nonatomic, retain) NSArray* untrackedChanges;
 @property(nonatomic, copy) NSString* currentCommitMessage;
+#warning TODO: lastUpdateDate is not needed anymore after using PeriodicalUpdater
 @property(nonatomic, retain, readonly) NSDate* lastUpdateDate; // check this to see if updateStage should be sent from FS monitor
 
 - (BOOL) isRebaseConflict;
@@ -24,11 +23,8 @@
 // Returns a good default human-readable message like "somefile.c, other.txt, Makefile and 5 others"
 - (NSString*) defaultStashMessage;
 
-- (void) updateStage;
 - (void) updateConflictState;
-
-- (void) updateChangesAndCallOnFirstUpdate:(void(^)())block; // sets needsUpdate and adds block to the queue to be called on DidUpdateNotification
-- (void) updateChangesAndCallWhenFinished:(void(^)())block; // sets needsUpdate and adds block to the queue to be called on DidUpdateNotification
+- (void) updateStageWithBlock:(void(^)(BOOL contentDidChange))block;
 
 - (void) stageChanges:(NSArray*)theChanges withBlock:(void(^)())block;
 - (void) unstageChanges:(NSArray*)theChanges withBlock:(void(^)())block;

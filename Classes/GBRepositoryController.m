@@ -232,13 +232,31 @@
 		self.folderMonitor.path = [[aURL path] stringByStandardizingPath];
 		self.undoManager = [[[NSUndoManager alloc] init] autorelease];
 		
-		self.stageUpdater      = [[[GBPeriodicalUpdater alloc] init] autorelease];
-		self.stageUpdater.updateBlock = ^{
+		self.stageUpdater = [GBPeriodicalUpdater updaterWithBlock:^{
+			[self.repository.stage updateStageWithBlock:^(BOOL contentDidChange) {
+				[self.stageUpdater didFinishUpdate];
+				if (contentDidChange)
+				{
+					[self.stageUpdater delayUpdateByInterval:0.5];
+				}
+				else
+				{
+					[self.stageUpdater delayUpdate];
+				}
+			}];
+		}];
+		
+		self.submodulesUpdater = [GBPeriodicalUpdater updaterWithBlock:^{
 			
-		};
-		self.submodulesUpdater = [[[GBPeriodicalUpdater alloc] init] autorelease];
-		self.localRefsUpdater  = [[[GBPeriodicalUpdater alloc] init] autorelease];
-		self.remoteRefsUpdater = [[[GBPeriodicalUpdater alloc] init] autorelease];
+		}];
+		
+		self.localRefsUpdater  = [GBPeriodicalUpdater updaterWithBlock:^{
+			
+		}];
+		
+		self.remoteRefsUpdater = [GBPeriodicalUpdater updaterWithBlock:^{
+			
+		}];
 
 	}
 	return self;

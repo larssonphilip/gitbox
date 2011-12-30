@@ -6,6 +6,7 @@
  2. Update with block: [updater setNeedsUpdateWithBlock:^{ ... }]
  3. Update routine: updater.updateBlock = ^{
 	 [self updateStageChangesWithBlock:^{
+			 [updater didFinishUpdate];
 			 if (changed) {
 				[updater setNeedsUpdate];
 			 }
@@ -29,9 +30,12 @@
 @property(nonatomic, assign) NSTimeInterval initialDelay;
 @property(nonatomic, assign) double delayMultiplier;
 
++ (GBPeriodicalUpdater*) updaterWithBlock:(void(^)())block;
+
 - (NSTimeInterval) timeSinceLastUpdate;
 - (NSTimeInterval) timeUntilNextUpdate;
 
+- (void) didFinishUpdate; // should always be called from updateBlock when owner finishes update.
 - (void) setNeedsUpdate;
 - (void) setNeedsUpdateWithBlock:(void(^)())callback;
 - (void) delayUpdate;
