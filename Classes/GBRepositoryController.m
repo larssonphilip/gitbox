@@ -122,6 +122,8 @@
 - (void) undoPullOverCommitId:(NSString*) commitId title:(NSString*)title;
 - (void) undoCommitWithMessage:(NSString*)message commitId:(NSString*)commitId undo:(BOOL)undo;
 
+- (void) setupPeriodicalUpdaters;
+
 @end
 
 
@@ -231,33 +233,6 @@
 		self.folderMonitor = [[[GBFolderMonitor alloc] init] autorelease];
 		self.folderMonitor.path = [[aURL path] stringByStandardizingPath];
 		self.undoManager = [[[NSUndoManager alloc] init] autorelease];
-		
-		self.stageUpdater = [GBPeriodicalUpdater updaterWithBlock:^{
-			[self.repository.stage updateStageWithBlock:^(BOOL contentDidChange) {
-				[self.stageUpdater didFinishUpdate];
-				if (contentDidChange)
-				{
-					[self.stageUpdater delayUpdateByInterval:0.5];
-				}
-				else
-				{
-					[self.stageUpdater delayUpdate];
-				}
-			}];
-		}];
-		
-		self.submodulesUpdater = [GBPeriodicalUpdater updaterWithBlock:^{
-			
-		}];
-		
-		self.localRefsUpdater  = [GBPeriodicalUpdater updaterWithBlock:^{
-			
-		}];
-		
-		self.remoteRefsUpdater = [GBPeriodicalUpdater updaterWithBlock:^{
-			
-		}];
-
 	}
 	return self;
 }
@@ -557,6 +532,91 @@
 		}
 	}
 }
+
+
+
+
+
+#pragma mark Periodical State Update
+
+
+
+- (void) setupPeriodicalUpdaters
+{
+	self.stageUpdater = [GBPeriodicalUpdater updaterWithBlock:^{
+		[self.repository.stage updateStageWithBlock:^(BOOL contentDidChange) {
+			[self.stageUpdater didFinishUpdate];
+			if (contentDidChange)
+			{
+				[self.stageUpdater delayUpdateByInterval:0.5];
+			}
+			else
+			{
+				[self.stageUpdater delayUpdate];
+			}
+		}];
+	}];
+	
+	self.submodulesUpdater = [GBPeriodicalUpdater updaterWithBlock:^{
+		
+	}];
+	
+	self.localRefsUpdater  = [GBPeriodicalUpdater updaterWithBlock:^{
+		
+	}];
+	
+	self.remoteRefsUpdater = [GBPeriodicalUpdater updaterWithBlock:^{
+		
+	}];
+}
+
+
+// Stupid proxies
+
+- (void) setNeedsUpdateStage
+{
+	[self.stageUpdater setNeedsUpdate];
+}
+
+- (void) setNeedsUpdateStage:(void(^)())block
+{
+	[self.stageUpdater setNeedsUpdateWithBlock:block];
+}
+
+- (void) setNeedsUpdateSubmodules
+{
+	[self.submodulesUpdater setNeedsUpdate];
+}
+
+- (void) setNeedsUpdateSubmodules:(void(^)())block
+{
+	[self.submodulesUpdater setNeedsUpdateWithBlock:block];
+}
+
+- (void) setNeedsUpdateLocalRefs
+{
+	[self.localRefsUpdater setNeedsUpdate];
+}
+
+- (void) setNeedsUpdateLocalRefs:(void(^)())block
+{
+	[self.localRefsUpdater setNeedsUpdateWithBlock:block];
+}
+
+- (void) setNeedsUpdateRemoteRefs
+{
+	[self.remoteRefsUpdater setNeedsUpdate];
+}
+
+- (void) setNeedsUpdateRemoteRefs:(void(^)())block
+{
+	[self.remoteRefsUpdater setNeedsUpdateWithBlock:block];
+}
+
+
+
+
+
 
 
 

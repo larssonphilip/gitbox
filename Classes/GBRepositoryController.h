@@ -48,6 +48,18 @@
 - (void) start;
 - (void) stop;
 
+- (void) setNeedsUpdateStage;
+- (void) setNeedsUpdateStage:(void(^)())block;
+
+- (void) setNeedsUpdateSubmodules;
+- (void) setNeedsUpdateSubmodules:(void(^)())block;
+
+- (void) setNeedsUpdateLocalRefs;
+- (void) setNeedsUpdateLocalRefs:(void(^)())block;
+
+- (void) setNeedsUpdateRemoteRefs;
+- (void) setNeedsUpdateRemoteRefs:(void(^)())block;
+
 - (void) loadCommitsIfNeeded;
 - (void) updateRemoteRefs;
 
