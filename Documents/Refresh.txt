@@ -5,31 +5,33 @@ Gitbox needs to perform several updates to be in sync with the Git repository:
 2. Submodules
 3. Local refs
 4. Remote refs
-5. Commits (history): depends on local + remote refs and search state.
+5. Commits (history): depends on state of:
+   - local ref
+   - selected remote ref
+   - search state
+
 
 These tasks should be performed both on demand and independently of the UI. 
 System should try to take FSEvents as hints, but still rely on its own timers and "isEqual" check for updated state 
 (so it does not update again when nothing's changed).
 
+Let's imagine a periodical procedure with increasing period:
 
-Helper object: GBPeriodicalUpdater
+1. On each cycle we decide which parts of the state should be updated and when to schedule another cycle.
+2. When an external condition kicks in we decide which parts should be updated on the next cycle and if we need to reschedule it for immediate execution.
+3. Update takes some time, during which conditions may change and require another update to take place.
+4. We need initial refresh when user selects the repository.
+5. Also, for non-selected repositories, the refresh should happen at some randomized delay in the future since the start.
 
-1. Force update: [updater setNeedsUpdate]
-2. Update routine: updater.block = ^{
-		[self updateStageChangesWithBlock:^{
-			if (changed) {
-				[updater setNeedsUpdate];
-			}
-			else 
-			{
-				[updater delayUpdate];
-			}
-		}];
-   }
-3. Custom delay: [updater delayUpdateByInterval:2.0];
-4. Multiplier: updater.delayMultiplier = 2.0;  // 2.0 is a default value
-5. Initial delay: updater.initialDelay = 1.0; // 1.0 is a default value
 
+So we need the following components:
+
+{
+  BOOL needsStageUpdate;
+  BOOL needsSubmodulesUpdate;
+  BOOL needsLocalRefsUpdate;
+  BOOL needsRemoteRefsUpdate;
+}
 
 
 
