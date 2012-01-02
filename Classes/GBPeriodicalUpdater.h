@@ -26,20 +26,37 @@
 
 @interface GBPeriodicalUpdater : NSObject
 
-@property(nonatomic, copy) void(^updateBlock)();
 @property(nonatomic, assign) NSTimeInterval initialDelay;
+@property(nonatomic, assign) NSTimeInterval maximumDelay;
 @property(nonatomic, assign) double delayMultiplier;
-
-+ (GBPeriodicalUpdater*) updaterWithBlock:(void(^)())block;
-
 - (NSTimeInterval) timeSinceLastUpdate;
 - (NSTimeInterval) timeUntilNextUpdate;
 
-- (void) didFinishUpdate; // should always be called from updateBlock when owner finishes update.
+// Returns new instance initialized with updateBlock
++ (GBPeriodicalUpdater*) updaterWithBlock:(void(^)())block;
+
+// You must call it from updateBlock when finish updating something. This method invokes pending callbacks.
+- (void) didFinishUpdate; 
+
+// Forces update on the next runloop cycle.
 - (void) setNeedsUpdate;
-- (void) setNeedsUpdateWithBlock:(void(^)())callback;
+
+// Forces update on the next runloop cycle and adds block to be called when update is finished.
+- (void) setNeedsUpdate:(void(^)())callback;
+
+// Schedules update if none was yet scheduled.
+- (void) ensureUpdatedOnce;
+
+// Schedules update if none was yet scheduled. Callback is called immediately (if first update has finished already) or when current update is finished.
+- (void) ensureUpdatedOnce:(void(^)())callback;
+
+// Delays update by an automatically increased interval (using delayMultiplier property).
 - (void) delayUpdate;
+
+// Delays update by the specified interval and sets it as a current one.
 - (void) delayUpdateByInterval:(NSTimeInterval)interval;
+
+// Removes pending callbacks and breaks retain cycles in blocks.
 - (void) stop;
 
 @end

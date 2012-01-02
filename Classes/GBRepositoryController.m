@@ -62,9 +62,9 @@
 @property(nonatomic, assign) BOOL isLoadedStageChangesOnce;
 @property(nonatomic, assign) NSInteger isStaging; // maintains a count of number of staging tasks running
 @property(nonatomic, assign) NSInteger isLoadingChanges; // maintains a count of number of changes loading tasks running
+@property(nonatomic, assign) NSTimeInterval autoFetchInterval;
 @property(nonatomic, assign, readwrite) NSInteger isDisabled;
 @property(nonatomic, assign, readwrite) NSInteger isSpinning;
-@property(nonatomic, assign) NSTimeInterval autoFetchInterval;
 
 @property(nonatomic, assign) NSUInteger commitsBadgeInteger; // will be cached on save and updated after history updates
 @property(nonatomic, assign) NSUInteger stageBadgeInteger; // will be cached on save and updated after stage updates
@@ -77,11 +77,6 @@
 
 @property(nonatomic, retain) NSArray* submoduleControllers;
 @property(nonatomic, retain) NSArray* submodules;
-
-@property(nonatomic, retain) GBPeriodicalUpdater* stageUpdater;
-@property(nonatomic, retain) GBPeriodicalUpdater* submodulesUpdater;
-@property(nonatomic, retain) GBPeriodicalUpdater* localRefsUpdater;
-@property(nonatomic, retain) GBPeriodicalUpdater* remoteRefsUpdater;
 
 - (NSImage*) icon;
 
@@ -96,6 +91,8 @@
 
 - (void) pushFSEventsPause;
 - (void) popFSEventsPause;
+
+- (void) scheduleUpdateAfterInterval:(NSTimeInterval)interval;
 
 - (void) loadCommitsWithBlock:(void(^)())aBlock;
 - (void) loadStageChanges;
@@ -116,18 +113,25 @@
 - (void) scheduleAutoFetch;
 - (void) unscheduleAutoFetch;
 
-- (BOOL) isConnectionAvailable;
-
 - (void) undoPushWithForce:(BOOL)forced commitId:(NSString*)commitId;
 - (void) undoPullOverCommitId:(NSString*) commitId title:(NSString*)title;
 - (void) undoCommitWithMessage:(NSString*)message commitId:(NSString*)commitId undo:(BOOL)undo;
 
-- (void) setupPeriodicalUpdaters;
-
 @end
 
 
-@implementation GBRepositoryController
+@implementation GBRepositoryController {
+	BOOL started;
+	BOOL stopped;
+	
+	BOOL needsStageUpdate;
+	BOOL needsSubmodulesUpdate;
+	BOOL needsLocalRefsUpdate;
+	BOOL needsRemoteRefsUpdate;
+	
+	BOOL needsScheduleUpdateImmediatelyAfterCurrentUpdate;
+	NSTimeInterval currentUpdateInterval;
+}
 
 @synthesize repository;
 @synthesize sidebarItem;
@@ -166,11 +170,6 @@
 @synthesize submoduleControllers=_submoduleControllers;
 @synthesize submodules=_submodules;
 
-@synthesize stageUpdater;
-@synthesize submodulesUpdater;
-@synthesize localRefsUpdater;
-@synthesize remoteRefsUpdater;
-
 - (void) dealloc
 {
 	NSLog(@"GBRepositoryController#dealloc: %@", self);
@@ -203,11 +202,6 @@
 	self.submoduleControllers = nil;
 	self.repository = nil; // so we unsubscribe correctly
 	
-	self.stageUpdater      = nil;
-	self.submodulesUpdater = nil;
-	self.localRefsUpdater  = nil;
-	self.remoteRefsUpdater = nil;
-
 	[super dealloc];
 }
 
@@ -233,7 +227,6 @@
 		self.folderMonitor = [[[GBFolderMonitor alloc] init] autorelease];
 		self.folderMonitor.path = [[aURL path] stringByStandardizingPath];
 		self.undoManager = [[[NSUndoManager alloc] init] autorelease];
-		[self setupPeriodicalUpdaters];
 	}
 	return self;
 }
@@ -457,6 +450,9 @@
 
 - (void) start
 {
+	if (started) return;
+	started = YES;
+	
 	self.folderMonitor.target = self;
 	self.folderMonitor.action = @selector(folderMonitorDidUpdate:);
 	self.autoFetchInterval = 3.0 + drand48()*300.0; // spread all repos' initial autofetch within 5 minutes
@@ -468,13 +464,11 @@
 
 - (void) stop
 {
+	if (stopped) return;
+	stopped = YES;
+	
 	NSLog(@"GBRepositoryController#stop: %@", self);
 	[self unscheduleAutoFetch];
-	
-	[self.stageUpdater stop];
-	[self.submodulesUpdater stop];
-	[self.localRefsUpdater stop];
-	[self.remoteRefsUpdater stop];
 	
 	if (self.toolbarController.repositoryController == self) self.toolbarController.repositoryController = nil;
 	if (self.viewController.repositoryController == self) self.viewController.repositoryController = nil;
@@ -498,39 +492,35 @@
 	GBRepository* repo = self.repository;
 	if (!repo) return;
 	if (![self checkRepositoryExistance]) return;
-	
-	NSDate* now = [NSDate date];
-	
-	NSTimeInterval interval = [now timeIntervalSinceDate:repo.stage.lastUpdateDate];
-	
-	//NSLog(@"FS Monitor: Time since last update: %0.3f sec", interval);
-	
-	if (interval < self.fsEventStream.latency*1.1)
+
+	GBPeriodicalUpdater* updater = self.stageUpdater;
+	if (updater.timeUntilNextUpdate < 2.0)
 	{
-		NSLog(@"FS Monitor: Ignoring update within %0.3f sec due to latency: %0.3f sec [%@]", interval, self.fsEventStream.latency, repo.url);
-		return;
+		return; // ignore the notification as we'll have soon a scheduled one.
 	}
+	
+	// This notification came in long before the next scheduled update, so let's 
+
 	if (monitor.dotgitIsUpdated)
 	{
-		[self pushFSEventsPause];
-		[self loadStageChangesWithBlock:^{
+		NSLog(@"GBFolderMonitor: .git updated");
+		[self setNeedsUpdateStage:^{
+			
+			// TODO: refactor these methods into using updaters
 			[self updateLocalRefsWithBlock:^{
 				[self loadCommitsWithBlock:^{
 					[self updateRemoteRefsWithBlock:^{
+						
 					}];
 				}];
-				[self popFSEventsPause];
 			}];
 		}];
 	}
-	else
+	else if (monitor.folderIsUpdated)
 	{
-		if (monitor.folderIsUpdated)
-		{
-			// TODO: if monitor.dotgitIsPaused, then update stage changes *without* refreshing the index to avoid complex event sequences.
-			[self loadStageChangesWithBlock:^{
-			}];
-		}
+		NSLog(@"GBFolderMonitor: folder is updated");
+		
+		[self setNeedsUpdateStage];
 	}
 }
 
@@ -545,6 +535,11 @@
 - (void) setupPeriodicalUpdaters
 {
 	self.stageUpdater = [GBPeriodicalUpdater updaterWithBlock:^{
+		if (![self checkRepositoryExistance])
+		{
+			[self.stageUpdater didFinishUpdate];
+			return;
+		}
 		[self.repository.stage updateStageWithBlock:^(BOOL contentDidChange) {
 			[self.stageUpdater didFinishUpdate];
 			if (contentDidChange)
@@ -557,62 +552,8 @@
 			}
 		}];
 	}];
-	
-	self.submodulesUpdater = [GBPeriodicalUpdater updaterWithBlock:^{
-		
-	}];
-	
-	self.localRefsUpdater  = [GBPeriodicalUpdater updaterWithBlock:^{
-		
-	}];
-	
-	self.remoteRefsUpdater = [GBPeriodicalUpdater updaterWithBlock:^{
-		
-	}];
 }
 
-
-// Stupid proxies
-
-- (void) setNeedsUpdateStage
-{
-	[self.stageUpdater setNeedsUpdate];
-}
-
-- (void) setNeedsUpdateStage:(void(^)())block
-{
-	[self.stageUpdater setNeedsUpdateWithBlock:block];
-}
-
-- (void) setNeedsUpdateSubmodules
-{
-	[self.submodulesUpdater setNeedsUpdate];
-}
-
-- (void) setNeedsUpdateSubmodules:(void(^)())block
-{
-	[self.submodulesUpdater setNeedsUpdateWithBlock:block];
-}
-
-- (void) setNeedsUpdateLocalRefs
-{
-	[self.localRefsUpdater setNeedsUpdate];
-}
-
-- (void) setNeedsUpdateLocalRefs:(void(^)())block
-{
-	[self.localRefsUpdater setNeedsUpdateWithBlock:block];
-}
-
-- (void) setNeedsUpdateRemoteRefs
-{
-	[self.remoteRefsUpdater setNeedsUpdate];
-}
-
-- (void) setNeedsUpdateRemoteRefs:(void(^)())block
-{
-	[self.remoteRefsUpdater setNeedsUpdateWithBlock:block];
-}
 
 
 
@@ -2074,10 +2015,120 @@
 	return [self icon];
 }
 
+- (id) sidebarItemContentsPropertyList
+{
+	return [NSDictionary dictionaryWithObjectsAndKeys:
+			[NSNumber numberWithUnsignedInteger:self.commitsBadgeInteger], @"commitsBadgeInteger",
+			[NSNumber numberWithUnsignedInteger:self.stageBadgeInteger], @"stageBadgeInteger", 
+			
+			// TODO: add submodules here
+			
+			nil];
+}
+
+- (void) sidebarItemLoadContentsFromPropertyList:(id)plist
+{
+	if (!plist || ![plist isKindOfClass:[NSDictionary class]]) return;
+	
+	self.commitsBadgeInteger = (NSUInteger)[[plist objectForKey:@"commitsBadgeInteger"] integerValue];
+	self.stageBadgeInteger = (NSUInteger)[[plist objectForKey:@"stageBadgeInteger"] integerValue];
+}
 
 
 
 
+
+
+
+
+
+
+#pragma mark Periodical Updates
+
+
+- (void) resetAutoFetchInterval
+{
+	//NSLog(@"GBRepositoryController: resetAutoFetchInterval in %@ (was: %f)", [self url], autoFetchInterval);
+	NSTimeInterval plusMinusOne = (2*(0.5-drand48()));
+	autoFetchInterval = 60.0 + plusMinusOne*30.0;
+	
+#if GB_STRESS_TEST_AUTOFETCH
+	autoFetchInterval = drand48()*5.0;
+#endif 
+	[self scheduleAutoFetch];
+}
+
+- (void) scheduleAutoFetch
+{
+	[NSObject cancelPreviousPerformRequestsWithTarget:self
+											 selector:@selector(autoFetch)
+											   object:nil];  
+	[self performSelector:@selector(autoFetch) 
+			   withObject:nil
+			   afterDelay:autoFetchInterval];
+}
+
+- (void) unscheduleAutoFetch
+{
+	//NSLog(@"AutoFetch: cancel for %@", self.repository.url);
+	[NSObject cancelPreviousPerformRequestsWithTarget:self 
+											 selector:@selector(autoFetch)
+											   object:nil];
+}
+
+- (void) autoFetch
+{
+	if (![self checkRepositoryExistance]) return;
+	if (!self.autofetchQueue) return;
+	
+	//NSLog(@"GBRepositoryController: autoFetch into %@ (delay: %f)", [self url], autoFetchInterval);
+	while (autoFetchInterval > 30*60.0) autoFetchInterval -= 60.0;
+	autoFetchInterval = autoFetchInterval*(2.0 + drand48());
+	
+#if GB_STRESS_TEST_AUTOFETCH
+	autoFetchInterval =  drand48()*10.0;
+#endif
+	
+	[self scheduleAutoFetch];
+  	
+	if (self.isWaitingForAutofetch) return;
+	
+#if GB_STRESS_TEST_AUTOFETCH
+	self.isWaitingForAutofetch = YES;
+	[self loadStageChangesWithBlock:^{
+		self.isWaitingForAutofetch = NO;
+	}];
+	return;
+#endif
+	
+	self.isWaitingForAutofetch = YES;
+	[self updateRemoteRefsSilently:YES withBlock:^{
+		[self loadStageChangesWithBlockIfNeeded:^{
+			self.isWaitingForAutofetch = NO;
+		}];
+	}];
+	
+	// Previous code with tons of debugging crap.
+	
+	//  //NSLog(@"AutoFetch: self.updatesQueue = %d / %d [%@]", (int)self.updatesQueue.operationCount, (int)[self.updatesQueue.queue count], [self nameInSidebar]);
+	//  self.isWaitingForAutofetch = YES;
+	//  //NSAssert(self.autofetchQueue, @"Somebody forgot to set autofetchQueue for repository controller %@", self.repository.url);
+	////  if (self.autofetchQueue)
+	////  {
+	////    [self.autofetchQueue addBlock:^{
+	////      self.isWaitingForAutofetch = NO;
+	//      //NSLog(@"AutoFetch: start %@", [self nameInSidebar]);
+	//      [self updateRemoteRefsWithBlock:^{
+	//        //NSLog(@"AutoFetch: end %@", [self nameInSidebar]);
+	//        [self loadStageChangesWithBlockIfNeeded:^{
+	//          self.isWaitingForAutofetch = NO;
+	////          [self.autofetchQueue endBlock];
+	//        }];
+	//      }];
+	////    }];
+	////  }
+	
+}
 
 
 
@@ -2394,6 +2445,16 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
 #pragma mark GBRepository Notifications
 
 
@@ -2489,17 +2550,19 @@
 	}
 }
 
+
+#warning FIXME: push/pop FSEvents pause is meaningless if we don't have fine control on fs events, so let's not mess with additional logic and remove this code.
 - (void) pushFSEventsPause
 {
-	
-	// TODO: add also pausing of the .git only so we can still get notifications while refreshing the stage
-	
-	[self.folderMonitor pauseFolder];
+//	
+//	// TODO: add also pausing of the .git only so we can still get notifications while refreshing the stage
+//	
+//	[self.folderMonitor pauseFolder];
 }
 
 - (void) popFSEventsPause
 {
-	[self.folderMonitor resumeFolder];
+//	[self.folderMonitor resumeFolder];
 }
 
 
@@ -2619,102 +2682,6 @@
 
 
 
-#pragma mark Auto Fetch
-
-
-- (void) resetAutoFetchInterval
-{
-	//NSLog(@"GBRepositoryController: resetAutoFetchInterval in %@ (was: %f)", [self url], autoFetchInterval);
-	NSTimeInterval plusMinusOne = (2*(0.5-drand48()));
-	autoFetchInterval = 60.0 + plusMinusOne*30.0;
-	
-#if GB_STRESS_TEST_AUTOFETCH
-	autoFetchInterval = drand48()*5.0;
-#endif 
-	[self scheduleAutoFetch];
-}
-
-- (void) scheduleAutoFetch
-{
-	[NSObject cancelPreviousPerformRequestsWithTarget:self
-											 selector:@selector(autoFetch)
-											   object:nil];  
-	[self performSelector:@selector(autoFetch) 
-			   withObject:nil
-			   afterDelay:autoFetchInterval];
-}
-
-- (void) unscheduleAutoFetch
-{
-	//NSLog(@"AutoFetch: cancel for %@", self.repository.url);
-	[NSObject cancelPreviousPerformRequestsWithTarget:self 
-											 selector:@selector(autoFetch)
-											   object:nil];
-}
-
-- (void) autoFetch
-{
-	if (![self checkRepositoryExistance]) return;
-	if (!self.autofetchQueue) return;
-	
-	//NSLog(@"GBRepositoryController: autoFetch into %@ (delay: %f)", [self url], autoFetchInterval);
-	while (autoFetchInterval > 30*60.0) autoFetchInterval -= 60.0;
-	autoFetchInterval = autoFetchInterval*(2.0 + drand48());
-	
-#if GB_STRESS_TEST_AUTOFETCH
-	autoFetchInterval =  drand48()*10.0;
-#endif
-	
-	[self scheduleAutoFetch];
-  	
-	if (self.isWaitingForAutofetch) return;
-	
-#if GB_STRESS_TEST_AUTOFETCH
-	self.isWaitingForAutofetch = YES;
-	[self loadStageChangesWithBlock:^{
-		self.isWaitingForAutofetch = NO;
-	}];
-	return;
-#endif
-	
-	self.isWaitingForAutofetch = YES;
-	[self updateRemoteRefsSilently:YES withBlock:^{
-		[self loadStageChangesWithBlockIfNeeded:^{
-			self.isWaitingForAutofetch = NO;
-		}];
-	}];
-	
-	// Previous code with tons of debugging crap.
-	
-	//  //NSLog(@"AutoFetch: self.updatesQueue = %d / %d [%@]", (int)self.updatesQueue.operationCount, (int)[self.updatesQueue.queue count], [self nameInSidebar]);
-	//  self.isWaitingForAutofetch = YES;
-	//  //NSAssert(self.autofetchQueue, @"Somebody forgot to set autofetchQueue for repository controller %@", self.repository.url);
-	////  if (self.autofetchQueue)
-	////  {
-	////    [self.autofetchQueue addBlock:^{
-	////      self.isWaitingForAutofetch = NO;
-	//      //NSLog(@"AutoFetch: start %@", [self nameInSidebar]);
-	//      [self updateRemoteRefsWithBlock:^{
-	//        //NSLog(@"AutoFetch: end %@", [self nameInSidebar]);
-	//        [self loadStageChangesWithBlockIfNeeded:^{
-	//          self.isWaitingForAutofetch = NO;
-	////          [self.autofetchQueue endBlock];
-	//        }];
-	//      }];
-	////    }];
-	////  }
-	
-}
-
-
-- (BOOL) isConnectionAvailable
-{
-	return YES;
-	// FIXME: this network availability check does not work.
-	return [NSURLConnection canHandleRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://google.com/"]]];
-}
-
-
 
 
 #pragma mark NSPasteboardWriting
@@ -2744,30 +2711,6 @@
 
 
 
-
-
-#pragma mark Persistance
-
-
-
-- (id) sidebarItemContentsPropertyList
-{
-	return [NSDictionary dictionaryWithObjectsAndKeys:
-			[NSNumber numberWithUnsignedInteger:self.commitsBadgeInteger], @"commitsBadgeInteger",
-			[NSNumber numberWithUnsignedInteger:self.stageBadgeInteger], @"stageBadgeInteger", 
-			
-			// TODO: add submodules here
-			
-			nil];
-}
-
-- (void) sidebarItemLoadContentsFromPropertyList:(id)plist
-{
-	if (!plist || ![plist isKindOfClass:[NSDictionary class]]) return;
-	
-	self.commitsBadgeInteger = (NSUInteger)[[plist objectForKey:@"commitsBadgeInteger"] integerValue];
-	self.stageBadgeInteger = (NSUInteger)[[plist objectForKey:@"stageBadgeInteger"] integerValue];
-}
 
 
 @end

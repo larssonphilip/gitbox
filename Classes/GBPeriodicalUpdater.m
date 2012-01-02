@@ -2,12 +2,14 @@
 #import "OABlockOperations.h"
 
 @interface GBPeriodicalUpdater ()
+@property(nonatomic, copy) void(^updateBlock)();
 @property(nonatomic, copy) void(^callback)();
 @property(nonatomic, retain) NSDate* lastUpdateDate;
 @property(nonatomic, retain) NSDate* nextUpdateDate;
 @end
 
 @implementation GBPeriodicalUpdater {
+	BOOL updatedOnce;
 	NSTimeInterval delayInterval;
 	int needsUpdateGeneration;
 	BOOL inProgress;
@@ -16,6 +18,7 @@
 
 @synthesize updateBlock;
 @synthesize initialDelay;
+@synthesize maximumDelay;
 @synthesize delayMultiplier;
 @synthesize callback=_callback;
 @synthesize lastUpdateDate;
@@ -35,6 +38,7 @@
 	if (self = [super init])
 	{
 		initialDelay = 1.0;
+		maximumDelay = 24*60*60;
 		delayMultiplier = 2.0;
 		delayInterval = initialDelay;
 	}
@@ -71,10 +75,10 @@
 
 - (void) setNeedsUpdate
 {
-	[self setNeedsUpdateWithBlock:nil];
+	[self setNeedsUpdate:nil];
 }
 
-- (void) setNeedsUpdateWithBlock:(void(^)())callback
+- (void) setNeedsUpdate:(void(^)())callback
 {
 	self.callback = OABlockConcat(self.callback, callback);
 	
@@ -87,19 +91,48 @@
 	self.nextUpdateDate = [NSDate date];
 	needsUpdateGeneration++;
 	int gen = needsUpdateGeneration;
+	
+	// Resets delay interval
+	delayInterval = initialDelay;
+	
 	dispatch_async(dispatch_get_current_queue(), ^{
 		if (gen != needsUpdateGeneration) return;
 		
 		// set this flag here to let people call setNeedsUpdate multiple times during a cycle and cause only one update
 		inProgress = YES;
 		
+		// Estimate the update up front - before it'll be refined upon completion.
+		self.nextUpdateDate = [NSDate dateWithTimeIntervalSinceNow:delayInterval];
 		if (self.updateBlock) self.updateBlock();
 	});
+}
+
+- (void) ensureUpdatedOnce
+{
+	[self ensureUpdatedOnce:nil];
+}
+
+- (void) ensureUpdatedOnce:(void(^)())callback
+{
+	if (updatedOnce)
+	{
+		if (callback) callback();
+		return;
+	}
+	
+	if (inProgress)
+	{
+		self.callback = OABlockConcat(self.callback, callback);
+		return;
+	}
+	
+	[self setNeedsUpdate:callback];
 }
 
 - (void) didFinishUpdate
 {
 	inProgress = NO;
+	updatedOnce = YES;
 	if (needsUpdateWhileWasInProgress)
 	{
 		needsUpdateWhileWasInProgress = NO;
@@ -118,9 +151,18 @@
 {
 	self.nextUpdateDate = [NSDate dateWithTimeIntervalSinceNow:interval];
 	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, interval * NSEC_PER_SEC), dispatch_get_current_queue(), ^{
+		NSTimeInterval di = delayInterval;
 		[self setNeedsUpdate];
+		delayInterval = di;
 	});
-	delayInterval = interval*delayMultiplier;
+	
+	NSTimeInterval plusMinusOne = (2*(0.5-drand48()));
+	delayInterval = interval*delayMultiplier*(1.0 + 0.2*plusMinusOne);
+	
+	if (delayInterval > maximumDelay)
+	{
+		delayInterval = maximumDelay*(1.0 + 0.2*plusMinusOne);
+	}
 }
 
 @end
