@@ -2006,11 +2006,11 @@
 	if (!repo) return;
 	if (![self checkRepositoryExistance]) return;
 	
-	GBPeriodicalUpdater* updater = self.stageUpdater;
-	if (updater.timeUntilNextUpdate < 2.0)
-	{
-		return; // ignore the notification as we'll have soon a scheduled one.
-	}
+	//GBPeriodicalUpdater* updater = self.stageUpdater;
+//	if (updater.timeUntilNextUpdate < 2.0)
+//	{
+//		return; // ignore the notification as we'll have soon a scheduled one.
+//	}
 	
 	// This notification came in long before the next scheduled update, so let's 
 	
@@ -2039,27 +2039,27 @@
 
 
 // OBSOLETE
-- (void) setupPeriodicalUpdaters
-{
-	self.stageUpdater = [GBPeriodicalUpdater updaterWithBlock:^{
-		if (![self checkRepositoryExistance])
-		{
-			[self.stageUpdater didFinishUpdate];
-			return;
-		}
-		[self.repository.stage updateStageWithBlock:^(BOOL contentDidChange) {
-			[self.stageUpdater didFinishUpdate];
-			if (contentDidChange)
-			{
-				[self.stageUpdater delayUpdateByInterval:0.5];
-			}
-			else
-			{
-				[self.stageUpdater delayUpdate];
-			}
-		}];
-	}];
-}
+//- (void) setupPeriodicalUpdaters
+//{
+//	self.stageUpdater = [GBPeriodicalUpdater updaterWithBlock:^{
+//		if (![self checkRepositoryExistance])
+//		{
+//			[self.stageUpdater didFinishUpdate];
+//			return;
+//		}
+//		[self.repository.stage updateStageWithBlock:^(BOOL contentDidChange) {
+//			[self.stageUpdater didFinishUpdate];
+//			if (contentDidChange)
+//			{
+//				[self.stageUpdater delayUpdateByInterval:0.5];
+//			}
+//			else
+//			{
+//				[self.stageUpdater delayUpdate];
+//			}
+//		}];
+//	}];
+//}
 
 
 
@@ -2082,7 +2082,7 @@
 
 - (void) setNeedsUpdateStage
 {
-	[self setNeedsUpdateStage:nil]
+	[self setNeedsUpdateStage:nil];
 }
 
 - (void) setNeedsUpdateStage:(void(^)())block
@@ -2115,7 +2115,7 @@
 
 - (void) setNeedsUpdateRemoteRefs
 {
-	[self setNeedsUpdateRemoteRefs:nil]
+	[self setNeedsUpdateRemoteRefs:nil];
 }
 
 - (void) setNeedsUpdateRemoteRefs:(void(^)())block
