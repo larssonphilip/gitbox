@@ -453,6 +453,8 @@
 		20CE6E0A13895CC3001D9707 /* GBStash.m in Sources */ = {isa = PBXBuildFile; fileRef = 20CE6E0913895CC3001D9707 /* GBStash.m */; };
 		20CE6E0B13895CC3001D9707 /* GBStash.m in Sources */ = {isa = PBXBuildFile; fileRef = 20CE6E0913895CC3001D9707 /* GBStash.m */; };
 		20DD4DC3134B4F7300E6E6B7 /* NSObject+OAResponderChain.m in Sources */ = {isa = PBXBuildFile; fileRef = 20DD4DC2134B4F7300E6E6B7 /* NSObject+OAResponderChain.m */; };
+		20DE951514B39A5D005A5DC5 /* GBRepositoryController+Actions.m in Sources */ = {isa = PBXBuildFile; fileRef = 20DE951414B39A5D005A5DC5 /* GBRepositoryController+Actions.m */; };
+		20DE951614B39A5D005A5DC5 /* GBRepositoryController+Actions.m in Sources */ = {isa = PBXBuildFile; fileRef = 20DE951414B39A5D005A5DC5 /* GBRepositoryController+Actions.m */; };
 		20E698DB13635AE8000A3A6F /* GBAskPassServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 20E698DA13635AE8000A3A6F /* GBAskPassServer.m */; };
 		20E698DC13635AE8000A3A6F /* GBAskPassServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 20E698DA13635AE8000A3A6F /* GBAskPassServer.m */; };
 		20EA6FD0131B0EB300B97430 /* OAPropertyListRepresentation.m in Sources */ = {isa = PBXBuildFile; fileRef = 20EA6FCF131B0EB300B97430 /* OAPropertyListRepresentation.m */; };
@@ -894,6 +896,8 @@
 		20CE6E0913895CC3001D9707 /* GBStash.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBStash.m; sourceTree = "<group>"; };
 		20DD4DC1134B4F7300E6E6B7 /* NSObject+OAResponderChain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+OAResponderChain.h"; sourceTree = "<group>"; };
 		20DD4DC2134B4F7300E6E6B7 /* NSObject+OAResponderChain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+OAResponderChain.m"; sourceTree = "<group>"; };
+		20DE951314B39A5D005A5DC5 /* GBRepositoryController+Actions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GBRepositoryController+Actions.h"; sourceTree = "<group>"; };
+		20DE951414B39A5D005A5DC5 /* GBRepositoryController+Actions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GBRepositoryController+Actions.m"; sourceTree = "<group>"; };
 		20E698D913635AE8000A3A6F /* GBAskPassServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBAskPassServer.h; sourceTree = "<group>"; };
 		20E698DA13635AE8000A3A6F /* GBAskPassServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBAskPassServer.m; sourceTree = "<group>"; };
 		20E7B6EC1303620F00CB6732 /* GBMainWindowItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBMainWindowItem.h; sourceTree = "<group>"; };
@@ -1185,6 +1189,8 @@
 				206CAC74122EBCAD009284FE /* GBRepositoriesController.m */,
 				206CAC6F122EB5F7009284FE /* GBRepositoryController.h */,
 				206CAC70122EB5F7009284FE /* GBRepositoryController.m */,
+				20DE951314B39A5D005A5DC5 /* GBRepositoryController+Actions.h */,
+				20DE951414B39A5D005A5DC5 /* GBRepositoryController+Actions.m */,
 				20FE4A9E1469961800817E2C /* GBSubmoduleController.h */,
 				20FE4A9F1469961800817E2C /* GBSubmoduleController.m */,
 				2082B7C2126587CA00667A7F /* GBRepositoryCloningController.h */,
@@ -2057,6 +2063,7 @@
 				200C159F14672EB2000F4C78 /* GBSubmoduleCloningViewController.m in Sources */,
 				20FE4AA11469961800817E2C /* GBSubmoduleController.m in Sources */,
 				20AFFB0414AAFD76002943E8 /* GBPeriodicalUpdater.m in Sources */,
+				20DE951614B39A5D005A5DC5 /* GBRepositoryController+Actions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2207,6 +2214,7 @@
 				200C159E14672EB2000F4C78 /* GBSubmoduleCloningViewController.m in Sources */,
 				20FE4AA01469961800817E2C /* GBSubmoduleController.m in Sources */,
 				20AFFB0314AAFD76002943E8 /* GBPeriodicalUpdater.m in Sources */,
+				20DE951514B39A5D005A5DC5 /* GBRepositoryController+Actions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

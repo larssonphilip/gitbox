@@ -123,6 +123,9 @@ Gitbox 1.6 misc items:
 
 -- the rest of the things --
 
+
+- bug: gitbox does not honor merge.ff setting to do "git merge --no-ff"
+ 
 - integrate preferences window or sheet like in http://blog.shpakovski.com/2011/04/preferences-windows-in-cocoa.html
 - integrate Growl notifications like in https://github.com/psionides/Gitifier
 - check out SSH NSTask from https://github.com/psionides/Gitifier
