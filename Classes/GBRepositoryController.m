@@ -33,6 +33,7 @@
 #import "OABlockGroup.h"
 #import "OABlockQueue.h"
 #import "OABlockTable.h"
+#import "OABlockOperations.h"
 #import "GBFolderMonitor.h"
 #import "NSArray+OAArrayHelpers.h"
 #import "NSAlert+OAAlertHelpers.h"
@@ -54,7 +55,6 @@
 
 @property(nonatomic, retain) OABlockTable* blockTable;
 @property(nonatomic, retain) GBFolderMonitor* folderMonitor;
-
 @property(nonatomic, assign) BOOL isDisappearedFromFileSystem;
 @property(nonatomic, assign) BOOL isCommitting;
 @property(nonatomic, assign) BOOL isWaitingForAutofetch;
@@ -63,6 +63,9 @@
 @property(nonatomic, assign) NSInteger isStaging; // maintains a count of number of staging tasks running
 @property(nonatomic, assign) NSInteger isLoadingChanges; // maintains a count of number of changes loading tasks running
 @property(nonatomic, assign) NSTimeInterval autoFetchInterval;
+
+@property(nonatomic, copy) void(^updateCallback)();
+
 @property(nonatomic, assign, readwrite) NSInteger isDisabled;
 @property(nonatomic, assign, readwrite) NSInteger isSpinning;
 
@@ -129,7 +132,7 @@
 	BOOL needsLocalRefsUpdate;
 	BOOL needsRemoteRefsUpdate;
 	
-	BOOL needsScheduleUpdateImmediatelyAfterCurrentUpdate;
+	int scheduleUpdateAfterIntervalGeneration;
 	NSTimeInterval currentUpdateInterval;
 }
 
@@ -140,20 +143,28 @@
 @synthesize viewController;
 @synthesize selectedCommit;
 @synthesize lastCommitBranchName;
-@synthesize needsInitialFetch;
+
+
+// Update-related properties
+
+@synthesize updateCallback;
+
 @synthesize blockTable;
+@synthesize needsInitialFetch;
 @synthesize autofetchQueue;
 @synthesize folderMonitor;
 @dynamic fsEventStream;
-
-@synthesize isRemoteBranchesDisabled;
-@synthesize isCommitting;
-@synthesize isDisappearedFromFileSystem;
 @synthesize isWaitingForAutofetch;
 @synthesize isUpdatedSubmodulesOnce;
 @synthesize isLoadedStageChangesOnce;
 @synthesize isStaging; // maintains a count of number of staging tasks running
 @synthesize isLoadingChanges; // maintains a count of number of changes loading tasks running
+
+
+
+@synthesize isRemoteBranchesDisabled;
+@synthesize isCommitting;
+@synthesize isDisappearedFromFileSystem;
 @synthesize autoFetchInterval;
 @synthesize isDisabled;
 @synthesize isSpinning;
@@ -188,6 +199,9 @@
 	folderMonitor.target = nil;
 	folderMonitor.action = NULL;
 	[folderMonitor release]; folderMonitor = nil;
+	
+	[updateCallback release];
+	
 	//NSLog(@">>> GBRepositoryController:%p dealloc done.", self);
 	
 	[searchString release]; searchString = nil;
@@ -230,6 +244,13 @@
 	}
 	return self;
 }
+
+
+- (NSString*) description
+{
+	return [NSString stringWithFormat:@"<GBRepositoryController:%p %@>", self, self.url];
+}
+
 
 - (void) setRepository:(GBRepository*)aRepository
 {
@@ -446,114 +467,6 @@
 	}
 	return YES;
 }
-
-
-- (void) start
-{
-	if (started) return;
-	started = YES;
-	
-	self.folderMonitor.target = self;
-	self.folderMonitor.action = @selector(folderMonitorDidUpdate:);
-	self.autoFetchInterval = 3.0 + drand48()*300.0; // spread all repos' initial autofetch within 5 minutes
-#if GB_STRESS_TEST_AUTOFETCH
-	self.autoFetchInterval = drand48()*3.0;
-#endif
-	[self scheduleAutoFetch];
-}
-
-- (void) stop
-{
-	if (stopped) return;
-	stopped = YES;
-	
-	NSLog(@"GBRepositoryController#stop: %@", self);
-	[self unscheduleAutoFetch];
-	
-	if (self.toolbarController.repositoryController == self) self.toolbarController.repositoryController = nil;
-	if (self.viewController.repositoryController == self) self.viewController.repositoryController = nil;
-	self.folderMonitor.target = nil;
-	self.folderMonitor.action = NULL;
-	self.folderMonitor.path = nil;
-	self.repository = nil;
-	
-	//NSLog(@"!!! Stopped GBRepoCtrl:%p!", self);
-	[self notifyWithSelector:@selector(repositoryControllerDidStop:)];
-}
-
-- (NSString*) description
-{
-	return [NSString stringWithFormat:@"<GBRepositoryController:%p %@>", self, self.url];
-}
-
-
-- (void) folderMonitorDidUpdate:(GBFolderMonitor*)monitor
-{
-	GBRepository* repo = self.repository;
-	if (!repo) return;
-	if (![self checkRepositoryExistance]) return;
-
-	GBPeriodicalUpdater* updater = self.stageUpdater;
-	if (updater.timeUntilNextUpdate < 2.0)
-	{
-		return; // ignore the notification as we'll have soon a scheduled one.
-	}
-	
-	// This notification came in long before the next scheduled update, so let's 
-
-	if (monitor.dotgitIsUpdated)
-	{
-		NSLog(@"GBFolderMonitor: .git updated");
-		[self setNeedsUpdateStage:^{
-			
-			// TODO: refactor these methods into using updaters
-			[self updateLocalRefsWithBlock:^{
-				[self loadCommitsWithBlock:^{
-					[self updateRemoteRefsWithBlock:^{
-						
-					}];
-				}];
-			}];
-		}];
-	}
-	else if (monitor.folderIsUpdated)
-	{
-		NSLog(@"GBFolderMonitor: folder is updated");
-		
-		[self setNeedsUpdateStage];
-	}
-}
-
-
-
-
-
-#pragma mark Periodical State Update
-
-
-
-- (void) setupPeriodicalUpdaters
-{
-	self.stageUpdater = [GBPeriodicalUpdater updaterWithBlock:^{
-		if (![self checkRepositoryExistance])
-		{
-			[self.stageUpdater didFinishUpdate];
-			return;
-		}
-		[self.repository.stage updateStageWithBlock:^(BOOL contentDidChange) {
-			[self.stageUpdater didFinishUpdate];
-			if (contentDidChange)
-			{
-				[self.stageUpdater delayUpdateByInterval:0.5];
-			}
-			else
-			{
-				[self.stageUpdater delayUpdate];
-			}
-		}];
-	}];
-}
-
 
 
 
@@ -2043,7 +1956,192 @@
 
 
 
+
 #pragma mark Periodical Updates
+
+
+
+
+
+- (void) start
+{
+	if (started) return;
+	started = YES;
+	
+	self.folderMonitor.target = self;
+	self.folderMonitor.action = @selector(folderMonitorDidUpdate:);
+	self.autoFetchInterval = 3.0 + drand48()*300.0; // spread all repos' initial autofetch within 5 minutes
+#if GB_STRESS_TEST_AUTOFETCH
+	self.autoFetchInterval = drand48()*3.0;
+#endif
+	[self scheduleAutoFetch];
+}
+
+- (void) stop
+{
+	if (stopped) return;
+	stopped = YES;
+	
+	if (self.updateCallback) self.updateCallback();
+	self.updateCallback = nil;
+	
+	NSLog(@"GBRepositoryController#stop: %@", self);
+	[self unscheduleAutoFetch];
+	
+	if (self.toolbarController.repositoryController == self) self.toolbarController.repositoryController = nil;
+	if (self.viewController.repositoryController == self) self.viewController.repositoryController = nil;
+	self.folderMonitor.target = nil;
+	self.folderMonitor.action = NULL;
+	self.folderMonitor.path = nil;
+	self.repository = nil;
+	
+	//NSLog(@"!!! Stopped GBRepoCtrl:%p!", self);
+	[self notifyWithSelector:@selector(repositoryControllerDidStop:)];
+}
+
+
+- (void) folderMonitorDidUpdate:(GBFolderMonitor*)monitor
+{
+	GBRepository* repo = self.repository;
+	if (!repo) return;
+	if (![self checkRepositoryExistance]) return;
+	
+	GBPeriodicalUpdater* updater = self.stageUpdater;
+	if (updater.timeUntilNextUpdate < 2.0)
+	{
+		return; // ignore the notification as we'll have soon a scheduled one.
+	}
+	
+	// This notification came in long before the next scheduled update, so let's 
+	
+	if (monitor.dotgitIsUpdated)
+	{
+		NSLog(@"GBFolderMonitor: .git updated");
+		[self setNeedsUpdateStage:^{
+			
+			// TODO: refactor these methods into using updaters
+			[self updateLocalRefsWithBlock:^{
+				[self loadCommitsWithBlock:^{
+					[self updateRemoteRefsWithBlock:^{
+						
+					}];
+				}];
+			}];
+		}];
+	}
+	else if (monitor.folderIsUpdated)
+	{
+		NSLog(@"GBFolderMonitor: folder is updated");
+		
+		[self setNeedsUpdateStage];
+	}
+}
+
+
+// OBSOLETE
+- (void) setupPeriodicalUpdaters
+{
+	self.stageUpdater = [GBPeriodicalUpdater updaterWithBlock:^{
+		if (![self checkRepositoryExistance])
+		{
+			[self.stageUpdater didFinishUpdate];
+			return;
+		}
+		[self.repository.stage updateStageWithBlock:^(BOOL contentDidChange) {
+			[self.stageUpdater didFinishUpdate];
+			if (contentDidChange)
+			{
+				[self.stageUpdater delayUpdateByInterval:0.5];
+			}
+			else
+			{
+				[self.stageUpdater delayUpdate];
+			}
+		}];
+	}];
+}
+
+
+
+
+/*
+ 
+ BOOL needsScheduleUpdateImmediatelyAfterCurrentUpdate;
+ NSTimeInterval currentUpdateInterval;
+
+ */
+
+// TODO: 
+// - Need to delete GBPeriodicalUpdater, 
+// - move IBActions to category from GBRepoCtrl
+// - and add a single periodical scheduler for all updates
+
+
+// Update flags and callback. Callback is called when update is finished. 
+// These methods do no reschedule updates.
+
+- (void) setNeedsUpdateStage
+{
+	[self setNeedsUpdateStage:nil]
+}
+
+- (void) setNeedsUpdateStage:(void(^)())block
+{
+	self.updateCallback = OABlockConcat(self.updateCallback, block);
+	needsStageUpdate = YES;
+}
+
+- (void) setNeedsUpdateSubmodules
+{
+	[self setNeedsUpdateSubmodules:nil];
+}
+
+- (void) setNeedsUpdateSubmodules:(void(^)())block
+{
+	self.updateCallback = OABlockConcat(self.updateCallback, block);
+	needsSubmodulesUpdate = YES;
+}
+
+- (void) setNeedsUpdateLocalRefs
+{
+	[self setNeedsUpdateLocalRefs:nil];
+}
+
+- (void) setNeedsUpdateLocalRefs:(void(^)())block
+{
+	self.updateCallback = OABlockConcat(self.updateCallback, block);
+	needsLocalRefsUpdate = YES;
+}
+
+- (void) setNeedsUpdateRemoteRefs
+{
+	[self setNeedsUpdateRemoteRefs:nil]
+}
+
+- (void) setNeedsUpdateRemoteRefs:(void(^)())block
+{
+	self.updateCallback = OABlockConcat(self.updateCallback, block);
+	needsRemoteRefsUpdate = YES;
+}
+
+// Performs pending updates and calls updateCallback.
+// If more updates were requested while performing update, reschedules update.
+- (void) performPendingUpdates
+{
+	
+}
+
+- (void) scheduleUpdateAfterInterval:(NSTimeInterval)interval
+{
+	scheduleUpdateAfterIntervalGeneration++;
+	int gen = scheduleUpdateAfterIntervalGeneration;
+	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, interval * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+		if (stopped) return;
+		if (gen != scheduleUpdateAfterIntervalGeneration) return;
+		[self performPendingUpdates];
+	});
+}
+
 
 
 - (void) resetAutoFetchInterval
