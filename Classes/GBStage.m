@@ -18,7 +18,6 @@
 @property(nonatomic, retain) NSMutableArray* pendingBlocksForFinishUpdateNotification;
 @property(nonatomic, assign, getter=isRebaseConflict) BOOL rebaseConflict;
 @property(nonatomic, copy) NSData* previousChangesData;
-@property(nonatomic, retain) NSDate* lastUpdateDate;
 - (void) arrangeChanges;
 - (void) launchTaskByChunksWithArguments:(NSArray*)args paths:(NSArray*)allPaths block:(void(^)())block taskCallback:(void(^)(GBTask*))taskCallback;
 - (void) flushBlocks:(NSMutableArray*)mutableArray;
@@ -35,7 +34,6 @@
 @synthesize currentCommitMessage;
 @synthesize rebaseConflict;
 @synthesize previousChangesData;
-@synthesize lastUpdateDate;
 
 @synthesize pendingBlocksForUpdateNotification;
 @synthesize pendingBlocksForFinishUpdateNotification;
@@ -52,7 +50,6 @@
 	[pendingBlocksForUpdateNotification release];
 	[pendingBlocksForFinishUpdateNotification release];
 	[previousChangesData release];
-	[lastUpdateDate release];
 	[super dealloc];
 }
 
@@ -62,7 +59,6 @@
 	{
 		self.pendingBlocksForUpdateNotification = [NSMutableArray array];
 		self.pendingBlocksForFinishUpdateNotification = [NSMutableArray array];
-		self.lastUpdateDate = [NSDate distantPast];
 	}
 	return self;
 }
@@ -257,7 +253,6 @@
 						NSData* data = untrackedChangesTask.output;
 						if (data) [accumulatedData appendData:data];
 						
-						self.lastUpdateDate = [NSDate date];
 						[self arrangeChanges];
 						[self updateConflictState];
 						updating = NO;

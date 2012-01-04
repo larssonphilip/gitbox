@@ -42,7 +42,7 @@
 @property(nonatomic, assign, readwrite) NSUInteger commitsDiffCount;
 @property(nonatomic, retain) NSMutableDictionary* tagsByCommitID;
 
-- (void) loadCurrentLocalRefWithBlock:(void(^)())block;
+- (void) updateCurrentLocalRefWithBlock:(void(^)())block;
 - (void) loadLocalRefsWithBlock:(void(^)())block;
 
 @end
@@ -614,15 +614,29 @@
 
 
 
-- (void) updateLocalRefsWithBlock:(void(^)())aBlock
+- (void) updateLocalRefsWithBlock:(void(^)(BOOL didChange))aBlock
 {
 	aBlock = [[aBlock copy] autorelease];
 	
-	[self loadRemotesWithBlock:^{
+	GBRef* currentRef = self.currentLocalRef;
+	GBRef* targetRef = self.currentRemoteBranch;
+	
+	[self updateRemotesWithBlock:^{
 		[self loadLocalRefsWithBlock:^{
-			[self loadCurrentLocalRefWithBlock:^{
+			[self updateCurrentLocalRefWithBlock:^{
 				[self.currentLocalRef loadConfiguredRemoteBranchWithBlock:^{
-					if (aBlock) aBlock();
+					
+					if ((!self.currentRemoteBranch || 
+						 [self.currentRemoteBranch isRemoteBranch]) && 
+						[self.currentLocalRef isLocalBranch])
+					{
+						self.currentRemoteBranch = self.currentLocalRef.configuredRemoteBranch;
+					}
+					
+					BOOL didChange = (!currentRef || ![self.currentLocalRef isEqual:currentRef]) ||
+									 (!targetRef || ![self.currentRemoteBranch isEqual:targetRef]);
+					
+					if (aBlock) aBlock(didChange);
 				}];
 			}];
 		}];
@@ -630,17 +644,17 @@
 }
 
 
-- (void) loadRemotesIfNeededWithBlock:(void(^)())aBlock
+- (void) updateRemotesIfNeededWithBlock:(void(^)())aBlock
 {
 	if (self.remotes.count > 0) 
 	{
 		if (aBlock) aBlock();
 		return;
 	}
-	[self loadRemotesWithBlock:aBlock];
+	[self updateRemotesWithBlock:aBlock];
 }
 
-- (void) loadRemotesWithBlock:(void(^)())aBlock
+- (void) updateRemotesWithBlock:(void(^)())aBlock
 {
 	aBlock = [[aBlock copy] autorelease];
 	GBRemotesTask* task = [GBRemotesTask task];
@@ -685,7 +699,7 @@
 }
 
 
-- (void) loadCurrentLocalRefWithBlock:(void(^)())block
+- (void) updateCurrentLocalRefWithBlock:(void(^)())block
 {
 	NSError* outError = nil;
 	NSString* HEAD = [NSString stringWithContentsOfURL:[self gitURLWithSuffix:@"HEAD"]
@@ -866,7 +880,7 @@
 
 
 // A routine for configuring .gitmodules in .git/config. 
-// 99.99% of users don't want to think about it, so it is a private method used by reloadSubmodulesWithBlock:
+// 99.99% of users don't want to think about it, so it is a private method used by updateSubmodulesWithBlock:
 - (void) initSubmodulesWithBlock:(void(^)())block
 {
 	block = [[block copy] autorelease];
@@ -890,7 +904,7 @@
 // Reloads list of submodules for this repository. 
 // Does not pull actual submodules or change their refs in any way.
 
-- (void) reloadSubmodulesWithBlock:(void (^)())block
+- (void) updateSubmodulesWithBlock:(void (^)())block
 {
 	// Quick check for common case: if file .gitmodules does not exist, we have no submodules
 	if (![self doesHaveSubmodules])

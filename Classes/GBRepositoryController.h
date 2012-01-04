@@ -48,7 +48,7 @@
 - (void) start;
 - (void) stop;
 
-- (void) loadCommitsIfNeeded;
+- (void) updateCommitsIfNeeded;
 - (void) updateRemoteRefs;
 
 - (void) initialFetchIfNeededWithBlock:(void(^)())aBlock;

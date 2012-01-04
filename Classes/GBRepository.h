@@ -70,16 +70,16 @@
 
 #pragma mark Update
 
-- (void) loadRemotesIfNeededWithBlock:(void(^)())block;
-- (void) loadRemotesWithBlock:(void(^)())block;
-- (void) updateLocalRefsWithBlock:(void(^)())block;
+- (void) updateRemotesIfNeededWithBlock:(void(^)())block;
+- (void) updateRemotesWithBlock:(void(^)())block;
+- (void) updateLocalRefsWithBlock:(void(^)(BOOL didChange))aBlock;
 
 - (void) updateLocalBranchCommitsWithBlock:(void(^)())block;
 - (void) updateUnmergedCommitsWithBlock:(void(^)())block;
 - (void) updateUnpushedCommitsWithBlock:(void(^)())block;
 - (void) updateCommitsDiffCountWithBlock:(void(^)())block;
 
-- (void) reloadSubmodulesWithBlock:(void(^)())block;
+- (void) updateSubmodulesWithBlock:(void(^)())block;
 
 
 #pragma mark Mutation

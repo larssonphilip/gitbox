@@ -12,8 +12,6 @@
 @property(nonatomic, retain) NSArray* unstagedChanges;
 @property(nonatomic, retain) NSArray* untrackedChanges;
 @property(nonatomic, copy) NSString* currentCommitMessage;
-#warning TODO: lastUpdateDate is not needed anymore after using PeriodicalUpdater
-@property(nonatomic, retain, readonly) NSDate* lastUpdateDate; // check this to see if updateStage should be sent from FS monitor
 
 - (BOOL) isRebaseConflict;
 - (BOOL) isDirty;

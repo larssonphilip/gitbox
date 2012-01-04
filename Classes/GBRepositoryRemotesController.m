@@ -134,7 +134,7 @@
 	}
 	
 	// Since we listen to FSEvent, changes done here should automatically apply
-	//if (dirtyFlag) [self.repository loadRemotesWithBlock:^{}];
+	//if (dirtyFlag) [self.repository updateRemotesWithBlock:^{}];
 	
 	for (GBRemote* remote in self.repository.remotes)
 	{
