@@ -682,7 +682,6 @@
 //  submodule.repositoryController = repoCtrl;
 ////  submodule.repositoryController.delegate = self;
 //  repoCtrl.updatesQueue = cloningRepoCtrl.updatesQueue;
-//  repoCtrl.autofetchQueue = cloningRepoCtrl.autofetchQueue;
 //  [repoCtrl start];
 //  [repoCtrl.updatesQueue prependBlock:^{
 //    [repoCtrl initialUpdateWithBlock:^{

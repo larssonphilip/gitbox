@@ -37,6 +37,7 @@
 	if (![object isKindOfClass:[self class]]) return NO;
 	
 	GBRef* other = (GBRef*)object;
+	
 	if (self.name && [self.name isEqualToString:other.name])
 	{
 		if (self.isTag)

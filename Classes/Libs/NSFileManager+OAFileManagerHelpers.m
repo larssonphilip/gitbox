@@ -64,14 +64,14 @@
   return URLs;
 }
 
-#warning FIXME: are you sure we should call completionHandler from background thread??
-
 + (void) calculateSizeAtURL:(NSURL*)aURL completionHandler:(void(^)())completionHandler
 {
 	NSFileManager* fm = [[[NSFileManager alloc] init] autorelease];
 	
 	completionHandler = [[completionHandler copy] autorelease];
 	
+	dispatch_queue_t callerQueue = dispatch_get_current_queue();
+	dispatch_retain(callerQueue);
 	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
 		
 		BOOL isDir = NO;
@@ -102,7 +102,11 @@
 		{
 			bytes = [[fm attributesOfItemAtPath:aURL.path error:nil] fileSize];
 		}
-		if (completionHandler) completionHandler(bytes);
+		
+		dispatch_async(callerQueue, ^{
+			if (completionHandler) completionHandler(bytes);
+		});
+		dispatch_release(callerQueue);
 	});
 }
 

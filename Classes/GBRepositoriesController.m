@@ -23,7 +23,6 @@
 @interface GBRepositoriesController () <NSOpenSavePanelDelegate>
 @property(nonatomic, retain) GBCloneWindowController* cloneWindowController;
 @property(nonatomic, retain) OAFSEventStream* fsEventStream;
-@property(nonatomic, retain) OABlockQueue* autofetchQueue;
 
 - (void) removeObjects:(NSArray*)objects;
 
@@ -41,7 +40,6 @@
 @implementation GBRepositoriesController
 
 @synthesize rootController;
-@synthesize autofetchQueue;
 @synthesize repositoryViewController;
 @synthesize repositoryToolbarController;
 @synthesize cloneWindowController;
@@ -50,7 +48,6 @@
 - (void) dealloc
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	self.autofetchQueue = nil;
 	self.cloneWindowController = nil;
 	self.fsEventStream = nil;
 	[super dealloc];
@@ -68,8 +65,6 @@
 		self.sidebarItem.section = YES;
 		self.sidebarItem.draggable = NO;
 		self.sidebarItem.editable = NO;
-		
-		self.autofetchQueue = [OABlockQueue queueWithName:@"AutoFetch" concurrency:4];
 		
 		self.repositoryViewController = [[[GBRepositoryViewController alloc] initWithNibName:@"GBRepositoryViewController" bundle:nil] autorelease];
 		self.repositoryToolbarController = [[[GBRepositoryToolbarController alloc] init] autorelease];
@@ -407,7 +402,6 @@
 	if (!repoCtrl) return;
 	repoCtrl.toolbarController = self.repositoryToolbarController;
 	repoCtrl.viewController = self.repositoryViewController;
-	repoCtrl.autofetchQueue = self.autofetchQueue;
 }
 
 - (void) startRepositoryController:(GBRepositoryController*)repoCtrl
@@ -417,7 +411,6 @@
 	[repoCtrl addObserverForAllSelectors:self];
 	repoCtrl.fsEventStream = self.fsEventStream;
 	[repoCtrl start];
-	[repoCtrl initialFetchIfNeededWithBlock:^{}];
 }
 
 

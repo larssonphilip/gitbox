@@ -116,7 +116,7 @@
 	if (repoCtrl)
 	{
 		// TODO: do a similar thing with stage and commit controllers (they currently load changes in updateViews method which is silly)
-		[self.repositoryController updateCommitsIfNeeded];
+		//[self.repositoryController updateCommitsIfNeeded];
 		[self prepareChangesControllersIfNeeded];
 	}
 	

@@ -57,10 +57,6 @@
 @property(nonatomic, assign) BOOL isDisappearedFromFileSystem;
 @property(nonatomic, assign) BOOL isCommitting;
 
-@property(nonatomic, assign) BOOL isWaitingForAutofetch;
-@property(nonatomic, assign) BOOL isUpdatedSubmodulesOnce;
-@property(nonatomic, assign) NSTimeInterval autoFetchInterval;
-
 @property(nonatomic, assign, readwrite) NSInteger isDisabled;
 @property(nonatomic, assign, readwrite) NSInteger isSpinning;
 
@@ -87,9 +83,6 @@
 - (void) pushSpinning;
 - (void) popSpinning;
 
-- (void) pushFSEventsPause;
-- (void) popFSEventsPause;
-
 
 // Local state updates
 
@@ -104,10 +97,7 @@
 // Remote state updates
 
 - (void) updateRemoteStateAfterDelay:(NSTimeInterval)interval;
-
-- (void) resetAutoFetchInterval; // to remove
-- (void) scheduleAutoFetch; // to remove
-- (void) unscheduleAutoFetch; // to remove
+- (void) invalidateDelayedRemoteStateUpdate;
 - (void) updateRemoteRefsWithBlock:(void(^)())aBlock;
 - (void) updateRemoteRefsSilently:(BOOL)silently withBlock:(void(^)())aBlock;
 - (void) updateBranchesForRemote:(GBRemote*)aRemote silently:(BOOL)silently withBlock:(void(^)(BOOL))aBlock;
@@ -127,6 +117,9 @@
 	BOOL started;
 	BOOL stopped;
 	BOOL selected;
+	
+	BOOL alreadyLaunchedInitialUpdates;
+	BOOL commitsAreInvalid;
 	
 	NSInteger stagingCounter;
 	
@@ -152,18 +145,14 @@
 
 @synthesize blockTable;
 @synthesize needsInitialFetch;
-@synthesize autofetchQueue;
 @synthesize folderMonitor;
 @dynamic fsEventStream;
-@synthesize isWaitingForAutofetch;
-@synthesize isUpdatedSubmodulesOnce;
 
 
 
 @synthesize isRemoteBranchesDisabled;
 @synthesize isCommitting;
 @synthesize isDisappearedFromFileSystem;
-@synthesize autoFetchInterval;
 @synthesize isDisabled;
 @synthesize isSpinning;
 @synthesize commitsBadgeInteger;
@@ -193,7 +182,6 @@
 	[selectedCommit release]; selectedCommit = nil;
 	[lastCommitBranchName release]; lastCommitBranchName = nil;
 	[blockTable release]; blockTable = nil;
-	[autofetchQueue release]; autofetchQueue = nil;
 	folderMonitor.target = nil;
 	folderMonitor.action = NULL;
 	[folderMonitor release]; folderMonitor = nil;
@@ -308,7 +296,6 @@
 				GBSubmoduleController* ctrl = [GBSubmoduleController controllerWithSubmodule:updatedSubmodule];
 				[updatedSubmoduleControllers addObject:ctrl];
 				
-				ctrl.autofetchQueue = self.autofetchQueue;
 				ctrl.viewController = self.viewController;
 				ctrl.toolbarController = self.toolbarController;
 				ctrl.fsEventStream = self.fsEventStream;
@@ -335,7 +322,6 @@
 				{
 					GBSubmoduleController* ctrl = [GBSubmoduleController controllerWithSubmodule:updatedSubmodule];
 					[updatedSubmoduleControllers addObject:ctrl];
-					ctrl.autofetchQueue = self.autofetchQueue;
 					ctrl.viewController = self.viewController;
 					ctrl.toolbarController = self.toolbarController;
 					ctrl.fsEventStream = self.fsEventStream;
@@ -504,12 +490,11 @@
 	self.toolbarController.repositoryController = self;
 	self.viewController.repositoryController = self;
 	
-	if (!self.isUpdatedSubmodulesOnce)
+	if (alreadyLaunchedInitialUpdates)
 	{
-		self.isUpdatedSubmodulesOnce = YES;
-		[self pushSpinning];
-		[self updateSubmodulesWithBlock:^{
-			[self popSpinning];
+		alreadyLaunchedInitialUpdates = YES;
+		[self updateLocalStateWithBlock:^{
+			[self updateRemoteStateAfterDelay:0.0];
 		}];
 	}
 }
@@ -661,11 +646,15 @@
 	
 	self.folderMonitor.target = self;
 	self.folderMonitor.action = @selector(folderMonitorDidUpdate:);
-	self.autoFetchInterval = 3.0 + drand48()*300.0; // spread all repos' initial autofetch within 5 minutes
-#if GB_STRESS_TEST_AUTOFETCH
-	self.autoFetchInterval = drand48()*3.0;
-#endif
-	[self scheduleAutoFetch];
+	
+	// Problem:
+	// 1. We want to update local and remote states after some big randomized  delay.
+	// 2. Each state has a notion of "first update". So some state should be updated.
+	// 3. Local state update should be issues immediately when repository is selected.
+	
+	double localUpdateDelayInSeconds = 10.0 + 10.0*60.0*drand48();
+	[self updateLocalStateAfterDelay:localUpdateDelayInSeconds];
+	[self updateRemoteStateAfterDelay:localUpdateDelayInSeconds + 10.0*60.0*drand48()];
 }
 
 - (void) stop
@@ -674,7 +663,6 @@
 	stopped = YES;
 	
 	NSLog(@"GBRepositoryController#stop: %@", self);
-	[self unscheduleAutoFetch];
 	
 	if (self.toolbarController.repositoryController == self) self.toolbarController.repositoryController = nil;
 	if (self.viewController.repositoryController == self) self.viewController.repositoryController = nil;
@@ -697,6 +685,7 @@
 	// If time to next update is short enough, ignore this event.
 	// Also, if it's negative, we are already in process of updating what's needed. 
 	NSTimeInterval timeToNextUpdate = nextLocalStateUpdateTimestamp - [[NSDate date] timeIntervalSince1970];
+	NSLog(@"[%@] timeToNextUpdate == %f", [self windowTitle], timeToNextUpdate);
 	if (timeToNextUpdate < 2.0)
 	{
 		return;
@@ -738,6 +727,10 @@
 	localStateUpdateGeneration++;
 	int gen = localStateUpdateGeneration;
 	
+	interval = MIN(interval, 60.0*60.0);
+	
+	NSLog(@"[%@] Local update scheduled: %0.0f sec", self.windowTitle, interval);
+	
 	nextLocalStateUpdateTimestamp = [[NSDate date] timeIntervalSince1970] + interval;
 	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, interval * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
 		if (stopped) return;
@@ -755,24 +748,26 @@
 		if (aBlock) aBlock();
 		return;
 	}
+	
+	localStateUpdateGeneration++;
+	
 	[self.blockTable addBlock:aBlock forName:@"updateStageChanges" proceedIfClear:^{
 		[self.repository.stage updateStageWithBlock:^(BOOL didChange){
-			
-			if (didChange)
-			{
-				localStateUpdateInterval = 1.0;
-				[self updateSubmodulesWithBlock:^{
+			[self updateSubmodulesWithBlock:^{
+				if (didChange)
+				{
+					localStateUpdateInterval = 1.0;
 					[self updateLocalStateAfterDelay:localStateUpdateInterval];
 					[self.blockTable callBlockForName:@"updateStageChanges"];
-				}];
-			}
-			else
-			{
-				localStateUpdateInterval = localStateUpdateInterval*(1.5+drand48());
-				[self updateLocalStateAfterDelay:localStateUpdateInterval];
-				[self.blockTable callBlockForName:@"updateStageChanges"];
-			}
-			[self.sidebarItem update];
+				}
+				else
+				{
+					localStateUpdateInterval = localStateUpdateInterval*(1.5+drand48());
+					[self updateLocalStateAfterDelay:localStateUpdateInterval];
+					[self.blockTable callBlockForName:@"updateStageChanges"];
+				}
+				[self.sidebarItem update];
+			}];
 		}];
 	}];
 }
@@ -830,17 +825,17 @@
 }
 
 
-#warning FIXME: remove this method when commits are loaded from within updateLocalRefsWithBlock
-- (void) updateLocalRefsIfNeededWithBlock:(void(^)())aBlock
-{
-	if (self.repository.currentLocalRef)
-	{
-		if (aBlock) aBlock();
-		return;
-	}
-	
-	[self updateLocalRefsWithBlock:aBlock];
-}
+//#warning FIXME: remove this method when commits are loaded from within updateLocalRefsWithBlock
+//- (void) updateLocalRefsIfNeededWithBlock:(void(^)())aBlock
+//{
+//	if (self.repository.currentLocalRef)
+//	{
+//		if (aBlock) aBlock();
+//		return;
+//	}
+//	
+//	[self updateLocalRefsWithBlock:aBlock];
+//}
 
 - (void) updateLocalRefsWithBlock:(void(^)())aBlock
 {
@@ -855,8 +850,9 @@
 
 		[self.repository updateLocalRefsWithBlock:^(BOOL didChange){
 			
-			if (didChange || !self.repository.localBranchCommits)
+			if (didChange || !self.repository.localBranchCommits || commitsAreInvalid)
 			{
+				commitsAreInvalid = NO;
 				[self updateCommitsWithBlock:^{
 					[self.blockTable callBlockForName:@"updateLocalRefs"];
 				}];
@@ -871,14 +867,14 @@
 	}];
 }
 
-// Called by history controller to ensure we have the commits.
-- (void) updateCommitsIfNeeded
-{
-	if (!self.repository.localBranchCommits)
-	{
-		[self updateCommitsWithBlock:^{}];
-	}
-}
+//#warning TODO: get rid of this and instead load necessary stuff based on local conditions (e.g. selected/focused/changed etc.)
+//- (void) updateCommitsIfNeeded
+//{
+//	if (!self.repository.localBranchCommits)
+//	{
+//		[self updateCommitsWithBlock:^{}];
+//	}
+//}
 
 - (void) updateCommitsWithBlock:(void(^)())aBlock
 {
@@ -889,19 +885,18 @@
 	}
 	
 	[self.blockTable addBlock:aBlock forName:@"updateCommits" proceedIfClear:^{
-		[self pushFSEventsPause];
 		[self pushSpinning];
 		
-		[self updateLocalRefsIfNeededWithBlock:^{
+		//#warning TODO: get rid of updateLocalRefsIfNeededWithBlock because commits should always be updated from within self under 
+		//[self updateLocalRefsIfNeededWithBlock:^{
 			[self.repository updateLocalBranchCommitsWithBlock:^{
 				[self.blockTable callBlockForName:@"updateCommits"];
 				[self popSpinning];
-				[self popFSEventsPause];
 				[self.sidebarItem update];
 				[self notifyWithSelector:@selector(repositoryControllerDidUpdateCommits:)];
 				[self updateCommitsBadgeInteger];
 			}];
-		}];
+		//}];
 	}];
 }
 
@@ -923,13 +918,23 @@
 
 
 
-- (void) updateRemoteStateAfterDelay:(NSTimeInterval)interval
+- (void) invalidateDelayedRemoteStateUpdate
 {
 	remoteStateUpdateGeneration++;
+}
+
+- (void) updateRemoteStateAfterDelay:(NSTimeInterval)interval
+{
+	[self invalidateDelayedRemoteStateUpdate];
 	int gen = remoteStateUpdateGeneration;
+	
+	interval = MIN(interval, 60.0*60.0);
+	
+	NSLog(@"[%@] Remote update scheduled: %0.0f sec", self.windowTitle, interval);
 	
 	nextRemoteStateUpdateTimestamp = [[NSDate date] timeIntervalSince1970] + interval;
 	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, interval * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+		if (![self checkRepositoryExistance]) return;
 		if (stopped) return;
 		if (gen != remoteStateUpdateGeneration) return;
 		
@@ -954,17 +959,37 @@
 		if (aBlock) aBlock();
 		return;
 	}
+	
+	[self invalidateDelayedRemoteStateUpdate];
+	
+	aBlock = [[aBlock copy] autorelease];
+	
+	__block BOOL didChangeAnyRemote = NO;
     
-	[self.blockTable addBlock:aBlock forName:@"updateRemoteRefs" proceedIfClear:^{
+	[self.blockTable addBlock:^{
+		
+		if (didChangeAnyRemote)
+		{
+			remoteStateUpdateInterval = 10.0 + 5.0*drand48();
+			[self updateRemoteStateAfterDelay:remoteStateUpdateInterval];
+		}
+		else
+		{
+			remoteStateUpdateInterval = remoteStateUpdateInterval*(1.5+drand48());
+			[self updateRemoteStateAfterDelay:remoteStateUpdateInterval];
+		}
+		
+		if (aBlock) aBlock();
+		
+	} forName:@"updateRemoteRefs" proceedIfClear:^{
 		[self.repository updateRemotesIfNeededWithBlock:^{
+			
 			[OABlockGroup groupBlock:^(OABlockGroup* blockGroup){
 				for (GBRemote* aRemote in self.repository.remotes)
 				{
 					[blockGroup enter];
-					[self updateBranchesForRemote:aRemote silently:silently withBlock:^(BOOL didChange){
-						
-#warning TODO: accumulate didChange flags
-						
+					[self updateBranchesForRemote:aRemote silently:silently withBlock:^(BOOL didChangeRemote){
+						if (didChangeRemote) didChangeAnyRemote = YES;
 						[blockGroup leave];
 					}];
 				}
@@ -987,12 +1012,11 @@
 	}
 	
 	//NSLog(@"%@: updating branches for remote %@...", [self class], aRemote.alias);
-	NSTimeInterval delayedInterval = remoteStateUpdateInterval*(1.5+drand48());
+	[self invalidateDelayedRemoteStateUpdate];
 	[aRemote updateBranchesSilently:silently withBlock:^{
+		[self invalidateDelayedRemoteStateUpdate];
 		if (aRemote.needsFetch)
 		{
-//			remoteStateUpdateInterval = 10.0;
-//			[self updateRemoteStateAfterDelay:remoteStateUpdateInterval];
 			//NSLog(@"%@: updated branches for remote %@; needs fetch! %@", [self class], aRemote.alias, [self longNameForSourceList]);
 			[self fetchRemote:aRemote silently:silently withBlock:^{
 				if (aBlock) aBlock(YES);
@@ -1001,110 +1025,10 @@
 		else
 		{
 			//NSLog(@"%@: updated branches for remote %@; no changes.", [self class], aRemote.alias);
-//			remoteStateUpdateInterval = delayedInterval;
-//			[self updateRemoteStateAfterDelay:remoteStateUpdateInterval];
 			if (aBlock) aBlock(NO);
 		}
 	}];
 }
-
-
-
-
-
-- (void) resetAutoFetchInterval
-{
-	//NSLog(@"GBRepositoryController: resetAutoFetchInterval in %@ (was: %f)", [self url], autoFetchInterval);
-	NSTimeInterval plusMinusOne = (2*(0.5-drand48()));
-	autoFetchInterval = 60.0 + plusMinusOne*30.0;
-	
-#if GB_STRESS_TEST_AUTOFETCH
-	autoFetchInterval = drand48()*5.0;
-#endif 
-	[self scheduleAutoFetch];
-}
-
-
-- (void) scheduleAutoFetch
-{
-	[NSObject cancelPreviousPerformRequestsWithTarget:self
-											 selector:@selector(autoFetch)
-											   object:nil];  
-	[self performSelector:@selector(autoFetch) 
-			   withObject:nil
-			   afterDelay:autoFetchInterval];
-}
-
-- (void) unscheduleAutoFetch
-{
-	//NSLog(@"AutoFetch: cancel for %@", self.repository.url);
-	[NSObject cancelPreviousPerformRequestsWithTarget:self 
-											 selector:@selector(autoFetch)
-											   object:nil];
-}
-
-- (void) autoFetch
-{
-	if (![self checkRepositoryExistance]) return;
-	if (!self.autofetchQueue) return;
-	
-	//NSLog(@"GBRepositoryController: autoFetch into %@ (delay: %f)", [self url], autoFetchInterval);
-	while (autoFetchInterval > 30*60.0) autoFetchInterval -= 60.0;
-	autoFetchInterval = autoFetchInterval*(2.0 + drand48());
-	
-#if GB_STRESS_TEST_AUTOFETCH
-	autoFetchInterval =  drand48()*10.0;
-#endif
-	
-	[self scheduleAutoFetch];
-  	
-	if (self.isWaitingForAutofetch) return;
-	
-#if GB_STRESS_TEST_AUTOFETCH
-	self.isWaitingForAutofetch = YES;
-	[self updateStageChangesWithBlock:^{
-		self.isWaitingForAutofetch = NO;
-	}];
-	return;
-#endif
-	
-	self.isWaitingForAutofetch = YES;
-	[self updateRemoteRefsSilently:YES withBlock:^{
-		self.isWaitingForAutofetch = NO;
-	}];
-}
-
-
-
-
-
-
-#warning FIXME: remove this method; schedule initial update after start.
-- (void) initialFetchIfNeededWithBlock:(void(^)())aBlock
-{
-	if (!self.needsInitialFetch)
-	{
-		if (aBlock) aBlock();
-		return;
-	}
-	
-	aBlock = [[aBlock copy] autorelease];
-	
-	self.needsInitialFetch = NO;
-	
-	[self pushSpinning];
-	[self pushDisabled];
-	[self pushFSEventsPause];
-	[self updateLocalRefsWithBlock:^{
-		[self updateRemoteRefsWithBlock:^{
-			if (aBlock) aBlock();
-			[self popSpinning];
-			[self popDisabled];
-			[self popFSEventsPause];
-		}];
-	}];
-}
-
 
 
 
@@ -1210,19 +1134,6 @@
 }
 
 
-#warning FIXME: push/pop FSEvents pause is meaningless if we don't have fine control on fs events, so let's not mess with additional logic and remove this code.
-- (void) pushFSEventsPause
-{
-//	
-//	// TODO: add also pausing of the .git only so we can still get notifications while refreshing the stage
-//	
-//	[self.folderMonitor pauseFolder];
-}
-
-- (void) popFSEventsPause
-{
-//	[self.folderMonitor resumeFolder];
-}
 
 
 
@@ -1381,7 +1292,6 @@
 	
 	[self pushDisabled];
 	[self pushSpinning];
-	[self pushFSEventsPause];
 	
 	// clear existing commits before switching
 	repo.localBranchCommits = nil;
@@ -1395,7 +1305,6 @@
 				[self notifyWithSelector:@selector(repositoryControllerDidCheckoutBranch:)];
 				[self popDisabled];
 				[self popSpinning];
-				[self popFSEventsPause];
 			}];
 		}];
 	});
@@ -1403,7 +1312,6 @@
 
 - (void) checkoutRef:(GBRef*)ref
 {
-	[self resetAutoFetchInterval];
 	[self checkoutHelper:^(void(^block)()){
 		[self.repository checkoutRef:ref withBlock:block];
 	}];
@@ -1411,7 +1319,6 @@
 
 - (void) checkoutRef:(GBRef*)ref withNewName:(NSString*)name
 {
-	[self resetAutoFetchInterval];
 	[self checkoutHelper:^(void(^block)()){
 		[self.repository checkoutRef:ref withNewName:name block:block];
 	}];
@@ -1419,7 +1326,6 @@
 
 - (void) checkoutNewBranchWithName:(NSString*)name commit:(GBCommit*)aCommit
 {
-	[self resetAutoFetchInterval];
 	[self checkoutHelper:^(void(^block)()){
 		[self.repository checkoutNewBranchWithName:name commit:aCommit block:block];
 	}];
@@ -1429,7 +1335,6 @@
 {
 	[[self.undoManager prepareWithInvocationTarget:self] deleteTagWithName:tagName commitId:commitId];
 	[self.undoManager setActionName:[NSString stringWithFormat:NSLocalizedString(@"New Tag %@", @""), tagName]];
-	[self resetAutoFetchInterval];
 	[self checkoutHelper:^(void(^block)()){
 		[self.repository createTagWithName:tagName commitId:commitId block:block];
 	}];
@@ -1552,8 +1457,6 @@
 
 - (void) selectRemoteBranch:(GBRef*) remoteBranch
 {
-	[self resetAutoFetchInterval];
-	
 	self.repository.currentRemoteBranch = remoteBranch;
 	[self.repository configureTrackingRemoteBranch:remoteBranch 
 									 withLocalName:self.repository.currentLocalRef.name 
@@ -1566,7 +1469,6 @@
 
 - (void) createAndSelectRemoteBranchWithName:(NSString*)name remote:(GBRemote*)aRemote
 {
-	[self resetAutoFetchInterval];
 	GBRef* remoteBranch = [[GBRef new] autorelease];
 	remoteBranch.repository = self.repository;
 	remoteBranch.name = name;
@@ -1637,7 +1539,6 @@
 	}
 	
 	[self pushSpinning];
-	[self pushFSEventsPause];
 	stagingCounter++;
 	block(notBusyChanges, stage, ^{
 		stagingCounter--;
@@ -1648,7 +1549,6 @@
 			[self updateStageChangesWithBlock:^{}];
 		}
 		[self popSpinning];
-		[self popFSEventsPause];
 	});
 }
 
@@ -1688,13 +1588,11 @@
 	// in 'git checkout HEAD' command when mixed with tracked paths.
 	for (GBChange* change in changes)
 	{
-		[self pushFSEventsPause];
 		[self stagingHelperForChanges:[NSArray arrayWithObject:change] withBlock:^(NSArray* notBusyChanges, GBStage* stage, void(^block)()){
 			[stage unstageChanges:notBusyChanges withBlock:^{
 				[stage revertChanges:notBusyChanges withBlock:block];
 			}];
 		} postStageBlock:^{
-			[self popFSEventsPause];
 		}];
 	}
 }
@@ -1716,6 +1614,7 @@
 		self.isCommitting = NO;
 		
 		[self updateStageChangesWithBlock:^{
+			commitsAreInvalid = YES;
 			[self updateLocalRefsWithBlock:^{
 				[self popSpinning];
 				
@@ -1767,7 +1666,7 @@
 	[self pushSpinning];
 	[self.repository resetSoftToCommit:undo ? [NSString stringWithFormat:@"%@^", aCommitId] : aCommitId withBlock:^{
 		self.isCommitting = NO;
-		
+		commitsAreInvalid = YES;
 		[self updateLocalRefsWithBlock:^{
 			
 			[self popSpinning];
@@ -1797,13 +1696,16 @@
 	block = [[block copy] autorelease];
 	
 	[self pushSpinning];
-	[self pushDisabled];
+	if (!silently) [self pushDisabled];
 	[self.repository fetchRemote:aRemote silently:silently withBlock:^{
+		[self pushDisabled];
+		commitsAreInvalid = YES;
 		[self updateLocalRefsWithBlock:^{
 			[self updateRemoteRefsSilently:silently withBlock:block];
 			[self popSpinning];
+			[self popDisabled];
 		}];
-		[self popDisabled];
+		if (!silently) [self popDisabled];
 	}];
 }
 
@@ -1811,11 +1713,12 @@
 {
 	if (self.isDisabled) return;
 	
-	[self resetAutoFetchInterval];
+	[self invalidateDelayedRemoteStateUpdate];
 	[self pushSpinning];
 	[self pushDisabled];
 	[self.repository fetchAllWithBlock:^{
 		[self.repository.lastError present];
+		commitsAreInvalid = YES;
 		[self updateLocalRefsWithBlock:^{
 			[self updateRemoteRefsWithBlock:nil];
 			[self popSpinning];
@@ -1836,10 +1739,11 @@
 		[[self.undoManager prepareWithInvocationTarget:self] undoPullOverCommitId:ref.commitId title:title];
 		[self.undoManager setActionName:title];
 	}
-	[self resetAutoFetchInterval];
+	[self invalidateDelayedRemoteStateUpdate];
 	[self pushSpinning];
 	[self pushDisabled];
 	[self.repository pullOrMergeWithBlock:^{
+		commitsAreInvalid = YES;
 		[self updateLocalStateWithBlock:^{
 			[self updateRemoteRefsWithBlock:nil];
 			[self popSpinning];
@@ -1855,7 +1759,7 @@
 	[[self.undoManager prepareWithInvocationTarget:self] pull:nil];
 	[self.undoManager setActionName:title];
 	
-	[self resetAutoFetchInterval];
+	[self invalidateDelayedRemoteStateUpdate];
 	[self pushSpinning];
 	[self pushDisabled];
 	
@@ -1864,6 +1768,7 @@
 	[self.repository doGitCommand:[NSArray arrayWithObjects:@"stash", @"--include-untracked", nil] withBlock:^{
 		[self.repository doGitCommand:[NSArray arrayWithObjects:@"reset", @"--hard", commitId, nil] withBlock:^{
 			[self.repository doGitCommand:[NSArray arrayWithObjects:@"stash", @"apply", nil] withBlock:^{
+				commitsAreInvalid = YES;
 				[self updateLocalStateWithBlock:^{
 					[self updateRemoteRefsWithBlock:nil];
 					[self popSpinning];
@@ -1878,10 +1783,11 @@
 
 - (void) helperPushBranch:(GBRef*)srcRef toRemoteBranch:(GBRef *)dstRef forced:(BOOL)forced
 {
-	[self resetAutoFetchInterval];
+	[self invalidateDelayedRemoteStateUpdate];
 	[self pushSpinning];
 	[self pushDisabled];
 	[self.repository pushBranch:srcRef toRemoteBranch:dstRef forced:forced withBlock:^{
+		commitsAreInvalid = YES;
 		[self updateLocalRefsWithBlock:^{
 			[self updateRemoteRefsWithBlock:^{
 			}];
@@ -1938,20 +1844,14 @@
 {
 	if (isDisabled) return;
 	
-	[self resetAutoFetchInterval];
+	[self invalidateDelayedRemoteStateUpdate];
 	[self pushSpinning];
 	[self pushDisabled];
-	[self pushFSEventsPause];
 	[self.repository rebaseWithBlock:^{
-		[self updateStageChangesWithBlock:^{
-			[self updateLocalRefsWithBlock:^{
-				[self updateSubmodulesWithBlock:^{
-					[self updateCommitsWithBlock:nil];
-					[self updateRemoteRefsWithBlock:nil];
-					[self popFSEventsPause];
-					[self popSpinning];
-				}];
-			}];
+		commitsAreInvalid = YES;
+		[self updateLocalStateWithBlock:^{
+			[self updateRemoteRefsWithBlock:nil];
+			[self popSpinning];
 			[self popDisabled];
 		}];
 	}];

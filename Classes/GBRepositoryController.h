@@ -17,7 +17,6 @@
 
 @property(nonatomic, retain) GBRepository* repository;
 @property(nonatomic, retain, readonly) NSURL* url;
-@property(nonatomic, retain) OABlockQueue* autofetchQueue;
 @property(nonatomic, retain) GBSidebarItem* sidebarItem;
 @property(nonatomic, assign) NSWindow* window;
 @property(nonatomic, retain) GBRepositoryToolbarController* toolbarController;
@@ -48,10 +47,8 @@
 - (void) start;
 - (void) stop;
 
-- (void) updateCommitsIfNeeded;
+//- (void) updateCommitsIfNeeded;
 - (void) updateRemoteRefs;
-
-- (void) initialFetchIfNeededWithBlock:(void(^)())aBlock;
 
 - (void) checkoutRef:(GBRef*) ref;
 - (void) checkoutRef:(GBRef*) ref withNewName:(NSString*)name;
