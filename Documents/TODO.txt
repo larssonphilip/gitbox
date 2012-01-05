@@ -48,6 +48,9 @@ Gitbox 1.6 misc items:
 + bug: with a lot of submodules (or with added repos for submodules), the app may bounce disk notifications between repos neverending. Should filter out changes inside submodules in a folder monitor.
 + prematurely refresh remote refs if focused into the window.
 
+- it takes very long time to update local state for non-selected repo.
+- disable spinning for local state updates
+
 - checkbox "Clone Github repositories"
 
 - bug: long error sheets when pull or push fails - with progress status
