@@ -49,7 +49,7 @@ Gitbox 1.6 misc items:
 + prematurely refresh remote refs if focused into the window.
 
 - bug: after submodules are updated, controller is not reused and all local state is lost.
-
+- bug: submodules in changes list are presented without folder icon (instead of checking extension, should try to find the file on disk and get its type - but not the icon because it'll be current icon, not a historical one)
 - it takes very long time to update local state for non-selected repo.
 - disable spinning for local state updates
 
