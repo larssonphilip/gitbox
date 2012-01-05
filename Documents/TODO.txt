@@ -46,9 +46,12 @@ Gitbox 1.6 Release Notes
 Gitbox 1.6 misc items:
 
 + bug: with a lot of submodules (or with added repos for submodules), the app may bounce disk notifications between repos neverending. Should filter out changes inside submodules in a folder monitor.
-- bug: should not refresh index while stage update is in progress.
++ prematurely refresh remote refs if focused into the window.
 
-- prematurely refresh remote refs if focused into the window.
+- bug: should not refresh index while staging multiple items quickly one-by-one. - use delayed update to override FSEvent.
+- bug: stage: selection is not accurately preserved when stage is reloaded.
+- bug: stage: scroll offset is not preserved when stage is reloaded.
+
 - checkbox "Clone Github repositories"
 
 - bug: long error sheets when pull or push fails - with progress status
@@ -71,14 +74,14 @@ Gitbox 1.6 misc items:
 + submodules: display "download" button in the sidebar item
 + submodules: submodule download controller
 
-- "git diff-files -C -M" causes submodules' .git folders to be updated and makes them updated themselves
++ "git diff-files -C -M" causes submodules' .git folders to be updated and makes them updated themselves
 
 - yet another refactoring:
   + subclass GBRepositoryController -> GBSubmoduleController for customizing sidebaritem
   + do not store any controllers inside GBSubmodule object 
   ≠ do not store weak ref to parent repository inside GBSubmodule object - put there only the URLs
   - update sidebar item and repository when update is finished
-  - maybe (!) store a weak ref to parent repo ctrl from GBSubmoduleController -> this would allow for submodule settings update when you change remote URL inside the submodule; but maybe indirect access by repo URL will b enough (or similar)
+  - maybe (!) store a weak ref to parent repo ctrl from GBSubmoduleController -> this would allow for submodule settings update when you change remote URL inside the submodule; but maybe indirect access by repo URL will be enough (or similar)
 
 - submodules: bug: when submodule is selected for the first time, view controller is not available [rare issue with simultaneous sidebar update]
 - submodules: bug: when submodule starts downloading, download button is not removed from sidebar.

@@ -84,6 +84,8 @@
 - (void) popSpinning;
 
 
+- (void) updateWhenGotFocus;
+
 // Local state updates
 
 - (void) updateLocalStateWithBlock:(void(^)())aBlock;
@@ -132,6 +134,7 @@
 	
 	int remoteStateUpdateGeneration;
 	NSTimeInterval nextRemoteStateUpdateTimestamp;
+	NSTimeInterval prevRemoteStateUpdateTimestamp;
 	NSTimeInterval remoteStateUpdateInterval;
 }
 
@@ -500,9 +503,7 @@
 	}
 	else
 	{
-		dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 500*USEC_PER_SEC), dispatch_get_main_queue(), ^{
-			[self updateStageChangesWithBlock:^{}];
-		});
+		[self updateWhenGotFocus];
 	}
 }
 
@@ -510,11 +511,7 @@
 {
 	if (selected)
 	{
-		// A short delay to work around stupid Xcode effect: when cmd+tabbing from Xcode to Gitbox, Xcode updates project file right before Gitbox is activated. If we immediately update the stage, we'll display temporary xcode project file.
-
-		dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 500*USEC_PER_SEC), dispatch_get_main_queue(), ^{
-			[self updateStageChangesWithBlock:^{}];
-		});
+		[self updateWhenGotFocus];
 	}
 }
 
@@ -699,7 +696,8 @@
 	// 4. + Selected repos also should increase ignoreFSEventsInterval.
 	// 5. ? Should reset distrust interval when actually refreshed the state (even if no changes occured). Maybe should distrust slower
 	// 6. + Should change parameters when getting focus or getting selected, unselected.
-	// 7. - periodical updates are interesting mostly for the short 
+	// 7. + periodical updates are interesting mostly for the nearest interval.
+	// 8. - Use delayed update as merely a way to ignore FS events (e.g. while doing multiple staging commands).
 	
 	// If time to next update is short enough, ignore this event.
 	// Also, if it's negative, we are already in process of updating what's needed. 
@@ -754,6 +752,20 @@
 #pragma mark Updates
 
 
+
+- (void) updateWhenGotFocus
+{
+	// A short delay to work around stupid Xcode effect: when cmd+tabbing from Xcode to Gitbox, Xcode updates project file right before Gitbox is activated. If we immediately update the stage, we'll display temporary xcode project file.
+	
+	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 500*USEC_PER_SEC), dispatch_get_main_queue(), ^{
+		[self updateStageChangesWithBlock:^{}];
+	});
+	
+	if ([[NSDate date] timeIntervalSince1970] - prevRemoteStateUpdateTimestamp > 60.0)
+	{
+		[self updateRemoteStateAfterDelay:0];
+	}
+}
 
 - (void) updateLocalStateWithBlock:(void(^)())aBlock
 {
@@ -995,6 +1007,10 @@
 		if (aBlock) aBlock();
 		return;
 	}
+	
+	prevRemoteStateUpdateTimestamp = [[NSDate date] timeIntervalSince1970];
+	
+	//NSLog(@"<<< Checking remote refs [%@]", self.windowTitle);
 	
 	[self invalidateDelayedRemoteStateUpdate];
 	
