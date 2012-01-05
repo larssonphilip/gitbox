@@ -48,10 +48,6 @@ Gitbox 1.6 misc items:
 + bug: with a lot of submodules (or with added repos for submodules), the app may bounce disk notifications between repos neverending. Should filter out changes inside submodules in a folder monitor.
 + prematurely refresh remote refs if focused into the window.
 
-- bug: should not refresh index while staging multiple items quickly one-by-one. - use delayed update to override FSEvent.
-- bug: stage: selection is not accurately preserved when stage is reloaded.
-- bug: stage: scroll offset is not preserved when stage is reloaded.
-
 - checkbox "Clone Github repositories"
 
 - bug: long error sheets when pull or push fails - with progress status
@@ -59,6 +55,11 @@ Gitbox 1.6 misc items:
 - crash: on invalid ssh key the askpass controller crashes with "task" selector
 - crash: The app crashes whenever I try to delete a remote branch, shortly after hitting the “Ok” button of the edit branch sheet
 - normalize commit text with composition (NFC) 
+
+- bug: should not refresh index while staging multiple items quickly one-by-one. - use delayed update to override FSEvent.
+- bug: stage: selection is not accurately preserved when stage is reloaded.
+- bug: stage: scroll offset is not preserved when stage is reloaded.
+
 
 - bug: problem with multiline commit messages - flattened
 - bug: about window or license window is not in focus
