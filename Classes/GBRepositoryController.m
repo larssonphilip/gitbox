@@ -2462,7 +2462,7 @@
 	block = [[block copy] autorelease];
 	
 	GBTask* task = self.repository.task;
-	task.arguments = [[NSArray arrayWithObjects:@"rm", @"--cached", @"--ignore-unmatch", @"--force", nil] arrayByAddingObjectsFromArray:paths];
+	task.arguments = [[NSArray arrayWithObjects:@"rm", @"--cached", @"--ignore-unmatch", @"--force", @"--", nil] arrayByAddingObjectsFromArray:paths];
 	[task launchWithBlock:^{
 		if (block) block();
 	}];

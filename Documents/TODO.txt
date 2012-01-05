@@ -37,12 +37,16 @@ Gitbox 1.6 Release Notes
 ✓ Fixed several text labels.
 ✓ Fixed an annoying bug in search field (when space is entered, all text was selected)
 ✓ Fixed bug with presenting files containing ":" and other URL-unfriendly characters.
+✓ Fixed performance bug with frequent stage updates (high CPU consumption).
+✓ Fixed bug with staging file names beginning with dash ("-")
+
 
 --
 
 Gitbox 1.6 misc items:
 
-- bug: with a lot of submodules (or with added repos for submodules), the app may bounce disk notifications between repos neverending. Should filter out changes inside submodules in a folder monitor.
++ bug: with a lot of submodules (or with added repos for submodules), the app may bounce disk notifications between repos neverending. Should filter out changes inside submodules in a folder monitor.
+- bug: should not refresh index while stage update is in progress.
 
 - prematurely refresh remote refs if focused into the window.
 - checkbox "Clone Github repositories"

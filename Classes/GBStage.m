@@ -311,7 +311,7 @@
 		return;
 	}
 	
-	[self launchTaskByChunksWithArguments:[NSArray arrayWithObjects:@"update-index", @"--remove", nil]
+	[self launchTaskByChunksWithArguments:[NSArray arrayWithObjects:@"update-index", @"--remove", @"--", nil]
 									paths:pathsToDelete
 									block:block
 							 taskCallback:^(GBTask *task) {
@@ -329,7 +329,7 @@
 		return;
 	}
 	
-	[self launchTaskByChunksWithArguments:[NSArray arrayWithObjects:@"add", @"--force", nil]
+	[self launchTaskByChunksWithArguments:[NSArray arrayWithObjects:@"add", @"--force", @"--", nil]
 									paths:pathsToAdd
 									block:block
 							 taskCallback:^(GBTask *task) {
@@ -396,7 +396,7 @@
 									paths:otherPaths
 									block:
 	 ^{
-		 [self launchTaskByChunksWithArguments:[NSArray arrayWithObjects:@"rm", @"--cached", @"--force", nil]
+		 [self launchTaskByChunksWithArguments:[NSArray arrayWithObjects:@"rm", @"--cached", @"--force", @"--", nil]
 										 paths:addedPaths
 										 block:block 
 								  taskCallback:nil];
@@ -476,7 +476,7 @@
 	
 	if ([pathsToGitRm count] > 0)
 	{
-		[self launchTaskByChunksWithArguments:[NSArray arrayWithObjects:@"rm", @"--force", nil]
+		[self launchTaskByChunksWithArguments:[NSArray arrayWithObjects:@"rm", @"--force", @"--", nil]
 										paths:pathsToGitRm
 										block:trashingBlock
 								 taskCallback:nil];
