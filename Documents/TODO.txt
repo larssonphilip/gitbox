@@ -44,6 +44,7 @@ Gitbox 1.6 misc items:
 
 - bug: with a lot of submodules (or with added repos for submodules), the app may bounce disk notifications between repos neverending. Should filter out changes inside submodules in a folder monitor.
 
+- prematurely refresh remote refs if focused into the window.
 - checkbox "Clone Github repositories"
 
 - bug: long error sheets when pull or push fails - with progress status
@@ -249,7 +250,8 @@ Features:
 - general: gitosis integration
 - general: shell command to open gitbox
 - general: bonjour publishing and cloning (see http://github.com/chad/gitjour; NSNetService, CryptoExercise sample code)
-- general: github integration: handling other repos/branches, pull requests and initial setup commands
+- github: handling other repos/branches, pull requests and initial setup commands
+- github: provide a link to open repo, commit on github.com.
 - general: handling URL schema: gitbox://git@sss.pierlis.com/repo.git#commits/sha1
 - general: obfuscated license check
 - general: polish the icon

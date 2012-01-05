@@ -24,7 +24,6 @@
 @property(nonatomic, retain) GBCommit* selectedCommit;
 @property(nonatomic, retain) OAFSEventStream* fsEventStream;
 @property(nonatomic, copy) NSString* lastCommitBranchName;
-@property(nonatomic, assign) BOOL needsInitialFetch;
 
 @property(nonatomic, assign, readonly, getter=isSearching) BOOL searching;
 @property(nonatomic, copy)   NSString* searchString;

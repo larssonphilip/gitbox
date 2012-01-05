@@ -236,7 +236,6 @@
 	GBRepositoriesGroup* aGroup = [self groupAndIndex:&insertionIndex forObject:cloningRepoCtrl];
 	
 	GBRepositoryController* repoCtrl = [GBRepositoryController repositoryControllerWithURL:cloningRepoCtrl.targetURL];
-	repoCtrl.needsInitialFetch = YES;
 	[self startRepositoryController:repoCtrl];
 	
 	NSMutableArray* selectedObjects = [[self.rootController.selectedObjects mutableCopy] autorelease];
@@ -294,7 +293,6 @@
 			{
 				repoCtrl = [GBRepositoryController repositoryControllerWithURL:aURL];
 				[aGroup insertObject:repoCtrl atIndex:insertionIndex];
-				repoCtrl.needsInitialFetch = YES;
 				[self startRepositoryController:repoCtrl];
 				insertionIndex++;
 			}

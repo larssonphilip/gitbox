@@ -127,6 +127,9 @@
 	NSTimeInterval nextLocalStateUpdateTimestamp;
 	NSTimeInterval localStateUpdateInterval;
 
+	NSTimeInterval recentFSEventsUpdateTimestamp;
+	NSTimeInterval ignoreFSEventsInterval;
+	
 	int remoteStateUpdateGeneration;
 	NSTimeInterval nextRemoteStateUpdateTimestamp;
 	NSTimeInterval remoteStateUpdateInterval;
@@ -144,10 +147,8 @@
 // Update-related properties
 
 @synthesize blockTable;
-@synthesize needsInitialFetch;
 @synthesize folderMonitor;
 @dynamic fsEventStream;
-
 
 
 @synthesize isRemoteBranchesDisabled;
@@ -490,12 +491,18 @@
 	self.toolbarController.repositoryController = self;
 	self.viewController.repositoryController = self;
 	
-	if (alreadyLaunchedInitialUpdates)
+	if (!alreadyLaunchedInitialUpdates)
 	{
 		alreadyLaunchedInitialUpdates = YES;
 		[self updateLocalStateWithBlock:^{
 			[self updateRemoteStateAfterDelay:0.0];
 		}];
+	}
+	else
+	{
+		dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 500*USEC_PER_SEC), dispatch_get_main_queue(), ^{
+			[self updateStageChangesWithBlock:^{}];
+		});
 	}
 }
 
@@ -652,6 +659,8 @@
 	// 2. Each state has a notion of "first update". So some state should be updated.
 	// 3. Local state update should be issues immediately when repository is selected.
 	
+	ignoreFSEventsInterval = 1.0;
+	
 	double localUpdateDelayInSeconds = 10.0 + 10.0*60.0*drand48();
 	[self updateLocalStateAfterDelay:localUpdateDelayInSeconds];
 	[self updateRemoteStateAfterDelay:localUpdateDelayInSeconds + 10.0*60.0*drand48()];
@@ -682,25 +691,58 @@
 	if (!repo) return;
 	if (![self checkRepositoryExistance]) return;
 	
+	// Some good ideas:
+	// 1. + Non-selected repos do not do periodical updates - only updated by FSEvents.
+	// 2. + Non-selected repos increase ignoreFSEventsInterval if nothing changes. (exponentially)
+	// 3. + Selected repos prefer periodical updates to FSEvents because they are more controllable. 
+	//     Maybe by rescheduling delayed update in proportion to how old is the previous FSEvent and/or how close is end of ignoreInterval.
+	// 4. + Selected repos also should increase ignoreFSEventsInterval.
+	// 5. ? Should reset distrust interval when actually refreshed the state (even if no changes occured). Maybe should distrust slower
+	// 6. + Should change parameters when getting focus or getting selected, unselected.
+	// 7. - periodical updates are interesting mostly for the short 
+	
 	// If time to next update is short enough, ignore this event.
 	// Also, if it's negative, we are already in process of updating what's needed. 
-	NSTimeInterval timeToNextUpdate = nextLocalStateUpdateTimestamp - [[NSDate date] timeIntervalSince1970];
-	NSLog(@"[%@] timeToNextUpdate == %f", [self windowTitle], timeToNextUpdate);
-	if (timeToNextUpdate < 2.0)
+	
+	NSTimeInterval currentTimestamp = [[NSDate date] timeIntervalSince1970];
+	NSTimeInterval timeToNextUpdate = nextLocalStateUpdateTimestamp - currentTimestamp;
+	//NSLog(@"[%@] timeToNextUpdate == %f", [self windowTitle], timeToNextUpdate);
+	
+	NSTimeInterval toleratedDelay = selected ? 2.0 : 10.0;
+	
+	if (timeToNextUpdate < toleratedDelay)
 	{
 		return;
 	}
 	
+	NSTimeInterval ignoreLimitForSelectedRepo = 3.0;
+	if (selected && ignoreFSEventsInterval > ignoreLimitForSelectedRepo)
+	{
+		ignoreFSEventsInterval = ignoreLimitForSelectedRepo;
+	}
+	
+	NSTimeInterval endOfIgnoreInterval = recentFSEventsUpdateTimestamp + ignoreFSEventsInterval;
+	if (endOfIgnoreInterval > currentTimestamp)
+	{
+		//NSLog(@"FSEvent: Don't trust during %0.1f sec interval [%@]", ignoreFSEventsInterval, self.windowTitle);
+		
+		// Reschedule next update to the end of ignore interval (or leave the current schedule in place if it's closer.)
+		if (timeToNextUpdate > endOfIgnoreInterval)
+		{
+			localStateUpdateInterval = (endOfIgnoreInterval - currentTimestamp) + drand48();
+			[self updateLocalStateAfterDelay:localStateUpdateInterval];
+		}
+		return;
+	}
+	
+	//NSLog(@"FSEvent: forcing update because scheduled is only in %0.1f sec [%@]", timeToNextUpdate, self.windowTitle);
+	
 	// This notification came in long before the next scheduled update, so let's force the update.
 	
-	if (monitor.dotgitIsUpdated)
+	if (monitor.dotgitIsUpdated || monitor.folderIsUpdated)
 	{
-		NSLog(@"GBFolderMonitor: .git updated");
-		[self updateLocalStateAfterDelay:0];
-	}
-	else if (monitor.folderIsUpdated)
-	{
-		NSLog(@"GBFolderMonitor: folder is updated");
+		recentFSEventsUpdateTimestamp = currentTimestamp;
+		localStateUpdateInterval = 1.0 + drand48();
 		[self updateLocalStateAfterDelay:0];
 	}
 }
@@ -729,14 +771,18 @@
 	
 	interval = MIN(interval, 60.0*60.0);
 	
-	NSLog(@"[%@] Local update scheduled: %0.0f sec", self.windowTitle, interval);
+	//NSLog(@"Local update scheduled: %0.0f sec [%@]", interval, self.windowTitle);
 	
 	nextLocalStateUpdateTimestamp = [[NSDate date] timeIntervalSince1970] + interval;
 	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, interval * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
 		if (stopped) return;
 		if (gen != localStateUpdateGeneration) return;
+		if (!selected) return;
 		
+		// Do not reset the current ignore interval if caused by fsevent or periodical update.
+		NSTimeInterval ignoreToRestore = ignoreFSEventsInterval;
 		[self updateLocalStateWithBlock:^{}];
+		ignoreFSEventsInterval = ignoreToRestore;
 	});
 }
 
@@ -749,21 +795,34 @@
 		return;
 	}
 	
+	ignoreFSEventsInterval = 1.0;
 	localStateUpdateGeneration++;
 	
 	[self.blockTable addBlock:aBlock forName:@"updateStageChanges" proceedIfClear:^{
+		NSLog(@"!!! Updating stage [%@]", self.windowTitle);
 		[self.repository.stage updateStageWithBlock:^(BOOL didChange){
 			[self updateSubmodulesWithBlock:^{
 				if (didChange)
 				{
+					ignoreFSEventsInterval = 1.0;
 					localStateUpdateInterval = 1.0;
 					[self updateLocalStateAfterDelay:localStateUpdateInterval];
 					[self.blockTable callBlockForName:@"updateStageChanges"];
 				}
 				else
 				{
-					localStateUpdateInterval = localStateUpdateInterval*(1.5+drand48());
-					[self updateLocalStateAfterDelay:localStateUpdateInterval];
+					ignoreFSEventsInterval = ignoreFSEventsInterval*2;
+					localStateUpdateInterval = localStateUpdateInterval*2.0;
+					
+					// Don't schedule updates at all in a distant future. We are much more likely to get valid FS- or other event there.
+					if (localStateUpdateInterval < 5.0)
+					{
+						[self updateLocalStateAfterDelay:localStateUpdateInterval];
+					}
+					else
+					{
+						nextLocalStateUpdateTimestamp = [[NSDate date] timeIntervalSince1970] + 999999.0;
+					}
 					[self.blockTable callBlockForName:@"updateStageChanges"];
 				}
 				[self.sidebarItem update];
@@ -800,10 +859,9 @@
 
 - (void) updateSubmodulesWithBlock:(void(^)())aBlock
 {
-	//#warning TODO: disabled submodules for beta testing
-	//	
-	//	if (aBlock) aBlock();
-	//	return;
+//#warning TODO: disabled submodules for beta testing
+//	if (aBlock) aBlock();
+//	return;
 	
 	[self.blockTable addBlock:aBlock forName:@"updateSubmodules" proceedIfClear:^{
 		
@@ -823,19 +881,6 @@
 		}];
 	}];
 }
-
-
-//#warning FIXME: remove this method when commits are loaded from within updateLocalRefsWithBlock
-//- (void) updateLocalRefsIfNeededWithBlock:(void(^)())aBlock
-//{
-//	if (self.repository.currentLocalRef)
-//	{
-//		if (aBlock) aBlock();
-//		return;
-//	}
-//	
-//	[self updateLocalRefsWithBlock:aBlock];
-//}
 
 - (void) updateLocalRefsWithBlock:(void(^)())aBlock
 {
@@ -866,15 +911,6 @@
 		}];  
 	}];
 }
-
-//#warning TODO: get rid of this and instead load necessary stuff based on local conditions (e.g. selected/focused/changed etc.)
-//- (void) updateCommitsIfNeeded
-//{
-//	if (!self.repository.localBranchCommits)
-//	{
-//		[self updateCommitsWithBlock:^{}];
-//	}
-//}
 
 - (void) updateCommitsWithBlock:(void(^)())aBlock
 {
@@ -930,7 +966,7 @@
 	
 	interval = MIN(interval, 60.0*60.0);
 	
-	NSLog(@"[%@] Remote update scheduled: %0.0f sec", self.windowTitle, interval);
+	//NSLog(@"Remote update scheduled: %0.0f sec [%@]", interval, self.windowTitle);
 	
 	nextRemoteStateUpdateTimestamp = [[NSDate date] timeIntervalSince1970] + interval;
 	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, interval * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
