@@ -116,27 +116,29 @@
 		if (![scanner scanString:@":" intoString:NULL]) ChangesScanError(@"Expected colon");
 		
 		//  2. mode for "src"; 000000 if creation or unmerged.
-		if (![scanner scanUpToString:@" " intoString:NULL]) ChangesScanError(@"Expected src mode");
+		NSString* srcMode = nil;
+		if (![scanner scanUpToString:@" " intoString:&srcMode]) ChangesScanError(@"Expected src mode");
 		
 		//  3. a space.
 		if (![scanner scanString:@" " intoString:NULL]) ChangesScanError(@"Expected space 3");
 		
 		//  4. mode for "dst"; 000000 if deletion or unmerged.
-		if (![scanner scanUpToString:@" " intoString:NULL]) ChangesScanError(@"Expected dst mode");
+		NSString* dstMode = nil;
+		if (![scanner scanUpToString:@" " intoString:&dstMode]) ChangesScanError(@"Expected dst mode");
 		
 		//  5. a space.
 		if (![scanner scanString:@" " intoString:NULL]) ChangesScanError(@"Expected space 5");
 		
 		//  6. sha1 for "src"; 0{40} if creation or unmerged.
-		NSString* oldRevision = nil;
-		if (![scanner scanUpToString:@" " intoString:&oldRevision]) ChangesScanError(@"Expected src SHA1");
+		NSString* srcRevision = nil;
+		if (![scanner scanUpToString:@" " intoString:&srcRevision]) ChangesScanError(@"Expected src SHA1");
 		
 		//  7. a space.
 		if (![scanner scanString:@" " intoString:NULL]) ChangesScanError(@"Expected space 7");
 		
 		//  8. sha1 for "dst"; 0{40} if creation, unmerged or "look at work tree".
-		NSString* newRevision = nil;
-		if (![scanner scanUpToString:@" " intoString:&newRevision]) ChangesScanError(@"Expected dst SHA1");
+		NSString* dstRevision = nil;
+		if (![scanner scanUpToString:@" " intoString:&dstRevision]) ChangesScanError(@"Expected dst SHA1");
 		
 		//  9. a space.
 		if (![scanner scanString:@" " intoString:NULL]) ChangesScanError(@"Expected space 9");
@@ -186,13 +188,22 @@
 		aChange.repository = self.repository;
 		aChange.statusScore = statusScore; // should set statusScore before setting a statusCode for correct calculation
 		aChange.statusCode = statusCode;
-		aChange.srcRevision = oldRevision;
-		aChange.dstRevision = newRevision;
+		aChange.srcMode = srcMode;
+		aChange.dstMode = dstMode;
+		aChange.srcRevision = srcRevision;
+		aChange.dstRevision = dstRevision;
 		aChange.srcURL = [self.repository URLForRelativePath:srcPath];
 		aChange.dstURL = [self.repository URLForRelativePath:dstPath];
 		
-		[aChanges addObject:aChange];
-		//NSLog(@"Added change %@ %@->%@ %@", statusCode, oldRevision, newRevision, srcPath);
+		if ([aChange isRealChange])
+		{
+			//NSLog(@"Added change %@ %@->%@ %@", statusCode, oldRevision, newRevision, srcPath);
+			[aChanges addObject:aChange];
+		}
+		else
+		{
+			//NSLog(@"Skipped bogus change %@ %@->%@ %@ (it's usually a dirty submodule)", statusCode, srcRevision, dstRevision, srcPath);
+		}
 	}
 	return aChanges;
 }

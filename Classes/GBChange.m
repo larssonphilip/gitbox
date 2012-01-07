@@ -29,6 +29,8 @@
 @synthesize statusCode;
 @synthesize status;
 @synthesize statusScore;
+@synthesize srcMode;
+@synthesize dstMode;
 @synthesize srcRevision;
 @synthesize dstRevision;
 @synthesize commitId;
@@ -52,18 +54,20 @@
 
 - (void) dealloc
 {
-	self.srcURL = nil;
-	self.dstURL = nil;
-	self.statusCode = nil;
-	self.status = nil;
-	self.srcRevision = nil;
-	self.dstRevision = nil;
-	self.commitId = nil;
-	self.cachedSrcIcon = nil;
-	self.cachedDstIcon = nil;
-	self.quicklookItemURL = nil;
-	[searchQuery release]; searchQuery = nil;
-	[highlightedPathSubstrings release]; highlightedPathSubstrings = nil;
+	[srcURL release];
+	[dstURL release];
+	[statusCode release];
+	[status release];
+	[srcMode release];
+	[dstMode release];
+	[srcRevision release];
+	[dstRevision release];
+	[commitId release];
+	[cachedSrcIcon release];
+	[cachedDstIcon release];
+	[quicklookItemURL release];
+	[searchQuery release];
+	[highlightedPathSubstrings release];
 	[super dealloc];
 }
 
@@ -105,7 +109,6 @@
 #pragma mark Interrogation
 
 
-
 + (NSArray*) diffTools
 {
 	return [NSArray arrayWithObjects:@"FileMerge", 
@@ -117,6 +120,20 @@
 			@"DiffMerge",
 			//NSLocalizedString(@"Other (full path to executable):", @"Change"), 
 			nil];
+}
+
+- (BOOL) isRealChange
+{
+	// Return NO if both modes and revisions are the same.
+	
+	if (self.srcRevision && self.dstRevision &&
+		[self.srcRevision isEqualToString:self.dstRevision] &&
+		self.srcMode && self.dstMode && 
+		[self.srcMode isEqualToString:self.dstMode])
+	{
+		return NO;
+	}
+	return YES;
 }
 
 - (NSURL*) fileURL
@@ -250,7 +267,7 @@
 	if (statusCode == aCode) return;
 	
 	[statusCode release];
-	statusCode = [aCode retain];
+	statusCode = [aCode copy];
 	
 	self.status = [self statusForStatusCode:statusCode];
 }

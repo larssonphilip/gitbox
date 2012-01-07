@@ -40,7 +40,7 @@ Gitbox 1.6 Release Notes
 ✓ Fixed performance bug with frequent stage updates (high CPU consumption).
 ✓ Fixed bug with staging file names beginning with dash ("-")
 
-
+ 
 --
 
 Gitbox 1.6 misc items:
@@ -48,10 +48,13 @@ Gitbox 1.6 misc items:
 + bug: with a lot of submodules (or with added repos for submodules), the app may bounce disk notifications between repos neverending. Should filter out changes inside submodules in a folder monitor.
 + prematurely refresh remote refs if focused into the window.
 
-- bug: after submodules are updated, controller is not reused and all local state is lost.
+- bug: after submodules are updated, controller is not reused and all local state is lost. Happens when submodule's HEAD changes.
 - bug: submodules in changes list are presented without folder icon (instead of checking extension, should try to find the file on disk and get its type - but not the icon because it'll be current icon, not a historical one)
 - it takes very long time to update local state for non-selected repo.
 - disable spinning for local state updates
++ bug: dirty submodule is visible in parent repo's changes. After "git diff-files -C -M" should ignore lines with the unchanged SHA and modes
+	:100644 100644 21144ed6a0e1cc809be616a0305fc44f86bf0eca 0000000000000000000000000000000000000000 M	Documents/TODO.txt
+	:160000 160000 19dee26e1470bee2ad29b585d01a1bb586481d0c 19dee26e1470bee2ad29b585d01a1bb586481d0c M	git
 
 - checkbox "Clone Github repositories"
 

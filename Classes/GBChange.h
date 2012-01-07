@@ -5,12 +5,15 @@
 @class GBRepository;
 @class GBCommit;
 @class GBSearchQuery;
+
 @interface GBChange : NSObject<NSPasteboardWriting, QLPreviewItem>
 
 @property(nonatomic,retain) NSURL* srcURL;
 @property(nonatomic,retain) NSURL* dstURL;
 @property(nonatomic,copy)   NSString* statusCode;
 @property(nonatomic,copy)   NSString* status;
+@property(nonatomic,copy)   NSString* srcMode;
+@property(nonatomic,copy)   NSString* dstMode;
 @property(nonatomic,assign) NSInteger statusScore;
 @property(nonatomic,copy)   NSString* srcRevision;
 @property(nonatomic,copy)   NSString* dstRevision;
@@ -45,6 +48,8 @@
 - (NSComparisonResult) compareByPath:(id) other;
 - (NSString*) pathForIgnore;
 - (GBChange*) nilIfBusy;
+
+- (BOOL) isRealChange;
 
 - (void) setStagedSilently:(BOOL) flag;
 
