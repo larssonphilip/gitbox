@@ -315,12 +315,12 @@
 		}
 		else // there's a matching controller
 		{
-			if ([matchingSubmodule.status isEqualToString:updatedSubmodule.status]) // status is the same, nothing really to do here
+			if ([matchingSubmodule isCloned] == [updatedSubmodule isCloned]) // persistence status is the same, nothing really to do here
 			{
 				matchingController.submodule = updatedSubmodule;
 				[updatedSubmoduleControllers addObject:matchingController];
 			}
-			else // status has changed, create a new controller, but reuse sidebarItem
+			else // cloned status has changed, create a new controller, but reuse sidebarItem
 			{
 				if ([updatedSubmodule isCloned])
 				{
@@ -864,7 +864,7 @@
 		if (![existingSubmodule.status isEqual:nextSubmodule.status]) return YES;
 	}
 	
-	// All paths matched and statuses match too.
+	// All paths and statuses match.
 	
 	return NO;
 }

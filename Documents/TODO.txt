@@ -45,16 +45,13 @@ Gitbox 1.6 Release Notes
 
 Gitbox 1.6 misc items:
 
-+ bug: with a lot of submodules (or with added repos for submodules), the app may bounce disk notifications between repos neverending. Should filter out changes inside submodules in a folder monitor.
-+ prematurely refresh remote refs if focused into the window.
 
-- bug: after submodules are updated, controller is not reused and all local state is lost. Happens when submodule's HEAD changes.
 - bug: submodules in changes list are presented without folder icon (instead of checking extension, should try to find the file on disk and get its type - but not the icon because it'll be current icon, not a historical one)
 - it takes very long time to update local state for non-selected repo.
 - disable spinning for local state updates
-+ bug: dirty submodule is visible in parent repo's changes. After "git diff-files -C -M" should ignore lines with the unchanged SHA and modes
-	:100644 100644 21144ed6a0e1cc809be616a0305fc44f86bf0eca 0000000000000000000000000000000000000000 M	Documents/TODO.txt
-	:160000 160000 19dee26e1470bee2ad29b585d01a1bb586481d0c 19dee26e1470bee2ad29b585d01a1bb586481d0c M	git
+
+- bug: when reset --hard from terminal, the commits are not updated because currentRef only has name, but not SHA-1.
+- test what happens if submodule is removed from disk while it's selected in the sidebar (and when it appears)
 
 - checkbox "Clone Github repositories"
 
@@ -68,7 +65,6 @@ Gitbox 1.6 misc items:
 - bug: stage: selection is not accurately preserved when stage is reloaded.
 - bug: stage: scroll offset is not preserved when stage is reloaded.
 
-
 - bug: problem with multiline commit messages - flattened
 - bug: about window or license window is not in focus
 - bug: adding file to gitignore when .gitignore does not exist fails.
@@ -80,10 +76,18 @@ Gitbox 1.6 misc items:
 - bug: remote URL with a space inside: 1) trucates 2) saves back to .git/config. See Bugs Inbox.
 - bug: remove views from sidebar item when switching owner object
 
+
++ bug: after submodules are updated, controller is not reused and all local state is lost. Happens when submodule's HEAD changes.
++ "git diff-files -C -M" causes submodules' .git folders to be updated and makes them updated themselves
+
++ bug: dirty submodule is visible in parent repo's changes. After "git diff-files -C -M" should ignore lines with the unchanged SHA and modes
+	:100644 100644 21144ed6a0e1cc809be616a0305fc44f86bf0eca 0000000000000000000000000000000000000000 M	Documents/TODO.txt
+	:160000 160000 19dee26e1470bee2ad29b585d01a1bb586481d0c 19dee26e1470bee2ad29b585d01a1bb586481d0c M	git
++ bug: with a lot of submodules (or with added repos for submodules), the app may bounce disk notifications between repos neverending. Should filter out changes inside submodules in a folder monitor.
++ prematurely refresh remote refs if focused into the window.
 + submodules: display "download" button in the sidebar item
 + submodules: submodule download controller
 
-+ "git diff-files -C -M" causes submodules' .git folders to be updated and makes them updated themselves
 
 - yet another refactoring:
   + subclass GBRepositoryController -> GBSubmoduleController for customizing sidebaritem
