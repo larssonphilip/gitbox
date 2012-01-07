@@ -45,12 +45,10 @@ Gitbox 1.6 Release Notes
 
 Gitbox 1.6 misc items:
 
-
 - bug: submodules in changes list are presented without folder icon (instead of checking extension, should try to find the file on disk and get its type - but not the icon because it'll be current icon, not a historical one)
 - it takes very long time to update local state for non-selected repo.
 - disable spinning for local state updates
 
-- bug: when reset --hard from terminal, the commits are not updated because currentRef only has name, but not SHA-1.
 - test what happens if submodule is removed from disk while it's selected in the sidebar (and when it appears)
 
 - checkbox "Clone Github repositories"
@@ -76,7 +74,7 @@ Gitbox 1.6 misc items:
 - bug: remote URL with a space inside: 1) trucates 2) saves back to .git/config. See Bugs Inbox.
 - bug: remove views from sidebar item when switching owner object
 
-
++ bug: when reset --hard from terminal, the commits are not updated because currentRef only has name, but not SHA-1.
 + bug: after submodules are updated, controller is not reused and all local state is lost. Happens when submodule's HEAD changes.
 + "git diff-files -C -M" causes submodules' .git folders to be updated and makes them updated themselves
 

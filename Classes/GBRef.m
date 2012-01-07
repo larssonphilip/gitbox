@@ -44,11 +44,12 @@
 		{
 			return YES;
 		}
+		
 		if (self.remoteAlias)
 		{
-			return [self.remoteAlias isEqualToString:other.remoteAlias];
+			return other.remoteAlias && [self.remoteAlias isEqualToString:other.remoteAlias];
 		}
-		else 
+		else
 		{
 			return !other.remoteAlias;
 		}

@@ -633,8 +633,19 @@
 						self.currentRemoteBranch = self.currentLocalRef.configuredRemoteBranch;
 					}
 					
+					// isEqual checks name equality.
 					BOOL didChange = (!currentRef || ![self.currentLocalRef isEqual:currentRef]) ||
 									 (!targetRef || ![self.currentRemoteBranch isEqual:targetRef]);
+					
+					// Also check if commit id has changed.
+					if (!self.currentLocalRef.commitId || ![currentRef.commitId isEqualToString:self.currentLocalRef.commitId])
+					{
+						didChange = YES;
+					}
+					if (!self.currentRemoteBranch.commitId || ![targetRef.commitId isEqualToString:self.currentRemoteBranch.commitId])
+					{
+						didChange = YES;
+					}
 					
 					if (aBlock) aBlock(didChange);
 				}];
