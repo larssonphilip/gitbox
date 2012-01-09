@@ -12,6 +12,8 @@
 #import "NSAlert+OAAlertHelpers.h"
 #import "NSFileManager+OAFileManagerHelpers.h"
 
+#define kGBChangeSubmoduleMode (@"160000")
+
 @interface GBChange ()
 @property(nonatomic, retain) NSImage* cachedSrcIcon;
 @property(nonatomic, retain) NSImage* cachedDstIcon;
@@ -173,7 +175,14 @@
 {
 	if (!self.cachedSrcIcon)
 	{
-		self.cachedSrcIcon = [self iconForPath:[self.srcURL path]];
+		if ([self.srcMode isEqualToString:kGBChangeSubmoduleMode])
+		{
+			self.cachedSrcIcon = [NSImage imageNamed:NSImageNameFolder];
+		}
+		else
+		{
+			self.cachedSrcIcon = [self iconForPath:[self.srcURL path]];
+		}
 	}
 	return self.cachedSrcIcon;
 }
@@ -182,7 +191,14 @@
 {
 	if (!self.cachedDstIcon)
 	{
-		self.cachedDstIcon = [self iconForPath:[self.dstURL path]];
+		if ([self.dstMode isEqualToString:kGBChangeSubmoduleMode])
+		{
+			self.cachedDstIcon = [NSImage imageNamed:NSImageNameFolder];
+		}
+		else
+		{
+			self.cachedDstIcon = [self iconForPath:[self.dstURL path]];
+		}
 	}
 	return self.cachedDstIcon;  
 }
@@ -301,7 +317,6 @@
 {
 	return [self.statusCode isEqualToString:@"R"];
 }
-
 
 - (NSComparisonResult) compareByPath:(GBChange*) other
 {
