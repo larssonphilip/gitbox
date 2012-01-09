@@ -654,7 +654,7 @@
 	// Problem:
 	// 1. We want to update local and remote states after some big randomized  delay.
 	// 2. Each state has a notion of "first update". So some state should be updated.
-	// 3. Local state update should be issues immediately when repository is selected.
+	// 3. Local state update should be issued immediately when repository is selected.
 	
 	ignoreFSEventsInterval = 1.0;
 	

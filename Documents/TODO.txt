@@ -45,8 +45,6 @@ Gitbox 1.6 Release Notes
 
 Gitbox 1.6 misc items:
 
-- it takes very long time to update local state for non-selected repo.
-
 - test what happens if submodule is removed from disk while it's selected in the sidebar (and when it appears)
 
 - checkbox "Clone Github repositories"
@@ -60,6 +58,8 @@ Gitbox 1.6 misc items:
 - bug: should not refresh index while staging multiple items quickly one-by-one. - use delayed update to override FSEvent.
 - bug: stage: selection is not accurately preserved when stage is reloaded.
 - bug: stage: scroll offset is not preserved when stage is reloaded.
+
+- it takes very long time to update local state for non-selected repo.
 
 - bug: problem with multiline commit messages - flattened
 - bug: about window or license window is not in focus
