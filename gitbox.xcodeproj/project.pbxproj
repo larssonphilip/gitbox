@@ -118,6 +118,8 @@
 		2035632F11D3B57800965765 /* GBLightScroller.m in Sources */ = {isa = PBXBuildFile; fileRef = 2035632E11D3B57800965765 /* GBLightScroller.m */; };
 		2035634E11D3BCB100965765 /* CGContext+OACGContextHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 2035634D11D3BCB100965765 /* CGContext+OACGContextHelpers.m */; };
 		2035639E11D3C14C00965765 /* GBLightScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2035639D11D3C14C00965765 /* GBLightScrollView.m */; };
+		20376A7914BAAF1100B181B7 /* OAAreEqual.m in Sources */ = {isa = PBXBuildFile; fileRef = 20376A7814BAAF1100B181B7 /* OAAreEqual.m */; };
+		20376A7A14BAAF1100B181B7 /* OAAreEqual.m in Sources */ = {isa = PBXBuildFile; fileRef = 20376A7814BAAF1100B181B7 /* OAAreEqual.m */; };
 		2038F1B3119366660087CE37 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C1660FE840EACC02AAC07 /* InfoPlist.strings */; };
 		2038F1B7119366960087CE37 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD582B0DA1D0D100B32029 /* MainMenu.xib */; };
 		2038F1DF11936B060087CE37 /* GBAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2038F1DE11936B060087CE37 /* GBAppDelegate.m */; };
@@ -625,6 +627,8 @@
 		2035634D11D3BCB100965765 /* CGContext+OACGContextHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CGContext+OACGContextHelpers.m"; sourceTree = "<group>"; };
 		2035639C11D3C14C00965765 /* GBLightScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBLightScrollView.h; sourceTree = "<group>"; };
 		2035639D11D3C14C00965765 /* GBLightScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBLightScrollView.m; sourceTree = "<group>"; };
+		20376A7714BAAF1100B181B7 /* OAAreEqual.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAAreEqual.h; sourceTree = "<group>"; };
+		20376A7814BAAF1100B181B7 /* OAAreEqual.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAAreEqual.m; sourceTree = "<group>"; };
 		2038F1DD11936B060087CE37 /* GBAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBAppDelegate.h; sourceTree = "<group>"; };
 		2038F1DE11936B060087CE37 /* GBAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = GBAppDelegate.m; sourceTree = "<group>"; tabWidth = 4; usesTabs = 1; };
 		2038F30A11952FCF0087CE37 /* GBRepository.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBRepository.h; sourceTree = "<group>"; };
@@ -1438,6 +1442,8 @@
 				200A47F912EF8F07004DF940 /* NSObject+OASelectorNotifications.m */,
 				20DD4DC1134B4F7300E6E6B7 /* NSObject+OAResponderChain.h */,
 				20DD4DC2134B4F7300E6E6B7 /* NSObject+OAResponderChain.m */,
+				20376A7714BAAF1100B181B7 /* OAAreEqual.h */,
+				20376A7814BAAF1100B181B7 /* OAAreEqual.m */,
 			);
 			name = "Foundation Extensions";
 			sourceTree = "<group>";
@@ -2064,6 +2070,7 @@
 				20FE4AA11469961800817E2C /* GBSubmoduleController.m in Sources */,
 				20AFFB0414AAFD76002943E8 /* GBPeriodicalUpdater.m in Sources */,
 				20DE951614B39A5D005A5DC5 /* GBRepositoryController+Actions.m in Sources */,
+				20376A7A14BAAF1100B181B7 /* OAAreEqual.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2215,6 +2222,7 @@
 				20FE4AA01469961800817E2C /* GBSubmoduleController.m in Sources */,
 				20AFFB0314AAFD76002943E8 /* GBPeriodicalUpdater.m in Sources */,
 				20DE951514B39A5D005A5DC5 /* GBRepositoryController+Actions.m in Sources */,
+				20376A7914BAAF1100B181B7 /* OAAreEqual.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
