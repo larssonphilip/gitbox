@@ -54,6 +54,7 @@ Gitbox 1.6 misc items:
 - normalize commit text with composition (NFC) 
 
 - bug: should not refresh index while staging multiple items quickly one-by-one. - use delayed update to override FSEvent.
+  - solution: see Refresh.txt for details
 - bug: stage: selection is not accurately preserved when stage is reloaded.
 - bug: stage: scroll offset is not preserved when stage is reloaded.
 

@@ -15,72 +15,15 @@ These tasks should be performed both on demand and independently of the UI.
 System should try to take FSEvents as hints, but still rely on its own timers and "isEqual" check for updated state 
 (so it does not update again when nothing's changed).
 
-Let's imagine a periodical procedure with increasing period:
 
-1. On each cycle we decide which parts of the state should be updated and when to schedule another cycle.
-2. When an external condition kicks in we decide which parts should be updated on the next cycle and if we need to reschedule it for immediate execution.
-3. Update takes some time, during which conditions may change and require another update to take place.
-4. We need initial refresh when user selects the repository.
-5. Also, for non-selected repositories, the refresh should happen at some randomized delay in the future since the start.
+Solution:
 
+1. If FS event kicks in perform the local state update.
+2. If FS event kicks in and we have an update scheduled in the future - do nothing.
+3. After local state update is finished, schedule another updater after short interval.
+4. If nothing has changed since last update, increase the interval and repeat.
+5. If interval gets big enough, schedule a delay (to skip remaining ping/pong fs events), but do not update again. And after that delay accept fs events again.
+6. For non-selected repos interval cutoff should be bigger than for selected to prevent ping-pong loop with submodules and nested repos.
 
-So we need the following components:
-
-{
-  BOOL needsStageUpdate;
-  BOOL needsSubmodulesUpdate;
-  BOOL needsLocalRefsUpdate;
-  BOOL needsRemoteRefsUpdate;
-}
-
-
-
-Since we cannot reliably check for stage updates once, here's a plan to improve the situation:
-
-- GBStage will be the only object which checks stage changes (git diff-index, git diff-files and git ls-files)
-- The API to trigger an update won't be block-based, but will be unconditional. 
-  However, there will be porcelain layer to queue blocks for basic notifications.
-- Stage can be in process of updating or idle. It ignores requests for update when it's already updating 
-  (+ small amount of time after finishing to adjust for delays from FS notifications).
-- Stage will load all the changes at least twice: first, to get up to date data, then second time to verify that updates are finished. 
-- If new results are different, then it will repeat again. 
-- If results are identical, it will go back to idle mode.
-
-
-State Machine:
-
-GBStageStateIdle:
-- setNeedsUpdate => GBStageStateUpdating
-
-GBStageStateUpdating: 
-- setNeedsUpdate => GBStageStateUpdating
-- identical results retrieved => GBStageStateFinishing
-
-GBStageStateFinishing: 
-- setNeedsUpdate => GBStageStateFinishing
-- latency timeout => GBStageStateIdle
-
-
-Factors (GBRepositoryRefreshStateMachine):
-
-1. Internal "needs update" flag - when the app itself knows that something has changed.
-2. External notification "folder did update" - could be used or not used.
-3. The previous history of changes - when was the last time we have really update the state.
-4. Current timeout (multiplied by 1.5 each time it's increased)
-
-
-
-Basic API:
-
-- (void) setNeedsUpdate; // triggers updates if they are not running yet
-
-NSString* GBStageDidUpdateNotification; // called each time there's an update
-NSString* GBStageDidFinishUpdatingNotification; // called at the very end of updates when stage becomes idle
-
-
-Block API (could be unnecessary):
-
-- (void) updateChangesAndCallOnFirstUpdate:(void(^)())block; // sets needsUpdate and adds block to the queue to be called on DidUpdateNotification
-- (void) updateChangesAndCallWhenFinished:(void(^)())block; // sets needsUpdate and adds block to the queue to be called on DidUpdateNotification
-
+Alternatively: simply delay ignoring FS events for some time when no actual change was detected. Don't increase that interval, but maybe make the interval bigger for non-selected repos.
 
