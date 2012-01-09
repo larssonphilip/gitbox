@@ -9,7 +9,6 @@
 #import "GBSearchQuery.h"
 #import "GBTask.h"
 
-#import "GBRepositoriesController.h"
 #import "GBRepositoryController.h"
 #import "GBRepositoryToolbarController.h"
 #import "GBRepositoryViewController.h"
@@ -801,7 +800,7 @@
 
 - (void) updateStageChangesWithBlock:(void(^)())aBlock
 {
-	if (!self.repository.stage)
+	if (!self.repository.stage || ![self checkRepositoryExistance])
 	{
 		if (aBlock) aBlock();
 		return;
@@ -875,6 +874,12 @@
 //	if (aBlock) aBlock();
 //	return;
 	
+	if (![self checkRepositoryExistance])
+	{
+		if (aBlock) aBlock();
+		return;
+	}
+	
 	[self.blockTable addBlock:aBlock forName:@"updateSubmodules" proceedIfClear:^{
 		
 		[self.repository updateSubmodulesWithBlock:^{
@@ -896,7 +901,7 @@
 
 - (void) updateLocalRefsWithBlock:(void(^)())aBlock
 {
-	if (!self.repository)
+	if (!self.repository || ![self checkRepositoryExistance])
 	{
 		if (aBlock) aBlock();
 		return;
@@ -923,7 +928,7 @@
 
 - (void) updateCommitsWithBlock:(void(^)())aBlock
 {
-	if (!self.repository)
+	if (!self.repository || ![self checkRepositoryExistance])
 	{
 		if (aBlock) aBlock();
 		return;

@@ -45,8 +45,6 @@ Gitbox 1.6 Release Notes
 
 Gitbox 1.6 misc items:
 
-- test what happens if submodule is removed from disk while it's selected in the sidebar (and when it appears)
-
 - checkbox "Clone Github repositories"
 
 - bug: long error sheets when pull or push fails - with progress status
@@ -71,6 +69,8 @@ Gitbox 1.6 misc items:
 - crash: when adding a repository
 - bug: remote URL with a space inside: 1) trucates 2) saves back to .git/config. See Bugs Inbox.
 - bug: remove views from sidebar item when switching owner object
+
+- bug: GBSubmoduleController should be replaced with cloning ctrl when submodule is deleted. (or at least, simply deselected)
 
 + disable spinning for local state updates
 + bug: submodules in changes list are presented without folder icon (the "mode" is 160000 when it's a submodule)

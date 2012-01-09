@@ -370,9 +370,9 @@
 		}
 	}
 	
-	[self contentsDidChange];
-	
 	[self.rootController removeObjectsFromSelection:objectsToRemoveFromSelection];
+	
+	[self contentsDidChange];
 }
 
 
@@ -461,8 +461,6 @@
 
 - (void) repositoryController:(GBRepositoryController*)oldRepoCtrl didMoveToURL:(NSURL*)newURL
 {
-	// TODO: extract common logic from here and didClone method
-	
 	if (!newURL)
 	{
 		[self removeObjects:[NSArray arrayWithObject:oldRepoCtrl]];
