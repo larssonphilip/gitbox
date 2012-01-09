@@ -903,8 +903,6 @@
 	}
 	
 	[self.blockTable addBlock:aBlock forName:@"updateLocalRefs" proceedIfClear:^{
-		[self pushSpinning];
-
 		[self.repository updateLocalRefsWithBlock:^(BOOL didChange){
 			
 			if (didChange || !self.repository.localBranchCommits || commitsAreInvalid)
@@ -918,7 +916,6 @@
 			{
 				[self.blockTable callBlockForName:@"updateLocalRefs"];
 			}
-			[self popSpinning];
 			[self notifyWithSelector:@selector(repositoryControllerDidUpdateRefs:)];
 		}];  
 	}];
