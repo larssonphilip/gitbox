@@ -1027,6 +1027,10 @@
 	if (message && [message length] > 0)
 	{
 		GBTask* task = [self task];
+		
+		// By default, OSX uses NFD. Some Linux and Windows programs work incorrectly with that normalization, so we convert to NFC.
+		message = [message precomposedStringWithCanonicalMapping];
+		
 		task.arguments = [NSArray arrayWithObjects:@"commit", @"-m", message, nil];
 		[self launchTask:task withBlock:^{
 			[task showErrorIfNeeded];
@@ -1576,6 +1580,10 @@
 	GBTask* task = [self task];
 	
 	message = [message stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+	
+	// By default, OSX uses NFD. Some Linux and Windows programs work incorrectly with that normalization, so we convert to NFC.
+	message = [message precomposedStringWithCanonicalMapping];
+
 	if (![GBTask isSnowLeopard])
 	{
 		task.arguments = [NSArray arrayWithObjects:@"stash", @"save", @"--include-untracked", message, nil];

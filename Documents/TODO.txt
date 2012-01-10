@@ -45,13 +45,10 @@ Gitbox 1.6 Release Notes
 
 Gitbox 1.6 misc items:
 
-- checkbox "Clone Github repositories"
-
 - bug: long error sheets when pull or push fails - with progress status
 - crash: on incorrect password or SSH key the askpass controller crashes with "task" selector
 - crash: on invalid ssh key the askpass controller crashes with "task" selector
 - crash: The app crashes whenever I try to delete a remote branch, shortly after hitting the “Ok” button of the edit branch sheet
-- normalize commit text with composition (NFC) 
 
 - bug: should not refresh index while staging multiple items quickly one-by-one. - use delayed update to override FSEvent.
   - solution: see Refresh.txt for details
@@ -59,6 +56,8 @@ Gitbox 1.6 misc items:
 - bug: stage: scroll offset is not preserved when stage is reloaded.
 
 - it takes very long time to update local state for non-selected repo.
+
+- checkbox "Clone Github repositories"
 
 - bug: problem with multiline commit messages - flattened
 - bug: about window or license window is not in focus
@@ -73,6 +72,7 @@ Gitbox 1.6 misc items:
 
 - bug: GBSubmoduleController should be replaced with cloning ctrl when submodule is deleted. (or at least, simply deselected)
 
++ normalize commit text with composition (NFC) 
 + disable spinning for local state updates
 + bug: submodules in changes list are presented without folder icon (the "mode" is 160000 when it's a submodule)
 + bug: when reset --hard from terminal, the commits are not updated because currentRef only has name, but not SHA-1.
