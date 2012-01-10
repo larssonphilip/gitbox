@@ -3,6 +3,7 @@
 #import "GBCommit.h"
 #import "GBHistoryTask.h"
 #import "NSData+OADataHelpers.h"
+#import "NSString+OAGitHelpers.h"
 
 @interface GBHistoryTask ()
 @end
@@ -329,26 +330,16 @@ Binary files /dev/null and b/psd/history-markers.psd differ
 				GBHistoryNextLine;
 			}
 			
-			commit.message = [rawBodyLines componentsJoinedByString:@"\n"];
-			
-			if ([NSRegularExpression class])
-			{
-				// Try to unwrap the paragraphs.
-				// Criteria: 
-				// - lines should not start with space or tab
-				// - lines should be 50-76 characters wide
-				// - lines should not end with period, question mark or exclamation mark.
-				
-				
-			}
+			NSString* msg = [rawBodyLines componentsJoinedByString:@"\n"];
 			
 			// Stupid git removes LFs between "Signed-off-by" signatures. We fix this by this hack
 			// (which is not that awful, actually):
-			commit.message = [commit.message stringByReplacingOccurrencesOfString:@"> Signed-off-by:"
-																	   withString:@">\nSigned-off-by:"];
+			msg = [msg stringByReplacingOccurrencesOfString:@"> Signed-off-by:"
+												 withString:@">\nSigned-off-by:"];
 			
+			msg = [msg stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 			
-			commit.message = [commit.message stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+			commit.message = [msg unwrappedText];
 			commit.repository = self.repository;
 			[list addObject:commit];
 			

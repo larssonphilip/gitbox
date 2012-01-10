@@ -13,6 +13,8 @@
 
 - (NSString*) stringWithEscapingConfigKeyPart;
 
-//- (NSString*) 
+// Unwraps text which is pre-wrapped by unix nazis.
+// Tries to be conservative and not unwrap when in doubt.
+- (NSString*) unwrappedText;
 
 @end

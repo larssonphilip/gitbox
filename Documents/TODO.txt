@@ -39,7 +39,7 @@ Gitbox 1.6 Release Notes
 ✓ Fixed bug with presenting files containing ":" and other URL-unfriendly characters.
 ✓ Fixed performance bug with frequent stage updates (high CPU consumption).
 ✓ Fixed bug with staging file names beginning with dash ("-")
-
+✓ Fixed bug with multi-line commit messages. Messages are recorded as-is. Prewrapped messages are intelligently unwrapped when displayed.
  
 --
 
@@ -59,7 +59,7 @@ Gitbox 1.6 misc items:
 
 - checkbox "Clone Github repositories"
 
-- bug: problem with multiline commit messages - flattened
++ bug: problem with multiline commit messages [added unwrapping]
 - bug: about window or license window is not in focus
 - bug: adding file to gitignore when .gitignore does not exist fails.
 - bug: dash in a folder name (first-level folder) confuses git command [luísbatista <mf3k.wd@gmail.com>]
@@ -67,7 +67,7 @@ Gitbox 1.6 misc items:
 - bug: "New Branch..." menu item has a sheet with "Checkout" button instead of "Create" // also the commit name is totally confusing 
 - bug: branch name is truncated in the settings view
 - crash: when adding a repository
-- bug: remote URL with a space inside: 1) trucates 2) saves back to .git/config. See Bugs Inbox.
+- bug: remote URL with a space inside: 1) truncates 2) saves back to .git/config. See Bugs Inbox.
 - bug: remove views from sidebar item when switching owner object
 
 - bug: GBSubmoduleController should be replaced with cloning ctrl when submodule is deleted. (or at least, simply deselected)
