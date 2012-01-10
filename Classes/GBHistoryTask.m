@@ -91,7 +91,7 @@
 	 "authorDate %ai%n"
 	 "committerTimestamp %ct%n"
 	 "%n"
-	 "%w(99999,4,4)%B"];
+	 "%w(0,4,4)%B"];
 	
 	// adding explicit path argument to allow branch names with slashes
 	[args addObject:@"--"];
@@ -314,14 +314,14 @@ Binary files /dev/null and b/psd/history-markers.psd differ
 			GBHistoryNextLine;
 			
 			// Skip initial empty lines
-			while (line && [line length] <= 0)
+			while (line && line.length <= 0)
 			{
 				GBHistoryNextLine;
 			}
 			NSMutableArray* rawBodyLines = [NSMutableArray array];
-			while ((line && [line length] <= 0) || [line hasPrefix:@"    "])
+			while ((line && line.length <= 0) || [line hasPrefix:@"    "])
 			{
-				[rawBodyLines addObject:[line stringByTrimmingCharactersInSet:whitespaceCharacterSet]];
+				[rawBodyLines addObject:line.length > 4 ? [line substringFromIndex:4] : @""];
 				//      if ([line length] > 0)
 				//      {
 				//        [rawBodyLines addObject:[line stringByTrimmingCharactersInSet:whitespaceCharacterSet]];
@@ -330,6 +330,17 @@ Binary files /dev/null and b/psd/history-markers.psd differ
 			}
 			
 			commit.message = [rawBodyLines componentsJoinedByString:@"\n"];
+			
+			if ([NSRegularExpression class])
+			{
+				// Try to unwrap the paragraphs.
+				// Criteria: 
+				// - lines should not start with space or tab
+				// - lines should be 50-76 characters wide
+				// - lines should not end with period, question mark or exclamation mark.
+				
+				
+			}
 			
 			// Stupid git removes LFs between "Signed-off-by" signatures. We fix this by this hack
 			// (which is not that awful, actually):

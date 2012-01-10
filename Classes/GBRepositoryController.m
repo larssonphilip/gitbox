@@ -810,7 +810,7 @@
 	localStateUpdateGeneration++;
 	
 	[self.blockTable addBlock:aBlock forName:@"updateStageChanges" proceedIfClear:^{
-		NSLog(@"!!! Updating stage [%@]", self.windowTitle);
+		//NSLog(@"!!! Updating stage [%@]", self.windowTitle);
 		[self.repository.stage updateStageWithBlock:^(BOOL didChange){
 			[self updateSubmodulesWithBlock:^{
 				if (didChange)
