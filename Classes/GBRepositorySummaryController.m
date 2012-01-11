@@ -139,9 +139,11 @@
 	
 	if (!gitignoreContents)
 	{
-		NSLog(@"GBRepositorySummaryController: Error while reading .gitignore: %@", error);
+		gitignoreContents = @"";
+		//NSLog(@"GBRepositorySummaryController: Error while reading .gitignore: %@", error);
 	}
-	else
+	
+	
 	{
 		NSArray* paths = [self.userInfo objectForKey:@"pathsForGitIgnore"];
 		

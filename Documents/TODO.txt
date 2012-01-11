@@ -4,7 +4,7 @@ Gitbox 2.0:
 - bigger font size and icons in the sidebar
 - grayscale icons in the sidebar
 - tree view in the stage
-- multiline commit message preview aka Mail.app (configurable)
+- history: multiline commit message preview aka Mail.app (configurable)
 
 
 Major Features:
@@ -40,6 +40,7 @@ Gitbox 1.6 Release Notes
 ✓ Fixed performance bug with frequent stage updates (high CPU consumption).
 ✓ Fixed bug with staging file names beginning with dash ("-")
 ✓ Fixed bug with multi-line commit messages. Messages are recorded as-is. Prewrapped messages are intelligently unwrapped when displayed.
+✓ Fixed bug with ignoring a file when .gitignore does not exist (file was not added to .gitignore).
  
 --
 
@@ -59,8 +60,6 @@ Gitbox 1.6 misc items:
 
 - checkbox "Clone Github repositories"
 
-- bug: about window or license window is not in focus
-- bug: adding file to gitignore when .gitignore does not exist fails.
 - feature: rename repositories
 - bug: branch name is truncated in the settings view
 - crash: when adding a repository
@@ -171,6 +170,8 @@ Gitbox 1.6 misc items:
 
 Misc done for 1.6:
 
++ bug: adding file to gitignore when .gitignore does not exist fails.
++ bug: about window or license window is not in focus
 + bug: "New Branch..." menu item has a sheet with "Checkout" button instead of "Create" // also the commit name is totally confusing
 + cannot stage files with question mark in them -> -stringByEscapingGitFilename
 + bug: dash in a folder name (first-level folder) confuses git command [luísbatista <mf3k.wd@gmail.com>]
