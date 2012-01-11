@@ -30,6 +30,18 @@
 	return self;
 }
 
+- (NSString*) stringByEscapingGitFilename
+{
+	if ([self rangeOfString:@"\\"].length > 0 || [self rangeOfString:@"?"].length > 0 || [self rangeOfString:@"'"].length > 0)
+	{
+		NSString* arg = self;
+		arg = [arg stringByReplacingOccurrencesOfString:@"\\" withString:@"\\\\"];
+		arg = [arg stringByReplacingOccurrencesOfString:@"?" withString:@"\\?"];
+		return arg;
+	}
+	return self;
+}
+
 - (NSString*) stringWithEscapedDoubleQuotes
 {
 	NSUInteger length = [self length];

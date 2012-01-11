@@ -506,6 +506,7 @@
 		{
 			[group enter];
 			GBTask* task = [self.repository task];
+			paths = [paths valueForKey:@"stringByEscapingGitFilename"];
 			task.arguments = [args arrayByAddingObjectsFromArray:paths];
 			[self.repository launchTask:task withBlock:^{
 				if (taskCallback) taskCallback(task);

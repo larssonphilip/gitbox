@@ -755,8 +755,8 @@
 	GBCommit* aCommit = [self.repositoryController contextCommit];
 	
 	ctrl.title = NSLocalizedString(@"New Branch", @"");
-	ctrl.promptText = [NSString stringWithFormat:NSLocalizedString(@"Branch name for %@:", @""), [aCommit subjectOrCommitIDForMenuItem]];
-	ctrl.buttonText = NSLocalizedString(@"Checkout", @"");
+	ctrl.promptText = NSLocalizedString(@"Branch Name:", @"");
+	ctrl.buttonText = NSLocalizedString(@"OK", @"");
 	ctrl.requireSingleLine = YES;
 	ctrl.requireStripWhitespace = YES;
 	ctrl.completionHandler = ^(BOOL cancelled){

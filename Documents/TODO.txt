@@ -59,12 +59,9 @@ Gitbox 1.6 misc items:
 
 - checkbox "Clone Github repositories"
 
-+ bug: problem with multiline commit messages [added unwrapping]
 - bug: about window or license window is not in focus
 - bug: adding file to gitignore when .gitignore does not exist fails.
-- bug: dash in a folder name (first-level folder) confuses git command [luísbatista <mf3k.wd@gmail.com>]
 - feature: rename repositories
-- bug: "New Branch..." menu item has a sheet with "Checkout" button instead of "Create" // also the commit name is totally confusing 
 - bug: branch name is truncated in the settings view
 - crash: when adding a repository
 - bug: remote URL with a space inside: 1) truncates 2) saves back to .git/config. See Bugs Inbox.
@@ -72,20 +69,7 @@ Gitbox 1.6 misc items:
 
 - bug: GBSubmoduleController should be replaced with cloning ctrl when submodule is deleted. (or at least, simply deselected)
 
-+ normalize commit text with composition (NFC) 
-+ disable spinning for local state updates
-+ bug: submodules in changes list are presented without folder icon (the "mode" is 160000 when it's a submodule)
-+ bug: when reset --hard from terminal, the commits are not updated because currentRef only has name, but not SHA-1.
-+ bug: after submodules are updated, controller is not reused and all local state is lost. Happens when submodule's HEAD changes.
-+ "git diff-files -C -M" causes submodules' .git folders to be updated and makes them updated themselves
 
-+ bug: dirty submodule is visible in parent repo's changes. After "git diff-files -C -M" should ignore lines with the unchanged SHA and modes
-	:100644 100644 21144ed6a0e1cc809be616a0305fc44f86bf0eca 0000000000000000000000000000000000000000 M	Documents/TODO.txt
-	:160000 160000 19dee26e1470bee2ad29b585d01a1bb586481d0c 19dee26e1470bee2ad29b585d01a1bb586481d0c M	git
-+ bug: with a lot of submodules (or with added repos for submodules), the app may bounce disk notifications between repos neverending. Should filter out changes inside submodules in a folder monitor.
-+ prematurely refresh remote refs if focused into the window.
-+ submodules: display "download" button in the sidebar item
-+ submodules: submodule download controller
 
 
 - yet another refactoring:
@@ -156,7 +140,7 @@ Gitbox 1.6 misc items:
 - bug: after repo is removed, its spinner is still retained and is in the view. Should remove all views on [stop]. 
 - bug: if the repo is deleted while updating, OATask crashes - should just fail with error and big log entry.
 - disable "rebase" menu item if nothing to rebase (no green or no blue commits)
-- cannot stage files with question mark in them
+
 - undo pull on clean working directory applies some older stashes. Should remember in invocation if working dir was dirty or not.
 
 - bug: search: try to add space after a word in search field - it selects the whole text which is amazingly annoying
@@ -186,6 +170,25 @@ Gitbox 1.6 misc items:
 
 
 Misc done for 1.6:
+
++ bug: "New Branch..." menu item has a sheet with "Checkout" button instead of "Create" // also the commit name is totally confusing
++ cannot stage files with question mark in them -> -stringByEscapingGitFilename
++ bug: dash in a folder name (first-level folder) confuses git command [luísbatista <mf3k.wd@gmail.com>]
++ bug: problem with multiline commit messages [added unwrapping]
++ normalize commit text with composition (NFC) 
++ disable spinning for local state updates
++ bug: submodules in changes list are presented without folder icon (the "mode" is 160000 when it's a submodule)
++ bug: when reset --hard from terminal, the commits are not updated because currentRef only has name, but not SHA-1.
++ bug: after submodules are updated, controller is not reused and all local state is lost. Happens when submodule's HEAD changes.
++ "git diff-files -C -M" causes submodules' .git folders to be updated and makes them updated themselves
+
++ bug: dirty submodule is visible in parent repo's changes. After "git diff-files -C -M" should ignore lines with the unchanged SHA and modes
+	:100644 100644 21144ed6a0e1cc809be616a0305fc44f86bf0eca 0000000000000000000000000000000000000000 M	Documents/TODO.txt
+	:160000 160000 19dee26e1470bee2ad29b585d01a1bb586481d0c 19dee26e1470bee2ad29b585d01a1bb586481d0c M	git
++ bug: with a lot of submodules (or with added repos for submodules), the app may bounce disk notifications between repos neverending. Should filter out changes inside submodules in a folder monitor.
++ prematurely refresh remote refs if focused into the window.
++ submodules: display "download" button in the sidebar item
++ submodules: submodule download controller
 
 + edit branches and tags in a single repository settings window.
 + bug: when filename on stage contains ":" file name is not displayed (null?)

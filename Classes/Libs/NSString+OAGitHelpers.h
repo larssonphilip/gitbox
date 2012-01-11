@@ -5,6 +5,7 @@
 
 // Returns unescaped file name that was escaped by git
 - (NSString*) stringByUnescapingGitFilename;
+- (NSString*) stringByEscapingGitFilename; // escapes file name for command arguments
 
 // Returns nil if commit is 0{40}
 - (NSString*) nonZeroCommitId;
