@@ -1371,7 +1371,15 @@
 			
 			if ([task isError])
 			{
-				[self alertWithMessage: @"Push failed" description:[task UTF8ErrorAndOutput]];
+				if (!forced)
+				{
+					[self alertWithMessage:[NSString stringWithFormat:NSLocalizedString(@"Push Failed", @""), nil]
+							   description:[NSString stringWithFormat:NSLocalizedString(@"Pull new commits from %@ and try again.", @""), aRemoteBranch.nameWithRemoteAlias]];
+				}
+				else
+				{
+					[self alertWithMessage:NSLocalizedString(@"Push failed", @"") description:[task UTF8ErrorAndOutput]];
+				}
 			}
 			else
 			{
