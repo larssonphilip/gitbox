@@ -1053,10 +1053,6 @@
 
 - (void) alertWithMessage:(NSString*)message description:(NSString*)description
 {
-	description = [description stringByReplacingOccurrencesOfString:@"fatal: " withString:@""];
-	description = [description stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-	description = [description stringByAppendingFormat:@"\n\nRepository: %@", self.path];
-	
 	NSAlert* alert = [[[NSAlert alloc] init] autorelease];
 	[alert addButtonWithTitle:@"OK"];
 	[alert setMessageText:message];
@@ -1070,6 +1066,16 @@
 						 didEndSelector:@selector(alertDidEnd:returnCode:contextInfo:)
 							contextInfo:NULL];
 	}];
+}
+
+
+- (void) alertWithMessage:(NSString*)message gitOutput:(NSString*)description
+{
+	description = [description stringByReplacingOccurrencesOfString:@"fatal: " withString:@""];
+	description = [description stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+	description = [description stringByAppendingFormat:@"\n\nRepository: %@", self.path];
+	
+	[self alertWithMessage:message gitOutput:description];
 }
 
 - (void) alertDidEnd:(NSAlert*)alert returnCode:(NSInteger)returnCode contextInfo:(void*)ref
@@ -1131,7 +1137,7 @@
 	[self launchTask:task withBlock:^{
 		if ([task isError])
 		{
-			[self alertWithMessage: @"Merge failed" description:[task UTF8ErrorAndOutput]];
+			[self alertWithMessage: @"Merge failed" gitOutput:[task UTF8ErrorAndOutput]];
 		}
 		if (block) block();
 	}];
@@ -1163,7 +1169,7 @@
 		}
 		if ([task isError])
 		{
-			[self alertWithMessage: @"Cherry-pick failed" description:[task UTF8ErrorAndOutput]];
+			[self alertWithMessage: @"Cherry-pick failed" gitOutput:[task UTF8ErrorAndOutput]];
 		}
 		if (block) block();
 	}];
@@ -1209,7 +1215,7 @@
 			
 			if ([task isError])
 			{
-				[self alertWithMessage: @"Pull failed" description:[task UTF8ErrorAndOutput]];
+				[self alertWithMessage: @"Pull failed" gitOutput:[task UTF8ErrorAndOutput]];
 			}
 			if (block) block();
 		};
@@ -1378,7 +1384,7 @@
 				}
 				else
 				{
-					[self alertWithMessage:NSLocalizedString(@"Push failed", @"") description:[task UTF8ErrorAndOutput]];
+					[self alertWithMessage:NSLocalizedString(@"Push failed", @"") gitOutput:[task UTF8ErrorAndOutput]];
 				}
 			}
 			else
@@ -1430,7 +1436,7 @@
 			[self launchTask:task withBlock:^{
 				if ([task isError])
 				{
-					[self alertWithMessage:NSLocalizedString(@"Rebase failed",nil) description:[task UTF8ErrorAndOutput]];
+					[self alertWithMessage:NSLocalizedString(@"Rebase failed",nil) gitOutput:[task UTF8ErrorAndOutput]];
 				}
 				if (block) block();
 			}];
@@ -1448,7 +1454,7 @@
 	[self launchTask:task withBlock:^{
 		if ([task isError])
 		{
-			[self alertWithMessage:NSLocalizedString(@"Failed to cancel rebase",nil) description:[task UTF8ErrorAndOutput]];
+			[self alertWithMessage:NSLocalizedString(@"Failed to cancel rebase",nil) gitOutput:[task UTF8ErrorAndOutput]];
 		}
 		if (block) block();
 	}];
@@ -1462,7 +1468,7 @@
 	[self launchTask:task withBlock:^{
 		if ([task isError])
 		{
-			[self alertWithMessage:NSLocalizedString(@"Rebase failed",nil) description:[task UTF8ErrorAndOutput]];
+			[self alertWithMessage:NSLocalizedString(@"Rebase failed",nil) gitOutput:[task UTF8ErrorAndOutput]];
 		}
 		if (block) block();
 	}];
@@ -1476,7 +1482,7 @@
 	[self launchTask:task withBlock:^{
 		if ([task isError])
 		{
-			[self alertWithMessage:NSLocalizedString(@"Rebase failed",nil) description:[task UTF8ErrorAndOutput]];
+			[self alertWithMessage:NSLocalizedString(@"Rebase failed",nil) gitOutput:[task UTF8ErrorAndOutput]];
 		}
 		if (block) block();
 	}];
@@ -1494,7 +1500,7 @@
 		self.stage.currentCommitMessage = nil;
 		if ([task isError])
 		{
-			[self alertWithMessage:NSLocalizedString(@"Reset failed",nil) description:[task UTF8ErrorAndOutput]];
+			[self alertWithMessage:NSLocalizedString(@"Reset failed",nil) gitOutput:[task UTF8ErrorAndOutput]];
 		}
 		if (block) block();
 	}];
@@ -1511,7 +1517,7 @@
 		self.stage.currentCommitMessage = nil;
 		if ([task isError])
 		{
-			[self alertWithMessage:NSLocalizedString(@"Branch reset failed",nil) description:[task UTF8ErrorAndOutput]];
+			[self alertWithMessage:NSLocalizedString(@"Branch reset failed",nil) gitOutput:[task UTF8ErrorAndOutput]];
 		}
 		if (block) block();
 	}];
@@ -1527,7 +1533,7 @@
 		self.stage.currentCommitMessage = nil;
 		if ([task isError])
 		{
-			[self alertWithMessage:NSLocalizedString(@"Branch reset failed",nil) description:[task UTF8ErrorAndOutput]];
+			[self alertWithMessage:NSLocalizedString(@"Branch reset failed",nil) gitOutput:[task UTF8ErrorAndOutput]];
 		}
 		if (block) block();
 	}];
@@ -1542,7 +1548,7 @@
 	[self launchTask:task withBlock:^{
 		if ([task isError])
 		{
-			[self alertWithMessage:NSLocalizedString(@"Branch reset failed",nil) description:[task UTF8ErrorAndOutput]];
+			[self alertWithMessage:NSLocalizedString(@"Branch reset failed",nil) gitOutput:[task UTF8ErrorAndOutput]];
 		}
 		if (block) block();
 	}];
@@ -1558,7 +1564,7 @@
 		self.stage.currentCommitMessage = nil;
 		if ([task isError])
 		{
-			[self alertWithMessage:NSLocalizedString(@"Commit revert failed",nil) description:[task UTF8ErrorAndOutput]];
+			[self alertWithMessage:NSLocalizedString(@"Commit revert failed",nil) gitOutput:[task UTF8ErrorAndOutput]];
 		}
 		if (block) block();
 	}];  
@@ -1603,7 +1609,7 @@
 	[self launchTask:task withBlock:^{
 		if ([task isError])
 		{
-			[self alertWithMessage:[NSString stringWithFormat:NSLocalizedString(@"Failed to stash “%@”",nil), message] description:[task UTF8ErrorAndOutput]];
+			[self alertWithMessage:[NSString stringWithFormat:NSLocalizedString(@"Failed to stash “%@”",nil), message] gitOutput:[task UTF8ErrorAndOutput]];
 		}
 		if (block) block();
 	}];
@@ -1625,7 +1631,7 @@
 	[self launchTask:task withBlock:^{
 		if ([task isError])
 		{
-			[self alertWithMessage:[NSString stringWithFormat:NSLocalizedString(@"Failed to apply stash “%@”",nil), aStash.message] description:[task UTF8ErrorAndOutput]];
+			[self alertWithMessage:[NSString stringWithFormat:NSLocalizedString(@"Failed to apply stash “%@”",nil), aStash.message] gitOutput:[task UTF8ErrorAndOutput]];
 		}
 		if (block) block();
 	}];
@@ -1643,7 +1649,7 @@
 			[self launchTask:task withBlock:^{
 				if ([task isError])
 				{
-					[self alertWithMessage:[NSString stringWithFormat:NSLocalizedString(@"Failed to remove stash %@",nil), stash.ref] description:[task UTF8ErrorAndOutput]];
+					[self alertWithMessage:[NSString stringWithFormat:NSLocalizedString(@"Failed to remove stash %@",nil), stash.ref] gitOutput:[task UTF8ErrorAndOutput]];
 				}
 				[group leave];
 			}];
@@ -1678,7 +1684,7 @@
 					[self alertWithMessage:[NSString stringWithFormat:ref.isTag ? 
 											NSLocalizedString(@"Failed to remove tag %@",nil) : 
 											NSLocalizedString(@"Failed to remove branch %@",nil), ref.name] 
-							   description:[task UTF8ErrorAndOutput]];
+							   gitOutput:[task UTF8ErrorAndOutput]];
 				}
 				[group leave];
 			}];
@@ -1704,7 +1710,7 @@
 					[self launchTask:task withBlock:^{
 						if ([task isError])
 						{
-							[self alertWithMessage:[NSString stringWithFormat:NSLocalizedString(@"Failed to remove tag %@",nil), ref.name] description:[task UTF8ErrorAndOutput]];
+							[self alertWithMessage:[NSString stringWithFormat:NSLocalizedString(@"Failed to remove tag %@",nil), ref.name] gitOutput:[task UTF8ErrorAndOutput]];
 						}
 						[group leave];
 					}];
@@ -1718,7 +1724,7 @@
 				[self launchTask:task withBlock:^{
 					if ([task isError])
 					{
-						[self alertWithMessage:[NSString stringWithFormat:NSLocalizedString(@"Failed to remove branch %@",nil), ref.name] description:[task UTF8ErrorAndOutput]];
+						[self alertWithMessage:[NSString stringWithFormat:NSLocalizedString(@"Failed to remove branch %@",nil), ref.name] gitOutput:[task UTF8ErrorAndOutput]];
 					}
 					[group leave];
 				}];
