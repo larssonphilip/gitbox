@@ -1075,7 +1075,7 @@
 	description = [description stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 	description = [description stringByAppendingFormat:@"\n\nRepository: %@", self.path];
 	
-	[self alertWithMessage:message gitOutput:description];
+	[self alertWithMessage:message description:description];
 }
 
 - (void) alertDidEnd:(NSAlert*)alert returnCode:(NSInteger)returnCode contextInfo:(void*)ref
@@ -1215,7 +1215,40 @@
 			
 			if ([task isError])
 			{
-				[self alertWithMessage: @"Pull failed" gitOutput:[task UTF8ErrorAndOutput]];
+				/*
+				 Message 1:
+				 
+					 error: The following untracked working tree files would be overwritten by merge:
+					 3577.txt
+					 Please move or remove them before you can merge.
+					 Aborting
+					 Updating 3b58cd4..c5ec7ec
+					 
+				 
+				 Message 2:
+				 
+					 error: Your local changes to the following files would be overwritten by merge:
+					 3577.txt
+					 Please, commit your changes or stash them before you can merge.
+					 Aborting
+					 Updating 3b58cd4..c5ec7ec
+				 
+				 Message 3:
+				 
+					'/incorrect/url' does not appear to be a git repository
+					The remote end hung up unexpectedly
+				 				 
+				 Message 4:
+						
+					error: no common commits
+					remote: received 1%...
+					...
+				 
+				 */
+				
+				NSString* msg = [task UTF8ErrorAndOutput];
+				
+				[self alertWithMessage: @"Pull Failed" gitOutput:msg];
 			}
 			if (block) block();
 		};
@@ -1384,7 +1417,7 @@
 				}
 				else
 				{
-					[self alertWithMessage:NSLocalizedString(@"Push failed", @"") gitOutput:[task UTF8ErrorAndOutput]];
+					[self alertWithMessage:NSLocalizedString(@"Push Failed", @"") gitOutput:[task UTF8ErrorAndOutput]];
 				}
 			}
 			else
