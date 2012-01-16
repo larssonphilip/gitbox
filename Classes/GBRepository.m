@@ -1137,7 +1137,7 @@
 	[self launchTask:task withBlock:^{
 		if ([task isError])
 		{
-			[self alertWithMessage: @"Merge failed" gitOutput:[task UTF8ErrorAndOutput]];
+			[self alertWithMessage: @"Merge Failed" gitOutput:[task UTF8ErrorAndOutput]];
 		}
 		if (block) block();
 	}];
@@ -1169,7 +1169,7 @@
 		}
 		if ([task isError])
 		{
-			[self alertWithMessage: @"Cherry-pick failed" gitOutput:[task UTF8ErrorAndOutput]];
+			[self alertWithMessage: @"Cherry-pick Failed" gitOutput:[task UTF8ErrorAndOutput]];
 		}
 		if (block) block();
 	}];
@@ -1248,7 +1248,20 @@
 				
 				NSString* msg = [task UTF8ErrorAndOutput];
 				
-				[self alertWithMessage: @"Pull Failed" gitOutput:msg];
+				if ([msg rangeOfString:@"overwritten by merge"].length > 0)
+				{
+					[self alertWithMessage:NSLocalizedString(@"Pull Failed", @"") 
+							   description:NSLocalizedString(@"Please commit your changes and try again.", @"")];
+				}
+				else if ([msg rangeOfString:@"remote end hung up unexpectedly"].length > 0)
+				{
+					[self alertWithMessage:NSLocalizedString(@"Pull Failed", @"") 
+							   description:NSLocalizedString(@"Please check the repository address or network settings.", @"")];
+				}
+				else
+				{
+					[self alertWithMessage:NSLocalizedString(@"Pull Failed", @"") gitOutput:msg];
+				}
 			}
 			if (block) block();
 		};
@@ -1354,7 +1367,7 @@
 				self.lastError = [self errorWithCode:GBErrorCodeFetchFailed
 										 description:[NSString stringWithFormat:NSLocalizedString(@"Failed to fetch from %@",@"Error"), aRemoteBranch.remoteAlias]
 											  reason:[task UTF8ErrorAndOutput]
-										  suggestion:NSLocalizedString(@"Please check the URL or network settings.",@"Error")];
+										  suggestion:NSLocalizedString(@"Please check the repository address or network settings.",@"Error")];
 			}
 			if (block) block();
 			self.lastError = nil;
@@ -1413,7 +1426,7 @@
 				if (!forced)
 				{
 					[self alertWithMessage:[NSString stringWithFormat:NSLocalizedString(@"Push Failed", @""), nil]
-							   description:[NSString stringWithFormat:NSLocalizedString(@"Pull new commits from %@ and try again.", @""), aRemoteBranch.nameWithRemoteAlias]];
+							   description:[NSString stringWithFormat:NSLocalizedString(@"Please pull new commits and try again.", @""), aRemoteBranch.nameWithRemoteAlias]];
 				}
 				else
 				{
