@@ -26,7 +26,11 @@
 			change.srcURL = [self.repository URLForRelativePath:path];
 			change.repository = self.repository;
 			change.statusCode = @"";
-			[untrackedChanges addObject:change];
+			
+			if ([change isRealChange])
+			{
+				[untrackedChanges addObject:change];
+			}
 		}
 	}
 	

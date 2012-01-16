@@ -135,6 +135,15 @@
 	{
 		return NO;
 	}
+	
+	// Return NO if it's a custom folder icon (weird unignorable Mac file)
+	
+	if ([[[self.srcURL path] lastPathComponent] isEqualToString:@"Icon\\r"] ||
+		[[[self.dstURL path] lastPathComponent] isEqualToString:@"Icon\\r"])
+	{
+		return NO;
+	}
+		
 	return YES;
 }
 

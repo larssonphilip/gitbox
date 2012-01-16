@@ -46,11 +46,11 @@ Gitbox 1.6 Release Notes
 
 Gitbox 1.6 misc items:
 
-- bug: long error sheets when pull or push fails - with progress status
 - crash: on incorrect password or SSH key the askpass controller crashes with "task" selector
 - crash: on invalid ssh key the askpass controller crashes with "task" selector
 - crash: The app crashes whenever I try to delete a remote branch, shortly after hitting the “Ok” button of the edit branch sheet
 
+- GBRepository.lastError is sometimes dropped because of AskPassController which delays a callback.
 - bug: should not refresh index while staging multiple items quickly one-by-one. - use delayed update to override FSEvent.
   - solution: see Refresh.txt for details
 - bug: stage: selection is not accurately preserved when stage is reloaded.
@@ -170,6 +170,8 @@ Gitbox 1.6 misc items:
 
 Misc done for 1.6:
 
++ bug: file "Icon\r" is ignored in the stage view.
++ bug: long error sheets when pull or push fails - with progress status [fixed for some common error messages]
 + bug: adding file to gitignore when .gitignore does not exist fails.
 + bug: about window or license window is not in focus
 + bug: "New Branch..." menu item has a sheet with "Checkout" button instead of "Create" // also the commit name is totally confusing
@@ -460,7 +462,6 @@ Bugs:
 - bug: search: when parent commit is clicked it can be missing in the history. Should either not highlight it, or reset search state.
 - bug: (rare) suddenly the search field became disabled. See how enabling/disabling work across repo switching to fix it.
 - bug: maybe NSURL bookmark data becomes broken and leads to "outside of repository" errors.
-- bug: file "Icon\r" was committed somehow.
 
 - (right now jump controller is disabled because of that) bug: minor issue: when quickly iterating through sidebar when repos are autofetched, the selection sometimes jumps. We should reset jump controller's block when selection is changed elsewhere.
 
