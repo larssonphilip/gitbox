@@ -126,12 +126,14 @@
 
 - (BOOL) isRealChange
 {
-	// Return NO if both modes and revisions are the same.
+	// Return NO if both modes, revisions and URLs are the same.
 	
 	if (self.srcRevision && self.dstRevision &&
 		[self.srcRevision isEqualToString:self.dstRevision] &&
 		self.srcMode && self.dstMode && 
-		[self.srcMode isEqualToString:self.dstMode])
+		[self.srcMode isEqualToString:self.dstMode] &&
+		self.srcURL && self.dstURL && 
+		[self.srcURL isEqual:self.dstURL])
 	{
 		return NO;
 	}
