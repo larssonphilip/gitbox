@@ -24,8 +24,6 @@
 #import "GBRepositorySettingsController.h"
 #import "GBFileEditingController.h" // will be obsolete when settings panel is done
 
-#import "GBPeriodicalUpdater.h"
-
 #import "OAFSEventStream.h"
 #import "NSString+OAStringHelpers.h"
 #import "NSError+OAPresent.h"
@@ -71,6 +69,8 @@
 @property(nonatomic, retain) NSArray* submoduleControllers;
 @property(nonatomic, retain) NSArray* submodules;
 
+@property(nonatomic, copy) void(^pendingContinuationToBeginAuthSession)();
+
 - (NSImage*) icon;
 
 - (void) pushDisabled;
@@ -105,7 +105,10 @@
 - (void) fetchRemote:(GBRemote*)aRemote withBlock:(void(^)())aBlock;
 - (void) fetchRemote:(GBRemote*)aRemote silently:(BOOL)silently withBlock:(void(^)())aBlock;
 
-
+// If task fails because of Auth, simply try again the previous action.
+// GBAuthenticatedTask takes care
+- (void) beginAuthenticatedSession:(void(^)())continuation;
+- (void) endAuthenticatedSession;
 
 - (void) undoPushWithForce:(BOOL)forced commitId:(NSString*)commitId;
 - (void) undoPullOverCommitId:(NSString*) commitId title:(NSString*)title;
@@ -171,6 +174,8 @@
 @synthesize submoduleControllers=_submoduleControllers;
 @synthesize submodules=_submodules;
 
+@synthesize pendingContinuationToBeginAuthSession=_pendingContinuationToBeginAuthSession;
+
 - (void) dealloc
 {
 	NSLog(@"GBRepositoryController#dealloc: %@", self);
@@ -202,6 +207,9 @@
 	self.submodules = nil;
 	self.submoduleControllers = nil;
 	self.repository = nil; // so we unsubscribe correctly
+	
+	if (_pendingContinuationToBeginAuthSession) _pendingContinuationToBeginAuthSession();
+	[_pendingContinuationToBeginAuthSession release]; _pendingContinuationToBeginAuthSession = nil;
 	
 	[super dealloc];
 }

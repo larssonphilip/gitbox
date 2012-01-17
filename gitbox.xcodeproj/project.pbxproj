@@ -222,6 +222,8 @@
 		206E0132130C605800018300 /* GBPlaceholderViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 206E012E130C605500018300 /* GBPlaceholderViewController.xib */; };
 		207D02FF13706AF8003C9D5F /* iRate.m in Sources */ = {isa = PBXBuildFile; fileRef = 207D02FD13706AF8003C9D5F /* iRate.m */; };
 		207D030013706F2D003C9D5F /* iRate.m in Sources */ = {isa = PBXBuildFile; fileRef = 207D02FD13706AF8003C9D5F /* iRate.m */; };
+		207FF7F214C54E6C0049E8F0 /* GBAuthenticatedTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 207FF7F114C54E6C0049E8F0 /* GBAuthenticatedTask.m */; };
+		207FF7F314C54E6C0049E8F0 /* GBAuthenticatedTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 207FF7F114C54E6C0049E8F0 /* GBAuthenticatedTask.m */; };
 		2082B7C4126587CA00667A7F /* GBRepositoryCloningController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2082B7C3126587CA00667A7F /* GBRepositoryCloningController.m */; };
 		2086DF52133BC20F00289144 /* OAMultipleSelection.m in Sources */ = {isa = PBXBuildFile; fileRef = 2086DF51133BC20F00289144 /* OAMultipleSelection.m */; };
 		2086DF53133BC20F00289144 /* OAMultipleSelection.m in Sources */ = {isa = PBXBuildFile; fileRef = 2086DF51133BC20F00289144 /* OAMultipleSelection.m */; };
@@ -405,8 +407,6 @@
 		20AC93901367473800FEACF9 /* GBAskPass.m in Sources */ = {isa = PBXBuildFile; fileRef = 20AC938E1367473800FEACF9 /* GBAskPass.m */; };
 		20AEF702137DD6770067AF9B /* GBStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = 20AEF701137DD6770067AF9B /* GBStyle.m */; };
 		20AEF703137DD6770067AF9B /* GBStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = 20AEF701137DD6770067AF9B /* GBStyle.m */; };
-		20AFFB0314AAFD76002943E8 /* GBPeriodicalUpdater.m in Sources */ = {isa = PBXBuildFile; fileRef = 20AFFB0214AAFD76002943E8 /* GBPeriodicalUpdater.m */; };
-		20AFFB0414AAFD76002943E8 /* GBPeriodicalUpdater.m in Sources */ = {isa = PBXBuildFile; fileRef = 20AFFB0214AAFD76002943E8 /* GBPeriodicalUpdater.m */; };
 		20B1621211944C0F00A709CF /* NSFileManager+OAFileManagerHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B1621111944C0F00A709CF /* NSFileManager+OAFileManagerHelpers.m */; };
 		20B399FA11B7F30600D6A3C4 /* GBLocalRefsTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B399F911B7F30600D6A3C4 /* GBLocalRefsTask.m */; };
 		20B8B70C11A489F1006D6442 /* GBChangesBaseTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B8B70B11A489F1006D6442 /* GBChangesBaseTask.m */; };
@@ -739,6 +739,8 @@
 		206E012E130C605500018300 /* GBPlaceholderViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GBPlaceholderViewController.xib; sourceTree = "<group>"; };
 		207D02FC13706AF8003C9D5F /* iRate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iRate.h; sourceTree = "<group>"; };
 		207D02FD13706AF8003C9D5F /* iRate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iRate.m; sourceTree = "<group>"; };
+		207FF7F014C54E6C0049E8F0 /* GBAuthenticatedTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBAuthenticatedTask.h; sourceTree = "<group>"; };
+		207FF7F114C54E6C0049E8F0 /* GBAuthenticatedTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBAuthenticatedTask.m; sourceTree = "<group>"; };
 		2080DC2912567B0800D05B33 /* GBChangeDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBChangeDelegate.h; sourceTree = "<group>"; };
 		20820CD3134E331F00AD55AF /* interactive.rb */ = {isa = PBXFileReference; lastKnownFileType = text.script.ruby; path = interactive.rb; sourceTree = "<group>"; };
 		20820CD4134E331F00AD55AF /* response.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = response.txt; sourceTree = "<group>"; };
@@ -834,8 +836,6 @@
 		20AC938E1367473800FEACF9 /* GBAskPass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBAskPass.m; sourceTree = "<group>"; };
 		20AEF700137DD6770067AF9B /* GBStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBStyle.h; sourceTree = "<group>"; };
 		20AEF701137DD6770067AF9B /* GBStyle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBStyle.m; sourceTree = "<group>"; };
-		20AFFB0114AAFD76002943E8 /* GBPeriodicalUpdater.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBPeriodicalUpdater.h; sourceTree = "<group>"; };
-		20AFFB0214AAFD76002943E8 /* GBPeriodicalUpdater.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBPeriodicalUpdater.m; sourceTree = "<group>"; };
 		20B1621011944C0F00A709CF /* NSFileManager+OAFileManagerHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSFileManager+OAFileManagerHelpers.h"; sourceTree = "<group>"; };
 		20B1621111944C0F00A709CF /* NSFileManager+OAFileManagerHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSFileManager+OAFileManagerHelpers.m"; sourceTree = "<group>"; };
 		20B399F811B7F30600D6A3C4 /* GBLocalRefsTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBLocalRefsTask.h; sourceTree = "<group>"; };
@@ -1091,8 +1091,6 @@
 				2041353114613009007BFE0B /* GBVersionComparator.m */,
 				20C66EEE1344EEAF0067D232 /* GBFolderMonitor.h */,
 				20C66EEF1344EEAF0067D232 /* GBFolderMonitor.m */,
-				20AFFB0114AAFD76002943E8 /* GBPeriodicalUpdater.h */,
-				20AFFB0214AAFD76002943E8 /* GBPeriodicalUpdater.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -1142,6 +1140,8 @@
 				70EEC8CF12DFE33E00DD1555 /* GBSubmodulesTask.m */,
 				20CE6DE91389447E001D9707 /* GBStashListTask.h */,
 				20CE6DEA1389447E001D9707 /* GBStashListTask.m */,
+				207FF7F014C54E6C0049E8F0 /* GBAuthenticatedTask.h */,
+				207FF7F114C54E6C0049E8F0 /* GBAuthenticatedTask.m */,
 			);
 			name = Tasks;
 			sourceTree = "<group>";
@@ -2068,9 +2068,9 @@
 				2041353314613009007BFE0B /* GBVersionComparator.m in Sources */,
 				200C159F14672EB2000F4C78 /* GBSubmoduleCloningViewController.m in Sources */,
 				20FE4AA11469961800817E2C /* GBSubmoduleController.m in Sources */,
-				20AFFB0414AAFD76002943E8 /* GBPeriodicalUpdater.m in Sources */,
 				20DE951614B39A5D005A5DC5 /* GBRepositoryController+Actions.m in Sources */,
 				20376A7A14BAAF1100B181B7 /* OAAreEqual.m in Sources */,
+				207FF7F314C54E6C0049E8F0 /* GBAuthenticatedTask.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2220,9 +2220,9 @@
 				2041353214613009007BFE0B /* GBVersionComparator.m in Sources */,
 				200C159E14672EB2000F4C78 /* GBSubmoduleCloningViewController.m in Sources */,
 				20FE4AA01469961800817E2C /* GBSubmoduleController.m in Sources */,
-				20AFFB0314AAFD76002943E8 /* GBPeriodicalUpdater.m in Sources */,
 				20DE951514B39A5D005A5DC5 /* GBRepositoryController+Actions.m in Sources */,
 				20376A7914BAAF1100B181B7 /* OAAreEqual.m in Sources */,
+				207FF7F214C54E6C0049E8F0 /* GBAuthenticatedTask.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
