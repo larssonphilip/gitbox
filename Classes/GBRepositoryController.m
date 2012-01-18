@@ -138,6 +138,8 @@
 	NSTimeInterval nextRemoteStateUpdateTimestamp;
 	NSTimeInterval prevRemoteStateUpdateTimestamp;
 	NSTimeInterval remoteStateUpdateInterval;
+	
+	BOOL authenticationInProgress;
 }
 
 @synthesize repository;
@@ -1196,6 +1198,22 @@
 }
 
 
+- (void) beginAuthenticatedSession:(void(^)())continuation
+{
+	if (authenticationInProgress)
+	{
+		self.pendingContinuationToBeginAuthSession = OABlockConcat(self.pendingContinuationToBeginAuthSession, continuation);
+		return;
+	}
+	authenticationInProgress = YES;
+	continuation();
+}
+
+- (void) endAuthenticatedSession
+{
+	authenticationInProgress = NO;
+	if (self.pendingContinuationToBeginAuthSession) self.pendingContinuationToBeginAuthSession();
+}
 
 
 
