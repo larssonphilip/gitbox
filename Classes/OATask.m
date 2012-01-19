@@ -115,8 +115,7 @@ NSString* OATaskDidDeallocateNotification  = @"OATaskDidDeallocateNotification";
 
 - (id)init
 {
-	self = [super init];
-	if (self)
+	if (self = [super init])
 	{
 		self.standardOutputData = [NSMutableData data];
 		self.standardErrorData = [NSMutableData data];
