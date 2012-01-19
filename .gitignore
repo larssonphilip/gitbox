@@ -16,3 +16,6 @@ xcuserdata
 .DS_Store
 profile
 xcshareddata
+
+# JetBrains App Code
+.idea

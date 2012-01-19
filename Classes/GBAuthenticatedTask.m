@@ -1,6 +1,5 @@
 #import "GBAuthenticatedTask.h"
 #import "GBAskPassServer.h"
-
 #import "GBMainWindowController.h"
 #import "GBAskPassBooleanPromptController.h"
 #import "GBAskPassCredentialsController.h"
@@ -9,6 +8,7 @@
 @property(nonatomic, copy) NSString* askPassClientId;
 @property(nonatomic, readwrite) BOOL authenticationFailed;
 @property(nonatomic, readwrite) BOOL authenticationCancelledByUser;
+@property(nonatomic, retain) NSNumber* booleanResponse;
 
 // user-provided or loaded from keychain
 @property(nonatomic, copy) NSString* password;
@@ -37,6 +37,7 @@
 @synthesize askPassClientId=_askPassClientId;
 @synthesize username=_username;
 @synthesize password=_password;
+@synthesize booleanResponse = _booleanResponse;
 
 
 - (void)dealloc
@@ -49,6 +50,7 @@
 	[_username release];
 	[_password release];
 
+    [_booleanResponse release];
     [super dealloc];
 }
 
