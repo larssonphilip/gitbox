@@ -20,7 +20,7 @@
 - (NSString*) keychainServiceName;
 - (void) deleteKeychainItem;
 - (BOOL) loadCredentialsFromKeychain;
-- (void) storeCredentialsInKeychain;
+- (BOOL) storeCredentialsInKeychain;
 
 @end
 
@@ -197,7 +197,7 @@
 		}
 		
 		// Nothing in Keychain, ask the user.
-		[self presentUsernamePrompt:self];
+		[self presentUsernamePrompt:prompt];
 		return nil;
 	}
 	else // not a username: prompt
@@ -221,7 +221,7 @@
 		}
 
 		// Nothing in Keychain, ask the user.
-		[self presentPasswordPrompt:self];
+		[self presentPasswordPrompt:prompt];
 		return nil;
 	}
 	
@@ -335,19 +335,271 @@
 
 - (BOOL) loadCredentialsFromKeychain
 {
-	// TODO: ...
+	const char* serviceCString = [self.keychainServiceName cStringUsingEncoding:NSUTF8StringEncoding];
+	const char* usernameCString = [self.username cStringUsingEncoding:NSUTF8StringEncoding];
+	
+	if (serviceCString == NULL)
+	{
+		NSLog(@"GBAskPassController: serviceCString is NULL, cannot store credentials in Keychain.");
+		return NO;
+	}
+	
+	SecKeychainSearchRef search = NULL;
+	SecKeychainItemRef itemRef = NULL;
+	SecKeychainAttributeList list;
+	SecKeychainAttribute attributes[2];
+	
+	attributes[0].tag = kSecServiceItemAttr;
+	attributes[0].data = (void*)serviceCString;
+	attributes[0].length = strlen(serviceCString);
+	
+	list.count = 1;
+	list.attr = attributes;
+	
+	// Add username to the list of attributes
+	if (usernameCString)
+	{
+		attributes[1].tag = kSecAccountItemAttr;
+		attributes[1].data = (void*)usernameCString;
+		attributes[1].length = strlen(usernameCString);
+		
+		list.count = 2;
+	}
+	
+	// We cannot use a simple call like FindGenericPassword because it does not return attributes like account (username).
+	// If we don't know the username, we should use more general API to find an entry for a given service and fetch its attributes (with username) and content (a password).
+	
+	OSStatus status = SecKeychainSearchCreateFromAttributes(NULL, kSecGenericPasswordItemClass, &list, &search);
+	
+	BOOL succeed = YES;
+	if (status == errSecSuccess)
+	{
+		status = SecKeychainSearchCopyNext(search, &itemRef);
+		
+		if (status == errSecSuccess)
+		{
+			// To fetch the attributes, we need to prepare a list of available attributes.
+			// Apparently, itemID is the same as item class. http://lists.apple.com/archives/apple-cdsa/2008/Nov/msg00049.html
+			
+			SecKeychainAttributeInfo* attrInfoRef = NULL;
+			
+			status = SecKeychainAttributeInfoForItemID(NULL, CSSM_DL_DB_RECORD_GENERIC_PASSWORD, &attrInfoRef);
+			if (status == errSecSuccess)
+			{
+				SecKeychainAttributeList* attrListRef = NULL;
+				UInt32 itemDataLength = 0;
+				void* itemData = NULL;
+				status = SecKeychainItemCopyAttributesAndData(
+															  itemRef, 
+															  attrInfoRef, 
+															  NULL, // returned itemClass; not interested
+															  &attrListRef, 
+															  &itemDataLength, 
+															  &itemData);
+				
+				if (status == errSecSuccess)
+				{
+					if (itemData)
+					{
+						self.password = [[[NSString alloc] initWithBytes:itemData length:itemDataLength encoding:NSUTF8StringEncoding] autorelease];
+					}
+					
+					// Iterate over all attributes and collect username
+					for (int i = 0; i < attrListRef->count; i++)
+					{
+						SecKeychainAttribute attr = attrListRef->attr[i];
+						if (attr.tag == kSecAccountItemAttr)
+						{
+							NSString* aUsername = [[[NSString alloc] initWithBytes:attr.data length:attr.length encoding:NSUTF8StringEncoding] autorelease];
+							if (self.username && aUsername && ![aUsername isEqualToString:self.username])
+							{
+								NSLog(@"ERROR: [GBAskPass loadCredentialsFromKeychain]: inconsistent username is retrieved from Keychain (already had %@, got %@)", self.username, aUsername);
+							}
+							
+							self.username = aUsername;
+							break;
+						}
+					}
+					if (keychainItem) CFRelease(keychainItem);
+					if (itemRef) CFRetain(itemRef);
+					keychainItem = itemRef;
+				}
+				else
+				{
+					CFStringRef statusStr = SecCopyErrorMessageString(status, NULL);
+					NSLog(@"ERROR: [GBAskPass loadCredentialsFromKeychain]: SecKeychainItemCopyAttributesAndData failed: %@", (NSString*)statusStr);
+					CFRelease(statusStr);
+					succeed = NO;
+				}
+				SecKeychainItemFreeAttributesAndData(attrListRef, itemData); // TODO: handle error code here
+			}
+			else
+			{
+				CFStringRef statusStr = SecCopyErrorMessageString(status, NULL);
+				NSLog(@"ERROR: [GBAskPass loadCredentialsFromKeychain]: SecKeychainAttributeInfoForItemID failed: %@", (NSString*)statusStr);
+				CFRelease(statusStr);
+				succeed = NO;
+			}
+			// TODO: handle error code here
+			if (attrInfoRef) SecKeychainFreeAttributeInfo(attrInfoRef);
+		}
+		else if (status == errSecItemNotFound)
+		{
+			// Silently return NO if no item exists in Keychain yet.
+			succeed = NO;
+		}
+		else
+		{
+			CFStringRef statusStr = SecCopyErrorMessageString(status, NULL);
+			NSLog(@"ERROR: [GBAskPass loadCredentialsFromKeychain]: SecKeychainSearchCopyNext failed: %@", (NSString*)statusStr);
+			CFRelease(statusStr);
+			succeed = NO;
+		}
+		
+		if (itemRef) CFRelease(itemRef);
+	}
+	else
+	{
+		CFStringRef statusStr = SecCopyErrorMessageString(status, NULL);
+		NSLog(@"ERROR: [GBAskPass loadCredentialsFromKeychain]: SecKeychainSearchCreateFromAttributes failed: %@", (NSString*)statusStr);
+		CFRelease(statusStr);
+		succeed = NO;
+	}
+	
+	if (search) CFRelease(search);
+	
+	return succeed;
 }
 
-- (void) storeCredentialsInKeychain
+- (BOOL) storeCredentialsInKeychain
 {
-	// First, find and remove the exiting keychain item, otherwise bad things happen.
+	// Store username and password.
+	
+	NSString* account = self.username;
+	if (!account || [account length] < 1)
+	{
+		// Try to get username from NSURL
+		NSURL* url = [NSURL URLWithString:self.remoteAddress];
+		account = [url user];
+	}
+	if (!account || [account length] < 1)
+	{
+		account = @"default";
+	}
+	
+	const char* serviceCString = [self.keychainServiceName cStringUsingEncoding:NSUTF8StringEncoding];
+	const char* usernameCString = [account cStringUsingEncoding:NSUTF8StringEncoding];
+	const char* passwordCString = [self.password cStringUsingEncoding:NSUTF8StringEncoding];
+
+	
+	// Now we have local copy of username it's safe to load and remove the exiting keychain item.
 	if (!keychainItem)
 	{
 		[self loadCredentialsFromKeychain];
 	}
 	[self deleteKeychainItem];
 	
-	// TODO: store username and password.
+	
+	
+	if (serviceCString == NULL)
+	{
+		NSLog(@"GBAskPassController: serviceCString is NULL, cannot store credentials in Keychain.");
+		return NO;
+	}
+	
+	if (usernameCString == NULL)
+	{
+		NSLog(@"GBAskPassController: usernameCString is NULL, cannot store credentials in Keychain.");
+		return NO;
+	}
+	
+	if (passwordCString == NULL)
+	{
+		NSLog(@"GBAskPassController: passwordCString is NULL, cannot store credentials in Keychain.");
+		return NO;
+	}
+	
+	SecKeychainAttribute attributes[2];
+	SecKeychainAttributeList list;
+	
+	attributes[0].tag = kSecServiceItemAttr;
+	attributes[0].data = (void*)serviceCString;
+	attributes[0].length = strlen(serviceCString);
+	
+	attributes[1].tag = kSecAccountItemAttr;
+	attributes[1].data = (void*)usernameCString;
+	attributes[1].length = strlen(usernameCString);
+    
+	list.count = 2;
+	list.attr = attributes;
+	
+	OSStatus status = SecKeychainItemCreateFromContent(
+													   kSecGenericPasswordItemClass, 
+													   &list,
+													   (UInt32) strlen(passwordCString),
+													   passwordCString,
+													   NULL,
+													   NULL,
+													   NULL);
+	
+	BOOL succeed = YES;
+	if (status != errSecSuccess)
+	{
+		if (status == errSecDuplicateItem)
+		{
+			// The item already exists, lets update it.
+			
+			// First we need to find an existing item.
+			
+			SecKeychainItemRef itemRef = NULL;
+			
+			status = SecKeychainFindGenericPassword(
+													NULL,
+													strlen(serviceCString),
+													serviceCString,
+													strlen(usernameCString),
+													usernameCString,
+													0,
+													NULL,
+													&itemRef
+													);
+			
+			if (status == errSecSuccess)
+			{
+				status = SecKeychainItemModifyAttributesAndData (
+																 itemRef,
+																 &list,
+																 (UInt32)strlen(passwordCString),
+																 passwordCString
+																 );
+				if (status != errSecSuccess)
+				{
+					CFStringRef statusStr = SecCopyErrorMessageString(status, NULL);
+					NSLog(@"ERROR: [GBAskPass storeCredentialsInKeychain]: SecKeychainItemModifyAttributesAndData failed: %@", (NSString*)statusStr);
+					CFRelease(statusStr);
+					succeed = NO;
+				}
+			}
+			else
+			{
+				CFStringRef statusStr = SecCopyErrorMessageString(status, NULL);
+				NSLog(@"ERROR: [GBAskPass storeCredentialsInKeychain]: SecKeychainFindGenericPassword failed: %@", (NSString*)statusStr);
+				CFRelease(statusStr);
+				succeed = NO;
+			}
+			
+			if (itemRef) CFRelease(itemRef);
+		}
+		else
+		{
+			CFStringRef statusStr = SecCopyErrorMessageString(status, NULL);
+			NSLog(@"ERROR: [GBAskPass storeCredentialsInKeychain]: SecKeychainItemCreateFromContent failed: %@", (NSString*)statusStr);
+			CFRelease(statusStr);
+			succeed = NO;
+		}
+	}
+    
+	return succeed;
 }
 
 
