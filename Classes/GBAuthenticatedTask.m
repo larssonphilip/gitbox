@@ -113,7 +113,7 @@
 		}
 		else // unknown error, bypass
 		{
-			NSLog(@"GBAskPassController: unknown error: %@ (giving up and calling task's block)", output);
+			NSLog(@"GBAuthenticatedTask: unknown error: %@ (giving up and calling task's block)", output);
 			return;
 		}
 	}

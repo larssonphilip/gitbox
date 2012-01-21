@@ -57,6 +57,12 @@ Gitbox 1.6 misc items:
   + GBRepositoryController: simply relaunch the task if it failed and was not cancelled by user.
   + GBRepositoryController: do not relaunch task if it was silent in the first place.
   - at least for authenticated tasks should pass NSError instead of displaying it right from GBRepository so controller can avoid displaying the error when it's going to retry operation.
+
+- possible bug: if authentication fails with empty or non-expected error message, keychain item is not removed.
+  - possible solution: mark item as problematic and ask for the password with autocompleted values.
+  - another possible solution: remember keychain items for failed tasks and upon app quit delete them.
+    - so if you finally managed to access the server - it won't remove the keychain item
+	- if you couldn't access it and gitbox restarts, it start afresh.
   
 - crash: on incorrect password or SSH key the askpass controller crashes with "task" selector
 - crash: on invalid ssh key the askpass controller crashes with "task" selector
