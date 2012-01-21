@@ -48,16 +48,23 @@ Gitbox 1.6 misc items:
 
 
 - Askpass:
-  - GBAuthenticatedTask: move ENV setup, output parsing to GBAuthenticatedTask.
-  - GBAuthenticatedTask: remove keychain entry if failed to use it ASAP.
-  - GBAuthenticatedTask: set the failed status and remote URL if authentication fails (not cancelled by user!).
-  - GBRepository: update the auth status so the using ctrl knows that the auth has failed. Status should be cleared by owning controller.
-
+  + GBAuthenticatedTask: move ENV setup, output parsing to GBAuthenticatedTask.
+  + GBAuthenticatedTask: remove keychain entry if failed to use it ASAP.
+  + GBAuthenticatedTask: set the failed status and remote URL if authentication fails (not cancelled by user!).
+  - GBAuthenticatedTask: remember last used username per address in user defaults (so that controller does not need to deal with it)
+  + GBRepository: update the auth status so the using ctrl knows that the auth has failed. Status should be cleared by owning controller.
+  + GBRepository: replace askpass controller usage with GBAuthenticatedTask; simulatenously wrap calling methods from GBRepositoryController with begin/endAuthentication to serialize modification of auth status flags.
+  + GBRepositoryController: simply relaunch the task if it failed and was not cancelled by user.
+  + GBRepositoryController: do not relaunch task if it was silent in the first place.
+  - at least for authenticated tasks should pass NSError instead of displaying it right from GBRepository so controller can avoid displaying the error when it's going to retry operation.
+  
 - crash: on incorrect password or SSH key the askpass controller crashes with "task" selector
 - crash: on invalid ssh key the askpass controller crashes with "task" selector
 - crash: The app crashes whenever I try to delete a remote branch, shortly after hitting the “Ok” button of the edit branch sheet
 
 - GBRepository.lastError is sometimes dropped because of AskPassController which delays a callback.
+
+
 - bug: should not refresh index while staging multiple items quickly one-by-one. - use delayed update to override FSEvent.
   - solution: see Refresh.txt for details
 - bug: stage: selection is not accurately preserved when stage is reloaded.
@@ -522,6 +529,23 @@ To read:
 
 
 -------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+-------------------------------------------------------------------------------
+
+
+
 
 
 

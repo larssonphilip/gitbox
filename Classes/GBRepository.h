@@ -38,6 +38,11 @@
 @property(nonatomic, assign) double currentTaskProgress;
 @property(nonatomic, copy) NSString* currentTaskProgressStatus;
 
+// If authentication failed this is set to YES.
+@property(nonatomic, getter=isAuthenticationFailed) BOOL authenticationFailed;
+// If authentication was cancelled by user returns YES.
+@property(nonatomic, getter=isAuthenticationCancelledByUser) BOOL authenticationCancelledByUser;
+
 + (id) repositoryWithURL:(NSURL*)url;
 
 + (NSString*) gitVersion;
@@ -93,18 +98,15 @@
 - (void) commitWithMessage:(NSString*) message block:(void(^)())block;
 
 - (void) pullOrMergeWithBlock:(void(^)())block;
-- (void) fetchAllWithBlock:(void(^)())block;
-- (void) fetchAllSilently:(BOOL)silently withBlock:(void(^)())block;
-- (void) fetchRemote:(GBRemote*)aRemote withBlock:(void(^)())block;
 - (void) fetchRemote:(GBRemote*)aRemote silently:(BOOL)silently withBlock:(void(^)())block;
 - (void) fetchCurrentBranchWithBlock:(void(^)())block;
+- (void) fetchBranch:(GBRef*)aRemoteBranch withBlock:(void(^)())block;
+
 - (void) mergeBranch:(GBRef*)aBranch withBlock:(void(^)())block;
 - (void) mergeCommitish:(NSString*)commitish withBlock:(void(^)())block;
 - (void) cherryPickCommitId:(NSString*)aCommitId creatingCommit:(BOOL)creatingCommit message:(NSString*)message withBlock:(void(^)())block;
 - (void) cherryPickCommit:(GBCommit*)aCommit creatingCommit:(BOOL)creatingCommit withBlock:(void(^)())block;
 - (void) pullBranch:(GBRef*)aRemoteBranch withBlock:(void(^)())block;
-- (void) fetchBranch:(GBRef*)aRemoteBranch withBlock:(void(^)())block;
-- (void) pushWithBlock:(void(^)())block;
 - (void) pushWithForce:(BOOL)force block:(void(^)())block;
 - (void) pushBranch:(GBRef*)aLocalBranch toRemoteBranch:(GBRef*)aRemoteBranch forced:(BOOL)forced withBlock:(void(^)())block;
 - (void) rebaseWithBlock:(void(^)())block;
@@ -128,7 +130,6 @@
 #pragma mark Util
 
 - (id) task;
-- (id) taskWithProgress;
 - (void) launchTask:(OATask*)aTask withBlock:(void(^)())block;
 - (id) launchTaskAndWait:(GBTask*)aTask;
 - (NSURL*) gitURLWithSuffix:(NSString*)suffix;

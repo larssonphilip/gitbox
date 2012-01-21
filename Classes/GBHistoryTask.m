@@ -213,7 +213,6 @@ Binary files /dev/null and b/psd/history-markers.psd differ
     line = nil; \
   } \
 }
-	NSCharacterSet* whitespaceCharacterSet = [NSCharacterSet whitespaceCharacterSet];
 	while (lineIndex < [lines count])
 	{
 		NSAutoreleasePool* pool = [NSAutoreleasePool new];
@@ -323,10 +322,6 @@ Binary files /dev/null and b/psd/history-markers.psd differ
 			while ((line && line.length <= 0) || [line hasPrefix:@"    "])
 			{
 				[rawBodyLines addObject:line.length > 4 ? [line substringFromIndex:4] : @""];
-				//      if ([line length] > 0)
-				//      {
-				//        [rawBodyLines addObject:[line stringByTrimmingCharactersInSet:whitespaceCharacterSet]];
-				//      }
 				GBHistoryNextLine;
 			}
 			

@@ -1,3 +1,4 @@
+#import "GBRepository.h"
 #import "GBAuthenticatedTask.h"
 #import "GBAskPassServer.h"
 #import "GBMainWindowController.h"
@@ -27,6 +28,7 @@
 @implementation GBAuthenticatedTask {
 	SecKeychainItemRef keychainItem;
 	BOOL displayingPrompt;
+	BOOL needsStoreCredentialsInKeychain;
 }
 
 @synthesize remoteAddress=_remoteAddress;
@@ -104,6 +106,7 @@
 		{
 			// Set the failure flag for the client.
 			self.authenticationFailed = YES;
+			self.repository.authenticationFailed = YES;
 			
 			// Delete keychain item (if present).
 			[self deleteKeychainItem];
@@ -113,6 +116,11 @@
 			NSLog(@"GBAskPassController: unknown error: %@ (giving up and calling task's block)", output);
 			return;
 		}
+	}
+	else
+	{
+		if (needsStoreCredentialsInKeychain) [self storeCredentialsInKeychain];
+		needsStoreCredentialsInKeychain = NO;
 	}
 	
 	[super didFinish];
@@ -271,12 +279,13 @@
 		if (promptCancelled)
 		{
 			self.authenticationCancelledByUser = YES;
+			self.repository.authenticationCancelledByUser = YES;
 		}
 		else
 		{
 			self.username = ctrl.username;
 			self.password = ctrl.password;
-			[self storeCredentialsInKeychain];
+			needsStoreCredentialsInKeychain = YES;
 		}
 		displayingPrompt = NO;
 		[[GBMainWindowController instance] dismissSheet:ctrl];
@@ -297,11 +306,12 @@
 		if (promptCancelled)
 		{
 			self.authenticationCancelledByUser = YES;
+			self.repository.authenticationCancelledByUser = YES;
 		}
 		else
 		{
 			self.password = ctrl.password;
-			[self storeCredentialsInKeychain];
+			needsStoreCredentialsInKeychain = YES;
 		}
 		displayingPrompt = NO;
 		[[GBMainWindowController instance] dismissSheet:ctrl];

@@ -102,13 +102,12 @@
 - (void) updateRemoteRefsWithBlock:(void(^)())aBlock;
 - (void) updateRemoteRefsSilently:(BOOL)silently withBlock:(void(^)())aBlock;
 - (void) updateBranchesForRemote:(GBRemote*)aRemote silently:(BOOL)silently withBlock:(void(^)(BOOL))aBlock;
-- (void) fetchRemote:(GBRemote*)aRemote withBlock:(void(^)())aBlock;
 - (void) fetchRemote:(GBRemote*)aRemote silently:(BOOL)silently withBlock:(void(^)())aBlock;
 
 // If task fails because of Auth, simply try again the previous action.
 // GBAuthenticatedTask takes care
 - (void) beginAuthenticatedSession:(void(^)())continuation;
-- (void) endAuthenticatedSession;
+- (void) endAuthenticatedSessionWithRetryBlock:(void(^)())retryBlock;
 
 - (void) undoPushWithForce:(BOOL)forced commitId:(NSString*)commitId;
 - (void) undoPullOverCommitId:(NSString*) commitId title:(NSString*)title;
@@ -1209,10 +1208,33 @@
 	continuation();
 }
 
-- (void) endAuthenticatedSession
+- (void) endAuthenticatedSessionWithRetryBlock:(void(^)())retryBlock
 {
+	// First, see if we need to retry command when auth failed and user did not cancel it.
+	BOOL shouldRetry = self.repository.isAuthenticationFailed && !self.repository.isAuthenticationCancelledByUser;
+	
+	// Clean up auth state in repo.
+	self.repository.authenticationFailed = NO;
+	self.repository.authenticationCancelledByUser = NO;
+	
+	// Finish auth session.
 	authenticationInProgress = NO;
 	if (self.pendingContinuationToBeginAuthSession) self.pendingContinuationToBeginAuthSession();
+	
+	// Retry if needed and if block is actually passed in.
+	if (retryBlock)
+	{
+		if (shouldRetry)
+		{
+			retryBlock();
+		}
+		else
+		{
+			// Present lastError only if retry block is passed. 
+			// For silent operations there will be no retry block and thus no error should be displayed either.
+			[self.repository.lastError present];
+		}
+	}
 }
 
 
@@ -1759,12 +1781,6 @@
 	}];
 }
 
-
-- (void) fetchRemote:(GBRemote*)aRemote withBlock:(void(^)())block
-{
-	[self fetchRemote:aRemote silently:NO withBlock:block];
-}
-
 - (void) fetchRemote:(GBRemote*)aRemote silently:(BOOL)silently withBlock:(void(^)())block
 {
 	if (!self.repository)
@@ -1777,15 +1793,21 @@
 	
 	[self pushSpinning];
 	if (!silently) [self pushDisabled];
-	[self.repository fetchRemote:aRemote silently:silently withBlock:^{
-		[self pushDisabled];
-		commitsAreInvalid = YES;
-		[self updateLocalRefsWithBlock:^{
-			[self updateRemoteRefsSilently:silently withBlock:block];
-			[self popSpinning];
-			[self popDisabled];
+	
+	[self beginAuthenticatedSession:^{
+		[self.repository fetchRemote:aRemote silently:silently withBlock:^{
+			[self pushDisabled];
+			commitsAreInvalid = YES;
+			[self updateLocalRefsWithBlock:^{
+				[self updateRemoteRefsSilently:silently withBlock:block];
+				[self popSpinning];
+				[self popDisabled];
+			}];
+			if (!silently) [self popDisabled];
+			[self endAuthenticatedSessionWithRetryBlock:silently ? nil : ^{
+				[self fetchRemote:aRemote silently:silently withBlock:nil];
+			}];
 		}];
-		if (!silently) [self popDisabled];
 	}];
 }
 
@@ -1794,17 +1816,34 @@
 	if (self.isDisabled) return;
 	
 	[self invalidateDelayedRemoteStateUpdate];
+
 	[self pushSpinning];
 	[self pushDisabled];
-	[self.repository fetchAllWithBlock:^{
-		[self.repository.lastError present];
-		commitsAreInvalid = YES;
-		[self updateLocalRefsWithBlock:^{
-			[self updateRemoteRefsWithBlock:nil];
-			[self popSpinning];
+	
+	__block int i = 0;
+	for (GBRemote* aRemote in self.repository.remotes)
+	{
+		i++;
+		[self beginAuthenticatedSession:^{
+			[self.repository fetchRemote:aRemote silently:NO withBlock:^{
+				i--;
+				
+				[self endAuthenticatedSessionWithRetryBlock:^{
+					[self fetchRemote:aRemote silently:NO withBlock:nil];
+				}];
+				
+				if (!i)
+				{
+					commitsAreInvalid = YES;
+					[self updateLocalRefsWithBlock:^{
+						[self updateRemoteRefsWithBlock:nil];
+						[self popSpinning];
+					}];
+					[self popDisabled];
+				}
+			}];
 		}];
-		[self popDisabled];
-	}];
+	}
 }
 
 - (IBAction) pull:(id)sender // or merge
@@ -1822,12 +1861,18 @@
 	[self invalidateDelayedRemoteStateUpdate];
 	[self pushSpinning];
 	[self pushDisabled];
-	[self.repository pullOrMergeWithBlock:^{
-		commitsAreInvalid = YES;
-		[self updateLocalStateWithBlock:^{
-			[self updateRemoteRefsWithBlock:nil];
-			[self popSpinning];
-			[self popDisabled];
+	[self beginAuthenticatedSession:^{
+		[self.repository pullOrMergeWithBlock:^{
+			commitsAreInvalid = YES;
+			[self updateLocalStateWithBlock:^{
+				[self updateRemoteRefsWithBlock:nil];
+				[self popSpinning];
+				[self popDisabled];
+			}];
+			
+			[self endAuthenticatedSessionWithRetryBlock:^{
+				[self pull:sender];
+			}];
 		}];
 	}];
 }
@@ -1866,14 +1911,20 @@
 	[self invalidateDelayedRemoteStateUpdate];
 	[self pushSpinning];
 	[self pushDisabled];
-	[self.repository pushBranch:srcRef toRemoteBranch:dstRef forced:forced withBlock:^{
-		commitsAreInvalid = YES;
-		[self updateLocalRefsWithBlock:^{
-			[self updateRemoteRefsWithBlock:^{
+	[self beginAuthenticatedSession:^{
+		[self.repository pushBranch:srcRef toRemoteBranch:dstRef forced:forced withBlock:^{
+			commitsAreInvalid = YES;
+			[self updateLocalRefsWithBlock:^{
+				[self updateRemoteRefsWithBlock:^{
+				}];
+				[self popSpinning];
 			}];
-			[self popSpinning];
+			[self popDisabled];
+			
+			[self endAuthenticatedSessionWithRetryBlock:^{
+				[self helperPushBranch:srcRef toRemoteBranch:dstRef forced:forced];
+			}];
 		}];
-		[self popDisabled];
 	}];
 }
 

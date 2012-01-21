@@ -17,7 +17,7 @@
 #import "GitConfig.h"
 
 #import "GBGitConfig.h"
-#import "GBAskPassController.h"
+#import "GBAuthenticatedTask.h"
 #import "GBMainWindowController.h"
 
 #import "GitRepository.h"
@@ -44,6 +44,9 @@
 
 - (void) updateCurrentLocalRefWithBlock:(void(^)())block;
 - (void) loadLocalRefsWithBlock:(void(^)())block;
+
+- (id) taskWithProgress;
+- (id) authenticatedTaskWithAddress:(NSString*)address;
 
 @end
 
@@ -78,6 +81,9 @@
 
 @synthesize currentTaskProgress;
 @synthesize currentTaskProgressStatus;
+
+@synthesize authenticationFailed;
+@synthesize authenticationCancelledByUser;
 
 
 #pragma mark Init
@@ -1198,99 +1204,71 @@
 		return;
 	}
 
-	[GBAskPassController launchedControllerWithAddress:aRemote.URLString taskFactory:^{
-		GBTask* task = [self taskWithProgress];
-		task.arguments = [NSArray arrayWithObjects:@"pull", 
-						  @"--tags", 
-						  @"--force", 
-						  @"--progress",
-						  aRemoteBranch.remoteAlias, 
-						  [NSString stringWithFormat:@"%@:refs/remotes/%@", 
-						   aRemoteBranch.name, [aRemoteBranch nameWithRemoteAlias]],
-						  nil];
-		task.dispatchQueue = self.dispatchQueue;
-		task.didTerminateBlock = ^{
-			self.currentTaskProgress = 0.0;
-			self.currentTaskProgressStatus = nil;
-			
-			if ([task isError])
-			{
-				/*
-				 Message 1:
-				 
-					 error: The following untracked working tree files would be overwritten by merge:
-					 3577.txt
-					 Please move or remove them before you can merge.
-					 Aborting
-					 Updating 3b58cd4..c5ec7ec
-					 
-				 
-				 Message 2:
-				 
-					 error: Your local changes to the following files would be overwritten by merge:
-					 3577.txt
-					 Please, commit your changes or stash them before you can merge.
-					 Aborting
-					 Updating 3b58cd4..c5ec7ec
-				 
-				 Message 3:
-				 
-					'/incorrect/url' does not appear to be a git repository
-					The remote end hung up unexpectedly
-				 				 
-				 Message 4:
-						
-					error: no common commits
-					remote: received 1%...
-					...
-				 
-				 */
-				
-				NSString* msg = [task UTF8ErrorAndOutput];
-				
-				if ([msg rangeOfString:@"overwritten by merge"].length > 0)
-				{
-					[self alertWithMessage:NSLocalizedString(@"Pull Failed", @"") 
-							   description:NSLocalizedString(@"Please commit your changes and try again.", @"")];
-				}
-				else if ([msg rangeOfString:@"remote end hung up unexpectedly"].length > 0)
-				{
-					[self alertWithMessage:NSLocalizedString(@"Pull Failed", @"") 
-							   description:NSLocalizedString(@"Please check the repository address or network settings.", @"")];
-				}
-				else
-				{
-					[self alertWithMessage:NSLocalizedString(@"Pull Failed", @"") gitOutput:msg];
-				}
-			}
-			if (block) block();
-		};
-		return (id)task;
-	}];
-}
-
-- (void) fetchAllWithBlock:(void(^)())block
-{
-	[self fetchAllSilently:NO withBlock:block];
-}
-
-- (void) fetchAllSilently:(BOOL)silently withBlock:(void(^)())block
-{
-	[OABlockGroup groupBlock:^(OABlockGroup *group) {
-		for (GBRemote* aRemote in self.remotes)
+	GBAuthenticatedTask* task = [self authenticatedTaskWithAddress:aRemote.URLString];
+	task.arguments = [NSArray arrayWithObjects:@"pull", 
+					  @"--tags", 
+					  @"--force", 
+					  @"--progress",
+					  aRemoteBranch.remoteAlias, 
+					  [NSString stringWithFormat:@"%@:refs/remotes/%@", 
+					   aRemoteBranch.name, [aRemoteBranch nameWithRemoteAlias]],
+					  nil];
+	[self launchTask:task withBlock:^{
+		self.currentTaskProgress = 0.0;
+		self.currentTaskProgressStatus = nil;
+		
+		if ([task isError])
 		{
-			[group enter];
-			[self fetchRemote:aRemote silently:silently withBlock:^{
-				[group leave];
-			}];
+			/*
+			 Message 1:
+			 
+			 error: The following untracked working tree files would be overwritten by merge:
+			 3577.txt
+			 Please move or remove them before you can merge.
+			 Aborting
+			 Updating 3b58cd4..c5ec7ec
+			 
+			 
+			 Message 2:
+			 
+			 error: Your local changes to the following files would be overwritten by merge:
+			 3577.txt
+			 Please, commit your changes or stash them before you can merge.
+			 Aborting
+			 Updating 3b58cd4..c5ec7ec
+			 
+			 Message 3:
+			 
+			 '/incorrect/url' does not appear to be a git repository
+			 The remote end hung up unexpectedly
+			 
+			 Message 4:
+			 
+			 error: no common commits
+			 remote: received 1%...
+			 ...
+			 
+			 */
+			
+			NSString* msg = [task UTF8ErrorAndOutput];
+			
+			if ([msg rangeOfString:@"overwritten by merge"].length > 0)
+			{
+				[self alertWithMessage:NSLocalizedString(@"Pull Failed", @"") 
+						   description:NSLocalizedString(@"Please commit your changes and try again.", @"")];
+			}
+			else if ([msg rangeOfString:@"remote end hung up unexpectedly"].length > 0)
+			{
+				[self alertWithMessage:NSLocalizedString(@"Pull Failed", @"") 
+						   description:NSLocalizedString(@"Please check the repository address or network settings.", @"")];
+			}
+			else
+			{
+				[self alertWithMessage:NSLocalizedString(@"Pull Failed", @"") gitOutput:msg];
+			}
 		}
-	} continuation:block];
-}
-
-
-- (void) fetchRemote:(GBRemote*)aRemote withBlock:(void(^)())block
-{
-	[self fetchRemote:aRemote silently:NO withBlock:block];
+		if (block) block();
+	}];
 }
 
 - (void) fetchRemote:(GBRemote*)aRemote silently:(BOOL)silently withBlock:(void(^)())block
@@ -1301,32 +1279,30 @@
 		if (block) block();
 		return;
 	}
-	[GBAskPassController launchedControllerWithAddress:aRemote.URLString silent:silently taskFactory:^{
-		GBTask* task = [self taskWithProgress];
-		task.arguments = [NSArray arrayWithObjects:@"fetch", 
-						  @"--tags",
-						  @"--force",
-						  @"--prune",
-						  @"--progress",
-						  aRemote.alias,
-						  [aRemote defaultFetchRefspec], // Declaring a proper refspec is necessary to make autofetch expectations about remote alias to work. git show-ref should always return refs for alias XYZ.
-						  nil];
-		task.dispatchQueue = self.dispatchQueue;
-		task.didTerminateBlock = ^{
-			self.currentTaskProgress = 0.0;
-			self.currentTaskProgressStatus = nil;
-			
-			if ([task isError])
-			{
-				self.lastError = [self errorWithCode:GBErrorCodeFetchFailed
-										 description:[NSString stringWithFormat:NSLocalizedString(@"Failed to fetch from %@",@"Error"), aRemote.alias]
-											  reason:[task UTF8ErrorAndOutput]
-										  suggestion:NSLocalizedString(@"Please check the URL or network settings.",@"Error")];
-			}
-			if (block) block();
-			self.lastError = nil;
-		};
-		return (id)task;
+	GBAuthenticatedTask* task = [self authenticatedTaskWithAddress:aRemote.URLString];
+	task.silent = silently;
+	task.arguments = [NSArray arrayWithObjects:@"fetch", 
+					  @"--tags",
+					  @"--force",
+					  @"--prune",
+					  @"--progress",
+					  aRemote.alias,
+					  [aRemote defaultFetchRefspec], // Declaring a proper refspec is necessary to make autofetch expectations about remote alias to work. git show-ref should always return refs for alias XYZ.
+					  nil];
+	task.dispatchQueue = self.dispatchQueue;
+	[self launchTask:task withBlock:^{
+		self.currentTaskProgress = 0.0;
+		self.currentTaskProgressStatus = nil;
+		
+		if ([task isError])
+		{
+			self.lastError = [self errorWithCode:GBErrorCodeFetchFailed
+									 description:[NSString stringWithFormat:NSLocalizedString(@"Failed to fetch from %@",@"Error"), aRemote.alias]
+										  reason:[task UTF8ErrorAndOutput]
+									  suggestion:NSLocalizedString(@"Please check the URL or network settings.",@"Error")];
+		}
+		if (block) block();
+		self.lastError = nil;
 	}];
 }
 
@@ -1348,38 +1324,31 @@
 		if (block) block();
 		return;
 	}
-	[GBAskPassController launchedControllerWithAddress:aRemote.URLString taskFactory:^{
-		GBTask* task = [self taskWithProgress];
-		task.arguments = [NSArray arrayWithObjects:@"fetch", 
-						  @"--tags", 
-						  @"--force", 
-						  @"--progress",
-						  aRemoteBranch.remoteAlias, 
-						  [NSString stringWithFormat:@"%@:refs/remotes/%@", 
-						   aRemoteBranch.name, [aRemoteBranch nameWithRemoteAlias]],
-						  nil];
-		task.dispatchQueue = self.dispatchQueue;
-		task.didTerminateBlock = ^{
-			self.currentTaskProgress = 0.0;
-			self.currentTaskProgressStatus = nil;
-			if ([task isError])
-			{
-				self.lastError = [self errorWithCode:GBErrorCodeFetchFailed
-										 description:[NSString stringWithFormat:NSLocalizedString(@"Failed to fetch from %@",@"Error"), aRemoteBranch.remoteAlias]
-											  reason:[task UTF8ErrorAndOutput]
-										  suggestion:NSLocalizedString(@"Please check the repository address or network settings.",@"Error")];
-			}
-			if (block) block();
-			self.lastError = nil;
-		};
-		return (id)task;
+	
+	GBAuthenticatedTask* task = [self authenticatedTaskWithAddress:aRemote.URLString];
+	task.arguments = [NSArray arrayWithObjects:@"fetch", 
+					  @"--tags", 
+					  @"--force", 
+					  @"--progress",
+					  aRemoteBranch.remoteAlias, 
+					  [NSString stringWithFormat:@"%@:refs/remotes/%@", 
+					   aRemoteBranch.name, [aRemoteBranch nameWithRemoteAlias]],
+					  nil];
+	[self launchTask:task withBlock:^{
+		self.currentTaskProgress = 0.0;
+		self.currentTaskProgressStatus = nil;
+		if ([task isError])
+		{
+			self.lastError = [self errorWithCode:GBErrorCodeFetchFailed
+									 description:[NSString stringWithFormat:NSLocalizedString(@"Failed to fetch from %@",@"Error"), aRemoteBranch.remoteAlias]
+										  reason:[task UTF8ErrorAndOutput]
+									  suggestion:NSLocalizedString(@"Please check the repository address or network settings.",@"Error")];
+		}
+		if (block) block();
+		self.lastError = nil;
 	}];
 }
 
-- (void) pushWithBlock:(void(^)())block
-{
-	[self pushWithForce:NO block:block];
-}
 
 - (void) pushWithForce:(BOOL)forced block:(void(^)())block
 {
@@ -1406,55 +1375,51 @@
 		return;
 	}
 	
-	[GBAskPassController launchedControllerWithAddress:aRemote.URLString taskFactory:^{
-		GBTask* task = [self taskWithProgress];
-		NSString* commitish = aLocalBranch.commitish;
-		NSString* refspec = [NSString stringWithFormat:@"%@:%@", commitish ? commitish : @"", aRemoteBranch.name];
+	GBAuthenticatedTask* task = [self authenticatedTaskWithAddress:aRemote.URLString];
+	NSString* commitish = aLocalBranch.commitish;
+	NSString* refspec = [NSString stringWithFormat:@"%@:%@", commitish ? commitish : @"", aRemoteBranch.name];
+	
+	task.arguments = [NSArray arrayWithObjects:@"push", @"--tags", @"--progress", nil];
+	if (forced) task.arguments = [task.arguments arrayByAddingObject:@"--force"];
+	task.arguments = [task.arguments arrayByAddingObject:aRemoteBranch.remoteAlias];
+	task.arguments = [task.arguments arrayByAddingObject:refspec];
+	
+	[self launchTask:task withBlock:^{
+		self.currentTaskProgress = 0.0;
+		self.currentTaskProgressStatus = nil;
 		
-		task.arguments = [NSArray arrayWithObjects:@"push", @"--tags", @"--progress", nil];
-		if (forced) task.arguments = [task.arguments arrayByAddingObject:@"--force"];
-		task.arguments = [task.arguments arrayByAddingObject:aRemoteBranch.remoteAlias];
-		task.arguments = [task.arguments arrayByAddingObject:refspec];
-		
-		task.dispatchQueue = self.dispatchQueue;
-		task.didTerminateBlock = ^{
-			self.currentTaskProgress = 0.0;
-			self.currentTaskProgressStatus = nil;
-			
-			if ([task isError])
+		if ([task isError])
+		{
+			if (!forced)
 			{
-				if (!forced)
-				{
-					[self alertWithMessage:[NSString stringWithFormat:NSLocalizedString(@"Push Failed", @""), nil]
-							   description:[NSString stringWithFormat:NSLocalizedString(@"Please pull new commits and try again.", @""), aRemoteBranch.nameWithRemoteAlias]];
-				}
-				else
-				{
-					[self alertWithMessage:NSLocalizedString(@"Push Failed", @"") gitOutput:[task UTF8ErrorAndOutput]];
-				}
+				[self alertWithMessage:[NSString stringWithFormat:NSLocalizedString(@"Push Failed", @""), nil]
+						   description:[NSString stringWithFormat:NSLocalizedString(@"Please pull new commits and try again.", @""), aRemoteBranch.nameWithRemoteAlias]];
 			}
 			else
 			{
-				// update remote branch commit id to avoid autofetching immediately after push.
-				// Normally we have two separate instances of remote branches: one from "configured for local branch" and one from remote.branches.
-				if (aLocalBranch.commitId && aRemoteBranch.name)
+				[self alertWithMessage:NSLocalizedString(@"Push Failed", @"") gitOutput:[task UTF8ErrorAndOutput]];
+			}
+		}
+		else
+		{
+			// update remote branch commit id to avoid autofetching immediately after push.
+			// Normally we have two separate instances of remote branches: one from "configured for local branch" and one from remote.branches.
+			if (aLocalBranch.commitId && aRemoteBranch.name)
+			{
+				aRemoteBranch.commitId = aLocalBranch.commitId;
+				if (aRemote)
 				{
-					aRemoteBranch.commitId = aLocalBranch.commitId;
-					if (aRemote)
+					for (GBRef* ref in [aRemote pushedAndNewBranches])
 					{
-						for (GBRef* ref in [aRemote pushedAndNewBranches])
+						if (ref.name && aRemoteBranch.name && [ref.name isEqualToString:aRemoteBranch.name])
 						{
-							if (ref.name && aRemoteBranch.name && [ref.name isEqualToString:aRemoteBranch.name])
-							{
-								ref.commitId = aLocalBranch.commitId;
-							}
+							ref.commitId = aLocalBranch.commitId;
 						}
 					}
 				}
 			}
-			if (block) block();
-		};
-		return (id)task;
+		}
+		if (block) block();
 	}];
 }
 
@@ -1472,7 +1437,7 @@
 	
 	GBRemote* aRemote = [self remoteForAlias:otherBranch.remoteAlias];
 	
-	[self fetchRemote:aRemote withBlock:^{
+	[self fetchRemote:aRemote silently:NO withBlock:^{
 		
 		GBTask* taskContinue = [self task];
 		taskContinue.arguments = [NSArray arrayWithObjects:@"rebase", @"--continue", nil];
@@ -1796,6 +1761,26 @@
 - (id) taskWithProgress
 {
 	GBTaskWithProgress* task = [[GBTaskWithProgress new] autorelease];
+	task.repository = self;
+	task.progressUpdateBlock = ^{
+		self.currentTaskProgress = task.progress;
+		self.currentTaskProgressStatus = task.status;
+		
+		if (task.progress >= 99.9)
+		{
+			self.currentTaskProgress = 0.0;
+			self.currentTaskProgressStatus = @"";
+		}
+		
+		[self notifyWithSelector:@selector(repositoryDidUpdateProgress:)];
+	};
+	return task;  
+}
+
+- (id) authenticatedTaskWithAddress:(NSString*)address
+{
+	GBAuthenticatedTask* task = [[GBAuthenticatedTask new] autorelease];
+	task.remoteAddress = address;
 	task.repository = self;
 	task.progressUpdateBlock = ^{
 		self.currentTaskProgress = task.progress;
