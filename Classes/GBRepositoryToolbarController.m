@@ -369,9 +369,13 @@
 {
 	GBRepository* repo = self.repositoryController.repository;
 	
-	// Local branches
-	NSMenu* newMenu = [NSMenu menu];
 	NSPopUpButton* button = self.currentBranchPopUpButton;
+	
+	// Local branches
+	//NSMenu* newMenu = [NSMenu menu];
+	NSMenu* newMenu = button.menu;
+	if (!newMenu) newMenu = [NSMenu menu];
+	[newMenu removeAllItems];
 	
 	if ([button pullsDown])
 	{
@@ -463,7 +467,7 @@
 	
 	// Select current branch
 	
-	[button setMenu:newMenu];
+	//[button setMenu:newMenu];
 	for (NSMenuItem* item in [newMenu itemArray])
 	{
 		if ([[item representedObject] isEqual:repo.currentLocalRef])
@@ -493,7 +497,10 @@
 	NSArray* remotes = repo.remotes;
 	
 	NSPopUpButton* button = self.otherBranchPopUpButton;
-	NSMenu* remoteBranchesMenu = [NSMenu menu];
+	//NSMenu* remoteBranchesMenu = [NSMenu menu];
+	NSMenu* remoteBranchesMenu = button.menu;
+	[remoteBranchesMenu removeAllItems];
+	if (!remoteBranchesMenu) remoteBranchesMenu = [NSMenu menu];
 	
 	if ([button pullsDown])
 	{
@@ -650,7 +657,7 @@
 	
 	// Finish with a button for the menu
 	
-	[button setMenu:remoteBranchesMenu];
+	//[button setMenu:remoteBranchesMenu];
 	
 	GBRef* remoteBranch = repo.currentRemoteBranch;
 	if (remoteBranch)
