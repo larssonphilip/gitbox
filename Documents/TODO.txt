@@ -59,6 +59,7 @@ Gitbox 1.6 misc items:
   + GBRepositoryController: do not relaunch task if it was silent in the first place.
   - at least for authenticated tasks should pass NSError instead of displaying it right from GBRepository so controller can avoid displaying the error when it's going to retry operation.
 
+- bug: disallow deletion of a current local branch in settings view.
 - bug: "bad revision" when just created remote branch and calculating difference using "rev-list"
 - bug: after remote branches are deleted, need to deselect remote branch if it's removed.
 - todo: add immediate check for existance in FSEvents callback (right now deletion is delayed for non-selected repos)
