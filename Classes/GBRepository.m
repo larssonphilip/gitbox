@@ -868,7 +868,7 @@
 	
 	GBTask* task = [self task];
 	NSString* query = [NSString stringWithFormat:@"%@...%@", commitish1, commitish2]; // '...' produces symmetric difference
-	task.arguments = [NSArray arrayWithObjects:@"rev-list", query, @"--count",  nil];
+	task.arguments = [NSArray arrayWithObjects:@"rev-list", query, @"--count", @"--", @".", nil];
 	[self launchTask:task withBlock:^{
 		if ([task isError])
 		{
