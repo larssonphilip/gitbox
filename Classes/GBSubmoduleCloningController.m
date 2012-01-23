@@ -4,15 +4,14 @@
 #import "GBSubmoduleCell.h"
 #import "GBSubmoduleCloningViewController.h"
 #import "GBSubmoduleCloningController.h"
-#import "GBTaskWithProgress.h"
+#import "GBAuthenticatedTask.h"
 #import "GBRepositoryController.h"
-#import "GBAskPassController.h"
 #import "NSString+OAStringHelpers.h"
 #import "NSObject+OASelectorNotifications.h"
 
 
 @interface GBSubmoduleCloningController ()
-@property(nonatomic,retain) GBTaskWithProgress* task;
+@property(nonatomic,retain) GBAuthenticatedTask* task;
 @property(nonatomic, assign, readwrite) NSInteger isDisabled;
 @property(nonatomic, assign, readwrite) NSInteger isSpinning;
 @property(nonatomic, retain, readwrite) GBSidebarItem* sidebarItem;
@@ -80,83 +79,84 @@
 
 - (IBAction)startDownload:(id)sender
 {
-	[GBAskPassController launchedControllerWithAddress:self.remoteURL.absoluteString taskFactory:^{
-		
-		self.progressStatus = nil;
-		self.sidebarItemProgress = 0.0;
+	
+	self.progressStatus = nil;
+	self.sidebarItemProgress = 0.0;
+	[self.sidebarItem update];
+	[self notifyWithSelector:@selector(submoduleCloningControllerProgress:)];
+	
+	GBAuthenticatedTask* t = [[GBAuthenticatedTask new] autorelease];
+	
+	t.remoteAddress = self.remoteURL.absoluteString;
+	t.repository = self.submodule.parentRepository;
+	t.arguments = [NSArray arrayWithObjects:@"submodule", @"update", @"--progress", @"--", self.submodule.path, nil];
+	
+	if ([GBTask isSnowLeopard])
+	{
+		t.arguments = [NSArray arrayWithObjects:@"submodule", @"update", @"--", self.submodule.path, nil];
+	}
+	
+	self.isDisabled++;
+	self.isSpinning++;
+	[self.sidebarItem update];
+	
+	self.task = t;
+	
+	[self notifyWithSelector:@selector(submoduleCloningControllerDidStart:)];
+	
+	t.progressUpdateBlock = ^(){
+		if (!self.task) return;
+		self.sidebarItemProgress = t.progress;
+		self.progressStatus = t.status;
 		[self.sidebarItem update];
 		[self notifyWithSelector:@selector(submoduleCloningControllerProgress:)];
+	};
+	
+	[self.submodule.parentRepository launchTask:t withBlock:^{
 		
-		GBTaskWithProgress* t = [[GBTaskWithProgress new] autorelease];
-
-		t.repository = self.submodule.parentRepository;
-		t.arguments = [NSArray arrayWithObjects:@"submodule", @"update", @"--progress", @"--", self.submodule.path, nil];
-		
-		if ([GBTask isSnowLeopard])
+		if (!self.task) // was terminated
 		{
-			t.arguments = [NSArray arrayWithObjects:@"submodule", @"update", @"--", self.submodule.path, nil];
+			//NSLog(@"!! No task, returning and cleaning up the folder");
+			if (self.submodule.localURL) [[NSFileManager defaultManager] removeItemAtURL:self.submodule.localURL error:NULL];
+			return;
 		}
 		
-		self.isDisabled++;
-		self.isSpinning++;
+		self.sidebarItemProgress = 0.0;
+		self.progressStatus = @"";
+		
+		//NSLog(@"!! Task finished. Decrementing a spinner.");
+		self.isSpinning--;
+		[self.sidebarItem removeAllViews];
 		[self.sidebarItem update];
 		
-		self.task = t;
+		self.task = nil;
 		
-		[self notifyWithSelector:@selector(submoduleCloningControllerDidStart:)];
+		if (t.authenticationFailed && !t.authenticationCancelledByUser)
+		{
+			[self startDownload:sender];
+			[self notifyWithSelector:@selector(submoduleCloningControllerDidRestart:)];
+			return;
+		}
 		
-		t.progressUpdateBlock = ^(){
-			if (!self.task) return;
-			self.sidebarItemProgress = t.progress;
-			self.progressStatus = t.status;
-			[self.sidebarItem update];
-			[self notifyWithSelector:@selector(submoduleCloningControllerProgress:)];
-		};
-		
-		t.didTerminateBlock = ^{
-			
-			if (!self.task) // was terminated
-			{
-				//NSLog(@"!! No task, returning and cleaning up the folder");
-				if (self.submodule.localURL) [[NSFileManager defaultManager] removeItemAtURL:self.submodule.localURL error:NULL];
-				return;
-			}
-			
-			self.sidebarItemProgress = 0.0;
-			self.progressStatus = @"";
-			
-			//NSLog(@"!! Task finished. Decrementing a spinner.");
-			self.isSpinning--;
-			[self.sidebarItem update];
-			
-			self.task = nil;
-			if ([t isError])
-			{
-				self.error = [NSError errorWithDomain:@"Gitbox"
-												 code:1 
-											 userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
-													   [t UTF8ErrorAndOutput], NSLocalizedDescriptionKey,
-													   [NSNumber numberWithInt:[t terminationStatus]], @"terminationStatus",
-													   [t command], @"command",
-													   nil
-													   ]];
-			}
-			
-			[self.sidebarItem removeAllViews];
-			
-			if ([t isError])
-			{
-				NSLog(@"GBSubmoduleCloningController: did FAIL to clone at %@", self.submodule.path);
-				NSLog(@"GBSubmoduleCloningController: output: %@", [t UTF8ErrorAndOutput]);
-				[self notifyWithSelector:@selector(submoduleCloningControllerDidFail:)];
-			}
-			else
-			{
-				NSLog(@"GBSubmoduleCloningController: did finish clone at %@", self.submodule.path);
-				[self notifyWithSelector:@selector(submoduleCloningControllerDidFinish:)];
-			}
-		};
-		return (id)task;
+		if ([t isError])
+		{
+			self.error = [NSError errorWithDomain:@"Gitbox"
+											 code:1 
+										 userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
+												   [t UTF8ErrorAndOutput], NSLocalizedDescriptionKey,
+												   [NSNumber numberWithInt:[t terminationStatus]], @"terminationStatus",
+												   [t command], @"command",
+												   nil
+												   ]];
+			NSLog(@"GBSubmoduleCloningController: did FAIL to clone at %@", self.submodule.path);
+			NSLog(@"GBSubmoduleCloningController: output: %@", [t UTF8ErrorAndOutput]);
+			[self notifyWithSelector:@selector(submoduleCloningControllerDidFail:)];
+		}
+		else
+		{
+			NSLog(@"GBSubmoduleCloningController: did finish clone at %@", self.submodule.path);
+			[self notifyWithSelector:@selector(submoduleCloningControllerDidFinish:)];
+		}
 	}];
 }
 

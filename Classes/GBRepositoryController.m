@@ -105,9 +105,9 @@
 - (void) fetchRemote:(GBRemote*)aRemote silently:(BOOL)silently withBlock:(void(^)())aBlock;
 
 // If task fails because of Auth, simply try again the previous action.
-// GBAuthenticatedTask takes care
+// GBAuthenticatedTask takes care of the rest.
 - (void) beginAuthenticatedSession:(void(^)())continuation;
-- (void) endAuthenticatedSessionWithRetryBlock:(void(^)())retryBlock;
+- (void) endAuthenticatedSession:(void(^)(BOOL shouldRetry))block;
 
 - (void) undoPushWithForce:(BOOL)forced commitId:(NSString*)commitId;
 - (void) undoPullOverCommitId:(NSString*) commitId title:(NSString*)title;
@@ -1076,20 +1076,35 @@
 	
 	//NSLog(@"%@: updating branches for remote %@...", [self class], aRemote.alias);
 	[self invalidateDelayedRemoteStateUpdate];
-	[aRemote updateBranchesSilently:silently withBlock:^{
-		[self invalidateDelayedRemoteStateUpdate];
-		if (aRemote.needsFetch)
-		{
-			//NSLog(@"%@: updated branches for remote %@; needs fetch! %@", [self class], aRemote.alias, [self longNameForSourceList]);
-			[self fetchRemote:aRemote silently:silently withBlock:^{
-				if (aBlock) aBlock(YES);
+	
+	[self beginAuthenticatedSession:^{
+		[aRemote updateBranchesSilently:silently withBlock:^{
+			[self invalidateDelayedRemoteStateUpdate];
+			
+			[self endAuthenticatedSession:^(BOOL shouldRetry) {
+				
+				if (shouldRetry && !silently)
+				{
+					[self updateBranchesForRemote:aRemote silently:silently withBlock:aBlock];
+					return;
+				}
+				
+				if (!silently) [self.repository.lastError present];
+
+				if (aRemote.needsFetch)
+				{
+					//NSLog(@"%@: updated branches for remote %@; needs fetch! %@", [self class], aRemote.alias, [self longNameForSourceList]);
+					[self fetchRemote:aRemote silently:silently withBlock:^{
+						if (aBlock) aBlock(YES);
+					}];
+				}
+				else
+				{
+					//NSLog(@"%@: updated branches for remote %@; no changes.", [self class], aRemote.alias);
+					if (aBlock) aBlock(NO);
+				}
 			}];
-		}
-		else
-		{
-			//NSLog(@"%@: updated branches for remote %@; no changes.", [self class], aRemote.alias);
-			if (aBlock) aBlock(NO);
-		}
+		}];
 	}];
 }
 
@@ -1208,7 +1223,7 @@
 	continuation();
 }
 
-- (void) endAuthenticatedSessionWithRetryBlock:(void(^)())retryBlock
+- (void) endAuthenticatedSession:(void(^)(BOOL shouldRetry))block
 {
 	// First, see if we need to retry command when auth failed and user did not cancel it.
 	BOOL shouldRetry = self.repository.isAuthenticationFailed && !self.repository.isAuthenticationCancelledByUser;
@@ -1222,19 +1237,7 @@
 	if (self.pendingContinuationToBeginAuthSession) self.pendingContinuationToBeginAuthSession();
 	
 	// Retry if needed and if block is actually passed in.
-	if (retryBlock)
-	{
-		if (shouldRetry)
-		{
-			retryBlock();
-		}
-		else
-		{
-			// Present lastError only if retry block is passed. 
-			// For silent operations there will be no retry block and thus no error should be displayed either.
-			[self.repository.lastError present];
-		}
-	}
+	if (block) block(shouldRetry);
 }
 
 
@@ -1796,17 +1799,30 @@
 	
 	[self beginAuthenticatedSession:^{
 		[self.repository fetchRemote:aRemote silently:silently withBlock:^{
-			[self pushDisabled];
-			commitsAreInvalid = YES;
-			[self updateLocalRefsWithBlock:^{
-				[self updateRemoteRefsSilently:silently withBlock:block];
-				[self popSpinning];
-				[self popDisabled];
+			[self endAuthenticatedSession:^(BOOL shouldRetry){
+				if (!silently)
+				{
+					if (shouldRetry)
+					{
+						[self fetchRemote:aRemote silently:silently withBlock:block];
+						return;
+					}
+					else
+					{
+						[self.repository.lastError present];
+					}
+				}
+				commitsAreInvalid = YES;
+				[self pushSpinning];
+				[self pushDisabled];
+				[self updateLocalRefsWithBlock:^{
+					[self updateRemoteRefsSilently:silently withBlock:block];
+					[self popSpinning];
+					[self popDisabled];
+				}];
 			}];
+			[self popSpinning];
 			if (!silently) [self popDisabled];
-			[self endAuthenticatedSessionWithRetryBlock:silently ? nil : ^{
-				[self fetchRemote:aRemote silently:silently withBlock:nil];
-			}];
 		}];
 	}];
 }
@@ -1828,8 +1844,15 @@
 			[self.repository fetchRemote:aRemote silently:NO withBlock:^{
 				i--;
 				
-				[self endAuthenticatedSessionWithRetryBlock:^{
-					[self fetchRemote:aRemote silently:NO withBlock:nil];
+				[self endAuthenticatedSession:^(BOOL shouldRetry) {
+					if (shouldRetry)
+					{
+						[self fetchRemote:aRemote silently:NO withBlock:nil];
+					}
+					else
+					{
+						[self.repository.lastError present];
+					}
 				}];
 				
 				if (!i)
@@ -1870,8 +1893,15 @@
 				[self popDisabled];
 			}];
 			
-			[self endAuthenticatedSessionWithRetryBlock:^{
-				[self pull:sender];
+			[self endAuthenticatedSession:^(BOOL shouldRetry){
+				if (shouldRetry) 
+				{
+					[self pull:sender];
+				}
+				else
+				{
+					[self.repository.lastError present];
+				}
 			}];
 		}];
 	}];
@@ -1921,8 +1951,15 @@
 			}];
 			[self popDisabled];
 			
-			[self endAuthenticatedSessionWithRetryBlock:^{
-				[self helperPushBranch:srcRef toRemoteBranch:dstRef forced:forced];
+			[self endAuthenticatedSession:^(BOOL shouldRetry){
+				if (shouldRetry)
+				{
+					[self helperPushBranch:srcRef toRemoteBranch:dstRef forced:forced];
+				}
+				else
+				{
+					[self.repository.lastError present];
+				}
 			}];
 		}];
 	}];

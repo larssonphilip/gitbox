@@ -2,7 +2,6 @@
 #import "GBRepository.h"
 #import "GBRef.h"
 #import "GBRemoteRefsTask.h"
-#import "GBAskPassController.h"
 
 #import "NSFileManager+OAFileManagerHelpers.h"
 #import "NSArray+OAArrayHelpers.h"
@@ -125,11 +124,6 @@
 	self.transientBranches = [self.transientBranches arrayByAddingObject:branch];
 }
 
-- (void) updateBranchesWithBlock:(void(^)())block
-{
-	[self updateBranchesSilently:NO withBlock:block];
-}
-
 - (void) updateBranchesSilently:(BOOL)silently withBlock:(void(^)())block
 {
 	block = [[block copy] autorelease];
@@ -141,27 +135,27 @@
 	}
 	
 	self.isUpdatingRemoteBranches = YES;
-	[GBAskPassController launchedControllerWithAddress:self.URLString silent:silently taskFactory:^{
-		GBRemoteRefsTask* aTask = [GBRemoteRefsTask task];
-		aTask.repository = self.repository;
-		aTask.remote = self;
-		aTask.didTerminateBlock = ^{
-			self.isUpdatingRemoteBranches = NO;
-			if (![aTask isError])
-			{
-				// Do not update branches and tags, but simply tell the caller that it needs to fetch tags and branches for real.
-				self.needsFetch = [self doesNeedFetchNewBranches:aTask.branches andTags:aTask.tags];
-				
-				if (block) block();
-				
-				self.needsFetch = NO; // reset the status after the callback
-			}
-			else
-			{
-				if (block) block();
-			}
-		};
-		return (id)aTask;
+	
+	GBRemoteRefsTask* aTask = [GBRemoteRefsTask task];
+	aTask.remoteAddress = self.URLString;
+	aTask.silent = silently;
+	aTask.repository = self.repository;
+	aTask.remote = self;
+	[self.repository launchTask:aTask withBlock:^{
+		self.isUpdatingRemoteBranches = NO;
+		if (![aTask isError])
+		{
+			// Do not update branches and tags, but simply tell the caller that it needs to fetch tags and branches for real.
+			self.needsFetch = [self doesNeedFetchNewBranches:aTask.branches andTags:aTask.tags];
+			
+			if (block) block();
+			
+			self.needsFetch = NO; // reset the status after the callback
+		}
+		else
+		{
+			if (block) block();
+		}
 	}];
 }
 

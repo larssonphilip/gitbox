@@ -4,7 +4,6 @@
 #import "GBCloneTask.h"
 #import "GBSidebarCell.h"
 #import "GBRepositoryController.h"
-#import "GBAskPassController.h"
 #import "NSString+OAStringHelpers.h"
 #import "NSObject+OASelectorNotifications.h"
 
@@ -69,77 +68,83 @@
 
 - (void) startCloning
 {
-	[GBAskPassController launchedControllerWithAddress:[self.sourceURL absoluteString] taskFactory:^{
-		
-		self.progressStatus = nil;
-		self.sidebarItemProgress = 0.0;
+	// TODO:!
+	
+	self.progressStatus = nil;
+	self.sidebarItemProgress = 0.0;
+	[self.sidebarItem update];
+	[self notifyWithSelector:@selector(cloningRepositoryControllerProgress:)];
+
+	
+	GBCloneTask* t = [[GBCloneTask new] autorelease];
+	
+	t.remoteAddress = self.sourceURL.absoluteString;
+	
+	self.isDisabled++;
+	self.isSpinning++;
+	[self.sidebarItem update];
+	t.sourceURL = self.sourceURL;
+	t.targetURL = self.targetURL;
+	
+	self.task = t;
+	
+	[self notifyWithSelector:@selector(cloningRepositoryControllerDidStart:)];
+	
+	t.progressUpdateBlock = ^(){
+		if (!self.task) return;
+		self.sidebarItemProgress = t.progress;
+		self.progressStatus = t.status;
 		[self.sidebarItem update];
 		[self notifyWithSelector:@selector(cloningRepositoryControllerProgress:)];
+	};
 		
-		GBCloneTask* t = [[GBCloneTask new] autorelease];
-		self.isDisabled++;
-		self.isSpinning++;
+	[t launchWithBlock:^{
+			
+		if (!self.task) // was terminated
+		{
+			//NSLog(@"!! No task, returning and cleaning up the folder");
+			if (self.targetURL) [[NSFileManager defaultManager] removeItemAtURL:self.targetURL error:NULL];
+			return;
+		}
+		
+		self.sidebarItemProgress = 0.0;
+		self.progressStatus = @"";
+		
+		//NSLog(@"!! Task finished. Decrementing a spinner.");
+		self.isSpinning--;
+		[self.sidebarItem removeAllViews];
 		[self.sidebarItem update];
-		t.sourceURL = self.sourceURL;
-		t.targetURL = self.targetURL;
 		
-		self.task = t;
+		self.task = nil;
 		
-		[self notifyWithSelector:@selector(cloningRepositoryControllerDidStart:)];
+		if (t.authenticationFailed && !t.authenticationCancelledByUser)
+		{
+			[self startCloning];
+			[self notifyWithSelector:@selector(cloningRepositoryControllerDidRestart:)];
+			return;
+		}
 		
-		t.progressUpdateBlock = ^(){
-			if (!self.task) return;
-			self.sidebarItemProgress = t.progress;
-			self.progressStatus = t.status;
-			[self.sidebarItem update];
-			[self notifyWithSelector:@selector(cloningRepositoryControllerProgress:)];
-		};
-		
-		t.didTerminateBlock = ^{
-			
-			if (!self.task) // was terminated
-			{
-				//NSLog(@"!! No task, returning and cleaning up the folder");
-				if (self.targetURL) [[NSFileManager defaultManager] removeItemAtURL:self.targetURL error:NULL];
-				return;
-			}
-			
-			self.sidebarItemProgress = 0.0;
-			self.progressStatus = @"";
-			
-			//NSLog(@"!! Task finished. Decrementing a spinner.");
-			self.isSpinning--;
-			[self.sidebarItem update];
-			
-			self.task = nil;
-			if ([t isError])
-			{
-				self.error = [NSError errorWithDomain:@"Gitbox"
-												 code:1 
-											 userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
-													   [t UTF8ErrorAndOutput], NSLocalizedDescriptionKey,
-													   [NSNumber numberWithInt:[t terminationStatus]], @"terminationStatus",
-													   [t command], @"command",
-													   nil
-													   ]];
-			}
-			
-			[self.sidebarItem removeAllViews];
-			
-			if ([t isError])
-			{
-				NSLog(@"GBRepositoryCloningController: did FAIL to clone at %@", self.targetURL);
-				NSLog(@"GBRepositoryCloningController: output: %@", [t UTF8ErrorAndOutput]);
-				[self notifyWithSelector:@selector(cloningRepositoryControllerDidFail:)];
-			}
-			else
-			{
-				NSLog(@"GBRepositoryCloningController: did finish clone at %@", self.targetURL);
-				[self notifyWithSelector:@selector(cloningRepositoryControllerDidFinish:)];
-			}
-		};
-		return (id)task;
+		if ([t isError])
+		{
+			self.error = [NSError errorWithDomain:@"Gitbox"
+											 code:1 
+										 userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
+												   [t UTF8ErrorAndOutput], NSLocalizedDescriptionKey,
+												   [NSNumber numberWithInt:[t terminationStatus]], @"terminationStatus",
+												   [t command], @"command",
+												   nil
+												   ]];
+			//NSLog(@"GBRepositoryCloningController: did FAIL to clone at %@", self.targetURL);
+			//NSLog(@"GBRepositoryCloningController: output: %@", [t UTF8ErrorAndOutput]);
+			[self notifyWithSelector:@selector(cloningRepositoryControllerDidFail:)];
+		}
+		else
+		{
+			//NSLog(@"GBRepositoryCloningController: did finish clone at %@", self.targetURL);
+			[self notifyWithSelector:@selector(cloningRepositoryControllerDidFinish:)];
+		}
 	}];
+	
 }
 
 - (void) cancelCloning

@@ -1,6 +1,6 @@
-#import "OATask.h"
+#import "GBAuthenticatedTask.h"
 
-@interface GBCloneTask : OATask
+@interface GBCloneTask : GBAuthenticatedTask
 @property(nonatomic, retain) NSURL* sourceURL;
 @property(nonatomic, retain) NSURL* targetURL;
 @property(nonatomic, copy) void(^progressUpdateBlock)();

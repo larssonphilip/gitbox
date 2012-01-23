@@ -7,7 +7,7 @@
 @implementation GBTask
 
 @synthesize repository;
-
+@synthesize ignoreMissingRepository;
 
 # pragma mark Init
 
@@ -43,7 +43,6 @@
 	return @"1.7.7.2.3.g19dee";
 }
 
-// TODO: future improvement here: do not remove bundled tar and unpack to Application Support folder instead of bundle to enable packed binary for the App Store.
 + (NSString*) pathToBundledBinary:(NSString*)name
 {
 	static NSString* cachedPathToGitBinary = nil;
@@ -108,37 +107,28 @@
 	return pathToBinary;
 }
 
-- (NSString*) executableName
-{
-	return @"git";
-}
-
-
-
-# pragma mark Execution environment
-
-
-- (NSString*) launchPath
-{
-	return [GBTask pathToBundledBinary:self.executableName];
-}
-
-- (NSString*) currentDirectoryPath
-{
-	return [self.repository.url path];
-}
-
 
 
 #pragma mark Helpers
 
+
 - (void) willLaunchTask
 {
-	if (!self.repository)
+	if (!self.repository && !self.ignoreMissingRepository)
 	{
 		NSException *exception = [NSException exceptionWithName:@"RepositoryIsNil"
 														 reason:@"You may use [GBRepository task] to get a new configured GBTask"  userInfo:nil];
 		@throw exception;
+	}
+	
+	if (!self.currentDirectoryPath) 
+	{
+		self.currentDirectoryPath = self.repository.url.path;
+	}
+	if (!self.executableName && !self.launchPath)
+	{
+		self.executableName = @"git";
+		self.launchPath = [GBTask pathToBundledBinary:self.executableName];
 	}
 }
 

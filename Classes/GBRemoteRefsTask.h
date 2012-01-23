@@ -1,7 +1,7 @@
-#import "GBTask.h"
+#import "GBAuthenticatedTask.h"
 
 @class GBRemote;
-@interface GBRemoteRefsTask : GBTask
+@interface GBRemoteRefsTask : GBAuthenticatedTask
 
 @property(nonatomic,retain) NSArray* branches;
 @property(nonatomic,retain) NSArray* tags;

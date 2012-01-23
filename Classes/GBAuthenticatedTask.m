@@ -5,6 +5,8 @@
 #import "GBAskPassBooleanPromptController.h"
 #import "GBAskPassCredentialsController.h"
 
+#define kGBAuthenticatedTaskLastUsername @"GBAuthenticatedTaskLastUsername"
+
 @interface GBAuthenticatedTask ()<GBAskPassServerClient>
 @property(nonatomic, copy) NSString* askPassClientId;
 @property(nonatomic, readwrite) BOOL authenticationFailed;
@@ -113,6 +115,9 @@
 		}
 		else // unknown error, bypass
 		{
+			// TODO: remember this remoteAddress as failed one so we don't try to use keychain item next time
+			//       but pre-fill login window with keychain data.
+			
 			NSLog(@"GBAuthenticatedTask: unknown error: %@ (giving up and calling task's block)", output);
 			return;
 		}
@@ -275,6 +280,10 @@
 	GBAskPassCredentialsController* ctrl = [GBAskPassCredentialsController controller];
 	ctrl.address = self.remoteAddress;
 	ctrl.username = self.username;
+	if (ctrl.username.length == 0)
+	{
+		ctrl.username = [[NSUserDefaults standardUserDefaults] objectForKey:kGBAuthenticatedTaskLastUsername];
+	}
 	ctrl.callback = ^(BOOL promptCancelled) {
 		if (promptCancelled)
 		{
@@ -285,6 +294,12 @@
 		{
 			self.username = ctrl.username;
 			self.password = ctrl.password;
+			
+			if (self.username.length > 0)
+			{
+				[[NSUserDefaults standardUserDefaults] setObject:self.username forKey:kGBAuthenticatedTaskLastUsername];
+			}
+			
 			needsStoreCredentialsInKeychain = YES;
 		}
 		displayingPrompt = NO;
@@ -350,7 +365,7 @@
 	
 	if (serviceCString == NULL)
 	{
-		NSLog(@"GBAskPassController: serviceCString is NULL, cannot store credentials in Keychain.");
+		NSLog(@"GBAuthenticatedTask: serviceCString is NULL, cannot store credentials in Keychain.");
 		return NO;
 	}
 	
@@ -513,19 +528,19 @@
 	
 	if (serviceCString == NULL)
 	{
-		NSLog(@"GBAskPassController: serviceCString is NULL, cannot store credentials in Keychain.");
+		NSLog(@"GBAuthenticatedTask: serviceCString is NULL, cannot store credentials in Keychain.");
 		return NO;
 	}
 	
 	if (usernameCString == NULL)
 	{
-		NSLog(@"GBAskPassController: usernameCString is NULL, cannot store credentials in Keychain.");
+		NSLog(@"GBAuthenticatedTask: usernameCString is NULL, cannot store credentials in Keychain.");
 		return NO;
 	}
 	
 	if (passwordCString == NULL)
 	{
-		NSLog(@"GBAskPassController: passwordCString is NULL, cannot store credentials in Keychain.");
+		NSLog(@"GBAuthenticatedTask: passwordCString is NULL, cannot store credentials in Keychain.");
 		return NO;
 	}
 	
