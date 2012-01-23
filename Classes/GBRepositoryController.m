@@ -1076,18 +1076,20 @@
 	
 	//NSLog(@"%@: updating branches for remote %@...", [self class], aRemote.alias);
 	[self invalidateDelayedRemoteStateUpdate];
+
+#warning BUG: This auth block causes infinite loop of blocks from pendingContinuationToBeginAuthSession
 	
-	[self beginAuthenticatedSession:^{
+//	[self beginAuthenticatedSession:^{
 		[aRemote updateBranchesSilently:silently withBlock:^{
 			[self invalidateDelayedRemoteStateUpdate];
 			
-			[self endAuthenticatedSession:^(BOOL shouldRetry) {
+//			[self endAuthenticatedSession:^(BOOL shouldRetry) {
 				
-				if (shouldRetry && !silently)
-				{
-					[self updateBranchesForRemote:aRemote silently:silently withBlock:aBlock];
-					return;
-				}
+//				if (shouldRetry && !silently)
+//				{
+//					[self updateBranchesForRemote:aRemote silently:silently withBlock:aBlock];
+//					return;
+//				}
 				
 				if (!silently) [self.repository.lastError present];
 
@@ -1103,9 +1105,9 @@
 					//NSLog(@"%@: updated branches for remote %@; no changes.", [self class], aRemote.alias);
 					if (aBlock) aBlock(NO);
 				}
-			}];
+//			}];
 		}];
-	}];
+//	}];
 }
 
 
