@@ -868,6 +868,14 @@
 	
 	GBTask* task = [self task];
 	NSString* query = [NSString stringWithFormat:@"%@...%@", commitish1, commitish2]; // '...' produces symmetric difference
+	
+	// Special case: if the remote branch is not pushed yet, we don't have its commitish. 
+	// So simply count all commits on the current branch.
+	if ([self.currentRemoteBranch.remote isTransientBranch:self.currentRemoteBranch])
+	{
+		query = commitish1;
+	}
+	
 	task.arguments = [NSArray arrayWithObjects:@"rev-list", query, @"--count", @"--", @".", nil];
 	[self launchTask:task withBlock:^{
 		if ([task isError])
@@ -882,6 +890,7 @@
 		NSString* countString = [task.output UTF8String];
 		self.commitsDiffCount = (NSUInteger)[countString integerValue];
 		if (block) block();
+		self.lastError = nil;
 	}];
 }
 

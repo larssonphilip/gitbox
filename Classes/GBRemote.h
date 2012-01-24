@@ -24,6 +24,7 @@
 
 #pragma mark Actions
 
+- (BOOL) isTransientBranch:(GBRef*)branch;
 - (void) addNewBranch:(GBRef*)branch;
 - (void) updateBranchesSilently:(BOOL)silently withBlock:(void(^)())block;
 

@@ -119,6 +119,12 @@
 #pragma mark Actions
 
 
+- (BOOL) isTransientBranch:(GBRef*)branch
+{
+	if (!branch) return NO;
+	return [self.transientBranches containsObject:branch];
+}
+
 - (void) addNewBranch:(GBRef*)branch
 {
 	self.transientBranches = [self.transientBranches arrayByAddingObject:branch];
