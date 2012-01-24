@@ -1236,7 +1236,11 @@
 	
 	// Finish auth session.
 	authenticationInProgress = NO;
-	if (self.pendingContinuationToBeginAuthSession) self.pendingContinuationToBeginAuthSession();
+	
+	// Be careful here: we need to clean the block before calling it to avoid nasty cycles.
+	void(^pendingBlock)() = [[self.pendingContinuationToBeginAuthSession retain] autorelease];
+	self.pendingContinuationToBeginAuthSession = nil;
+	if (pendingBlock) pendingBlock();
 	
 	// Retry if needed and if block is actually passed in.
 	if (block) block(shouldRetry);
