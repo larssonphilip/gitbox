@@ -2,5 +2,8 @@
 NSString *const GBErrorDomain;
 
 typedef enum {
-  GBErrorCodeFetchFailed,
+	GBErrorCodeFetchFailed,
+	GBErrorCodePullFailed,
+	GBErrorCodePushFailed,
+	GBErrorCodeMergeFailed,
 } GBErrorCode;

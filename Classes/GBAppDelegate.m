@@ -258,6 +258,33 @@
 	return NO;
 }
 
+- (NSError *)application:(NSApplication *)application willPresentError:(NSError *)error
+{
+	if ([error.domain isEqualToString:NSCocoaErrorDomain] && error.code == NSUserCancelledError) 
+		return error;
+	
+	NSAlert* alert = [NSAlert alertWithError:error];
+	
+	[[GBMainWindowController instance] sheetQueueAddBlock:^{
+		[alert retain]; // will be released in the callback
+		[alert beginSheetModalForWindow:[[GBMainWindowController instance] window] 
+						  modalDelegate:self
+						 didEndSelector:@selector(presentedErrorAlertDidEnd:returnCode:contextInfo:)
+							contextInfo:NULL];
+	}];
+
+	NSLog(@"ERROR: %@", error);
+	
+	// Return "user cancelled" error because it's the only one which is not displayed.
+	return [NSError errorWithDomain:NSCocoaErrorDomain code:NSUserCancelledError userInfo:nil];
+}
+
+- (void) presentedErrorAlertDidEnd:(NSAlert*)alert returnCode:(NSInteger)returnCode contextInfo:(void*)ref
+{
+	[[alert window] orderOut:nil];
+	[[GBMainWindowController instance] sheetQueueEndBlock];
+	[alert release]; // was retained in the application:willPresentError:
+}
 
 
 

@@ -2394,6 +2394,7 @@
 	if (!aCommit) aCommit = self.selectedCommit;
 	
 	[self.repository mergeCommitish:aCommit.commitId withBlock:^{
+		[self.repository.lastError present];
 	}];
 }
 

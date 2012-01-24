@@ -118,7 +118,7 @@
 			// TODO: remember this remoteAddress as failed one so we don't try to use keychain item next time
 			//       but pre-fill login window with keychain data.
 			
-			NSLog(@"GBAuthenticatedTask: unknown error: %@ (giving up and calling task's block)", output);
+			NSLog(@"GBAuthenticatedTask: unknown error: %@", output);
 			return;
 		}
 	}

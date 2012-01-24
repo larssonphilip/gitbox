@@ -1143,9 +1143,13 @@
 	[self launchTask:task withBlock:^{
 		if ([task isError])
 		{
-			[self alertWithMessage: @"Merge Failed" gitOutput:[task UTF8ErrorAndOutput]];
+			self.lastError = [self errorWithCode:GBErrorCodeMergeFailed 
+									 description:NSLocalizedString(@"Merge Failed", @"")
+										  reason:[task UTF8ErrorAndOutput] 
+									  suggestion:nil];
 		}
 		if (block) block();
+		self.lastError = nil;
 	}];
 }
 
@@ -1254,20 +1258,28 @@
 			
 			if ([msg rangeOfString:@"overwritten by merge"].length > 0)
 			{
-				[self alertWithMessage:NSLocalizedString(@"Pull Failed", @"") 
-						   description:NSLocalizedString(@"Please commit your changes and try again.", @"")];
+				self.lastError = [self errorWithCode:GBErrorCodePullFailed
+										 description:NSLocalizedString(@"Pull Failed", @"")
+											  reason:nil
+										  suggestion:NSLocalizedString(@"Please commit your changes and try again.", @"")];
 			}
 			else if ([msg rangeOfString:@"remote end hung up unexpectedly"].length > 0)
 			{
-				[self alertWithMessage:NSLocalizedString(@"Pull Failed", @"") 
-						   description:NSLocalizedString(@"Please check the repository address or network settings.", @"")];
+				self.lastError = [self errorWithCode:GBErrorCodePullFailed
+										 description:NSLocalizedString(@"Pull Failed", @"")
+											  reason:nil
+										  suggestion:NSLocalizedString(@"Please check the repository address or network settings.", @"")];
 			}
 			else
 			{
-				[self alertWithMessage:NSLocalizedString(@"Pull Failed", @"") gitOutput:msg];
+				self.lastError = [self errorWithCode:GBErrorCodePullFailed
+										 description:NSLocalizedString(@"Pull Failed", @"")
+											  reason:msg
+										  suggestion:nil];
 			}
 		}
 		if (block) block();
+		self.lastError = nil;
 	}];
 }
 
@@ -1392,12 +1404,17 @@
 		{
 			if (!forced)
 			{
-				[self alertWithMessage:[NSString stringWithFormat:NSLocalizedString(@"Push Failed", @""), nil]
-						   description:[NSString stringWithFormat:NSLocalizedString(@"Please pull new commits and try again.", @""), aRemoteBranch.nameWithRemoteAlias]];
+				self.lastError = [self errorWithCode:GBErrorCodePushFailed
+										 description:NSLocalizedString(@"Push Failed", @"")
+											  reason:nil
+										  suggestion:[NSString stringWithFormat:NSLocalizedString(@"Please pull new commits and try again.", @""), aRemoteBranch.nameWithRemoteAlias]];
 			}
 			else
 			{
-				[self alertWithMessage:NSLocalizedString(@"Push Failed", @"") gitOutput:[task UTF8ErrorAndOutput]];
+				self.lastError = [self errorWithCode:GBErrorCodePushFailed
+										 description:NSLocalizedString(@"Push Failed", @"")
+											  reason:[task UTF8ErrorAndOutput]
+										  suggestion:nil];
 			}
 		}
 		else
@@ -1420,6 +1437,7 @@
 			}
 		}
 		if (block) block();
+		self.lastError = nil;
 	}];
 }
 
@@ -1819,13 +1837,16 @@
                     reason:(NSString*)aReason
                 suggestion:(NSString*)aSuggestion
 {
+	
+	NSMutableDictionary* dict = [NSMutableDictionary dictionary];
+	
+	if (aDescription) [dict setObject:aDescription forKey:NSLocalizedDescriptionKey];
+	if (aReason)      [dict setObject:aReason      forKey:NSLocalizedFailureReasonErrorKey];
+	if (aSuggestion)  [dict setObject:aSuggestion  forKey:NSLocalizedRecoverySuggestionErrorKey];
+	
 	return [NSError errorWithDomain:GBErrorDomain
 							   code:aCode
-						   userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
-									 aDescription, NSLocalizedDescriptionKey,
-									 aReason, NSLocalizedFailureReasonErrorKey,
-									 aSuggestion, NSLocalizedRecoverySuggestionErrorKey,
-									 nil]];
+						   userInfo:dict];
 }
 
 @end
