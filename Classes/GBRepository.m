@@ -1411,18 +1411,38 @@
 		
 		if ([task isError])
 		{
-			if (!forced)
+			// Special case: GBAuthenticatedTask: unknown error: fatal: '/Users/oleganza/Work/gitbox/example_repos/server1' does not appear to be a git repository
+			
+			//To /Users/oleganza/Work/gitbox/example_repos/server
+			//! [rejected]        master -> master2 (non-fast-forward)
+			//error: failed to push some refs to '/Users/oleganza/Work/gitbox/example_repos/server'
+			//To prevent you from losing history, non-fast-forward updates were rejected
+			//Merge the remote changes (e.g. 'git pull') before pushing again.  See the
+			//'Note about fast-forwards' section of 'git push --help' for details.
+
+			NSString* msg = [task UTF8ErrorAndOutput];
+			
+			if ([msg rangeOfString:@"[rejected]"].length > 0 ||
+				[msg rangeOfString:@"non-fast-forward"].length > 0)
 			{
-				self.lastError = [self errorWithCode:GBErrorCodePushFailed
+				self.lastError = [self errorWithCode:GBErrorCodePullFailed
 										 description:NSLocalizedString(@"Push Failed", @"")
 											  reason:nil
-										  suggestion:[NSString stringWithFormat:NSLocalizedString(@"Please pull new commits and try again.", @""), aRemoteBranch.nameWithRemoteAlias]];
+										  suggestion:NSLocalizedString(@"Please pull new commits and try again.", @"")];
+			}
+			else if ([msg rangeOfString:@"remote end hung up unexpectedly"].length > 0 ||
+					 [msg rangeOfString:@"does not appear to be a git repository"].length > 0)
+			{
+				self.lastError = [self errorWithCode:GBErrorCodePullFailed
+										 description:NSLocalizedString(@"Push Failed", @"")
+											  reason:nil
+										  suggestion:NSLocalizedString(@"Please check the repository address or network settings.", @"")];
 			}
 			else
 			{
-				self.lastError = [self errorWithCode:GBErrorCodePushFailed
+				self.lastError = [self errorWithCode:GBErrorCodePullFailed
 										 description:NSLocalizedString(@"Push Failed", @"")
-											  reason:[task UTF8ErrorAndOutput]
+											  reason:msg
 										  suggestion:nil];
 			}
 		}
