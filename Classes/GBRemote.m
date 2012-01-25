@@ -51,7 +51,10 @@
 	return [[transientBranches retain] autorelease];
 }
 
-
+- (NSString*)description
+{
+	return [NSString stringWithFormat:@"<%@:%p %@ %@ [%d refs, %d transient refs]>", [self class], self, self.alias, self.URLString, self.branches.count, self.transientBranches.count];
+}
 
 
 
@@ -76,14 +79,24 @@
 {
 	NSArray* names = [self.branches valueForKey:@"name"];
 	NSMutableArray* updatedNewBranches = [NSMutableArray array];
+	BOOL hasRemovedTransientBranch = NO;
 	for (GBRef* aBranch in self.transientBranches)
 	{
 		if (aBranch.name && ![names containsObject:aBranch.name])
 		{
 			[updatedNewBranches addObject:aBranch];
 		}
+		else
+		{
+			hasRemovedTransientBranch = YES;
+		}
 	}
 	self.transientBranches = updatedNewBranches;
+////	NSLog(@">>> [GBRemote updateNewBranches] %@ : transientBranches: %@", self, self.transientBranches);
+//	if (hasRemovedTransientBranch)
+//	{
+////		NSLog(@"DEBUG: Removed transient branch!");
+//	}
 }
 
 - (void) updateBranches
@@ -122,7 +135,7 @@
 - (BOOL) isTransientBranch:(GBRef*)branch
 {
 	if (!branch) return NO;
-	return [self.transientBranches containsObject:branch];
+	return ![self.branches containsObject:branch];
 }
 
 - (void) addNewBranch:(GBRef*)branch

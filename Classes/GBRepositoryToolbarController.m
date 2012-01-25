@@ -14,7 +14,7 @@
 #import "NSArray+OAArrayHelpers.h"
 #import "NSString+OAStringHelpers.h"
 
-@interface GBRepositoryToolbarController () <NSTextFieldDelegate>
+@interface GBRepositoryToolbarController () <NSTextFieldDelegate, NSMenuDelegate>
 
 @property(nonatomic, readonly) NSPopUpButton* currentBranchPopUpButton;
 @property(nonatomic, readonly) NSButton* settingsButton;
@@ -22,19 +22,22 @@
 @property(nonatomic, readonly) NSButton* pullButton;
 @property(nonatomic, readonly) NSPopUpButton* otherBranchPopUpButton;
 @property(nonatomic, readonly) NSSearchField* searchField;
-
+@property(nonatomic, retain) NSMutableArray* openedMenus;
 - (void) updateDisabledState;
 - (void) updateBranchMenus;
 - (void) updateCurrentBranchMenus;
 - (void) updateRemoteBranchMenus;
 - (void) updateSyncButtons;
-
+- (BOOL) isMenuOpened:(NSMenu*)menu;
 @end
 
 
-@implementation GBRepositoryToolbarController
+@implementation GBRepositoryToolbarController {
+	BOOL needsUpdateAfterClosingMenu;
+}
 
 @synthesize repositoryController;
+@synthesize openedMenus=_openedMenus;
 
 @dynamic currentBranchPopUpButton;
 @dynamic pullPushControl;
@@ -46,6 +49,7 @@
 - (void) dealloc
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	[_openedMenus release];
 	[super dealloc];
 }
 
@@ -80,7 +84,7 @@
 
 
 
-#pragma mark Controls properties
+#pragma mark - Controls properties
 
 
 
@@ -116,10 +120,8 @@
 
 
 
-#pragma mark GBRepositoryController notifications
+#pragma mark - GBRepositoryController notifications
 
-
-// TODO: update branch menus and disabled status when the relevant repo state changes
 
 
 - (void) repositoryControllerDidChangeDisabledStatus:(GBRepositoryController*)repoCtrl
@@ -181,7 +183,7 @@
 
 
 
-#pragma mark Search delegate and action
+#pragma mark - Search delegate and action
 
 
 - (IBAction)searchFieldDidChange:(id)sender
@@ -228,7 +230,7 @@
 
 
 
-#pragma mark Updates
+#pragma mark - Updates
 
 
 
@@ -371,21 +373,27 @@
 	
 	NSPopUpButton* button = self.currentBranchPopUpButton;
 	
+	if ([self isMenuOpened:button.menu])
+	{
+		needsUpdateAfterClosingMenu = YES;
+		return;
+	}
 	// Local branches
 	//NSMenu* newMenu = [NSMenu menu];
-	NSMenu* newMenu = button.menu;
-	if (!newMenu) newMenu = [NSMenu menu];
-	[newMenu removeAllItems];
+	NSMenu* currentBranchesMenu = button.menu;
+	if (!currentBranchesMenu) currentBranchesMenu = [NSMenu menu];
+	currentBranchesMenu.delegate = self;
+	[currentBranchesMenu removeAllItems];
 	
 	if ([button pullsDown])
 	{
 		// Note: this is needed according to documentation for pull-down menus. The item will be ignored.
-		[newMenu addItem:[NSMenuItem menuItemWithTitle:@"" submenu:nil]];
+		[currentBranchesMenu addItem:[NSMenuItem menuItemWithTitle:@"" submenu:nil]];
 	}
 	
 	if (!repo)
 	{
-		[button setMenu:newMenu];
+		[button setMenu:currentBranchesMenu];
 		[button setEnabled:NO];
 		//NSLog(@"Toolbar: disabling branch menu because repo is nil.");
 		return;
@@ -393,7 +401,7 @@
 	
 	if ([repo.localBranches count] < 1)
 	{
-		[button setMenu:newMenu];
+		[button setMenu:currentBranchesMenu];
 		[button setEnabled:NO];
 		[button setTitle:NSLocalizedString(@"", @"Toolbar")];
 		//NSLog(@"Toolbar: disabling branch menu because branches count is 0");
@@ -411,17 +419,17 @@
 		{
 			[item setState:NSOnState];
 		}
-		[newMenu addItem:item];
+		[currentBranchesMenu addItem:item];
 	}
 	
-	[newMenu addItem:[NSMenuItem separatorItem]];
+	[currentBranchesMenu addItem:[NSMenuItem separatorItem]];
 	
 	
 	// Checkout Tag
 	
 	if ([repo.tags count] > 0)
 	{
-		[newMenu addItem:[NSMenuItem menuItemWithTitle:NSLocalizedString(@"Checkout Tag", @"Command") action:@selector(checkoutTagMenu:)]];
+		[currentBranchesMenu addItem:[NSMenuItem menuItemWithTitle:NSLocalizedString(@"Checkout Tag", @"Command") action:@selector(checkoutTagMenu:)]];
 	}
 	
 	
@@ -437,7 +445,7 @@
 	}
 	if (hasOneRemoteBranch)
 	{
-		[newMenu addItem:[NSMenuItem menuItemWithTitle:NSLocalizedString(@"Checkout Remote Branch", @"Command") action:@selector(checkoutRemoteBranchMenu:)]];
+		[currentBranchesMenu addItem:[NSMenuItem menuItemWithTitle:NSLocalizedString(@"Checkout Remote Branch", @"Command") action:@selector(checkoutRemoteBranchMenu:)]];
 	}
 	
 	
@@ -450,25 +458,25 @@
 		[item setAction:@selector(checkoutCommit:)];
 		[item setTarget:self];
 		
-		[newMenu addItem:item];
+		[currentBranchesMenu addItem:item];
 	}
 	
 	
-	[newMenu addItem:[NSMenuItem separatorItem]];
+	[currentBranchesMenu addItem:[NSMenuItem separatorItem]];
 	
 	
 	// Create and edit branches and tags
 	
-	[newMenu addItem:[NSMenuItem menuItemWithTitle:NSLocalizedString(@"New Tag...", @"Command") action:@selector(newTag:)]];
-	[newMenu addItem:[NSMenuItem menuItemWithTitle:NSLocalizedString(@"New Branch...", @"Command") action:@selector(newBranch:)]];  
-	[newMenu addItem:[NSMenuItem separatorItem]];
-	[newMenu addItem:[NSMenuItem menuItemWithTitle:NSLocalizedString(@"Edit Branches and Tags...", @"Command") action:@selector(editBranchesAndTags:)]];  
+	[currentBranchesMenu addItem:[NSMenuItem menuItemWithTitle:NSLocalizedString(@"New Tag...", @"Command") action:@selector(newTag:)]];
+	[currentBranchesMenu addItem:[NSMenuItem menuItemWithTitle:NSLocalizedString(@"New Branch...", @"Command") action:@selector(newBranch:)]];  
+	[currentBranchesMenu addItem:[NSMenuItem separatorItem]];
+	[currentBranchesMenu addItem:[NSMenuItem menuItemWithTitle:NSLocalizedString(@"Edit Branches and Tags...", @"Command") action:@selector(editBranchesAndTags:)]];  
 	
 	
 	// Select current branch
 	
 	//[button setMenu:newMenu];
-	for (NSMenuItem* item in [newMenu itemArray])
+	for (NSMenuItem* item in [currentBranchesMenu itemArray])
 	{
 		if ([[item representedObject] isEqual:repo.currentLocalRef])
 		{
@@ -497,10 +505,16 @@
 	NSArray* remotes = repo.remotes;
 	
 	NSPopUpButton* button = self.otherBranchPopUpButton;
-	//NSMenu* remoteBranchesMenu = [NSMenu menu];
-	NSMenu* remoteBranchesMenu = button.menu;
-	[remoteBranchesMenu removeAllItems];
-	if (!remoteBranchesMenu) remoteBranchesMenu = [NSMenu menu];
+	
+	if ([self isMenuOpened:button.menu])
+	{
+		needsUpdateAfterClosingMenu = YES;
+		return;
+	}
+	
+	NSMenu* remoteBranchesMenu = button.menu ? button.menu : [NSMenu menu];
+	[button.menu removeAllItems];
+	remoteBranchesMenu.delegate = self;
 	
 	if ([button pullsDown])
 	{
@@ -657,6 +671,7 @@
 	
 	// Finish with a button for the menu
 	
+	NSLog(@"Updated remote branches menu!");
 	//[button setMenu:remoteBranchesMenu];
 	
 	GBRef* remoteBranch = repo.currentRemoteBranch;
@@ -675,15 +690,38 @@
 
 
 
+#pragma mark - NSMenuDelegate
+
+
+- (void)menuWillOpen:(NSMenu *)menu
+{
+	if (!self.openedMenus) self.openedMenus = [NSMutableArray array];
+	[self.openedMenus addObject:menu];
+	NSLog(@"   > Opened menu.");
+}
+
+- (void)menuDidClose:(NSMenu *)menu
+{
+	NSLog(@"   < Closed menu.");
+	[self.openedMenus removeObject:menu];
+	if (needsUpdateAfterClosingMenu)
+	{
+		needsUpdateAfterClosingMenu = NO;
+		[self updateBranchMenus];
+	}
+}
+
+- (BOOL) isMenuOpened:(NSMenu*)menu
+{
+	if (!menu) return NO;
+	return [self.openedMenus containsObject:menu];
+}
 
 
 
 
 
-
-
-
-#pragma mark IBActions
+#pragma mark - IBActions
 
 
 

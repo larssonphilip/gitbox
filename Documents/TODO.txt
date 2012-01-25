@@ -48,7 +48,8 @@ Gitbox 1.6 Release Notes
 
 Gitbox 1.6 misc items:
 
-- bug: commits count is not updated after push to a new branch
++ bug: commits count is not updated after push to a new branch
+- after focusing into the window and changing remote branch, it's not changed. It's not a menu update issue.
 - bug: after remote branches are deleted, need to deselect remote branch if it's removed.
 - todo: add immediate check for existance in FSEvents callback (right now deletion is delayed for non-selected repos)
 - possible bug: if authentication fails with empty or non-expected error message, keychain item is not removed.

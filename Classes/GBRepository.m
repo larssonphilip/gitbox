@@ -1405,6 +1405,8 @@
 	task.arguments = [task.arguments arrayByAddingObject:aRemoteBranch.remoteAlias];
 	task.arguments = [task.arguments arrayByAddingObject:refspec];
 	
+	BOOL pushingToNewBranch = [aRemoteBranch.remote isTransientBranch:aRemoteBranch];
+	
 	[self launchTask:task withBlock:^{
 		self.currentTaskProgress = 0.0;
 		self.currentTaskProgressStatus = nil;
@@ -1465,7 +1467,15 @@
 				}
 			}
 		}
-		if (block) block();
+		
+		if (pushingToNewBranch && !self.lastError)
+		{
+			[self fetchRemote:aRemote silently:YES withBlock:block];
+		}
+		else
+		{
+			if (block) block();
+		}
 		self.lastError = nil;
 	}];
 }
