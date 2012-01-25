@@ -1765,6 +1765,19 @@
 	// git push origin :refs/tags/12345
 	// git push origin :refs/heads/branch
 	
+	block = [[block copy] autorelease];
+	
+	if (self.currentRemoteBranch && [refs containsObject:self.currentRemoteBranch])
+	{
+		self.currentRemoteBranch = nil;
+		[self configureTrackingRemoteBranch:nil
+							  withLocalName:self.currentLocalRef.name 
+									 block:^{
+										 [self removeRemoteRefs:refs withBlock:block];
+									 }];
+		return;
+	}
+	
 	[OABlockGroup groupBlock:^(OABlockGroup *group) {
 		for (GBRef* ref in refs)
 		{

@@ -671,7 +671,7 @@
 	
 	// Finish with a button for the menu
 	
-	NSLog(@"Updated remote branches menu!");
+	//NSLog(@"Updated remote branches menu!");
 	//[button setMenu:remoteBranchesMenu];
 	
 	GBRef* remoteBranch = repo.currentRemoteBranch;
@@ -697,12 +697,12 @@
 {
 	if (!self.openedMenus) self.openedMenus = [NSMutableArray array];
 	[self.openedMenus addObject:menu];
-	NSLog(@"   > Opened menu.");
+	//NSLog(@"   > Opened menu.");
 }
 
 - (void)menuDidClose:(NSMenu *)menu
 {
-	NSLog(@"   < Closed menu.");
+	//NSLog(@"   < Closed menu.");
 	[self.openedMenus removeObject:menu];
 	if (needsUpdateAfterClosingMenu)
 	{

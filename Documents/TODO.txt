@@ -48,21 +48,15 @@ Gitbox 1.6 Release Notes
 
 Gitbox 1.6 misc items:
 
-+ bug: commits count is not updated after push to a new branch
-- after focusing into the window and changing remote branch, it's not changed. It's not a menu update issue.
-- bug: after remote branches are deleted, need to deselect remote branch if it's removed.
-- todo: add immediate check for existance in FSEvents callback (right now deletion is delayed for non-selected repos)
 - possible bug: if authentication fails with empty or non-expected error message, keychain item is not removed.
   - possible solution: mark item as problematic and ask for the password with autocompleted values.
   - another possible solution: remember keychain items for failed tasks and upon app quit delete them.
     - so if you finally managed to access the server - it won't remove the keychain item
 	- if you couldn't access it and gitbox restarts, it start afresh.
   
-- crash: on incorrect password or SSH key the askpass controller crashes with "task" selector
-- crash: on invalid ssh key the askpass controller crashes with "task" selector
-- crash: The app crashes whenever I try to delete a remote branch, shortly after hitting the “Ok” button of the edit branch sheet
-
-+ GBRepository.lastError is sometimes dropped because of AskPassController which delays a callback.
+? crash: on incorrect password or SSH key the askpass controller crashes with "task" selector
+? crash: on invalid ssh key the askpass controller crashes with "task" selector
+? crash: The app crashes whenever I try to delete a remote branch, shortly after hitting the “Ok” button of the edit branch sheet
 
 
 - bug: should not refresh index while staging multiple items quickly one-by-one. - use delayed update to override FSEvent.
@@ -186,6 +180,10 @@ Gitbox 1.6 misc items:
 
 Misc done for 1.6:
 
++ GBRepository.lastError is sometimes dropped because of AskPassController which delays a callback.
++ todo: add immediate check for existance in FSEvents callback (right now deletion is delayed for non-selected repos)
++ bug: commits count is not updated after push to a new branch
++ bug: after remote branches are deleted, need to deselect remote branch if it's removed.
 + bug: "bad revision" when just created remote branch and calculating difference using "rev-list"
 + bug: file "Icon\r" is ignored in the stage view.
 + bug: long error sheets when pull or push fails - with progress status [fixed for some common error messages]
@@ -476,6 +474,8 @@ Error messages translation to English:
 Bugs:
 
 - check other uses of setNextResponder: in view controllers - should be unset in dealloc (sometimes undoManager messages go to dangling pointer)
+
+- after focusing into the window and changing remote branch, it's not changed. It's not a menu update issue.
 
 - bug: stage does not notice renaming from ABC.txt to abc.txt - need to stage all with temp name, then rename and stage again.
 - bug: when pulling a lot of commits, undo leaves a lot of crap in the stage. Try with Gitbox and July 2011 state.
