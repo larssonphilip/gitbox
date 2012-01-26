@@ -50,10 +50,9 @@ Gitbox 1.6 misc items:
 
 - possible bug: if authentication fails with empty or non-expected error message, keychain item is not removed.
   - possible solution: mark item as problematic and ask for the password with autocompleted values.
-  - another possible solution: remember keychain items for failed tasks and upon app quit delete them.
-    - so if you finally managed to access the server - it won't remove the keychain item
-	- if you couldn't access it and gitbox restarts, it start afresh.
-  
+	- doesn't work nice if one command succeeds and another one fails (e.g. push failed).
+	- but works if every command fails.
+	
 ? crash: on incorrect password or SSH key the askpass controller crashes with "task" selector
 ? crash: on invalid ssh key the askpass controller crashes with "task" selector
 ? crash: The app crashes whenever I try to delete a remote branch, shortly after hitting the “Ok” button of the edit branch sheet

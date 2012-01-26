@@ -14,7 +14,13 @@
 @property(nonatomic, retain) NSNumber* booleanResponse;
 
 // user-provided or loaded from keychain
+@property(nonatomic, copy) NSString* username;
+
+// user-provided or loaded from keychain
 @property(nonatomic, copy) NSString* password;
+
+- (void) setAddressAsFailed:(BOOL)flag;
+- (BOOL) isAddressMarkedAsFailed;
 
 - (void) presentBooleanPrompt:(NSString*)prompt;
 - (void) presentUsernamePrompt:(NSString*)prompt;
@@ -68,7 +74,6 @@
 
 
 
-
 #pragma mark - OATask start and finish
 
 - (void) willLaunchTask
@@ -115,8 +120,10 @@
 		}
 		else // unknown error, bypass
 		{
-			// TODO: remember this remoteAddress as failed one so we don't try to use keychain item next time
-			//       but pre-fill login window with keychain data.
+			// Remember this remoteAddress as a failed one so we don't try to use keychain item next time
+			// but pre-fill login window with keychain data.
+			
+			[self setAddressAsFailed:YES];
 			
 			NSLog(@"GBAuthenticatedTask: unknown error: %@", output);
 			return;
@@ -124,6 +131,8 @@
 	}
 	else
 	{
+		[self setAddressAsFailed:NO];
+		
 		if (needsStoreCredentialsInKeychain) [self storeCredentialsInKeychain];
 		needsStoreCredentialsInKeychain = NO;
 	}
@@ -200,13 +209,16 @@
 		// Do we have something in Keychain? 
 		if ([self loadCredentialsFromKeychain])
 		{
-			if (self.username) return self.username;
+			if (self.username && ![self isAddressMarkedAsFailed])
+			{
+				return self.username;
+			}
 		}
 		
-		// If Keychain did not help and we should be silent, return empty string.
+		// If should be silent return whatever we have.
 		if (self.isSilent)
 		{
-			return @"";
+			return self.username ? self.username : @"";
 		}
 		
 		// Nothing in Keychain, ask the user.
@@ -221,16 +233,19 @@
 			return self.password;
 		}
 		
-		// Do we have something in Keychain? 
+		// Do we have something in Keychain?
 		if ([self loadCredentialsFromKeychain])
 		{
-			if (self.password) return self.password;
+			if (self.password  && ![self isAddressMarkedAsFailed])
+			{
+				return self.password;
+			}
 		}
 		
 		// If Keychain did not help and we should be silent, return empty string.
 		if (self.isSilent)
 		{
-			return @"";
+			return self.password ? self.password : @"";
 		}
 
 		// Nothing in Keychain, ask the user.
@@ -241,6 +256,57 @@
 	// By default we return nil which means a delayed answer. We'll be asked again later.
 	return nil;
 }
+
+
+
+
+
+#pragma mark - Possible Failure
+
+
+#define kFailedAddressesKey @"GBAuthenticatedTaskFailedAddresses"
+
+// When the task fails without explicit auth problem, we could not be sure if it's caused by the authentication.
+// So in that case we mark the remote address as failed so next time we do not attempt to use keychain username and password.
+- (void) setAddressAsFailed:(BOOL)flag
+{
+	// TODO: if we have a "push" failure, the address will be marked as failed, but if then "fetch" succeeds, the address will be cleared.
+	// The UX will be unpredictable: sometimes the password will show up, sometimes it won't.
+	// We should come up with more robust way to do that.
+	return;
+	
+	NSString* addr = self.remoteAddress;
+	
+	if (!addr) return;
+	
+	NSMutableArray* list = [[[[NSUserDefaults standardUserDefaults] objectForKey:kFailedAddressesKey] mutableCopy] autorelease];
+	if (!list) list = [NSMutableArray array];
+	
+	if (flag)
+	{
+		if (![list containsObject:addr]) [list addObject:addr];
+	}
+	else
+	{
+		[list removeObject:addr];
+	}
+	
+	[[NSUserDefaults standardUserDefaults] setObject:list forKey:kFailedAddressesKey];
+}
+
+- (BOOL) isAddressMarkedAsFailed
+{
+	// TODO: see the comment above in setAddressAsFailed:
+	return NO;
+	
+	NSString* addr = self.remoteAddress;
+	if (!addr) return NO;
+	
+	NSMutableArray* list = [[[[NSUserDefaults standardUserDefaults] objectForKey:kFailedAddressesKey] mutableCopy] autorelease];
+	
+	return [list containsObject:addr];
+}
+
 
 
 
@@ -280,6 +346,7 @@
 	GBAskPassCredentialsController* ctrl = [GBAskPassCredentialsController controller];
 	ctrl.address = self.remoteAddress;
 	ctrl.username = self.username;
+	ctrl.password = self.password;
 	if (ctrl.username.length == 0)
 	{
 		ctrl.username = [[NSUserDefaults standardUserDefaults] objectForKey:kGBAuthenticatedTaskLastUsername];
