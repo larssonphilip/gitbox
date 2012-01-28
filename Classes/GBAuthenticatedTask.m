@@ -125,7 +125,7 @@
 			
 			[self setAddressAsFailed:YES];
 			
-			NSLog(@"GBAuthenticatedTask: unknown error: %@", output);
+			//NSLog(@"GBAuthenticatedTask: unknown error: %@", output);
 			return;
 		}
 	}
@@ -264,7 +264,7 @@
 #pragma mark - Possible Failure
 
 
-#define kFailedAddressesKey @"GBAuthenticatedTaskFailedAddresses"
+#define kFailedAddressesKey @"GBAuthenticatedTaskFailedAddressesDictionary"
 
 // When the task fails without explicit auth problem, we could not be sure if it's caused by the authentication.
 // So in that case we mark the remote address as failed so next time we do not attempt to use keychain username and password.
@@ -273,38 +273,41 @@
 	// TODO: if we have a "push" failure, the address will be marked as failed, but if then "fetch" succeeds, the address will be cleared.
 	// The UX will be unpredictable: sometimes the password will show up, sometimes it won't.
 	// We should come up with more robust way to do that.
-	return;
 	
 	NSString* addr = self.remoteAddress;
 	
 	if (!addr) return;
 	
-	NSMutableArray* list = [[[[NSUserDefaults standardUserDefaults] objectForKey:kFailedAddressesKey] mutableCopy] autorelease];
-	if (!list) list = [NSMutableArray array];
+	NSMutableDictionary* dict = [[[[NSUserDefaults standardUserDefaults] objectForKey:kFailedAddressesKey] mutableCopy] autorelease];
+	if (!dict) dict = [NSMutableDictionary dictionary];
 	
 	if (flag)
 	{
-		if (![list containsObject:addr]) [list addObject:addr];
+		NSNumber* countNumber = [dict objectForKey:addr];
+		NSLog(@"GBAuthenticatedTask: address failure: %d [%@]", (int)(countNumber.integerValue + 1), addr);
+		[dict setObject:[NSNumber numberWithInteger:countNumber.integerValue + 1] forKey:addr];
 	}
 	else
 	{
-		[list removeObject:addr];
+		if ([dict objectForKey:addr])
+		{
+			NSLog(@"GBAuthenticatedTask: address succeeded, clearing counter [%@]", addr);
+		}
+		[dict removeObjectForKey:addr];
 	}
 	
-	[[NSUserDefaults standardUserDefaults] setObject:list forKey:kFailedAddressesKey];
+	[[NSUserDefaults standardUserDefaults] setObject:dict forKey:kFailedAddressesKey];
 }
 
+// Return YES if the address failed enough times in a row.
 - (BOOL) isAddressMarkedAsFailed
 {
-	// TODO: see the comment above in setAddressAsFailed:
-	return NO;
-	
 	NSString* addr = self.remoteAddress;
 	if (!addr) return NO;
 	
-	NSMutableArray* list = [[[[NSUserDefaults standardUserDefaults] objectForKey:kFailedAddressesKey] mutableCopy] autorelease];
+	NSMutableDictionary* dict = [[NSUserDefaults standardUserDefaults] objectForKey:kFailedAddressesKey];
 	
-	return [list containsObject:addr];
+	return [[dict objectForKey:addr] integerValue] >= 3;
 }
 
 
