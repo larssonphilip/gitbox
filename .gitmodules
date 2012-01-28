@@ -7,3 +7,6 @@
 [submodule "git"]
 	path = git
 	url = git@github.com:oleganza/git.git
+[submodule "MASPreferences"]
+	path = MASPreferences
+	url = https://github.com/oleganza/MASPreferences

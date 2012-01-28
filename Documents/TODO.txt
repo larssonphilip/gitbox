@@ -56,7 +56,7 @@ Gitbox 1.6 misc items:
 - bug: stage: selection is not accurately preserved when stage is reloaded.
 - bug: stage: scroll offset is not preserved when stage is reloaded.
 
-- it takes very long time to update local state for non-selected repo.
+- bug: it takes a very long time to update local state for non-selected repo.
 
 - checkbox "Clone Github repositories"
 
