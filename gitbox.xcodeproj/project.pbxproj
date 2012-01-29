@@ -435,6 +435,14 @@
 		20C3C234125C4DB600ABEDE7 /* GBWelcomeController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20C3C233125C4DB600ABEDE7 /* GBWelcomeController.m */; };
 		20C3C30B125D9EA900ABEDE7 /* GBCloneWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 20C3C30A125D9EA900ABEDE7 /* GBCloneWindowController.xib */; };
 		20C3C312125DA0BC00ABEDE7 /* GBCloneWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20C3C311125DA0BC00ABEDE7 /* GBCloneWindowController.m */; };
+		20C50D2014D5EFF9009786D9 /* MASPreferencesWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 20C50D1D14D5EFF9009786D9 /* MASPreferencesWindow.xib */; };
+		20C50D2114D5EFF9009786D9 /* MASPreferencesWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 20C50D1D14D5EFF9009786D9 /* MASPreferencesWindow.xib */; };
+		20C50D2214D5EFF9009786D9 /* MASPreferencesWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20C50D1F14D5EFF9009786D9 /* MASPreferencesWindowController.m */; };
+		20C50D2314D5EFF9009786D9 /* MASPreferencesWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20C50D1F14D5EFF9009786D9 /* MASPreferencesWindowController.m */; };
+		20C50D2714D5F7FB009786D9 /* GBPreferencesDiffViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20C50D2514D5F7FB009786D9 /* GBPreferencesDiffViewController.m */; };
+		20C50D2814D5F7FB009786D9 /* GBPreferencesDiffViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20C50D2514D5F7FB009786D9 /* GBPreferencesDiffViewController.m */; };
+		20C50D2914D5F7FB009786D9 /* GBPreferencesDiffViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 20C50D2614D5F7FB009786D9 /* GBPreferencesDiffViewController.xib */; };
+		20C50D2A14D5F7FB009786D9 /* GBPreferencesDiffViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 20C50D2614D5F7FB009786D9 /* GBPreferencesDiffViewController.xib */; };
 		20C66EF01344EEAF0067D232 /* GBFolderMonitor.m in Sources */ = {isa = PBXBuildFile; fileRef = 20C66EEF1344EEAF0067D232 /* GBFolderMonitor.m */; };
 		20C66EF11344EEAF0067D232 /* GBFolderMonitor.m in Sources */ = {isa = PBXBuildFile; fileRef = 20C66EEF1344EEAF0067D232 /* GBFolderMonitor.m */; };
 		20C83E7C12A9ACB900769F47 /* OAFastJumpController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20C83E7B12A9ACB900769F47 /* OAFastJumpController.m */; };
@@ -877,6 +885,13 @@
 		20C3C30A125D9EA900ABEDE7 /* GBCloneWindowController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBCloneWindowController.xib; sourceTree = "<group>"; };
 		20C3C310125DA0BC00ABEDE7 /* GBCloneWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBCloneWindowController.h; sourceTree = "<group>"; };
 		20C3C311125DA0BC00ABEDE7 /* GBCloneWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBCloneWindowController.m; sourceTree = "<group>"; };
+		20C50D1C14D5EFF9009786D9 /* MASPreferencesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MASPreferencesViewController.h; sourceTree = "<group>"; };
+		20C50D1D14D5EFF9009786D9 /* MASPreferencesWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MASPreferencesWindow.xib; sourceTree = "<group>"; };
+		20C50D1E14D5EFF9009786D9 /* MASPreferencesWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MASPreferencesWindowController.h; sourceTree = "<group>"; };
+		20C50D1F14D5EFF9009786D9 /* MASPreferencesWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MASPreferencesWindowController.m; sourceTree = "<group>"; };
+		20C50D2414D5F7FB009786D9 /* GBPreferencesDiffViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBPreferencesDiffViewController.h; sourceTree = "<group>"; };
+		20C50D2514D5F7FB009786D9 /* GBPreferencesDiffViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBPreferencesDiffViewController.m; sourceTree = "<group>"; };
+		20C50D2614D5F7FB009786D9 /* GBPreferencesDiffViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GBPreferencesDiffViewController.xib; sourceTree = "<group>"; };
 		20C66EEE1344EEAF0067D232 /* GBFolderMonitor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBFolderMonitor.h; sourceTree = "<group>"; };
 		20C66EEF1344EEAF0067D232 /* GBFolderMonitor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBFolderMonitor.m; sourceTree = "<group>"; };
 		20C83E7A12A9ACB900769F47 /* OAFastJumpController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAFastJumpController.h; sourceTree = "<group>"; };
@@ -1575,6 +1590,28 @@
 			name = "Prompts and aux window controllers";
 			sourceTree = "<group>";
 		};
+		20C50D1A14D5EFB6009786D9 /* Preferences */ = {
+			isa = PBXGroup;
+			children = (
+				20C50D2414D5F7FB009786D9 /* GBPreferencesDiffViewController.h */,
+				20C50D2514D5F7FB009786D9 /* GBPreferencesDiffViewController.m */,
+				20C50D2614D5F7FB009786D9 /* GBPreferencesDiffViewController.xib */,
+			);
+			name = Preferences;
+			sourceTree = "<group>";
+		};
+		20C50D1B14D5EFF9009786D9 /* MASPreferences */ = {
+			isa = PBXGroup;
+			children = (
+				20C50D1C14D5EFF9009786D9 /* MASPreferencesViewController.h */,
+				20C50D1D14D5EFF9009786D9 /* MASPreferencesWindow.xib */,
+				20C50D1E14D5EFF9009786D9 /* MASPreferencesWindowController.h */,
+				20C50D1F14D5EFF9009786D9 /* MASPreferencesWindowController.m */,
+			);
+			name = MASPreferences;
+			path = MASPreferences/Demo/Shared;
+			sourceTree = SOURCE_ROOT;
+		};
 		20E698D813635AB9000A3A6F /* Authentication */ = {
 			isa = PBXGroup;
 			children = (
@@ -1622,8 +1659,10 @@
 				20A9713712C6C6CB00E2B7B9 /* Sidebar */,
 				20A9407112FA068800C3F6F4 /* Main Pane */,
 				208D0B1D139A623F002C8072 /* Repository Settings */,
+				20C50D1A14D5EFB6009786D9 /* Preferences */,
 				20BF19341282238800A30EE6 /* Prompts and aux window controllers */,
 				2057963E11ADD37F004715FE /* Shared Views */,
+				20C50D1B14D5EFF9009786D9 /* MASPreferences */,
 				20B1620D11944B6900A709CF /* Libs */,
 				200C158014670E43000F4C78 /* Documents */,
 			);
@@ -1817,6 +1856,8 @@
 				202A1FA9145B2CDF00953257 /* git.bundle-1.7.5.4.tar in Resources */,
 				200C159A14670F9E000F4C78 /* GitboxLicense.txt in Resources */,
 				200C15A114672EB2000F4C78 /* GBSubmoduleCloningViewController.xib in Resources */,
+				20C50D2114D5EFF9009786D9 /* MASPreferencesWindow.xib in Resources */,
+				20C50D2A14D5F7FB009786D9 /* GBPreferencesDiffViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1895,6 +1936,8 @@
 				202A1FA8145B2CDF00953257 /* git.bundle-1.7.5.4.tar in Resources */,
 				200C159914670F9E000F4C78 /* GitboxLicense.txt in Resources */,
 				200C15A014672EB2000F4C78 /* GBSubmoduleCloningViewController.xib in Resources */,
+				20C50D2014D5EFF9009786D9 /* MASPreferencesWindow.xib in Resources */,
+				20C50D2914D5F7FB009786D9 /* GBPreferencesDiffViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2064,6 +2107,8 @@
 				20DE951614B39A5D005A5DC5 /* GBRepositoryController+Actions.m in Sources */,
 				20376A7A14BAAF1100B181B7 /* OAAreEqual.m in Sources */,
 				207FF7F314C54E6C0049E8F0 /* GBAuthenticatedTask.m in Sources */,
+				20C50D2314D5EFF9009786D9 /* MASPreferencesWindowController.m in Sources */,
+				20C50D2814D5F7FB009786D9 /* GBPreferencesDiffViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2215,6 +2260,8 @@
 				20DE951514B39A5D005A5DC5 /* GBRepositoryController+Actions.m in Sources */,
 				20376A7914BAAF1100B181B7 /* OAAreEqual.m in Sources */,
 				207FF7F214C54E6C0049E8F0 /* GBAuthenticatedTask.m in Sources */,
+				20C50D2214D5EFF9009786D9 /* MASPreferencesWindowController.m in Sources */,
+				20C50D2714D5F7FB009786D9 /* GBPreferencesDiffViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
