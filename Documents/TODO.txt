@@ -51,9 +51,10 @@ Gitbox 1.6 misc items:
 - prefs:
 	- GBPreferencesDiffViewController "Diff tools"
 	- GBPreferencesGithubViewController "Github"
+	- GBPreferencesGitIgnoreViewController "Ignored Files"
+	- GBPreferencesGitConfigViewController "Advanced"
 	- GBPreferencesUpdatesViewController "Updates"
-	- GBPreferencesGitConfigViewController "Ignored Files"
-	- GBPreferencesGitIgnoreViewController "Advanced"
+	- GBPreferencesLicenseViewController "License"
 	- export icons
 	- instantiate updater 
 

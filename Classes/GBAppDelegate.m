@@ -3,7 +3,11 @@
 #import "GBRepositoriesController.h"
 #import "GBMainWindowController.h"
 #import "GBActivityController.h"
-#import "GBPreferencesController.h"
+
+#import "MASPreferencesWindowController.h"
+#import "GBPreferencesDiffViewController.h"
+#import "GBPreferencesGithubViewController.h"
+
 #import "GBPromptController.h"
 #import "GBLicenseController.h"
 #import "GBSidebarController.h"
@@ -27,11 +31,15 @@
 #import "iRate.h"
 #endif
 
+#if !GITBOX_APP_STORE
+#import "Sparkle/Sparkle.h"
+#endif
+
 @interface GBAppDelegate () <NSOpenSavePanelDelegate>
 
 @property(nonatomic, retain) GBRootController* rootController;
 @property(nonatomic, retain) GBMainWindowController* windowController;
-@property(nonatomic, retain) GBPreferencesController* preferencesController;
+@property(nonatomic, retain) MASPreferencesWindowController* preferencesController;
 @property(nonatomic, retain) GBLicenseController* licenseController;
 @property(nonatomic, retain) NSMutableArray* URLsToOpenAfterLaunch;
 
@@ -103,7 +111,11 @@
 
 - (IBAction) checkForUpdates:(id)sender
 {
-	[self.preferencesController.updater checkForUpdates:sender];
+#if !GITBOX_APP_STORE
+	[[SUUpdater sharedUpdater] checkForUpdates:sender];
+#else
+	[self rateInAppStore:sender];
+#endif
 }
 
 - (IBAction) showOnlineHelp:sender
@@ -157,8 +169,9 @@
 {
 	[GBAskPassServer sharedServer]; // preload the server
     
-	//#warning UNIT TESTING!
-	//  [self testUTF8Healing];
+#if !GITBOX_APP_STORE
+	[SUUpdater sharedUpdater]; // preload updater
+#endif
 	
 #if DEBUG
     //NSLog(@"GBAskPassServer: %@", [GBAskPassServer sharedServer]);
@@ -185,29 +198,39 @@
 	self.windowController = [GBMainWindowController instance];
 	
 	void(^removeMenuItem)(NSMenuItem*) = ^(NSMenuItem* item) {
-		[[item menu] removeItem:item];
+		if (item) [[item menu] removeItem:item];
 	};
 	
-	NSString* preferencesNibName = @"GBPreferencesController";
 #if GITBOX_APP_STORE
-	preferencesNibName = @"GBPreferencesController-appstore";
-	
 	removeMenuItem(self.licenseMenuItem);
 	removeMenuItem(self.checkForUpdatesMenuItem);
 #else
 	removeMenuItem(self.rateInAppStoreMenuItem);
 #endif
 	
-#if DEBUG
-#else
+#if !DEBUG
 	removeMenuItem(self.welcomeMenuItem);
 #endif
 	
 	
 	self.licenseTextView.string = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"GitboxLicense" ofType:@"txt"] encoding:NSUTF8StringEncoding error:NULL];
 	
-	self.preferencesController = [[[GBPreferencesController alloc] initWithWindowNibName:preferencesNibName] autorelease];
-	[self.preferencesController loadWindow]; // force load Sparkle Updater
+#if GITBOX_APP_STORE
+#warning TODO: add all relevant controllers
+	NSArray* preferencesControllers = [NSArray arrayWithObjects:
+									   [GBPreferencesDiffViewController controller],
+									   [GBPreferencesGithubViewController controller],
+									   nil];
+
+#else
+	NSArray* preferencesControllers = [NSArray arrayWithObjects:
+									   [GBPreferencesDiffViewController controller],
+									   [GBPreferencesGithubViewController controller],
+									   nil];
+	
+#endif
+	
+	self.preferencesController = [[[MASPreferencesWindowController alloc] initWithViewControllers:preferencesControllers] autorelease];
 	
 	self.windowController.rootController = self.rootController;
 	[self.windowController showWindow:self];
