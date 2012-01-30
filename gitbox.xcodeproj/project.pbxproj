@@ -387,6 +387,22 @@
 		20A37BAC120DC4510068AB8B /* GBToolbarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20A37BAB120DC4510068AB8B /* GBToolbarController.m */; };
 		20A37BB6120DC7640068AB8B /* GBSidebarController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 20A37BB5120DC7640068AB8B /* GBSidebarController.xib */; };
 		20A37BBE120DDBA60068AB8B /* GBMainWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 20A37BBD120DDBA60068AB8B /* GBMainWindowController.xib */; };
+		20A5E37B14D68BE200408DD7 /* GBPreferencesConfigViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20A5E37014D68BD500408DD7 /* GBPreferencesConfigViewController.m */; };
+		20A5E37C14D68BE200408DD7 /* GBPreferencesConfigViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20A5E37014D68BD500408DD7 /* GBPreferencesConfigViewController.m */; };
+		20A5E37D14D68BE200408DD7 /* GBPreferencesConfigViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 20A5E37114D68BD500408DD7 /* GBPreferencesConfigViewController.xib */; };
+		20A5E37E14D68BE200408DD7 /* GBPreferencesConfigViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 20A5E37114D68BD500408DD7 /* GBPreferencesConfigViewController.xib */; };
+		20A5E37F14D68BE200408DD7 /* GBPreferencesIgnoreViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20A5E37314D68BD600408DD7 /* GBPreferencesIgnoreViewController.m */; };
+		20A5E38014D68BE200408DD7 /* GBPreferencesIgnoreViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20A5E37314D68BD600408DD7 /* GBPreferencesIgnoreViewController.m */; };
+		20A5E38114D68BE200408DD7 /* GBPreferencesIgnoreViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 20A5E37414D68BD700408DD7 /* GBPreferencesIgnoreViewController.xib */; };
+		20A5E38214D68BE200408DD7 /* GBPreferencesIgnoreViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 20A5E37414D68BD700408DD7 /* GBPreferencesIgnoreViewController.xib */; };
+		20A5E38314D68BE200408DD7 /* GBPreferencesLicenseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20A5E37614D68BD900408DD7 /* GBPreferencesLicenseViewController.m */; };
+		20A5E38414D68BE200408DD7 /* GBPreferencesLicenseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20A5E37614D68BD900408DD7 /* GBPreferencesLicenseViewController.m */; };
+		20A5E38514D68BE200408DD7 /* GBPreferencesLicenseViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 20A5E37714D68BDA00408DD7 /* GBPreferencesLicenseViewController.xib */; };
+		20A5E38614D68BE200408DD7 /* GBPreferencesLicenseViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 20A5E37714D68BDA00408DD7 /* GBPreferencesLicenseViewController.xib */; };
+		20A5E38714D68BE200408DD7 /* GBPreferencesUpdatesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20A5E37914D68BDE00408DD7 /* GBPreferencesUpdatesViewController.m */; };
+		20A5E38814D68BE200408DD7 /* GBPreferencesUpdatesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20A5E37914D68BDE00408DD7 /* GBPreferencesUpdatesViewController.m */; };
+		20A5E38914D68BE200408DD7 /* GBPreferencesUpdatesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 20A5E37A14D68BDF00408DD7 /* GBPreferencesUpdatesViewController.xib */; };
+		20A5E38A14D68BE200408DD7 /* GBPreferencesUpdatesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 20A5E37A14D68BDF00408DD7 /* GBPreferencesUpdatesViewController.xib */; };
 		20A750E51377C42F00981C39 /* GBSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 20A750E41377C42F00981C39 /* GBSearch.m */; };
 		20A750E61377C42F00981C39 /* GBSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 20A750E41377C42F00981C39 /* GBSearch.m */; };
 		20A9407512FA07C100C3F6F4 /* GBRepositoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20A9407412FA07C100C3F6F4 /* GBRepositoryViewController.m */; };
@@ -839,6 +855,18 @@
 		20A37BAB120DC4510068AB8B /* GBToolbarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBToolbarController.m; sourceTree = "<group>"; };
 		20A37BB5120DC7640068AB8B /* GBSidebarController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBSidebarController.xib; sourceTree = "<group>"; };
 		20A37BBD120DDBA60068AB8B /* GBMainWindowController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBMainWindowController.xib; sourceTree = "<group>"; };
+		20A5E36F14D68BD500408DD7 /* GBPreferencesConfigViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBPreferencesConfigViewController.h; sourceTree = "<group>"; };
+		20A5E37014D68BD500408DD7 /* GBPreferencesConfigViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBPreferencesConfigViewController.m; sourceTree = "<group>"; };
+		20A5E37114D68BD500408DD7 /* GBPreferencesConfigViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GBPreferencesConfigViewController.xib; sourceTree = "<group>"; };
+		20A5E37214D68BD600408DD7 /* GBPreferencesIgnoreViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBPreferencesIgnoreViewController.h; sourceTree = "<group>"; };
+		20A5E37314D68BD600408DD7 /* GBPreferencesIgnoreViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBPreferencesIgnoreViewController.m; sourceTree = "<group>"; };
+		20A5E37414D68BD700408DD7 /* GBPreferencesIgnoreViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GBPreferencesIgnoreViewController.xib; sourceTree = "<group>"; };
+		20A5E37514D68BD800408DD7 /* GBPreferencesLicenseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBPreferencesLicenseViewController.h; sourceTree = "<group>"; };
+		20A5E37614D68BD900408DD7 /* GBPreferencesLicenseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBPreferencesLicenseViewController.m; sourceTree = "<group>"; };
+		20A5E37714D68BDA00408DD7 /* GBPreferencesLicenseViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GBPreferencesLicenseViewController.xib; sourceTree = "<group>"; };
+		20A5E37814D68BDC00408DD7 /* GBPreferencesUpdatesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBPreferencesUpdatesViewController.h; sourceTree = "<group>"; };
+		20A5E37914D68BDE00408DD7 /* GBPreferencesUpdatesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBPreferencesUpdatesViewController.m; sourceTree = "<group>"; };
+		20A5E37A14D68BDF00408DD7 /* GBPreferencesUpdatesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GBPreferencesUpdatesViewController.xib; sourceTree = "<group>"; };
 		20A750E31377C42F00981C39 /* GBSearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBSearch.h; sourceTree = "<group>"; };
 		20A750E41377C42F00981C39 /* GBSearch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBSearch.m; sourceTree = "<group>"; };
 		20A9407312FA07C100C3F6F4 /* GBRepositoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBRepositoryViewController.h; sourceTree = "<group>"; };
@@ -1624,6 +1652,18 @@
 				20C50D3D14D6057E009786D9 /* GBPreferencesGithubViewController.h */,
 				20C50D3E14D6057E009786D9 /* GBPreferencesGithubViewController.m */,
 				20C50D3F14D6057E009786D9 /* GBPreferencesGithubViewController.xib */,
+				20A5E36F14D68BD500408DD7 /* GBPreferencesConfigViewController.h */,
+				20A5E37014D68BD500408DD7 /* GBPreferencesConfigViewController.m */,
+				20A5E37114D68BD500408DD7 /* GBPreferencesConfigViewController.xib */,
+				20A5E37214D68BD600408DD7 /* GBPreferencesIgnoreViewController.h */,
+				20A5E37314D68BD600408DD7 /* GBPreferencesIgnoreViewController.m */,
+				20A5E37414D68BD700408DD7 /* GBPreferencesIgnoreViewController.xib */,
+				20A5E37514D68BD800408DD7 /* GBPreferencesLicenseViewController.h */,
+				20A5E37614D68BD900408DD7 /* GBPreferencesLicenseViewController.m */,
+				20A5E37714D68BDA00408DD7 /* GBPreferencesLicenseViewController.xib */,
+				20A5E37814D68BDC00408DD7 /* GBPreferencesUpdatesViewController.h */,
+				20A5E37914D68BDE00408DD7 /* GBPreferencesUpdatesViewController.m */,
+				20A5E37A14D68BDF00408DD7 /* GBPreferencesUpdatesViewController.xib */,
 				20C50D2B14D5F98D009786D9 /* GBPreferencesConfig.png */,
 				20C50D2C14D5F98D009786D9 /* GBPreferencesDiff.png */,
 				20C50D2D14D5F98E009786D9 /* GBPreferencesGithub.png */,
@@ -1899,6 +1939,10 @@
 				20C50D3914D5F98E009786D9 /* GBPreferencesUpdates.png in Resources */,
 				20C50D3C14D60441009786D9 /* GBPreferencesLicense.png in Resources */,
 				20C50D4314D6057E009786D9 /* GBPreferencesGithubViewController.xib in Resources */,
+				20A5E37E14D68BE200408DD7 /* GBPreferencesConfigViewController.xib in Resources */,
+				20A5E38214D68BE200408DD7 /* GBPreferencesIgnoreViewController.xib in Resources */,
+				20A5E38614D68BE200408DD7 /* GBPreferencesLicenseViewController.xib in Resources */,
+				20A5E38A14D68BE200408DD7 /* GBPreferencesUpdatesViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1986,6 +2030,10 @@
 				20C50D3814D5F98E009786D9 /* GBPreferencesUpdates.png in Resources */,
 				20C50D3B14D60441009786D9 /* GBPreferencesLicense.png in Resources */,
 				20C50D4214D6057E009786D9 /* GBPreferencesGithubViewController.xib in Resources */,
+				20A5E37D14D68BE200408DD7 /* GBPreferencesConfigViewController.xib in Resources */,
+				20A5E38114D68BE200408DD7 /* GBPreferencesIgnoreViewController.xib in Resources */,
+				20A5E38514D68BE200408DD7 /* GBPreferencesLicenseViewController.xib in Resources */,
+				20A5E38914D68BE200408DD7 /* GBPreferencesUpdatesViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2158,6 +2206,10 @@
 				20C50D2314D5EFF9009786D9 /* MASPreferencesWindowController.m in Sources */,
 				20C50D2814D5F7FB009786D9 /* GBPreferencesDiffViewController.m in Sources */,
 				20C50D4114D6057E009786D9 /* GBPreferencesGithubViewController.m in Sources */,
+				20A5E37C14D68BE200408DD7 /* GBPreferencesConfigViewController.m in Sources */,
+				20A5E38014D68BE200408DD7 /* GBPreferencesIgnoreViewController.m in Sources */,
+				20A5E38414D68BE200408DD7 /* GBPreferencesLicenseViewController.m in Sources */,
+				20A5E38814D68BE200408DD7 /* GBPreferencesUpdatesViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2312,6 +2364,10 @@
 				20C50D2214D5EFF9009786D9 /* MASPreferencesWindowController.m in Sources */,
 				20C50D2714D5F7FB009786D9 /* GBPreferencesDiffViewController.m in Sources */,
 				20C50D4014D6057E009786D9 /* GBPreferencesGithubViewController.m in Sources */,
+				20A5E37B14D68BE200408DD7 /* GBPreferencesConfigViewController.m in Sources */,
+				20A5E37F14D68BE200408DD7 /* GBPreferencesIgnoreViewController.m in Sources */,
+				20A5E38314D68BE200408DD7 /* GBPreferencesLicenseViewController.m in Sources */,
+				20A5E38714D68BE200408DD7 /* GBPreferencesUpdatesViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

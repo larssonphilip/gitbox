@@ -7,6 +7,10 @@
 #import "MASPreferencesWindowController.h"
 #import "GBPreferencesDiffViewController.h"
 #import "GBPreferencesGithubViewController.h"
+#import "GBPreferencesConfigViewController.h"
+#import "GBPreferencesIgnoreViewController.h"
+#import "GBPreferencesLicenseViewController.h"
+#import "GBPreferencesUpdatesViewController.h"
 
 #import "GBPromptController.h"
 #import "GBLicenseController.h"
@@ -216,16 +220,21 @@
 	self.licenseTextView.string = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"GitboxLicense" ofType:@"txt"] encoding:NSUTF8StringEncoding error:NULL];
 	
 #if GITBOX_APP_STORE
-#warning TODO: add all relevant controllers
 	NSArray* preferencesControllers = [NSArray arrayWithObjects:
 									   [GBPreferencesDiffViewController controller],
 									   [GBPreferencesGithubViewController controller],
+									   [GBPreferencesIgnoreViewController controller],
+									   [GBPreferencesConfigViewController controller],
 									   nil];
 
 #else
 	NSArray* preferencesControllers = [NSArray arrayWithObjects:
 									   [GBPreferencesDiffViewController controller],
 									   [GBPreferencesGithubViewController controller],
+									   [GBPreferencesIgnoreViewController controller],
+									   [GBPreferencesConfigViewController controller],
+									   [GBPreferencesUpdatesViewController controller],
+									   [GBPreferencesLicenseViewController controller],
 									   nil];
 	
 #endif
