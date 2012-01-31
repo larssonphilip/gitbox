@@ -62,7 +62,7 @@ Gitbox 1.6 misc items:
 ? crash: The app crashes whenever I try to delete a remote branch, shortly after hitting the “Ok” button of the edit branch sheet
 
 - test: diff tools state with empty prefs.
-- test: clone in github checkbox with empty prefs.
++ test: clone in github checkbox with empty prefs.
 - test: should clone from github when app is not launched.
 - test: should stop/start cloning from github when checkbox is switched.
 - test: default state of update checkboxes.
