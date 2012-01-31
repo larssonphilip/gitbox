@@ -68,6 +68,7 @@ Gitbox 1.6 misc items:
 - test: default state of update checkboxes.
 - test: updater is not included in the app store build.
 
+- bug: when stashing only untracked files, default message is "No Changes"
 
 - bug: should not refresh index while staging multiple items quickly one-by-one. - use delayed update to override FSEvent.
   - solution: see Refresh.txt for details
