@@ -231,7 +231,8 @@
 	removeMenuItem(self.licenseMenuItem);
 	removeMenuItem(self.checkForUpdatesMenuItem);
 #else
-	removeMenuItem(self.rateInAppStoreMenuItem);
+	// TODO: change the action to open app homepage in appstore instead of ratings page
+	//removeMenuItem(self.rateInAppStoreMenuItem);
 #endif
 	
 //#if !DEBUG
