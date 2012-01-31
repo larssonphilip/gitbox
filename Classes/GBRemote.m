@@ -160,7 +160,7 @@
 	aTask.silent = silently;
 	aTask.repository = self.repository;
 	aTask.remote = self;
-	[self.repository launchTask:aTask withBlock:^{
+	[self.repository launchRemoteTask:aTask withBlock:^{
 		self.isUpdatingRemoteBranches = NO;
 		if (![aTask isError])
 		{

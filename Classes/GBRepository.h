@@ -130,7 +130,10 @@
 #pragma mark Util
 
 - (id) task;
+
 - (void) launchTask:(OATask*)aTask withBlock:(void(^)())block;
+- (void) launchRemoteTask:(OATask*)aTask withBlock:(void(^)())block;
+
 - (id) launchTaskAndWait:(GBTask*)aTask;
 - (NSURL*) gitURLWithSuffix:(NSString*)suffix;
 - (NSError*) errorWithCode:(GBErrorCode)aCode

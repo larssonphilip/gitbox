@@ -38,7 +38,6 @@
 @property(nonatomic, retain, readwrite) NSData* URLBookmarkData;
 @property(nonatomic, retain) OABlockTable* blockTable;
 @property(nonatomic, retain) GBGitConfig* config;
-@property(nonatomic, assign) dispatch_queue_t dispatchQueue;
 @property(nonatomic, assign, readwrite) NSUInteger commitsDiffCount;
 @property(nonatomic, retain) NSMutableDictionary* tagsByCommitID;
 
@@ -52,7 +51,10 @@
 
 
 
-@implementation GBRepository
+@implementation GBRepository {
+	dispatch_queue_t dispatchQueue;
+	dispatch_queue_t remoteDispatchQueue;
+}
 
 @synthesize url;
 @synthesize URLBookmarkData;
@@ -68,7 +70,6 @@
 @synthesize currentLocalRef;
 @synthesize currentRemoteBranch;
 @synthesize localBranchCommits;
-@synthesize dispatchQueue;
 @synthesize lastError;
 @synthesize blockTable;
 @synthesize config;
@@ -115,9 +116,9 @@
 	
 	[currentTaskProgressStatus release]; currentTaskProgressStatus = nil;
 	
-	if (self.dispatchQueue) dispatch_release(self.dispatchQueue);
-	self.dispatchQueue = nil;
-    
+	if (dispatchQueue) dispatch_release(dispatchQueue);
+    if (remoteDispatchQueue) dispatch_release(remoteDispatchQueue);
+	
 	[super dealloc];
 }
 
@@ -126,7 +127,9 @@
 {
 	if ((self = [super init]))
 	{
-		self.dispatchQueue = dispatch_queue_create("com.oleganza.gitbox.repository_queue", NULL);
+		dispatchQueue = dispatch_queue_create("com.oleganza.gitbox.repo_local_task_queue", NULL);
+		remoteDispatchQueue = dispatch_queue_create("com.oleganza.gitbox.repo_remote_task_queue", NULL);
+		
 		self.blockTable = [[OABlockTable new] autorelease];
 		self.config = [GBGitConfig configForRepository:self];
 	}
@@ -1310,7 +1313,7 @@
 					  aRemote.alias,
 					  [aRemote defaultFetchRefspec], // Declaring a proper refspec is necessary to make autofetch expectations about remote alias to work. git show-ref should always return refs for alias XYZ.
 					  nil];
-	task.dispatchQueue = self.dispatchQueue;
+	task.dispatchQueue = dispatchQueue;
 	[self launchTask:task withBlock:^{
 		self.currentTaskProgress = 0.0;
 		self.currentTaskProgressStatus = nil;
@@ -1869,7 +1872,19 @@
 
 - (void) launchTask:(OATask*)aTask withBlock:(void(^)())block
 {
-	[aTask launchInQueue:self.dispatchQueue withBlock:block];
+	[aTask launchInQueue:dispatchQueue withBlock:block];
+}
+
+- (void) launchRemoteTask:(OATask*)aTask withBlock:(void(^)())block
+{
+	// Wait for current local tasks to finish.
+	block = [[block copy] autorelease];
+	dispatch_async(dispatchQueue, ^{
+		dispatch_async(dispatch_get_main_queue(), ^{
+			[aTask launchInQueue:remoteDispatchQueue withBlock:block];
+		});
+	});
+	
 }
 
 - (id) launchTaskAndWait:(GBTask*)aTask
