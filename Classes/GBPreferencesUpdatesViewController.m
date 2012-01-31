@@ -1,4 +1,5 @@
 
+#import "Sparkle/Sparkle.h"
 #import "GBPreferencesUpdatesViewController.h"
 
 @implementation GBPreferencesUpdatesViewController
@@ -6,6 +7,16 @@
 + (GBPreferencesUpdatesViewController*) controller
 {
 	return [[[self alloc] initWithNibName:@"GBPreferencesUpdatesViewController" bundle:nil] autorelease];
+}
+
+- (IBAction)checkForUpdates:(id)sender
+{
+	[self.updater checkForUpdates:sender];
+}
+
+- (SUUpdater*) updater
+{
+	return [SUUpdater sharedUpdater];
 }
 
 

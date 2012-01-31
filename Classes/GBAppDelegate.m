@@ -91,6 +91,10 @@
 #endif
 }
 
++ (GBAppDelegate*) instance
+{
+	return (GBAppDelegate*)[NSApp delegate];
+}
 
 
 #pragma mark Actions
@@ -156,6 +160,22 @@
 	[self.preferencesController showWindow:nil];
 }
 
+- (void) updateAppleEvents
+{
+	NSString* GBCloneFromGithubKey = @"GBCloneFromGithub";
+	NSNumber* value = [[NSUserDefaults standardUserDefaults] objectForKey:GBCloneFromGithubKey];
+	if (!value) [[NSUserDefaults standardUserDefaults] setBool:YES forKey:GBCloneFromGithubKey];
+	if (!value) value = [NSNumber numberWithBool:YES];
+	
+	if ([value boolValue])
+	{
+		[[NSAppleEventManager sharedAppleEventManager] setEventHandler:self andSelector:@selector(handleUrl:withReplyEvent:) forEventClass:kInternetEventClass andEventID:kAEGetURL];
+	}
+	else
+	{
+		[[NSAppleEventManager sharedAppleEventManager] removeEventHandlerForEventClass:kInternetEventClass andEventID:kAEGetURL];
+	}
+}
 
 
 
@@ -190,8 +210,7 @@
     });
 #endif
 	
-	[[NSAppleEventManager sharedAppleEventManager] setEventHandler:self andSelector:@selector(handleUrl:withReplyEvent:) forEventClass:kInternetEventClass andEventID:kAEGetURL];
-	
+	[self updateAppleEvents];
 	[[GBActivityController sharedActivityController] loadWindow]; // force load the activity controller to begin monitoring the tasks
 	
 	self.rootController = [[GBRootController new] autorelease];
@@ -212,10 +231,9 @@
 	removeMenuItem(self.rateInAppStoreMenuItem);
 #endif
 	
-#if !DEBUG
-	removeMenuItem(self.welcomeMenuItem);
-#endif
-	
+//#if !DEBUG
+//	removeMenuItem(self.welcomeMenuItem);
+//#endif
 	
 	self.licenseTextView.string = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"GitboxLicense" ofType:@"txt"] encoding:NSUTF8StringEncoding error:NULL];
 	
@@ -361,8 +379,11 @@
 	
 	if ([urlString rangeOfString:@"github-mac://"].location == 0)
 	{
-		NSString* repoURLString = [urlString stringByReplacingOccurrencesOfString:@"github-mac://openRepo/" withString:@""];
-		[self.rootController.repositoriesController cloneRepositoryAtURLString:repoURLString];
+		// Let the app start up if it was not launched.
+		dispatch_async(dispatch_get_main_queue(), ^{
+			NSString* repoURLString = [urlString stringByReplacingOccurrencesOfString:@"github-mac://openRepo/" withString:@""];
+			[self.rootController.repositoriesController cloneRepositoryAtURLString:repoURLString];
+		});
 	}
 	else
 	{

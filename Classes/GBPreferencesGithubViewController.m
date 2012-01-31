@@ -1,3 +1,4 @@
+#import "GBAppDelegate.h"
 #import "GBPreferencesGithubViewController.h"
 
 @implementation GBPreferencesGithubViewController
@@ -7,7 +8,18 @@
 	return [[[self alloc] initWithNibName:@"GBPreferencesGithubViewController" bundle:nil] autorelease];
 }
 
+- (IBAction)checkboxDidChange:(id)sender
+{
+//	BOOL value = [[NSUserDefaults standardUserDefaults] boolForKey:@"GBCloneFromGithub"];
+//	NSLog(@"GBCloneFromGithub = %d", (int)value);
+	
+	[[GBAppDelegate instance] updateAppleEvents];
+}
+
+
+
 #pragma mark - MASPreferencesViewController
+
 
 - (NSString *)identifier
 {

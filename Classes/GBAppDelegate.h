@@ -8,6 +8,8 @@
 @property(nonatomic, retain) IBOutlet NSMenuItem* welcomeMenuItem;
 @property(nonatomic, retain) IBOutlet NSMenuItem* rateInAppStoreMenuItem;
 
++ (GBAppDelegate*) instance;
+
 - (IBAction) rateInAppStore:(id)sender;
 - (IBAction) showMainWindow:(id)sender;
 - (IBAction) showActivityWindow:(id)sender;
@@ -17,5 +19,7 @@
 - (IBAction) showDiffToolPreferences:(id)sender;
 - (IBAction) checkForUpdates:(id)sender;
 - (IBAction) showPreferences:(id)sender;
+
+- (void) updateAppleEvents;
 
 @end

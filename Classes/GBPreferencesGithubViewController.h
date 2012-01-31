@@ -4,5 +4,7 @@
 
 + (GBPreferencesGithubViewController*) controller;
 
+- (IBAction)checkboxDidChange:(id)sender;
+
 @end
 

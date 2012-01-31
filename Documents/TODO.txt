@@ -29,7 +29,7 @@ Gitbox 1.6 Release Notes
 ✓ Tags are sorted in natural order and with respect to version numbers.
 ✓ When a file is added to ignore list, it is also untracked (git rm --cached).
 ✓ Warning is displayed when trying to make a commit when no branch is selected.
-✓ 
+✓ Single Preferences window with Git configuration, ignored files, "Clone from Github" checkbox etc.
 
 ✓ Fixed bug with text fields in repository settings (value was not stored immediately)
 ✓ Fixed a bug with trimming whitespace from .gitignore
@@ -49,17 +49,25 @@ Gitbox 1.6 Release Notes
 Gitbox 1.6 misc items:
 
 - prefs:
-	- GBPreferencesDiffViewController "Diff tools"
-	- GBPreferencesGithubViewController "Github"
+	+ GBPreferencesDiffViewController "Diff tools"
+	+ GBPreferencesGithubViewController "Github"
 	- GBPreferencesGitIgnoreViewController "Ignored Files"
 	- GBPreferencesGitConfigViewController "Advanced"
-	- GBPreferencesUpdatesViewController "Updates"
+	+ GBPreferencesUpdatesViewController "Updates"
 	- GBPreferencesLicenseViewController "License"
-	- export icons
-	- instantiate updater 
+	+ export icons
+	+ instantiate updater 
 
 ? crash: on invalid ssh key the askpass controller crashes with "task" selector
 ? crash: The app crashes whenever I try to delete a remote branch, shortly after hitting the “Ok” button of the edit branch sheet
+
+- test: diff tools state with empty prefs.
+- test: clone in github checkbox with empty prefs.
+- test: should clone from github when app is not launched.
+- test: should stop/start cloning from github when checkbox is switched.
+- test: default state of update checkboxes.
+- test: updater is not included in the app store build.
+
 
 - bug: should not refresh index while staging multiple items quickly one-by-one. - use delayed update to override FSEvent.
   - solution: see Refresh.txt for details
@@ -67,8 +75,6 @@ Gitbox 1.6 misc items:
 - bug: stage: scroll offset is not preserved when stage is reloaded.
 
 - bug: it takes a very long time to update local state for non-selected repo.
-
-- checkbox "Clone Github repositories"
 
 - feature: rename repositories
 - bug: branch name is truncated in the settings view
@@ -230,6 +236,7 @@ Misc done for 1.6:
   + GBRepositoryController: simply relaunch the task if it failed and was not cancelled by user.
   + GBRepositoryController: do not relaunch task if it was silent in the first place.
   + at least for authenticated tasks should pass NSError instead of displaying it right from GBRepository so controller can avoid displaying the error when it's going to retry operation.
++ checkbox "Clone Github repositories"
 
 
 -------------------------------
