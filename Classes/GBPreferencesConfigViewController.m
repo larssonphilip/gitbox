@@ -1,6 +1,8 @@
 
 #import "OATask.h"
+#import "GBGitConfig.h"
 #import "GBPreferencesConfigViewController.h"
+#import "NSData+OADataHelpers.h"
 
 @implementation GBPreferencesConfigViewController {
 	NSView* currentView;
@@ -17,7 +19,7 @@
 }
 
 
-- (IBAction)toggleMode:(id)sender
+- (IBAction) toggleMode:(id)sender
 {
 	[currentView removeFromSuperview];
 	currentView = (currentView == basicView ? advancedView : basicView);
@@ -25,7 +27,7 @@
 	[self.view addSubview:currentView];
 }
 
-- (IBAction)nameOrEmailDidChange:(id)sender
+- (IBAction) nameOrEmailDidChange:(id)sender
 {
 	
 }
@@ -37,10 +39,18 @@
 
 - (void) loadData
 {
-	static BOOL loading = NO;
-	if (loading) return;
+	// Load ~/.gitconfig contents and name/email pair.
 	
-	// TODO: load ~/.gitconfig contents and name/email pair.
+	id name = [[GBGitConfig userConfig] userName];
+	id email = [[GBGitConfig userConfig] userEmail];
+	
+	[self.nameTextField setStringValue:name ? name : @""];
+	[self.emailTextField setStringValue:email ? email : @""];
+	
+	NSData* configData = [NSData dataWithContentsOfURL:[NSURL fileURLWithPath:[NSHomeDirectory() stringByAppendingPathComponent:@".gitconfig"]]];
+	NSString* configString = [configData UTF8String];
+	
+	[self.configTextView setString:configString ? configString : @""];
 }
 
 - (void) loadView
@@ -70,7 +80,7 @@
 
 - (NSString *)toolbarItemLabel
 {
-    return NSLocalizedString(@"Git Config", nil);
+    return NSLocalizedString(@"Git Settings", nil);
 }
 
 - (void)viewWillAppear
