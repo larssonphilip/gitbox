@@ -16,3 +16,8 @@ void(^OABlockConcat(void(^block1)(), void(^block2)()))()
   return [[block3 copy] autorelease];
 }
 
+void OADispatchDelayed(NSTimeInterval delayInSeconds, dispatch_block_t block)
+{
+	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+	dispatch_after(popTime, dispatch_get_current_queue(), block);
+}
