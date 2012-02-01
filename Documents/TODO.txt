@@ -62,9 +62,9 @@ Gitbox 1.6 misc items:
 ? crash: The app crashes whenever I try to delete a remote branch, shortly after hitting the “Ok” button of the edit branch sheet
 
 - test: diff tools state with empty prefs.
-+ test: clone in github checkbox with empty prefs.
+- test: clone in github checkbox with empty prefs.
 - test: should clone from github when app is not launched.
-- test: should stop/start cloning from github when checkbox is switched.
++ test: should stop/start cloning from github when checkbox is switched.
 - test: default state of update checkboxes.
 - test: updater is not included in the app store build.
 
@@ -238,6 +238,10 @@ Misc done for 1.6:
   + GBRepositoryController: do not relaunch task if it was silent in the first place.
   + at least for authenticated tasks should pass NSError instead of displaying it right from GBRepository so controller can avoid displaying the error when it's going to retry operation.
 + checkbox "Clone Github repositories"
++ general: human message in case git cannot merge/pull when some files are modified (error: Untracked working tree file 'Patryst.xcodeproj/project.pbxproj' would be overwritten by merge.)
++ prefs: Add support for global .gitconfig (at least, show name/email pair)
++ settings: edit global .gitignore (or whatever files is set up in ~/.gitconfig) in Preferences window.
++ history: create a tag + undo
 
 
 -------------------------------
@@ -340,7 +344,6 @@ Features:
 - history: add "load more" cell in the bottom of the log
 - history: show branch/tag names in history using "label" (+color in green/blue to connect with green/blue "pills")
 - history: branch badges in history
-+ history: create a tag + undo
 
 - search: recognized pasted file path (with or without file:// prefix)
 - search: load total count of commits to be scanned to present a progress circle instead of a spinner
@@ -456,7 +459,7 @@ Enhancements:
 - general: do different initial updates for remembered repos and opened/cloned ones:
   - general: for the remembered repos first load submodules with spinner to update sidebar, then load branches and history (but not stage/commit changes)
   - general: for added repos do the full initial update like it's done today
-+ general: human message in case git cannot merge/pull when some files are modified (error: Untracked working tree file 'Patryst.xcodeproj/project.pbxproj' would be overwritten by merge.)
+
 - general: Add common OS X to the global ~/.gitignore https://github.com/github/gitignore
 - general: check behavior when opendiff is missing
 - general: check that opendiff is selected by default on new start + it is not selected if it is missing
@@ -464,9 +467,6 @@ Enhancements:
 - general: if git.bundle.tar is not found inside .app, present the UI to download it from gitboxapp.com (in anticipation to FSF's fight with Apple)
 - general: think on the best and consistent way to terminate tasks
 ? general: remember activity window visibility
-
-- prefs: Add support for global .gitconfig (at least, show name/email pair)
-- settings: edit global .gitignore (or whatever files is set up in ~/.gitconfig) in Preferences window.
 
 - toolbar: show confirmation prompt when trying to push branch "X" into "origin/Y" (that is when branch name differ)
 - toolbar: think on how to checkout a branch into a different folder. Make it useful as a default.
