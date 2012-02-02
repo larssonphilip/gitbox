@@ -58,7 +58,8 @@ Gitbox 1.6 misc items:
 	+ export icons
 	+ instantiate updater 
 
-- sometimes cannot set color label
+- bug: if curr. branch menu is rebuilt while being open, gitbox does not show sheet for "checkout remote branch"
+- bug: sometimes cannot set color label
 - maybe reshuffle preferences: "Mac" (diff tools, github: "Behaviour"), "Git" (~/.gitignore, name and email), "Gitbox" (updates, license)
 - move ~/.gitignore to Git Settings (and remove "Advanced" screen)
 - reshuffle repo settings: remove "Optimize" button and remove stats; remove "Advanced" tab
