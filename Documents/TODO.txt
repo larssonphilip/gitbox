@@ -64,7 +64,8 @@ Gitbox 1.6 misc items:
 - move ~/.gitignore to Git Settings (and remove "Advanced" screen)
 - reshuffle repo settings: remove "Optimize" button and remove stats; remove "Advanced" tab
   - icons: "list" for General; "label 1.0" for branches and tags; "cloud" for remotes
-  
+- bug: if stash apply failes, it still restores new files.
+- todo: change the default stash message from the file names to "Stash 1" string. 
 
 
 ? crash: on invalid ssh key the askpass controller crashes with "task" selector
