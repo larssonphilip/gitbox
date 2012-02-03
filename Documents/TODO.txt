@@ -51,8 +51,8 @@ Gitbox 1.6 misc items:
 - prefs:
 	+ GBPreferencesDiffViewController "Diff tools"
 	+ GBPreferencesGithubViewController "Github"
-	- GBPreferencesGitIgnoreViewController "Ignored Files"
-	- GBPreferencesGitConfigViewController "Advanced"
+	+ GBPreferencesGitIgnoreViewController "Ignored Files"
+	+ GBPreferencesGitConfigViewController "Advanced"
 	+ GBPreferencesUpdatesViewController "Updates"
 	- GBPreferencesLicenseViewController "License"
 	+ export icons
@@ -63,9 +63,10 @@ Gitbox 1.6 misc items:
 - maybe reshuffle preferences: "Mac" (diff tools, github: "Behaviour"), "Git" (~/.gitignore, name and email), "Gitbox" (updates, license)
 - move ~/.gitignore to Git Settings (and remove "Advanced" screen)
 - reshuffle repo settings: remove "Optimize" button and remove stats; remove "Advanced" tab
+  - make optimize in background with a sheet.
   - icons: "list" for General; "label 1.0" for branches and tags; "cloud" for remotes
   
-
+- open multiple files for Kaleidoscope.
 
 ? crash: on invalid ssh key the askpass controller crashes with "task" selector
 ? crash: The app crashes whenever I try to delete a remote branch, shortly after hitting the “Ok” button of the edit branch sheet
