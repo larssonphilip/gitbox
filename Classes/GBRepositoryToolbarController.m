@@ -29,6 +29,9 @@
 - (void) updateRemoteBranchMenus;
 - (void) updateSyncButtons;
 - (BOOL) isMenuOpened:(NSMenu*)menu;
+
+- (BOOL) validateCheckoutTagMenu:(NSMenuItem*)sender;
+- (BOOL) validateCheckoutRemoteBranchMenu:(NSMenuItem*)sender;
 @end
 
 
@@ -429,7 +432,9 @@
 	
 	if ([repo.tags count] > 0)
 	{
-		[currentBranchesMenu addItem:[NSMenuItem menuItemWithTitle:NSLocalizedString(@"Checkout Tag", @"Command") action:@selector(checkoutTagMenu:)]];
+		NSMenuItem* item = [NSMenuItem menuItemWithTitle:NSLocalizedString(@"Checkout Tag", @"Command") action:nil];
+		[currentBranchesMenu addItem:item];
+		[self validateCheckoutTagMenu:item];
 	}
 	
 	
@@ -445,7 +450,9 @@
 	}
 	if (hasOneRemoteBranch)
 	{
-		[currentBranchesMenu addItem:[NSMenuItem menuItemWithTitle:NSLocalizedString(@"Checkout Remote Branch", @"Command") action:@selector(checkoutRemoteBranchMenu:)]];
+		NSMenuItem* item = [NSMenuItem menuItemWithTitle:NSLocalizedString(@"Checkout Remote Branch", @"Command") action:nil];
+		[currentBranchesMenu addItem:item];
+		[self validateCheckoutRemoteBranchMenu:item];
 	}
 	
 	
@@ -889,7 +896,7 @@
 	// noop method to trigger validation callbacks
 }
 
-
+// Used by main menu
 - (BOOL) validateCheckoutBranchMenu:(NSMenuItem*)sender
 {
 	[sender setSubmenu:[NSMenu menuWithTitle:[sender title]]];
@@ -914,7 +921,7 @@
 	return hasOneItem;
 }
 
-
+// Used by main menu
 - (BOOL) validateCheckoutRemoteBranchMenu:(NSMenuItem*)sender
 {
 	[sender setSubmenu:[NSMenu menuWithTitle:[sender title]]];
@@ -926,7 +933,7 @@
 	{
 		for (GBRemote* remote in repo.remotes)
 		{
-			if ([remote.branches count] > 0)
+			if (remote.branches.count > 0)
 			{
 				NSMenu* remoteMenu = [[NSMenu new] autorelease];
 				for (GBRef* branch in remote.branches)
@@ -965,6 +972,7 @@
 	return hasOneItem;
 }
 
+// Used by main menu
 - (BOOL) validateCheckoutTagMenu:(NSMenuItem*)sender
 {
 	[sender setSubmenu:[NSMenu menuWithTitle:[sender title]]];
