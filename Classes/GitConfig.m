@@ -9,16 +9,26 @@
 
 @synthesize config;
 
+- (NSURL*) userConfigURL
+{
+	return [NSURL fileURLWithPath:[NSHomeDirectory() stringByAppendingPathComponent:@".gitconfig"]];
+}
+
 - (id) initGlobalConfig
 {
     if ((self = [self init]))
 	{
+		// TODO: not tested, not used yet.
+		if (![[[NSFileManager new] autorelease] fileExistsAtPath:self.userConfigURL.path])
+		{
+			[[NSData data] writeToFile:self.userConfigURL.path atomically:YES encoding:NSUTF8StringEncoding error:NULL];
+		}
+		
 		git_error error = git_config_open_global(&config);
 		
 		//NSLog(@"GitConfig initGlobalConfig: %p [%d, %s]", config, error, git_lasterror());
 		if (error != GIT_SUCCESS)
 		{
-#warning TODO: Check if ~/.gitconfig file exists. If it doesn't, create one and retry.
 			config = NULL;
 			NSLog(@"GitConfig error while opening global config: %d [%s]", error, git_lasterror());
 			[self release];

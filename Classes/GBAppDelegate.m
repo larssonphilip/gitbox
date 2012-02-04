@@ -13,7 +13,6 @@
 #import "GBPreferencesUpdatesViewController.h"
 
 #import "GBPromptController.h"
-#import "GBLicenseController.h"
 #import "GBSidebarController.h"
 #import "GBAskPassServer.h"
 
@@ -44,7 +43,6 @@
 @property(nonatomic, retain) GBRootController* rootController;
 @property(nonatomic, retain) GBMainWindowController* windowController;
 @property(nonatomic, retain) MASPreferencesWindowController* preferencesController;
-@property(nonatomic, retain) GBLicenseController* licenseController;
 @property(nonatomic, retain) NSMutableArray* URLsToOpenAfterLaunch;
 
 - (void) saveItems;
@@ -52,14 +50,16 @@
 
 @end
 
-@implementation GBAppDelegate
+@implementation GBAppDelegate {
+	NSUInteger diffToolsControllerIndex;
+	NSUInteger licenseControllerIndex;
+}
 
 @synthesize licenseTextView;
 
 @synthesize rootController;
 @synthesize windowController;
 @synthesize preferencesController;
-@synthesize licenseController;
 @synthesize URLsToOpenAfterLaunch;
 @synthesize licenseMenuItem;
 @synthesize checkForUpdatesMenuItem;
@@ -72,7 +72,6 @@
 	self.rootController = nil;
 	self.windowController = nil;
 	self.preferencesController = nil;
-	self.licenseController = nil;
 	self.URLsToOpenAfterLaunch = nil;
 	self.licenseMenuItem = nil;
 	self.checkForUpdatesMenuItem = nil;
@@ -134,14 +133,14 @@
 
 - (IBAction) showLicense:(id)sender
 {
-	if (self.licenseController) return; // avoid entering the modal mode twice if user hits License... menu again.
-	
-	self.licenseController = [[[GBLicenseController alloc] initWithWindowNibName:@"GBLicenseController"] autorelease];
-	[NSApp runModalForWindow:[self.licenseController window]];
-	self.licenseController = nil;
-	
-	// update buy button status
-	[self.windowController.sidebarController updateBuyButton];
+	[self.preferencesController selectControllerAtIndex:licenseControllerIndex];
+	[self.preferencesController showWindow:nil];
+}
+
+- (IBAction) showDiffToolPreferences:(id)sender
+{
+	[self.preferencesController selectControllerAtIndex:diffToolsControllerIndex];
+	[self.preferencesController showWindow:nil];
 }
 
 - (IBAction) releaseNotes:(id)sender
@@ -155,10 +154,6 @@
 	[[GBActivityController sharedActivityController] showWindow:sender];
 }
 
-- (IBAction) showDiffToolPreferences:(id)sender
-{
-	[self.preferencesController showWindow:nil];
-}
 
 - (void) updateAppleEvents
 {
@@ -254,8 +249,10 @@
 									   [GBPreferencesUpdatesViewController controller],
 									   [GBPreferencesLicenseViewController controller],
 									   nil];
-	
+	licenseControllerIndex = 3;
 #endif
+	
+	diffToolsControllerIndex = 0;
 	
 	self.preferencesController = [[[MASPreferencesWindowController alloc] initWithViewControllers:preferencesControllers] autorelease];
 	

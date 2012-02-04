@@ -4,8 +4,6 @@
 
 #import "GBPreferencesLicenseViewController.h"
 
-
-
 @implementation GBPreferencesLicenseViewController {
 	BOOL wasValid;
 	BOOL didEdit;

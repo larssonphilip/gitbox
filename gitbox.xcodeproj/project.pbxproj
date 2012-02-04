@@ -84,10 +84,8 @@
 		20164BC812D5F46F005C69DA /* GBRepositoriesAndGroupsSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 20164BC612D5F46F005C69DA /* GBRepositoriesAndGroupsSerialization.m */; };
 		20177F8512AAA229006362D1 /* GBChangeCheckboxCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 20177F8412AAA228006362D1 /* GBChangeCheckboxCell.m */; };
 		20177F8612AAA229006362D1 /* GBChangeCheckboxCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 20177F8412AAA228006362D1 /* GBChangeCheckboxCell.m */; };
-		201E02F711EA231D007E4420 /* GBLicenseController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 201E02F611EA231D007E4420 /* GBLicenseController.xib */; };
 		201E030211EE083D007E4420 /* GBCertificateUpdateController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 201E030111EE083D007E4420 /* GBCertificateUpdateController.xib */; };
 		201E030611EE09D7007E4420 /* GBCertificateUpdateController.m in Sources */ = {isa = PBXBuildFile; fileRef = 201E030511EE09D7007E4420 /* GBCertificateUpdateController.m */; };
-		201E030B11EE2CBD007E4420 /* GBLicenseController.m in Sources */ = {isa = PBXBuildFile; fileRef = 201E030A11EE2CBD007E4420 /* GBLicenseController.m */; };
 		201E27431350C26F00DF6D94 /* OAPseudoTTY.m in Sources */ = {isa = PBXBuildFile; fileRef = 201E27421350C26F00DF6D94 /* OAPseudoTTY.m */; };
 		201E27441350C26F00DF6D94 /* OAPseudoTTY.m in Sources */ = {isa = PBXBuildFile; fileRef = 201E27421350C26F00DF6D94 /* OAPseudoTTY.m */; };
 		201E5F6811AA71E00061EFD6 /* NSObject+OAKeyValueObserving.m in Sources */ = {isa = PBXBuildFile; fileRef = 201E5F6711AA71E00061EFD6 /* NSObject+OAKeyValueObserving.m */; };
@@ -264,7 +262,6 @@
 		20915EC712874D2A005E0D82 /* GBCommitPromptController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2093AC9011B2EBFF00239185 /* GBCommitPromptController.xib */; };
 		20915EC812874D2A005E0D82 /* GBFileEditingController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 209A935911BA92B6006B0B5C /* GBFileEditingController.xib */; };
 		20915ECB12874D2A005E0D82 /* GBWelcomeController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 20265E4A11E3EB9B00709F6B /* GBWelcomeController.xib */; };
-		20915ECC12874D2A005E0D82 /* GBLicenseController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 201E02F611EA231D007E4420 /* GBLicenseController.xib */; };
 		20915ECD12874D2A005E0D82 /* GBCertificateUpdateController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 201E030111EE083D007E4420 /* GBCertificateUpdateController.xib */; };
 		20915ECE12874D2A005E0D82 /* GBSidebarController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 20A37BB5120DC7640068AB8B /* GBSidebarController.xib */; };
 		20915ECF12874D2A005E0D82 /* GBMainWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 20A37BBD120DDBA60068AB8B /* GBMainWindowController.xib */; };
@@ -329,7 +326,6 @@
 		20915F1212874D2A005E0D82 /* OAPropertyListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20265C0211D68D3400709F6B /* OAPropertyListController.m */; };
 		20915F1312874D2A005E0D82 /* OAFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 20265C1311D68F1300709F6B /* OAFile.m */; };
 		20915F1512874D2A005E0D82 /* GBCertificateUpdateController.m in Sources */ = {isa = PBXBuildFile; fileRef = 201E030511EE09D7007E4420 /* GBCertificateUpdateController.m */; };
-		20915F1612874D2A005E0D82 /* GBLicenseController.m in Sources */ = {isa = PBXBuildFile; fileRef = 201E030A11EE2CBD007E4420 /* GBLicenseController.m */; };
 		20915F1712874D2A005E0D82 /* GBSidebarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20A37BA5120DC1D90068AB8B /* GBSidebarController.m */; };
 		20915F1812874D2A005E0D82 /* GBMainWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20A37BA8120DC27B0068AB8B /* GBMainWindowController.m */; };
 		20915F1912874D2A005E0D82 /* GBToolbarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20A37BAB120DC4510068AB8B /* GBToolbarController.m */; };
@@ -623,12 +619,9 @@
 		20164BC612D5F46F005C69DA /* GBRepositoriesAndGroupsSerialization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBRepositoriesAndGroupsSerialization.m; sourceTree = "<group>"; };
 		20177F8312AAA228006362D1 /* GBChangeCheckboxCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBChangeCheckboxCell.h; sourceTree = "<group>"; };
 		20177F8412AAA228006362D1 /* GBChangeCheckboxCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBChangeCheckboxCell.m; sourceTree = "<group>"; };
-		201E02F611EA231D007E4420 /* GBLicenseController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBLicenseController.xib; sourceTree = "<group>"; };
 		201E030111EE083D007E4420 /* GBCertificateUpdateController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBCertificateUpdateController.xib; sourceTree = "<group>"; };
 		201E030411EE09D7007E4420 /* GBCertificateUpdateController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBCertificateUpdateController.h; sourceTree = "<group>"; };
 		201E030511EE09D7007E4420 /* GBCertificateUpdateController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBCertificateUpdateController.m; sourceTree = "<group>"; };
-		201E030911EE2CBD007E4420 /* GBLicenseController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBLicenseController.h; sourceTree = "<group>"; };
-		201E030A11EE2CBD007E4420 /* GBLicenseController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBLicenseController.m; sourceTree = "<group>"; };
 		201E27411350C26F00DF6D94 /* OAPseudoTTY.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAPseudoTTY.h; sourceTree = "<group>"; };
 		201E27421350C26F00DF6D94 /* OAPseudoTTY.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAPseudoTTY.m; sourceTree = "<group>"; };
 		201E5F6611AA71E00061EFD6 /* NSObject+OAKeyValueObserving.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+OAKeyValueObserving.h"; sourceTree = "<group>"; };
@@ -1106,9 +1099,6 @@
 		201E02DA11EA1ED3007E4420 /* License */ = {
 			isa = PBXGroup;
 			children = (
-				201E030911EE2CBD007E4420 /* GBLicenseController.h */,
-				201E030A11EE2CBD007E4420 /* GBLicenseController.m */,
-				201E02F611EA231D007E4420 /* GBLicenseController.xib */,
 				201E030411EE09D7007E4420 /* GBCertificateUpdateController.h */,
 				201E030511EE09D7007E4420 /* GBCertificateUpdateController.m */,
 				201E030111EE083D007E4420 /* GBCertificateUpdateController.xib */,
@@ -1876,7 +1866,6 @@
 				20915EC712874D2A005E0D82 /* GBCommitPromptController.xib in Resources */,
 				20915EC812874D2A005E0D82 /* GBFileEditingController.xib in Resources */,
 				20915ECB12874D2A005E0D82 /* GBWelcomeController.xib in Resources */,
-				20915ECC12874D2A005E0D82 /* GBLicenseController.xib in Resources */,
 				20915ECD12874D2A005E0D82 /* GBCertificateUpdateController.xib in Resources */,
 				20915ECE12874D2A005E0D82 /* GBSidebarController.xib in Resources */,
 				20915ECF12874D2A005E0D82 /* GBMainWindowController.xib in Resources */,
@@ -1968,7 +1957,6 @@
 				2093AC9111B2EBFF00239185 /* GBCommitPromptController.xib in Resources */,
 				209A935A11BA92B6006B0B5C /* GBFileEditingController.xib in Resources */,
 				20265E4B11E3EB9B00709F6B /* GBWelcomeController.xib in Resources */,
-				201E02F711EA231D007E4420 /* GBLicenseController.xib in Resources */,
 				201E030211EE083D007E4420 /* GBCertificateUpdateController.xib in Resources */,
 				20A37BB6120DC7640068AB8B /* GBSidebarController.xib in Resources */,
 				20A37BBE120DDBA60068AB8B /* GBMainWindowController.xib in Resources */,
@@ -2120,7 +2108,6 @@
 				20915F1212874D2A005E0D82 /* OAPropertyListController.m in Sources */,
 				20915F1312874D2A005E0D82 /* OAFile.m in Sources */,
 				20915F1512874D2A005E0D82 /* GBCertificateUpdateController.m in Sources */,
-				20915F1612874D2A005E0D82 /* GBLicenseController.m in Sources */,
 				20915F1712874D2A005E0D82 /* GBSidebarController.m in Sources */,
 				20915F1812874D2A005E0D82 /* GBMainWindowController.m in Sources */,
 				20915F1912874D2A005E0D82 /* GBToolbarController.m in Sources */,
@@ -2277,7 +2264,6 @@
 				20265C0311D68D3400709F6B /* OAPropertyListController.m in Sources */,
 				20265C1411D68F1300709F6B /* OAFile.m in Sources */,
 				201E030611EE09D7007E4420 /* GBCertificateUpdateController.m in Sources */,
-				201E030B11EE2CBD007E4420 /* GBLicenseController.m in Sources */,
 				20A37BA6120DC1D90068AB8B /* GBSidebarController.m in Sources */,
 				20A37BA9120DC27B0068AB8B /* GBMainWindowController.m in Sources */,
 				20A37BAC120DC4510068AB8B /* GBToolbarController.m in Sources */,

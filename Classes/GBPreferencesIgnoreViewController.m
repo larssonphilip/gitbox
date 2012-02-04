@@ -13,6 +13,7 @@
 
 - (void)dealloc
 {
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
     [label release];
     [super dealloc];
 }
