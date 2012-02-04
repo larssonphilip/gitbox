@@ -55,6 +55,7 @@
 	[self.outlineView setMenu:[self defaultMenu]];
 	[self updateBuyButton];
 	[self updateContents];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(licenseDidUpdate:) name:OALicenseDidUpdateNotification object:nil];
 }
 
 - (void) setRootController:(GBRootController *)aRootController
@@ -70,7 +71,10 @@
 }
 
 
-
+- (void) licenseDidUpdate:(NSNotification*)notif
+{
+	[self updateBuyButton];
+}
 
 
 - (GBSidebarItem*) clickedSidebarItem

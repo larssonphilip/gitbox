@@ -492,6 +492,8 @@
 		20CE6DEC1389447E001D9707 /* GBStashListTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 20CE6DEA1389447E001D9707 /* GBStashListTask.m */; };
 		20CE6E0A13895CC3001D9707 /* GBStash.m in Sources */ = {isa = PBXBuildFile; fileRef = 20CE6E0913895CC3001D9707 /* GBStash.m */; };
 		20CE6E0B13895CC3001D9707 /* GBStash.m in Sources */ = {isa = PBXBuildFile; fileRef = 20CE6E0913895CC3001D9707 /* GBStash.m */; };
+		20CFEFA314DD87130086330F /* GBPreferencesIntegration.png in Resources */ = {isa = PBXBuildFile; fileRef = 20CFEFA214DD87130086330F /* GBPreferencesIntegration.png */; };
+		20CFEFA414DD87130086330F /* GBPreferencesIntegration.png in Resources */ = {isa = PBXBuildFile; fileRef = 20CFEFA214DD87130086330F /* GBPreferencesIntegration.png */; };
 		20DD4DC3134B4F7300E6E6B7 /* NSObject+OAResponderChain.m in Sources */ = {isa = PBXBuildFile; fileRef = 20DD4DC2134B4F7300E6E6B7 /* NSObject+OAResponderChain.m */; };
 		20DE951514B39A5D005A5DC5 /* GBRepositoryController+Actions.m in Sources */ = {isa = PBXBuildFile; fileRef = 20DE951414B39A5D005A5DC5 /* GBRepositoryController+Actions.m */; };
 		20DE951614B39A5D005A5DC5 /* GBRepositoryController+Actions.m in Sources */ = {isa = PBXBuildFile; fileRef = 20DE951414B39A5D005A5DC5 /* GBRepositoryController+Actions.m */; };
@@ -962,6 +964,7 @@
 		20CE6DEA1389447E001D9707 /* GBStashListTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBStashListTask.m; sourceTree = "<group>"; };
 		20CE6E0813895CC3001D9707 /* GBStash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBStash.h; sourceTree = "<group>"; };
 		20CE6E0913895CC3001D9707 /* GBStash.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBStash.m; sourceTree = "<group>"; };
+		20CFEFA214DD87130086330F /* GBPreferencesIntegration.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GBPreferencesIntegration.png; path = Images/GBPreferencesIntegration.png; sourceTree = SOURCE_ROOT; };
 		20DD4DC1134B4F7300E6E6B7 /* NSObject+OAResponderChain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+OAResponderChain.h"; sourceTree = "<group>"; };
 		20DD4DC2134B4F7300E6E6B7 /* NSObject+OAResponderChain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+OAResponderChain.m"; sourceTree = "<group>"; };
 		20DE951314B39A5D005A5DC5 /* GBRepositoryController+Actions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GBRepositoryController+Actions.h"; sourceTree = "<group>"; };
@@ -1658,12 +1661,13 @@
 				20A5E37214D68BD600408DD7 /* GBPreferencesIgnoreViewController.h */,
 				20A5E37314D68BD600408DD7 /* GBPreferencesIgnoreViewController.m */,
 				20A5E37414D68BD700408DD7 /* GBPreferencesIgnoreViewController.xib */,
-				20A5E37514D68BD800408DD7 /* GBPreferencesLicenseViewController.h */,
-				20A5E37614D68BD900408DD7 /* GBPreferencesLicenseViewController.m */,
-				20A5E37714D68BDA00408DD7 /* GBPreferencesLicenseViewController.xib */,
 				20A5E37814D68BDC00408DD7 /* GBPreferencesUpdatesViewController.h */,
 				20A5E37914D68BDE00408DD7 /* GBPreferencesUpdatesViewController.m */,
 				20A5E37A14D68BDF00408DD7 /* GBPreferencesUpdatesViewController.xib */,
+				20A5E37514D68BD800408DD7 /* GBPreferencesLicenseViewController.h */,
+				20A5E37614D68BD900408DD7 /* GBPreferencesLicenseViewController.m */,
+				20A5E37714D68BDA00408DD7 /* GBPreferencesLicenseViewController.xib */,
+				20CFEFA214DD87130086330F /* GBPreferencesIntegration.png */,
 				20C50D2B14D5F98D009786D9 /* GBPreferencesConfig.png */,
 				20C50D2C14D5F98D009786D9 /* GBPreferencesDiff.png */,
 				20C50D2D14D5F98E009786D9 /* GBPreferencesGithub.png */,
@@ -1943,6 +1947,7 @@
 				20A5E38214D68BE200408DD7 /* GBPreferencesIgnoreViewController.xib in Resources */,
 				20A5E38614D68BE200408DD7 /* GBPreferencesLicenseViewController.xib in Resources */,
 				20A5E38A14D68BE200408DD7 /* GBPreferencesUpdatesViewController.xib in Resources */,
+				20CFEFA414DD87130086330F /* GBPreferencesIntegration.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2034,6 +2039,7 @@
 				20A5E38114D68BE200408DD7 /* GBPreferencesIgnoreViewController.xib in Resources */,
 				20A5E38514D68BE200408DD7 /* GBPreferencesLicenseViewController.xib in Resources */,
 				20A5E38914D68BE200408DD7 /* GBPreferencesUpdatesViewController.xib in Resources */,
+				20CFEFA314DD87130086330F /* GBPreferencesIntegration.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

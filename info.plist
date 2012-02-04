@@ -72,6 +72,8 @@
 	<string>http://gitboxapp.com/release-notes.html</string>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.developer-tools</string>
+	<key>GBSiteURL</key>
+	<string>http://gitboxapp.com</string>
 	<key>LSMinimumSystemVersion</key>
 	<string>${MACOSX_DEPLOYMENT_TARGET}</string>
 	<key>NSHumanReadableCopyright</key>

@@ -244,17 +244,13 @@
 #if GITBOX_APP_STORE
 	NSArray* preferencesControllers = [NSArray arrayWithObjects:
 									   [GBPreferencesDiffViewController controller],
-									   [GBPreferencesGithubViewController controller],
 									   [GBPreferencesConfigViewController controller],
-									   [GBPreferencesIgnoreViewController controller],
 									   nil];
 
 #else
 	NSArray* preferencesControllers = [NSArray arrayWithObjects:
 									   [GBPreferencesDiffViewController controller],
-									   [GBPreferencesGithubViewController controller],
 									   [GBPreferencesConfigViewController controller],
-									   [GBPreferencesIgnoreViewController controller],
 									   [GBPreferencesUpdatesViewController controller],
 									   [GBPreferencesLicenseViewController controller],
 									   nil];

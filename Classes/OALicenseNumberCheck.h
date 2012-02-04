@@ -3,6 +3,8 @@
 #import <CommonCrypto/CommonDigest.h>
 #import "OAAppStoreReceipt.h"
 
+#define OALicenseDidUpdateNotification @"OALicenseDidUpdateNotification"
+
 NS_INLINE BOOL OAMASCopyReceiptFromTo(NSString* from, NSString* to)
 {
 	if (!from) return NO;

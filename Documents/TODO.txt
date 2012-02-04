@@ -61,16 +61,14 @@ Gitbox 1.6 misc items:
 + bug: if curr. branch menu is rebuilt while being open, gitbox does not show sheet for "checkout remote branch"
 ? bug: sometimes cannot set color label
 
-- quickly staging stuff it takes some longer time. maybe because of the delay or some irrelevant operations going on (submodules?).
-
 - maybe reshuffle preferences: "Mac" (diff tools, github: "Behaviour"), "Git" (~/.gitignore, name and email), "Gitbox" (updates, license)
 - move ~/.gitignore to Git Settings (and remove "Advanced" screen)
 - reshuffle repo settings: remove "Optimize" button and remove stats; remove "Advanced" tab
   - make optimize in background with a sheet.
   - icons: "list" for General; "label 1.0" for branches and tags; "cloud" for remotes
-- bug: if stash apply failes, it still restores new files.
-- todo: change the default stash message from the file names to "Stash 1" string. 
-- open multiple files for Kaleidoscope.
+
+- quickly staging stuff it takes some longer time. maybe because of the delay or some irrelevant operations going on (submodules?).
+
 
 ? crash: on invalid ssh key the askpass controller crashes with "task" selector
 ? crash: The app crashes whenever I try to delete a remote branch, shortly after hitting the “Ok” button of the edit branch sheet
@@ -99,6 +97,9 @@ Gitbox 1.6 misc items:
 
 - bug: GBSubmoduleController should be replaced with cloning ctrl when submodule is deleted. (or at least, simply deselected)
 
+- open multiple files for Kaleidoscope.
+- bug: if stash apply failes, it still restores new files.
+- todo: change the default stash message from the file names to "Stash 1" string. 
 
 
 

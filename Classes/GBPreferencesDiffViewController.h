@@ -14,4 +14,6 @@
 
 - (NSArray*) diffTools;
 
+- (IBAction)checkboxDidChange:(id)sender;
+
 @end

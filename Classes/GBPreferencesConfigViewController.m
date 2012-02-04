@@ -4,14 +4,28 @@
 #import "GBPreferencesConfigViewController.h"
 #import "NSData+OADataHelpers.h"
 
+@interface GBPreferencesConfigViewController ()
+@property(nonatomic, copy) NSString* labelString;
+@end
+
 @implementation GBPreferencesConfigViewController {
 	NSView* currentView;
 }
 @synthesize basicView;
 @synthesize advancedView;
 @synthesize configTextView;
+@synthesize ignoreTextView;
 @synthesize nameTextField;
 @synthesize emailTextField;
+@synthesize label;
+@synthesize labelString;
+
+- (void)dealloc
+{
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+    [labelString release];
+    [super dealloc];
+}
 
 + (GBPreferencesConfigViewController*) controller
 {
@@ -21,6 +35,51 @@
 - (NSURL*) configURL
 {
 	return [NSURL fileURLWithPath:[NSHomeDirectory() stringByAppendingPathComponent:@".gitconfig"]];
+}
+
+- (NSURL*) gitignoreURL
+{
+	NSString* path = [[GBGitConfig userConfig] stringForKey:@"core.excludesfile"];
+	
+	if (path.length == 0)
+	{
+		path = [NSHomeDirectory() stringByAppendingPathComponent:@".gitignore"];
+		[[GBGitConfig userConfig] setString:path forKey:@"core.excludesfile"];
+	}
+	
+	path = [path stringByExpandingTildeInPath];
+	
+	if (path.length > 0 && [path characterAtIndex:0] != [@"/" characterAtIndex:0])
+	{
+		path = [NSHomeDirectory() stringByAppendingPathComponent:path];
+	}
+	return [NSURL fileURLWithPath:path];
+}
+
+- (void) loadIgnoreData
+{
+	NSURL* url = [self gitignoreURL];
+	if (!url)
+	{
+		NSLog(@"ERROR: Cannot get url for gitignore file!");
+		return;
+	}
+	NSData* data = [NSData dataWithContentsOfURL:url];
+	NSString* string = [data UTF8String];
+	
+	[self.ignoreTextView setString:string ? string : @""];
+	
+	NSString* path = [url path];
+	
+	if ([path rangeOfString:NSHomeDirectory()].length > 0)
+	{
+		path = [path stringByReplacingOccurrencesOfString:[NSHomeDirectory() stringByAppendingString:@"/"] withString:@""];
+		self.label.stringValue = self.labelString ? [self.labelString stringByReplacingOccurrencesOfString:@".gitignore" withString:path] : path;
+	}
+	else
+	{
+		self.label.stringValue = [NSString stringWithFormat:NSLocalizedString(@"These settings are stored in %@.", @""), path];
+	}
 }
 
 - (void) loadConfigData
@@ -44,6 +103,7 @@
 - (void) loadData
 {
 	[self loadBasicData];
+	[self loadIgnoreData];
 	[self loadConfigData];
 }
 
@@ -73,7 +133,7 @@
 	});
 }
 
-- (void) textDidChange:(NSNotification*)notification
+- (void) configTextDidChange:(NSNotification*)notification
 {
 	static int counter = 0;
 	counter++;
@@ -87,16 +147,31 @@
 	});
 }
 
+- (void) ignoreTextDidChange:(NSNotification*)notification
+{
+	static int counter = 0;
+	counter++;
+	int c = counter;
+	double delayInSeconds = 1.0;
+	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+	dispatch_after(popTime, dispatch_get_main_queue(), ^{
+		if (c != counter) return;
+		[[self.ignoreTextView.string dataUsingEncoding:NSUTF8StringEncoding] writeToURL:[self gitignoreURL] atomically:YES];
+	});
+}
 
 - (void) loadView
 {
 	[super loadView];
 	
+	self.labelString = self.label.stringValue;
+	
 	if (!currentView) [self toggleMode:nil];
 	
 	[self loadData];
 	
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textDidChange:) name:NSTextDidChangeNotification object:self.configTextView];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(configTextDidChange:) name:NSTextDidChangeNotification object:self.configTextView];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(ignoreTextDidChange:) name:NSTextDidChangeNotification object:self.ignoreTextView];
 }
 
 

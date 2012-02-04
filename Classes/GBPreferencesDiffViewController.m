@@ -1,5 +1,6 @@
 #import "OATask.h"
 #import "GBChange.h"
+#import "GBAppDelegate.h"
 #import "GBPreferencesDiffViewController.h"
 
 @implementation GBPreferencesDiffViewController {
@@ -71,6 +72,15 @@
 	}
 }
 
+- (IBAction)checkboxDidChange:(id)sender
+{
+	//	BOOL value = [[NSUserDefaults standardUserDefaults] boolForKey:@"GBCloneFromGithub"];
+	//	NSLog(@"GBCloneFromGithub = %d", (int)value);
+	
+	[[GBAppDelegate instance] updateAppleEvents];
+}
+
+
 - (void) windowDidBecomeKey:(NSNotification *)notification
 {
 	[self loadDiffToolsStatus];
@@ -88,12 +98,12 @@
 
 - (NSImage *)toolbarItemImage
 {
-    return [NSImage imageNamed:@"GBPreferencesDiff.png"];
+    return [NSImage imageNamed:@"GBPreferencesIntegration.png"];
 }
 
 - (NSString *)toolbarItemLabel
 {
-    return NSLocalizedString(@"Diff Tools", nil);
+    return NSLocalizedString(@"Integration", nil);
 }
 
 - (void) viewWillAppear
