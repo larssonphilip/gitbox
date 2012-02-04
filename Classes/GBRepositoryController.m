@@ -89,7 +89,8 @@
 
 - (void) updateLocalStateWithBlock:(void(^)())aBlock;
 - (void) updateLocalStateAfterDelay:(NSTimeInterval)interval;
-- (void) updateStageChangesWithBlock:(void(^)())aBlock;
+- (void) updateStageChangesAndSubmodulesWithBlock:(void(^)())aBlock;
+- (void) updateStageChangesAndSubmodules:(BOOL)updateSubmodules withBlock:(void(^)())aBlock;
 - (void) updateSubmodulesWithBlock:(void(^)())aBlock;
 - (void) updateLocalRefsWithBlock:(void(^)())aBlock;
 - (void) updateCommitsWithBlock:(void(^)())aBlock;
@@ -766,7 +767,7 @@
 	// A short delay to work around stupid Xcode effect: when cmd+tabbing from Xcode to Gitbox, Xcode updates project file right before Gitbox is activated. If we immediately update the stage, we'll display temporary xcode project file.
 	
 	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 500*USEC_PER_SEC), dispatch_get_main_queue(), ^{
-		[self updateStageChangesWithBlock:^{}];
+		[self updateStageChangesAndSubmodulesWithBlock:^{}];
 	});
 	
 	if ([[NSDate date] timeIntervalSince1970] - prevRemoteStateUpdateTimestamp > 60.0)
@@ -778,7 +779,7 @@
 - (void) updateLocalStateWithBlock:(void(^)())aBlock
 {
 	aBlock = [[aBlock copy] autorelease];
-	[self updateStageChangesWithBlock:^{
+	[self updateStageChangesAndSubmodulesWithBlock:^{
 		[self updateLocalRefsWithBlock:aBlock];
 	}];
 }
@@ -807,7 +808,12 @@
 }
 
 
-- (void) updateStageChangesWithBlock:(void(^)())aBlock
+- (void) updateStageChangesAndSubmodulesWithBlock:(void(^)())aBlock
+{
+	[self updateStageChangesAndSubmodules:YES withBlock:aBlock];
+}
+
+- (void) updateStageChangesAndSubmodules:(BOOL)updateSubmodules withBlock:(void(^)())aBlock
 {
 	if (!self.repository.stage || ![self checkRepositoryExistance])
 	{
@@ -821,7 +827,7 @@
 	[self.blockTable addBlock:aBlock forName:@"updateStageChanges" proceedIfClear:^{
 		//NSLog(@"!!! Updating stage [%@]", self.windowTitle);
 		[self.repository.stage updateStageWithBlock:^(BOOL didChange){
-			[self updateSubmodulesWithBlock:^{
+			void(^contblock)() = ^{
 				if (didChange)
 				{
 					ignoreFSEventsInterval = 1.0;
@@ -846,7 +852,16 @@
 					[self.blockTable callBlockForName:@"updateStageChanges"];
 				}
 				[self.sidebarItem update];
-			}];
+			};
+			
+			if (updateSubmodules)
+			{
+				[self updateSubmodulesWithBlock:contblock];
+			}
+			else
+			{
+				contblock();
+			}
 		}];
 	}];
 }
@@ -1411,7 +1426,7 @@
 	
 	checkoutBlock(^{
 		
-		[self updateStageChangesWithBlock:^{
+		[self updateStageChangesAndSubmodulesWithBlock:^{
 			[self updateLocalRefsWithBlock:^{
 				[self notifyWithSelector:@selector(repositoryControllerDidCheckoutBranch:)];
 				[self popDisabled];
@@ -1657,7 +1672,7 @@
 		// Avoid loading changes if another staging is running.
 		if (stagingCounter == 0)
 		{
-			[self updateStageChangesWithBlock:^{}];
+			[self updateStageChangesAndSubmodules:NO withBlock:^{}];
 		}
 		[self popSpinning];
 	});
@@ -1724,7 +1739,7 @@
 	[self.repository commitWithMessage:message block:^{
 		self.isCommitting = NO;
 		
-		[self updateStageChangesWithBlock:^{
+		[self updateStageChangesAndSubmodulesWithBlock:^{
 			commitsAreInvalid = YES;
 			[self updateLocalRefsWithBlock:^{
 				[self popSpinning];
@@ -1785,7 +1800,7 @@
 			self.repository.stage.currentCommitMessage = message;
 			
 			[self notifyWithSelector:@selector(repositoryControllerDidCommit:)];
-			[self updateStageChangesWithBlock:^{}];
+			[self updateStageChangesAndSubmodulesWithBlock:^{}];
 		}];
 	}];
 }
@@ -2377,7 +2392,7 @@
 																{
 																	[self.undoManager removeAllActions];
 																	[self.repository resetStageWithBlock:^{
-																		[self updateStageChangesWithBlock:^{
+																		[self updateStageChangesAndSubmodulesWithBlock:^{
 																		}];
 																	}];
 																}
