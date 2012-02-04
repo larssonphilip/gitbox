@@ -28,6 +28,7 @@
 - (void) updateCurrentBranchMenus;
 - (void) updateRemoteBranchMenus;
 - (void) updateSyncButtons;
+- (BOOL) isMenuOpened;
 - (BOOL) isMenuOpened:(NSMenu*)menu;
 
 - (BOOL) validateCheckoutTagMenu:(NSMenuItem*)sender;
@@ -381,6 +382,7 @@
 		needsUpdateAfterClosingMenu = YES;
 		return;
 	}
+	
 	// Local branches
 	//NSMenu* newMenu = [NSMenu menu];
 	NSMenu* currentBranchesMenu = button.menu;
@@ -714,8 +716,17 @@
 	if (needsUpdateAfterClosingMenu)
 	{
 		needsUpdateAfterClosingMenu = NO;
-		[self updateBranchMenus];
+		dispatch_async(dispatch_get_main_queue(), ^{
+			[self updateBranchMenus];
+		});
 	}
+}
+
+
+
+- (BOOL) isMenuOpened
+{
+	return self.openedMenus.count > 0;
 }
 
 - (BOOL) isMenuOpened:(NSMenu*)menu
