@@ -48,26 +48,9 @@ Gitbox 1.6 Release Notes
 
 Gitbox 1.6 misc items:
 
-- prefs:
-	+ GBPreferencesDiffViewController "Diff tools"
-	+ GBPreferencesGithubViewController "Github"
-	+ GBPreferencesGitIgnoreViewController "Ignored Files"
-	+ GBPreferencesGitConfigViewController "Advanced"
-	+ GBPreferencesUpdatesViewController "Updates"
-	- GBPreferencesLicenseViewController "License"
-	+ export icons
-	+ instantiate updater 
-
-+ bug: if curr. branch menu is rebuilt while being open, gitbox does not show sheet for "checkout remote branch"
-? bug: sometimes cannot set color label
-
-- maybe reshuffle preferences: "Mac" (diff tools, github: "Behaviour"), "Git" (~/.gitignore, name and email), "Gitbox" (updates, license)
-- move ~/.gitignore to Git Settings (and remove "Advanced" screen)
 - reshuffle repo settings: remove "Optimize" button and remove stats; remove "Advanced" tab
   - make optimize in background with a sheet.
   - icons: "list" for General; "label 1.0" for branches and tags; "cloud" for remotes
-
-- quickly staging stuff it takes some longer time. maybe because of the delay or some irrelevant operations going on (submodules?).
 
 
 ? crash: on invalid ssh key the askpass controller crashes with "task" selector
@@ -201,8 +184,29 @@ Gitbox 1.6 misc items:
 
 - new group should wrap selected repos and should be added in place of the first selected item.
 
+- bug: sometimes cannot set color label
+
+
+
 
 Misc done for 1.6:
+
+
++ quickly staging stuff it takes some longer time. maybe because of the delay or some irrelevant operations going on (submodules?).
++ prefs:
+	+ GBPreferencesDiffViewController "Diff tools"
+	+ GBPreferencesGithubViewController "Github"
+	+ GBPreferencesGitIgnoreViewController "Ignored Files"
+	+ GBPreferencesGitConfigViewController "Advanced"
+	+ GBPreferencesUpdatesViewController "Updates"
+	+ GBPreferencesLicenseViewController "License"
+	+ export icons
+	+ instantiate updater 
+
++ bug: if curr. branch menu is rebuilt while being open, gitbox does not show sheet for "checkout remote branch"
+
++ maybe reshuffle preferences: "Mac" (diff tools, github: "Behaviour"), "Git" (~/.gitignore, name and email), "Gitbox" (updates, license)
++ move ~/.gitignore to Git Settings (and remove "Advanced" screen)
 
 + if authenticated task fails with non-auth error message, remember the failure and on 3 failure in a row present login sheet.	
 ? crash: on incorrect password or SSH key the askpass controller crashes with "task" selector
