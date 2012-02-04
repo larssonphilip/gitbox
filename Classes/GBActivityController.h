@@ -9,5 +9,6 @@
 + (id) sharedActivityController;
 
 - (void) addActivity:(GBActivity*)activity;
+- (IBAction)clearAll:(id)sender;
 
 @end

@@ -64,7 +64,6 @@ static GBActivityController* sharedGBActivityController;
 												 selector:@selector(taskDidDeallocate:) 
 													 name:OATaskDidDeallocateNotification
 												   object:nil];
-		
 	}
 	return self;
 }
@@ -103,6 +102,7 @@ static GBActivityController* sharedGBActivityController;
 			{
 				[self.outputTextView setString:@""]; // setting nil corrupts entire text system in a window
 			}
+			[self.outputTextView setFont:[NSFont fontWithName:@"Menlo" size:11.0]];
 		}
 	}
 }
@@ -154,6 +154,16 @@ static GBActivityController* sharedGBActivityController;
 		{
 			[self.tableView scrollRowToVisible:numberOfRows - 1];
 		}
+	}
+}
+
+- (IBAction)clearAll:(id)sender
+{
+	[self.activities removeAllObjects];
+	if (self.arrayController)
+	{
+		[self.arrayController rearrangeObjects];
+		[self syncActivityOutput];
 	}
 }
 
