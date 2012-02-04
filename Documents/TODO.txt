@@ -52,10 +52,6 @@ Gitbox 1.6 misc items:
   - make optimize in background with a sheet.
   - icons: "list" for General; "label 1.0" for branches and tags; "cloud" for remotes
 
-
-? crash: on invalid ssh key the askpass controller crashes with "task" selector
-? crash: The app crashes whenever I try to delete a remote branch, shortly after hitting the “Ok” button of the edit branch sheet
-
 - test: diff tools state with empty prefs.
 - test: clone in github checkbox with empty prefs.
 - test: should clone from github when app is not launched.
@@ -185,6 +181,9 @@ Gitbox 1.6 misc items:
 - new group should wrap selected repos and should be added in place of the first selected item.
 
 - bug: sometimes cannot set color label
+
+? crash: on invalid ssh key the askpass controller crashes with "task" selector
+? crash: The app crashes whenever I try to delete a remote branch, shortly after hitting the “Ok” button of the edit branch sheet
 
 
 
