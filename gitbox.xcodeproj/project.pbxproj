@@ -486,6 +486,10 @@
 		20CE6E0B13895CC3001D9707 /* GBStash.m in Sources */ = {isa = PBXBuildFile; fileRef = 20CE6E0913895CC3001D9707 /* GBStash.m */; };
 		20CFEFA314DD87130086330F /* GBPreferencesIntegration.png in Resources */ = {isa = PBXBuildFile; fileRef = 20CFEFA214DD87130086330F /* GBPreferencesIntegration.png */; };
 		20CFEFA414DD87130086330F /* GBPreferencesIntegration.png in Resources */ = {isa = PBXBuildFile; fileRef = 20CFEFA214DD87130086330F /* GBPreferencesIntegration.png */; };
+		20CFEFA714DDBE520086330F /* GBOptimizeRepositoryController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20CFEFA614DDBE520086330F /* GBOptimizeRepositoryController.m */; };
+		20CFEFA814DDBE520086330F /* GBOptimizeRepositoryController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20CFEFA614DDBE520086330F /* GBOptimizeRepositoryController.m */; };
+		20CFEFAA14DDBE6C0086330F /* GBOptimizeRepositoryController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 20CFEFA914DDBE6C0086330F /* GBOptimizeRepositoryController.xib */; };
+		20CFEFAB14DDBE6C0086330F /* GBOptimizeRepositoryController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 20CFEFA914DDBE6C0086330F /* GBOptimizeRepositoryController.xib */; };
 		20DD4DC3134B4F7300E6E6B7 /* NSObject+OAResponderChain.m in Sources */ = {isa = PBXBuildFile; fileRef = 20DD4DC2134B4F7300E6E6B7 /* NSObject+OAResponderChain.m */; };
 		20DE951514B39A5D005A5DC5 /* GBRepositoryController+Actions.m in Sources */ = {isa = PBXBuildFile; fileRef = 20DE951414B39A5D005A5DC5 /* GBRepositoryController+Actions.m */; };
 		20DE951614B39A5D005A5DC5 /* GBRepositoryController+Actions.m in Sources */ = {isa = PBXBuildFile; fileRef = 20DE951414B39A5D005A5DC5 /* GBRepositoryController+Actions.m */; };
@@ -950,6 +954,9 @@
 		20CE6E0813895CC3001D9707 /* GBStash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBStash.h; sourceTree = "<group>"; };
 		20CE6E0913895CC3001D9707 /* GBStash.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBStash.m; sourceTree = "<group>"; };
 		20CFEFA214DD87130086330F /* GBPreferencesIntegration.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GBPreferencesIntegration.png; path = Images/GBPreferencesIntegration.png; sourceTree = SOURCE_ROOT; };
+		20CFEFA514DDBE520086330F /* GBOptimizeRepositoryController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBOptimizeRepositoryController.h; sourceTree = "<group>"; };
+		20CFEFA614DDBE520086330F /* GBOptimizeRepositoryController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBOptimizeRepositoryController.m; sourceTree = "<group>"; };
+		20CFEFA914DDBE6C0086330F /* GBOptimizeRepositoryController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GBOptimizeRepositoryController.xib; sourceTree = "<group>"; };
 		20DD4DC1134B4F7300E6E6B7 /* NSObject+OAResponderChain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+OAResponderChain.h"; sourceTree = "<group>"; };
 		20DD4DC2134B4F7300E6E6B7 /* NSObject+OAResponderChain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+OAResponderChain.m"; sourceTree = "<group>"; };
 		20DE951314B39A5D005A5DC5 /* GBRepositoryController+Actions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GBRepositoryController+Actions.h"; sourceTree = "<group>"; };
@@ -1620,6 +1627,9 @@
 				2057F10411ACF4C0009EDF2F /* GBActivityController.xib */,
 				200DE073136A9F9100D18A5B /* GBWindowControllerWithCallback.h */,
 				200DE074136A9F9100D18A5B /* GBWindowControllerWithCallback.m */,
+				20CFEFA514DDBE520086330F /* GBOptimizeRepositoryController.h */,
+				20CFEFA614DDBE520086330F /* GBOptimizeRepositoryController.m */,
+				20CFEFA914DDBE6C0086330F /* GBOptimizeRepositoryController.xib */,
 			);
 			name = "Prompts and aux window controllers";
 			sourceTree = "<group>";
@@ -1924,6 +1934,7 @@
 				20A5E38614D68BE200408DD7 /* GBPreferencesLicenseViewController.xib in Resources */,
 				20A5E38A14D68BE200408DD7 /* GBPreferencesUpdatesViewController.xib in Resources */,
 				20CFEFA414DD87130086330F /* GBPreferencesIntegration.png in Resources */,
+				20CFEFAB14DDBE6C0086330F /* GBOptimizeRepositoryController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2014,6 +2025,7 @@
 				20A5E38514D68BE200408DD7 /* GBPreferencesLicenseViewController.xib in Resources */,
 				20A5E38914D68BE200408DD7 /* GBPreferencesUpdatesViewController.xib in Resources */,
 				20CFEFA314DD87130086330F /* GBPreferencesIntegration.png in Resources */,
+				20CFEFAA14DDBE6C0086330F /* GBOptimizeRepositoryController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2188,6 +2200,7 @@
 				20A5E38014D68BE200408DD7 /* GBPreferencesIgnoreViewController.m in Sources */,
 				20A5E38414D68BE200408DD7 /* GBPreferencesLicenseViewController.m in Sources */,
 				20A5E38814D68BE200408DD7 /* GBPreferencesUpdatesViewController.m in Sources */,
+				20CFEFA814DDBE520086330F /* GBOptimizeRepositoryController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2344,6 +2357,7 @@
 				20A5E37F14D68BE200408DD7 /* GBPreferencesIgnoreViewController.m in Sources */,
 				20A5E38314D68BE200408DD7 /* GBPreferencesLicenseViewController.m in Sources */,
 				20A5E38714D68BE200408DD7 /* GBPreferencesUpdatesViewController.m in Sources */,
+				20CFEFA714DDBE520086330F /* GBOptimizeRepositoryController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
