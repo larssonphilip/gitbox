@@ -12,12 +12,8 @@
 @property (assign) IBOutlet NSTextField *remoteLabel3;
 @property (assign) IBOutlet NSTextField *remoteField3;
 @property (assign) IBOutlet NSView *remainingView;
-@property (assign) IBOutlet NSTextField *sizeField;
-@property (assign) IBOutlet NSTextField *statsLineField;
 @property (assign) IBOutlet NSTextView *gitignoreTextView;
-@property (assign) IBOutlet NSProgressIndicator *optimizeProgressIndicator;
 
-- (IBAction)optimizeRepository:(NSButton*)sender;
 - (IBAction)openInFinder:(id)sender;
 
 @end

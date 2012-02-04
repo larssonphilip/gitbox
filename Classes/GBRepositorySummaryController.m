@@ -11,13 +11,10 @@
 @property(nonatomic, retain) NSArray* remotes;
 @property(nonatomic, retain) NSArray* labels;
 @property(nonatomic, retain) NSArray* fields;
-@property(nonatomic, assign) BOOL calculatingSize;
 
 - (NSString*) parentFolder;
 - (NSString*) repoTitle;
 - (NSString*) repoPath;
-- (void) calculateSize;
-- (void) calculateCommits;
 - (void) iterateRemoteLines:(void(^)(NSUInteger i, GBRemote* aRemote, NSTextField* field, NSTextField* label))aBlock;
 @end
 
@@ -26,7 +23,6 @@
 @synthesize remotes;
 @synthesize labels;
 @synthesize fields;
-@synthesize calculatingSize;
 
 @synthesize pathLabel;
 @synthesize originLabel;
@@ -37,10 +33,7 @@
 @synthesize remoteLabel3;
 @synthesize remoteField3;
 @synthesize remainingView;
-@synthesize sizeField;
-@synthesize statsLineField;
 @synthesize gitignoreTextView;
-@synthesize optimizeProgressIndicator;
 
 - (void) dealloc
 {
@@ -170,10 +163,6 @@
 //		NSLog(@"Config: %@ => %@", key, obj);
 //	}];
 	
-	[self calculateSize];
-	
-	self.statsLineField.stringValue = @"";
-	[self calculateCommits];
 	
 	// TODO: add label and strings for:
 	// ≠ path + disclosure button like in Xcode locations preference
@@ -253,111 +242,111 @@
 #pragma mark Private
 
 
-- (void) calculateSize
-{
-	if (calculatingSize)
-	{
-		// Try again after 2 and 4 seconds.
-		double delayInSeconds = 2.0;
-		dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
-		dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-			if (calculatingSize)
-			{
-				double delayInSeconds = 2.0;
-				dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
-				dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-					if (calculatingSize) return;
-					[self calculatingSize];
-				});
-				return;
-			}
-			[self calculatingSize];
-		});
-		return;
-	}
-	
-	calculatingSize = YES;
-	
-	self.sizeField.stringValue = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"Size on disk:", @""), @""];
-	
-	[NSFileManager calculateSizeAtURL:self.repository.url completionHandler:^(long long bytes){
-		double bytesf = (double)bytes;
-		double kbytes = bytesf / 1000.0;
-		double mbytes = kbytes / 1000.0;
-		double gbytes = mbytes / 1000.0;
-		
-		NSString* sizeString = [NSString stringWithFormat:@"%qi %@", bytes, NSLocalizedString(@"bytes", @"")];
-		
-		if (gbytes >= 1.0)
-		{
-			sizeString = [NSString stringWithFormat:@"%0.1f %@", gbytes, NSLocalizedString(@"Gb", @"")];
-		}
-		else if (mbytes >= 1.0)
-		{
-			sizeString = [NSString stringWithFormat:@"%0.1f %@", mbytes, NSLocalizedString(@"Mb", @"")];
-		}
-		else if (kbytes >= 1.0)
-		{
-			sizeString = [NSString stringWithFormat:@"%0.1f %@", kbytes, NSLocalizedString(@"Kb", @"")];
-		}
-		
-		self.sizeField.stringValue = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"Size on disk:", @""), sizeString];
-		
-		calculatingSize = NO;
-	}];
-}
+//- (void) calculateSize
+//{
+//	if (calculatingSize)
+//	{
+//		// Try again after 2 and 4 seconds.
+//		double delayInSeconds = 2.0;
+//		dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+//		dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+//			if (calculatingSize)
+//			{
+//				double delayInSeconds = 2.0;
+//				dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+//				dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+//					if (calculatingSize) return;
+//					[self calculatingSize];
+//				});
+//				return;
+//			}
+//			[self calculatingSize];
+//		});
+//		return;
+//	}
+//	
+//	calculatingSize = YES;
+//	
+//	self.sizeField.stringValue = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"Size on disk:", @""), @""];
+//	
+//	[NSFileManager calculateSizeAtURL:self.repository.url completionHandler:^(long long bytes){
+//		double bytesf = (double)bytes;
+//		double kbytes = bytesf / 1000.0;
+//		double mbytes = kbytes / 1000.0;
+//		double gbytes = mbytes / 1000.0;
+//		
+//		NSString* sizeString = [NSString stringWithFormat:@"%qi %@", bytes, NSLocalizedString(@"bytes", @"")];
+//		
+//		if (gbytes >= 1.0)
+//		{
+//			sizeString = [NSString stringWithFormat:@"%0.1f %@", gbytes, NSLocalizedString(@"Gb", @"")];
+//		}
+//		else if (mbytes >= 1.0)
+//		{
+//			sizeString = [NSString stringWithFormat:@"%0.1f %@", mbytes, NSLocalizedString(@"Mb", @"")];
+//		}
+//		else if (kbytes >= 1.0)
+//		{
+//			sizeString = [NSString stringWithFormat:@"%0.1f %@", kbytes, NSLocalizedString(@"Kb", @"")];
+//		}
+//		
+//		self.sizeField.stringValue = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"Size on disk:", @""), sizeString];
+//		
+//		calculatingSize = NO;
+//	}];
+//}
 
-- (NSString*) inflectNumeric:(NSInteger)i singular:(NSString*)singular plural:(NSString*)plural
-{
-	if (i == 1) return singular;
-	return plural;
-}
+//- (NSString*) inflectNumeric:(NSInteger)i singular:(NSString*)singular plural:(NSString*)plural
+//{
+//	if (i == 1) return singular;
+//	return plural;
+//}
 
 
-- (void) calculateCommits
-{
-	GBTask* task = [GBTask taskWithRepository:self.repository];
-	
-	NSMutableArray* args = [NSMutableArray arrayWithObject:@"log"];
-	[args addObjectsFromArray:[self.repository.localBranches valueForKey:@"name"]];
-	[args addObject:@"--format=\"%H %ae\""];
-	task.arguments = args;
-	[task launchWithBlock:^{
-		self.statsLineField.stringValue = @"";
-		
-		NSString* output = task.UTF8OutputStripped;
-		if (output.length == 0) return;
-		
-		NSArray* lines = [output componentsSeparatedByString:@"\n"];
-		if (lines.count == 0) return;
-		
-		NSMutableArray* stats = [NSMutableArray array];
-		
-		[stats addObject:[NSString stringWithFormat:@"%d %@", lines.count, [self inflectNumeric:lines.count singular:@"commit" plural:@"commits"]]];
-		
-		NSMutableSet* emails = [NSMutableSet set];
-		
-		for (NSString* line in lines)
-		{
-			NSArray* comps = [line componentsSeparatedByString:@" "];
-			if (comps.count >= 2)
-			{
-				[emails addObject:[comps objectAtIndex:1]];
-			}
-		}
-		
-		if (emails.count > 0)
-		{
-			[stats addObject:[NSString stringWithFormat:@"%d %@", emails.count, [self inflectNumeric:emails.count singular:@"contributor" plural:@"contributors"]]];
-		}
-		
-		if (stats.count > 0)
-		{
-			NSString* statsString = [stats componentsJoinedByString:@", "];
-			self.statsLineField.stringValue = statsString;
-		}
-	}];
-}
+//- (void) calculateCommits
+//{
+//	GBTask* task = [GBTask taskWithRepository:self.repository];
+//	
+//	NSMutableArray* args = [NSMutableArray arrayWithObject:@"log"];
+//	[args addObjectsFromArray:[self.repository.localBranches valueForKey:@"name"]];
+//	[args addObject:@"--format=\"%H %ae\""];
+//	task.arguments = args;
+//	[task launchWithBlock:^{
+//		self.statsLineField.stringValue = @"";
+//		
+//		NSString* output = task.UTF8OutputStripped;
+//		if (output.length == 0) return;
+//		
+//		NSArray* lines = [output componentsSeparatedByString:@"\n"];
+//		if (lines.count == 0) return;
+//		
+//		NSMutableArray* stats = [NSMutableArray array];
+//		
+//		[stats addObject:[NSString stringWithFormat:@"%d %@", lines.count, [self inflectNumeric:lines.count singular:@"commit" plural:@"commits"]]];
+//		
+//		NSMutableSet* emails = [NSMutableSet set];
+//		
+//		for (NSString* line in lines)
+//		{
+//			NSArray* comps = [line componentsSeparatedByString:@" "];
+//			if (comps.count >= 2)
+//			{
+//				[emails addObject:[comps objectAtIndex:1]];
+//			}
+//		}
+//		
+//		if (emails.count > 0)
+//		{
+//			[stats addObject:[NSString stringWithFormat:@"%d %@", emails.count, [self inflectNumeric:emails.count singular:@"contributor" plural:@"contributors"]]];
+//		}
+//		
+//		if (stats.count > 0)
+//		{
+//			NSString* statsString = [stats componentsJoinedByString:@", "];
+//			self.statsLineField.stringValue = statsString;
+//		}
+//	}];
+//}
 
 
 
@@ -398,53 +387,53 @@
 	return url ? url : @"";
 }
 
-- (IBAction) optimizeRepository:(NSButton*)button
-{
-	[button setEnabled:NO];
-	
-	GBTaskWithProgress* gitgcTask = [GBTaskWithProgress taskWithRepository:self.repository];
-	if (![GBTask isSnowLeopard])
-	{
-		gitgcTask.arguments = [NSArray arrayWithObjects:@"gc", @"--progress", nil];
-	}
-	else
-	{
-		gitgcTask.arguments = [NSArray arrayWithObjects:@"gc", nil];
-	}
-		
-	[self.optimizeProgressIndicator setIndeterminate:YES];
-	[self.optimizeProgressIndicator startAnimation:nil];
-	gitgcTask.progressUpdateBlock = ^{
-		double progress = gitgcTask.extendedProgress;
-		
-		self.optimizeProgressIndicator.doubleValue = progress;
-		
-		BOOL newIndeterminate = (progress < 2.0 || progress > 99.0);
-		if (newIndeterminate != self.optimizeProgressIndicator.isIndeterminate)
-		{
-			[self.optimizeProgressIndicator stopAnimation:nil];
-			if (newIndeterminate)
-			{
-				self.optimizeProgressIndicator.doubleValue = 0.0;
-				[self.optimizeProgressIndicator setIndeterminate:YES];
-				[self.optimizeProgressIndicator startAnimation:nil];
-			}
-			else
-			{
-				[self.optimizeProgressIndicator setIndeterminate:newIndeterminate];
-			}
-		}
-	};
-	
-	[self pushDisabled];
-	[gitgcTask launchWithBlock:^{
-		[self popDisabled];
-		[button setEnabled:YES];
-		[self.optimizeProgressIndicator stopAnimation:nil];
-		[self.optimizeProgressIndicator setIndeterminate:YES];
-		[self calculateSize];
-	}];
-}
+//- (IBAction) optimizeRepository:(NSButton*)button
+//{
+//	[button setEnabled:NO];
+//	
+//	GBTaskWithProgress* gitgcTask = [GBTaskWithProgress taskWithRepository:self.repository];
+//	if (![GBTask isSnowLeopard])
+//	{
+//		gitgcTask.arguments = [NSArray arrayWithObjects:@"gc", @"--progress", nil];
+//	}
+//	else
+//	{
+//		gitgcTask.arguments = [NSArray arrayWithObjects:@"gc", nil];
+//	}
+//		
+//	[self.optimizeProgressIndicator setIndeterminate:YES];
+//	[self.optimizeProgressIndicator startAnimation:nil];
+//	gitgcTask.progressUpdateBlock = ^{
+//		double progress = gitgcTask.extendedProgress;
+//		
+//		self.optimizeProgressIndicator.doubleValue = progress;
+//		
+//		BOOL newIndeterminate = (progress < 2.0 || progress > 99.0);
+//		if (newIndeterminate != self.optimizeProgressIndicator.isIndeterminate)
+//		{
+//			[self.optimizeProgressIndicator stopAnimation:nil];
+//			if (newIndeterminate)
+//			{
+//				self.optimizeProgressIndicator.doubleValue = 0.0;
+//				[self.optimizeProgressIndicator setIndeterminate:YES];
+//				[self.optimizeProgressIndicator startAnimation:nil];
+//			}
+//			else
+//			{
+//				[self.optimizeProgressIndicator setIndeterminate:newIndeterminate];
+//			}
+//		}
+//	};
+//	
+//	[self pushDisabled];
+//	[gitgcTask launchWithBlock:^{
+//		[self popDisabled];
+//		[button setEnabled:YES];
+//		[self.optimizeProgressIndicator stopAnimation:nil];
+//		[self.optimizeProgressIndicator setIndeterminate:YES];
+//		[self calculateSize];
+//	}];
+//}
 
 - (IBAction)openInFinder:(id)sender
 {
