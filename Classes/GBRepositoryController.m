@@ -71,6 +71,7 @@
 @property(nonatomic, retain) NSArray* submoduleControllers;
 @property(nonatomic, retain) NSArray* submodules;
 
+@property(nonatomic, copy) void(^localStateUpdatePendingBlock)();
 @property(nonatomic, copy) void(^pendingContinuationToBeginAuthSession)();
 
 - (NSImage*) icon;
@@ -90,7 +91,8 @@
 // Local state updates
 
 - (void) updateLocalStateWithBlock:(void(^)())aBlock;
-- (void) updateLocalStateAfterDelay:(NSTimeInterval)interval;
+- (void) updateLocalStateAfterDelay:(NSTimeInterval)interval block:(void(^)())block;
+
 - (void) updateStageChangesAndSubmodulesWithBlock:(void(^)())aBlock;
 - (void) updateStageChangesAndSubmodules:(BOOL)updateSubmodules withBlock:(void(^)())aBlock;
 - (void) updateSubmodulesWithBlock:(void(^)())aBlock;
@@ -130,11 +132,11 @@
 	NSInteger stagingCounter;
 	
 	int localStateUpdateGeneration;
-	NSTimeInterval nextLocalStateUpdateTimestamp;
-	NSTimeInterval localStateUpdateInterval;
-
-	NSTimeInterval recentFSEventsUpdateTimestamp;
-	NSTimeInterval ignoreFSEventsInterval;
+	int isScheduledLocalStateUpdate;
+	BOOL isScheduled;
+	NSTimeInterval timestampToRespectFSEvents;
+	NSTimeInterval repeatedUpdateDelay;
+	
 	
 	int remoteStateUpdateGeneration;
 	NSTimeInterval nextRemoteStateUpdateTimestamp;
@@ -178,6 +180,7 @@
 @synthesize submoduleControllers=_submoduleControllers;
 @synthesize submodules=_submodules;
 
+@synthesize localStateUpdatePendingBlock=_localStateUpdatePendingBlock;
 @synthesize pendingContinuationToBeginAuthSession=_pendingContinuationToBeginAuthSession;
 
 - (void) dealloc
@@ -215,6 +218,8 @@
 	if (_pendingContinuationToBeginAuthSession) _pendingContinuationToBeginAuthSession();
 	[_pendingContinuationToBeginAuthSession release]; _pendingContinuationToBeginAuthSession = nil;
 	
+	[_localStateUpdatePendingBlock release]; _localStateUpdatePendingBlock = nil;
+	
 	[super dealloc];
 }
 
@@ -241,7 +246,6 @@
 		self.folderMonitor.path = [[aURL path] stringByStandardizingPath];
 		self.undoManager = [[[NSUndoManager alloc] init] autorelease];
 		
-		localStateUpdateInterval = 1.0;
 		remoteStateUpdateInterval = 10.0;
 		
 		[[NSNotificationCenter defaultCenter] addObserver:self
@@ -483,7 +487,7 @@
 
 
 
-#pragma mark GBMainWindowItem
+#pragma mark - GBMainWindowItem
 
 
 
@@ -510,11 +514,14 @@
 	self.toolbarController.repositoryController = self;
 	self.viewController.repositoryController = self;
 	
+	timestampToRespectFSEvents = 0.0; // reset ignoring of FS events.
+	
 	if (!alreadyLaunchedInitialUpdates)
 	{
 		alreadyLaunchedInitialUpdates = YES;
 		[self updateLocalStateWithBlock:^{
-			[self updateRemoteStateAfterDelay:0.0];
+#warning DEBUG
+		//	[self updateRemoteStateAfterDelay:0.0];
 		}];
 	}
 	else
@@ -536,7 +543,7 @@
 
 
 
-#pragma mark GBSidebarItem
+#pragma mark - GBSidebarItem
 
 
 
@@ -653,7 +660,9 @@
 
 
 
-#pragma mark Updates
+#pragma mark - Updates
+
+
 
 
 
@@ -667,16 +676,14 @@
 	self.folderMonitor.target = self;
 	self.folderMonitor.action = @selector(folderMonitorDidUpdate:);
 	
-	// Problem:
 	// 1. We want to update local and remote states after some big randomized  delay.
 	// 2. Each state has a notion of "first update". So some state should be updated.
 	// 3. Local state update should be issued immediately when repository is selected.
 	
-	ignoreFSEventsInterval = 1.0;
-	
-	double localUpdateDelayInSeconds = 10.0 + 10.0*60.0*drand48();
-	[self updateLocalStateAfterDelay:localUpdateDelayInSeconds];
-	[self updateRemoteStateAfterDelay:localUpdateDelayInSeconds + 10.0*60.0*drand48()];
+	double localUpdateDelayInSeconds = 10.0 + 2.0*60.0*drand48();
+	[self updateLocalStateAfterDelay:localUpdateDelayInSeconds block:nil];
+#warning DEBUG
+//	[self updateRemoteStateAfterDelay:localUpdateDelayInSeconds + 2.0*60.0*drand48()];
 }
 
 - (void) stop
@@ -697,6 +704,12 @@
 	[self notifyWithSelector:@selector(repositoryControllerDidStop:)];
 }
 
+- (void) delayReceivingFSEvents
+{
+	// Delay fs events by 1 sec for current selected repo. For background repos delay for longer to avoid interfering.
+	timestampToRespectFSEvents = [[NSDate date] timeIntervalSince1970] + (selected ? 1.0 : 5.0);
+}
+
 
 - (void) folderMonitorDidUpdate:(GBFolderMonitor*)monitor
 {
@@ -704,113 +717,113 @@
 	if (!repo) return;
 	if (![self checkRepositoryExistance]) return;
 	
-	// Some good ideas:
-	// 1. + Non-selected repos do not do periodical updates - only updated by FSEvents.
-	// 2. + Non-selected repos increase ignoreFSEventsInterval if nothing changes. (exponentially)
-	// 3. + Selected repos prefer periodical updates to FSEvents because they are more controllable. 
-	//     Maybe by rescheduling delayed update in proportion to how old is the previous FSEvent and/or how close is end of ignoreInterval.
-	// 4. + Selected repos also should increase ignoreFSEventsInterval.
-	// 5. ? Should reset distrust interval when actually refreshed the state (even if no changes occured). Maybe should distrust slower
-	// 6. + Should change parameters when getting focus or getting selected, unselected.
-	// 7. + periodical updates are interesting mostly for the nearest interval.
-	// 8. - Use delayed update as merely a way to ignore FS events (e.g. while doing multiple staging commands).
-	
-	// If time to next update is short enough, ignore this event.
-	// Also, if it's negative, we are already in process of updating what's needed. 
+	//	FS Event:
+	//	- if ignoring fs events, skip
+	//	- if there's scheduled update, skip
+	//	- if there's running update, skip
+	//	- schedule update after 0.0 seconds.
 	
 	NSTimeInterval currentTimestamp = [[NSDate date] timeIntervalSince1970];
-	NSTimeInterval timeToNextUpdate = nextLocalStateUpdateTimestamp - currentTimestamp;
-	//NSLog(@"[%@] timeToNextUpdate == %f", [self windowTitle], timeToNextUpdate);
 	
-	NSTimeInterval toleratedDelay = selected ? 2.0 : 10.0;
-	
-	if (timeToNextUpdate < toleratedDelay)
+	// 1. Ignore until the timestamp.
+	if (currentTimestamp < timestampToRespectFSEvents)
 	{
+		//NSLog(@"FSEvent: ignoring event (%f sec. remaining) [%@]", (timestampToRespectFSEvents - currentTimestamp), self.windowTitle);
 		return;
 	}
 	
-	NSTimeInterval ignoreLimitForSelectedRepo = 3.0;
-	if (selected && ignoreFSEventsInterval > ignoreLimitForSelectedRepo)
+	// 2. Ignore if update is scheduled or already running.
+	if (isScheduledLocalStateUpdate)
 	{
-		ignoreFSEventsInterval = ignoreLimitForSelectedRepo;
-	}
-	
-	NSTimeInterval endOfIgnoreInterval = recentFSEventsUpdateTimestamp + ignoreFSEventsInterval;
-	if (endOfIgnoreInterval > currentTimestamp)
-	{
-		//NSLog(@"FSEvent: Don't trust during %0.1f sec interval [%@]", ignoreFSEventsInterval, self.windowTitle);
-		
-		// Reschedule next update to the end of ignore interval (or leave the current schedule in place if it's closer.)
-		if (timeToNextUpdate > endOfIgnoreInterval)
-		{
-			localStateUpdateInterval = (endOfIgnoreInterval - currentTimestamp) + drand48();
-			[self updateLocalStateAfterDelay:localStateUpdateInterval];
-		}
+		//NSLog(@"FSEvent: ignoring event (%d updates are running) [%@]", isScheduledLocalStateUpdate, self.windowTitle);
 		return;
 	}
 	
-	//NSLog(@"FSEvent: forcing update because scheduled is only in %0.1f sec [%@]", timeToNextUpdate, self.windowTitle);
-	
-	// This notification came in long before the next scheduled update, so let's force the update.
-	
+	// 3. Schedule an update.
 	if (monitor.dotgitIsUpdated || monitor.folderIsUpdated)
 	{
-		recentFSEventsUpdateTimestamp = currentTimestamp;
-		localStateUpdateInterval = 1.0 + drand48();
-		[self updateLocalStateAfterDelay:0];
+		//NSLog(@"FSEvent: updating [%@]", self.windowTitle);
+		
+		[self updateLocalStateAfterDelay:0.0 block:nil];
 	}
 }
 
 
-
-
-
-#pragma mark Updates
 
 
 
 - (void) updateWhenGotFocus
 {
+	// Reserve local updates immediately to avoid FS events. Will be overriden below.
+	[self updateLocalStateAfterDelay:10.0 block:nil];
+	
 	// A short delay to work around stupid Xcode effect: when cmd+tabbing from Xcode to Gitbox, Xcode updates project file right before Gitbox is activated. If we immediately update the stage, we'll display temporary xcode project file.
 	
 	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 500*USEC_PER_SEC), dispatch_get_main_queue(), ^{
-		[self updateStageChangesAndSubmodulesWithBlock:^{}];
+		// Update only changes on stage to be quick.
+		[self updateStageChangesAndSubmodules:NO withBlock:^{
+			// Update the rest of the state.
+			[self updateLocalStateAfterDelay:0.0 block:nil];
+		}];
 	});
 	
 	if ([[NSDate date] timeIntervalSince1970] - prevRemoteStateUpdateTimestamp > 60.0)
 	{
-		[self updateRemoteStateAfterDelay:0];
+#warning DEBUG
+		//[self updateRemoteStateAfterDelay:0];
 	}
 }
 
-- (void) updateLocalStateWithBlock:(void(^)())aBlock
+// Updates stage, local refs and commits if needed.
+- (void) updateLocalStateWithBlock:(void(^)())block
 {
-	aBlock = [[aBlock copy] autorelease];
+	//NSLog(@"> updateLocalStateWithBlock [%@]", self.windowTitle);
+	// Invalidate scheduled update
+	isScheduledLocalStateUpdate++;
+	
+	block = [[block copy] autorelease];
 	[self updateStageChangesAndSubmodulesWithBlock:^{
-		[self updateLocalRefsWithBlock:aBlock];
+		isScheduledLocalStateUpdate--;
+		
+		[self updateLocalRefsWithBlock:^{
+			if (block) block();
+		}];
 	}];
 }
 
-// Updates stage, local refs and commits if needed.
-- (void) updateLocalStateAfterDelay:(NSTimeInterval)interval
+
+- (void) updateLocalStateAfterDelay:(NSTimeInterval)interval block:(void(^)())block
 {
-	localStateUpdateGeneration++;
+//	if ([self.windowTitle rangeOfString:@"gitbox"].length > 0)
+//	{
+//		NSLog(@"Local update scheduled: %0.1f sec [%@]", interval, self.windowTitle);
+//	}
+	
+	self.localStateUpdatePendingBlock = OABlockConcat(self.localStateUpdatePendingBlock, block);
+	
+	if (!isScheduled)
+	{
+		isScheduledLocalStateUpdate++;
+		isScheduled = YES;
+	}
 	int gen = localStateUpdateGeneration;
 	
-	interval = MIN(interval, 60.0*60.0);
-	
-	//NSLog(@"Local update scheduled: %0.0f sec [%@]", interval, self.windowTitle);
-	
-	nextLocalStateUpdateTimestamp = [[NSDate date] timeIntervalSince1970] + interval;
 	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, interval * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-		if (stopped) return;
-		if (gen != localStateUpdateGeneration) return;
-		if (!selected) return;
 		
-		// Do not reset the current ignore interval if caused by fsevent or periodical update.
-		NSTimeInterval ignoreToRestore = ignoreFSEventsInterval;
-		[self updateLocalStateWithBlock:^{}];
-		ignoreFSEventsInterval = ignoreToRestore;
+		// Repository is stopped. Leave all hope.
+		if (stopped) return;
+		
+		// We have already scheduled another time.
+		if (gen != localStateUpdateGeneration) return;
+
+		isScheduledLocalStateUpdate--;
+		isScheduled = NO;
+		
+		[self updateLocalStateWithBlock:^{
+			void(^aBlock)() = [[self.localStateUpdatePendingBlock copy] autorelease];
+			self.localStateUpdatePendingBlock = nil;
+			if (aBlock) aBlock();
+		}];
 	});
 }
 
@@ -828,33 +841,37 @@
 		return;
 	}
 	
-	ignoreFSEventsInterval = 1.0;
+	[self delayReceivingFSEvents];
+	
 	localStateUpdateGeneration++;
 	
 	[self.blockTable addBlock:aBlock forName:@"updateStageChanges" proceedIfClear:^{
 		//NSLog(@"!!! Updating stage [%@]", self.windowTitle);
 		[self.repository.stage updateStageWithBlock:^(BOOL didChange){
 			void(^contblock)() = ^{
+				
+				[self delayReceivingFSEvents];
+				
 				if (didChange)
 				{
-					ignoreFSEventsInterval = 1.0;
-					localStateUpdateInterval = 1.0;
-					[self updateLocalStateAfterDelay:localStateUpdateInterval];
+					repeatedUpdateDelay = 0.0;
+					//NSLog(@"Repeated update scheduled: %f [%@ - did change]", repeatedUpdateDelay, self.windowTitle);
+					[self updateLocalStateAfterDelay:repeatedUpdateDelay block:nil];
 					[self.blockTable callBlockForName:@"updateStageChanges"];
 				}
 				else
 				{
-					ignoreFSEventsInterval = ignoreFSEventsInterval*2;
-					localStateUpdateInterval = localStateUpdateInterval*2.0;
+					repeatedUpdateDelay = repeatedUpdateDelay + 0.5;
 					
 					// Don't schedule updates at all in a distant future. We are much more likely to get valid FS- or other event there.
-					if (localStateUpdateInterval < 5.0)
+					if (repeatedUpdateDelay < 0.51)
 					{
-						[self updateLocalStateAfterDelay:localStateUpdateInterval];
+						//NSLog(@"Repeated update scheduled: %f [%@ - not changed]", repeatedUpdateDelay, self.windowTitle);
+						[self updateLocalStateAfterDelay:repeatedUpdateDelay block:nil];
 					}
 					else
 					{
-						nextLocalStateUpdateTimestamp = [[NSDate date] timeIntervalSince1970] + 999999.0;
+						repeatedUpdateDelay = 0.0;
 					}
 					[self.blockTable callBlockForName:@"updateStageChanges"];
 				}
@@ -911,9 +928,12 @@
 		return;
 	}
 	
+	[self delayReceivingFSEvents];
 	[self.blockTable addBlock:aBlock forName:@"updateSubmodules" proceedIfClear:^{
 		
 		[self.repository updateSubmodulesWithBlock:^{
+			
+			[self delayReceivingFSEvents];
 			
 			// Figure out in advance if there's anything to send update notification about.
 			BOOL didChangeSubmodules = [self submodulesOutOfSync];
@@ -937,10 +957,10 @@
 		if (aBlock) aBlock();
 		return;
 	}
-	
+	[self delayReceivingFSEvents];
 	[self.blockTable addBlock:aBlock forName:@"updateLocalRefs" proceedIfClear:^{
 		[self.repository updateLocalRefsWithBlock:^(BOOL didChange){
-			
+			[self delayReceivingFSEvents];
 			if (didChange || !self.repository.localBranchCommits || commitsAreInvalid)
 			{
 				commitsAreInvalid = NO;
@@ -994,7 +1014,7 @@
 
 
 
-#pragma mark Remote State Updates
+#pragma mark - Remote State Updates
 
 
 
@@ -1050,7 +1070,7 @@
 	aBlock = [[aBlock copy] autorelease];
 	
 	__block BOOL didChangeAnyRemote = NO;
-    
+
 	[self.blockTable addBlock:^{
 		
 		if (didChangeAnyRemote)
@@ -1067,7 +1087,11 @@
 		if (aBlock) aBlock();
 		
 	} forName:@"updateRemoteRefs" proceedIfClear:^{
+		
+		//NSLog(@"==== updateRemotesIfNeededWithBlock START");
 		[self.repository updateRemotesIfNeededWithBlock:^{
+			
+			//NSLog(@"==== updateRemotesIfNeededWithBlock END");
 			
 			[OABlockGroup groupBlock:^(OABlockGroup* blockGroup){
 				for (GBRemote* aRemote in self.repository.remotes)
@@ -1083,6 +1107,8 @@
 			}];
 		}];
 	}];
+	
+//	NSLog(@">> self.blockTable = %@ [%@]", self.blockTable.description, self.windowTitle);
 }
 
 // just a helper for updateRemoteRefsSilently
@@ -1096,7 +1122,7 @@
 		return;
 	}
 	
-	//NSLog(@"%@: updating branches for remote %@...", [self class], aRemote.alias);
+//	NSLog(@"Updating branches for remote %@... [%@]", aRemote.alias, self.windowTitle);
 	[self invalidateDelayedRemoteStateUpdate];
 
 #warning BUG: This auth block causes infinite loop of blocks from pendingContinuationToBeginAuthSession
@@ -1282,7 +1308,7 @@
 
 
 
-#pragma mark Search in history
+#pragma mark - Search in history
 
 
 
@@ -1396,7 +1422,7 @@
 
 
 
-#pragma mark Actions
+#pragma mark - Actions
 
 
 - (IBAction) undo:(id)sender
@@ -1649,7 +1675,7 @@
 
 
 // This method helps to factor out common code for both staging and unstaging tasks.
-// Block declaration might look tricky, but it's just a convenient wrapper, nothing special.
+// Block declaration might look tricky, but it's a convenient wrapper.
 // See the stage and unstage methods below.
 - (void) stagingHelperForChanges:(NSArray*)changes 
                        withBlock:(void(^)(NSArray*, GBStage*, void(^)()))block
@@ -1682,13 +1708,16 @@
 	
 	[self pushSpinning];
 	stagingCounter++;
+	
+	[self updateLocalStateAfterDelay:10.0 block:nil]; // reserve update
+	
 	block(notBusyChanges, stage, ^{
 		stagingCounter--;
 		if (postStageBlock) postStageBlock();
 		// Avoid loading changes if another staging is running.
 		if (stagingCounter == 0)
 		{
-			[self updateStageChangesAndSubmodules:NO withBlock:^{}];
+			[self updateLocalStateAfterDelay:1.0 block:nil];
 		}
 		[self popSpinning];
 	});
@@ -1841,6 +1870,7 @@
 				{
 					if (shouldRetry)
 					{
+						NSLog(@"Retrying fetch because of Auth failure...");
 						[self fetchRemote:aRemote silently:silently withBlock:block];
 						return;
 					}
@@ -1853,7 +1883,14 @@
 				[self pushSpinning];
 				[self pushDisabled];
 				[self updateLocalRefsWithBlock:^{
-					[self updateRemoteRefsSilently:silently withBlock:block];
+					
+					// The fetch could have been invoked from the updateRemoteRefsSilently:withBlock:
+					// Hence, we should not pass the block there. Rather, call it after block invocation.
+					
+					if (block) block();
+					
+					[self updateRemoteRefsSilently:silently withBlock:^{}];
+					
 					[self popSpinning];
 					[self popDisabled];
 				}];
@@ -2655,7 +2692,7 @@
 
 
 
-#pragma mark NSPasteboardWriting
+#pragma mark - NSPasteboardWriting
 
 
 

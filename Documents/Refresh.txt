@@ -27,3 +27,65 @@ Solution:
 
 Alternatively: simply delay ignoring FS events for some time when no actual change was detected. Don't increase that interval, but maybe make the interval bigger for non-selected repos.
 
+
+Solution 2:
+
+	Selected Repository:
+
+		FS Event:
+		+ if ignoring fs events, skip
+		+ if there's scheduled update, skip
+		+ if there's running update, skip
+		+ schedule update after 0.0 seconds.
+
+		Update scheduled:
+		+ override delay
+
+		Update started:
+		+ if update is running, put into a pending block
+
+		Update finished:
+		+ run and clear pending block
+		+ if something's changed, schedule an update after 0.0 sec.
+		+ if nothing's changed 1st time, schedule an update later after 0.5 sec.
+		+ if nothing's changed 2nd time, do not schedule
+		+ ignore FS events for 1 second.
+
+		Repo unselected:
+		+ do nothing
+		
+		Window focused:
+		+ schedule update after 0.0 seconds
+		
+	Non-selected Repository:
+	
+		FS Event:
+		+ if ignoring fs events, skip
+		+ if there's scheduled update, skip
+		+ if there's running update, skip
+		+ schedule update after 0.0 seconds.
+
+		Update scheduled:
+		+ override delay
+
+		Update started:
+		+ if update is running, put into a pending block
+
+		Update finished:
+		+ run and clear pending block
+		+ if something's changed, schedule an update immediately.
+		+ if nothing's changed, do not schedule again.
+		+ ignore FS events for 5 seconds.
+	
+		Repo selected:
+		+ reset ignore FS events interval
+
+
+
+
+
+
+
+
+
+

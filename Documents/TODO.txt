@@ -48,8 +48,6 @@ Gitbox 1.6 Release Notes
 
 Gitbox 1.6 misc items:
 
-  
-- repo settings: icons: "list" for General; "label 1.0" for branches and tags; "cloud" for remotes
 
 - test: diff tools state with empty prefs.
 - test: clone in github checkbox with empty prefs.
@@ -57,14 +55,15 @@ Gitbox 1.6 misc items:
 - test: default state of update checkboxes.
 - test: committing without name/email in ~/.gitconfig
 
-- bug: when stashing only untracked files, default message is "No Changes"
 
-- bug: should not refresh index while staging multiple items quickly one-by-one. - use delayed update to override FSEvent.
-  - solution: see Refresh.txt for details
++ bug: should not refresh index while staging multiple items quickly one-by-one. - use delayed update to override FSEvent.
+  + solution: see Refresh.txt for details
 - bug: stage: selection is not accurately preserved when stage is reloaded.
 - bug: stage: scroll offset is not preserved when stage is reloaded.
 
-- bug: it takes a very long time to update local state for non-selected repo.
++ bug: it takes a very long time to update local state for non-selected repo.
++ bug: does not auto fetch when focused in the commit field.
+
 
 - feature: rename repositories
 - bug: branch name is truncated in the settings view
@@ -73,10 +72,7 @@ Gitbox 1.6 misc items:
 - bug: remove views from sidebar item when switching owner object
 
 - bug: GBSubmoduleController should be replaced with cloning ctrl when submodule is deleted. (or at least, simply deselected)
-
-- open multiple files for Kaleidoscope.
-- bug: if stash apply failes, it still restores new files.
-- todo: change the default stash message from the file names to "Stash 1" string. 
+- bug: submodule cloning ctrl should be replaced when download/cloning is finished.
 
 
 
@@ -160,8 +156,6 @@ Gitbox 1.6 misc items:
 - search: make search over all branches instead of the current ones
 - double-section badge in the sidebar for local modifications and remote ones.
 
-- "clone from github" - need a checkbox "Clone from Github in Gitbox" - if user unchecks, do not subscribe to URL in Gitbox. Also need checkbox in prefs.
-
 - when clicking "ignore file" and file is already committed, ask if you want to remove the file from repo.
 
 - new repo: instead of creating local .gitignore, check on launch if we have ~/.gitignore. If we don't, then create one with default .DS_Store entries. Display short intro in the empty stage - "To start, add some files and commit them."
@@ -180,6 +174,16 @@ Gitbox 1.6 misc items:
 
 - bug: sometimes cannot set color label
 
+- repo settings: icons: "list" for General; "label 1.0" for branches and tags; "cloud" for remotes
+- open multiple files for Kaleidoscope.
+- bug: if stash apply failes, it still restores new files.
+- todo: change the default stash message from the file names to "Stash 1" string. 
+- bug: when stashing only untracked files, default message is "No Changes"
+
++ "clone from github" - need a checkbox "Clone from Github in Gitbox" - if user unchecks, do not subscribe to URL in Gitbox. Also need checkbox in prefs.
+
+
+
 ? crash: on invalid ssh key the askpass controller crashes with "task" selector
 ? crash: The app crashes whenever I try to delete a remote branch, shortly after hitting the “Ok” button of the edit branch sheet
 
@@ -187,6 +191,7 @@ Gitbox 1.6 misc items:
 
 
 Misc done for 1.6:
+
 
 + make optimize in background with a sheet. (git-gc)
   + have a loop in GBRepositoriesController; detect mouse moves and reset the timer.
