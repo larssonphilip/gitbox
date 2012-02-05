@@ -345,9 +345,9 @@
 					ctrl.viewController = self.viewController;
 					ctrl.toolbarController = self.toolbarController;
 					ctrl.fsEventStream = self.fsEventStream;
-					#warning TODO: make sure sidebaItem draggable properties are restored
 					ctrl.sidebarItem = matchingController.sidebarItem;
 					ctrl.sidebarItem.object = ctrl;
+					ctrl.sidebarItem.selectable = matchingController.sidebarItem.selectable;
 					[ctrl start];
 				}
 				else
