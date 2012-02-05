@@ -891,6 +891,7 @@
 									<string key="NSFrame">{{198, 0}, {601, 435}}</string>
 									<reference key="NSSuperview" ref="50605990"/>
 									<reference key="NSWindow"/>
+									<reference key="NSNextKeyView"/>
 									<string key="NSClassName">NSView</string>
 								</object>
 							</array>
@@ -912,7 +913,6 @@
 				<string key="NSMinSize">{600, 255}</string>
 				<string key="NSMaxSize">{10000000000000, 10000000000000}</string>
 				<string key="NSFrameAutosaveName">gitboxwindow</string>
-				<int key="NSWindowCollectionBehavior">128</int>
 				<bool key="NSWindowIsRestorable">NO</bool>
 			</object>
 		</array>
@@ -1669,8 +1669,6 @@
 						<string key="deleteTag:">id</string>
 						<string key="deleteTagMenu:">id</string>
 						<string key="editBranchesAndTags:">id</string>
-						<string key="editGitConfig:">id</string>
-						<string key="editGitIgnore:">id</string>
 						<string key="editRemotes:">id</string>
 						<string key="fetch:">id</string>
 						<string key="forcePush:">id</string>
@@ -1727,14 +1725,6 @@
 						</object>
 						<object class="IBActionInfo" key="editBranchesAndTags:">
 							<string key="name">editBranchesAndTags:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="editGitConfig:">
-							<string key="name">editGitConfig:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="editGitIgnore:">
-							<string key="name">editGitIgnore:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBActionInfo" key="editRemotes:">
@@ -1848,7 +1838,6 @@
 						<string key="checkoutRemoteBranchMenu:">NSMenuItem</string>
 						<string key="checkoutTagMenu:">NSMenuItem</string>
 						<string key="newBranch:">id</string>
-						<string key="newTag:">id</string>
 						<string key="pullOrPush:">NSSegmentedControl</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="actionInfosByName">
@@ -1870,10 +1859,6 @@
 						</object>
 						<object class="IBActionInfo" key="newBranch:">
 							<string key="name">newBranch:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="newTag:">
-							<string key="name">newTag:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBActionInfo" key="pullOrPush:">

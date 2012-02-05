@@ -472,6 +472,11 @@
 {
 	[super windowDidLoad];
 	
+	if ([NSPopover class]) // Lion or later
+	{
+		[self.window setCollectionBehavior:self.window.collectionBehavior | NSWindowCollectionBehaviorFullScreenPrimary];
+	}
+	
 	//[[self window] setAcceptsMouseMovedEvents:YES];
 	
 	self.rootController.window = [self window];
