@@ -58,6 +58,7 @@ Gitbox 1.6 misc items:
 
 + bug: should not refresh index while staging multiple items quickly one-by-one. - use delayed update to override FSEvent.
   + solution: see Refresh.txt for details
+- bug: sometimes after commit the stage is not updated. Should probably force update after commit.
 - bug: stage: selection is not accurately preserved when stage is reloaded.
 - bug: stage: scroll offset is not preserved when stage is reloaded.
 
