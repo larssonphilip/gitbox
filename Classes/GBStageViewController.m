@@ -188,15 +188,16 @@
 				changeByOldRevision = aChange;
 			}
 		}
-		if (changeByOldRevision)
-		{
-			//NSLog(@"changeByOldRevision: %@ -> %@", selectedChange, changeByOldRevision);
-			[newSelectedChanges addObject:changeByOldRevision];
-		}
-		else if (changeByURL)
+		
+		if (changeByURL)
 		{
 			//NSLog(@"changeByURL: %@ -> %@", selectedChange, changeByURL);
 			[newSelectedChanges addObject:changeByURL];
+		}
+		else if (changeByOldRevision)
+		{
+			//NSLog(@"changeByOldRevision: %@ -> %@", selectedChange, changeByOldRevision);
+			[newSelectedChanges addObject:changeByOldRevision];
 		}
 	}
 	//NSLog(@"updated selection: %@ -> %@", selectedChanges, [newSelectedChanges allObjects]);
