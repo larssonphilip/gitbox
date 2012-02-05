@@ -189,6 +189,8 @@
 			}
 		}
 		
+		// TODO: Support multiple URLs here.
+		
 		if (changeByURL)
 		{
 			//NSLog(@"changeByURL: %@ -> %@", selectedChange, changeByURL);
