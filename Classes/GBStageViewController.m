@@ -601,12 +601,6 @@
 	[self.tableView setNextKeyView:self.messageTextView];
 	[[self.tableView enclosingScrollView] setFrame:[self.view bounds]];
 	
-#warning FIXME: should only speak to repositoryController about updates here. 
-	if (!self.stage.changes)
-	{
-		[self.stage loadChangesWithBlock:^{}];
-	}
-	
 	// Fix for Lion: scroll to the top when switching commit
 	{
 		NSScrollView* scrollView = self.tableView.enclosingScrollView;
