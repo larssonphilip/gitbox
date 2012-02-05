@@ -16,6 +16,8 @@
 #import "GBSubmoduleCloningController.h"
 #import "GBMainWindowController.h"
 
+#import "GBOptimizeRepositoryController.h"
+
 #import "GBSidebarCell.h"
 #import "GBSidebarItem.h"
 
@@ -241,6 +243,11 @@
 		
 		localStateUpdateInterval = 1.0;
 		remoteStateUpdateInterval = 10.0;
+		
+		[[NSNotificationCenter defaultCenter] addObserver:self
+												 selector:@selector(optimizeRepository:)
+													 name:GBOptimizeRepositoryNotification
+												   object:nil];
 	}
 	return self;
 }
@@ -1133,7 +1140,7 @@
 
 
 
-#pragma mark GBRepository Notifications
+#pragma mark - GBRepository Notifications
 
 
 - (void)repositoryDidUpdateProgress:(GBRepository*)aRepo
@@ -1146,7 +1153,7 @@
 
 
 
-#pragma mark GBCommit Notifications
+#pragma mark - GBCommit Notifications
 
 
 - (void) stageDidUpdateChanges:(GBStage*)aStage
@@ -1159,6 +1166,16 @@
 
 
 
+#pragma mark - GBOptimizeRepository Notification
+
+
+- (void) optimizeRepository:(NSNotification*)notif
+{
+	if (!self.repository) return;
+	if (![GBOptimizeRepositoryController randomShouldOptimize]) return;
+	
+	[[GBOptimizeRepositoryController controllerWithRepository:self.repository] presentSheetInMainWindow];
+}
 
 
 
@@ -1166,8 +1183,7 @@
 
 
 
-
-#pragma mark Private helpers
+#pragma mark - Private helpers
 
 
 

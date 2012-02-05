@@ -355,13 +355,22 @@
 - (void) presentSheet:(id)aWindowOrWindowController
 {
 	if (!aWindowOrWindowController) return;
-	NSWindow* aWindow = aWindowOrWindowController;
-	if (![aWindowOrWindowController isKindOfClass:[NSWindow class]])
-	{
-		aWindow = [aWindowOrWindowController window];
-	}
-	if (!aWindow) return;
+	
 	[self.sheetQueue addBlock:^{
+		
+		NSWindow* aWindow = aWindowOrWindowController;
+		if (![aWindowOrWindowController isKindOfClass:[NSWindow class]])
+		{
+			aWindow = [aWindowOrWindowController window];
+		}
+		if (!aWindow)
+		{
+			dispatch_async(dispatch_get_main_queue(), ^{
+				[self.sheetQueue endBlock];
+			});
+			return;
+		}
+		
 		self.currentSheet = aWindow;
 		// skipping current cycle to avoid collision with previously opened sheet which is closing right now
 		dispatch_async(dispatch_get_main_queue(), ^{
@@ -389,18 +398,12 @@
 	[aWindow orderOut:nil];
 	[aWindow release];
 	[self.sheetQueue endBlock];
-	//  [self dismissSheet];
 }
 
 - (void) dismissSheet
 {
 	[self dismissSheet:self.currentSheet];
 	self.currentSheet = nil;
-	//  if (!self.currentSheet) return;
-	//  [NSApp endSheet:self.currentSheet];
-	//  [self.currentSheet orderOut:nil];
-	//  self.currentSheet = nil;
-	//  [self.sheetQueue endBlock];
 }
 
 - (void) sheetQueueAddBlock:(void(^)())aBlock

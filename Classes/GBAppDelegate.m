@@ -21,6 +21,8 @@
 #import "NSObject+OASelectorNotifications.h"
 #import "NSData+OADataHelpers.h"
 
+#import "GBOptimizeRepositoryController.h"
+
 #import "OALicenseNumberCheck.h"
 #import "OATask.h"
 
@@ -81,7 +83,7 @@
 	[super dealloc];
 }
 
-+ (void)initialize
++ (void) initialize
 {
 #if GITBOX_APP_STORE || DEBUG_iRate
 	// http://itunes.apple.com/us/app/gitbox/id403388357
@@ -226,6 +228,7 @@
 	removeMenuItem(self.licenseMenuItem);
 	removeMenuItem(self.checkForUpdatesMenuItem);
 #else
+	removeMenuItem(nil); // so that compiler does not warn about unused variable.
 	// TODO: change the action to open app homepage in appstore instead of ratings page
 	//removeMenuItem(self.rateInAppStoreMenuItem);
 #endif
@@ -268,12 +271,15 @@
 		[[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:YES] forKey:@"WelcomeWasDisplayed"];
 		[self.windowController showWelcomeWindow:self];
 	}
+	
+	[GBOptimizeRepositoryController startMonitoring];
 }
 
 - (void) applicationWillTerminate:(NSNotification*)aNotification
 {
 	[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(saveItems) object:nil];
 	[self saveItems];
+	[GBOptimizeRepositoryController stopMonitoring];
 }
 
 

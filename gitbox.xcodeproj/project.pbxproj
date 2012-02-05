@@ -1605,6 +1605,8 @@
 		20BF19341282238800A30EE6 /* Prompts and aux window controllers */ = {
 			isa = PBXGroup;
 			children = (
+				200DE073136A9F9100D18A5B /* GBWindowControllerWithCallback.h */,
+				200DE074136A9F9100D18A5B /* GBWindowControllerWithCallback.m */,
 				20C3C310125DA0BC00ABEDE7 /* GBCloneWindowController.h */,
 				20C3C311125DA0BC00ABEDE7 /* GBCloneWindowController.m */,
 				20C3C30A125D9EA900ABEDE7 /* GBCloneWindowController.xib */,
@@ -1619,17 +1621,15 @@
 				205C2894138C2A9F0039D19D /* GBConfirmationController.h */,
 				205C2895138C2A9F0039D19D /* GBConfirmationController.m */,
 				205C2899138C2ABD0039D19D /* GBConfirmationController.xib */,
+				20CFEFA514DDBE520086330F /* GBOptimizeRepositoryController.h */,
+				20CFEFA614DDBE520086330F /* GBOptimizeRepositoryController.m */,
+				20CFEFA914DDBE6C0086330F /* GBOptimizeRepositoryController.xib */,
 				209A935D11BA934C006B0B5C /* GBFileEditingController.h */,
 				209A935E11BA934C006B0B5C /* GBFileEditingController.m */,
 				209A935911BA92B6006B0B5C /* GBFileEditingController.xib */,
 				2057F10E11ACF751009EDF2F /* GBActivityController.h */,
 				2057F10F11ACF751009EDF2F /* GBActivityController.m */,
 				2057F10411ACF4C0009EDF2F /* GBActivityController.xib */,
-				200DE073136A9F9100D18A5B /* GBWindowControllerWithCallback.h */,
-				200DE074136A9F9100D18A5B /* GBWindowControllerWithCallback.m */,
-				20CFEFA514DDBE520086330F /* GBOptimizeRepositoryController.h */,
-				20CFEFA614DDBE520086330F /* GBOptimizeRepositoryController.m */,
-				20CFEFA914DDBE6C0086330F /* GBOptimizeRepositoryController.xib */,
 			);
 			name = "Prompts and aux window controllers";
 			sourceTree = "<group>";
