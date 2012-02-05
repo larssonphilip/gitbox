@@ -26,4 +26,21 @@
 	return self;
 }
 
+- (NSMenu*) sidebarItemMenu
+{
+	NSMenu* aMenu = [[[NSMenu alloc] initWithTitle:@""] autorelease];
+	
+	[self addOpenMenuItemsToMenu:aMenu];
+
+	// TODO: add options to add existing folder as a submodule or a URL
+	
+//	[aMenu addItem:[NSMenuItem separatorItem]];
+//	[aMenu addItem:[[[NSMenuItem alloc] 
+//					 initWithTitle:NSLocalizedString(@"Add Repository...", @"Sidebar") action:@selector(openDocument:) keyEquivalent:@""] autorelease]];
+//	[aMenu addItem:[[[NSMenuItem alloc] 
+//					 initWithTitle:NSLocalizedString(@"Clone Repository...", @"Sidebar") action:@selector(cloneRepository:) keyEquivalent:@""] autorelease]];
+	
+	return aMenu;
+}
+
 @end
