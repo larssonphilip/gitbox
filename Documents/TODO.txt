@@ -23,7 +23,7 @@ Major Features:
 Gitbox 1.6 Release Notes
 
 - Fantastic submodules support: automatic display for all submodules, one-click download and update.
-✓ 
+✓ Automatic repository optimization in background.
 ✓ 
 
 ✓ Tags are sorted in natural order and with respect to version numbers.
@@ -48,9 +48,6 @@ Gitbox 1.6 Release Notes
 
 Gitbox 1.6 misc items:
 
-- make optimize in background with a sheet. (git-gc)
-  - have a loop in GBRepositoriesController; detect mouse moves and reset the timer.
-  - after 2 hours of inactivity notify repositories and they randomly optimize themselves (prob. is 1/20); reset the timer
   
 - repo settings: icons: "list" for General; "label 1.0" for branches and tags; "cloud" for remotes
 
@@ -190,6 +187,10 @@ Gitbox 1.6 misc items:
 
 
 Misc done for 1.6:
+
++ make optimize in background with a sheet. (git-gc)
+  + have a loop in GBRepositoriesController; detect mouse moves and reset the timer.
+  + after 2 hours of inactivity notify repositories and they randomly optimize themselves (prob. is 1/20); reset the timer
 
 + reshuffle repo settings: remove "Optimize" button and remove stats; remove "Advanced" tab
 + test: updater is not included in the app store build.
