@@ -364,7 +364,7 @@
 	[self.sheetQueue addBlock:^{
 		self.currentSheet = aWindow;
 		// skipping current cycle to avoid collision with previously opened sheet which is closing right now
-		dispatch_async(dispatch_get_main_queue(), ^{ 
+		dispatch_async(dispatch_get_main_queue(), ^{
 			[NSApp beginSheet:self.currentSheet
 			   modalForWindow:[self window]
 				modalDelegate:nil
