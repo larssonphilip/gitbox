@@ -520,8 +520,7 @@
 	{
 		alreadyLaunchedInitialUpdates = YES;
 		[self updateLocalStateWithBlock:^{
-#warning DEBUG
-		//	[self updateRemoteStateAfterDelay:0.0];
+		[self updateRemoteStateAfterDelay:0.0];
 		}];
 	}
 	else
@@ -682,8 +681,7 @@
 	
 	double localUpdateDelayInSeconds = 10.0 + 2.0*60.0*drand48();
 	[self updateLocalStateAfterDelay:localUpdateDelayInSeconds block:nil];
-#warning DEBUG
-//	[self updateRemoteStateAfterDelay:localUpdateDelayInSeconds + 2.0*60.0*drand48()];
+	[self updateRemoteStateAfterDelay:localUpdateDelayInSeconds + 2.0*60.0*drand48()];
 }
 
 - (void) stop
@@ -769,8 +767,7 @@
 	
 	if ([[NSDate date] timeIntervalSince1970] - prevRemoteStateUpdateTimestamp > 60.0)
 	{
-#warning DEBUG
-		//[self updateRemoteStateAfterDelay:0];
+		[self updateRemoteStateAfterDelay:0];
 	}
 }
 
