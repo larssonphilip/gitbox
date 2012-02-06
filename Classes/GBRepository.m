@@ -698,6 +698,7 @@
 		self.tags = [task.tags sortedArrayUsingComparator:^(id tag1, id tag2) {
 			return [comparator compareVersion:[tag1 name] toVersion:[tag2 name]];
 		}];
+		//NSLog(@">>> Updated tags: %@", [[self.tags valueForKey:@"name"] componentsJoinedByString:@", "]);
 		for (NSString* remoteAlias in task.remoteBranchesByRemoteAlias)
 		{
 			GBRemote* aRemote = [self.remotes objectWithValue:remoteAlias forKey:@"alias"];
