@@ -761,7 +761,9 @@
 		// Update only changes on stage to be quick.
 		[self updateStageChangesAndSubmodules:NO withBlock:^{
 			// Update the rest of the state.
-			[self updateLocalStateAfterDelay:0.0 block:nil];
+			dispatch_async(dispatch_get_main_queue(), ^{
+				[self updateLocalStateAfterDelay:0.0 block:nil];
+			});
 		}];
 	});
 	

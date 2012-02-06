@@ -57,6 +57,7 @@ Gitbox 1.6 misc items:
 
 - bug: stage: selection is not accurately preserved when stage is reloaded.
 - bug: stage: scroll offset is not preserved when stage is reloaded.
+- bug: if pushed from the terminal, commits difference is not recalculated (green dots remain).
 
 - feature: rename repositories
 - bug: branch name is truncated in the settings view
