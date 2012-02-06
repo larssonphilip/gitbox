@@ -70,7 +70,8 @@ Gitbox 1.6 misc items:
 - bug: GBSubmoduleController should be replaced with cloning ctrl when submodule is deleted. (or at least, simply deselected)
 - bug: submodule cloning ctrl should be replaced when download/cloning is finished.
 
-
+- prefs: "Default Github application: [list of apps]"
+- license prefs: button for buy in App Store. Explain how to remove the app before installing the latest version.
 
 - yet another refactoring:
   + subclass GBRepositoryController -> GBSubmoduleController for customizing sidebaritem
