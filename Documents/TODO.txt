@@ -55,6 +55,8 @@ Gitbox 1.6 misc items:
 - test: default state of update checkboxes.
 - test: committing without name/email in ~/.gitconfig
 
++ bug: stage is not transactionally updated.
+- bug: stage is refreshed before staging command is worked out. blinks with previous state. (should invalidate notif. )
 - bug: stage: selection is not accurately preserved when stage is reloaded.
 - bug: stage: scroll offset is not preserved when stage is reloaded.
 - bug: if pushed from the terminal, commits difference is not recalculated (green dots remain).

@@ -8,23 +8,25 @@
 #import "GBUnstagedChangesTask.h"
 #import "GBUntrackedChangesTask.h"
 #import "OABlockGroup.h"
+#import "OABlockOperations.h"
 #import "NSData+OADataHelpers.h"
 #import "NSArray+OAArrayHelpers.h"
 #import "NSObject+OASelectorNotifications.h"
 
 @interface GBStage ()
 @property(nonatomic, assign, getter=isUpdating) BOOL updating;
-@property(nonatomic, retain) NSMutableArray* pendingBlocksForUpdateNotification;
-@property(nonatomic, retain) NSMutableArray* pendingBlocksForFinishUpdateNotification;
 @property(nonatomic, assign, getter=isRebaseConflict) BOOL rebaseConflict;
 @property(nonatomic, copy) NSData* previousChangesData;
+@property(nonatomic, copy) void(^transactionPendingBlock)();
 - (void) arrangeChanges;
-- (void) launchTaskByChunksWithArguments:(NSArray*)args paths:(NSArray*)allPaths block:(void(^)())block taskCallback:(void(^)(GBTask*))taskCallback;
+- (void) launchTaskByChunksWithArguments:(NSArray*)args paths:(NSArray*)allPaths block:(void(^)())block taskCallback:(void(^)(GBTask*))taskCallback atomic:(BOOL)atomic;
 - (void) flushBlocks:(NSMutableArray*)mutableArray;
 @end
 
 
-@implementation GBStage
+@implementation GBStage {
+	BOOL stageTransactionInProgress;
+}
 
 @synthesize updating;
 
@@ -35,11 +37,9 @@
 @synthesize rebaseConflict;
 @synthesize previousChangesData;
 
-@synthesize pendingBlocksForUpdateNotification;
-@synthesize pendingBlocksForFinishUpdateNotification;
+@synthesize transactionPendingBlock=_transactionPendingBlock;
 
-
-#pragma mark Init
+#pragma mark - Init
 
 - (void) dealloc
 {
@@ -47,9 +47,8 @@
 	[unstagedChanges release];
 	[untrackedChanges release];
 	[currentCommitMessage release];
-	[pendingBlocksForUpdateNotification release];
-	[pendingBlocksForFinishUpdateNotification release];
 	[previousChangesData release];
+	[_transactionPendingBlock release];
 	[super dealloc];
 }
 
@@ -57,8 +56,6 @@
 {
 	if ((self = [super init]))
 	{
-		self.pendingBlocksForUpdateNotification = [NSMutableArray array];
-		self.pendingBlocksForFinishUpdateNotification = [NSMutableArray array];
 	}
 	return self;
 }
@@ -74,7 +71,7 @@
 }
 
 
-#pragma mark Interrogation
+#pragma mark - Interrogation
 
 
 - (BOOL) isDirty
@@ -133,7 +130,7 @@
 
 
 
-#pragma mark GBCommit overrides
+#pragma mark - GBCommit overrides
 
 
 - (BOOL) isStage
@@ -197,7 +194,7 @@
 
 
 
-#pragma mark Actions
+#pragma mark - Actions
 
 
 - (void) updateConflictState
@@ -210,68 +207,79 @@
 	NSMutableData* accumulatedData = [NSMutableData data];
 	
 	block = [[block copy] autorelease];
+
 	
-	[self.repository launchTask:[GBRefreshIndexTask taskWithRepository:self.repository] withBlock:^{
-		
-		GBStagedChangesTask* stagedChangesTask = [GBStagedChangesTask taskWithRepository:self.repository];
-		[self.repository launchTask:stagedChangesTask withBlock:^{
+	[self beginStageTransaction:^{
+	
+		[self.repository launchTask:[GBRefreshIndexTask taskWithRepository:self.repository] withBlock:^{
 			
-			[OABlockGroup groupBlock:^(OABlockGroup* blockGroup){
+			GBStagedChangesTask* stagedChangesTask = [GBStagedChangesTask taskWithRepository:self.repository];
+			[self.repository launchTask:stagedChangesTask withBlock:^{
 				
-				if (stagedChangesTask.terminationStatus == 0)
-				{
-					self.stagedChanges = stagedChangesTask.changes;
-					NSData* data = stagedChangesTask.output;
-					if (data) [accumulatedData appendData:data];
-				}
-				else
-				{
-					// diff-tree failed: we don't have a HEAD commit, try another task
-					GBAllStagedFilesTask* stagedChangesTask2 = [GBAllStagedFilesTask taskWithRepository:self.repository];
-					[blockGroup enter];
-					[self.repository launchTask:stagedChangesTask2 withBlock:^{
-						self.stagedChanges = stagedChangesTask2.changes;
-						NSData* data = stagedChangesTask2.output;
+				[OABlockGroup groupBlock:^(OABlockGroup* blockGroup){
+					
+					if (stagedChangesTask.terminationStatus == 0)
+					{
+						self.stagedChanges = stagedChangesTask.changes;
+						NSData* data = stagedChangesTask.output;
 						if (data) [accumulatedData appendData:data];
-						[blockGroup leave];
-					}];
-				}
-				
-			} continuation: ^{
-				
-				GBUnstagedChangesTask* unstagedChangesTask = [GBUnstagedChangesTask taskWithRepository:self.repository];
-				[self.repository launchTask:unstagedChangesTask withBlock:^{
-					self.unstagedChanges = unstagedChangesTask.changes;
+					}
+					else
+					{
+						// diff-tree failed: we don't have a HEAD commit, try another task
+						GBAllStagedFilesTask* stagedChangesTask2 = [GBAllStagedFilesTask taskWithRepository:self.repository];
+						[blockGroup enter];
+						[self.repository launchTask:stagedChangesTask2 withBlock:^{
+							self.stagedChanges = stagedChangesTask2.changes;
+							NSData* data = stagedChangesTask2.output;
+							if (data) [accumulatedData appendData:data];
+							[blockGroup leave];
+						}];
+					}
 					
-					NSData* data = unstagedChangesTask.output;
-					if (data) [accumulatedData appendData:data];
+				} continuation: ^{
 					
-					GBUntrackedChangesTask* untrackedChangesTask = [GBUntrackedChangesTask taskWithRepository:self.repository];
-					[self.repository launchTask:untrackedChangesTask withBlock:^{
-						self.untrackedChanges = untrackedChangesTask.changes;
+					GBUnstagedChangesTask* unstagedChangesTask = [GBUnstagedChangesTask taskWithRepository:self.repository];
+					[self.repository launchTask:unstagedChangesTask withBlock:^{
+						self.unstagedChanges = unstagedChangesTask.changes;
 						
-						NSData* data = untrackedChangesTask.output;
+						NSData* data = unstagedChangesTask.output;
 						if (data) [accumulatedData appendData:data];
 						
-						[self arrangeChanges];
-						[self updateConflictState];
-						updating = NO;
-						
-						// Now, we can calculate if we have different data or not.
-						
-						BOOL didChange = !self.previousChangesData || ![self.previousChangesData isEqualToData:accumulatedData];
-						
-						self.previousChangesData = accumulatedData;
-						
-						if (block) block(didChange);
-						
-						[self notifyWithSelector:@selector(stageDidUpdateChanges:)];
-						
-					}]; // untracked
-				}]; // unstaged
-			}]; // group
-		}]; // staged
-	}]; // refresh-index
+						GBUntrackedChangesTask* untrackedChangesTask = [GBUntrackedChangesTask taskWithRepository:self.repository];
+						[self.repository launchTask:untrackedChangesTask withBlock:^{
+							self.untrackedChanges = untrackedChangesTask.changes;
+							
+							NSData* data = untrackedChangesTask.output;
+							if (data) [accumulatedData appendData:data];
+							
+							[self arrangeChanges];
+							[self updateConflictState];
+							updating = NO;
+							
+							// Now, we can calculate if we have different data or not.
+							
+							BOOL didChange = !self.previousChangesData || ![self.previousChangesData isEqualToData:accumulatedData];
+							
+							self.previousChangesData = accumulatedData;
+							
+	//						if ([self.repository.path rangeOfString:@"clean worki"].length > 0)
+	//						{
+	//							NSLog(@"GBStage update: staged: %d unstaged: %d untracked: %d", self.stagedChanges.count, self.unstagedChanges.count, self.untrackedChanges.count);
+	//						}
+							
+							[self endStageTransaction];
+							
+							if (block) block(didChange);
+							
+							[self notifyWithSelector:@selector(stageDidUpdateChanges:)];
+							
+						}]; // untracked
+					}]; // unstaged
+				}]; // group
+			}]; // staged
+		}]; // refresh-index
+	}]; // beginStageTransaction
 }
 
 
@@ -295,7 +303,7 @@
 
 
 
-#pragma mark Stage Modification Methods
+#pragma mark - Stage Modification Methods
 
 
 
@@ -316,7 +324,7 @@
 									block:block
 							 taskCallback:^(GBTask *task) {
 								 [task showErrorIfNeeded];
-							 }];
+							 } atomic:YES];
 }
 
 - (void) stageAddedPaths:(NSArray*)pathsToAdd withBlock:(void(^)())block
@@ -334,7 +342,7 @@
 									block:block
 							 taskCallback:^(GBTask *task) {
 								 [task showErrorIfNeeded];
-							 }];
+							 } atomic:YES];
 }
 
 - (void) stageChanges:(NSArray*)theChanges withBlock:(void(^)())block
@@ -399,18 +407,23 @@
 		 [self launchTaskByChunksWithArguments:[NSArray arrayWithObjects:@"rm", @"--cached", @"--force", @"--", nil]
 										 paths:addedPaths
 										 block:block 
-								  taskCallback:nil];
-	 } taskCallback:nil];
+								  taskCallback:nil
+										atomic:YES];
+	 } taskCallback:nil
+			 atomic:YES];
 }
 
 - (void) stageAllWithBlock:(void(^)())block
 {
 	block = [[block copy] autorelease];
-	GBTask* task = [self.repository task];
-	task.arguments = [NSArray arrayWithObjects:@"add", @".", nil];
-	[self.repository launchTask:task withBlock:^{
-		[task showErrorIfNeeded];
-		if (block) block();
+	[self beginStageTransaction:^{
+		GBTask* task = [self.repository task];
+		task.arguments = [NSArray arrayWithObjects:@"add", @".", nil];
+		[self.repository launchTask:task withBlock:^{
+			[task showErrorIfNeeded];
+			[self endStageTransaction];
+			if (block) block();
+		}];
 	}];
 }
 
@@ -433,87 +446,138 @@
 	[self launchTaskByChunksWithArguments:[NSArray arrayWithObjects:@"checkout", @"HEAD", @"--", nil]
 									paths:paths
 									block:block
-							 taskCallback:nil];
+							 taskCallback:nil
+								   atomic:YES];
 }
 
 - (void) deleteFilesInChanges:(NSArray*)theChanges withBlock:(void(^)())block
 {
 	block = [[block copy] autorelease];
 	
-	NSMutableArray* URLsToTrash = [NSMutableArray array];
-	NSMutableArray* pathsToGitRm = [NSMutableArray array];
-	
-	for (GBChange* aChange in theChanges)
-	{
-		if (!aChange.staged && aChange.fileURL)
+	[self beginStageTransaction:^{
+		
+		NSMutableArray* URLsToTrash = [NSMutableArray array];
+		NSMutableArray* pathsToGitRm = [NSMutableArray array];
+		
+		for (GBChange* aChange in theChanges)
 		{
-			if ([aChange isUntrackedFile])
+			if (!aChange.staged && aChange.fileURL)
 			{
-				[URLsToTrash addObject:aChange.fileURL];
+				if ([aChange isUntrackedFile])
+				{
+					[URLsToTrash addObject:aChange.fileURL];
+				}
+				else
+				{
+					[pathsToGitRm addObject:aChange.fileURL.relativePath];
+				}
+			}
+		}
+		
+		// move to trash
+		
+		void (^trashingBlock)() = ^{
+			if ([URLsToTrash count] > 0)
+			{
+				[[NSWorkspace sharedWorkspace] recycleURLs:URLsToTrash 
+										 completionHandler:^(NSDictionary *newURLs, NSError *error){
+											 if (block) block();
+										 }];    
 			}
 			else
 			{
-				[pathsToGitRm addObject:aChange.fileURL.relativePath];
+				[self endStageTransaction];
+				if (block) block();
 			}
-		}
-	}
-	
-	// move to trash
-	
-	void (^trashingBlock)() = ^{
-		if ([URLsToTrash count] > 0)
+		};
+		
+		if ([pathsToGitRm count] > 0)
 		{
-			[[NSWorkspace sharedWorkspace] recycleURLs:URLsToTrash 
-									 completionHandler:^(NSDictionary *newURLs, NSError *error){
-										 if (block) block();
-									 }];    
+			[self launchTaskByChunksWithArguments:[NSArray arrayWithObjects:@"rm", @"--force", @"--", nil]
+											paths:pathsToGitRm
+											block:trashingBlock
+									 taskCallback:nil
+										   atomic:NO];
 		}
 		else
 		{
-			if (block) block();
+			trashingBlock();
 		}
-	};
+	}];
+
+}
+
+
+
+#pragma mark - Stage Transaction
+
+
+- (void) beginStageTransaction:(void(^)())block
+{
+	if (!block) return;
 	
-	if ([pathsToGitRm count] > 0)
+	if (!stageTransactionInProgress)
 	{
-		[self launchTaskByChunksWithArguments:[NSArray arrayWithObjects:@"rm", @"--force", @"--", nil]
-										paths:pathsToGitRm
-										block:trashingBlock
-								 taskCallback:nil];
+		stageTransactionInProgress = YES;
+		block();
 	}
 	else
 	{
-		trashingBlock();
+		self.transactionPendingBlock = OABlockConcat(self.transactionPendingBlock, block);
 	}
+}
+
+- (void) endStageTransaction
+{
+	stageTransactionInProgress = NO;
+	void(^block)() = [[self.transactionPendingBlock copy] autorelease];
+	self.transactionPendingBlock = nil;
+	if (block) block();
 }
 
 
 
 
-
-
-
-#pragma mark Private
+#pragma mark - Private
 
 
 
 // helper method to process more than 4096 files in chunks
-- (void) launchTaskByChunksWithArguments:(NSArray*)args paths:(NSArray*)allPaths block:(void(^)())block taskCallback:(void(^)(GBTask*))taskCallback
+- (void) launchTaskByChunksWithArguments:(NSArray*)args paths:(NSArray*)allPaths block:(void(^)())block taskCallback:(void(^)(GBTask*))taskCallback atomic:(BOOL)atomic
 {
 	taskCallback = [[taskCallback copy] autorelease];
-	[OABlockGroup groupBlock:^(OABlockGroup *group) {
-		for (NSArray* paths in [allPaths arrayOfChunksBySize:1000])
-		{
-			[group enter];
-			GBTask* task = [self.repository task];
-			paths = [paths valueForKey:@"stringByEscapingGitFilename"];
-			task.arguments = [args arrayByAddingObjectsFromArray:paths];
-			[self.repository launchTask:task withBlock:^{
-				if (taskCallback) taskCallback(task);
-				[group leave];
-			}];
-		}
-	} continuation:block];
+	block = [[block copy] autorelease];
+	
+	void(^content)() = ^{
+		[OABlockGroup groupBlock:^(OABlockGroup *group) {
+			for (NSArray* paths in [allPaths arrayOfChunksBySize:1000])
+			{
+				[group enter];
+				GBTask* task = [self.repository task];
+				paths = [paths valueForKey:@"stringByEscapingGitFilename"];
+				task.arguments = [args arrayByAddingObjectsFromArray:paths];
+				[self.repository launchTask:task withBlock:^{
+					if (taskCallback) taskCallback(task);
+					[group leave];
+				}];
+			}
+		} continuation:^{
+			if (atomic) [self endStageTransaction];
+			if (block) block();
+		}];
+	};
+	
+	if (atomic)
+	{
+		content = [[content copy] autorelease];
+		[self beginStageTransaction:^{
+			content();
+		}];
+	}
+	else
+	{
+		content();
+	}
 }
 
 
