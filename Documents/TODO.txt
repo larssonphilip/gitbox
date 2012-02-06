@@ -55,16 +55,8 @@ Gitbox 1.6 misc items:
 - test: default state of update checkboxes.
 - test: committing without name/email in ~/.gitconfig
 
-
-+ bug: should not refresh index while staging multiple items quickly one-by-one. - use delayed update to override FSEvent.
-  + solution: see Refresh.txt for details
-- bug: sometimes after commit the stage is not updated. Should probably force update after commit.
 - bug: stage: selection is not accurately preserved when stage is reloaded.
 - bug: stage: scroll offset is not preserved when stage is reloaded.
-
-+ bug: it takes a very long time to update local state for non-selected repo.
-+ bug: does not auto fetch when focused in the commit field.
-
 
 - feature: rename repositories
 - bug: branch name is truncated in the settings view
@@ -181,8 +173,9 @@ Gitbox 1.6 misc items:
 - todo: change the default stash message from the file names to "Stash 1" string. 
 - bug: when stashing only untracked files, default message is "No Changes"
 
-+ "clone from github" - need a checkbox "Clone from Github in Gitbox" - if user unchecks, do not subscribe to URL in Gitbox. Also need checkbox in prefs.
-
+- bug: git.git is constantly fetching after ls-remote
+  - because I have two remotes not in sync and they remove/recreate tags one after another.
+  - need to detect such case and sync or ask user to sync the repos.
 
 
 ? crash: on invalid ssh key the askpass controller crashes with "task" selector
@@ -194,6 +187,12 @@ Gitbox 1.6 misc items:
 Misc done for 1.6:
 
 
++ bug: should not refresh index while staging multiple items quickly one-by-one. - use delayed update to override FSEvent.
+  + solution: see Refresh.txt for details
++ bug: sometimes after commit the stage is not updated. Should probably force update after commit.
++ bug: it takes a very long time to update local state for non-selected repo.
++ bug: does not auto fetch when focused in the commit field.
+
 + make optimize in background with a sheet. (git-gc)
   + have a loop in GBRepositoriesController; detect mouse moves and reset the timer.
   + after 2 hours of inactivity notify repositories and they randomly optimize themselves (prob. is 1/20); reset the timer
@@ -203,6 +202,7 @@ Misc done for 1.6:
 + test: should stop/start cloning from github when checkbox is switched.
 
 + quickly staging stuff it takes some longer time. maybe because of the delay or some irrelevant operations going on (submodules?).
++ "clone from github" - need a checkbox "Clone from Github in Gitbox" - if user unchecks, do not subscribe to URL in Gitbox. Also need checkbox in prefs.
 + prefs:
 	+ GBPreferencesDiffViewController "Diff tools"
 	+ GBPreferencesGithubViewController "Github"
