@@ -679,9 +679,9 @@
 	// 2. Each state has a notion of "first update". So some state should be updated.
 	// 3. Local state update should be issued immediately when repository is selected.
 	
-	double localUpdateDelayInSeconds = 10.0 + 2.0*60.0*drand48();
+	double localUpdateDelayInSeconds = 10.0 + 5.0*60.0*drand48();
 	[self updateLocalStateAfterDelay:localUpdateDelayInSeconds block:nil];
-	[self updateRemoteStateAfterDelay:localUpdateDelayInSeconds + 2.0*60.0*drand48()];
+	[self updateRemoteStateAfterDelay:localUpdateDelayInSeconds + 10.0*60.0*drand48()];
 }
 
 - (void) stop
