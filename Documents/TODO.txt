@@ -53,36 +53,21 @@ Gitbox 1.6 misc items:
 - test: should clone from github when app is not launched.
 - test: committing without name/email in ~/.gitconfig
 
-- bug: when submodules are opened, all parent items (e.g. groups) are opened as well. Shouldn't do that. Also, remember the submodules in prefs.plist
-- bug: if pushed from the terminal, commits difference is not recalculated (green dots remain).
-- bug: gitbox does not honor merge.ff setting to do "git merge --no-ff"
-- bug: on launch, the sidebar badges are shifted to the edge (maybe when scroll bar is visible or not). Same bug when submodules are loaded and expanded.
-? bug: after repo is removed, its spinner is still retained and is in the view. Should remove all views on [stop]. 
-- bug: if the repo is deleted while updating, OATask crashes - should just fail with error and big log entry.
+- bug: submodules' loading causes stage refresh delays or similar glitches.
 
-- bug: after commit and refresh of the history, sometimes the stage remains non-updated.
-
-- yet another refactoring:
-  + subclass GBRepositoryController -> GBSubmoduleController for customizing sidebaritem
-  + do not store any controllers inside GBSubmodule object 
-  ≠ do not store weak ref to parent repository inside GBSubmodule object - put there only the URLs
-  - update sidebar item and repository when update is finished
-  - maybe (!) store a weak ref to parent repo ctrl from GBSubmoduleController -> this would allow for submodule settings update when you change remote URL inside the submodule; but maybe indirect access by repo URL will be enough (or similar)
-
-- submodules: submodule cloning ctrl should be replaced when download/cloning is finished.
-- submodules: GBSubmoduleController should be replaced with cloning ctrl when submodule is deleted. (or at least, simply deselected)
-- submodules: when submodule folder is removed, properly update its status
 - submodules: cloning repo ctrl is not deallocated
 - submodules: wrap submodules clone/pull task with GBAskPassController
-- submodules: cancelling of a cloning repo ctrl does not work (crash)
-- submodules: remember collapsed status of submodules in user defaults
-- submodules: reload submodules status on fsevents and update the sidebar if changed
-- submodules: when reloading submodules merge or reload all of them - think hard on that!
-- submodules: remember submodules in prefs plist because we don't update all of them on startup
+- submodules: cancelling of a cloning repo ctrl does not work (disabled cancel button)
+- submodules: do not show "close" button in place of "cancel" button.
 - submodules: rename "update" button to "checkout", so it's clear what it does.
+- submodules: submodule cloning ctrl should be replaced when download/cloning is finished.
 - submodules: automatically update submodule after repo pull/merge if they are were totally in sync before (that is no development happened there)
-+ submodules: bug: when submodule is selected for the first time, view controller is not available [rare issue with simultaneous sidebar update]
-+ submodules: bug: when submodule starts downloading, download button is not removed from sidebar.
+
+- submodules: remember collapsed status of submodules in user defaults
+- submodules: remember submodules in prefs plist because we don't update all of them on startup
+
+- submodules: GBSubmoduleController should be replaced with cloning ctrl when submodule is deleted. (or at least, simply deselected)
+- submodules: when submodule folder is removed, properly update its status
 
 - check that undo stack works after playling with submodules.
 
@@ -99,18 +84,31 @@ Gitbox 1.6 misc items:
 - submodules: do not forget to "git submodule add <url> <path>" after path update (same for remove, maybe)
 
 - submodules: maybe show intermediate folder item if submodule is inside a folder (placebo-like)
-- bug: submodules' loading causes stage refresh delays or similar glitches.
+
+- bug: when submodules are opened, all parent items (e.g. groups) are opened as well. Shouldn't do that. Also, remember the submodules in prefs.plist
+- bug: if pushed from the terminal, commits difference is not recalculated (green dots remain).
+- bug: gitbox does not honor merge.ff setting to do "git merge --no-ff"
+- bug: on launch, the sidebar badges are shifted to the edge (maybe when scroll bar is visible or not). Same bug when submodules are loaded and expanded.
+- bug: after commit and refresh of the history, sometimes the stage remains non-updated.
+
+- maybe: update sidebar item and repository when update is finished
+- maybe: store a weak ref to parent repo ctrl from GBSubmoduleController -> this would allow for submodule settings update when you change remote URL inside the submodule; but maybe indirect access by repo URL will be enough (or similar)
 
 - feature: rename repositories
 - license prefs: button for buy in App Store. Explain how to remove the app before installing the latest version.
 - maybe: show the version of a submodule 
 
-? bug: remove views from sidebar item when switching owner object
 - bug: remote URL with a space inside: 1) truncates 2) saves back to .git/config. See Bugs Inbox.
 - bug: cannot drag filename into a search field.
 - bug: if focused in a commit header (NSTextView), cmd+e and cmd+f do not jump to the main search field.
 - bug: if selected a filename, cmd+E should enter it into search field.
 - bug: branch name is truncated in the settings view
+
+? bug: remove views from sidebar item when switching owner object
+
+? bug: after repo is removed, its spinner is still retained and is in the view. Should remove all views on [stop]. 
+? bug: if the repo is deleted while updating, OATask crashes - should just fail with error and big log entry.
+
 ? crash: when adding a repository
 ? crash: on invalid ssh key the askpass controller crashes with "task" selector
 ? crash: The app crashes whenever I try to delete a remote branch, shortly after hitting the “Ok” button of the edit branch sheet
@@ -120,6 +118,16 @@ Gitbox 1.6 misc items:
 
 Misc done for 1.6:
 
+
++ submodules: reload submodules status on fsevents and update the sidebar if changed
++ submodules: when reloading submodules merge or reload all of them - think hard on that!
+
++ submodules: bug: when submodule is selected for the first time, view controller is not available [rare issue with simultaneous sidebar update]
++ submodules: bug: when submodule starts downloading, download button is not removed from sidebar.
+
++ subclass GBRepositoryController -> GBSubmoduleController for customizing sidebaritem
++ do not store any controllers inside GBSubmodule object 
+≠ do not store weak ref to parent repository inside GBSubmodule object - put there only the URLs
 
 + bug: fixed beginStageTransaction/endStageTransaction when deleting files.
 + integrate preferences window or sheet like in http://blog.shpakovski.com/2011/04/preferences-windows-in-cocoa.html
@@ -238,6 +246,7 @@ Gitbox Next:
 
 Unsorted:
 
+- bug: when "Clone Repo URL" sheet is present, opening another one crashes Gitbox with modal window inconsistency exception.
 - bug: disallow deletion of a current local branch in settings view.
 - respect system settings of the sidebar icon size - small/medium/large (NSTableViewDefaultSizeMode = 1/2/3). Xcode does not respect it.
 - bug: disable "rebase" menu item if nothing to rebase (no green or no blue commits)
