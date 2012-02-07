@@ -55,11 +55,9 @@ Gitbox 1.6 misc items:
 
 - bug: when submodules are opened, all parent items (e.g. groups) are opened as well. Shouldn't do that. Also, remember the submodules in prefs.plist
 - bug: if pushed from the terminal, commits difference is not recalculated (green dots remain).
-- bug: submodule cloning ctrl should be replaced when download/cloning is finished.
-- bug: GBSubmoduleController should be replaced with cloning ctrl when submodule is deleted. (or at least, simply deselected)
 - bug: gitbox does not honor merge.ff setting to do "git merge --no-ff"
 - bug: on launch, the sidebar badges are shifted to the edge (maybe when scroll bar is visible or not). Same bug when submodules are loaded and expanded.
-- bug: after repo is removed, its spinner is still retained and is in the view. Should remove all views on [stop]. 
+? bug: after repo is removed, its spinner is still retained and is in the view. Should remove all views on [stop]. 
 - bug: if the repo is deleted while updating, OATask crashes - should just fail with error and big log entry.
 
 - bug: after commit and refresh of the history, sometimes the stage remains non-updated.
@@ -71,8 +69,8 @@ Gitbox 1.6 misc items:
   - update sidebar item and repository when update is finished
   - maybe (!) store a weak ref to parent repo ctrl from GBSubmoduleController -> this would allow for submodule settings update when you change remote URL inside the submodule; but maybe indirect access by repo URL will be enough (or similar)
 
-- submodules: bug: when submodule is selected for the first time, view controller is not available [rare issue with simultaneous sidebar update]
-- submodules: bug: when submodule starts downloading, download button is not removed from sidebar.
+- submodules: submodule cloning ctrl should be replaced when download/cloning is finished.
+- submodules: GBSubmoduleController should be replaced with cloning ctrl when submodule is deleted. (or at least, simply deselected)
 - submodules: when submodule folder is removed, properly update its status
 - submodules: cloning repo ctrl is not deallocated
 - submodules: wrap submodules clone/pull task with GBAskPassController
@@ -83,6 +81,8 @@ Gitbox 1.6 misc items:
 - submodules: remember submodules in prefs plist because we don't update all of them on startup
 - submodules: rename "update" button to "checkout", so it's clear what it does.
 - submodules: automatically update submodule after repo pull/merge if they are were totally in sync before (that is no development happened there)
++ submodules: bug: when submodule is selected for the first time, view controller is not available [rare issue with simultaneous sidebar update]
++ submodules: bug: when submodule starts downloading, download button is not removed from sidebar.
 
 - check that undo stack works after playling with submodules.
 
@@ -107,7 +107,6 @@ Gitbox 1.6 misc items:
 
 ? bug: remove views from sidebar item when switching owner object
 - bug: remote URL with a space inside: 1) truncates 2) saves back to .git/config. See Bugs Inbox.
-- bug: opendiff task stuck in the queue, but no opendiff process was running. Maybe after deletion of a file which was delayed.
 - bug: cannot drag filename into a search field.
 - bug: if focused in a commit header (NSTextView), cmd+e and cmd+f do not jump to the main search field.
 - bug: if selected a filename, cmd+E should enter it into search field.
@@ -122,6 +121,7 @@ Gitbox 1.6 misc items:
 Misc done for 1.6:
 
 
++ bug: fixed beginStageTransaction/endStageTransaction when deleting files.
 + integrate preferences window or sheet like in http://blog.shpakovski.com/2011/04/preferences-windows-in-cocoa.html
 
 + test: diff tools state with empty prefs.

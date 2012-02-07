@@ -488,10 +488,11 @@
 		// move to trash
 		
 		void (^trashingBlock)() = ^{
-			if ([URLsToTrash count] > 0)
+			if (URLsToTrash.count > 0)
 			{
 				[[NSWorkspace sharedWorkspace] recycleURLs:URLsToTrash 
 										 completionHandler:^(NSDictionary *newURLs, NSError *error){
+											 [self endStageTransaction];
 											 if (block) block();
 										 }];    
 			}
