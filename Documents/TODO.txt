@@ -31,9 +31,10 @@ Gitbox 1.6 Release Notes
 ✓ Warning is displayed when trying to make a commit when no branch is selected.
 ✓ Single Preferences window with Git configuration, ignored files, "Clone from Github" checkbox etc.
 
+✓ Fixed bugs with preserving stage selection and scroll offset when stage is reloaded.
 ✓ Fixed bug with text fields in repository settings (value was not stored immediately)
 ✓ Fixed a bug with trimming whitespace from .gitignore
-✓ Fixed link highlighting on Lion: now all kinds of schemas are recognized including rdar://.
+✓ Fixed link highlighting: now all kinds of schemas are recognized including rdar:// (Lion-only). 
 ✓ Fixed several text labels.
 ✓ Fixed an annoying bug in search field (when space is entered, all text was selected)
 ✓ Fixed bug with presenting files containing ":" and other URL-unfriendly characters.
@@ -43,7 +44,7 @@ Gitbox 1.6 Release Notes
 ✓ Fixed bug with ignoring a file when .gitignore does not exist (file was not added to .gitignore).
 ✓ Fixed bug with title duplication in the branch menus.
 ✓ Fixed bugs and crashes in authentication session.
-✓ Fixed bugs with preserving stage selection.
+
  
 --
 
@@ -59,7 +60,7 @@ Gitbox 1.6 misc items:
 + bug: stage is not transactionally updated.
 + bug: stage is refreshed before staging command is worked out. blinks with previous state. (should invalidate notif. )
 ± bug: stage: selection is not accurately preserved when stage is reloaded. [now is more precise]
-- bug: stage: scroll offset is not preserved when stage is reloaded.
++ bug: stage: scroll offset is not preserved when stage is reloaded.
 - bug: if pushed from the terminal, commits difference is not recalculated (green dots remain).
 
 - feature: rename repositories

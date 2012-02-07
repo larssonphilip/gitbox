@@ -168,6 +168,9 @@
 		change.delegate = self;
 	}
 	
+	NSClipView* clipView = [[self.tableView enclosingScrollView] contentView];
+	NSRect visibleRect = [clipView documentVisibleRect];
+	
 	// Restore selection
 	NSMutableSet* newSelectedChanges = [NSMutableSet set];
 	NSArray* allChanges = [self.statusArrayController arrangedObjects];
@@ -206,6 +209,10 @@
 	[self.statusArrayController setSelectedObjects:[newSelectedChanges allObjects]];
 	
 	[self updateViews];
+	
+	// Restore scroll offset.
+	[clipView scrollToPoint:[clipView constrainScrollPoint:visibleRect.origin]];
+	[[self.tableView enclosingScrollView] reflectScrolledClipView:clipView];
 }
 
 
