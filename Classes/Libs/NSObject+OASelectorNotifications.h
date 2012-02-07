@@ -42,6 +42,8 @@
 */
 
 @interface NSObject (OASelectorNotifications)
++ (void) addObserver:(id)observer forSelector:(SEL)selector;
++ (void) removeObserver:(id)observer forSelector:(SEL)selector;
 - (void) notifyWithSelector:(SEL)selector;
 - (void) notifyWithSelector:(SEL)selector withObject:(id)object;
 - (void) addObserver:(id)observer forSelector:(SEL)selector;
