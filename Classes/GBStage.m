@@ -26,6 +26,7 @@
 
 @implementation GBStage {
 	BOOL stageTransactionInProgress;
+	int stageStateCounter;
 }
 
 @synthesize updating;
@@ -207,7 +208,8 @@
 	NSMutableData* accumulatedData = [NSMutableData data];
 	
 	block = [[block copy] autorelease];
-
+	
+	int stageStateCounterLocal = stageStateCounter;
 	
 	[self beginStageTransaction:^{
 	
@@ -272,7 +274,12 @@
 							
 							if (block) block(didChange);
 							
-							[self notifyWithSelector:@selector(stageDidUpdateChanges:)];
+							// The counter is the same if there were no new update while loading stage changes.
+							// This prevents blinking of the previous state after checking boxes.
+							if (stageStateCounterLocal == stageStateCounter)
+							{
+								[self notifyWithSelector:@selector(stageDidUpdateChanges:)];
+							}
 							
 						}]; // untracked
 					}]; // unstaged
@@ -416,6 +423,7 @@
 - (void) stageAllWithBlock:(void(^)())block
 {
 	block = [[block copy] autorelease];
+	stageStateCounter++;
 	[self beginStageTransaction:^{
 		GBTask* task = [self.repository task];
 		task.arguments = [NSArray arrayWithObjects:@"add", @".", nil];
@@ -454,6 +462,7 @@
 {
 	block = [[block copy] autorelease];
 	
+	stageStateCounter++;
 	[self beginStageTransaction:^{
 		
 		NSMutableArray* URLsToTrash = [NSMutableArray array];
@@ -545,6 +554,8 @@
 // helper method to process more than 4096 files in chunks
 - (void) launchTaskByChunksWithArguments:(NSArray*)args paths:(NSArray*)allPaths block:(void(^)())block taskCallback:(void(^)(GBTask*))taskCallback atomic:(BOOL)atomic
 {
+	stageStateCounter++;
+	
 	taskCallback = [[taskCallback copy] autorelease];
 	block = [[block copy] autorelease];
 	
