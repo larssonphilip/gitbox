@@ -27,9 +27,9 @@
 @synthesize window;
 @synthesize nextRespondingSidebarObjects;
 
-@synthesize selectedObjects;
-@synthesize selectedObject;
-@synthesize clickedObject;
+@synthesize selectedObjects=_selectedObjects;
+@synthesize selectedObject=_selectedObject;
+@synthesize clickedObject=_clickedObject;
 
 @dynamic    selectedSidebarItem;
 @dynamic    selectedSidebarItems;
@@ -43,9 +43,9 @@
 	self.repositoriesController = nil;
 	
 	[nextRespondingSidebarObjects release]; nextRespondingSidebarObjects = nil;
-	[selectedObject release]; selectedObject = nil;
-	[selectedObjects release]; selectedObjects = nil;
-	[clickedObject release]; clickedObject = nil;
+	[_selectedObject release]; _selectedObject = nil;
+	[_selectedObjects release]; _selectedObjects = nil;
+	[_clickedObject release]; _clickedObject = nil;
 	
 	[super dealloc];
 }
@@ -100,30 +100,30 @@
 
 
 
-- (void) setSelectedObjects:(NSArray *)newSelectedObjects
+- (void) setSelectedObjects:(NSArray *)selectedObjects
 {
-	if (newSelectedObjects == selectedObjects) return;
+	if (selectedObjects == _selectedObjects) return;
 	
-	[selectedObjects release];
-	selectedObjects = [newSelectedObjects retain];
+	[_selectedObjects release];
+	_selectedObjects = [selectedObjects retain];
 	
-	id newSelectedObject = nil;
-	if ([newSelectedObjects count] == 1)
+	id selectedObject = nil;
+	if (selectedObjects.count == 1)
 	{
-		newSelectedObject = [newSelectedObjects objectAtIndex:0];
+		selectedObject = [selectedObjects objectAtIndex:0];
 	}
 	
-	if (selectedObject != newSelectedObject)
+	if (_selectedObject != selectedObject)
 	{
-		if ([selectedObject respondsToSelector:@selector(willDeselectWindowItem)])
+		if ([_selectedObject respondsToSelector:@selector(willDeselectWindowItem)])
 		{
-			[selectedObject willDeselectWindowItem];
+			[_selectedObject willDeselectWindowItem];
 		}
-		[selectedObject release];
-		selectedObject = [newSelectedObject retain];
-		if ([selectedObject respondsToSelector:@selector(didSelectWindowItem)])
+		[_selectedObject release];
+		_selectedObject = [selectedObject retain];
+		if ([_selectedObject respondsToSelector:@selector(didSelectWindowItem)])
 		{
-			[selectedObject didSelectWindowItem];
+			[_selectedObject didSelectWindowItem];
 		}
 	}
 	
@@ -131,39 +131,39 @@
 	[self notifyWithSelector:@selector(rootControllerDidChangeSelection:)];
 }
 
-- (void) setClickedObject:(NSResponder<GBSidebarItemObject,GBMainWindowItem> *)newClickedObject
+- (void) setClickedObject:(NSResponder<GBSidebarItemObject,GBMainWindowItem> *)clickedObject
 {
-	if (clickedObject == newClickedObject) return;
+	if (_clickedObject == clickedObject) return;
 	
 	// If there was a clicked object, bring the chain to the normal state.
-	if (clickedObject)
+	if (_clickedObject)
 	{
 		[self updateResponders];
 	}
 	
-	[clickedObject release];
-	clickedObject = [newClickedObject retain];
+	[_clickedObject release];
+	_clickedObject = [clickedObject retain];
 	
-	if (clickedObject)
+	if (_clickedObject)
 	{
 		NSArray* currentChain = self.nextRespondingSidebarObjects;
-		if (currentChain && [currentChain containsObject:clickedObject])
+		if (currentChain && [currentChain containsObject:_clickedObject])
 		{
 			// we have the clicked object somewhere in the chain - should remove it from chain and put in the beginning.
 			NSMutableArray* chain = [[currentChain mutableCopy] autorelease];
-			[chain removeObject:clickedObject];
+			[chain removeObject:_clickedObject];
 			currentChain = chain;
 		}
 		
-		self.nextRespondingSidebarObjects = [[NSArray arrayWithObject:clickedObject] 
+		self.nextRespondingSidebarObjects = [[NSArray arrayWithObject:_clickedObject] 
 											 arrayByAddingObjectsFromArray:currentChain ? currentChain : [NSArray array]];
 	}
 }
 
-- (void) setSelectedObject:(NSResponder<GBSidebarItemObject, GBMainWindowItem>*)newSelectedObject
+- (void) setSelectedObject:(NSResponder<GBSidebarItemObject, GBMainWindowItem>*)selectedObject
 {
-	if (newSelectedObject == selectedObject) return;
-	self.selectedObjects = [NSArray arrayWithObject:newSelectedObject];
+	if (selectedObject == _selectedObject) return;
+	self.selectedObjects = [NSArray arrayWithObject:selectedObject];
 }
 
 - (void) addObjectsToSelection:(NSArray*)objects
@@ -257,14 +257,14 @@
 	return [self.selectedObject sidebarItem];
 }
 
-- (void) setSelectedSidebarItems:(NSArray *)newSelectedSidebarItems
+- (void) setSelectedSidebarItems:(NSArray *)selectedSidebarItems
 {
-	self.selectedObjects = [newSelectedSidebarItems valueForKey:@"object"];
+	self.selectedObjects = [selectedSidebarItems valueForKey:@"object"];
 }
 
-- (void) setSelectedSidebarItem:(GBSidebarItem *)newSelectedSidebarItem
+- (void) setSelectedSidebarItem:(GBSidebarItem *)selectedSidebarItem
 {
-	self.selectedObject = (NSResponder<GBSidebarItemObject,GBMainWindowItem>*)newSelectedSidebarItem.object;
+	self.selectedObject = (NSResponder<GBSidebarItemObject,GBMainWindowItem>*)selectedSidebarItem.object;
 }
 
 - (NSArray*) selectedItemIndexes
@@ -511,7 +511,7 @@
 
 - (void) updateResponders
 {
-	NSArray* newChain = nil;
+	NSArray* aChain = nil;
 	
 	if ([self.selectedObjects count] > 1)
 	{
@@ -526,31 +526,31 @@
 		// commonParents should not contain one of the selected items (when there is a group)
 		NSArray* commonParents = [self commonPrefixForArrays:paths ignoreFromEnd:1];
 		
-		newChain = [[NSArray arrayWithObject:[OAMultipleSelection selectionWithObjects:self.selectedObjects]] arrayByAddingObjectsFromArray:[commonParents reversedArray]];
+		aChain = [[NSArray arrayWithObject:[OAMultipleSelection selectionWithObjects:self.selectedObjects]] arrayByAddingObjectsFromArray:[commonParents reversedArray]];
 	}
 	else
 	{
 		// Note: using reversed array to allow nested items override actions (group has a rename: action and can be contained within another group)
-		newChain = [[[self.sidebarItem pathToItem:[self.selectedObject sidebarItem]] valueForKey:@"object"] reversedArray];
+		aChain = [[[self.sidebarItem pathToItem:[self.selectedObject sidebarItem]] valueForKey:@"object"] reversedArray];
 	}
 	
-	if (!newChain)
+	if (!aChain)
 	{
-		newChain = [NSArray array];
+		aChain = [NSArray array];
 	}
 	
 	// Static responders should always be in the tail of the chain. 
 	// But before appending them, we should avoid duplication by removing static responders from the collected objects.
 	NSMutableArray* staticResponders = [[[self staticResponders] mutableCopy] autorelease];
-	[staticResponders removeObjectsInArray:newChain];
+	[staticResponders removeObjectsInArray:aChain];
 	
 	// Remove self from the chain
-	if ([newChain count] > 0 && [newChain lastObject] == self)
+	if ([aChain count] > 0 && [aChain lastObject] == self)
 	{
-		newChain = [newChain subarrayWithRange:NSMakeRange(0, [newChain count] - 1)];
+		aChain = [aChain subarrayWithRange:NSMakeRange(0, [aChain count] - 1)];
 	}
 	
-	self.nextRespondingSidebarObjects = [newChain arrayByAddingObjectsFromArray:staticResponders];
+	self.nextRespondingSidebarObjects = [aChain arrayByAddingObjectsFromArray:staticResponders];
 }
 
 
