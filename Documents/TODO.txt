@@ -50,33 +50,24 @@ Gitbox 1.6 Release Notes
 
 Gitbox 1.6 misc items:
 
-
 - test: diff tools state with empty prefs.
 - test: clone in github checkbox with empty prefs.
 - test: should clone from github when app is not launched.
 - test: default state of update checkboxes.
 - test: committing without name/email in ~/.gitconfig
 
-+ bug: stage is not transactionally updated.
-+ bug: stage is refreshed before staging command is worked out. blinks with previous state. (should invalidate notif. )
-± bug: stage: selection is not accurately preserved when stage is reloaded. [now is more precise]
-+ bug: stage: scroll offset is not preserved when stage is reloaded.
 - bug: if pushed from the terminal, commits difference is not recalculated (green dots remain).
-
-- feature: rename repositories
-- bug: branch name is truncated in the settings view
-- crash: when adding a repository
 - bug: remote URL with a space inside: 1) truncates 2) saves back to .git/config. See Bugs Inbox.
 - bug: remove views from sidebar item when switching owner object
-
 - bug: GBSubmoduleController should be replaced with cloning ctrl when submodule is deleted. (or at least, simply deselected)
 - bug: submodule cloning ctrl should be replaced when download/cloning is finished.
+- bug: prefs: no diff tool is selected on fresh launch
+- bug: prefs: on fresh computer when entering email address, it's truncated (dt@danieltull.co.uk -> dt)
+- bug: gitbox does not honor merge.ff setting to do "git merge --no-ff"
+- bug: on launch, the sidebar badges are shifted to the edge (maybe when scroll bar is visible or not). Same bug when submodules are loaded and expanded.
+- bug: after repo is removed, its spinner is still retained and is in the view. Should remove all views on [stop]. 
+- bug: if the repo is deleted while updating, OATask crashes - should just fail with error and big log entry.
 
-- prefs: "Default Github application: [list of apps]"
-- license prefs: button for buy in App Store. Explain how to remove the app before installing the latest version.
-- prefs: no diff tool is selected on fresh launch
-- prefs: on fresh computer when entering email address, it's truncated (dt@danieltull.co.uk -> dt)
-- maybe: show the version of a submodule 
 
 - yet another refactoring:
   + subclass GBRepositoryController -> GBSubmoduleController for customizing sidebaritem
@@ -113,9 +104,21 @@ Gitbox 1.6 misc items:
 - submodules: do not forget to "git submodule add <url> <path>" after path update (same for remove, maybe)
 
 - submodules: maybe show intermediate folder item if submodule is inside a folder (placebo-like)
-- bug: when submodule is added to the sidebar and its parent repo is selected, update to a submodule's file triggers refresh of the parent, but not of the submodule (check how OAFSEventMonitor coalesces paths)
-  - this well may be not submodule-related, but to completely failed FSEvent object on Gwendal's machine
 - bug: submodules' loading causes stage refresh delays or similar glitches.
+
+- feature: rename repositories
+- license prefs: button for buy in App Store. Explain how to remove the app before installing the latest version.
+- maybe: show the version of a submodule 
+
+
+
+=========================================
+
+- bug: branch name is truncated in the settings view
+? crash: when adding a repository
+
+
+- prefs: "Default Github application: [list of apps]"
 
 
 -- multiple branches -- 
@@ -133,26 +136,18 @@ Gitbox 1.6 misc items:
 
 -- the rest of the things --
 
-
-- bug: gitbox does not honor merge.ff setting to do "git merge --no-ff"
  
-- integrate preferences window or sheet like in http://blog.shpakovski.com/2011/04/preferences-windows-in-cocoa.html
++ integrate preferences window or sheet like in http://blog.shpakovski.com/2011/04/preferences-windows-in-cocoa.html
 - integrate Growl notifications like in https://github.com/psionides/Gitifier
 - check out SSH NSTask from https://github.com/psionides/Gitifier
 
 - bug: disallow deletion of a current local branch in settings view.
 
 - respect system settings of the sidebar icon size - small/medium/large (NSTableViewDefaultSizeMode = 1/2/3). Xcode does not respect it.
-- FS notifs: avoid ping-pong between repo and submodule by filtering out all sub-repo notifications. Or use FS events as an advice part of a regular scheduled update timer.
-- bug: on launch, the sidebar badges are shifted to the edge (maybe when scroll bar is visible or not). Same bug when submodules are loaded and expanded.
-- bug: after repo is removed, its spinner is still retained and is in the view. Should remove all views on [stop]. 
-- bug: if the repo is deleted while updating, OATask crashes - should just fail with error and big log entry.
-- disable "rebase" menu item if nothing to rebase (no green or no blue commits)
+
+- bug: disable "rebase" menu item if nothing to rebase (no green or no blue commits)
 
 - undo pull on clean working directory applies some older stashes. Should remember in invocation if working dir was dirty or not.
-
-- bug: search: try to add space after a word in search field - it selects the whole text which is amazingly annoying
-
 - help to recover from "upstream rebase" or "force push" - detect that branch slipped and ask user to stash changes, reset branch and apply the changes back
 
 - search: make search over all branches instead of the current ones
@@ -195,6 +190,17 @@ Gitbox 1.6 misc items:
 
 Misc done for 1.6:
 
+
++ bug: when submodule is added to the sidebar and its parent repo is selected, update to a submodule's file triggers refresh of the parent, but not of the submodule (check how OAFSEventMonitor coalesces paths)
+  + this well may be not submodule-related, but to completely failed FSEvent object on Gwendal's machine
+
++ bug: search: try to add space after a word in search field - it selects the whole text which is amazingly annoying [done in 1.5.*]
++ FS notifs: avoid ping-pong between repo and submodule by filtering out all sub-repo notifications. Or use FS events as an advice part of a regular scheduled update timer.
+
++ bug: stage is not transactionally updated.
++ bug: stage is refreshed before staging command is worked out. blinks with previous state. (should invalidate notif. )
+± bug: stage: selection is not accurately preserved when stage is reloaded. [now is more precise]
++ bug: stage: scroll offset is not preserved when stage is reloaded.
 
 + bug: should not refresh index while staging multiple items quickly one-by-one. - use delayed update to override FSEvent.
   + solution: see Refresh.txt for details
