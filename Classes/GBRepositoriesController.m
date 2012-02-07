@@ -70,7 +70,7 @@
 		self.repositoryToolbarController = [[[GBRepositoryToolbarController alloc] init] autorelease];
 		
 		self.fsEventStream = [[[OAFSEventStream alloc] init] autorelease];
-		self.fsEventStream.latency = 0.1;
+		self.fsEventStream.latency = 0.2; // more latency - more accumulated events; less latency - faster response.
 		self.fsEventStream.enabled = YES;
 	}
 	return self;

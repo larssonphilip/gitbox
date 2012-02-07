@@ -43,6 +43,7 @@ Gitbox 1.6 Release Notes
 ✓ Fixed bug with ignoring a file when .gitignore does not exist (file was not added to .gitignore).
 ✓ Fixed bug with title duplication in the branch menus.
 ✓ Fixed bugs and crashes in authentication session.
+✓ Fixed bugs with preserving stage selection.
  
 --
 
@@ -56,8 +57,8 @@ Gitbox 1.6 misc items:
 - test: committing without name/email in ~/.gitconfig
 
 + bug: stage is not transactionally updated.
-- bug: stage is refreshed before staging command is worked out. blinks with previous state. (should invalidate notif. )
-- bug: stage: selection is not accurately preserved when stage is reloaded.
++ bug: stage is refreshed before staging command is worked out. blinks with previous state. (should invalidate notif. )
+± bug: stage: selection is not accurately preserved when stage is reloaded. [now is more precise]
 - bug: stage: scroll offset is not preserved when stage is reloaded.
 - bug: if pushed from the terminal, commits difference is not recalculated (green dots remain).
 

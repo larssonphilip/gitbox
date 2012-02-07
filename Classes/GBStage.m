@@ -270,13 +270,15 @@
 	//							NSLog(@"GBStage update: staged: %d unstaged: %d untracked: %d", self.stagedChanges.count, self.unstagedChanges.count, self.untrackedChanges.count);
 	//						}
 							
+							BOOL stillValid = (stageStateCounterLocal == stageStateCounter);
+							
 							[self endStageTransaction];
 							
 							if (block) block(didChange);
 							
 							// The counter is the same if there were no new update while loading stage changes.
 							// This prevents blinking of the previous state after checking boxes.
-							if (stageStateCounterLocal == stageStateCounter)
+							if (stillValid)
 							{
 								[self notifyWithSelector:@selector(stageDidUpdateChanges:)];
 							}

@@ -133,7 +133,7 @@
 	
 	int localStateUpdateGeneration;
 	int isScheduledLocalStateUpdate;
-	BOOL isScheduled;
+	int isRunningLocalStateUpdate;
 	NSTimeInterval timestampToRespectFSEvents;
 	NSTimeInterval repeatedUpdateDelay;
 	
@@ -520,7 +520,7 @@
 	{
 		alreadyLaunchedInitialUpdates = YES;
 		[self updateLocalStateWithBlock:^{
-		[self updateRemoteStateAfterDelay:0.0];
+			[self updateRemoteStateAfterDelay:0.0];
 		}];
 	}
 	else
@@ -705,7 +705,7 @@
 - (void) delayReceivingFSEvents
 {
 	// Delay fs events by 1 sec for current selected repo. For background repos delay for longer to avoid interfering.
-	timestampToRespectFSEvents = [[NSDate date] timeIntervalSince1970] + (selected ? 1.0 : 5.0);
+	timestampToRespectFSEvents = [[NSDate date] timeIntervalSince1970] + (selected ? self.fsEventStream.latency*1.5 : 5.0);
 }
 
 
@@ -731,7 +731,7 @@
 	}
 	
 	// 2. Ignore if update is scheduled or already running.
-	if (isScheduledLocalStateUpdate)
+	if (isScheduledLocalStateUpdate || isRunningLocalStateUpdate)
 	{
 		//NSLog(@"FSEvent: ignoring event (%d updates are running) [%@]", isScheduledLocalStateUpdate, self.windowTitle);
 		return;
@@ -778,13 +778,12 @@
 {
 	//NSLog(@"> updateLocalStateWithBlock [%@]", self.windowTitle);
 	// Invalidate scheduled update
-	isScheduledLocalStateUpdate++;
+	isRunningLocalStateUpdate++;
 	
 	block = [[block copy] autorelease];
 	[self updateStageChangesAndSubmodulesWithBlock:^{
-		isScheduledLocalStateUpdate--;
-		
 		[self updateLocalRefsWithBlock:^{
+			isRunningLocalStateUpdate--;
 			if (block) block();
 		}];
 	}];
@@ -798,13 +797,24 @@
 //		NSLog(@"Local update scheduled: %0.1f sec [%@]", interval, self.windowTitle);
 //	}
 	
-	self.localStateUpdatePendingBlock = OABlockConcat(self.localStateUpdatePendingBlock, block);
+	if (!isScheduledLocalStateUpdate && isRunningLocalStateUpdate)
+	{
+		block = [[block copy] autorelease];
+		self.localStateUpdatePendingBlock = OABlockConcat(self.localStateUpdatePendingBlock, ^{
+			[self updateLocalStateAfterDelay:interval block:block];
+		});
+		return;
+	}
+	else
+	{
+		self.localStateUpdatePendingBlock = OABlockConcat(self.localStateUpdatePendingBlock, block);
+	}
 	
-	if (!isScheduled)
+	if (!isScheduledLocalStateUpdate)
 	{
 		isScheduledLocalStateUpdate++;
-		isScheduled = YES;
 	}
+	
 	int gen = localStateUpdateGeneration;
 	
 	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, interval * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
@@ -816,7 +826,6 @@
 		if (gen != localStateUpdateGeneration) return;
 
 		isScheduledLocalStateUpdate--;
-		isScheduled = NO;
 		
 		[self updateLocalStateWithBlock:^{
 			void(^aBlock)() = [[self.localStateUpdatePendingBlock copy] autorelease];
@@ -856,24 +865,26 @@
 					repeatedUpdateDelay = 0.0;
 					//NSLog(@"Repeated update scheduled: %f [%@ - did change]", repeatedUpdateDelay, self.windowTitle);
 					[self updateLocalStateAfterDelay:repeatedUpdateDelay block:nil];
-					[self.blockTable callBlockForName:@"updateStageChanges"];
 				}
 				else
 				{
-					repeatedUpdateDelay = repeatedUpdateDelay + 0.5;
+					// No change - do nothing.
 					
-					// Don't schedule updates at all in a distant future. We are much more likely to get valid FS- or other event there.
-					if (repeatedUpdateDelay < 0.51)
-					{
-						//NSLog(@"Repeated update scheduled: %f [%@ - not changed]", repeatedUpdateDelay, self.windowTitle);
-						[self updateLocalStateAfterDelay:repeatedUpdateDelay block:nil];
-					}
-					else
-					{
-						repeatedUpdateDelay = 0.0;
-					}
-					[self.blockTable callBlockForName:@"updateStageChanges"];
+//					repeatedUpdateDelay = repeatedUpdateDelay + 0.5;
+//					
+//					// Don't schedule updates at all in a distant future. We are much more likely to get valid FS- or other event there.
+//					if (repeatedUpdateDelay < 0.51)
+//					{
+//						//NSLog(@"Repeated update scheduled: %f [%@ - not changed]", repeatedUpdateDelay, self.windowTitle);
+//						[self updateLocalStateAfterDelay:repeatedUpdateDelay block:nil];
+//					}
+//					else
+//					{
+//						repeatedUpdateDelay = 0.0;
+//					}
+					
 				}
+				[self.blockTable callBlockForName:@"updateStageChanges"];
 				[self.sidebarItem update];
 			};
 			
@@ -1708,7 +1719,7 @@
 	[self pushSpinning];
 	stagingCounter++;
 	
-	[self updateLocalStateAfterDelay:10.0 block:nil]; // reserve update
+	[self updateLocalStateAfterDelay:10.0 block:nil]; // reserve update, delay be lowered after completion
 	
 	block(notBusyChanges, stage, ^{
 		stagingCounter--;
@@ -1716,7 +1727,7 @@
 		// Avoid loading changes if another staging is running.
 		if (stagingCounter == 0)
 		{
-			[self updateLocalStateAfterDelay:1.0 block:nil];
+			[self updateLocalStateAfterDelay:self.fsEventStream.latency block:nil];
 		}
 		[self popSpinning];
 	});

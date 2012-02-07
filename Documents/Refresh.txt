@@ -16,16 +16,12 @@ System should try to take FSEvents as hints, but still rely on its own timers an
 (so it does not update again when nothing's changed).
 
 
-Solution:
+When staging, we want to efficiently refresh stage status without extra expenses like branches and submodules. Should schedule those after some delay.
 
-1. If FS event kicks in perform the local state update.
-2. If FS event kicks in and we have an update scheduled in the future - do nothing.
-3. After local state update is finished, schedule another updater after short interval.
-4. If nothing has changed since last update, increase the interval and repeat.
-5. If interval gets big enough, schedule a delay (to skip remaining ping/pong fs events), but do not update again. And after that delay accept fs events again.
-6. For non-selected repos interval cutoff should be bigger than for selected to prevent ping-pong loop with submodules and nested repos.
-
-Alternatively: simply delay ignoring FS events for some time when no actual change was detected. Don't increase that interval, but maybe make the interval bigger for non-selected repos.
+What about separate update loop with setNeeds* flags? 
+- setNeeds* dispatches update if not present.
+- delayed updates for needs* flags.
+- block callbacks for scheduled updates, but not for the current updates.
 
 
 Solution 2:
@@ -80,12 +76,13 @@ Solution 2:
 		Repo selected:
 		+ reset ignore FS events interval
 
+Solution 1:
 
+1. If FS event kicks in perform the local state update.
+2. If FS event kicks in and we have an update scheduled in the future - do nothing.
+3. After local state update is finished, schedule another updater after short interval.
+4. If nothing has changed since last update, increase the interval and repeat.
+5. If interval gets big enough, schedule a delay (to skip remaining ping/pong fs events), but do not update again. And after that delay accept fs events again.
+6. For non-selected repos interval cutoff should be bigger than for selected to prevent ping-pong loop with submodules and nested repos.
 
-
-
-
-
-
-
-
+Alternatively: simply delay ignoring FS events for some time when no actual change was detected. Don't increase that interval, but maybe make the interval bigger for non-selected repos.
