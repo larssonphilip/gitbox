@@ -15,3 +15,34 @@ Major problem: under sandbox one cannot run any external tasks as they won't inh
 - no shell out - bin/bash should be bundled and signed
 - Git should call bundled ssh and bash.
 
+
+In 1.7.3 you can launch system-provided NSTasks, yay.
+- https://devforums.apple.com/thread/137083?tstart=50
+- https://devforums.apple.com/thread/136361?tstart=50
+
+Project-like documents not yet well supported:
+- https://devforums.apple.com/thread/136339?tstart=50
+
+Detecting sandbox in runtime (not obvious):
+- https://devforums.apple.com/thread/105990?tstart=50
+
+Not possible to kill children NSTasks yet:
+- https://devforums.apple.com/thread/108821?tstart=50
+
+Improvements in the latest build:
+- In-process execution of command line tools from /bin, /sbin, /usr/bin and /usr/sbin is now permitted.
+- Sandboxed applications can now freely create and connect to UNIX domain sockets in their container.
+- Sandboxed applications can send signals to their children, i.e. processes they spawned such as with NSTask and similar API.
+- Various sandbox violations when accessing files through temporary exception entitlements, media entitlements, or in the temporary or cache directories, will no longer occur.
+- Other bug fixes.
+- More: https://devforums.apple.com/thread/138513?tstart=0
+
+Sign from command line:
+- https://devforums.apple.com/thread/130404?tstart=100
+  codesign -s "My Developer Certificate Common Name" --entitlements enable_sandbox.plist MyApp.app
+  
+Keychain issues under sandbox:
+- https://devforums.apple.com/thread/121931?tstart=150
+
+ioctl is denied by sandbox in a Perl script:
+- https://devforums.apple.com/thread/115368?tstart=200
