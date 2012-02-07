@@ -65,6 +65,13 @@
 		return;
 	}
 	NSData* data = [NSData dataWithContentsOfURL:url];
+	
+	if (!data)
+	{
+		[[@".DS_Store\n" dataUsingEncoding:NSUTF8StringEncoding] writeToURL:url atomically:YES];
+		data = [NSData dataWithContentsOfURL:url];
+	}
+	
 	NSString* string = [data UTF8String];
 	
 	[self.ignoreTextView setString:string ? string : @""];
@@ -116,12 +123,12 @@
 	[self.view addSubview:currentView];
 }
 
-- (IBAction) nameOrEmailDidChange:(id)sender
+- (IBAction) nameOrEmailDidChange:(id)senderOrNotification
 {
 	static int counter = 0;
 	counter++;
 	int c = counter;
-	double delayInSeconds = 1.0;
+	double delayInSeconds = 0.5;
 	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
 	dispatch_after(popTime, dispatch_get_main_queue(), ^{
 		if (c != counter) return;
@@ -138,7 +145,7 @@
 	static int counter = 0;
 	counter++;
 	int c = counter;
-	double delayInSeconds = 1.0;
+	double delayInSeconds = 0.5;
 	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
 	dispatch_after(popTime, dispatch_get_main_queue(), ^{
 		if (c != counter) return;
@@ -152,7 +159,7 @@
 	static int counter = 0;
 	counter++;
 	int c = counter;
-	double delayInSeconds = 1.0;
+	double delayInSeconds = 0.5;
 	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
 	dispatch_after(popTime, dispatch_get_main_queue(), ^{
 		if (c != counter) return;
@@ -170,8 +177,13 @@
 	
 	[self loadData];
 	
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(configTextDidChange:) name:NSTextDidChangeNotification object:self.configTextView];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(ignoreTextDidChange:) name:NSTextDidChangeNotification object:self.ignoreTextView];
+	if (self.configTextView) [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(configTextDidChange:) name:NSTextDidChangeNotification object:self.configTextView];
+	if (self.ignoreTextView) [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(ignoreTextDidChange:) name:NSTextDidChangeNotification object:self.ignoreTextView];
+
+	if (self.nameTextField)
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(nameOrEmailDidChange:) name:NSControlTextDidChangeNotification object:self.nameTextField];
+	if (self.emailTextField)
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(nameOrEmailDidChange:) name:NSControlTextDidChangeNotification object:self.emailTextField];
 }
 
 

@@ -16,6 +16,8 @@
 #import "GBSidebarController.h"
 #import "GBAskPassServer.h"
 
+#import "GBChange.h"
+
 #import "NSFileManager+OAFileManagerHelpers.h"
 #import "NSWindowController+OAWindowControllerHelpers.h"
 #import "NSObject+OASelectorNotifications.h"
@@ -193,6 +195,11 @@
 {
 	[GBAskPassServer sharedServer]; // preload the server
     
+	if (![[NSUserDefaults standardUserDefaults] objectForKey:kGBChangeDiffToolKey])
+	{
+		[[NSUserDefaults standardUserDefaults] setObject:[GBChange defaultDiffTool] forKey:kGBChangeDiffToolKey];
+	}
+	
 #if !GITBOX_APP_STORE
 	[SUUpdater sharedUpdater]; // preload updater
 #endif

@@ -50,20 +50,13 @@ Gitbox 1.6 Release Notes
 
 Gitbox 1.6 misc items:
 
-- test: diff tools state with empty prefs.
-- test: clone in github checkbox with empty prefs.
 - test: should clone from github when app is not launched.
-- test: default state of update checkboxes.
 - test: committing without name/email in ~/.gitconfig
 
 - bug: when submodules are opened, all parent items (e.g. groups) are opened as well. Shouldn't do that. Also, remember the submodules in prefs.plist
 - bug: if pushed from the terminal, commits difference is not recalculated (green dots remain).
-- bug: remote URL with a space inside: 1) truncates 2) saves back to .git/config. See Bugs Inbox.
-- bug: remove views from sidebar item when switching owner object
-- bug: GBSubmoduleController should be replaced with cloning ctrl when submodule is deleted. (or at least, simply deselected)
 - bug: submodule cloning ctrl should be replaced when download/cloning is finished.
-- bug: prefs: no diff tool is selected on fresh launch
-- bug: prefs: on fresh computer when entering email address, it's truncated (dt@danieltull.co.uk -> dt)
+- bug: GBSubmoduleController should be replaced with cloning ctrl when submodule is deleted. (or at least, simply deselected)
 - bug: gitbox does not honor merge.ff setting to do "git merge --no-ff"
 - bug: on launch, the sidebar badges are shifted to the edge (maybe when scroll bar is visible or not). Same bug when submodules are loaded and expanded.
 - bug: after repo is removed, its spinner is still retained and is in the view. Should remove all views on [stop]. 
@@ -112,83 +105,14 @@ Gitbox 1.6 misc items:
 - license prefs: button for buy in App Store. Explain how to remove the app before installing the latest version.
 - maybe: show the version of a submodule 
 
-
-
-=========================================
-
+? bug: remove views from sidebar item when switching owner object
+- bug: remote URL with a space inside: 1) truncates 2) saves back to .git/config. See Bugs Inbox.
 - bug: opendiff task stuck in the queue, but no opendiff process was running. Maybe after deletion of a file which was delayed.
 - bug: cannot drag filename into a search field.
 - bug: if focused in a commit header (NSTextView), cmd+e and cmd+f do not jump to the main search field.
 - bug: if selected a filename, cmd+E should enter it into search field.
-
 - bug: branch name is truncated in the settings view
 ? crash: when adding a repository
-
-
-- prefs: "Default Github application: [list of apps]"
-
-
--- multiple branches -- 
-
-- implement graph drawing as described in GraphVisualization.txt
-- branches: make GBHistoryViewController a split-view with branches in the right pane
-- branches: align toolbar items with GBHistoryViewController panes: current branch and buttons under the history pane, target branch over the branch list pane
-- branches: allow multiple selection of target branches (if .git/config cannot reliably configure multiple remote branches, save the first one and remember the rest in runtime)
-- branches: show branch color icons in the pulldown toolbar buttons
-  - for multiple branches, show icons together in a row, then branch names, comma-separated.
-- branches: show branch color icons in the branch list (for selected branches only)
-
-
-
-
--- the rest of the things --
-
- 
-+ integrate preferences window or sheet like in http://blog.shpakovski.com/2011/04/preferences-windows-in-cocoa.html
-- integrate Growl notifications like in https://github.com/psionides/Gitifier
-- check out SSH NSTask from https://github.com/psionides/Gitifier
-
-- bug: disallow deletion of a current local branch in settings view.
-
-- respect system settings of the sidebar icon size - small/medium/large (NSTableViewDefaultSizeMode = 1/2/3). Xcode does not respect it.
-
-- bug: disable "rebase" menu item if nothing to rebase (no green or no blue commits)
-
-- undo pull on clean working directory applies some older stashes. Should remember in invocation if working dir was dirty or not.
-- help to recover from "upstream rebase" or "force push" - detect that branch slipped and ask user to stash changes, reset branch and apply the changes back
-
-- search: make search over all branches instead of the current ones
-- double-section badge in the sidebar for local modifications and remote ones.
-
-- when clicking "ignore file" and file is already committed, ask if you want to remove the file from repo.
-
-- new repo: instead of creating local .gitignore, check on launch if we have ~/.gitignore. If we don't, then create one with default .DS_Store entries. Display short intro in the empty stage - "To start, add some files and commit them."
-
-- changes: show mode change as a gray "0755 -> 0644" to the right of the file name. (If only mode has changed, then show it in place of the status)
-
-- ui: show spinner after some operation takes longer than expected 
-- ui: implement spinner for indeterminate tasks (with color switch support) and wetransfer-like spinning progress sector (shows progress using sector + rotates it to present activity).
-- ui: for two above: implement OASuperActivityIndicator with stack API, spinning progress, color switch and lazy API (to avoid showing spinner for short tasks of 1-2 seconds).
-- ui: cmd+return should stage all if nothing is selected, but have something on stage (esp. when history view is highlighted)
-
-- tags: make sure you cannot add a tag with the same name again
-- bug: when removing spinning repo from sidebar (task is running), spinner remains in sidebar
-
-- new group should wrap selected repos and should be added in place of the first selected item.
-
-- bug: sometimes cannot set color label
-
-- repo settings: icons: "list" for General; "label 1.0" for branches and tags; "cloud" for remotes
-- open multiple files for Kaleidoscope.
-- bug: if stash apply failes, it still restores new files.
-- todo: change the default stash message from the file names to "Stash 1" string. 
-- bug: when stashing only untracked files, default message is "No Changes"
-
-- bug: git.git is constantly fetching after ls-remote
-  - because I have two remotes not in sync and they remove/recreate tags one after another.
-  - need to detect such case and sync or ask user to sync the repos.
-
-
 ? crash: on invalid ssh key the askpass controller crashes with "task" selector
 ? crash: The app crashes whenever I try to delete a remote branch, shortly after hitting the “Ok” button of the edit branch sheet
 
@@ -197,6 +121,15 @@ Gitbox 1.6 misc items:
 
 Misc done for 1.6:
 
+
++ integrate preferences window or sheet like in http://blog.shpakovski.com/2011/04/preferences-windows-in-cocoa.html
+
++ test: diff tools state with empty prefs.
++ test: clone in github checkbox with empty prefs.
++ test: default state of update checkboxes: downloads is off
+
++ bug: prefs: no diff tool is selected on fresh launch
++ bug: prefs: on fresh computer when entering email address, it's truncated (dt@danieltull.co.uk -> dt)
 
 + bug: if stage is selected and search string is entered, first commit is selected, but changes view is not updated.
 + bug: when submodule is added to the sidebar and its parent repo is selected, update to a submodule's file triggers refresh of the parent, but not of the submodule (check how OAFSEventMonitor coalesces paths)
@@ -299,6 +232,58 @@ Misc done for 1.6:
 -------------------------------
 
 Gitbox Next:
+
+
+
+
+Unsorted:
+
+- bug: disallow deletion of a current local branch in settings view.
+- respect system settings of the sidebar icon size - small/medium/large (NSTableViewDefaultSizeMode = 1/2/3). Xcode does not respect it.
+- bug: disable "rebase" menu item if nothing to rebase (no green or no blue commits)
+- undo pull on clean working directory applies some older stashes. Should remember in invocation if working dir was dirty or not.
+- help to recover from "upstream rebase" or "force push" - detect that branch slipped and ask user to stash changes, reset branch and apply the changes back
+- search: make search over all branches instead of the current ones
+- double-section badge in the sidebar for local modifications and remote ones.
+- when clicking "ignore file" and file is already committed, ask if you want to remove the file from repo.
+- new repo: instead of creating local .gitignore, check on launch if we have ~/.gitignore. If we don't, then create one with default .DS_Store entries. Display short intro in the empty stage - "To start, add some files and commit them."
+- changes: show mode change as a gray "0755 -> 0644" to the right of the file name. (If only mode has changed, then show it in place of the status)
+
+- ui: show spinner after some operation takes longer than expected
+- ui: implement spinner for indeterminate tasks (with color switch support) and wetransfer-like spinning progress sector (shows progress using sector + rotates it to present activity).
+- ui: for two above: implement OASuperActivityIndicator with stack API, spinning progress, color switch and lazy API (to avoid showing spinner for short tasks of 1-2 seconds).
+- ui: cmd+return should stage all if nothing is selected, but have something on stage (esp. when history view is highlighted)
+
+- tags: make sure you cannot add a tag with the same name again
+- bug: when removing spinning repo from sidebar (task is running), spinner remains in sidebar
+- new group should wrap selected repos and should be added in place of the first selected item.
+- bug: sometimes cannot set color label
+- repo settings: icons: "list" for General; "label 1.0" for branches and tags; "cloud" for remotes
+- open multiple files for Kaleidoscope.
+- bug: if stash apply failes, it still restores new files.
+- todo: change the default stash message from the file names to "Stash 1" string. 
+- bug: when stashing only untracked files, default message is "No Changes"
+
+- bug: git.git is constantly fetching after ls-remote
+  - because I have two remotes not in sync and they remove/recreate tags one after another.
+  - need to detect such case and sync or ask user to sync the repos.
+
+- prefs: "Default Github application: [list of apps]"
+
+
+
+Multiple branches:
+
+- implement graph drawing as described in GraphVisualization.txt
+- branches: make GBHistoryViewController a split-view with branches in the right pane
+- branches: align toolbar items with GBHistoryViewController panes: current branch and buttons under the history pane, target branch over the branch list pane
+- branches: allow multiple selection of target branches (if .git/config cannot reliably configure multiple remote branches, save the first one and remember the rest in runtime)
+- branches: show branch color icons in the pulldown toolbar buttons
+  - for multiple branches, show icons together in a row, then branch names, comma-separated.
+- branches: show branch color icons in the branch list (for selected branches only)
+
+
+
 
 Sandbox:
 
@@ -465,10 +450,14 @@ Features:
 - lion: animate insertion of commits in history
 - lion: animate insertion of repos in sidebar
 
+- integrate Growl notifications like in https://github.com/psionides/Gitifier
+
 
 Enhancements:
 
 
+
+- check out SSH NSTask from https://github.com/psionides/Gitifier
 
 - stage: after select all + stage/unstage should select all changes (even if some "new" changes appeared). Probably we should keep track of unselected changes vs. selected, so we select all new relevant changes.
 - stage: overlay view describing shortcuts to stage all

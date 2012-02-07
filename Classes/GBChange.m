@@ -111,6 +111,11 @@
 #pragma mark Interrogation
 
 
++ (NSString*) defaultDiffTool
+{
+	return @"FileMerge";
+}
+
 + (NSArray*) diffTools
 {
 	return [NSArray arrayWithObjects:@"FileMerge", 
@@ -407,7 +412,7 @@
 	
 	OATask* task = [OATask task];
 	
-	NSString* diffTool = [[NSUserDefaults standardUserDefaults] stringForKey:@"diffTool"];
+	NSString* diffTool = [[NSUserDefaults standardUserDefaults] stringForKey:kGBChangeDiffToolKey];
 	NSString* diffToolLaunchPath = [[NSUserDefaults standardUserDefaults] stringForKey:@"diffToolLaunchPath"];
 	
 	if (!diffTool) diffTool = @"FileMerge";

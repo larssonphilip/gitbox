@@ -1,6 +1,8 @@
 #import <Quartz/Quartz.h>
 #import "GBChangeDelegate.h"
 
+#define kGBChangeDiffToolKey @"diffTool"
+
 @class GBChangeCell;
 @class GBRepository;
 @class GBCommit;
@@ -31,7 +33,7 @@
 
 + (GBChange*) dummy; // for bindings in right view
 + (NSArray*) diffTools;
-
++ (NSString*) defaultDiffTool;
 
 
 #pragma mark Interrogation
