@@ -56,6 +56,7 @@ Gitbox 1.6 misc items:
 - test: default state of update checkboxes.
 - test: committing without name/email in ~/.gitconfig
 
+- after commit and refresh of the history, sometimes the stage remains non-updated.
 - bug: when submodules are opened, all parent items (e.g. groups) are opened as well. Shouldn't do that. Also, remember the submodules in prefs.plist
 - bug: if pushed from the terminal, commits difference is not recalculated (green dots remain).
 - bug: remote URL with a space inside: 1) truncates 2) saves back to .git/config. See Bugs Inbox.
