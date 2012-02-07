@@ -59,21 +59,20 @@
 		[self.messageLabel setStringValue:[NSString stringWithFormat:NSLocalizedString(@"Downloading submodule %@", @"Clone"), URL ? [URL absoluteString] : @""]];
 		
 		[self.errorLabel setStringValue:@""];
-		[self.cancelButton setTitle:NSLocalizedString(@"Cancel", @"")];
 		[self.startButton setEnabled:NO];
+		[self.cancelButton setEnabled:YES];
 	}
 	
 	if (self.repositoryController.error)
 	{
 		[self.messageLabel setStringValue:NSLocalizedString(@"Download Error", @"Clone")];
 		[self.errorLabel setStringValue:NSLocalizedString(@"Check the URL or the network connection.", @"Clone")];
-		[self.cancelButton setTitle:NSLocalizedString(@"Close", @"")];
 	}
 }
 
 
 
-#pragma mark GBRepositoryCloningController notifications
+#pragma mark - GBRepositoryCloningController notifications
 
 
 - (void) submoduleCloningControllerDidStart:(GBSubmoduleCloningController*)ctrl
@@ -98,18 +97,22 @@
 {
 	[self.messageLabel setStringValue:NSLocalizedString(@"Download Error", @"Clone")];
 	[self.errorLabel setStringValue:NSLocalizedString(@"Check the URL or the network connection.", @"Clone")];
-	[self.cancelButton setTitle:NSLocalizedString(@"Close", @"")];
 }
 
 - (void) submoduleCloningControllerDidCancel:(GBSubmoduleCloningController*)cloningRepoCtrl
 {
+	[self update];
+	[self.errorLabel setStringValue:NSLocalizedString(@"Cancelled.", @"Clone")];
+	[self.progressIndicator setIndeterminate:NO];
+	[self.progressIndicator setDoubleValue:0.0];
+	[self.progressIndicator stopAnimation:nil];
 }
 
 - (void) submoduleCloningControllerDidFinish:(GBSubmoduleCloningController*)cloningRepoCtrl
 {
 	[self.messageLabel setStringValue:NSLocalizedString(@"Download Finished", @"Clone")];
 	[self.errorLabel setStringValue:@""];
-	[self.cancelButton setTitle:NSLocalizedString(@"Close", @"")];
+	[self.cancelButton setEnabled:NO];
 }
 
 

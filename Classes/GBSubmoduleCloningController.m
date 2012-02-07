@@ -166,10 +166,13 @@
 	{
 		//NSLog(@"!! Task cancelled. Decrementing a spinner. Terminating a task.");
 		self.isSpinning--;
-		[self.sidebarItem update];
 		OATask* t = self.task;
 		self.task = nil;
 		[t terminate];
+		self.progressStatus = @"";
+		self.sidebarItemProgress = 0.0;
+		[self.sidebarItem removeAllViews];
+		[self.sidebarItem update];
 	}
 	[self notifyWithSelector:@selector(submoduleCloningControllerDidCancel:)];
 }

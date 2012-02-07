@@ -50,15 +50,10 @@ Gitbox 1.6 Release Notes
 
 Gitbox 1.6 misc items:
 
-- test: should clone from github when app is not launched.
 - test: committing without name/email in ~/.gitconfig
 
 - bug: submodules' loading causes stage refresh delays or similar glitches.
 
-- submodules: cloning repo ctrl is not deallocated
-- submodules: wrap submodules clone/pull task with GBAskPassController
-- submodules: cancelling of a cloning repo ctrl does not work (disabled cancel button)
-- submodules: do not show "close" button in place of "cancel" button.
 - submodules: rename "update" button to "checkout", so it's clear what it does.
 - submodules: submodule cloning ctrl should be replaced when download/cloning is finished.
 - submodules: automatically update submodule after repo pull/merge if they are were totally in sync before (that is no development happened there)
@@ -83,8 +78,6 @@ Gitbox 1.6 misc items:
 
 - submodules: do not forget to "git submodule add <url> <path>" after path update (same for remove, maybe)
 
-- submodules: maybe show intermediate folder item if submodule is inside a folder (placebo-like)
-
 - bug: when submodules are opened, all parent items (e.g. groups) are opened as well. Shouldn't do that. Also, remember the submodules in prefs.plist
 - bug: if pushed from the terminal, commits difference is not recalculated (green dots remain).
 - bug: gitbox does not honor merge.ff setting to do "git merge --no-ff"
@@ -99,10 +92,6 @@ Gitbox 1.6 misc items:
 - maybe: show the version of a submodule 
 
 - bug: remote URL with a space inside: 1) truncates 2) saves back to .git/config. See Bugs Inbox.
-- bug: cannot drag filename into a search field.
-- bug: if focused in a commit header (NSTextView), cmd+e and cmd+f do not jump to the main search field.
-- bug: if selected a filename, cmd+E should enter it into search field.
-- bug: branch name is truncated in the settings view
 
 ? bug: remove views from sidebar item when switching owner object
 
@@ -118,10 +107,10 @@ Gitbox 1.6 misc items:
 
 Misc done for 1.6:
 
-
++ submodules: cancelling of a cloning repo ctrl does not work (disabled cancel button)
++ submodules: do not show "close" button in place of "cancel" button.
 + submodules: reload submodules status on fsevents and update the sidebar if changed
 + submodules: when reloading submodules merge or reload all of them - think hard on that!
-
 + submodules: bug: when submodule is selected for the first time, view controller is not available [rare issue with simultaneous sidebar update]
 + submodules: bug: when submodule starts downloading, download button is not removed from sidebar.
 
@@ -245,6 +234,12 @@ Gitbox Next:
 
 
 Unsorted:
+
+- bug: cannot clone from github when app is not launched.
+- bug: cannot drag filename into a search field.
+- bug: if focused in a commit header (NSTextView), cmd+e and cmd+f do not jump to the main search field.
+- bug: if selected a filename, cmd+E should enter it into search field.
+- bug: branch name is truncated in the settings view
 
 - bug: when "Clone Repo URL" sheet is present, opening another one crashes Gitbox with modal window inconsistency exception.
 - bug: disallow deletion of a current local branch in settings view.
