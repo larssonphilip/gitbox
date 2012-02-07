@@ -232,6 +232,13 @@
 - (void) repositoryControllerDidUpdateCommits:(GBRepositoryController*)repoCtrl
 {
 	self.visibleCommits = [self.repositoryController visibleCommits];
+	
+	// Sync selection.
+	if (self.logArrayController.selectedObjects.count == 1)
+	{
+		self.repositoryController.selectedCommit = [self.logArrayController.selectedObjects objectAtIndex:0];
+	}
+	
 	[self.searchBarController setVisible:[self.repositoryController isSearching] animated:NO];
 	self.searchBarController.resultsCount = [[self.repositoryController searchResults] count];
 	[self.tableView setNeedsDisplay:YES];

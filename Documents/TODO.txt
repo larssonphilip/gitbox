@@ -56,12 +56,6 @@ Gitbox 1.6 misc items:
 - test: default state of update checkboxes.
 - test: committing without name/email in ~/.gitconfig
 
-- after commit and refresh of the history, sometimes the stage remains non-updated.
-- bug: if focused in a commit header (NSTextView), cmd+e and cmd+f do not jump to the main search field.
-- bug: if selected a filename, cmd+E should enter it into search field.
-- bug: cannot drag filename into a search field.
-- bug: if stage is selected and search string is entered, first commit is selected, but changes view is not updated.
-- bug: opendiff task stuck in the queue, but not opendiff process was running. Maybe after deletion of a file which was delayed.
 - bug: when submodules are opened, all parent items (e.g. groups) are opened as well. Shouldn't do that. Also, remember the submodules in prefs.plist
 - bug: if pushed from the terminal, commits difference is not recalculated (green dots remain).
 - bug: remote URL with a space inside: 1) truncates 2) saves back to .git/config. See Bugs Inbox.
@@ -75,6 +69,7 @@ Gitbox 1.6 misc items:
 - bug: after repo is removed, its spinner is still retained and is in the view. Should remove all views on [stop]. 
 - bug: if the repo is deleted while updating, OATask crashes - should just fail with error and big log entry.
 
+- bug: after commit and refresh of the history, sometimes the stage remains non-updated.
 
 - yet another refactoring:
   + subclass GBRepositoryController -> GBSubmoduleController for customizing sidebaritem
@@ -120,6 +115,11 @@ Gitbox 1.6 misc items:
 
 
 =========================================
+
+- bug: opendiff task stuck in the queue, but no opendiff process was running. Maybe after deletion of a file which was delayed.
+- bug: cannot drag filename into a search field.
+- bug: if focused in a commit header (NSTextView), cmd+e and cmd+f do not jump to the main search field.
+- bug: if selected a filename, cmd+E should enter it into search field.
 
 - bug: branch name is truncated in the settings view
 ? crash: when adding a repository
@@ -198,6 +198,7 @@ Gitbox 1.6 misc items:
 Misc done for 1.6:
 
 
++ bug: if stage is selected and search string is entered, first commit is selected, but changes view is not updated.
 + bug: when submodule is added to the sidebar and its parent repo is selected, update to a submodule's file triggers refresh of the parent, but not of the submodule (check how OAFSEventMonitor coalesces paths)
   + this well may be not submodule-related, but to completely failed FSEvent object on Gwendal's machine
 
