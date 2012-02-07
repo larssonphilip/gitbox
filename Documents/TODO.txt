@@ -75,7 +75,7 @@ Gitbox 1.6 misc items:
 - license prefs: button for buy in App Store. Explain how to remove the app before installing the latest version.
 - prefs: no diff tool is selected on fresh launch
 - prefs: on fresh computer when entering email address, it's truncated (dt@danieltull.co.uk -> dt)
-- maybe: show the version of submodule 
+- maybe: show the version of a submodule 
 
 - yet another refactoring:
   + subclass GBRepositoryController -> GBSubmoduleController for customizing sidebaritem
