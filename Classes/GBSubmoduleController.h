@@ -9,4 +9,6 @@
 + (GBSubmoduleController*) controllerWithSubmodule:(GBSubmodule*)submodule;
 - (id) initWithSubmodule:(GBSubmodule*)submodule;
 
+- (IBAction) updateSubmodule:(id)sender;
+
 @end

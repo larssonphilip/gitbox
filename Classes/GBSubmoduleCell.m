@@ -5,10 +5,11 @@
 
 @interface GBSubmoduleCell ()
 @property(nonatomic, retain, readonly) GBSubmodule* submodule;
-- (NSRect) drawDownloadButtonAndReturnRemainingRect:(NSRect)rect;
+- (NSRect) drawButtonAndReturnRemainingRect:(NSRect)rect title:(NSString*)title key:(NSString*)key action:(SEL)action;
 @end
 
-static NSString* const kGBSubmoduleCellButton = @"GBSubmoduleCellButton";
+static NSString* const kGBSubmoduleCellDownloadButton = @"GBSubmoduleCellDownloadButton";
+static NSString* const kGBSubmoduleCellCheckoutButton = @"GBSubmoduleCellCheckoutButton";
 
 @implementation GBSubmoduleCell
 
@@ -17,7 +18,7 @@ static NSString* const kGBSubmoduleCellButton = @"GBSubmoduleCellButton";
 
 - (NSImage*) image
 {
-	if ([[self submodule] status] == GBSubmoduleStatusNotCloned)
+	if (self.submodule.status == GBSubmoduleStatusNotCloned)
 	{
 		return [NSImage imageNamed:@"GBSidebarSubmoduleMissingIcon.png"];
 	}
@@ -27,13 +28,34 @@ static NSString* const kGBSubmoduleCellButton = @"GBSubmoduleCellButton";
 
 - (NSRect) drawExtraFeaturesAndReturnRemainingRect:(NSRect)rect
 {
-	if (![self.submodule isCloned] && ![self.sidebarItem visibleSpinning] && [self.sidebarItem isExpanded])
+	// Clear the spinner before we add our buttons.
+	if (!self.sidebarItem.visibleSpinning)
 	{
-		return [self drawDownloadButtonAndReturnRemainingRect:rect];
+		[self drawSpinnerIfNeededInRectAndReturnRemainingRect:rect];
+	}
+	
+	if (!self.submodule.isCloned && !self.sidebarItem.visibleSpinning && self.sidebarItem.isExpanded)
+	{
+		return [self drawButtonAndReturnRemainingRect:rect 
+												title:NSLocalizedString(@"Download", @"GBSubmodule") 
+												  key:kGBSubmoduleCellDownloadButton
+											   action:@selector(startDownload:)];
 	}
 	else
 	{
-		[self.sidebarItem setView:nil forKey:kGBSubmoduleCellButton];
+		[self.sidebarItem setView:nil forKey:kGBSubmoduleCellDownloadButton];
+	}
+	
+	if(self.submodule.status == GBSubmoduleStatusNotUpToDate && !self.sidebarItem.visibleSpinning && self.sidebarItem.isExpanded)
+	{
+		return [self drawButtonAndReturnRemainingRect:rect 
+												title:NSLocalizedString(@"Checkout", @"GBSubmodule") 
+												  key:kGBSubmoduleCellCheckoutButton
+											   action:@selector(updateSubmodule:)];
+	}
+	else
+	{
+		[self.sidebarItem setView:nil forKey:kGBSubmoduleCellCheckoutButton];
 	}
 	return [super drawExtraFeaturesAndReturnRemainingRect:rect];
 }
@@ -43,23 +65,23 @@ static NSString* const kGBSubmoduleCellButton = @"GBSubmoduleCellButton";
 #pragma mark Private
 
 
-- (NSRect) drawDownloadButtonAndReturnRemainingRect:(NSRect)rect
+- (NSRect) drawButtonAndReturnRemainingRect:(NSRect)rect title:(NSString*)title key:(NSString*)key action:(SEL)action
 {
-	NSButton* button = (NSButton*)[self.sidebarItem viewForKey:kGBSubmoduleCellButton];
+	NSButton* button = (NSButton*)[self.sidebarItem viewForKey:key];
 	if (!button)
 	{
 		// TODO: adjust the frame to the contained text
 		button = [[[NSButton alloc] initWithFrame:NSMakeRect(0, 0, 50.0, 13.0)] autorelease];
 		
 		// TODO: support also "Update" button which pull and checks out updated HEAD
-		[button setTitle:NSLocalizedString(@"Download", @"")];
+		[button setTitle:title];
 		
 		[button setBezelStyle:NSRoundRectBezelStyle];
 		[[button cell] setControlSize:NSMiniControlSize];
 		[[button cell] setFont:[NSFont systemFontOfSize:[NSFont systemFontSizeForControlSize:[[button cell] controlSize]]]];
-		[self.sidebarItem setView:button forKey:kGBSubmoduleCellButton];
+		[self.sidebarItem setView:button forKey:key];
 		
-		[button setAction:@selector(startDownload:)];
+		[button setAction:action];
 		[button setTarget:self.sidebarItem.object];
 	}
 	

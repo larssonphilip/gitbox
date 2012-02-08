@@ -1,5 +1,7 @@
 #import "GBSubmoduleController.h"
 #import "GBSubmodule.h"
+#import "GBSubmoduleCell.h"
+#import "GBSidebarItem.h"
 
 @implementation GBSubmoduleController
 
@@ -22,6 +24,13 @@
 	if (self = [super initWithURL:submodule.localURL])
 	{
 		self.submodule = submodule;
+		
+		self.sidebarItem = [[[GBSidebarItem alloc] init] autorelease];
+		self.sidebarItem.object = self;
+		self.sidebarItem.draggable = NO;
+		self.sidebarItem.selectable = YES;
+		self.sidebarItem.editable = NO;
+		self.sidebarItem.cell = [[[GBSubmoduleCell alloc] initWithItem:self.sidebarItem] autorelease];
 	}
 	return self;
 }
@@ -41,6 +50,11 @@
 //					 initWithTitle:NSLocalizedString(@"Clone Repository...", @"Sidebar") action:@selector(cloneRepository:) keyEquivalent:@""] autorelease]];
 	
 	return aMenu;
+}
+
+- (IBAction) updateSubmodule:(id)sender
+{
+	// Tell parent to update this submodule.
 }
 
 @end

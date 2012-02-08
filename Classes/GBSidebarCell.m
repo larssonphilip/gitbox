@@ -5,6 +5,7 @@
 #import "CGContext+OACGContextHelpers.h"
 
 #define kGBSidebarCellIconWidth 16.0
+#define	kGBSidebarCellSpinnerKey @"GBSidebarCellSpinnerKey"
 
 @interface GBSidebarCell ()
 - (NSRect) drawIconAndReturnRemainingRect:(NSRect)rect;
@@ -250,17 +251,17 @@
 {
 	if (![self.sidebarItem visibleSpinning])
 	{
-		[self.sidebarItem setView:nil forKey:@"GBSidebarCellPogressIndicator"];
+		[self.sidebarItem setView:nil forKey:kGBSidebarCellSpinnerKey];
 		return rect;
 	}
 	
-	NSProgressIndicator* spinner = (NSProgressIndicator*)[self.sidebarItem viewForKey:@"GBSidebarCellPogressIndicator"];
+	NSProgressIndicator* spinner = (NSProgressIndicator*)[self.sidebarItem viewForKey:kGBSidebarCellSpinnerKey];
 	if (!spinner)
 	{
 		spinner = [[[NSProgressIndicator alloc] initWithFrame:NSMakeRect(0, 0, 16.0, 16.0)] autorelease];
 		[spinner setStyle:NSProgressIndicatorSpinningStyle];
 		[spinner setControlSize:NSSmallControlSize];
-		[self.sidebarItem setView:spinner forKey:@"GBSidebarCellPogressIndicator"];
+		[self.sidebarItem setView:spinner forKey:kGBSidebarCellSpinnerKey];
 	}
 	
 	if (!spinner) return rect;

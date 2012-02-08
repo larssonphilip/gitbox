@@ -93,6 +93,8 @@ Gitbox 1.6 misc items:
 
 - bug: remote URL with a space inside: 1) truncates 2) saves back to .git/config. See Bugs Inbox.
 
+- add .DS_Store to gitignore by default.
+
 ? bug: remove views from sidebar item when switching owner object
 
 ? bug: after repo is removed, its spinner is still retained and is in the view. Should remove all views on [stop]. 

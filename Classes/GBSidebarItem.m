@@ -17,7 +17,7 @@
 @synthesize badgeInteger;
 @synthesize cell;
 @synthesize menu;
-@synthesize viewsDictionary;
+@synthesize viewsDictionary=_viewsDictionary;
 @synthesize section;
 @synthesize spinning;
 @synthesize progress;
@@ -37,12 +37,12 @@
 	self.cell = nil;
 	self.menu = nil;
 	//NSLog(@"GBSidebarItem#dealloc");
-	for (NSString* aKey in viewsDictionary)
+	for (NSString* aKey in _viewsDictionary)
 	{
 		//NSLog(@"GBSidebarItem#dealloc: removing view %@", aKey);
-		[[viewsDictionary objectForKey:aKey] removeFromSuperview];
+		[[_viewsDictionary objectForKey:aKey] removeFromSuperview];
 	}
-	[viewsDictionary release]; viewsDictionary = nil;
+	[_viewsDictionary release]; _viewsDictionary = nil;
 	[super dealloc];
 }
 
@@ -230,12 +230,12 @@
 
 - (NSView*) viewForKey:(NSString*)aKey
 {
-	return [self.viewsDictionary objectForKey:aKey];
+	return [_viewsDictionary objectForKey:aKey];
 }
 
 - (void) setView:(NSView*)aView forKey:(NSString*)aKey
 {
-	NSView* oldView = [self.viewsDictionary objectForKey:aKey];
+	NSView* oldView = [_viewsDictionary objectForKey:aKey];
 	
 	if (oldView == aView) return;
 	
@@ -243,21 +243,22 @@
 	[oldView removeFromSuperview];
 	if (aView)
 	{
-		[self.viewsDictionary setObject:aView forKey:aKey];
+		[_viewsDictionary setObject:aView forKey:aKey];
 	}
 	else
 	{
-		[self.viewsDictionary removeObjectForKey:aKey];
+		[_viewsDictionary removeObjectForKey:aKey];
 	}
 }
 
 - (void) removeAllViews
 {
-	for (NSString* aKey in viewsDictionary)
+	for (NSString* aKey in _viewsDictionary)
 	{
 		//NSLog(@"GBSidebarItem#dealloc: removing view %@", aKey);
-		[[viewsDictionary objectForKey:aKey] removeFromSuperview];
+		[[_viewsDictionary objectForKey:aKey] removeFromSuperview];
 	}
+	[_viewsDictionary removeAllObjects];
 }
 
 

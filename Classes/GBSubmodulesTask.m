@@ -15,6 +15,11 @@
   [super dealloc];
 }
 
+- (NSArray*) arguments
+{
+	return [NSArray arrayWithObjects:@"submodule", @"status", nil];
+}
+
 - (NSArray*) submodulesFromStatusOutput:(NSData*) data
 {
   /* Example (from Express.js repository):
@@ -123,15 +128,6 @@
   {
     self.submodules = [self submodulesFromStatusOutput:self.output];
   }
-}
-
-
-
-# pragma mark implementation
-
-- (NSArray*) arguments
-{
-  return [NSArray arrayWithObjects:@"submodule", @"status", nil];
 }
 
 @end

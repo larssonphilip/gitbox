@@ -59,6 +59,7 @@
 		self.sidebarItem.object = self;
 		self.sidebarItem.draggable = NO;
 		self.sidebarItem.selectable = YES;
+		self.sidebarItem.editable = NO;
 		self.sidebarItem.cell = [[[GBSubmoduleCell alloc] initWithItem:self.sidebarItem] autorelease];
 		
 		self.viewController = [[[GBSubmoduleCloningViewController alloc] initWithNibName:@"GBSubmoduleCloningViewController" bundle:nil] autorelease];

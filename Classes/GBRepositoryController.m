@@ -337,8 +337,10 @@
 		{
 			if ([matchingSubmodule isCloned] == [updatedSubmodule isCloned]) // persistence status is the same, nothing really to do here
 			{
+				BOOL shouldUpdate = (matchingSubmodule.status != updatedSubmodule.status);
 				matchingController.submodule = updatedSubmodule;
 				[updatedSubmoduleControllers addObject:matchingController];
+				if (shouldUpdate) [matchingController.sidebarItem update];
 			}
 			else // cloned status has changed, create a new controller, but reuse sidebarItem
 			{
