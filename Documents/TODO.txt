@@ -54,7 +54,7 @@ Gitbox 1.6 misc items:
 
 - bug: submodules' loading causes stage refresh delays or similar glitches.
 
-- submodules: rename "update" button to "checkout", so it's clear what it does.
+- submodules: checkout submodule
 - submodules: submodule cloning ctrl should be replaced when download/cloning is finished.
 - submodules: automatically update submodule after repo pull/merge if they are were totally in sync before (that is no development happened there)
 
@@ -93,8 +93,8 @@ Gitbox 1.6 misc items:
 
 - bug: remote URL with a space inside: 1) truncates 2) saves back to .git/config. See Bugs Inbox.
 
-- add .DS_Store to gitignore by default.
 
+- possible bugs with sidebar cells + views: if alternative view is drawn, then previously added one could have not been removed (especially if it's added by superclass).
 ? bug: remove views from sidebar item when switching owner object
 
 ? bug: after repo is removed, its spinner is still retained and is in the view. Should remove all views on [stop]. 
@@ -109,6 +109,8 @@ Gitbox 1.6 misc items:
 
 Misc done for 1.6:
 
+± add .DS_Store to gitignore by default. [filtering in GBChange]
++ submodules: rename "update" button to "checkout", so it's clear what it does.
 + submodules: cancelling of a cloning repo ctrl does not work (disabled cancel button)
 + submodules: do not show "close" button in place of "cancel" button.
 + submodules: reload submodules status on fsevents and update the sidebar if changed
