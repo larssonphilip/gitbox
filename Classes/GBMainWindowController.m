@@ -249,10 +249,15 @@
 		self.defaultDetailViewController.title = detailViewTitle;
 		newDetailController = self.defaultDetailViewController;
 	}
-	
-#if 0
-#warning BETA: personal build
-	windowTitle = [windowTitle stringByAppendingString:@" (beta build for Troy Murray aka @talltroym)"];
+
+#if DEBUG
+	{
+		NSString* version = [[NSBundle mainBundle] objectForInfoDictionaryKey:(NSString*)kCFBundleVersionKey];
+		if ([version rangeOfString:@"beta"].length > 0)
+		{
+			windowTitle = [windowTitle stringByAppendingFormat:@"  (%@)", version];
+		}
+	}
 #endif
 	
 	[self.window setTitle:windowTitle];
