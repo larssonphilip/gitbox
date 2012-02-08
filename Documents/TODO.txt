@@ -53,8 +53,9 @@ Gitbox 1.6 misc items:
 - test: committing without name/email in ~/.gitconfig
 
 - bug: submodules' loading causes stage refresh delays or similar glitches.
+- show submodule HEAD in status in changes list.
 
-- submodules: checkout submodule
++ submodules: checkout submodule
 - submodules: submodule cloning ctrl should be replaced when download/cloning is finished.
 - submodules: automatically update submodule after repo pull/merge if they are were totally in sync before (that is no development happened there)
 
@@ -66,7 +67,7 @@ Gitbox 1.6 misc items:
 
 - check that undo stack works after playling with submodules.
 
-- submodules: case 1: user clones a repo which has some submodules => needs init, display "download" button for submodules in sidebar
++ submodules: case 1: user clones a repo which has some submodules => needs init, display "download" button for submodules in sidebar
 - submodules: case 2: user pulls a repo which has some submodules updated => needs pull
 - submodules: case 3: user pulls a repo which has some submodules updated, but his submodule itself is checked out on some branch => needs fetch, not pull
 - submodules: case 4: user clones the repo inside the repo => needs to display as a non-tracked submodule which can be tracked
@@ -92,6 +93,10 @@ Gitbox 1.6 misc items:
 - maybe: show the version of a submodule 
 
 - bug: remote URL with a space inside: 1) truncates 2) saves back to .git/config. See Bugs Inbox.
+
+- ui: show spinner after some operation takes longer than expected
+- ui: implement spinner for indeterminate tasks (with color switch support) and wetransfer-like spinning progress sector (shows progress using sector + rotates it to present activity).
+- ui: for two above: implement OASuperActivityIndicator with stack API, spinning progress, color switch and lazy API (to avoid showing spinner for short tasks of 1-2 seconds).
 
 
 - possible bugs with sidebar cells + views: if alternative view is drawn, then previously added one could have not been removed (especially if it's added by superclass).
@@ -257,9 +262,6 @@ Unsorted:
 - new repo: instead of creating local .gitignore, check on launch if we have ~/.gitignore. If we don't, then create one with default .DS_Store entries. Display short intro in the empty stage - "To start, add some files and commit them."
 - changes: show mode change as a gray "0755 -> 0644" to the right of the file name. (If only mode has changed, then show it in place of the status)
 
-- ui: show spinner after some operation takes longer than expected
-- ui: implement spinner for indeterminate tasks (with color switch support) and wetransfer-like spinning progress sector (shows progress using sector + rotates it to present activity).
-- ui: for two above: implement OASuperActivityIndicator with stack API, spinning progress, color switch and lazy API (to avoid showing spinner for short tasks of 1-2 seconds).
 - ui: cmd+return should stage all if nothing is selected, but have something on stage (esp. when history view is highlighted)
 
 - tags: make sure you cannot add a tag with the same name again

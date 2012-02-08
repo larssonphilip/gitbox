@@ -1,5 +1,7 @@
 #import "GBSubmoduleController.h"
 #import "GBSubmodule.h"
+#import "GBRepository.h"
+#import "GBStage.h"
 #import "GBSubmoduleCell.h"
 #import "GBSidebarItem.h"
 
@@ -54,7 +56,17 @@
 
 - (IBAction) updateSubmodule:(id)sender
 {
-	// Tell parent to update this submodule.
+	[self pushSpinning];
+	[self pushDisabled];
+	
+	[self.submodule updateHeadWithBlock:^{
+		[self popSpinning];
+		[self popDisabled];
+#warning TODO: check that this does not break anything. Should normally go to parent repo ctrl.
+		[self.submodule.parentRepository.stage updateStageWithBlock:^(BOOL contentDidChange) {
+			
+		}];
+	}];
 }
 
 @end

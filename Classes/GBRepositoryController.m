@@ -76,14 +76,8 @@
 
 - (NSImage*) icon;
 
-- (void) pushDisabled;
-- (void) popDisabled;
-
 - (void) pushRemoteBranchesDisabled;
 - (void) popRemoteBranchesDisabled;
-
-- (void) pushSpinning;
-- (void) popSpinning;
 
 
 - (void) updateWhenGotFocus;

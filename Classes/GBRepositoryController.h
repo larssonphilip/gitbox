@@ -115,5 +115,13 @@
 - (IBAction) search:(id)sender; // posts notification repositoryControllerSearchDidStart:
 - (IBAction) cancelSearch:(id)sender; // posts notification repositoryControllerSearchDidEnd:
 
+// For subclasses
+
+- (void) pushDisabled;
+- (void) popDisabled;
+
+- (void) pushSpinning;
+- (void) popSpinning;
+
 
 @end
