@@ -52,6 +52,7 @@ Gitbox 1.6 misc items:
 
 - test: committing without name/email in ~/.gitconfig
 
+- checkout button -> "sync" ?
 - bug: submodules' loading causes stage refresh delays or similar glitches.
 - show submodule HEAD in status in changes list.
 
