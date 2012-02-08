@@ -53,6 +53,7 @@
 	[self.outlineView setDraggingSourceOperationMask:NSDragOperationEvery forLocal:YES];
 	[self.outlineView setDraggingSourceOperationMask:NSDragOperationEvery forLocal:NO];
 	[self.outlineView setMenu:[self defaultMenu]];
+	[self.outlineView setAutoresizesOutlineColumn:NO];
 	[self updateBuyButton];
 	[self updateContents];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(licenseDidUpdate:) name:OALicenseDidUpdateNotification object:nil];

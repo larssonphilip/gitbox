@@ -44,7 +44,7 @@ Gitbox 1.6 Release Notes
 ✓ Fixed bug with ignoring a file when .gitignore does not exist (file was not added to .gitignore).
 ✓ Fixed bug with title duplication in the branch menus.
 ✓ Fixed bugs and crashes in authentication session.
-
+✓ Fixed sidebar alignment bug.
  
 --
 
@@ -79,10 +79,9 @@ Gitbox 1.6 misc items:
 
 - submodules: do not forget to "git submodule add <url> <path>" after path update (same for remove, maybe)
 
-- bug: when submodules are opened, all parent items (e.g. groups) are opened as well. Shouldn't do that. Also, remember the submodules in prefs.plist
+- bug: when submodules are opened, all parent items (e.g. groups) are opened as well. Shouldn't do that. Also, remember the submodules in prefs.plist [seems like the groups are not opened]
 - bug: if pushed from the terminal, commits difference is not recalculated (green dots remain).
 - bug: gitbox does not honor merge.ff setting to do "git merge --no-ff"
-- bug: on launch, the sidebar badges are shifted to the edge (maybe when scroll bar is visible or not). Same bug when submodules are loaded and expanded.
 - bug: after commit and refresh of the history, sometimes the stage remains non-updated.
 
 - maybe: update sidebar item and repository when update is finished
@@ -99,6 +98,11 @@ Gitbox 1.6 misc items:
 - ui: for two above: implement OASuperActivityIndicator with stack API, spinning progress, color switch and lazy API (to avoid showing spinner for short tasks of 1-2 seconds).
 
 
+- bug: when focusing back to a prompt sheet (e.g. tag name) text is cleared.
+
+- allow force update tags.
+- notify that the tag is already taken when you type it's name.
+
 - possible bugs with sidebar cells + views: if alternative view is drawn, then previously added one could have not been removed (especially if it's added by superclass).
 ? bug: remove views from sidebar item when switching owner object
 
@@ -114,6 +118,7 @@ Gitbox 1.6 misc items:
 
 Misc done for 1.6:
 
++ bug: on launch, the sidebar badges are shifted to the edge (maybe when scroll bar is visible or not). Same bug when submodules are loaded and expanded.
 ± add .DS_Store to gitignore by default. [filtering in GBChange]
 + submodules: rename "update" button to "checkout", so it's clear what it does.
 + submodules: cancelling of a cloning repo ctrl does not work (disabled cancel button)
