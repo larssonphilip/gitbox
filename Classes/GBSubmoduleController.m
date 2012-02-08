@@ -59,12 +59,20 @@
 	[self pushSpinning];
 	[self pushDisabled];
 	
+	// Retain here because the parentRepo might be replaced already when checkout is done.
+	GBStage* stage = self.submodule.parentRepository.stage;
+	
 	[self.submodule updateHeadWithBlock:^{
-		[self popSpinning];
-		[self popDisabled];
+		
+		// 1. Predict the status before we actually update the stage of the parent to avoid blinking of "checkout" button
+		// 2. Don't need that because we'll stop spinning when stage is updated.
+		// 3. This doesn't really work, so let's predict the status.
+		self.submodule.status = GBSubmoduleStatusUpToDate; 
+
 #warning TODO: check that this does not break anything. Should normally go to parent repo ctrl.
-		[self.submodule.parentRepository.stage updateStageWithBlock:^(BOOL contentDidChange) {
-			
+		[stage updateStageWithBlock:^(BOOL contentDidChange) {
+			[self popSpinning];
+			[self popDisabled];
 		}];
 	}];
 }
