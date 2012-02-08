@@ -55,7 +55,6 @@ Gitbox 1.6 misc items:
 - bug: submodules' loading causes stage refresh delays or similar glitches.
 - show submodule HEAD in status in changes list.
 
-+ submodules: checkout submodule
 - submodules: submodule cloning ctrl should be replaced when download/cloning is finished.
 - submodules: automatically update submodule after repo pull/merge if they are were totally in sync before (that is no development happened there)
 
@@ -97,7 +96,7 @@ Gitbox 1.6 misc items:
 - ui: implement spinner for indeterminate tasks (with color switch support) and wetransfer-like spinning progress sector (shows progress using sector + rotates it to present activity).
 - ui: for two above: implement OASuperActivityIndicator with stack API, spinning progress, color switch and lazy API (to avoid showing spinner for short tasks of 1-2 seconds).
 
-
+- show expansion arrow on a "+" button in toolbar.
 - bug: when focusing back to a prompt sheet (e.g. tag name) text is cleared.
 
 - allow force update tags.
@@ -117,6 +116,8 @@ Gitbox 1.6 misc items:
 
 
 Misc done for 1.6:
+
++ submodules: checkout submodule
 
 + bug: on launch, the sidebar badges are shifted to the edge (maybe when scroll bar is visible or not). Same bug when submodules are loaded and expanded.
 ± add .DS_Store to gitignore by default. [filtering in GBChange]
@@ -249,6 +250,8 @@ Gitbox Next:
 
 Unsorted:
 
+
+- rename local and remote branches
 - bug: cannot clone from github when app is not launched.
 - bug: cannot drag filename into a search field.
 - bug: if focused in a commit header (NSTextView), cmd+e and cmd+f do not jump to the main search field.
