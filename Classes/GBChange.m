@@ -150,7 +150,14 @@
 	{
 		return NO;
 	}
-		
+
+	// Return NO if it's a .DS_Store item.
+	
+	if ([self.srcURL.path rangeOfString:@".DS_Store"].length > 0)
+	{
+		return NO;
+	}
+
 	return YES;
 }
 
