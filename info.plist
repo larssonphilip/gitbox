@@ -81,7 +81,7 @@
 	<key>NSMainNibFile</key>
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
-	<string>NSApplication</string>
+	<string>GBApplication</string>
 	<key>NSServices</key>
 	<array/>
 	<key>SUEnableAutomaticChecks</key>
