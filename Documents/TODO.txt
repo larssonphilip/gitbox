@@ -52,6 +52,7 @@ Gitbox 1.6 misc items:
 
 - test: committing without name/email in ~/.gitconfig
 
+- when window not focused, ignore FS events for longer periodsto avoid tons of refreshes while typing.
 + show submodule HEAD in status in changes list.
 + show submodule "dirty" status in changes list.
 - show submodule HEAD in status in sidebar.
