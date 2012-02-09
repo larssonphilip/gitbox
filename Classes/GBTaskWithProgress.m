@@ -3,6 +3,10 @@
 
 @interface GBTaskWithProgress ()
 @property(nonatomic, retain) NSDate* indeterminateActivityStartDate;
+
+// Returns zero value if could not parse a progress.
++ (double) progressForDataChunk:(NSData*)dataChunk statusRef:(NSString**)statusRef sendingRatio:(double)sendingRatio;
+
 @end
 
 @implementation GBTaskWithProgress
@@ -12,6 +16,7 @@
 @synthesize progress;
 @synthesize extendedProgress;
 @synthesize indeterminateActivityStartDate;
+@synthesize sendingRatio;
 
 - (void) dealloc
 {
@@ -19,6 +24,15 @@
 	self.status = nil;
 	self.indeterminateActivityStartDate = nil;
 	[super dealloc];
+}
+
+- (id)init
+{
+	if (self = [super init])
+	{
+		sendingRatio = 0.8;
+	}
+	return self;
 }
 
 - (BOOL) isRealTime
@@ -62,13 +76,14 @@
 	return 0.0;
 }
 
-+ (double) progressForDataChunk:(NSData*)dataChunk statusRef:(NSString**)statusRef
++ (double) progressForDataChunk:(NSData*)dataChunk statusRef:(NSString**)statusRef sendingRatio:(double)sendingRatio
 {
 	double newProgress = 0.0;
 	
-	static double compressingRatio = 0.1;
-	static double resolvingDeltasRatio = 0.1;
-	static double sendingRatio = 0.8;
+	sendingRatio = MAX(MIN(sendingRatio, 1.0), 0.0);
+	
+	double compressingRatio = (1.0 - sendingRatio)*0.5;
+	double resolvingDeltasRatio = 1.0 - compressingRatio - sendingRatio;
 	
 	NSString* string = [[dataChunk UTF8String] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 	NSArray* lines = [string componentsSeparatedByCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"\n\r"]];
@@ -131,7 +146,7 @@
 {
 	NSString* newStatus = self.status;
 	
-	double newProgress = [[self class] progressForDataChunk:dataChunk statusRef:&newStatus];
+	double newProgress = [[self class] progressForDataChunk:dataChunk statusRef:&newStatus sendingRatio:sendingRatio];
 	if (newProgress <= 0) newProgress = self.progress;
 	self.status = newStatus;
     
