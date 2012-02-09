@@ -101,6 +101,7 @@
 - (NSString*) displayName
 {
 	if (self.name) return [self nameWithRemoteAlias];
+	if (self.commitId.length > 8) return [self.commitId substringWithRange:NSMakeRange(0, 8)];
 	if (self.commitId) return self.commitId;
 	return nil;
 }
