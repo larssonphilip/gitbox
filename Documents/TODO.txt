@@ -57,6 +57,9 @@ Gitbox 1.6 misc items:
 - show submodule HEAD in status in sidebar.
   - submodule controller should subscribe to its stage and notify parent when stage is changed.
   - OR: just see if the rev. is the same, then
+- HEAD: think about how to depict the src/dst versions. 
+- maybe display HEAD in grey next to the submodule name?
+
 - submodules: submodule cloning ctrl should be replaced when download/cloning is finished.
 - submodules: automatically update submodule after repo pull/merge if they are were totally in sync before (that is no development happened there)
 
