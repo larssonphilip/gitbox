@@ -22,9 +22,9 @@ Major Features:
 
 Gitbox 1.6 Release Notes
 
-- Fantastic submodules support: automatic display for all submodules, one-click download and update.
+✓ Fantastic submodules support: automatic display for all submodules, one-click download and reset.
+- Submodules are reset automatically when pulling, switching branches or checking out commits.
 ✓ Automatic repository optimization in background.
-✓ 
 
 ✓ Tags are sorted in natural order and with respect to version numbers.
 ✓ When a file is added to ignore list, it is also untracked (git rm --cached).
@@ -52,7 +52,12 @@ Gitbox 1.6 misc items:
 
 - test: committing without name/email in ~/.gitconfig
 
+- bug: stage: when selecting with keyboard and stage refreshes, it loses the initial point of selection.
 - show submodule HEAD in status in changes list.
++ show submodule "dirty" status in changes list.
+- show submodule HEAD in status in sidebar.
+  - submodule controller should subscribe to its stage and notify parent when stage is changed.
+  - OR: just see if the rev. is the same, then
 - submodules: submodule cloning ctrl should be replaced when download/cloning is finished.
 - submodules: automatically update submodule after repo pull/merge if they are were totally in sync before (that is no development happened there)
 
@@ -81,12 +86,11 @@ Gitbox 1.6 misc items:
 - bug: gitbox does not honor merge.ff setting to do "git merge --no-ff"
 - bug: after commit and refresh of the history, sometimes the stage remains non-updated.
 
-- maybe: update sidebar item and repository when update is finished
-- maybe: store a weak ref to parent repo ctrl from GBSubmoduleController -> this would allow for submodule settings update when you change remote URL inside the submodule; but maybe indirect access by repo URL will be enough (or similar)
+? maybe: update sidebar item and repository when update is finished [about submodules]
+? maybe: store a weak ref to parent repo ctrl from GBSubmoduleController -> this would allow for submodule settings update when you change remote URL inside the submodule; but maybe indirect access by repo URL will be enough (or similar)
 
 - feature: rename repositories
 - license prefs: button for buy in App Store. Explain how to remove the app before installing the latest version.
-- maybe: show the version of a submodule 
 
 - bug: remote URL with a space inside: 1) truncates 2) saves back to .git/config. See Bugs Inbox.
 
@@ -115,6 +119,27 @@ Gitbox 1.6 misc items:
 
 
 Misc done for 1.6:
+
++ settings: add gear button on the left
++ settings: delete local branch
++ settings: delete remote branch
+
++ history: flag interesting commits (e.g. for bisect)
++ bug: general: when a long process modifies the working directory, the FSEvents wait till the very end, but should refresh each 2 seconds or so.
++ bug: toolbar: sometimes some duplicate branch name appears in popdown menus.
++ bug: askpass crashes with "task" selector when tries to update a repo with missing/invalid ssh key.
++ bug: search: when commits are updated, the selected one does not show the proper view in the commitviewcontroller. [not important]
++ bug: (rare) suddenly the search field became disabled. See how enabling/disabling work across repo switching to fix it.
+
++ also override presentError: on main window controller to put error in a queued sheet
++ general: since push/pull happen in the same dispatch queue as any other git command, while sending a big pack of data we simply cannot load commits and changes anymore. Should put up different queues for different tasks: changes can be loaded and staged  separately from committing and branch manipulation, local branches can be edited while doing push.
++ general: eliminate unncesessary per-repo queued tasks (GBRepository launchTask:withBlock:). For instance, for loading commit changes. (So we can update something while long networking command is running.)
+
++ general: Add common OS X to the global ~/.gitignore https://github.com/github/gitignore
++ general: check that opendiff is selected by default on new start + it is not selected if it is missing
++ failed pull: need commit first: "error: Your local changes to 'TODO.txt' would be overwritten by merge.  Aborting. Please, commit your changes or stash them before you can merge. Updating c3c800f..87bc4f4"
++ failed merge
++ failed push (actually, should prevent from pushing when some commits are fetched)
 
 + remove download button from submodule item after download is completed. Refresh submodules immediately.
 + checkout button -> "reset" ?
@@ -254,7 +279,6 @@ Gitbox Next:
 
 Unsorted:
 
-
 - rename local and remote branches
 - bug: cannot clone from github when app is not launched.
 - bug: cannot drag filename into a search field.
@@ -368,7 +392,7 @@ Features:
 
 ? sidebar: "Duplicate..." menu item to make a quick clone + copy of .git/config.
 - sidebar: double click opens item in finder (patraque 987)
-- sidebar: edit repo name and store it in .git/vendor/gitbox/info.plist - too confusing? maybe just rename local folder?
+- sidebar: edit repo name and store it in sidebar prefs plist
 
 - general: svn support ('git svn clone', 'git svn rebase' and 'git svn dcommit') - see also e-mail conversation with some script which ports tags and branches
 - general: mercurial support
@@ -447,12 +471,7 @@ Features:
 - stage: conflict: highlight conflicted changes, allow to choose one of the versions 
 - stage: conflict: allow visual merge for conflicted files
 
-- settings: add gear button on the left
-- settings: delete local branch
-- settings: delete remote branch
 
-- site: student discount info
-- site: 8 features with smaller icons on the side
 
 - site: help
 - screencasts:
@@ -492,8 +511,8 @@ Enhancements:
 
 - stage: for deleted file rename menu item "Revert File..." to "Restore File..."
 
-- enhancement: fsevents: push dotgit-only pause when doing stage updates, fetch, config updates or other internal changes.
-- enhancement: fsevents: on folder update, while .git is on pause, update stage *without* updating the index, so we don't generate more .git/ events
+? enhancement: fsevents: push dotgit-only pause when doing stage updates, fetch, config updates or other internal changes.
+? enhancement: fsevents: on folder update, while .git is on pause, update stage *without* updating the index, so we don't generate more .git/ events
 
 - enhancement: maintain scroll position in history (per repo) when iterating over the repos
 - enhancement: maintain selection of the file when switching commits
@@ -507,8 +526,6 @@ Enhancements:
 
 - maybe try to replace pull with merge+fetch+merge and perform fetch on another queue to make staging work independently (also for push)
 - [NSApp requestUserAttention:] when new commits are fetched (automatically or not).
-
-- also override presentError: on main window controller to put error in a queued sheet
   
 ? when error is not surpressed for automatic tasks, remember the first such error and present it when the repo is selected by user
 - changes: parse changes in background hook instead of a main thread didFinish
@@ -517,15 +534,12 @@ Enhancements:
 - p4merge support - awful perforce crap
 
 
-- general: since push/pull happen in the same dispatch queue as any other git command, while sending a big pack of data we simply cannot load commits and changes anymore. Should put up different queues for different tasks: changes can be loaded and staged  separately from committing and branch manipulation, local branches can be edited while doing push.
-- general: eliminate unncesessary per-repo queued tasks (GBRepository launchTask:withBlock:). For instance, for loading commit changes. (So we can update something while long networking command is running.)
 - general: do different initial updates for remembered repos and opened/cloned ones:
   - general: for the remembered repos first load submodules with spinner to update sidebar, then load branches and history (but not stage/commit changes)
   - general: for added repos do the full initial update like it's done today
 
-- general: Add common OS X to the global ~/.gitignore https://github.com/github/gitignore
 - general: check behavior when opendiff is missing
-- general: check that opendiff is selected by default on new start + it is not selected if it is missing
+
 - general: on start, touch a file inside gitbox-{APP_VERSION}-git.bundle and remove all bundles where such file is more than 1 month old.
 - general: if git.bundle.tar is not found inside .app, present the UI to download it from gitboxapp.com (in anticipation to FSF's fight with Apple)
 - general: think on the best and consistent way to terminate tasks
@@ -542,9 +556,6 @@ Enhancements:
 - stage: autocomplete file names when TAB pressed.
 
 Error messages translation to English:
-- failed pull: need commit first: "error: Your local changes to 'TODO.txt' would be overwritten by merge.  Aborting. Please, commit your changes or stash them before you can merge. Updating c3c800f..87bc4f4"
-- failed merge
-- failed push (actually, should prevent from pushing when some commits are fetched)
 
 
 Bugs:
@@ -558,13 +569,10 @@ Bugs:
 - bug: new tag should be pushed to all remotes ASAP OR it should be colored green and count as a pending item (latter is better)
 - bug: when the file is committed, modified and in gitignore, it could be very hard to pull ("cannot merge, dirty working dir" error)
 
-- bug: askpass crashes with "task" selector when tries to update a repo with missing/invalid ssh key.
 - bug: stage: when having multiple selection and expanding it with keyboard, stage updates cause internal rest, so the selection does not change the same way when continuing pressing keystrokes. Should probably not replace stage content when it did not really change.
-
-- bug: search: when commits are updated, the selected one does not show the proper view in the commitviewcontroller. [not important]
 - bug/minor: when staging one of the same files, the last one is selected, not the one with the same name
 - bug: search: when parent commit is clicked it can be missing in the history. Should either not highlight it, or reset search state.
-- bug: (rare) suddenly the search field became disabled. See how enabling/disabling work across repo switching to fix it.
+
 - bug: maybe NSURL bookmark data becomes broken and leads to "outside of repository" errors.
 
 - (right now jump controller is disabled because of that) bug: minor issue: when quickly iterating through sidebar when repos are autofetched, the selection sometimes jumps. We should reset jump controller's block when selection is changed elsewhere.
@@ -586,7 +594,6 @@ Bugs:
 - bug: general: when /Developer is symlinked to another partition, opendiff cannot launch FileMerge: "exception raised trying to run FileMerge: launch path not accessible" [Jeff Snell <jeffsnell@mac.com>]
 - bug: general: git repo in dropbox causes gitbox to refresh frequently [Tom Martin <tom@devart.org>]
 
-- bug: toolbar: sometimes some duplicate branch name appears in popdown menus.
 - bug: toolbar: when removing a single server, remote branch remains and log is clean.
 - bug: toolbar: android repo checked out on a commit has branch menus disabled.
 
@@ -597,7 +604,7 @@ Bugs:
 - bug: changes: when quickly hitting "->" while changes haven't not load yet, right pane refuses first responder and user appears on the toolbar.
 
 - bug: site: paypal payment option does not allow coupon? [Luis Martins <luis.martins@multiweb.pt>]
-- bug: general: when a long process modifies the working directory, the FSEvents wait till the very end, but should refresh each 2 seconds or so.
+
 - maybe bug: stage: if the stage view is not selected, commit: action is not available
 
 
@@ -606,7 +613,6 @@ Some thoughts (possibly stupid):
 - general: do not require name and email for ~/.gitconfig 
 - general: allow switching to a system-provided git in preferences
 - history: mark as read/unread + automatic mark as read
-- history: flag interesting commits (e.g. for bisect)
 - changes: maybe 2 tabs: changes & tree (tree should show a status as usual)
 
 To read:
@@ -691,6 +697,9 @@ Gitbox 1.5 Release Notes
 
 Gitbox 1.5 misc items:
 
+
++ site: student discount info
++ site: 8 features with smaller icons on the side
 
 + history: undo for commit (sort of "amend commit")
 + history: undo for push
