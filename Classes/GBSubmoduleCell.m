@@ -49,7 +49,7 @@ static NSString* const kGBSubmoduleCellCheckoutButton = @"GBSubmoduleCellCheckou
 	if(self.submodule.status == GBSubmoduleStatusNotUpToDate && !self.sidebarItem.visibleSpinning && self.sidebarItem.isExpanded)
 	{
 		return [self drawButtonAndReturnRemainingRect:rect 
-												title:NSLocalizedString(@"Checkout", @"GBSubmodule") 
+												title:NSLocalizedString(@"Reset", @"GBSubmodule") 
 												  key:kGBSubmoduleCellCheckoutButton
 											   action:@selector(updateSubmodule:)];
 	}
