@@ -1206,7 +1206,7 @@
 	if (!self.repository) return;
 	if (![GBOptimizeRepositoryController randomShouldOptimize]) return;
 	
-	[[GBOptimizeRepositoryController controllerWithRepository:self.repository] presentSheetInMainWindow];
+	[[GBOptimizeRepositoryController controllerWithRepository:self.repository] presentSheetInMainWindowSilent:YES];
 }
 
 
