@@ -52,11 +52,7 @@ Gitbox 1.6 misc items:
 
 - test: committing without name/email in ~/.gitconfig
 
-- remove download button from submodule item after download is completed. Refresh submodules immediately.
-- checkout button -> "reset" ?
-- bug: submodules' loading causes stage refresh delays or similar glitches.
 - show submodule HEAD in status in changes list.
-
 - submodules: submodule cloning ctrl should be replaced when download/cloning is finished.
 - submodules: automatically update submodule after repo pull/merge if they are were totally in sync before (that is no development happened there)
 
@@ -104,6 +100,7 @@ Gitbox 1.6 misc items:
 - allow force update tags.
 - notify that the tag is already taken when you type it's name.
 
+- bug: submodules' loading causes stage refresh delays or similar glitches.
 - possible bugs with sidebar cells + views: if alternative view is drawn, then previously added one could have not been removed (especially if it's added by superclass).
 ? bug: remove views from sidebar item when switching owner object
 
@@ -119,6 +116,8 @@ Gitbox 1.6 misc items:
 
 Misc done for 1.6:
 
++ remove download button from submodule item after download is completed. Refresh submodules immediately.
++ checkout button -> "reset" ?
 
 + bug: sort submodules by name, not by path for easier locating them.
 + bug: background git-gc sheet causes Dock icon to bounce

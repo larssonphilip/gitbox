@@ -3,6 +3,7 @@
 #import "GBTask.h"
 
 NSString* const GBSubmoduleStatusNotCloned   = @"GBSubmoduleStatusNotCloned";
+NSString* const GBSubmoduleStatusJustCloned  = @"GBSubmoduleStatusJustCloned";
 NSString* const GBSubmoduleStatusUpToDate    = @"GBSubmoduleStatusUpToDate";
 NSString* const GBSubmoduleStatusNotUpToDate = @"GBSubmoduleStatusNotUpToDate";
 
@@ -29,11 +30,6 @@ NSString* const GBSubmoduleStatusNotUpToDate = @"GBSubmoduleStatusNotUpToDate";
 - (NSURL*) localURL
 {
 	return [self.parentRepository URLForRelativePath:self.path];
-}
-
-- (BOOL) isCloned
-{
-	return ![self.status isEqualToString:GBSubmoduleStatusNotCloned];
 }
 
 - (void) updateHeadWithBlock:(void(^)())block

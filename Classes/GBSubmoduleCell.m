@@ -34,7 +34,7 @@ static NSString* const kGBSubmoduleCellCheckoutButton = @"GBSubmoduleCellCheckou
 		[self drawSpinnerIfNeededInRectAndReturnRemainingRect:rect];
 	}
 	
-	if (!self.submodule.isCloned && !self.sidebarItem.visibleSpinning && self.sidebarItem.isExpanded)
+	if ([self.submodule.status isEqualToString:GBSubmoduleStatusNotCloned] && !self.sidebarItem.visibleSpinning && self.sidebarItem.isExpanded)
 	{
 		return [self drawButtonAndReturnRemainingRect:rect 
 												title:NSLocalizedString(@"Download", @"GBSubmodule") 

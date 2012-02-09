@@ -308,7 +308,7 @@
 		
 		if (!matchingController)
 		{
-			if ([updatedSubmodule isCloned])
+			if (![updatedSubmodule.status isEqualToString:GBSubmoduleStatusNotCloned])
 			{
 				// Create a new regular controller
 				GBSubmoduleController* ctrl = [GBSubmoduleController controllerWithSubmodule:updatedSubmodule];
@@ -329,7 +329,7 @@
 		}
 		else // there's a matching controller
 		{
-			if ([matchingSubmodule isCloned] == [updatedSubmodule isCloned]) // persistence status is the same, nothing really to do here
+			if ([matchingSubmodule.status isEqualToString:updatedSubmodule.status]) // persistence status is the same, nothing really to do here
 			{
 				BOOL shouldUpdate = (matchingSubmodule.status != updatedSubmodule.status);
 				matchingController.submodule = updatedSubmodule;
@@ -338,7 +338,7 @@
 			}
 			else // cloned status has changed, create a new controller, but reuse sidebarItem
 			{
-				if ([updatedSubmodule isCloned])
+				if (![updatedSubmodule.status isEqualToString:GBSubmoduleStatusNotCloned])
 				{
 					GBSubmoduleController* ctrl = [GBSubmoduleController controllerWithSubmodule:updatedSubmodule];
 					[updatedSubmoduleControllers addObject:ctrl];

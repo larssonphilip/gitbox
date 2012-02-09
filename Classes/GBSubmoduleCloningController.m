@@ -127,9 +127,7 @@
 		
 		//NSLog(@"!! Task finished. Decrementing a spinner.");
 		self.isSpinning--;
-		[self.sidebarItem removeAllViews];
-		[self.sidebarItem update];
-		
+
 		self.task = nil;
 		
 		if (t.authenticationFailed && !t.authenticationCancelledByUser)
@@ -155,9 +153,14 @@
 		}
 		else
 		{
+			self.submodule.status = GBSubmoduleStatusJustCloned;
+			
 			NSLog(@"GBSubmoduleCloningController: did finish clone at %@", self.submodule.path);
 			[self notifyWithSelector:@selector(submoduleCloningControllerDidFinish:)];
 		}
+		
+		[self.sidebarItem removeAllViews];
+		[self.sidebarItem update];
 	}];
 }
 
