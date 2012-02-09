@@ -10,6 +10,7 @@ extern NSString* const GBSubmoduleStatusNotUpToDate;
 @property(nonatomic, copy) NSURL* remoteURL;
 @property(nonatomic, copy) NSString* path;
 @property(nonatomic, copy) NSString* status;
+@property(nonatomic, copy) NSString* commitId;
 @property(nonatomic, assign) GBRepository* parentRepository;
 
 @property(nonatomic, readonly) NSURL* localURL;

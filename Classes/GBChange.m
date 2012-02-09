@@ -5,6 +5,8 @@
 #import "GBChangeCell.h"
 #import "GBSearchQuery.h"
 
+#import "GBSubmodule.h"
+
 #import "OATask.h"
 
 #import "NSString+OAGitHelpers.h"
@@ -226,7 +228,17 @@
 	return self.cachedDstIcon;  
 }
 
-
+- (GBSubmodule*) submodule
+{
+	for (GBSubmodule* sm in self.repository.submodules)
+	{
+		if (sm.path && [self.srcURL.relativePath isEqual:sm.path])
+		{
+			return sm;
+		}
+	}
+	return nil;
+}
 
 
 - (NSString*) statusForStatusCode:(NSString*)aStatusCode
@@ -291,6 +303,14 @@
 		if ([self isDirtySubmodule])
 		{
 			return NSLocalizedString(@"Dirty", @"Change");
+		}
+		if ([self isSubmodule])
+		{
+			GBSubmodule* submodule = [self submodule];
+			if (submodule.commitId.length > 8)
+			{
+				return [submodule.commitId substringWithRange:NSMakeRange(0, 8)];
+			}
 		}
 		return NSLocalizedString(@"Modified", @"Change");
 	}

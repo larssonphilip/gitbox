@@ -95,7 +95,7 @@
 		GBSubmodule *submodule = [[GBSubmodule new] autorelease];
 		submodule.path         = submodulePath;
 		submodule.remoteURL    = submoduleURL;
-		
+		submodule.commitId     = submoduleRef;
 		if (!leadingChar || [leadingChar isEqualToString:@""])
 		{
 			submodule.status = GBSubmoduleStatusUpToDate;

@@ -16,14 +16,15 @@ NSString* const GBSubmoduleStatusNotUpToDate = @"GBSubmoduleStatusNotUpToDate";
 @synthesize remoteURL=_remoteURL;
 @synthesize path=_path;
 @synthesize status=_status;
+@synthesize commitId=_commitId;
 
 - (void) dealloc
 {
 	//NSLog(@"GBSubmodule#dealloc");
-	self.remoteURL = nil;
-	self.path      = nil;
-	self.status    = nil;
-	
+	[_remoteURL release];
+	[_path release];
+	[_status release];
+	[_commitId release];
 	[super dealloc];
 }
 
@@ -37,6 +38,11 @@ NSString* const GBSubmoduleStatusNotUpToDate = @"GBSubmoduleStatusNotUpToDate";
 	GBTask* task = [self.parentRepository task];
 	task.arguments = [NSArray arrayWithObjects:@"submodule", @"update", @"--init", @"--", self.localURL.path, nil];
 	[self.parentRepository launchTask:task withBlock:block];
+}
+
+- (NSString*) description
+{
+	return [NSString stringWithFormat:@"<%@:%p path:%@ URL:%@ status:%@ head:%@>", [self class], self, self.path, self.remoteURL, self.status, self.commitId];
 }
 
 
