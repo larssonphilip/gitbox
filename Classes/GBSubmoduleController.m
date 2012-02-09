@@ -54,7 +54,7 @@
 	return aMenu;
 }
 
-- (IBAction) updateSubmodule:(id)sender
+- (IBAction) resetSubmodule:(id)sender
 {
 	[self pushSpinning];
 	[self pushDisabled];

@@ -51,7 +51,7 @@ static NSString* const kGBSubmoduleCellCheckoutButton = @"GBSubmoduleCellCheckou
 		return [self drawButtonAndReturnRemainingRect:rect 
 												title:NSLocalizedString(@"Reset", @"GBSubmodule") 
 												  key:kGBSubmoduleCellCheckoutButton
-											   action:@selector(updateSubmodule:)];
+											   action:@selector(resetSubmodule:)];
 	}
 	else
 	{
