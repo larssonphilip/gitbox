@@ -52,6 +52,7 @@ Gitbox 1.6 misc items:
 
 - test: committing without name/email in ~/.gitconfig
 
+- bug: background git-gc sheet causes Dock icon to bounce
 - bug: sort submodules by name, not by path for easier locating them.
 - remove download button from submodule item after download is completed. Refresh submodules immediately.
 - checkout button -> "sync" ?
