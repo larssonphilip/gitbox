@@ -154,6 +154,8 @@
 
 - (void) setChanges:(NSArray *)aChanges
 {
+	if (aChanges && self.changes == aChanges) return;
+	
 	for (GBChange* change in self.changes)
 	{
 		if (change.delegate == (id)self) change.delegate = nil;
@@ -891,12 +893,6 @@
 	return YES;
 }
 
-//- (NSIndexSet *)tableView:(NSTableView *)aTableView selectionIndexesForProposedSelection:(NSIndexSet *)proposedSelectionIndexes
-//{
-//  return [proposedSelectionIndexes indexesPassingTest:^(NSUInteger index, BOOL* stop){
-//    return (BOOL)(index != 0);
-//  }];
-//}
 
 // This avoids changing selection when checkbox is clicked.
 // NOTE: this method is not called because parent class implements tableView:selectionIndexesForProposedSelection:

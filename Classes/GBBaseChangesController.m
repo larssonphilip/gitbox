@@ -15,7 +15,9 @@
 - (void) updateChanges;
 @end
 
-@implementation GBBaseChangesController
+@implementation GBBaseChangesController {
+	int delaySetChanges;
+}
 
 @synthesize repositoryController;
 @synthesize commit;
@@ -74,7 +76,10 @@
 	
 	[commit addObserverForAllSelectors:self];
 	
-	self.changes = commit.changes;
+	//if (!delaySetChanges)
+	{
+		self.changes = commit.changes;
+	}
 }
 
 
@@ -87,7 +92,10 @@
 - (void) commitDidUpdateChanges:(GBCommit*)aCommit
 {
 	if (aCommit != self.commit) return;
-	self.changes = aCommit.changes;
+	//if (!delaySetChanges)
+	{
+		self.changes = aCommit.changes;
+	}
 }
 
 
@@ -274,8 +282,20 @@ dataCellForTableColumn:(NSTableColumn*)aTableColumn
 	return nil;
 }
 
+//- (void) delaySetChanges
+//{
+//	delaySetChanges++;
+//	double delayInSeconds = 0.8;
+//	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+//	dispatch_after(popTime, dispatch_get_main_queue(), ^{
+//		delaySetChanges--;
+//		self.changes = self.commit.changes;
+//	});
+//}
+
 - (NSIndexSet *)tableView:(NSTableView *)aTableView selectionIndexesForProposedSelection:(NSIndexSet *)proposedSelectionIndexes
 {
+//	[self delaySetChanges];
 	return [proposedSelectionIndexes indexesPassingTest:^(NSUInteger index, BOOL* stop){
 		return (BOOL)(index != 0);
 	}];

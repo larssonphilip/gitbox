@@ -123,6 +123,8 @@
 	
 	if (!isDragging)
 	{
+		CGFloat highlightedAlpha = 0.7;
+		NSString* status = [aChange.status lowercaseString];
 		NSColor* textColor = [NSColor colorWithCalibratedWhite:0.3 alpha:1.0];
 		
 		//    if ([aChange isAddedFile] || [aChange isUntrackedFile])
@@ -134,9 +136,15 @@
 		//      textColor = [NSColor colorWithCalibratedWhite:0.0 alpha:1.0]; //[NSColor colorWithCalibratedRed:0.6 green:0.1 blue:0.0 alpha:1.0];
 		//    }
 		
+		if ([aChange isDirtySubmodule])
+		{
+			textColor = [NSColor colorWithCalibratedRed:0.6 green:0.1 blue:0.0 alpha:1.0];
+			highlightedAlpha = 1.0;
+		}
+		
 		if ([self isHighlighted] && self.isFocused)
 		{
-			textColor = [NSColor colorWithCalibratedWhite:1.0 alpha:0.7];
+			textColor = [NSColor colorWithCalibratedWhite:1.0 alpha:highlightedAlpha];
 		}
 		
 		NSFont* font = [NSFont systemFontOfSize:11.0];
@@ -146,8 +154,6 @@
 											font, NSFontAttributeName,
 											self.truncatingParagraphStyle, NSParagraphStyleAttributeName,
 											nil] autorelease];
-		
-		NSString* status = [aChange.status lowercaseString];
 		
 		NSSize size = [status sizeWithAttributes:attributes];
 		

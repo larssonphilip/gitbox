@@ -187,13 +187,13 @@
 		[self initializeChange:aChange];
 		aChange.repository = self.repository;
 		aChange.statusScore = statusScore; // should set statusScore before setting a statusCode for correct calculation
-		aChange.statusCode = statusCode;
 		aChange.srcMode = srcMode;
 		aChange.dstMode = dstMode;
 		aChange.srcRevision = srcRevision;
 		aChange.dstRevision = dstRevision;
 		aChange.srcURL = [self.repository URLForRelativePath:srcPath];
 		aChange.dstURL = [self.repository URLForRelativePath:dstPath];
+		aChange.statusCode = statusCode;
 		
 		if ([aChange isRealChange])
 		{

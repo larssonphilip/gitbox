@@ -47,6 +47,8 @@
 - (BOOL) isDeletedFile;
 - (BOOL) isUntrackedFile;
 - (BOOL) isMovedOrRenamedFile;
+- (BOOL) isSubmodule;
+- (BOOL) isDirtySubmodule;
 - (NSComparisonResult) compareByPath:(id) other;
 - (NSString*) pathForIgnore;
 - (GBChange*) nilIfBusy;

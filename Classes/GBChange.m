@@ -198,7 +198,7 @@
 {
 	if (!self.cachedSrcIcon)
 	{
-		if ([self.srcMode isEqualToString:kGBChangeSubmoduleMode])
+		if ([self isSubmodule])
 		{
 			self.cachedSrcIcon = [NSImage imageNamed:NSImageNameFolder];
 		}
@@ -214,7 +214,7 @@
 {
 	if (!self.cachedDstIcon)
 	{
-		if ([self.dstMode isEqualToString:kGBChangeSubmoduleMode])
+		if ([self isSubmodule])
 		{
 			self.cachedDstIcon = [NSImage imageNamed:NSImageNameFolder];
 		}
@@ -283,8 +283,18 @@
 		if (statusScore < 100) return NSLocalizedString(@"Modified", @"Change"); // copy status will be denoted by the arrow between the src and dst
 		return NSLocalizedString(@"Copied", @"Change");
 	}
+	
 	if (c == 'D') return NSLocalizedString(@"Deleted", @"Change");
-	if (c == 'M') return NSLocalizedString(@"Modified", @"Change");
+	
+	if (c == 'M')
+	{
+		if ([self isDirtySubmodule])
+		{
+			return NSLocalizedString(@"Dirty", @"Change");
+		}
+		return NSLocalizedString(@"Modified", @"Change");
+	}
+		
 	if (c == 'T') return NSLocalizedString(@"Type changed", @"Change");
 	if (c == 'U') return NSLocalizedString(@"Unmerged", @"Change");
 	if (c == 'X') return NSLocalizedString(@"Unknown", @"Change");
@@ -339,6 +349,21 @@
 - (BOOL) isMovedOrRenamedFile
 {
 	return [self.statusCode isEqualToString:@"R"];
+}
+
+- (BOOL) isSubmodule
+{
+	return ([self.srcMode isEqualToString:kGBChangeSubmoduleMode] || [self.dstMode isEqualToString:kGBChangeSubmoduleMode]);
+}
+
+- (BOOL) isDirtySubmodule
+{
+	if (![self isSubmodule]) return NO;
+	
+	NSString* s = [self.srcRevision nonZeroCommitId];
+	NSString* d = [self.dstRevision nonZeroCommitId];
+	
+	return s && d && [s isEqualToString:d];
 }
 
 - (NSComparisonResult) compareByPath:(GBChange*) other
