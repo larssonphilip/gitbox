@@ -19,13 +19,18 @@
 
 - (void) presentSheetInMainWindow
 {
+	[self presentSheetInMainWindowSilent:NO];
+}
+
+- (void) presentSheetInMainWindowSilent:(BOOL)silent
+{
 	void(^block)(BOOL) = self.completionHandler;
 	
 	self.completionHandler = ^(BOOL cancelled){
 		if (block) block(cancelled);
 		[[GBMainWindowController instance] dismissSheet:self];
 	};
-	[[GBMainWindowController instance] presentSheet:self];
+	[[GBMainWindowController instance] presentSheet:self silent:silent];
 }
 
 @end
