@@ -12,7 +12,7 @@ static const double actionProbability = 0.05;
 #warning Debug: short intervals for optimize in background.
 static const NSTimeInterval idleInterval = 10.0;
 static const NSTimeInterval checkInterval = 3.0;
-static const double actionProbability = 0.5;
+static const double actionProbability = 0.1;
 #endif
 
 static NSTimeInterval lastResetTimestamp = 0;
@@ -67,6 +67,9 @@ static id monitor = nil;
 		
 	[self.progressIndicator setIndeterminate:YES];
 	[self.progressIndicator startAnimation:nil];
+	
+	gitgcTask.sendingRatio = 0.0; // as there's nothing to send.
+	
 	gitgcTask.progressUpdateBlock = ^{
 		double progress = gitgcTask.extendedProgress;
 		
