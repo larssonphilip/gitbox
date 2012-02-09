@@ -1,3 +1,4 @@
+#import "GBApplication.h"
 #import "GBMainWindowController.h"
 #import "GBRootController.h"
 #import "GBToolbarController.h"
@@ -359,6 +360,11 @@
 
 - (void) presentSheet:(id)aWindowOrWindowController
 {
+	[self presentSheet:aWindowOrWindowController silent:NO];
+}
+
+- (void) presentSheet:(id)aWindowOrWindowController silent:(BOOL)silent
+{
 	if (!aWindowOrWindowController) return;
 	
 	[self.sheetQueue addBlock:^{
@@ -377,6 +383,9 @@
 		}
 		
 		self.currentSheet = aWindow;
+		
+		if (silent) [GBApp beginIgnoreUserAttentionRequests];
+		
 		// skipping current cycle to avoid collision with previously opened sheet which is closing right now
 		dispatch_async(dispatch_get_main_queue(), ^{
 			[NSApp beginSheet:self.currentSheet
@@ -384,6 +393,10 @@
 				modalDelegate:nil
 			   didEndSelector:nil
 				  contextInfo:nil];
+			
+			dispatch_async(dispatch_get_main_queue(), ^{
+				if (silent) [GBApp endIgnoreUserAttentionRequests];
+			});
 		});
 	}];
 }

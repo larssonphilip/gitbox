@@ -25,6 +25,7 @@
 - (IBAction) selectNextPane:(id)_;
 
 - (void) presentSheet:(id)aWindowOrWindowController;
+- (void) presentSheet:(id)aWindowOrWindowController silent:(BOOL)silent;
 - (void) dismissSheet:(id)aWindowOrWindowController; // convenience helper to retain window ctrl in a completionHandler block
 - (void) dismissSheet;
 - (void) sheetQueueAddBlock:(void(^)())aBlock;
