@@ -49,4 +49,6 @@
 - (NSResponder*) externalNextResponder;
 - (void) setExternalNextResponder:(NSResponder*)aResponder;
 
+- (BOOL) syncSelectedObjects;
+
 @end

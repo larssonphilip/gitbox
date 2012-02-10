@@ -98,6 +98,28 @@
 #pragma mark Selection
 
 
+- (BOOL) syncSelectedObjects
+{
+	NSArray* objs = [self.selectedSidebarItems valueForKey:@"object"];
+	NSArray* selobjs = self.selectedObjects;
+	
+	if (objs.count == selobjs.count)
+	{
+		BOOL hasChanged = NO;
+		for (NSUInteger i = 0; i < objs.count; i++)
+		{
+			if ([objs objectAtIndex:i] != [selobjs objectAtIndex:i])
+			{
+				hasChanged = YES;
+				break;
+			}
+		}
+		if (!hasChanged) return NO;
+	}
+	NSLog(@"GBRootController: syncSelectedObjects -> YES");
+	self.selectedObjects = objs;
+	return YES;
+}
 
 
 - (void) setSelectedObjects:(NSArray *)selectedObjects
