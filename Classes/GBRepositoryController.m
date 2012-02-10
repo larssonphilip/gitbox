@@ -1212,7 +1212,7 @@
 
 
 
-#pragma mark - GBSubmoduleCloningController Notifications
+#pragma mark - Submodule Notifications
 
 
 - (void) submoduleCloningControllerDidFinish:(GBSubmoduleCloningController*)ctrl
@@ -1220,6 +1220,11 @@
 	[self updateLocalStateAfterDelay:0 block:^{}];
 }
 
+
+- (void) submoduleControllerDidReset:(GBSubmoduleController*)ctrl
+{
+	[self updateLocalStateAfterDelay:0 block:^{}];
+}
 
 
 

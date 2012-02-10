@@ -1,9 +1,9 @@
 #import "GBSubmoduleController.h"
 #import "GBSubmodule.h"
 #import "GBRepository.h"
-#import "GBStage.h"
 #import "GBSubmoduleCell.h"
 #import "GBSidebarItem.h"
+#import "NSObject+OASelectorNotifications.h"
 
 @implementation GBSubmoduleController
 
@@ -59,9 +59,6 @@
 	[self pushSpinning];
 	[self pushDisabled];
 	
-	// Retain here because the parentRepo might be replaced already when checkout is done.
-	GBStage* stage = self.submodule.parentRepository.stage;
-	
 	[self.submodule updateHeadWithBlock:^{
 		
 		// 1. Predict the status before we actually update the stage of the parent to avoid blinking of "checkout" button
@@ -69,11 +66,10 @@
 		// 3. This doesn't really work, so let's predict the status.
 		self.submodule.status = GBSubmoduleStatusUpToDate; 
 
-#warning TODO: check that this does not break anything. Should normally go to parent repo ctrl.
-		[stage updateStageWithBlock:^(BOOL contentDidChange) {
-			[self popSpinning];
-			[self popDisabled];
-		}];
+		[self notifyWithSelector:@selector(submoduleControllerDidReset:)];
+		
+		[self popSpinning];
+		[self popDisabled];
 	}];
 }
 
