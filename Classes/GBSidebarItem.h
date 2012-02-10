@@ -30,6 +30,7 @@
 - (BOOL) visibleSpinning; // returns YES if the spinner should be visible depending on expanded state
 - (double) visibleProgress; // returns average progress of all children if all of them have progress > 0 and < 100
 
+- (BOOL) isStopped;
 - (NSView*) viewForKey:(NSString*)aKey;
 - (void) setView:(NSView*)aView forKey:(NSString*)aKey;
 - (void) removeAllViews;
@@ -54,7 +55,7 @@
 - (void) expand;
 - (void) collapse;
 - (void) update;
-
+- (void) stop;
 
 // Content
 

@@ -6,7 +6,9 @@
 @property(nonatomic, retain) NSMutableDictionary* viewsDictionary;
 @end
 
-@implementation GBSidebarItem
+@implementation GBSidebarItem {
+	BOOL stopped;
+}
 
 @synthesize object;
 @synthesize sidebarController;
@@ -424,8 +426,16 @@
 	[self.sidebarController updateItem:self];
 }
 
+- (void) stop
+{
+	stopped = YES;
+	[self removeAllViews];
+}
 
-
+- (BOOL) isStopped
+{
+	return stopped;
+}
 
 
 #pragma mark Content
