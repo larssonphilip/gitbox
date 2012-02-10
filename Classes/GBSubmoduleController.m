@@ -3,9 +3,11 @@
 #import "GBRepository.h"
 #import "GBSubmoduleCell.h"
 #import "GBSidebarItem.h"
+#import "GBStage.h"
 #import "NSObject+OASelectorNotifications.h"
 
-@implementation GBSubmoduleController
+@implementation GBSubmoduleController {
+}
 
 @synthesize submodule=_submodule;
 
@@ -71,6 +73,11 @@
 		[self popSpinning];
 		[self popDisabled];
 	}];
+}
+
+- (BOOL) isSubmoduleClean
+{
+	return self.repository.stage.totalPendingChanges == 0;
 }
 
 @end

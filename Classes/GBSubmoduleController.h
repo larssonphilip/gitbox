@@ -11,4 +11,6 @@
 
 - (IBAction) resetSubmodule:(id)sender;
 
+- (BOOL) isSubmoduleClean;
+
 @end

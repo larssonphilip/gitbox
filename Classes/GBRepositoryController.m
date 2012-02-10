@@ -340,6 +340,20 @@
 			{
 				if (![updatedSubmodule.status isEqualToString:GBSubmoduleStatusNotCloned])
 				{
+					// If the submodule was not dirty and was in sync, should issue a reset here.
+					
+#warning FIXME: we are too quick here. Submodule hasn't yet refreshed its local state and we are already judging it.
+					
+					BOOL shouldReset = NO;
+					
+//					if ([matchingSubmodule.status isEqualToString:GBSubmoduleStatusUpToDate])
+//					{
+//						if (matchingController && [matchingController isSubmoduleClean])
+//						{
+//							shouldReset = YES;
+//						}
+//					}
+					
 					GBSubmoduleController* ctrl = [GBSubmoduleController controllerWithSubmodule:updatedSubmodule];
 					[updatedSubmoduleControllers addObject:ctrl];
 					ctrl.viewController = self.viewController;
@@ -349,6 +363,8 @@
 					ctrl.sidebarItem.object = ctrl;
 					ctrl.sidebarItem.selectable = matchingController.sidebarItem.selectable;
 					[ctrl start];
+					
+					if (shouldReset) [ctrl resetSubmodule:nil];
 				}
 				else
 				{
