@@ -693,6 +693,7 @@
 	self.folderMonitor.action = NULL;
 	self.folderMonitor.path = nil;
 	self.repository = nil;
+	[self.sidebarItem stop];
 	
 	//NSLog(@"!!! Stopped GBRepoCtrl:%p!", self);
 	[self notifyWithSelector:@selector(repositoryControllerDidStop:)];
@@ -1207,6 +1208,16 @@
 	if (![GBOptimizeRepositoryController randomShouldOptimize]) return;
 	
 	[[GBOptimizeRepositoryController controllerWithRepository:self.repository] presentSheetInMainWindowSilent:YES];
+}
+
+
+
+#pragma mark - GBSubmoduleCloningController Notifications
+
+
+- (void) submoduleCloningControllerDidFinish:(GBSubmoduleCloningController*)ctrl
+{
+	[self updateLocalStateAfterDelay:0 block:^{}];
 }
 
 
