@@ -117,7 +117,7 @@
 	
 	if (!self.path)
 	{
-		NSLog(@"GBFolderMonitor: self.path = nil, but did receive a notification! %@", aNotification);
+		//NSLog(@"GBFolderMonitor: self.path = nil, but did receive a notification! %@", aNotification);
 		return;
 	}
 	
