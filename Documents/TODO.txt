@@ -80,6 +80,7 @@ Gitbox 1.6 misc items:
 - bug: gitbox does not honor merge.ff setting to do "git merge --no-ff"
 - bug: after commit and refresh of the history, sometimes the stage remains non-updated.
 
+- initial update: order by recently used repos (in terms of pulls, merges and commits). Like with optimization singleton, use a single dispatcher of initial updates to avoid concurrent updates bringing machine down.
 
 - feature: rename repositories
 - license prefs: button for buy in App Store. Explain how to remove the app before installing the latest version.
