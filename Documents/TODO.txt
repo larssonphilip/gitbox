@@ -52,15 +52,6 @@ Gitbox 1.6 misc items:
 
 - test: committing without name/email in ~/.gitconfig
 
-- when window not focused, ignore FS events for longer period to avoid tons of refreshes while typing.
-+ show submodule HEAD in status in changes list.
-+ show submodule "dirty" status in changes list.
-- show submodule HEAD in status in sidebar.
-  - submodule controller should subscribe to its stage and notify parent when stage is changed.
-  - OR: just see if the rev. is the same, then
-- HEAD: think about how to depict the src/dst versions. 
-- maybe display HEAD in grey next to the submodule name?
-
 - submodules: submodule cloning ctrl should be replaced when download/cloning is finished.
 - submodules: automatically update submodule after repo pull/merge if they are were totally in sync before (that is no development happened there)
 
@@ -89,8 +80,6 @@ Gitbox 1.6 misc items:
 - bug: gitbox does not honor merge.ff setting to do "git merge --no-ff"
 - bug: after commit and refresh of the history, sometimes the stage remains non-updated.
 
-? maybe: update sidebar item and repository when update is finished [about submodules]
-? maybe: store a weak ref to parent repo ctrl from GBSubmoduleController -> this would allow for submodule settings update when you change remote URL inside the submodule; but maybe indirect access by repo URL will be enough (or similar)
 
 - feature: rename repositories
 - license prefs: button for buy in App Store. Explain how to remove the app before installing the latest version.
@@ -101,7 +90,7 @@ Gitbox 1.6 misc items:
 - ui: implement spinner for indeterminate tasks (with color switch support) and wetransfer-like spinning progress sector (shows progress using sector + rotates it to present activity).
 - ui: for two above: implement OASuperActivityIndicator with stack API, spinning progress, color switch and lazy API (to avoid showing spinner for short tasks of 1-2 seconds).
 
-- show expansion arrow on a "+" button in toolbar.
+- show expansion arrow on a "+" button in toolbar. [looks super ugly, only one person complained]
 - bug: when focusing back to a prompt sheet (e.g. tag name) text is cleared.
 
 - allow force update tags.
@@ -110,6 +99,12 @@ Gitbox 1.6 misc items:
 - bug: submodules' loading causes stage refresh delays or similar glitches.
 - possible bugs with sidebar cells + views: if alternative view is drawn, then previously added one could have not been removed (especially if it's added by superclass).
 - bug: stage: when selecting with keyboard and stage refreshes, it loses the initial point of selection.
+
+- when window not focused, ignore FS events for longer period to avoid tons of refreshes while typing.
+
+
+? maybe: update sidebar item and repository when update is finished [about submodules]
+? maybe: store a weak ref to parent repo ctrl from GBSubmoduleController -> this would allow for submodule settings update when you change remote URL inside the submodule; but maybe indirect access by repo URL will be enough (or similar)
 
 ? bug: remove views from sidebar item when switching owner object
 
@@ -124,6 +119,9 @@ Gitbox 1.6 misc items:
 
 
 Misc done for 1.6:
+
++ show submodule HEAD in status in changes list.
++ show submodule "dirty" status in changes list.
 
 + settings: add gear button on the left
 + settings: delete local branch
@@ -283,6 +281,12 @@ Gitbox Next:
 
 
 Unsorted:
+
+- show submodule HEAD in status in sidebar.
+  - submodule controller should subscribe to its stage and notify parent when stage is changed.
+  - OR: just see if the rev. is the same, then
+- HEAD: think about how to depict the src/dst versions. 
+- maybe display HEAD in grey next to the submodule name?
 
 - rename local and remote branches
 - bug: cannot clone from github when app is not launched.
