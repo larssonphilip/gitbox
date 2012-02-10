@@ -306,6 +306,14 @@
 		}
 		if ([self isSubmodule])
 		{
+			NSString* dstCommitId = [self.dstRevision nonZeroCommitId];
+			if (dstCommitId.length > 8)
+			{
+				return [dstCommitId substringWithRange:NSMakeRange(0, 8)];
+			}
+			
+			// No dst commit id - it's an unstaged submodule, so try to find it and get it's HEAD.
+			
 			GBSubmodule* submodule = [self submodule];
 			if (submodule.commitId.length > 8)
 			{
