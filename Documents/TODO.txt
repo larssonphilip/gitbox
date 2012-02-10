@@ -91,7 +91,6 @@ Gitbox 1.6 misc items:
 - ui: for two above: implement OASuperActivityIndicator with stack API, spinning progress, color switch and lazy API (to avoid showing spinner for short tasks of 1-2 seconds).
 
 - show expansion arrow on a "+" button in toolbar. [looks super ugly, only one person complained]
-- bug: when focusing back to a prompt sheet (e.g. tag name) text is cleared.
 
 - allow force update tags.
 - notify that the tag is already taken when you type it's name.
@@ -119,6 +118,9 @@ Gitbox 1.6 misc items:
 
 
 Misc done for 1.6:
+
+
++ bug: when focusing back to a prompt sheet (e.g. tag name) text is cleared.
 
 + show submodule HEAD in status in changes list.
 + show submodule "dirty" status in changes list.
