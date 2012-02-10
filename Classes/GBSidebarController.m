@@ -633,6 +633,10 @@
 
 - (void) updateSelection
 {
+	// Refresh actual selected objects (sidebarItems may remain the same with new owners)
+	// Return instantly because we are subscribed to update notifications.
+	if ([self.rootController syncSelectedObjects]) return;
+
 	// TODO: maybe should ignore updating if selection is already correct.
 	self.ignoreSelectionChange++;
 	
