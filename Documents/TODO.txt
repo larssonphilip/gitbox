@@ -53,6 +53,7 @@ Gitbox 1.6 misc items:
 - test: committing without name/email in ~/.gitconfig
 
 - submodules: automatically update submodule after repo pull/merge if they are were totally in sync before (that is no development happened there)
+  - do that by delaying stage update after checkout/pull/merge/reset in parent repo and checking out specific submodules that were clean before.
 
 - submodules: remember collapsed status of submodules in user defaults
 - submodules: remember submodules in prefs plist because we don't update all of them on startup
