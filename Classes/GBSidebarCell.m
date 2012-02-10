@@ -249,6 +249,8 @@
 
 - (NSRect) drawSpinnerIfNeededInRectAndReturnRemainingRect:(NSRect)rect
 {
+	if ([self.sidebarItem isStopped]) return rect;
+	
 	if (![self.sidebarItem visibleSpinning])
 	{
 		[self.sidebarItem setView:nil forKey:kGBSidebarCellSpinnerKey];

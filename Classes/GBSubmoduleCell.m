@@ -67,6 +67,8 @@ static NSString* const kGBSubmoduleCellCheckoutButton = @"GBSubmoduleCellCheckou
 
 - (NSRect) drawButtonAndReturnRemainingRect:(NSRect)rect title:(NSString*)title key:(NSString*)key action:(SEL)action
 {
+	if ([self.sidebarItem isStopped]) return rect;
+	
 	NSButton* button = (NSButton*)[self.sidebarItem viewForKey:key];
 	if (!button)
 	{
