@@ -69,9 +69,9 @@ Gitbox 1.6 misc items:
 - submodules: case 4: user clones the repo inside the repo => needs to display as a non-tracked submodule which can be tracked
 - submodules: case 5: user tries to commit a submodule which has the HEAD non-pushed (or dirty directory) - show warning or ask to push manually; show button "show module"
 
-- submodules: settings view: show a table with columns "path", "public URL", "private URL" (private URL should have a placeholder which is == public URL)
-- submodules: settings view: sync private URL with both .git/config and submodule/.git/config
-- submodules: settings view: when editing repo's own URL, sync it with parent's submodule record in .git/config
+- submodules settings: show a table with columns "path", "public URL", "private URL" (private URL should have a placeholder which is == public URL)
+- submodules settings: sync private URL with both .git/config and submodule/.git/config
+- submodules settings: when editing repo's own URL, sync it with parent's submodule record in .git/config
 
 - submodules: do not forget to "git submodule add <url> <path>" after path update (same for remove, maybe)
 
