@@ -52,7 +52,6 @@ Gitbox 1.6 misc items:
 
 - test: committing without name/email in ~/.gitconfig
 
-- submodules: submodule cloning ctrl should be replaced when download/cloning is finished.
 - submodules: automatically update submodule after repo pull/merge if they are were totally in sync before (that is no development happened there)
 
 - submodules: remember collapsed status of submodules in user defaults
@@ -119,6 +118,9 @@ Gitbox 1.6 misc items:
 
 Misc done for 1.6:
 
+
++ when removed from sidebar while ls-remote, the spinner is not removed (because repo is still busy and retaining the sidebar item).
++ submodules: submodule cloning ctrl should be replaced when download/cloning is finished.
 
 + bug: when focusing back to a prompt sheet (e.g. tag name) text is cleared.
 

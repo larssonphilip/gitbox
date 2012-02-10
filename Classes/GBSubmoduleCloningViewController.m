@@ -110,9 +110,13 @@
 
 - (void) submoduleCloningControllerDidFinish:(GBSubmoduleCloningController*)cloningRepoCtrl
 {
-	[self.messageLabel setStringValue:NSLocalizedString(@"Download Finished", @"Clone")];
+	[self.messageLabel setStringValue:NSLocalizedString(@"Finishing download...", @"Clone")];
 	[self.errorLabel setStringValue:@""];
 	[self.cancelButton setEnabled:NO];
+	[self.startButton setEnabled:NO];
+	[self.progressIndicator stopAnimation:nil];
+	[self.progressIndicator setIndeterminate:YES];
+	[self.progressIndicator startAnimation:nil];
 }
 
 
