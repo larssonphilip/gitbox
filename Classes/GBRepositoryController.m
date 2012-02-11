@@ -85,7 +85,6 @@
 // Local state updates
 
 - (void) updateLocalStateWithBlock:(void(^)())aBlock;
-- (void) updateLocalStateAfterDelay:(NSTimeInterval)interval block:(void(^)())block;
 
 - (void) updateStageChangesAndSubmodulesWithBlock:(void(^)())aBlock;
 - (void) updateStageChangesAndSubmodules:(BOOL)updateSubmodules withBlock:(void(^)())aBlock;
@@ -138,6 +137,8 @@
 	NSTimeInterval remoteStateUpdateInterval;
 	
 	BOOL authenticationInProgress;
+	
+	BOOL wantsAutoResetSubmodules;
 }
 
 @synthesize repository;
@@ -329,31 +330,32 @@
 		}
 		else // there's a matching controller
 		{
-			if ([matchingSubmodule.status isEqualToString:updatedSubmodule.status]) // persistence status is the same, nothing really to do here
+			BOOL alreadyLocal1 = (matchingSubmodule.status == GBSubmoduleStatusUpToDate ||
+								 matchingSubmodule.status == GBSubmoduleStatusNotUpToDate);
+			BOOL alreadyLocal2 = (updatedSubmodule.status == GBSubmoduleStatusUpToDate ||
+								  updatedSubmodule.status == GBSubmoduleStatusNotUpToDate);
+
+			if (alreadyLocal1 && alreadyLocal2) // persistence status is the same
 			{
 				BOOL shouldUpdate = (matchingSubmodule.status != updatedSubmodule.status);
 				matchingController.submodule = updatedSubmodule;
 				[updatedSubmoduleControllers addObject:matchingController];
 				if (shouldUpdate) [matchingController.sidebarItem update];
+				
+				// If the submodule was not dirty and was in sync, should issue a reset here.
+				
+				if (wantsAutoResetSubmodules && 
+					matchingController &&
+					[matchingSubmodule.status isEqualToString:GBSubmoduleStatusUpToDate] &&
+					[matchingController isSubmoduleClean])
+				{
+					[matchingController resetSubmodule:nil];
+				}
 			}
 			else // cloned status has changed, create a new controller, but reuse sidebarItem
 			{
 				if (![updatedSubmodule.status isEqualToString:GBSubmoduleStatusNotCloned])
 				{
-					// If the submodule was not dirty and was in sync, should issue a reset here.
-					
-#warning FIXME: we are too quick here. Submodule hasn't yet refreshed its local state and we are already judging it.
-					
-					BOOL shouldReset = NO;
-					
-//					if ([matchingSubmodule.status isEqualToString:GBSubmoduleStatusUpToDate])
-//					{
-//						if (matchingController && [matchingController isSubmoduleClean])
-//						{
-//							shouldReset = YES;
-//						}
-//					}
-					
 					GBSubmoduleController* ctrl = [GBSubmoduleController controllerWithSubmodule:updatedSubmodule];
 					[updatedSubmoduleControllers addObject:ctrl];
 					ctrl.viewController = self.viewController;
@@ -363,8 +365,6 @@
 					ctrl.sidebarItem.object = ctrl;
 					ctrl.sidebarItem.selectable = matchingController.sidebarItem.selectable;
 					[ctrl start];
-					
-					if (shouldReset) [ctrl resetSubmodule:nil];
 				}
 				else
 				{
@@ -375,6 +375,7 @@
 		}
 	} // for each new submodule
 	
+	wantsAutoResetSubmodules = NO;
 	self.submoduleControllers = updatedSubmoduleControllers;
 }
 
@@ -726,6 +727,7 @@
 {
 	GBRepository* repo = self.repository;
 	if (!repo) return;
+	if (stopped) return;
 	if (![self checkRepositoryExistance]) return;
 	
 	//	FS Event:
@@ -792,7 +794,13 @@
 	//NSLog(@"> updateLocalStateWithBlock [%@]", self.windowTitle);
 	// Invalidate scheduled update
 	isRunningLocalStateUpdate++;
-	
+
+	if (stopped || !self.repository)
+	{
+		if (block) block();
+		return;
+	}
+
 	block = [[block copy] autorelease];
 	[self updateStageChangesAndSubmodulesWithBlock:^{
 		[self updateLocalRefsWithBlock:^{
@@ -809,6 +817,11 @@
 //	{
 //		NSLog(@"Local update scheduled: %0.1f sec [%@]", interval, self.windowTitle);
 //	}
+	if (stopped || !self.repository)
+	{
+		if (block) block();
+		return;
+	}
 	
 	if (!isScheduledLocalStateUpdate && isRunningLocalStateUpdate)
 	{
@@ -856,7 +869,7 @@
 
 - (void) updateStageChangesAndSubmodules:(BOOL)updateSubmodules withBlock:(void(^)())aBlock
 {
-	if (!self.repository.stage || ![self checkRepositoryExistance])
+	if (!self.repository.stage || ![self checkRepositoryExistance] || stopped)
 	{
 		if (aBlock) aBlock();
 		return;
@@ -1050,6 +1063,8 @@
 - (void) updateRemoteStateAfterDelay:(NSTimeInterval)interval
 {
 	[self invalidateDelayedRemoteStateUpdate];
+	if (stopped) return;
+	
 	int gen = remoteStateUpdateGeneration;
 	
 	interval = MIN(interval, 60.0*60.0);
@@ -1503,6 +1518,8 @@
 	repo.localBranchCommits = nil;
 	// keep old commits visible
 	// [self notifyWithSelector:@selector(repositoryControllerDidUpdateCommits:)];
+	
+	wantsAutoResetSubmodules = YES;
 	
 	checkoutBlock(^{
 		
@@ -1997,7 +2014,13 @@
 	[self pushSpinning];
 	[self pushDisabled];
 	[self beginAuthenticatedSession:^{
+		
+		wantsAutoResetSubmodules = YES; // check submodules during pull.
+		
 		[self.repository pullOrMergeWithBlock:^{
+			
+			wantsAutoResetSubmodules = YES; // check submodules here because the update could have happened while pulling.
+			
 			commitsAreInvalid = YES;
 			[self updateLocalStateWithBlock:^{
 				[self updateRemoteRefsWithBlock:nil];
@@ -2030,12 +2053,19 @@
 	[self pushSpinning];
 	[self pushDisabled];
 	
+	wantsAutoResetSubmodules = YES;
+	
+	[self delayReceivingFSEvents];
+	
 	// Note: stash and unstash to preserve modifications.
 	//       if we use reset --mixed or --soft, we will keep added objects from the pull. We don't want them.
 	[self.repository doGitCommand:[NSArray arrayWithObjects:@"stash", @"--include-untracked", nil] withBlock:^{
 		[self.repository doGitCommand:[NSArray arrayWithObjects:@"reset", @"--hard", commitId, nil] withBlock:^{
 			[self.repository doGitCommand:[NSArray arrayWithObjects:@"stash", @"apply", nil] withBlock:^{
+				
+				wantsAutoResetSubmodules = YES; // check also here if FS events has caused update during reset.
 				commitsAreInvalid = YES;
+				
 				[self updateLocalStateWithBlock:^{
 					[self updateRemoteRefsWithBlock:nil];
 					[self popSpinning];
@@ -2127,6 +2157,9 @@
 	[self invalidateDelayedRemoteStateUpdate];
 	[self pushSpinning];
 	[self pushDisabled];
+	
+	wantsAutoResetSubmodules = YES;
+	
 	[self.repository rebaseWithBlock:^{
 		commitsAreInvalid = YES;
 		[self updateLocalStateWithBlock:^{
@@ -2503,8 +2536,11 @@
 	GBCommit* aCommit = [sender representedObject];
 	if (!aCommit) aCommit = self.selectedCommit;
 	
+	wantsAutoResetSubmodules = YES;
+	
 	[self.repository mergeCommitish:aCommit.commitId withBlock:^{
 		[self.repository.lastError present];
+		[self updateLocalStateWithBlock:^{}];
 	}];
 }
 
@@ -2532,7 +2568,10 @@
 	GBCommit* aCommit = [sender representedObject];
 	if (!aCommit) aCommit = self.selectedCommit;
 	
+	wantsAutoResetSubmodules = YES;
 	[self.repository cherryPickCommit:aCommit creatingCommit:YES withBlock:^{
+		[self.repository.lastError present];
+		[self updateLocalStateWithBlock:^{}];
 	}];
 }
 
@@ -2561,7 +2600,10 @@
 	GBCommit* aCommit = [sender representedObject];
 	if (!aCommit) aCommit = self.selectedCommit;
 	
+	wantsAutoResetSubmodules = YES;
 	[self.repository cherryPickCommit:aCommit creatingCommit:NO withBlock:^{
+		[self.repository.lastError present];
+		[self updateLocalStateWithBlock:^{}];
 	}];
 }
 
@@ -2606,8 +2648,11 @@
 	
 	void(^block)() = ^{
 		[self.undoManager removeAllActions];
+		wantsAutoResetSubmodules = YES;
+		[self updateLocalStateAfterDelay:10.0 block:^{}]; // delay updates.
 		[self.repository stashChangesWithMessage:stashMessage block:^{
 			[self.repository resetToCommit:aCommit withBlock:^{
+				[self updateLocalStateAfterDelay:0.0 block:^{}];
 			}];
 		}];
 	};
@@ -2662,8 +2707,10 @@
 	}
 	
 	void(^block)() = ^{
+		wantsAutoResetSubmodules = YES;
 		[self.repository stashChangesWithMessage:stashMessage block:^{
 			[self.repository revertCommit:aCommit withBlock:^{
+				[self updateLocalStateWithBlock:^{}];
 			}];
 		}];
 	};

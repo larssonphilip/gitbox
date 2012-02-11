@@ -70,8 +70,10 @@
 
 		[self notifyWithSelector:@selector(submoduleControllerDidReset:)];
 		
-		[self popSpinning];
-		[self popDisabled];
+		[self updateLocalStateAfterDelay:0.0 block:^{
+			[self popSpinning];
+			[self popDisabled];
+		}];
 	}];
 }
 

@@ -52,8 +52,9 @@ Gitbox 1.6 misc items:
 
 - test: committing without name/email in ~/.gitconfig
 
-- submodules: automatically update submodule after repo pull/merge if they are were totally in sync before (that is no development happened there)
-  - do that by delaying stage update after checkout/pull/merge/reset in parent repo and checking out specific submodules that were clean before.
+- bug: downloading submodule does not update progress bar beyond "Packing..."
+- bug: when checking out older commits, submodule folders remain in place.
+- bug: when checking out and recreating submodule controllers, more tasks are running in bg
 
 - submodules: remember collapsed status of submodules in user defaults
 - submodules: remember submodules in prefs plist because we don't update all of them on startup
@@ -120,6 +121,13 @@ Gitbox 1.6 misc items:
 
 Misc done for 1.6:
 
+
+
++ bug: when submodule is updated, the controller is recreated and history is reloaded.
++ bug: when stopped, should ignore fs events etc.
+
++ submodules: automatically update submodule after repo pull/merge if they are were totally in sync before (that is no development happened there)
+  + do that by delaying stage update after checkout/pull/merge/reset in parent repo and checking out specific submodules that were clean before.
 
 + when removed from sidebar while ls-remote, the spinner is not removed (because repo is still busy and retaining the sidebar item).
 + submodules: submodule cloning ctrl should be replaced when download/cloning is finished.
