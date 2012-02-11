@@ -23,7 +23,7 @@ Major Features:
 Gitbox 1.6 Release Notes
 
 ✓ Fantastic submodules support: automatic display for all submodules, one-click download and reset.
-- Submodules are reset automatically when pulling, switching branches or checking out commits.
+✓ Submodules are reset automatically when pulling, switching branches or checking out commits.
 ✓ Automatic repository optimization in background.
 
 ✓ Tags are sorted in natural order and with respect to version numbers.
@@ -53,8 +53,6 @@ Gitbox 1.6 misc items:
 - test: committing without name/email in ~/.gitconfig
 
 - bug: downloading submodule does not update progress bar beyond "Packing..."
-- bug: when checking out older commits, submodule folders remain in place.
-- bug: when checking out and recreating submodule controllers, more tasks are running in bg
 
 - submodules: remember collapsed status of submodules in user defaults
 - submodules: remember submodules in prefs plist because we don't update all of them on startup
@@ -102,6 +100,9 @@ Gitbox 1.6 misc items:
 - bug: stage: when selecting with keyboard and stage refreshes, it loses the initial point of selection.
 
 - when window not focused, ignore FS events for longer period to avoid tons of refreshes while typing.
+
+- bug: when checking out older commits, submodule folders remain in place.
+- bug: when checking out and recreating submodule controllers, more tasks are running in bg
 
 
 ? maybe: update sidebar item and repository when update is finished [about submodules]
