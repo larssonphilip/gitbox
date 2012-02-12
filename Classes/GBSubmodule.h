@@ -12,10 +12,9 @@ extern NSString* const GBSubmoduleStatusNotUpToDate;
 @property(nonatomic, retain) NSURL* remoteURL;
 @property(nonatomic, copy)   NSString* status;
 @property(nonatomic, copy)   NSString* commitId;
-@property(nonatomic, assign) GBRepository* parentRepository;
 
 @property(nonatomic, readonly) NSURL* localURL;
 
-- (void) updateHeadWithBlock:(void(^)())block;
+@property(nonatomic, assign) dispatch_queue_t dispatchQueue;
 
 @end

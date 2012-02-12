@@ -20,6 +20,7 @@
 @implementation GBSubmoduleCloningController
 
 @synthesize submodule=_submodule;
+@synthesize parentRepositoryController=_parentRepositoryController;
 @synthesize window;
 @synthesize viewController;
 
@@ -80,11 +81,6 @@
 
 - (IBAction)startDownload:(id)sender
 {
-	if (!self.submodule.parentRepository)
-	{
-		NSLog(@"ERROR: no parent repository for submodule. Out of sync with parent repo!");
-	}
-	
 	self.progressStatus = nil;
 	self.sidebarItemProgress = 0.0;
 	[self.sidebarItem update];
@@ -93,7 +89,9 @@
 	GBAuthenticatedTask* t = [[GBAuthenticatedTask new] autorelease];
 	
 	t.remoteAddress = self.remoteURL.absoluteString;
-	t.repository = self.submodule.parentRepository;
+	t.ignoreMissingRepository = YES;
+	t.dispatchQueue = self.submodule.dispatchQueue;
+	t.currentDirectoryPath = self.submodule.parentURL.path;
 	t.arguments = [NSArray arrayWithObjects:@"submodule", @"update", @"--progress", @"--", self.submodule.path, nil];
 	
 	if ([GBTask isSnowLeopard])
@@ -117,7 +115,7 @@
 		[self notifyWithSelector:@selector(submoduleCloningControllerProgress:)];
 	};
 	
-	[self.submodule.parentRepository launchTask:t withBlock:^{
+	[t launchWithBlock:^{
 		
 		if (!self.task) // was terminated
 		{

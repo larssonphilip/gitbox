@@ -50,16 +50,14 @@ Gitbox 1.6 Release Notes
 
 Gitbox 1.6 misc items:
 
-- test: committing without name/email in ~/.gitconfig
-
-- bug: downloading submodule does not update progress bar beyond "Packing..."
-
-- bug: 150% CPU usage when updating a repo and its submodules.
 - initial update: order by recently used repos (in terms of pulls, merges and commits). Like with optimization singleton, use a single dispatcher of initial updates to avoid concurrent updates bringing machine down.
 
-- remove parentRepository from submodule, pass parent repo ctrl to submodule ctrls so they can ping parents properly.
++ remove parentRepository from submodule, pass parent repo ctrl to submodule ctrls so they can ping parents properly.
++ reuse the cloning controller (so we will receive the notifs from the currently used controller)
 
-- reuse the cloning controller (so we will receive the notifs from the currently used controller)
++ FS events cause parent repo ctrl update submodules while submodule is being cloned and kills the task.
++ possible solution: reuse the GBRepository dispatchQueue for nested repos.
++ bug: 150% CPU usage when updating a repo and its submodules.
 
 - submodules: remember collapsed status of submodules in user defaults
 - submodules: remember submodules in prefs plist because we don't update all of them on startup
@@ -109,12 +107,14 @@ Gitbox 1.6 misc items:
 
 - bug: when checking out older commits, submodule folders remain in place.
 - bug: when checking out and recreating submodule controllers, more tasks are running in bg
+- test: committing without name/email in ~/.gitconfig
 
 
 ? maybe: update sidebar item and repository when update is finished [about submodules]
 ? maybe: store a weak ref to parent repo ctrl from GBSubmoduleController -> this would allow for submodule settings update when you change remote URL inside the submodule; but maybe indirect access by repo URL will be enough (or similar)
 
-? bug: remove views from sidebar item when switching owner object
+? bug: downloading submodule does not update progress bar beyond "Packing..."
+? bug: remove views from sidebar item when switching owner object [might have been fixed with submodule cloning ctrls]
 
 ? bug: after repo is removed, its spinner is still retained and is in the view. Should remove all views on [stop]. 
 ? bug: if the repo is deleted while updating, OATask crashes - should just fail with error and big log entry.

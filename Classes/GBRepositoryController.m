@@ -207,7 +207,7 @@
 	[undoManager release]; undoManager = nil;
 
 	self.submodules = nil;
-	self.submoduleControllers = nil;
+	self.submoduleControllers = nil; // so we unsubscribe correctly
 	self.repository = nil; // so we unsubscribe correctly
 	
 	if (_pendingContinuationToBeginAuthSession) _pendingContinuationToBeginAuthSession();
@@ -315,6 +315,7 @@
 				GBSubmoduleController* ctrl = [GBSubmoduleController controllerWithSubmodule:updatedSubmodule];
 				[updatedSubmoduleControllers addObject:ctrl];
 				
+				ctrl.parentRepositoryController = self;
 				ctrl.viewController = self.viewController;
 				ctrl.toolbarController = self.toolbarController;
 				ctrl.fsEventStream = self.fsEventStream;
@@ -325,6 +326,7 @@
 			{
 				// Create a new cloning controller
 				GBSubmoduleCloningController* ctrl = [[[GBSubmoduleCloningController alloc] initWithSubmodule:updatedSubmodule] autorelease];
+				ctrl.parentRepositoryController = self;
 				[updatedSubmoduleControllers addObject:ctrl];
 			}
 		}
@@ -349,12 +351,23 @@
 					[matchingSubmodule.status isEqualToString:GBSubmoduleStatusUpToDate] &&
 					[matchingController isSubmoduleClean])
 				{
+					//NSLog(@"AUTO RESET SUBMODULE: %@ [%@]", matchingSubmodule.path, self.repository.path);
 					[matchingController resetSubmodule:nil];
 				}
 			}
 			else // cloned status has changed, create a new controller, but reuse sidebarItem
 			{
-				if (![updatedSubmodule.status isEqualToString:GBSubmoduleStatusNotCloned])
+				BOOL notCloned1 = (matchingSubmodule.status == GBSubmoduleStatusNotCloned);
+				BOOL notCloned2 = (updatedSubmodule.status  == GBSubmoduleStatusNotCloned);
+				
+				// both are not cloned, reuse controller
+				if (notCloned1 && notCloned2)
+				{
+					matchingController.submodule = updatedSubmodule;
+					[matchingController.sidebarItem update];
+					[updatedSubmoduleControllers addObject:matchingController];
+				}
+				else if (![updatedSubmodule.status isEqualToString:GBSubmoduleStatusNotCloned]) // transitioned to cloned status
 				{
 					GBSubmoduleController* ctrl = [GBSubmoduleController controllerWithSubmodule:updatedSubmodule];
 					[updatedSubmoduleControllers addObject:ctrl];
@@ -364,11 +377,13 @@
 					ctrl.sidebarItem = matchingController.sidebarItem;
 					ctrl.sidebarItem.object = ctrl;
 					ctrl.sidebarItem.selectable = matchingController.sidebarItem.selectable;
+					ctrl.parentRepositoryController = self;
 					[ctrl start];
 				}
-				else
+				else // transitioned to non-cloned status (removed from disk)
 				{
 					GBSubmoduleCloningController* ctrl = [[[GBSubmoduleCloningController alloc] initWithSubmodule:updatedSubmodule] autorelease];
+					ctrl.parentRepositoryController = self;
 					[updatedSubmoduleControllers addObject:ctrl];
 				}
 			}
@@ -385,6 +400,7 @@
 	
 	for (GBSubmoduleController* ctrl in _submoduleControllers)
 	{
+		ctrl.parentRepositoryController = nil;
 		[ctrl removeObserverForAllSelectors:self];
 		if (![submoduleControllers containsObject:ctrl])
 		{
@@ -397,6 +413,7 @@
 	
 	for (GBSubmoduleController* ctrl in _submoduleControllers)
 	{
+		ctrl.parentRepositoryController = self;
 		[ctrl addObserverForAllSelectors:self];
 	}
 }
@@ -1255,11 +1272,6 @@
 	[self updateLocalStateAfterDelay:0 block:^{}];
 }
 
-
-- (void) submoduleControllerDidReset:(GBSubmoduleController*)ctrl
-{
-	[self updateLocalStateAfterDelay:0 block:^{}];
-}
 
 
 
@@ -2525,6 +2537,17 @@
 																	}];
 																}
 															}];
+}
+
+- (void) resetSubmodule:(GBSubmodule*)submodule block:(void(^)())block
+{
+	block = [[block copy] autorelease];
+	[self.repository resetSubmodule:submodule withBlock:^{
+	
+		if (block) block();
+		
+		[self updateLocalStateAfterDelay:0.0 block:^{}];
+	}];
 }
 
 - (BOOL) validateResetChanges:(id)sender

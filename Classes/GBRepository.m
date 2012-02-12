@@ -52,11 +52,11 @@
 
 
 @implementation GBRepository {
-	dispatch_queue_t dispatchQueue;
 	dispatch_queue_t remoteDispatchQueue;
 }
 
 @synthesize url;
+@synthesize dispatchQueue;
 @synthesize URLBookmarkData;
 @dynamic path;
 @synthesize dotGitURL;
@@ -136,7 +136,15 @@
 	return self;
 }
 
-
+- (void) setDispatchQueue:(dispatch_queue_t)aDispatchQueue
+{
+	if (aDispatchQueue)
+	{
+		if (dispatchQueue) dispatch_release(dispatchQueue);
+		dispatch_retain(aDispatchQueue);
+		dispatchQueue = aDispatchQueue;
+	}
+}
 
 
 + (id) repositoryWithURL:(NSURL*)url
@@ -595,24 +603,6 @@
 	//	pathURL path = /Users/oleganza/Work/gitbox
 	//	pathURL absolute path = /Users/oleganza/Work/gitbox
 	return [NSURL URLWithString:[relativePath stringByAddingAllPercentEscapesUsingEncoding:NSUTF8StringEncoding] relativeToURL:self.url];
-}
-
-- (void) setSubmodules:(NSArray *)submodules
-{
-	if (_submodules == submodules) return;
-	
-	for (GBSubmodule* submodule in _submodules)
-	{
-		if (submodule.parentRepository == self) submodule.parentRepository = nil;
-	}
-	
-	[_submodules release];
-	_submodules = [submodules retain];
-	
-	for (GBSubmodule* submodule in _submodules)
-	{
-		submodule.parentRepository = self;
-	}
 }
 
 
@@ -1640,6 +1630,13 @@
 		}
 		if (block) block();
 	}];  
+}
+
+- (void) resetSubmodule:(GBSubmodule*)submodule withBlock:(void(^)())block
+{
+	GBTask* task = [self task];
+	task.arguments = [NSArray arrayWithObjects:@"submodule", @"update", @"--init", @"--", submodule.path, nil];
+	[self launchTask:task withBlock:block];
 }
 
 

@@ -12,16 +12,17 @@ NSString* const GBSubmoduleStatusNotUpToDate = @"GBSubmoduleStatusNotUpToDate";
 
 @implementation GBSubmodule
 
-@synthesize parentRepository=_parentRepository;
 @synthesize path=_path;
 @synthesize parentURL=_parentURL;
 @synthesize remoteURL=_remoteURL;
 @synthesize status=_status;
 @synthesize commitId=_commitId;
+@synthesize dispatchQueue;
 
 - (void) dealloc
 {
 	//NSLog(@"GBSubmodule#dealloc");
+	if (dispatchQueue) dispatch_release(dispatchQueue);
 	[_remoteURL release];
 	[_path release];
 	[_parentURL release];
@@ -32,19 +33,22 @@ NSString* const GBSubmoduleStatusNotUpToDate = @"GBSubmoduleStatusNotUpToDate";
 
 - (NSURL*) localURL
 {
-	return [self.parentRepository URLForRelativePath:self.path];
-}
-
-- (void) updateHeadWithBlock:(void(^)())block
-{
-	GBTask* task = [self.parentRepository task];
-	task.arguments = [NSArray arrayWithObjects:@"submodule", @"update", @"--init", @"--", self.localURL.path, nil];
-	[self.parentRepository launchTask:task withBlock:block];
+	return [NSURL fileURLWithPath:[self.parentURL.path stringByAppendingPathComponent:self.path]];
 }
 
 - (NSString*) description
 {
 	return [NSString stringWithFormat:@"<%@:%p path:%@ URL:%@ status:%@ head:%@>", [self class], self, self.path, self.remoteURL, self.status, self.commitId];
+}
+
+- (void) setDispatchQueue:(dispatch_queue_t)aDispatchQueue
+{
+	if (aDispatchQueue)
+	{
+		if (dispatchQueue) dispatch_release(dispatchQueue);
+		dispatch_retain(aDispatchQueue);
+		dispatchQueue = aDispatchQueue;
+	}
 }
 
 

@@ -4,10 +4,12 @@
 @class GBSubmodule;
 @class GBSidebarItem;
 @class GBSubmoduleCloningViewController;
+@class GBRepositoryController;
 
 @interface GBSubmoduleCloningController : NSResponder<GBMainWindowItem, GBSidebarItemObject>
 
 @property(nonatomic, retain) GBSubmodule* submodule;
+@property(nonatomic, assign) GBRepositoryController* parentRepositoryController;
 @property(nonatomic, retain) NSWindow* window;
 @property(nonatomic, retain) GBSubmoduleCloningViewController* viewController;
 

@@ -2,8 +2,8 @@
 
 @class GitRepository;
 @class GBRepository;
+@class GBSubmodule;
 @class GBRemote;
-
 @class GBRef;
 @class GBRemote;
 @class GBCommit;
@@ -37,6 +37,8 @@
 
 @property(nonatomic, assign) double currentTaskProgress;
 @property(nonatomic, copy) NSString* currentTaskProgressStatus;
+
+@property(nonatomic, assign) dispatch_queue_t dispatchQueue;
 
 // If authentication failed this is set to YES.
 @property(nonatomic, getter=isAuthenticationFailed) BOOL authenticationFailed;
@@ -123,6 +125,8 @@
 - (void) removeStashes:(NSArray*)theStashes withBlock:(void(^)())block;
 - (void) removeRefs:(NSArray*)refs withBlock:(void(^)())block;
 - (void) removeRemoteRefs:(NSArray*)refs withBlock:(void(^)())block;
+
+- (void) resetSubmodule:(GBSubmodule*)submodule withBlock:(void(^)())block;
 
 - (void) doGitCommand:(NSArray*)arguments withBlock:(void(^)())block;
 

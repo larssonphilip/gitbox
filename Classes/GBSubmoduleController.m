@@ -10,6 +10,7 @@
 }
 
 @synthesize submodule=_submodule;
+@synthesize parentRepositoryController=_parentRepositoryController;
 
 - (void) dealloc
 {
@@ -28,6 +29,8 @@
 	if (self = [super initWithURL:submodule.localURL])
 	{
 		self.submodule = submodule;
+		
+		self.repository.dispatchQueue = self.submodule.dispatchQueue;
 		
 		self.sidebarItem = [[[GBSidebarItem alloc] init] autorelease];
 		self.sidebarItem.object = self;
@@ -61,14 +64,12 @@
 	[self pushSpinning];
 	[self pushDisabled];
 	
-	[self.submodule updateHeadWithBlock:^{
+	[self.parentRepositoryController resetSubmodule:self.submodule block:^{
 		
 		// 1. Predict the status before we actually update the stage of the parent to avoid blinking of "checkout" button
 		// 2. Don't need that because we'll stop spinning when stage is updated.
 		// 3. This doesn't really work, so let's predict the status.
-		self.submodule.status = GBSubmoduleStatusUpToDate; 
-
-		[self notifyWithSelector:@selector(submoduleControllerDidReset:)];
+		self.submodule.status = GBSubmoduleStatusUpToDate;
 		
 		[self updateLocalStateAfterDelay:0.0 block:^{
 			[self popSpinning];

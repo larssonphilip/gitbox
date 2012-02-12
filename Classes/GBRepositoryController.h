@@ -3,6 +3,7 @@
 #import "GBSidebarItemObject.h"
 
 @class GBRepository;
+@class GBSubmodule;
 @class GBRef;
 @class GBRemote;
 @class GBCommit;
@@ -70,6 +71,8 @@
 - (void) addOpenMenuItemsToMenu:(NSMenu*)aMenu;
 
 - (void) removeRefs:(NSArray*)refs;
+
+- (void) resetSubmodule:(GBSubmodule*)submodule block:(void(^)())block;
 
 - (IBAction) fetch:(id)sender;
 - (IBAction) pull:(id)sender;
