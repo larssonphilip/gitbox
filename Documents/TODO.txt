@@ -22,8 +22,8 @@ Major Features:
 
 Gitbox 1.6 Release Notes
 
-✓ Fantastic submodules support: automatic display for all submodules, one-click download and reset.
-✓ Submodules are reset automatically when pulling, switching branches or checking out commits.
+✓ Zero-configuration submodules: one-click download and reset.
+✓ Submodules are intelligently reset when pulling, switching branches or checking out commits in the parent repository.
 ✓ Editable repository names (Gitbox keeps an alias without changing the actual folder name.)
 ✓ Automatic repository optimization in background.
 
