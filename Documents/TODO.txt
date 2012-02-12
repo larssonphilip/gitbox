@@ -59,6 +59,8 @@ Gitbox 1.6 misc items:
 
 - remove parentRepository from submodule, pass parent repo ctrl to submodule ctrls so they can ping parents properly.
 
+- reuse the cloning controller (so we will receive the notifs from the currently used controller)
+
 - submodules: remember collapsed status of submodules in user defaults
 - submodules: remember submodules in prefs plist because we don't update all of them on startup
 
