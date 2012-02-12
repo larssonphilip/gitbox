@@ -52,13 +52,6 @@ Gitbox 1.6 misc items:
 
 - initial update: order by recently used repos (in terms of pulls, merges and commits). Like with optimization singleton, use a single dispatcher of initial updates to avoid concurrent updates bringing machine down.
 
-+ remove parentRepository from submodule, pass parent repo ctrl to submodule ctrls so they can ping parents properly.
-+ reuse the cloning controller (so we will receive the notifs from the currently used controller)
-
-+ FS events cause parent repo ctrl update submodules while submodule is being cloned and kills the task.
-+ possible solution: reuse the GBRepository dispatchQueue for nested repos.
-+ bug: 150% CPU usage when updating a repo and its submodules.
-
 - submodules: remember collapsed status of submodules in user defaults
 - submodules: remember submodules in prefs plist because we don't update all of them on startup
 
@@ -128,6 +121,14 @@ Gitbox 1.6 misc items:
 
 Misc done for 1.6:
 
+
+
++ remove parentRepository from submodule, pass parent repo ctrl to submodule ctrls so they can ping parents properly.
++ reuse the cloning controller (so we will receive the notifs from the currently used controller)
+
++ FS events cause parent repo ctrl update submodules while submodule is being cloned and kills the task.
++ possible solution: reuse the GBRepository dispatchQueue for nested repos.
++ bug: 150% CPU usage when updating a repo and its submodules.
 
 + when removed tree of submodules, sidebar item views are still in sidebar.
 

@@ -8,7 +8,6 @@
 @interface GBRepositoryCloningController : NSResponder<GBMainWindowItem, GBSidebarItemObject>
 
 @property(nonatomic, retain) GBSidebarItem* sidebarItem;
-@property(nonatomic, retain) NSWindow* window;
 @property(nonatomic, retain) GBRepositoryCloningViewController* viewController;
 
 @property(nonatomic, retain) NSURL* sourceURL;

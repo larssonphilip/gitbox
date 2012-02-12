@@ -19,7 +19,7 @@
 @property(nonatomic, retain) GBRepository* repository;
 @property(nonatomic, retain, readonly) NSURL* url;
 @property(nonatomic, retain) GBSidebarItem* sidebarItem;
-@property(nonatomic, assign) NSWindow* window;
+@property(nonatomic, copy) NSString* userDefinedName;
 @property(nonatomic, retain) GBRepositoryToolbarController* toolbarController;
 @property(nonatomic, retain) GBRepositoryViewController* viewController;
 @property(nonatomic, retain) GBCommit* selectedCommit;

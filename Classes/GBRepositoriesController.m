@@ -89,14 +89,12 @@
 
 
 
-#pragma mark Actions
+#pragma mark - Actions
 
 
 
 - (IBAction) openDocument:(id)sender
 {
-	NSAssert(self.window, @"GBRepositoriesController should have a window or sender should be a view");
-	
 	if (![self validateAdditionalRepositories:1])
 	{
 		return;
@@ -380,7 +378,7 @@
 
 
 
-#pragma mark GBSidebarItem
+#pragma mark - GBSidebarItem
 
 
 
@@ -392,7 +390,7 @@
 
 
 
-#pragma mark Private helpers
+#pragma mark - Private helpers
 
 
 - (void) configureRepositoryController:(GBRepositoryController*)repoCtrl
@@ -456,7 +454,7 @@
 
 
 
-#pragma mark GBRepositoryController notifications
+#pragma mark - GBRepositoryController Notifications
 
 
 - (void) repositoryController:(GBRepositoryController*)oldRepoCtrl didMoveToURL:(NSURL*)newURL
@@ -554,7 +552,7 @@
 
 
 
-
+#pragma mark - Persistence
 
 
 
@@ -572,10 +570,6 @@
 
 @implementation GBRepositoriesController (Persistance)
 
-
-
-
-#pragma mark Saving
 
 
 - (id) propertyListForGroupContents:(GBRepositoriesGroup*)aGroup

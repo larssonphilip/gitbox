@@ -143,7 +143,7 @@
 
 @synthesize repository;
 @synthesize sidebarItem;
-@synthesize window;
+@synthesize userDefinedName=_userDefinedName;
 @synthesize toolbarController;
 @synthesize viewController;
 @synthesize selectedCommit;
@@ -185,9 +185,15 @@
 	//NSLog(@">>> GBRepositoryController:%p dealloc...", self);
 	sidebarItem.object = nil;
 	[sidebarItem release]; sidebarItem = nil;
+	
+	self.submodules = nil;
+	self.submoduleControllers = nil; // so we unsubscribe correctly
+	self.repository = nil; // so we unsubscribe correctly
+
 	if (toolbarController.repositoryController == self) toolbarController.repositoryController = nil;
 	[toolbarController release]; toolbarController = nil;
 	if (viewController.repositoryController == self) viewController.repositoryController = nil;
+	
 	[viewController release]; viewController = nil;
 	[selectedCommit release]; selectedCommit = nil;
 	[lastCommitBranchName release]; lastCommitBranchName = nil;
@@ -195,25 +201,22 @@
 	folderMonitor.target = nil;
 	folderMonitor.action = NULL;
 	[folderMonitor release]; folderMonitor = nil;
-	
-	//NSLog(@">>> GBRepositoryController:%p dealloc done.", self);
-	
-	[searchString release]; searchString = nil;
-	[searchResults release]; searchResults = nil;
-	
+
 	currentSearch.target = nil;
 	[currentSearch cancel];
 	[currentSearch release]; currentSearch = nil;
-	[undoManager release]; undoManager = nil;
 
-	self.submodules = nil;
-	self.submoduleControllers = nil; // so we unsubscribe correctly
-	self.repository = nil; // so we unsubscribe correctly
+	[searchString release]; searchString = nil;
+	[searchResults release]; searchResults = nil;
+	
+	[undoManager release]; undoManager = nil;
 	
 	if (_pendingContinuationToBeginAuthSession) _pendingContinuationToBeginAuthSession();
 	[_pendingContinuationToBeginAuthSession release]; _pendingContinuationToBeginAuthSession = nil;
 	
 	[_localStateUpdatePendingBlock release]; _localStateUpdatePendingBlock = nil;
+	
+	[_userDefinedName release];
 	
 	[super dealloc];
 }
@@ -234,6 +237,7 @@
 		self.sidebarItem = [[[GBSidebarItem alloc] init] autorelease];
 		self.sidebarItem.object = self;
 		self.sidebarItem.selectable = YES;
+		self.sidebarItem.editable = YES;
 		self.sidebarItem.draggable = YES;
 		self.sidebarItem.cell = [[[GBSidebarCell alloc] initWithItem:self.sidebarItem] autorelease];
 		self.selectedCommit = self.repository.stage;
@@ -429,13 +433,6 @@
 	self.folderMonitor.eventStream = newfseventStream;
 }
 
-- (void) setWindow:(NSWindow *)aWindow
-{
-	if (window == aWindow) return;
-	window = aWindow;
-	// TODO: iterate over submodules and set window to every one of them
-}
-
 - (NSURL*) url
 {
 	return self.repository.url;
@@ -529,7 +526,7 @@
 
 - (NSString*) windowTitle
 {
-	return [[[self url] path] twoLastPathComponentsWithDash];
+	return self.userDefinedName.length > 0 ? self.userDefinedName : [[[self url] path] twoLastPathComponentsWithDash];
 }
 
 - (NSURL*) windowRepresentedURL
@@ -636,7 +633,12 @@
 
 - (NSString*) sidebarItemTitle
 {
-	return self.url.path.lastPathComponent;
+	return self.userDefinedName.length > 0 ? self.userDefinedName : self.url.path.lastPathComponent;
+}
+
+- (void) sidebarItemSetStringValue:(NSString*)value
+{
+	self.userDefinedName = value;
 }
 
 - (NSString*) sidebarItemTooltip
@@ -669,7 +671,7 @@
 	return [NSDictionary dictionaryWithObjectsAndKeys:
 			[NSNumber numberWithUnsignedInteger:self.commitsBadgeInteger], @"commitsBadgeInteger",
 			[NSNumber numberWithUnsignedInteger:self.stageBadgeInteger], @"stageBadgeInteger", 
-			
+			(self.userDefinedName ? self.userDefinedName : @""), @"userDefinedName", 
 			// TODO: add submodules here
 			
 			nil];
@@ -681,6 +683,9 @@
 	
 	self.commitsBadgeInteger = (NSUInteger)[[plist objectForKey:@"commitsBadgeInteger"] integerValue];
 	self.stageBadgeInteger = (NSUInteger)[[plist objectForKey:@"stageBadgeInteger"] integerValue];
+	
+	self.userDefinedName = [plist objectForKey:@"userDefinedName"];
+	if (self.userDefinedName.length == 0) self.userDefinedName = nil;
 }
 
 
@@ -834,10 +839,6 @@
 
 - (void) updateLocalStateAfterDelay:(NSTimeInterval)interval block:(void(^)())block
 {
-//	if ([self.windowTitle rangeOfString:@"gitbox"].length > 0)
-//	{
-//		NSLog(@"Local update scheduled: %0.1f sec [%@]", interval, self.windowTitle);
-//	}
 	if (stopped || !self.repository)
 	{
 		if (block) block();
@@ -901,7 +902,6 @@
 	localStateUpdateGeneration++;
 	
 	[self.blockTable addBlock:aBlock forName:@"updateStageChanges" proceedIfClear:^{
-		//NSLog(@"!!! Updating stage [%@]", self.windowTitle);
 		[self.repository.stage updateStageWithBlock:^(BOOL didChange){
 			void(^contblock)() = ^{
 				

@@ -9,7 +9,6 @@
 @property(nonatomic, retain) GBSidebarItem* sidebarItem;
 @property(nonatomic, copy) NSString* name;
 @property(nonatomic, retain) NSMutableArray* items;
-@property(nonatomic, assign) NSWindow* window;
 @property(nonatomic, assign) GBRepositoriesController* repositoriesController;
 
 + (GBRepositoriesGroup*) untitledGroup;

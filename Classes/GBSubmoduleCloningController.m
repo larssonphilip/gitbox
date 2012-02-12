@@ -21,7 +21,6 @@
 
 @synthesize submodule=_submodule;
 @synthesize parentRepositoryController=_parentRepositoryController;
-@synthesize window;
 @synthesize viewController;
 
 @synthesize task;
@@ -35,7 +34,6 @@
 
 - (void) dealloc
 {
-	self.window      = nil;
 	self.viewController.repositoryController = nil;
 	self.viewController = nil;
 	[self.task terminate];

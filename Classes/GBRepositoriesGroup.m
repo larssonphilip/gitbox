@@ -16,7 +16,6 @@
 @synthesize sidebarItem;
 @synthesize name;
 @synthesize items;
-@synthesize window;
 @synthesize repositoriesController;
 
 @synthesize isExpanded;
@@ -56,19 +55,6 @@
 - (NSString*) untitledGroupName
 {
   return NSLocalizedString(@"untitled", @"GBRepositoriesGroup");
-}
-
-- (void) setWindow:(NSWindow *)aWindow
-{
-  if (window == aWindow) return;
-  window = aWindow;
-  for (id anObject in self.items)
-  {
-    if ([anObject respondsToSelector:@selector(setWindow:)])
-    {
-      [anObject setWindow:window];
-    }
-  }
 }
 
 - (void) insertObject:(id<GBSidebarItemObject>)anObject atIndex:(NSUInteger)anIndex

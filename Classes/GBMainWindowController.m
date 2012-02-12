@@ -103,11 +103,9 @@
 		[rootController setExternalNextResponder:nil];
 	}
 	
-	rootController.window = nil;
 	[rootController removeObserverForAllSelectors:self];
 	[rootController release];
 	rootController = [newRootController retain];
-	rootController.window = [self isWindowLoaded] ? [self window] : nil;
 	[rootController addObserverForAllSelectors:self];
 	
 	if (rootController)
@@ -496,8 +494,6 @@
 	}
 	
 	//[[self window] setAcceptsMouseMovedEvents:YES];
-	
-	self.rootController.window = [self window];
 	
 	[self.window setTitle:NSLocalizedString(@"No selection", @"Window")];
 	[self.window setRepresentedURL:nil];

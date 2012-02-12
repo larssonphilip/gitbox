@@ -17,7 +17,6 @@
 @implementation GBRepositoryCloningController
 
 @synthesize sidebarItem;
-@synthesize window;
 @synthesize viewController;
 
 @synthesize sourceURL;
@@ -33,7 +32,6 @@
 
 - (void) dealloc
 {
-	self.window      = nil;
 	self.viewController = nil;
 	self.sourceURL   = nil;
 	self.targetURL   = nil;

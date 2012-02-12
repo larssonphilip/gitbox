@@ -24,7 +24,6 @@
 
 @synthesize sidebarItem;
 @synthesize repositoriesController;
-@synthesize window;
 @synthesize nextRespondingSidebarObjects;
 
 @synthesize selectedObjects=_selectedObjects;
@@ -62,13 +61,6 @@
 		[self updateResponders];
 	}
 	return self;
-}
-
-- (void) setWindow:(NSWindow *)aWindow
-{
-	if (window == aWindow) return;
-	window = aWindow;
-	self.repositoriesController.window = window;
 }
 
 - (NSArray*) staticResponders
