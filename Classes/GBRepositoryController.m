@@ -672,7 +672,8 @@
 	
 	for (GBSubmoduleController* ctrl in self.submoduleControllers)
 	{
-		// TODO:
+		//NSDictionary* dict = 
+		//[submodulesList addObject:];
 	}
 	
 	return [NSDictionary dictionaryWithObjectsAndKeys:
@@ -680,7 +681,9 @@
 			[NSNumber numberWithUnsignedInteger:self.stageBadgeInteger], @"stageBadgeInteger", 
 			(self.userDefinedName ? self.userDefinedName : @""), @"userDefinedName", 
 			
-			// TODO: add submodules here
+			[NSNumber numberWithBool:self.sidebarItem.isCollapsed], @"collapsed",
+			
+			submodulesList, @"submoduleControllers",
 			
 			nil];
 }
@@ -694,6 +697,13 @@
 	
 	self.userDefinedName = [plist objectForKey:@"userDefinedName"];
 	if (self.userDefinedName.length == 0) self.userDefinedName = nil;
+	
+	self.sidebarItem.collapsed = [[plist objectForKey:@"collapsed"] boolValue];
+	
+	for (id childPlist in [plist objectForKey:@"submoduleControllers"])
+	{
+		//id submodulePlist
+	}
 }
 
 
