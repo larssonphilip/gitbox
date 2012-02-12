@@ -336,14 +336,14 @@
 		}
 		else // there's a matching controller
 		{
-			BOOL alreadyLocal1 = (matchingSubmodule.status == GBSubmoduleStatusUpToDate ||
-								 matchingSubmodule.status == GBSubmoduleStatusNotUpToDate);
-			BOOL alreadyLocal2 = (updatedSubmodule.status == GBSubmoduleStatusUpToDate ||
-								  updatedSubmodule.status == GBSubmoduleStatusNotUpToDate);
+			BOOL alreadyLocal1 = ([matchingSubmodule.status isEqualToString:GBSubmoduleStatusUpToDate] ||
+								 [matchingSubmodule.status isEqualToString:GBSubmoduleStatusNotUpToDate]);
+			BOOL alreadyLocal2 = ([updatedSubmodule.status isEqualToString:GBSubmoduleStatusUpToDate] ||
+								  [updatedSubmodule.status isEqualToString:GBSubmoduleStatusNotUpToDate]);
 
 			if (alreadyLocal1 && alreadyLocal2) // persistence status is the same
 			{
-				BOOL shouldUpdate = (matchingSubmodule.status != updatedSubmodule.status);
+				BOOL shouldUpdate = ![matchingSubmodule.status isEqualToString:updatedSubmodule.status];
 				matchingController.submodule = updatedSubmodule;
 				[updatedSubmoduleControllers addObject:matchingController];
 				if (shouldUpdate) [matchingController.sidebarItem update];
@@ -361,8 +361,8 @@
 			}
 			else // cloned status has changed, create a new controller, but reuse sidebarItem
 			{
-				BOOL notCloned1 = (matchingSubmodule.status == GBSubmoduleStatusNotCloned);
-				BOOL notCloned2 = (updatedSubmodule.status  == GBSubmoduleStatusNotCloned);
+				BOOL notCloned1 = [matchingSubmodule.status isEqualToString:GBSubmoduleStatusNotCloned];
+				BOOL notCloned2 = [updatedSubmodule.status isEqualToString:GBSubmoduleStatusNotCloned];
 				
 				// both are not cloned, reuse controller
 				if (notCloned1 && notCloned2)
@@ -668,10 +668,18 @@
 
 - (id) sidebarItemContentsPropertyList
 {
+	NSMutableArray* submodulesList = [NSMutableArray array];
+	
+	for (GBSubmoduleController* ctrl in self.submoduleControllers)
+	{
+		// TODO:
+	}
+	
 	return [NSDictionary dictionaryWithObjectsAndKeys:
 			[NSNumber numberWithUnsignedInteger:self.commitsBadgeInteger], @"commitsBadgeInteger",
 			[NSNumber numberWithUnsignedInteger:self.stageBadgeInteger], @"stageBadgeInteger", 
 			(self.userDefinedName ? self.userDefinedName : @""), @"userDefinedName", 
+			
 			// TODO: add submodules here
 			
 			nil];

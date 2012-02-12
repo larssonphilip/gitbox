@@ -52,4 +52,30 @@ NSString* const GBSubmoduleStatusNotUpToDate = @"GBSubmoduleStatusNotUpToDate";
 }
 
 
+
+#pragma mark - Persistence
+
+
+
+- (id) plistRepresentation
+{
+	return [NSDictionary dictionaryWithObjectsAndKeys:
+			self.path, @"path",
+			self.parentURL.path, @"parentPath",
+			[self.remoteURL absoluteString], @"remoteURLString",
+			self.commitId, @"commitId",
+			self.status, @"status",
+			nil];
+}
+
+- (void) setPlistRepresentation:(id)plist
+{
+	self.path = [plist objectForKey:@"path"];
+	self.parentURL = [NSURL fileURLWithPath:[plist objectForKey:@"parentPath"]];
+	self.remoteURL = [NSURL URLWithString:[plist objectForKey:@"remoteURLString"]];
+	self.commitId = [plist objectForKey:@"commitId"];
+	self.status = [plist objectForKey:@"status"];
+}
+
+
 @end

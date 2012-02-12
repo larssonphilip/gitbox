@@ -119,6 +119,7 @@
 		[ary addObject:submodule];
 	}
 	
+	// Sort by the visible, last path component.
 	[ary sortUsingComparator:^(id obj1, id obj2) {
 		return (NSComparisonResult)[[obj1 path].lastPathComponent compare:[obj2 path].lastPathComponent options:NSCaseInsensitiveSearch];
 	}];

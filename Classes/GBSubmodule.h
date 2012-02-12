@@ -17,4 +17,7 @@ extern NSString* const GBSubmoduleStatusNotUpToDate;
 
 @property(nonatomic, assign) dispatch_queue_t dispatchQueue;
 
+- (id) plistRepresentation;
+- (void) setPlistRepresentation:(id)plist;
+
 @end

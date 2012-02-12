@@ -18,7 +18,7 @@ static NSString* const kGBSubmoduleCellCheckoutButton = @"GBSubmoduleCellCheckou
 
 - (NSImage*) image
 {
-	if (self.submodule.status == GBSubmoduleStatusNotCloned)
+	if ([self.submodule.status isEqualToString:GBSubmoduleStatusNotCloned])
 	{
 		return [NSImage imageNamed:@"GBSidebarSubmoduleMissingIcon.png"];
 	}
@@ -46,7 +46,7 @@ static NSString* const kGBSubmoduleCellCheckoutButton = @"GBSubmoduleCellCheckou
 		[self.sidebarItem setView:nil forKey:kGBSubmoduleCellDownloadButton];
 	}
 	
-	if(self.submodule.status == GBSubmoduleStatusNotUpToDate && !self.sidebarItem.visibleSpinning && self.sidebarItem.isExpanded)
+	if([self.submodule.status isEqualToString:GBSubmoduleStatusNotUpToDate] && !self.sidebarItem.visibleSpinning && self.sidebarItem.isExpanded)
 	{
 		return [self drawButtonAndReturnRemainingRect:rect 
 												title:NSLocalizedString(@"Reset", @"GBSubmodule") 
