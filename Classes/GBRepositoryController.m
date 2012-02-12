@@ -386,6 +386,10 @@
 	for (GBSubmoduleController* ctrl in _submoduleControllers)
 	{
 		[ctrl removeObserverForAllSelectors:self];
+		if (![submoduleControllers containsObject:ctrl])
+		{
+			[ctrl stop];
+		}
 	}
 	
 	[_submoduleControllers release];

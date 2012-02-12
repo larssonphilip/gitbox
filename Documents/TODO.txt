@@ -54,6 +54,11 @@ Gitbox 1.6 misc items:
 
 - bug: downloading submodule does not update progress bar beyond "Packing..."
 
+- bug: 150% CPU usage when updating a repo and its submodules.
+- initial update: order by recently used repos (in terms of pulls, merges and commits). Like with optimization singleton, use a single dispatcher of initial updates to avoid concurrent updates bringing machine down.
+
+- remove parentRepository from submodule, pass parent repo ctrl to submodule ctrls so they can ping parents properly.
+
 - submodules: remember collapsed status of submodules in user defaults
 - submodules: remember submodules in prefs plist because we don't update all of them on startup
 
@@ -79,7 +84,6 @@ Gitbox 1.6 misc items:
 - bug: gitbox does not honor merge.ff setting to do "git merge --no-ff"
 - bug: after commit and refresh of the history, sometimes the stage remains non-updated.
 
-- initial update: order by recently used repos (in terms of pulls, merges and commits). Like with optimization singleton, use a single dispatcher of initial updates to avoid concurrent updates bringing machine down.
 
 - feature: rename repositories
 - license prefs: button for buy in App Store. Explain how to remove the app before installing the latest version.
@@ -123,6 +127,7 @@ Gitbox 1.6 misc items:
 Misc done for 1.6:
 
 
++ when removed tree of submodules, sidebar item views are still in sidebar.
 
 + bug: when submodule is updated, the controller is recreated and history is reloaded.
 + bug: when stopped, should ignore fs events etc.

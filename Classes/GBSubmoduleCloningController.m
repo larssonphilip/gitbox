@@ -80,6 +80,10 @@
 
 - (IBAction)startDownload:(id)sender
 {
+	if (!self.submodule.parentRepository)
+	{
+		NSLog(@"ERROR: no parent repository for submodule. Out of sync with parent repo!");
+	}
 	
 	self.progressStatus = nil;
 	self.sidebarItemProgress = 0.0;
@@ -170,7 +174,7 @@
 	{
 		//NSLog(@"!! Task cancelled. Decrementing a spinner. Terminating a task.");
 		self.isSpinning--;
-		OATask* t = self.task;
+		OATask* t = [[self.task retain] autorelease];
 		self.task = nil;
 		[t terminate];
 		self.progressStatus = @"";
@@ -179,6 +183,15 @@
 		[self.sidebarItem update];
 	}
 	[self notifyWithSelector:@selector(submoduleCloningControllerDidCancel:)];
+}
+
+- (void) stop
+{
+	OATask* t = [[self.task retain] autorelease];
+	self.task = nil;
+	[t terminate];
+	[self.sidebarItem removeAllViews];
+	[self.sidebarItem update];
 }
 
 
