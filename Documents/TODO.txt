@@ -24,6 +24,7 @@ Gitbox 1.6 Release Notes
 
 ✓ Fantastic submodules support: automatic display for all submodules, one-click download and reset.
 ✓ Submodules are reset automatically when pulling, switching branches or checking out commits.
+✓ Editable repository names (Gitbox keeps an alias without changing the actual folder name.)
 ✓ Automatic repository optimization in background.
 
 ✓ Tags are sorted in natural order and with respect to version numbers.
@@ -31,19 +32,19 @@ Gitbox 1.6 Release Notes
 ✓ Warning is displayed when trying to make a commit when no branch is selected.
 ✓ Single Preferences window with Git configuration, ignored files, "Clone from Github" checkbox etc.
 
+✓ Fixed bugs and crashes in authentication session.
+✓ Fixed performance bug with frequent stage updates (high CPU consumption).
 ✓ Fixed bugs with preserving stage selection and scroll offset when stage is reloaded.
 ✓ Fixed bug with text fields in repository settings (value was not stored immediately)
 ✓ Fixed a bug with trimming whitespace from .gitignore
-✓ Fixed link highlighting: now all kinds of schemas are recognized including rdar:// (Lion-only). 
-✓ Fixed several text labels.
+✓ Fixed link highlighting: now all kinds of schemas are recognized including rdar:// (Lion-only).
+✓ Fixed several text labels and error messages.
 ✓ Fixed an annoying bug in search field (when space is entered, all text was selected)
 ✓ Fixed bug with presenting files containing ":" and other URL-unfriendly characters.
-✓ Fixed performance bug with frequent stage updates (high CPU consumption).
 ✓ Fixed bug with staging file names beginning with dash ("-")
 ✓ Fixed bug with multi-line commit messages. Messages are recorded as-is. Prewrapped messages are intelligently unwrapped when displayed.
 ✓ Fixed bug with ignoring a file when .gitignore does not exist (file was not added to .gitignore).
 ✓ Fixed bug with title duplication in the branch menus.
-✓ Fixed bugs and crashes in authentication session.
 ✓ Fixed sidebar alignment bug.
  
 --
@@ -54,20 +55,6 @@ Gitbox 1.6 misc items:
 
 - submodules: remember collapsed status of submodules in user defaults
 - submodules: remember submodules in prefs plist because we don't update all of them on startup
-
-- submodules: GBSubmoduleController should be replaced with cloning ctrl when submodule is deleted. (or at least, simply deselected)
-
-- check that undo stack works after playling with submodules.
-
-- submodules: case 4: user clones the repo inside the repo => needs to display as a non-tracked submodule which can be tracked
-- submodules: case 5: user tries to commit a submodule which has the HEAD non-pushed (or dirty directory) - show warning or ask to push manually; show button "show module"
-
-- submodules settings: show a table with columns "path", "public URL", "private URL" (private URL should have a placeholder which is == public URL)
-- submodules settings: sync private URL with both .git/config and submodule/.git/config
-- submodules settings: when editing repo's own URL, sync it with parent's submodule record in .git/config
-
-- submodules: do not forget to "git submodule add <url> <path>" after path update (same for remove, maybe)
-
 - bug: when submodules are opened, all parent items (e.g. groups) are opened as well. Shouldn't do that. Also, remember the submodules in prefs.plist [seems like the groups are not opened]
 - bug: if pushed from the terminal, commits difference is not recalculated (green dots remain).
 - bug: gitbox does not honor merge.ff setting to do "git merge --no-ff"
@@ -82,20 +69,28 @@ Gitbox 1.6 misc items:
 - ui: implement spinner for indeterminate tasks (with color switch support) and wetransfer-like spinning progress sector (shows progress using sector + rotates it to present activity).
 - ui: for two above: implement OASuperActivityIndicator with stack API, spinning progress, color switch and lazy API (to avoid showing spinner for short tasks of 1-2 seconds).
 
-- show expansion arrow on a "+" button in toolbar. [looks super ugly, only one person complained]
 
-- allow force update tags.
-- notify that the tag is already taken when you type it's name.
+
+- submodule settings:
+	- submodules: case 4: user clones the repo inside the repo => needs to display as a non-tracked submodule which can be tracked
+	- submodules: case 5: user tries to commit a submodule which has the HEAD non-pushed (or dirty directory) - show warning or ask to push manually; show button "show module"
+
+	- submodules settings: show a table with columns "path", "public URL", "private URL" (private URL should have a placeholder which is == public URL)
+	- submodules settings: sync private URL with both .git/config and submodule/.git/config
+	- submodules settings: when editing repo's own URL, sync it with parent's submodule record in .git/config
+	- submodules: do not forget to "git submodule add <url> <path>" after path update (same for remove, maybe)
 
 - bug: submodules' loading causes stage refresh delays or similar glitches.
 - possible bugs with sidebar cells + views: if alternative view is drawn, then previously added one could have not been removed (especially if it's added by superclass).
 - bug: stage: when selecting with keyboard and stage refreshes, it loses the initial point of selection.
-
 - when window not focused, ignore FS events for longer period to avoid tons of refreshes while typing.
 
 - bug: when checking out older commits, submodule folders remain in place.
 - bug: when checking out and recreating submodule controllers, more tasks are running in bg
 - test: committing without name/email in ~/.gitconfig
+
+- submodules: GBSubmoduleController should be replaced with cloning ctrl when submodule is deleted. (or at least, simply deselected)
+- check that undo stack works after playling with submodules.
 
 
 ? submodules: when submodule folder is removed, properly update its status
@@ -304,6 +299,10 @@ Gitbox Next:
 
 
 Unsorted:
+
+
+- allow force update tags.
+- notify that the tag is already taken when you type it's name.
 
 - show submodule HEAD in status in sidebar.
   - submodule controller should subscribe to its stage and notify parent when stage is changed.
