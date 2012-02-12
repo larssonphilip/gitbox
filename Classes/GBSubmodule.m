@@ -13,8 +13,9 @@ NSString* const GBSubmoduleStatusNotUpToDate = @"GBSubmoduleStatusNotUpToDate";
 @implementation GBSubmodule
 
 @synthesize parentRepository=_parentRepository;
-@synthesize remoteURL=_remoteURL;
 @synthesize path=_path;
+@synthesize parentURL=_parentURL;
+@synthesize remoteURL=_remoteURL;
 @synthesize status=_status;
 @synthesize commitId=_commitId;
 
@@ -23,6 +24,7 @@ NSString* const GBSubmoduleStatusNotUpToDate = @"GBSubmoduleStatusNotUpToDate";
 	//NSLog(@"GBSubmodule#dealloc");
 	[_remoteURL release];
 	[_path release];
+	[_parentURL release];
 	[_status release];
 	[_commitId release];
 	[super dealloc];
