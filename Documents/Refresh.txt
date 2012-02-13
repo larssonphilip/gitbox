@@ -10,6 +10,49 @@ Gitbox needs to perform several updates to be in sync with the Git repository:
    - selected remote ref
    - search state
 
+API for updating a "feature" F:
+
+- setNeedsUpdateFeature
+- waitUpdateFeature:^{ ... }
+
+State: (move this to the object)
+- needsUpdateFeature
+- needsUpdateFeatureAfterCurrentUpdate // set to YES if update is in progress
+- updateFeatureInProgress
+- updateFeatureCurrentWaitBlock // after completion of the current update
+- updateFeatureNextWaitBlock // after completion of the next update
+
+
+- setNeedsUpdateFeature:
+  - if not in progress:
+    - set needs update schedule update after short delay
+    - after delay, enter in progress
+  - if in progress:
+    - set needs update after current update
+	
+- waitUpdateFeature:
+  - if not in progress: call back immediately
+  - if in progress, but not needs update after current update: add block to updateFeatureCurrentWaitBlock
+  - if in progress and needs update after current update
+  
+- did finish update:
+  - copy state in tmp variables and clear
+  - call current wait block
+  - send notif
+  - set next wait block to current wait block
+  - if needs update after current update, setNeedsUpdate
+  
+
+- when repo is selected and app is active, ignore all FS events. Update state by timer when idle with increasing interval if nothing changes.
+- when repo is not selected and app is active, 
+
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
+
+
+-------------------------------------------------------------------------------
 
 These tasks should be performed both on demand and independently of the UI. 
 System should try to take FSEvents as hints, but still rely on its own timers and "isEqual" check for updated state 
