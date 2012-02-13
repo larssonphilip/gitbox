@@ -49,6 +49,11 @@ State: (move this to the object)
 - if repo is not selected and app is inactive, ack FS events every 10 seconds and never update by timer.
 - if autofetch completes, refresh all local state.
 
+Wishlist:
+- when window is selected, only selected repo is updated. Submodules' local state is refreshed only if parent noticed a change in their status.
+- when staged a file, only stage is updated and every other feature or repo are silent. So the stage happens quickly.
+  - also: for some common cases we may avoid launching some commands. E.g. when file is modified and staged as modified, we may even not load new state, but fixup existing one.
+
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
