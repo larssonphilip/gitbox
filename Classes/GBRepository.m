@@ -101,6 +101,8 @@
 	[localBranches release]; localBranches = nil;
 	[remotes release]; remotes = nil;
 	[tags release]; tags = nil;
+	
+	stage.repository = nil;
 	[stage release]; stage = nil;
 	
 	[currentLocalRef release]; currentLocalRef = nil;

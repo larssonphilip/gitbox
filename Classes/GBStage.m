@@ -211,12 +211,14 @@
 	
 	int stageStateCounterLocal = stageStateCounter;
 	
+	GBRepository* repo = self.repository; // make a strong reference for async operation.
+	
 	[self beginStageTransaction:^{
 	
-		[self.repository launchTask:[GBRefreshIndexTask taskWithRepository:self.repository] withBlock:^{
+		[repo launchTask:[GBRefreshIndexTask taskWithRepository:repo] withBlock:^{
 			
-			GBStagedChangesTask* stagedChangesTask = [GBStagedChangesTask taskWithRepository:self.repository];
-			[self.repository launchTask:stagedChangesTask withBlock:^{
+			GBStagedChangesTask* stagedChangesTask = [GBStagedChangesTask taskWithRepository:repo];
+			[repo launchTask:stagedChangesTask withBlock:^{
 				
 				[OABlockGroup groupBlock:^(OABlockGroup* blockGroup){
 					
@@ -229,9 +231,9 @@
 					else
 					{
 						// diff-tree failed: we don't have a HEAD commit, try another task
-						GBAllStagedFilesTask* stagedChangesTask2 = [GBAllStagedFilesTask taskWithRepository:self.repository];
+						GBAllStagedFilesTask* stagedChangesTask2 = [GBAllStagedFilesTask taskWithRepository:repo];
 						[blockGroup enter];
-						[self.repository launchTask:stagedChangesTask2 withBlock:^{
+						[repo launchTask:stagedChangesTask2 withBlock:^{
 							self.stagedChanges = stagedChangesTask2.changes;
 							NSData* data = stagedChangesTask2.output;
 							if (data) [accumulatedData appendData:data];
@@ -241,15 +243,15 @@
 					
 				} continuation: ^{
 					
-					GBUnstagedChangesTask* unstagedChangesTask = [GBUnstagedChangesTask taskWithRepository:self.repository];
-					[self.repository launchTask:unstagedChangesTask withBlock:^{
+					GBUnstagedChangesTask* unstagedChangesTask = [GBUnstagedChangesTask taskWithRepository:repo];
+					[repo launchTask:unstagedChangesTask withBlock:^{
 						self.unstagedChanges = unstagedChangesTask.changes;
 						
 						NSData* data = unstagedChangesTask.output;
 						if (data) [accumulatedData appendData:data];
 						
-						GBUntrackedChangesTask* untrackedChangesTask = [GBUntrackedChangesTask taskWithRepository:self.repository];
-						[self.repository launchTask:untrackedChangesTask withBlock:^{
+						GBUntrackedChangesTask* untrackedChangesTask = [GBUntrackedChangesTask taskWithRepository:repo];
+						[repo launchTask:untrackedChangesTask withBlock:^{
 							self.untrackedChanges = untrackedChangesTask.changes;
 							
 							NSData* data = untrackedChangesTask.output;
@@ -265,7 +267,7 @@
 							
 							self.previousChangesData = accumulatedData;
 							
-	//						if ([self.repository.path rangeOfString:@"clean worki"].length > 0)
+	//						if ([repo.path rangeOfString:@"clean worki"].length > 0)
 	//						{
 	//							NSLog(@"GBStage update: staged: %d unstaged: %d untracked: %d", self.stagedChanges.count, self.unstagedChanges.count, self.untrackedChanges.count);
 	//						}
