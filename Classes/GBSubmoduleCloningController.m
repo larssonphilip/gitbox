@@ -181,6 +181,11 @@
 	[self notifyWithSelector:@selector(submoduleCloningControllerDidCancel:)];
 }
 
+- (void) start
+{
+	// noop for compat with GBRepositoryController
+}
+
 - (void) stop
 {
 	OATask* t = [[self.task retain] autorelease];

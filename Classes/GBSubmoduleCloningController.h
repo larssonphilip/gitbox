@@ -31,6 +31,7 @@
 
 - (NSURL*) remoteURL;
 
+- (void) start;
 - (void) stop;
 
 @end

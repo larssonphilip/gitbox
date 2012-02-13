@@ -93,7 +93,7 @@
 		NSURL* submoduleURL = [self.repository URLForSubmoduleAtPath:submodulePath];
 		
 		GBSubmodule *submodule = [[GBSubmodule new] autorelease];
-		[submodule setDispatchQueue:self.repository.dispatchQueue];
+		submodule.dispatchQueue = self.repository.dispatchQueue;
 		submodule.path         = submodulePath;
 		submodule.parentURL    = self.repository.url;
 		submodule.remoteURL    = submoduleURL;

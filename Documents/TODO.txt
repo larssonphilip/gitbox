@@ -53,9 +53,8 @@ Gitbox 1.6 misc items:
 
 - initial update: order by recently used repos (in terms of pulls, merges and commits). Like with optimization singleton, use a single dispatcher of initial updates to avoid concurrent updates bringing machine down.
 
-- submodules: remember collapsed status of submodules in user defaults
-- submodules: remember submodules in prefs plist because we don't update all of them on startup
-- bug: when submodules are opened, all parent items (e.g. groups) are opened as well. Shouldn't do that. Also, remember the submodules in prefs.plist [seems like the groups are not opened]
+- bug: when checking out/resetting submodule which is dirty, it fails silently. 
+
 - bug: if pushed from the terminal, commits difference is not recalculated (green dots remain).
 - bug: gitbox does not honor merge.ff setting to do "git merge --no-ff"
 - bug: after commit and refresh of the history, sometimes the stage remains non-updated.
@@ -112,6 +111,10 @@ Gitbox 1.6 misc items:
 
 Misc done for 1.6:
 
+
++ submodules: remember collapsed status of submodules in user defaults
++ submodules: remember submodules in prefs plist because we don't update all of them on startup
++ bug: when submodules are opened, all parent items (e.g. groups) are opened as well. Shouldn't do that. Also, remember the submodules in prefs.plist [seems like the groups are not opened]
 
 + submodules: case 1: user clones a repo which has some submodules => needs init, display "download" button for submodules in sidebar
 + submodules: case 2: user pulls a repo which has some submodules updated => needs pull

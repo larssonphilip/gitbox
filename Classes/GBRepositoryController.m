@@ -672,8 +672,17 @@
 	
 	for (GBSubmoduleController* ctrl in self.submoduleControllers)
 	{
-		//NSDictionary* dict = 
-		//[submodulesList addObject:];
+		NSMutableDictionary* dict = [NSMutableDictionary dictionary];
+		
+		[dict setObject:NSStringFromClass([ctrl class]) forKey:@"class"];
+		
+		id submodulePlist = [ctrl.submodule plistRepresentation];
+		if (submodulePlist) [dict setObject:submodulePlist forKey:@"submodule"];
+		
+		id ctrlContentPlist = [ctrl respondsToSelector:@selector(sidebarItemContentsPropertyList)] ? [ctrl sidebarItemContentsPropertyList] : nil;
+		if (ctrlContentPlist) [dict setObject:ctrlContentPlist forKey:@"controller"];
+		
+		[submodulesList addObject:dict];
 	}
 	
 	return [NSDictionary dictionaryWithObjectsAndKeys:
@@ -683,7 +692,7 @@
 			
 			[NSNumber numberWithBool:self.sidebarItem.isCollapsed], @"collapsed",
 			
-			submodulesList, @"submoduleControllers",
+			submodulesList, @"submodules",
 			
 			nil];
 }
@@ -700,10 +709,54 @@
 	
 	self.sidebarItem.collapsed = [[plist objectForKey:@"collapsed"] boolValue];
 	
-	for (id childPlist in [plist objectForKey:@"submoduleControllers"])
+	NSMutableArray* smControllers = [NSMutableArray array];
+	NSMutableArray* submodules = [NSMutableArray array];
+	
+	for (id childPlist in [plist objectForKey:@"submodules"])
 	{
-		//id submodulePlist
+		id submodulePlist = [childPlist objectForKey:@"submodule"];
+		id className = [childPlist objectForKey:@"class"];
+		id controllerPlist = [childPlist objectForKey:@"controller"];
+		
+		GBSubmodule* submodule = [[[GBSubmodule alloc] init] autorelease];
+		submodule.dispatchQueue = self.repository.dispatchQueue;
+		[submodule setPlistRepresentation:submodulePlist];
+		submodule.parentURL = self.repository.url;
+		
+		if ([className isEqual:@"GBSubmoduleController"])
+		{
+			[submodules addObject:submodule];
+			
+			GBSubmoduleController* ctrl = [GBSubmoduleController controllerWithSubmodule:submodule];
+			[smControllers addObject:ctrl];
+			
+			ctrl.viewController = self.viewController;
+			ctrl.toolbarController = self.toolbarController;
+			ctrl.fsEventStream = self.fsEventStream;
+			ctrl.parentRepositoryController = self;
+			
+			[ctrl sidebarItemLoadContentsFromPropertyList:controllerPlist];
+		}
+		else if ([className isEqual:@"GBSubmoduleCloningController"]) 
+		{
+			[submodules addObject:submodule];
+			
+			GBSubmoduleCloningController* ctrl = [[[GBSubmoduleCloningController alloc] initWithSubmodule:submodule] autorelease];
+			ctrl.parentRepositoryController = self;
+			[smControllers addObject:ctrl];
+			
+			if ([ctrl respondsToSelector:@selector(sidebarItemLoadContentsFromPropertyList:)])
+			{
+				[ctrl sidebarItemLoadContentsFromPropertyList:controllerPlist];
+			}
+		}
 	}
+	
+	// Do not use setter to avoid recreating submodule controllers.
+	[_submodules release];
+	_submodules = [submodules retain];
+	
+	self.submoduleControllers = smControllers;
 }
 
 
@@ -727,6 +780,7 @@
 - (void) start
 {
 	if (started) return;
+	
 	started = YES;
 	
 	self.folderMonitor.target = self;
@@ -739,6 +793,11 @@
 	double localUpdateDelayInSeconds = 10.0 + 5.0*60.0*drand48();
 	[self updateLocalStateAfterDelay:localUpdateDelayInSeconds block:nil];
 	[self updateRemoteStateAfterDelay:localUpdateDelayInSeconds + 10.0*60.0*drand48()];
+	
+	for (GBSubmoduleController* ctrl in self.submoduleControllers)
+	{
+		[ctrl start];
+	}
 }
 
 - (void) stop

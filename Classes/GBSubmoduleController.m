@@ -83,4 +83,13 @@
 	return self.repository.stage.totalPendingChanges == 0;
 }
 
+- (void) start
+{
+	self.viewController    = self.parentRepositoryController.viewController;
+	self.toolbarController = self.parentRepositoryController.toolbarController;
+	self.fsEventStream     = self.parentRepositoryController.fsEventStream;
+
+	[super start];
+}
+
 @end
