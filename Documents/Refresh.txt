@@ -43,8 +43,11 @@ State: (move this to the object)
   - if needs update after current update, setNeedsUpdate
   
 
-- when repo is selected and app is active, ignore all FS events. Update state by timer when idle with increasing interval if nothing changes.
-- when repo is not selected and app is active, 
+- if repo is selected and app is active, ignore all FS events. Update state by timer when idle with increasing interval if nothing changes.
+- if repo is not selected and app is active, ignore FS events. Submodules should be updated by explicit notification from/to parent.
+- if repo is selected and app is inactive, ack FS events every 5 seconds and update by timer as when app is active.
+- if repo is not selected and app is inactive, ack FS events every 10 seconds and never update by timer.
+- if autofetch completes, refresh all local state.
 
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
