@@ -38,7 +38,7 @@
 @synthesize indeterminate = _isIndeterminate;
 @synthesize doubleValue = _currentValue;
 @synthesize maxValue = _maxValue;
-
+@synthesize actsAsCell=_actsAsCell;
 
 
 
@@ -54,14 +54,8 @@
         
         _finColors = calloc(_numFins, sizeof(NSColor*));
         
-        _isAnimating = NO;
-        _isFadingOut = NO;
-        
         _foreColor = [[NSColor blackColor] retain];
         _backColor = [[NSColor clearColor] retain];
-        _drawsBackground = NO;
-        
-        _usesThreadedAnimation = YES;
         
         _isIndeterminate = YES;
         _currentValue = 0.0;
@@ -96,6 +90,19 @@
     else if (_isAnimating) {
         [self actuallyStartAnimation];
     }
+}
+
+- (void) setNeedsDisplay:(BOOL)flag
+{
+	if (_actsAsCell)
+	{
+		// Update superview
+		[self.superview setNeedsDisplayInRect:self.frame];
+	}
+	else
+	{
+		[super setNeedsDisplay:flag];
+	}
 }
 
 - (void)drawRect:(NSRect)rect{
@@ -328,7 +335,7 @@
         [self display];
     }
     else {
-		NSLog(@". window: %@ rect = %@", self.window, NSStringFromRect(self.frame));
+		//NSLog(@". window: %@ rect = %@", self.window, NSStringFromRect(self.frame));
         [self setNeedsDisplay:YES];
     }
 }
@@ -337,7 +344,6 @@
     // Just to be safe kill any existing timer.
     [self actuallyStopAnimation];
     
-	NSLog(@"actuallyStartAnimation");
     _isAnimating = YES;
     _isFadingOut = NO;
     

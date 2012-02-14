@@ -151,6 +151,7 @@
 	{
 		//NSLog(@"!! Task cancelled. Decrementing a spinner. Terminating a task.");
 		self.isSpinning--;
+		[self.sidebarItem removeAllViews];
 		[self.sidebarItem update];
 		OATask* t = self.task;
 		self.task = nil;

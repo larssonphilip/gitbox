@@ -261,30 +261,32 @@
 	if (!spinner)
 	{
 		spinner = [[[YRKSpinningProgressIndicator alloc] initWithFrame:NSMakeRect(0, 0, 16.0, 16.0)] autorelease];
-		spinner.usesThreadedAnimation = YES;
+		//spinner.actsAsCell = YES;
+		
 		[self.sidebarItem setView:spinner forKey:kGBSidebarCellSpinnerKey];
 	}
-	[self.outlineView addSubview:spinner];
+	if (spinner.superview != self.outlineView)
+	{
+		[self.outlineView addSubview:spinner];
+	}
 	[spinner setHidden:NO];
 	
-//	if (!self.isHighlighted)
-//	{
-//		spinner.color = [NSColor grayColor];
-//	}
-//	else
-//	{
-//		spinner.color = [NSColor whiteColor];
-//	}
+	if (!self.isHighlighted)
+	{
+		spinner.color = [NSColor grayColor];
+	}
+	else
+	{
+		spinner.color = [NSColor whiteColor];
+	}
 	
 	if (!spinner) return rect;
 	
 	double progress = self.sidebarItem.visibleProgress;
-	[spinner setIndeterminate:progress <= 0.1 || progress >= 99.9 || 1];
-//	[spinner setDoubleValue:progress];
+	[spinner setIndeterminate:progress <= 1.0 || progress >= 99.9];
+	[spinner setDoubleValue:MAX(MIN(progress, 100.0), 6.0)];
 	
 	[spinner startAnimation:nil];
-	
-	
 	
 	static CGFloat leftPadding = 2.0;
 	static CGFloat rightPadding = 2.0;
@@ -345,7 +347,7 @@
 
 - (NSRect) drawSpinnerIfNeededInRectAndReturnRemainingRect:(NSRect)rect
 {
-	return [self drawCocoaSpinnerIfNeededInRectAndReturnRemainingRect:rect];
+	return [self drawCustomSpinnerIfNeededInRectAndReturnRemainingRect:rect];
 }
 
 
