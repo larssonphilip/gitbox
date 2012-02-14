@@ -284,10 +284,14 @@
 
 - (void)updateFrame:(NSTimer *)timer
 {
-    // Indeterminate animation: 10 - speed
-    if (!_isIndeterminate && (_currentValue!=_maxValue)) {
-        _animationAngel=_animationAngel - ( 10 );
-    } else{
+	double msec = (dispatch_time(DISPATCH_TIME_NOW, 0) / 1000000);
+	
+    if (!_isIndeterminate && (_currentValue!=_maxValue))
+	{
+        _animationAngel = -msec / 6.0;
+    }
+	else
+	{
         if(_position > 0) {
             _position--;
         }
@@ -295,9 +299,7 @@
             _position = _numFins - 1;
         }
 		
-		double msec = (dispatch_time(DISPATCH_TIME_NOW, 0) / 1000000);
-		
-        _position = (_numFins - 1) - (((int)round(msec / (_isIndeterminate ? 50.0 : 20.0))) % _numFins);
+        _position = (_numFins - 1) - (((int)round(msec / (50.0))) % _numFins);
 		
         // update the colors
         CGFloat minAlpha = 0.01;
