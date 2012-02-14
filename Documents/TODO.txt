@@ -54,11 +54,18 @@ Gitbox 1.6 Release Notes
 Gitbox 1.6 misc items:
 
 - bug: remote URL with a space inside: 1) truncates 2) saves back to .git/config. See Bugs Inbox.
+- license prefs: button for buy in App Store. Explain how to remove the app before installing the latest version.
+- fetch from only one remote to avoid
+  - from the selected remote if given.
+  - or the first one in a list, if remote branch is not selected.
+  
+- test app store build before submission.
+
+
 - bug: when checking out/resetting submodule which is dirty, it fails silently. 
 - show "unpushed" status for unpushed submodule.
 - bug: if pushed from the terminal, commits difference is not recalculated (green dots remain).
 - bug: after commit and refresh of the history, sometimes the stage remains non-updated.
-- license prefs: button for buy in App Store. Explain how to remove the app before installing the latest version.
 
 
 
