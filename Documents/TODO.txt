@@ -55,15 +55,13 @@ Gitbox 1.6 misc items:
 - don't know what to do when submodule has other submodules and is collapsed and we want a "reset" button.
   - should not mean "reset all inner stuff too"
 
-- bug: cloning rails.git does not read download progress properly. Stays at 18% or so.
-
 - bug: when checking out/resetting submodule which is dirty, it fails silently. 
 - show "unpushed" status for unpushed submodule.
 
 - bug: if pushed from the terminal, commits difference is not recalculated (green dots remain).
 - bug: gitbox does not honor merge.ff setting to do "git merge --no-ff"
+  - there could be a related bug with no display of such merge commits
 - bug: after commit and refresh of the history, sometimes the stage remains non-updated.
-
 
 - license prefs: button for buy in App Store. Explain how to remove the app before installing the latest version.
 
@@ -119,6 +117,8 @@ Gitbox 1.6 misc items:
 
 Misc done for 1.6:
 
+
++ bug: cloning rails.git does not read download progress properly. Stays at 18% or so.
 
 + sidebar: draw a background inset circle for spinner in a selected sidebar cell
 + ui: implement spinner for indeterminate tasks (with color switch support) and wetransfer-like spinning progress sector (shows progress using sector + rotates it to present activity).

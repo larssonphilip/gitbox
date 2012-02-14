@@ -42,7 +42,7 @@
 
 - (void) callProgressBlock
 {
-	dispatch_async(dispatch_get_main_queue(), ^{ 
+	dispatch_async(dispatch_get_main_queue(), ^{
 		if (self.progressUpdateBlock) self.progressUpdateBlock(); 
 	});
 }
@@ -152,10 +152,12 @@
     
 	double newExtendedProgress = 0.0;
 	{
-		const double firstPart = 20.0;
-		const double lastPart = 20.0;
+		const double firstPart = 5.0;
+		const double lastPart = 10.0;
 		const double middlePart = 100.0 - firstPart - lastPart;
 		const double fadeRatio = 0.1;
+		
+		// If we are waiting 
 		if (newProgress < 0.1)
 		{
 			if (!self.indeterminateActivityStartDate)
@@ -168,7 +170,7 @@
 		}
 		else if (newProgress < 99.9)
 		{
-			newExtendedProgress = firstPart + middlePart*self.extendedProgress*0.01;
+			newExtendedProgress = firstPart + middlePart*newProgress*0.01;
 			self.indeterminateActivityStartDate = nil; // reset the timer
 			//NSLog(@"Phase 2: %f", newExtendedProgress);
 		}
@@ -182,9 +184,9 @@
 			//NSLog(@"Phase 3: %f", newExtendedProgress);
 		}
 	}	
-	
-	// To avoid heavy load on main thread, call the block only when progress changes by 0.5%.
-	if (round(newExtendedProgress*2) == round(self.extendedProgress*2)) return;
+
+	// To avoid heavy load on main thread, call the block only when progress changes by 0.1%.
+	if (round(newExtendedProgress*10) == round(self.extendedProgress*10)) return;
 	
 	self.extendedProgress = newExtendedProgress;
 	self.progress = newProgress;
