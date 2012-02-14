@@ -52,6 +52,10 @@ Gitbox 1.6 Release Notes
 
 Gitbox 1.6 misc items:
 
+- don't know what to do when submodule has other submodules and is collapsed and we want a "reset" button.
+  - should not mean "reset all inner stuff too"
+  
+
 - bug: cloning rails.git does not read download progress properly. Stays at 18% or so.
 
 - initial update: order by recently used repos (in terms of pulls, merges and commits). Like with optimization singleton, use a single dispatcher of initial updates to avoid concurrent updates bringing machine down.
