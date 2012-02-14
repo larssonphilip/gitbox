@@ -45,6 +45,7 @@ Gitbox 1.6 Release Notes
 ✓ Fixed bug with multi-line commit messages. Messages are recorded as-is. Prewrapped messages are intelligently unwrapped when displayed.
 ✓ Fixed bug with ignoring a file when .gitignore does not exist (file was not added to .gitignore).
 ✓ Fixed bug with title duplication in the branch menus.
+✓ Fixed merge --no-ff option. Gitbox shows no-ff merge commits and respects “mergeoptions” in .git/config.
 ✓ Fixed sidebar alignment bug.
 ✓ Fixed sidebar spinner color and animation.
  
@@ -52,22 +53,12 @@ Gitbox 1.6 Release Notes
 
 Gitbox 1.6 misc items:
 
-- don't know what to do when submodule has other submodules and is collapsed and we want a "reset" button.
-  - should not mean "reset all inner stuff too"
-
+- bug: remote URL with a space inside: 1) truncates 2) saves back to .git/config. See Bugs Inbox.
 - bug: when checking out/resetting submodule which is dirty, it fails silently. 
 - show "unpushed" status for unpushed submodule.
-
 - bug: if pushed from the terminal, commits difference is not recalculated (green dots remain).
-- bug: gitbox does not honor merge.ff setting to do "git merge --no-ff"
-  - there could be a related bug with no display of such merge commits
 - bug: after commit and refresh of the history, sometimes the stage remains non-updated.
-
 - license prefs: button for buy in App Store. Explain how to remove the app before installing the latest version.
-
-- bug: remote URL with a space inside: 1) truncates 2) saves back to .git/config. See Bugs Inbox.
-
-- ui: show spinner after some operation takes longer than expected
 
 
 
@@ -98,6 +89,12 @@ Gitbox 1.6 misc items:
 - instead of checkoutCommit and quickCheckout show a single window with find-as-you-type commit selection.
   - maybe change popup button to a simple button and show list in place of the history table view.
 
+- ui: show spinner after some operation takes longer than expected
+
+- don't know what to do when submodule has other submodules and is collapsed and we want a "reset" button.
+  - should not mean "reset all inner stuff too"
+
+
 ? submodules: when submodule folder is removed, properly update its status
 ? maybe: update sidebar item and repository when update is finished [about submodules]
 ? maybe: store a weak ref to parent repo ctrl from GBSubmoduleController -> this would allow for submodule settings update when you change remote URL inside the submodule; but maybe indirect access by repo URL will be enough (or similar)
@@ -117,6 +114,9 @@ Gitbox 1.6 misc items:
 
 Misc done for 1.6:
 
+
++ bug: gitbox does not honor merge.ff setting to do "git merge --no-ff"
+  + there could be a related bug with no display of such merge commits
 
 + bug: cloning rails.git does not read download progress properly. Stays at 18% or so.
 

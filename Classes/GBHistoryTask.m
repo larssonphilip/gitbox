@@ -96,7 +96,9 @@
 	
 	// adding explicit path argument to allow branch names with slashes
 	[args addObject:@"--"];
-	[args addObject:@"."];
+	
+	// Dot is commented out to allow display of -no-ff merge commits (empty commits when merging non-diverged branches)
+	//[args addObject:@"."];
 	
 	//  NSLog(@"arguments: %@", [[args subarrayWithRange:NSMakeRange(4, [args count] - 4)] componentsJoinedByString:@" "]);
 	//  NSLog(@"--");
