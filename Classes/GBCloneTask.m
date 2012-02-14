@@ -10,7 +10,6 @@
 
 @synthesize sourceURL;
 @synthesize targetURL;
-@synthesize progressUpdateBlock;
 @synthesize status;
 @synthesize progress;
 
@@ -18,7 +17,6 @@
 {
   self.sourceURL = nil;
   self.targetURL = nil;
-  self.progressUpdateBlock = nil;
   self.status = nil;
   [super dealloc];
 }
