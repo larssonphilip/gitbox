@@ -25,6 +25,7 @@
 #import "OAPropertyListController.h"
 #import "OABlockGroup.h"
 #import "OABlockTable.h"
+#import "OABlockTransaction.h"
 #import "NSFileManager+OAFileManagerHelpers.h"
 #import "NSData+OADataHelpers.h"
 #import "NSArray+OAArrayHelpers.h"
@@ -37,6 +38,7 @@
 
 @property(nonatomic, retain, readwrite) NSData* URLBookmarkData;
 @property(nonatomic, retain) OABlockTable* blockTable;
+@property(nonatomic, retain, readwrite) OABlockTransaction* blockTransaction;
 @property(nonatomic, retain) GBGitConfig* config;
 @property(nonatomic, assign, readwrite) NSUInteger commitsDiffCount;
 @property(nonatomic, retain) NSMutableDictionary* tagsByCommitID;
@@ -72,6 +74,7 @@
 @synthesize localBranchCommits;
 @synthesize lastError;
 @synthesize blockTable;
+@synthesize blockTransaction;
 @synthesize config;
 
 @synthesize unmergedCommitsCount; // obsolete
@@ -85,6 +88,7 @@
 
 @synthesize authenticationFailed;
 @synthesize authenticationCancelledByUser;
+
 
 
 #pragma mark Init
@@ -121,6 +125,8 @@
 	if (dispatchQueue) dispatch_release(dispatchQueue);
     if (remoteDispatchQueue) dispatch_release(remoteDispatchQueue);
 	
+	[blockTransaction release];
+	
 	[super dealloc];
 }
 
@@ -133,6 +139,7 @@
 		remoteDispatchQueue = dispatch_queue_create("com.oleganza.gitbox.repo_remote_task_queue", NULL);
 		
 		self.blockTable = [[OABlockTable new] autorelease];
+		self.blockTransaction = [[OABlockTransaction new] autorelease];
 		self.config = [GBGitConfig configForRepository:self];
 	}
 	return self;

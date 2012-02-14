@@ -217,6 +217,8 @@
 		206E0132130C605800018300 /* GBPlaceholderViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 206E012E130C605500018300 /* GBPlaceholderViewController.xib */; };
 		207C836014E9C6D3005C91E7 /* YRKSpinningProgressIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 207C835F14E9C6D3005C91E7 /* YRKSpinningProgressIndicator.m */; };
 		207C836114E9C6D3005C91E7 /* YRKSpinningProgressIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 207C835F14E9C6D3005C91E7 /* YRKSpinningProgressIndicator.m */; };
+		207C836414E9F0F6005C91E7 /* OABlockTransaction.m in Sources */ = {isa = PBXBuildFile; fileRef = 207C836314E9F0F6005C91E7 /* OABlockTransaction.m */; };
+		207C836514E9F0F6005C91E7 /* OABlockTransaction.m in Sources */ = {isa = PBXBuildFile; fileRef = 207C836314E9F0F6005C91E7 /* OABlockTransaction.m */; };
 		207D02FF13706AF8003C9D5F /* iRate.m in Sources */ = {isa = PBXBuildFile; fileRef = 207D02FD13706AF8003C9D5F /* iRate.m */; };
 		207D030013706F2D003C9D5F /* iRate.m in Sources */ = {isa = PBXBuildFile; fileRef = 207D02FD13706AF8003C9D5F /* iRate.m */; };
 		207FF7F214C54E6C0049E8F0 /* GBAuthenticatedTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 207FF7F114C54E6C0049E8F0 /* GBAuthenticatedTask.m */; };
@@ -772,6 +774,8 @@
 		206E012E130C605500018300 /* GBPlaceholderViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GBPlaceholderViewController.xib; sourceTree = "<group>"; };
 		207C835E14E9C6D3005C91E7 /* YRKSpinningProgressIndicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YRKSpinningProgressIndicator.h; sourceTree = "<group>"; };
 		207C835F14E9C6D3005C91E7 /* YRKSpinningProgressIndicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YRKSpinningProgressIndicator.m; sourceTree = "<group>"; };
+		207C836214E9F0F6005C91E7 /* OABlockTransaction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OABlockTransaction.h; sourceTree = "<group>"; };
+		207C836314E9F0F6005C91E7 /* OABlockTransaction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OABlockTransaction.m; sourceTree = "<group>"; };
 		207D02FC13706AF8003C9D5F /* iRate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iRate.h; sourceTree = "<group>"; };
 		207D02FD13706AF8003C9D5F /* iRate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iRate.m; sourceTree = "<group>"; };
 		207FF7F014C54E6C0049E8F0 /* GBAuthenticatedTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBAuthenticatedTask.h; sourceTree = "<group>"; };
@@ -1566,6 +1570,8 @@
 				20AAFAC71347B44300A8E31F /* OABlockOperations.m */,
 				20AAFACA1347CD9700A8E31F /* OABlockTable.h */,
 				20AAFACB1347CD9700A8E31F /* OABlockTable.m */,
+				207C836214E9F0F6005C91E7 /* OABlockTransaction.h */,
+				207C836314E9F0F6005C91E7 /* OABlockTransaction.m */,
 			);
 			name = "Concurrency Helpers";
 			sourceTree = "<group>";
@@ -2215,6 +2221,7 @@
 				20CFEFA814DDBE520086330F /* GBOptimizeRepositoryController.m in Sources */,
 				20F2D1C214E469E3009F3609 /* GBApplication.m in Sources */,
 				207C836114E9C6D3005C91E7 /* YRKSpinningProgressIndicator.m in Sources */,
+				207C836514E9F0F6005C91E7 /* OABlockTransaction.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2374,6 +2381,7 @@
 				20CFEFA714DDBE520086330F /* GBOptimizeRepositoryController.m in Sources */,
 				20F2D1C114E469E3009F3609 /* GBApplication.m in Sources */,
 				207C836014E9C6D3005C91E7 /* YRKSpinningProgressIndicator.m in Sources */,
+				207C836414E9F0F6005C91E7 /* OABlockTransaction.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

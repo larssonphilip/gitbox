@@ -8,6 +8,7 @@
 #import "GBSearch.h"
 #import "GBSearchQuery.h"
 #import "GBTask.h"
+#import "OABlockTransaction.h"
 
 #import "GBRepositoryController.h"
 #import "GBRepositoryToolbarController.h"
@@ -812,6 +813,7 @@
 	self.folderMonitor.target = nil;
 	self.folderMonitor.action = NULL;
 	self.folderMonitor.path = nil;
+	[self.repository.blockTransaction clean];
 	self.repository = nil;
 	[self.sidebarItem stop];
 	
@@ -832,6 +834,9 @@
 	if (!repo) return;
 	if (stopped) return;
 	if (![self checkRepositoryExistance]) return;
+	
+//#warning DEBUG: DISABLED FS EVENTS.
+//	return;
 	
 	//	FS Event:
 	//	- if ignoring fs events, skip

@@ -12,6 +12,8 @@
 @class GBStash;
 @class GBTask;
 @class OATask;
+@class OABlockTransaction;
+
 
 @interface GBRepository : NSObject
 
@@ -39,6 +41,7 @@
 @property(nonatomic, copy) NSString* currentTaskProgressStatus;
 
 @property(nonatomic, assign) dispatch_queue_t dispatchQueue;
+@property(nonatomic, retain, readonly) OABlockTransaction* blockTransaction;
 
 // If authentication failed this is set to YES.
 @property(nonatomic, getter=isAuthenticationFailed) BOOL authenticationFailed;

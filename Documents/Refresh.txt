@@ -55,6 +55,9 @@ Wishlist:
   - also: for some common cases we may avoid launching some commands. E.g. when file is modified and staged as modified, we may even not load new state, but fixup existing one.
   - however, if we only launch 3 stage status tasks, it'll be fast enough and always correct.
 
+For model updaters:
+1. For composed tasks need to group nested calls in a single transaction.
+
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 

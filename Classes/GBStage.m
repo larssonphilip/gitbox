@@ -9,6 +9,7 @@
 #import "GBUntrackedChangesTask.h"
 #import "OABlockGroup.h"
 #import "OABlockOperations.h"
+#import "OABlockTransaction.h"
 #import "NSData+OADataHelpers.h"
 #import "NSArray+OAArrayHelpers.h"
 #import "NSObject+OASelectorNotifications.h"
@@ -528,25 +529,28 @@
 
 - (void) beginStageTransaction:(void(^)())block
 {
-	if (!block) return;
-	
-	if (!stageTransactionInProgress)
-	{
-		stageTransactionInProgress = YES;
-		block();
-	}
-	else
-	{
-		self.transactionPendingBlock = OABlockConcat(self.transactionPendingBlock, block);
-	}
+	[self.repository.blockTransaction begin:block];
+//	if (!block) return;
+//	
+//	if (!stageTransactionInProgress)
+//	{
+//		stageTransactionInProgress = YES;
+//		block();
+//	}
+//	else
+//	{
+//		self.transactionPendingBlock = OABlockConcat(self.transactionPendingBlock, block);
+//	}
 }
 
 - (void) endStageTransaction
 {
-	stageTransactionInProgress = NO;
-	void(^block)() = [[self.transactionPendingBlock copy] autorelease];
-	self.transactionPendingBlock = nil;
-	if (block) block();
+	[self.repository.blockTransaction end];
+	
+//	stageTransactionInProgress = NO;
+//	void(^block)() = [[self.transactionPendingBlock copy] autorelease];
+//	self.transactionPendingBlock = nil;
+//	if (block) block();
 }
 
 
