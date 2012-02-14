@@ -46,6 +46,7 @@ Gitbox 1.6 Release Notes
 ✓ Fixed bug with ignoring a file when .gitignore does not exist (file was not added to .gitignore).
 ✓ Fixed bug with title duplication in the branch menus.
 ✓ Fixed sidebar alignment bug.
+✓ Fixed sidebar spinner color and animation.
  
 --
 
@@ -65,10 +66,7 @@ Gitbox 1.6 misc items:
 
 - bug: remote URL with a space inside: 1) truncates 2) saves back to .git/config. See Bugs Inbox.
 
-- spinner sucks
-	- ui: show spinner after some operation takes longer than expected
-	- ui: implement spinner for indeterminate tasks (with color switch support) and wetransfer-like spinning progress sector (shows progress using sector + rotates it to present activity).
-	- ui: for two above: implement OASuperActivityIndicator with stack API, spinning progress, color switch and lazy API (to avoid showing spinner for short tasks of 1-2 seconds).
+- ui: show spinner after some operation takes longer than expected
 
 
 
@@ -113,6 +111,9 @@ Gitbox 1.6 misc items:
 
 Misc done for 1.6:
 
+
++ ui: implement spinner for indeterminate tasks (with color switch support) and wetransfer-like spinning progress sector (shows progress using sector + rotates it to present activity).
++ ui: for two above: implement OASuperActivityIndicator with stack API, spinning progress, color switch and lazy API (to avoid showing spinner for short tasks of 1-2 seconds).
 
 + submodules: remember collapsed status of submodules in user defaults
 + submodules: remember submodules in prefs plist because we don't update all of them on startup
