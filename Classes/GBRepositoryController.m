@@ -306,8 +306,8 @@
 			
 			if ([currentSubmodule.path isEqualToString:updatedSubmodule.path])
 			{
-				matchingController = ctrl;
-				matchingSubmodule = currentSubmodule;
+				matchingController = [[ctrl retain] autorelease];
+				matchingSubmodule = [[currentSubmodule retain] autorelease];
 				break;
 			}
 		}

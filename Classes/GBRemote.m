@@ -79,7 +79,7 @@
 {
 	NSArray* names = [self.branches valueForKey:@"name"];
 	NSMutableArray* updatedNewBranches = [NSMutableArray array];
-	BOOL hasRemovedTransientBranch = NO;
+	//BOOL hasRemovedTransientBranch = NO;
 	for (GBRef* aBranch in self.transientBranches)
 	{
 		if (aBranch.name && ![names containsObject:aBranch.name])
@@ -88,7 +88,7 @@
 		}
 		else
 		{
-			hasRemovedTransientBranch = YES;
+			//hasRemovedTransientBranch = YES;
 		}
 	}
 	self.transientBranches = updatedNewBranches;

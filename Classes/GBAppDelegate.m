@@ -166,15 +166,15 @@
 	if (!value) [[NSUserDefaults standardUserDefaults] setBool:YES forKey:GBCloneFromGithubKey];
 	if (!value) value = [NSNumber numberWithBool:YES];
 
-	OSStatus status = 0;
+	//OSStatus status = 0;
 	if ([value boolValue])
 	{
-		status = LSSetDefaultHandlerForURLScheme((CFStringRef)@"github-mac", (CFStringRef)[[NSBundle mainBundle] bundleIdentifier]);
+		/*status =*/ LSSetDefaultHandlerForURLScheme((CFStringRef)@"github-mac", (CFStringRef)[[NSBundle mainBundle] bundleIdentifier]);
 		[[NSAppleEventManager sharedAppleEventManager] setEventHandler:self andSelector:@selector(handleUrl:withReplyEvent:) forEventClass:kInternetEventClass andEventID:kAEGetURL];
 	}
 	else
 	{
-		status = LSSetDefaultHandlerForURLScheme((CFStringRef)@"github-mac", (CFStringRef)@"com.github.GitHub");
+		/*status =*/ LSSetDefaultHandlerForURLScheme((CFStringRef)@"github-mac", (CFStringRef)@"com.github.GitHub");
 		[[NSAppleEventManager sharedAppleEventManager] removeEventHandlerForEventClass:kInternetEventClass andEventID:kAEGetURL];
 	}
 }
