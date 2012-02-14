@@ -54,6 +54,7 @@ Gitbox 1.6 misc items:
 - initial update: order by recently used repos (in terms of pulls, merges and commits). Like with optimization singleton, use a single dispatcher of initial updates to avoid concurrent updates bringing machine down.
 
 - bug: when checking out/resetting submodule which is dirty, it fails silently. 
+- show "unpushed" status for unpushed submodule.
 
 - bug: if pushed from the terminal, commits difference is not recalculated (green dots remain).
 - bug: gitbox does not honor merge.ff setting to do "git merge --no-ff"
@@ -64,9 +65,10 @@ Gitbox 1.6 misc items:
 
 - bug: remote URL with a space inside: 1) truncates 2) saves back to .git/config. See Bugs Inbox.
 
-- ui: show spinner after some operation takes longer than expected
-- ui: implement spinner for indeterminate tasks (with color switch support) and wetransfer-like spinning progress sector (shows progress using sector + rotates it to present activity).
-- ui: for two above: implement OASuperActivityIndicator with stack API, spinning progress, color switch and lazy API (to avoid showing spinner for short tasks of 1-2 seconds).
+- spinner sucks
+	- ui: show spinner after some operation takes longer than expected
+	- ui: implement spinner for indeterminate tasks (with color switch support) and wetransfer-like spinning progress sector (shows progress using sector + rotates it to present activity).
+	- ui: for two above: implement OASuperActivityIndicator with stack API, spinning progress, color switch and lazy API (to avoid showing spinner for short tasks of 1-2 seconds).
 
 
 

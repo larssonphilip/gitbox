@@ -2,6 +2,7 @@
 #import "GBSidebarItem.h"
 #import "GBSidebarOutlineView.h"
 #import "GBLightScroller.h"
+#import "YRKSpinningProgressIndicator.h"
 #import "CGContext+OACGContextHelpers.h"
 
 #define kGBSidebarCellIconWidth 16.0
@@ -246,8 +247,59 @@
 	return rect2;
 }
 
+- (NSRect) drawCustomSpinnerIfNeededInRectAndReturnRemainingRect:(NSRect)rect
+{
+	if ([self.sidebarItem isStopped]) return rect;
+	
+	if (![self.sidebarItem visibleSpinning])
+	{
+		[self.sidebarItem setView:nil forKey:kGBSidebarCellSpinnerKey];
+		return rect;
+	}
+	
+	YRKSpinningProgressIndicator* spinner = (YRKSpinningProgressIndicator*)[self.sidebarItem viewForKey:kGBSidebarCellSpinnerKey];
+	if (!spinner)
+	{
+		spinner = [[[YRKSpinningProgressIndicator alloc] initWithFrame:NSMakeRect(0, 0, 16.0, 16.0)] autorelease];
+		spinner.usesThreadedAnimation = YES;
+		[self.sidebarItem setView:spinner forKey:kGBSidebarCellSpinnerKey];
+	}
+	[self.outlineView addSubview:spinner];
+	[spinner setHidden:NO];
+	
+//	if (!self.isHighlighted)
+//	{
+//		spinner.color = [NSColor grayColor];
+//	}
+//	else
+//	{
+//		spinner.color = [NSColor whiteColor];
+//	}
+	
+	if (!spinner) return rect;
+	
+	double progress = self.sidebarItem.visibleProgress;
+	[spinner setIndeterminate:progress <= 0.1 || progress >= 99.9 || 1];
+//	[spinner setDoubleValue:progress];
+	
+	[spinner startAnimation:nil];
+	
+	
+	
+	static CGFloat leftPadding = 2.0;
+	static CGFloat rightPadding = 2.0;
+	static CGFloat yOffset = -1.0;
+	NSRect spinnerFrame = spinner.frame;
+	spinnerFrame.origin.x = rect.origin.x + (rect.size.width - spinnerFrame.size.width - rightPadding);
+	spinnerFrame.origin.y = rect.origin.y + yOffset;
+	[spinner setFrame:spinnerFrame];
+	
+	rect.size.width = spinnerFrame.origin.x - rect.origin.x - leftPadding;
+	
+	return rect;
+}
 
-- (NSRect) drawSpinnerIfNeededInRectAndReturnRemainingRect:(NSRect)rect
+- (NSRect) drawCocoaSpinnerIfNeededInRectAndReturnRemainingRect:(NSRect)rect
 {
 	if ([self.sidebarItem isStopped]) return rect;
 	
@@ -269,8 +321,11 @@
 	if (!spinner) return rect;
 	
 	double progress = [self.sidebarItem visibleProgress];
-	[spinner setIndeterminate:progress <= 0.1 || progress >= 99.9];
+	BOOL newFlag = progress <= 0.1 || progress >= 99.9;
+	BOOL changedMode = spinner.isIndeterminate != newFlag;
+	[spinner setIndeterminate:newFlag];
 	[spinner setDoubleValue:progress];
+	if (changedMode) [spinner stopAnimation:nil];
 	[spinner startAnimation:nil];
 	[spinner setHidden:NO];
 	[self.outlineView addSubview:spinner];
@@ -287,6 +342,12 @@
 	
 	return rect;
 }
+
+- (NSRect) drawSpinnerIfNeededInRectAndReturnRemainingRect:(NSRect)rect
+{
+	return [self drawCocoaSpinnerIfNeededInRectAndReturnRemainingRect:rect];
+}
+
 
 
 - (NSRect) drawBadgeIfNeededInRectAndReturnRemainingRect:(NSRect)rect
