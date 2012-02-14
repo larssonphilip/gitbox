@@ -58,7 +58,9 @@ Gitbox 1.6 misc items:
 - fetch from only one remote to avoid
   - from the selected remote if given.
   - or the first one in a list, if remote branch is not selected.
-  
+
+- gboptimizerepo should reset timer if wakes up from sleep. Detect sleep by comparing timers.
+
 - test app store build before submission.
 
 
