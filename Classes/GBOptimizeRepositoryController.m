@@ -5,7 +5,7 @@
 NSString* const GBOptimizeRepositoryNotification = @"GBOptimizeRepositoryNotification";
 
 #if 1
-static const NSTimeInterval idleInterval = 2*3600.0;
+static const NSTimeInterval idleInterval = 4*3600.0;
 static const NSTimeInterval checkInterval = 60.0;
 static const double actionProbability = 0.05;
 #else
