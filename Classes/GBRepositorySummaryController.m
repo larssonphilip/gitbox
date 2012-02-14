@@ -387,54 +387,6 @@
 	return url ? url : @"";
 }
 
-//- (IBAction) optimizeRepository:(NSButton*)button
-//{
-//	[button setEnabled:NO];
-//	
-//	GBTaskWithProgress* gitgcTask = [GBTaskWithProgress taskWithRepository:self.repository];
-//	if (![GBTask isSnowLeopard])
-//	{
-//		gitgcTask.arguments = [NSArray arrayWithObjects:@"gc", @"--progress", nil];
-//	}
-//	else
-//	{
-//		gitgcTask.arguments = [NSArray arrayWithObjects:@"gc", nil];
-//	}
-//		
-//	[self.optimizeProgressIndicator setIndeterminate:YES];
-//	[self.optimizeProgressIndicator startAnimation:nil];
-//	gitgcTask.progressUpdateBlock = ^{
-//		double progress = gitgcTask.extendedProgress;
-//		
-//		self.optimizeProgressIndicator.doubleValue = progress;
-//		
-//		BOOL newIndeterminate = (progress < 2.0 || progress > 99.0);
-//		if (newIndeterminate != self.optimizeProgressIndicator.isIndeterminate)
-//		{
-//			[self.optimizeProgressIndicator stopAnimation:nil];
-//			if (newIndeterminate)
-//			{
-//				self.optimizeProgressIndicator.doubleValue = 0.0;
-//				[self.optimizeProgressIndicator setIndeterminate:YES];
-//				[self.optimizeProgressIndicator startAnimation:nil];
-//			}
-//			else
-//			{
-//				[self.optimizeProgressIndicator setIndeterminate:newIndeterminate];
-//			}
-//		}
-//	};
-//	
-//	[self pushDisabled];
-//	[gitgcTask launchWithBlock:^{
-//		[self popDisabled];
-//		[button setEnabled:YES];
-//		[self.optimizeProgressIndicator stopAnimation:nil];
-//		[self.optimizeProgressIndicator setIndeterminate:YES];
-//		[self calculateSize];
-//	}];
-//}
-
 - (IBAction)openInFinder:(id)sender
 {
 	[[NSWorkspace sharedWorkspace] openURL:self.repository.url];
