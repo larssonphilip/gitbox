@@ -48,7 +48,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         _position = 0;
-        _numFins = 13;
+        _numFins = 12;
         _animationAngel=90;
         
         _finColors = calloc(_numFins, sizeof(NSColor*));
@@ -180,20 +180,20 @@
 	if (_isAnimating && !_isFadingOut) return;
 	
 	
-//    [NSAnimationContext beginGrouping];
-//    [[NSAnimationContext currentContext] setDuration:0.5f];
-//    [[self animator] setAlphaValue:1.];
-//    [NSAnimationContext endGrouping];
+    [NSAnimationContext beginGrouping];
+    [[NSAnimationContext currentContext] setDuration:0.5f];
+    [[self animator] setAlphaValue:1.];
+    [NSAnimationContext endGrouping];
 	
     [self actuallyStartAnimation];
 }
 
 - (void)stopAnimation:(id)sender
 {
-//    [NSAnimationContext beginGrouping];
-//    [[NSAnimationContext currentContext] setDuration:0.5f];
-//    [[self animator] setAlphaValue:0.];
-//    [NSAnimationContext endGrouping];
+    [NSAnimationContext beginGrouping];
+    [[NSAnimationContext currentContext] setDuration:0.5f];
+    [[self animator] setAlphaValue:0.];
+    [NSAnimationContext endGrouping];
     
     // animate to stopped state
     _isFadingOut = YES;
@@ -302,7 +302,7 @@
         _position = (_numFins - 1) - (((int)round(msec / (50.0))) % _numFins);
 		
         // update the colors
-        CGFloat minAlpha = 0.01;
+        CGFloat minAlpha = 0.1;
         for (int i=0; i<_numFins; i++) {
             // want each fin to fade exponentially over _numFins frames of animation
             CGFloat newAlpha = [_finColors[i] alphaComponent] * kFadeMultiplier;

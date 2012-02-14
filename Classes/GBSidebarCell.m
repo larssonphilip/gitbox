@@ -275,11 +275,11 @@
 	{
 		if (self.isForeground)
 		{
-			spinner.color = [NSColor colorWithCalibratedHue:217.0/360.0 saturation:0.27 brightness:0.59 alpha:1.0];
+			spinner.color = [NSColor colorWithCalibratedHue:217.0/360.0 saturation:0.27 brightness:0.30 alpha:1.0];
 		}
 		else
 		{
-			spinner.color = [NSColor colorWithCalibratedHue:0 saturation:0 brightness:0.67 alpha:1.0];
+			spinner.color = [NSColor colorWithCalibratedHue:0 saturation:0 brightness:0.40 alpha:1.0];
 		}
 
 	}
