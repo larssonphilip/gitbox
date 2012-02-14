@@ -297,7 +297,7 @@
 		
 		double msec = (dispatch_time(DISPATCH_TIME_NOW, 0) / 1000000);
 		
-        _position = (_numFins - 1) - (((int)round(msec / 50.0)) % _numFins);
+        _position = (_numFins - 1) - (((int)round(msec / (_isIndeterminate ? 50.0 : 20.0))) % _numFins);
 		
         // update the colors
         CGFloat minAlpha = 0.01;
