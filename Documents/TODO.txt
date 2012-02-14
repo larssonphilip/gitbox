@@ -55,6 +55,7 @@ Gitbox 1.6 misc items:
 - don't know what to do when submodule has other submodules and is collapsed and we want a "reset" button.
   - should not mean "reset all inner stuff too"
   
+- sidebar: draw a background inset circle for spinner in a selected sidebar cell
 
 - bug: cloning rails.git does not read download progress properly. Stays at 18% or so.
 
