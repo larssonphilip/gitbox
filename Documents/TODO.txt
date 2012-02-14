@@ -93,6 +93,8 @@ Gitbox 1.6 misc items:
 - submodules: GBSubmoduleController should be replaced with cloning ctrl when submodule is deleted. (or at least, simply deselected)
 - check that undo stack works after playling with submodules.
 
+- instead of checkoutCommit and quickCheckout show a single window with find-as-you-type commit selection.
+  - maybe change popup button to a simple button and show list in place of the history table view.
 
 ? submodules: when submodule folder is removed, properly update its status
 ? maybe: update sidebar item and repository when update is finished [about submodules]
