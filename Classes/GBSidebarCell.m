@@ -275,13 +275,12 @@
 	{
 		if (self.isForeground)
 		{
-			spinner.color = [NSColor colorWithCalibratedHue:217.0/360.0 saturation:0.27 brightness:0.30 alpha:1.0];
+			spinner.color = [NSColor colorWithCalibratedHue:217.0/360.0 saturation:0.27 brightness:0.40 alpha:1.0];
 		}
 		else
 		{
-			spinner.color = [NSColor colorWithCalibratedHue:0 saturation:0 brightness:0.40 alpha:1.0];
+			spinner.color = [NSColor colorWithCalibratedHue:0 saturation:0 brightness:0.50 alpha:1.0];
 		}
-
 	}
 	else
 	{
@@ -308,6 +307,21 @@
 	[spinner setFrame:spinnerFrame];
 	
 	rect.size.width = spinnerFrame.origin.x - rect.origin.x - leftPadding;
+	
+	// Drop a backdrop behind the spinner for selected item
+	if (self.isHighlighted)
+	{
+		NSRect imageRect = NSRectFromCGRect(CGRectInset(NSRectToCGRect(spinnerFrame), -1.0, -1.0));
+		
+		if ([self.outlineView isFlipped])
+		{
+			imageRect.origin.y += imageRect.size.height;
+		}
+		
+		NSImage* image = [NSImage imageNamed:@"GBSidebarCellSpinnerBackdrop.png"];
+		[image setSize:imageRect.size];
+		[image compositeToPoint:imageRect.origin operation:NSCompositeSourceOver];
+	}
 	
 	return rect;
 }

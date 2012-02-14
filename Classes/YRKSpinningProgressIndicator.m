@@ -151,7 +151,8 @@
         }
         [path release];
     }
-    else {
+    else
+	{
         CGFloat lineWidth = 1 + (0.01 * theMaxSize);
         CGFloat circleRadius = (theMaxSize - lineWidth) / 2.1;
         NSPoint circleCenter = NSMakePoint(0, 0);
@@ -180,20 +181,20 @@
 	if (_isAnimating && !_isFadingOut) return;
 	
 	
-    [NSAnimationContext beginGrouping];
-    [[NSAnimationContext currentContext] setDuration:0.5f];
-    [[self animator] setAlphaValue:1.];
-    [NSAnimationContext endGrouping];
+//    [NSAnimationContext beginGrouping];
+//    [[NSAnimationContext currentContext] setDuration:0.5f];
+//    [[self animator] setAlphaValue:1.];
+//    [NSAnimationContext endGrouping];
 	
     [self actuallyStartAnimation];
 }
 
 - (void)stopAnimation:(id)sender
 {
-    [NSAnimationContext beginGrouping];
-    [[NSAnimationContext currentContext] setDuration:0.5f];
-    [[self animator] setAlphaValue:0.];
-    [NSAnimationContext endGrouping];
+//    [NSAnimationContext beginGrouping];
+//    [[NSAnimationContext currentContext] setDuration:0.5f];
+//    [[self animator] setAlphaValue:0.];
+//    [NSAnimationContext endGrouping];
     
     // animate to stopped state
     _isFadingOut = YES;

@@ -54,12 +54,8 @@ Gitbox 1.6 misc items:
 
 - don't know what to do when submodule has other submodules and is collapsed and we want a "reset" button.
   - should not mean "reset all inner stuff too"
-  
-- sidebar: draw a background inset circle for spinner in a selected sidebar cell
 
 - bug: cloning rails.git does not read download progress properly. Stays at 18% or so.
-
-- initial update: order by recently used repos (in terms of pulls, merges and commits). Like with optimization singleton, use a single dispatcher of initial updates to avoid concurrent updates bringing machine down.
 
 - bug: when checking out/resetting submodule which is dirty, it fails silently. 
 - show "unpushed" status for unpushed submodule.
@@ -75,6 +71,9 @@ Gitbox 1.6 misc items:
 
 - ui: show spinner after some operation takes longer than expected
 
+
+
+- initial update: order by recently used repos (in terms of pulls, merges and commits). Like with optimization singleton, use a single dispatcher of initial updates to avoid concurrent updates bringing machine down.
 
 
 - submodule settings:
@@ -121,6 +120,7 @@ Gitbox 1.6 misc items:
 Misc done for 1.6:
 
 
++ sidebar: draw a background inset circle for spinner in a selected sidebar cell
 + ui: implement spinner for indeterminate tasks (with color switch support) and wetransfer-like spinning progress sector (shows progress using sector + rotates it to present activity).
 + ui: for two above: implement OASuperActivityIndicator with stack API, spinning progress, color switch and lazy API (to avoid showing spinner for short tasks of 1-2 seconds).
 

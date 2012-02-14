@@ -219,6 +219,8 @@
 		207C836114E9C6D3005C91E7 /* YRKSpinningProgressIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 207C835F14E9C6D3005C91E7 /* YRKSpinningProgressIndicator.m */; };
 		207C836414E9F0F6005C91E7 /* OABlockTransaction.m in Sources */ = {isa = PBXBuildFile; fileRef = 207C836314E9F0F6005C91E7 /* OABlockTransaction.m */; };
 		207C836514E9F0F6005C91E7 /* OABlockTransaction.m in Sources */ = {isa = PBXBuildFile; fileRef = 207C836314E9F0F6005C91E7 /* OABlockTransaction.m */; };
+		207C836A14EAF36E005C91E7 /* GBSidebarCellSpinnerBackdrop.png in Resources */ = {isa = PBXBuildFile; fileRef = 207C836914EAF36E005C91E7 /* GBSidebarCellSpinnerBackdrop.png */; };
+		207C836B14EAF36E005C91E7 /* GBSidebarCellSpinnerBackdrop.png in Resources */ = {isa = PBXBuildFile; fileRef = 207C836914EAF36E005C91E7 /* GBSidebarCellSpinnerBackdrop.png */; };
 		207D02FF13706AF8003C9D5F /* iRate.m in Sources */ = {isa = PBXBuildFile; fileRef = 207D02FD13706AF8003C9D5F /* iRate.m */; };
 		207D030013706F2D003C9D5F /* iRate.m in Sources */ = {isa = PBXBuildFile; fileRef = 207D02FD13706AF8003C9D5F /* iRate.m */; };
 		207FF7F214C54E6C0049E8F0 /* GBAuthenticatedTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 207FF7F114C54E6C0049E8F0 /* GBAuthenticatedTask.m */; };
@@ -776,6 +778,7 @@
 		207C835F14E9C6D3005C91E7 /* YRKSpinningProgressIndicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YRKSpinningProgressIndicator.m; sourceTree = "<group>"; };
 		207C836214E9F0F6005C91E7 /* OABlockTransaction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OABlockTransaction.h; sourceTree = "<group>"; };
 		207C836314E9F0F6005C91E7 /* OABlockTransaction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OABlockTransaction.m; sourceTree = "<group>"; };
+		207C836914EAF36E005C91E7 /* GBSidebarCellSpinnerBackdrop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GBSidebarCellSpinnerBackdrop.png; path = Images/GBSidebarCellSpinnerBackdrop.png; sourceTree = SOURCE_ROOT; };
 		207D02FC13706AF8003C9D5F /* iRate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iRate.h; sourceTree = "<group>"; };
 		207D02FD13706AF8003C9D5F /* iRate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iRate.m; sourceTree = "<group>"; };
 		207FF7F014C54E6C0049E8F0 /* GBAuthenticatedTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBAuthenticatedTask.h; sourceTree = "<group>"; };
@@ -1412,6 +1415,7 @@
 				2097EC6B12DE6B450070AE89 /* GBSidebarCell.m */,
 				200A43E712EC2507004DF940 /* GBSubmoduleCell.h */,
 				200A43E812EC2507004DF940 /* GBSubmoduleCell.m */,
+				207C836914EAF36E005C91E7 /* GBSidebarCellSpinnerBackdrop.png */,
 				2097EE2312DF2B4A0070AE89 /* GBSidebarGroupIcon.png */,
 				200A471E12ECB265004DF940 /* GBSidebarRepositoryIcon.png */,
 				200A471F12ECB265004DF940 /* GBSidebarSubmoduleIcon.png */,
@@ -1953,6 +1957,7 @@
 				20A5E38A14D68BE200408DD7 /* GBPreferencesUpdatesViewController.xib in Resources */,
 				20CFEFA414DD87130086330F /* GBPreferencesIntegration.png in Resources */,
 				20CFEFAB14DDBE6C0086330F /* GBOptimizeRepositoryController.xib in Resources */,
+				207C836B14EAF36E005C91E7 /* GBSidebarCellSpinnerBackdrop.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2044,6 +2049,7 @@
 				20A5E38914D68BE200408DD7 /* GBPreferencesUpdatesViewController.xib in Resources */,
 				20CFEFA314DD87130086330F /* GBPreferencesIntegration.png in Resources */,
 				20CFEFAA14DDBE6C0086330F /* GBOptimizeRepositoryController.xib in Resources */,
+				207C836A14EAF36E005C91E7 /* GBSidebarCellSpinnerBackdrop.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
