@@ -4,7 +4,7 @@
 
 // Some constants to control the animation
 #define kAlphaWhenStopped   0.15
-#define kFadeMultiplier     0.85
+#define kFadeMultiplier     0.95
 
 
 @interface YRKSpinningProgressIndicator ()
@@ -39,7 +39,6 @@
 @synthesize doubleValue = _currentValue;
 @synthesize maxValue = _maxValue;
 @synthesize actsAsCell=_actsAsCell;
-
 
 
 #pragma mark Init
@@ -295,7 +294,11 @@
         else {
             _position = _numFins - 1;
         }
-        
+		
+		double msec = (dispatch_time(DISPATCH_TIME_NOW, 0) / 1000000);
+		
+        _position = (_numFins - 1) - (((int)round(msec / 50.0)) % _numFins);
+		
         // update the colors
         CGFloat minAlpha = 0.01;
         for (int i=0; i<_numFins; i++) {
@@ -357,7 +360,7 @@
             [_animationThread start];
         }
         else {
-            _animationTimer = [[NSTimer timerWithTimeInterval:(NSTimeInterval)0.05
+            _animationTimer = [[NSTimer timerWithTimeInterval:0.01 //0.05 // invoke more often to avoid skipping frames taken from dispatch_time
                                                        target:self
                                                      selector:@selector(updateFrame:)
                                                      userInfo:nil

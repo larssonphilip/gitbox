@@ -273,7 +273,15 @@
 	
 	if (!self.isHighlighted)
 	{
-		spinner.color = [NSColor grayColor];
+		if (self.isForeground)
+		{
+			spinner.color = [NSColor colorWithCalibratedHue:217.0/360.0 saturation:0.27 brightness:0.59 alpha:1.0];
+		}
+		else
+		{
+			spinner.color = [NSColor colorWithCalibratedHue:0 saturation:0 brightness:0.67 alpha:1.0];
+		}
+
 	}
 	else
 	{
@@ -284,7 +292,10 @@
 	
 	double progress = self.sidebarItem.visibleProgress;
 	[spinner setIndeterminate:progress <= 1.0 || progress >= 99.9];
-	[spinner setDoubleValue:MAX(MIN(progress, 100.0), 6.0)];
+	if (!spinner.isIndeterminate)
+	{
+		[spinner setDoubleValue:MAX(MIN(progress, 100.0), 6.0)];
+	}
 	
 	[spinner startAnimation:nil];
 	
