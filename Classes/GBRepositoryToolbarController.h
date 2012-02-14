@@ -13,5 +13,6 @@
 
 - (IBAction) newBranch:(id)sender;
 - (IBAction) checkoutCommit:(id)sender;
+- (IBAction) quickCheckout:(id)sender;
 
 @end

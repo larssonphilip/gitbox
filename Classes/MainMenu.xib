@@ -768,6 +768,15 @@
 									<reference key="NSOnImage" ref="1033313550"/>
 									<reference key="NSMixedImage" ref="310636482"/>
 								</object>
+								<object class="NSMenuItem" id="30839847">
+									<reference key="NSMenu" ref="107797663"/>
+									<string key="NSTitle">Quick Checkout...</string>
+									<string key="NSKeyEquiv">C</string>
+									<int key="NSKeyEquivModMask">1048576</int>
+									<int key="NSMnemonicLoc">2147483647</int>
+									<reference key="NSOnImage" ref="1033313550"/>
+									<reference key="NSMixedImage" ref="310636482"/>
+								</object>
 								<object class="NSMenuItem" id="1027155248">
 									<reference key="NSMenu" ref="107797663"/>
 									<bool key="NSIsDisabled">YES</bool>
@@ -1274,7 +1283,7 @@
 				<nil key="NSUserInterfaceItemIdentifier"/>
 				<string key="NSWindowContentMinSize">{300, 200}</string>
 				<object class="NSView" key="NSWindowView" id="170047807">
-					<nil key="NSNextResponder"/>
+					<reference key="NSNextResponder"/>
 					<int key="NSvFlags">256</int>
 					<object class="NSMutableArray" key="NSSubviews">
 						<bool key="EncodedWithXMLCoder">YES</bool>
@@ -1291,9 +1300,10 @@
 										<object class="NSTextView" id="713596817">
 											<reference key="NSNextResponder" ref="561993810"/>
 											<int key="NSvFlags">2322</int>
-											<string key="NSFrame">{{0, 42}, {463, 4438}}</string>
+											<string key="NSFrameSize">{463, 4452}</string>
 											<reference key="NSSuperview" ref="561993810"/>
-											<reference key="NSNextKeyView" ref="566905771"/>
+											<reference key="NSWindow"/>
+											<reference key="NSNextKeyView" ref="778952306"/>
 											<object class="NSTextContainer" key="NSTextContainer" id="2642329">
 												<object class="NSLayoutManager" key="NSLayoutManager">
 													<object class="NSTextStorage" key="NSTextStorage">
@@ -1740,6 +1750,7 @@ ClB1YmxpYyBMaWNlbnNlIGluc3RlYWQgb2YgdGhpcyBMaWNlbnNlLgo</bytes>
 									</object>
 									<string key="NSFrameSize">{465, 273}</string>
 									<reference key="NSSuperview" ref="435171086"/>
+									<reference key="NSWindow"/>
 									<reference key="NSNextKeyView" ref="713596817"/>
 									<reference key="NSDocView" ref="713596817"/>
 									<reference key="NSBGColor" ref="946450204"/>
@@ -1776,16 +1787,19 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 									<int key="NSvFlags">256</int>
 									<string key="NSFrame">{{450, 0}, {15, 273}}</string>
 									<reference key="NSSuperview" ref="435171086"/>
+									<reference key="NSWindow"/>
+									<reference key="NSNextKeyView"/>
 									<bool key="NSEnabled">YES</bool>
 									<reference key="NSTarget" ref="435171086"/>
 									<string key="NSAction">_doScroller:</string>
-									<double key="NSPercent">0.060937499999999999</double>
+									<double key="NSPercent">0.061320754716981132</double>
 								</object>
 								<object class="NSScroller" id="566905771">
 									<reference key="NSNextResponder" ref="435171086"/>
 									<int key="NSvFlags">-2147483392</int>
 									<string key="NSFrame">{{-100, -100}, {87, 18}}</string>
 									<reference key="NSSuperview" ref="435171086"/>
+									<reference key="NSWindow"/>
 									<reference key="NSNextKeyView" ref="561993810"/>
 									<int key="NSsFlags">1</int>
 									<reference key="NSTarget" ref="435171086"/>
@@ -1796,7 +1810,8 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 							</object>
 							<string key="NSFrameSize">{465, 273}</string>
 							<reference key="NSSuperview" ref="170047807"/>
-							<reference key="NSNextKeyView" ref="561993810"/>
+							<reference key="NSWindow"/>
+							<reference key="NSNextKeyView" ref="566905771"/>
 							<int key="NSsFlags">133200</int>
 							<reference key="NSVScroller" ref="778952306"/>
 							<reference key="NSHScroller" ref="566905771"/>
@@ -1804,9 +1819,11 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 						</object>
 					</object>
 					<string key="NSFrameSize">{465, 273}</string>
+					<reference key="NSSuperview"/>
+					<reference key="NSWindow"/>
 					<reference key="NSNextKeyView" ref="435171086"/>
 				</object>
-				<string key="NSScreenRect">{{0, 0}, {1440, 878}}</string>
+				<string key="NSScreenRect">{{0, 0}, {2560, 1418}}</string>
 				<string key="NSMinSize">{300, 222}</string>
 				<string key="NSMaxSize">{10000000000000, 10000000000000}</string>
 				<string key="NSFrameAutosaveName">legalinfo</string>
@@ -2415,6 +2432,14 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 						<reference key="destination" ref="298208487"/>
 					</object>
 					<int key="connectionID">1120</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">quickCheckout:</string>
+						<reference key="source" ref="1014"/>
+						<reference key="destination" ref="30839847"/>
+					</object>
+					<int key="connectionID">1125</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBActionConnection" key="connection">
@@ -3375,6 +3400,7 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 							<reference ref="32125301"/>
 							<reference ref="686943393"/>
 							<reference ref="734379905"/>
+							<reference ref="30839847"/>
 						</object>
 						<reference key="parent" ref="872592151"/>
 					</object>
@@ -3539,6 +3565,11 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 						<reference key="object" ref="116626552"/>
 						<reference key="parent" ref="388842427"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">1124</int>
+						<reference key="object" ref="30839847"/>
+						<reference key="parent" ref="107797663"/>
+					</object>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="flattenedProperties">
@@ -3601,6 +3632,7 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 					<string>1118.IBPluginDependency</string>
 					<string>1122.IBPluginDependency</string>
 					<string>1123.IBPluginDependency</string>
+					<string>1124.IBPluginDependency</string>
 					<string>124.IBPluginDependency</string>
 					<string>125.IBPluginDependency</string>
 					<string>126.IBPluginDependency</string>
@@ -3841,6 +3873,7 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>{{387, 278}, {465, 273}}</string>
 					<boolean value="NO"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -3870,7 +3903,7 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">1123</int>
+			<int key="maxID">1125</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -4950,6 +4983,7 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 							<string>checkoutTagMenu:</string>
 							<string>newBranch:</string>
 							<string>pullOrPush:</string>
+							<string>quickCheckout:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
@@ -4959,6 +4993,7 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 							<string>NSMenuItem</string>
 							<string>id</string>
 							<string>NSSegmentedControl</string>
+							<string>id</string>
 						</object>
 					</object>
 					<object class="NSMutableDictionary" key="actionInfosByName">
@@ -4971,6 +5006,7 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 							<string>checkoutTagMenu:</string>
 							<string>newBranch:</string>
 							<string>pullOrPush:</string>
+							<string>quickCheckout:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
@@ -4997,6 +5033,10 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 							<object class="IBActionInfo">
 								<string key="name">pullOrPush:</string>
 								<string key="candidateClassName">NSSegmentedControl</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">quickCheckout:</string>
+								<string key="candidateClassName">id</string>
 							</object>
 						</object>
 					</object>

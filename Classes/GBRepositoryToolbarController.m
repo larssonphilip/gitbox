@@ -889,7 +889,16 @@
 	[ctrl presentSheetInMainWindow];
 }
 
-
+- (IBAction) quickCheckout:(id)sender
+{
+	dispatch_async(dispatch_get_main_queue(), ^{
+		if (self.currentBranchPopUpButton.superview)
+		{
+			NSPopUpButtonCell* cell = self.currentBranchPopUpButton.cell;
+			[cell performClickWithFrame:self.currentBranchPopUpButton.frame inView:self.currentBranchPopUpButton.superview];
+		}
+	});
+}
 
 
 - (IBAction) checkoutBranchMenu:(NSMenuItem*)sender
