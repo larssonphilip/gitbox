@@ -16,6 +16,7 @@ static const double actionProbability = 0.1;
 #endif
 
 static NSTimeInterval lastResetTimestamp = 0;
+static NSTimeInterval lastCheckTimestamp = 0;
 static BOOL running = NO;
 static id monitor = nil;
 
@@ -129,6 +130,8 @@ static id monitor = nil;
 {
 	running = YES;
 	
+	lastCheckTimestamp = [[NSDate date] timeIntervalSince1970];
+	
 	[self resetTimeout];
 	[self scheduleCheck];
 	
@@ -162,6 +165,17 @@ static id monitor = nil;
 	if (!running) return;
 	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, checkInterval * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
 		if (!running) return;
+		
+		// If next check occured after longer interval, it's probably because computer was in sleep and now woke up.
+		// Should reset timeout because person does not want to watch some repos optimizing at this point.
+		if ([[NSDate date] timeIntervalSince1970] > (lastCheckTimestamp + checkInterval*2))
+		{
+			//NSLog(@"Sleep wake up detected!");
+			[self resetTimeout];
+		}
+		
+		lastCheckTimestamp = [[NSDate date] timeIntervalSince1970];
+		
 		if ([[NSDate date] timeIntervalSince1970] > (lastResetTimestamp + idleInterval))
 		{
 			//NSLog(@"Notification: Optimize repositories!");

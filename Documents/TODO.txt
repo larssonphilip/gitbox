@@ -53,11 +53,9 @@ Gitbox 1.6 Release Notes
 
 Gitbox 1.6 misc items:
 
-- fetch from only one remote to avoid
+- fetch from only one remote to avoid tags ping-ponging.
   - from the selected remote if given.
   - or the first one in a list, if remote branch is not selected.
-
-- gboptimizerepo should reset timer if wakes up from sleep. Detect sleep by comparing timers.
 
 - test app store build before submission.
 
@@ -123,6 +121,7 @@ Gitbox 1.6 misc items:
 Misc done for 1.6:
 
 
++ gboptimizerepo should reset timer if wakes up from sleep. Detect sleep by comparing timers.
 + bug: remote URL with a space inside: 1) truncates 2) saves back to .git/config. See Bugs Inbox.
 + bug: gitbox does not honor merge.ff setting to do "git merge --no-ff"
   + there could be a related bug with no display of such merge commits
