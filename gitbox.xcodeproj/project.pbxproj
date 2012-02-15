@@ -398,7 +398,6 @@
 		20A5E38514D68BE200408DD7 /* GBPreferencesLicenseViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 20A5E37714D68BDA00408DD7 /* GBPreferencesLicenseViewController.xib */; };
 		20A5E38614D68BE200408DD7 /* GBPreferencesLicenseViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 20A5E37714D68BDA00408DD7 /* GBPreferencesLicenseViewController.xib */; };
 		20A5E38714D68BE200408DD7 /* GBPreferencesUpdatesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20A5E37914D68BDE00408DD7 /* GBPreferencesUpdatesViewController.m */; };
-		20A5E38814D68BE200408DD7 /* GBPreferencesUpdatesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20A5E37914D68BDE00408DD7 /* GBPreferencesUpdatesViewController.m */; };
 		20A5E38914D68BE200408DD7 /* GBPreferencesUpdatesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 20A5E37A14D68BDF00408DD7 /* GBPreferencesUpdatesViewController.xib */; };
 		20A5E38A14D68BE200408DD7 /* GBPreferencesUpdatesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 20A5E37A14D68BDF00408DD7 /* GBPreferencesUpdatesViewController.xib */; };
 		20A750E51377C42F00981C39 /* GBSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 20A750E41377C42F00981C39 /* GBSearch.m */; };
@@ -2223,7 +2222,6 @@
 				20A5E37C14D68BE200408DD7 /* GBPreferencesConfigViewController.m in Sources */,
 				20A5E38014D68BE200408DD7 /* GBPreferencesIgnoreViewController.m in Sources */,
 				20A5E38414D68BE200408DD7 /* GBPreferencesLicenseViewController.m in Sources */,
-				20A5E38814D68BE200408DD7 /* GBPreferencesUpdatesViewController.m in Sources */,
 				20CFEFA814DDBE520086330F /* GBOptimizeRepositoryController.m in Sources */,
 				20F2D1C214E469E3009F3609 /* GBApplication.m in Sources */,
 				207C836114E9C6D3005C91E7 /* YRKSpinningProgressIndicator.m in Sources */,
@@ -2535,7 +2533,7 @@
 					"-DAPP_VERSION=${APP_VERSION}",
 				);
 				OTHER_LDFLAGS = "-lcrypto";
-				PROVISIONING_PROFILE = "7B4612BC-080E-4DF6-AF28-41D93A00F71B";
+				PROVISIONING_PROFILE = "903A155A-8E32-4C2E-A88C-EBECA6C54744";
 				SDKROOT = macosx;
 				VALID_ARCHS = x86_64;
 			};
