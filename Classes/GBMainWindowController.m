@@ -252,10 +252,7 @@
 #if DEBUG
 	{
 		NSString* version = [[NSBundle mainBundle] objectForInfoDictionaryKey:(NSString*)kCFBundleVersionKey];
-		if ([version rangeOfString:@"beta"].length > 0)
-		{
-			windowTitle = [windowTitle stringByAppendingFormat:@"  (%@)", version];
-		}
+		windowTitle = [windowTitle stringByAppendingFormat:@" — %@", version];
 	}
 #endif
 	
