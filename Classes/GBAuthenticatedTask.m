@@ -415,7 +415,7 @@
 
 - (NSString*) keychainServiceName
 {
-	return [NSString stringWithFormat:@"Gitbox: %@", self.remoteAddress];
+	return [NSString stringWithFormat:@"Gitbox 1.6: %@", self.remoteAddress];
 }
 
 - (void) deleteKeychainItem
