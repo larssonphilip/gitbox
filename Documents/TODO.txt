@@ -53,12 +53,12 @@ Gitbox 1.6 Release Notes
 
 Gitbox 1.6 misc items:
 
+- test app store build before submission.
+
+
 - fetch from only one remote to avoid tags ping-ponging.
   - from the selected remote if given.
   - or the first one in a list, if remote branch is not selected.
-
-- test app store build before submission.
-
 
 - bug: when checking out/resetting submodule which is dirty, it fails silently. 
 - show "unpushed" status for unpushed submodule.
