@@ -25,6 +25,7 @@
 
 - (void) stringForKey:(NSString*)key withBlock:(void(^)(NSString* value))aBlock;
 - (void) setString:(NSString*)value forKey:(NSString*)key withBlock:(void(^)())aBlock;
+- (void) removeKey:(NSString*)key;
 
 - (void) ensureDisabledPathQuoting:(void(^)())aBlock;
 - (void) setName:(NSString*)name email:(NSString*)email withBlock:(void(^)())block;

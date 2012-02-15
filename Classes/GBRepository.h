@@ -13,7 +13,7 @@
 @class GBTask;
 @class OATask;
 @class OABlockTransaction;
-
+@class GBGitConfig;
 
 @interface GBRepository : NSObject
 
@@ -26,6 +26,7 @@
 @property(nonatomic, retain) NSArray* tags;
 @property(nonatomic, retain) NSArray* submodules;
 @property(nonatomic, retain) GitRepository* libgitRepository;
+@property(nonatomic, retain, readonly) GBGitConfig* config;
 
 @property(nonatomic, retain) GBStage* stage;
 @property(nonatomic, retain) GBRef* currentLocalRef;

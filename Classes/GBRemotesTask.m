@@ -48,10 +48,10 @@
     if (line && [line length] > 0)
     {
       NSArray* keyAndValue = [line componentsSeparatedByString:@" "];
-      if (keyAndValue && [keyAndValue count] >= 2)
+      if (keyAndValue && keyAndValue.count >= 2)
       {
         NSString* key = [keyAndValue objectAtIndex:0];
-        NSString* value = [keyAndValue objectAtIndex:1];
+        NSString* value = [[keyAndValue subarrayWithRange:NSMakeRange(1, keyAndValue.count-1)] componentsJoinedByString:@" "];
         
         NSRange r1 = [key rangeOfString:@"remote."];
         NSRange r2 = [key rangeOfString:@".url"];

@@ -10,6 +10,6 @@
 
 - (NSString*) stringForKey:(NSString*)key;
 - (void) setString:(NSString*)string forKey:(NSString*)key;
-- (void) removeStringForKey:(NSString*)key;
+- (void) removeKey:(NSString*)key;
 - (void)enumerateKeysAndObjectsUsingBlock:(void (^)(id key, id obj, BOOL *stop))block;
 @end

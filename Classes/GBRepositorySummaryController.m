@@ -5,6 +5,7 @@
 #import "GBTaskWithProgress.h"
 #import "GitRepository.h"
 #import "GitConfig.h"
+#import "GBGitConfig.h"
 #import "NSFileManager+OAFileManagerHelpers.h"
 
 @interface GBRepositorySummaryController ()
@@ -180,7 +181,8 @@
 {
 	// Save the remote addresses
 	
-	GitConfig* config = self.repository.libgitRepository.config;
+	//GitConfig* config = self.repository.libgitRepository.config;
+	GBGitConfig* config = self.repository.config;
 	
 	NSUInteger linesCount = MIN(remotes.count, self.fields.count);
 	
@@ -203,8 +205,8 @@
 			}
 			else // empty string - remove entries
 			{
-				[config removeStringForKey:[NSString stringWithFormat:@"remote.%@.url", remote.alias]];
-				[config removeStringForKey:[NSString stringWithFormat:@"remote.%@.fetch", remote.alias]];
+				[config removeKey:[NSString stringWithFormat:@"remote.%@.url", remote.alias]];
+				[config removeKey:[NSString stringWithFormat:@"remote.%@.fetch", remote.alias]];
 			}
 		}];
 	}

@@ -93,6 +93,23 @@
 	[task launchAndWait];
 }
 
+- (void) removeKey:(NSString*)key
+{
+	OATask* task              = [OATask task];
+	task.currentDirectoryPath = [self.repository path];
+	task.launchPath           = [GBTask pathToBundledBinary:@"git"];
+	
+	if ([self isUserConfig])
+	{
+		task.arguments = [NSArray arrayWithObjects:@"config", @"--global", @"--unset-all", key, nil];
+	}
+	else
+	{
+		task.arguments = [NSArray arrayWithObjects:@"config", @"--unset-all", key, nil];
+	}
+	[task launchAndWait];
+}
+
 - (NSString*) userName
 {
 	return [self stringForKey:@"user.name"];

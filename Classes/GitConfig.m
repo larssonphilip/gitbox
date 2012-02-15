@@ -123,7 +123,7 @@
 	}
 }
 
-- (void) removeStringForKey:(NSString*)key
+- (void) removeKey:(NSString*)key
 {
 	git_error error = git_config_delete(config, [key cStringUsingEncoding:NSUTF8StringEncoding]);
 	if (error != GIT_SUCCESS)

@@ -39,7 +39,7 @@
 @property(nonatomic, retain, readwrite) NSData* URLBookmarkData;
 @property(nonatomic, retain) OABlockTable* blockTable;
 @property(nonatomic, retain, readwrite) OABlockTransaction* blockTransaction;
-@property(nonatomic, retain) GBGitConfig* config;
+@property(nonatomic, retain, readwrite) GBGitConfig* config;
 @property(nonatomic, assign, readwrite) NSUInteger commitsDiffCount;
 @property(nonatomic, retain) NSMutableDictionary* tagsByCommitID;
 
@@ -967,7 +967,7 @@
 	
 	if (!ref)
 	{
-		[self.libgitRepository.config removeStringForKey:[NSString stringWithFormat:@"branch.%@.merge", escapedName]];
+		[self.libgitRepository.config removeKey:[NSString stringWithFormat:@"branch.%@.merge", escapedName]];
 		if (block) block();
 		return;
 	}
