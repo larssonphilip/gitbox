@@ -20,40 +20,9 @@ Major Features:
 - Tree view in stage - does not add much value, but quite tiresome.
 
 
-Gitbox 1.6 Release Notes
-
-✓ Zero-configuration submodules: one-click download and reset.
-✓ Submodules are intelligently reset when pulling, switching branches or checking out commits in the parent repository.
-✓ Editable repository names (Gitbox keeps an alias without changing the actual folder name.)
-✓ Automatic repository optimization in background.
-
-✓ Tags are sorted in natural order and with respect to version numbers.
-✓ When a file is added to ignore list, it is also untracked (git rm --cached).
-✓ Warning is displayed when trying to make a commit when no branch is selected.
-✓ Single Preferences window with Git configuration, ignored files, "Clone from Github" checkbox etc.
-
-✓ Fixed bugs and crashes in authentication session.
-✓ Fixed performance bug with frequent stage updates (high CPU consumption).
-✓ Fixed bugs with preserving stage selection and scroll offset when stage is reloaded.
-✓ Fixed bug with text fields in repository settings (value was not stored immediately)
-✓ Fixed a bug with trimming whitespace from .gitignore
-✓ Fixed link highlighting: now all kinds of schemas are recognized including rdar:// (Lion-only).
-✓ Fixed several text labels and error messages.
-✓ Fixed an annoying bug in search field (when space is entered, all text was selected)
-✓ Fixed bug with presenting files containing ":" and other URL-unfriendly characters.
-✓ Fixed bug with staging file names beginning with dash ("-")
-✓ Fixed bug with multi-line commit messages. Messages are recorded as-is. Prewrapped messages are intelligently unwrapped when displayed.
-✓ Fixed bug with ignoring a file when .gitignore does not exist (file was not added to .gitignore).
-✓ Fixed bug with title duplication in the branch menus.
-✓ Fixed merge --no-ff option. Gitbox shows no-ff merge commits and respects “mergeoptions” in .git/config.
-✓ Fixed sidebar alignment bug.
-✓ Fixed sidebar spinner color and animation.
- 
 --
 
-Gitbox 1.6 misc items:
-
-- license prefs: button for buy in App Store. Explain how to remove the app before installing the latest version.
+Gitbox 1.7 misc items:
 
 
 - allow cherry-picking from any commit (like from search mode)
@@ -115,205 +84,6 @@ Gitbox 1.6 misc items:
 ? crash: on invalid ssh key the askpass controller crashes with "task" selector
 ? crash: The app crashes whenever I try to delete a remote branch, shortly after hitting the “Ok” button of the edit branch sheet
 
-
-
-
-Misc done for 1.6:
-
-
-+ test app store build before submission.
-
-+ gboptimizerepo should reset timer if wakes up from sleep. Detect sleep by comparing timers.
-+ bug: remote URL with a space inside: 1) truncates 2) saves back to .git/config. See Bugs Inbox.
-+ bug: gitbox does not honor merge.ff setting to do "git merge --no-ff"
-  + there could be a related bug with no display of such merge commits
-
-+ bug: cloning rails.git does not read download progress properly. Stays at 18% or so.
-
-+ sidebar: draw a background inset circle for spinner in a selected sidebar cell
-+ ui: implement spinner for indeterminate tasks (with color switch support) and wetransfer-like spinning progress sector (shows progress using sector + rotates it to present activity).
-+ ui: for two above: implement OASuperActivityIndicator with stack API, spinning progress, color switch and lazy API (to avoid showing spinner for short tasks of 1-2 seconds).
-
-+ submodules: remember collapsed status of submodules in user defaults
-+ submodules: remember submodules in prefs plist because we don't update all of them on startup
-+ bug: when submodules are opened, all parent items (e.g. groups) are opened as well. Shouldn't do that. Also, remember the submodules in prefs.plist [seems like the groups are not opened]
-
-+ submodules: case 1: user clones a repo which has some submodules => needs init, display "download" button for submodules in sidebar
-+ submodules: case 2: user pulls a repo which has some submodules updated => needs pull
-≠ submodules: case 3: user pulls a repo which has some submodules updated, but his submodule itself is checked out on some branch => needs fetch, not pull
-
-+ feature: rename repositories
-+ remove parentRepository from submodule, pass parent repo ctrl to submodule ctrls so they can ping parents properly.
-+ reuse the cloning controller (so we will receive the notifs from the currently used controller)
-
-+ FS events cause parent repo ctrl update submodules while submodule is being cloned and kills the task.
-+ possible solution: reuse the GBRepository dispatchQueue for nested repos.
-+ bug: 150% CPU usage when updating a repo and its submodules.
-
-+ when removed tree of submodules, sidebar item views are still in sidebar.
-
-+ bug: when submodule is updated, the controller is recreated and history is reloaded.
-+ bug: when stopped, should ignore fs events etc.
-
-+ submodules: automatically update submodule after repo pull/merge if they are were totally in sync before (that is no development happened there)
-  + do that by delaying stage update after checkout/pull/merge/reset in parent repo and checking out specific submodules that were clean before.
-
-+ when removed from sidebar while ls-remote, the spinner is not removed (because repo is still busy and retaining the sidebar item).
-+ submodules: submodule cloning ctrl should be replaced when download/cloning is finished.
-
-+ bug: when focusing back to a prompt sheet (e.g. tag name) text is cleared.
-
-+ show submodule HEAD in status in changes list.
-+ show submodule "dirty" status in changes list.
-
-+ settings: add gear button on the left
-+ settings: delete local branch
-+ settings: delete remote branch
-
-+ history: flag interesting commits (e.g. for bisect)
-+ bug: general: when a long process modifies the working directory, the FSEvents wait till the very end, but should refresh each 2 seconds or so.
-+ bug: toolbar: sometimes some duplicate branch name appears in popdown menus.
-+ bug: askpass crashes with "task" selector when tries to update a repo with missing/invalid ssh key.
-+ bug: search: when commits are updated, the selected one does not show the proper view in the commitviewcontroller. [not important]
-+ bug: (rare) suddenly the search field became disabled. See how enabling/disabling work across repo switching to fix it.
-
-+ also override presentError: on main window controller to put error in a queued sheet
-+ general: since push/pull happen in the same dispatch queue as any other git command, while sending a big pack of data we simply cannot load commits and changes anymore. Should put up different queues for different tasks: changes can be loaded and staged  separately from committing and branch manipulation, local branches can be edited while doing push.
-+ general: eliminate unncesessary per-repo queued tasks (GBRepository launchTask:withBlock:). For instance, for loading commit changes. (So we can update something while long networking command is running.)
-
-+ general: Add common OS X to the global ~/.gitignore https://github.com/github/gitignore
-+ general: check that opendiff is selected by default on new start + it is not selected if it is missing
-+ failed pull: need commit first: "error: Your local changes to 'TODO.txt' would be overwritten by merge.  Aborting. Please, commit your changes or stash them before you can merge. Updating c3c800f..87bc4f4"
-+ failed merge
-+ failed push (actually, should prevent from pushing when some commits are fetched)
-
-+ remove download button from submodule item after download is completed. Refresh submodules immediately.
-+ checkout button -> "reset" ?
-
-+ bug: sort submodules by name, not by path for easier locating them.
-+ bug: background git-gc sheet causes Dock icon to bounce
-+ submodules: checkout submodule
-
-+ bug: on launch, the sidebar badges are shifted to the edge (maybe when scroll bar is visible or not). Same bug when submodules are loaded and expanded.
-± add .DS_Store to gitignore by default. [filtering in GBChange]
-+ submodules: rename "update" button to "checkout", so it's clear what it does.
-+ submodules: cancelling of a cloning repo ctrl does not work (disabled cancel button)
-+ submodules: do not show "close" button in place of "cancel" button.
-+ submodules: reload submodules status on fsevents and update the sidebar if changed
-+ submodules: when reloading submodules merge or reload all of them - think hard on that!
-+ submodules: bug: when submodule is selected for the first time, view controller is not available [rare issue with simultaneous sidebar update]
-+ submodules: bug: when submodule starts downloading, download button is not removed from sidebar.
-
-+ subclass GBRepositoryController -> GBSubmoduleController for customizing sidebaritem
-+ do not store any controllers inside GBSubmodule object 
-≠ do not store weak ref to parent repository inside GBSubmodule object - put there only the URLs
-
-+ bug: fixed beginStageTransaction/endStageTransaction when deleting files.
-+ integrate preferences window or sheet like in http://blog.shpakovski.com/2011/04/preferences-windows-in-cocoa.html
-
-+ test: diff tools state with empty prefs.
-+ test: clone in github checkbox with empty prefs.
-+ test: default state of update checkboxes: downloads is off
-
-+ bug: prefs: no diff tool is selected on fresh launch
-+ bug: prefs: on fresh computer when entering email address, it's truncated (dt@danieltull.co.uk -> dt)
-
-+ bug: if stage is selected and search string is entered, first commit is selected, but changes view is not updated.
-+ bug: when submodule is added to the sidebar and its parent repo is selected, update to a submodule's file triggers refresh of the parent, but not of the submodule (check how OAFSEventMonitor coalesces paths)
-  + this well may be not submodule-related, but to completely failed FSEvent object on Gwendal's machine
-
-+ bug: search: try to add space after a word in search field - it selects the whole text which is amazingly annoying [done in 1.5.*]
-+ FS notifs: avoid ping-pong between repo and submodule by filtering out all sub-repo notifications. Or use FS events as an advice part of a regular scheduled update timer.
-
-+ bug: stage is not transactionally updated.
-+ bug: stage is refreshed before staging command is worked out. blinks with previous state. (should invalidate notif. )
-± bug: stage: selection is not accurately preserved when stage is reloaded. [now is more precise]
-+ bug: stage: scroll offset is not preserved when stage is reloaded.
-
-+ bug: should not refresh index while staging multiple items quickly one-by-one. - use delayed update to override FSEvent.
-  + solution: see Refresh.txt for details
-+ bug: sometimes after commit the stage is not updated. Should probably force update after commit.
-+ bug: it takes a very long time to update local state for non-selected repo.
-+ bug: does not auto fetch when focused in the commit field.
-
-+ make optimize in background with a sheet. (git-gc)
-  + have a loop in GBRepositoriesController; detect mouse moves and reset the timer.
-  + after 2 hours of inactivity notify repositories and they randomly optimize themselves (prob. is 1/20); reset the timer
-
-+ reshuffle repo settings: remove "Optimize" button and remove stats; remove "Advanced" tab
-+ test: updater is not included in the app store build.
-+ test: should stop/start cloning from github when checkbox is switched.
-
-+ quickly staging stuff it takes some longer time. maybe because of the delay or some irrelevant operations going on (submodules?).
-+ "clone from github" - need a checkbox "Clone from Github in Gitbox" - if user unchecks, do not subscribe to URL in Gitbox. Also need checkbox in prefs.
-+ prefs:
-	+ GBPreferencesDiffViewController "Diff tools"
-	+ GBPreferencesGithubViewController "Github"
-	+ GBPreferencesGitIgnoreViewController "Ignored Files"
-	+ GBPreferencesGitConfigViewController "Advanced"
-	+ GBPreferencesUpdatesViewController "Updates"
-	+ GBPreferencesLicenseViewController "License"
-	+ export icons
-	+ instantiate updater 
-
-+ bug: if curr. branch menu is rebuilt while being open, gitbox does not show sheet for "checkout remote branch"
-
-+ maybe reshuffle preferences: "Mac" (diff tools, github: "Behaviour"), "Git" (~/.gitignore, name and email), "Gitbox" (updates, license)
-+ move ~/.gitignore to Git Settings (and remove "Advanced" screen)
-
-+ if authenticated task fails with non-auth error message, remember the failure and on 3 failure in a row present login sheet.	
-? crash: on incorrect password or SSH key the askpass controller crashes with "task" selector
-
-+ GBRepository.lastError is sometimes dropped because of AskPassController which delays a callback.
-+ todo: add immediate check for existance in FSEvents callback (right now deletion is delayed for non-selected repos)
-+ bug: commits count is not updated after push to a new branch
-+ bug: after remote branches are deleted, need to deselect remote branch if it's removed.
-+ bug: "bad revision" when just created remote branch and calculating difference using "rev-list"
-+ bug: file "Icon\r" is ignored in the stage view.
-+ bug: long error sheets when pull or push fails - with progress status [fixed for some common error messages]
-+ bug: adding file to gitignore when .gitignore does not exist fails.
-+ bug: about window or license window is not in focus
-+ bug: "New Branch..." menu item has a sheet with "Checkout" button instead of "Create" // also the commit name is totally confusing
-+ cannot stage files with question mark in them -> -stringByEscapingGitFilename
-+ bug: dash in a folder name (first-level folder) confuses git command [luísbatista <mf3k.wd@gmail.com>]
-+ bug: problem with multiline commit messages [added unwrapping]
-+ normalize commit text with composition (NFC) 
-+ disable spinning for local state updates
-+ bug: submodules in changes list are presented without folder icon (the "mode" is 160000 when it's a submodule)
-+ bug: when reset --hard from terminal, the commits are not updated because currentRef only has name, but not SHA-1.
-+ bug: after submodules are updated, controller is not reused and all local state is lost. Happens when submodule's HEAD changes.
-+ "git diff-files -C -M" causes submodules' .git folders to be updated and makes them updated themselves
-
-+ bug: dirty submodule is visible in parent repo's changes. After "git diff-files -C -M" should ignore lines with the unchanged SHA and modes
-	:100644 100644 21144ed6a0e1cc809be616a0305fc44f86bf0eca 0000000000000000000000000000000000000000 M	Documents/TODO.txt
-	:160000 160000 19dee26e1470bee2ad29b585d01a1bb586481d0c 19dee26e1470bee2ad29b585d01a1bb586481d0c M	git
-+ bug: with a lot of submodules (or with added repos for submodules), the app may bounce disk notifications between repos neverending. Should filter out changes inside submodules in a folder monitor.
-+ prematurely refresh remote refs if focused into the window.
-+ submodules: display "download" button in the sidebar item
-+ submodules: submodule download controller
-
-+ edit branches and tags in a single repository settings window.
-+ bug: when filename on stage contains ":" file name is not displayed (null?)
-+ remove "..." from "Delete Tag", "Delete Branch" buttons in the settings view.
-+ ui: show alert Yes/No sheet window when trying to create a commit outside of a branch (instead of simply disabling the commit button)
-+ tags: sort tags using SUStandardVersionComparator (from Sparkle)
-+ bug: when settings is opened/closed, .gitignore is stripped
-
-+ Askpass:
-  + GBAuthenticatedTask: move ENV setup, output parsing to GBAuthenticatedTask.
-  + GBAuthenticatedTask: remove keychain entry if failed to use it ASAP.
-  + GBAuthenticatedTask: set the failed status and remote URL if authentication fails (not cancelled by user!).
-  + GBAuthenticatedTask: remember last used username per address in user defaults (so that controller does not need to deal with it)
-  + GBRepository: update the auth status so the using ctrl knows that the auth has failed. Status should be cleared by owning controller.
-  + GBRepository: replace askpass controller usage with GBAuthenticatedTask; simulatenously wrap calling methods from GBRepositoryController with begin/endAuthentication to serialize modification of auth status flags.
-  + GBRepositoryController: simply relaunch the task if it failed and was not cancelled by user.
-  + GBRepositoryController: do not relaunch task if it was silent in the first place.
-  + at least for authenticated tasks should pass NSError instead of displaying it right from GBRepository so controller can avoid displaying the error when it's going to retry operation.
-+ checkbox "Clone Github repositories"
-+ general: human message in case git cannot merge/pull when some files are modified (error: Untracked working tree file 'Patryst.xcodeproj/project.pbxproj' would be overwritten by merge.)
-+ prefs: Add support for global .gitconfig (at least, show name/email pair)
-+ settings: edit global .gitignore (or whatever files is set up in ~/.gitconfig) in Preferences window.
-+ history: create a tag + undo
 
 
 -------------------------------
@@ -698,6 +468,245 @@ To read:
 
 
 
+
+Gitbox 1.6 Release Notes
+
+✓ Zero-configuration submodules: one-click download and reset.
+✓ Submodules are intelligently reset when pulling, switching branches or checking out commits in the parent repository.
+✓ Editable repository names (Gitbox keeps an alias without changing the actual folder name.)
+✓ Automatic repository optimization in background.
+
+✓ Tags are sorted in natural order and with respect to version numbers.
+✓ When a file is added to ignore list, it is also untracked (git rm --cached).
+✓ Warning is displayed when trying to make a commit when no branch is selected.
+✓ Single Preferences window with Git configuration, ignored files, "Clone from Github" checkbox etc.
+
+✓ Fixed bugs and crashes in authentication session.
+✓ Fixed performance bug with frequent stage updates (high CPU consumption).
+✓ Fixed bugs with preserving stage selection and scroll offset when stage is reloaded.
+✓ Fixed bug with text fields in repository settings (value was not stored immediately)
+✓ Fixed a bug with trimming whitespace from .gitignore
+✓ Fixed link highlighting: now all kinds of schemas are recognized including rdar:// (Lion-only).
+✓ Fixed several text labels and error messages.
+✓ Fixed an annoying bug in search field (when space is entered, all text was selected)
+✓ Fixed bug with presenting files containing ":" and other URL-unfriendly characters.
+✓ Fixed bug with staging file names beginning with dash ("-")
+✓ Fixed bug with multi-line commit messages. Messages are recorded as-is. Prewrapped messages are intelligently unwrapped when displayed.
+✓ Fixed bug with ignoring a file when .gitignore does not exist (file was not added to .gitignore).
+✓ Fixed bug with title duplication in the branch menus.
+✓ Fixed merge --no-ff option. Gitbox shows no-ff merge commits and respects “mergeoptions” in .git/config.
+✓ Fixed sidebar alignment bug.
+✓ Fixed sidebar spinner color and animation.
+ 
+
+Misc done for 1.6:
+
+
++ license prefs: button for buy in App Store. Explain how to remove the app before installing the latest version.
++ test app store build before submission.
+
++ gboptimizerepo should reset timer if wakes up from sleep. Detect sleep by comparing timers.
++ bug: remote URL with a space inside: 1) truncates 2) saves back to .git/config. See Bugs Inbox.
++ bug: gitbox does not honor merge.ff setting to do "git merge --no-ff"
+  + there could be a related bug with no display of such merge commits
+
++ bug: cloning rails.git does not read download progress properly. Stays at 18% or so.
+
++ sidebar: draw a background inset circle for spinner in a selected sidebar cell
++ ui: implement spinner for indeterminate tasks (with color switch support) and wetransfer-like spinning progress sector (shows progress using sector + rotates it to present activity).
++ ui: for two above: implement OASuperActivityIndicator with stack API, spinning progress, color switch and lazy API (to avoid showing spinner for short tasks of 1-2 seconds).
+
++ submodules: remember collapsed status of submodules in user defaults
++ submodules: remember submodules in prefs plist because we don't update all of them on startup
++ bug: when submodules are opened, all parent items (e.g. groups) are opened as well. Shouldn't do that. Also, remember the submodules in prefs.plist [seems like the groups are not opened]
+
++ submodules: case 1: user clones a repo which has some submodules => needs init, display "download" button for submodules in sidebar
++ submodules: case 2: user pulls a repo which has some submodules updated => needs pull
+≠ submodules: case 3: user pulls a repo which has some submodules updated, but his submodule itself is checked out on some branch => needs fetch, not pull
+
++ feature: rename repositories
++ remove parentRepository from submodule, pass parent repo ctrl to submodule ctrls so they can ping parents properly.
++ reuse the cloning controller (so we will receive the notifs from the currently used controller)
+
++ FS events cause parent repo ctrl update submodules while submodule is being cloned and kills the task.
++ possible solution: reuse the GBRepository dispatchQueue for nested repos.
++ bug: 150% CPU usage when updating a repo and its submodules.
+
++ when removed tree of submodules, sidebar item views are still in sidebar.
+
++ bug: when submodule is updated, the controller is recreated and history is reloaded.
++ bug: when stopped, should ignore fs events etc.
+
++ submodules: automatically update submodule after repo pull/merge if they are were totally in sync before (that is no development happened there)
+  + do that by delaying stage update after checkout/pull/merge/reset in parent repo and checking out specific submodules that were clean before.
+
++ when removed from sidebar while ls-remote, the spinner is not removed (because repo is still busy and retaining the sidebar item).
++ submodules: submodule cloning ctrl should be replaced when download/cloning is finished.
+
++ bug: when focusing back to a prompt sheet (e.g. tag name) text is cleared.
+
++ show submodule HEAD in status in changes list.
++ show submodule "dirty" status in changes list.
+
++ settings: add gear button on the left
++ settings: delete local branch
++ settings: delete remote branch
+
++ history: flag interesting commits (e.g. for bisect)
++ bug: general: when a long process modifies the working directory, the FSEvents wait till the very end, but should refresh each 2 seconds or so.
++ bug: toolbar: sometimes some duplicate branch name appears in popdown menus.
++ bug: askpass crashes with "task" selector when tries to update a repo with missing/invalid ssh key.
++ bug: search: when commits are updated, the selected one does not show the proper view in the commitviewcontroller. [not important]
++ bug: (rare) suddenly the search field became disabled. See how enabling/disabling work across repo switching to fix it.
+
++ also override presentError: on main window controller to put error in a queued sheet
++ general: since push/pull happen in the same dispatch queue as any other git command, while sending a big pack of data we simply cannot load commits and changes anymore. Should put up different queues for different tasks: changes can be loaded and staged  separately from committing and branch manipulation, local branches can be edited while doing push.
++ general: eliminate unncesessary per-repo queued tasks (GBRepository launchTask:withBlock:). For instance, for loading commit changes. (So we can update something while long networking command is running.)
+
++ general: Add common OS X to the global ~/.gitignore https://github.com/github/gitignore
++ general: check that opendiff is selected by default on new start + it is not selected if it is missing
++ failed pull: need commit first: "error: Your local changes to 'TODO.txt' would be overwritten by merge.  Aborting. Please, commit your changes or stash them before you can merge. Updating c3c800f..87bc4f4"
++ failed merge
++ failed push (actually, should prevent from pushing when some commits are fetched)
+
++ remove download button from submodule item after download is completed. Refresh submodules immediately.
++ checkout button -> "reset" ?
+
++ bug: sort submodules by name, not by path for easier locating them.
++ bug: background git-gc sheet causes Dock icon to bounce
++ submodules: checkout submodule
+
++ bug: on launch, the sidebar badges are shifted to the edge (maybe when scroll bar is visible or not). Same bug when submodules are loaded and expanded.
+± add .DS_Store to gitignore by default. [filtering in GBChange]
++ submodules: rename "update" button to "checkout", so it's clear what it does.
++ submodules: cancelling of a cloning repo ctrl does not work (disabled cancel button)
++ submodules: do not show "close" button in place of "cancel" button.
++ submodules: reload submodules status on fsevents and update the sidebar if changed
++ submodules: when reloading submodules merge or reload all of them - think hard on that!
++ submodules: bug: when submodule is selected for the first time, view controller is not available [rare issue with simultaneous sidebar update]
++ submodules: bug: when submodule starts downloading, download button is not removed from sidebar.
+
++ subclass GBRepositoryController -> GBSubmoduleController for customizing sidebaritem
++ do not store any controllers inside GBSubmodule object 
+≠ do not store weak ref to parent repository inside GBSubmodule object - put there only the URLs
+
++ bug: fixed beginStageTransaction/endStageTransaction when deleting files.
++ integrate preferences window or sheet like in http://blog.shpakovski.com/2011/04/preferences-windows-in-cocoa.html
+
++ test: diff tools state with empty prefs.
++ test: clone in github checkbox with empty prefs.
++ test: default state of update checkboxes: downloads is off
+
++ bug: prefs: no diff tool is selected on fresh launch
++ bug: prefs: on fresh computer when entering email address, it's truncated (dt@danieltull.co.uk -> dt)
+
++ bug: if stage is selected and search string is entered, first commit is selected, but changes view is not updated.
++ bug: when submodule is added to the sidebar and its parent repo is selected, update to a submodule's file triggers refresh of the parent, but not of the submodule (check how OAFSEventMonitor coalesces paths)
+  + this well may be not submodule-related, but to completely failed FSEvent object on Gwendal's machine
+
++ bug: search: try to add space after a word in search field - it selects the whole text which is amazingly annoying [done in 1.5.*]
++ FS notifs: avoid ping-pong between repo and submodule by filtering out all sub-repo notifications. Or use FS events as an advice part of a regular scheduled update timer.
+
++ bug: stage is not transactionally updated.
++ bug: stage is refreshed before staging command is worked out. blinks with previous state. (should invalidate notif. )
+± bug: stage: selection is not accurately preserved when stage is reloaded. [now is more precise]
++ bug: stage: scroll offset is not preserved when stage is reloaded.
+
++ bug: should not refresh index while staging multiple items quickly one-by-one. - use delayed update to override FSEvent.
+  + solution: see Refresh.txt for details
++ bug: sometimes after commit the stage is not updated. Should probably force update after commit.
++ bug: it takes a very long time to update local state for non-selected repo.
++ bug: does not auto fetch when focused in the commit field.
+
++ make optimize in background with a sheet. (git-gc)
+  + have a loop in GBRepositoriesController; detect mouse moves and reset the timer.
+  + after 2 hours of inactivity notify repositories and they randomly optimize themselves (prob. is 1/20); reset the timer
+
++ reshuffle repo settings: remove "Optimize" button and remove stats; remove "Advanced" tab
++ test: updater is not included in the app store build.
++ test: should stop/start cloning from github when checkbox is switched.
+
++ quickly staging stuff it takes some longer time. maybe because of the delay or some irrelevant operations going on (submodules?).
++ "clone from github" - need a checkbox "Clone from Github in Gitbox" - if user unchecks, do not subscribe to URL in Gitbox. Also need checkbox in prefs.
++ prefs:
+	+ GBPreferencesDiffViewController "Diff tools"
+	+ GBPreferencesGithubViewController "Github"
+	+ GBPreferencesGitIgnoreViewController "Ignored Files"
+	+ GBPreferencesGitConfigViewController "Advanced"
+	+ GBPreferencesUpdatesViewController "Updates"
+	+ GBPreferencesLicenseViewController "License"
+	+ export icons
+	+ instantiate updater 
+
++ bug: if curr. branch menu is rebuilt while being open, gitbox does not show sheet for "checkout remote branch"
+
++ maybe reshuffle preferences: "Mac" (diff tools, github: "Behaviour"), "Git" (~/.gitignore, name and email), "Gitbox" (updates, license)
++ move ~/.gitignore to Git Settings (and remove "Advanced" screen)
+
++ if authenticated task fails with non-auth error message, remember the failure and on 3 failure in a row present login sheet.	
+? crash: on incorrect password or SSH key the askpass controller crashes with "task" selector
+
++ GBRepository.lastError is sometimes dropped because of AskPassController which delays a callback.
++ todo: add immediate check for existance in FSEvents callback (right now deletion is delayed for non-selected repos)
++ bug: commits count is not updated after push to a new branch
++ bug: after remote branches are deleted, need to deselect remote branch if it's removed.
++ bug: "bad revision" when just created remote branch and calculating difference using "rev-list"
++ bug: file "Icon\r" is ignored in the stage view.
++ bug: long error sheets when pull or push fails - with progress status [fixed for some common error messages]
++ bug: adding file to gitignore when .gitignore does not exist fails.
++ bug: about window or license window is not in focus
++ bug: "New Branch..." menu item has a sheet with "Checkout" button instead of "Create" // also the commit name is totally confusing
++ cannot stage files with question mark in them -> -stringByEscapingGitFilename
++ bug: dash in a folder name (first-level folder) confuses git command [luísbatista <mf3k.wd@gmail.com>]
++ bug: problem with multiline commit messages [added unwrapping]
++ normalize commit text with composition (NFC) 
++ disable spinning for local state updates
++ bug: submodules in changes list are presented without folder icon (the "mode" is 160000 when it's a submodule)
++ bug: when reset --hard from terminal, the commits are not updated because currentRef only has name, but not SHA-1.
++ bug: after submodules are updated, controller is not reused and all local state is lost. Happens when submodule's HEAD changes.
++ "git diff-files -C -M" causes submodules' .git folders to be updated and makes them updated themselves
+
++ bug: dirty submodule is visible in parent repo's changes. After "git diff-files -C -M" should ignore lines with the unchanged SHA and modes
+	:100644 100644 21144ed6a0e1cc809be616a0305fc44f86bf0eca 0000000000000000000000000000000000000000 M	Documents/TODO.txt
+	:160000 160000 19dee26e1470bee2ad29b585d01a1bb586481d0c 19dee26e1470bee2ad29b585d01a1bb586481d0c M	git
++ bug: with a lot of submodules (or with added repos for submodules), the app may bounce disk notifications between repos neverending. Should filter out changes inside submodules in a folder monitor.
++ prematurely refresh remote refs if focused into the window.
++ submodules: display "download" button in the sidebar item
++ submodules: submodule download controller
+
++ edit branches and tags in a single repository settings window.
++ bug: when filename on stage contains ":" file name is not displayed (null?)
++ remove "..." from "Delete Tag", "Delete Branch" buttons in the settings view.
++ ui: show alert Yes/No sheet window when trying to create a commit outside of a branch (instead of simply disabling the commit button)
++ tags: sort tags using SUStandardVersionComparator (from Sparkle)
++ bug: when settings is opened/closed, .gitignore is stripped
+
++ Askpass:
+  + GBAuthenticatedTask: move ENV setup, output parsing to GBAuthenticatedTask.
+  + GBAuthenticatedTask: remove keychain entry if failed to use it ASAP.
+  + GBAuthenticatedTask: set the failed status and remote URL if authentication fails (not cancelled by user!).
+  + GBAuthenticatedTask: remember last used username per address in user defaults (so that controller does not need to deal with it)
+  + GBRepository: update the auth status so the using ctrl knows that the auth has failed. Status should be cleared by owning controller.
+  + GBRepository: replace askpass controller usage with GBAuthenticatedTask; simulatenously wrap calling methods from GBRepositoryController with begin/endAuthentication to serialize modification of auth status flags.
+  + GBRepositoryController: simply relaunch the task if it failed and was not cancelled by user.
+  + GBRepositoryController: do not relaunch task if it was silent in the first place.
+  + at least for authenticated tasks should pass NSError instead of displaying it right from GBRepository so controller can avoid displaying the error when it's going to retry operation.
++ checkbox "Clone Github repositories"
++ general: human message in case git cannot merge/pull when some files are modified (error: Untracked working tree file 'Patryst.xcodeproj/project.pbxproj' would be overwritten by merge.)
++ prefs: Add support for global .gitconfig (at least, show name/email pair)
++ settings: edit global .gitignore (or whatever files is set up in ~/.gitconfig) in Preferences window.
++ history: create a tag + undo
+
+
+
+
+
+
+
+
+
+
+-------------------------------------------------------------------------------
 
 
 
