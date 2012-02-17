@@ -62,9 +62,15 @@
 	}
 }
 
-- (IBAction) buy:_
+- (IBAction) buy:(id)sender
 {
 	NSString* purchaseURLString = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"GBPurchaseURL"];
+	[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:purchaseURLString]];
+}
+
+- (IBAction) buyFromAppStore:(id)sender
+{
+	NSString* purchaseURLString = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"GBAppStoreURL"];
 	[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:purchaseURLString]];
 }
 

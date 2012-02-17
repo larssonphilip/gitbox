@@ -9,8 +9,9 @@
 
 + (GBPreferencesLicenseViewController*) controller;
 
-- (IBAction) buy:_;
-- (IBAction)website:(id)sender;
+- (IBAction) buy:(id)sender;
+- (IBAction) buyFromAppStore:(id)sender;
+- (IBAction) website:(id)sender;
 
 @end
 

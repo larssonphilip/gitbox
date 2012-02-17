@@ -67,7 +67,9 @@
 	<key>GBHelpURL</key>
 	<string>http://gitboxapp.com/help.html</string>
 	<key>GBPurchaseURL</key>
-	<string>http://gitboxapp.com/buy.html</string>
+	<string>http://gitboxapp.com/buy_license.html</string>
+	<key>GBAppStoreURL</key>
+	<string>http://itunes.apple.com/app/gitbox/id403388357</string>
 	<key>GBReleaseNotesURL</key>
 	<string>http://gitboxapp.com/release-notes.html</string>
 	<key>LSApplicationCategoryType</key>
