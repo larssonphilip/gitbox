@@ -39,6 +39,8 @@ static id monitor = nil;
 {
     [_repository release];
 	[_task release];
+	[progressIndicator release];
+	[pathLabel release];
     [super dealloc];
 }
 
