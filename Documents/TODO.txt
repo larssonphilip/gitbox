@@ -25,6 +25,7 @@ Major Features:
 Gitbox 1.7 misc items:
 
 
+- bug: spaces in path of submodules doom everything (also check the spaces in their urls)
 - allow cherry-picking from any commit (like from search mode)
 - fetch from only one remote to avoid tags ping-ponging.
   - from the selected remote if given.
