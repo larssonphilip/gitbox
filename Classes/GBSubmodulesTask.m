@@ -7,7 +7,7 @@
 
 @implementation GBSubmodulesTask
 
-@synthesize submodules;
+@synthesize submodules=_submodules;
 
 - (void) dealloc
 {
@@ -42,89 +42,100 @@
 	 -805b0a69e1b357dcf2c4d54486dbcd7d6ac3d427 support/markdown
 	 -738177239c6b55521a1b0cb12aadccb794eb1609 support/sass     
 	 
-	 
+	 # With spaces and parentheses:
+	 bf5329bc04918d58b7af1376f7a4aa6c8c25c5af Test Spaces/(with brackets)/emrpc (heads/master)
+	 bf5329bc04918d58b7af1376f7a4aa6c8c25c5af Test Spaces/emrpc (heads/master)
+
 	 that is, the output looks like this:
 	 
 	 [space][optional + or -][SHA1 of commit submodule is pinned to][space or newline?][submodule path][the rest]
 	 */
-	NSScanner* scanner = [NSScanner scannerWithString:[data UTF8String]];
-	NSCharacterSet* whitespaceCharacterSet = [NSCharacterSet whitespaceAndNewlineCharacterSet];
-	NSCharacterSet* plusOrMinusCharacterSet = [NSCharacterSet characterSetWithCharactersInString:@"+-"];
-	[scanner setCharactersToBeSkipped:[NSCharacterSet characterSetWithCharactersInString:@""]];
 	
-	NSMutableArray *ary = [NSMutableArray array];
+	NSArray* lines = [[[data UTF8String] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] componentsSeparatedByString:@"\n"];
 	
-#define GBSubmodulesScanError(msg) {NSLog(@"ERROR: GBSubmodulesTask parse error: %@", msg); return ary;}
-	
-	while ([scanner isAtEnd] == NO)
+	NSMutableArray *submodules = [NSMutableArray array];
+		
+	for (NSString* line in lines)
 	{
-		[scanner scanCharactersFromSet:whitespaceCharacterSet intoString:NULL];
+		line = [line stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+		NSArray* parts = [line componentsSeparatedByString:@" "];
 		
-		// optional plus or minus
-		NSString* leadingChar = nil;
-		
-		[scanner scanCharactersFromSet:plusOrMinusCharacterSet intoString:&leadingChar];
-		
-		// commit submodule is pinned down to
-		NSString* submoduleRef = nil;
-		if (![scanner scanUpToString:@" " intoString:&submoduleRef]) {
-			GBSubmodulesScanError(@"Expected submodule ref");
-		}
-		
-		// space
-		if (![scanner scanString:@" " intoString:NULL]) {
-			GBSubmodulesScanError(@"Expected space after submodule ref");
-		}
-		
-		// submodule path
-		NSString* submodulePath = nil;
-		if (![scanner scanUpToCharactersFromSet:whitespaceCharacterSet intoString:&submodulePath]) {
-			GBSubmodulesScanError(@"Expected submodule path");
-		}
-		
-		/* from there on there may or may not be any other content in the line.
-		 * In any case, it is irrelevant to us: we know submodule ref and we don't care
-		 * what branch/tag that commit belongs to. MK.
-		 */
-		[scanner scanUpToString:@"\n" intoString:NULL];
-		[scanner scanString:@"\n" intoString:NULL];
-		
-		//NSLog(@"submodulePath = %@, self.repository = %@", submodulePath, self.repository);
-		NSURL* submoduleURL = [self.repository URLForSubmoduleAtPath:submodulePath];
-		
-		GBSubmodule *submodule = [[GBSubmodule new] autorelease];
-		submodule.dispatchQueue = self.repository.dispatchQueue;
-		submodule.path         = submodulePath;
-		submodule.parentURL    = self.repository.url;
-		submodule.remoteURL    = submoduleURL;
-		submodule.commitId     = submoduleRef;
-		
-		if (!leadingChar || [leadingChar isEqualToString:@""])
+		if (parts.count >= 2) // at least sha and path
 		{
-			submodule.status = GBSubmoduleStatusUpToDate;
-		}
-		else if ([leadingChar isEqualToString:@"-"])
-		{
-			submodule.status = GBSubmoduleStatusNotCloned;
-		}
-		else if ([leadingChar isEqualToString:@"+"])
-		{
-			submodule.status = GBSubmoduleStatusNotUpToDate;
-		}
-		
+			NSString* firstPart = [parts objectAtIndex:0];
+			
+			if (firstPart.length > 1)
+			{
+				// optional plus or minus
+				NSString* leadingChar = nil;
+				NSString* submoduleRef = firstPart;
+				NSString* firstChar = [firstPart substringWithRange:NSMakeRange(0, 1)];
+				
+				if ([firstChar isEqualToString:@"-"] || [firstChar isEqualToString:@"+"])
+				{
+					leadingChar = firstChar;
+					submoduleRef = [firstPart substringFromIndex:1];
+				}
+				
+				BOOL isMissing = [leadingChar isEqualToString:@"-"];
+				// If submodule is missing, we don't have "(ref)" in the end of a line.
+				if (!isMissing && parts.count < 3)
+				{
+					NSLog(@"GBSubmodulesTask Error: Submodule is not missing, but has too short line: %@", line);
+				}
+				else
+				{
+					NSString* submodulePath = [[parts subarrayWithRange:NSMakeRange(1, parts.count - 1 - (isMissing ? 0 : 1))] componentsJoinedByString:@" "];
+					
+					//NSLog(@"submodulePath = %@, self.repository = %@", submodulePath, self.repository);
+					NSURL* submoduleURL = [self.repository URLForSubmoduleAtPath:submodulePath];
+					
+					GBSubmodule *submodule = [[GBSubmodule new] autorelease];
+					submodule.dispatchQueue = self.repository.dispatchQueue;
+					submodule.path         = submodulePath;
+					submodule.parentURL    = self.repository.url;
+					submodule.remoteURL    = submoduleURL;
+					submodule.commitId     = submoduleRef;
+					
+					if (!leadingChar || [leadingChar isEqualToString:@""])
+					{
+						submodule.status = GBSubmoduleStatusUpToDate;
+					}
+					else if ([leadingChar isEqualToString:@"-"])
+					{
+						submodule.status = GBSubmoduleStatusNotCloned;
+					}
+					else if ([leadingChar isEqualToString:@"+"])
+					{
+						submodule.status = GBSubmoduleStatusNotUpToDate;
+					}
+					
 #if DEBUG
-		//NSLog(@"Instantiated submodule %@ (%@) at %@", submodule.path, submoduleURL, [self.repository path]);
+					//NSLog(@"Instantiated submodule %@ (%@) at %@", submodule.path, submoduleURL, [self.repository path]);
 #endif
-		
-		[ary addObject:submodule];
-	}
+					
+					[submodules addObject:submodule];
+
+				}
+				
+			}
+			else
+			{
+				NSLog(@"GBSubmodulesTask Error: unexpected line: %@ [first part is too short]", line);
+			}
+		}
+		else
+		{
+			NSLog(@"GBSubmodulesTask Error: unexpected line: %@ [less than 2 parts separated by space]", line);
+		}
+	} // each line
 	
 	// Sort by the visible, last path component.
-	[ary sortUsingComparator:^(id obj1, id obj2) {
+	[submodules sortUsingComparator:^(id obj1, id obj2) {
 		return (NSComparisonResult)[[obj1 path].lastPathComponent compare:[obj2 path].lastPathComponent options:NSCaseInsensitiveSearch];
 	}];
 	
-	return ary;
+	return submodules;
 }
 
 
