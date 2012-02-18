@@ -202,6 +202,20 @@
 	
 #if !GITBOX_APP_STORE
 	[SUUpdater sharedUpdater]; // preload updater
+	
+	#if DEBUG
+		// Make beta builds update themselves regularly.
+		[[SUUpdater sharedUpdater] resetUpdateCycle];
+		[[SUUpdater sharedUpdater] setAutomaticallyChecksForUpdates:YES];
+		[[SUUpdater sharedUpdater] setAutomaticallyDownloadsUpdates:YES];
+		[[SUUpdater sharedUpdater] setUpdateCheckInterval:12*60*60];
+		double delayInSeconds = 1.0;
+		dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+		dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+			[[SUUpdater sharedUpdater] checkForUpdatesInBackground];
+		});
+	#endif
+	
 #endif
 	
 #if DEBUG
