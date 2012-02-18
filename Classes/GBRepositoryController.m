@@ -2667,7 +2667,7 @@
 	return [self.repository.currentLocalRef isLocalBranch] && 
 	self.selectedCommit && 
 	![self.selectedCommit isStage] &&
-	self.selectedCommit.syncStatus == GBCommitSyncStatusUnmerged;
+	(self.selectedCommit.syncStatus == GBCommitSyncStatusUnmerged  || self.isSearching);
 }
 
 - (IBAction) cherryPickCommit:(NSMenuItem*)sender
@@ -2698,8 +2698,8 @@
 	return [self.repository.currentLocalRef isLocalBranch] && 
 	self.selectedCommit && 
 	![self.selectedCommit isStage] && 
-	![self.selectedCommit isMerge] && 
-	self.selectedCommit.syncStatus == GBCommitSyncStatusUnmerged;
+	![self.selectedCommit isMerge] &&
+	(self.selectedCommit.syncStatus == GBCommitSyncStatusUnmerged || self.isSearching);
 }
 
 - (IBAction) applyAsPatchCommit:(NSMenuItem*)sender
@@ -2731,7 +2731,7 @@
 	self.selectedCommit && 
 	![self.selectedCommit isStage] && 
 	![self.selectedCommit isMerge] && 
-	self.selectedCommit.syncStatus == GBCommitSyncStatusUnmerged;
+	(self.selectedCommit.syncStatus == GBCommitSyncStatusUnmerged || self.isSearching);
 }
 
 - (IBAction) resetBranchToCommit:(NSMenuItem*)sender

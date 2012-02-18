@@ -37,12 +37,11 @@ Gitbox 1.7 Release Notes
 Gitbox 1.7 misc items:
 
 - some problems with removing a tag
-- allow cherry-picking from any commit (like from search mode)
 - fetch from only one remote to avoid tags ping-ponging.
   - from the selected remote if given.
   - or the first one in a list, if remote branch is not selected.
 
-- bug: when checking out/resetting submodule which is dirty, it fails silently. 
+- bug: when checking out/resetting submodule which is dirty, it fails silently.
 - show "unpushed" status for unpushed submodule.
 - bug: if pushed from the terminal, commits difference is not recalculated (green dots remain).
 - bug: after commit and refresh of the history, sometimes the stage remains non-updated.
@@ -106,7 +105,7 @@ Done for next release:
 + bug: cannot clone "Olivier Maes@git.tiwi.be:/git/2011-2012" because "Next..." button is disabled - space is not validated
 + bug: when pushing to git://github.com/... error message is present in git output, but not in the alert window.
 + bug: spaces in path of submodules doom everything (also check the spaces in their urls)
-
++ allow cherry-picking from any commit in search mode
 
 
 -------------------------------
