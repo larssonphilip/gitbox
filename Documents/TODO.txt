@@ -36,8 +36,6 @@ Gitbox 1.7 Release Notes
 
 Gitbox 1.7 misc items:
 
-- bug: spaces in path of submodules doom everything (also check the spaces in their urls)
-
 - some problems with removing a tag
 - allow cherry-picking from any commit (like from search mode)
 - fetch from only one remote to avoid tags ping-ponging.
@@ -107,6 +105,7 @@ Done for next release:
 + prepare a debug target with auto updates and automatic upload to gitboxapp.com
 + bug: cannot clone "Olivier Maes@git.tiwi.be:/git/2011-2012" because "Next..." button is disabled - space is not validated
 + bug: when pushing to git://github.com/... error message is present in git output, but not in the alert window.
++ bug: spaces in path of submodules doom everything (also check the spaces in their urls)
 
 
 
