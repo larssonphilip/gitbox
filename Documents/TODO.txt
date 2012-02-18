@@ -5,11 +5,14 @@ Gitbox 2.0:
 - grayscale icons in the sidebar
 - tree view in the stage
 - history: multiline commit message preview aka Mail.app (configurable)
+- single view for two modes:
+  - browsing mode: sidebar, history, changes
+  - diff mode: changes, file history, diff
+  - remember the frame of a window in every mode and go to that frame when switching the mode.
 
 
 Major Features:
 
-- Submodules
 - Visualized Branches, multiple selection
 - In-app diff
   - staging hunks
@@ -17,13 +20,15 @@ Major Features:
   - image diff
 - Sandbox
 - Subversion import
-- Tree view in stage - does not add much value, but quite tiresome.
+- Tree view in stage - does not add much value, but may be tiresome to implement.
 
 
 --
 
 Gitbox 1.7 misc items:
 
+- prepare a debug target with auto updates and automatic upload to gitboxapp.com
+- bug: cannot clone "Olivier Maes@git.tiwi.be:/git/2011-2012" because "Next..." button is disabled - space is not validated
 - bug: when pushing to git://github.com/... error message is present in git output, but not in the alert window.
 - bug: spaces in path of submodules doom everything (also check the spaces in their urls)
 

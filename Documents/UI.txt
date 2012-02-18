@@ -1,0 +1,30 @@
+
+Browsing mode:
+- toolbar with push/pull controls
+- sidebar with repos
+- middle pane with branch history
+- changes view on the right
+
+Diff mode with File History:
+- changes view on the left
+- list of commits for selected file
+- diff view on the right
+
+Diff mode with Branch History:
+- normal branch history view on the left
+- changes view in the middle
+- diff view on the right
+
+Stage view needs:
+- tree of files
+- "Stage All" button - either in the bottom bar, or in toolbar; in toolbar if we can put search and branch options somewhere
+
+Branch list:
+- Q: How to present and checkout buttons? 
+  - badge "Current"
+  - on selected branch - button "Checkout"
+    - need to prevent click on a checkout button if just wanted to select row
+- Q: How to present the branch list?
+  - option 1: like in Xcode - with an extra bar and small tabs to switch between repos and selected repo's branch (but this goes against hierarchy)
+  - option 2: expansion button in the bottom bar, under history
+
