@@ -7,6 +7,18 @@
 	objects = {
 
 /* Begin PBXAggregateTarget section */
+		20046FCF14F010B6008811FE /* Gitbox Beta */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 20046FD314F010B6008811FE /* Build configuration list for PBXAggregateTarget "Gitbox Beta" */;
+			buildPhases = (
+				20046FD214F010B6008811FE /* ShellScript */,
+			);
+			dependencies = (
+				20046FD014F010B6008811FE /* PBXTargetDependency */,
+			);
+			name = "Gitbox Beta";
+			productName = Predeploy;
+		};
 		2057F0DB11ACF16B009EDF2F /* Gitbox Sparkle */ = {
 			isa = PBXAggregateTarget;
 			buildConfigurationList = 2057F0E411ACF174009EDF2F /* Build configuration list for PBXAggregateTarget "Gitbox Sparkle" */;
@@ -519,6 +531,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		20046FD114F010B6008811FE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2A37F4A9FDCFA73011CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8D15AC270486D014006FF6A4;
+			remoteInfo = gitbox;
+		};
 		2057F0E511ACF17C009EDF2F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 2A37F4A9FDCFA73011CA2CEA /* Project object */;
@@ -554,6 +573,8 @@
 		200433A012DA02CF00B045C0 /* GBGreyGradientView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBGreyGradientView.h; sourceTree = "<group>"; };
 		200433A112DA02CF00B045C0 /* GBGreyGradientView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBGreyGradientView.m; sourceTree = "<group>"; };
 		200435F412DC59E200B045C0 /* GBRepositoriesControllerLocalItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBRepositoriesControllerLocalItem.h; sourceTree = "<group>"; };
+		20046FC814F005B0008811FE /* UI.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = UI.txt; sourceTree = "<group>"; };
+		20046FDC14F026CA008811FE /* release-notes */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "release-notes"; path = "../site/public/release-notes"; sourceTree = "<group>"; };
 		200A41AF12EB91B0004DF940 /* OABlockMerger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OABlockMerger.h; sourceTree = "<group>"; };
 		200A41B012EB91B0004DF940 /* OABlockMerger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OABlockMerger.m; sourceTree = "<group>"; };
 		200A41C712EB9B14004DF940 /* GBGitConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBGitConfig.h; sourceTree = "<group>"; };
@@ -1092,6 +1113,7 @@
 				200C159614670E43000F4C78 /* Subversion.txt */,
 				200C159714670E43000F4C78 /* TODO.txt */,
 				200C159814670E43000F4C78 /* WWDC2011.txt */,
+				20046FC814F005B0008811FE /* UI.txt */,
 			);
 			path = Documents;
 			sourceTree = SOURCE_ROOT;
@@ -1723,8 +1745,9 @@
 				2A37F4ABFDCFA73011CA2CEA /* Classes */,
 				2A37F4AFFDCFA73011CA2CEA /* Other Sources */,
 				2084C8661299A05A009295C8 /* Scripts */,
-				20820CD2134E331E00AD55AF /* Test */,
 				2A37F4B8FDCFA73011CA2CEA /* Resources */,
+				20046FDC14F026CA008811FE /* release-notes */,
+				20820CD2134E331E00AD55AF /* Test */,
 				2A37F4C3FDCFA73011CA2CEA /* Frameworks */,
 				19C28FB0FE9D524F11CA2CBB /* Products */,
 			);
@@ -1861,6 +1884,7 @@
 			projectRoot = "";
 			targets = (
 				8D15AC270486D014006FF6A4 /* Gitbox */,
+				20046FCF14F010B6008811FE /* Gitbox Beta */,
 				2057F0DB11ACF16B009EDF2F /* Gitbox Sparkle */,
 				20915EBA12874D2A005E0D82 /* Gitbox AppStore */,
 			);
@@ -2055,6 +2079,19 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		20046FD214F010B6008811FE /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/bash;
+			shellScript = "set -o errexit\n\n[ $CONFIGURATION = Debug ] || { echo Gitbox Beta target requires \"'Debug'\" build configuration; false; }\n\nVERSION=$(defaults read \"$BUILT_PRODUCTS_DIR/$PROJECT_NAME.app/Contents/Info\" CFBundleVersion)\nDOWNLOAD_BASE_URL=\"http://gitboxapp.com/downloads\"\nRELEASENOTES_URL=\"http://gitboxapp.com/release-notes/$VERSION.html\"\n\nARCHIVE_FILENAME=\"$PROJECT_NAME-$VERSION.zip\"\nDOWNLOAD_URL=\"$DOWNLOAD_BASE_URL/$ARCHIVE_FILENAME\"\nKEYCHAIN_PRIVKEY_NAME=\"gitbox sparkle private key\"\n\nSITE_PATH=\"$PROJECT_DIR/../site\"\n\nMANIFEST_PATH=\"$SITE_PATH/public/updates-beta.xml\"\n\nWD=$PWD\npushd \"$BUILT_PRODUCTS_DIR\"\nrm -f \"$PROJECT_NAME\"*.zip\nrm -f \"$PROJECT_NAME\"*.tar.gz\n\nAPP_FILENAME=\"$PROJECT_NAME.app\"\n\n#tar -czf $ARCHIVE_FILENAME $PROJECT_NAME.app\nditto -ck --keepParent --rsrc \"$APP_FILENAME\" \"$ARCHIVE_FILENAME\"\n\n\nSIZE=$(stat -f %z \"$ARCHIVE_FILENAME\")\nPUBDATE=$(LC_TIME=en_US date +\"%a, %d %b %G %T %z\")\nSIGNATURE=$(\n\topenssl dgst -sha1 -binary < \"$ARCHIVE_FILENAME\" \\\n\t| openssl dgst -dss1 -sign <(security find-generic-password -g -s \"$KEYCHAIN_PRIVKEY_NAME\" 2>&1 1>/dev/null | perl -pe '($_) = /\"(.+)\"/; s/\\\\012/\\n/g' | perl -MXML::LibXML -e 'print XML::LibXML->new()->parse_file(\"-\")->findvalue(q(//string[preceding-sibling::key[1] = \"NOTE\"]))') \\\n\t| openssl enc -base64\n)\n\n[ $SIGNATURE ] || { echo Unable to load signing private key with name \"'$KEYCHAIN_PRIVKEY_NAME'\" from keychain; false; }\n\ncat > $MANIFEST_PATH <<EOF\n<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<rss version=\"2.0\" xmlns:sparkle=\"http://www.andymatuschak.org/xml-namespaces/sparkle\"  xmlns:dc=\"http://purl.org/dc/elements/1.1/\">\n    <channel>\n        <title>Gitbox Beta Changelog</title>\n        <link>http://gitboxapp.com/updates-beta.xml</link>\n        <description>Gitbox Beta</description>\n        <language>en</language>\n\t\t<item>\n\t\t\t<title>Gitbox $VERSION</title>\n\t\t\t<sparkle:releaseNotesLink>$RELEASENOTES_URL</sparkle:releaseNotesLink>\n\t\t\t<pubDate>$PUBDATE</pubDate>\n\t\t\t<enclosure\n\t\t\t\turl=\"$DOWNLOAD_URL\"\n\t\t\t\tsparkle:version=\"$VERSION\"\n\t\t\t\ttype=\"application/octet-stream\"\n\t\t\t\tlength=\"$SIZE\"\n\t\t\t\tsparkle:dsaSignature=\"$SIGNATURE\"\n\t\t\t/>\n\t\t</item>\n    </channel>\n</rss>\n\nEOF\n\nRELEASENOTES_FOLDER=\"$SITE_PATH/public/release-notes\"\nDOWNLOADS_FOLDER=\"$SITE_PATH/public/downloads\"\n\ncat $SITE_PATH/public/release-notes/template.html | sed s/\\\\\\$VERSION/$VERSION/g > $RELEASENOTES_FOLDER/$VERSION.html\nmv $BUILT_PRODUCTS_DIR/$ARCHIVE_FILENAME $DOWNLOADS_FOLDER/$ARCHIVE_FILENAME\n\npushd $DOWNLOADS_FOLDER\n  git add $ARCHIVE_FILENAME || { echo \"Adding archive $ARCHIVE_FILENAME failed\"; false; }\n#  git commit \"Added $ARCHIVE_FILENAME\" || { echo \"Commit of archive $ARCHIVE_FILENAME failed\"; false; }\n#  git push || { echo \"Push of archive $ARCHIVE_FILENAME failed\"; false; }\npopd\n\npushd $RELEASENOTES_FOLDER\n  git add $MANIFEST_PATH || { echo \"Adding manifest $MANIFEST_PATH failed\"; false; }\n#  git add $VERSION.html  || { echo \"Adding release notes $VERSION.html failed\"; false; }\n#  git commit \"Added $VERSION.html\" || { echo \"Commit of manifest and release notes $VERSION failed\"; false; }\n#  git push || { echo \"Push of manifest and release notes $VERSION failed\"; false; }\npopd\n\n#pushd $SITE_PATH\n#  bin/pulldownloads\n#  bin/pullsite\n#popd\n";
+		};
 		2057F0DA11ACF16B009EDF2F /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -2066,7 +2103,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
-			shellScript = "set -o errexit\n\n[ $CONFIGURATION = Release ] || { echo Sparkle target requires \"'Release'\" build configuration; false; }\n\nVERSION=$(defaults read \"$BUILT_PRODUCTS_DIR/$PROJECT_NAME.app/Contents/Info\" CFBundleVersion)\nDOWNLOAD_BASE_URL=\"http://gitboxapp.com/downloads\"\nRELEASENOTES_URL=\"http://gitboxapp.com/release-notes/$VERSION.html\"\n\n#ARCHIVE_FILENAME=\"$PROJECT_NAME-$VERSION.tar.gz\"\nARCHIVE_FILENAME=\"$PROJECT_NAME-$VERSION.zip\"\nDOWNLOAD_URL=\"$DOWNLOAD_BASE_URL/$ARCHIVE_FILENAME\"\nKEYCHAIN_PRIVKEY_NAME=\"gitbox sparkle private key\"\n\nSITE_PATH=\"$PROJECT_DIR/../site\"\n\nWD=$PWD\ncd \"$BUILT_PRODUCTS_DIR\"\nrm -f \"$PROJECT_NAME\"*.zip\nrm -f \"$PROJECT_NAME\"*.tar.gz\n#tar -czf $ARCHIVE_FILENAME $PROJECT_NAME.app\nditto -ck --keepParent --rsrc \"$PROJECT_NAME.app\" \"$ARCHIVE_FILENAME\"\n\n\nSIZE=$(stat -f %z \"$ARCHIVE_FILENAME\")\nPUBDATE=$(LC_TIME=en_US date +\"%a, %d %b %G %T %z\")\nSIGNATURE=$(\n\topenssl dgst -sha1 -binary < \"$ARCHIVE_FILENAME\" \\\n\t| openssl dgst -dss1 -sign <(security find-generic-password -g -s \"$KEYCHAIN_PRIVKEY_NAME\" 2>&1 1>/dev/null | perl -pe '($_) = /\"(.+)\"/; s/\\\\012/\\n/g' | perl -MXML::LibXML -e 'print XML::LibXML->new()->parse_file(\"-\")->findvalue(q(//string[preceding-sibling::key[1] = \"NOTE\"]))') \\\n\t| openssl enc -base64\n)\n\n[ $SIGNATURE ] || { echo Unable to load signing private key with name \"'$KEYCHAIN_PRIVKEY_NAME'\" from keychain; false; }\n\ncat <<EOF\n\t\t<item>\n\t\t\t<title>Gitbox $VERSION</title>\n\t\t\t<sparkle:releaseNotesLink>$RELEASENOTES_URL</sparkle:releaseNotesLink>\n\t\t\t<pubDate>$PUBDATE</pubDate>\n\t\t\t<enclosure\n\t\t\t\turl=\"$DOWNLOAD_URL\"\n\t\t\t\tsparkle:version=\"$VERSION\"\n\t\t\t\ttype=\"application/octet-stream\"\n\t\t\t\tlength=\"$SIZE\"\n\t\t\t\tsparkle:dsaSignature=\"$SIGNATURE\"\n\t\t\t/>\n\t\t</item>\nEOF\n\ntouch $SITE_PATH/public/release-notes/$VERSION.html\nmv $BUILT_PRODUCTS_DIR/$ARCHIVE_FILENAME $SITE_PATH/public/downloads/$ARCHIVE_FILENAME\n\n";
+			shellScript = "set -o errexit\n\n[ $CONFIGURATION = Release ] || { echo Gitbox Sparkle target requires \"'Release'\" build configuration; false; }\n\nVERSION=$(defaults read \"$BUILT_PRODUCTS_DIR/$PROJECT_NAME.app/Contents/Info\" CFBundleVersion)\nDOWNLOAD_BASE_URL=\"http://gitboxapp.com/downloads\"\nRELEASENOTES_URL=\"http://gitboxapp.com/release-notes/$VERSION.html\"\n\n#ARCHIVE_FILENAME=\"$PROJECT_NAME-$VERSION.tar.gz\"\nARCHIVE_FILENAME=\"$PROJECT_NAME-$VERSION.zip\"\nDOWNLOAD_URL=\"$DOWNLOAD_BASE_URL/$ARCHIVE_FILENAME\"\nKEYCHAIN_PRIVKEY_NAME=\"gitbox sparkle private key\"\n\nSITE_PATH=\"$PROJECT_DIR/../site\"\n\nWD=$PWD\ncd \"$BUILT_PRODUCTS_DIR\"\nrm -f \"$PROJECT_NAME\"*.zip\nrm -f \"$PROJECT_NAME\"*.tar.gz\n#tar -czf $ARCHIVE_FILENAME $PROJECT_NAME.app\nditto -ck --keepParent --rsrc \"$PROJECT_NAME.app\" \"$ARCHIVE_FILENAME\"\n\n\nSIZE=$(stat -f %z \"$ARCHIVE_FILENAME\")\nPUBDATE=$(LC_TIME=en_US date +\"%a, %d %b %G %T %z\")\nSIGNATURE=$(\n\topenssl dgst -sha1 -binary < \"$ARCHIVE_FILENAME\" \\\n\t| openssl dgst -dss1 -sign <(security find-generic-password -g -s \"$KEYCHAIN_PRIVKEY_NAME\" 2>&1 1>/dev/null | perl -pe '($_) = /\"(.+)\"/; s/\\\\012/\\n/g' | perl -MXML::LibXML -e 'print XML::LibXML->new()->parse_file(\"-\")->findvalue(q(//string[preceding-sibling::key[1] = \"NOTE\"]))') \\\n\t| openssl enc -base64\n)\n\n[ $SIGNATURE ] || { echo Unable to load signing private key with name \"'$KEYCHAIN_PRIVKEY_NAME'\" from keychain; false; }\n\ncat <<EOF\n\t\t<item>\n\t\t\t<title>Gitbox $VERSION</title>\n\t\t\t<sparkle:releaseNotesLink>$RELEASENOTES_URL</sparkle:releaseNotesLink>\n\t\t\t<pubDate>$PUBDATE</pubDate>\n\t\t\t<enclosure\n\t\t\t\turl=\"$DOWNLOAD_URL\"\n\t\t\t\tsparkle:version=\"$VERSION\"\n\t\t\t\ttype=\"application/octet-stream\"\n\t\t\t\tlength=\"$SIZE\"\n\t\t\t\tsparkle:dsaSignature=\"$SIGNATURE\"\n\t\t\t/>\n\t\t</item>\nEOF\n\ntouch $SITE_PATH/public/release-notes/$VERSION.html\nmv $BUILT_PRODUCTS_DIR/$ARCHIVE_FILENAME $SITE_PATH/public/downloads/$ARCHIVE_FILENAME\n\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -2392,6 +2429,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		20046FD014F010B6008811FE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8D15AC270486D014006FF6A4 /* Gitbox */;
+			targetProxy = 20046FD114F010B6008811FE /* PBXContainerItemProxy */;
+		};
 		2057F0E611ACF17C009EDF2F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 8D15AC270486D014006FF6A4 /* Gitbox */;
@@ -2411,6 +2453,26 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		20046FD414F010B6008811FE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				PRODUCT_NAME = "Gitbox Beta";
+			};
+			name = Debug;
+		};
+		20046FD514F010B6008811FE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				PRODUCT_NAME = "Gitbox Beta";
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
 		2057F0DC11ACF16B009EDF2F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -2516,7 +2578,7 @@
 		C05733CC08A9546B00998B17 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				APP_VERSION = 1.6.0;
+				APP_VERSION = "2012-00-02";
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CODE_SIGN_IDENTITY = "iPhone Developer: Oleg Andreev (9F23AVDPMZ)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -2535,6 +2597,7 @@
 				OTHER_LDFLAGS = "-lcrypto";
 				PROVISIONING_PROFILE = "903A155A-8E32-4C2E-A88C-EBECA6C54744";
 				SDKROOT = macosx;
+				SPARKLE_FEED_URL = "http://gitboxapp.com/updates-beta.xml";
 				VALID_ARCHS = x86_64;
 			};
 			name = Debug;
@@ -2542,7 +2605,7 @@
 		C05733CD08A9546B00998B17 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				APP_VERSION = 1.6.0;
+				APP_VERSION = 1.6.2;
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CODE_SIGN_IDENTITY = "iPhone Developer: Oleg Andreev (9F23AVDPMZ)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -2557,6 +2620,7 @@
 				OTHER_LDFLAGS = "-lcrypto";
 				PROVISIONING_PROFILE = "7B4612BC-080E-4DF6-AF28-41D93A00F71B";
 				SDKROOT = macosx;
+				SPARKLE_FEED_URL = "http://gitboxapp.com/updates.xml";
 				VALID_ARCHS = x86_64;
 			};
 			name = Release;
@@ -2564,6 +2628,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		20046FD314F010B6008811FE /* Build configuration list for PBXAggregateTarget "Gitbox Beta" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				20046FD414F010B6008811FE /* Debug */,
+				20046FD514F010B6008811FE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		2057F0E411ACF174009EDF2F /* Build configuration list for PBXAggregateTarget "Gitbox Sparkle" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

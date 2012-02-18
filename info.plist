@@ -64,18 +64,18 @@
 	</array>
 	<key>CFBundleVersion</key>
 	<string>${APP_VERSION}</string>
+	<key>GBAppStoreURL</key>
+	<string>http://itunes.apple.com/app/gitbox/id403388357</string>
 	<key>GBHelpURL</key>
 	<string>http://gitboxapp.com/help.html</string>
 	<key>GBPurchaseURL</key>
 	<string>http://gitboxapp.com/buy_license.html</string>
-	<key>GBAppStoreURL</key>
-	<string>http://itunes.apple.com/app/gitbox/id403388357</string>
 	<key>GBReleaseNotesURL</key>
 	<string>http://gitboxapp.com/release-notes.html</string>
-	<key>LSApplicationCategoryType</key>
-	<string>public.app-category.developer-tools</string>
 	<key>GBSiteURL</key>
 	<string>http://gitboxapp.com</string>
+	<key>LSApplicationCategoryType</key>
+	<string>public.app-category.developer-tools</string>
 	<key>LSMinimumSystemVersion</key>
 	<string>${MACOSX_DEPLOYMENT_TARGET}</string>
 	<key>NSHumanReadableCopyright</key>
@@ -84,17 +84,11 @@
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
 	<string>GBApplication</string>
-	<key>NSServices</key>
-	<array/>
 	<key>SUEnableAutomaticChecks</key>
 	<true/>
 	<key>SUFeedURL</key>
-	<string>http://gitboxapp.com/updates.xml</string>
+	<string>${SPARKLE_FEED_URL}</string>
 	<key>SUPublicDSAKeyFile</key>
 	<string>sparkle_dsa_pub.pem</string>
-	<key>UTExportedTypeDeclarations</key>
-	<array/>
-	<key>UTImportedTypeDeclarations</key>
-	<array/>
 </dict>
 </plist>
