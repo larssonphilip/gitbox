@@ -1445,10 +1445,17 @@
 			}
 			else
 			{
+				msg = [msg stringByReplacingOccurrencesOfString:@"fatal:" withString:@""];
+				msg = [msg stringByReplacingOccurrencesOfString:@"remote error:" withString:@""];
+				msg = [msg stringByReplacingOccurrencesOfString:@"\n\t"   withString:@"\n"];
+				msg = [msg stringByReplacingOccurrencesOfString:@"\n    " withString:@"\n"];
+				msg = [msg stringByReplacingOccurrencesOfString:@"\n   "  withString:@"\n"];
+				msg = [msg stringByReplacingOccurrencesOfString:@"\n  "   withString:@"\n"];
+				msg = [msg stringByReplacingOccurrencesOfString:@"\n "    withString:@"\n"];
 				self.lastError = [self errorWithCode:GBErrorCodePullFailed
 										 description:NSLocalizedString(@"Push Failed", @"")
-											  reason:msg
-										  suggestion:nil];
+											  reason:nil
+										  suggestion:[msg stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]];
 			}
 		}
 		else

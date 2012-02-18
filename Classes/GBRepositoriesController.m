@@ -187,7 +187,7 @@
 	GBCloneWindowController* ctrl = self.cloneWindowController;
 	
 	ctrl.finishBlock = ^{
-		if (ctrl.sourceURL && ctrl.targetURL)
+		if (ctrl.sourceURLString && ctrl.targetURL)
 		{
 			if (![ctrl.targetURL isFileURL])
 			{
@@ -196,7 +196,7 @@
 			}
 			
 			GBRepositoryCloningController* cloneController = [[[GBRepositoryCloningController alloc] init] autorelease];
-			cloneController.sourceURL = ctrl.sourceURL;
+			cloneController.sourceURLString = ctrl.sourceURLString;
 			cloneController.targetURL = ctrl.targetURL;
 			
 			[cloneController addObserverForAllSelectors:self];

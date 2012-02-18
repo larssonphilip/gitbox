@@ -19,7 +19,7 @@
 @synthesize sidebarItem;
 @synthesize viewController;
 
-@synthesize sourceURL;
+@synthesize sourceURLString;
 @synthesize targetURL;
 @synthesize task;
 @synthesize error;
@@ -33,7 +33,7 @@
 - (void) dealloc
 {
 	self.viewController = nil;
-	self.sourceURL   = nil;
+	self.sourceURLString   = nil;
 	self.targetURL   = nil;
 	[self.task terminate];
 	self.task        = nil;
@@ -76,12 +76,12 @@
 	
 	GBCloneTask* t = [[GBCloneTask new] autorelease];
 	
-	t.remoteAddress = self.sourceURL.absoluteString;
+	t.remoteAddress = self.sourceURLString;
 	
 	self.isDisabled++;
 	self.isSpinning++;
 	[self.sidebarItem update];
-	t.sourceURL = self.sourceURL;
+	t.sourceURLString = self.sourceURLString;
 	t.targetURL = self.targetURL;
 	
 	self.task = t;

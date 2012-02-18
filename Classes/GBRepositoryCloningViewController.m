@@ -54,8 +54,8 @@
 
 - (void) update
 {
-	NSURL* URL = self.repositoryController.sourceURL;
-	[self.messageLabel setStringValue:[NSString stringWithFormat:NSLocalizedString(@"Cloning %@", @"Clone"), URL ? [URL absoluteString] : @""]];
+	NSString* URLString = self.repositoryController.sourceURLString;
+	[self.messageLabel setStringValue:[NSString stringWithFormat:NSLocalizedString(@"Cloning %@", @"Clone"), URLString ? URLString : @""]];
 	
 	[self.errorLabel setStringValue:@""];
 	[self.cancelButton setTitle:NSLocalizedString(@"Cancel", @"")];

@@ -23,15 +23,22 @@ Major Features:
 - Tree view in stage - does not add much value, but may be tiresome to implement.
 
 
---
+
+
+
+
+Gitbox 1.7 Release Notes
+
+
+
+
+----------------------
 
 Gitbox 1.7 misc items:
 
-- prepare a debug target with auto updates and automatic upload to gitboxapp.com
-- bug: cannot clone "Olivier Maes@git.tiwi.be:/git/2011-2012" because "Next..." button is disabled - space is not validated
-- bug: when pushing to git://github.com/... error message is present in git output, but not in the alert window.
 - bug: spaces in path of submodules doom everything (also check the spaces in their urls)
 
+- some problems with removing a tag
 - allow cherry-picking from any commit (like from search mode)
 - fetch from only one remote to avoid tags ping-ponging.
   - from the selected remote if given.
@@ -41,7 +48,6 @@ Gitbox 1.7 misc items:
 - show "unpushed" status for unpushed submodule.
 - bug: if pushed from the terminal, commits difference is not recalculated (green dots remain).
 - bug: after commit and refresh of the history, sometimes the stage remains non-updated.
-
 
 
 - initial update: order by recently used repos (in terms of pulls, merges and commits). Like with optimization singleton, use a single dispatcher of initial updates to avoid concurrent updates bringing machine down.
@@ -90,6 +96,17 @@ Gitbox 1.7 misc items:
 ? crash: when adding a repository
 ? crash: on invalid ssh key the askpass controller crashes with "task" selector
 ? crash: The app crashes whenever I try to delete a remote branch, shortly after hitting the “Ok” button of the edit branch sheet
+
+
+
+
+-------------------------------
+
+Done for next release:
+
++ prepare a debug target with auto updates and automatic upload to gitboxapp.com
++ bug: cannot clone "Olivier Maes@git.tiwi.be:/git/2011-2012" because "Next..." button is disabled - space is not validated
++ bug: when pushing to git://github.com/... error message is present in git output, but not in the alert window.
 
 
 

@@ -2,7 +2,7 @@
 
 @property(retain) IBOutlet NSTextField* urlField;
 @property(retain) IBOutlet NSButton* nextButton;
-@property(retain) NSURL* sourceURL;
+@property(retain) NSString* sourceURLString;
 @property(retain) NSURL* targetDirectoryURL;
 @property(retain) NSURL* targetURL;
 @property(copy) void (^finishBlock)();

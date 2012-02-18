@@ -10,7 +10,7 @@
 @property(nonatomic, retain) GBSidebarItem* sidebarItem;
 @property(nonatomic, retain) GBRepositoryCloningViewController* viewController;
 
-@property(nonatomic, retain) NSURL* sourceURL;
+@property(nonatomic, retain) NSString* sourceURLString;
 @property(nonatomic, retain) NSURL* targetURL;
 @property(nonatomic, retain) NSError* error;
 

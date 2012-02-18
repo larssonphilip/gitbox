@@ -3,7 +3,7 @@
 #import "NSFileManager+OAFileManagerHelpers.h"
 
 @interface GBCloneWindowController ()
-- (NSURL*) urlFromTextField;
+- (NSString*) urlStringFromTextField;
 - (void) update;
 @end
 
@@ -15,7 +15,7 @@
 @synthesize urlField;
 @synthesize nextButton;
 @synthesize finishBlock;
-@synthesize sourceURL;
+@synthesize sourceURLString;
 @synthesize targetDirectoryURL;
 @synthesize targetURL;
 
@@ -23,6 +23,8 @@
 {
 	self.urlField = nil;
 	self.nextButton = nil;
+	self.sourceURLString = nil;
+	self.finishBlock = nil;
 	self.targetDirectoryURL = nil;
 	self.targetURL = nil;
 	[super dealloc];
@@ -46,18 +48,18 @@
 
 - (IBAction) ok:(id)sender
 {
-	self.sourceURL = [self urlFromTextField];
+	self.sourceURLString = [self urlStringFromTextField];
 	
 	if ([self.urlField stringValue])
 	{
 		[GBCloneWindowController setLastURLString:self.urlField.stringValue];
 	}
 	
-	if (self.sourceURL)
+	if (self.sourceURLString)
 	{
 		[[GBMainWindowController instance] dismissSheet];
 		
-		NSString* suggestedName = [[self.sourceURL absoluteString] lastPathComponent];
+		NSString* suggestedName = self.sourceURLString.lastPathComponent;
 		suggestedName = [[suggestedName componentsSeparatedByString:@":"] lastObject]; // handle the case of "oleg.local:test.git"
 		if (!suggestedName) suggestedName = @"";
 		NSInteger dotgitlocation = 0;
@@ -69,7 +71,7 @@
 		}
 		
 		NSSavePanel* panel = [NSSavePanel savePanel];
-		[panel setMessage:[self.sourceURL absoluteString]];
+		[panel setMessage:self.sourceURLString];
 		[panel setNameFieldLabel:NSLocalizedString(@"Clone To:", @"Clone")];
 		[panel setNameFieldStringValue:suggestedName];
 		[panel setPrompt:NSLocalizedString(@"Clone", @"Clone")];
@@ -90,7 +92,7 @@
 						
 						// Clean up for next use.
 						[self.urlField setStringValue:@""];
-						self.sourceURL = nil;
+						self.sourceURLString = nil;
 						self.targetDirectoryURL = nil;
 						self.targetURL = nil;
 					}
@@ -183,7 +185,7 @@
 
 
 
-- (NSURL*) urlFromTextField
+- (NSString*) urlStringFromTextField
 {
 	NSString* urlString = [self.urlField stringValue];
 	if ([urlString isEqual:@""]) return nil;
@@ -195,25 +197,13 @@
 		urlString = [urlString stringByReplacingOccurrencesOfString:@"~" withString:NSHomeDirectory()];
 	}
 	
-	if ([urlString rangeOfString:@"://"].location == NSNotFound)
-	{
-		if ([[NSFileManager defaultManager] fileExistsAtPath:urlString])
-		{
-			return [NSURL fileURLWithPath:urlString];
-		}
-		//    urlString = [urlString stringByReplacingOccurrencesOfString:@":/" withString:@"/"]; // git@github.com:/oleganza/path => git@github.com/oleganza/
-		//    urlString = [urlString stringByReplacingOccurrencesOfString:@":" withString:@"/~/"]; // git@github.com:oleganza/path => git@github.com/~/oleganza/path
-		//    urlString = [urlString stringByReplacingOccurrencesOfString:@"//" withString:@"/"]; // needs a fix if it was domain:/root/path
-		//    urlString = [NSString stringWithFormat:@"ssh://%@", urlString];
-	}
-	NSURL* url = [NSURL URLWithString:urlString];
-	return url;
+	return urlString;
 }
 
 
 - (void) update
 {
-	[self.nextButton setEnabled:!![self urlFromTextField]];
+	[self.nextButton setEnabled:!![self urlStringFromTextField]];
 }
 
 

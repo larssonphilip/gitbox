@@ -8,14 +8,14 @@
 
 @implementation GBCloneTask
 
-@synthesize sourceURL;
+@synthesize sourceURLString;
 @synthesize targetURL;
 @synthesize status;
 @synthesize progress;
 
 - (void) dealloc
 {
-  self.sourceURL = nil;
+  self.sourceURLString = nil;
   self.targetURL = nil;
   self.status = nil;
   [super dealloc];
@@ -35,8 +35,8 @@
 {
   NSString* folder = [[self.targetURL path] lastPathComponent];
   NSAssert(folder, @"Target URL should have last path component (self.targetURL = %@)", self.targetURL);
-  NSAssert(self.sourceURL, @"Source URL should be present");
-  return [NSArray arrayWithObjects:@"clone", [self.sourceURL absoluteString], folder, @"--progress", nil];
+  NSAssert(self.sourceURLString, @"Source URL string should be present");
+  return [NSArray arrayWithObjects:@"clone", self.sourceURLString, folder, @"--progress", nil];
 }
 
 @end
