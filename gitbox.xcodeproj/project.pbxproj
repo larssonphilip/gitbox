@@ -31,6 +31,17 @@
 			name = "Gitbox Sparkle";
 			productName = Predeploy;
 		};
+		206EEB1914F110B50017F7DE /* TouchInfoPlist */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 206EEB1A14F110B50017F7DE /* Build configuration list for PBXAggregateTarget "TouchInfoPlist" */;
+			buildPhases = (
+				206EEB1D14F110CF0017F7DE /* ShellScript */,
+			);
+			dependencies = (
+			);
+			name = TouchInfoPlist;
+			productName = TouchInfoPlist2;
+		};
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
@@ -546,6 +557,20 @@
 			proxyType = 1;
 			remoteGlobalIDString = 8D15AC270486D014006FF6A4;
 			remoteInfo = gitbox;
+		};
+		206EEB1E14F110F90017F7DE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2A37F4A9FDCFA73011CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 206EEB1914F110B50017F7DE;
+			remoteInfo = TouchInfoPlist;
+		};
+		206EEB2014F110FE0017F7DE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2A37F4A9FDCFA73011CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 206EEB1914F110B50017F7DE;
+			remoteInfo = TouchInfoPlist;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -1839,6 +1864,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				206EEB2114F110FE0017F7DE /* PBXTargetDependency */,
 			);
 			name = "Gitbox AppStore";
 			productInstallPath = "$(HOME)/Applications";
@@ -1858,6 +1884,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				206EEB1F14F110F90017F7DE /* PBXTargetDependency */,
 			);
 			name = Gitbox;
 			productInstallPath = "$(HOME)/Applications";
@@ -1893,6 +1920,7 @@
 				20046FCF14F010B6008811FE /* Gitbox Beta */,
 				2057F0DB11ACF16B009EDF2F /* Gitbox Sparkle */,
 				20915EBA12874D2A005E0D82 /* Gitbox AppStore */,
+				206EEB1914F110B50017F7DE /* TouchInfoPlist */,
 			);
 		};
 /* End PBXProject section */
@@ -2110,6 +2138,19 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
 			shellScript = "set -o errexit\n\n[ $CONFIGURATION = Release ] || { echo Gitbox Sparkle target requires \"'Release'\" build configuration; false; }\n\nVERSION=$(defaults read \"$BUILT_PRODUCTS_DIR/$PROJECT_NAME.app/Contents/Info\" CFBundleVersion)\nDOWNLOAD_BASE_URL=\"http://gitboxapp.com/downloads\"\nRELEASENOTES_URL=\"http://gitboxapp.com/release-notes/$VERSION.html\"\n\n#ARCHIVE_FILENAME=\"$PROJECT_NAME-$VERSION.tar.gz\"\nARCHIVE_FILENAME=\"$PROJECT_NAME-$VERSION.zip\"\nDOWNLOAD_URL=\"$DOWNLOAD_BASE_URL/$ARCHIVE_FILENAME\"\nKEYCHAIN_PRIVKEY_NAME=\"gitbox sparkle private key\"\n\nSITE_PATH=\"$PROJECT_DIR/../site\"\n\nWD=$PWD\ncd \"$BUILT_PRODUCTS_DIR\"\nrm -f \"$PROJECT_NAME\"*.zip\nrm -f \"$PROJECT_NAME\"*.tar.gz\n#tar -czf $ARCHIVE_FILENAME $PROJECT_NAME.app\nditto -ck --keepParent --rsrc \"$PROJECT_NAME.app\" \"$ARCHIVE_FILENAME\"\n\n\nSIZE=$(stat -f %z \"$ARCHIVE_FILENAME\")\nPUBDATE=$(LC_TIME=en_US date +\"%a, %d %b %G %T %z\")\nSIGNATURE=$(\n\topenssl dgst -sha1 -binary < \"$ARCHIVE_FILENAME\" \\\n\t| openssl dgst -dss1 -sign <(security find-generic-password -g -s \"$KEYCHAIN_PRIVKEY_NAME\" 2>&1 1>/dev/null | perl -pe '($_) = /\"(.+)\"/; s/\\\\012/\\n/g' | perl -MXML::LibXML -e 'print XML::LibXML->new()->parse_file(\"-\")->findvalue(q(//string[preceding-sibling::key[1] = \"NOTE\"]))') \\\n\t| openssl enc -base64\n)\n\n[ $SIGNATURE ] || { echo Unable to load signing private key with name \"'$KEYCHAIN_PRIVKEY_NAME'\" from keychain; false; }\n\ncat <<EOF\n\t\t<item>\n\t\t\t<title>Gitbox $VERSION</title>\n\t\t\t<sparkle:releaseNotesLink>$RELEASENOTES_URL</sparkle:releaseNotesLink>\n\t\t\t<pubDate>$PUBDATE</pubDate>\n\t\t\t<enclosure\n\t\t\t\turl=\"$DOWNLOAD_URL\"\n\t\t\t\tsparkle:version=\"$VERSION\"\n\t\t\t\ttype=\"application/octet-stream\"\n\t\t\t\tlength=\"$SIZE\"\n\t\t\t\tsparkle:dsaSignature=\"$SIGNATURE\"\n\t\t\t/>\n\t\t</item>\nEOF\n\ntouch $SITE_PATH/public/release-notes/$VERSION.html\nmv $BUILT_PRODUCTS_DIR/$ARCHIVE_FILENAME $SITE_PATH/public/downloads/$ARCHIVE_FILENAME\n\n";
+		};
+		206EEB1D14F110CF0017F7DE /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/bash;
+			shellScript = "echo \"Touch Plist:\"\necho $PROJECT_DIR\ntouch $PROJECT_DIR/info.plist\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -2447,6 +2488,16 @@
 			target = 8D15AC270486D014006FF6A4 /* Gitbox */;
 			targetProxy = 2057F0E511ACF17C009EDF2F /* PBXContainerItemProxy */;
 		};
+		206EEB1F14F110F90017F7DE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 206EEB1914F110B50017F7DE /* TouchInfoPlist */;
+			targetProxy = 206EEB1E14F110F90017F7DE /* PBXContainerItemProxy */;
+		};
+		206EEB2114F110FE0017F7DE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 206EEB1914F110B50017F7DE /* TouchInfoPlist */;
+			targetProxy = 206EEB2014F110FE0017F7DE /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
@@ -2498,6 +2549,20 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				PRODUCT_NAME = Predeploy;
 				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+		206EEB1B14F110B50017F7DE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		206EEB1C14F110B50017F7DE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
 		};
@@ -2598,10 +2663,7 @@
 				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/libgit2/build";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				ONLY_ACTIVE_ARCH = NO;
-				OTHER_CFLAGS = (
-					"-DDEBUG=1",
-					"-DAPP_VERSION=${APP_VERSION}",
-				);
+				OTHER_CFLAGS = "-DDEBUG=1";
 				OTHER_LDFLAGS = "-lcrypto";
 				PROVISIONING_PROFILE = "903A155A-8E32-4C2E-A88C-EBECA6C54744";
 				SDKROOT = macosx;
@@ -2624,7 +2686,7 @@
 				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/libgit2/build";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				ONLY_ACTIVE_ARCH = NO;
-				OTHER_CFLAGS = "-DAPP_VERSION=${APP_VERSION}";
+				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "-lcrypto";
 				PROVISIONING_PROFILE = "7B4612BC-080E-4DF6-AF28-41D93A00F71B";
 				SDKROOT = macosx;
@@ -2653,6 +2715,14 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		206EEB1A14F110B50017F7DE /* Build configuration list for PBXAggregateTarget "TouchInfoPlist" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				206EEB1B14F110B50017F7DE /* Debug */,
+				206EEB1C14F110B50017F7DE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 		20915F3112874D2A005E0D82 /* Build configuration list for PBXNativeTarget "Gitbox AppStore" */ = {
 			isa = XCConfigurationList;
