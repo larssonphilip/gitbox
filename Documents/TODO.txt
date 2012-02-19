@@ -51,6 +51,9 @@ Done for next release:
 + setNeedsUpdate: when submodule updates its local ref or changes stage, should ping parent to update its stage
 + setNeedsUpdate: when parent resets submodule, should ping it to update its everything
 + setNeedsUpdate: bug with balance
++ bug: if pushed from the terminal, commits difference is not recalculated (green dots remain).
++ bug: after commit and refresh of the history, sometimes the stage remains non-updated.
++ bug: submodules' loading causes stage refresh delays or similar glitches.
 
 -------------------------------
 
@@ -75,8 +78,6 @@ Gitbox Next:
 
 - bug: when checking out/resetting submodule which is dirty, it fails silently.
 - show "unpushed" status for unpushed submodule.
-- bug: if pushed from the terminal, commits difference is not recalculated (green dots remain).
-- bug: after commit and refresh of the history, sometimes the stage remains non-updated.
 
 
 - initial update: order by recently used repos (in terms of pulls, merges and commits). Like with optimization singleton, use a single dispatcher of initial updates to avoid concurrent updates bringing machine down.
@@ -91,7 +92,6 @@ Gitbox Next:
 	- submodules settings: when editing repo's own URL, sync it with parent's submodule record in .git/config
 	- submodules: do not forget to "git submodule add <url> <path>" after path update (same for remove, maybe)
 
-- bug: submodules' loading causes stage refresh delays or similar glitches.
 - possible bugs with sidebar cells + views: if alternative view is drawn, then previously added one could have not been removed (especially if it's added by superclass).
 - bug: stage: when selecting with keyboard and stage refreshes, it loses the initial point of selection.
 - when window not focused, ignore FS events for longer period to avoid tons of refreshes while typing.
