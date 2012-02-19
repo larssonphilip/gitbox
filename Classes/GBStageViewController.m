@@ -712,7 +712,7 @@
 	//[self.tableView scrollToBeginningOfDocument:nil];
 	
 	// before we made a commit, lets try to fetch updates from the server so that user can avoid making a commit before pulling.
-	[self.repositoryController updateRemoteRefs];
+	[self.repositoryController setNeedsUpdateRemoteRefs];
 }
 
 - (void) textView:(NSTextView*)aTextView willResignFirstResponder:(BOOL)result

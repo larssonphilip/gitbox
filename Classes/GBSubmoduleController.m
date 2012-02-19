@@ -71,10 +71,11 @@
 		// 3. This doesn't really work, so let's predict the status.
 		self.submodule.status = GBSubmoduleStatusUpToDate;
 		
-		[self updateLocalStateAfterDelay:0.0 block:^{
-			[self popSpinning];
-			[self popDisabled];
-		}];
+		[self.parentRepositoryController setNeedsUpdateSubmodules];
+		[self.parentRepositoryController setNeedsUpdateStage];
+		
+		[self popSpinning];
+		[self popDisabled];
 	}];
 }
 

@@ -24,6 +24,7 @@
 
 #import "GBPromptController.h"
 
+#import "GBAsyncUpdater.h"
 #import "GBRepositorySettingsController.h"
 #import "GBFileEditingController.h" // will be obsolete when settings panel is done
 
@@ -75,24 +76,29 @@
 @property(nonatomic, copy) void(^localStateUpdatePendingBlock)();
 @property(nonatomic, copy) void(^pendingContinuationToBeginAuthSession)();
 
+@property(nonatomic, retain) GBAsyncUpdater* stageUpdater;
+@property(nonatomic, retain) GBAsyncUpdater* submodulesUpdater;
+@property(nonatomic, retain) GBAsyncUpdater* localRefsUpdater;
+@property(nonatomic, retain) GBAsyncUpdater* commitsUpdater;
+@property(nonatomic, retain) GBAsyncUpdater* remoteRefsUpdater;
+@property(nonatomic, retain) GBAsyncUpdater* fetchUpdater;
+
 - (NSImage*) icon;
 
 - (void) pushRemoteBranchesDisabled;
 - (void) popRemoteBranchesDisabled;
 
+- (void) setNeedsUpdateLocalState;
 
-- (void) updateWhenGotFocus;
+//- (void) updateWhenGotFocus;
 
-// Local state updates
+//- (void) updateLocalStateWithBlock:(void(^)())aBlock;
 
-- (void) updateLocalStateWithBlock:(void(^)())aBlock;
-
-- (void) updateStageChangesAndSubmodulesWithBlock:(void(^)())aBlock;
-- (void) updateStageChangesAndSubmodules:(BOOL)updateSubmodules withBlock:(void(^)())aBlock;
-- (void) updateSubmodulesWithBlock:(void(^)())aBlock;
-- (void) updateLocalRefsWithBlock:(void(^)())aBlock;
-- (void) updateCommitsWithBlock:(void(^)())aBlock;
-- (void) updateCommitsBadgeInteger;
+//- (void) updateStageChangesAndSubmodulesWithBlock:(void(^)())aBlock;
+//- (void) updateStageChangesAndSubmodules:(BOOL)updateSubmodules withBlock:(void(^)())aBlock;
+//- (void) updateSubmodulesWithBlock:(void(^)())aBlock;
+//- (void) updateLocalRefsWithBlock:(void(^)())aBlock;
+//- (void) updateCommitsWithBlock:(void(^)())aBlock;
 
 // Remote state updates
 
@@ -120,15 +126,14 @@
 	BOOL stopped;
 	BOOL selected;
 	
-	BOOL alreadyLaunchedInitialUpdates;
-	BOOL commitsAreInvalid;
+//	BOOL commitsAreInvalid;
 	
 	NSInteger stagingCounter;
 	
 	int localStateUpdateGeneration;
 	int isScheduledLocalStateUpdate;
 	int isRunningLocalStateUpdate;
-	NSTimeInterval timestampToRespectFSEvents;
+	NSTimeInterval lastFSEventUpdateTimestamp;
 	NSTimeInterval repeatedUpdateDelay;
 	
 	
@@ -179,10 +184,20 @@
 @synthesize localStateUpdatePendingBlock=_localStateUpdatePendingBlock;
 @synthesize pendingContinuationToBeginAuthSession=_pendingContinuationToBeginAuthSession;
 
+@synthesize stageUpdater;
+@synthesize submodulesUpdater;
+@synthesize localRefsUpdater;
+@synthesize commitsUpdater;
+@synthesize remoteRefsUpdater;
+@synthesize fetchUpdater;
+
+
 - (void) dealloc
 {
 	NSLog(@"GBRepositoryController#dealloc: %@", self);
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	[NSObject cancelPreviousPerformRequestsWithTarget:self]; // need to check if performSelector:afterDelay: retains the receiver
+	
 	//NSLog(@">>> GBRepositoryController:%p dealloc...", self);
 	sidebarItem.object = nil;
 	[sidebarItem release]; sidebarItem = nil;
@@ -219,6 +234,20 @@
 	
 	[_userDefinedName release];
 	
+	self.stageUpdater.target = nil;
+	self.submodulesUpdater.target = nil;
+	self.localRefsUpdater.target = nil;
+	self.commitsUpdater.target = nil;
+	self.remoteRefsUpdater.target = nil;
+	self.fetchUpdater.target = nil;
+
+	self.stageUpdater = nil;
+	self.submodulesUpdater = nil;
+	self.localRefsUpdater = nil;
+	self.commitsUpdater = nil;
+	self.remoteRefsUpdater = nil;
+	self.fetchUpdater = nil;
+	
 	[super dealloc];
 }
 
@@ -252,6 +281,14 @@
 												 selector:@selector(optimizeRepository:)
 													 name:GBOptimizeRepositoryNotification
 												   object:nil];
+		
+		
+		self.stageUpdater      = [GBAsyncUpdater updaterWithTarget:self action:@selector(shouldUpdateStage:)];
+		self.submodulesUpdater = [GBAsyncUpdater updaterWithTarget:self action:@selector(shouldUpdateSubmodules:)];
+		self.localRefsUpdater  = [GBAsyncUpdater updaterWithTarget:self action:@selector(shouldUpdateLocalRefs:)];
+		self.commitsUpdater    = [GBAsyncUpdater updaterWithTarget:self action:@selector(shouldUpdateCommits:)];
+		self.remoteRefsUpdater = [GBAsyncUpdater updaterWithTarget:self action:@selector(shouldUpdateRemoteRefs:)];
+		self.fetchUpdater      = [GBAsyncUpdater updaterWithTarget:self action:@selector(shouldUpdateFetch:)];
 	}
 	return self;
 }
@@ -546,26 +583,18 @@
 	self.toolbarController.repositoryController = self;
 	self.viewController.repositoryController = self;
 	
-	timestampToRespectFSEvents = 0.0; // reset ignoring of FS events.
+	// Cancel initial update.
+	// TODO: check if the initialUpdate was not done yet and run it. Otherwise run [self setNeedsUpdateLocalState];
+	[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(initialUpdate) object:nil];
 	
-	if (!alreadyLaunchedInitialUpdates)
-	{
-		alreadyLaunchedInitialUpdates = YES;
-		[self updateLocalStateWithBlock:^{
-			[self updateRemoteStateAfterDelay:0.0];
-		}];
-	}
-	else
-	{
-		[self updateWhenGotFocus];
-	}
+	[self setNeedsUpdateLocalState];
 }
 
 - (void) windowDidBecomeKey
 {
 	if (selected)
 	{
-		[self updateWhenGotFocus];
+		[self setNeedsUpdateLocalState];
 	}
 }
 
@@ -615,11 +644,6 @@
 	return aMenu;
 }
 
-
-
-// Note: do not return instances of GBRepositoryController, but GBSubmodule instead. 
-//       Submodule will return repository controller when needed (when selected), 
-//       but will have its own UI ("download" button, right-click menu etc.)
 
 - (NSInteger) sidebarItemNumberOfChildren
 {
@@ -792,7 +816,8 @@
 	// 3. Local state update should be issued immediately when repository is selected.
 	
 	double localUpdateDelayInSeconds = 10.0 + 5.0*60.0*drand48();
-	[self updateLocalStateAfterDelay:localUpdateDelayInSeconds block:nil];
+	[self performSelector:@selector(initialUpdate) withObject:nil afterDelay:localUpdateDelayInSeconds];
+	
 	[self updateRemoteStateAfterDelay:localUpdateDelayInSeconds + 10.0*60.0*drand48()];
 	
 	for (GBSubmoduleController* ctrl in self.submoduleControllers)
@@ -803,10 +828,13 @@
 
 - (void) stop
 {
+	
 	if (stopped) return;
 	stopped = YES;
 	
 	NSLog(@"GBRepositoryController#stop: %@", self);
+	
+	[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(initialUpdate) object:nil];
 	
 	if (self.toolbarController.repositoryController == self) self.toolbarController.repositoryController = nil;
 	if (self.viewController.repositoryController == self) self.viewController.repositoryController = nil;
@@ -817,215 +845,89 @@
 	self.repository = nil;
 	[self.sidebarItem stop];
 	
+	[self.stageUpdater cancel];
+	[self.submodulesUpdater cancel];
+	[self.localRefsUpdater cancel];
+	[self.commitsUpdater cancel];
+	[self.remoteRefsUpdater cancel];
+	[self.fetchUpdater cancel];
+	
 	//NSLog(@"!!! Stopped GBRepoCtrl:%p!", self);
 	[self notifyWithSelector:@selector(repositoryControllerDidStop:)];
 }
 
-- (void) delayReceivingFSEvents
+- (void) setNeedsUpdateLocalState
 {
-	// Delay fs events by 1 sec for current selected repo. For background repos delay for longer to avoid interfering.
-	timestampToRespectFSEvents = [[NSDate date] timeIntervalSince1970] + (selected ? self.fsEventStream.latency*1.5 : 5.0);
-}
-
-
-- (void) folderMonitorDidUpdate:(GBFolderMonitor*)monitor
-{
-	GBRepository* repo = self.repository;
-	if (!repo) return;
-	if (stopped) return;
-	if (![self checkRepositoryExistance]) return;
-	
-//#warning DEBUG: DISABLED FS EVENTS.
-//	return;
-	
-	//	FS Event:
-	//	- if ignoring fs events, skip
-	//	- if there's scheduled update, skip
-	//	- if there's running update, skip
-	//	- schedule update after 0.0 seconds.
-	
-	NSTimeInterval currentTimestamp = [[NSDate date] timeIntervalSince1970];
-	
-	// 1. Ignore until the timestamp.
-	if (currentTimestamp < timestampToRespectFSEvents)
-	{
-		//NSLog(@"FSEvent: ignoring event (%f sec. remaining) [%@]", (timestampToRespectFSEvents - currentTimestamp), self.windowTitle);
-		return;
-	}
-	
-	// 2. Ignore if update is scheduled or already running.
-	if (isScheduledLocalStateUpdate || isRunningLocalStateUpdate)
-	{
-		//NSLog(@"FSEvent: ignoring event (%d updates are running) [%@]", isScheduledLocalStateUpdate, self.windowTitle);
-		return;
-	}
-	
-	// 3. Schedule an update.
-	if (monitor.dotgitIsUpdated || monitor.folderIsUpdated)
-	{
-		//NSLog(@"FSEvent: updating [%@]", self.windowTitle);
-		
-		[self updateLocalStateAfterDelay:0.0 block:nil];
-	}
-}
-
-
-
-
-
-- (void) updateWhenGotFocus
-{
-	// Reserve local updates immediately to avoid FS events. Will be overriden below.
-	[self updateLocalStateAfterDelay:10.0 block:nil];
-	
-	// A short delay to work around stupid Xcode effect: when cmd+tabbing from Xcode to Gitbox, Xcode updates project file right before Gitbox is activated. If we immediately update the stage, we'll display temporary xcode project file.
-	
-	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 500*USEC_PER_SEC), dispatch_get_main_queue(), ^{
-		// Update only changes on stage to be quick.
-		[self updateStageChangesAndSubmodules:NO withBlock:^{
-			// Update the rest of the state.
-			dispatch_async(dispatch_get_main_queue(), ^{
-				[self updateLocalStateAfterDelay:0.0 block:nil];
-			});
-		}];
-	});
-	
-	if ([[NSDate date] timeIntervalSince1970] - prevRemoteStateUpdateTimestamp > 60.0)
-	{
-		[self updateRemoteStateAfterDelay:0];
-	}
-}
-
-// Updates stage, local refs and commits if needed.
-- (void) updateLocalStateWithBlock:(void(^)())block
-{
-	//NSLog(@"> updateLocalStateWithBlock [%@]", self.windowTitle);
-	// Invalidate scheduled update
-	isRunningLocalStateUpdate++;
-
-	if (stopped || !self.repository)
-	{
-		if (block) block();
-		return;
-	}
-
-	block = [[block copy] autorelease];
-	[self updateStageChangesAndSubmodulesWithBlock:^{
-		[self updateLocalRefsWithBlock:^{
-			isRunningLocalStateUpdate--;
-			if (block) block();
+	[self setNeedsUpdateStage];
+	[self.stageUpdater waitUpdate:^{
+		[self setNeedsUpdateLocalRefs];
+		[self setNeedsUpdateSubmodules];
+		[self.localRefsUpdater waitUpdate:^{
+			[self setNeedsUpdateRemoteRefs];
 		}];
 	}];
 }
 
-
-- (void) updateLocalStateAfterDelay:(NSTimeInterval)interval block:(void(^)())block
+- (void) initialUpdate
 {
-	if (stopped || !self.repository)
-	{
-		if (block) block();
-		return;
-	}
-	
-	if (!isScheduledLocalStateUpdate && isRunningLocalStateUpdate)
-	{
-		block = [[block copy] autorelease];
-		self.localStateUpdatePendingBlock = OABlockConcat(self.localStateUpdatePendingBlock, ^{
-			[self updateLocalStateAfterDelay:interval block:block];
-		});
-		return;
-	}
-	else
-	{
-		self.localStateUpdatePendingBlock = OABlockConcat(self.localStateUpdatePendingBlock, block);
-	}
-	
-	if (!isScheduledLocalStateUpdate)
-	{
-		isScheduledLocalStateUpdate++;
-	}
-	
-	int gen = localStateUpdateGeneration;
-	
-	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, interval * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-		
-		// Repository is stopped. Leave all hope.
-		if (stopped) return;
-		
-		// We have already scheduled another time.
-		if (gen != localStateUpdateGeneration) return;
-
-		isScheduledLocalStateUpdate--;
-		
-		[self updateLocalStateWithBlock:^{
-			void(^aBlock)() = [[self.localStateUpdatePendingBlock copy] autorelease];
-			self.localStateUpdatePendingBlock = nil;
-			if (aBlock) aBlock();
+	[self setNeedsUpdateStage];
+	[self.stageUpdater waitUpdate:^{
+		[self setNeedsUpdateLocalRefs];
+		[self setNeedsUpdateSubmodules];
+		[self.localRefsUpdater waitUpdate:^{
+			[self setNeedsUpdateRemoteRefs];
 		}];
-	});
+	}];
+}
+
+- (void) setNeedsUpdateStage
+{
+	[self.stageUpdater setNeedsUpdate];
+}
+
+- (void) setNeedsUpdateSubmodules
+{
+	[self.submodulesUpdater setNeedsUpdate];
+}
+
+- (void) setNeedsUpdateLocalRefs
+{
+	[self.localRefsUpdater setNeedsUpdate];
+}
+
+- (void) setNeedsUpdateCommits
+{
+	[self.commitsUpdater setNeedsUpdate];
+}
+
+- (void) setNeedsUpdateRemoteRefs
+{
+	[self updateRemoteStateAfterDelay:0];
+//	[self.remoteRefsUpdater setNeedsUpdate];
+}
+
+- (void) setNeedsUpdateFetch
+{
+	[self.fetchUpdater setNeedsUpdate];
 }
 
 
-- (void) updateStageChangesAndSubmodulesWithBlock:(void(^)())aBlock
-{
-	[self updateStageChangesAndSubmodules:YES withBlock:aBlock];
-}
 
-- (void) updateStageChangesAndSubmodules:(BOOL)updateSubmodules withBlock:(void(^)())aBlock
+- (void) shouldUpdateStage:(GBAsyncUpdater*)updater
 {
-	if (!self.repository.stage || ![self checkRepositoryExistance] || stopped)
-	{
-		if (aBlock) aBlock();
-		return;
-	}
+	if (!self.repository.stage) return;
 	
-	[self delayReceivingFSEvents];
+	[updater beginUpdate];
 	
-	localStateUpdateGeneration++;
-	
-	[self.blockTable addBlock:aBlock forName:@"updateStageChanges" proceedIfClear:^{
-		[self.repository.stage updateStageWithBlock:^(BOOL didChange){
-			void(^contblock)() = ^{
-				
-				[self delayReceivingFSEvents];
-				
-				if (didChange)
-				{
-					repeatedUpdateDelay = 0.0;
-					//NSLog(@"Repeated update scheduled: %f [%@ - did change]", repeatedUpdateDelay, self.windowTitle);
-					[self updateLocalStateAfterDelay:repeatedUpdateDelay block:nil];
-				}
-				else
-				{
-					// No change - do nothing.
-					
-//					repeatedUpdateDelay = repeatedUpdateDelay + 0.5;
-//					
-//					// Don't schedule updates at all in a distant future. We are much more likely to get valid FS- or other event there.
-//					if (repeatedUpdateDelay < 0.51)
-//					{
-//						//NSLog(@"Repeated update scheduled: %f [%@ - not changed]", repeatedUpdateDelay, self.windowTitle);
-//						[self updateLocalStateAfterDelay:repeatedUpdateDelay block:nil];
-//					}
-//					else
-//					{
-//						repeatedUpdateDelay = 0.0;
-//					}
-					
-				}
-				[self.blockTable callBlockForName:@"updateStageChanges"];
-				[self.sidebarItem update];
-			};
-			
-			if (updateSubmodules)
-			{
-				[self updateSubmodulesWithBlock:contblock];
-			}
-			else
-			{
-				contblock();
-			}
-		}];
+	[self.repository.stage updateStageWithBlock:^(BOOL didChange){
+		if (didChange)
+		{
+			#warning TODO: reset periodic updates timer for local updates.
+			[self setNeedsUpdateStage];
+		}
+		[self.sidebarItem update];
+		
+		[updater endUpdate];
 	}];
 }
 
@@ -1055,90 +957,45 @@
 	return NO;
 }
 
-- (void) updateSubmodulesWithBlock:(void(^)())aBlock
+- (void) shouldUpdateSubmodules:(GBAsyncUpdater*)updater
 {
-//#warning TODO: disabled submodules for beta testing
-//	if (aBlock) aBlock();
-//	return;
+	if (![self checkRepositoryExistance]) return;
 	
-	if (![self checkRepositoryExistance])
-	{
-		if (aBlock) aBlock();
-		return;
-	}
-	
-	[self delayReceivingFSEvents];
-	[self.blockTable addBlock:aBlock forName:@"updateSubmodules" proceedIfClear:^{
+	[updater beginUpdate];
+	[self.repository updateSubmodulesWithBlock:^{
 		
-		[self.repository updateSubmodulesWithBlock:^{
-			
-			[self delayReceivingFSEvents];
-			
-			// Figure out in advance if there's anything to send update notification about.
-			BOOL didChangeSubmodules = [self submodulesOutOfSync];
-			
-			self.submodules = self.repository.submodules;
-			
-			[self.blockTable callBlockForName:@"updateSubmodules"];
-			
-			if (didChangeSubmodules)
-			{
-				[self notifyWithSelector:@selector(repositoryControllerDidUpdateSubmodules:)];
-			}
-		}];
+		// Figure out in advance if there's anything to send update notification about.
+		BOOL didChangeSubmodules = [self submodulesOutOfSync];
+		
+		self.submodules = self.repository.submodules;
+		
+		if (didChangeSubmodules)
+		{
+			[self notifyWithSelector:@selector(repositoryControllerDidUpdateSubmodules:)];
+		}
+		[updater endUpdate];
 	}];
 }
 
-- (void) updateLocalRefsWithBlock:(void(^)())aBlock
+
+- (void) shouldUpdateLocalRefs:(GBAsyncUpdater*)updater
 {
-	if (!self.repository || ![self checkRepositoryExistance])
-	{
-		if (aBlock) aBlock();
-		return;
-	}
-	[self delayReceivingFSEvents];
-	[self.blockTable addBlock:aBlock forName:@"updateLocalRefs" proceedIfClear:^{
-		[self.repository updateLocalRefsWithBlock:^(BOOL didChange){
-			[self delayReceivingFSEvents];
-			if (didChange || !self.repository.localBranchCommits || commitsAreInvalid)
-			{
-				commitsAreInvalid = NO;
-				[self updateCommitsWithBlock:^{
-					[self.blockTable callBlockForName:@"updateLocalRefs"];
-				}];
-			}
-			else
-			{
-				[self.blockTable callBlockForName:@"updateLocalRefs"];
-			}
-			[self notifyWithSelector:@selector(repositoryControllerDidUpdateRefs:)];
-		}];  
+	if (!self.repository) return;
+	if (![self checkRepositoryExistance]) return;
+	
+	[updater beginUpdate];
+	
+	[self.repository updateLocalRefsWithBlock:^(BOOL didChange){
+		if (didChange || self.repository.localBranchCommits.count == 0)
+		{
+			[self setNeedsUpdateCommits];
+		}
+		[updater endUpdate];
+		[self notifyWithSelector:@selector(repositoryControllerDidUpdateRefs:)];
 	}];
 }
 
-- (void) updateCommitsWithBlock:(void(^)())aBlock
-{
-	if (!self.repository || ![self checkRepositoryExistance])
-	{
-		if (aBlock) aBlock();
-		return;
-	}
-	
-	[self.blockTable addBlock:aBlock forName:@"updateCommits" proceedIfClear:^{
-		[self pushSpinning];
-		
-		//#warning TODO: get rid of updateLocalRefsIfNeededWithBlock because commits should always be updated from within self under 
-		//[self updateLocalRefsIfNeededWithBlock:^{
-			[self.repository updateLocalBranchCommitsWithBlock:^{
-				[self.blockTable callBlockForName:@"updateCommits"];
-				[self popSpinning];
-				[self.sidebarItem update];
-				[self notifyWithSelector:@selector(repositoryControllerDidUpdateCommits:)];
-				[self updateCommitsBadgeInteger];
-			}];
-		//}];
-	}];
-}
+
 
 - (void) updateCommitsBadgeInteger
 {
@@ -1147,6 +1004,344 @@
 		[self.sidebarItem update];
 	}];
 }
+
+- (void) shouldUpdateCommits:(GBAsyncUpdater*)updater
+{
+	if (!self.repository) return;
+	if (![self checkRepositoryExistance]) return;
+
+	[self.localRefsUpdater waitUpdate:^{
+		[updater beginUpdate];
+		
+		[self pushSpinning];
+
+		[self.repository updateLocalBranchCommitsWithBlock:^{
+			
+			[self popSpinning];
+			
+			[updater endUpdate];
+			
+			[self.sidebarItem update];
+			[self updateCommitsBadgeInteger];
+			[self notifyWithSelector:@selector(repositoryControllerDidUpdateCommits:)];
+		}];
+	}];
+}
+
+
+- (void) shouldUpdateRemoteRefs:(GBAsyncUpdater*)updater
+{
+	[updater beginUpdate];
+	[updater endUpdate];
+}
+
+- (void) shouldUpdateFetch:(GBAsyncUpdater*)updater
+{
+	[updater beginUpdate];
+	[updater endUpdate];
+}
+
+
+
+
+
+#pragma mark - FS Events
+
+
+
+
+
+
+- (void) folderMonitorDidUpdate:(GBFolderMonitor*)monitor
+{
+	GBRepository* repo = self.repository;
+	if (!repo) return;
+	if (stopped) return;
+	if (![self checkRepositoryExistance]) return;
+	
+//#warning DEBUG: DISABLED FS EVENTS.
+//	return;
+	
+	if (!(monitor.dotgitIsUpdated || monitor.folderIsUpdated)) return;
+	
+	// When operating inside the app we don't want some uncontrolled updates.
+	if ([NSApp isActive]) return;
+	
+	if (self.stageUpdater.isUpdating || self.stageUpdater.needsUpdate) return;
+	
+	if (self.submodulesUpdater.isUpdating || self.submodulesUpdater.needsUpdate) return;
+	
+	if (self.localRefsUpdater.isUpdating || self.localRefsUpdater.needsUpdate) return;
+	
+	float delay = selected ? 2.0 : 10.0;
+	NSTimeInterval currentTimestamp = [[NSDate date] timeIntervalSince1970];
+	
+	if ((currentTimestamp - lastFSEventUpdateTimestamp) > delay)
+	{
+		lastFSEventUpdateTimestamp = currentTimestamp;
+		[self setNeedsUpdateStage];
+		[self setNeedsUpdateSubmodules];
+		[self setNeedsUpdateLocalRefs];
+	}
+}
+
+
+
+
+
+
+#pragma mark - Local State Updates
+
+
+
+
+
+//
+//- (void) XXXXXXXupdateWhenGotFocus
+//{
+//	
+//	
+//	// Reserve local updates immediately to avoid FS events. Will be overriden below.
+//	[self updateLocalStateAfterDelay:10.0 block:nil];
+//	
+//	// A short delay to work around stupid Xcode effect: when cmd+tabbing from Xcode to Gitbox, Xcode updates project file right before Gitbox is activated. If we immediately update the stage, we'll display temporary xcode project file.
+//	
+//	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 500*USEC_PER_SEC), dispatch_get_main_queue(), ^{
+//		// Update only changes on stage to be quick.
+//		[self updateStageChangesAndSubmodules:NO withBlock:^{
+//			// Update the rest of the state.
+//			dispatch_async(dispatch_get_main_queue(), ^{
+//				[self updateLocalStateAfterDelay:0.0 block:nil];
+//			});
+//		}];
+//	});
+//	
+//	if ([[NSDate date] timeIntervalSince1970] - prevRemoteStateUpdateTimestamp > 60.0)
+//	{
+//		[self updateRemoteStateAfterDelay:0];
+//	}
+//}
+//
+//// Updates stage, local refs and commits if needed.
+//- (void) XXXXXXupdateLocalStateWithBlock:(void(^)())block
+//{
+//	//NSLog(@"> updateLocalStateWithBlock [%@]", self.windowTitle);
+//	// Invalidate scheduled update
+//	isRunningLocalStateUpdate++;
+//
+//	if (stopped || !self.repository)
+//	{
+//		if (block) block();
+//		return;
+//	}
+//
+//	block = [[block copy] autorelease];
+//	[self updateStageChangesAndSubmodulesWithBlock:^{
+//		[self updateLocalRefsWithBlock:^{
+//			isRunningLocalStateUpdate--;
+//			if (block) block();
+//		}];
+//	}];
+//}
+
+//
+//- (void) XXXXXXupdateLocalStateAfterDelay:(NSTimeInterval)interval block:(void(^)())block
+//{
+//	if (stopped || !self.repository)
+//	{
+//		if (block) block();
+//		return;
+//	}
+//	
+//	if (!isScheduledLocalStateUpdate && isRunningLocalStateUpdate)
+//	{
+//		block = [[block copy] autorelease];
+//		self.localStateUpdatePendingBlock = OABlockConcat(self.localStateUpdatePendingBlock, ^{
+//			[self updateLocalStateAfterDelay:interval block:block];
+//		});
+//		return;
+//	}
+//	else
+//	{
+//		self.localStateUpdatePendingBlock = OABlockConcat(self.localStateUpdatePendingBlock, block);
+//	}
+//	
+//	if (!isScheduledLocalStateUpdate)
+//	{
+//		isScheduledLocalStateUpdate++;
+//	}
+//	
+//	int gen = localStateUpdateGeneration;
+//	
+//	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, interval * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+//		
+//		// Repository is stopped. Leave all hope.
+//		if (stopped) return;
+//		
+//		// We have already scheduled another time.
+//		if (gen != localStateUpdateGeneration) return;
+//
+//		isScheduledLocalStateUpdate--;
+//		
+//		[self updateLocalStateWithBlock:^{
+//			void(^aBlock)() = [[self.localStateUpdatePendingBlock copy] autorelease];
+//			self.localStateUpdatePendingBlock = nil;
+//			if (aBlock) aBlock();
+//		}];
+//	});
+//}
+
+//
+//- (void) XXXXXXupdateStageChangesAndSubmodulesWithBlock:(void(^)())aBlock
+//{
+//	[self updateStageChangesAndSubmodules:YES withBlock:aBlock];
+//}
+//
+//- (void) XXXXXXupdateStageChangesAndSubmodules:(BOOL)updateSubmodules withBlock:(void(^)())aBlock
+//{
+//	if (!self.repository.stage || ![self checkRepositoryExistance] || stopped)
+//	{
+//		if (aBlock) aBlock();
+//		return;
+//	}
+//	
+//	[self delayReceivingFSEvents];
+//	
+//	localStateUpdateGeneration++;
+//	
+//	[self.blockTable addBlock:aBlock forName:@"updateStageChanges" proceedIfClear:^{
+//		[self.repository.stage updateStageWithBlock:^(BOOL didChange){
+//			void(^contblock)() = ^{
+//				
+//				[self delayReceivingFSEvents];
+//				
+//				if (didChange)
+//				{
+//					repeatedUpdateDelay = 0.0;
+//					//NSLog(@"Repeated update scheduled: %f [%@ - did change]", repeatedUpdateDelay, self.windowTitle);
+//					[self updateLocalStateAfterDelay:repeatedUpdateDelay block:nil];
+//				}
+//				else
+//				{
+//					// No change - do nothing.
+//					
+////					repeatedUpdateDelay = repeatedUpdateDelay + 0.5;
+////					
+////					// Don't schedule updates at all in a distant future. We are much more likely to get valid FS- or other event there.
+////					if (repeatedUpdateDelay < 0.51)
+////					{
+////						//NSLog(@"Repeated update scheduled: %f [%@ - not changed]", repeatedUpdateDelay, self.windowTitle);
+////						[self updateLocalStateAfterDelay:repeatedUpdateDelay block:nil];
+////					}
+////					else
+////					{
+////						repeatedUpdateDelay = 0.0;
+////					}
+//					
+//				}
+//				[self.blockTable callBlockForName:@"updateStageChanges"];
+//				[self.sidebarItem update];
+//			};
+//			
+//			if (updateSubmodules)
+//			{
+//				[self updateSubmodulesWithBlock:contblock];
+//			}
+//			else
+//			{
+//				contblock();
+//			}
+//		}];
+//	}];
+//}
+//
+
+//
+//- (void) XXXXXXupdateSubmodulesWithBlock:(void(^)())aBlock
+//{
+////#warning TODO: disabled submodules for beta testing
+////	if (aBlock) aBlock();
+////	return;
+//	
+//	if (![self checkRepositoryExistance])
+//	{
+//		if (aBlock) aBlock();
+//		return;
+//	}
+//	
+//	[self delayReceivingFSEvents];
+//	[self.blockTable addBlock:aBlock forName:@"updateSubmodules" proceedIfClear:^{
+//		
+//		[self.repository updateSubmodulesWithBlock:^{
+//			
+//			[self delayReceivingFSEvents];
+//			
+//			// Figure out in advance if there's anything to send update notification about.
+//			BOOL didChangeSubmodules = [self submodulesOutOfSync];
+//			
+//			self.submodules = self.repository.submodules;
+//			
+//			[self.blockTable callBlockForName:@"updateSubmodules"];
+//			
+//			if (didChangeSubmodules)
+//			{
+//				[self notifyWithSelector:@selector(repositoryControllerDidUpdateSubmodules:)];
+//			}
+//		}];
+//	}];
+//}
+//
+//- (void) XXXXXXupdateLocalRefsWithBlock:(void(^)())aBlock
+//{
+//	if (!self.repository || ![self checkRepositoryExistance])
+//	{
+//		if (aBlock) aBlock();
+//		return;
+//	}
+//	[self delayReceivingFSEvents];
+//	[self.blockTable addBlock:aBlock forName:@"updateLocalRefs" proceedIfClear:^{
+//		[self.repository updateLocalRefsWithBlock:^(BOOL didChange){
+//			[self delayReceivingFSEvents];
+//			if (didChange || !self.repository.localBranchCommits || commitsAreInvalid)
+//			{
+//				commitsAreInvalid = NO;
+//				[self updateCommitsWithBlock:^{
+//					[self.blockTable callBlockForName:@"updateLocalRefs"];
+//				}];
+//			}
+//			else
+//			{
+//				[self.blockTable callBlockForName:@"updateLocalRefs"];
+//			}
+//			[self notifyWithSelector:@selector(repositoryControllerDidUpdateRefs:)];
+//		}];  
+//	}];
+//}
+
+//- (void) XXXXXXupdateCommitsWithBlock:(void(^)())aBlock
+//{
+//	if (!self.repository || ![self checkRepositoryExistance])
+//	{
+//		if (aBlock) aBlock();
+//		return;
+//	}
+//	
+//	[self.blockTable addBlock:aBlock forName:@"updateCommits" proceedIfClear:^{
+//		[self pushSpinning];
+//		
+//		//#warning TODO: get rid of updateLocalRefsIfNeededWithBlock because commits should always be updated from within self under 
+//		//[self updateLocalRefsIfNeededWithBlock:^{
+//			[self.repository updateLocalBranchCommitsWithBlock:^{
+//				[self.blockTable callBlockForName:@"updateCommits"];
+//				[self popSpinning];
+//				[self.sidebarItem update];
+//				[self notifyWithSelector:@selector(repositoryControllerDidUpdateCommits:)];
+//				[self updateCommitsBadgeInteger];
+//			}];
+//		//}];
+//	}];
+//}
+
 
 
 
@@ -1182,11 +1377,6 @@
 		
 		[self updateRemoteRefsSilently:YES withBlock:^{}];
 	});
-}
-
-- (void) updateRemoteRefs
-{
-	[self updateRemoteRefsWithBlock:^{}];
 }
 
 - (void) updateRemoteRefsWithBlock:(void(^)())aBlock
@@ -1304,10 +1494,9 @@
 
 
 
-
-
-
 #pragma mark - GBRepository Notifications
+
+
 
 
 - (void)repositoryDidUpdateProgress:(GBRepository*)aRepo
@@ -1320,7 +1509,11 @@
 
 
 
+
 #pragma mark - GBCommit Notifications
+
+
+
 
 
 - (void) stageDidUpdateChanges:(GBStage*)aStage
@@ -1336,6 +1529,8 @@
 #pragma mark - GBOptimizeRepository Notification
 
 
+
+
 - (void) optimizeRepository:(NSNotification*)notif
 {
 	if (!self.repository) return;
@@ -1346,12 +1541,18 @@
 
 
 
+
 #pragma mark - Submodule Notifications
+
+
+
 
 
 - (void) submoduleCloningControllerDidFinish:(GBSubmoduleCloningController*)ctrl
 {
-	[self updateLocalStateAfterDelay:0 block:^{}];
+	[self setNeedsUpdateSubmodules];
+	[self setNeedsUpdateStage];
+	[self setNeedsUpdateLocalRefs];
 }
 
 
@@ -1621,13 +1822,22 @@
 	
 	checkoutBlock(^{
 		
-		[self updateStageChangesAndSubmodulesWithBlock:^{
-			[self updateLocalRefsWithBlock:^{
-				[self notifyWithSelector:@selector(repositoryControllerDidCheckoutBranch:)];
-				[self popDisabled];
-				[self popSpinning];
-			}];
+		[self setNeedsUpdateStage];
+		[self setNeedsUpdateLocalRefs];
+		
+		[self.localRefsUpdater waitUpdate:^{
+			[self notifyWithSelector:@selector(repositoryControllerDidCheckoutBranch:)];
+			[self popDisabled];
+			[self popSpinning];
 		}];
+		 
+//		[self.localRefsUpdater updateStageChangesAndSubmodulesWithBlock:^{
+//			[self updateLocalRefsWithBlock:^{
+//				[self notifyWithSelector:@selector(repositoryControllerDidCheckoutBranch:)];
+//				[self popDisabled];
+//				[self popSpinning];
+//			}];
+//		}];
 	});
 }
 
@@ -1685,7 +1895,10 @@
 	[self.repository removeRemoteRefs:refs withBlock:^{
 		[self.repository removeRefs:refs withBlock:^{
 			[self notifyWithSelector:@selector(repositoryControllerDidUpdateRefs:)];
-			[self updateLocalRefsWithBlock:^{
+			
+			[self setNeedsUpdateLocalRefs];
+			[self.localRefsUpdater waitUpdate:^{
+//			[self updateLocalRefsWithBlock:^{
 				
 				[self popDisabled];
 				[self popSpinning];
@@ -1783,7 +1996,7 @@
 									 withLocalName:self.repository.currentLocalRef.name 
 											 block:^{
 												 [self notifyWithSelector:@selector(repositoryControllerDidChangeRemoteBranch:)];
-												 [self updateCommitsWithBlock:nil];
+												 [self setNeedsUpdateCommits];
 												 [self updateRemoteRefsWithBlock:nil];
 											 }];
 }
@@ -1862,15 +2075,15 @@
 	[self pushSpinning];
 	stagingCounter++;
 	
-	[self updateLocalStateAfterDelay:10.0 block:nil]; // reserve update, delay be lowered after completion
-	
 	block(notBusyChanges, stage, ^{
 		stagingCounter--;
 		if (postStageBlock) postStageBlock();
 		// Avoid loading changes if another staging is running.
 		if (stagingCounter == 0)
 		{
-			[self updateLocalStateAfterDelay:self.fsEventStream.latency block:nil];
+			[self setNeedsUpdateStage];
+#warning TODO: instead of updating submodules here, check if changes contained submodules before/after update and update submodules.
+			[self setNeedsUpdateSubmodules];
 		}
 		[self popSpinning];
 	});
@@ -1937,29 +2150,33 @@
 	[self.repository commitWithMessage:message block:^{
 		self.isCommitting = NO;
 		
-		[self updateStageChangesAndSubmodulesWithBlock:^{
-			commitsAreInvalid = YES;
-			[self updateLocalRefsWithBlock:^{
-				[self popSpinning];
-				
-				NSString* aCommitId = self.repository.currentLocalRef.commitId;
-				if (aCommitId)
-				{
-					[[self.undoManager prepareWithInvocationTarget:self] undoCommitWithMessage:message commitId:aCommitId undo:YES];
-					[self.undoManager setActionName:[NSString stringWithFormat:NSLocalizedString(@"Commit “%@”", @""), [message prettyTrimmedStringToLength:15]]];
-				}
-				else
-				{
-					NSLog(@"Cannot find current ref's commit id. Clearing up undo stack.");
-					[self.undoManager removeAllActions];
-				}
-				
-				
+		[self setNeedsUpdateStage];
+		[self setNeedsUpdateSubmodules];
+		[self setNeedsUpdateLocalRefs];
+		#warning TODO: check if necessary to update commits or at least avoid double update
+		[self setNeedsUpdateCommits];
+		
+		[self.localRefsUpdater waitUpdate:^{
+
+			[self popSpinning];
+			
+			NSString* aCommitId = self.repository.currentLocalRef.commitId;
+			if (aCommitId)
+			{
+				[[self.undoManager prepareWithInvocationTarget:self] undoCommitWithMessage:message commitId:aCommitId undo:YES];
+				[self.undoManager setActionName:[NSString stringWithFormat:NSLocalizedString(@"Commit “%@”", @""), [message prettyTrimmedStringToLength:15]]];
+			}
+			else
+			{
+				NSLog(@"Cannot find current ref's commit id. Clearing up undo stack.");
+				[self.undoManager removeAllActions];
+			}
+			
+			
 #if GITBOX_APP_STORE || DEBUG_iRate
-				[[iRate sharedInstance] logEvent:NO];
+			[[iRate sharedInstance] logEvent:NO];
 #endif
-				
-			}];
+
 		}];
 		
 		[self notifyWithSelector:@selector(repositoryControllerDidCommit:)];
@@ -1990,15 +2207,21 @@
 	[self pushSpinning];
 	[self.repository resetSoftToCommit:undo ? [NSString stringWithFormat:@"%@^", aCommitId] : aCommitId withBlock:^{
 		self.isCommitting = NO;
-		commitsAreInvalid = YES;
-		[self updateLocalRefsWithBlock:^{
+		
+		[self setNeedsUpdateLocalRefs];
+		#warning TODO: check if necessary to update commits or at least avoid double update
+		[self setNeedsUpdateCommits];
+		
+		[self.localRefsUpdater waitUpdate:^{
 			
 			[self popSpinning];
 			
 			self.repository.stage.currentCommitMessage = message;
 			
 			[self notifyWithSelector:@selector(repositoryControllerDidCommit:)];
-			[self updateStageChangesAndSubmodulesWithBlock:^{}];
+			
+			[self setNeedsUpdateStage];
+			[self setNeedsUpdateSubmodules];
 		}];
 	}];
 }
@@ -2032,10 +2255,14 @@
 						[self.repository.lastError present];
 					}
 				}
-				commitsAreInvalid = YES;
 				[self pushSpinning];
 				[self pushDisabled];
-				[self updateLocalRefsWithBlock:^{
+				
+				[self setNeedsUpdateLocalRefs];
+				#warning TODO: check if necessary to update commits or at least avoid double update
+				[self setNeedsUpdateCommits];
+				
+				[self.localRefsUpdater waitUpdate:^{
 					
 					// The fetch could have been invoked from the updateRemoteRefsSilently:withBlock:
 					// Hence, we should not pass the block there. Rather, call it after block invocation.
@@ -2084,8 +2311,12 @@
 				
 				if (!i)
 				{
-					commitsAreInvalid = YES;
-					[self updateLocalRefsWithBlock:^{
+					[self setNeedsUpdateLocalRefs];
+#warning TODO: check if necessary to update commits or at least avoid double update
+					[self setNeedsUpdateCommits];
+					
+					[self.localRefsUpdater waitUpdate:^{
+
 						[self updateRemoteRefsWithBlock:nil];
 						[self popSpinning];
 					}];
@@ -2119,8 +2350,12 @@
 			
 			wantsAutoResetSubmodules = YES; // check submodules here because the update could have happened while pulling.
 			
-			commitsAreInvalid = YES;
-			[self updateLocalStateWithBlock:^{
+			[self setNeedsUpdateLocalRefs];
+#warning TODO: check if necessary to update commits or at least avoid double update
+			[self setNeedsUpdateCommits];
+			[self setNeedsUpdateStage];
+			
+			[self.localRefsUpdater waitUpdate:^{
 				[self updateRemoteRefsWithBlock:nil];
 				[self popSpinning];
 				[self popDisabled];
@@ -2153,8 +2388,6 @@
 	
 	wantsAutoResetSubmodules = YES;
 	
-	[self delayReceivingFSEvents];
-	
 	// Note: stash and unstash to preserve modifications.
 	//       if we use reset --mixed or --soft, we will keep added objects from the pull. We don't want them.
 	[self.repository doGitCommand:[NSArray arrayWithObjects:@"stash", @"--include-untracked", nil] withBlock:^{
@@ -2162,9 +2395,13 @@
 			[self.repository doGitCommand:[NSArray arrayWithObjects:@"stash", @"apply", nil] withBlock:^{
 				
 				wantsAutoResetSubmodules = YES; // check also here if FS events has caused update during reset.
-				commitsAreInvalid = YES;
 				
-				[self updateLocalStateWithBlock:^{
+				[self setNeedsUpdateLocalRefs];
+#warning TODO: check if necessary to update commits or at least avoid double update
+				[self setNeedsUpdateCommits];
+				[self setNeedsUpdateStage];
+				
+				[self.localRefsUpdater waitUpdate:^{
 					[self updateRemoteRefsWithBlock:nil];
 					[self popSpinning];
 					[self popDisabled];
@@ -2183,8 +2420,11 @@
 	[self pushDisabled];
 	[self beginAuthenticatedSession:^{
 		[self.repository pushBranch:srcRef toRemoteBranch:dstRef forced:forced withBlock:^{
-			commitsAreInvalid = YES;
-			[self updateLocalRefsWithBlock:^{
+			[self setNeedsUpdateLocalRefs];
+#warning TODO: check if necessary to update commits or at least avoid double update
+			[self setNeedsUpdateCommits];
+			
+			[self.localRefsUpdater waitUpdate:^{
 				[self updateRemoteRefsWithBlock:^{
 				}];
 				[self popSpinning];
@@ -2259,8 +2499,12 @@
 	wantsAutoResetSubmodules = YES;
 	
 	[self.repository rebaseWithBlock:^{
-		commitsAreInvalid = YES;
-		[self updateLocalStateWithBlock:^{
+		[self setNeedsUpdateLocalRefs];
+#warning TODO: check if necessary to update commits or at least avoid double update
+		[self setNeedsUpdateCommits];
+		[self setNeedsUpdateStage];
+		
+		[self.localRefsUpdater waitUpdate:^{
 			[self updateRemoteRefsWithBlock:nil];
 			[self popSpinning];
 			[self popDisabled];
@@ -2614,8 +2858,8 @@
 																{
 																	[self.undoManager removeAllActions];
 																	[self.repository resetStageWithBlock:^{
-																		[self updateStageChangesAndSubmodulesWithBlock:^{
-																		}];
+																		[self setNeedsUpdateStage];
+																		[self setNeedsUpdateSubmodules];
 																	}];
 																}
 															}];
@@ -2628,7 +2872,8 @@
 	
 		if (block) block();
 		
-		[self updateLocalStateAfterDelay:0.0 block:^{}];
+		[self setNeedsUpdateStage];
+		[self setNeedsUpdateSubmodules];
 	}];
 }
 
@@ -2649,7 +2894,9 @@
 	
 	[self.repository mergeCommitish:aCommit.commitId withBlock:^{
 		[self.repository.lastError present];
-		[self updateLocalStateWithBlock:^{}];
+		[self setNeedsUpdateStage];
+		[self setNeedsUpdateSubmodules];
+		[self setNeedsUpdateLocalRefs];
 	}];
 }
 
@@ -2680,7 +2927,9 @@
 	wantsAutoResetSubmodules = YES;
 	[self.repository cherryPickCommit:aCommit creatingCommit:YES withBlock:^{
 		[self.repository.lastError present];
-		[self updateLocalStateWithBlock:^{}];
+		[self setNeedsUpdateStage];
+		[self setNeedsUpdateSubmodules];
+		[self setNeedsUpdateLocalRefs];
 	}];
 }
 
@@ -2712,7 +2961,9 @@
 	wantsAutoResetSubmodules = YES;
 	[self.repository cherryPickCommit:aCommit creatingCommit:NO withBlock:^{
 		[self.repository.lastError present];
-		[self updateLocalStateWithBlock:^{}];
+		[self setNeedsUpdateStage];
+		[self setNeedsUpdateSubmodules];
+		[self setNeedsUpdateLocalRefs];
 	}];
 }
 
@@ -2758,10 +3009,11 @@
 	void(^block)() = ^{
 		[self.undoManager removeAllActions];
 		wantsAutoResetSubmodules = YES;
-		[self updateLocalStateAfterDelay:10.0 block:^{}]; // delay updates.
 		[self.repository stashChangesWithMessage:stashMessage block:^{
 			[self.repository resetToCommit:aCommit withBlock:^{
-				[self updateLocalStateAfterDelay:0.0 block:^{}];
+				[self setNeedsUpdateStage];
+				[self setNeedsUpdateSubmodules];
+				[self setNeedsUpdateLocalRefs];
 			}];
 		}];
 	};
@@ -2819,7 +3071,9 @@
 		wantsAutoResetSubmodules = YES;
 		[self.repository stashChangesWithMessage:stashMessage block:^{
 			[self.repository revertCommit:aCommit withBlock:^{
-				[self updateLocalStateWithBlock:^{}];
+				[self setNeedsUpdateStage];
+				[self setNeedsUpdateSubmodules];
+				[self setNeedsUpdateLocalRefs];
 			}];
 		}];
 	};

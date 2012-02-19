@@ -48,7 +48,7 @@
 - (void) stop;
 
 //- (void) updateCommitsIfNeeded;
-- (void) updateRemoteRefs;
+//- (void) updateRemoteState;
 
 - (void) checkoutRef:(GBRef*) ref;
 - (void) checkoutRef:(GBRef*) ref withNewName:(NSString*)name;
@@ -118,6 +118,12 @@
 - (IBAction) search:(id)sender; // posts notification repositoryControllerSearchDidStart:
 - (IBAction) cancelSearch:(id)sender; // posts notification repositoryControllerSearchDidEnd:
 
+- (void) setNeedsUpdateStage;
+- (void) setNeedsUpdateSubmodules;
+- (void) setNeedsUpdateLocalRefs;
+- (void) setNeedsUpdateCommits;
+- (void) setNeedsUpdateRemoteRefs;
+- (void) setNeedsUpdateFetch;
 
 
 // For subclasses
@@ -128,6 +134,6 @@
 - (void) pushSpinning;
 - (void) popSpinning;
 
-- (void) updateLocalStateAfterDelay:(NSTimeInterval)interval block:(void(^)())block;
+//- (void) updateLocalStateAfterDelay:(NSTimeInterval)interval block:(void(^)())block;
 
 @end
