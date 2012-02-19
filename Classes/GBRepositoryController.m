@@ -90,16 +90,6 @@
 
 - (void) setNeedsUpdateLocalState;
 
-//- (void) updateWhenGotFocus;
-
-//- (void) updateLocalStateWithBlock:(void(^)())aBlock;
-
-//- (void) updateStageChangesAndSubmodulesWithBlock:(void(^)())aBlock;
-//- (void) updateStageChangesAndSubmodules:(BOOL)updateSubmodules withBlock:(void(^)())aBlock;
-//- (void) updateSubmodulesWithBlock:(void(^)())aBlock;
-//- (void) updateLocalRefsWithBlock:(void(^)())aBlock;
-//- (void) updateCommitsWithBlock:(void(^)())aBlock;
-
 // Remote state updates
 
 - (void) updateRemoteStateAfterDelay:(NSTimeInterval)interval;
@@ -126,13 +116,8 @@
 	BOOL stopped;
 	BOOL selected;
 	
-//	BOOL commitsAreInvalid;
-	
 	NSInteger stagingCounter;
 	
-	int localStateUpdateGeneration;
-	int isScheduledLocalStateUpdate;
-	int isRunningLocalStateUpdate;
 	NSTimeInterval lastFSEventUpdateTimestamp;
 	NSTimeInterval repeatedUpdateDelay;
 	
@@ -917,7 +902,7 @@
 
 - (void) setNeedsUpdateFetch
 {
-	[self.fetchUpdater setNeedsUpdate];
+//	[self.fetchUpdater setNeedsUpdate];
 }
 
 // Returns YES if submodules are not on the stage.
@@ -932,6 +917,7 @@
 
 - (void) shouldUpdateStage:(GBAsyncUpdater*)updater
 {
+	if (stopped) return;
 	if (!self.repository.stage) return;
 
 	[updater beginUpdate];
@@ -943,8 +929,21 @@
 
 		if (didChange)
 		{
-#warning TODO: reset periodic updates timer for local updates.
+			repeatedUpdateDelay = 0.0;
 			[self setNeedsUpdateStage];
+			[self notifyWithSelector:@selector(repositoryControllerDidUpdateStageWithNewChanges:)];
+		}
+		else
+		{
+			repeatedUpdateDelay = repeatedUpdateDelay + 1.0;
+			
+			if (repeatedUpdateDelay <= 2.0)
+			{
+				dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, repeatedUpdateDelay * NSEC_PER_SEC);
+				dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+					[self setNeedsUpdateStage];
+				});
+			}
 		}
 
 		BOOL _hasCleanSubmodules = [self stageHasCleanSubmodules];
@@ -987,6 +986,7 @@
 
 - (void) shouldUpdateSubmodules:(GBAsyncUpdater*)updater
 {
+	if (stopped) return;
 	if (![self checkRepositoryExistance]) return;
 	
 	[updater beginUpdate];
@@ -1009,6 +1009,7 @@
 
 - (void) shouldUpdateLocalRefs:(GBAsyncUpdater*)updater
 {
+	if (stopped) return;
 	if (!self.repository) return;
 	if (![self checkRepositoryExistance]) return;
 	
@@ -1036,6 +1037,7 @@
 
 - (void) shouldUpdateCommits:(GBAsyncUpdater*)updater
 {
+	if (stopped) return;
 	if (!self.repository) return;
 	if (![self checkRepositoryExistance]) return;
 
@@ -1060,14 +1062,16 @@
 
 - (void) shouldUpdateRemoteRefs:(GBAsyncUpdater*)updater
 {
-//	[updater beginUpdate];
-//	[updater endUpdate];
+	if (stopped) return;
+	[updater beginUpdate];
+	[updater endUpdate];
 }
 
 - (void) shouldUpdateFetch:(GBAsyncUpdater*)updater
 {
-//	[updater beginUpdate];
-//	[updater endUpdate];
+	if (stopped) return;
+	[updater beginUpdate];
+	[updater endUpdate];
 }
 
 
@@ -1088,9 +1092,6 @@
 	if (stopped) return;
 	if (![self checkRepositoryExistance]) return;
 	
-//#warning DEBUG: DISABLED FS EVENTS.
-//	return;
-	
 	if (!(monitor.dotgitIsUpdated || monitor.folderIsUpdated)) return;
 	
 	// When operating inside the app we don't want some uncontrolled updates.
@@ -1102,7 +1103,7 @@
 	
 	if (self.localRefsUpdater.isUpdating || self.localRefsUpdater.needsUpdate) return;
 	
-	float delay = selected ? 5.0 : 60.0;
+	float delay = selected ? 5.0 : 20.0;
 	NSTimeInterval currentTimestamp = [[NSDate date] timeIntervalSince1970];
 	
 	if ((currentTimestamp - lastFSEventUpdateTimestamp) > delay)
@@ -1574,7 +1575,19 @@
 
 
 
+- (void) repositoryControllerDidUpdateStageWithNewChanges:(GBRepositoryController*)ctrl
+{
+	// Submodule has updated its branch.
+	[self setNeedsUpdateSubmodules];
+	[self setNeedsUpdateStage];
+}
 
+- (void) repositoryControllerDidUpdateBranch:(GBRepositoryController*)ctrl
+{
+	// Submodule has updated its branch.
+	[self setNeedsUpdateSubmodules];
+	[self setNeedsUpdateStage];
+}
 
 - (void) submoduleCloningControllerDidFinish:(GBSubmoduleCloningController*)ctrl
 {
@@ -1855,6 +1868,7 @@
 		
 		[self.localRefsUpdater waitUpdate:^{
 			[self notifyWithSelector:@selector(repositoryControllerDidCheckoutBranch:)];
+			[self notifyWithSelector:@selector(repositoryControllerDidUpdateBranch:)];
 			[self popDisabled];
 			[self popSpinning];
 		}];
@@ -2245,6 +2259,7 @@
 			self.repository.stage.currentCommitMessage = message;
 			
 			[self notifyWithSelector:@selector(repositoryControllerDidCommit:)];
+			[self notifyWithSelector:@selector(repositoryControllerDidUpdateBranch:)];
 			
 			[self setNeedsUpdateStage];
 			[self setNeedsUpdateSubmodules];
@@ -2397,6 +2412,8 @@
 					[self.repository.lastError present];
 				}
 			}];
+			
+			[self notifyWithSelector:@selector(repositoryControllerDidUpdateBranch:)];
 		}];
 	}];
 }
@@ -2432,6 +2449,8 @@
 					[self popSpinning];
 					[self popDisabled];
 				}];
+				
+				[self notifyWithSelector:@selector(repositoryControllerDidUpdateBranch:)];
 			}];
 		}];
 	}];
@@ -2466,6 +2485,7 @@
 				{
 					[self.repository.lastError present];
 				}
+				[self notifyWithSelector:@selector(repositoryControllerDidUpdateBranch:)];
 			}];
 		}];
 	}];
@@ -2535,6 +2555,7 @@
 			[self popSpinning];
 			[self popDisabled];
 		}];
+		[self notifyWithSelector:@selector(repositoryControllerDidUpdateBranch:)];
 	}];
 }
 
@@ -2895,11 +2916,10 @@
 {
 	block = [[block copy] autorelease];
 	[self.repository resetSubmodule:submodule withBlock:^{
-	
-		if (block) block();
-		
 		[self setNeedsUpdateStage];
 		[self setNeedsUpdateSubmodules];
+		
+		if (block) block();
 	}];
 }
 
@@ -2923,6 +2943,7 @@
 		[self setNeedsUpdateStage];
 		[self setNeedsUpdateSubmodules];
 		[self setNeedsUpdateLocalRefs];
+		[self notifyWithSelector:@selector(repositoryControllerDidUpdateBranch:)];
 	}];
 }
 
@@ -2956,6 +2977,7 @@
 		[self setNeedsUpdateStage];
 		[self setNeedsUpdateSubmodules];
 		[self setNeedsUpdateLocalRefs];
+		[self notifyWithSelector:@selector(repositoryControllerDidUpdateBranch:)];
 	}];
 }
 
@@ -3040,6 +3062,7 @@
 				[self setNeedsUpdateStage];
 				[self setNeedsUpdateSubmodules];
 				[self setNeedsUpdateLocalRefs];
+				[self notifyWithSelector:@selector(repositoryControllerDidUpdateBranch:)];
 			}];
 		}];
 	};

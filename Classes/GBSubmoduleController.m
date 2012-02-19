@@ -71,8 +71,10 @@
 		// 3. This doesn't really work, so let's predict the status.
 		self.submodule.status = GBSubmoduleStatusUpToDate;
 		
-		[self.parentRepositoryController setNeedsUpdateSubmodules];
-		[self.parentRepositoryController setNeedsUpdateStage];
+		[self setNeedsUpdateStage];
+		[self setNeedsUpdateSubmodules];
+		[self setNeedsUpdateLocalRefs];
+		[self setNeedsUpdateCommits];
 		
 		[self popSpinning];
 		[self popDisabled];
