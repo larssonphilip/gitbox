@@ -146,6 +146,7 @@
 	
 	BOOL wantsAutoResetSubmodules;
 	BOOL stageHasCleanSubmodules;
+	BOOL initialUpdateDone;
 }
 
 @synthesize repository;
@@ -587,8 +588,14 @@
 	// Cancel initial update.
 	// TODO: check if the initialUpdate was not done yet and run it. Otherwise run [self setNeedsUpdateLocalState];
 	[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(initialUpdate) object:nil];
-	
-	[self setNeedsUpdateLocalState];
+	if (!initialUpdateDone)
+	{
+		[self initialUpdate];
+	}
+	else
+	{
+		[self setNeedsUpdateLocalState];
+	}
 }
 
 - (void) windowDidBecomeKey
@@ -871,6 +878,7 @@
 
 - (void) initialUpdate
 {
+	initialUpdateDone = YES;
 	[self setNeedsUpdateStage];
 	[self.stageUpdater waitUpdate:^{
 		[self setNeedsUpdateLocalRefs];
