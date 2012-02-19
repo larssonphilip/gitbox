@@ -1,13 +1,25 @@
 #import <Foundation/Foundation.h>
 
-extern NSString* const GBAsyncUpdaterDidFinishNotification;
-extern NSString* const GBAsyncUpdaterWillBeginNotification;
+//extern NSString* const GBAsyncUpdaterDidFinishNotification;
+//extern NSString* const GBAsyncUpdaterWillBeginNotification;
 
 @interface GBAsyncUpdater : NSObject
 
 // Target is called when needs to begin an update.
 @property(nonatomic, assign) id target;
 @property(nonatomic, assign) SEL action;
+
++ (GBAsyncUpdater*) updaterWithTarget:(id)target action:(SEL)action;
+
+// Returns YES if will update later.
+
+- (BOOL) needsUpdate;
+
+
+// Returns YES if already in process of updating.
+
+- (BOOL) isUpdating;
+
 
 // Tells updater to update as soon as possible.
 // If update is already in progress, another update will be scheduled right after.
@@ -25,5 +37,8 @@ extern NSString* const GBAsyncUpdaterWillBeginNotification;
 
 - (void) beginUpdate;
 - (void) endUpdate;
+
+// Call to clean up all pending blocks
+- (void) cancel;
 
 @end

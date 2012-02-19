@@ -1,8 +1,8 @@
 #import "GBAsyncUpdater.h"
 #import "OABlockOperations.h"
 
-NSString* const GBAsyncUpdaterDidFinishNotification = @"GBAsyncUpdaterDidFinishNotification";
-NSString* const GBAsyncUpdaterWillBeginNotification = @"GBAsyncUpdaterWillBeginNotification";
+//NSString* const GBAsyncUpdaterDidFinishNotification = @"GBAsyncUpdaterDidFinishNotification";
+//NSString* const GBAsyncUpdaterWillBeginNotification = @"GBAsyncUpdaterWillBeginNotification";
 
 @interface GBAsyncUpdater ()
 @property(nonatomic, copy) void(^currentWaitBlock)(); // after completion of the current update
@@ -15,8 +15,8 @@ NSString* const GBAsyncUpdaterWillBeginNotification = @"GBAsyncUpdaterWillBeginN
 	BOOL _inProgress;
 }
 
-@synthesize target;
-@synthesize action;
+@synthesize target=_target;
+@synthesize action=_action;
 @synthesize currentWaitBlock;
 @synthesize nextWaitBlock;
 
@@ -27,6 +27,23 @@ NSString* const GBAsyncUpdaterWillBeginNotification = @"GBAsyncUpdaterWillBeginN
 	[super dealloc];
 }
 
++ (GBAsyncUpdater*) updaterWithTarget:(id)target action:(SEL)action
+{
+	GBAsyncUpdater* updater = [[[self alloc] init] autorelease];
+	updater.target = target;
+	updater.action = action;
+	return updater;
+}
+
+- (BOOL) needsUpdate
+{
+	return _needsUpdate || _needsUpdateAfterCurrentUpdate;
+}
+
+- (BOOL) isUpdating
+{
+	return _inProgress;
+}
 
 - (void) setNeedsUpdate
 {
@@ -38,7 +55,7 @@ NSString* const GBAsyncUpdaterWillBeginNotification = @"GBAsyncUpdaterWillBeginN
 		{
 			_needsUpdate = YES;
 			dispatch_async(dispatch_get_main_queue(), ^{
-				[self.target performSelector:self.action withObject:self];
+				if (self.action) [self.target performSelector:self.action withObject:self];
 			});
 		}
 	}
@@ -69,9 +86,10 @@ NSString* const GBAsyncUpdaterWillBeginNotification = @"GBAsyncUpdaterWillBeginN
 
 - (void) beginUpdate
 {
+	// It is important to set _needsUpdate to NO here and not before target/action call.
+	// The client may delay call to beginUpdate and we keep the "needs update" state until we really beginUpdate.
 	_inProgress = YES;
 	_needsUpdate = NO;
-	[[NSNotificationCenter defaultCenter] postNotificationName:GBAsyncUpdaterWillBeginNotification object:self];
 }
 
 - (void) endUpdate
@@ -86,17 +104,26 @@ NSString* const GBAsyncUpdaterWillBeginNotification = @"GBAsyncUpdaterWillBeginN
 	_needsUpdate = NO;
 	self.currentWaitBlock = nil;
 	self.nextWaitBlock = nil;
-	
-	if (currentBlock) currentBlock();
-	
-	[[NSNotificationCenter defaultCenter] postNotificationName:GBAsyncUpdaterDidFinishNotification object:self];
-	
+
+	// Schedule another update if needed.
 	self.currentWaitBlock = nextBlock;
-	
 	if (needsUpdateAgain || self.currentWaitBlock)
 	{
 		[self setNeedsUpdate];
 	}
+	
+	// Get back to the waiting clients.
+	if (currentBlock) currentBlock();
+}
+
+
+- (void) cancel
+{
+	_inProgress = NO;
+	_needsUpdateAfterCurrentUpdate = NO;
+	_needsUpdate = NO;
+	self.currentWaitBlock = nil;
+	self.nextWaitBlock = nil;
 }
 
 
