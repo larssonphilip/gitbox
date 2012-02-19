@@ -46,3 +46,6 @@ Keychain issues under sandbox:
 
 ioctl is denied by sandbox in a Perl script:
 - https://devforums.apple.com/thread/115368?tstart=200
+
+NSURL security-scoped bookmarks and transition for existing documents.
+- https://devforums.apple.com/thread/141847?tstart=0
