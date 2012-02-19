@@ -18,7 +18,6 @@
 @property(nonatomic, assign, getter=isUpdating) BOOL updating;
 @property(nonatomic, assign, getter=isRebaseConflict) BOOL rebaseConflict;
 @property(nonatomic, copy) NSData* previousChangesData;
-@property(nonatomic, copy) void(^transactionPendingBlock)();
 - (void) arrangeChanges;
 - (void) launchTaskByChunksWithArguments:(NSArray*)args paths:(NSArray*)allPaths block:(void(^)())block taskCallback:(void(^)(GBTask*))taskCallback atomic:(BOOL)atomic;
 - (void) flushBlocks:(NSMutableArray*)mutableArray;
@@ -39,8 +38,6 @@
 @synthesize rebaseConflict;
 @synthesize previousChangesData;
 
-@synthesize transactionPendingBlock=_transactionPendingBlock;
-
 #pragma mark - Init
 
 - (void) dealloc
@@ -50,7 +47,6 @@
 	[untrackedChanges release];
 	[currentCommitMessage release];
 	[previousChangesData release];
-	[_transactionPendingBlock release];
 	[super dealloc];
 }
 
@@ -530,27 +526,11 @@
 - (void) beginStageTransaction:(void(^)())block
 {
 	[self.repository.blockTransaction begin:block];
-//	if (!block) return;
-//	
-//	if (!stageTransactionInProgress)
-//	{
-//		stageTransactionInProgress = YES;
-//		block();
-//	}
-//	else
-//	{
-//		self.transactionPendingBlock = OABlockConcat(self.transactionPendingBlock, block);
-//	}
 }
 
 - (void) endStageTransaction
 {
 	[self.repository.blockTransaction end];
-	
-//	stageTransactionInProgress = NO;
-//	void(^block)() = [[self.transactionPendingBlock copy] autorelease];
-//	self.transactionPendingBlock = nil;
-//	if (block) block();
 }
 
 
