@@ -154,6 +154,8 @@
 		203FF1DE1365C96E000624D6 /* GBAskPassCredentialsControllerPasswordOnly.xib in Resources */ = {isa = PBXBuildFile; fileRef = 203FF1DC1365C96E000624D6 /* GBAskPassCredentialsControllerPasswordOnly.xib */; };
 		2041353214613009007BFE0B /* GBVersionComparator.m in Sources */ = {isa = PBXBuildFile; fileRef = 2041353114613009007BFE0B /* GBVersionComparator.m */; };
 		2041353314613009007BFE0B /* GBVersionComparator.m in Sources */ = {isa = PBXBuildFile; fileRef = 2041353114613009007BFE0B /* GBVersionComparator.m */; };
+		205101B614F0F16C00F9507D /* GBAsyncUpdater.m in Sources */ = {isa = PBXBuildFile; fileRef = 205101B514F0F16C00F9507D /* GBAsyncUpdater.m */; };
+		205101B714F0F16C00F9507D /* GBAsyncUpdater.m in Sources */ = {isa = PBXBuildFile; fileRef = 205101B514F0F16C00F9507D /* GBAsyncUpdater.m */; };
 		2051376E13446443008614D4 /* OAFSEventStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 2051376D13446443008614D4 /* OAFSEventStream.m */; };
 		2051376F13446443008614D4 /* OAFSEventStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 2051376D13446443008614D4 /* OAFSEventStream.m */; };
 		2054FFE8125DE75800692C77 /* GBRepositoryCloningViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2054FFE7125DE75800692C77 /* GBRepositoryCloningViewController.xib */; };
@@ -723,6 +725,8 @@
 		203FF1DC1365C96E000624D6 /* GBAskPassCredentialsControllerPasswordOnly.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBAskPassCredentialsControllerPasswordOnly.xib; sourceTree = "<group>"; };
 		2041353014613009007BFE0B /* GBVersionComparator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBVersionComparator.h; sourceTree = "<group>"; };
 		2041353114613009007BFE0B /* GBVersionComparator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBVersionComparator.m; sourceTree = "<group>"; };
+		205101B414F0F16C00F9507D /* GBAsyncUpdater.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBAsyncUpdater.h; sourceTree = "<group>"; };
+		205101B514F0F16C00F9507D /* GBAsyncUpdater.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBAsyncUpdater.m; sourceTree = "<group>"; };
 		2051376C13446442008614D4 /* OAFSEventStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAFSEventStream.h; sourceTree = "<group>"; };
 		2051376D13446443008614D4 /* OAFSEventStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAFSEventStream.m; sourceTree = "<group>"; };
 		2054FFE7125DE75800692C77 /* GBRepositoryCloningViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBRepositoryCloningViewController.xib; sourceTree = "<group>"; };
@@ -1183,6 +1187,8 @@
 				2041353114613009007BFE0B /* GBVersionComparator.m */,
 				20C66EEE1344EEAF0067D232 /* GBFolderMonitor.h */,
 				20C66EEF1344EEAF0067D232 /* GBFolderMonitor.m */,
+				205101B414F0F16C00F9507D /* GBAsyncUpdater.h */,
+				205101B514F0F16C00F9507D /* GBAsyncUpdater.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -2263,6 +2269,7 @@
 				20F2D1C214E469E3009F3609 /* GBApplication.m in Sources */,
 				207C836114E9C6D3005C91E7 /* YRKSpinningProgressIndicator.m in Sources */,
 				207C836514E9F0F6005C91E7 /* OABlockTransaction.m in Sources */,
+				205101B714F0F16C00F9507D /* GBAsyncUpdater.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2423,6 +2430,7 @@
 				20F2D1C114E469E3009F3609 /* GBApplication.m in Sources */,
 				207C836014E9C6D3005C91E7 /* YRKSpinningProgressIndicator.m in Sources */,
 				207C836414E9F0F6005C91E7 /* OABlockTransaction.m in Sources */,
+				205101B614F0F16C00F9507D /* GBAsyncUpdater.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2578,7 +2586,7 @@
 		C05733CC08A9546B00998B17 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				APP_VERSION = "2012-02-18";
+				APP_VERSION = "2012-02-19";
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CODE_SIGN_IDENTITY = "iPhone Developer: Oleg Andreev (9F23AVDPMZ)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;

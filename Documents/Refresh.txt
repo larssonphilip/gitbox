@@ -14,8 +14,10 @@ API for updating a "feature" F:
 
 - setNeedsUpdateFeature
 - waitUpdateFeature:^{ ... }
+- didFinishUpdate
 
 State: (move this to the object)
+- target/action: to start an update
 - needsUpdateFeature
 - needsUpdateFeatureAfterCurrentUpdate // set to YES if update is in progress
 - updateFeatureInProgress
@@ -33,7 +35,7 @@ State: (move this to the object)
 - waitUpdateFeature:
   - if not in progress: call back immediately
   - if in progress, but not needs update after current update: add block to updateFeatureCurrentWaitBlock
-  - if in progress and needs update after current update
+  - if in progress and needs update after current update: add to next wait block.
   
 - did finish update:
   - copy state in tmp variables and clear

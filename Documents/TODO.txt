@@ -27,14 +27,35 @@ Major Features:
 
 
 
-Gitbox 1.7 Release Notes
+Gitbox 1.6.2 Release Notes
+
+
+
+Fixed bug when cloning from a URL with spaces.
+Fixed several error messages.
+Fixed bug with submodule paths containing spaces.
+Fixed commit cherry-picking and merging from the search mode.
+
+
+-------------------------------
+
+Done for next release:
+
++ prepare a debug target with auto updates and automatic upload to gitboxapp.com
++ bug: cannot clone "Olivier Maes@git.tiwi.be:/git/2011-2012" because "Next..." button is disabled - space is not validated
++ bug: when pushing to git://github.com/... error message is present in git output, but not in the alert window.
++ bug: spaces in path of submodules doom everything (also check the spaces in their urls)
++ allow cherry-picking from any commit in search mode
+
+
+-------------------------------
+
+Gitbox Next:
 
 
 
 
-----------------------
 
-Gitbox 1.7 misc items:
 
 - some problems with removing a tag
 - fetch from only one remote to avoid tags ping-ponging.
@@ -93,25 +114,6 @@ Gitbox 1.7 misc items:
 ? crash: when adding a repository
 ? crash: on invalid ssh key the askpass controller crashes with "task" selector
 ? crash: The app crashes whenever I try to delete a remote branch, shortly after hitting the “Ok” button of the edit branch sheet
-
-
-
-
--------------------------------
-
-Done for next release:
-
-+ prepare a debug target with auto updates and automatic upload to gitboxapp.com
-+ bug: cannot clone "Olivier Maes@git.tiwi.be:/git/2011-2012" because "Next..." button is disabled - space is not validated
-+ bug: when pushing to git://github.com/... error message is present in git output, but not in the alert window.
-+ bug: spaces in path of submodules doom everything (also check the spaces in their urls)
-+ allow cherry-picking from any commit in search mode
-
-
--------------------------------
-
-Gitbox Next:
-
 
 
 
