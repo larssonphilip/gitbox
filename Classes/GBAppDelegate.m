@@ -28,6 +28,8 @@
 #import "OALicenseNumberCheck.h"
 #import "OATask.h"
 
+#import "GBAsyncUpdater.h"
+
 #define DEBUG_iRate 0
 
 #if DEBUG_iRate
@@ -218,9 +220,6 @@
 	
 #endif
 	
-#if DEBUG
-    //NSLog(@"GBAskPassServer: %@", [GBAskPassServer sharedServer]);
-#endif
 	
 #if DEBUG_iRate
 #warning DEBUG: launching iRate dialog on start
@@ -413,6 +412,64 @@
 	{
 		NSLog(@"GBAppDelegate: unknown URL: %@", urlString);
 	}
+}
+
+
+
+
+- (void) simulateSetNeedsUpdate:(GBAsyncUpdater*)updater
+{
+	NSLog(@">> Setting setNeedsUpdate");
+	[updater setNeedsUpdate];
+	double delayInSeconds = 4.0*drand48();
+	NSLog(@">> Will setNeedsUpdate after %f sec", delayInSeconds);
+	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+		[self simulateSetNeedsUpdate:updater];
+	});
+	
+//	if (drand48() > 0.0)
+	{
+		static int c = 0;
+		static int uid = 0;
+		uid += (int)(drand48()*10000);
+		c++;
+		int c_ = c;
+		int uid_ = uid;
+		NSLog(@">> Began waiting[%d]: c=%d ", uid_, c);
+		[updater waitUpdate:^{
+			c--;
+			NSLog(@">> Ended waiting[%d]: c=%d [c was %d]", uid_, c, c_);
+			if (c < 0)
+			{
+				NSLog(@"WARNING WARNING: imbalance detected! WARNING WARNING");
+			}
+		}];
+	}
+}
+
+- (void) testGBAsyncUpdaterUpdate:(GBAsyncUpdater*)updater
+{
+	[updater beginUpdate];
+	double delayInSeconds = 5.0*drand48();
+	NSLog(@">> Began update for %f sec.", delayInSeconds);
+	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+	dispatch_after(popTime, dispatch_get_main_queue(), ^{
+		[updater endUpdate];
+		NSLog(@">> Update ended after %f sec.", delayInSeconds);
+	});
+}
+
+- (void) testGBAsyncUpdater
+{
+	static GBAsyncUpdater* updater = nil;
+	
+	if (!updater)
+	{
+		updater = [[GBAsyncUpdater updaterWithTarget:self action:@selector(testGBAsyncUpdaterUpdate:)] retain];
+	}
+	
+	[self simulateSetNeedsUpdate:updater];
 }
 
 

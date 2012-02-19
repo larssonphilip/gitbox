@@ -53,6 +53,7 @@
 	{
 		if (!_needsUpdate)
 		{
+			//NSLog(@"GBAsyncUpdater: setNeedsUpdate: scheduling update");
 			_needsUpdate = YES;
 			dispatch_async(dispatch_get_main_queue(), ^{
 				if (self.action) [self.target performSelector:self.action withObject:self];
@@ -61,6 +62,7 @@
 	}
 	else
 	{
+		//NSLog(@"GBAsyncUpdater: setNeedsUpdate: needs update after current update");
 		_needsUpdateAfterCurrentUpdate = YES;
 	}
 }
@@ -69,17 +71,20 @@
 {
 	if (!_inProgress)
 	{
+		//NSLog(@"GBAsyncUpdater: waitUpdate: not in progress, calling block");
 		if (block) block();
 	}
 	else
 	{
 		if (!_needsUpdateAfterCurrentUpdate)
 		{
+			//NSLog(@"GBAsyncUpdater: waitUpdate: adding to current wait block");
 			self.currentWaitBlock = OABlockConcat(self.currentWaitBlock, block);
 		}
 		else
 		{
-			self.nextWaitBlock = OABlockConcat(self.currentWaitBlock, block);
+			//NSLog(@"GBAsyncUpdater: waitUpdate: adding to next wait block, after update");
+			self.nextWaitBlock = OABlockConcat(self.nextWaitBlock, block);
 		}
 	}
 }
@@ -119,11 +124,14 @@
 
 	// Schedule another update if needed.
 	self.currentWaitBlock = nextBlock;
+	
+	//NSLog(@"GBAsyncUpdater: endUpdate: needsUpdateAgain=%d  currentWaitBlock=%@", (int)needsUpdateAgain, self.currentWaitBlock);
 	if (needsUpdateAgain || self.currentWaitBlock)
 	{
 		[self setNeedsUpdate];
 	}
 	
+	//NSLog(@"GBAsyncUpdater: endUpdate: calling client: %@", currentBlock);
 	// Get back to the waiting clients.
 	if (currentBlock) currentBlock();
 }
