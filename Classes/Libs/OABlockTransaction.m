@@ -37,7 +37,10 @@
 	stageTransactionInProgress = NO;
 	void(^block)() = [[self.transactionPendingBlock copy] autorelease];
 	self.transactionPendingBlock = nil;
-	if (block) block();
+	if (block) 
+	{
+		[self begin:block];
+	}
 }
 
 - (void) clean
