@@ -30,7 +30,7 @@ Major Features:
 Gitbox 1.6.2 Release Notes
 
 
-
+Improved performance of updates of git state (stage, branches, commits and submodules).
 Fixed bug when cloning from a URL with spaces.
 Fixed several error messages.
 Fixed bug with submodule paths containing spaces.
@@ -46,22 +46,22 @@ Done for next release:
 + bug: when pushing to git://github.com/... error message is present in git output, but not in the alert window.
 + bug: spaces in path of submodules doom everything (also check the spaces in their urls)
 + allow cherry-picking from any commit in search mode
-
++ setNeedsUpdate: add timer for local updates
++ setNeedsUpdate: when stage is updated, should setNeedsUpdateSubmodules if previous or current changes contained submodules.
++ setNeedsUpdate: when submodule updates its local ref or changes stage, should ping parent to update its stage
++ setNeedsUpdate: when parent resets submodule, should ping it to update its everything
++ setNeedsUpdate: bug with balance
 
 -------------------------------
 
 Gitbox Next:
 
 - setNeedsUpdate:
-  - add timer for local updates
   - add timer for remote refs updates
   - separate single remote update from the rest.
   - use setNeeds... for refreshing remotes when app needs to (after creating a branch, pushing etc.)
   - autofetch for the current remote only (if present).
-  + when stage is updated, should setNeedsUpdateSubmodules if previous or current changes contained submodules.
-  + when submodule updates its local ref or changes stage, should ping parent to update its stage
-  + when parent resets submodule, should ping it to update its everything
-  ? BUG: GRMustache did not pop the spinner. - cannot reproduce
+
   
 - fetch from only one remote to avoid tags ping-ponging.
   - from the selected remote if given.
