@@ -69,9 +69,9 @@
 
 - (void) waitUpdate:(void(^)())block
 {
-	if (!_inProgress)
+	if (!_inProgress && !_needsUpdate && !_needsUpdateAfterCurrentUpdate)
 	{
-		//NSLog(@"GBAsyncUpdater: waitUpdate: not in progress, calling block");
+		//NSLog(@"GBAsyncUpdater: waitUpdate: not in progress and does not need update, calling block");
 		if (block) block();
 	}
 	else
