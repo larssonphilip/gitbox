@@ -13,6 +13,8 @@
 	BOOL _needsUpdate;
 	BOOL _needsUpdateAfterCurrentUpdate; // set to YES if update is in progress
 	BOOL _inProgress;
+	
+	int generation;
 }
 
 @synthesize target=_target;
@@ -49,8 +51,6 @@
 {
 	if (!_inProgress)
 	{
-		_needsUpdateAfterCurrentUpdate = NO;
-		
 		if (!_needsUpdate)
 		{
 			_needsUpdate = YES;
@@ -90,10 +90,22 @@
 	// The client may delay call to beginUpdate and we keep the "needs update" state until we really beginUpdate.
 	_inProgress = YES;
 	_needsUpdate = NO;
+	
+#if DEBUG
+	generation++;
+	int gen = generation;
+	OADispatchDelayed(20.0, ^{
+		if (gen == generation)
+		{
+			NSLog(@"GBAsyncUpdater[%@ -> %@] Was not finished for 20 seconds.", NSStringFromSelector(self.action), self.target);
+		}
+	});
+#endif
 }
 
 - (void) endUpdate
 {
+	generation++;
 	BOOL needsUpdateAgain = _needsUpdateAfterCurrentUpdate;
 	void(^currentBlock)() = [[self.currentWaitBlock copy] autorelease];
 	void(^nextBlock)() = [[self.nextWaitBlock copy] autorelease];

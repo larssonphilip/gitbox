@@ -62,6 +62,23 @@ For model updaters:
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+Async updater:
+
+I  = Idle
+W  = Waiting for beginUpdate
+P1 = In progress
+P2 = In Progress and needs update again
+
+
+I - Idle:
+
+setNeedsUpdate - 
+waitUpdate: - calls block immediately.
+
+
+
+
+
 
 
 

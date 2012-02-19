@@ -14,8 +14,6 @@
 #import "NSAlert+OAAlertHelpers.h"
 #import "NSFileManager+OAFileManagerHelpers.h"
 
-#define kGBChangeSubmoduleMode (@"160000")
-
 @interface GBChange ()
 @property(nonatomic, retain) NSImage* cachedSrcIcon;
 @property(nonatomic, retain) NSImage* cachedDstIcon;

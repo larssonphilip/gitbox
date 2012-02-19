@@ -145,6 +145,7 @@
 	BOOL authenticationInProgress;
 	
 	BOOL wantsAutoResetSubmodules;
+	BOOL stageHasCleanSubmodules;
 }
 
 @synthesize repository;
@@ -828,7 +829,6 @@
 
 - (void) stop
 {
-	
 	if (stopped) return;
 	stopped = YES;
 	
@@ -861,10 +861,11 @@
 	[self setNeedsUpdateStage];
 	[self.stageUpdater waitUpdate:^{
 		[self setNeedsUpdateLocalRefs];
-		[self setNeedsUpdateSubmodules];
-		[self.localRefsUpdater waitUpdate:^{
-			[self setNeedsUpdateRemoteRefs];
-		}];
+		
+		// Remote refs also load current remote configuration from disk.
+//		[self.localRefsUpdater waitUpdate:^{
+//			[self setNeedsUpdateRemoteRefs];
+//		}];
 	}];
 }
 
@@ -911,23 +912,42 @@
 	[self.fetchUpdater setNeedsUpdate];
 }
 
-
+// Returns YES if submodules are not on the stage.
+- (BOOL) stageHasCleanSubmodules
+{
+	for (GBChange* change in self.repository.stage.changes)
+	{
+		if ([change isSubmodule]) return NO;
+	}
+	return YES;
+}
 
 - (void) shouldUpdateStage:(GBAsyncUpdater*)updater
 {
 	if (!self.repository.stage) return;
-	
+
 	[updater beginUpdate];
-	
+
 	[self.repository.stage updateStageWithBlock:^(BOOL didChange){
+		[self.sidebarItem update];
+
+		[updater endUpdate];
+
 		if (didChange)
 		{
-			#warning TODO: reset periodic updates timer for local updates.
+#warning TODO: reset periodic updates timer for local updates.
 			[self setNeedsUpdateStage];
 		}
-		[self.sidebarItem update];
+
+		BOOL _hasCleanSubmodules = [self stageHasCleanSubmodules];
 		
-		[updater endUpdate];
+		// If was not clean or not clean now, update submodules.
+		if (!stageHasCleanSubmodules || !_hasCleanSubmodules)
+		{
+			[self setNeedsUpdateSubmodules];
+		}
+		stageHasCleanSubmodules = _hasCleanSubmodules;
+		
 	}];
 }
 
@@ -969,6 +989,7 @@
 		
 		self.submodules = self.repository.submodules;
 		
+		stageHasCleanSubmodules = [self stageHasCleanSubmodules];
 		if (didChangeSubmodules)
 		{
 			[self notifyWithSelector:@selector(repositoryControllerDidUpdateSubmodules:)];
@@ -1031,14 +1052,14 @@
 
 - (void) shouldUpdateRemoteRefs:(GBAsyncUpdater*)updater
 {
-	[updater beginUpdate];
-	[updater endUpdate];
+//	[updater beginUpdate];
+//	[updater endUpdate];
 }
 
 - (void) shouldUpdateFetch:(GBAsyncUpdater*)updater
 {
-	[updater beginUpdate];
-	[updater endUpdate];
+//	[updater beginUpdate];
+//	[updater endUpdate];
 }
 
 
@@ -1073,14 +1094,13 @@
 	
 	if (self.localRefsUpdater.isUpdating || self.localRefsUpdater.needsUpdate) return;
 	
-	float delay = selected ? 2.0 : 10.0;
+	float delay = selected ? 5.0 : 60.0;
 	NSTimeInterval currentTimestamp = [[NSDate date] timeIntervalSince1970];
 	
 	if ((currentTimestamp - lastFSEventUpdateTimestamp) > delay)
 	{
 		lastFSEventUpdateTimestamp = currentTimestamp;
 		[self setNeedsUpdateStage];
-		[self setNeedsUpdateSubmodules];
 		[self setNeedsUpdateLocalRefs];
 	}
 }
@@ -2082,8 +2102,6 @@
 		if (stagingCounter == 0)
 		{
 			[self setNeedsUpdateStage];
-#warning TODO: instead of updating submodules here, check if changes contained submodules before/after update and update submodules.
-			[self setNeedsUpdateSubmodules];
 		}
 		[self popSpinning];
 	});

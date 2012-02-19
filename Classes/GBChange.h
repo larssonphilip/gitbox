@@ -1,7 +1,8 @@
 #import <Quartz/Quartz.h>
 #import "GBChangeDelegate.h"
 
-#define kGBChangeDiffToolKey @"diffTool"
+#define kGBChangeDiffToolKey   (@"diffTool")
+#define kGBChangeSubmoduleMode (@"160000")
 
 @class GBChangeCell;
 @class GBRepository;

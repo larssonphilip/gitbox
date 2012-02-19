@@ -58,7 +58,10 @@ Gitbox Next:
   - separate single remote update from the rest.
   - autofetch for the current remote only (if present).
   - use setNeeds... for refreshing remotes when app needs to (after creating a branch, pushing etc.)
-  - when stage is updated, should setNeedsUpdateSubmodules if previous or current changes contained submodules.
+  + when stage is updated, should setNeedsUpdateSubmodules if previous or current changes contained submodules.
+  - when submodule updates its local ref or changes stage, should ping parent to update its stage
+  - when parent resets submodule, should ping it to update its everything
+  ? BUG: GRMustache did not pop the spinner. - cannot reproduce
   
 - fetch from only one remote to avoid tags ping-ponging.
   - from the selected remote if given.
