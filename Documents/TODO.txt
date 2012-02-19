@@ -1682,3 +1682,4 @@ $ man git-diff-tree:
 
 $ sudo installer -store -pkg Desktop/gitbox.pkg -target /
 (installs to /Applications if gitbox.app removed from all the folders: Trash, Debug, Release and Archived Applications folders)
+
