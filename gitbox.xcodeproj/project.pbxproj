@@ -2150,7 +2150,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
-			shellScript = "echo \"Touch Plist:\"\necho $PROJECT_DIR\ntouch $PROJECT_DIR/info.plist\n";
+			shellScript = "touch $PROJECT_DIR/info.plist\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
