@@ -1264,6 +1264,12 @@
 			 remote: received 1%...
 			 ...
 			 
+			 Message 5:
+			 
+			 Auto-merging Documents/TODO.txt
+			 CONFLICT (content): Merge conflict in Documents/TODO.txt
+			 Automatic merge failed; fix conflicts and then commit the result.
+			 
 			 */
 			
 			NSString* msg = [task UTF8ErrorAndOutput];
@@ -1286,8 +1292,8 @@
 			{
 				self.lastError = [self errorWithCode:GBErrorCodePullFailed
 										 description:NSLocalizedString(@"Pull Failed", @"")
-											  reason:msg
-										  suggestion:nil];
+											  reason:nil
+										  suggestion:msg];
 			}
 		}
 		if (block) block();
