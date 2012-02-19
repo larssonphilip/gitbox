@@ -90,7 +90,7 @@
 #if GITBOX_APP_STORE || DEBUG_iRate
 	// http://itunes.apple.com/us/app/gitbox/id403388357
 	[iRate sharedInstance].appStoreID = 403388357;
-	[iRate sharedInstance].eventsUntilPrompt = 20; // 20 commits before prompt
+	[iRate sharedInstance].eventsUntilPrompt = 200; // 200 commits before prompt
 #endif
 }
 
