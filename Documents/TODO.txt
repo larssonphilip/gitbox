@@ -59,6 +59,7 @@ Gitbox Next:
   - autofetch for the current remote only (if present).
   - use setNeeds... for refreshing remotes when app needs to (after creating a branch, pushing etc.)
   - when stage is updated, should setNeedsUpdateSubmodules if previous or current changes contained submodules.
+  - BUG: GRMustache did not pop the spinner.
   
 - fetch from only one remote to avoid tags ping-ponging.
   - from the selected remote if given.
