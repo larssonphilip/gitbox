@@ -1,3 +1,4 @@
+#import "GBApplication.h"
 #import "GBAppDelegate.h"
 #import "GBRootController.h"
 #import "GBRepositoriesController.h"
@@ -195,6 +196,10 @@
 
 - (void) applicationDidFinishLaunching:(NSNotification*) aNotification
 {
+	GBApp.didTerminateSafely = [[NSUserDefaults standardUserDefaults] boolForKey:@"GBDidTerminateSafely"];
+	[[NSUserDefaults standardUserDefaults] removeObjectForKey:@"GBDidTerminateSafely"];
+	[[NSUserDefaults standardUserDefaults] synchronize];
+	
 	[GBAskPassServer sharedServer]; // preload the server
     
 	if (![[NSUserDefaults standardUserDefaults] objectForKey:kGBChangeDiffToolKey])
@@ -299,6 +304,7 @@
 {
 	[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(saveItems) object:nil];
 	[self saveItems];
+	[[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"GBDidTerminateSafely"];
 	[GBOptimizeRepositoryController stopMonitoring];
 }
 
