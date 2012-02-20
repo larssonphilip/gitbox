@@ -30,7 +30,8 @@
 	{
 		self.submodule = submodule;
 		
-		//self.repository.dispatchQueue = self.submodule.dispatchQueue;
+#warning TODO: without that we may hit 5 updates concurrently eating tons of cpu!
+		self.repository.dispatchQueue = self.submodule.dispatchQueue;
 		
 		self.sidebarItem = [[[GBSidebarItem alloc] init] autorelease];
 		self.sidebarItem.object = self;

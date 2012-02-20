@@ -1124,7 +1124,10 @@
 	
 	if (self.localRefsUpdater.isUpdating || self.localRefsUpdater.needsUpdate) return;
 	
-	float delay = selected ? 5.0 : 20.0;
+#warning TODO: if we update all repos frequently, typing in Xcode becomes difficult.
+	
+//	float delay = selected ? 5.0 : 20.0;
+	float delay = selected ? 60.0 : 160.0;
 	NSTimeInterval currentTimestamp = [[NSDate date] timeIntervalSince1970];
 	
 	if ((currentTimestamp - lastFSEventUpdateTimestamp) > delay)
