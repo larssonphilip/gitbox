@@ -853,11 +853,11 @@
 	[self setNeedsUpdateStage];
 	[self.stageUpdater waitUpdate:^{
 		[self setNeedsUpdateLocalRefs];
-		
-		// Remote refs also load current remote configuration from disk.
-//		[self.localRefsUpdater waitUpdate:^{
-//			[self setNeedsUpdateRemoteRefs];
-//		}];
+
+		[self.localRefsUpdater waitUpdate:^{
+#warning FIXME: this thing does not help from spurious "unpushed" markers when checking out older commits.
+			[self updateRemoteStateAfterDelay:0.0];
+		}];
 	}];
 }
 
@@ -1867,6 +1867,7 @@
 		[self setNeedsUpdateLocalRefs];
 		
 		[self.localRefsUpdater waitUpdate:^{
+			[self setNeedsUpdateCommits];
 			[self notifyWithSelector:@selector(repositoryControllerDidCheckoutBranch:)];
 			[self notifyWithSelector:@selector(repositoryControllerDidUpdateBranch:)];
 			[self popDisabled];
