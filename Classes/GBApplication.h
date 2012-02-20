@@ -4,6 +4,8 @@
 
 @interface GBApplication : NSApplication
 
+@property(nonatomic, assign) BOOL didTerminateSafely;
+
 - (void) beginIgnoreUserAttentionRequests;
 - (void) endIgnoreUserAttentionRequests;
 

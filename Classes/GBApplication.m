@@ -4,6 +4,8 @@
 	int ignoreUserAttentionRequests;
 }
 
+@synthesize didTerminateSafely;
+
 - (void) beginIgnoreUserAttentionRequests
 {
 	ignoreUserAttentionRequests++;
