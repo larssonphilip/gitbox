@@ -65,6 +65,7 @@ Gitbox Next:
   - autofetch for the current remote only (if present).
 
 - bug: if pushed from the terminal, commits difference is not recalculated (green dots remain).
+- bug: if checkout a commit, all commits before it become green.
   
 - fetch from only one remote to avoid tags ping-ponging.
   - from the selected remote if given.
