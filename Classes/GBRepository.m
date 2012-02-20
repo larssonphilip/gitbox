@@ -835,6 +835,10 @@
 	{
 		task.substructedBranch = self.currentRemoteBranch;
 	}
+	else
+	{
+		NSLog(@"GBRepository: remote branch does not exist: %@ [not substructing branch]", self.currentRemoteBranch);
+	}
 	
 	[self launchTask:task withBlock:^{
 		NSArray* allCommits = self.localBranchCommits;
