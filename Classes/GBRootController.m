@@ -1,3 +1,4 @@
+#import "GBApplication.h"
 #import "GBRootController.h"
 #import "GBRepository.h"
 #import "GBRepositoriesController.h"
@@ -386,7 +387,6 @@
 			 nil], @"contents", 
 			
 			[self selectedItemIndexes], @"selectedItemIndexes",
-			
 			nil];
 }
 
@@ -476,7 +476,10 @@
 		}
 	}
 	
-	self.selectedItemIndexes = indexes;
+	if (GBApp.didTerminateSafely)
+	{
+		self.selectedItemIndexes = indexes;
+	}
 }
 
 
