@@ -30,7 +30,7 @@
 	{
 		self.submodule = submodule;
 		
-		self.repository.dispatchQueue = self.submodule.dispatchQueue;
+		//self.repository.dispatchQueue = self.submodule.dispatchQueue;
 		
 		self.sidebarItem = [[[GBSidebarItem alloc] init] autorelease];
 		self.sidebarItem.object = self;
