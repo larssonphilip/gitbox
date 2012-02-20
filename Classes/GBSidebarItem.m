@@ -454,7 +454,7 @@
 
 - (GBSidebarItem*) childAtIndex:(NSInteger)anIndex
 {
-	return [self.object sidebarItemChildAtIndex:anIndex];
+	return [[[self.object sidebarItemChildAtIndex:anIndex] retain] autorelease];
 }
 
 - (NSUInteger) indexOfChild:(GBSidebarItem*)aChild
