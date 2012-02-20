@@ -1004,20 +1004,24 @@
 	if (stopped) return;
 	if (![self checkRepositoryExistance]) return;
 	
-	[updater beginUpdate];
-	[self.repository updateSubmodulesWithBlock:^{
-		
-		// Figure out in advance if there's anything to send update notification about.
-		BOOL didChangeSubmodules = [self submodulesOutOfSync];
-		
-		self.submodules = self.repository.submodules;
-		
-		stageHasCleanSubmodules = [self stageHasCleanSubmodules];
-		if (didChangeSubmodules)
-		{
-			[self notifyWithSelector:@selector(repositoryControllerDidUpdateSubmodules:)];
-		}
-		[updater endUpdate];
+	[self.localRefsUpdater waitUpdate:^{
+		[self.commitsUpdater waitUpdate:^{
+			[updater beginUpdate];
+			[self.repository updateSubmodulesWithBlock:^{
+				
+				// Figure out in advance if there's anything to send update notification about.
+				BOOL didChangeSubmodules = [self submodulesOutOfSync];
+				
+				self.submodules = self.repository.submodules;
+				
+				stageHasCleanSubmodules = [self stageHasCleanSubmodules];
+				if (didChangeSubmodules)
+				{
+					[self notifyWithSelector:@selector(repositoryControllerDidUpdateSubmodules:)];
+				}
+				[updater endUpdate];
+			}];
+		}];
 	}];
 }
 

@@ -1901,13 +1901,13 @@
 
 - (void) launchRemoteTask:(OATask*)aTask withBlock:(void(^)())block
 {
-	// Wait for current local tasks to finish.
+	// Wait for current local task to finish.
 	block = [[block copy] autorelease];
-	dispatch_async(dispatchQueue, ^{
-		dispatch_async(dispatch_get_main_queue(), ^{
+//	dispatch_async(dispatchQueue, ^{
+//		dispatch_async(dispatch_get_main_queue(), ^{
 			[aTask launchInQueue:remoteDispatchQueue withBlock:block];
-		});
-	});
+//		});
+//	});
 	
 }
 
