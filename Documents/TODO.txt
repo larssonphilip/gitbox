@@ -53,6 +53,7 @@ Done for next release:
 + setNeedsUpdate: bug with balance
 + bug: after commit and refresh of the history, sometimes the stage remains non-updated.
 + bug: submodules' loading causes stage refresh delays or similar glitches.
++ bug: if checkout a commit, all commits before it become green.
 
 -------------------------------
 
@@ -65,8 +66,8 @@ Gitbox Next:
   - autofetch for the current remote only (if present).
 
 - bug: if pushed from the terminal, commits difference is not recalculated (green dots remain).
-- bug: if checkout a commit, all commits before it become green.
-  
+  - need to clear up how branches are loaded: remote ref does not have an alias when running GBHistoryTask...
+
 - fetch from only one remote to avoid tags ping-ponging.
   - from the selected remote if given.
   - or the first one in a list, if remote branch is not selected.
