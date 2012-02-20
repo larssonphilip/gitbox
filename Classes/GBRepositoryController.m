@@ -445,6 +445,8 @@
 		ctrl.parentRepositoryController = self;
 		[ctrl addObserverForAllSelectors:self];
 	}
+	
+	[self.sidebarItem update];
 }
 
 
@@ -930,7 +932,20 @@
 		if (didChange)
 		{
 			repeatedUpdateDelay = 0.0;
-			[self setNeedsUpdateStage];
+			
+			dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 0.0 * NSEC_PER_SEC);
+			dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+				// Let everybody update their stuff first before next update.
+				// Improves when checking out a commit or a branch.
+				[self.localRefsUpdater waitUpdate:^{
+					[self.commitsUpdater waitUpdate:^{
+						[self.submodulesUpdater waitUpdate:^{
+							[self setNeedsUpdateStage];
+						}];
+					}];
+				}];
+			});
+
 			[self notifyWithSelector:@selector(repositoryControllerDidUpdateStageWithNewChanges:)];
 		}
 		else
@@ -1013,15 +1028,17 @@
 	if (!self.repository) return;
 	if (![self checkRepositoryExistance]) return;
 	
-	[updater beginUpdate];
-	
-	[self.repository updateLocalRefsWithBlock:^(BOOL didChange){
-		if (didChange || self.repository.localBranchCommits.count == 0)
-		{
-			[self setNeedsUpdateCommits];
-		}
-		[updater endUpdate];
-		[self notifyWithSelector:@selector(repositoryControllerDidUpdateRefs:)];
+	[self.stageUpdater waitUpdate:^{
+		[updater beginUpdate];
+		
+		[self.repository updateLocalRefsWithBlock:^(BOOL didChange){
+			if (didChange || self.repository.localBranchCommits.count == 0)
+			{
+				[self setNeedsUpdateCommits];
+			}
+			[updater endUpdate];
+			[self notifyWithSelector:@selector(repositoryControllerDidUpdateRefs:)];
+		}];
 	}];
 }
 
@@ -1865,14 +1882,12 @@
 		
 		[self setNeedsUpdateStage];
 		[self setNeedsUpdateLocalRefs];
+		[self setNeedsUpdateCommits];
 		
-		[self.localRefsUpdater waitUpdate:^{
-			[self setNeedsUpdateCommits];
-			[self notifyWithSelector:@selector(repositoryControllerDidCheckoutBranch:)];
-			[self notifyWithSelector:@selector(repositoryControllerDidUpdateBranch:)];
-			[self popDisabled];
-			[self popSpinning];
-		}];
+		[self notifyWithSelector:@selector(repositoryControllerDidCheckoutBranch:)];
+		[self notifyWithSelector:@selector(repositoryControllerDidUpdateBranch:)];
+		[self popDisabled];
+		[self popSpinning];
 		 
 //		[self.localRefsUpdater updateStageChangesAndSubmodulesWithBlock:^{
 //			[self updateLocalRefsWithBlock:^{
