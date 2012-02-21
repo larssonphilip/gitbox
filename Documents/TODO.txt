@@ -66,6 +66,7 @@ Gitbox Next:
   - autofetch for the current remote only (if present).
 
 - use no more than 4 threads for all repositories. But serialize all tasks for each repo.
+- merge conflict error is not displaying a reason.
 
 - bug: if pushed from the terminal, commits difference is not recalculated (green dots remain).
   - need to clear up how branches are loaded: remote ref does not have an alias when running GBHistoryTask...
