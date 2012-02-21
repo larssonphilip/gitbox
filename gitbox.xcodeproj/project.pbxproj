@@ -1410,7 +1410,11 @@
 		20A9407112FA068800C3F6F4 /* Main Pane */ = {
 			isa = PBXGroup;
 			children = (
-				20A9407212FA06B200C3F6F4 /* Repository View Controller */,
+				20A9407312FA07C100C3F6F4 /* GBRepositoryViewController.h */,
+				20A9407412FA07C100C3F6F4 /* GBRepositoryViewController.m */,
+				20A9408612FA0E5900C3F6F4 /* GBRepositoryViewController.xib */,
+				20A9713812C6C6D200E2B7B9 /* History View */,
+				20A9713912C6C6D800E2B7B9 /* Changes View */,
 				2054FFEE125DE9D200692C77 /* GBRepositoryCloningViewController.h */,
 				2054FFEF125DE9D200692C77 /* GBRepositoryCloningViewController.m */,
 				2054FFE7125DE75800692C77 /* GBRepositoryCloningViewController.xib */,
@@ -1419,18 +1423,6 @@
 				200C159D14672EB1000F4C78 /* GBSubmoduleCloningViewController.xib */,
 			);
 			name = "Main Pane";
-			sourceTree = "<group>";
-		};
-		20A9407212FA06B200C3F6F4 /* Repository View Controller */ = {
-			isa = PBXGroup;
-			children = (
-				20A9407312FA07C100C3F6F4 /* GBRepositoryViewController.h */,
-				20A9407412FA07C100C3F6F4 /* GBRepositoryViewController.m */,
-				20A9408612FA0E5900C3F6F4 /* GBRepositoryViewController.xib */,
-				20A9713812C6C6D200E2B7B9 /* History View */,
-				20A9713912C6C6D800E2B7B9 /* Changes View */,
-			);
-			name = "Repository View Controller";
 			sourceTree = "<group>";
 		};
 		20A9713612C6C6B900E2B7B9 /* Main Window */ = {
@@ -2723,6 +2715,7 @@
 				206EEB1C14F110B50017F7DE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		20915F3112874D2A005E0D82 /* Build configuration list for PBXNativeTarget "Gitbox AppStore" */ = {
 			isa = XCConfigurationList;
