@@ -12,8 +12,6 @@
 @property(nonatomic, retain) GBRepositoryViewController* repositoryViewController;
 @property(nonatomic, retain) GBRepositoryToolbarController* repositoryToolbarController;
 
-// Actions
-
 - (IBAction) openDocument:(id)sender;
 - (IBAction) addGroup:(id)sender;
 - (IBAction) remove:(id)sender;

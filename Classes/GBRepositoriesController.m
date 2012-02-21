@@ -141,6 +141,10 @@
 	[self removeObjects:self.rootController.clickedOrSelectedObjects];
 }
 
+- (void)someNewMethod {
+
+}
+
 - (IBAction) addGroup:(id)sender
 {
 	NSUInteger insertionIndex = 0;
@@ -157,6 +161,8 @@
 	[aGroup.sidebarItem expand];
 	[newGroup.sidebarItem expand];
 	[newGroup.sidebarItem edit];
+
+    [self someNewMethod];
 }
 
 - (void) cloneRepositoryAtURLString:(NSString*)URLString
