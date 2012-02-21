@@ -65,6 +65,8 @@ Gitbox Next:
   - use setNeeds... for refreshing remotes when app needs to (after creating a branch, pushing etc.)
   - autofetch for the current remote only (if present).
 
+- if received good fs event, do not update right away, but update when app is selected.
+  -  should avoid massive updates
 - use no more than 4 threads for all repositories. But serialize all tasks for each repo.
 
 - bug: if pushed from the terminal, commits difference is not recalculated (green dots remain).
