@@ -68,6 +68,10 @@ Gitbox Next:
 - if received good fs event, do not update right away, but update when app is selected.
   -  should avoid massive updates
 - use no more than 4 threads for all repositories. But serialize all tasks for each repo.
+- merge conflict error is not displaying a reason.
+- BUG beanstalk: ls-remote always returns different stuff (?) and causes repeated fetches.
+  - in general, should always have a limit on immediate updates both for fetch and stage update.
+  - note: fetch might be performed by person, should respect a single branch without all that crap.
 
 - bug: if pushed from the terminal, commits difference is not recalculated (green dots remain).
   - need to clear up how branches are loaded: remote ref does not have an alias when running GBHistoryTask...
