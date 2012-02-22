@@ -438,6 +438,8 @@
 {
 	[[self retain] autorelease]; // quick patch to work around the crash when changes are replaced
 	
+	NSFileManager* fileManager = [[[NSFileManager alloc] init] autorelease];
+	
 	// Do nothing for deleted file
 	if ([self isDeletedFile])
 	{
@@ -505,7 +507,7 @@
 	}
 	else if (diffToolLaunchPath)
 	{
-		if ([[NSFileManager defaultManager] isExecutableFileAtPath:diffToolLaunchPath])
+		if ([fileManager isExecutableFileAtPath:diffToolLaunchPath])
 		{
 			task.launchPath = diffToolLaunchPath;      
 		}
@@ -522,6 +524,52 @@
 		return;
 	}
 	
+	
+	// Try to locate opendiff in Xcode 4.3+ bundle.
+	// Starting with 4.3, there's no more /Developer folder and /usr/bin/opendiff does not know where the FileMerge is.
+	// We will try to find an Xcode in /Applications/Xcode.app/
+	
+#warning DEBUG: this is not finished.
+	
+	// A problem with launching from Xcode.app/...:
+	// 2012-02-22 09:09:43.875 opendiff[6978:60b] exception raised trying to run FileMerge: launch path not accessible
+	// 2012-02-22 09:09:43.876 opendiff[6978:60b] Couldn't launch FileMerge
+	
+	if ([task.executableName isEqualToString:@"opendiff"])
+	{
+		if ([fileManager isExecutableFileAtPath:@"/Applications/Xcode.app/Contents/Developer/usr/bin/opendiff"])
+		{
+			task.launchPath = @"/Applications/Xcode.app/Contents/Developer/usr/bin/opendiff";
+		}
+		else // Try to find non-standard Xcode installation.
+		{
+			NSError *error = nil;
+			NSArray* appPaths = [fileManager contentsOfDirectoryAtPath:@"/Applications" error:&error];
+			if (appPaths)
+			{
+				NSMutableArray* opendiffPaths = [NSMutableArray array];
+				for (NSString* name in appPaths)
+				{
+					if ([name rangeOfString:@"Xcode"].length > 0)
+					{
+						NSString* path = [[@"/Applications" stringByAppendingPathComponent:name] stringByAppendingPathComponent:@"Contents/Developer/usr/bin/opendiff"];
+						if ([fileManager isExecutableFileAtPath:path])
+						{
+							[opendiffPaths addObject:path];
+						}
+					}
+				}
+				if (opendiffPaths.count > 0)
+				{
+					task.launchPath = [opendiffPaths lastObject];
+				}
+			}
+			else
+			{
+				NSLog(@"GBChange: cannot iterate over /Applications/* in a search of Xcode apps. %@", error);
+			}
+		}
+	}
 	
 	if (task.executableName && ! task.launchPath)
 	{

@@ -65,8 +65,11 @@ Gitbox Next:
   - use setNeeds... for refreshing remotes when app needs to (after creating a branch, pushing etc.)
   - autofetch for the current remote only (if present).
 
+- supply DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer to opendiff if standard opendiff does not work. 
+  - issue a warning on launching the diff with instruction how to fix it.
+
 - if received good fs event, do not update right away, but update when app is selected.
-  -  should avoid massive updates
+  -  should avoid massive updates.
 - use no more than 4 threads for all repositories. But serialize all tasks for each repo.
 - merge conflict error is not displaying a reason.
 - BUG beanstalk: ls-remote always returns different stuff (?) and causes repeated fetches.
