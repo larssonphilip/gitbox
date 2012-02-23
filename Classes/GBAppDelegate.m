@@ -324,6 +324,21 @@
 // Show the window if there's no key window at the moment. 
 - (void)applicationDidBecomeActive:(NSNotification *)aNotification
 {
+#if !GITBOX_APP_STORE
+#if DEBUG
+	static NSTimeInterval lastCheckStamp = 0.0;
+	
+	if ([[NSDate date] timeIntervalSince1970] - lastCheckStamp > 3600)
+	{
+		lastCheckStamp = [[NSDate date] timeIntervalSince1970];
+		double delayInSeconds = 1.0;
+		dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+		dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+			[[SUUpdater sharedUpdater] checkForUpdatesInBackground];
+		});
+	}
+#endif
+#endif
 	if (![NSApp keyWindow])
 	{
 		[self.windowController showWindow:self];
