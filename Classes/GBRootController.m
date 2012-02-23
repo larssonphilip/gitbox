@@ -475,10 +475,17 @@
 			// load github controller items
 		}
 	}
-	
+
 	if (GBApp.didTerminateSafely)
 	{
 		self.selectedItemIndexes = indexes;
+	}
+	else
+	{
+#if DEBUG
+		self.selectedItemIndexes = indexes; // while debugging it's common to kill app.
+#endif
+		
 	}
 }
 

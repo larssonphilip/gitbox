@@ -13,6 +13,11 @@
 #import "NSString+OAStringHelpers.h"
 #import "NSAlert+OAAlertHelpers.h"
 #import "NSFileManager+OAFileManagerHelpers.h"
+#import "NSError+OAPresent.h"
+
+
+#define GBChangeDeveloperDirForOpendiff @"GBChangeDeveloperDirForOpendiff"
+
 
 @interface GBChange ()
 @property(nonatomic, retain) NSImage* cachedSrcIcon;
@@ -24,7 +29,9 @@
 
 
 
-@implementation GBChange
+@implementation GBChange {
+	BOOL relaunchingOpendiff;
+}
 
 @synthesize srcURL;
 @synthesize dstURL;
@@ -428,7 +435,6 @@
 #pragma mark Actions
 
 
-
 - (void) doubleClick:(id)sender
 {
 	[self.delegate doubleClickChange:self];
@@ -436,6 +442,9 @@
 
 - (void) launchDiffWithBlock:(void(^)())block
 {
+	BOOL isRelaunched = relaunchingOpendiff;
+	relaunchingOpendiff = NO; // reset here to be sure it's cleaned up before multiple exists down there.
+	
 	[[self retain] autorelease]; // quick patch to work around the crash when changes are replaced
 	
 	NSFileManager* fileManager = [[[NSFileManager alloc] init] autorelease];
@@ -524,53 +533,6 @@
 		return;
 	}
 	
-	
-	// Try to locate opendiff in Xcode 4.3+ bundle.
-	// Starting with 4.3, there's no more /Developer folder and /usr/bin/opendiff does not know where the FileMerge is.
-	// We will try to find an Xcode in /Applications/Xcode.app/
-	
-#warning DEBUG: this is not finished.
-	
-	// A problem with launching from Xcode.app/...:
-	// 2012-02-22 09:09:43.875 opendiff[6978:60b] exception raised trying to run FileMerge: launch path not accessible
-	// 2012-02-22 09:09:43.876 opendiff[6978:60b] Couldn't launch FileMerge
-	
-	if ([task.executableName isEqualToString:@"opendiff"])
-	{
-		if ([fileManager isExecutableFileAtPath:@"/Applications/Xcode.app/Contents/Developer/usr/bin/opendiff"])
-		{
-			task.launchPath = @"/Applications/Xcode.app/Contents/Developer/usr/bin/opendiff";
-		}
-		else // Try to find non-standard Xcode installation.
-		{
-			NSError *error = nil;
-			NSArray* appPaths = [fileManager contentsOfDirectoryAtPath:@"/Applications" error:&error];
-			if (appPaths)
-			{
-				NSMutableArray* opendiffPaths = [NSMutableArray array];
-				for (NSString* name in appPaths)
-				{
-					if ([name rangeOfString:@"Xcode"].length > 0)
-					{
-						NSString* path = [[@"/Applications" stringByAppendingPathComponent:name] stringByAppendingPathComponent:@"Contents/Developer/usr/bin/opendiff"];
-						if ([fileManager isExecutableFileAtPath:path])
-						{
-							[opendiffPaths addObject:path];
-						}
-					}
-				}
-				if (opendiffPaths.count > 0)
-				{
-					task.launchPath = [opendiffPaths lastObject];
-				}
-			}
-			else
-			{
-				NSLog(@"GBChange: cannot iterate over /Applications/* in a search of Xcode apps. %@", error);
-			}
-		}
-	}
-	
 	if (task.executableName && ! task.launchPath)
 	{
 		NSString* launchPath = [OATask systemPathForExecutable:task.executableName];
@@ -599,7 +561,17 @@
 			if (block) block();
 			return;
 		}
-	}	
+	}
+	
+	NSString* storedDeveloperDir = [[NSUserDefaults standardUserDefaults] objectForKey:GBChangeDeveloperDirForOpendiff];
+	if ([task.executableName isEqualToString:@"opendiff"] && storedDeveloperDir) 
+	{
+		//NSLog(@"GBChange: using DEVELOPER_DIR=%@", storedDeveloperDir);
+		[task setEnvironmentValue:storedDeveloperDir forKey:@"DEVELOPER_DIR"];
+	}
+	
+	//NSLog(@"GBChange: task.launchPath = %@", task.launchPath);
+	
 	task.currentDirectoryPath = self.repository.path;
 	task.arguments = [NSArray arrayWithObjects:[leftURL path], [rightURL path], nil];
 	// opendiff will quit in 5 secs
@@ -615,7 +587,95 @@
 	//      [NSApp sendAction:@selector(showDiffToolPreferences:) to:nil from:self];
 	//    }
 	//  };
-	[task launchWithBlock:block];
+	
+	block = [[block copy] autorelease];
+	
+	[task launchWithBlock:^{
+		
+		if (!isRelaunched && 
+			[task.executableName isEqualToString:@"opendiff"] && 
+			([task.UTF8ErrorAndOutput rangeOfString:@"Error:"].length > 0 ||
+			 [task.UTF8ErrorAndOutput rangeOfString:@"launch path not accessible"].length > 0 ||
+			 [task.UTF8ErrorAndOutput rangeOfString:@"exception"].length > 0))
+		{
+			NSLog(@"GBChange: opendiff failed; trying to find appropriate DEVELOPER_DIR");
+			[[NSUserDefaults standardUserDefaults] removeObjectForKey:GBChangeDeveloperDirForOpendiff];
+			
+			// So we couldn't launch opendiff with default settings. 
+			// Let's find some DEVELOPER_DIR to supply to the opendiff.
+			
+			// Try to locate opendiff in Xcode 4.3+ bundle.
+			// Starting with 4.3, there's no more /Developer folder and /usr/bin/opendiff does not know where the FileMerge is.
+			// We will try to find an Xcode in /Applications/Xcode.app/
+			// A problem with launching from Xcode.app/...:
+			// 2012-02-22 09:09:43.875 opendiff[6978:60b] exception raised trying to run FileMerge: launch path not accessible
+			// 2012-02-22 09:09:43.876 opendiff[6978:60b] Couldn't launch FileMerge
+			
+			NSString* developerDir = nil;
+			
+			if ([fileManager isExecutableFileAtPath:@"/Applications/Xcode.app/Contents/Developer/usr/bin/opendiff"])
+			{
+				developerDir = @"/Applications/Xcode.app/Contents/Developer";
+			}
+			else // Try to find non-standard Xcode installation.
+			{
+				NSError *error = nil;
+				NSString* applicationsPath = @"/Applications";
+				NSArray* appPaths = [fileManager contentsOfDirectoryAtPath:applicationsPath error:&error];
+				if (appPaths)
+				{
+					NSMutableArray* opendiffPaths = [NSMutableArray array];
+					for (NSString* name in appPaths)
+					{
+						// opendiff cannot launch if Xcode path contains space (like "Xcode 4.3.app"), so we filter those paths out.
+						if ([name rangeOfString:@"Xcode"].length > 0 && [name rangeOfString:@" "].length == 0)
+						{
+							NSString* path = [[applicationsPath stringByAppendingPathComponent:name] stringByAppendingPathComponent:@"Contents/Developer/usr/bin/opendiff"];
+							if ([fileManager isExecutableFileAtPath:path])
+							{
+								[opendiffPaths addObject:path];
+							}
+						}
+					}
+					if (opendiffPaths.count > 0)
+					{
+						developerDir = [[[[opendiffPaths objectAtIndex:0] // take the first path, the stable one.
+										  stringByDeletingLastPathComponent] // /opendiff
+										 stringByDeletingLastPathComponent]  // /bin
+										stringByDeletingLastPathComponent];  // /usr
+					}
+				}
+				else
+				{
+					NSLog(@"GBChange: cannot iterate over /Applications/* in a search of Xcode apps. %@", error);
+				}
+			}
+			
+			if (developerDir && ![storedDeveloperDir isEqualToString:developerDir])
+			{
+				NSLog(@"Storing new DEVELOPER_DIR=%@", developerDir);
+				[[NSUserDefaults standardUserDefaults] setObject:developerDir forKey:GBChangeDeveloperDirForOpendiff];
+				
+				// Relaunching the same task.
+				relaunchingOpendiff = YES;
+				[self launchDiffWithBlock:block];
+				return;
+			}
+			
+			double delayInSeconds = 0.1;
+			dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+			dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+				NSMutableDictionary* dict = [NSMutableDictionary dictionary];
+				
+				[dict setObject:NSLocalizedString(@"Failed to launch FileMerge", @"") forKey:NSLocalizedDescriptionKey];
+				[dict setObject:NSLocalizedString(@"Please install Xcode and its Command Line Components and run this command in Terminal:\nsudo xcode-select -switch /Applications/Xcode.app/Contents/Developer", @"")  forKey:NSLocalizedRecoverySuggestionErrorKey];
+				
+				[[NSError errorWithDomain:GBErrorDomain code:1 userInfo:dict] present];
+			});
+		}
+
+		if (block) block();
+	}];
 }
 
 - (BOOL) validateShowDifference

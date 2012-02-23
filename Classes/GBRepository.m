@@ -1159,10 +1159,38 @@
 	[self launchTask:task withBlock:^{
 		if ([task isError])
 		{
+			NSString* msg = [task UTF8ErrorAndOutput];
+			
+			// Auto-merging another_new_file.txt
+			// CONFLICT (content): Merge conflict in another_new_file.txt
+			// Automatic merge failed; fix conflicts and then commit the result.
+			
+			if ([msg rangeOfString:@"CONFLICT"].length > 0)
+			{
+				msg = NSLocalizedString(@"Conflicting changes detected. Fix conflicts and commit the result.", @"");
+			}
+			// fatal: 'merge' is not possible because you have unmerged files.
+			// Please, fix them up in the work tree, and then use 'git add/rm <file>' as
+			// appropriate to mark resolution and make a commit, or use 'git commit -a'.
+			else if ([msg rangeOfString:@"unmerged files"].length > 0 && [msg rangeOfString:@"resolution"].length > 0)
+			{
+				msg = NSLocalizedString(@"Stage contains unmerged files. Fix conflicting changes and commit the result.", @"");
+			}
+			
+			// error: Your local changes to the following files would be overwritten by merge:
+			// another_new_file.txt
+			// Please, commit your changes or stash them before you can merge.
+			// Aborting
+			// Updating 5e1d882..366163a
+			else if ([msg rangeOfString:@"overwritten by merge"].length > 0)
+			{
+				msg = NSLocalizedString(@"Commit or stash changes before you can merge.", @"");
+			}
+			
 			self.lastError = [self errorWithCode:GBErrorCodeMergeFailed 
 									 description:NSLocalizedString(@"Merge Failed", @"")
-										  reason:[task UTF8ErrorAndOutput] 
-									  suggestion:nil];
+										  reason:nil
+									  suggestion:msg];
 		}
 		if (block) block();
 		self.lastError = nil;
