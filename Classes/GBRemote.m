@@ -210,6 +210,8 @@
 	}
 	
 	NSMutableArray* newTagNames = [[[theTags valueForKey:@"name"] mutableCopy] autorelease];
+#warning FIXME: crashed here on repository.tags; need a proper zeroing.
+	
 	[newTagNames removeObjectsInArray:[self.repository.tags valueForKey:@"name"]];
 	
 	if ([newTagNames count] > 0)
