@@ -91,7 +91,7 @@
 	
 	NSRect rect2 = [self drawSpinnerIfNeededInRectAndReturnRemainingRect:rect];
 	
-	if (rect2.size.width == rect.size.width && rect2.size.height == rect.size.height)
+	if (NSEqualRects(rect2, rect))
 	{
 		rect2 = [self drawBadgeIfNeededInRectAndReturnRemainingRect:rect];
 	}

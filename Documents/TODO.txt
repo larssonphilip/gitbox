@@ -58,6 +58,7 @@ Done for next release:
 + merge conflict error is not displaying a reason.
 + supply DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer to opendiff if standard opendiff does not work.
   + issue a warning on launching the diff with instruction how to fix it.
++ fixed bug with invisible Reset button when submodule is collapsed.
 
 -------------------------------
 
@@ -122,8 +123,6 @@ Gitbox Next:
 
 - ui: show spinner after some operation takes longer than expected
 
-- don't know what to do when submodule has other submodules and is collapsed and we want a "reset" button.
-  - should not mean "reset all inner stuff too"
 
 
 ? submodules: when submodule folder is removed, properly update its status
@@ -144,8 +143,11 @@ Gitbox Next:
 
 Unsorted:
 
-
-- allow force update tags.
+- stage: show a single line wih NSMixedState checkbox instead of two for a staged and unstaged version of the same file. Show both hunks in the diff viewer.
+- history: offline pull (merge fetched commits and then pull)
+- history: allow force update tags.
+- sidebar: support workspaces for "Open Xcode Project"
+- sidebar: always show "Open Xcode Project" item deselected
 - notify that the tag is already taken when you type it's name.
 
 - show submodule HEAD in status in sidebar.

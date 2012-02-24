@@ -34,7 +34,7 @@ static NSString* const kGBSubmoduleCellCheckoutButton = @"GBSubmoduleCellCheckou
 		[self drawSpinnerIfNeededInRectAndReturnRemainingRect:rect];
 	}
 	
-	if ([self.submodule.status isEqualToString:GBSubmoduleStatusNotCloned] && !self.sidebarItem.visibleSpinning && self.sidebarItem.isExpanded)
+	if ([self.submodule.status isEqualToString:GBSubmoduleStatusNotCloned] && !self.sidebarItem.visibleSpinning)
 	{
 		return [self drawButtonAndReturnRemainingRect:rect 
 												title:NSLocalizedString(@"Download", @"GBSubmodule") 
@@ -46,7 +46,7 @@ static NSString* const kGBSubmoduleCellCheckoutButton = @"GBSubmoduleCellCheckou
 		[self.sidebarItem setView:nil forKey:kGBSubmoduleCellDownloadButton];
 	}
 	
-	if([self.submodule.status isEqualToString:GBSubmoduleStatusNotUpToDate] && !self.sidebarItem.visibleSpinning && self.sidebarItem.isExpanded)
+	if([self.submodule.status isEqualToString:GBSubmoduleStatusNotUpToDate] && !self.sidebarItem.visibleSpinning)
 	{
 		return [self drawButtonAndReturnRemainingRect:rect 
 												title:NSLocalizedString(@"Reset", @"GBSubmodule") 
