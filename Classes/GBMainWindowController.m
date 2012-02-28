@@ -539,10 +539,7 @@
 
 - (void) windowDidBecomeKey:(NSNotification *)notification
 {
-	if ([self.selectedWindowItem respondsToSelector:@selector(windowDidBecomeKey)])
-	{
-		[self.selectedWindowItem windowDidBecomeKey];
-	}
+	[[NSNotificationCenter defaultCenter] postNotificationName:GBMainWindowItemDidBecomeKeyNotification object:self];
 }
 
 - (void) windowDidResignKey:(NSNotification *)notification

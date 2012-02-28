@@ -132,6 +132,7 @@
 	BOOL wantsAutoResetSubmodules;
 	BOOL stageHasCleanSubmodules;
 	BOOL initialUpdateDone;
+	BOOL needsUpdateStageWhenBecomesKey;
 }
 
 @synthesize repository;
@@ -276,6 +277,11 @@
 		self.commitsUpdater    = [GBAsyncUpdater updaterWithTarget:self action:@selector(shouldUpdateCommits:)];
 		self.remoteRefsUpdater = [GBAsyncUpdater updaterWithTarget:self action:@selector(shouldUpdateRemoteRefs:)];
 		self.fetchUpdater      = [GBAsyncUpdater updaterWithTarget:self action:@selector(shouldUpdateFetch:)];
+		
+		[[NSNotificationCenter defaultCenter] addObserver:self
+												 selector:@selector(windowDidBecomeKey:)
+													 name:GBMainWindowItemDidBecomeKeyNotification
+												   object:nil];
 	}
 	return self;
 }
@@ -585,9 +591,9 @@
 	}
 }
 
-- (void) windowDidBecomeKey
+- (void) windowDidBecomeKey:(NSNotification*)notification
 {
-	if (selected)
+	if (selected || needsUpdateStageWhenBecomesKey)
 	{
 		[self setNeedsUpdateLocalState];
 	}
@@ -852,6 +858,8 @@
 
 - (void) setNeedsUpdateLocalState
 {
+	NSLog(@"Updating stage %@", self.url);
+	needsUpdateStageWhenBecomesKey = NO;
 	[self setNeedsUpdateStage];
 	[self.stageUpdater waitUpdate:^{
 		[self setNeedsUpdateLocalRefs];
@@ -1135,6 +1143,12 @@
 		lastFSEventUpdateTimestamp = currentTimestamp;
 		[self setNeedsUpdateStage];
 		[self setNeedsUpdateLocalRefs];
+	}
+	else
+	{
+		// TODO: do not mark when probably updated by parent folder checks.
+		//NSLog(@"UPDATE WHEN BECOMES KEY %@", self.url);
+		//needsUpdateStageWhenBecomesKey = YES;
 	}
 }
 

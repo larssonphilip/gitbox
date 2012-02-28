@@ -1,3 +1,5 @@
+#define GBMainWindowItemDidBecomeKeyNotification @"GBMainWindowItemDidBecomeKeyNotification"
+
 @class GBToolbarController;
 @class NSViewController;
 @protocol GBMainWindowItem <NSObject>
@@ -8,6 +10,5 @@
 - (NSViewController*) viewController;
 - (void) willDeselectWindowItem;
 - (void) didSelectWindowItem;
-- (void) windowDidBecomeKey;
 - (NSUndoManager*) undoManager;
 @end
