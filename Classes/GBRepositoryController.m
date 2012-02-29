@@ -132,7 +132,7 @@
 	BOOL wantsAutoResetSubmodules;
 	BOOL stageHasCleanSubmodules;
 	BOOL initialUpdateDone;
-	BOOL needsUpdateStageWhenBecomesKey;
+	int laterStageUpdateScheduleCounter;
 }
 
 @synthesize repository;
@@ -593,7 +593,7 @@
 
 - (void) windowDidBecomeKey:(NSNotification*)notification
 {
-	if (selected || needsUpdateStageWhenBecomesKey)
+	if (selected)
 	{
 		[self setNeedsUpdateLocalState];
 	}
@@ -858,8 +858,7 @@
 
 - (void) setNeedsUpdateLocalState
 {
-	NSLog(@"Updating stage %@", self.url);
-	needsUpdateStageWhenBecomesKey = NO;
+	laterStageUpdateScheduleCounter++;
 	[self setNeedsUpdateStage];
 	[self.stageUpdater waitUpdate:^{
 		[self setNeedsUpdateLocalRefs];
@@ -1132,23 +1131,29 @@
 	
 	if (self.localRefsUpdater.isUpdating || self.localRefsUpdater.needsUpdate) return;
 	
-#warning TODO: if we update all repos frequently, typing in Xcode becomes difficult.
+	// Observation: if we update all repos frequently, typing in Xcode becomes difficult.
+	// Correction: sometimes it's Xcode on its own becoming very slow.
 	
 //	float delay = selected ? 5.0 : 20.0;
-	float delay = selected ? 60.0 : 160.0;
+	float delay = selected ? 5.0 : 20.0;
 	NSTimeInterval currentTimestamp = [[NSDate date] timeIntervalSince1970];
-	
-	if ((currentTimestamp - lastFSEventUpdateTimestamp) > delay)
+	NSTimeInterval currentDelay = (currentTimestamp - lastFSEventUpdateTimestamp);
+	if (currentDelay > delay)
 	{
+		laterStageUpdateScheduleCounter++;
 		lastFSEventUpdateTimestamp = currentTimestamp;
 		[self setNeedsUpdateStage];
 		[self setNeedsUpdateLocalRefs];
 	}
 	else
 	{
-		// TODO: do not mark when probably updated by parent folder checks.
-		//NSLog(@"UPDATE WHEN BECOMES KEY %@", self.url);
-		//needsUpdateStageWhenBecomesKey = YES;
+		// Schedule an update right after the remaining time.
+		laterStageUpdateScheduleCounter++;
+		int c = laterStageUpdateScheduleCounter;
+		dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (delay - currentDelay) * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+			if (c != laterStageUpdateScheduleCounter) return;
+			[self setNeedsUpdateLocalState];
+		});
 	}
 }
 

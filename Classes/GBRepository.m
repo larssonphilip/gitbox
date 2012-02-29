@@ -135,7 +135,19 @@
 {
 	if ((self = [super init]))
 	{
-		dispatchQueue = dispatch_queue_create("com.oleganza.gitbox.repo_local_task_queue", NULL);
+		// Limit number of queues to 4 to avoid high load on CPU and disk.
+		static int queueId = 0;
+		static dispatch_queue_t queues[4] = {NULL, NULL, NULL, NULL};
+		static dispatch_once_t onceToken = 0;
+		dispatch_once(&onceToken, ^{
+			queues[0] = dispatch_queue_create("com.oleganza.gitbox.repo_local_task_queue", NULL);
+			queues[1] = dispatch_queue_create("com.oleganza.gitbox.repo_local_task_queue", NULL);
+			queues[2] = dispatch_queue_create("com.oleganza.gitbox.repo_local_task_queue", NULL);
+			queues[3] = dispatch_queue_create("com.oleganza.gitbox.repo_local_task_queue", NULL);
+		});
+		
+		dispatchQueue = queues[(queueId++) % 4];
+		dispatch_retain(dispatchQueue);
 		remoteDispatchQueue = dispatch_queue_create("com.oleganza.gitbox.repo_remote_task_queue", NULL);
 		
 		self.blockTable = [[OABlockTable new] autorelease];
@@ -1924,18 +1936,24 @@
 
 - (void) launchTask:(OATask*)aTask withBlock:(void(^)())block
 {
-	[aTask launchInQueue:dispatchQueue withBlock:block];
+	// Avoid forking a process until the queue is empty.
+	block = [[block copy] autorelease];
+	dispatch_async(dispatchQueue, ^{
+		dispatch_async(dispatch_get_main_queue(), ^{
+			[aTask launchInQueue:dispatchQueue withBlock:block];
+		});
+	});
 }
 
 - (void) launchRemoteTask:(OATask*)aTask withBlock:(void(^)())block
 {
-	// Wait for current local task to finish.
+	// Avoid forking a process until the queue is empty.
 	block = [[block copy] autorelease];
-//	dispatch_async(dispatchQueue, ^{
-//		dispatch_async(dispatch_get_main_queue(), ^{
+	dispatch_async(dispatchQueue, ^{
+		dispatch_async(dispatch_get_main_queue(), ^{
 			[aTask launchInQueue:remoteDispatchQueue withBlock:block];
-//		});
-//	});
+		});
+	});
 	
 }
 
