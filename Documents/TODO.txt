@@ -72,6 +72,15 @@ Gitbox Next:
   - use setNeeds... for refreshing remotes when app needs to (after creating a branch, pushing etc.)
   - autofetch for the current remote only (if present).
 
+- weird revert:
+   - working dir is dirty
+   - some commit is reverted
+   - suddenly all contents are gone somewhere (to stash actually)
+   -> should try to revert. If fails with merge issue - allow to stash and continue
+
+- branch tracking is lost when remote branch name is "blah+blah(blah)"
+
+
 - BUG beanstalk: ls-remote always returns different stuff (?) and causes repeated fetches.
   - in general, should always have a limit on immediate updates both for fetch and stage update.
   - note: fetch might be performed by person, should respect a single branch without all that crap.
