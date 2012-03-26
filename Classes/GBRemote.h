@@ -16,7 +16,6 @@
 - (GBRef*) defaultBranch;
 - (NSArray*) pushedAndNewBranches;
 - (BOOL) copyInterestingDataFromRemoteIfApplicable:(GBRemote*)otherRemote;
-- (BOOL) isConfiguredToFetchToTheDefaultLocation;
 - (NSString*) defaultFetchRefspec;
 - (void) updateNewBranches;
 - (void) updateBranches;

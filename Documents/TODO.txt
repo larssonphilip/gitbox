@@ -93,7 +93,6 @@ Gitbox Next:
   - need to clear up how branches are loaded: remote ref does not have an alias when running GBHistoryTask...
   - instead of publicly checking "is branch exists" in history task, we should simply avoid passing it into GBHistoryTask.
   
-
 - bug: submodule is visible in repo, but was not "git submodule init" by Gitbox. User couldn't display a branch in branch menu.
 
 - some problems with removing a tag

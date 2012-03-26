@@ -1266,6 +1266,7 @@
 
 	GBAuthenticatedTask* task = [self authenticatedTaskWithAddress:aRemote.URLString];
 	task.arguments = [NSArray arrayWithObjects:@"pull", 
+					  @"--prune", // removes tags and branches missing on remote
 					  @"--tags", 
 					  @"--force", 
 					  @"--progress",
@@ -1355,14 +1356,22 @@
 	}
 	GBAuthenticatedTask* task = [self authenticatedTaskWithAddress:aRemote.URLString];
 	task.silent = silently;
-	task.arguments = [NSArray arrayWithObjects:@"fetch", 
-					  @"--tags",
-					  @"--force",
-					  @"--prune",
-					  @"--progress",
-					  aRemote.alias,
-					  [aRemote defaultFetchRefspec], // Declaring a proper refspec is necessary to make autofetch expectations about remote alias to work. git show-ref should always return refs for alias XYZ.
-					  nil];
+	NSMutableArray* args = [NSMutableArray arrayWithObjects:@"fetch", 
+							@"--tags",
+							@"--force",
+							@"--progress", 
+							nil];
+	if (!silently)
+	{
+		[args addObject:@"--prune"]; // removes tags and branches missing on remote. In silent mode we don't do that to be nice with remotes not-in-sync.
+	}
+	[args addObject:aRemote.alias];
+	
+	// Declaring a proper refspec is necessary to make autofetch expectations about remote alias to work. git show-ref should always return refs for alias XYZ.
+	[args addObject:[aRemote defaultFetchRefspec]];
+	
+	task.arguments = args;
+	
 	task.dispatchQueue = dispatchQueue;
 	[self launchRemoteTask:task withBlock:^{
 		self.currentTaskProgress = 0.0;

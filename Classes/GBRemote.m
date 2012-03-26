@@ -115,12 +115,6 @@
 	return NO;
 }
 
-- (BOOL) isConfiguredToFetchToTheDefaultLocation
-{
-	if (!self.fetchRefspec) return NO;
-	return [self.fetchRefspec rangeOfString:[NSString stringWithFormat:@"refs/heads/*:refs/remotes/%@/*", self.alias]].length > 0;
-}
-
 - (NSString*) defaultFetchRefspec
 {
 	return [NSString stringWithFormat:@"+refs/heads/*:refs/remotes/%@/*", self.alias];
@@ -214,7 +208,7 @@
 	
 	[newTagNames removeObjectsInArray:[self.repository.tags valueForKey:@"name"]];
 	
-	if ([newTagNames count] > 0)
+	if (newTagNames.count > 0)
 	{
 		//NSLog(@"NEEDS FETCH? new tag names found: %@ [%@]", [newTagNames componentsJoinedByString:@", "], self.alias);
 		return YES;
