@@ -2559,7 +2559,7 @@
 		[self.undoManager setActionName:forced ? NSLocalizedString(@"Force Push", @"") : NSLocalizedString(@"Push", @"")];
 	}
 	
-	GBRef* srcRef = [[[GBRef alloc] init] autorelease];
+	GBRef* srcRef = [[GBRef new] autorelease];
 	srcRef.commitId = commitId;
 	srcRef.repository = self.repository;
 	
