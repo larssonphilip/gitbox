@@ -15,4 +15,6 @@ extern NSString* const GBOptimizeRepositoryNotification;
 
 + (BOOL) randomShouldOptimize;
 
+- (void) start;
+
 @end

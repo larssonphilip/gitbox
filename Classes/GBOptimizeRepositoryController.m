@@ -11,8 +11,8 @@ static const double actionProbability = 0.05;
 #else
 #warning Debug: short intervals for optimize in background.
 static const NSTimeInterval idleInterval = 10.0;
-static const NSTimeInterval checkInterval = 3.0;
-static const double actionProbability = 0.1;
+static const NSTimeInterval checkInterval = 6.0;
+static const double actionProbability = 0.5;
 #endif
 
 static NSTimeInterval lastResetTimestamp = 0;
@@ -106,8 +106,10 @@ static id monitor = nil;
 		self.task = nil;
 		
 		[self performCompletionHandler:NO];
+		//NSLog(@"Finished optimization %@", self.repository.path);
 	}];
 	
+	//NSLog(@"Began optimization %@", self.repository.path);
 	self.task = gitgcTask;
 }
 

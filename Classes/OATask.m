@@ -358,9 +358,6 @@ NSString* OATaskDidDeallocateNotification  = @"OATaskDidDeallocateNotification";
 		dispatch_async(self.originDispatchQueue, ^{
 			[self didFinish];
 			if (self.didTerminateBlock) self.didTerminateBlock();
-			self.didTerminateBlock = nil;
-			self.originDispatchQueue = nil;
-			self.dispatchQueue = nil;
 			
 			[[NSNotificationCenter defaultCenter] postNotificationName:OATaskDidTerminateNotification object:self];
 			
@@ -377,6 +374,12 @@ NSString* OATaskDidDeallocateNotification  = @"OATaskDidDeallocateNotification";
 			
 			NSAssert(pingEvent, @"Cannot create pingEvent!");
 			[NSApp postEvent:pingEvent atStart:NO];
+			
+			[[self retain] autorelease];
+			
+			self.didTerminateBlock = nil;
+			self.originDispatchQueue = nil;
+			self.dispatchQueue = nil;
 		});
 	});
 }

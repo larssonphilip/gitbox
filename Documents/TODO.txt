@@ -36,6 +36,7 @@ Fixed several error messages.
 Fixed bug with submodule paths containing spaces.
 Fixed commit cherry-picking and merging from the search mode.
 Fixed bug with launching FileMerge after installing Xcode 4.3 and removing /Developer folder.
+Prevented window activation when minimized and repository optimization kicks in.
 Improved error messages for merge failure.
 
 -------------------------------

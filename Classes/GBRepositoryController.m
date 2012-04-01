@@ -1608,7 +1608,25 @@
 	if (!self.repository) return;
 	if (![GBOptimizeRepositoryController randomShouldOptimize]) return;
 	
-	[[GBOptimizeRepositoryController controllerWithRepository:self.repository] presentSheetInMainWindowSilent:YES];
+	GBOptimizeRepositoryController* ctrl = [GBOptimizeRepositoryController controllerWithRepository:self.repository];
+	
+	[self pushSpinning];
+	[self pushDisabled];
+	ctrl.completionHandler = ^(BOOL cancelled){
+		[self popSpinning];
+		[self popDisabled];
+	};
+
+	if (![[[GBMainWindowController instance] window] isMiniaturized])
+	{
+		//NSLog(@"Scheduling sheet %@", self.url);
+		[ctrl presentSheetInMainWindowSilent:YES];
+	}
+	else
+	{
+		//NSLog(@"Scheduling silent update %@", self.url);
+		[ctrl start];
+	}
 }
 
 
