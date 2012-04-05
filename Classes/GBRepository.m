@@ -136,18 +136,21 @@
 {
 	if ((self = [super init]))
 	{
-		// Limit number of queues to 4 to avoid high load on CPU and disk.
+		// Limit global number of queues to avoid high load on CPU and disk.
 		static int queueId = 0;
-		static dispatch_queue_t queues[4] = {NULL, NULL, NULL, NULL};
+#define GBRepoDispatchQueuesMax 6
+		static dispatch_queue_t queues[GBRepoDispatchQueuesMax] = {NULL, NULL, NULL, NULL, NULL, NULL};
 		static dispatch_once_t onceToken = 0;
 		dispatch_once(&onceToken, ^{
-			queues[0] = dispatch_queue_create("com.oleganza.gitbox.repo_local_task_queue", NULL);
-			queues[1] = dispatch_queue_create("com.oleganza.gitbox.repo_local_task_queue", NULL);
-			queues[2] = dispatch_queue_create("com.oleganza.gitbox.repo_local_task_queue", NULL);
-			queues[3] = dispatch_queue_create("com.oleganza.gitbox.repo_local_task_queue", NULL);
+			queues[0] = dispatch_queue_create("com.oleganza.gitbox.repo_local_task_queue1", NULL);
+			queues[1] = dispatch_queue_create("com.oleganza.gitbox.repo_local_task_queue2", NULL);
+			queues[2] = dispatch_queue_create("com.oleganza.gitbox.repo_local_task_queue3", NULL);
+			queues[3] = dispatch_queue_create("com.oleganza.gitbox.repo_local_task_queue4", NULL);
+			queues[4] = dispatch_queue_create("com.oleganza.gitbox.repo_local_task_queue5", NULL);
+			queues[5] = dispatch_queue_create("com.oleganza.gitbox.repo_local_task_queue6", NULL);
 		});
 		
-		dispatchQueue = queues[(queueId++) % 4];
+		dispatchQueue = queues[(queueId++) % GBRepoDispatchQueuesMax];
 		dispatch_retain(dispatchQueue);
 		remoteDispatchQueue = dispatch_queue_create("com.oleganza.gitbox.repo_remote_task_queue", NULL);
 		
