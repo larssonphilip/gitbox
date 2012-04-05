@@ -24,15 +24,19 @@
 	[super dealloc];
 }
 
-// tries to satisfy name equality.
+
 - (BOOL) isEqual:(id)object
 {
-	if (self == object) return YES;
-	if (![object isKindOfClass:[self class]]) return NO;
+	return [self isEqualToRef:(GBRef*)object];
+}
+
+
+- (BOOL) isEqualToRef:(GBRef*)otherRef
+{
+	if (self == otherRef) return YES;
+	if (![otherRef isKindOfClass:[self class]]) return NO;
 	
-	GBRef* other = (GBRef*)object;
-	
-	if (self.name && [self.name isEqualToString:other.name])
+	if (self.name && [self.name isEqualToString:otherRef.name])
 	{
 		if (self.isTag)
 		{
@@ -41,16 +45,16 @@
 		
 		if (self.remoteAlias)
 		{
-			return other.remoteAlias && [self.remoteAlias isEqualToString:other.remoteAlias];
+			return otherRef.remoteAlias && [self.remoteAlias isEqualToString:otherRef.remoteAlias];
 		}
 		else
 		{
-			return !other.remoteAlias;
+			return !otherRef.remoteAlias;
 		}
 	}
-	else if (!self.name && !other.name)
+	else if (!self.name && !otherRef.name)
 	{
-		if (self.commitId) return ([self.commitId isEqualToString:other.commitId]);
+		if (self.commitId) return ([self.commitId isEqualToString:otherRef.commitId]);
 	}
 	
 	return NO;

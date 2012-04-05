@@ -19,4 +19,6 @@
 - (NSString*) displayName;
 - (NSString*) commitish; // returns symbolic name if possible or commit ID
 
+- (BOOL) isEqualToRef:(GBRef*)otherRef;
+
 @end
