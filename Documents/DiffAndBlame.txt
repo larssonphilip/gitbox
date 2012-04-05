@@ -1,5 +1,45 @@
 
-Diff and Blame
+Diff View is a mode in the main window.
+
+When user double-clicks the file:
+- sidebar and history collapse to the left, 
+- file list slides to the left and becomes smaller,
+- big diff view appears on the right (as a 4th panel)
+- toolbar is replaced by diff-related buttons:
+  - "back" button to get to the normal view
+  - "diff | blame" switch
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---------------------------------------------------------------------------------------------------------------------
+
+
+
+
+OBSOLETE: Diff and Blame
+
+
+
 
 When user hits space or double clicks the changed file, QuickLook-like panel appears.
 
