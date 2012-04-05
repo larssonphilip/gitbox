@@ -355,22 +355,17 @@
 
 - (IBAction) stageRevertFile:(id)sender
 {
-	NSAlert* alert = [[[NSAlert alloc] init] autorelease];
-	[alert addButtonWithTitle:NSLocalizedString(@"OK", @"App")];
-	[alert addButtonWithTitle:NSLocalizedString(@"Cancel", @"App")];
-	[alert setMessageText:NSLocalizedString(@"Revert selected files to last committed state?", @"Stage")];
-	[alert setInformativeText:NSLocalizedString(@"All non-committed changes will be lost.",@"Stage")];
-	[alert setAlertStyle:NSWarningAlertStyle];
-	[alert retain];
-	[[GBMainWindowController instance] sheetQueueAddBlock:^{
-		
-		[NSApp activateIgnoringOtherApps:YES];
-		
-		[alert beginSheetModalForWindow:[[self view] window]
-						  modalDelegate:self
-						 didEndSelector:@selector(stageRevertFileAlertDidEnd:returnCode:contextInfo:)
-							contextInfo:[[self selectedChanges] copy]];
-	}];
+	id changes = [[[self selectedChanges] copy] autorelease];
+	
+	[[GBMainWindowController instance] criticalConfirmationWithMessage:NSLocalizedString(@"Revert selected files to last committed state?", @"Stage") 
+														   description:NSLocalizedString(@"All non-committed changes will be lost.",@"Stage")
+																	ok:nil 
+															completion:^(BOOL confirmed) {
+																if (confirmed)
+																{
+																	[self.repositoryController revertChanges:changes];
+																}
+															}];
 }
 - (BOOL) validateStageRevertFile:(id)sender
 {
@@ -378,34 +373,19 @@
 	return ![[self selectedChanges] allAreTrue:@selector(isUntrackedFile)]; 
 }
 
-- (void) stageRevertFileAlertDidEnd:(NSAlert*)alert returnCode:(NSInteger)returnCode contextInfo:(NSArray*)changes
-{
-	if (returnCode == NSAlertFirstButtonReturn)
-	{
-		[self.repositoryController revertChanges:changes];
-	}
-	[changes autorelease];
-	[NSApp endSheet:[[self view] window]];
-	[[alert window] orderOut:self];
-	[[GBMainWindowController instance] sheetQueueEndBlock];
-	[alert autorelease];
-}
-
 - (IBAction) stageDeleteFile:(id)sender
 {
-	NSAlert* alert = [[[NSAlert alloc] init] autorelease];
-	[alert addButtonWithTitle:NSLocalizedString(@"OK", @"")];
-	[alert addButtonWithTitle:NSLocalizedString(@"Cancel", @"")];
-	[alert setMessageText:NSLocalizedString(@"Delete selected files?", @"Stage")];
-	[alert setInformativeText:NSLocalizedString(@"All non-committed changes will be lost.", @"Stage")];
-	[alert setAlertStyle:NSWarningAlertStyle];
-	[alert retain];
-	[[GBMainWindowController instance] sheetQueueAddBlock:^{
-		[alert beginSheetModalForWindow:[[self view] window]
-						  modalDelegate:self
-						 didEndSelector:@selector(stageDeleteFileAlertDidEnd:returnCode:contextInfo:)
-							contextInfo:[[self selectedChanges] copy]];
-	}];
+	id changes = [[[self selectedChanges] copy] autorelease];
+	
+	[[GBMainWindowController instance] criticalConfirmationWithMessage:NSLocalizedString(@"Delete selected files?", @"Stage")
+														   description:NSLocalizedString(@"All non-committed changes will be lost.", @"Stage")
+																	ok:nil 
+															completion:^(BOOL confirmed) {
+																if (confirmed)
+																{
+																	[self.repositoryController deleteFilesInChanges:changes];
+																}
+															}];
 }
 
 - (BOOL) validateStageDeleteFile:(id)sender
@@ -415,20 +395,6 @@
 	if ([[self selectedChanges] allAreTrue:@selector(staged)]) return NO;
 	return YES;
 }
-
-- (void) stageDeleteFileAlertDidEnd:(NSAlert*)alert returnCode:(NSInteger)returnCode contextInfo:(NSArray*)changes
-{
-	if (returnCode == NSAlertFirstButtonReturn)
-	{
-		[self.repositoryController deleteFilesInChanges:changes];
-	}
-	[changes autorelease];
-	[NSApp endSheet:[[self view] window]];
-	[[alert window] orderOut:self];
-	[alert autorelease];
-	[[GBMainWindowController instance] sheetQueueEndBlock];
-}
-
 
 - (void) commitWithSheet:(id)sender
 {

@@ -16,7 +16,7 @@
 
 @property(nonatomic, retain) IBOutlet NSSplitView* splitView;
 
-+ (id) instance;
++ (GBMainWindowController*) instance;
 
 - (IBAction) editGlobalGitConfig:(id)_;
 

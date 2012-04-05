@@ -37,12 +37,14 @@ Fixed bug with submodule paths containing spaces.
 Fixed commit cherry-picking and merging from the search mode.
 Fixed bug with launching FileMerge after installing Xcode 4.3 and removing /Developer folder.
 Prevented window activation when minimized and repository optimization kicks in.
+Fixed window activation when clicked through after closing FileMerge window.
 Improved error messages for merge failure.
 
 -------------------------------
 
 Done for next release:
 
++ bug: window loses focus when confirmation sheet appears (e.g. Revert File...). Cannot hit "Return" to confirm.
 + prepare a debug target with auto updates and automatic upload to gitboxapp.com
 + bug: cannot clone "Olivier Maes@git.tiwi.be:/git/2011-2012" because "Next..." button is disabled - space is not validated
 + bug: when pushing to git://github.com/... error message is present in git output, but not in the alert window.
@@ -80,9 +82,6 @@ Gitbox Next:
    -> should try to revert. If fails with merge issue - allow to stash and continue
 
 - branch tracking is lost when remote branch name is "blah+blah(blah)"
-
-- bug: window loses focus when confirmation sheet appears (e.g. Revert File...). Cannot hit "Return" to confirm.
-  - appears because of non-focusing ""
   
 - BUG beanstalk: ls-remote always returns different stuff (?) and causes repeated fetches.
   - in general, should always have a limit on immediate updates both for fetch and stage update.

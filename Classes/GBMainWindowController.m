@@ -77,7 +77,7 @@
 	return self;
 }
 
-+ (id) instance
++ (GBMainWindowController*) instance
 {
 	static id volatile instance = nil;
 	static dispatch_once_t once = 0;
