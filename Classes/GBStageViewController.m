@@ -363,6 +363,9 @@
 	[alert setAlertStyle:NSWarningAlertStyle];
 	[alert retain];
 	[[GBMainWindowController instance] sheetQueueAddBlock:^{
+		
+		[NSApp activateIgnoringOtherApps:YES];
+		
 		[alert beginSheetModalForWindow:[[self view] window]
 						  modalDelegate:self
 						 didEndSelector:@selector(stageRevertFileAlertDidEnd:returnCode:contextInfo:)

@@ -381,6 +381,8 @@
 		
 		if (silent) [GBApp beginIgnoreUserAttentionRequests];
 		
+		if (!silent) [GBApp activateIgnoringOtherApps:YES];
+		
 		// skipping current cycle to avoid collision with previously opened sheet which is closing right now
 		dispatch_async(dispatch_get_main_queue(), ^{
 			[NSApp beginSheet:self.currentSheet
@@ -441,6 +443,8 @@
 	
 	[alert addButtonWithTitle:okOrNil ? okOrNil : NSLocalizedString(@"OK", nil)];
 	[alert addButtonWithTitle:NSLocalizedString(@"Cancel", nil)];
+	
+	[GBApp activateIgnoringOtherApps:YES];
 	
 	[self sheetQueueAddBlock:^{
 		[completion retain];

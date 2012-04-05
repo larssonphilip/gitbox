@@ -82,7 +82,8 @@ Gitbox Next:
 - branch tracking is lost when remote branch name is "blah+blah(blah)"
 
 - bug: window loses focus when confirmation sheet appears (e.g. Revert File...). Cannot hit "Return" to confirm.
-
+  - appears because of non-focusing ""
+  
 - BUG beanstalk: ls-remote always returns different stuff (?) and causes repeated fetches.
   - in general, should always have a limit on immediate updates both for fetch and stage update.
   - note: fetch might be performed by person, should respect a single branch without all that crap.
