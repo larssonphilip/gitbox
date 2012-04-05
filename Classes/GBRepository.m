@@ -571,16 +571,26 @@
 	if (![ref isRemoteBranch]) return YES;
 	if (!ref.name)
 	{
-		NSLog(@"WARNING: %@ %@ ref %@ is expected to have a name", [self class], NSStringFromSelector(_cmd), ref);
+		NSLog(@"GBRepository: WARNING: ref %@ is expected to have a name", ref);
 		return NO;
 	}
 	
 	// Note: don't use ref.remote to avoid stale data (just in case)
-	GBRemote* remote = [self.remotes objectWithValue:ref.remoteAlias forKey:@"alias"];
+	GBRemote* remote = [self remoteForAlias:ref.remoteAlias];
 	
-	if (!remote) return NO;
+	if (!remote)
+	{
+		NSLog(@"GBRepository: no remote found for ref %@", ref);
+		return NO;
+	}
 	
-	return [[remote.branches valueForKey:@"name"] containsObject:ref.name];
+	if ([remote isTransientBranch:ref])
+	{
+		//NSLog(@"GBRepository: ref %@ is transient", ref);
+		return NO;
+	}
+	
+	return YES;
 }
 
 - (BOOL) doesHaveSubmodules
@@ -642,8 +652,24 @@
 	task.localBranchName = self.currentLocalRef.name;
 	task.repository = self;
 	[self launchTask:task withBlock:^{
-		//NSLog(@"GBRepository: %@ loaded configured branch: %@", [self class], NSStringFromSelector(_cmd), task.remoteBranch);
-		self.currentLocalRef.configuredRemoteBranch = task.remoteBranch;
+		GBRef* ref = task.remoteBranch;
+		
+		if (!ref.commitId)
+		{
+			GBRef* existingRef = [self existingRefForRef:task.remoteBranch];
+			if (existingRef.commitId)
+			{
+				ref = existingRef;
+			}
+//			else
+//			{
+//				NSLog(@"GBRepository: Cannot find existing ref for configured ref %@ [existing: %@]", ref, existingRef);
+//			}
+		}
+		
+		//NSLog(@"GBRepository: loaded configured branch: %@", ref);
+		
+		self.currentLocalRef.configuredRemoteBranch = ref;
 		
 		if ((!self.currentRemoteBranch || 
 			 [self.currentRemoteBranch isRemoteBranch]) && 
@@ -728,9 +754,23 @@
 		//NSLog(@">>> Updated tags: %@", [[self.tags valueForKey:@"name"] componentsJoinedByString:@", "]);
 		for (NSString* remoteAlias in task.remoteBranchesByRemoteAlias)
 		{
-			GBRemote* aRemote = [self.remotes objectWithValue:remoteAlias forKey:@"alias"];
-			aRemote.branches = [task.remoteBranchesByRemoteAlias objectForKey:remoteAlias];
-			[aRemote updateBranches];
+			GBRemote* remote = [self.remotes objectWithValue:remoteAlias forKey:@"alias"];
+			
+			// Pushed, but not yet pulled branches will be missing in this list. So we should simply replace refs, but append/update.
+			
+			NSArray* refs = [task.remoteBranchesByRemoteAlias objectForKey:remoteAlias];
+
+			// ??
+//			NSMutableArray* listedBranchesMissingInLocalList = [[remote.branches mutableCopy] autorelease];
+//			[listedBranchesMissingInLocalList removeObjectsInArray:refs]; // uses [GBRef isEqual:]
+//			
+//			if (listedBranchesMissingInLocalList.count > 0)
+//			{
+//				refs = [refs arrayByAddingObjectsFromArray:listedBranchesMissingInLocalList];
+//			}
+			
+			remote.branches = refs;
+			[remote updateBranches];
 		}
 		
 		if (block) block();
@@ -862,10 +902,6 @@
 	{
 		task.substructedBranch = self.currentRemoteBranch;
 	}
-	else
-	{
-		NSLog(@"GBRepository: remote branch does not exist: %@ [not substructing branch]", self.currentRemoteBranch);
-	}
 	
 	[self launchTask:task withBlock:^{
 		NSArray* allCommits = self.localBranchCommits;
@@ -888,7 +924,7 @@
 	NSString* commitish1 = [self.currentLocalRef commitish];
 	NSString* commitish2 = [self.currentRemoteBranch commitish];
 	
-	if (!commitish1 || !commitish2 || [commitish1 isEqualToString:@""] || [commitish2 isEqualToString:@""])
+	if (commitish1.length == 0 || commitish2.length == 0)
 	{
 		self.commitsDiffCount = 0;
 		if (block) block();
@@ -1281,7 +1317,8 @@
 
 	GBAuthenticatedTask* task = [self authenticatedTaskWithAddress:aRemote.URLString];
 	task.arguments = [NSArray arrayWithObjects:@"pull", 
-					  @"--prune", // removes tags and branches missing on remote
+					  // Do not prune anything because when "--tags" option is given, Git repeatedly removes/adds the remote branch from .git/packed-refs
+					  // @"--prune", // removes tags and branches missing on remote
 					  @"--tags", 
 					  @"--force", 
 					  @"--progress",
@@ -1378,7 +1415,8 @@
 							nil];
 	if (!silently)
 	{
-		[args addObject:@"--prune"]; // removes tags and branches missing on remote. In silent mode we don't do that to be nice with remotes not-in-sync.
+		// Do not prune anything because when "--tags" option is given, Git repeatedly removes/adds the remote branch from .git/packed-refs
+		//[args addObject:@"--prune"]; // removes tags and branches missing on remote. In silent mode we don't do that to be nice with remotes not-in-sync.
 	}
 	[args addObject:aRemote.alias];
 	
