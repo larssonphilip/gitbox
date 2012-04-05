@@ -186,7 +186,7 @@
 		BOOL foundAnExistingBranch = NO;
 		for (GBRef* existingRef in self.branches)
 		{
-			if (updatedRef.name && existingRef.name && [updatedRef.name isEqual:existingRef.name])
+			if ([updatedRef.name isEqual:existingRef.name])
 			{
 				foundAnExistingBranch = YES;
 				if (![updatedRef.commitId isEqual:existingRef.commitId])
