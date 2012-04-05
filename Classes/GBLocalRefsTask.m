@@ -60,7 +60,9 @@
 	
 	GBRef* prevTag = nil;
 	
-	for (NSString* line in [[self UTF8OutputStripped] componentsSeparatedByString:@"\n"])
+	NSString* output = [self UTF8OutputStripped];
+	
+	for (NSString* line in [output componentsSeparatedByString:@"\n"])
 	{
 		if (line && [line length] > 0)
 		{
