@@ -2644,7 +2644,7 @@
 		C05733CC08A9546B00998B17 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				APP_VERSION = "2012-02-28";
+				APP_VERSION = "2012-04-05";
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CODE_SIGN_IDENTITY = "iPhone Developer: Oleg Andreev (9F23AVDPMZ)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
