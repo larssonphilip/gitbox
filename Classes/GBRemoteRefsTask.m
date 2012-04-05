@@ -53,7 +53,6 @@
 				else if ([refName hasPrefix:@"refs/heads/"])
 				{
 					GBRef* ref = [[GBRef new] autorelease];
-					ref.repository = self.repository;
 					ref.commitId = commitId;
 					ref.name = [refName substringFromIndex:[@"refs/heads/" length]];
 					ref.remoteAlias = self.remote.alias;
@@ -62,7 +61,6 @@
 				else if ([refName hasPrefix:@"refs/tags/"])
 				{
 					GBRef* ref = [[GBRef new] autorelease];
-					ref.repository = self.repository;
 					ref.commitId = commitId;
 					ref.name = [refName substringFromIndex:[@"refs/tags/" length]];
 					ref.remoteAlias = self.remote.alias;

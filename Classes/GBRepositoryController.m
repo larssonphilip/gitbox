@@ -1979,7 +1979,6 @@
 	[self.undoManager setActionName:[NSString stringWithFormat:NSLocalizedString(@"Delete Tag %@", @""), tagName]];
 	
 	GBRef* ref = [[GBRef new] autorelease];
-	ref.repository = self.repository;
 	ref.commitId = commitId;
 	ref.name = tagName;
 	ref.isTag = YES;
@@ -2106,7 +2105,6 @@
 - (void) createAndSelectRemoteBranchWithName:(NSString*)name remote:(GBRemote*)aRemote
 {
 	GBRef* remoteBranch = [[GBRef new] autorelease];
-	remoteBranch.repository = self.repository;
 	remoteBranch.name = name;
 	remoteBranch.remoteAlias = aRemote.alias;
 	[aRemote addNewBranch:remoteBranch];
@@ -2579,7 +2577,6 @@
 	
 	GBRef* srcRef = [[GBRef new] autorelease];
 	srcRef.commitId = commitId;
-	srcRef.repository = self.repository;
 	
 	[self helperPushBranch:srcRef toRemoteBranch:self.repository.currentRemoteBranch forced:YES]; // when undoing push, we need --force flag.
 }

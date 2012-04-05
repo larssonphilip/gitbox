@@ -1,9 +1,4 @@
 #import "GBRef.h"
-#import "GBRepository.h"
-#import "GBTask.h"
-#import "GBHistoryTask.h"
-#import "GBLocalRemoteAssociationTask.h"
-#import "GBRemote.h"
 
 @implementation GBRef
 @synthesize name;
@@ -12,7 +7,6 @@
 @synthesize configuredRemoteBranch;
 
 @synthesize isTag;
-@synthesize repository;
 
 + (GBRef*) refWithCommitId:(NSString*)commitId
 {
@@ -60,12 +54,6 @@
 	}
 	
 	return NO;
-}
-
-- (GBRemote*) remote
-{
-	if (!self.remoteAlias) return nil;
-	return [self.repository remoteForAlias:self.remoteAlias];
 }
 
 - (NSString*) nameWithRemoteAlias
@@ -116,20 +104,6 @@
 - (NSString*) description
 {
 	return [NSString stringWithFormat:@"<%@:%p name:%@ commit:%@>", [self class], self, [self nameWithRemoteAlias], self.commitId];
-}
-
-
-- (void) loadConfiguredRemoteBranchWithBlock:(void(^)())block
-{
-	block = [[block copy] autorelease];
-	GBLocalRemoteAssociationTask* task = [GBLocalRemoteAssociationTask task];
-	task.localBranchName = self.name;
-	task.repository = self.repository;
-	[self.repository launchTask:task withBlock:^{
-		//NSLog(@"%@ %@ loaded configured branch: %@", [self class], NSStringFromSelector(_cmd), task.remoteBranch);
-		self.configuredRemoteBranch = task.remoteBranch;
-		if (block) block();
-	}];
 }
 
 

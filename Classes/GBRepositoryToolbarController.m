@@ -487,7 +487,7 @@
 	//[button setMenu:newMenu];
 	for (NSMenuItem* item in [currentBranchesMenu itemArray])
 	{
-		if ([[item representedObject] isEqual:repo.currentLocalRef])
+		if (item.representedObject == repo.currentLocalRef)
 		{
 			[button selectItem:item];
 		}
@@ -550,7 +550,7 @@
 				[item setAction:@selector(selectRemoteBranch:)];
 				[item setTarget:self];
 				[item setRepresentedObject:branch];
-				if ([branch isEqual:repo.currentRemoteBranch])
+				if (branch == repo.currentRemoteBranch)
 				{
 					[item setState:NSOnState];
 				}
@@ -587,7 +587,7 @@
 			[item setAction:@selector(selectRemoteBranch:)];
 			[item setTarget:self];
 			[item setRepresentedObject:branch];
-			if ([branch isEqual:repo.currentRemoteBranch])
+			if (branch == repo.currentRemoteBranch)
 			{
 				[item setState:NSOnState];
 			}
@@ -648,11 +648,11 @@
 			[item setAction:@selector(selectRemoteBranch:)];
 			[item setTarget:self];
 			[item setRepresentedObject:localBranch];
-			if (repo.currentRemoteBranch && [localBranch isEqual:repo.currentRemoteBranch])
+			if (localBranch == repo.currentRemoteBranch)
 			{
 				[item setState:NSOnState];
 			}
-			if (repo.currentLocalRef && [localBranch isEqual:repo.currentLocalRef])
+			if (localBranch == repo.currentLocalRef)
 			{
 				[item setEnabled:NO];
 				[item setAction:@selector(thisItemIsActuallyDisabled)];
@@ -861,7 +861,7 @@
 {
 	GBRef* remoteBranch = [sender representedObject];
 	
-	if (remoteBranch && [self.repositoryController.repository.currentRemoteBranch isEqual:remoteBranch])
+	if (remoteBranch && self.repositoryController.repository.currentRemoteBranch == remoteBranch)
 	{
 		remoteBranch = nil; // reset branch if selected current branch
 	}

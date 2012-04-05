@@ -8,7 +8,6 @@
 @property(nonatomic, retain) GBRef* configuredRemoteBranch;
 
 @property(nonatomic, assign) BOOL isTag;
-@property(nonatomic, assign) GBRepository* repository;
 
 + (GBRef*) refWithCommitId:(NSString*)commitId;
 
@@ -19,9 +18,5 @@
 - (BOOL) isRemoteBranch;
 - (NSString*) displayName;
 - (NSString*) commitish; // returns symbolic name if possible or commit ID
-
-- (GBRemote*) remote;
-
-- (void) loadConfiguredRemoteBranchWithBlock:(void(^)())block;
 
 @end

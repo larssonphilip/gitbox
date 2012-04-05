@@ -12,6 +12,7 @@
 #import "GBSubmodulesTask.h"
 #import "GBStashListTask.h"
 #import "GBVersionComparator.h"
+#import "GBLocalRemoteAssociationTask.h"
 
 #import "GitRepository.h"
 #import "GitConfig.h"
@@ -634,6 +635,28 @@
 
 
 
+- (void) updateConfiguredRemoteBranchWithBlock:(void(^)())block
+{
+	block = [[block copy] autorelease];
+	GBLocalRemoteAssociationTask* task = [GBLocalRemoteAssociationTask task];
+	task.localBranchName = self.currentLocalRef.name;
+	task.repository = self;
+	[self launchTask:task withBlock:^{
+		//NSLog(@"GBRepository: %@ loaded configured branch: %@", [self class], NSStringFromSelector(_cmd), task.remoteBranch);
+		self.currentLocalRef.configuredRemoteBranch = task.remoteBranch;
+		
+		if ((!self.currentRemoteBranch || 
+			 [self.currentRemoteBranch isRemoteBranch]) && 
+			[self.currentLocalRef isLocalBranch])
+		{
+			self.currentRemoteBranch = self.currentLocalRef.configuredRemoteBranch;
+		}
+
+		if (block) block();
+	}];
+}
+
+
 - (void) updateLocalRefsWithBlock:(void(^)(BOOL didChange))aBlock
 {
 	aBlock = [[aBlock copy] autorelease];
@@ -644,14 +667,7 @@
 	[self updateRemotesWithBlock:^{
 		[self loadLocalRefsWithBlock:^{
 			[self updateCurrentLocalRefWithBlock:^{
-				[self.currentLocalRef loadConfiguredRemoteBranchWithBlock:^{
-					
-					if ((!self.currentRemoteBranch || 
-						 [self.currentRemoteBranch isRemoteBranch]) && 
-						[self.currentLocalRef isLocalBranch])
-					{
-						self.currentRemoteBranch = self.currentLocalRef.configuredRemoteBranch;
-					}
+				[self updateConfiguredRemoteBranchWithBlock:^{
 					
 					BOOL didChange = !(OAAreEqual(currentRef.commitId, self.currentLocalRef.commitId) &&
 									   OAAreEqual(currentRef.name,     self.currentLocalRef.name) &&
@@ -735,7 +751,6 @@
 	HEAD = [HEAD stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 	NSString* refprefix = @"ref: refs/heads/";
 	GBRef* ref = [[GBRef new] autorelease];
-	ref.repository = self;
 	if ([HEAD hasPrefix:refprefix])
 	{
 		ref.name = [HEAD substringFromIndex:[refprefix length]];
@@ -890,7 +905,7 @@
 	
 	// Special case: if the remote branch is not pushed yet, we don't have its commitish. 
 	// So simply count all commits on the current branch.
-	if ([self.currentRemoteBranch.remote isTransientBranch:self.currentRemoteBranch])
+	if ([[self remoteForAlias:self.currentRemoteBranch.remoteAlias] isTransientBranch:self.currentRemoteBranch])
 	{
 		query = commitish1;
 	}
@@ -1448,12 +1463,11 @@
 		return;
 	}
 		
-	NSString* alias = aRemoteBranch.remoteAlias;
-	GBRemote* aRemote = aRemoteBranch.remote;
+	GBRemote* aRemote = [self remoteForAlias:aRemoteBranch.remoteAlias];
 	
 	if (!aRemote)
 	{
-		NSLog(@"Error: cannot find remote for alias '%@'", alias);
+		NSLog(@"Error: cannot find remote for alias '%@'", aRemoteBranch.remoteAlias);
 		if (block) block();
 		return;
 	}
@@ -1467,7 +1481,7 @@
 	task.arguments = [task.arguments arrayByAddingObject:aRemoteBranch.remoteAlias];
 	task.arguments = [task.arguments arrayByAddingObject:refspec];
 	
-	BOOL pushingToNewBranch = [aRemoteBranch.remote isTransientBranch:aRemoteBranch];
+	BOOL pushingToNewBranch = [aRemote isTransientBranch:aRemoteBranch];
 	
 	[self launchRemoteTask:task withBlock:^{
 		self.currentTaskProgress = 0.0;
