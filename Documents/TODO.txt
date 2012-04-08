@@ -29,16 +29,15 @@ Major Features:
 
 Gitbox 1.6.2 Release Notes
 
-
-Improved performance of updates of git state (stage, branches, commits and submodules).
-Fixed bug when cloning from a URL with spaces.
-Fixed several error messages.
-Fixed bug with submodule paths containing spaces.
-Fixed commit cherry-picking and merging from the search mode.
-Fixed bug with launching FileMerge after installing Xcode 4.3 and removing /Developer folder.
-Prevented window activation when minimized and repository optimization kicks in.
-Fixed window activation when clicked through after closing FileMerge window.
-Improved error messages for merge failure.
+✓ Improved performance of updates of git state (stage, branches, commits and submodules).
+✓ Fixed bug when cloning from a URL with spaces.
+✓ Fixed several error messages.
+✓ Fixed bug with submodule paths containing spaces.
+✓ Fixed commit cherry-picking and merging from the search mode.
+✓ Fixed bug with launching FileMerge after installing Xcode 4.3 and removing /Developer folder.
+✓ Prevented window activation when minimized and repository optimization kicks in.
+✓ Fixed window activation when clicked through after closing FileMerge window.
+✓ Improved error messages for merge failure.
 
 -------------------------------
 
@@ -510,6 +509,51 @@ To read:
 
 
 
+
+
+-------------------------------------------------------------------------------
+
+
+
+
+
+
+Gitbox 1.6.2 Release Notes
+
+✓ Improved performance of updates of git state (stage, branches, commits and submodules).
+✓ Fixed bug when cloning from a URL with spaces.
+✓ Fixed several error messages.
+✓ Fixed bug with submodule paths containing spaces.
+✓ Fixed commit cherry-picking and merging from the search mode.
+✓ Fixed bug with launching FileMerge after installing Xcode 4.3 and removing /Developer folder.
+✓ Prevented window activation when minimized and repository optimization kicks in.
+✓ Fixed window activation when clicked through after closing FileMerge window.
+✓ Improved error messages for merge failure.
+
+-------------------------------
+
+Done for next release:
+
++ bug: window loses focus when confirmation sheet appears (e.g. Revert File...). Cannot hit "Return" to confirm.
++ prepare a debug target with auto updates and automatic upload to gitboxapp.com
++ bug: cannot clone "Olivier Maes@git.tiwi.be:/git/2011-2012" because "Next..." button is disabled - space is not validated
++ bug: when pushing to git://github.com/... error message is present in git output, but not in the alert window.
++ bug: spaces in path of submodules doom everything (also check the spaces in their urls)
++ allow cherry-picking from any commit in search mode
++ setNeedsUpdate: add timer for local updates
++ setNeedsUpdate: when stage is updated, should setNeedsUpdateSubmodules if previous or current changes contained submodules.
++ setNeedsUpdate: when submodule updates its local ref or changes stage, should ping parent to update its stage
++ setNeedsUpdate: when parent resets submodule, should ping it to update its everything
++ setNeedsUpdate: bug with balance
++ bug: after commit and refresh of the history, sometimes the stage remains non-updated.
++ bug: submodules' loading causes stage refresh delays or similar glitches.
++ bug: if checkout a commit, all commits before it become green.
++ merge conflict error is not displaying a reason.
++ supply DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer to opendiff if standard opendiff does not work.
+  + issue a warning on launching the diff with instruction how to fix it.
++ fixed bug with invisible Reset button when submodule is collapsed.
++ if received good fs event, do not update right away, but update after the remaining delay for FS events
++ use no more than 4 threads for all repositories. But serialize all tasks for each repo.
 
 
 
