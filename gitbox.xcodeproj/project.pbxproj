@@ -2668,7 +2668,7 @@
 		C05733CD08A9546B00998B17 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				APP_VERSION = 1.6.3;
+				APP_VERSION = 1.6.2;
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CODE_SIGN_IDENTITY = "iPhone Developer: Oleg Andreev (9F23AVDPMZ)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
