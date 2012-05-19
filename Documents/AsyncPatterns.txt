@@ -1,4 +1,33 @@
 
+
+Ways to organize long-running tasks:
+1. Blocking - caller should manage the queues and synchronization.
+2. Async - caller gets a call back when task is finished.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 USE CASES:
 
 - group: perform the block once all other blocks are finished or were not called at all (OABlockGroup).
