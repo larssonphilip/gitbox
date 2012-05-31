@@ -149,6 +149,23 @@ Gitbox Next:
 
 Unsorted:
 
+- bug: when in merging state, but reverted to HEAD conflicted files, there's nothing to merge, so merge button is not available, but we MUST merge to proceed.
+
+    master ~/Work/ohmygolf/webapp $ gs
+    # On branch fungolf
+    # Your branch and 'origin/master' have diverged,
+    # and have 44 and 5 different commit(s) each, respectively.
+    #
+    nothing to commit (working directory clean)
+    fungolf|MERGING ~/Work/ohmygolf/webapp $ gc 'merged'
+    [fungolf 37c1f23] merged
+    fungolf ~/Work/ohmygolf/webapp $ gs
+    # On branch fungolf
+    # Your branch and 'origin/master' have diverged,
+    # and have 45 and 4 different commit(s) each, respectively.
+    #
+    nothing to commit (working directory clean)
+
 - stage: show a single line wih NSMixedState checkbox instead of two for a staged and unstaged version of the same file. Show both hunks in the diff viewer.
 - history: offline pull (merge fetched commits and then pull)
 - history: allow force update tags.
