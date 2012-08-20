@@ -526,7 +526,7 @@
 					CFRelease(statusStr);
 					succeed = NO;
 				}
-				SecKeychainItemFreeAttributesAndData(attrListRef, itemData); // TODO: handle error code here
+				SecKeychainItemFreeAttributesAndData(attrListRef, itemData ? itemData : NULL); // TODO: handle error code here
 			}
 			else
 			{
