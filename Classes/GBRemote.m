@@ -53,7 +53,7 @@
 
 - (NSString*)description
 {
-	return [NSString stringWithFormat:@"<%@:%p %@ %@ [%d refs, %d transient refs]>", [self class], self, self.alias, self.URLString, self.branches.count, self.transientBranches.count];
+	return [NSString stringWithFormat:@"<%@:%p %@ %@ [%lu refs, %lu transient refs]>", [self class], self, self.alias, self.URLString, self.branches.count, self.transientBranches.count];
 }
 
 

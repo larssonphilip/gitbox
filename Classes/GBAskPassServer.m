@@ -137,7 +137,7 @@ NSString* const GBAskPassClientIdKey = @"GBAskPassClientId";
 
 - (NSString*) description
 {
-	return [NSString stringWithFormat:@"<GBAskPassServer:%p name:%@ clients:%d resultsByClientId:%@>", 
+	return [NSString stringWithFormat:@"<GBAskPassServer:%p name:%@ clients:%lu resultsByClientId:%@>", 
 			self, 
 			self.name, 
 			[self.clients count], 

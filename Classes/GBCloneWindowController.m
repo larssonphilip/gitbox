@@ -170,7 +170,7 @@
 		while ([[NSFileManager defaultManager] fileExistsAtPath:[targetPath stringByAppendingPathComponent:uniqueName]])
 		{
 			counter++;
-			uniqueName = [enteredName stringByAppendingFormat:@"%d", counter];
+			uniqueName = [enteredName stringByAppendingFormat:@"%lu", counter];
 		}
 		[aPanel setNameFieldStringValue:uniqueName];
 	}

@@ -521,7 +521,7 @@
 			NSMutableString* hexString = [NSMutableString string];
 			for (int i = 0; i < length; i++)
 			{
-				[hexString appendFormat:@"%x ", (NSUInteger)((unsigned char)(bytes[i]))];
+				[hexString appendFormat:@"%x ", (unsigned)((unsigned char)(bytes[i]))];
 			}      
 			NSLog(@"FAILED to heal UTF-8 chars in %lu bytes: %@", [data length], hexString);
 			

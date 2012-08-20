@@ -671,11 +671,11 @@
 			counter++;
 			if (extension && ![extension isEqualToString:@""] && basename && ![basename isEqualToString:@""])
 			{
-				uniqueName = [[basename stringByAppendingFormat:@"%d", counter] stringByAppendingPathExtension:extension];
+				uniqueName = [[basename stringByAppendingFormat:@"%lu", counter] stringByAppendingPathExtension:extension];
 			}
 			else
 			{
-				uniqueName = [enteredName stringByAppendingFormat:@"%d", counter];
+				uniqueName = [enteredName stringByAppendingFormat:@"%lu", counter];
 			}
 		}
 		[aPanel setNameFieldStringValue:uniqueName];

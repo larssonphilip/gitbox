@@ -384,7 +384,7 @@
 	
 	if (badgeValue > 0)
 	{
-		NSString* badgeLabel = [NSString stringWithFormat:@"%d", badgeValue];
+		NSString* badgeLabel = [NSString stringWithFormat:@"%lu", badgeValue];
 		if (badgeLabel && [badgeLabel length] > 0 && !self.isDragged)
 		{
 			NSRect badgeFrame = [self drawBadge:badgeLabel inRect:rect];

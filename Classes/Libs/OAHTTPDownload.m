@@ -151,7 +151,7 @@ NSString* const OAHTTPDownloadHTTPCodeErrorDomain = @"com.oleganza.OAHTTPDownloa
 	if (self.byteOffset > 0)
 	{
 		NSMutableURLRequest* mutableRequest = [[self.request mutableCopy] autorelease];
-		[mutableRequest setValue:[NSString stringWithFormat:@"bytes=%u-", self.byteOffset] forHTTPHeaderField:@"Range"];
+		[mutableRequest setValue:[NSString stringWithFormat:@"bytes=%lu-", self.byteOffset] forHTTPHeaderField:@"Range"];
 		self.request = mutableRequest;
 	}
 	

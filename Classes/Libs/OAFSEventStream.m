@@ -248,7 +248,7 @@ void OAFSEventStreamCallback( ConstFSEventStreamRef streamRef,
 
 - (NSString*) description
 {
-	return [NSString stringWithFormat:@"<OAFSEvent %d %@ flags: %@>", self.eventId, self.path, [self flagsDescription]];
+	return [NSString stringWithFormat:@"<OAFSEvent %llu %@ flags: %@>", self.eventId, self.path, [self flagsDescription]];
 }
 @end
 

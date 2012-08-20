@@ -104,7 +104,7 @@
 
 + (NSString*) description
 {
-	return [NSString stringWithFormat:@"<OABlockTable:%p (shared) names: %@>", [[self sharedTable].table allKeys]];
+	return [NSString stringWithFormat:@"<OABlockTable:%p (shared) names: %@>", self, [self sharedTable].table.allKeys];
 }
 
 @end

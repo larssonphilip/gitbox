@@ -69,12 +69,12 @@
 	
 	if (self.limit > 0)
 	{
-		[args addObject:[NSString stringWithFormat:@"--max-count=%d", self.limit]];
+		[args addObject:[NSString stringWithFormat:@"--max-count=%lu", self.limit]];
 	}
 	
 	if (self.skip > 0)
 	{
-		[args addObject:[NSString stringWithFormat:@"--skip=%d", self.skip]];
+		[args addObject:[NSString stringWithFormat:@"--skip=%lu", self.skip]];
 	}
 	
 	if (self.beforeTimestamp)

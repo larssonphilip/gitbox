@@ -61,7 +61,7 @@
     NSUInteger skippedBytes = ([self.data length] - trimLimit);
     [self.data setData:[self.data subdataWithRange:NSMakeRange(0, 10000)]];
     
-    NSData* noticeData = [[NSString stringWithFormat:@"\n\n[skipped %d bytes]\n", skippedBytes] dataUsingEncoding:NSUTF8StringEncoding];
+    NSData* noticeData = [[NSString stringWithFormat:@"\n\n[skipped %lu bytes]\n", skippedBytes] dataUsingEncoding:NSUTF8StringEncoding];
     [self.data appendData:noticeData];
     self.textOutput = [self.data UTF8String];
   }
