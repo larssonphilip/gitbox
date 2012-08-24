@@ -43,7 +43,15 @@ Done for next release:
 
 Gitbox Next:
 
-- tree view of the stage.
+- stage: tree view.
+- stage: show subitems for the submodule.
+- stage: allow staging and commiting dirty submodule together with the parent repo.
+
+- change the async API to queue all the operations.
+- for certain operations disable the UI until previous operations are finished. E.g. when updating stage, keep "pull" button enabled, but when it's pressed, queue "git pull" and disable pull/push ui.
+- acknowledge fsevents only if haven't done any activity in 10 seconds.
+- use fsevents to mark repo needsUpdate to be updated when window is focused or the repo is selected.
+
 
 
 - setNeedsUpdate:
