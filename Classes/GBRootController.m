@@ -15,9 +15,9 @@
 
 
 @interface GBRootController ()
-@property(nonatomic, retain, readwrite) GBSidebarItem* sidebarItem;
-@property(nonatomic, retain, readwrite) GBRepositoriesController* repositoriesController;
-@property(nonatomic, retain) NSArray* nextRespondingSidebarObjects; // a list of sidebar item objects linked in a responder chain
+@property(nonatomic, strong, readwrite) GBSidebarItem* sidebarItem;
+@property(nonatomic, strong, readwrite) GBRepositoriesController* repositoriesController;
+@property(nonatomic, strong) NSArray* nextRespondingSidebarObjects; // a list of sidebar item objects linked in a responder chain
 - (void) updateResponders;
 @end
 
@@ -39,24 +39,21 @@
 
 - (void)dealloc
 {
-	self.sidebarItem = nil;
-	self.repositoriesController = nil;
 	
-	[nextRespondingSidebarObjects release]; nextRespondingSidebarObjects = nil;
-	[_selectedObject release]; _selectedObject = nil;
-	[_selectedObjects release]; _selectedObjects = nil;
-	[_clickedObject release]; _clickedObject = nil;
+	 nextRespondingSidebarObjects = nil;
+	 _selectedObject = nil;
+	 _selectedObjects = nil;
+	 _clickedObject = nil;
 	
-	[super dealloc];
 }
 
 - (id) init
 {
 	if ((self = [super init]))
 	{
-		self.sidebarItem = [[[GBSidebarItem alloc] init] autorelease];
+		self.sidebarItem = [[GBSidebarItem alloc] init];
 		self.sidebarItem.object = self;
-		self.repositoriesController = [[[GBRepositoriesController alloc] init] autorelease];
+		self.repositoriesController = [[GBRepositoriesController alloc] init];
 		self.repositoriesController.rootController = self;
 		
 		[self updateResponders];
@@ -119,8 +116,7 @@
 {
 	if (selectedObjects == _selectedObjects) return;
 	
-	[_selectedObjects release];
-	_selectedObjects = [selectedObjects retain];
+	_selectedObjects = selectedObjects;
 	
 	id selectedObject = nil;
 	if (selectedObjects.count == 1)
@@ -134,8 +130,7 @@
 		{
 			[_selectedObject willDeselectWindowItem];
 		}
-		[_selectedObject release];
-		_selectedObject = [selectedObject retain];
+		_selectedObject = selectedObject;
 		if ([_selectedObject respondsToSelector:@selector(didSelectWindowItem)])
 		{
 			[_selectedObject didSelectWindowItem];
@@ -156,8 +151,7 @@
 		[self updateResponders];
 	}
 	
-	[_clickedObject release];
-	_clickedObject = [clickedObject retain];
+	_clickedObject = clickedObject;
 	
 	if (_clickedObject)
 	{
@@ -165,7 +159,7 @@
 		if (currentChain && [currentChain containsObject:_clickedObject])
 		{
 			// we have the clicked object somewhere in the chain - should remove it from chain and put in the beginning.
-			NSMutableArray* chain = [[currentChain mutableCopy] autorelease];
+			NSMutableArray* chain = [currentChain mutableCopy];
 			[chain removeObject:_clickedObject];
 			currentChain = chain;
 		}
@@ -190,8 +184,8 @@
 		return;
 	}
 	
-	NSMutableArray* currentObjects = [[self.selectedObjects mutableCopy] autorelease];
-	NSMutableArray* objectsToAdd = [[objects mutableCopy] autorelease];
+	NSMutableArray* currentObjects = [self.selectedObjects mutableCopy];
+	NSMutableArray* objectsToAdd = [objects mutableCopy];
 	[objectsToAdd removeObjectsInArray:currentObjects];
 	[currentObjects addObjectsFromArray:objectsToAdd];
 	
@@ -203,7 +197,7 @@
 	if (!objects) return;
 	if (!self.selectedObjects) return;
 	
-	NSMutableArray* currentObjects = [[self.selectedObjects mutableCopy] autorelease];
+	NSMutableArray* currentObjects = [self.selectedObjects mutableCopy];
 	[currentObjects removeObjectsInArray:objects];
 	self.selectedObjects = currentObjects;
 }
@@ -226,8 +220,7 @@
 	}
 	
 	// autorelease is important as GBSidebarMultipleSelection can be replaced while performing an action, but should not be released yet
-	[nextRespondingSidebarObjects autorelease]; 
-	nextRespondingSidebarObjects = [list retain];
+	nextRespondingSidebarObjects = list;
 	
 	// 2. Insert new chain: self->next becomes self->x->y->next
 	NSResponder* lastObject = self;
@@ -565,7 +558,7 @@
 	
 	// Static responders should always be in the tail of the chain. 
 	// But before appending them, we should avoid duplication by removing static responders from the collected objects.
-	NSMutableArray* staticResponders = [[[self staticResponders] mutableCopy] autorelease];
+	NSMutableArray* staticResponders = [[self staticResponders] mutableCopy];
 	[staticResponders removeObjectsInArray:aChain];
 	
 	// Remove self from the chain

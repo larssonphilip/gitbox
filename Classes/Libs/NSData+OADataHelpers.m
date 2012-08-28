@@ -5,11 +5,11 @@
 - (NSString*) UTF8String
 {
   // First we try strict decoding to avoid iconv overhead when not needed (majority of cases).
-  NSString* str = [[[NSString alloc] initWithData:self encoding:NSUTF8StringEncoding] autorelease];
+  NSString* str = [[NSString alloc] initWithData:self encoding:NSUTF8StringEncoding];
   if (!str)
   {
     // Here data contains invalid characters, so we'll try to clean them up.
-    return [[[NSString alloc] initWithData:[self dataByHealingUTF8Stream] encoding:NSUTF8StringEncoding] autorelease];
+    return [[NSString alloc] initWithData:[self dataByHealingUTF8Stream] encoding:NSUTF8StringEncoding];
   }
   return str;
 }

@@ -1,7 +1,7 @@
 #import "GBWindowControllerWithCallback.h"
 @interface GBPromptController : GBWindowControllerWithCallback<NSWindowDelegate>
 
-@property(retain) IBOutlet NSTextField* textField;
+@property(strong) IBOutlet NSTextField* textField;
 
 @property(copy) NSString* title;
 @property(copy) NSString* promptText;

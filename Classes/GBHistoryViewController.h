@@ -8,9 +8,9 @@
 
 // Public API
 
-@property(nonatomic, assign) GBRepositoryController* repositoryController; // view controller is indirectly owned by repo controller
-@property(nonatomic, retain) GBCommit* commit;
-@property(nonatomic, retain) NSView* detailView;
+@property(nonatomic, unsafe_unretained) GBRepositoryController* repositoryController; // view controller is indirectly owned by repo controller
+@property(nonatomic, strong) GBCommit* commit;
+@property(nonatomic, strong) NSView* detailView;
 
 - (IBAction) selectLeftPane:(id)sender;
 - (IBAction) selectRightPane:(id)sender;
@@ -18,8 +18,8 @@
 
 // Nib API
 
-@property(nonatomic, retain) IBOutlet NSTableView* tableView;
-@property(nonatomic, retain) IBOutlet NSArrayController* logArrayController;
-@property(nonatomic, retain) IBOutlet GBSearchBarController* searchBarController;
+@property(nonatomic, strong) IBOutlet NSTableView* tableView;
+@property(nonatomic, strong) IBOutlet NSArrayController* logArrayController;
+@property(nonatomic, strong) IBOutlet GBSearchBarController* searchBarController;
 
 @end

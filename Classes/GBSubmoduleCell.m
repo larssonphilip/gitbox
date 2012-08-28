@@ -2,9 +2,10 @@
 #import "GBSubmodule.h"
 #import "GBSubmoduleController.h"
 #import "GBSidebarItem.h"
+#import "GBSidebarOutlineView.h"
 
 @interface GBSubmoduleCell ()
-@property(nonatomic, retain, readonly) GBSubmodule* submodule;
+@property(nonatomic, strong, readonly) GBSubmodule* submodule;
 - (NSRect) drawButtonAndReturnRemainingRect:(NSRect)rect title:(NSString*)title key:(NSString*)key action:(SEL)action;
 @end
 
@@ -73,7 +74,7 @@ static NSString* const kGBSubmoduleCellCheckoutButton = @"GBSubmoduleCellCheckou
 	if (!button)
 	{
 		// TODO: adjust the frame to the contained text
-		button = [[[NSButton alloc] initWithFrame:NSMakeRect(0, 0, 50.0, 13.0)] autorelease];
+		button = [[NSButton alloc] initWithFrame:NSMakeRect(0, 0, 50.0, 13.0)];
 		
 		// TODO: support also "Update" button which pull and checks out updated HEAD
 		[button setTitle:title];

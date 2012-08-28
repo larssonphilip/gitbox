@@ -8,7 +8,7 @@
 
 // we will pass self as a dummy UI item when validating actions
 @interface OAMultipleSelection () <NSValidatedUserInterfaceItem, NSUserInterfaceValidations>
-@property(nonatomic, retain) NSArray* objects;
+@property(nonatomic, strong) NSArray* objects;
 @property(nonatomic, assign) SEL action; // temporary property for NSValidatedUserInterfaceItem
 - (BOOL) canPerformAction:(SEL)selector;
 - (id) targetForAction:(SEL)selector inObject:(id)object;
@@ -20,15 +20,10 @@
 @synthesize action;
 
 
-- (void) dealloc
-{
-  self.objects = nil;
-  [super dealloc];
-}
 
 + (OAMultipleSelection*) selectionWithObjects:(NSArray*)objects
 {
-  OAMultipleSelection* obj = [[[OAMultipleSelection alloc] init] autorelease];
+  OAMultipleSelection* obj = [[OAMultipleSelection alloc] init];
   obj.objects = objects;
   return obj;
 }
@@ -54,7 +49,10 @@
   }
   if ([self canPerformAction:selector])
   {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
     [self performSelector:selector withObject:argument];
+#pragma clang diagnostic pop
     return YES;
   }
   return [super tryToPerform:selector with:argument];
@@ -82,7 +80,10 @@
   //NSLog(@"GBSidebarMultipleSelection: selector = %@", NSStringFromSelector(selector));
   if ([super respondsToSelector:selector])
   {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
     return [super performSelector:selector withObject:argument];
+#pragma clang diagnostic pop
   }
   
   self.action = selector;
@@ -95,7 +96,10 @@
       if (![target respondsToSelector:@selector(validateUserInterfaceItem:)] || 
           [(id<NSUserInterfaceValidations>)target validateUserInterfaceItem:self])
       {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
         [target performSelector:selector withObject:argument];
+#pragma clang diagnostic pop
       }
     }
   }

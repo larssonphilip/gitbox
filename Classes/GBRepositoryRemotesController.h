@@ -1,5 +1,5 @@
 #import "GBRepositorySettingsViewController.h"
 
 @interface GBRepositoryRemotesController : GBRepositorySettingsViewController
-@property(nonatomic,retain) NSMutableArray* remotesDictionaries;
+@property(nonatomic,strong) NSMutableArray* remotesDictionaries;
 @end

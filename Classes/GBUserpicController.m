@@ -5,8 +5,8 @@
 #import "NSString+OAStringHelpers.h"
 
 @interface GBUserpicController ()
-@property(nonatomic,retain) NSCache* cache;
-@property(nonatomic,retain) OAHTTPQueue* httpQueue;
+@property(nonatomic,strong) NSCache* cache;
+@property(nonatomic,strong) OAHTTPQueue* httpQueue;
 @end
 
 @implementation GBUserpicController
@@ -16,21 +16,18 @@
 
 - (void) dealloc
 {
-	self.cache = nil;
 	[self.httpQueue cancel];
-	self.httpQueue = nil;
-	[super dealloc];
 }
 
 - (id) init
 {
 	if ((self = [super init]))
 	{
-		self.cache = [[[NSCache alloc] init] autorelease];
+		self.cache = [[NSCache alloc] init];
 		[self.cache setTotalCostLimit:10*1024*1024];
 		[self.cache setCountLimit:1000];
 		
-		self.httpQueue = [[OAHTTPQueue new] autorelease];
+		self.httpQueue = [OAHTTPQueue new];
 		self.httpQueue.coalesceURLs = YES;
 		self.httpQueue.maxConcurrentOperationCount = 6;
 		self.httpQueue.limit = 12.0;
@@ -48,7 +45,7 @@
 // Fetches the image (from the cache, local storage or network) and calls the block when done.
 - (void) loadImageForEmail:(NSString*)email withBlock:(void(^)())aBlock
 {
-	aBlock = [[aBlock copy] autorelease];
+	aBlock = [aBlock copy];
 	if (!email || [self.cache objectForKey:email])
 	{
 		if (aBlock) aBlock();
@@ -79,7 +76,7 @@
 			
 			if (imageData)
 			{
-				NSImage* newImage = [[[NSImage alloc] initWithData:imageData] autorelease];
+				NSImage* newImage = [[NSImage alloc] initWithData:imageData];
 				if (newImage)
 				{
 					[self.cache setObject:newImage forKey:email cost:[imageData length]];
@@ -111,7 +108,7 @@
 			if (!aDownload.error && aDownload.data)
 			{
 				NSData* imageData = aDownload.data;
-				NSImage* newImage = [[[NSImage alloc] initWithData:imageData] autorelease];
+				NSImage* newImage = [[NSImage alloc] initWithData:imageData];
 				[self.cache setObject:newImage forKey:email cost:[imageData length]];
 				if (aBlock) aBlock();
 			}

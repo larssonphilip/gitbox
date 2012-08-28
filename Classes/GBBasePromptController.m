@@ -2,10 +2,6 @@
 
 @implementation GBBasePromptController
 
-- (void) dealloc
-{
-  [super dealloc];
-}
 
 - (IBAction) onOK:(id)sender
 {

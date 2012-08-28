@@ -43,20 +43,7 @@
 
 - (void) dealloc
 {
-	[commitId release]; commitId = nil;
-	[treeId release]; treeId = nil;
-	[authorName release]; authorName = nil;
-	[authorEmail release]; authorEmail = nil;
-	[committerName release]; committerName = nil;
-	[committerEmail release]; committerEmail = nil;
-	[date release]; date = nil;
-	[message release]; message = nil;
-	[parentIds release]; parentIds = nil;
-	[changes release]; changes = nil;
-	[diffs release]; diffs = nil;
-	[searchQuery release]; searchQuery = nil;
-	[foundRangesByProperties release]; foundRangesByProperties = nil;
-	[super dealloc];
+	 searchQuery = nil;
 }
 
 - (NSString*) description
@@ -195,8 +182,7 @@
 {
 	if (searchQuery == aQuery) return;
 	
-	[searchQuery release];
-	searchQuery = [aQuery retain];
+	searchQuery = aQuery;
 	
 	[self updateSearchAttributes];
 }
@@ -354,7 +340,7 @@
 	
 	if (!label) label = GBColorLabelClear;
 	
-	colorLabel = [label retain];
+	colorLabel = label;
 	
 	return colorLabel;
 }
@@ -365,10 +351,9 @@
 	if (!newLabel) newLabel = GBColorLabelClear;
 	if ([colorLabel isEqual:newLabel]) return;
 	
-	[colorLabel release];
-	colorLabel = [newLabel retain];
+	colorLabel = newLabel;
 	
-	NSMutableDictionary* dict = [[[[NSUserDefaults standardUserDefaults] dictionaryForKey:@"GBColorLabelsForCommits"] mutableCopy] autorelease];
+	NSMutableDictionary* dict = [[[NSUserDefaults standardUserDefaults] dictionaryForKey:@"GBColorLabelsForCommits"] mutableCopy];
 	
 	if (!dict) dict = [NSMutableDictionary dictionary];
 	
@@ -391,7 +376,7 @@
 
 - (void) loadChangesWithBlock:(void(^)())block
 {
-	block = [[block copy] autorelease];
+	block = [block copy];
 	
 	if (!self.commitId)
 	{

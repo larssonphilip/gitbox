@@ -9,7 +9,7 @@
 
 + (NSMenu*) menuWithTitle:(NSString*)title
 {
-  NSMenu* menu = [[[self alloc] init] autorelease];
+  NSMenu* menu = [[self alloc] init];
   if (title) [menu setTitle:title];
   [menu setAutoenablesItems:YES];
   return menu;  
@@ -22,7 +22,7 @@
 
 + (NSMenuItem*) menuItemWithTitle:(NSString*)title submenu:(NSMenu*)menu
 {
-  NSMenuItem* item = [[[self alloc] init] autorelease];
+  NSMenuItem* item = [[self alloc] init];
   if (title) [item setTitle:title];
   if (menu) [item setSubmenu:menu];
   return item;
@@ -30,7 +30,7 @@
 
 + (NSMenuItem*) menuItemWithTitle:(NSString*)title action:(SEL)action
 {
-  NSMenuItem* item = [[[self alloc] init] autorelease];
+  NSMenuItem* item = [[self alloc] init];
   if (title) [item setTitle:title];
   if (action) [item setAction:action];
   return item;
@@ -38,7 +38,7 @@
 
 + (NSMenuItem*) menuItemWithTitle:(NSString*)title action:(SEL)action object:(NSObject*)object
 {
-  NSMenuItem* item = [[[self alloc] init] autorelease];
+  NSMenuItem* item = [[self alloc] init];
   if (title) [item setTitle:title];
   if (action) [item setAction:action];
   [item setRepresentedObject:object];

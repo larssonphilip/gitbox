@@ -20,12 +20,12 @@
 	if (length < 1) return self;
 	if ([self rangeOfString:@"\""].location == 0 & length > 2) // if in double quotes, it is escaped
 	{
-		NSMutableString* result = [[[self substringWithRange:NSMakeRange(1, length - 2)] mutableCopy] autorelease];
+		NSMutableString* result = [[self substringWithRange:NSMakeRange(1, length - 2)] mutableCopy];
 		[result replaceOccurrencesOfString:@"\\t" withString:@"\t" options:0 range:NSMakeRange(0, result.length)];
 		[result replaceOccurrencesOfString:@"\\n" withString:@"\n" options:0 range:NSMakeRange(0, result.length)];
 		[result replaceOccurrencesOfString:@"\\\"" withString:@"\"" options:0 range:NSMakeRange(0, result.length)];
 		[result replaceOccurrencesOfString:@"\\\\" withString:@"\\" options:0 range:NSMakeRange(0, result.length)];
-		return [[result copy] autorelease];
+		return [result copy];
 	}
 	return self;
 }
@@ -46,10 +46,10 @@
 {
 	NSUInteger length = [self length];
 	if (length < 1) return self;
-	NSMutableString* result = [[self mutableCopy] autorelease];
+	NSMutableString* result = [self mutableCopy];
 	[result replaceOccurrencesOfString:@"\\" withString:@"\\\\" options:0 range:NSMakeRange(0, result.length)];
 	[result replaceOccurrencesOfString:@"\"" withString:@"\\\"" options:0 range:NSMakeRange(0, result.length)];
-	return [[result copy] autorelease];
+	return [result copy];
 }
 
 - (NSString*) stringWithEscapingConfigKeyPart

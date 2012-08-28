@@ -10,15 +10,6 @@
 @synthesize originalURL;
 @synthesize targetURL;
 
-- (void) dealloc
-{
-  self.objectId = nil;
-  self.commitId = nil;
-  self.folder = nil;
-  self.originalURL = nil;
-  self.targetURL = nil;
-  [super dealloc];
-}
 
 
 
@@ -55,7 +46,7 @@
     path = [path stringByAppendingPathComponent:[self prettyFileName]];
     self.targetURL = [NSURL fileURLWithPath:path];
   }
-  return [[targetURL retain] autorelease];
+  return targetURL;
 }
 
 

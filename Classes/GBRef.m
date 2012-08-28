@@ -10,19 +10,11 @@
 
 + (GBRef*) refWithCommitId:(NSString*)commitId
 {
-	GBRef* ref = [[self new] autorelease];
+	GBRef* ref = [self new];
 	ref.commitId = commitId;
 	return ref;
 }
 
-- (void) dealloc
-{
-	self.name = nil;
-	self.commitId = nil;
-	self.remoteAlias = nil;
-	self.configuredRemoteBranch = nil;
-	[super dealloc];
-}
 
 
 - (BOOL) isEqual:(id)object

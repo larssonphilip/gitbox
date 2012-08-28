@@ -5,7 +5,7 @@
 
 + (GBChangeCheckboxCell*) checkboxCell
 {
-  GBChangeCheckboxCell* cell = [[[self alloc] initTextCell:@""] autorelease];
+  GBChangeCheckboxCell* cell = [[self alloc] initTextCell:@""];
   [cell setControlSize:NSSmallControlSize];
   [cell setBezelStyle:NSRoundedBezelStyle];
   [cell setButtonType:NSSwitchButton];

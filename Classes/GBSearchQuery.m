@@ -4,7 +4,7 @@ NSRange GBSearchQueryRangeForTokenInString(id token, NSString* string);
 
 @interface GBSearchQuery ()
 @property(nonatomic, copy, readwrite) NSString* sourceString;
-@property(nonatomic, retain) NSArray* tokens;
+@property(nonatomic, strong) NSArray* tokens;
 - (NSArray*) tokensForString:(NSString*)str;
 @end
 
@@ -15,14 +15,12 @@ NSRange GBSearchQueryRangeForTokenInString(id token, NSString* string);
 
 - (void) dealloc
 {
-	[sourceString release]; sourceString = nil;
-	[tokens release]; tokens = nil;
-	[super dealloc];
+	 sourceString = nil;
 }
 
 + (GBSearchQuery*) queryWithString:(NSString*)str
 {
-	GBSearchQuery* q = [[[self alloc] init] autorelease];
+	GBSearchQuery* q = [[self alloc] init];
 	q.sourceString = str;
 	return q;
 }
@@ -68,7 +66,6 @@ NSRange GBSearchQueryRangeForTokenInString(id token, NSString* string);
 {
 	if (sourceString == str) return;
 	
-	[sourceString release];
 	sourceString = [[str stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] copy];
 	
 	self.tokens = [self tokensForString:sourceString];

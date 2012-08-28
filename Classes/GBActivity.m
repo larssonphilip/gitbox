@@ -3,7 +3,7 @@
 #import "NSData+OADataHelpers.h"
 
 @interface GBActivity ()
-@property(nonatomic, retain) NSMutableData* data;
+@property(nonatomic, strong) NSMutableData* data;
 @end 
 
 @implementation GBActivity
@@ -22,17 +22,6 @@
 
 #pragma mark Init
 
-- (void) dealloc
-{
-  [date release]; date = nil;
-  [path release]; path = nil;
-  [command release]; command = nil;
-  [status release]; status = nil;
-  [textOutput release]; textOutput = nil;
-  [data release]; data = nil;
-  [dataLength release]; dataLength = nil;
-  [super dealloc];
-}
 
 - (id) init
 {

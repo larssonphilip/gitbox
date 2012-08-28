@@ -14,13 +14,13 @@
 
 + (id) controller
 {
-  GBAskPassCredentialsController* ctrl = [[[self alloc] initWithWindowNibName:@"GBAskPassCredentialsController"] autorelease];
+  GBAskPassCredentialsController* ctrl = [[self alloc] initWithWindowNibName:@"GBAskPassCredentialsController"];
   return ctrl;
 }
 
 + (id) passwordOnlyController
 {
-  GBAskPassCredentialsController* ctrl = [[[self alloc] initWithWindowNibName:@"GBAskPassCredentialsControllerPasswordOnly"] autorelease];
+  GBAskPassCredentialsController* ctrl = [[self alloc] initWithWindowNibName:@"GBAskPassCredentialsControllerPasswordOnly"];
   return ctrl;
 }
 
@@ -31,16 +31,9 @@
 
 - (void)dealloc
 {
-  [callback release]; callback = nil;
-  [address release]; address = nil;
-  [username release]; username = nil;
-  [password release]; password = nil;
+   callback = nil;
   
-  [addressLabel release]; addressLabel = nil;
-  [usernameField release]; usernameField = nil;
-  [passwordField release]; passwordField = nil;
   
-  [super dealloc];
 }
 
 - (void)windowDidLoad

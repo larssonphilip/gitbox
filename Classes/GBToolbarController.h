@@ -1,7 +1,7 @@
 @interface GBToolbarController : NSResponder<NSToolbarDelegate>
 
-@property(nonatomic, retain) IBOutlet NSToolbar* toolbar;
-@property(nonatomic, retain) IBOutlet NSWindow* window;
+@property(nonatomic, strong) IBOutlet NSToolbar* toolbar;
+@property(nonatomic, strong) IBOutlet NSWindow* window;
 @property(nonatomic, assign) CGFloat sidebarWidth;
 
 // Methods for subclasses:

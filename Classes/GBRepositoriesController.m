@@ -21,8 +21,8 @@
 
 
 @interface GBRepositoriesController () <NSOpenSavePanelDelegate>
-@property(nonatomic, retain) GBCloneWindowController* cloneWindowController;
-@property(nonatomic, retain) OAFSEventStream* fsEventStream;
+@property(nonatomic, strong) GBCloneWindowController* cloneWindowController;
+@property(nonatomic, strong) OAFSEventStream* fsEventStream;
 
 - (void) removeObjects:(NSArray*)objects;
 
@@ -48,9 +48,6 @@
 - (void) dealloc
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	self.cloneWindowController = nil;
-	self.fsEventStream = nil;
-	[super dealloc];
 }
 
 - (id) init
@@ -58,7 +55,7 @@
 	if ((self = [super init]))
 	{
 		self.name = NSLocalizedString(@"REPOSITORIES", @"Sidebar");
-		self.sidebarItem = [[[GBSidebarItem alloc] init] autorelease];
+		self.sidebarItem = [[GBSidebarItem alloc] init];
 		self.sidebarItem.object = self;
 		self.sidebarItem.expanded = YES;
 		self.sidebarItem.expandable = YES;
@@ -66,10 +63,10 @@
 		self.sidebarItem.draggable = NO;
 		self.sidebarItem.editable = NO;
 		
-		self.repositoryViewController = [[[GBRepositoryViewController alloc] initWithNibName:@"GBRepositoryViewController" bundle:nil] autorelease];
-		self.repositoryToolbarController = [[[GBRepositoryToolbarController alloc] init] autorelease];
+		self.repositoryViewController = [[GBRepositoryViewController alloc] initWithNibName:@"GBRepositoryViewController" bundle:nil];
+		self.repositoryToolbarController = [[GBRepositoryToolbarController alloc] init];
 		
-		self.fsEventStream = [[[OAFSEventStream alloc] init] autorelease];
+		self.fsEventStream = [[OAFSEventStream alloc] init];
 		self.fsEventStream.latency = 0.2; // more latency - more accumulated events; less latency - faster response.
 		self.fsEventStream.enabled = YES;
 	}
@@ -187,7 +184,7 @@
 	
 	if (!self.cloneWindowController)
 	{
-		self.cloneWindowController = [[[GBCloneWindowController alloc] initWithWindowNibName:@"GBCloneWindowController"] autorelease];
+		self.cloneWindowController = [[GBCloneWindowController alloc] initWithWindowNibName:@"GBCloneWindowController"];
 	}
 	
 	GBCloneWindowController* ctrl = self.cloneWindowController;
@@ -201,7 +198,7 @@
 				return;
 			}
 			
-			GBRepositoryCloningController* cloneController = [[[GBRepositoryCloningController alloc] init] autorelease];
+			GBRepositoryCloningController* cloneController = [[GBRepositoryCloningController alloc] init];
 			cloneController.sourceURLString = ctrl.sourceURLString;
 			cloneController.targetURL = ctrl.targetURL;
 			
@@ -232,7 +229,7 @@
 
 - (void) cloningRepositoryControllerDidFinish:(GBRepositoryCloningController*)cloningRepoCtrl
 {
-	[[cloningRepoCtrl retain] autorelease];
+	GB_RETAIN_AUTORELEASE(self);
 	
 	[cloningRepoCtrl removeObserverForAllSelectors:self];
 	
@@ -242,7 +239,7 @@
 	GBRepositoryController* repoCtrl = [GBRepositoryController repositoryControllerWithURL:cloningRepoCtrl.targetURL];
 	[self startRepositoryController:repoCtrl];
 	
-	NSMutableArray* selectedObjects = [[self.rootController.selectedObjects mutableCopy] autorelease];
+	NSMutableArray* selectedObjects = [self.rootController.selectedObjects mutableCopy];
 	
 	if (selectedObjects)
 	{
@@ -354,7 +351,7 @@
 
 - (void) removeObjects:(NSArray*)objects
 {
-	[[objects retain] autorelease]; // make objects survive till the end of this call
+	GB_RETAIN_AUTORELEASE(objects);  // make objects survive till the end of this call
 	NSMutableArray* objectsToRemoveFromSelection = [NSMutableArray array];
 	for (id<GBSidebarItemObject> object in objects)
 	{
@@ -471,7 +468,7 @@
 		return;
 	}
 	
-	[[oldRepoCtrl retain] autorelease];
+	GB_RETAIN_AUTORELEASE(oldRepoCtrl);
 	[oldRepoCtrl stop];
 	
 	//NSLog(@"FSEventStream: %@", self.fsEventStream);
@@ -482,7 +479,7 @@
 	GBRepositoryController* repoCtrl = [GBRepositoryController repositoryControllerWithURL:newURL];
 	[self startRepositoryController:repoCtrl];
 	
-	NSMutableArray* selectedObjects = [[self.rootController.selectedObjects mutableCopy] autorelease];
+	NSMutableArray* selectedObjects = [self.rootController.selectedObjects mutableCopy];
 	
 	if (selectedObjects)
 	{
@@ -646,7 +643,7 @@
 		
 		if ([className isEqual:@"GBRepositoriesGroup"])
 		{
-			GBRepositoriesGroup* aGroup = [[[GBRepositoriesGroup alloc] init] autorelease];
+			GBRepositoriesGroup* aGroup = [[GBRepositoriesGroup alloc] init];
 			aGroup.name = [dict objectForKey:@"name"];
 			aGroup.sidebarItem.collapsed = collapsed;
 			aGroup.repositoriesController = self;

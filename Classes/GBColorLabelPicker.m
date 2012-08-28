@@ -19,17 +19,17 @@ NSString* const GBColorLabelGray   = @"GBColorLabelGray";
 #define buttonsCount  8 // should be in sync with value declarations listed above
 
 @interface GBColorLabelPickerButton : NSImageView
-@property(nonatomic, assign) GBColorLabelPicker* picker;
-@property(nonatomic, assign) NSString* value;
+@property(nonatomic, unsafe_unretained) GBColorLabelPicker* picker;
+@property(nonatomic, unsafe_unretained) NSString* value;
 @property(nonatomic, assign) BOOL selected;
 + (id) buttonWithValue:(NSString*)value picker:(GBColorLabelPicker*)picker;
 @end
 
 @interface GBColorLabelPicker ()
-@property(nonatomic, retain) NSString* highlightedValue;
-@property(nonatomic, retain) NSImageView* selectionImageView;
-@property(nonatomic, retain) NSImageView* highlightImageView;
-@property(nonatomic, retain) NSArray* buttons;
+@property(nonatomic, strong) NSString* highlightedValue;
+@property(nonatomic, strong) NSImageView* selectionImageView;
+@property(nonatomic, strong) NSImageView* highlightImageView;
+@property(nonatomic, strong) NSArray* buttons;
 @end
 
 
@@ -46,15 +46,10 @@ NSString* const GBColorLabelGray   = @"GBColorLabelGray";
 
 - (void) dealloc
 {
-  [value release]; value = nil;
+   value = nil;
   target = nil;
   action = nil;
-  [representedObject release]; representedObject = nil;
-  [highlightedValue release]; highlightedValue = nil;
-  [selectionImageView release]; selectionImageView = nil;
-  [highlightImageView release]; highlightImageView = nil;
-  [buttons release]; buttons = nil;
-  [super dealloc];
+   highlightedValue = nil;
 }
 
 + (id) pickerWithTarget:(id)target action:(SEL)action object:(id)representedObject
@@ -63,7 +58,7 @@ NSString* const GBColorLabelGray   = @"GBColorLabelGray";
                             0.0, 
                             paddingLeft + buttonsCount*(buttonSize + innerSpacing) + paddingRight, 
                             paddingTop + buttonSize + paddingBottom);
-  GBColorLabelPicker* picker = [[[GBColorLabelPicker alloc] initWithFrame:frame] autorelease];
+  GBColorLabelPicker* picker = [[GBColorLabelPicker alloc] initWithFrame:frame];
   picker.target = target;
   picker.action = action;
   picker.representedObject = representedObject;
@@ -73,7 +68,7 @@ NSString* const GBColorLabelGray   = @"GBColorLabelGray";
 - (NSArray*) allValues
 {
   static NSArray* values = nil;
-  if (!values) values = [[NSArray arrayWithObjects:
+  if (!values) values = [NSArray arrayWithObjects:
                          GBColorLabelClear,
                          GBColorLabelRed,
                          GBColorLabelOrange,
@@ -82,7 +77,7 @@ NSString* const GBColorLabelGray   = @"GBColorLabelGray";
                          GBColorLabelBlue,
                          GBColorLabelPurple,
                          GBColorLabelGray, 
-                          nil] retain];
+                          nil];
   return values;
 }
 
@@ -97,11 +92,11 @@ NSString* const GBColorLabelGray   = @"GBColorLabelGray";
   {
     NSArray* values = [self allValues];
     
-    self.selectionImageView = [[[NSImageView alloc] initWithFrame:NSMakeRect(0,0,buttonSize,buttonSize)] autorelease];
+    self.selectionImageView = [[NSImageView alloc] initWithFrame:NSMakeRect(0,0,buttonSize,buttonSize)];
     [self.selectionImageView setImage:[NSImage imageNamed:@"GBColorLabelSelection.png"]];
     [self addSubview:self.selectionImageView];
 
-    self.highlightImageView = [[[NSImageView alloc] initWithFrame:NSMakeRect(0,0,buttonSize,buttonSize)] autorelease];
+    self.highlightImageView = [[NSImageView alloc] initWithFrame:NSMakeRect(0,0,buttonSize,buttonSize)];
     [self.highlightImageView setImage:[NSImage imageNamed:@"GBColorLabelHighlight.png"]];
     [self addSubview:self.highlightImageView];
     
@@ -128,8 +123,7 @@ NSString* const GBColorLabelGray   = @"GBColorLabelGray";
   
   if ([value isEqual:aValue]) return;
   
-  [value release];
-  value = [aValue retain];
+  value = aValue;
   
   if (!value)
   {
@@ -159,8 +153,7 @@ NSString* const GBColorLabelGray   = @"GBColorLabelGray";
   if (!aValue && !highlightedValue) return;
   if (aValue && [highlightedValue isEqual:aValue]) return;
   
-  [highlightedValue release];
-  highlightedValue = [aValue retain];
+  highlightedValue = aValue;
   
   if (!highlightedValue || [value isEqual:highlightedValue])
   {
@@ -223,7 +216,7 @@ NSString* const GBColorLabelGray   = @"GBColorLabelGray";
 
 + (id) buttonWithValue:(NSString*)value picker:(GBColorLabelPicker*)picker
 {
-  GBColorLabelPickerButton* button = [[[self alloc] initWithFrame:NSMakeRect(0, 0, buttonSize, buttonSize)] autorelease];
+  GBColorLabelPickerButton* button = [[self alloc] initWithFrame:NSMakeRect(0, 0, buttonSize, buttonSize)];
   button.value = value;
   button.picker = picker;
   [button setImage:[NSImage imageNamed:[NSString stringWithFormat:@"%@.png", value]]];

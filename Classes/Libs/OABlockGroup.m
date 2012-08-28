@@ -13,7 +13,7 @@
 
 + (void) groupBlock:(void(^)(OABlockGroup*))groupBlock continuation:(void(^)())continuationBlock
 {
-  OABlockGroup* group = [[self new] autorelease];
+  OABlockGroup* group = [self new];
   group.block = continuationBlock;
   group.isWrapped = YES;
   [group enter];
@@ -21,11 +21,6 @@
   [group leave];
 }
 
-- (void) dealloc
-{
-  self.block = nil;
-  [super dealloc];
-}
 
 - (void) enter
 {

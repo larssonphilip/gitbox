@@ -2,10 +2,10 @@
 
 @interface GBUserNameEmailController : GBBasePromptController
 
-@property(retain) NSString* userName;
-@property(retain) NSString* userEmail;
-@property(retain) IBOutlet NSTextField* nameField;
-@property(retain) IBOutlet NSTextField* emailField;
+@property(strong) NSString* userName;
+@property(strong) NSString* userEmail;
+@property(strong) IBOutlet NSTextField* nameField;
+@property(strong) IBOutlet NSTextField* emailField;
 
 - (void) fillWithAddressBookData;
 

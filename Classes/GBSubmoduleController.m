@@ -12,16 +12,11 @@
 @synthesize submodule=_submodule;
 @synthesize parentRepositoryController=_parentRepositoryController;
 
-- (void) dealloc
-{
-	self.submodule = nil;
-	[super dealloc];
-}
 
 + (GBSubmoduleController*) controllerWithSubmodule:(GBSubmodule*)submodule
 {
 	if (!submodule) return nil;
-	return [[[self alloc] initWithSubmodule:submodule] autorelease];
+	return [[self alloc] initWithSubmodule:submodule];
 }
 
 - (id) initWithSubmodule:(GBSubmodule*)submodule
@@ -33,19 +28,19 @@
 #warning TODO: without that we may hit 5 updates concurrently eating tons of cpu!
 		self.repository.dispatchQueue = self.submodule.dispatchQueue;
 		
-		self.sidebarItem = [[[GBSidebarItem alloc] init] autorelease];
+		self.sidebarItem = [[GBSidebarItem alloc] init];
 		self.sidebarItem.object = self;
 		self.sidebarItem.draggable = NO;
 		self.sidebarItem.selectable = YES;
 		self.sidebarItem.editable = NO;
-		self.sidebarItem.cell = [[[GBSubmoduleCell alloc] initWithItem:self.sidebarItem] autorelease];
+		self.sidebarItem.cell = [[GBSubmoduleCell alloc] initWithItem:self.sidebarItem];
 	}
 	return self;
 }
 
 - (NSMenu*) sidebarItemMenu
 {
-	NSMenu* aMenu = [[[NSMenu alloc] initWithTitle:@""] autorelease];
+	NSMenu* aMenu = [[NSMenu alloc] initWithTitle:@""];
 	
 	[self addOpenMenuItemsToMenu:aMenu];
 

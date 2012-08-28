@@ -53,7 +53,6 @@ BOOL GBLightScrollerIsModernOS()
 - (void) dealloc
 {
 	[NSObject cancelPreviousPerformRequestsWithTarget:self];
-	[super dealloc];
 }
 
 - (BOOL) isOpaque

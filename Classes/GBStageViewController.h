@@ -7,14 +7,14 @@
 
 // Nib API
 
-@property(nonatomic, retain) IBOutlet NSTextView* messageTextView;
-@property(nonatomic, retain) IBOutlet NSButton* commitButton;
-@property(nonatomic, retain) IBOutlet NSTextField* shortcutHintLabel;
+@property(nonatomic, strong) IBOutlet NSTextView* messageTextView;
+@property(nonatomic, strong) IBOutlet NSButton* commitButton;
+@property(nonatomic, strong) IBOutlet NSTextField* shortcutHintLabel;
 
-@property(nonatomic, retain) IBOutlet NSTextField* rebaseStatusLabel;
-@property(nonatomic, retain) IBOutlet NSButton* rebaseCancelButton;
-@property(nonatomic, retain) IBOutlet NSButton* rebaseSkipButton;
-@property(nonatomic, retain) IBOutlet NSButton* rebaseContinueButton;
+@property(nonatomic, strong) IBOutlet NSTextField* rebaseStatusLabel;
+@property(nonatomic, strong) IBOutlet NSButton* rebaseCancelButton;
+@property(nonatomic, strong) IBOutlet NSButton* rebaseSkipButton;
+@property(nonatomic, strong) IBOutlet NSButton* rebaseContinueButton;
 
 - (IBAction) stageDoStage:(id)sender;
 - (IBAction) stageDoUnstage:(id)sender;

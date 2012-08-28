@@ -20,9 +20,9 @@
 
 
 @interface GBChange ()
-@property(nonatomic, retain) NSImage* cachedSrcIcon;
-@property(nonatomic, retain) NSImage* cachedDstIcon;
-@property(nonatomic, retain) NSURL* quicklookItemURL;
+@property(nonatomic, strong) NSImage* cachedSrcIcon;
+@property(nonatomic, strong) NSImage* cachedDstIcon;
+@property(nonatomic, strong) NSURL* quicklookItemURL;
 - (NSImage*) iconForPath:(NSString*)path;
 - (NSURL*) temporaryURLForObjectId:(NSString*)objectId optionalURL:(NSURL*)url commitId:(NSString*)aCommitId;
 @end
@@ -58,27 +58,9 @@
 
 + (GBChange*) dummy
 {
-	return [[self new] autorelease];
+	return [self new];
 }
 
-- (void) dealloc
-{
-	[srcURL release];
-	[dstURL release];
-	[statusCode release];
-	[status release];
-	[srcMode release];
-	[dstMode release];
-	[srcRevision release];
-	[dstRevision release];
-	[commitId release];
-	[cachedSrcIcon release];
-	[cachedDstIcon release];
-	[quicklookItemURL release];
-	[searchQuery release];
-	[highlightedPathSubstrings release];
-	[super dealloc];
-}
 
 - (void) setStaged:(BOOL) flag
 {
@@ -348,7 +330,6 @@
 {
 	if (statusCode == aCode) return;
 	
-	[statusCode release];
 	statusCode = [aCode copy];
 	
 	self.status = [self statusForStatusCode:statusCode];
@@ -445,9 +426,9 @@
 	BOOL isRelaunched = relaunchingOpendiff;
 	relaunchingOpendiff = NO; // reset here to be sure it's cleaned up before multiple exists down there.
 	
-	[[self retain] autorelease]; // quick patch to work around the crash when changes are replaced
+	GB_RETAIN_AUTORELEASE(self); // quick patch to work around the crash when changes are replaced
 	
-	NSFileManager* fileManager = [[[NSFileManager alloc] init] autorelease];
+	NSFileManager* fileManager = [[NSFileManager alloc] init];
 	
 	// Do nothing for deleted file
 	if ([self isDeletedFile])
@@ -588,7 +569,7 @@
 	//    }
 	//  };
 	
-	block = [[block copy] autorelease];
+	block = [block copy];
 	
 	[task launchWithBlock:^{
 		
@@ -777,7 +758,7 @@
 
 - (NSObject<NSPasteboardWriting>*) pasteboardItem // for now, respond to pasteboard API by ourselves
 {
-	return [[self retain] autorelease];
+	return self;
 }
 
 - (id)pasteboardPropertyListForType:(NSString *)type
@@ -822,9 +803,9 @@
 
 - (NSArray*) writableTypesForPasteboard:(NSPasteboard *)pasteboard
 {
-	NSString* UTI = [((NSString *)UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension,
-																		(CFStringRef)[[[self fileURL] path] pathExtension], 
-																		NULL)) autorelease];
+	NSString* UTI = ((NSString *)CFBridgingRelease(UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension,
+																		(__bridge CFStringRef)[[[self fileURL] path] pathExtension], 
+																		NULL)));
 	NSArray* types = [NSArray arrayWithObjects:
 					  UTI,
 					  kUTTypeFileURL,
@@ -858,7 +839,7 @@
 
 - (void) prepareQuicklookItemWithBlock:(void(^)(BOOL didExtractFile))aBlock
 {
-	aBlock = [[aBlock copy] autorelease];
+	aBlock = [aBlock copy];
 	
 	NSString* objectId = nil;
 	

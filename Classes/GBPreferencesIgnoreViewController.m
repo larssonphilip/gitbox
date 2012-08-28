@@ -14,13 +14,11 @@
 - (void)dealloc
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
-    [label release];
-    [super dealloc];
 }
 
 + (GBPreferencesIgnoreViewController*) controller
 {
-	return [[[self alloc] initWithNibName:@"GBPreferencesIgnoreViewController" bundle:nil] autorelease];
+	return [[self alloc] initWithNibName:@"GBPreferencesIgnoreViewController" bundle:nil];
 }
 
 - (NSURL*) fileURL

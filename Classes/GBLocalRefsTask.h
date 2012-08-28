@@ -1,8 +1,8 @@
 #import "GBTask.h"
 @interface GBLocalRefsTask : GBTask
 
-@property(nonatomic, retain) NSArray* branches;
-@property(nonatomic, retain) NSArray* tags;
-@property(nonatomic, retain) NSMutableDictionary* remoteBranchesByRemoteAlias;
+@property(nonatomic, strong) NSArray* branches;
+@property(nonatomic, strong) NSArray* tags;
+@property(nonatomic, strong) NSMutableDictionary* remoteBranchesByRemoteAlias;
 
 @end

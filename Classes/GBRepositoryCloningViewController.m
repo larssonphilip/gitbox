@@ -17,11 +17,6 @@
 - (void) dealloc
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	self.messageLabel = nil;
-	self.errorLabel = nil;
-	self.cancelButton = nil;
-	self.progressIndicator = nil;
-	[super dealloc];
 }
 
 - (void) setRepositoryController:(GBRepositoryCloningController*)repoCtrl

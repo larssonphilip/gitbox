@@ -40,15 +40,6 @@
 
 #pragma mark - Init
 
-- (void) dealloc
-{
-	[stagedChanges release];
-	[unstagedChanges release];
-	[untrackedChanges release];
-	[currentCommitMessage release];
-	[previousChangesData release];
-	[super dealloc];
-}
 
 - (id) init
 {
@@ -204,7 +195,7 @@
 {
 	NSMutableData* accumulatedData = [NSMutableData data];
 	
-	block = [[block copy] autorelease];
+	block = [block copy];
 	
 	int stageStateCounterLocal = stageStateCounter;
 	
@@ -294,7 +285,7 @@
 // Legacy method, shouldn't be called from anywhere.
 - (void) loadChangesWithBlock:(void(^)())block
 {
-	block = [[block copy] autorelease];
+	block = [block copy];
 	[self updateStageWithBlock:^(BOOL f){
 		if (block) block();
 	}];
@@ -319,7 +310,7 @@
 
 - (void) stageDeletedPaths:(NSArray*)pathsToDelete withBlock:(void(^)())block
 {
-	block = [[block copy] autorelease];
+	block = [block copy];
 	
 	if ([pathsToDelete count] <= 0)
 	{
@@ -337,7 +328,7 @@
 
 - (void) stageAddedPaths:(NSArray*)pathsToAdd withBlock:(void(^)())block
 {
-	block = [[block copy] autorelease];
+	block = [block copy];
 	
 	if ([pathsToAdd count] <= 0)
 	{
@@ -355,7 +346,7 @@
 
 - (void) stageChanges:(NSArray*)theChanges withBlock:(void(^)())block
 {
-	block = [[block copy] autorelease];
+	block = [block copy];
 	
 	NSMutableArray* pathsToDelete = [NSMutableArray array];
 	NSMutableArray* pathsToAdd = [NSMutableArray array];
@@ -379,7 +370,7 @@
 
 - (void) unstageChanges:(NSArray*)theChanges withBlock:(void(^)())block
 {
-	block = [[block copy] autorelease];
+	block = [block copy];
 	if ([theChanges count] <= 0)
 	{
 		if (block) block();
@@ -423,7 +414,7 @@
 
 - (void) stageAllWithBlock:(void(^)())block
 {
-	block = [[block copy] autorelease];
+	block = [block copy];
 	stageStateCounter++;
 	[self beginStageTransaction:^{
 		GBTask* task = [self.repository task];
@@ -444,7 +435,7 @@
 		return;
 	}
 	
-	block = [[block copy] autorelease];
+	block = [block copy];
 	NSMutableArray* paths = [NSMutableArray array];
 	for (GBChange* aChange in theChanges)
 	{
@@ -461,7 +452,7 @@
 
 - (void) deleteFilesInChanges:(NSArray*)theChanges withBlock:(void(^)())block
 {
-	block = [[block copy] autorelease];
+	block = [block copy];
 	
 	stageStateCounter++;
 	[self beginStageTransaction:^{
@@ -545,12 +536,12 @@
 {
 	stageStateCounter++;
 	
-	taskCallback = [[taskCallback copy] autorelease];
-	block = [[block copy] autorelease];
+	taskCallback = [taskCallback copy];
+	block = [block copy];
 	
 	void(^content)() = ^{
 		[OABlockGroup groupBlock:^(OABlockGroup *group) {
-			for (NSArray* paths in [allPaths arrayOfChunksBySize:1000])
+			for (__strong NSArray* paths in [allPaths arrayOfChunksBySize:1000])
 			{
 				[group enter];
 				GBTask* task = [self.repository task];
@@ -569,7 +560,7 @@
 	
 	if (atomic)
 	{
-		content = [[content copy] autorelease];
+		content = [content copy];
 		[self beginStageTransaction:^{
 			content();
 		}];
@@ -604,7 +595,6 @@
 	{
 		block();
 	}
-	[blocks release];
 }
 
 @end

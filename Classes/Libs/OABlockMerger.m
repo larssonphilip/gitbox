@@ -1,8 +1,8 @@
 #import "OABlockMerger.h"
 
 @interface OABlockMerger ()
-@property(nonatomic, retain) NSMutableDictionary* completionHandlersByTaskNames;
-@property(nonatomic, retain) NSMutableSet* ranTaskNames;
+@property(nonatomic, strong) NSMutableDictionary* completionHandlersByTaskNames;
+@property(nonatomic, strong) NSMutableSet* ranTaskNames;
 @end
 
 @implementation OABlockMerger
@@ -10,12 +10,6 @@
 @synthesize completionHandlersByTaskNames;
 @synthesize ranTaskNames;
 
-- (void) dealloc
-{
-  self.completionHandlersByTaskNames = nil;
-  self.ranTaskNames = nil;
-  [super dealloc];
-}
 
 - (id) init
 {
@@ -34,12 +28,12 @@
   NSAssert(taskName, @"taskName must be provided");
   NSAssert(taskBlock, @"taskBlock must be provided");
   if (!completionHandler) completionHandler = ^{};
-  completionHandler = [[completionHandler copy] autorelease];
+  completionHandler = [completionHandler copy];
   
   OABlockMergerBlock callbackBlock = ^{
     [self didFinishTask:taskName];
   };
-  callbackBlock = [[callbackBlock copy] autorelease];
+  callbackBlock = [callbackBlock copy];
   
   [self.ranTaskNames addObject:taskName];
   
@@ -48,12 +42,12 @@
   if (existingHandler)
   {
     //NSLog(@"OABlockMerger:%p [performTask:%@] attaching to running task", self, taskName);
-    existingHandler = [[existingHandler copy] autorelease];
+    existingHandler = [existingHandler copy];
     void (^newHandler)() = ^{
       existingHandler();
       if (completionHandler) completionHandler();
     };
-    newHandler = [[newHandler copy] autorelease];
+    newHandler = [newHandler copy];
     [self.completionHandlersByTaskNames setObject:newHandler forKey:taskName];
   }
   else
@@ -100,7 +94,7 @@
   
   NSAssert(existingHandler, @"expected completionHandler for task %@", taskName);
   
-  [[existingHandler copy] autorelease];
+  //[[existingHandler copy] autorelease];
   [self.completionHandlersByTaskNames removeObjectForKey:taskName];
   existingHandler();
 }

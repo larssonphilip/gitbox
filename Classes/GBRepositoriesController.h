@@ -8,9 +8,9 @@
 
 @interface GBRepositoriesController : GBRepositoriesGroup
 
-@property(nonatomic, assign) GBRootController* rootController;
-@property(nonatomic, retain) GBRepositoryViewController* repositoryViewController;
-@property(nonatomic, retain) GBRepositoryToolbarController* repositoryToolbarController;
+@property(nonatomic, unsafe_unretained) GBRootController* rootController;
+@property(nonatomic, strong) GBRepositoryViewController* repositoryViewController;
+@property(nonatomic, strong) GBRepositoryToolbarController* repositoryToolbarController;
 
 - (IBAction) openDocument:(id)sender;
 - (IBAction) addGroup:(id)sender;

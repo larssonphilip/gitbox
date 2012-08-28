@@ -4,9 +4,9 @@
 
 @interface GBSidebarController : NSViewController<NSOutlineViewDataSource, NSOutlineViewDelegate>
 
-@property(nonatomic, retain) GBRootController* rootController;
-@property(nonatomic, retain) IBOutlet NSOutlineView* outlineView;
-@property(nonatomic, retain) IBOutlet NSButton* buyButton;
+@property(nonatomic, strong) GBRootController* rootController;
+@property(nonatomic, strong) IBOutlet NSOutlineView* outlineView;
+@property(nonatomic, strong) IBOutlet NSButton* buyButton;
 
 - (IBAction) selectPreviousItem:(id)sender;
 - (IBAction) selectNextItem:(id)sender;

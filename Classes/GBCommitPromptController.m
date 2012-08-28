@@ -46,13 +46,6 @@
 - (void) dealloc
 {
   [NSObject cancelPreviousPerformRequestsWithTarget:self];
-  self.value = nil;
-  self.branchName = nil;
-  self.messageHistory = nil;
-  self.textView = nil;
-  self.shortcutTipLabel = nil;
-  self.branchHintLabel = nil;
-  [super dealloc];
 }
 
 - (void) resetMagicFlags
@@ -67,7 +60,7 @@
 - (IBAction) onOK:(id)sender
 {
   [self resetMagicFlags];
-  self.value = [[[self.textView string] copy] autorelease];
+  self.value = [[self.textView string] copy];
   
   if (!self.value || [self.value isEmptyString]) 
   {
@@ -91,7 +84,7 @@
 {
   [self rewindMessageHistory];
   [self resetMagicFlags];
-  self.value = [[[self.textView string] copy] autorelease];
+  self.value = [[self.textView string] copy];
 //  if (self.cancelBlock) self.cancelBlock();
 //  [self endSheet];
 }
@@ -128,7 +121,7 @@
     // If it is the first scroll back, stash away the current text
     if (messageHistoryIndex == 0)
     {
-      self.value = [[[self.textView string] copy] autorelease];
+      self.value = [[self.textView string] copy];
     }
     [self.textView setString:message];
     [self.textView selectAll:nil];
@@ -169,12 +162,12 @@
 - (void) updateWindow
 {
   [self.branchHintLabel setStringValue:self.branchName ? self.branchName : @""];
-  [self.textView setString:self.value ? [[self.value copy] autorelease] : @""];
+  [self.textView setString:self.value ? [self.value copy] : @""];
 }
 
 - (void)windowDidResignKey:(NSNotification *)notification
 {
-  self.value = [[[self.textView string] copy] autorelease];
+  self.value = [[self.textView string] copy];
 }
 
 

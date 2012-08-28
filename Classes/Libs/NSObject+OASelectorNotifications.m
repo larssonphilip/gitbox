@@ -74,11 +74,17 @@
 		id argument = [userInfo objectForKey:@"OANotificationSelectorArgument"];
 		if ([userInfo objectForKey:@"OANotificationSelectorWithArgument"])
 		{
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
 			[self performSelector:selector withObject:notification.object withObject:argument];
+#pragma clang diagnostic pop
 		}
 		else
 		{
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
 			[self performSelector:selector withObject:notification.object];
+#pragma clang diagnostic pop
 		}
 	}
 }
@@ -98,7 +104,10 @@
 		id delegate = [(id)self delegate];
 		if ([delegate respondsToSelector:selector])
 		{
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
 			[delegate performSelector:selector withObject:self];
+#pragma clang diagnostic pop
 		}
 	}
 	[[NSNotificationCenter defaultCenter] postNotification:aNotification];
@@ -120,7 +129,10 @@
 		id delegate = [(id)self delegate];
 		if ([delegate respondsToSelector:selector])
 		{
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
 			[delegate performSelector:selector withObject:self withObject:argument];
+#pragma clang diagnostic pop
 		}
 	}
 	[[NSNotificationCenter defaultCenter] postNotification:aNotification];

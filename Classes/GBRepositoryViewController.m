@@ -3,11 +3,10 @@
 #import "GBRepositoryController.h"
 #import "GBHistoryViewController.h"
 #import "NSView+OAViewHelpers.h"
-#import "NSWindowController+OAWindowControllerHelpers.h"
 #import "NSObject+OADispatchItemValidation.h"
 
 @interface GBRepositoryViewController ()
-@property(nonatomic, retain) GBHistoryViewController* historyController;
+@property(nonatomic, strong) GBHistoryViewController* historyController;
 - (NSView*) historyView;
 - (NSView*) detailView;
 @end
@@ -21,16 +20,13 @@
 - (void) dealloc
 {
 	self.repositoryController = nil;
-	self.historyController = nil;
-	self.splitView = nil;
-	[super dealloc];
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
 	if ((self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]))
 	{
-		self.historyController = [[[GBHistoryViewController alloc] initWithNibName:@"GBHistoryViewController" bundle:nil] autorelease];
+		self.historyController = [[GBHistoryViewController alloc] initWithNibName:@"GBHistoryViewController" bundle:nil];
 	}
 	return self;
 }

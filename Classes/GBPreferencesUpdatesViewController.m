@@ -6,7 +6,7 @@
 
 + (GBPreferencesUpdatesViewController*) controller
 {
-	return [[[self alloc] initWithNibName:@"GBPreferencesUpdatesViewController" bundle:nil] autorelease];
+	return [[self alloc] initWithNibName:@"GBPreferencesUpdatesViewController" bundle:nil];
 }
 
 - (IBAction)checkForUpdates:(id)sender

@@ -41,7 +41,6 @@
 #import "NSObject+OASelectorNotifications.h"
 #import "NSObject+OADispatchItemValidation.h"
 #import "NSMenu+OAMenuHelpers.h"
-#import "NSWindowController+OAWindowControllerHelpers.h"
 
 
 #if GITBOX_APP_STORE || DEBUG_iRate
@@ -53,8 +52,8 @@
 
 @interface GBRepositoryController ()
 
-@property(nonatomic, retain) OABlockTable* blockTable;
-@property(nonatomic, retain) GBFolderMonitor* folderMonitor;
+@property(nonatomic, strong) OABlockTable* blockTable;
+@property(nonatomic, strong) GBFolderMonitor* folderMonitor;
 @property(nonatomic, assign) BOOL isDisappearedFromFileSystem;
 @property(nonatomic, assign) BOOL isCommitting;
 
@@ -65,23 +64,23 @@
 @property(nonatomic, assign) NSUInteger stageBadgeInteger; // will be cached on save and updated after stage updates
 
 @property(nonatomic, assign, readwrite) double searchProgress;
-@property(nonatomic, retain, readwrite) NSArray* searchResults; // list of found commits; setter posts a notification
-@property(nonatomic, retain) GBSearch* currentSearch;
+@property(nonatomic, strong, readwrite) NSArray* searchResults; // list of found commits; setter posts a notification
+@property(nonatomic, strong) GBSearch* currentSearch;
 
-@property(nonatomic, retain) NSUndoManager* undoManager;
+@property(nonatomic, strong) NSUndoManager* undoManager;
 
-@property(nonatomic, retain) NSArray* submoduleControllers;
-@property(nonatomic, retain) NSArray* submodules;
+@property(nonatomic, strong) NSArray* submoduleControllers;
+@property(nonatomic, strong) NSArray* submodules;
 
 @property(nonatomic, copy) void(^localStateUpdatePendingBlock)();
 @property(nonatomic, copy) void(^pendingContinuationToBeginAuthSession)();
 
-@property(nonatomic, retain) GBAsyncUpdater* stageUpdater;
-@property(nonatomic, retain) GBAsyncUpdater* submodulesUpdater;
-@property(nonatomic, retain) GBAsyncUpdater* localRefsUpdater;
-@property(nonatomic, retain) GBAsyncUpdater* commitsUpdater;
-@property(nonatomic, retain) GBAsyncUpdater* remoteRefsUpdater;
-@property(nonatomic, retain) GBAsyncUpdater* fetchUpdater;
+@property(nonatomic, strong) GBAsyncUpdater* stageUpdater;
+@property(nonatomic, strong) GBAsyncUpdater* submodulesUpdater;
+@property(nonatomic, strong) GBAsyncUpdater* localRefsUpdater;
+@property(nonatomic, strong) GBAsyncUpdater* commitsUpdater;
+@property(nonatomic, strong) GBAsyncUpdater* remoteRefsUpdater;
+@property(nonatomic, strong) GBAsyncUpdater* fetchUpdater;
 
 - (NSImage*) icon;
 
@@ -188,39 +187,29 @@
 	
 	//NSLog(@">>> GBRepositoryController:%p dealloc...", self);
 	sidebarItem.object = nil;
-	[sidebarItem release]; sidebarItem = nil;
 	
-	self.submodules = nil;
 	self.submoduleControllers = nil; // so we unsubscribe correctly
-	self.repository = nil; // so we unsubscribe correctly
+	 // so we unsubscribe correctly
 
 	if (toolbarController.repositoryController == self) toolbarController.repositoryController = nil;
-	[toolbarController release]; toolbarController = nil;
 	if (viewController.repositoryController == self) viewController.repositoryController = nil;
 	
-	[viewController release]; viewController = nil;
-	[selectedCommit release]; selectedCommit = nil;
-	[lastCommitBranchName release]; lastCommitBranchName = nil;
-	[blockTable release]; blockTable = nil;
+	 selectedCommit = nil;
 	folderMonitor.target = nil;
 	folderMonitor.action = NULL;
-	[folderMonitor release]; folderMonitor = nil;
 
 	currentSearch.target = nil;
 	[currentSearch cancel];
-	[currentSearch release]; currentSearch = nil;
 
-	[searchString release]; searchString = nil;
-	[searchResults release]; searchResults = nil;
+	 searchString = nil;
+	 searchResults = nil;
 	
-	[undoManager release]; undoManager = nil;
 	
 	if (_pendingContinuationToBeginAuthSession) _pendingContinuationToBeginAuthSession();
-	[_pendingContinuationToBeginAuthSession release]; _pendingContinuationToBeginAuthSession = nil;
+	 _pendingContinuationToBeginAuthSession = nil;
 	
-	[_localStateUpdatePendingBlock release]; _localStateUpdatePendingBlock = nil;
+	 _localStateUpdatePendingBlock = nil;
 	
-	[_userDefinedName release];
 	
 	self.stageUpdater.target = nil;
 	self.submodulesUpdater.target = nil;
@@ -229,20 +218,13 @@
 	self.remoteRefsUpdater.target = nil;
 	self.fetchUpdater.target = nil;
 
-	self.stageUpdater = nil;
-	self.submodulesUpdater = nil;
-	self.localRefsUpdater = nil;
-	self.commitsUpdater = nil;
-	self.remoteRefsUpdater = nil;
-	self.fetchUpdater = nil;
 	
-	[super dealloc];
 }
 
 + (id) repositoryControllerWithURL:(NSURL*)url
 {
 	if (!url) return nil;
-	return [[[self alloc] initWithURL:url] autorelease];
+	return [[self alloc] initWithURL:url];
 }
 
 - (id) initWithURL:(NSURL*)aURL
@@ -251,17 +233,17 @@
 	if ((self = [super init]))
 	{
 		self.repository = [GBRepository repositoryWithURL:aURL];
-		self.blockTable = [[OABlockTable new] autorelease];
-		self.sidebarItem = [[[GBSidebarItem alloc] init] autorelease];
+		self.blockTable = [OABlockTable new];
+		self.sidebarItem = [[GBSidebarItem alloc] init];
 		self.sidebarItem.object = self;
 		self.sidebarItem.selectable = YES;
 		self.sidebarItem.editable = YES;
 		self.sidebarItem.draggable = YES;
-		self.sidebarItem.cell = [[[GBSidebarCell alloc] initWithItem:self.sidebarItem] autorelease];
+		self.sidebarItem.cell = [[GBSidebarCell alloc] initWithItem:self.sidebarItem];
 		self.selectedCommit = self.repository.stage;
-		self.folderMonitor = [[[GBFolderMonitor alloc] init] autorelease];
+		self.folderMonitor = [[GBFolderMonitor alloc] init];
 		self.folderMonitor.path = [[aURL path] stringByStandardizingPath];
-		self.undoManager = [[[NSUndoManager alloc] init] autorelease];
+		self.undoManager = [[NSUndoManager alloc] init];
 		
 		remoteStateUpdateInterval = 10.0;
 		
@@ -300,11 +282,10 @@
 	
 	[repository.stage removeObserverForAllSelectors:self];
 	[repository removeObserverForAllSelectors:self];
-	[repository release];
-	repository = [aRepository retain];
+	repository = aRepository;
 	if (repository)
 	{
-		self.undoManager = [[[NSUndoManager alloc] init] autorelease];
+		self.undoManager = [[NSUndoManager alloc] init];
 	}
 	[repository.stage addObserverForAllSelectors:self];
 	[repository addObserverForAllSelectors:self];
@@ -321,8 +302,7 @@
 	// 3. Replace controller if status does not match.
 	// 4. Add submodule controller if not yet present.
 	
-	[_submodules release];
-	_submodules = [submodules retain];
+	_submodules = submodules;
 	
 	NSMutableArray* updatedSubmoduleControllers = [NSMutableArray array];
 	
@@ -336,8 +316,8 @@
 			
 			if ([currentSubmodule.path isEqualToString:updatedSubmodule.path])
 			{
-				matchingController = [[ctrl retain] autorelease];
-				matchingSubmodule = [[currentSubmodule retain] autorelease];
+				matchingController = ctrl;
+				matchingSubmodule = currentSubmodule;
 				break;
 			}
 		}
@@ -360,7 +340,7 @@
 			else
 			{
 				// Create a new cloning controller
-				GBSubmoduleCloningController* ctrl = [[[GBSubmoduleCloningController alloc] initWithSubmodule:updatedSubmodule] autorelease];
+				GBSubmoduleCloningController* ctrl = [[GBSubmoduleCloningController alloc] initWithSubmodule:updatedSubmodule];
 				ctrl.parentRepositoryController = self;
 				[updatedSubmoduleControllers addObject:ctrl];
 			}
@@ -417,7 +397,7 @@
 				}
 				else // transitioned to non-cloned status (removed from disk)
 				{
-					GBSubmoduleCloningController* ctrl = [[[GBSubmoduleCloningController alloc] initWithSubmodule:updatedSubmodule] autorelease];
+					GBSubmoduleCloningController* ctrl = [[GBSubmoduleCloningController alloc] initWithSubmodule:updatedSubmodule];
 					ctrl.parentRepositoryController = self;
 					[updatedSubmoduleControllers addObject:ctrl];
 				}
@@ -443,8 +423,7 @@
 		}
 	}
 	
-	[_submoduleControllers release];
-	_submoduleControllers = [submoduleControllers retain];
+	_submoduleControllers = submoduleControllers;
 	
 	for (GBSubmoduleController* ctrl in _submoduleControllers)
 	{
@@ -532,7 +511,7 @@
 		
 		if (newURL)
 		{
-			newURL = [[[NSURL alloc] initFileURLWithPath:[newURL path] isDirectory:YES] autorelease];
+			newURL = [[NSURL alloc] initFileURLWithPath:[newURL path] isDirectory:YES];
 		}
 		
 		[self notifyWithSelector:@selector(repositoryController:didMoveToURL:) withObject:newURL];
@@ -611,37 +590,37 @@
 
 - (void) addOpenMenuItemsToMenu:(NSMenu*)aMenu
 {
-	[aMenu addItem:[[[NSMenuItem alloc] 
-					 initWithTitle:NSLocalizedString(@"Open in Finder", @"Sidebar") action:@selector(openInFinder:) keyEquivalent:@""] autorelease]];
-	[aMenu addItem:[[[NSMenuItem alloc] 
-					 initWithTitle:NSLocalizedString(@"Open in Terminal", @"Sidebar") action:@selector(openInTerminal:) keyEquivalent:@""] autorelease]];
-	[aMenu addItem:[[[NSMenuItem alloc] 
-					 initWithTitle:NSLocalizedString(@"Open Xcode Project", @"Sidebar") action:@selector(openInXcode:) keyEquivalent:@""] autorelease]];
+	[aMenu addItem:[[NSMenuItem alloc] 
+					 initWithTitle:NSLocalizedString(@"Open in Finder", @"Sidebar") action:@selector(openInFinder:) keyEquivalent:@""]];
+	[aMenu addItem:[[NSMenuItem alloc] 
+					 initWithTitle:NSLocalizedString(@"Open in Terminal", @"Sidebar") action:@selector(openInTerminal:) keyEquivalent:@""]];
+	[aMenu addItem:[[NSMenuItem alloc] 
+					 initWithTitle:NSLocalizedString(@"Open Xcode Project", @"Sidebar") action:@selector(openInXcode:) keyEquivalent:@""]];
 }
 
 
 - (NSMenu*) sidebarItemMenu
 {
-	NSMenu* aMenu = [[[NSMenu alloc] initWithTitle:@""] autorelease];
+	NSMenu* aMenu = [[NSMenu alloc] initWithTitle:@""];
 	
 	[self addOpenMenuItemsToMenu:aMenu];
 	
 	[aMenu addItem:[NSMenuItem separatorItem]];
 	
-	[aMenu addItem:[[[NSMenuItem alloc] 
-					 initWithTitle:NSLocalizedString(@"Add Repository...", @"Sidebar") action:@selector(openDocument:) keyEquivalent:@""] autorelease]];
-	[aMenu addItem:[[[NSMenuItem alloc] 
-					 initWithTitle:NSLocalizedString(@"Clone Repository...", @"Sidebar") action:@selector(cloneRepository:) keyEquivalent:@""] autorelease]];
+	[aMenu addItem:[[NSMenuItem alloc] 
+					 initWithTitle:NSLocalizedString(@"Add Repository...", @"Sidebar") action:@selector(openDocument:) keyEquivalent:@""]];
+	[aMenu addItem:[[NSMenuItem alloc] 
+					 initWithTitle:NSLocalizedString(@"Clone Repository...", @"Sidebar") action:@selector(cloneRepository:) keyEquivalent:@""]];
 	
 	[aMenu addItem:[NSMenuItem separatorItem]];
 	
-	[aMenu addItem:[[[NSMenuItem alloc] 
-					 initWithTitle:NSLocalizedString(@"New Group", @"Sidebar") action:@selector(addGroup:) keyEquivalent:@""] autorelease]];
+	[aMenu addItem:[[NSMenuItem alloc] 
+					 initWithTitle:NSLocalizedString(@"New Group", @"Sidebar") action:@selector(addGroup:) keyEquivalent:@""]];
 	
 	[aMenu addItem:[NSMenuItem separatorItem]];
 	
-	[aMenu addItem:[[[NSMenuItem alloc] 
-					 initWithTitle:NSLocalizedString(@"Remove from Sidebar", @"Sidebar") action:@selector(remove:) keyEquivalent:@""] autorelease]];
+	[aMenu addItem:[[NSMenuItem alloc] 
+					 initWithTitle:NSLocalizedString(@"Remove from Sidebar", @"Sidebar") action:@selector(remove:) keyEquivalent:@""]];
 	return aMenu;
 }
 
@@ -744,7 +723,7 @@
 		id className = [childPlist objectForKey:@"class"];
 		id controllerPlist = [childPlist objectForKey:@"controller"];
 		
-		GBSubmodule* submodule = [[[GBSubmodule alloc] init] autorelease];
+		GBSubmodule* submodule = [[GBSubmodule alloc] init];
 		submodule.dispatchQueue = self.repository.dispatchQueue;
 		[submodule setPlistRepresentation:submodulePlist];
 		submodule.parentURL = self.repository.url;
@@ -767,7 +746,7 @@
 		{
 			[submodules addObject:submodule];
 			
-			GBSubmoduleCloningController* ctrl = [[[GBSubmoduleCloningController alloc] initWithSubmodule:submodule] autorelease];
+			GBSubmoduleCloningController* ctrl = [[GBSubmoduleCloningController alloc] initWithSubmodule:submodule];
 			ctrl.parentRepositoryController = self;
 			[smControllers addObject:ctrl];
 			
@@ -779,8 +758,7 @@
 	}
 	
 	// Do not use setter to avoid recreating submodule controllers.
-	[_submodules release];
-	_submodules = [submodules retain];
+	_submodules = submodules;
 	
 	self.submoduleControllers = smControllers;
 }
@@ -1212,7 +1190,7 @@
 	
 	[self invalidateDelayedRemoteStateUpdate];
 	
-	aBlock = [[aBlock copy] autorelease];
+	aBlock = [aBlock copy];
 	
 	__block BOOL didChangeAnyRemote = NO;
 
@@ -1259,7 +1237,7 @@
 // just a helper for updateRemoteRefsSilently
 - (void) updateBranchesForRemote:(GBRemote*)aRemote silently:(BOOL)silently withBlock:(void(^)(BOOL))aBlock
 {
-	aBlock = [[aBlock copy] autorelease];
+	aBlock = [aBlock copy];
 	
 	if (!aRemote)
 	{
@@ -1491,7 +1469,7 @@
 	authenticationInProgress = NO;
 	
 	// Be careful here: we need to clean the block before calling it to avoid nasty cycles.
-	void(^pendingBlock)() = [[self.pendingContinuationToBeginAuthSession retain] autorelease];
+	void(^pendingBlock)() = self.pendingContinuationToBeginAuthSession;
 	self.pendingContinuationToBeginAuthSession = nil;
 	if (pendingBlock) pendingBlock();
 	
@@ -1517,12 +1495,11 @@
 {
 	if (searchString == newString) return;
 	
-	[searchString release];
 	searchString = [newString copy];
 	
 	self.currentSearch.target = nil;
 	[self.currentSearch cancel];
-	id searchCache = [[self.currentSearch.searchCache retain] autorelease];
+	id searchCache = self.currentSearch.searchCache;
 	self.currentSearch = nil;
 	
 	if (searchString && [searchString length] > 0)
@@ -1557,8 +1534,7 @@
 {
 	if (searchResults != newResults)
 	{
-		[searchResults release];
-		searchResults = [newResults retain];
+		searchResults = newResults;
 	}
 	[self notifyWithSelector:@selector(repositoryControllerDidUpdateCommits:)];
 }
@@ -1644,14 +1620,14 @@
 				   @"tell application \"Terminal\" to do script \"cd \" & quoted form of \"%@\"\n"
 				   "tell application \"Terminal\" to activate", escapedPath];
 	
-	NSAppleScript* as = [[[NSAppleScript alloc] initWithSource: s] autorelease];
+	NSAppleScript* as = [[NSAppleScript alloc] initWithSource: s];
 	[as executeAndReturnError:nil];
 }
 
 - (void) checkoutHelper:(void(^)(void(^)()))checkoutBlock
 {
 	// TODO: queue up all checkouts
-	checkoutBlock = [[checkoutBlock copy] autorelease];
+	checkoutBlock = [checkoutBlock copy];
 	GBRepository* repo = self.repository;
 	
 	[self pushDisabled];
@@ -1720,7 +1696,7 @@
 	[[self.undoManager prepareWithInvocationTarget:self] createTagWithName:tagName commitId:commitId];
 	[self.undoManager setActionName:[NSString stringWithFormat:NSLocalizedString(@"Delete Tag %@", @""), tagName]];
 	
-	GBRef* ref = [[GBRef new] autorelease];
+	GBRef* ref = [GBRef new];
 	ref.commitId = commitId;
 	ref.name = tagName;
 	ref.isTag = YES;
@@ -1811,7 +1787,7 @@
 		else
 		{
 			NSString* submenuTitle = NSLocalizedString(@"Delete Tag", @"");
-			NSMenu* submenu = [[[NSMenu alloc] initWithTitle:submenuTitle] autorelease];
+			NSMenu* submenu = [[NSMenu alloc] initWithTitle:submenuTitle];
 			
 			for (GBRef* aTag in tags)
 			{
@@ -1846,7 +1822,7 @@
 
 - (void) createAndSelectRemoteBranchWithName:(NSString*)name remote:(GBRemote*)aRemote
 {
-	GBRef* remoteBranch = [[GBRef new] autorelease];
+	GBRef* remoteBranch = [GBRef new];
 	remoteBranch.name = name;
 	remoteBranch.remoteAlias = aRemote.alias;
 	[aRemote addNewBranch:remoteBranch];
@@ -1859,8 +1835,7 @@
 {
 	if (selectedCommit == aCommit) return;
 	
-	[selectedCommit release];
-	selectedCommit = [aCommit retain];
+	selectedCommit = aCommit;
 	
 	[self notifyWithSelector:@selector(repositoryControllerDidSelectCommit:)];
 }
@@ -1889,8 +1864,8 @@
                        withBlock:(void(^)(NSArray*, GBStage*, void(^)()))block
                   postStageBlock:(void(^)())postStageBlock
 {
-	block = [[block copy] autorelease];
-	postStageBlock = [[postStageBlock copy] autorelease];
+	block = [block copy];
+	postStageBlock = [postStageBlock copy];
 	
 	GBStage* stage = self.repository.stage;
 	if (!stage)
@@ -2075,7 +2050,7 @@
 		return;
 	}
 	
-	block = [[block copy] autorelease];
+	block = [block copy];
 	
 	[self pushSpinning];
 	if (!silently) [self pushDisabled];
@@ -2317,7 +2292,7 @@
 		[self.undoManager setActionName:forced ? NSLocalizedString(@"Force Push", @"") : NSLocalizedString(@"Push", @"")];
 	}
 	
-	GBRef* srcRef = [[GBRef new] autorelease];
+	GBRef* srcRef = [GBRef new];
 	srcRef.commitId = commitId;
 	
 	[self helperPushBranch:srcRef toRemoteBranch:self.repository.currentRemoteBranch forced:YES]; // when undoing push, we need --force flag.
@@ -2503,7 +2478,7 @@
 {
 	NSMutableArray* xcodeProjectURLs = [NSMutableArray array];
 	
-	NSArray* URLs = [[[[NSFileManager alloc] init] autorelease] contentsOfDirectoryAtURL:self.url includingPropertiesForKeys:nil options:NSDirectoryEnumerationSkipsHiddenFiles error:NULL];
+	NSArray* URLs = [[[NSFileManager alloc] init] contentsOfDirectoryAtURL:self.url includingPropertiesForKeys:nil options:NSDirectoryEnumerationSkipsHiddenFiles error:NULL];
 	
 	for (NSURL* fileURL in URLs)
 	{
@@ -2523,13 +2498,13 @@
 		}
 		else
 		{
-			NSMenu* xcodeMenu = [[[NSMenu alloc] init] autorelease];
+			NSMenu* xcodeMenu = [[NSMenu alloc] init];
 			[xcodeMenu setTitle:[sender title]];
 			
 			for (NSURL* xcodeProjectURL in xcodeProjectURLs)
 			{
-				NSMenuItem* item = [[[NSMenuItem alloc] 
-									 initWithTitle:[[[xcodeProjectURL path] lastPathComponent] stringByReplacingOccurrencesOfString:@".xcodeproj" withString:@""] action:@selector(openOneProjectInXcode:) keyEquivalent:@""] autorelease];
+				NSMenuItem* item = [[NSMenuItem alloc] 
+									 initWithTitle:[[[xcodeProjectURL path] lastPathComponent] stringByReplacingOccurrencesOfString:@".xcodeproj" withString:@""] action:@selector(openOneProjectInXcode:) keyEquivalent:@""];
 				[item setRepresentedObject:xcodeProjectURL];
 				[xcodeMenu addItem:item];
 			}
@@ -2618,8 +2593,8 @@
 			{
 				i++;
 				if (i > 30) break; // don't show too much of obsolete stuff
-				NSMenuItem* item = [[[NSMenuItem alloc] 
-									 initWithTitle:stash.menuTitle action:@selector(applyStash:) keyEquivalent:@""] autorelease];
+				NSMenuItem* item = [[NSMenuItem alloc] 
+									 initWithTitle:stash.menuTitle action:@selector(applyStash:) keyEquivalent:@""];
 				[item setRepresentedObject:stash];
 				[[sender submenu] addItem:item];
 				showRemoveOldStashesItem = showRemoveOldStashesItem || [stash isOldStash];
@@ -2628,8 +2603,8 @@
 			if (YES)
 			{
 				[[sender submenu] addItem:[NSMenuItem separatorItem]];
-				[[sender submenu] addItem:[[[NSMenuItem alloc] 
-											initWithTitle:NSLocalizedString(@"Remove all stashes...",nil) action:@selector(removeAllStashes:) keyEquivalent:@""] autorelease]];
+				[[sender submenu] addItem:[[NSMenuItem alloc] 
+											initWithTitle:NSLocalizedString(@"Remove all stashes...",nil) action:@selector(removeAllStashes:) keyEquivalent:@""]];
 			}
 		}
 	}];
@@ -2713,7 +2688,7 @@
 
 - (void) resetSubmodule:(GBSubmodule*)submodule block:(void(^)())block
 {
-	block = [[block copy] autorelease];
+	block = [block copy];
 	[self.repository resetSubmodule:submodule withBlock:^{
 		[self setNeedsUpdateStage];
 		[self setNeedsUpdateSubmodules];
@@ -2866,7 +2841,7 @@
 		}];
 	};
 	
-	block = [[block copy] autorelease];
+	block = [block copy];
 	
 	[[GBMainWindowController instance] criticalConfirmationWithMessage:message 
 														   description:description
@@ -2926,7 +2901,7 @@
 		}];
 	};
 	
-	block = [[block copy] autorelease];
+	block = [block copy];
 	
 	[[GBMainWindowController instance] criticalConfirmationWithMessage:message 
 														   description:description
@@ -2962,7 +2937,7 @@
 		return;
 	}
 	
-	block = [[block copy] autorelease];
+	block = [block copy];
 	
 	GBTask* task = self.repository.task;
 	task.arguments = [[NSArray arrayWithObjects:@"rm", @"--cached", @"--ignore-unmatch", @"--force", @"--", nil] arrayByAddingObjectsFromArray:paths];

@@ -4,11 +4,11 @@
   BOOL contentPrepared;
 }
 
-@property(nonatomic,retain) NSURL* URL;
-@property(nonatomic,retain) NSString* title;
-@property(nonatomic,retain) NSArray* linesToAppend;
+@property(nonatomic,strong) NSURL* URL;
+@property(nonatomic,strong) NSString* title;
+@property(nonatomic,strong) NSArray* linesToAppend;
 
-@property(nonatomic,retain) IBOutlet NSTextView* textView;
+@property(nonatomic,strong) IBOutlet NSTextView* textView;
 
 + (GBFileEditingController*) controller;
 

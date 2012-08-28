@@ -16,13 +16,13 @@
 
 @interface GBRepositoryToolbarController () <NSTextFieldDelegate, NSMenuDelegate>
 
-@property(nonatomic, readonly) NSPopUpButton* currentBranchPopUpButton;
-@property(nonatomic, readonly) NSButton* settingsButton;
-@property(nonatomic, readonly) NSSegmentedControl* pullPushControl;
-@property(nonatomic, readonly) NSButton* pullButton;
-@property(nonatomic, readonly) NSPopUpButton* otherBranchPopUpButton;
-@property(nonatomic, readonly) NSSearchField* searchField;
-@property(nonatomic, retain) NSMutableArray* openedMenus;
+@property(unsafe_unretained, nonatomic, readonly) NSPopUpButton* currentBranchPopUpButton;
+@property(unsafe_unretained, nonatomic, readonly) NSButton* settingsButton;
+@property(unsafe_unretained, nonatomic, readonly) NSSegmentedControl* pullPushControl;
+@property(unsafe_unretained, nonatomic, readonly) NSButton* pullButton;
+@property(unsafe_unretained, nonatomic, readonly) NSPopUpButton* otherBranchPopUpButton;
+@property(unsafe_unretained, nonatomic, readonly) NSSearchField* searchField;
+@property(nonatomic, strong) NSMutableArray* openedMenus;
 - (void) updateDisabledState;
 - (void) updateBranchMenus;
 - (void) updateCurrentBranchMenus;
@@ -53,8 +53,6 @@
 - (void) dealloc
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	[_openedMenus release];
-	[super dealloc];
 }
 
 - (id)init
@@ -415,7 +413,7 @@
 	
 	for (GBRef* localBranch in repo.localBranches)
 	{
-		NSMenuItem* item = [[NSMenuItem new] autorelease];
+		NSMenuItem* item = [NSMenuItem new];
 		[item setTitle:localBranch.name];
 		[item setAction:@selector(checkoutBranch:)];
 		[item setTarget:nil];
@@ -462,7 +460,7 @@
 	// Checkout Commit
 	
 	{
-		NSMenuItem* item = [[NSMenuItem new] autorelease];
+		NSMenuItem* item = [NSMenuItem new];
 		[item setTitle:NSLocalizedString(@"Checkout Commit...", @"Command")];
 		[item setAction:@selector(checkoutCommit:)];
 		[item setTarget:self];
@@ -533,7 +531,7 @@
 	
 	if ([remotes count] > 1) // display submenus for each remote
 	{
-		NSMenuItem* item = [[NSMenuItem new] autorelease];
+		NSMenuItem* item = [NSMenuItem new];
 		[item setTitle:NSLocalizedString(@"Remote Branches", @"Toolbar")];
 		[item setAction:@selector(thisItemIsActuallyDisabled)];
 		[item setEnabled:NO];
@@ -541,11 +539,11 @@
 		
 		for (GBRemote* remote in remotes)
 		{
-			NSMenu* remoteMenu = [[NSMenu new] autorelease];
+			NSMenu* remoteMenu = [NSMenu new];
 			BOOL haveBranches = NO;
 			for (GBRef* branch in [remote pushedAndNewBranches])
 			{
-				NSMenuItem* item = [[NSMenuItem new] autorelease];
+				NSMenuItem* item = [NSMenuItem new];
 				[item setTitle:branch.name];
 				[item setAction:@selector(selectRemoteBranch:)];
 				[item setTarget:self];
@@ -572,7 +570,7 @@
 	}
 	else if ([remotes count] == 1) // display a flat list of "origin/master"-like titles
 	{
-		NSMenuItem* item = [[NSMenuItem new] autorelease];
+		NSMenuItem* item = [NSMenuItem new];
 		[item setTitle:NSLocalizedString(@"Remote Branches", @"Toolbar")];
 		[item setAction:@selector(thisItemIsActuallyDisabled)];
 		[item setEnabled:NO];
@@ -581,7 +579,7 @@
 		GBRemote* remote = [remotes firstObject];
 		for (GBRef* branch in [remote pushedAndNewBranches])
 		{
-			NSMenuItem* item = [[NSMenuItem new] autorelease];
+			NSMenuItem* item = [NSMenuItem new];
 			[item setIndentationLevel:1];
 			[item setTitle:[branch nameWithRemoteAlias]];
 			[item setAction:@selector(selectRemoteBranch:)];
@@ -634,7 +632,7 @@
 			[remoteBranchesMenu addItem:[NSMenuItem separatorItem]];
 		}
 		
-		NSMenuItem* item = [[NSMenuItem new] autorelease];
+		NSMenuItem* item = [NSMenuItem new];
 		[item setTitle:NSLocalizedString(@"Local Branches", @"Toolbar")];
 		[item setAction:@selector(thisItemIsActuallyDisabled)];
 		[item setEnabled:NO];
@@ -642,7 +640,7 @@
 		
 		for (GBRef* localBranch in repo.localBranches)
 		{
-			NSMenuItem* item = [[NSMenuItem new] autorelease];
+			NSMenuItem* item = [NSMenuItem new];
 			[item setIndentationLevel:1];
 			[item setTitle:localBranch.name];
 			[item setAction:@selector(selectRemoteBranch:)];
@@ -926,7 +924,7 @@
 	BOOL hasOneItem = NO;
 	for (GBRef* localBranch in repo.localBranches)
 	{
-		NSMenuItem* item = [[NSMenuItem new] autorelease];
+		NSMenuItem* item = [NSMenuItem new];
 		[item setTitle:localBranch.name];
 		[item setAction:@selector(checkoutBranch:)];
 		[item setRepresentedObject:localBranch];
@@ -955,12 +953,12 @@
 		{
 			if (remote.branches.count > 0)
 			{
-				NSMenu* remoteMenu = [[NSMenu new] autorelease];
+				NSMenu* remoteMenu = [NSMenu new];
 				for (GBRef* branch in remote.branches)
 				{
 					if ([repo doesRefExist:branch])
 					{
-						NSMenuItem* item = [[NSMenuItem new] autorelease];
+						NSMenuItem* item = [NSMenuItem new];
 						[item setTitle:branch.name];
 						[item setAction:@selector(checkoutRemoteBranch:)];
 						[item setTarget:self];
@@ -979,7 +977,7 @@
 		{
 			if ([repo doesRefExist:branch])
 			{
-				NSMenuItem* item = [[NSMenuItem new] autorelease];
+				NSMenuItem* item = [NSMenuItem new];
 				[item setTitle:[branch nameWithRemoteAlias]];
 				[item setAction:@selector(checkoutRemoteBranch:)];
 				[item setTarget:self];
@@ -1002,7 +1000,7 @@
 	BOOL hasOneItem = NO;
 	for (GBRef* tag in repo.tags)
 	{
-		NSMenuItem* item = [[NSMenuItem new] autorelease];
+		NSMenuItem* item = [NSMenuItem new];
 		[item setTitle:tag.name];
 		[item setAction:@selector(checkoutBranch:)];
 		[item setTarget:self];

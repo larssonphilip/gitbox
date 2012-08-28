@@ -11,7 +11,7 @@
 #import "NSArray+OAArrayHelpers.h"
 
 @interface GBBaseChangesController ()
-@property(nonatomic, retain) QLPreviewPanel* quicklookPanel;
+@property(nonatomic, strong) QLPreviewPanel* quicklookPanel;
 - (void) updateChanges;
 @end
 
@@ -34,15 +34,8 @@
 {
 	[NSObject cancelPreviousPerformRequestsWithTarget:self];
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	[commit release]; commit = nil;
+	 commit = nil;
 	
-	self.tableView = nil;
-	self.statusArrayController = nil;
-	self.headerView = nil;
-	[changes release]; changes = nil;
-	self.changesWithHeaderForBindings = nil;
-	self.quicklookPanel = nil;
-	[super dealloc];
 }
 
 
@@ -71,8 +64,7 @@
 	
 	[commit removeObserverForAllSelectors:self];
 	
-	[commit release];
-	commit = [aCommit retain];
+	commit = aCommit;
 	
 	[commit addObserverForAllSelectors:self];
 	
@@ -132,8 +124,7 @@
 		if (change.delegate == (id)self) change.delegate = nil;
 	}
 	
-	[changes release];
-	changes = [theChanges retain];
+	changes = theChanges;
 	
 	for (GBChange* change in self.changes)
 	{

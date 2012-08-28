@@ -17,7 +17,7 @@
 #import <QuartzCore/QuartzCore.h>
 
 @interface GBCommitViewController ()
-@property(nonatomic,retain) GBUserpicController* userpicController;
+@property(nonatomic,strong) GBUserpicController* userpicController;
 - (void) updateViews;
 - (void) updateCommitHeader;
 - (void) updateTemplate:(NSTextStorage*)storage withCommit:(GBCommit*)aCommit;
@@ -44,13 +44,6 @@
 													name:nil 
 												  object:self.tableView];
 	
-	self.headerRTFTemplate = nil;
-	self.headerTextView = nil;
-	self.messageTextView = nil;
-	self.horizontalLine = nil;
-	self.authorImage = nil;
-	self.userpicController = nil;
-	[super dealloc];
 }
 
 
@@ -89,7 +82,7 @@
 	
 	if (!self.userpicController)
 	{
-		self.userpicController = [[GBUserpicController new] autorelease];
+		self.userpicController = [GBUserpicController new];
 	}
 	
 	[self updateViews];
@@ -172,7 +165,7 @@
 	NSString* message = aCommit.message ? aCommit.message : @"";
 	{
 		// this hoopla with replacing attributed string is needed because otherwise during search highlighted color is applied to the whole string, not the specified range.
-		NSMutableAttributedString* attrString = [[[NSMutableAttributedString alloc] initWithString:message] autorelease];
+		NSMutableAttributedString* attrString = [[NSMutableAttributedString alloc] initWithString:message];
 		[attrString beginEditing];
 		[self updateMessageStorage:attrString];
 		[attrString endEditing];
@@ -255,10 +248,10 @@
 							nil])
 	{
 		[storage updateAttribute:NSParagraphStyleAttributeName forSubstring:line withBlock:^(id style){
-			NSMutableParagraphStyle* mutableStyle = [[style mutableCopy] autorelease];
+			NSMutableParagraphStyle* mutableStyle = [style mutableCopy];
 			if (!mutableStyle)
 			{
-				mutableStyle = [[[NSMutableParagraphStyle alloc] init] autorelease];
+				mutableStyle = [[NSMutableParagraphStyle alloc] init];
 			}
 			[mutableStyle setLineBreakMode:NSLineBreakByTruncatingTail];
 			return (id)mutableStyle;

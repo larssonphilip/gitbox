@@ -3,8 +3,8 @@
 
 @interface GBPreferencesIgnoreViewController : NSViewController <MASPreferencesViewController>
 
-@property (assign) IBOutlet NSTextView *textView;
-@property (assign) IBOutlet NSTextField *label;
+@property (unsafe_unretained) IBOutlet NSTextView *textView;
+@property (unsafe_unretained) IBOutlet NSTextField *label;
 
 + (GBPreferencesIgnoreViewController*) controller;
 

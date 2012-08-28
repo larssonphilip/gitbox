@@ -2,7 +2,7 @@
 #import "OABlockTransaction.h"
 
 @interface OABlockTransaction ()
-@property(nonatomic, retain) void(^transactionPendingBlock)();
+@property(nonatomic, strong) void(^transactionPendingBlock)();
 @end
 
 @implementation OABlockTransaction {
@@ -11,11 +11,6 @@
 
 @synthesize transactionPendingBlock;
 
-- (void) dealloc
-{
-	self.transactionPendingBlock = nil;
-	[super dealloc];
-}
 
 - (void) begin:(void(^)())block
 {
@@ -35,7 +30,7 @@
 - (void) end
 {
 	stageTransactionInProgress = NO;
-	void(^block)() = [[self.transactionPendingBlock copy] autorelease];
+	void(^block)() = [self.transactionPendingBlock copy];
 	self.transactionPendingBlock = nil;
 	if (block) 
 	{

@@ -17,22 +17,22 @@
 
 @interface GBRepository : NSObject
 
-@property(nonatomic, retain) NSURL* url;
-@property(nonatomic, retain, readonly) NSData* URLBookmarkData;
-@property(nonatomic, retain, readonly) NSString* path;
-@property(nonatomic, retain) NSURL* dotGitURL;
-@property(nonatomic, retain) NSArray* localBranches;
-@property(nonatomic, retain) NSArray* remotes;
-@property(nonatomic, retain) NSArray* tags;
-@property(nonatomic, retain) NSArray* submodules;
-@property(nonatomic, retain) GitRepository* libgitRepository;
-@property(nonatomic, retain, readonly) GBGitConfig* config;
+@property(nonatomic, strong) NSURL* url;
+@property(nonatomic, strong, readonly) NSData* URLBookmarkData;
+@property(nonatomic, strong, readonly) NSString* path;
+@property(nonatomic, strong) NSURL* dotGitURL;
+@property(nonatomic, strong) NSArray* localBranches;
+@property(nonatomic, strong) NSArray* remotes;
+@property(nonatomic, strong) NSArray* tags;
+@property(nonatomic, strong) NSArray* submodules;
+@property(nonatomic, strong) GitRepository* libgitRepository;
+@property(nonatomic, strong, readonly) GBGitConfig* config;
 
-@property(nonatomic, retain) GBStage* stage;
-@property(nonatomic, retain) GBRef* currentLocalRef;
-@property(nonatomic, retain) GBRef* currentRemoteBranch;
-@property(nonatomic, retain) NSArray* localBranchCommits;
-@property(nonatomic, retain) NSError* lastError;
+@property(nonatomic, strong) GBStage* stage;
+@property(nonatomic, strong) GBRef* currentLocalRef;
+@property(nonatomic, strong) GBRef* currentRemoteBranch;
+@property(nonatomic, strong) NSArray* localBranchCommits;
+@property(nonatomic, strong) NSError* lastError;
 
 @property(nonatomic, assign) NSUInteger unmergedCommitsCount; // obsolete
 @property(nonatomic, assign) NSUInteger unpushedCommitsCount; // obsolete
@@ -42,7 +42,7 @@
 @property(nonatomic, copy) NSString* currentTaskProgressStatus;
 
 @property(nonatomic, assign) dispatch_queue_t dispatchQueue;
-@property(nonatomic, retain, readonly) OABlockTransaction* blockTransaction;
+@property(nonatomic, strong, readonly) OABlockTransaction* blockTransaction;
 
 // If authentication failed this is set to YES.
 @property(nonatomic, getter=isAuthenticationFailed) BOOL authenticationFailed;

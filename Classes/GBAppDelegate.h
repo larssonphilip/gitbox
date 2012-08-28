@@ -1,12 +1,12 @@
 
 @interface GBAppDelegate : NSObject <NSApplicationDelegate>
 
-@property(nonatomic, retain) IBOutlet NSTextView* licenseTextView;
+@property(nonatomic, strong) IBOutlet NSTextView* licenseTextView;
 
-@property(nonatomic, retain) IBOutlet NSMenuItem* licenseMenuItem;
-@property(nonatomic, retain) IBOutlet NSMenuItem* checkForUpdatesMenuItem;
-@property(nonatomic, retain) IBOutlet NSMenuItem* welcomeMenuItem;
-@property(nonatomic, retain) IBOutlet NSMenuItem* rateInAppStoreMenuItem;
+@property(nonatomic, strong) IBOutlet NSMenuItem* licenseMenuItem;
+@property(nonatomic, strong) IBOutlet NSMenuItem* checkForUpdatesMenuItem;
+@property(nonatomic, strong) IBOutlet NSMenuItem* welcomeMenuItem;
+@property(nonatomic, strong) IBOutlet NSMenuItem* rateInAppStoreMenuItem;
 
 + (GBAppDelegate*) instance;
 

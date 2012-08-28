@@ -5,7 +5,7 @@
 
 + (GBPreferencesGithubViewController*) controller
 {
-	return [[[self alloc] initWithNibName:@"GBPreferencesGithubViewController" bundle:nil] autorelease];
+	return [[self alloc] initWithNibName:@"GBPreferencesGithubViewController" bundle:nil];
 }
 
 - (IBAction)checkboxDidChange:(id)sender

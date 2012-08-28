@@ -4,11 +4,6 @@
 
 @synthesize okButton;
 
-- (void) dealloc
-{
-  self.okButton = nil;
-  [super dealloc];
-}
 
 
 

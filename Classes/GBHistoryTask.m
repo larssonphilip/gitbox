@@ -28,14 +28,6 @@
 	return limit;
 }
 
-- (void) dealloc
-{
-	self.branch = nil;
-	self.joinedBranch = nil;
-	self.substructedBranch = nil;
-	self.commits = nil;
-	[super dealloc];
-}
 
 - (NSArray*) arguments
 {
@@ -186,7 +178,6 @@ Binary files /dev/null and b/psd/history-markers.psd differ
 {
 
 #define HistoryScanError(msg) { \
-  [pool drain]; \
   NSLog(@"ERROR: GBHistoryTask parse error: %@", msg); \
   NSLog(@"INPUT: %@", stringData); \
   return list; \
@@ -217,13 +208,13 @@ Binary files /dev/null and b/psd/history-markers.psd differ
 }
 	while (lineIndex < [lines count])
 	{
-		NSAutoreleasePool* pool = [NSAutoreleasePool new];
+		@autoreleasepool {
 		
 		line = [lines objectAtIndex:lineIndex];
 		
 		if ([line length] > 0)
 		{
-			GBCommit* commit = [[GBCommit new] autorelease];
+			GBCommit* commit = [GBCommit new];
 			
 			// commit 4d235c8044a638108b67e22f94b2876657130fc8
 			if ([line hasPrefix:@"commit "])
@@ -420,7 +411,7 @@ Binary files /dev/null and b/psd/history-markers.psd differ
 			GBHistoryNextLine;
 		}
 		
-		[pool release];
+		}
 	}
 	
 	return list;

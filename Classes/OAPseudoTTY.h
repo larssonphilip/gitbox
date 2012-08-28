@@ -8,7 +8,7 @@
 @interface OAPseudoTTY : NSObject
 
 @property(nonatomic, copy,   readonly) NSString* name;
-@property(nonatomic, retain, readonly) NSFileHandle* masterFileHandle;
-@property(nonatomic, retain, readonly) NSFileHandle* slaveFileHandle;
+@property(nonatomic, strong, readonly) NSFileHandle* masterFileHandle;
+@property(nonatomic, strong, readonly) NSFileHandle* slaveFileHandle;
 
 @end

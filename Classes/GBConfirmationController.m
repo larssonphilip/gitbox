@@ -6,13 +6,6 @@
 @synthesize descriptionTextField;
 @synthesize okButton;
 
-- (void) dealloc
-{
-  self.promptTextField = nil;
-  self.descriptionTextField = nil;
-  self.okButton = nil;
-  [super dealloc];
-}
 
 + (GBConfirmationController*) controllerWithPrompt:(NSString*)prompt description:(NSString*)description
 {
@@ -21,7 +14,7 @@
 
 + (GBConfirmationController*) controllerWithPrompt:(NSString*)prompt description:(NSString*)description ok:(NSString*)ok
 {
-  GBConfirmationController* ctrl = [[[self alloc] initWithWindowNibName:@"GBConfirmationController"] autorelease];
+  GBConfirmationController* ctrl = [[self alloc] initWithWindowNibName:@"GBConfirmationController"];
   
 //  [self.promptTextField setStringValue:prompt ? prompt : @""];
 //  [self.descriptionTextField setStringValue:description ? description : @""];

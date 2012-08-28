@@ -9,7 +9,7 @@
 #import "NSObject+OADispatchItemValidation.h"
 
 @interface GBToolbarController ()
-@property(nonatomic, readonly) NSToolbarItem* sidebarPaddingItem;
+@property(unsafe_unretained, nonatomic, readonly) NSToolbarItem* sidebarPaddingItem;
 - (void) updateAlignment;
 @end
 
@@ -26,9 +26,6 @@
 {
   [[NSNotificationCenter defaultCenter] removeObserver:self];
   if (toolbar.delegate == self) toolbar.delegate = nil;
-  [toolbar release]; toolbar = nil;
-  self.window = nil;
-  [super dealloc];
 }
 
 
@@ -46,8 +43,7 @@
   [[NSNotificationCenter defaultCenter] removeObserver:self name:NSWindowDidEndSheetNotification object:nil];
   
   if ([toolbar delegate] == self) [toolbar setDelegate:nil];
-  [toolbar release];
-  toolbar = [aToolbar retain];
+  toolbar = aToolbar;
   [toolbar setDelegate:self];
   [self update];
   

@@ -9,11 +9,6 @@
 
 @synthesize changes;
 
-- (void) dealloc
-{
-	self.changes = nil;
-	[super dealloc];
-}
 
 - (void) didFinish
 {
@@ -183,7 +178,7 @@
 		//  15. an LF or a NUL when -z option is used, to terminate the record.
 		if (![scanner scanString:@"\n" intoString:NULL]) ChangesScanError(@"Expected LF");
 		
-		GBChange* aChange = [[GBChange new] autorelease];
+		GBChange* aChange = [GBChange new];
 		[self initializeChange:aChange];
 		aChange.repository = self.repository;
 		aChange.statusScore = statusScore; // should set statusScore before setting a statusCode for correct calculation

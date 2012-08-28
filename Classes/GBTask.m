@@ -60,7 +60,7 @@
 	NSString* gitboxAppSupportPath = [applicationSupportPath stringByAppendingPathComponent:@"Gitbox"];
 	NSString* pathToBundle = [gitboxAppSupportPath stringByAppendingPathComponent:[NSString stringWithFormat:@"git-%@/git.bundle", [self bundledGitVersion]]];
 	
-	NSFileManager* fm = [[[NSFileManager alloc] init] autorelease];
+	NSFileManager* fm = [[NSFileManager alloc] init];
 	
 	if (![fm fileExistsAtPath:pathToBundle])
 	{
@@ -103,7 +103,7 @@
 	NSBundle* gitBundle = [NSBundle bundleWithPath:pathToBundle];
 	NSString* pathToBinary = [gitBundle pathForResource:name ofType:nil inDirectory:@"libexec/git-core"];
 	
-	if ([name isEqual:@"git"]) cachedPathToGitBinary = [pathToBinary retain];
+	if ([name isEqual:@"git"]) cachedPathToGitBinary = pathToBinary;
 	return pathToBinary;
 }
 

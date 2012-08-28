@@ -2,17 +2,17 @@
 
 @interface GBRepositoryBranchesAndTagsController : GBRepositorySettingsViewController
 
-@property(nonatomic, retain) NSMutableArray* branchesBinding;
-@property(nonatomic, retain) NSMutableArray* tagsBinding;
-@property(nonatomic, retain) NSMutableArray* remoteBranchesBinding;
+@property(nonatomic, strong) NSMutableArray* branchesBinding;
+@property(nonatomic, strong) NSMutableArray* tagsBinding;
+@property(nonatomic, strong) NSMutableArray* remoteBranchesBinding;
 
-@property(nonatomic, retain) IBOutlet NSArrayController* branchesController;
-@property(nonatomic, retain) IBOutlet NSArrayController* tagsController;
-@property(nonatomic, retain) IBOutlet NSArrayController* remoteBranchesController;
+@property(nonatomic, strong) IBOutlet NSArrayController* branchesController;
+@property(nonatomic, strong) IBOutlet NSArrayController* tagsController;
+@property(nonatomic, strong) IBOutlet NSArrayController* remoteBranchesController;
 
-@property(nonatomic, retain) IBOutlet NSButton* deleteBranchButton;
-@property(nonatomic, retain) IBOutlet NSButton* deleteTagButton;
-@property(nonatomic, retain) IBOutlet NSButton* deleteRemoteBranchButton;
+@property(nonatomic, strong) IBOutlet NSButton* deleteBranchButton;
+@property(nonatomic, strong) IBOutlet NSButton* deleteTagButton;
+@property(nonatomic, strong) IBOutlet NSButton* deleteRemoteBranchButton;
 
 - (IBAction) deleteBranch:(id)sender;
 - (IBAction) deleteTag:(id)sender;

@@ -3,7 +3,7 @@
 NSString* const OAFSEventStreamNotification = @"OAFSEventStreamNotification";
 
 @interface OAFSEventStream ()
-@property(nonatomic, retain) NSCountedSet* pathsBag;
+@property(nonatomic, strong) NSCountedSet* pathsBag;
 @property(nonatomic, assign) BOOL started;
 @property(nonatomic, assign) FSEventStreamRef streamRef;
 - (void) update;
@@ -20,12 +20,12 @@ void OAFSEventStreamCallback( ConstFSEventStreamRef streamRef,
 							 const FSEventStreamEventFlags eventFlags[],
 							 const FSEventStreamEventId eventIds[])
 {
-	OAFSEventStream* owner = (OAFSEventStream*)info;
+	OAFSEventStream* owner = (__bridge OAFSEventStream*)info;
 	NSMutableArray* events = [NSMutableArray arrayWithCapacity:numEvents];
 	
 	for (NSUInteger i = 0; i < numEvents; i++)
 	{
-		NSString* eventPath = [[(NSArray*)eventPaths objectAtIndex:i] stringByStandardizingPath];
+		NSString* eventPath = [[(__bridge NSArray*)eventPaths objectAtIndex:i] stringByStandardizingPath];
 		[events addObject:[OAFSEvent eventWithPath:eventPath flags:eventFlags[i] eventId:eventIds[i]]];
 	}
 	
@@ -46,8 +46,6 @@ void OAFSEventStreamCallback( ConstFSEventStreamRef streamRef,
 - (void)dealloc
 {
 	[self stop];
-	[pathsBag release]; pathsBag = nil;
-	[super dealloc];
 }
 
 - (id)init
@@ -119,14 +117,14 @@ void OAFSEventStreamCallback( ConstFSEventStreamRef streamRef,
 - (void) start
 {
 	if (!self.pathsBag) self.pathsBag = [NSCountedSet set];
-	CFArrayRef pathsToWatch = (CFArrayRef)[self.pathsBag allObjects];
+	CFArrayRef pathsToWatch = (__bridge CFArrayRef)[self.pathsBag allObjects];
 	
 	if (!pathsToWatch || CFArrayGetCount(pathsToWatch) <= 0) return;
 	
 	FSEventStreamContext streamContext;
 	
 	streamContext.version = 0;
-	streamContext.info = (void*)self; // passing self is the only reason to create this struct here
+	streamContext.info = (__bridge void*)self; // passing self is the only reason to create this struct here
 	streamContext.retain = NULL;
 	streamContext.release = NULL;
 	streamContext.copyDescription = NULL;
@@ -183,15 +181,10 @@ void OAFSEventStreamCallback( ConstFSEventStreamRef streamRef,
 @synthesize flags;
 @synthesize eventId;
 
-- (void) dealloc
-{
-	[path release]; path = nil;
-	[super dealloc];
-}
 
 + (OAFSEvent*) eventWithPath:(NSString*)aPath flags:(FSEventStreamEventFlags)flags eventId:(FSEventStreamEventId)eventId
 {
-	OAFSEvent* event = [[[self alloc] init] autorelease];
+	OAFSEvent* event = [[self alloc] init];
 	event.path = aPath;
 	event.flags = flags;
 	event.eventId = eventId;

@@ -10,8 +10,8 @@
 
 // NIB API:
 
-@property(nonatomic, retain) IBOutlet NSTextField* addressLabel;
-@property(nonatomic, retain) IBOutlet NSTextField* questionLabel;
+@property(nonatomic, strong) IBOutlet NSTextField* addressLabel;
+@property(nonatomic, strong) IBOutlet NSTextField* questionLabel;
 
 - (IBAction) no:(id)sender;
 - (IBAction) yes:(id)sender;

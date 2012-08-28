@@ -8,7 +8,7 @@
 
 
 @interface GBRemote ()
-@property(nonatomic,retain) NSArray* transientBranches;
+@property(nonatomic,strong) NSArray* transientBranches;
 @property(nonatomic,assign) BOOL isUpdatingRemoteBranches;
 - (BOOL) doesNeedFetchNewBranches:(NSArray*)theBranches andTags:(NSArray*)theTags;
 @end
@@ -25,15 +25,6 @@
 @synthesize isUpdatingRemoteBranches;
 @synthesize needsFetch;
 
-- (void) dealloc
-{
-	self.alias = nil;
-	self.URLString = nil;
-	self.fetchRefspec = nil;
-	self.branches = nil;
-	self.transientBranches = nil;
-	[super dealloc];
-}
 
 
 #pragma mark Init
@@ -42,13 +33,13 @@
 - (NSArray*) branches
 {
 	if (!branches) self.branches = [NSArray array];
-	return [[branches retain] autorelease];
+	return branches;
 }
 
 - (NSArray*) transientBranches
 {
 	if (!transientBranches) self.transientBranches = [NSArray array];
-	return [[transientBranches retain] autorelease];
+	return transientBranches;
 }
 
 - (NSString*)description
@@ -139,7 +130,7 @@
 
 - (void) updateBranchesSilently:(BOOL)silently withBlock:(void(^)())block
 {
-	block = [[block copy] autorelease];
+	block = [block copy];
 	
 	if (self.isUpdatingRemoteBranches)
 	{
@@ -203,7 +194,7 @@
 		}
 	}
 	
-	NSMutableArray* newTagNames = [[[theTags valueForKey:@"name"] mutableCopy] autorelease];
+	NSMutableArray* newTagNames = [[theTags valueForKey:@"name"] mutableCopy];
 #warning FIXME: crashed here on repository.tags; need a proper zeroing.
 	
 	[newTagNames removeObjectsInArray:[self.repository.tags valueForKey:@"name"]];

@@ -12,11 +12,6 @@
 
 @synthesize remotesDictionaries;
 
-- (void) dealloc
-{
-	[remotesDictionaries release]; remotesDictionaries = nil;
-	[super dealloc];
-}
 
 - (id) initWithRepository:(GBRepository *)repo
 {
@@ -82,10 +77,10 @@
 	NSArray* oldAliases = [self.repository.remotes valueForKey:@"alias"];
 	NSArray* newAliases = [self.remotesDictionaries valueForKey:@"alias"];
 	
-	NSMutableArray* removedAliases = [[oldAliases mutableCopy] autorelease];
+	NSMutableArray* removedAliases = [oldAliases mutableCopy];
 	[removedAliases removeObjectsInArray:newAliases];
 	
-	NSMutableArray* addedAliases = [[newAliases mutableCopy] autorelease];
+	NSMutableArray* addedAliases = [newAliases mutableCopy];
 	[addedAliases removeObjectsInArray:oldAliases];
 	
 	BOOL didChange = NO;

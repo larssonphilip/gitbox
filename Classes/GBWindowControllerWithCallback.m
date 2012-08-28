@@ -7,8 +7,7 @@
 
 - (void) dealloc
 {
-	[completionHandler release]; completionHandler = nil;
-	[super dealloc];
+	 completionHandler = nil;
 }
 
 - (void) performCompletionHandler:(BOOL)cancelled

@@ -111,21 +111,21 @@
 		textColor = [NSColor alternateSelectedControlTextColor];
 	}
 	
-	NSMutableParagraphStyle* paragraphStyle = [[NSMutableParagraphStyle new] autorelease];
+	NSMutableParagraphStyle* paragraphStyle = [NSMutableParagraphStyle new];
 	[paragraphStyle setLineBreakMode:NSLineBreakByTruncatingTail];
 	
 	static CGFloat fontSize = 11.0; // 12.0
 	NSFont* font = isHighlighted ? [NSFont boldSystemFontOfSize:fontSize] : [NSFont systemFontOfSize:fontSize];
 	
-	NSMutableDictionary* attributes = [[[NSMutableDictionary alloc] initWithObjectsAndKeys:
+	NSMutableDictionary* attributes = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
 										textColor, NSForegroundColorAttributeName,
 										font, NSFontAttributeName,
 										paragraphStyle, NSParagraphStyleAttributeName,
-										nil] autorelease];
+										nil];
 	
 	if (isHighlighted)
 	{
-		NSShadow* s = [[[NSShadow alloc] init] autorelease];
+		NSShadow* s = [[NSShadow alloc] init];
 		[s setShadowOffset:NSMakeSize(0, -1)];
 		[s setShadowColor:[NSColor colorWithCalibratedWhite:0.0 alpha:0.3]];
 		[attributes setObject:s forKey:NSShadowAttributeName];
@@ -260,7 +260,7 @@
 	YRKSpinningProgressIndicator* spinner = (YRKSpinningProgressIndicator*)[self.sidebarItem viewForKey:kGBSidebarCellSpinnerKey];
 	if (!spinner)
 	{
-		spinner = [[[YRKSpinningProgressIndicator alloc] initWithFrame:NSMakeRect(0, 0, 16.0, 16.0)] autorelease];
+		spinner = [[YRKSpinningProgressIndicator alloc] initWithFrame:NSMakeRect(0, 0, 16.0, 16.0)];
 		//spinner.actsAsCell = YES;
 		
 		[self.sidebarItem setView:spinner forKey:kGBSidebarCellSpinnerKey];
@@ -339,7 +339,7 @@
 	NSProgressIndicator* spinner = (NSProgressIndicator*)[self.sidebarItem viewForKey:kGBSidebarCellSpinnerKey];
 	if (!spinner)
 	{
-		spinner = [[[NSProgressIndicator alloc] initWithFrame:NSMakeRect(0, 0, 16.0, 16.0)] autorelease];
+		spinner = [[NSProgressIndicator alloc] initWithFrame:NSMakeRect(0, 0, 16.0, 16.0)];
 		[spinner setStyle:NSProgressIndicatorSpinningStyle];
 		[spinner setControlSize:NSSmallControlSize];
 		[self.sidebarItem setView:spinner forKey:kGBSidebarCellSpinnerKey];
@@ -400,7 +400,7 @@
 {
 	NSStringDrawingOptions drawingOptions = NSStringDrawingDisableScreenFontSubstitution;
 	
-	NSMutableParagraphStyle* paragraphStyle = [[NSMutableParagraphStyle new] autorelease];
+	NSMutableParagraphStyle* paragraphStyle = [NSMutableParagraphStyle new];
 	[paragraphStyle setLineBreakMode:NSLineBreakByTruncatingTail];
 	
 	//  NSFontDescriptor* descriptor = [NSFontDescriptor]
@@ -417,11 +417,11 @@
 		}
 	}
 	
-	NSMutableDictionary* attributes = [[[NSMutableDictionary alloc] initWithObjectsAndKeys:
+	NSMutableDictionary* attributes = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
 										textColor, NSForegroundColorAttributeName,
 										font, NSFontAttributeName,
 										paragraphStyle, NSParagraphStyleAttributeName,
-										nil] autorelease];
+										nil];
 	
 	NSRect labelRect = [badge boundingRectWithSize:NSMakeSize(64.0, 20.0)
 										   options:drawingOptions

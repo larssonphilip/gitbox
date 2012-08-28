@@ -11,8 +11,8 @@ NSString* const OAHTTPDownloadErrorDomain = @"com.oleganza.OAHTTPDownloadErrorDo
 NSString* const OAHTTPDownloadHTTPCodeErrorDomain = @"com.oleganza.OAHTTPDownloadErrorDomain.HTTP";
 
 @interface OAHTTPDownload () <NSURLConnectionDelegate>
-@property(nonatomic,retain) NSMutableData* receivedData;
-@property(nonatomic,retain) NSFileHandle* fileHandleForWriting;
+@property(nonatomic,strong) NSMutableData* receivedData;
+@property(nonatomic,strong) NSFileHandle* fileHandleForWriting;
 - (void) log:(NSString*)msg;
 - (void) logError:(NSError*)error;
 - (void) prepareFileHandleIfNeeded;
@@ -29,7 +29,7 @@ NSString* const OAHTTPDownloadHTTPCodeErrorDomain = @"com.oleganza.OAHTTPDownloa
 
 + (id) download
 {
-	return [[self new] autorelease];
+	return [self new];
 }
 
 + (id) downloadWithURL:(NSURL*)url
@@ -87,27 +87,6 @@ NSString* const OAHTTPDownloadHTTPCodeErrorDomain = @"com.oleganza.OAHTTPDownloa
 @synthesize delegate;
 @synthesize alreadyStarted;
 
-- (void) dealloc
-{
-	self.request = nil;
-	self.url = nil;
-	self.username = nil;
-	self.password = nil;
-  self.allowedContentTypes = nil;
-	self.connection = nil;
-	self.receivedData = nil;
-	self.data = nil;
-	self.lastResponse = nil;
-	self.error = nil;
-	self.block = nil;
-	self.completionBlock = nil;
-	self.runLoopMode = nil;
-	self.targetFileURL = nil;
-	self.fileHandleForWriting = nil;
-	self.userDictionary = nil;
-	
-	[super dealloc];
-}
 
 - (id) init
 {
@@ -150,13 +129,13 @@ NSString* const OAHTTPDownloadHTTPCodeErrorDomain = @"com.oleganza.OAHTTPDownloa
 	
 	if (self.byteOffset > 0)
 	{
-		NSMutableURLRequest* mutableRequest = [[self.request mutableCopy] autorelease];
+		NSMutableURLRequest* mutableRequest = [self.request mutableCopy];
 		[mutableRequest setValue:[NSString stringWithFormat:@"bytes=%lu-", self.byteOffset] forHTTPHeaderField:@"Range"];
 		self.request = mutableRequest;
 	}
 	
   NSAssert(self.request || self.url, @"OAHTTPDownload: either url or request property should be present");
-  self.connection = [[[NSURLConnection alloc] initWithRequest:self.request delegate:self startImmediately:NO] autorelease];
+  self.connection = [[NSURLConnection alloc] initWithRequest:self.request delegate:self startImmediately:NO];
   if (self.runLoopMode) 
   {
 	// NSRunLoopCommonModes includes UITrackingRunLoopMode
@@ -176,7 +155,7 @@ NSString* const OAHTTPDownloadHTTPCodeErrorDomain = @"com.oleganza.OAHTTPDownloa
 
 - (void) startWithBlock:(void(^)())aBlock
 {
-	self.block = [[aBlock copy] autorelease];
+	self.block = [aBlock copy];
 	[self start];
 }
 
@@ -582,7 +561,7 @@ NSString* const OAHTTPDownloadHTTPCodeErrorDomain = @"com.oleganza.OAHTTPDownloa
 		
 	NSString* directoryPath = [filePath stringByDeletingLastPathComponent];
 	NSError* theError = nil;
-	NSFileManager* fm = [[NSFileManager new] autorelease];
+	NSFileManager* fm = [NSFileManager new];
 	if ([fm createDirectoryAtPath:directoryPath withIntermediateDirectories:YES attributes:nil error:&theError])
 	{
 		if (![fm fileExistsAtPath:filePath])

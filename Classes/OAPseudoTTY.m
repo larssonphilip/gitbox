@@ -7,8 +7,8 @@
 
 @interface OAPseudoTTY ()
 @property(nonatomic, copy,   readwrite) NSString* name;
-@property(nonatomic, retain, readwrite) NSFileHandle* masterFileHandle;
-@property(nonatomic, retain, readwrite) NSFileHandle* slaveFileHandle;
+@property(nonatomic, strong, readwrite) NSFileHandle* masterFileHandle;
+@property(nonatomic, strong, readwrite) NSFileHandle* slaveFileHandle;
 @end
 
 @implementation OAPseudoTTY
@@ -29,10 +29,10 @@
       [NSException raise:@"OpenPtyErrorException"
                   format:@"%s", strerror(errno)];
     }
-    self.name = [[[NSString alloc] initWithCString:devname encoding:NSUTF8StringEncoding] autorelease];
-    self.slaveFileHandle = [[[NSFileHandle alloc] initWithFileDescriptor:slavefd] autorelease];
-    self.masterFileHandle = [[[NSFileHandle alloc] initWithFileDescriptor:masterfd
-                                              closeOnDealloc:YES] autorelease];
+    self.name = [[NSString alloc] initWithCString:devname encoding:NSUTF8StringEncoding];
+    self.slaveFileHandle = [[NSFileHandle alloc] initWithFileDescriptor:slavefd];
+    self.masterFileHandle = [[NSFileHandle alloc] initWithFileDescriptor:masterfd
+                                              closeOnDealloc:YES];
     
     if (setsid() < 0)
     {
@@ -47,12 +47,5 @@
   return self;
 }
 
--(void)dealloc
-{
-  [name release]; name = nil;
-  [slaveFileHandle release]; slaveFileHandle = nil;
-  [masterFileHandle release]; masterFileHandle = nil;
-  [super dealloc];
-}
 
 @end

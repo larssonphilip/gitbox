@@ -2,17 +2,17 @@
 
 @interface GBRepositorySummaryController : GBRepositorySettingsViewController
 
-@property(nonatomic, retain) IBOutlet NSTextField* pathLabel;
-@property(nonatomic, retain) IBOutlet NSTextField* originLabel;
+@property(nonatomic, strong) IBOutlet NSTextField* pathLabel;
+@property(nonatomic, strong) IBOutlet NSTextField* originLabel;
 
-@property (assign) IBOutlet NSTextField *remoteLabel1;
-@property (assign) IBOutlet NSTextField *remoteField1;
-@property (assign) IBOutlet NSTextField *remoteLabel2;
-@property (assign) IBOutlet NSTextField *remoteField2;
-@property (assign) IBOutlet NSTextField *remoteLabel3;
-@property (assign) IBOutlet NSTextField *remoteField3;
-@property (assign) IBOutlet NSView *remainingView;
-@property (assign) IBOutlet NSTextView *gitignoreTextView;
+@property (unsafe_unretained) IBOutlet NSTextField *remoteLabel1;
+@property (unsafe_unretained) IBOutlet NSTextField *remoteField1;
+@property (unsafe_unretained) IBOutlet NSTextField *remoteLabel2;
+@property (unsafe_unretained) IBOutlet NSTextField *remoteField2;
+@property (unsafe_unretained) IBOutlet NSTextField *remoteLabel3;
+@property (unsafe_unretained) IBOutlet NSTextField *remoteField3;
+@property (unsafe_unretained) IBOutlet NSView *remainingView;
+@property (unsafe_unretained) IBOutlet NSTextView *gitignoreTextView;
 
 - (IBAction)openInFinder:(id)sender;
 

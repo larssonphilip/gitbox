@@ -4,12 +4,12 @@
 
 @interface GBFolderMonitor : NSObject
 
-@property(nonatomic, retain) OAFSEventStream* eventStream;
+@property(nonatomic, strong) OAFSEventStream* eventStream;
 @property(nonatomic, copy) NSString* path;
 
 // Action signature: 
 // - (void) folderMonitorDidUpdate:(GBFolderMonitor*)monitor;
-@property(nonatomic, assign) id target;
+@property(nonatomic, unsafe_unretained) id target;
 @property(nonatomic, assign) SEL action;
 
 // These properties are available only during the action message to target.

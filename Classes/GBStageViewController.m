@@ -25,7 +25,7 @@
 
 @interface GBStageHeaderAnimation : NSAnimation
 @property(nonatomic, copy) NSString* message;
-@property(nonatomic, assign) GBStageViewController* controller;
+@property(nonatomic, unsafe_unretained) GBStageViewController* controller;
 @property(nonatomic, assign) NSRect headerFrame;
 @property(nonatomic, assign) NSRect textScrollViewFrame;
 @property(nonatomic, assign) CGFloat buttonAlpha;
@@ -38,17 +38,17 @@
 
 
 @interface GBStageViewController ()
-@property(nonatomic, retain) GBCommitPromptController* commitPromptController;
-@property(nonatomic, retain) NSIndexSet* rememberedSelectionIndexes;
-@property(nonatomic, retain) GBStageHeaderAnimation* headerAnimation;
-@property(nonatomic, retain) GBCellWithView* headerCell;
-@property(nonatomic, retain) GBStageShortcutHintDetector* shortcutHintDetector;
-@property(nonatomic, retain) GBStageMessageHistoryController* messageHistoryController;
-@property(nonatomic, retain) NSUndoManager* textViewUndoManager;
+@property(nonatomic, strong) GBCommitPromptController* commitPromptController;
+@property(nonatomic, strong) NSIndexSet* rememberedSelectionIndexes;
+@property(nonatomic, strong) GBStageHeaderAnimation* headerAnimation;
+@property(nonatomic, strong) GBCellWithView* headerCell;
+@property(nonatomic, strong) GBStageShortcutHintDetector* shortcutHintDetector;
+@property(nonatomic, strong) GBStageMessageHistoryController* messageHistoryController;
+@property(nonatomic, strong) NSUndoManager* textViewUndoManager;
 @property(nonatomic, assign) BOOL alreadyValidatedUserNameAndEmail;
 @property(nonatomic, assign) CGFloat overridenHeaderHeight;
 
-@property(nonatomic, readonly) GBStage* stage;
+@property(unsafe_unretained, nonatomic, readonly) GBStage* stage;
 
 - (BOOL) isEditingCommitMessage;
 - (void) resetMessageHistory;
@@ -97,25 +97,10 @@
 
 - (void) dealloc
 {
-	self.messageTextView = nil;
-	self.commitButton = nil;
-	self.commitPromptController = nil;
-	self.rememberedSelectionIndexes = nil;
-	self.headerAnimation = nil;
-	self.headerCell = nil;
-	self.shortcutHintLabel = nil;
 	[self.shortcutHintDetector reset];
 	self.shortcutHintDetector.view = nil;
-	self.shortcutHintDetector = nil;
-	self.messageHistoryController = nil;
-	self.textViewUndoManager = nil;
 	
-	self.rebaseStatusLabel = nil;
-	self.rebaseCancelButton = nil;
-	self.rebaseSkipButton = nil;
-	self.rebaseContinueButton = nil;
 	
-	[super dealloc];
 }
 
 
@@ -161,7 +146,7 @@
 		if (change.delegate == (id)self) change.delegate = nil;
 	}
 	
-	NSArray* selectedChanges = [[[self selectedChanges] copy] autorelease];
+	NSArray* selectedChanges = [[self selectedChanges] copy];
 	
 	[super setChanges:aChanges];
 	
@@ -355,7 +340,7 @@
 
 - (IBAction) stageRevertFile:(id)sender
 {
-	id changes = [[[self selectedChanges] copy] autorelease];
+	id changes = [[self selectedChanges] copy];
 	
 	[[GBMainWindowController instance] criticalConfirmationWithMessage:NSLocalizedString(@"Revert selected files to last committed state?", @"Stage") 
 														   description:NSLocalizedString(@"All non-committed changes will be lost.",@"Stage")
@@ -375,7 +360,7 @@
 
 - (IBAction) stageDeleteFile:(id)sender
 {
-	id changes = [[[self selectedChanges] copy] autorelease];
+	id changes = [[self selectedChanges] copy];
 	
 	[[GBMainWindowController instance] criticalConfirmationWithMessage:NSLocalizedString(@"Delete selected files?", @"Stage")
 														   description:NSLocalizedString(@"All non-committed changes will be lost.", @"Stage")
@@ -517,7 +502,7 @@
 
 - (NSString*) validCommitMessage
 {
-	NSString* msg = [[[self.messageTextView string] copy] autorelease];
+	NSString* msg = [[self.messageTextView string] copy];
 	msg = [msg stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 	if ([msg length] < 1)
 	{
@@ -654,7 +639,7 @@
 {
 	if (!self.textViewUndoManager)
 	{
-		self.textViewUndoManager = [[[NSUndoManager alloc] init] autorelease];
+		self.textViewUndoManager = [[NSUndoManager alloc] init];
 	}
 	return self.textViewUndoManager;
 }
@@ -670,7 +655,7 @@
 		[self.messageTextView setString:@""];
 	}
 	
-	self.stage.currentCommitMessage = [[[self.messageTextView string] copy] autorelease];
+	self.stage.currentCommitMessage = [[self.messageTextView string] copy];
 	if (!self.stage.currentCommitMessage)
 	{
 		self.stage.currentCommitMessage = @"";
@@ -701,7 +686,7 @@
 
 - (void)textDidChange:(NSNotification *)aNotification
 {
-	self.stage.currentCommitMessage = [[[self.messageTextView string] copy] autorelease];
+	self.stage.currentCommitMessage = [[self.messageTextView string] copy];
 	[self updateHeaderSizeAnimating:NO];
 }
 
@@ -734,7 +719,7 @@
 
 - (void) updateHeader
 {
-	NSString* msg = [[self.stage.currentCommitMessage copy] autorelease];
+	NSString* msg = [self.stage.currentCommitMessage copy];
 	if (!msg) msg = @"";
 	if (![[self.messageTextView string] isEqualToString:msg])
 	{
@@ -913,9 +898,9 @@
 		return;
 	}
 	
-	block = [[block copy] autorelease];
+	block = [block copy];
 	
-	GBUserNameEmailController* ctrl = [[[GBUserNameEmailController alloc] initWithWindowNibName:@"GBUserNameEmailController"] autorelease];
+	GBUserNameEmailController* ctrl = [[GBUserNameEmailController alloc] initWithWindowNibName:@"GBUserNameEmailController"];
 	[ctrl fillWithAddressBookData];
 	ctrl.completionHandler = ^(BOOL cancelled){
 		if (!cancelled)
@@ -936,7 +921,7 @@
 
 - (void) resetMessageHistory
 {
-	self.messageHistoryController = [[GBStageMessageHistoryController new] autorelease];
+	self.messageHistoryController = [GBStageMessageHistoryController new];
 	
 	self.messageHistoryController.repository = self.repositoryController.repository;
 	self.messageHistoryController.textView = self.messageTextView;
@@ -982,9 +967,7 @@
 
 - (void) dealloc
 {
-	self.message = nil;
 	[NSObject cancelPreviousPerformRequestsWithTarget:self];
-	[super dealloc];
 }
 
 + (GBStageHeaderAnimation*) animationWithController:(GBStageViewController*)ctrl
@@ -997,7 +980,7 @@
 	static float frames = 5.0;
 #endif
 	
-	GBStageHeaderAnimation* animation = [[[self alloc] initWithDuration:duration animationCurve:NSAnimationEaseIn] autorelease];
+	GBStageHeaderAnimation* animation = [[self alloc] initWithDuration:duration animationCurve:NSAnimationEaseIn];
 	animation.controller = ctrl;
 	[animation setAnimationBlockingMode:NSAnimationNonblocking];
 	[animation setFrameRate:MAX(frames/duration, 30.0)];

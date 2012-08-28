@@ -66,9 +66,9 @@
 
 + (void) calculateSizeAtURL:(NSURL*)aURL completionHandler:(void(^)())completionHandler
 {
-	NSFileManager* fm = [[[NSFileManager alloc] init] autorelease];
+	NSFileManager* fm = [[NSFileManager alloc] init];
 	
-	completionHandler = [[completionHandler copy] autorelease];
+	completionHandler = [completionHandler copy];
 	
 	dispatch_queue_t callerQueue = dispatch_get_current_queue();
 	dispatch_retain(callerQueue);
@@ -86,7 +86,7 @@
 		if (isDir)
 		{
 			NSPipe *pipe = [NSPipe pipe];
-			NSTask *t = [[[NSTask alloc] init] autorelease];
+			NSTask *t = [[NSTask alloc] init];
 			[t setLaunchPath:@"/usr/bin/du"];
 			[t setArguments:[NSArray arrayWithObjects:@"-k", @"-d", @"0", aURL.path, nil]];
 			[t setStandardOutput:pipe];
@@ -94,7 +94,7 @@
 			[t launch];
 			[t waitUntilExit];
 			
-			NSString *sizeString = [[[NSString alloc] initWithData:[[pipe fileHandleForReading] availableData] encoding:NSASCIIStringEncoding] autorelease];
+			NSString *sizeString = [[NSString alloc] initWithData:[[pipe fileHandleForReading] availableData] encoding:NSASCIIStringEncoding];
 			sizeString = [[sizeString componentsSeparatedByString:@" "] objectAtIndex:0];
 			bytes = [sizeString longLongValue]*1024;
 		}

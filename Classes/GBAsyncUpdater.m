@@ -22,16 +22,10 @@
 @synthesize currentWaitBlock;
 @synthesize nextWaitBlock;
 
-- (void) dealloc
-{
-	self.currentWaitBlock = nil;
-	self.nextWaitBlock = nil;
-	[super dealloc];
-}
 
 + (GBAsyncUpdater*) updaterWithTarget:(id)target action:(SEL)action
 {
-	GBAsyncUpdater* updater = [[[self alloc] init] autorelease];
+	GBAsyncUpdater* updater = [[self alloc] init];
 	updater.target = target;
 	updater.action = action;
 	return updater;
@@ -56,7 +50,10 @@
 			//NSLog(@"GBAsyncUpdater: setNeedsUpdate: scheduling update");
 			_needsUpdate = YES;
 			dispatch_async(dispatch_get_main_queue(), ^{
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
 				if (self.action) [self.target performSelector:self.action withObject:self];
+#pragma clang diagnostic pop
 			});
 		}
 	}
@@ -112,8 +109,8 @@
 {
 	generation++;
 	BOOL needsUpdateAgain = _needsUpdateAfterCurrentUpdate;
-	void(^currentBlock)() = [[self.currentWaitBlock copy] autorelease];
-	void(^nextBlock)() = [[self.nextWaitBlock copy] autorelease];
+	void(^currentBlock)() = [self.currentWaitBlock copy];
+	void(^nextBlock)() = [self.nextWaitBlock copy];
 
 	// Clean up all state
 	_inProgress = NO;

@@ -9,9 +9,9 @@
 #import "NSFileManager+OAFileManagerHelpers.h"
 
 @interface GBRepositorySummaryController ()
-@property(nonatomic, retain) NSArray* remotes;
-@property(nonatomic, retain) NSArray* labels;
-@property(nonatomic, retain) NSArray* fields;
+@property(nonatomic, strong) NSArray* remotes;
+@property(nonatomic, strong) NSArray* labels;
+@property(nonatomic, strong) NSArray* fields;
 
 - (NSString*) parentFolder;
 - (NSString*) repoTitle;
@@ -39,13 +39,7 @@
 - (void) dealloc
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	self.remotes = nil;
-	self.labels = nil;
-	self.fields = nil;
 	
-	self.pathLabel = nil;
-	self.originLabel = nil;  
-	[super dealloc];
 }
 
 - (id) initWithRepository:(GBRepository*)repo
@@ -212,10 +206,10 @@
 	}
 	
 	NSError* error = nil;
-	NSString* gitignore = [[self.gitignoreTextView.string copy] autorelease];
+	NSString* gitignore = [self.gitignoreTextView.string copy];
 	NSString* gitignoreTrimmed = [gitignore stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 	NSString* gitignorePath = [self.repository.path stringByAppendingPathComponent:@".gitignore"];
-	if (![[[[NSFileManager alloc] init] autorelease] fileExistsAtPath:gitignorePath] && gitignoreTrimmed.length == 0)
+	if (![[[NSFileManager alloc] init] fileExistsAtPath:gitignorePath] && gitignoreTrimmed.length == 0)
 	{
 		// avoid creating an empty file
 	}

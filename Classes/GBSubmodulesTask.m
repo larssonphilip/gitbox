@@ -9,11 +9,6 @@
 
 @synthesize submodules=_submodules;
 
-- (void) dealloc
-{
-	self.submodules = nil;
-	[super dealloc];
-}
 
 - (NSArray*) arguments
 {
@@ -55,7 +50,7 @@
 	
 	NSMutableArray *submodules = [NSMutableArray array];
 		
-	for (NSString* line in lines)
+	for (__strong NSString* line in lines)
 	{
 		line = [line stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 		NSArray* parts = [line componentsSeparatedByString:@" "];
@@ -90,7 +85,7 @@
 					//NSLog(@"submodulePath = %@, self.repository = %@", submodulePath, self.repository);
 					NSURL* submoduleURL = [self.repository URLForSubmoduleAtPath:submodulePath];
 					
-					GBSubmodule *submodule = [[GBSubmodule new] autorelease];
+					GBSubmodule *submodule = [GBSubmodule new];
 					submodule.dispatchQueue = self.repository.dispatchQueue;
 					submodule.path         = submodulePath;
 					submodule.parentURL    = self.repository.url;

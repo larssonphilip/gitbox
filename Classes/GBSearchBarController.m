@@ -27,12 +27,7 @@
 
 - (void) dealloc 
 {
-	self.barView = nil;
-	self.contentView = nil;
-	self.searchField = nil;
-	self.progressIndicator = nil;
 	self.statusLabel = nil;
-	[super dealloc];
 }
 
 - (void) awakeFromNib
@@ -41,7 +36,7 @@
 	
 	if (!self.barView)
 	{
-		NSNib* privateNib = [[[NSNib alloc] initWithNibNamed:@"GBSearchBarController" bundle:[NSBundle mainBundle]] autorelease];
+		NSNib* privateNib = [[NSNib alloc] initWithNibNamed:@"GBSearchBarController" bundle:[NSBundle mainBundle]];
 		[privateNib instantiateNibWithOwner:self topLevelObjects:NULL];
 		
 		[self.barView setFrame:[self.view bounds]];

@@ -19,7 +19,7 @@
 
 + (GBPromptController*) controller
 {
-	return [[[self alloc] initWithWindowNibName:@"GBPromptController"] autorelease];
+	return [[self alloc] initWithWindowNibName:@"GBPromptController"];
 }
 
 - (id) initWithWindow:(NSWindow*)window
@@ -39,12 +39,6 @@
 - (void) dealloc
 {
 	[NSObject cancelPreviousPerformRequestsWithTarget:self];
-	self.textField = nil;
-	self.title = nil;
-	self.promptText = nil;
-	self.buttonText = nil;
-	self.value = nil;
-	[super dealloc];
 }
 
 - (IBAction) onOK:(id)sender
@@ -62,7 +56,8 @@
 	if (requireNonNilValue && !self.value) self.value = @"";
 	if (requireNonEmptyString && (!self.value || [self.value isEmptyString])) return;
 	
-	[[self retain] autorelease];
+	GB_RETAIN_AUTORELEASE(self);
+	
 	[self performCompletionHandler:NO];
 	self.value = @"";
 }

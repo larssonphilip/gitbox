@@ -19,7 +19,7 @@
     if ((self = [self init]))
 	{
 		// TODO: not tested, not used yet.
-		if (![[[NSFileManager new] autorelease] fileExistsAtPath:self.userConfigURL.path])
+		if (![[NSFileManager new] fileExistsAtPath:self.userConfigURL.path])
 		{
 			[[NSData data] writeToFile:self.userConfigURL.path atomically:YES encoding:NSUTF8StringEncoding error:NULL];
 		}
@@ -31,7 +31,6 @@
 		{
 			config = NULL;
 			NSLog(@"GitConfig error while opening global config: %d [%s]", error, git_lasterror());
-			[self release];
 			return nil;
 		}
     }
@@ -51,7 +50,6 @@
 		{
 			NSLog(@"GitConfig error while opening %@: %d [%s]", path, error, git_lasterror());
 			config = NULL;
-			[self release];
 			return nil;
 		}
     }
@@ -71,7 +69,6 @@
 		{
 			NSLog(@"GitConfig error while opening %@: %d [%s]", path, error, git_lasterror());
 			config = NULL;
-			[self release];
 			return nil;
 		}
     }
@@ -91,7 +88,6 @@
 	if (config) git_config_free(config);
 	config = NULL;
 	
-    [super dealloc];
 }
 
 
@@ -153,7 +149,7 @@
 
 int GitConfigEnumerationFunction(const char *key, const char *value, void *payload)
 {
-	void (^block)(id key, id obj, BOOL *stop) = (void (^)(id, id, BOOL*))payload;
+	void (^block)(id key, id obj, BOOL *stop) = (__bridge void (^)(id, id, BOOL*))payload;
 	BOOL stop = NO;
 	block([NSString stringWithCString:key encoding:NSUTF8StringEncoding], 
 		  [NSString stringWithCString:value encoding:NSUTF8StringEncoding], 
@@ -165,7 +161,7 @@ int GitConfigEnumerationFunction(const char *key, const char *value, void *paylo
 - (void) enumerateKeysAndObjectsUsingBlock:(void (^)(id key, id obj, BOOL *stop))block
 {
 	if (!block) return;
-	git_config_foreach(config, GitConfigEnumerationFunction, block);
+	git_config_foreach(config, GitConfigEnumerationFunction, (__bridge void*)block);
 }
 
 @end

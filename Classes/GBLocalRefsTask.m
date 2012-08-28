@@ -7,13 +7,6 @@
 @synthesize tags;
 @synthesize remoteBranchesByRemoteAlias;
 
-- (void) dealloc
-{
-	self.branches = nil;
-	self.tags = nil;
-	self.remoteBranchesByRemoteAlias = nil;
-	[super dealloc];
-}
 
 
 
@@ -90,7 +83,7 @@
 				}
 				else if ([refName hasPrefix:@"refs/heads/"])
 				{
-					GBRef* ref = [[GBRef new] autorelease];
+					GBRef* ref = [GBRef new];
 					ref.commitId = commitId;
 					ref.name = [refName substringFromIndex:[@"refs/heads/" length]];
 					
@@ -101,7 +94,7 @@
 				}
 				else if ([refName hasPrefix:@"refs/tags/"])
 				{
-					GBRef* ref = [[GBRef new] autorelease];
+					GBRef* ref = [GBRef new];
 					ref.commitId = commitId;
 					ref.name = [refName substringFromIndex:[@"refs/tags/" length]];
 					ref.isTag = YES;
@@ -123,7 +116,7 @@
 					
 					if ([nameWithAlias rangeOfString:@"/"].length > 0)
 					{
-						GBRef* ref = [[GBRef new] autorelease];
+						GBRef* ref = [GBRef new];
 						ref.commitId = commitId;
 						[ref setNameWithRemoteAlias:nameWithAlias];
 						ref.isTag = NO;

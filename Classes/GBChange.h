@@ -11,8 +11,8 @@
 
 @interface GBChange : NSObject<NSPasteboardWriting, QLPreviewItem>
 
-@property(nonatomic,retain) NSURL* srcURL;
-@property(nonatomic,retain) NSURL* dstURL;
+@property(nonatomic,strong) NSURL* srcURL;
+@property(nonatomic,strong) NSURL* dstURL;
 @property(nonatomic,copy)   NSString* statusCode;
 @property(nonatomic,copy)   NSString* status;
 @property(nonatomic,copy)   NSString* srcMode;
@@ -21,15 +21,15 @@
 @property(nonatomic,copy)   NSString* srcRevision;
 @property(nonatomic,copy)   NSString* dstRevision;
 @property(nonatomic,copy)   NSString* commitId;
-@property(nonatomic,retain) GBSearchQuery* searchQuery;
+@property(nonatomic,strong) GBSearchQuery* searchQuery;
 @property(nonatomic,copy)   NSSet* highlightedPathSubstrings;
 @property(nonatomic,assign) BOOL containsHighlightedDiffLines;
 
 // Important: staged property & delegate are only used for checkbox binding in UI.
 @property(nonatomic,assign) BOOL staged;
-@property(nonatomic,assign) id<GBChangeDelegate> delegate;
+@property(nonatomic,unsafe_unretained) id<GBChangeDelegate> delegate;
 @property(nonatomic,assign) BOOL busy;
-@property(nonatomic,assign) GBRepository* repository;
+@property(nonatomic,unsafe_unretained) GBRepository* repository;
 
 
 + (GBChange*) dummy; // for bindings in right view

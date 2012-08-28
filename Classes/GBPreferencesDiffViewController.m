@@ -9,7 +9,7 @@
 
 + (GBPreferencesDiffViewController*) controller
 {
-	return [[[self alloc] initWithNibName:@"GBPreferencesDiffViewController" bundle:nil] autorelease];
+	return [[self alloc] initWithNibName:@"GBPreferencesDiffViewController" bundle:nil];
 }
 
 @synthesize isFileMergeAvailable;
@@ -23,7 +23,6 @@
 - (void) dealloc
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	[super dealloc];
 }
 
 - (NSArray*) diffTools

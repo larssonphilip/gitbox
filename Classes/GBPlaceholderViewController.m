@@ -13,10 +13,5 @@
     return self;
 }
 
-- (void)dealloc
-{
-  [title release]; title = nil;
-  [super dealloc];
-}
 
 @end

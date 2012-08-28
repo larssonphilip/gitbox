@@ -8,13 +8,6 @@
 @synthesize tags;
 @synthesize remote;
 
-- (void) dealloc
-{
-	self.branches = nil;
-	self.tags = nil;
-	self.remote = nil;
-	[super dealloc];
-}
 
 - (NSArray*) arguments
 {
@@ -52,7 +45,7 @@
 				}
 				else if ([refName hasPrefix:@"refs/heads/"])
 				{
-					GBRef* ref = [[GBRef new] autorelease];
+					GBRef* ref = [GBRef new];
 					ref.commitId = commitId;
 					ref.name = [refName substringFromIndex:[@"refs/heads/" length]];
 					ref.remoteAlias = self.remote.alias;
@@ -60,7 +53,7 @@
 				}
 				else if ([refName hasPrefix:@"refs/tags/"])
 				{
-					GBRef* ref = [[GBRef new] autorelease];
+					GBRef* ref = [GBRef new];
 					ref.commitId = commitId;
 					ref.name = [refName substringFromIndex:[@"refs/tags/" length]];
 					ref.remoteAlias = self.remote.alias;

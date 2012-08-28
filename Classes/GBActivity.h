@@ -3,10 +3,10 @@
 @class OATask;
 @interface GBActivity : NSObject
 
-@property(nonatomic,assign) OATask* task;
+@property(nonatomic,unsafe_unretained) OATask* task;
 @property(nonatomic,assign) BOOL isRunning;
 
-@property(nonatomic,retain) NSDate* date;
+@property(nonatomic,strong) NSDate* date;
 @property(nonatomic,copy) NSString* path;
 @property(nonatomic,copy) NSString* command;
 @property(nonatomic,copy) NSString* status;

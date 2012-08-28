@@ -4,9 +4,9 @@
 
 @interface GBRepositoryBranchesAndTagsController ()
 
-@property(nonatomic, retain) NSMutableArray* branchesToDelete;
-@property(nonatomic, retain) NSMutableArray* tagsToDelete;
-@property(nonatomic, retain) NSMutableArray* remoteBranchesToDelete;
+@property(nonatomic, strong) NSMutableArray* branchesToDelete;
+@property(nonatomic, strong) NSMutableArray* tagsToDelete;
+@property(nonatomic, strong) NSMutableArray* remoteBranchesToDelete;
 
 @end
 
@@ -28,26 +28,6 @@
 @synthesize tagsToDelete;
 @synthesize remoteBranchesToDelete;
 
-- (void) dealloc
-{
-	[branchesBinding release];       branchesBinding = nil;
-	[tagsBinding release];           tagsBinding = nil;
-	[remoteBranchesBinding release]; remoteBranchesBinding = nil;
-	
-	[branchesController release];       branchesController = nil;
-	[tagsController release];           tagsController = nil;
-	[remoteBranchesController release]; remoteBranchesController = nil;
-	
-	[deleteBranchButton release];       deleteBranchButton = nil;
-	[deleteTagButton release];          deleteTagButton = nil;
-	[deleteRemoteBranchButton release]; deleteRemoteBranchButton = nil;
-	
-	[branchesToDelete release];       branchesToDelete = nil;
-	[tagsToDelete release];           tagsToDelete = nil;
-	[remoteBranchesToDelete release]; remoteBranchesToDelete = nil;
-	
-	[super dealloc];
-}
 
 - (id) initWithRepository:(GBRepository*)repo
 {
@@ -121,8 +101,8 @@
 {
 	[super viewDidLoad];
 	
-	self.branchesBinding = [[self.repository.localBranches mutableCopy] autorelease];
-	self.tagsBinding = [[self.repository.tags mutableCopy] autorelease];
+	self.branchesBinding = [self.repository.localBranches mutableCopy];
+	self.tagsBinding = [self.repository.tags mutableCopy];
 	
 	NSMutableArray* rs = [NSMutableArray array];
 	for (GBRemote* remote in self.repository.remotes)

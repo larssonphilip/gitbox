@@ -4,17 +4,17 @@
 
 + (id)attributedStringWithString:(NSString *)str
 {
-  return [[[self alloc] initWithString:str] autorelease];
+  return [[self alloc] initWithString:str];
 }
 
 + (id)attributedStringWithString:(NSString *)str attributes:(NSDictionary *)attributes
 {
-  return [[[self alloc] initWithString:str attributes:attributes] autorelease];
+  return [[self alloc] initWithString:str attributes:attributes];
 }
 
 + (NSMutableAttributedString*)attributedStringWithString:(NSString *)str attributes:(NSDictionary *)attributes highlightedRanges:(NSArray*)ranges highlightColor:(NSColor*)highlightColor
 {
-  NSMutableAttributedString* s = [[[NSMutableAttributedString alloc] initWithString:str] autorelease];
+  NSMutableAttributedString* s = [[NSMutableAttributedString alloc] initWithString:str];
   
   [s beginEditing];
   [s addAttributes:attributes range:NSMakeRange(0, [str length])];

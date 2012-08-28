@@ -7,18 +7,21 @@
 
 int main(int argc, const char *argv[])
 {
-	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
+	@autoreleasepool {
 	if ([[[NSProcessInfo processInfo] environment] objectForKey:GBAskPassServerNameKey])
 	{
-		[pool drain];
 		return GBAskPass(argc, argv);
 	}
 	
-	if (getenv("NSZombieEnabled") || getenv("NSAutoreleaseFreedObjectCheckEnabled"))
+	if (getenv("NSZombieEnabled"))
 	{
-		NSLog(@"WARNING! NSZombieEnabled/NSAutoreleaseFreedObjectCheckEnabled enabled!");
+		NSLog(@"WARNING! NSZombieEnabled is ON!");
 	}
 	
+	if (getenv("NSAutoreleaseFreedObjectCheckEnabled"))
+	{
+		NSLog(@"WARNING! NSAutoreleaseFreedObjectCheckEnabled is ON!");
+	}
 	
 #if GITBOX_APP_STORE
     // The purpose of this check here is to provide the user with
@@ -95,7 +98,6 @@ int main(int argc, const char *argv[])
 	
 #endif
 	
-	int code = NSApplicationMain(argc, (const char **) argv);
-	[pool drain];
-	return code;
+	return NSApplicationMain(argc, (const char **) argv);
+	}
 }

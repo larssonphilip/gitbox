@@ -6,7 +6,7 @@
 @interface GBAsyncUpdater : NSObject
 
 // Target is called when needs to begin an update.
-@property(nonatomic, assign) id target;
+@property(nonatomic, unsafe_unretained) id target;
 @property(nonatomic, assign) SEL action;
 
 + (GBAsyncUpdater*) updaterWithTarget:(id)target action:(SEL)action;

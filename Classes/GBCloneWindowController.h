@@ -1,10 +1,10 @@
 @interface GBCloneWindowController : NSWindowController<NSWindowDelegate, NSTextFieldDelegate, NSOpenSavePanelDelegate>
 
-@property(retain) IBOutlet NSTextField* urlField;
-@property(retain) IBOutlet NSButton* nextButton;
-@property(retain) NSString* sourceURLString;
-@property(retain) NSURL* targetDirectoryURL;
-@property(retain) NSURL* targetURL;
+@property(strong) IBOutlet NSTextField* urlField;
+@property(strong) IBOutlet NSButton* nextButton;
+@property(strong) NSString* sourceURLString;
+@property(strong) NSURL* targetDirectoryURL;
+@property(strong) NSURL* targetURL;
 @property(copy) void (^finishBlock)();
 
 - (void) start;

@@ -16,19 +16,19 @@
 
 @interface GBRepositoryController : NSResponder<GBMainWindowItem, GBSidebarItemObject>
 
-@property(nonatomic, retain) GBRepository* repository;
-@property(nonatomic, retain, readonly) NSURL* url;
-@property(nonatomic, retain) GBSidebarItem* sidebarItem;
+@property(nonatomic, strong) GBRepository* repository;
+@property(nonatomic, strong, readonly) NSURL* url;
+@property(nonatomic, strong) GBSidebarItem* sidebarItem;
 @property(nonatomic, copy) NSString* userDefinedName;
-@property(nonatomic, retain) GBRepositoryToolbarController* toolbarController;
-@property(nonatomic, retain) GBRepositoryViewController* viewController;
-@property(nonatomic, retain) GBCommit* selectedCommit;
-@property(nonatomic, retain) OAFSEventStream* fsEventStream;
+@property(nonatomic, strong) GBRepositoryToolbarController* toolbarController;
+@property(nonatomic, strong) GBRepositoryViewController* viewController;
+@property(nonatomic, strong) GBCommit* selectedCommit;
+@property(nonatomic, strong) OAFSEventStream* fsEventStream;
 @property(nonatomic, copy) NSString* lastCommitBranchName;
 
 @property(nonatomic, assign, readonly, getter=isSearching) BOOL searching;
 @property(nonatomic, copy)   NSString* searchString;
-@property(nonatomic, retain, readonly) NSArray* searchResults;
+@property(nonatomic, strong, readonly) NSArray* searchResults;
 @property(nonatomic, assign, readonly) double searchProgress;
 
 @property(nonatomic, assign) NSInteger isRemoteBranchesDisabled;

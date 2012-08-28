@@ -9,7 +9,7 @@
 }
 
 @property(nonatomic, copy) NSURL* plistURL;
-@property(nonatomic, retain) id plist;
+@property(nonatomic, strong) id plist;
 
 - (id)objectForKey:(NSString*)name;
 - (void)setObject:(id)value forKey:(NSString *)name;

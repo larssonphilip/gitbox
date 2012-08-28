@@ -6,15 +6,15 @@
 
 @interface GBMainWindowController : NSWindowController<NSSplitViewDelegate>
 
-@property(nonatomic, retain) GBRootController* rootController;
-@property(nonatomic, retain) GBToolbarController* toolbarController;
-@property(nonatomic, retain) GBSidebarController* sidebarController;
-@property(nonatomic, retain) NSViewController* detailViewController;
-@property(nonatomic, retain) GBWelcomeController* welcomeController;
+@property(nonatomic, strong) GBRootController* rootController;
+@property(nonatomic, strong) GBToolbarController* toolbarController;
+@property(nonatomic, strong) GBSidebarController* sidebarController;
+@property(nonatomic, strong) NSViewController* detailViewController;
+@property(nonatomic, strong) GBWelcomeController* welcomeController;
 
-@property(nonatomic, retain, readonly) OABlockQueue* sheetQueue;
+@property(nonatomic, strong, readonly) OABlockQueue* sheetQueue;
 
-@property(nonatomic, retain) IBOutlet NSSplitView* splitView;
+@property(nonatomic, strong) IBOutlet NSSplitView* splitView;
 
 + (GBMainWindowController*) instance;
 

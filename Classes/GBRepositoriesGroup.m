@@ -20,34 +20,27 @@
 
 @synthesize isExpanded;
 
-- (void) dealloc
-{
-  self.sidebarItem = nil;
-  self.name = nil;
-  self.items = nil;
-  [super dealloc];
-}
 
 - (id) init
 {
   if ((self = [super init]))
   {
     self.items = [NSMutableArray array];
-    self.sidebarItem = [[[GBSidebarItem alloc] init] autorelease];
+    self.sidebarItem = [[GBSidebarItem alloc] init];
     self.sidebarItem.object = self;
     self.sidebarItem.selectable = YES;
     self.sidebarItem.expandable = YES;
     self.sidebarItem.draggable = YES;
     self.sidebarItem.editable = YES;
     self.sidebarItem.image = [NSImage imageNamed:@"GBSidebarGroupIcon"];
-    self.sidebarItem.cell = [[[GBSidebarCell alloc] initWithItem:self.sidebarItem] autorelease];
+    self.sidebarItem.cell = [[GBSidebarCell alloc] initWithItem:self.sidebarItem];
   }
   return self;
 }
 
 + (GBRepositoriesGroup*) untitledGroup
 {
-  GBRepositoriesGroup* g = [[[self alloc] init] autorelease];
+  GBRepositoriesGroup* g = [[self alloc] init];
   g.name = [g untitledGroupName];
   return g;
 }
@@ -70,7 +63,7 @@
 - (void) removeObject:(id<GBSidebarItemObject>)anObject
 {
   if (!anObject) return;
-  [[anObject retain] autorelease];
+  GB_RETAIN_AUTORELEASE(anObject);
   [self.items removeObject:anObject];
 }
 
@@ -215,25 +208,25 @@
 
 - (NSMenu*) sidebarItemMenu
 {
-  NSMenu* menu = [[[NSMenu alloc] initWithTitle:@""] autorelease];
+  NSMenu* menu = [[NSMenu alloc] initWithTitle:@""];
   
-  [menu addItem:[[[NSMenuItem alloc] 
-                  initWithTitle:NSLocalizedString(@"Add Repository...", @"Sidebar") action:@selector(openDocument:) keyEquivalent:@""] autorelease]];
-  [menu addItem:[[[NSMenuItem alloc] 
-                  initWithTitle:NSLocalizedString(@"Clone Repository...", @"Sidebar") action:@selector(cloneRepository:) keyEquivalent:@""] autorelease]];
-  
-  [menu addItem:[NSMenuItem separatorItem]];
-  
-  [menu addItem:[[[NSMenuItem alloc] 
-                  initWithTitle:NSLocalizedString(@"New Group", @"Sidebar") action:@selector(addGroup:) keyEquivalent:@""] autorelease]];
+  [menu addItem:[[NSMenuItem alloc] 
+                  initWithTitle:NSLocalizedString(@"Add Repository...", @"Sidebar") action:@selector(openDocument:) keyEquivalent:@""]];
+  [menu addItem:[[NSMenuItem alloc] 
+                  initWithTitle:NSLocalizedString(@"Clone Repository...", @"Sidebar") action:@selector(cloneRepository:) keyEquivalent:@""]];
   
   [menu addItem:[NSMenuItem separatorItem]];
   
-  [menu addItem:[[[NSMenuItem alloc] 
-                  initWithTitle:NSLocalizedString(@"Rename", @"Sidebar") action:@selector(rename:) keyEquivalent:@""] autorelease]];
+  [menu addItem:[[NSMenuItem alloc] 
+                  initWithTitle:NSLocalizedString(@"New Group", @"Sidebar") action:@selector(addGroup:) keyEquivalent:@""]];
   
-  [menu addItem:[[[NSMenuItem alloc] 
-                  initWithTitle:NSLocalizedString(@"Remove from Sidebar", @"Sidebar") action:@selector(remove:) keyEquivalent:@""] autorelease]];
+  [menu addItem:[NSMenuItem separatorItem]];
+  
+  [menu addItem:[[NSMenuItem alloc] 
+                  initWithTitle:NSLocalizedString(@"Rename", @"Sidebar") action:@selector(rename:) keyEquivalent:@""]];
+  
+  [menu addItem:[[NSMenuItem alloc] 
+                  initWithTitle:NSLocalizedString(@"Remove from Sidebar", @"Sidebar") action:@selector(remove:) keyEquivalent:@""]];
   return menu;
 }
 

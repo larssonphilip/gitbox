@@ -1,5 +1,5 @@
 #import "GBRepositorySettingsViewController.h"
 
 @interface GBRepositoryConfigController : GBRepositorySettingsViewController
-@property (assign) IBOutlet NSTextView *textView;
+@property (unsafe_unretained) IBOutlet NSTextView *textView;
 @end

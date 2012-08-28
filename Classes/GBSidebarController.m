@@ -16,8 +16,8 @@
 @interface GBSidebarController () <NSMenuDelegate>
 
 @property(nonatomic, assign) NSUInteger ignoreSelectionChange;
-@property(nonatomic, readonly) GBSidebarItem* clickedSidebarItem; // returns a clicked item if it exists and lies outside the selection
-@property(nonatomic, retain) OAFastJumpController* jumpController;
+@property(unsafe_unretained, nonatomic, readonly) GBSidebarItem* clickedSidebarItem; // returns a clicked item if it exists and lies outside the selection
+@property(nonatomic, strong) OAFastJumpController* jumpController;
 - (NSArray*) selectedSidebarItems;
 - (void) updateContents;
 - (void) updateSelection;
@@ -38,11 +38,7 @@
 - (void) dealloc
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	[rootController release]; rootController = nil;
-	self.outlineView = nil;
-	self.buyButton = nil;
-	self.jumpController = nil;
-	[super dealloc];
+	 rootController = nil;
 }
 
 - (void) loadView
@@ -64,8 +60,7 @@
 	if (rootController == aRootController) return;
 	
 	[rootController removeObserverForAllSelectors:self];
-	[rootController release];
-	rootController = [aRootController retain];
+	rootController = aRootController;
 	[rootController addObserverForAllSelectors:self];
 	
 	[self updateContents];
@@ -104,17 +99,17 @@
 
 - (NSMenu*) defaultMenu
 {
-	NSMenu* menu = [[[NSMenu alloc] initWithTitle:@""] autorelease];
+	NSMenu* menu = [[NSMenu alloc] initWithTitle:@""];
 	
-	[menu addItem:[[[NSMenuItem alloc] 
-					initWithTitle:NSLocalizedString(@"Add Repository...", @"Sidebar") action:@selector(openDocument:) keyEquivalent:@""] autorelease]];
-	[menu addItem:[[[NSMenuItem alloc] 
-					initWithTitle:NSLocalizedString(@"Clone Repository...", @"Sidebar") action:@selector(cloneRepository:) keyEquivalent:@""] autorelease]];
+	[menu addItem:[[NSMenuItem alloc] 
+					initWithTitle:NSLocalizedString(@"Add Repository...", @"Sidebar") action:@selector(openDocument:) keyEquivalent:@""]];
+	[menu addItem:[[NSMenuItem alloc] 
+					initWithTitle:NSLocalizedString(@"Clone Repository...", @"Sidebar") action:@selector(cloneRepository:) keyEquivalent:@""]];
 	
 	[menu addItem:[NSMenuItem separatorItem]];
 	
-	[menu addItem:[[[NSMenuItem alloc] 
-					initWithTitle:NSLocalizedString(@"New Group", @"Sidebar") action:@selector(addGroup:) keyEquivalent:@""] autorelease]];
+	[menu addItem:[[NSMenuItem alloc] 
+					initWithTitle:NSLocalizedString(@"New Group", @"Sidebar") action:@selector(addGroup:) keyEquivalent:@""]];
 	
 	menu.delegate = self;
 	return menu;

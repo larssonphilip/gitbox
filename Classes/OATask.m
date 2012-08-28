@@ -16,28 +16,28 @@ NSString* OATaskDidDeallocateNotification  = @"OATaskDidDeallocateNotification";
 @interface OATask ()
 
 // Additional environment values merged in to the inherited environment
-@property(nonatomic, retain) NSMutableDictionary* additionalEnvironment;
+@property(nonatomic, strong) NSMutableDictionary* additionalEnvironment;
 
 // Private NSTask doing all the dirty work.
-@property(nonatomic, retain) NSTask* nstask;
+@property(nonatomic, strong) NSTask* nstask;
 
 // Dispatch queue of the caller. Usually it is a main queue.
 @property(nonatomic, assign) dispatch_queue_t originDispatchQueue;
 
 // Public accessors redeclared as readwrite.
-@property(nonatomic, retain, readwrite) NSMutableData* standardOutputData;
-@property(nonatomic, retain, readwrite) NSMutableData* standardErrorData;
+@property(nonatomic, strong, readwrite) NSMutableData* standardOutputData;
+@property(nonatomic, strong, readwrite) NSMutableData* standardErrorData;
 
 @property(nonatomic, readwrite) BOOL isWaiting;
 @property(nonatomic) BOOL isLaunched;
 
 // Contains file handle if a private pipe is used for the stream
-@property(nonatomic, retain) NSFileHandle* standardOutputFileHandle;
-@property(nonatomic, retain) NSFileHandle* standardErrorFileHandle;
+@property(nonatomic, strong) NSFileHandle* standardOutputFileHandle;
+@property(nonatomic, strong) NSFileHandle* standardErrorFileHandle;
 
-@property(nonatomic, retain) OAPseudoTTY* pseudoTTY;
+@property(nonatomic, strong) OAPseudoTTY* pseudoTTY;
 
-@property(nonatomic, retain) NSDate* launchDate;
+@property(nonatomic, strong) NSDate* launchDate;
 
 - (void) prepareTask;
 - (void) readStandardOutputAndStandardError;
@@ -88,29 +88,14 @@ NSString* OATaskDidDeallocateNotification  = @"OATaskDidDeallocateNotification";
 	NSValue* value = [NSValue valueWithNonretainedObject:self];
 	[[NSNotificationCenter defaultCenter] postNotificationName:OATaskDidDeallocateNotification object:value];
     
-	[standardOutputFileHandle release]; standardOutputFileHandle = nil;
-	[standardErrorFileHandle release]; standardErrorFileHandle = nil;
 	
-	[executableName release]; executableName = nil;
-	[launchPath release]; launchPath = nil;
-	[currentDirectoryPath release]; currentDirectoryPath = nil;
-	[arguments release]; arguments = nil;
-	[standardOutputHandleOrPipe release]; standardOutputHandleOrPipe = nil;
-	[standardErrorHandleOrPipe release]; standardErrorHandleOrPipe = nil;
-	[standardOutputData release]; standardOutputData = nil;
-	[standardErrorData release]; standardErrorData = nil;
 	if (dispatchQueue) { dispatch_release(dispatchQueue); dispatchQueue = nil; }
-	[didTerminateBlock release]; didTerminateBlock = nil;
-	[didReceiveDataBlock release]; didReceiveDataBlock = nil;
+	 didTerminateBlock = nil;
+	 didReceiveDataBlock = nil;
 	
-	[additionalEnvironment release]; additionalEnvironment = nil;
-	[nstask release]; nstask = nil;
 	if (originDispatchQueue) { dispatch_release(originDispatchQueue); originDispatchQueue = nil; };
 	
-	[pseudoTTY release]; pseudoTTY = nil;
 	
-	[launchDate release]; launchDate = nil;
-	[super dealloc];
 }
 
 - (id)init
@@ -130,13 +115,13 @@ NSString* OATaskDidDeallocateNotification  = @"OATaskDidDeallocateNotification";
 	newTask.executableName = self.executableName;
 	newTask.launchPath = self.launchPath;
 	newTask.currentDirectoryPath = self.currentDirectoryPath;
-	newTask.arguments = [[self.arguments copy] autorelease];
+	newTask.arguments = [self.arguments copy];
 	newTask.realTime = [self isRealTime];
 	newTask.interactive = [self isInteractive];
 	newTask.dispatchQueue = self.dispatchQueue;
 	newTask.didTerminateBlock = self.didTerminateBlock;
 	newTask.didReceiveDataBlock = self.didReceiveDataBlock;
-	newTask.additionalEnvironment = [[self.additionalEnvironment mutableCopy] autorelease];
+	newTask.additionalEnvironment = [self.additionalEnvironment mutableCopy];
 	return newTask;
 }
 
@@ -146,12 +131,12 @@ NSString* OATaskDidDeallocateNotification  = @"OATaskDidDeallocateNotification";
 
 + (id) task
 {
-	return [[[self alloc] init] autorelease];
+	return [[self alloc] init];
 }
 
 + (NSString*) pathForExecutableUsingWhich:(NSString*)executable
 {
-	NSTask* task = [[[NSTask alloc] init] autorelease];
+	NSTask* task = [[NSTask alloc] init];
 	[task setCurrentDirectoryPath:NSHomeDirectory()];
 	[task setLaunchPath:@"/usr/bin/which"];
 	[task setArguments:[NSArray arrayWithObjects:executable, nil]];
@@ -185,7 +170,7 @@ NSString* OATaskDidDeallocateNotification  = @"OATaskDidDeallocateNotification";
 
 + (NSString*) pathForExecutableUsingBruteForce:(NSString*)executable
 {
-	NSFileManager* fm = [[NSFileManager new] autorelease];
+	NSFileManager* fm = [NSFileManager new];
 	NSArray* binPaths = [NSArray arrayWithObjects:
 						 @"~/bin",
 						 @"/usr/local/git/bin",
@@ -375,7 +360,7 @@ NSString* OATaskDidDeallocateNotification  = @"OATaskDidDeallocateNotification";
 			NSAssert(pingEvent, @"Cannot create pingEvent!");
 			[NSApp postEvent:pingEvent atStart:NO];
 			
-			[[self retain] autorelease];
+			GB_RETAIN_AUTORELEASE(self);
 			
 			self.didTerminateBlock = nil;
 			self.originDispatchQueue = nil;
@@ -395,7 +380,7 @@ NSString* OATaskDidDeallocateNotification  = @"OATaskDidDeallocateNotification";
 	self.isLaunched = YES;
 	self.interactive = YES; 
 	
-	[self retain]; // self retain to ensure that self lives till the task finishes even if the didTerminateBlock does not retain it.
+	 // self retain to ensure that self lives till the task finishes even if the didTerminateBlock does not retain it.
 	
 	[self willLaunchTask];
 	
@@ -561,7 +546,7 @@ NSString* OATaskDidDeallocateNotification  = @"OATaskDidDeallocateNotification";
 {
 	if (!self.launchPath && self.executableName)
 	{
-		aBlock = [[aBlock copy] autorelease];
+		aBlock = [aBlock copy];
 		NSString* exec = self.executableName;
 		dispatch_queue_t originQueue = dispatch_get_current_queue();
 		dispatch_retain(originQueue);
@@ -598,7 +583,7 @@ NSString* OATaskDidDeallocateNotification  = @"OATaskDidDeallocateNotification";
 	
 	[self willPrepareTask];
     
-	self.nstask = [[[NSTask alloc] init] autorelease];
+	self.nstask = [[NSTask alloc] init];
 	
 	if (!self.launchPath && self.executableName)
 	{
@@ -629,7 +614,7 @@ NSString* OATaskDidDeallocateNotification  = @"OATaskDidDeallocateNotification";
 	[self.nstask setLaunchPath:    self.launchPath];
 	[self.nstask setArguments:     self.arguments ? self.arguments : [NSArray array]];
 	NSString* binPath = [self.launchPath stringByDeletingLastPathComponent];
-	NSMutableDictionary* environment = [[[[NSProcessInfo processInfo] environment] mutableCopy] autorelease];
+	NSMutableDictionary* environment = [[[NSProcessInfo processInfo] environment] mutableCopy];
 	NSString* path = [environment objectForKey:@"PATH"];
 	if (!path) path = binPath;
 	else path = [path stringByAppendingFormat:@":%@", binPath];
@@ -656,7 +641,7 @@ NSString* OATaskDidDeallocateNotification  = @"OATaskDidDeallocateNotification";
 	
 	if ([self isInteractive])
 	{
-		self.pseudoTTY = [[[OAPseudoTTY alloc] init] autorelease];
+		self.pseudoTTY = [[OAPseudoTTY alloc] init];
 		[self.nstask setStandardOutput:self.pseudoTTY.slaveFileHandle];
 		[self.nstask setStandardError:self.pseudoTTY.slaveFileHandle];
 		[self.nstask setStandardInput:self.pseudoTTY.slaveFileHandle];
@@ -682,14 +667,14 @@ NSString* OATaskDidDeallocateNotification  = @"OATaskDidDeallocateNotification";
 		
 		if (!self.standardOutputHandleOrPipe)
 		{
-			self.standardOutputHandleOrPipe = [[[NSPipe alloc] init] autorelease];
+			self.standardOutputHandleOrPipe = [[NSPipe alloc] init];
 			self.standardOutputFileHandle = [self.standardOutputHandleOrPipe fileHandleForReading];
 		}
 		[self.nstask setStandardOutput:self.standardOutputHandleOrPipe];
 		
 		if (!self.standardErrorHandleOrPipe)
 		{
-			self.standardErrorHandleOrPipe = [[[NSPipe alloc] init] autorelease];
+			self.standardErrorHandleOrPipe = [[NSPipe alloc] init];
 			self.standardErrorFileHandle = [self.standardErrorHandleOrPipe fileHandleForReading];
 		}
 		[self.nstask setStandardError: self.standardErrorHandleOrPipe];
@@ -847,7 +832,7 @@ NSString* OATaskDidDeallocateNotification  = @"OATaskDidDeallocateNotification";
 	[[NSNotificationCenter defaultCenter] postNotificationName:OATaskDidTerminateNotification object:self];
 	dispatch_resume(self.dispatchQueue);
 	self.dispatchQueue = nil;
-	[self release]; // balances [self retain] done in the launchInteractively
+	 // balances [self retain] done in the launchInteractively
 }
 
 

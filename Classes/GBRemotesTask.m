@@ -2,7 +2,7 @@
 #import "GBRemote.h"
 
 @interface GBRemotesTask ()
-@property(nonatomic, retain) NSMutableDictionary* remotesByAlias;
+@property(nonatomic, strong) NSMutableDictionary* remotesByAlias;
 @end
 
 @implementation GBRemotesTask
@@ -10,12 +10,6 @@
 @synthesize remotes;
 @synthesize remotesByAlias;
 
-- (void) dealloc
-{
-  self.remotes = nil;
-  self.remotesByAlias = nil;
-  [super dealloc];
-}
 
 - (NSArray*) arguments
 {
@@ -31,7 +25,7 @@
   GBRemote* aRemote = [self.remotesByAlias objectForKey:alias];
   if (!aRemote)
   {
-    aRemote = [[GBRemote new] autorelease];
+    aRemote = [GBRemote new];
     aRemote.alias = alias;
     aRemote.repository = self.repository;
     [self.remotesByAlias setObject:aRemote forKey:alias];

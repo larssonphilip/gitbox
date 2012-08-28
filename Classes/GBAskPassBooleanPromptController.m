@@ -11,7 +11,7 @@
 
 + (id) controller
 {
-  GBAskPassBooleanPromptController* ctrl = [[[self alloc] initWithWindowNibName:@"GBAskPassBooleanPromptController"] autorelease];
+  GBAskPassBooleanPromptController* ctrl = [[self alloc] initWithWindowNibName:@"GBAskPassBooleanPromptController"];
   return ctrl;
 }
 
@@ -22,14 +22,9 @@
 
 - (void)dealloc
 {
-  [callback release]; callback = nil;
-  [address release]; address = nil;
-  [question release]; question = nil;
+   callback = nil;
   
-  [addressLabel release]; addressLabel = nil;
-  [questionLabel release]; questionLabel = nil;
 
-  [super dealloc];
 }
 
 - (void)windowDidLoad

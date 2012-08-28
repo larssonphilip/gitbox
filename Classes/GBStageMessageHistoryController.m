@@ -17,13 +17,6 @@
 
 @synthesize messageIndex;
 
-- (void) dealloc
-{
-  self.repository = nil;
-  self.textView = nil;
-  self.initialMessage = nil;
-  [super dealloc];
-}
 
 - (id) init
 {
@@ -68,7 +61,7 @@
   if (self.messageIndex <= -1)
   {
     self.messageIndex = -1;
-    self.initialMessage = [[[self.textView string] copy] autorelease];
+    self.initialMessage = [[self.textView string] copy];
   }
   
   NSArray* commits = [self.repository commits];

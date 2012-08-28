@@ -1,8 +1,8 @@
 #import "GBAuthenticatedTask.h"
 
 @interface GBCloneTask : GBAuthenticatedTask
-@property(nonatomic, retain) NSString* sourceURLString;
-@property(nonatomic, retain) NSURL* targetURL;
+@property(nonatomic, strong) NSString* sourceURLString;
+@property(nonatomic, strong) NSURL* targetURL;
 @property(copy) NSString* status;
 @property(assign) double progress;
 @end

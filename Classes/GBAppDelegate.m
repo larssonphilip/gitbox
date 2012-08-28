@@ -20,7 +20,6 @@
 #import "GBChange.h"
 
 #import "NSFileManager+OAFileManagerHelpers.h"
-#import "NSWindowController+OAWindowControllerHelpers.h"
 #import "NSObject+OASelectorNotifications.h"
 #import "NSData+OADataHelpers.h"
 
@@ -47,10 +46,10 @@
 
 @interface GBAppDelegate () <NSOpenSavePanelDelegate>
 
-@property(nonatomic, retain) GBRootController* rootController;
-@property(nonatomic, retain) GBMainWindowController* windowController;
-@property(nonatomic, retain) MASPreferencesWindowController* preferencesController;
-@property(nonatomic, retain) NSMutableArray* URLsToOpenAfterLaunch;
+@property(nonatomic, strong) GBRootController* rootController;
+@property(nonatomic, strong) GBMainWindowController* windowController;
+@property(nonatomic, strong) MASPreferencesWindowController* preferencesController;
+@property(nonatomic, strong) NSMutableArray* URLsToOpenAfterLaunch;
 
 - (void) saveItems;
 - (void) testUTF8Healing;
@@ -73,20 +72,6 @@
 @synthesize welcomeMenuItem;
 @synthesize rateInAppStoreMenuItem;
 
-- (void) dealloc
-{
-	self.licenseTextView = nil;
-	self.rootController = nil;
-	self.windowController = nil;
-	self.preferencesController = nil;
-	self.URLsToOpenAfterLaunch = nil;
-	self.licenseMenuItem = nil;
-	self.checkForUpdatesMenuItem = nil;
-	self.welcomeMenuItem = nil;
-	self.rateInAppStoreMenuItem = nil;
-	
-	[super dealloc];
-}
 
 + (void) initialize
 {
@@ -172,7 +157,7 @@
 	//OSStatus status = 0;
 	if ([value boolValue])
 	{
-		/*status =*/ LSSetDefaultHandlerForURLScheme((CFStringRef)@"github-mac", (CFStringRef)[[NSBundle mainBundle] bundleIdentifier]);
+		/*status =*/ LSSetDefaultHandlerForURLScheme((CFStringRef)@"github-mac", (__bridge CFStringRef)[[NSBundle mainBundle] bundleIdentifier]);
 		[[NSAppleEventManager sharedAppleEventManager] setEventHandler:self andSelector:@selector(handleUrl:withReplyEvent:) forEventClass:kInternetEventClass andEventID:kAEGetURL];
 	}
 	else
@@ -238,7 +223,7 @@
 	[self updateAppleEvents];
 	[[GBActivityController sharedActivityController] loadWindow]; // force load the activity controller to begin monitoring the tasks
 	
-	self.rootController = [[GBRootController new] autorelease];
+	self.rootController = [GBRootController new];
 	id plist = [[NSUserDefaults standardUserDefaults] objectForKey:@"GBSidebarItems"];
 	[self.rootController sidebarItemLoadContentsFromPropertyList:plist];
 	[self.rootController addObserverForAllSelectors:self];
@@ -282,12 +267,12 @@
 	
 	diffToolsControllerIndex = 0;
 	
-	self.preferencesController = [[[MASPreferencesWindowController alloc] initWithViewControllers:preferencesControllers] autorelease];
+	self.preferencesController = [[MASPreferencesWindowController alloc] initWithViewControllers:preferencesControllers];
 	
 	self.windowController.rootController = self.rootController;
 	[self.windowController showWindow:self];
 	
-	NSArray* urls = [[self.URLsToOpenAfterLaunch retain] autorelease];
+	NSArray* urls = self.URLsToOpenAfterLaunch;
 	self.URLsToOpenAfterLaunch = nil;
 	[self.rootController openURLs:urls];
 	
@@ -360,7 +345,7 @@
 	NSAlert* alert = [NSAlert alertWithError:error];
 	
 	[[GBMainWindowController instance] sheetQueueAddBlock:^{
-		[alert retain]; // will be released in the callback
+		 // will be released in the callback
 		[alert beginSheetModalForWindow:[[GBMainWindowController instance] window] 
 						  modalDelegate:self
 						 didEndSelector:@selector(presentedErrorAlertDidEnd:returnCode:contextInfo:)
@@ -377,7 +362,7 @@
 {
 	[[alert window] orderOut:nil];
 	[[GBMainWindowController instance] sheetQueueEndBlock];
-	[alert release]; // was retained in the application:willPresentError:
+	 // was retained in the application:willPresentError:
 }
 
 
@@ -487,7 +472,7 @@
 	
 	if (!updater)
 	{
-		updater = [[GBAsyncUpdater updaterWithTarget:self action:@selector(testGBAsyncUpdaterUpdate:)] retain];
+		updater = [GBAsyncUpdater updaterWithTarget:self action:@selector(testGBAsyncUpdaterUpdate:)];
 	}
 	
 	[self simulateSetNeedsUpdate:updater];
@@ -502,7 +487,7 @@
 	char bytes[] = {0xc0, 0x86};
 	
 	NSData* data = [NSData dataWithBytes:(void*)bytes length:2];
-	NSLog(@"data = %@, string = %@ %@", data, [data UTF8String], [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease]);
+	NSLog(@"data = %@, string = %@ %@", data, [data UTF8String], [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
 	
 	
 	int failures = 10;

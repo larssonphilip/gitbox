@@ -7,12 +7,12 @@
 
 @interface GBRepositoryCloningController : NSResponder<GBMainWindowItem, GBSidebarItemObject>
 
-@property(nonatomic, retain) GBSidebarItem* sidebarItem;
-@property(nonatomic, retain) GBRepositoryCloningViewController* viewController;
+@property(nonatomic, strong) GBSidebarItem* sidebarItem;
+@property(nonatomic, strong) GBRepositoryCloningViewController* viewController;
 
-@property(nonatomic, retain) NSString* sourceURLString;
-@property(nonatomic, retain) NSURL* targetURL;
-@property(nonatomic, retain) NSError* error;
+@property(nonatomic, strong) NSString* sourceURLString;
+@property(nonatomic, strong) NSURL* targetURL;
+@property(nonatomic, strong) NSError* error;
 
 @property(nonatomic, assign, readonly) NSInteger isDisabled;
 @property(nonatomic, assign, readonly) NSInteger isSpinning;

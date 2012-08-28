@@ -10,11 +10,6 @@
 @synthesize textView;
 @synthesize contents;
 
-- (void) dealloc
-{
-	self.contents = nil;
-	[super dealloc];
-}
 
 - (id) initWithRepository:(GBRepository *)repo
 {
@@ -41,14 +36,14 @@
 	}
 	else
 	{
-		[self.textView setString:[[self.contents copy] autorelease]];
+		[self.textView setString:[self.contents copy]];
 	}
 }
 
 - (void) save
 {
 	NSError* error = nil;
-	NSString* config = [[self.textView.string copy] autorelease];
+	NSString* config = [self.textView.string copy];
 	
 	// Check if we have really changed contents. Otherwise we may overwrite update from the "Remotes" tab.
 	if (config && self.contents && [self.contents isEqual:config])

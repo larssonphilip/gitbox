@@ -16,18 +16,12 @@
 
 + (OABlockQueue*) queueWithName:(NSString*)aName concurrency:(NSInteger)maxConcurrentOps
 {
-  OABlockQueue* q = [[self new] autorelease];
+  OABlockQueue* q = [self new];
   q.name = aName;
   q.maxConcurrentOperationCount = maxConcurrentOps;
   return q;
 }
 
-- (void) dealloc
-{
-  self.name = nil;
-  self.queue = nil;
-  [super dealloc];
-}
 
 - (id) init
 {
@@ -51,7 +45,7 @@
   }
   
   if (!self.queue) self.queue = [NSMutableArray array];
-  [self.queue addObject:[[aBlock copy] autorelease]];
+  [self.queue addObject:[aBlock copy]];
   [self proceed];
 }
 
@@ -68,7 +62,7 @@
   }
 
   if (!self.queue) self.queue = [NSMutableArray array];
-  [self.queue insertObject:[[aBlock copy] autorelease] atIndex:0];
+  [self.queue insertObject:[aBlock copy] atIndex:0];
   [self proceed];
 }
 
@@ -109,7 +103,9 @@
     if (self.queue && [self.queue count] > 0)
     {
       void(^aBlock)() = [self.queue objectAtIndex:0];
-      [[aBlock retain] autorelease];
+		
+		GB_RETAIN_AUTORELEASE(aBlock);
+		
       [self.queue removeObjectAtIndex:0];
       self.operationCount++;
       aBlock();

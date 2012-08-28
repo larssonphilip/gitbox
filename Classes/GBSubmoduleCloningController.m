@@ -11,10 +11,10 @@
 
 
 @interface GBSubmoduleCloningController ()
-@property(nonatomic,retain) GBAuthenticatedTask* task;
+@property(nonatomic,strong) GBAuthenticatedTask* task;
 @property(nonatomic, assign, readwrite) NSInteger isDisabled;
 @property(nonatomic, assign, readwrite) NSInteger isSpinning;
-@property(nonatomic, retain, readwrite) GBSidebarItem* sidebarItem;
+@property(nonatomic, strong, readwrite) GBSidebarItem* sidebarItem;
 @end
 
 @implementation GBSubmoduleCloningController
@@ -35,17 +35,10 @@
 - (void) dealloc
 {
 	self.viewController.repositoryController = nil;
-	self.viewController = nil;
 	[self.task terminate];
-	self.task        = nil;
-	self.error       = nil;
-	self.progressStatus = nil;
 	
-	self.submodule = nil;
 	
 	if (self.sidebarItem.object == self) self.sidebarItem.object = nil;
-	self.sidebarItem = nil;
-	[super dealloc];
 }
 
 - (id) initWithSubmodule:(GBSubmodule*)submodule
@@ -54,14 +47,14 @@
 	{
 		self.submodule = submodule;
 		
-		self.sidebarItem = [[[GBSidebarItem alloc] init] autorelease];
+		self.sidebarItem = [[GBSidebarItem alloc] init];
 		self.sidebarItem.object = self;
 		self.sidebarItem.draggable = NO;
 		self.sidebarItem.selectable = YES;
 		self.sidebarItem.editable = NO;
-		self.sidebarItem.cell = [[[GBSubmoduleCell alloc] initWithItem:self.sidebarItem] autorelease];
+		self.sidebarItem.cell = [[GBSubmoduleCell alloc] initWithItem:self.sidebarItem];
 		
-		self.viewController = [[[GBSubmoduleCloningViewController alloc] initWithNibName:@"GBSubmoduleCloningViewController" bundle:nil] autorelease];
+		self.viewController = [[GBSubmoduleCloningViewController alloc] initWithNibName:@"GBSubmoduleCloningViewController" bundle:nil];
 		self.viewController.repositoryController = self;
 	}
 	return self;
@@ -84,7 +77,7 @@
 	[self.sidebarItem update];
 	[self notifyWithSelector:@selector(submoduleCloningControllerProgress:)];
 	
-	GBAuthenticatedTask* t = [[GBAuthenticatedTask new] autorelease];
+	GBAuthenticatedTask* t = [GBAuthenticatedTask new];
 	
 	t.remoteAddress = self.remoteURL.absoluteString;
 	t.ignoreMissingRepository = YES;
@@ -170,7 +163,7 @@
 	{
 		//NSLog(@"!! Task cancelled. Decrementing a spinner. Terminating a task.");
 		self.isSpinning--;
-		OATask* t = [[self.task retain] autorelease];
+		OATask* t = self.task;
 		self.task = nil;
 		[t terminate];
 		self.progressStatus = @"";
@@ -188,7 +181,7 @@
 
 - (void) stop
 {
-	OATask* t = [[self.task retain] autorelease];
+	OATask* t = self.task;
 	self.task = nil;
 	[t terminate];
 	[self.sidebarItem removeAllViews];

@@ -3,7 +3,7 @@
 
 @interface GBSidebarItem ()
 @property(nonatomic, copy, readwrite) NSString* UID;
-@property(nonatomic, retain) NSMutableDictionary* viewsDictionary;
+@property(nonatomic, strong) NSMutableDictionary* viewsDictionary;
 @end
 
 @implementation GBSidebarItem {
@@ -32,20 +32,12 @@
 
 - (void) dealloc
 {
-	self.UID = nil;
-	self.image = nil;
-	self.title = nil;
-	self.tooltip = nil;
-	self.cell = nil;
-	self.menu = nil;
 	//NSLog(@"GBSidebarItem#dealloc");
 	for (NSString* aKey in _viewsDictionary)
 	{
 		//NSLog(@"GBSidebarItem#dealloc: removing view %@", aKey);
 		[[_viewsDictionary objectForKey:aKey] removeFromSuperview];
 	}
-	[_viewsDictionary release]; _viewsDictionary = nil;
-	[super dealloc];
 }
 
 - (id) init
@@ -91,7 +83,7 @@
 	{
 		return [self.object sidebarItemImage];
 	}
-	return [[image retain] autorelease];
+	return image;
 }
 
 - (NSString*) title
@@ -100,7 +92,7 @@
 	{
 		return [self.object sidebarItemTitle];
 	}
-	return [[title retain] autorelease];
+	return title;
 }
 
 - (NSString*) tooltip
@@ -109,7 +101,7 @@
 	{
 		return [self.object sidebarItemTooltip];
 	}
-	return [[tooltip retain] autorelease];
+	return tooltip;
 }
 
 - (NSUInteger) badgeInteger
@@ -241,7 +233,8 @@
 	
 	if (oldView == aView) return;
 	
-	[[oldView retain] autorelease];
+	GB_RETAIN_AUTORELEASE(oldView);
+	
 	[oldView removeFromSuperview];
 	if (aView)
 	{
@@ -276,7 +269,10 @@
 {
 	if ([self.object respondsToSelector:anAction])
 	{
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
 		[self.object performSelector:anAction withObject:argument];
+#pragma clang diagnostic pop
 		return YES;
 	}
 	return [super tryToPerform:anAction with:argument];
@@ -291,11 +287,14 @@
 
 - (id) performSelector:(SEL)selector withObject:(id)argument
 {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
 	if ([super respondsToSelector:selector])
 	{
 		return [super performSelector:selector withObject:argument];
 	}
 	return [self.object performSelector:selector withObject:argument];
+#pragma clang diagnostic pop
 }
 
 
@@ -454,7 +453,7 @@
 
 - (GBSidebarItem*) childAtIndex:(NSInteger)anIndex
 {
-	return [[[self.object sidebarItemChildAtIndex:anIndex] retain] autorelease];
+	return [self.object sidebarItemChildAtIndex:anIndex];
 }
 
 - (NSUInteger) indexOfChild:(GBSidebarItem*)aChild

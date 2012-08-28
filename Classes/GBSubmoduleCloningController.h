@@ -8,11 +8,11 @@
 
 @interface GBSubmoduleCloningController : NSResponder<GBMainWindowItem, GBSidebarItemObject>
 
-@property(nonatomic, retain) GBSubmodule* submodule;
-@property(nonatomic, assign) GBRepositoryController* parentRepositoryController;
-@property(nonatomic, retain) GBSubmoduleCloningViewController* viewController;
+@property(nonatomic, strong) GBSubmodule* submodule;
+@property(nonatomic, unsafe_unretained) GBRepositoryController* parentRepositoryController;
+@property(nonatomic, strong) GBSubmoduleCloningViewController* viewController;
 
-@property(nonatomic, retain) NSError* error;
+@property(nonatomic, strong) NSError* error;
 
 @property(nonatomic, assign, readonly) NSInteger isDisabled;
 @property(nonatomic, assign, readonly) NSInteger isSpinning;
@@ -20,7 +20,7 @@
 @property(nonatomic, assign) double sidebarItemProgress;
 @property(nonatomic, copy) NSString* progressStatus;
 
-@property(nonatomic, retain, readonly) GBSidebarItem* sidebarItem;
+@property(nonatomic, strong, readonly) GBSidebarItem* sidebarItem;
 
 - (id) initWithSubmodule:(GBSubmodule*)submodule;
 

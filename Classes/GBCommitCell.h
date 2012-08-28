@@ -4,7 +4,7 @@
 
 @property(nonatomic, assign) BOOL isForeground;
 @property(nonatomic, assign) BOOL isFocused;
-@property(nonatomic, retain) GBCommit* commit;
+@property(nonatomic, strong) GBCommit* commit;
 
 + (CGFloat) cellHeight;
 + (GBCommitCell*) cell;

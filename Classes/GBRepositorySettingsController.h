@@ -11,12 +11,12 @@ extern NSString* const GBRepositorySettingsGitConfig;
 
 @interface GBRepositorySettingsController : GBWindowControllerWithCallback<NSWindowDelegate>
 
-@property(nonatomic, retain) GBRepository* repository;
-@property(nonatomic, retain, readonly) NSMutableDictionary* userInfo;
+@property(nonatomic, strong) GBRepository* repository;
+@property(nonatomic, strong, readonly) NSMutableDictionary* userInfo;
 @property(nonatomic, copy)   NSString* selectedTab;
-@property(nonatomic, retain) IBOutlet NSButton* cancelButton;
-@property(nonatomic, retain) IBOutlet NSButton* saveButton;
-@property(nonatomic, retain) IBOutlet NSTabView* tabView;
+@property(nonatomic, strong) IBOutlet NSButton* cancelButton;
+@property(nonatomic, strong) IBOutlet NSButton* saveButton;
+@property(nonatomic, strong) IBOutlet NSTabView* tabView;
 @property(nonatomic, assign, readonly, getter=isDisabled) BOOL disabled;
 
 + (id) controllerWithTab:(NSString*)tab repository:(GBRepository*)repo;

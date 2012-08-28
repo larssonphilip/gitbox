@@ -21,8 +21,8 @@ static BOOL running = NO;
 static id monitor = nil;
 
 @interface GBOptimizeRepositoryController ()
-@property(nonatomic, retain) GBRepository* repository;
-@property(nonatomic, retain) GBTaskWithProgress* task;
+@property(nonatomic, strong) GBRepository* repository;
+@property(nonatomic, strong) GBTaskWithProgress* task;
 + (void) scheduleCheck;
 + (void) resetTimeout;
 @end
@@ -35,18 +35,10 @@ static id monitor = nil;
 @synthesize repository=_repository;
 @synthesize task=_task;
 
-- (void)dealloc
-{
-    [_repository release];
-	[_task release];
-	[progressIndicator release];
-	[pathLabel release];
-    [super dealloc];
-}
 
 + (GBOptimizeRepositoryController*) controllerWithRepository:(GBRepository*)repo
 {
-	GBOptimizeRepositoryController* ctrl = [[[self alloc] initWithWindowNibName:@"GBOptimizeRepositoryController"] autorelease];
+	GBOptimizeRepositoryController* ctrl = [[self alloc] initWithWindowNibName:@"GBOptimizeRepositoryController"];
 	ctrl.repository = repo;
 	return ctrl;
 }

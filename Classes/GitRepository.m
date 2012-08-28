@@ -14,7 +14,7 @@
 
 + (GitRepository*) repositoryWithURL:(NSURL*)URL
 {
-	GitRepository* repo = [[[self alloc] init] autorelease];
+	GitRepository* repo = [[self alloc] init];
 	repo.URL = URL;
 	return repo;
 }
@@ -30,16 +30,13 @@
 - (void)dealloc
 {
 	self.repository = NULL;
-	[URL release]; URL = nil;
-    [super dealloc];
 }
 
 - (void) setURL:(NSURL *)newURL
 {
 	if (URL == newURL || (URL && newURL && [URL isEqual:newURL])) return;
 	
-	[URL release];
-	URL = [newURL retain];
+	URL = newURL;
 	
 	[self reloadRepository];
 }
@@ -82,7 +79,7 @@
 
 - (GitConfig*) config
 {
-	return [[[GitConfig alloc] initWithRepositoryURL:self.URL] autorelease];
+	return [[GitConfig alloc] initWithRepositoryURL:self.URL];
 }
 
 - (NSString*) commitIdForRefName:(NSString*)refName

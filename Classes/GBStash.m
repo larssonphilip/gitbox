@@ -7,13 +7,6 @@
 @synthesize rawMessage;
 @dynamic message;
 
-- (void) dealloc
-{
-  self.ref = nil;
-  self.date = nil;
-  self.rawMessage = nil;
-  [super dealloc];
-}
 
 + (NSTimeInterval) oldStashesTreshold
 {
@@ -50,7 +43,7 @@
   if (!self.date) return msg;
   
   NSDate* today = [NSDate date];
-  NSDateFormatter* formatter = [[[NSDateFormatter alloc] init] autorelease];
+  NSDateFormatter* formatter = [[NSDateFormatter alloc] init];
   NSString* dateString = @"";
   if ([today timeIntervalSinceDate:self.date] < 12*3600.0)
   {

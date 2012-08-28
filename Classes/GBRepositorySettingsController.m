@@ -13,8 +13,8 @@ NSString* const GBRepositorySettingsRemoteServers   = @"GBRepositorySettingsRemo
 NSString* const GBRepositorySettingsGitConfig       = @"GBRepositorySettingsGitConfig";
 
 @interface GBRepositorySettingsController () <NSTabViewDelegate>
-@property(nonatomic, retain) NSArray* viewControllers;
-@property(nonatomic, retain, readwrite) NSMutableDictionary* userInfo;
+@property(nonatomic, strong) NSArray* viewControllers;
+@property(nonatomic, strong, readwrite) NSMutableDictionary* userInfo;
 @property(nonatomic, assign, getter=isDirty) BOOL dirty;
 @property(nonatomic, assign, getter=areTabsPrepared) BOOL tabsPrepared;
 @property(nonatomic, assign, readwrite, getter=isDisabled) BOOL disabled;
@@ -35,22 +35,10 @@ NSString* const GBRepositorySettingsGitConfig       = @"GBRepositorySettingsGitC
 @synthesize tabsPrepared;
 @synthesize disabled;
 
-- (void) dealloc
-{
-	[repository release]; repository = nil;
-	[userInfo release]; userInfo = nil;
-	[viewControllers release]; viewControllers = nil;
-	
-	[cancelButton release]; cancelButton = nil;
-	[saveButton release]; saveButton = nil;
-	[tabView release]; tabView = nil;
-	
-	[super dealloc];
-}
 
 + (id) controllerWithTab:(NSString*)tab repository:(GBRepository*)repo
 {
-	GBRepositorySettingsController* ctrl = [[[GBRepositorySettingsController alloc] initWithWindowNibName:@"GBRepositorySettingsController"] autorelease];
+	GBRepositorySettingsController* ctrl = [[GBRepositorySettingsController alloc] initWithWindowNibName:@"GBRepositorySettingsController"];
 	ctrl.repository = repo;
 	ctrl.selectedTab = tab;
 	return ctrl;
@@ -70,10 +58,10 @@ NSString* const GBRepositorySettingsGitConfig       = @"GBRepositorySettingsGitC
 {
 	// Not the best place to init controllers, but at least we have the repository here.
 	self.viewControllers = [NSArray arrayWithObjects:
-							[[[GBRepositorySummaryController alloc] initWithRepository:self.repository] autorelease],
-							[[[GBRepositoryBranchesAndTagsController alloc] initWithRepository:self.repository] autorelease],
-							[[[GBRepositoryRemotesController alloc] initWithRepository:self.repository] autorelease],
-							[[[GBRepositoryConfigController alloc] initWithRepository:self.repository] autorelease],
+							[[GBRepositorySummaryController alloc] initWithRepository:self.repository],
+							[[GBRepositoryBranchesAndTagsController alloc] initWithRepository:self.repository],
+							[[GBRepositoryRemotesController alloc] initWithRepository:self.repository],
+							[[GBRepositoryConfigController alloc] initWithRepository:self.repository],
 							nil];
 	
 	for (GBRepositorySettingsViewController* ctrl in self.viewControllers)
@@ -132,7 +120,6 @@ NSString* const GBRepositorySettingsGitConfig       = @"GBRepositorySettingsGitC
 	if (!tabName) tabName = GBRepositorySettingsSummary;
 	if (selectedTab == tabName) return;
 	
-	[selectedTab release];
 	selectedTab = [tabName copy];
 	
 	[self syncSelectedTab];
@@ -187,7 +174,7 @@ NSString* const GBRepositorySettingsGitConfig       = @"GBRepositorySettingsGitC
 	
 	// Remove items added in the Nib
 	
-	NSArray* tabItems = [[[self.tabView tabViewItems] copy] autorelease];
+	NSArray* tabItems = [[self.tabView tabViewItems] copy];
 	for (NSTabViewItem* item in tabItems)
 	{
 		[self.tabView removeTabViewItem:item];
@@ -197,7 +184,7 @@ NSString* const GBRepositorySettingsGitConfig       = @"GBRepositorySettingsGitC
 	
 	for (GBRepositorySettingsViewController* vc in self.viewControllers)
 	{
-		NSTabViewItem* item = [[[NSTabViewItem alloc] initWithIdentifier:nil] autorelease];
+		NSTabViewItem* item = [[NSTabViewItem alloc] initWithIdentifier:nil];
 		[item setLabel:vc.title ? vc.title : @""];
 		[item setView:[vc view]];
 		[self.tabView addTabViewItem:item];
@@ -236,9 +223,9 @@ NSString* const GBRepositorySettingsGitConfig       = @"GBRepositorySettingsGitC
 
 - (void) criticalConfirmationWithMessage:(NSString*)message description:(NSString*)desc ok:(NSString*)okOrNil completion:(void(^)(BOOL))completion
 {
-	completion = [[completion copy] autorelease];
+	completion = [completion copy];
 	
-	NSAlert* alert = [[[NSAlert alloc] init] autorelease];
+	NSAlert* alert = [[NSAlert alloc] init];
 	
 	if (message) [alert setMessageText:message];
 	if (desc) [alert setInformativeText:desc];
@@ -247,17 +234,15 @@ NSString* const GBRepositorySettingsGitConfig       = @"GBRepositorySettingsGitC
 	[alert addButtonWithTitle:okOrNil ? okOrNil : NSLocalizedString(@"OK", nil)];
 	[alert addButtonWithTitle:NSLocalizedString(@"Cancel", nil)];
 	
-	[completion retain];
 	[alert beginSheetModalForWindow:[self window]
 					  modalDelegate:self 
 					 didEndSelector:@selector(alertDidEnd:returnCode:contextInfo:) 
-						contextInfo:completion];
+						contextInfo:(__bridge void *)(completion)];
 }
 
 - (void) alertDidEnd:(NSAlert*)alert returnCode:(NSInteger)returnCode contextInfo:(void(^)(BOOL))completion
 {
 	if (completion) completion(returnCode == NSAlertFirstButtonReturn);
-	[completion release];
 }
 
 

@@ -10,8 +10,8 @@
 
 
 @interface GBCommitCell ()
-@property(nonatomic, retain) NSDictionary* attributes;
-@property(nonatomic, retain) GBStage* stage;
+@property(nonatomic, strong) NSDictionary* attributes;
+@property(nonatomic, strong) GBStage* stage;
 @property(nonatomic, assign) BOOL cachedStage;
 - (void) drawStageContentInFrame:(NSRect)cellFrame;
 - (NSRect) drawTagBadgesAndReturnRemainingRect:(NSRect)rect;
@@ -27,12 +27,6 @@
 @synthesize stage;
 @synthesize cachedStage;
 
-- (void)dealloc
-{
-  [stage release]; stage = nil;
-  [attributes release]; attributes = nil;
-  [super dealloc];
-}
 
 + (CGFloat) cellHeight
 {
@@ -41,7 +35,7 @@
 
 - (NSDateFormatter*) dateFormatterWithTemplate:(NSString*)template
 {
-  NSDateFormatter* formatter = [[[NSDateFormatter alloc] init] autorelease];
+  NSDateFormatter* formatter = [[NSDateFormatter alloc] init];
   [formatter setDateFormat:[NSDateFormatter dateFormatFromTemplate:template options:0 locale:[NSLocale currentLocale]]];
   return formatter;
 }
@@ -54,7 +48,7 @@
   NSDateFormatter* dateFormatter     = [self dateFormatterWithTemplate:@"MMM d, y"];
   NSDateFormatter* timeFormatter     = [self dateFormatterWithTemplate:@"HH:mm"];
   
-  NSMutableParagraphStyle* truncatingParagraphStyle = [[NSMutableParagraphStyle new] autorelease];
+  NSMutableParagraphStyle* truncatingParagraphStyle = [NSMutableParagraphStyle new];
   [truncatingParagraphStyle setLineBreakMode:NSLineBreakByTruncatingTail];
 
   self.attributes = [NSDictionary dictionaryWithObjectsAndKeys:
@@ -73,7 +67,7 @@
 
 + (GBCommitCell*) cell
 {
-  GBCommitCell* cell = [[[self alloc] initTextCell:@""] autorelease];
+  GBCommitCell* cell = [[self alloc] initTextCell:@""];
   return cell;
 }
 
@@ -138,7 +132,7 @@
     cachedStage = YES;
     if ([self.commit isStage])
     {
-      stage = [[self.commit asStage] retain];
+      stage = [self.commit asStage];
     }
   }
   return stage;
@@ -316,17 +310,17 @@
   NSParagraphStyle* paragraphStyle = [self attribute:@"truncatingParagraphStyle"];
   
   
-	NSMutableDictionary* titleAttributes = [[[NSMutableDictionary alloc] initWithObjectsAndKeys:
+	NSMutableDictionary* titleAttributes = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
                                            titleColor, NSForegroundColorAttributeName,
                                            [NSFont boldSystemFontOfSize:12.0], NSFontAttributeName,
                                            paragraphStyle, NSParagraphStyleAttributeName,
-                                           nil] autorelease];
+                                           nil];
   
-  NSMutableDictionary* dateAttributes = [[[NSMutableDictionary alloc] initWithObjectsAndKeys:
+  NSMutableDictionary* dateAttributes = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
                                           dateColor, NSForegroundColorAttributeName,
                                           [NSFont systemFontOfSize:11.0], NSFontAttributeName,
                                           paragraphStyle, NSParagraphStyleAttributeName,
-                                          nil] autorelease];
+                                          nil];
   
   NSFont* messageFont = [NSFont systemFontOfSize:12.0];
 
@@ -336,15 +330,15 @@
 //    messageFont = [[NSFontManager sharedFontManager] convertFont:messageFont toHaveTrait:NSItalicFontMask];
 //  }
   
-  NSMutableDictionary* messageAttributes = [[[NSMutableDictionary alloc] initWithObjectsAndKeys:
+  NSMutableDictionary* messageAttributes = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
                                              textColor, NSForegroundColorAttributeName,
                                              messageFont, NSFontAttributeName,
                                              paragraphStyle, NSParagraphStyleAttributeName,
-                                             nil] autorelease];
+                                             nil];
   
   if ([self isHighlighted] && self.isFocused)
   {
-    NSShadow* s = [[[NSShadow alloc] init] autorelease];
+    NSShadow* s = [[NSShadow alloc] init];
     [s setShadowOffset:NSMakeSize(0, -1)];
     [s setShadowColor:[NSColor colorWithCalibratedWhite:0.0 alpha:0.1]];
     [titleAttributes setObject:s forKey:NSShadowAttributeName];
@@ -471,16 +465,16 @@
   
   if ([tags count] < 1) return rect;
   
-  NSShadow* shadow = [[[NSShadow alloc] init] autorelease];
+  NSShadow* shadow = [[NSShadow alloc] init];
   [shadow setShadowOffset:NSMakeSize(0, -1)];
   [shadow setShadowColor:[NSColor colorWithCalibratedWhite:0.0 alpha:0.3]];
   
-	NSMutableDictionary* attrs = [[[NSMutableDictionary alloc] initWithObjectsAndKeys:
+	NSMutableDictionary* attrs = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
                                            [NSColor whiteColor], NSForegroundColorAttributeName,
                                            [NSFont boldSystemFontOfSize:11.0], NSFontAttributeName,
                                            [self attribute:@"truncatingParagraphStyle"], NSParagraphStyleAttributeName,
                                             shadow, NSShadowAttributeName,
-                                           nil] autorelease];
+                                           nil];
   
   BOOL alt = [self isHighlighted] && [self isFocused];
   
@@ -578,15 +572,15 @@
     font = [NSFont systemFontOfSize:12.0];
   }
   
-	NSMutableDictionary* titleAttributes = [[[NSMutableDictionary alloc] initWithObjectsAndKeys:
+	NSMutableDictionary* titleAttributes = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
                                            textColor, NSForegroundColorAttributeName,
                                            font, NSFontAttributeName,
                                            paragraphStyle, NSParagraphStyleAttributeName,
-                                           nil] autorelease];
+                                           nil];
   
   if ([self isHighlighted] && self.isFocused)
   {
-    NSShadow* s = [[[NSShadow alloc] init] autorelease];
+    NSShadow* s = [[NSShadow alloc] init];
     [s setShadowOffset:NSMakeSize(0, -1)];
     [s setShadowColor:[NSColor colorWithCalibratedWhite:0.0 alpha:0.1]];
     [titleAttributes setObject:s forKey:NSShadowAttributeName];
@@ -620,7 +614,7 @@
 {
   [self prepareAttributesIfNeeded];
   
-  NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
+  @autoreleasepool {
   
   NSWindow* window = [theControlView window];
   
@@ -694,7 +688,7 @@
   }
   
   [self drawContentInFrame:cellFrame];
-  [pool release];
+  }
 }
 
 

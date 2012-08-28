@@ -11,7 +11,7 @@
 @property(nonatomic, copy) NSString* askPassClientId;
 @property(nonatomic, readwrite) BOOL authenticationFailed;
 @property(nonatomic, readwrite) BOOL authenticationCancelledByUser;
-@property(nonatomic, retain) NSNumber* booleanResponse;
+@property(nonatomic, strong) NSNumber* booleanResponse;
 
 // user-provided or loaded from keychain
 @property(nonatomic, copy) NSString* username;
@@ -54,14 +54,8 @@
 {
 	if (keychainItem) CFRelease(keychainItem);
 	
-	[_remoteAddress release];
 	
-    [_askPassClientId release];
-	[_username release];
-	[_password release];
 
-    [_booleanResponse release];
-    [super dealloc];
 }
 
 - (id)init
@@ -278,7 +272,7 @@
 	
 	if (!addr) return;
 	
-	NSMutableDictionary* dict = [[[[NSUserDefaults standardUserDefaults] objectForKey:kFailedAddressesKey] mutableCopy] autorelease];
+	NSMutableDictionary* dict = [[[NSUserDefaults standardUserDefaults] objectForKey:kFailedAddressesKey] mutableCopy];
 	if (!dict) dict = [NSMutableDictionary dictionary];
 	
 	if (flag)
@@ -496,7 +490,7 @@
 				{
 					if (itemData)
 					{
-						self.password = [[[NSString alloc] initWithBytes:itemData length:itemDataLength encoding:NSUTF8StringEncoding] autorelease];
+						self.password = [[NSString alloc] initWithBytes:itemData length:itemDataLength encoding:NSUTF8StringEncoding];
 					}
 					
 					// Iterate over all attributes and collect username
@@ -505,7 +499,7 @@
 						SecKeychainAttribute attr = attrListRef->attr[i];
 						if (attr.tag == kSecAccountItemAttr)
 						{
-							NSString* aUsername = [[[NSString alloc] initWithBytes:attr.data length:attr.length encoding:NSUTF8StringEncoding] autorelease];
+							NSString* aUsername = [[NSString alloc] initWithBytes:attr.data length:attr.length encoding:NSUTF8StringEncoding];
 							if (self.username && aUsername && ![aUsername isEqualToString:self.username])
 							{
 								NSLog(@"ERROR: [GBAskPass loadCredentialsFromKeychain]: inconsistent username is retrieved from Keychain (already had %@, got %@)", self.username, aUsername);
@@ -522,7 +516,7 @@
 				else
 				{
 					CFStringRef statusStr = SecCopyErrorMessageString(status, NULL);
-					NSLog(@"ERROR: [GBAskPass loadCredentialsFromKeychain]: SecKeychainItemCopyAttributesAndData failed: %@", (NSString*)statusStr);
+					NSLog(@"ERROR: [GBAskPass loadCredentialsFromKeychain]: SecKeychainItemCopyAttributesAndData failed: %@", (__bridge NSString*)statusStr);
 					CFRelease(statusStr);
 					succeed = NO;
 				}
@@ -531,7 +525,7 @@
 			else
 			{
 				CFStringRef statusStr = SecCopyErrorMessageString(status, NULL);
-				NSLog(@"ERROR: [GBAskPass loadCredentialsFromKeychain]: SecKeychainAttributeInfoForItemID failed: %@", (NSString*)statusStr);
+				NSLog(@"ERROR: [GBAskPass loadCredentialsFromKeychain]: SecKeychainAttributeInfoForItemID failed: %@", (__bridge NSString*)statusStr);
 				CFRelease(statusStr);
 				succeed = NO;
 			}
@@ -546,7 +540,7 @@
 		else
 		{
 			CFStringRef statusStr = SecCopyErrorMessageString(status, NULL);
-			NSLog(@"ERROR: [GBAskPass loadCredentialsFromKeychain]: SecKeychainSearchCopyNext failed: %@", (NSString*)statusStr);
+			NSLog(@"ERROR: [GBAskPass loadCredentialsFromKeychain]: SecKeychainSearchCopyNext failed: %@", (__bridge NSString*)statusStr);
 			CFRelease(statusStr);
 			succeed = NO;
 		}
@@ -556,7 +550,7 @@
 	else
 	{
 		CFStringRef statusStr = SecCopyErrorMessageString(status, NULL);
-		NSLog(@"ERROR: [GBAskPass loadCredentialsFromKeychain]: SecKeychainSearchCreateFromAttributes failed: %@", (NSString*)statusStr);
+		NSLog(@"ERROR: [GBAskPass loadCredentialsFromKeychain]: SecKeychainSearchCreateFromAttributes failed: %@", (__bridge NSString*)statusStr);
 		CFRelease(statusStr);
 		succeed = NO;
 	}
@@ -670,7 +664,7 @@
 				if (status != errSecSuccess)
 				{
 					CFStringRef statusStr = SecCopyErrorMessageString(status, NULL);
-					NSLog(@"ERROR: [GBAskPass storeCredentialsInKeychain]: SecKeychainItemModifyAttributesAndData failed: %@", (NSString*)statusStr);
+					NSLog(@"ERROR: [GBAskPass storeCredentialsInKeychain]: SecKeychainItemModifyAttributesAndData failed: %@", (__bridge NSString*)statusStr);
 					CFRelease(statusStr);
 					succeed = NO;
 				}
@@ -678,7 +672,7 @@
 			else
 			{
 				CFStringRef statusStr = SecCopyErrorMessageString(status, NULL);
-				NSLog(@"ERROR: [GBAskPass storeCredentialsInKeychain]: SecKeychainFindGenericPassword failed: %@", (NSString*)statusStr);
+				NSLog(@"ERROR: [GBAskPass storeCredentialsInKeychain]: SecKeychainFindGenericPassword failed: %@", (__bridge NSString*)statusStr);
 				CFRelease(statusStr);
 				succeed = NO;
 			}
@@ -688,7 +682,7 @@
 		else
 		{
 			CFStringRef statusStr = SecCopyErrorMessageString(status, NULL);
-			NSLog(@"ERROR: [GBAskPass storeCredentialsInKeychain]: SecKeychainItemCreateFromContent failed: %@", (NSString*)statusStr);
+			NSLog(@"ERROR: [GBAskPass storeCredentialsInKeychain]: SecKeychainItemCreateFromContent failed: %@", (__bridge NSString*)statusStr);
 			CFRelease(statusStr);
 			succeed = NO;
 		}

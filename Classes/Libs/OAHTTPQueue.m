@@ -2,8 +2,8 @@
 #import "OAHTTPDownload.h"
 
 @interface OAHTTPQueue ()
-@property(nonatomic, retain) NSMutableArray* queue;
-@property(nonatomic, retain) NSMutableArray* activeDownloads;
+@property(nonatomic, strong) NSMutableArray* queue;
+@property(nonatomic, strong) NSMutableArray* activeDownloads;
 @property(nonatomic, assign) BOOL cancelling;
 - (void) proceed;
 - (void) removeDownload:(OAHTTPDownload*)aDownload;
@@ -36,9 +36,6 @@
 - (void) dealloc
 {
 	[self cancel];
-	self.queue = nil;
-	self.activeDownloads = nil;
-	[super dealloc];
 }
 
 - (NSUInteger) operationCount
@@ -75,7 +72,7 @@
 		[self.queue removeObjectAtIndex:0];
 	}
 	
-	void(^completionBlock)() = [[aDownload.completionBlock copy] autorelease];
+	void(^completionBlock)() = [aDownload.completionBlock copy];
 	
 	// Note: here we create a cyclic reference: download -> block -> download
 	// But it's okay since download object will always release the block when done.

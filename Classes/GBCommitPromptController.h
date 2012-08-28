@@ -49,12 +49,12 @@
   BOOL removedNewLine;
   BOOL finishedPlayingWithTooltip;
 }
-@property(retain) NSString* value;
-@property(retain) NSString* branchName;
-@property(retain) NSMutableArray* messageHistory;
-@property(retain) IBOutlet NSTextView* textView;
-@property(retain) IBOutlet NSTextField* shortcutTipLabel;
-@property(retain) IBOutlet NSTextField* branchHintLabel;
+@property(strong) NSString* value;
+@property(strong) NSString* branchName;
+@property(strong) NSMutableArray* messageHistory;
+@property(strong) IBOutlet NSTextView* textView;
+@property(strong) IBOutlet NSTextField* shortcutTipLabel;
+@property(strong) IBOutlet NSTextField* branchHintLabel;
 
 
 #pragma mark Message History

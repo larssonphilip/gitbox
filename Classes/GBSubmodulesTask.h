@@ -3,7 +3,7 @@
 
 @interface GBSubmodulesTask : GBTask
 
-@property(nonatomic,retain) NSArray* submodules;
+@property(nonatomic,strong) NSArray* submodules;
 
 - (NSArray*) submodulesFromStatusOutput:(NSData*) data;
 

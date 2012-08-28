@@ -16,9 +16,9 @@
 @property(nonatomic, assign) BOOL spinning;
 @property(nonatomic, assign) double progress;
 @property(nonatomic, assign) NSUInteger resultsCount;
-@property(nonatomic, retain) IBOutlet NSView* contentView; // this outlet should be connected in the parent NIB
-@property(nonatomic, assign) IBOutlet id<GBSearchBarControllerDelegate> delegate;
-@property(nonatomic, assign) IBOutlet NSTextField* statusLabel;
+@property(nonatomic, strong) IBOutlet NSView* contentView; // this outlet should be connected in the parent NIB
+@property(nonatomic, unsafe_unretained) IBOutlet id<GBSearchBarControllerDelegate> delegate;
+@property(nonatomic, unsafe_unretained) IBOutlet NSTextField* statusLabel;
 
 - (void) setVisible:(BOOL)visible animated:(BOOL)animated;
 - (IBAction) searchFieldDidChange:(id)sender;
@@ -27,8 +27,8 @@
 - (void) unfocus;
 
 // Private outlets for GBSearchBarController NIB.
-@property(nonatomic, retain) IBOutlet NSView* barView;
-@property(nonatomic, retain) IBOutlet GBSearchBarTextField *searchField;
-@property(nonatomic, retain) IBOutlet NSProgressIndicator *progressIndicator;
+@property(nonatomic, strong) IBOutlet NSView* barView;
+@property(nonatomic, strong) IBOutlet GBSearchBarTextField *searchField;
+@property(nonatomic, strong) IBOutlet NSProgressIndicator *progressIndicator;
 
 @end

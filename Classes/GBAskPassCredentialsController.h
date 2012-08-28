@@ -12,9 +12,9 @@
 
 // NIB API:
 
-@property(nonatomic, retain) IBOutlet NSTextField* addressLabel;
-@property(nonatomic, retain) IBOutlet NSTextField* usernameField;
-@property(nonatomic, retain) IBOutlet NSTextField* passwordField;
+@property(nonatomic, strong) IBOutlet NSTextField* addressLabel;
+@property(nonatomic, strong) IBOutlet NSTextField* usernameField;
+@property(nonatomic, strong) IBOutlet NSTextField* passwordField;
 
 - (IBAction) cancel:(id)sender;
 - (IBAction) ok:(id)sender;

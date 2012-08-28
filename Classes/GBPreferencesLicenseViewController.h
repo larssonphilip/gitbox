@@ -2,10 +2,10 @@
 #import "MASPreferencesViewController.h"
 
 @interface GBPreferencesLicenseViewController : NSViewController <MASPreferencesViewController>
-@property (assign) IBOutlet NSTextField *descriptionLabel;
-@property (assign) IBOutlet NSTextField *licenseField;
-@property (assign) IBOutlet NSTextField *statusLabel;
-@property (assign) IBOutlet NSButton *okButton;
+@property (unsafe_unretained) IBOutlet NSTextField *descriptionLabel;
+@property (unsafe_unretained) IBOutlet NSTextField *licenseField;
+@property (unsafe_unretained) IBOutlet NSTextField *statusLabel;
+@property (unsafe_unretained) IBOutlet NSButton *okButton;
 
 + (GBPreferencesLicenseViewController*) controller;
 

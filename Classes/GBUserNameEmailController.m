@@ -10,14 +10,6 @@
 @synthesize nameField;
 @synthesize emailField;
 
-- (void) dealloc
-{
-  self.userName = nil;
-  self.userEmail = nil;
-  self.nameField = nil;
-  self.emailField = nil;
-  [super dealloc];
-}
 
 - (IBAction) onOK:(id)sender
 {

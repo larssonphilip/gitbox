@@ -13,7 +13,7 @@
 
 + (GBStageShortcutHintDetector*) detectorWithView:(NSView*)aView
 {
-  GBStageShortcutHintDetector* d = [[self new] autorelease];
+  GBStageShortcutHintDetector* d = [self new];
   d.view = aView;
   return d;
 }
@@ -27,8 +27,6 @@
 - (void) dealloc
 {
   [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(showView) object:nil];
-  self.view = nil;
-  [super dealloc];
 }
 
 - (void) textView:(NSTextView*)aTextView didChangeTextInRange:(NSRange)affectedCharRange replacementString:(NSString*)replacementString

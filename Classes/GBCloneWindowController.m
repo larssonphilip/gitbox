@@ -19,20 +19,10 @@
 @synthesize targetDirectoryURL;
 @synthesize targetURL;
 
-- (void) dealloc
-{
-	self.urlField = nil;
-	self.nextButton = nil;
-	self.sourceURLString = nil;
-	self.finishBlock = nil;
-	self.targetDirectoryURL = nil;
-	self.targetURL = nil;
-	[super dealloc];
-}
 
 + (void) setLastURLString:(NSString*)urlString
 {
-	[[NSUserDefaults standardUserDefaults] setObject:[[urlString copy] autorelease] forKey:GBCloneWindowLastURLKey];
+	[[NSUserDefaults standardUserDefaults] setObject:[urlString copy] forKey:GBCloneWindowLastURLKey];
 }
 
 - (void) start

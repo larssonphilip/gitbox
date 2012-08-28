@@ -22,13 +22,13 @@ typedef enum {
 @property(nonatomic,assign) int rawTimestamp;
 @property(nonatomic,copy) NSString* message;
 @property(nonatomic,copy) NSArray* parentIds;
-@property(nonatomic,retain) NSArray* changes;
+@property(nonatomic,strong) NSArray* changes;
 @property(nonatomic,copy) NSArray* diffs; // array of dicts {"paths": "File.h b/File2.h", "lines": "line1\nline2\n"}
-@property(nonatomic,retain) GBSearchQuery* searchQuery;
-@property(nonatomic,retain) NSDictionary* foundRangesByProperties;
+@property(nonatomic,strong) GBSearchQuery* searchQuery;
+@property(nonatomic,strong) NSDictionary* foundRangesByProperties;
 
 @property(nonatomic,assign) GBCommitSyncStatus syncStatus;
-@property(nonatomic,assign) GBRepository* repository;
+@property(nonatomic,unsafe_unretained) GBRepository* repository;
 
 @property(nonatomic,copy) NSString* colorLabel;
 

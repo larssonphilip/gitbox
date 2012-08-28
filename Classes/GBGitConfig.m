@@ -5,7 +5,7 @@
 
 
 @interface GBGitConfig ()
-@property(nonatomic, retain) OABlockTable* blockTable;
+@property(nonatomic, strong) OABlockTable* blockTable;
 @property(nonatomic, assign) BOOL disabledPathQuoting;
 @end
 
@@ -15,11 +15,6 @@
 @synthesize disabledPathQuoting;
 @synthesize repository;
 
-- (void) dealloc
-{
-	self.blockTable = nil;
-	[super dealloc];
-}
 
 + (GBGitConfig*) userConfig
 {
@@ -34,7 +29,7 @@
 
 + (GBGitConfig*) configForRepository:(GBRepository*)repo
 {
-	GBGitConfig* config = [[self new] autorelease];
+	GBGitConfig* config = [self new];
 	config.repository = repo;
 	return config;
 }
@@ -43,7 +38,7 @@
 {
 	if ((self = [super init]))
 	{
-		self.blockTable = [[OABlockTable new] autorelease];
+		self.blockTable = [OABlockTable new];
 	}
 	return self;
 }
@@ -128,7 +123,7 @@
 
 - (void) stringForKey:(NSString*)key withBlock:(void(^)(NSString* value))aBlock
 {
-	aBlock = [[aBlock copy] autorelease];
+	aBlock = [aBlock copy];
 	
 	OATask* task              = [OATask task];
 	task.currentDirectoryPath = [self.repository path];
@@ -159,7 +154,7 @@
 
 - (void) setString:(NSString*)value forKey:(NSString*)key withBlock:(void(^)())aBlock
 {
-	aBlock = [[aBlock copy] autorelease];
+	aBlock = [aBlock copy];
 	
 	OATask* task              = [OATask task];
 	task.currentDirectoryPath = [self.repository path];
@@ -205,7 +200,7 @@
 
 - (void) setName:(NSString*)name email:(NSString*)email withBlock:(void(^)())aBlock
 {
-	aBlock = [[aBlock copy] autorelease];
+	aBlock = [aBlock copy];
 	[self setString:name forKey:@"user.name" withBlock:^{
 		[self setString:email forKey:@"user.email" withBlock:^{
 			if (aBlock) aBlock();

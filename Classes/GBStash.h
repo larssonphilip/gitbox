@@ -3,10 +3,10 @@
 @interface GBStash : NSObject
 
 @property(nonatomic, copy) NSString* ref;
-@property(nonatomic, retain) NSDate* date;
+@property(nonatomic, strong) NSDate* date;
 @property(nonatomic, copy) NSString* rawMessage;
-@property(nonatomic, readonly) NSString* message;
-@property(nonatomic, readonly) NSString* menuTitle;
+@property(unsafe_unretained, nonatomic, readonly) NSString* message;
+@property(unsafe_unretained, nonatomic, readonly) NSString* menuTitle;
 
 + (NSTimeInterval) oldStashesTreshold;
 - (BOOL) isOldStash;

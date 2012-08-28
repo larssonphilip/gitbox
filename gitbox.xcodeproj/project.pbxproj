@@ -322,7 +322,6 @@
 		20915EED12874D2A005E0D82 /* GBUnstagedChangesTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B8B71111A48E3E006D6442 /* GBUnstagedChangesTask.m */; };
 		20915EEE12874D2A005E0D82 /* GBUntrackedChangesTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B8B71F11A48F60006D6442 /* GBUntrackedChangesTask.m */; };
 		20915EEF12874D2A005E0D82 /* NSMenu+OAMenuHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B8B7C111A49975006D6442 /* NSMenu+OAMenuHelpers.m */; };
-		20915EF012874D2A005E0D82 /* NSWindowController+OAWindowControllerHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B8B81211A49E8D006D6442 /* NSWindowController+OAWindowControllerHelpers.m */; };
 		20915EF112874D2A005E0D82 /* GBPromptController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B8B83C11A4A776006D6442 /* GBPromptController.m */; };
 		20915EF212874D2A005E0D82 /* NSString+OAStringHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B8B84711A4AAF2006D6442 /* NSString+OAStringHelpers.m */; };
 		20915EF312874D2A005E0D82 /* OAActivityIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 206A088611A7AB36003BB9E3 /* OAActivityIndicator.m */; };
@@ -450,7 +449,6 @@
 		20B8B71211A48E3E006D6442 /* GBUnstagedChangesTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B8B71111A48E3E006D6442 /* GBUnstagedChangesTask.m */; };
 		20B8B72011A48F60006D6442 /* GBUntrackedChangesTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B8B71F11A48F60006D6442 /* GBUntrackedChangesTask.m */; };
 		20B8B7C211A49975006D6442 /* NSMenu+OAMenuHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B8B7C111A49975006D6442 /* NSMenu+OAMenuHelpers.m */; };
-		20B8B81311A49E8D006D6442 /* NSWindowController+OAWindowControllerHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B8B81211A49E8D006D6442 /* NSWindowController+OAWindowControllerHelpers.m */; };
 		20B8B83911A4A72A006D6442 /* GBPromptController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 20B8B83811A4A72A006D6442 /* GBPromptController.xib */; };
 		20B8B83D11A4A776006D6442 /* GBPromptController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B8B83C11A4A776006D6442 /* GBPromptController.m */; };
 		20B8B84811A4AAF2006D6442 /* NSString+OAStringHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B8B84711A4AAF2006D6442 /* NSString+OAStringHelpers.m */; };
@@ -951,8 +949,6 @@
 		20B8B71F11A48F60006D6442 /* GBUntrackedChangesTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBUntrackedChangesTask.m; sourceTree = "<group>"; };
 		20B8B7C011A49975006D6442 /* NSMenu+OAMenuHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMenu+OAMenuHelpers.h"; sourceTree = "<group>"; };
 		20B8B7C111A49975006D6442 /* NSMenu+OAMenuHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMenu+OAMenuHelpers.m"; sourceTree = "<group>"; };
-		20B8B81111A49E8D006D6442 /* NSWindowController+OAWindowControllerHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSWindowController+OAWindowControllerHelpers.h"; sourceTree = "<group>"; };
-		20B8B81211A49E8D006D6442 /* NSWindowController+OAWindowControllerHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSWindowController+OAWindowControllerHelpers.m"; sourceTree = "<group>"; };
 		20B8B83811A4A72A006D6442 /* GBPromptController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBPromptController.xib; sourceTree = "<group>"; };
 		20B8B83B11A4A776006D6442 /* GBPromptController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBPromptController.h; sourceTree = "<group>"; };
 		20B8B83C11A4A776006D6442 /* GBPromptController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBPromptController.m; sourceTree = "<group>"; };
@@ -1579,8 +1575,6 @@
 				2038F41C11954E000087CE37 /* NSAlert+OAAlertHelpers.m */,
 				20B8B7C011A49975006D6442 /* NSMenu+OAMenuHelpers.h */,
 				20B8B7C111A49975006D6442 /* NSMenu+OAMenuHelpers.m */,
-				20B8B81111A49E8D006D6442 /* NSWindowController+OAWindowControllerHelpers.h */,
-				20B8B81211A49E8D006D6442 /* NSWindowController+OAWindowControllerHelpers.m */,
 				203977E51252815000770D13 /* NSTableView+OATableViewHelpers.h */,
 				203977E61252815000770D13 /* NSTableView+OATableViewHelpers.m */,
 				2058EA0611AEEE3200F2853F /* NSView+OAViewHelpers.h */,
@@ -2172,7 +2166,6 @@
 				20915EED12874D2A005E0D82 /* GBUnstagedChangesTask.m in Sources */,
 				20915EEE12874D2A005E0D82 /* GBUntrackedChangesTask.m in Sources */,
 				20915EEF12874D2A005E0D82 /* NSMenu+OAMenuHelpers.m in Sources */,
-				20915EF012874D2A005E0D82 /* NSWindowController+OAWindowControllerHelpers.m in Sources */,
 				20915EF112874D2A005E0D82 /* GBPromptController.m in Sources */,
 				20915EF212874D2A005E0D82 /* NSString+OAStringHelpers.m in Sources */,
 				20915EF312874D2A005E0D82 /* OAActivityIndicator.m in Sources */,
@@ -2331,7 +2324,6 @@
 				20B8B71211A48E3E006D6442 /* GBUnstagedChangesTask.m in Sources */,
 				20B8B72011A48F60006D6442 /* GBUntrackedChangesTask.m in Sources */,
 				20B8B7C211A49975006D6442 /* NSMenu+OAMenuHelpers.m in Sources */,
-				20B8B81311A49E8D006D6442 /* NSWindowController+OAWindowControllerHelpers.m in Sources */,
 				20B8B83D11A4A776006D6442 /* GBPromptController.m in Sources */,
 				20B8B84811A4AAF2006D6442 /* NSString+OAStringHelpers.m in Sources */,
 				206A088711A7AB36003BB9E3 /* OAActivityIndicator.m in Sources */,
@@ -2605,6 +2597,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "";
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -2618,6 +2611,7 @@
 				GCC_PREFIX_HEADER = prefix.pch;
 				INFOPLIST_FILE = info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
+				MACOSX_DEPLOYMENT_TARGET = 10.6.8;
 				PRODUCT_NAME = Gitbox;
 			};
 			name = Debug;
@@ -2626,6 +2620,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -2637,6 +2632,7 @@
 				GCC_PREFIX_HEADER = prefix.pch;
 				INFOPLIST_FILE = info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
+				MACOSX_DEPLOYMENT_TARGET = 10.6.8;
 				PRODUCT_NAME = Gitbox;
 			};
 			name = Release;

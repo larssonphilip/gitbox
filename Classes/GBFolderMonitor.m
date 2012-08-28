@@ -2,8 +2,8 @@
 #import "GBFolderMonitor.h"
 
 @interface GBFolderMonitor ()
-@property(nonatomic, retain) NSDate* folderResumeDate;
-@property(nonatomic, retain) NSDate* dotgitResumeDate;
+@property(nonatomic, strong) NSDate* folderResumeDate;
+@property(nonatomic, strong) NSDate* dotgitResumeDate;
 @property(nonatomic, assign) NSInteger folderPauseCounter;
 @property(nonatomic, assign) NSInteger dotgitPauseCounter;
 @property(nonatomic, assign, readwrite) BOOL folderIsUpdated;
@@ -30,11 +30,7 @@
 	// using setters to correctly remove the path and the observer from eventStream
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	if (path) [eventStream removePath:path];
-	[eventStream release]; eventStream = nil;
-	[path release]; path = nil;
-	[folderResumeDate release]; folderResumeDate = nil;
-	[dotgitResumeDate release]; dotgitResumeDate = nil;
-	[super dealloc];
+	 eventStream = nil;
 }
 
 - (void) setEventStream:(OAFSEventStream *)newEventStream
@@ -46,8 +42,7 @@
 																	 name:OAFSEventStreamNotification 
 																   object:eventStream];
 	
-	[eventStream release];
-	eventStream = [newEventStream retain];
+	eventStream = newEventStream;
 	
 	if (eventStream) [[NSNotificationCenter defaultCenter] addObserver:self
 															  selector:@selector(eventStreamDidUpdate:)
@@ -62,7 +57,6 @@
 	
 	if (path) [eventStream removePath:path];
 	
-	[path release];
 	path = [aPath copy];
 	
 	if (path) [eventStream addPath:path];
@@ -210,8 +204,11 @@
 	{
 		NSLog(@"WARNING: GBFolderMonitor: target or action is not set! Cannot publish status for events: %@", events);
 	}
-	
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
 	if (self.action) [self.target performSelector:self.action withObject:self];
+#pragma clang diagnostic pop
 	
 	// reset flags after calling target.action
 	self.folderIsUpdated = NO;

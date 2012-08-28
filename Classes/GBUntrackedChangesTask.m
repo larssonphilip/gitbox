@@ -17,11 +17,11 @@
 - (NSArray*) changesFromDiffOutput:(NSData*) data
 {
 	NSMutableArray* untrackedChanges = [NSMutableArray array];
-	for (NSString* path in [[data UTF8String] componentsSeparatedByString:@"\n"])
+	for (__strong NSString* path in [[data UTF8String] componentsSeparatedByString:@"\n"])
 	{
 		if (path.length > 0)
 		{
-			GBChange* change = [[GBChange new] autorelease];
+			GBChange* change = [GBChange new];
 			path = [path stringByUnescapingGitFilename];
 			change.srcURL = [self.repository URLForRelativePath:path];
 			change.repository = self.repository;

@@ -25,13 +25,13 @@
 
 @interface GBHistoryViewController ()
 
-@property(nonatomic, retain) GBStageViewController* stageController;
-@property(nonatomic, retain) GBCommitViewController* commitController;
-@property(nonatomic, retain) NSArray* visibleCommits;
-@property(nonatomic, retain) NSArray* arrayControllerCommits;
-@property(nonatomic, retain) OAFastJumpController* jumpController;
-@property(nonatomic, retain) GBCommitCell* commitCell;
-@property(nonatomic, retain) NSMenu* currentMenu;
+@property(nonatomic, strong) GBStageViewController* stageController;
+@property(nonatomic, strong) GBCommitViewController* commitController;
+@property(nonatomic, strong) NSArray* visibleCommits;
+@property(nonatomic, strong) NSArray* arrayControllerCommits;
+@property(nonatomic, strong) OAFastJumpController* jumpController;
+@property(nonatomic, strong) GBCommitCell* commitCell;
+@property(nonatomic, strong) NSMenu* currentMenu;
 
 - (void) prepareChangesControllersIfNeeded;
 
@@ -70,27 +70,15 @@
 {
 	[NSObject cancelPreviousPerformRequestsWithTarget:self];
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	[commit release];
-	self.detailView = nil;
 	
 	[self.tableView setDelegate:nil];
 	[self.tableView setDataSource:nil];
-	self.tableView = nil;
-	self.logArrayController = nil;
 	
-	self.stageController = nil;
-	self.commitController = nil;
-	self.jumpController = nil;
 	self.searchBarController.delegate = nil;
-	self.searchBarController = nil;
 	
-	[commitCell release]; commitCell = nil;
-	[arrayControllerCommits release]; arrayControllerCommits = nil;
 	
 	if ([currentMenu delegate] == (id)self) [currentMenu setDelegate:nil];
-	[currentMenu release]; currentMenu = nil;
 	
-	[super dealloc];
 }
 
 
@@ -141,8 +129,7 @@
 {
 	if (commit == aCommit) return;
 	
-	[commit release];
-	commit = [aCommit retain];
+	commit = aCommit;
 	
 	[self.tableView withDelegate:nil doBlock:^{
 		if (!aCommit)
@@ -318,14 +305,14 @@
 {
 	if (!self.stageController)
 	{
-		self.stageController = [[[GBStageViewController alloc] initWithNibName:@"GBStageViewController" bundle:nil] autorelease];
+		self.stageController = [[GBStageViewController alloc] initWithNibName:@"GBStageViewController" bundle:nil];
 		[self.stageController view]; // preloads view
 		//[self.stageController.tableView setNextKeyView:[self.tableView nextKeyView]];
 	}
 	
 	if (!self.commitController)
 	{
-		self.commitController = [[[GBCommitViewController alloc] initWithNibName:@"GBCommitViewController" bundle:nil] autorelease];
+		self.commitController = [[GBCommitViewController alloc] initWithNibName:@"GBCommitViewController" bundle:nil];
 		[self.commitController view]; // preloads view
 		//[self.commitController.tableView setNextKeyView:[self.tableView nextKeyView]];
 	}
@@ -341,25 +328,25 @@
 
 - (NSMenu*) menuForStage:(GBStage*)aStage
 {
-	NSMenu* aMenu = [[[NSMenu alloc] initWithTitle:@""] autorelease];
+	NSMenu* aMenu = [[NSMenu alloc] initWithTitle:@""];
 	
 	[self.repositoryController addOpenMenuItemsToMenu:aMenu];
 	
 	[aMenu addItem:[NSMenuItem separatorItem]];
 	
 	
-	[aMenu addItem:[[[NSMenuItem alloc] 
-					 initWithTitle:NSLocalizedString(@"Stash Changes...", @"Sidebar") action:@selector(stashChanges:) keyEquivalent:@""] autorelease]];
+	[aMenu addItem:[[NSMenuItem alloc] 
+					 initWithTitle:NSLocalizedString(@"Stash Changes...", @"Sidebar") action:@selector(stashChanges:) keyEquivalent:@""]];
 	
-	NSMenuItem* stashesItem = [[[NSMenuItem alloc] 
-								initWithTitle:NSLocalizedString(@"Apply Stash", @"Sidebar") action:@selector(applyStashMenu:) keyEquivalent:@""] autorelease];
+	NSMenuItem* stashesItem = [[NSMenuItem alloc] 
+								initWithTitle:NSLocalizedString(@"Apply Stash", @"Sidebar") action:@selector(applyStashMenu:) keyEquivalent:@""];
 	
 	[aMenu addItem:stashesItem];
     
 	[aMenu addItem:[NSMenuItem separatorItem]];
 	
-	[aMenu addItem:[[[NSMenuItem alloc]
-					 initWithTitle:NSLocalizedString(@"Reset Changes...", @"Sidebar") action:@selector(resetChanges:) keyEquivalent:@""] autorelease]];
+	[aMenu addItem:[[NSMenuItem alloc]
+					 initWithTitle:NSLocalizedString(@"Reset Changes...", @"Sidebar") action:@selector(resetChanges:) keyEquivalent:@""]];
 	
 	return aMenu;
 }
@@ -373,7 +360,7 @@
 
 - (NSMenu*) menuForCommit:(GBCommit*)aCommit
 {
-	NSMenu* aMenu = [[[NSMenu alloc] initWithTitle:@""] autorelease];
+	NSMenu* aMenu = [[NSMenu alloc] initWithTitle:@""];
 	
 	self.currentMenu = aMenu;
 	
@@ -552,7 +539,7 @@ dataCellForTableColumn:(NSTableColumn*)aTableColumn
 	{
 		self.commitCell = [GBCommitCell cell];
 	}
-	GBCommitCell* aCell = [[self.commitCell copy] autorelease];
+	GBCommitCell* aCell = [self.commitCell copy];
 	[aCell setRepresentedObject:[self.visibleCommits objectAtIndex:row]];
 	return aCell;
 }

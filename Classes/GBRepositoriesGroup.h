@@ -6,10 +6,10 @@
 @class GBRepositoriesController;
 @interface GBRepositoriesGroup : NSResponder<GBMainWindowItem, GBSidebarItemObject>
 
-@property(nonatomic, retain) GBSidebarItem* sidebarItem;
+@property(nonatomic, strong) GBSidebarItem* sidebarItem;
 @property(nonatomic, copy) NSString* name;
-@property(nonatomic, retain) NSMutableArray* items;
-@property(nonatomic, assign) GBRepositoriesController* repositoriesController;
+@property(nonatomic, strong) NSMutableArray* items;
+@property(nonatomic, unsafe_unretained) GBRepositoriesController* repositoriesController;
 
 + (GBRepositoriesGroup*) untitledGroup;
 - (NSString*) untitledGroupName;

@@ -3,11 +3,11 @@
 
 @interface OAXMLDecoder()
 
-@property(nonatomic, retain) NSMutableString* currentStringBuffer;
-@property(nonatomic, retain) NSMutableArray* startMapStack;
-@property(nonatomic, retain) NSMutableArray* endMapStack;
-@property(nonatomic, retain) NSMutableDictionary* currentStartMap; // elementName -> block
-@property(nonatomic, retain) NSMutableDictionary* currentEndMap; // elementName -> block
+@property(nonatomic, strong) NSMutableString* currentStringBuffer;
+@property(nonatomic, strong) NSMutableArray* startMapStack;
+@property(nonatomic, strong) NSMutableArray* endMapStack;
+@property(nonatomic, strong) NSMutableDictionary* currentStartMap; // elementName -> block
+@property(nonatomic, strong) NSMutableDictionary* currentEndMap; // elementName -> block
 
 - (void) debugElementWithMessage:(NSString*)msg;
 
@@ -33,23 +33,6 @@
 @synthesize succeed;
 @synthesize traceParsing;
 
-- (void) dealloc
-{
-	self.xmlData = nil;
-	self.xmlParser = nil;
-	self.currentStringBuffer = nil;
-	self.currentAttributes = nil;
-	self.currentQualifiedName = nil;
-	self.currentNamespaceURI = nil;
-	self.currentElementName = nil;
-	self.error = nil;
-	self.startMapStack = nil;
-	self.endMapStack = nil;
-	self.currentStartMap = nil;
-	self.currentEndMap = nil;
-
-	[super dealloc];
-}
 
 - (void) decodeWithObject:(id<NSObject>)rootObject startSelector:(SEL)startSelector
 {
@@ -61,7 +44,10 @@
 	[self decodeWithObject:rootObject startSelector:startSelector endBlock:^{
 		if (endSelector)
 		{
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
 			[rootObject performSelector:endSelector withObject:self];
+#pragma clang diagnostic pop
 		}
 	}];
 }
@@ -71,7 +57,7 @@
 	self.startMapStack = [NSMutableArray arrayWithCapacity:8];
 	self.endMapStack = [NSMutableArray arrayWithCapacity:8];
 	
-	self.xmlParser = [[[NSXMLParser alloc] initWithData:self.xmlData] autorelease];
+	self.xmlParser = [[NSXMLParser alloc] initWithData:self.xmlData];
 	[self.xmlParser setShouldProcessNamespaces:YES];
 	[self.xmlParser setShouldReportNamespacePrefixes:YES];
 	[self.xmlParser setDelegate:self];
@@ -81,7 +67,10 @@
 	
 	if (startSelector)
 	{
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
 		[rootObject performSelector:startSelector withObject:self];
+#pragma clang diagnostic pop
 	}
 	
 	self.succeed = [self.xmlParser parse];
@@ -113,16 +102,16 @@
 
 - (void) parseElement:(NSString*)elementName startBlock:(void(^)())startBlock endBlock:(void(^)())endBlock
 {
-	startBlock = [[startBlock copy] autorelease];
-	endBlock = [[endBlock copy] autorelease];
+	startBlock = [startBlock copy];
+	endBlock = [endBlock copy];
 	[self startElement:elementName withBlock:startBlock];
 	[self endElement:elementName withBlock:endBlock];
 }
 
 - (void) parseElements:(id<NSFastEnumeration>)elements startBlock:(void(^)())startBlock endBlock:(void(^)())endBlock
 {
-	startBlock = [[startBlock copy] autorelease];
-	endBlock = [[endBlock copy] autorelease];
+	startBlock = [startBlock copy];
+	endBlock = [endBlock copy];
 	[self startElements:elements withBlock:startBlock];
 	[self endElements:elements withBlock:endBlock];
 }
@@ -137,13 +126,13 @@
 	void(^existingBlock)() = [self.currentStartMap objectForKey:elementName];
 	if (existingBlock)
 	{
-		block = [[block copy] autorelease];
+		block = [block copy];
 		block = ^{
 			existingBlock();
 			block();
 		};
 	}
-	[self.currentStartMap setObject:[[block copy] autorelease] forKey:elementName];
+	[self.currentStartMap setObject:[block copy] forKey:elementName];
 }
 
 - (void) startOptionalElement:(NSString*)elementName withBlock:(void(^)())block
@@ -154,7 +143,7 @@
 
 - (void) startElements:(id<NSFastEnumeration>)elements withBlock:(void(^)())block
 {
-	block = [[block copy] autorelease];
+	block = [block copy];
 	for (NSString* element in elements)
 	{
 		[self startElement:element withBlock:block];
@@ -175,18 +164,18 @@
 	void(^existingBlock)() = [self.currentEndMap objectForKey:elementName];
 	if (existingBlock)
 	{
-		block = [[block copy] autorelease];
+		block = [block copy];
 		block = ^{
 			existingBlock();
 			block();
 		};
 	}
-	[self.currentEndMap setObject:[[block copy] autorelease] forKey:elementName];
+	[self.currentEndMap setObject:[block copy] forKey:elementName];
 }
 
 - (void) endElements:(id<NSFastEnumeration>)elements withBlock:(void(^)())block
 {
-	block = [[block copy] autorelease];
+	block = [block copy];
 	for (NSString* element in elements)
 	{
 		[self endElement:element withBlock:block];

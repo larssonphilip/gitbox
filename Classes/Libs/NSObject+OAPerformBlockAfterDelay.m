@@ -16,7 +16,7 @@
     if (!cancelled) aBlock();
   };
   
-  aWrappingBlock = [[aWrappingBlock copy] autorelease]; // move to the heap
+  aWrappingBlock = [aWrappingBlock copy]; // move to the heap
   
   dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1000000000*seconds)), 
                  dispatch_get_main_queue(), 

@@ -3,8 +3,8 @@
 @class GBRemote;
 @interface GBRemoteRefsTask : GBAuthenticatedTask
 
-@property(nonatomic,retain) NSArray* branches;
-@property(nonatomic,retain) NSArray* tags;
-@property(nonatomic,retain) GBRemote* remote;
+@property(nonatomic,strong) NSArray* branches;
+@property(nonatomic,strong) NSArray* tags;
+@property(nonatomic,strong) GBRemote* remote;
 
 @end

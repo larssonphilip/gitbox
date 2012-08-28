@@ -47,7 +47,7 @@
 
 + (NSString*) stringForPath:(NSString*)path encoding:(NSStringEncoding)encoding
 {
-	return [[[NSString alloc] initWithData:[OAFile dataForPath:path] encoding:encoding] autorelease];
+	return [[NSString alloc] initWithData:[OAFile dataForPath:path] encoding:encoding];
 }
 
 
@@ -169,7 +169,6 @@
 	if (errorString) 
 	{
 		NSLog(@"OAFile: Error occured while serializing property list: %@", errorString);
-		[errorString release];
 	}
 	
 	return data;
@@ -189,7 +188,6 @@
 		if (errorString)
 		{
 			NSLog(@"OAFile: Corrupted plist file: %@", errorString);
-			[errorString release];
 			return nil;
 		}
 		else

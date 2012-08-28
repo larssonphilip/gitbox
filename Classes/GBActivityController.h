@@ -1,10 +1,10 @@
 @class GBActivity;
 @interface GBActivityController : NSWindowController <NSTableViewDelegate, NSWindowDelegate>
 
-@property(nonatomic,retain) NSMutableArray* activities;
-@property(nonatomic,retain) IBOutlet NSTextView* outputTextView;
-@property(nonatomic,retain) IBOutlet NSTableView* tableView;
-@property(nonatomic,retain) IBOutlet NSArrayController* arrayController;
+@property(nonatomic,strong) NSMutableArray* activities;
+@property(nonatomic,strong) IBOutlet NSTextView* outputTextView;
+@property(nonatomic,strong) IBOutlet NSTableView* tableView;
+@property(nonatomic,strong) IBOutlet NSArrayController* arrayController;
 
 + (id) sharedActivityController;
 

@@ -1,7 +1,7 @@
 @class GBRepository;
 @interface GBGitConfig : NSObject
 
-@property(nonatomic, assign) GBRepository* repository;
+@property(nonatomic, unsafe_unretained) GBRepository* repository;
 
 // Returns singleton instance for ~/.gitconfig
 + (GBGitConfig*) userConfig;

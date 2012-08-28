@@ -18,18 +18,18 @@
 
 @interface GBRootController : NSResponder<GBSidebarItemObject>
 
-@property(nonatomic, retain, readonly)  GBSidebarItem* sidebarItem;
-@property(nonatomic, retain, readonly)  GBRepositoriesController* repositoriesController;
+@property(nonatomic, strong, readonly)  GBSidebarItem* sidebarItem;
+@property(nonatomic, strong, readonly)  GBRepositoriesController* repositoriesController;
 
-@property(nonatomic, retain) NSArray* selectedObjects;
-@property(nonatomic, retain) NSResponder<GBSidebarItemObject, GBMainWindowItem>* selectedObject;
-@property(nonatomic, retain) NSResponder<GBSidebarItemObject, GBMainWindowItem>* clickedObject;
-@property(nonatomic, retain) NSArray* selectedSidebarItems;
-@property(nonatomic, retain) GBSidebarItem* selectedSidebarItem;
-@property(nonatomic, retain) GBSidebarItem* clickedSidebarItem;
-@property(nonatomic, retain) NSArray* selectedItemIndexes;
-@property(nonatomic, readonly) NSArray* clickedOrSelectedSidebarItems;
-@property(nonatomic, readonly) NSArray* clickedOrSelectedObjects;
+@property(nonatomic, strong) NSArray* selectedObjects;
+@property(nonatomic, strong) NSResponder<GBSidebarItemObject, GBMainWindowItem>* selectedObject;
+@property(nonatomic, strong) NSResponder<GBSidebarItemObject, GBMainWindowItem>* clickedObject;
+@property(nonatomic, strong) NSArray* selectedSidebarItems;
+@property(nonatomic, strong) GBSidebarItem* selectedSidebarItem;
+@property(nonatomic, strong) GBSidebarItem* clickedSidebarItem;
+@property(nonatomic, strong) NSArray* selectedItemIndexes;
+@property(unsafe_unretained, nonatomic, readonly) NSArray* clickedOrSelectedSidebarItems;
+@property(unsafe_unretained, nonatomic, readonly) NSArray* clickedOrSelectedObjects;
 
 - (void) addObjectsToSelection:(NSArray*)objects;
 - (void) removeObjectsFromSelection:(NSArray*)objects;

@@ -15,13 +15,12 @@
 
 + (GBPreferencesLicenseViewController*) controller
 {
-	return [[[self alloc] initWithNibName:@"GBPreferencesLicenseViewController" bundle:nil] autorelease];
+	return [[self alloc] initWithNibName:@"GBPreferencesLicenseViewController" bundle:nil];
 }
 
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [super dealloc];
 }
 
 - (void) update

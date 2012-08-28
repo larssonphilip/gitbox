@@ -14,14 +14,12 @@
 
 - (void) dealloc
 {
-  self.delayedBlock = nil;
   [NSObject cancelPreviousPerformRequestsWithTarget:self];
-  [super dealloc];
 }
 
 + (id) controller
 {
-  return [[self new] autorelease];
+  return [self new];
 }
 
 - (void) delayBlockIfNeeded:(void(^)())aBlock
@@ -75,7 +73,7 @@
 - (void) callBlockAndClear
 {
   void(^aBlock)() = self.delayedBlock;
-  [[aBlock retain] autorelease];
+	GB_RETAIN_AUTORELEASE(aBlock);
   self.delayedBlock = nil;
   if (aBlock) aBlock();  
 }

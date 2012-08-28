@@ -6,9 +6,9 @@ NSString* const GBAskPassClientIdKey = @"GBAskPassClientId";
 
 @interface GBAskPassServer () <NSConnectionDelegate>
 @property(nonatomic, copy, readwrite) NSString* name;
-@property(nonatomic, retain) NSMutableSet* clients;
-@property(nonatomic, retain) NSMutableDictionary* resultsByClientId;
-@property(nonatomic, retain) NSConnection* connection;
+@property(nonatomic, strong) NSMutableSet* clients;
+@property(nonatomic, strong) NSMutableDictionary* resultsByClientId;
+@property(nonatomic, strong) NSConnection* connection;
 @end
 
 @implementation GBAskPassServer
@@ -20,12 +20,7 @@ NSString* const GBAskPassClientIdKey = @"GBAskPassClientId";
 
 - (void)dealloc
 {
-	self.name = nil;
-	self.clients = nil;
-	self.resultsByClientId = nil;
 	[self.connection invalidate];
-	self.connection = nil;
-	[super dealloc];
 }
 
 + (GBAskPassServer*) sharedServer
@@ -39,7 +34,7 @@ NSString* const GBAskPassClientIdKey = @"GBAskPassClientId";
 + (NSDistantObject<GBAskPassServer>*) remoteServerWithName:(NSString*)aName
 {
 	NSDistantObject* distantObject = [NSConnection rootProxyForConnectionWithRegisteredName:aName host:nil];
-	[[distantObject retain] autorelease];
+	GB_RETAIN_AUTORELEASE(distantObject);
 	[distantObject setProtocolForProxy:@protocol(GBAskPassServer)];
 	return (NSDistantObject<GBAskPassServer>*)distantObject;
 }
@@ -57,7 +52,6 @@ NSString* const GBAskPassClientIdKey = @"GBAskPassClientId";
 		if (!self.connection)
 		{
 			NSLog(@"GBAskPassServer: cannot create NSConnection with name %@", self.name);
-			[self release];
 			return nil;
 		}
 		[self.connection setDelegate:self];
@@ -103,7 +97,7 @@ NSString* const GBAskPassClientIdKey = @"GBAskPassClientId";
 	if (preparedResult)
 	{
 		//NSLog(@"DEBUG: returning result %@", preparedResult);
-		[[preparedResult retain] autorelease];
+		GB_RETAIN_AUTORELEASE(preparedResult);
 		[self.resultsByClientId removeObjectForKey:clientId];
 		return preparedResult;
 	}

@@ -28,11 +28,6 @@ static GBActivityController* sharedGBActivityController;
 - (void) dealloc
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	self.activities = nil;
-	self.outputTextView = nil;
-	self.tableView = nil;
-	self.arrayController = nil;
-	[super dealloc];
 }
 
 - (id) initWithWindowNibName:(NSString *)windowNibName
@@ -74,7 +69,7 @@ static GBActivityController* sharedGBActivityController;
 	{
 		self.activities = [NSMutableArray array];
 	}
-	return [[activities retain] autorelease];
+	return activities;
 }
 
 
@@ -256,7 +251,7 @@ static GBActivityController* sharedGBActivityController;
 
 - (void) taskDidLaunch:(NSNotification*)notif
 {
-	GBActivity* activity = [[[GBActivity alloc] init] autorelease];
+	GBActivity* activity = [[GBActivity alloc] init];
 	
 	OATask* aTask = [notif object];
 	activity.task = aTask;
@@ -272,7 +267,7 @@ static GBActivityController* sharedGBActivityController;
 // Achtung: the notification can be posted from other thread
 - (void) taskDidDeallocate:(NSNotification*)notif
 {
-	__block OATask* aTask = [[notif object] nonretainedObjectValue]; // __block prevents retaining
+	__unsafe_unretained OATask* aTask = [[notif object] nonretainedObjectValue]; // __block prevents retaining
 	int status = [aTask terminationStatus];
 	dispatch_async(dispatch_get_main_queue(), ^{
 		GBActivity* activity = [self activityForTask:aTask];

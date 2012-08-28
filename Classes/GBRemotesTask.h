@@ -2,6 +2,6 @@
 
 @interface GBRemotesTask : GBTask
 
-@property(nonatomic, retain) NSArray* remotes;
+@property(nonatomic, strong) NSArray* remotes;
 
 @end

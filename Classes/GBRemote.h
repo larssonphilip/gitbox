@@ -5,10 +5,10 @@
 @property(nonatomic,copy) NSString* alias;
 @property(nonatomic,copy) NSString* URLString;
 @property(nonatomic,copy) NSString* fetchRefspec;
-@property(nonatomic,retain) NSArray* branches;
+@property(nonatomic,strong) NSArray* branches;
 
 @property(nonatomic,assign) BOOL needsFetch;
-@property(nonatomic,assign) GBRepository* repository;
+@property(nonatomic,unsafe_unretained) GBRepository* repository;
 
 
 #pragma mark Interrogation

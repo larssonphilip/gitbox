@@ -3,9 +3,9 @@
 @class GBRef;
 @interface GBLocalRemoteAssociationTask : GBTask
 
-@property(nonatomic,retain) GBRef* remoteBranch;
-@property(nonatomic,retain) NSString* localBranchName;
-@property(nonatomic,retain) NSString* remoteAlias;
-@property(nonatomic,retain) NSString* remoteBranchName;
+@property(nonatomic,strong) GBRef* remoteBranch;
+@property(nonatomic,strong) NSString* localBranchName;
+@property(nonatomic,strong) NSString* remoteAlias;
+@property(nonatomic,strong) NSString* remoteBranchName;
 
 @end

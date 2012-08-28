@@ -8,20 +8,20 @@
 
 @interface GBSidebarItem : NSResponder<NSPasteboardWriting>
 
-@property(nonatomic, assign) NSResponder<GBSidebarItemObject>* object;
-@property(nonatomic, assign) GBSidebarController* sidebarController;
+@property(nonatomic, unsafe_unretained) NSResponder<GBSidebarItemObject>* object;
+@property(nonatomic, unsafe_unretained) GBSidebarController* sidebarController;
 
 
 // Appearance
 
 @property(nonatomic, copy, readonly) NSString* UID;
-@property(nonatomic, retain) NSImage* image;
+@property(nonatomic, strong) NSImage* image;
 @property(nonatomic, copy) NSString* title;
 @property(nonatomic, copy) NSString* tooltip;
 @property(nonatomic, assign) NSUInteger badgeInteger;
 - (NSUInteger) subtreeBadgeInteger;
 - (NSUInteger) visibleBadgeInteger;
-@property(nonatomic, retain) GBSidebarCell* cell;
+@property(nonatomic, strong) GBSidebarCell* cell;
 
 @property(nonatomic, assign, getter=isSection) BOOL section;
 @property(nonatomic, assign, getter=isSpinning)   BOOL spinning;
@@ -59,7 +59,7 @@
 
 // Content
 
-@property(nonatomic, retain) NSMenu* menu;
+@property(nonatomic, strong) NSMenu* menu;
 - (NSInteger) numberOfChildren;
 - (GBSidebarItem*) childAtIndex:(NSInteger)anIndex;
 - (NSUInteger) indexOfChild:(GBSidebarItem*)aChild;

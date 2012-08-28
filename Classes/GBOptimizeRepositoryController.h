@@ -5,8 +5,8 @@ extern NSString* const GBOptimizeRepositoryNotification;
 
 @class GBRepository;
 @interface GBOptimizeRepositoryController : GBWindowControllerWithCallback
-@property (nonatomic, retain) IBOutlet NSProgressIndicator *progressIndicator;
-@property (nonatomic, retain) IBOutlet NSTextField *pathLabel;
+@property (nonatomic, strong) IBOutlet NSProgressIndicator *progressIndicator;
+@property (nonatomic, strong) IBOutlet NSTextField *pathLabel;
 
 + (GBOptimizeRepositoryController*) controllerWithRepository:(GBRepository*)repo;
 

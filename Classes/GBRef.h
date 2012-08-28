@@ -5,7 +5,7 @@
 @property(nonatomic, copy) NSString* name;
 @property(nonatomic, copy) NSString* commitId;
 @property(nonatomic, copy) NSString* remoteAlias;
-@property(nonatomic, retain) GBRef* configuredRemoteBranch;
+@property(nonatomic, strong) GBRef* configuredRemoteBranch;
 
 @property(nonatomic, assign) BOOL isTag;
 

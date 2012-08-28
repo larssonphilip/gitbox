@@ -22,11 +22,6 @@
 @synthesize isDragging;
 @dynamic change;
 
-- (void) dealloc
-{
-	self.truncatingParagraphStyle = nil;
-	[super dealloc];
-}
 
 - (id) copyWithZone:(NSZone *)zone
 {
@@ -40,13 +35,13 @@
 
 + (GBChangeCell*) cell
 {
-	GBChangeCell* cell = [[[self alloc] initTextCell:@""] autorelease];
+	GBChangeCell* cell = [[self alloc] initTextCell:@""];
 	[cell setControlSize:NSSmallControlSize];
 	
-	NSMutableParagraphStyle* paragraphStyle = [[NSMutableParagraphStyle new] autorelease];
+	NSMutableParagraphStyle* paragraphStyle = [NSMutableParagraphStyle new];
 	[paragraphStyle setLineBreakMode:NSLineBreakByTruncatingTail];
 	
-	cell.truncatingParagraphStyle = [[paragraphStyle copy] autorelease];
+	cell.truncatingParagraphStyle = [paragraphStyle copy];
 	return cell;
 }
 
@@ -149,11 +144,11 @@
 		
 		NSFont* font = [NSFont systemFontOfSize:11.0];
 		
-		NSMutableDictionary* attributes = [[[NSMutableDictionary alloc] initWithObjectsAndKeys:
+		NSMutableDictionary* attributes = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
 											textColor, NSForegroundColorAttributeName,
 											font, NSFontAttributeName,
 											self.truncatingParagraphStyle, NSParagraphStyleAttributeName,
-											nil] autorelease];
+											nil];
 		
 		NSSize size = [status sizeWithAttributes:attributes];
 		
@@ -188,11 +183,11 @@
 		
 		NSFont* font = [NSFont systemFontOfSize:12.0];
 		
-		NSMutableDictionary* attributes = [[[NSMutableDictionary alloc] initWithObjectsAndKeys:
+		NSMutableDictionary* attributes = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
 											textColor, NSForegroundColorAttributeName,
 											font, NSFontAttributeName,
 											self.truncatingParagraphStyle, NSParagraphStyleAttributeName,
-											nil] autorelease];
+											nil];
 		
 		// If moved, we'll display the first path, then arrow and icon+relative path for the second one
 		if ([aChange isMovedOrRenamedFile] && dstURL && !isDragging)
@@ -306,7 +301,7 @@
 			highlightColor = [GBStyle searchSelectedHighlightColor];
 		}
 		
-		NSMutableAttributedString* attributedString = [[[NSMutableAttributedString alloc] initWithString:aPath] autorelease];
+		NSMutableAttributedString* attributedString = [[NSMutableAttributedString alloc] initWithString:aPath];
 		[attributedString beginEditing];
 		
 		// Set base attributes

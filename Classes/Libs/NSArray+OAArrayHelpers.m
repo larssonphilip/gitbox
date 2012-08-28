@@ -30,7 +30,10 @@
 {
   for (id item in self)
   {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
     if (!![item performSelector:selector]) return YES;
+#pragma clang diagnostic pop
   }
   return NO;
 }
@@ -39,7 +42,10 @@
 {
   for (id item in self)
   {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
     if (![item performSelector:selector]) return NO;
+#pragma clang diagnostic pop
   }
   return YES;
 }

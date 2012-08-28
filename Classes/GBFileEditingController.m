@@ -3,7 +3,6 @@
 #import "NSString+OAStringHelpers.h"
 #import "NSData+OADataHelpers.h"
 #import "NSFileManager+OAFileManagerHelpers.h"
-#import "NSWindowController+OAWindowControllerHelpers.h"
 
 @implementation GBFileEditingController
 
@@ -15,17 +14,9 @@
 
 + (GBFileEditingController*) controller
 {
-  return [[[self alloc] initWithWindowNibName:@"GBFileEditingController"] autorelease];
+  return [[self alloc] initWithWindowNibName:@"GBFileEditingController"];
 }
 
-- (void) dealloc
-{
-  self.URL = nil;
-  self.title = nil;
-  self.linesToAppend = nil;
-  self.textView = nil;
-  [super dealloc];
-}
 
 - (IBAction) onOK:(id)sender
 {

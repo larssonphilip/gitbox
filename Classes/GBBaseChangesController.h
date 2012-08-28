@@ -11,21 +11,21 @@
 
 // Public API
 
-@property(nonatomic, assign) GBRepositoryController* repositoryController;
-@property(nonatomic, retain) GBCommit* commit;
+@property(nonatomic, unsafe_unretained) GBRepositoryController* repositoryController;
+@property(nonatomic, strong) GBCommit* commit;
 
 
 // NIB API
 
-@property(nonatomic, retain) IBOutlet NSTableView* tableView;
-@property(nonatomic, retain) IBOutlet NSArrayController* statusArrayController;
-@property(nonatomic, retain) IBOutlet NSView* headerView;
-@property(nonatomic, retain) NSArray* changesWithHeaderForBindings; // bound to statusArrayController
+@property(nonatomic, strong) IBOutlet NSTableView* tableView;
+@property(nonatomic, strong) IBOutlet NSArrayController* statusArrayController;
+@property(nonatomic, strong) IBOutlet NSView* headerView;
+@property(nonatomic, strong) NSArray* changesWithHeaderForBindings; // bound to statusArrayController
 
 
 // Subclass API
 
-@property(nonatomic, retain) NSArray* changes;
+@property(nonatomic, strong) NSArray* changes;
 
 - (NSArray*) selectedChanges;
 - (NSCell*) headerCell;

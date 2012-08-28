@@ -5,11 +5,6 @@
 @implementation GBCommittedChangesTask
 @synthesize commit;
 
-- (void) dealloc
-{
-  self.commit = nil;
-  [super dealloc];
-}
 
 - (NSArray*) arguments
 {

@@ -23,7 +23,7 @@
     int _numFins;
     CGFloat _animationAngel;
     
-    NSColor **_finColors;
+    NSMutableArray *_finColors;
     
     BOOL _isAnimating;
     BOOL _isFadingOut;
@@ -51,11 +51,16 @@
         _numFins = 12;
         _animationAngel=90;
         
-        _finColors = calloc(_numFins, sizeof(NSColor*));
+        _finColors = [NSMutableArray arrayWithCapacity:_numFins];
         
-        _foreColor = [[NSColor blackColor] retain];
-        _backColor = [[NSColor clearColor] retain];
+        _foreColor = [NSColor blackColor];
+        _backColor = [NSColor clearColor];
         
+		for (int i = 0; i < _numFins; i++)
+		{
+			[_finColors addObject:_foreColor];
+		}
+		
         _isIndeterminate = YES;
         _currentValue = 0.0;
         _maxValue = 100.0;
@@ -66,15 +71,8 @@
 }
 
 - (void) dealloc{
-    for (int i=0; i<_numFins; i++) {
-        [_finColors[i] release];
-    }
-    free(_finColors);
-    [_foreColor release];
-    [_backColor release];
     if (_isAnimating) [self stopAnimation:self];
     
-    [super dealloc];
 }
 
 # pragma mark NSView overrides
@@ -138,7 +136,7 @@
 
         for (int i=0; i<_numFins; i++) {
             if(_isAnimating) {
-                [_finColors[i] set];
+                [(NSColor*)_finColors[i] set];
             }
             else {
                 [[_foreColor colorWithAlphaComponent:kAlphaWhenStopped] set];
@@ -149,7 +147,6 @@
             // we draw all the fins by rotating the CTM, then just redraw the same segment again
             CGContextRotateCTM(currentContext, 6.282185/_numFins);
         }
-        [path release];
     }
     else
 	{
@@ -161,12 +158,10 @@
         [path setLineWidth:lineWidth];
         [path appendBezierPathWithOvalInRect:NSMakeRect(-circleRadius, -circleRadius, circleRadius*2, circleRadius*2)];
         [path stroke];
-        [path release];
         path = [[NSBezierPath alloc] init];
         [path appendBezierPathWithArcWithCenter:circleCenter radius:circleRadius startAngle:_animationAngel endAngle:(_animationAngel-(360*(_currentValue/_maxValue))) clockwise:YES];
         [path lineToPoint:circleCenter] ;
         [path fill];
-        [path release];
     }
 
     [NSGraphicsContext restoreGraphicsState];
@@ -215,15 +210,13 @@
 
 - (void)setColor:(NSColor *)value{
     if (_foreColor != value) {
-        [_foreColor release];
-        _foreColor = [value retain];
+        _foreColor = value;
         
         // generate all the fin colors, with the alpha components
         // they already have
         for (int i=0; i<_numFins; i++) {
             CGFloat alpha = [_finColors[i] alphaComponent];
-            [_finColors[i] release];
-            _finColors[i] = [[_foreColor colorWithAlphaComponent:alpha] retain];
+            _finColors[i] = [_foreColor colorWithAlphaComponent:alpha];
         }
         
         [self setNeedsDisplay:YES];
@@ -232,8 +225,7 @@
 
 - (void)setBackgroundColor:(NSColor *)value{
     if (_backColor != value) {
-        [_backColor release];
-        _backColor = [value retain];
+        _backColor = value;
         [self setNeedsDisplay:YES];
     }
 }
@@ -309,9 +301,7 @@
             CGFloat newAlpha = [_finColors[i] alphaComponent] * kFadeMultiplier;
             if (newAlpha < minAlpha)
                 newAlpha = minAlpha;
-            NSColor *oldColor = _finColors[i];
-            _finColors[i] = [[_foreColor colorWithAlphaComponent:newAlpha] retain];
-            [oldColor release];
+            _finColors[i] = [_foreColor colorWithAlphaComponent:newAlpha];
         }
         
         if (_isFadingOut) {
@@ -329,9 +319,7 @@
         }
         else {
             // "light up" the next fin (with full alpha)
-            NSColor *oldColor = _finColors[_position];
-            _finColors[_position] = [_foreColor retain];
-            [oldColor release];
+            _finColors[_position] = _foreColor;
         }
     }
     
@@ -363,11 +351,11 @@
             [_animationThread start];
         }
         else {
-            _animationTimer = [[NSTimer timerWithTimeInterval:0.01 //0.05 // invoke more often to avoid skipping frames taken from dispatch_time
+            _animationTimer = [NSTimer timerWithTimeInterval:0.01 //0.05 // invoke more often to avoid skipping frames taken from dispatch_time
                                                        target:self
                                                      selector:@selector(updateFrame:)
                                                      userInfo:nil
-                                                      repeats:YES] retain];
+                                                      repeats:YES];
             
             [[NSRunLoop currentRunLoop] addTimer:_animationTimer forMode:NSRunLoopCommonModes];
             [[NSRunLoop currentRunLoop] addTimer:_animationTimer forMode:NSDefaultRunLoopMode];
@@ -386,13 +374,11 @@
 		if (![_animationThread isFinished]) {
 			[[NSRunLoop currentRunLoop] runMode:NSModalPanelRunLoopMode beforeDate:[NSDate dateWithTimeIntervalSinceNow:0.05]];
 		}
-		[_animationThread release];
         _animationThread = nil;
 	}
     else if (_animationTimer) {
         // we were using timer-based animation
         [_animationTimer invalidate];
-        [_animationTimer release];
         _animationTimer = nil;
     }
     [self setNeedsDisplay:YES];
@@ -403,34 +389,25 @@
     for (int i=0; i<_numFins; i++) {
         NSColor *oldColor = _finColors[i];
         CGFloat alpha = [oldColor alphaComponent];
-        _finColors[i] = [[_foreColor colorWithAlphaComponent:alpha] retain];
-        [oldColor release];
+        _finColors[i] = [_foreColor colorWithAlphaComponent:alpha];
     }
 }
 
-- (void)animateInBackgroundThread{
-	NSAutoreleasePool *animationPool = [[NSAutoreleasePool alloc] init];
-	
+- (void)animateInBackgroundThread
+{
 	// Set up the animation speed to subtly change with size > 32.
 	// int animationDelay = 38000 + (2000 * ([self bounds].size.height / 32));
     
     // Set the rev per minute here
     int omega = 100; // RPM
     int animationDelay = 60*1000000/omega/_numFins;
-	int poolFlushCounter = 0;
     
 	do {
-		[self updateFrame:nil];
-		usleep(animationDelay);
-		poolFlushCounter++;
-		if (poolFlushCounter > 256) {
-			[animationPool drain];
-			animationPool = [[NSAutoreleasePool alloc] init];
-			poolFlushCounter = 0;
+		@autoreleasepool {
+			[self updateFrame:nil];
 		}
-	} while (![[NSThread currentThread] isCancelled]); 
-    
-	[animationPool release];
+		usleep(animationDelay);
+	} while (![[NSThread currentThread] isCancelled]);
 }
 
 @end

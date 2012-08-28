@@ -8,9 +8,9 @@
 
 @interface GBStage : GBCommit
 
-@property(nonatomic, retain) NSArray* stagedChanges;
-@property(nonatomic, retain) NSArray* unstagedChanges;
-@property(nonatomic, retain) NSArray* untrackedChanges;
+@property(nonatomic, strong) NSArray* stagedChanges;
+@property(nonatomic, strong) NSArray* unstagedChanges;
+@property(nonatomic, strong) NSArray* untrackedChanges;
 @property(nonatomic, copy) NSString* currentCommitMessage;
 
 - (BOOL) isRebaseConflict;

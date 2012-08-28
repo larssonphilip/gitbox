@@ -53,16 +53,16 @@
 
 @interface OAXMLDecoder : NSObject<NSXMLParserDelegate>
 
-@property(nonatomic, retain) NSData* xmlData;
-@property(nonatomic, retain) NSXMLParser* xmlParser;
-@property(nonatomic, retain) NSDictionary* currentAttributes;
+@property(nonatomic, strong) NSData* xmlData;
+@property(nonatomic, strong) NSXMLParser* xmlParser;
+@property(nonatomic, strong) NSDictionary* currentAttributes;
 @property(nonatomic, copy)   NSString* currentQualifiedName;
 @property(nonatomic, copy)   NSString* currentNamespaceURI;
 @property(nonatomic, copy)   NSString* currentElementName;
 @property(nonatomic, copy)   NSError* error;
 
-@property(nonatomic, readonly) NSString* currentString;
-@property(nonatomic, readonly) NSString* currentStringStripped;
+@property(unsafe_unretained, nonatomic, readonly) NSString* currentString;
+@property(unsafe_unretained, nonatomic, readonly) NSString* currentStringStripped;
 
 @property(nonatomic, assign) BOOL caseInsensitive;
 @property(nonatomic, assign) BOOL succeed;

@@ -37,12 +37,12 @@
 
 @interface GBRepository ()
 
-@property(nonatomic, retain, readwrite) NSData* URLBookmarkData;
-@property(nonatomic, retain) OABlockTable* blockTable;
-@property(nonatomic, retain, readwrite) OABlockTransaction* blockTransaction;
-@property(nonatomic, retain, readwrite) GBGitConfig* config;
+@property(nonatomic, strong, readwrite) NSData* URLBookmarkData;
+@property(nonatomic, strong) OABlockTable* blockTable;
+@property(nonatomic, strong, readwrite) OABlockTransaction* blockTransaction;
+@property(nonatomic, strong, readwrite) GBGitConfig* config;
 @property(nonatomic, assign, readwrite) NSUInteger commitsDiffCount;
-@property(nonatomic, retain) NSMutableDictionary* tagsByCommitID;
+@property(nonatomic, strong) NSMutableDictionary* tagsByCommitID;
 
 - (void) updateCurrentLocalRefWithBlock:(void(^)())block;
 - (void) loadLocalRefsWithBlock:(void(^)())block;
@@ -100,35 +100,21 @@
 	NSLog(@"GBRepository#dealloc: %@", self);
 	[NSObject cancelPreviousPerformRequestsWithTarget:self];
 	
-	[url release]; url = nil;
-	[URLBookmarkData release]; URLBookmarkData = nil;
-	[dotGitURL release]; dotGitURL = nil;
-	[localBranches release]; localBranches = nil;
-	[remotes release]; remotes = nil;
-	[tags release]; tags = nil;
+	 url = nil;
+	 tags = nil;
 	
 	stage.repository = nil;
-	[stage release]; stage = nil;
 	
-	[currentLocalRef release]; currentLocalRef = nil;
-	[currentRemoteBranch release]; currentRemoteBranch = nil;
-	[localBranchCommits release]; localBranchCommits = nil;
 	
-	[blockTable release]; blockTable = nil;
-	[config release]; config = nil;
 	
-	self.submodules = nil; // smart setter
+	 // smart setter
 	
-	[tagsByCommitID release]; tagsByCommitID = nil;
 	
-	[currentTaskProgressStatus release]; currentTaskProgressStatus = nil;
 	
 	if (dispatchQueue) dispatch_release(dispatchQueue);
     if (remoteDispatchQueue) dispatch_release(remoteDispatchQueue);
 	
-	[blockTransaction release];
 	
-	[super dealloc];
 }
 
 
@@ -154,8 +140,8 @@
 		dispatch_retain(dispatchQueue);
 		remoteDispatchQueue = dispatch_queue_create("com.oleganza.gitbox.repo_remote_task_queue", NULL);
 		
-		self.blockTable = [[OABlockTable new] autorelease];
-		self.blockTransaction = [[OABlockTransaction new] autorelease];
+		self.blockTable = [OABlockTable new];
+		self.blockTransaction = [OABlockTransaction new];
 		self.config = [GBGitConfig configForRepository:self];
 	}
 	return self;
@@ -174,8 +160,8 @@
 
 + (id) repositoryWithURL:(NSURL*)url
 {
-	GBRepository* r = [[self new] autorelease];
-	r.url = [[[NSURL alloc] initFileURLWithPath:[url path] isDirectory:YES] autorelease]; // force ending slash "/" if needed
+	GBRepository* r = [self new];
+	r.url = [[NSURL alloc] initFileURLWithPath:[url path] isDirectory:YES]; // force ending slash "/" if needed
 	return r;
 }
 
@@ -373,8 +359,7 @@
 {
 	if (aURL == url) return;
 	
-	[url release];
-	url = [aURL retain];
+	url = aURL;
 	
 	if (!url)
 	{
@@ -394,7 +379,7 @@
 			self.URLBookmarkData = nil;
 		}
 		
-		self.libgitRepository = [[[GitRepository alloc] init] autorelease];
+		self.libgitRepository = [[GitRepository alloc] init];
 		self.libgitRepository.URL = url;
 	}
 }
@@ -405,37 +390,36 @@
 	{
 		self.dotGitURL = [self.url URLByAppendingPathComponent:@".git"];
 	}
-	return [[dotGitURL retain]  autorelease];
+	return dotGitURL;
 }
 
 - (GBStage*) stage
 {
 	if (!stage)
 	{
-		self.stage = [[GBStage new] autorelease];
+		self.stage = [GBStage new];
 		stage.repository = self;
 	}
-	return [[stage retain] autorelease];
+	return stage;
 }
 
 - (NSArray*) localBranches
 {
 	if (!localBranches) self.localBranches = [NSArray array];
-	return [[localBranches retain] autorelease];
+	return localBranches;
 }
 
 - (NSArray*) tags
 {
 	if (!tags) self.tags = [NSArray array];
-	return [[tags retain] autorelease];
+	return tags;
 }
 
 - (void) setTags:(NSArray *)newTags
 {
 	if (tags == newTags) return;
 	
-	[tags release];
-	tags = [newTags retain];
+	tags = newTags;
     
 	self.tagsByCommitID = [NSMutableDictionary dictionary];
 	for (GBRef* tag in tags)
@@ -448,7 +432,7 @@
 - (NSArray*) remotes
 {
 	if (!remotes) self.remotes = [NSArray array];
-	return [[remotes retain] autorelease];
+	return remotes;
 }
 
 - (NSArray*) remoteBranches
@@ -613,9 +597,9 @@
 {
 	if (!block) return;
 	
-	block = [[block copy] autorelease];
+	block = [block copy];
 	
-	GBStashListTask* task = [[[GBStashListTask alloc] init] autorelease];
+	GBStashListTask* task = [[GBStashListTask alloc] init];
 	task.repository = self;
 	[self launchTask:task withBlock:^{
 		block(task.stashes);
@@ -650,7 +634,7 @@
 
 - (void) updateConfiguredRemoteBranchWithBlock:(void(^)())block
 {
-	block = [[block copy] autorelease];
+	block = [block copy];
 	GBLocalRemoteAssociationTask* task = [GBLocalRemoteAssociationTask task];
 	task.localBranchName = self.currentLocalRef.name;
 	task.repository = self;
@@ -688,7 +672,7 @@
 
 - (void) updateLocalRefsWithBlock:(void(^)(BOOL didChange))aBlock
 {
-	aBlock = [[aBlock copy] autorelease];
+	aBlock = [aBlock copy];
 	
 	GBRef* currentRef = self.currentLocalRef;
 	GBRef* targetRef = self.currentRemoteBranch;
@@ -723,7 +707,7 @@
 
 - (void) updateRemotesWithBlock:(void(^)())aBlock
 {
-	aBlock = [[aBlock copy] autorelease];
+	aBlock = [aBlock copy];
 	GBRemotesTask* task = [GBRemotesTask task];
 	task.repository = self;
 	[self launchTask:task withBlock:^{
@@ -745,7 +729,7 @@
 
 - (void) loadLocalRefsWithBlock:(void(^)())block
 {
-	block = [[block copy] autorelease];
+	block = [block copy];
 	GBLocalRefsTask* task = [GBLocalRefsTask task];
 	task.repository = self;
 	[self launchTask:task withBlock:^{
@@ -793,7 +777,7 @@
 	}
 	HEAD = [HEAD stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 	NSString* refprefix = @"ref: refs/heads/";
-	GBRef* ref = [[GBRef new] autorelease];
+	GBRef* ref = [GBRef new];
 	if ([HEAD hasPrefix:refprefix])
 	{
 		ref.name = [HEAD substringFromIndex:[refprefix length]];
@@ -840,7 +824,7 @@
 		if (block) block();
 		return;
 	}
-	block = [[block copy] autorelease];
+	block = [block copy];
 	GBHistoryTask* task = [GBHistoryTask task];
 	task.repository = self;
 	task.branch = self.currentLocalRef;
@@ -867,7 +851,7 @@
 		return;
 	}
 	
-	block = [[block copy] autorelease];
+	block = [block copy];
 	GBHistoryTask* task = [GBHistoryTask task];
 	task.repository = self;
 	task.branch = self.currentRemoteBranch;
@@ -875,7 +859,7 @@
 	[self launchTask:task withBlock:^{
 		NSArray* allCommits = self.localBranchCommits;
 		self.unmergedCommitsCount = [task.commits count];
-		for (GBCommit* commit in task.commits)
+		for (__strong GBCommit* commit in task.commits)
 		{
 			NSUInteger index = [allCommits indexOfObject:commit];
 			if (index !=  NSNotFound)
@@ -890,7 +874,7 @@
 
 - (void) updateUnpushedCommitsWithBlock:(void(^)())block
 {
-	block = [[block copy] autorelease];
+	block = [block copy];
 	if (!self.currentRemoteBranch)
 	{
 		self.unpushedCommitsCount = 0;
@@ -909,7 +893,7 @@
 	[self launchTask:task withBlock:^{
 		NSArray* allCommits = self.localBranchCommits;
 		self.unpushedCommitsCount = [task.commits count];
-		for (GBCommit* commit in task.commits)
+		for (__strong GBCommit* commit in task.commits)
 		{
 			NSUInteger index = [allCommits indexOfObject:commit];
 			if (index !=  NSNotFound)
@@ -934,7 +918,7 @@
 		return;
 	}
 	
-	block = [[block copy] autorelease];
+	block = [block copy];
 	
 	// There's a problem with blockTable here: if the branch was changed when this command was running, the result will be stale.
 	//[self.blockTable addBlock:block forName:@"updateCommitsDiffCount" proceedIfClear:^{}];
@@ -973,7 +957,7 @@
 // 99.99% of users don't want to think about it, so it is a private method used by updateSubmodulesWithBlock:
 - (void) initSubmodulesWithBlock:(void(^)())block
 {
-	block = [[block copy] autorelease];
+	block = [block copy];
 	GBTask* task = [self task];
 	task.arguments = [NSArray arrayWithObjects:@"submodule", @"init",  nil];
 	[self launchTask:task withBlock:^{
@@ -1025,7 +1009,7 @@
 
 - (void) configureTrackingRemoteBranch:(GBRef*)ref withLocalName:(NSString*)name block:(void(^)())block
 {
-	block = [[block copy] autorelease];
+	block = [block copy];
 	
 	if ((ref && ![ref isRemoteBranch]) || !name)
 	{
@@ -1057,7 +1041,7 @@
 
 - (void) checkoutRef:(GBRef*)ref withBlock:(void(^)())block
 {
-	block = [[block copy] autorelease];
+	block = [block copy];
 	GBTask* task = [self task];
 	task.arguments = [NSArray arrayWithObjects:@"checkout", [ref commitish], nil];
 	[self launchTask:task withBlock:^{
@@ -1068,7 +1052,7 @@
 
 - (void) checkoutRef:(GBRef*)ref withNewName:(NSString*)name block:(void(^)())block
 {
-	block = [[block copy] autorelease];
+	block = [block copy];
 	if ([ref isRemoteBranch])
 	{
 		GBTask* checkoutTask = [self task];
@@ -1086,7 +1070,7 @@
 
 - (void) checkoutNewBranchWithName:(NSString*)name commit:(GBCommit*)aCommit block:(void(^)())block
 {
-	block = [[block copy] autorelease];
+	block = [block copy];
 	GBTask* checkoutTask = [self task];
 	// Note: if commit is nil, then the command will be simply "git tag <name>"
 	checkoutTask.arguments = [NSArray arrayWithObjects:@"checkout", @"-b", name, aCommit.commitId, nil];
@@ -1098,7 +1082,7 @@
 
 - (void) createTagWithName:(NSString*)name commitId:(NSString*)aCommitId block:(void(^)())block
 {
-	block = [[block copy] autorelease];
+	block = [block copy];
 	GBTask* aTask = [self task];
 	// Note: if commit is nil, then the command will be simply "git tag <name>"
 	aTask.arguments = [NSArray arrayWithObjects:@"tag", name, aCommitId, nil]; 
@@ -1111,7 +1095,7 @@
 
 - (void) commitWithMessage:(NSString*) message block:(void(^)())block
 {
-	block = [[block copy] autorelease];
+	block = [block copy];
 	if (message && [message length] > 0)
 	{
 		GBTask* task = [self task];
@@ -1141,14 +1125,13 @@
 
 - (void) alertWithMessage:(NSString*)message description:(NSString*)description
 {
-	NSAlert* alert = [[[NSAlert alloc] init] autorelease];
+	NSAlert* alert = [[NSAlert alloc] init];
 	[alert addButtonWithTitle:@"OK"];
 	[alert setMessageText:message];
 	[alert setInformativeText:description];
 	[alert setAlertStyle:NSWarningAlertStyle];
 	
 	[[GBMainWindowController instance] sheetQueueAddBlock:^{
-		[alert retain];
 		[alert beginSheetModalForWindow:[[GBMainWindowController instance] window] 
 						  modalDelegate:self
 						 didEndSelector:@selector(alertDidEnd:returnCode:contextInfo:)
@@ -1170,13 +1153,12 @@
 {
 	[[alert window] orderOut:nil];
 	[[GBMainWindowController instance] sheetQueueEndBlock];
-	[alert release];
 }
 
 
 - (void) fetchCurrentBranchWithBlock:(void(^)())block
 {
-	block = [[block copy] autorelease];
+	block = [block copy];
 	if (self.currentRemoteBranch && [self.currentRemoteBranch isRemoteBranch])
 	{
 		[self fetchBranch:self.currentRemoteBranch withBlock:block];
@@ -1189,7 +1171,7 @@
 
 - (void) pullOrMergeWithBlock:(void(^)())block
 {
-	block = [[block copy] autorelease];
+	block = [block copy];
 	if (self.currentRemoteBranch)
 	{
 		if ([self.currentRemoteBranch isLocalBranch])
@@ -1219,7 +1201,7 @@
 		if (block) block();
 		return;
 	}
-	block = [[block copy] autorelease];
+	block = [block copy];
 	GBTask* task = [self task];
 	task.arguments = [NSArray arrayWithObjects:@"merge", commitish, nil];
 	[self launchTask:task withBlock:^{
@@ -1271,7 +1253,7 @@
 		return;
 	}
 	
-	block = [[block copy] autorelease];
+	block = [block copy];
 	GBTask* task = [self task];
 	if (creatingCommit)
 	{
@@ -1302,7 +1284,7 @@
 
 - (void) pullBranch:(GBRef*)aRemoteBranch withBlock:(void(^)())block
 {
-	block = [[block copy] autorelease];
+	block = [block copy];
 	if (!aRemoteBranch)
 	{
 		block();
@@ -1403,7 +1385,7 @@
 
 - (void) fetchRemote:(GBRemote*)aRemote silently:(BOOL)silently withBlock:(void(^)())block
 {
-	block = [[block copy] autorelease];
+	block = [block copy];
 	if (!aRemote)
 	{
 		if (block) block();
@@ -1448,7 +1430,7 @@
 
 - (void) fetchBranch:(GBRef*)aRemoteBranch withBlock:(void(^)())block
 {
-	block = [[block copy] autorelease];
+	block = [block copy];
 	if (!aRemoteBranch)
 	{
 		if (block) block();
@@ -1497,7 +1479,7 @@
 // if aLocalBranch.commitish == nil, then it's a "push delete"
 - (void) pushBranch:(GBRef*)aLocalBranch toRemoteBranch:(GBRef*)aRemoteBranch forced:(BOOL)forced withBlock:(void(^)())block
 {
-	block = [[block copy] autorelease];
+	block = [block copy];
 	if (!aLocalBranch || !aRemoteBranch)
 	{
 		if (block) block();
@@ -1606,7 +1588,7 @@
 
 - (void) rebaseWithBlock:(void(^)())block
 {
-	block = [[block copy] autorelease];
+	block = [block copy];
 	
 	if (!self.currentRemoteBranch)
 	{
@@ -1640,7 +1622,7 @@
 
 - (void) rebaseCancelWithBlock:(void(^)())block
 {
-	block = [[block copy] autorelease];
+	block = [block copy];
 	GBTask* task = [self task];
 	task.arguments = [NSArray arrayWithObjects:@"rebase", @"--abort", nil];
 	[self launchTask:task withBlock:^{
@@ -1654,7 +1636,7 @@
 
 - (void) rebaseSkipWithBlock:(void(^)())block
 {
-	block = [[block copy] autorelease];
+	block = [block copy];
 	GBTask* task = [self task];
 	task.arguments = [NSArray arrayWithObjects:@"rebase", @"--skip", nil];
 	[self launchTask:task withBlock:^{
@@ -1668,7 +1650,7 @@
 
 - (void) rebaseContinueWithBlock:(void(^)())block
 {
-	block = [[block copy] autorelease];
+	block = [block copy];
 	GBTask* task = [self task];
 	task.arguments = [NSArray arrayWithObjects:@"rebase", @"--continue", nil];
 	[self launchTask:task withBlock:^{
@@ -1684,7 +1666,7 @@
 
 - (void) resetStageWithBlock:(void(^)())block
 {
-	block = [[block copy] autorelease];
+	block = [block copy];
     
 	GBTask* task = [self task];
 	task.arguments = [NSArray arrayWithObjects:@"reset", @"--hard", @"HEAD", nil];
@@ -1701,7 +1683,7 @@
 
 - (void) resetToCommit:(GBCommit*)aCommit withBlock:(void(^)())block
 {
-	block = [[block copy] autorelease];
+	block = [block copy];
 	
 	GBTask* task = [self task];
 	task.arguments = [NSArray arrayWithObjects:@"reset", @"--hard", aCommit.commitId, nil];
@@ -1717,7 +1699,7 @@
 
 - (void) resetSoftToCommit:(NSString*)commitish withBlock:(void(^)())block
 {
-	block = [[block copy] autorelease];
+	block = [block copy];
 	
 	GBTask* task = [self task];
 	task.arguments = [NSArray arrayWithObjects:@"reset", @"--soft", commitish, nil];
@@ -1733,7 +1715,7 @@
 
 - (void) resetMixedToCommit:(NSString*)commitish withBlock:(void(^)())block
 {
-	block = [[block copy] autorelease];
+	block = [block copy];
 	
 	GBTask* task = [self task];
 	task.arguments = [NSArray arrayWithObjects:@"reset", @"--mixed", commitish, nil];
@@ -1748,7 +1730,7 @@
 
 - (void) revertCommit:(GBCommit*)aCommit withBlock:(void(^)())block
 {
-	block = [[block copy] autorelease];
+	block = [block copy];
 	
 	GBTask* task = [self task];
 	task.arguments = [NSArray arrayWithObjects:@"revert", @"--no-edit", aCommit.commitId, nil];
@@ -1777,7 +1759,7 @@
 		if (block) block();
 		return;
 	}
-	block = [[block copy] autorelease];
+	block = [block copy];
 	GBTask* task = [self task];
 	task.arguments = arguments;
 	[self launchTask:task withBlock:^{
@@ -1788,7 +1770,7 @@
 
 - (void) stashChangesWithMessage:(NSString*)message block:(void(^)())block
 {
-	block = [[block copy] autorelease];
+	block = [block copy];
 	
 	GBTask* task = [self task];
 	
@@ -1817,7 +1799,7 @@
 
 - (void) applyStash:(GBStash*)aStash withBlock:(void(^)())block
 {
-	block = [[block copy] autorelease];
+	block = [block copy];
 	
 	if (!aStash)
 	{
@@ -1859,7 +1841,7 @@
 
 - (void) removeRefs:(NSArray*)refs withBlock:(void(^)())block
 {
-	NSMutableArray* newtags = [[self.tags mutableCopy] autorelease];
+	NSMutableArray* newtags = [self.tags mutableCopy];
 	[newtags removeObjectsInArray:refs];
 	self.tags = newtags;
 	
@@ -1896,7 +1878,7 @@
 	// git push origin :refs/tags/12345
 	// git push origin :refs/heads/branch
 	
-	block = [[block copy] autorelease];
+	block = [block copy];
 	
 	if (self.currentRemoteBranch && [refs containsObject:self.currentRemoteBranch])
 	{
@@ -1954,14 +1936,14 @@
 
 - (id) task
 {
-	GBTask* task = [[GBTask new] autorelease];
+	GBTask* task = [GBTask new];
 	task.repository = self;
 	return task;
 }
 
 - (id) taskWithProgress
 {
-	GBTaskWithProgress* task = [[GBTaskWithProgress new] autorelease];
+	GBTaskWithProgress* task = [GBTaskWithProgress new];
 	task.repository = self;
 	task.progressUpdateBlock = ^{
 		self.currentTaskProgress = task.progress;
@@ -1980,7 +1962,7 @@
 
 - (id) authenticatedTaskWithAddress:(NSString*)address
 {
-	GBAuthenticatedTask* task = [[GBAuthenticatedTask new] autorelease];
+	GBAuthenticatedTask* task = [GBAuthenticatedTask new];
 	task.remoteAddress = address;
 	task.repository = self;
 	task.progressUpdateBlock = ^{
@@ -2001,7 +1983,7 @@
 - (void) launchTask:(OATask*)aTask withBlock:(void(^)())block
 {
 	// Avoid forking a process until the queue is empty.
-	block = [[block copy] autorelease];
+	block = [block copy];
 	dispatch_async(dispatchQueue, ^{
 		dispatch_async(dispatch_get_main_queue(), ^{
 			[aTask launchInQueue:dispatchQueue withBlock:block];
@@ -2012,7 +1994,7 @@
 - (void) launchRemoteTask:(OATask*)aTask withBlock:(void(^)())block
 {
 	// Avoid forking a process until the queue is empty.
-	block = [[block copy] autorelease];
+	block = [block copy];
 	dispatch_async(dispatchQueue, ^{
 		dispatch_async(dispatch_get_main_queue(), ^{
 			[aTask launchInQueue:remoteDispatchQueue withBlock:block];

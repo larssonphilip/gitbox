@@ -2,7 +2,7 @@
 #import "NSData+OADataHelpers.h"
 
 @interface GBTaskWithProgress ()
-@property(nonatomic, retain) NSDate* indeterminateActivityStartDate;
+@property(nonatomic, strong) NSDate* indeterminateActivityStartDate;
 
 // Returns zero value if could not parse a progress.
 + (double) progressForDataChunk:(NSData*)dataChunk statusRef:(NSString**)statusRef sendingRatio:(double)sendingRatio;
@@ -18,13 +18,6 @@
 @synthesize indeterminateActivityStartDate;
 @synthesize sendingRatio;
 
-- (void) dealloc
-{
-	self.progressUpdateBlock = nil;
-	self.status = nil;
-	self.indeterminateActivityStartDate = nil;
-	[super dealloc];
-}
 
 - (id)init
 {

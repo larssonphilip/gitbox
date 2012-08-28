@@ -5,10 +5,10 @@
 #import "GBCommit.h"
 
 @interface GBSearch ()
-@property(nonatomic, retain, readwrite) NSMutableArray* commits;
-@property(nonatomic, retain) NSMutableSet* commitIds; // set of ids to reject duplicates
+@property(nonatomic, strong, readwrite) NSMutableArray* commits;
+@property(nonatomic, strong) NSMutableSet* commitIds; // set of ids to reject duplicates
 @property(nonatomic, assign) BOOL cancelled;
-@property(nonatomic, assign) GBHistoryTask* task;
+@property(nonatomic, unsafe_unretained) GBHistoryTask* task;
 @property(nonatomic, assign) int lastTimestamp;
 @property(nonatomic, assign) BOOL isRunning;
 @property(nonatomic, assign) NSUInteger limit;
@@ -33,21 +33,15 @@
 
 - (void) dealloc
 {
-	self.query = nil;
-	self.repository = nil;
-	self.commits = nil;
-	self.commitIds = nil;
 	
-	[searchCache release]; searchCache = nil;
 	
 	[self.task terminate];
 	self.task = nil;
-	[super dealloc];
 }
 
 + (GBSearch*) searchWithQuery:(GBSearchQuery*)query repository:(GBRepository*)repo target:(id)target action:(SEL)action
 {
-	GBSearch* search = [[[self alloc] init] autorelease];
+	GBSearch* search = [[self alloc] init];
 	search.query = query;
 	search.repository = repo;
 	search.target = target;
@@ -110,7 +104,10 @@
 	}
 	
 	self.isRunning = gotNewCommits;
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
 	[self.target performSelector:self.action withObject:self];
+#pragma clang diagnostic pop
 	
 	self.task = nil;
 	
@@ -131,7 +128,7 @@
 		self.usedCachedCommits = YES;
 		if (self.searchCache)
 		{
-			NSArray* cachedCommits = [[self.searchCache retain] autorelease];
+			NSArray* cachedCommits = self.searchCache;
 			self.searchCache = nil;
 			[self processCommits:cachedCommits];
 			return;

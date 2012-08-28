@@ -23,13 +23,11 @@
 - (void)dealloc
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
-    [labelString release];
-    [super dealloc];
 }
 
 + (GBPreferencesConfigViewController*) controller
 {
-	return [[[self alloc] initWithNibName:@"GBPreferencesConfigViewController" bundle:nil] autorelease];
+	return [[self alloc] initWithNibName:@"GBPreferencesConfigViewController" bundle:nil];
 }
 
 - (NSURL*) configURL

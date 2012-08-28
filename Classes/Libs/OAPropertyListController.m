@@ -15,9 +15,6 @@
     @throw exception;
   }
   [NSObject cancelPreviousPerformRequestsWithTarget:self];
-  self.plistURL = nil;
-  self.plist = nil;
-  [super dealloc];
 }
 
 - (id) plist

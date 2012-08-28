@@ -49,7 +49,7 @@ extern NSString* OATaskDidDeallocateNotification;
 @property(nonatomic, copy) NSString* currentDirectoryPath;
 
 // Array of arguments. OATask raises an exception if more than 4096 arguments are present.
-@property(nonatomic, retain) NSArray* arguments;
+@property(nonatomic, strong) NSArray* arguments;
 
 // Set to YES if you want to receive data notifications in real time (slower)
 @property(nonatomic, assign, getter=isRealTime) BOOL realTime;
@@ -58,16 +58,16 @@ extern NSString* OATaskDidDeallocateNotification;
 @property(nonatomic, assign, getter=isInteractive) BOOL interactive;
 
 // NSPipe or NSFileHandle for stdout. If nil, a private pipe is used to read into standardOutputData.
-@property(nonatomic, retain) id standardOutputHandleOrPipe;
+@property(nonatomic, strong) id standardOutputHandleOrPipe;
 
 // NSPipe or NSFileHandle for stdout. If nil, a private pipe is used to read into standardErrorData.
-@property(nonatomic, retain) id standardErrorHandleOrPipe;
+@property(nonatomic, strong) id standardErrorHandleOrPipe;
 
 // Accumulated data read from stdout when standardOutputHandleOrPipe was set to nil and private pipe was used.
-@property(nonatomic, retain, readonly) NSMutableData* standardOutputData;
+@property(nonatomic, strong, readonly) NSMutableData* standardOutputData;
 
 // Accumulated data read from stderr when standardErrorHandleOrPipe was set to nil and private pipe was used.
-@property(nonatomic, retain, readonly) NSMutableData* standardErrorData;
+@property(nonatomic, strong, readonly) NSMutableData* standardErrorData;
 
 // A dispatch queue to launch the task on. If nil, a global default concurrent queue is used.
 @property(nonatomic, assign) dispatch_queue_t dispatchQueue;

@@ -2,8 +2,8 @@
 #import "OABlockOperations.h"
 
 @interface OABlockTable ()
-@property(nonatomic, retain) NSMutableDictionary* table;
-@property(nonatomic, retain) NSMutableDictionary* tableCounters;
+@property(nonatomic, strong) NSMutableDictionary* table;
+@property(nonatomic, strong) NSMutableDictionary* tableCounters;
 @end
 
 @implementation OABlockTable
@@ -21,12 +21,6 @@
 	return self;
 }
 
-- (void)dealloc
-{
-	self.table = nil;
-	self.tableCounters = nil;
-	[super dealloc];
-}
 
 - (BOOL) containsBlockForName:(NSString*)aName
 {
@@ -44,11 +38,10 @@
 
 - (void) callBlockForName:(NSString*)aName
 {
-	void(^aBlock)() = [[self.table objectForKey:aName] retain];
+	void(^aBlock)() = [self.table objectForKey:aName];
 	[self.table removeObjectForKey:aName]; // it is important to remove the block before it is called
 	[self.tableCounters removeObjectForKey:aName];
 	if (aBlock) aBlock();
-	[aBlock release];
 }
 
 - (void) addBlock:(void(^)())aBlock forName:(NSString*)aName proceedIfClear:(void(^)())continuation

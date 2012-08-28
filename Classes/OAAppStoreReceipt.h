@@ -88,7 +88,6 @@ NS_INLINE NSData * OAAppleRootCert()
 			if(itemRef) CFRelease(itemRef);
 		}
 		
-		[name release];
 	}
 	CFRelease(searchList);
 	CFRelease(searchRef);
@@ -254,9 +253,9 @@ NS_INLINE NSDictionary* OADictionaryWithAppStoreReceipt(NSString* path)
 					unsigned char const *str_p = p;
 					ASN1_get_object(&str_p, &str_length, &str_type, &xclass, seq_end - str_p);
 					if (str_type == V_ASN1_UTF8STRING) {
-						NSString *string = [[[NSString alloc] initWithBytes:str_p
+						NSString *string = [[NSString alloc] initWithBytes:str_p
 																	 length:str_length
-																   encoding:NSUTF8StringEncoding] autorelease];
+																   encoding:NSUTF8StringEncoding];
 						
 						switch (attr_type) {
 							case BUNDLE_ID:
@@ -359,12 +358,7 @@ NS_INLINE BOOL OAValidateAppStoreReceiptAtPath(NSString* path)
 	NSString *bundleVersion = nil;
 	NSString *bundleIdentifer = nil;
 #ifndef OA_APPSTORE_SAMPLE_RECEIPT
-	guidData = (NSData*)OACopyMACAddress();
-	
-	if ([NSGarbageCollector defaultCollector])
-		[[NSGarbageCollector defaultCollector] enableCollectorForPointer:guidData];
-	else 
-		[guidData autorelease];
+	guidData = (__bridge_transfer NSData*)OACopyMACAddress();
 	
 	if (!guidData)
 		return NO;

@@ -4,7 +4,7 @@
 
 #define RETURN_COLOR(r, g, b, a) \
   static NSColor* c = nil;\
-  if (!c) c = [[NSColor colorWithCalibratedRed:(r) green:(g) blue:(b) alpha:(a)] retain];\
+  if (!c) c = [NSColor colorWithCalibratedRed:(r) green:(g) blue:(b) alpha:(a)];\
   return c;
 
 + (NSColor*) linkColor

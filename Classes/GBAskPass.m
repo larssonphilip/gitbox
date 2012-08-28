@@ -6,7 +6,7 @@
 
 int GBAskPass(int argc, const char * argv[])
 {
-  NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
+  @autoreleasepool {
   [NSRunLoop currentRunLoop];
   
   NSString* promptString = nil;
@@ -25,21 +25,18 @@ int GBAskPass(int argc, const char * argv[])
   if (!promptString || [promptString length] == 0)
   {
     NSLog(@"Gitbox askpass: prompt is nil or empty.");
-    [pool drain];
     return -1;
   }
   
   if (!serverName || [serverName length] == 0)
   {
     NSLog(@"Gitbox askpass: %@ is nil or empty.", GBAskPassServerNameKey);
-    [pool drain];
     return -2;
   }
   
   if (!clientId || [clientId length] == 0)
   {
     NSLog(@"Gitbox askpass: %@ is nil or empty.", GBAskPassClientIdKey);
-    [pool drain];
     return -3;
   }
   
@@ -48,7 +45,6 @@ int GBAskPass(int argc, const char * argv[])
   if (!server)
   {
     NSLog(@"Gitbox askpass: server is nil. Name: %@; client ID: %@", serverName, clientId);
-    [pool drain];
     return -4;
   }
   
@@ -66,7 +62,6 @@ int GBAskPass(int argc, const char * argv[])
     {
       // Exception is usually raised when Gitbox app is closed while askpass is waiting for reply.
       NSLog(@"Gitbox askpass: exception raised when trying to get result from server: %@", e);
-      [pool drain];
       return -5;
     }
     
@@ -76,11 +71,9 @@ int GBAskPass(int argc, const char * argv[])
       if (buffer == NULL)
       {
         NSLog(@"Gitbox askpass: cannot get char* UTF-8 string for result: %@.", result);
-        [pool drain];
         return -6;
       }
       printf("%s\n", buffer);
-      [pool drain];
       return 0;
     }
     //NSLog(@"Gitbox askpass: waiting with prompt %@", promptString);
@@ -88,6 +81,6 @@ int GBAskPass(int argc, const char * argv[])
     waittime++;
   }
   
-  [pool drain];
+  }
   return 0;
 }

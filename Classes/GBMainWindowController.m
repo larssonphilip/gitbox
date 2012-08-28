@@ -10,7 +10,6 @@
 
 #import "OABlockQueue.h"
 #import "OAFastJumpController.h"
-#import "NSWindowController+OAWindowControllerHelpers.h"
 #import "NSView+OAViewHelpers.h"
 #import "NSSplitView+OASplitViewHelpers.h"
 #import "NSString+OAStringHelpers.h"
@@ -18,12 +17,12 @@
 #import "NSObject+OASelectorNotifications.h"
 
 @interface GBMainWindowController ()
-@property(nonatomic, retain) GBToolbarController* defaultToolbarController;
-@property(nonatomic, retain) GBPlaceholderViewController* defaultDetailViewController;
-@property(nonatomic, retain) id<GBMainWindowItem> selectedWindowItem;
-@property(nonatomic, retain) OAFastJumpController* jumpController;
-@property(nonatomic, retain, readwrite) OABlockQueue* sheetQueue;
-@property(nonatomic, retain) NSWindow* currentSheet;
+@property(nonatomic, strong) GBToolbarController* defaultToolbarController;
+@property(nonatomic, strong) GBPlaceholderViewController* defaultDetailViewController;
+@property(nonatomic, strong) id<GBMainWindowItem> selectedWindowItem;
+@property(nonatomic, strong) OAFastJumpController* jumpController;
+@property(nonatomic, strong, readwrite) OABlockQueue* sheetQueue;
+@property(nonatomic, strong) NSWindow* currentSheet;
 - (void) updateToolbarAlignment;
 - (NSView*) sidebarView;
 - (NSView*) detailView;
@@ -48,28 +47,19 @@
 - (void) dealloc
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	[rootController release]; rootController = nil;
-	[defaultToolbarController release]; defaultToolbarController = nil;
-	[toolbarController release]; toolbarController = nil;
-	[detailViewController release]; detailViewController = nil;
-	[defaultDetailViewController release]; defaultDetailViewController = nil;
-	[selectedWindowItem release]; selectedWindowItem = nil;
-	[sheetQueue release]; sheetQueue = nil;
-	self.sidebarController = nil;
-	self.welcomeController = nil;
-	self.splitView = nil;
-	self.jumpController = nil;
-	[currentSheet release]; currentSheet = nil;
-	[super dealloc];
+	 rootController = nil;
+	 toolbarController = nil;
+	 detailViewController = nil;
+	 selectedWindowItem = nil;
 }
 
 - (id) initWithWindow:(NSWindow*)aWindow
 {
 	if ((self = [super initWithWindow:aWindow]))
 	{
-		self.sidebarController = [[[GBSidebarController alloc] initWithNibName:@"GBSidebarController" bundle:nil] autorelease];
-		self.defaultToolbarController = [[[GBToolbarController alloc] init] autorelease];
-		self.defaultDetailViewController = [[[GBPlaceholderViewController alloc] initWithNibName:@"GBPlaceholderViewController" bundle:nil] autorelease];
+		self.sidebarController = [[GBSidebarController alloc] initWithNibName:@"GBSidebarController" bundle:nil];
+		self.defaultToolbarController = [[GBToolbarController alloc] init];
+		self.defaultDetailViewController = [[GBPlaceholderViewController alloc] initWithNibName:@"GBPlaceholderViewController" bundle:nil];
 		self.defaultDetailViewController.title = NSLocalizedString(@"No selection", @"Window");
 		self.jumpController = [OAFastJumpController controller];
 		self.sheetQueue = [OABlockQueue queueWithName:@"GBMainWindowController.sheetQueue" concurrency:1];
@@ -99,13 +89,12 @@
 	NSResponder* responder = [self nextResponder];
 	if (rootController)
 	{
-		responder = [[[rootController externalNextResponder] retain] autorelease];
+		responder = [rootController externalNextResponder];
 		[rootController setExternalNextResponder:nil];
 	}
 	
 	[rootController removeObserverForAllSelectors:self];
-	[rootController release];
-	rootController = [newRootController retain];
+	rootController = newRootController;
 	[rootController addObserverForAllSelectors:self];
 	
 	if (rootController)
@@ -133,7 +122,7 @@
 	NSResponder* responder = [self nextResponder];
 	if (toolbarController)
 	{
-		responder = [[[toolbarController nextResponder] retain] autorelease];
+		responder = [toolbarController nextResponder];
 		[toolbarController setNextResponder:nil];
 		toolbarController.window = nil;
 	}
@@ -154,8 +143,7 @@
 	}
 	
 	toolbarController.toolbar = nil;
-	[toolbarController release];
-	toolbarController = [newToolbarController retain];
+	toolbarController = newToolbarController;
 	toolbarController.toolbar = [[self window] toolbar];
 	toolbarController.window = [self window];
 }
@@ -168,8 +156,7 @@
 	if (newViewController == detailViewController) return;
 	
 	[detailViewController unloadView];
-	[detailViewController release];
-	detailViewController = [newViewController retain];
+	detailViewController = newViewController;
 	[detailViewController loadInView:[self detailView]];
 	[self.detailViewController setNextResponder:self.sidebarController];
 }
@@ -179,8 +166,7 @@
 {
 	if (selectedWindowItem == anObject) return;
 	
-	[selectedWindowItem release];
-	selectedWindowItem = [anObject retain];
+	selectedWindowItem = anObject;
 	
 	GBToolbarController* newToolbarController = nil;
 	NSViewController* newDetailController = nil;
@@ -327,7 +313,7 @@
 {
 	if (!self.welcomeController)
 	{
-		self.welcomeController = [[[GBWelcomeController alloc] initWithWindowNibName:@"GBWelcomeController"] autorelease];
+		self.welcomeController = [[GBWelcomeController alloc] initWithWindowNibName:@"GBWelcomeController"];
 	}
 	self.welcomeController.completionHandler = ^(BOOL cancelled){
 		[self dismissSheet];
@@ -408,10 +394,8 @@
 	}
 	
 	if (!aWindow) return;
-	[aWindow retain];
 	[NSApp endSheet:aWindow];
 	[aWindow orderOut:nil];
-	[aWindow release];
 	[self.sheetQueue endBlock];
 }
 
@@ -433,9 +417,9 @@
 
 - (void) criticalConfirmationWithMessage:(NSString*)message description:(NSString*)desc ok:(NSString*)okOrNil completion:(void(^)(BOOL))completion
 {
-	completion = [[completion copy] autorelease];
+	completion = [completion copy];
 	
-	NSAlert* alert = [[[NSAlert alloc] init] autorelease];
+	NSAlert* alert = [[NSAlert alloc] init];
 	
 	if (message) [alert setMessageText:message];
 	if (desc) [alert setInformativeText:desc];
@@ -447,11 +431,10 @@
 	[GBApp activateIgnoringOtherApps:YES];
 	
 	[self sheetQueueAddBlock:^{
-		[completion retain];
 		[alert beginSheetModalForWindow:[self window]
 						  modalDelegate:self 
 						 didEndSelector:@selector(alertDidEnd:returnCode:contextInfo:) 
-							contextInfo:completion];
+							contextInfo:(__bridge void *)(completion)];
 	}];
 }
 
@@ -459,7 +442,6 @@
 {
 	[self sheetQueueEndBlock];
 	if (completion) completion(returnCode == NSAlertFirstButtonReturn);
-	[completion release];
 }
 
 

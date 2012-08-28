@@ -3,7 +3,7 @@
 @class GBRepositoryController;
 @interface GBRepositoryViewController : NSViewController<NSSplitViewDelegate>
 
-@property(nonatomic, assign) GBRepositoryController* repositoryController;
-@property(nonatomic, retain) IBOutlet NSSplitView* splitView;
+@property(nonatomic, unsafe_unretained) GBRepositoryController* repositoryController;
+@property(nonatomic, strong) IBOutlet NSSplitView* splitView;
 
 @end

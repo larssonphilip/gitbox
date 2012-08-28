@@ -3,7 +3,7 @@
   NSButton* okButton;
 }
 
-@property(retain) IBOutlet NSButton* okButton;
+@property(strong) IBOutlet NSButton* okButton;
 
 - (IBAction) tryAgain;
 - (IBAction) cancel;

@@ -2,11 +2,11 @@
 
 @interface GBRepositoryCloningViewController : NSViewController
 
-@property(nonatomic, retain) IBOutlet NSTextField* messageLabel;
-@property(nonatomic, retain) IBOutlet NSTextField* errorLabel;
-@property(nonatomic, retain) IBOutlet NSButton* cancelButton;
-@property(nonatomic, retain) IBOutlet NSProgressIndicator* progressIndicator;
-@property(nonatomic, assign) GBRepositoryCloningController* repositoryController;
+@property(nonatomic, strong) IBOutlet NSTextField* messageLabel;
+@property(nonatomic, strong) IBOutlet NSTextField* errorLabel;
+@property(nonatomic, strong) IBOutlet NSButton* cancelButton;
+@property(nonatomic, strong) IBOutlet NSProgressIndicator* progressIndicator;
+@property(nonatomic, unsafe_unretained) GBRepositoryCloningController* repositoryController;
 
 - (IBAction) cancel:(id)sender;
 

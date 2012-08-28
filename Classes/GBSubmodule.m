@@ -23,12 +23,6 @@ NSString* const GBSubmoduleStatusNotUpToDate = @"GBSubmoduleStatusNotUpToDate";
 {
 	//NSLog(@"GBSubmodule#dealloc");
 	if (dispatchQueue) dispatch_release(dispatchQueue);
-	[_remoteURL release];
-	[_path release];
-	[_parentURL release];
-	[_status release];
-	[_commitId release];
-	[super dealloc];
 }
 
 - (NSURL*) localURL

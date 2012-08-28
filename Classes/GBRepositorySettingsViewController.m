@@ -18,9 +18,6 @@
 	{
 		[self.view setNextResponder:nil];
 	}
-	[repository release]; repository = nil;
-	[title release]; title = nil;
-	[super dealloc];
 }
 
 - (id) initWithRepository:(GBRepository*)repo

@@ -13,13 +13,6 @@
 @synthesize status;
 @synthesize progress;
 
-- (void) dealloc
-{
-  self.sourceURLString = nil;
-  self.targetURL = nil;
-  self.status = nil;
-  [super dealloc];
-}
 
 - (BOOL) ignoreMissingRepository
 {

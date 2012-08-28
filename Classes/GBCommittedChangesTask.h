@@ -1,5 +1,5 @@
 #import "GBChangesBaseTask.h"
 @class GBCommit;
 @interface GBCommittedChangesTask : GBChangesBaseTask
-@property(retain) GBCommit* commit;
+@property(strong) GBCommit* commit;
 @end

@@ -2,6 +2,6 @@
 
 @interface GBStashListTask : GBTask
 
-@property(nonatomic, retain) NSArray* stashes;
+@property(nonatomic, strong) NSArray* stashes;
 
 @end

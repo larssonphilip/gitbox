@@ -11,14 +11,6 @@
 @synthesize remoteAlias;
 @synthesize remoteBranchName;
 
-- (void) dealloc
-{
-	self.remoteBranch = nil;
-	self.localBranchName = nil;
-	self.remoteAlias = nil;
-	self.remoteBranchName = nil;
-	[super dealloc];
-}
 
 - (NSArray*) arguments
 {
@@ -79,7 +71,7 @@
 	
 	if (self.remoteBranchName)
 	{
-		GBRef* ref = [[GBRef new] autorelease];
+		GBRef* ref = [GBRef new];
 		
 		if (self.remoteAlias && ([self.remoteAlias isEqualToString:@"."]  || [self.remoteAlias isEqualToString:@""]))
 		{

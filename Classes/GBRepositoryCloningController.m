@@ -9,7 +9,7 @@
 
 
 @interface GBRepositoryCloningController ()
-@property(nonatomic,retain) GBCloneTask* task;
+@property(nonatomic,strong) GBCloneTask* task;
 @property(nonatomic, assign, readwrite) NSInteger isDisabled;
 @property(nonatomic, assign, readwrite) NSInteger isSpinning;
 @end
@@ -32,28 +32,21 @@
 
 - (void) dealloc
 {
-	self.viewController = nil;
-	self.sourceURLString   = nil;
-	self.targetURL   = nil;
 	[self.task terminate];
-	self.task        = nil;
-	self.error       = nil;
-	self.progressStatus = nil;
-	[super dealloc];
 }
 
 - (id) init
 {
 	if ((self = [super init]))
 	{
-		self.sidebarItem = [[[GBSidebarItem alloc] init] autorelease];
+		self.sidebarItem = [[GBSidebarItem alloc] init];
 		self.sidebarItem.object = self;
 		self.sidebarItem.selectable = YES;
 		self.sidebarItem.draggable = YES;
 		self.sidebarItem.image = [NSImage imageNamed:NSImageNameFolder];
-		self.sidebarItem.cell = [[[GBSidebarCell alloc] initWithItem:self.sidebarItem] autorelease];
+		self.sidebarItem.cell = [[GBSidebarCell alloc] initWithItem:self.sidebarItem];
 		
-		self.viewController = [[[GBRepositoryCloningViewController alloc] initWithNibName:@"GBRepositoryCloningViewController" bundle:nil] autorelease];
+		self.viewController = [[GBRepositoryCloningViewController alloc] initWithNibName:@"GBRepositoryCloningViewController" bundle:nil];
 		self.viewController.repositoryController = self;
 	}
 	return self;
@@ -74,7 +67,7 @@
 	[self notifyWithSelector:@selector(cloningRepositoryControllerProgress:)];
 
 	
-	GBCloneTask* t = [[GBCloneTask new] autorelease];
+	GBCloneTask* t = [GBCloneTask new];
 	
 	t.remoteAddress = self.sourceURLString;
 	

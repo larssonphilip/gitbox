@@ -9,7 +9,7 @@
 
 + (GBCellWithView*) cellWithView:(NSView*)aView
 {
-  GBCellWithView* cell = [[[self alloc] initTextCell:@""] autorelease];
+  GBCellWithView* cell = [[self alloc] initTextCell:@""];
   cell.view = aView;
   return cell;
 }

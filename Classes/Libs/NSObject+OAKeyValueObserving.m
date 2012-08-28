@@ -7,8 +7,8 @@
 
 @interface OAKeyValueObservingListener : NSObject
 {
-	id	  		observer;
-  id	  		target;
+	id	  		__unsafe_unretained observer;
+  id	  		__unsafe_unretained target;
 	NSString*	keyPath;
   SEL		  	selector;
   SEL       selectorWithNewValue;
@@ -18,13 +18,13 @@
 	
 }
 
-@property(nonatomic,assign) id observer;
-@property(nonatomic,assign) id target;
-@property(nonatomic,retain) NSString* keyPath;
+@property(nonatomic,unsafe_unretained) id observer;
+@property(nonatomic,unsafe_unretained) id target;
+@property(nonatomic,strong) NSString* keyPath;
 @property(nonatomic,assign) SEL selector;
 @property(nonatomic,assign) SEL selectorWithNewValue;
 @property(nonatomic,assign) SEL selectorWithoutArguments;
-@property(nonatomic,retain) id userInfo;
+@property(nonatomic,strong) id userInfo;
 @property(nonatomic,assign) NSKeyValueObservingOptions options;
 
 - (SEL) anySelector;
@@ -40,7 +40,7 @@
 	NSMutableDictionary* listeners;
 }
 
-@property(nonatomic,retain) NSMutableDictionary* listeners;
+@property(nonatomic,strong) NSMutableDictionary* listeners;
 
 + (id)defaultCenter;
 
@@ -71,12 +71,6 @@ static char OAKeyValueObservingListenerMagicContext;
 @synthesize userInfo;
 @synthesize options;
 
-- (void) dealloc
-{
-  self.userInfo = nil;
-  self.keyPath = nil;
-  [super dealloc];
-}
 
 - (SEL) anySelector
 {
@@ -125,11 +119,17 @@ static char OAKeyValueObservingListenerMagicContext;
     
     if (selectorWithoutArguments)
     {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
       [observer performSelector:selectorWithoutArguments];
+#pragma clang diagnostic pop
     }
     else if (selectorWithNewValue)
     {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
       [observer performSelector:selectorWithNewValue withObject:[aChange objectForKey:NSKeyValueChangeNewKey]];
+#pragma clang diagnostic pop
     }
     else if (selector)
     {
@@ -170,14 +170,9 @@ static char OAKeyValueObservingListenerMagicContext;
 	{
 		self.listeners = [NSMutableDictionary dictionary];
 	}
-	return [[listeners retain] autorelease];
+	return listeners;
 }
 
-- (void)dealloc
-{
-	self.listeners = nil;
-	[super dealloc];
-}
 
 
 
@@ -217,7 +212,7 @@ static char OAKeyValueObservingListenerMagicContext;
          forKeyPath:(NSString*)keyPath
 selectorWithoutArguments:(SEL)selector
 {
-  OAKeyValueObservingListener* listener = [[OAKeyValueObservingListener new] autorelease];
+  OAKeyValueObservingListener* listener = [OAKeyValueObservingListener new];
   listener.target = self;
   listener.observer = observer;
   listener.keyPath = keyPath;
@@ -229,7 +224,7 @@ selectorWithoutArguments:(SEL)selector
          forKeyPath:(NSString*)keyPath
 selectorWithNewValue:(SEL)selector
 {
-  OAKeyValueObservingListener* listener = [[OAKeyValueObservingListener new] autorelease];
+  OAKeyValueObservingListener* listener = [OAKeyValueObservingListener new];
   listener.target = self;
   listener.observer = observer;
   listener.keyPath = keyPath;
@@ -254,7 +249,7 @@ selectorWithNewValue:(SEL)selector
            userInfo:(id)userInfo 
             options:(NSKeyValueObservingOptions)options
 {
-  OAKeyValueObservingListener* listener = [[OAKeyValueObservingListener new] autorelease];
+  OAKeyValueObservingListener* listener = [OAKeyValueObservingListener new];
   listener.target = self;
   listener.observer = observer;
   listener.keyPath = keyPath;

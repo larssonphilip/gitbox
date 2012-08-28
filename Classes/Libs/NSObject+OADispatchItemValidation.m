@@ -19,7 +19,10 @@
   
   if ([self respondsToSelector:validationAction])
   {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
     return !![self performSelector:validationAction withObject:anItem];
+#pragma clang diagnostic pop
   }
   return YES;
 }

@@ -15,24 +15,24 @@ extern NSString* const OAHTTPDownloadHTTPCodeErrorDomain;
 
 @interface OAHTTPDownload : NSObject <NSCoding>
 
-@property(nonatomic,retain) NSURLRequest*  request;
+@property(nonatomic,strong) NSURLRequest*  request;
 @property(nonatomic,copy)   NSURL*         url;
 @property(nonatomic,copy)   NSString*      username;
 @property(nonatomic,copy)   NSString*      password;
 @property(nonatomic,copy)   NSArray*       allowedContentTypes;
-@property(nonatomic,retain) NSURLConnection* connection;
-@property(nonatomic,retain) NSData* data;
-@property(nonatomic,retain) NSHTTPURLResponse* lastResponse;
-@property(nonatomic,retain) NSError* error;
+@property(nonatomic,strong) NSURLConnection* connection;
+@property(nonatomic,strong) NSData* data;
+@property(nonatomic,strong) NSHTTPURLResponse* lastResponse;
+@property(nonatomic,strong) NSError* error;
 @property(nonatomic,copy)   void(^block)();
 @property(nonatomic,copy)   void(^completionBlock)();
 @property(nonatomic,copy)   NSString* runLoopMode;
 @property(nonatomic,copy)   NSURL* targetFileURL;
-@property(nonatomic,retain) NSMutableDictionary* userDictionary;
+@property(nonatomic,strong) NSMutableDictionary* userDictionary;
 
 @property(nonatomic,assign) NSUInteger byteOffset;
 @property(nonatomic,assign) BOOL doNotShowActivityIndicator;
-@property(nonatomic,assign) NSObject<OAHTTPDownloadDelegate>* delegate;
+@property(nonatomic,unsafe_unretained) NSObject<OAHTTPDownloadDelegate>* delegate;
 @property(nonatomic,assign) BOOL alreadyStarted;
 
 + (id) download;

@@ -8,11 +8,6 @@
 
 @synthesize stashes;
 
-- (void) dealloc
-{
-  self.stashes = nil;
-  [super dealloc];
-}
 
 
 - (NSArray*) arguments
@@ -45,7 +40,6 @@ date 2011-05-22 15:03:34 +0200
 {
   
 #define GBScanError(msg) { \
-[pool drain]; \
 NSLog(@"ERROR: GBStashListTask parse error: %@", msg); \
 NSLog(@"INPUT: %@", stringData); \
 return list; \
@@ -69,13 +63,13 @@ line = nil; \
   NSCharacterSet* whitespaceCharacterSet = [NSCharacterSet whitespaceCharacterSet];
   while (lineIndex < [lines count])
   {
-    NSAutoreleasePool* pool = [NSAutoreleasePool new];
+	  @autoreleasepool {
     
     line = [lines objectAtIndex:lineIndex];
     
     if ([line length] > 0)
     {
-      GBStash* stash = [[GBStash new] autorelease];
+      GBStash* stash = [GBStash new];
       
       // ref stash@{1}
       if ([line hasPrefix:@"ref "])
@@ -117,7 +111,7 @@ line = nil; \
       GBNextLine;
     }
     
-    [pool drain];
+	}
   }
   
   return list;
