@@ -7,19 +7,19 @@
 
 @interface OAKeyValueObservingListener : NSObject
 {
-	id	  		__unsafe_unretained observer;
-  id	  		__unsafe_unretained target;
+	id	  		__weak observer;
+	id	  		__weak target;
 	NSString*	keyPath;
-  SEL		  	selector;
-  SEL       selectorWithNewValue;
-  SEL		  	selectorWithoutArguments;
+	SEL		  	selector;
+	SEL       selectorWithNewValue;
+	SEL		  	selectorWithoutArguments;
 	id		  	userInfo;
 	NSKeyValueObservingOptions options;
 	
 }
 
-@property(nonatomic,unsafe_unretained) id observer;
-@property(nonatomic,unsafe_unretained) id target;
+@property(nonatomic,weak) id observer;
+@property(nonatomic,weak) id target;
 @property(nonatomic,strong) NSString* keyPath;
 @property(nonatomic,assign) SEL selector;
 @property(nonatomic,assign) SEL selectorWithNewValue;
@@ -74,67 +74,67 @@ static char OAKeyValueObservingListenerMagicContext;
 
 - (SEL) anySelector
 {
-  if (selectorWithoutArguments)
-  {
-    return selectorWithoutArguments;
-  }
-  else if (selectorWithNewValue)
-  {
-    return selectorWithNewValue;
-  }
-  else if (selector)
-  {
-    return selector;
-  }
-  return NULL;
+	if (selectorWithoutArguments)
+	{
+		return selectorWithoutArguments;
+	}
+	else if (selectorWithNewValue)
+	{
+		return selectorWithNewValue;
+	}
+	else if (selector)
+	{
+		return selector;
+	}
+	return NULL;
 }
 
 - (void) subscribe
 {
-  if (selectorWithNewValue)
-  {
-    options = options | NSKeyValueObservingOptionNew;
-  }
-  [self.target addObserver:self
-                forKeyPath:self.keyPath
-                   options:self.options
-                   context:&OAKeyValueObservingListenerMagicContext];  
+	if (selectorWithNewValue)
+	{
+		options = options | NSKeyValueObservingOptionNew;
+	}
+	[self.target addObserver:self
+				  forKeyPath:self.keyPath
+					 options:self.options
+					 context:&OAKeyValueObservingListenerMagicContext];
 }
 
 - (void) unsubscribe
 {
-  [self.target removeObserver:self forKeyPath:self.keyPath];
+	[self.target removeObserver:self forKeyPath:self.keyPath];
 }
 
 
-- (void) observeValueForKeyPath:(NSString*)aKeyPath 
-                       ofObject:(id)anObject 
-                         change:(NSDictionary*)aChange 
+- (void) observeValueForKeyPath:(NSString*)aKeyPath
+                       ofObject:(id)anObject
+                         change:(NSDictionary*)aChange
                         context:(void*)aContext
 {
-  if (aContext == &OAKeyValueObservingListenerMagicContext)
+	if (aContext == &OAKeyValueObservingListenerMagicContext)
 	{
 		// Mike: we only ever sign up for one notification per object, so if we got here
 		// then we *know* that the key path and object are what we want
-    
-    if (selectorWithoutArguments)
-    {
+		
+		if (selectorWithoutArguments)
+		{
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-      [observer performSelector:selectorWithoutArguments];
+			[observer performSelector:selectorWithoutArguments];
 #pragma clang diagnostic pop
-    }
-    else if (selectorWithNewValue)
-    {
+		}
+		else if (selectorWithNewValue)
+		{
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-      [observer performSelector:selectorWithNewValue withObject:[aChange objectForKey:NSKeyValueChangeNewKey]];
+			[observer performSelector:selectorWithNewValue withObject:[aChange objectForKey:NSKeyValueChangeNewKey]];
 #pragma clang diagnostic pop
-    }
-    else if (selector)
-    {
-      ((void (*)(id, SEL, NSString *, id, NSDictionary *, id))objc_msgSend)(observer, selector, aKeyPath, anObject, aChange, self.userInfo);
-    }
+		}
+		else if (selector)
+		{
+			((void (*)(id, SEL, NSString *, id, NSDictionary *, id))objc_msgSend)(observer, selector, aKeyPath, anObject, aChange, self.userInfo);
+		}
 	}
 	else // Oleg: this should probably never happen, but anyway
 	{
@@ -176,9 +176,9 @@ static char OAKeyValueObservingListenerMagicContext;
 
 
 
-- (id) listenerKeyForObserver:(id)observer 
-                       target:(id)target 
-                      keyPath:(NSString*)keyPath 
+- (id) listenerKeyForObserver:(id)observer
+                       target:(id)target
+                      keyPath:(NSString*)keyPath
                      selector:(SEL)selector
 {
 	return [NSString stringWithFormat:@"%p:%p:%@:%p", observer, target, keyPath, selector];
@@ -186,20 +186,20 @@ static char OAKeyValueObservingListenerMagicContext;
 
 - (void)addListener:(OAKeyValueObservingListener*)listener
 {
-	id key = [self listenerKeyForObserver:listener.observer 
-                                 target:listener.target 
-                                keyPath:listener.keyPath 
-                               selector:[listener anySelector]];
-  [self.listeners setObject:listener forKey:key];
-  [listener subscribe];
+	id key = [self listenerKeyForObserver:listener.observer
+								   target:listener.target
+								  keyPath:listener.keyPath
+								 selector:[listener anySelector]];
+	[self.listeners setObject:listener forKey:key];
+	[listener subscribe];
 }
 
 - (void)removeObserver:(id)observer target:(id)target keyPath:(NSString*)keyPath selector:(SEL)selector
 {
 	id key = [self listenerKeyForObserver:observer target:target keyPath:keyPath selector:selector];
 	OAKeyValueObservingListener* listener = [self.listeners objectForKey:key];
-  [listener unsubscribe];
-  [self.listeners removeObjectForKey:key];
+	[listener unsubscribe];
+	[self.listeners removeObjectForKey:key];
 }
 
 @end
@@ -208,63 +208,63 @@ static char OAKeyValueObservingListenerMagicContext;
 
 @implementation NSObject (OAKeyValueObserving)
 
-- (void)addObserver:(id)observer 
+- (void)addObserver:(id)observer
          forKeyPath:(NSString*)keyPath
 selectorWithoutArguments:(SEL)selector
 {
-  OAKeyValueObservingListener* listener = [OAKeyValueObservingListener new];
-  listener.target = self;
-  listener.observer = observer;
-  listener.keyPath = keyPath;
-  listener.selectorWithoutArguments = selector;
-  [[OAKVONotificationCenter defaultCenter] addListener:listener];
+	OAKeyValueObservingListener* listener = [OAKeyValueObservingListener new];
+	listener.target = self;
+	listener.observer = observer;
+	listener.keyPath = keyPath;
+	listener.selectorWithoutArguments = selector;
+	[[OAKVONotificationCenter defaultCenter] addListener:listener];
 }
 
-- (void)addObserver:(id)observer 
+- (void)addObserver:(id)observer
          forKeyPath:(NSString*)keyPath
 selectorWithNewValue:(SEL)selector
 {
-  OAKeyValueObservingListener* listener = [OAKeyValueObservingListener new];
-  listener.target = self;
-  listener.observer = observer;
-  listener.keyPath = keyPath;
-  listener.selectorWithNewValue = selector;
-  [[OAKVONotificationCenter defaultCenter] addListener:listener];  
+	OAKeyValueObservingListener* listener = [OAKeyValueObservingListener new];
+	listener.target = self;
+	listener.observer = observer;
+	listener.keyPath = keyPath;
+	listener.selectorWithNewValue = selector;
+	[[OAKVONotificationCenter defaultCenter] addListener:listener];
 }
 
-- (void)addObserver:(id)observer 
-         forKeyPath:(NSString*)keyPath 
-           selector:(SEL)selector 
+- (void)addObserver:(id)observer
+         forKeyPath:(NSString*)keyPath
+           selector:(SEL)selector
 {
 	[self addObserver:observer
-         forKeyPath:keyPath 
-           selector:selector
-           userInfo:nil
-            options:NSKeyValueObservingOptionNew];
+		   forKeyPath:keyPath
+			 selector:selector
+			 userInfo:nil
+			  options:NSKeyValueObservingOptionNew];
 }
 
-- (void)addObserver:(id)observer 
-         forKeyPath:(NSString*)keyPath 
-           selector:(SEL)selector 
-           userInfo:(id)userInfo 
+- (void)addObserver:(id)observer
+         forKeyPath:(NSString*)keyPath
+           selector:(SEL)selector
+           userInfo:(id)userInfo
             options:(NSKeyValueObservingOptions)options
 {
-  OAKeyValueObservingListener* listener = [OAKeyValueObservingListener new];
-  listener.target = self;
-  listener.observer = observer;
-  listener.keyPath = keyPath;
-  listener.selector = selector;
-  listener.userInfo = userInfo;
-  listener.options = options;
-  [[OAKVONotificationCenter defaultCenter] addListener:listener];
+	OAKeyValueObservingListener* listener = [OAKeyValueObservingListener new];
+	listener.target = self;
+	listener.observer = observer;
+	listener.keyPath = keyPath;
+	listener.selector = selector;
+	listener.userInfo = userInfo;
+	listener.options = options;
+	[[OAKVONotificationCenter defaultCenter] addListener:listener];
 }
 
 - (void)removeObserver:(id)observer keyPath:(NSString*)keyPath selector:(SEL)selector
 {
-	[[OAKVONotificationCenter defaultCenter] removeObserver:observer 
-                                                   target:self 
-                                                  keyPath:keyPath
-                                                 selector:selector];
+	[[OAKVONotificationCenter defaultCenter] removeObserver:observer
+													 target:self
+													keyPath:keyPath
+												   selector:selector];
 }
 
 @end

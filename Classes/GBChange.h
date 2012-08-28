@@ -27,9 +27,9 @@
 
 // Important: staged property & delegate are only used for checkbox binding in UI.
 @property(nonatomic,assign) BOOL staged;
-@property(nonatomic,unsafe_unretained) id<GBChangeDelegate> delegate;
+@property(nonatomic,weak) id<GBChangeDelegate> delegate;
 @property(nonatomic,assign) BOOL busy;
-@property(nonatomic,unsafe_unretained) GBRepository* repository;
+@property(nonatomic,weak) GBRepository* repository;
 
 
 + (GBChange*) dummy; // for bindings in right view

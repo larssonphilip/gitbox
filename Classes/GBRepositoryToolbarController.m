@@ -16,12 +16,12 @@
 
 @interface GBRepositoryToolbarController () <NSTextFieldDelegate, NSMenuDelegate>
 
-@property(unsafe_unretained, nonatomic, readonly) NSPopUpButton* currentBranchPopUpButton;
-@property(unsafe_unretained, nonatomic, readonly) NSButton* settingsButton;
-@property(unsafe_unretained, nonatomic, readonly) NSSegmentedControl* pullPushControl;
-@property(unsafe_unretained, nonatomic, readonly) NSButton* pullButton;
-@property(unsafe_unretained, nonatomic, readonly) NSPopUpButton* otherBranchPopUpButton;
-@property(unsafe_unretained, nonatomic, readonly) NSSearchField* searchField;
+@property(weak, nonatomic, readonly) NSPopUpButton* currentBranchPopUpButton;
+@property(weak, nonatomic, readonly) NSButton* settingsButton;
+@property(weak, nonatomic, readonly) NSSegmentedControl* pullPushControl;
+@property(weak, nonatomic, readonly) NSButton* pullButton;
+@property(weak, nonatomic, readonly) NSPopUpButton* otherBranchPopUpButton;
+@property(weak, nonatomic, readonly) NSSearchField* searchField;
 @property(nonatomic, strong) NSMutableArray* openedMenus;
 - (void) updateDisabledState;
 - (void) updateBranchMenus;

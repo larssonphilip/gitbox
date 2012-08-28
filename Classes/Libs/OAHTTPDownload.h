@@ -32,7 +32,7 @@ extern NSString* const OAHTTPDownloadHTTPCodeErrorDomain;
 
 @property(nonatomic,assign) NSUInteger byteOffset;
 @property(nonatomic,assign) BOOL doNotShowActivityIndicator;
-@property(nonatomic,unsafe_unretained) NSObject<OAHTTPDownloadDelegate>* delegate;
+@property(nonatomic,weak) NSObject<OAHTTPDownloadDelegate>* delegate;
 @property(nonatomic,assign) BOOL alreadyStarted;
 
 + (id) download;

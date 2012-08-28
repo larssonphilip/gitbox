@@ -6,7 +6,7 @@
 @property(nonatomic, strong) IBOutlet NSTextField* errorLabel;
 @property(nonatomic, strong) IBOutlet NSButton* cancelButton;
 @property(nonatomic, strong) IBOutlet NSProgressIndicator* progressIndicator;
-@property(nonatomic, unsafe_unretained) GBRepositoryCloningController* repositoryController;
+@property(nonatomic, weak) GBRepositoryCloningController* repositoryController;
 
 - (IBAction) cancel:(id)sender;
 

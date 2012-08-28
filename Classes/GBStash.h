@@ -5,8 +5,8 @@
 @property(nonatomic, copy) NSString* ref;
 @property(nonatomic, strong) NSDate* date;
 @property(nonatomic, copy) NSString* rawMessage;
-@property(unsafe_unretained, nonatomic, readonly) NSString* message;
-@property(unsafe_unretained, nonatomic, readonly) NSString* menuTitle;
+@property(weak, nonatomic, readonly) NSString* message;
+@property(weak, nonatomic, readonly) NSString* menuTitle;
 
 + (NSTimeInterval) oldStashesTreshold;
 - (BOOL) isOldStash;

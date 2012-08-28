@@ -3,7 +3,7 @@
 @class GBRepositoryController;
 @interface GBRepositoryToolbarController : GBToolbarController
 
-@property(nonatomic, unsafe_unretained) GBRepositoryController* repositoryController; // repository controller owns toolbar controller
+@property(nonatomic, weak) GBRepositoryController* repositoryController; // repository controller owns toolbar controller
 
 - (IBAction) pullOrPush:(NSSegmentedControl*)segmentedControl;
 

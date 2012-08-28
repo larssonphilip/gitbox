@@ -8,8 +8,8 @@
 
 @interface GBSidebarItem : NSResponder<NSPasteboardWriting>
 
-@property(nonatomic, unsafe_unretained) NSResponder<GBSidebarItemObject>* object;
-@property(nonatomic, unsafe_unretained) GBSidebarController* sidebarController;
+@property(nonatomic, weak) NSResponder<GBSidebarItemObject>* object;
+@property(nonatomic, weak) GBSidebarController* sidebarController;
 
 
 // Appearance

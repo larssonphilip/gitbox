@@ -4,8 +4,8 @@
 @interface GBSidebarCell : NSTextFieldCell
 
 // For subclasses:
-@property(nonatomic,unsafe_unretained) GBSidebarItem* sidebarItem; // item owns the cell
-@property(nonatomic,unsafe_unretained) GBSidebarOutlineView* outlineView;
+@property(nonatomic,weak) GBSidebarItem* sidebarItem; // item owns the cell
+@property(nonatomic,weak) GBSidebarOutlineView* outlineView;
 @property(nonatomic,assign) BOOL isForeground;
 @property(nonatomic,assign) BOOL isFocused;
 @property(nonatomic,assign) BOOL isDragged;

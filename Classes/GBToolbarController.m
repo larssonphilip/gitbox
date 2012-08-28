@@ -9,7 +9,7 @@
 #import "NSObject+OADispatchItemValidation.h"
 
 @interface GBToolbarController ()
-@property(unsafe_unretained, nonatomic, readonly) NSToolbarItem* sidebarPaddingItem;
+@property(weak, nonatomic, readonly) NSToolbarItem* sidebarPaddingItem;
 - (void) updateAlignment;
 @end
 

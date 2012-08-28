@@ -8,7 +8,7 @@
 @property(nonatomic, strong, readwrite) NSMutableArray* commits;
 @property(nonatomic, strong) NSMutableSet* commitIds; // set of ids to reject duplicates
 @property(nonatomic, assign) BOOL cancelled;
-@property(nonatomic, unsafe_unretained) GBHistoryTask* task;
+@property(nonatomic, weak) GBHistoryTask* task;
 @property(nonatomic, assign) int lastTimestamp;
 @property(nonatomic, assign) BOOL isRunning;
 @property(nonatomic, assign) NSUInteger limit;

@@ -3,7 +3,7 @@
 @class OATask;
 @interface GBActivity : NSObject
 
-@property(nonatomic,unsafe_unretained) OATask* task;
+@property(nonatomic,weak) OATask* task;
 @property(nonatomic,assign) BOOL isRunning;
 
 @property(nonatomic,strong) NSDate* date;

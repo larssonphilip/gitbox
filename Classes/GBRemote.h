@@ -8,7 +8,7 @@
 @property(nonatomic,strong) NSArray* branches;
 
 @property(nonatomic,assign) BOOL needsFetch;
-@property(nonatomic,unsafe_unretained) GBRepository* repository;
+@property(nonatomic,weak) GBRepository* repository;
 
 
 #pragma mark Interrogation

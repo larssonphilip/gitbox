@@ -9,7 +9,7 @@
 @property(nonatomic, strong) GBSidebarItem* sidebarItem;
 @property(nonatomic, copy) NSString* name;
 @property(nonatomic, strong) NSMutableArray* items;
-@property(nonatomic, unsafe_unretained) GBRepositoriesController* repositoriesController;
+@property(nonatomic, weak) GBRepositoriesController* repositoriesController;
 
 + (GBRepositoriesGroup*) untitledGroup;
 - (NSString*) untitledGroupName;

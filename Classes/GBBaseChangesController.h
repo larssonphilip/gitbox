@@ -11,7 +11,7 @@
 
 // Public API
 
-@property(nonatomic, unsafe_unretained) GBRepositoryController* repositoryController;
+@property(nonatomic, weak) GBRepositoryController* repositoryController;
 @property(nonatomic, strong) GBCommit* commit;
 
 

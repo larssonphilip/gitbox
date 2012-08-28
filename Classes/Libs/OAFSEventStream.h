@@ -20,7 +20,7 @@ extern NSString* const OAFSEventStreamNotification;
 @property(nonatomic, assign) BOOL ignoreSelf;
 @property(nonatomic, assign, getter=isEnabled) BOOL enabled;
 
-@property(unsafe_unretained, nonatomic, readonly) NSArray* paths;
+@property(weak, nonatomic, readonly) NSArray* paths;
 
 // You can add a path multiple times, but should always balance additions with removals.
 - (void) addPath:(NSString*)aPath;

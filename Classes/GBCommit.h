@@ -28,7 +28,7 @@ typedef enum {
 @property(nonatomic,strong) NSDictionary* foundRangesByProperties;
 
 @property(nonatomic,assign) GBCommitSyncStatus syncStatus;
-@property(nonatomic,unsafe_unretained) GBRepository* repository;
+@property(nonatomic,weak) GBRepository* repository;
 
 @property(nonatomic,copy) NSString* colorLabel;
 

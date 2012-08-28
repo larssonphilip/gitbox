@@ -9,7 +9,7 @@
 @interface GBSubmoduleCloningController : NSResponder<GBMainWindowItem, GBSidebarItemObject>
 
 @property(nonatomic, strong) GBSubmodule* submodule;
-@property(nonatomic, unsafe_unretained) GBRepositoryController* parentRepositoryController;
+@property(nonatomic, weak) GBRepositoryController* parentRepositoryController;
 @property(nonatomic, strong) GBSubmoduleCloningViewController* viewController;
 
 @property(nonatomic, strong) NSError* error;

@@ -5,7 +5,7 @@
 @interface GBSubmoduleController : GBRepositoryController
 
 @property(nonatomic, strong) GBSubmodule* submodule;
-@property(nonatomic, unsafe_unretained) GBRepositoryController* parentRepositoryController;
+@property(nonatomic, weak) GBRepositoryController* parentRepositoryController;
 
 + (GBSubmoduleController*) controllerWithSubmodule:(GBSubmodule*)submodule;
 - (id) initWithSubmodule:(GBSubmodule*)submodule;

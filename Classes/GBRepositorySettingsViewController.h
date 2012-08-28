@@ -3,7 +3,7 @@
 @class GBRepositorySettingsController;
 @interface GBRepositorySettingsViewController : NSViewController
 
-@property(nonatomic, unsafe_unretained) GBRepositorySettingsController* settingsController;
+@property(nonatomic, weak) GBRepositorySettingsController* settingsController;
 @property(nonatomic, strong) GBRepository* repository;
 @property(nonatomic, copy) NSString* title;
 @property(nonatomic, assign, getter=isDirty) BOOL dirty;

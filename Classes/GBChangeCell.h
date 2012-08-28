@@ -4,7 +4,7 @@
 @interface GBChangeCell : NSTextFieldCell
 
 @property(nonatomic,assign) BOOL isFocused;
-@property(unsafe_unretained, nonatomic,readonly) GBChange* change;
+@property(weak, nonatomic,readonly) GBChange* change;
 
 + (GBChangeCell*) cell;
 + (CGFloat) cellHeight;

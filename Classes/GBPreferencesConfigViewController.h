@@ -2,13 +2,13 @@
 #import "MASPreferencesViewController.h"
 
 @interface GBPreferencesConfigViewController : NSViewController <MASPreferencesViewController>
-@property (unsafe_unretained) IBOutlet NSView *basicView;
-@property (unsafe_unretained) IBOutlet NSView *advancedView;
+@property (weak) IBOutlet NSView *basicView;
+@property (weak) IBOutlet NSView *advancedView;
 @property (unsafe_unretained) IBOutlet NSTextView *configTextView;
 @property (unsafe_unretained) IBOutlet NSTextView *ignoreTextView;
-@property (unsafe_unretained) IBOutlet NSTextField *nameTextField;
-@property (unsafe_unretained) IBOutlet NSTextField *emailTextField;
-@property (unsafe_unretained) IBOutlet NSTextField *label;
+@property (weak) IBOutlet NSTextField *nameTextField;
+@property (weak) IBOutlet NSTextField *emailTextField;
+@property (weak) IBOutlet NSTextField *label;
 
 - (IBAction)toggleMode:(id)sender;
 

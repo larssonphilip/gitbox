@@ -25,7 +25,7 @@
 
 @interface GBStageHeaderAnimation : NSAnimation
 @property(nonatomic, copy) NSString* message;
-@property(nonatomic, unsafe_unretained) GBStageViewController* controller;
+@property(nonatomic, weak) GBStageViewController* controller;
 @property(nonatomic, assign) NSRect headerFrame;
 @property(nonatomic, assign) NSRect textScrollViewFrame;
 @property(nonatomic, assign) CGFloat buttonAlpha;
@@ -48,7 +48,7 @@
 @property(nonatomic, assign) BOOL alreadyValidatedUserNameAndEmail;
 @property(nonatomic, assign) CGFloat overridenHeaderHeight;
 
-@property(unsafe_unretained, nonatomic, readonly) GBStage* stage;
+@property(weak, nonatomic, readonly) GBStage* stage;
 
 - (BOOL) isEditingCommitMessage;
 - (void) resetMessageHistory;

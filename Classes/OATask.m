@@ -85,9 +85,8 @@ NSString* OATaskDidDeallocateNotification  = @"OATaskDidDeallocateNotification";
 	}
 	
 	// The notification can be posted from other thread
-	NSValue* value = [NSValue valueWithNonretainedObject:self];
-	[[NSNotificationCenter defaultCenter] postNotificationName:OATaskDidDeallocateNotification object:value];
-    
+//	NSValue* value = [NSValue valueWithNonretainedObject:self];
+//	[[NSNotificationCenter defaultCenter] postNotificationName:OATaskDidDeallocateNotification object:value];
 	
 	if (dispatchQueue) { dispatch_release(dispatchQueue); dispatchQueue = nil; }
 	 didTerminateBlock = nil;

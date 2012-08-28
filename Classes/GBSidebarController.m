@@ -16,7 +16,7 @@
 @interface GBSidebarController () <NSMenuDelegate>
 
 @property(nonatomic, assign) NSUInteger ignoreSelectionChange;
-@property(unsafe_unretained, nonatomic, readonly) GBSidebarItem* clickedSidebarItem; // returns a clicked item if it exists and lies outside the selection
+@property(weak, nonatomic, readonly) GBSidebarItem* clickedSidebarItem; // returns a clicked item if it exists and lies outside the selection
 @property(nonatomic, strong) OAFastJumpController* jumpController;
 - (NSArray*) selectedSidebarItems;
 - (void) updateContents;

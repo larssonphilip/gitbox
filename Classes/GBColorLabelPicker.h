@@ -12,7 +12,7 @@ extern NSString* const GBColorLabelGray;
 
 @property(nonatomic, strong) NSString* value;
 @property(nonatomic, strong) id representedObject;
-@property(nonatomic, unsafe_unretained) id target; // if target is nil, first responder receives an action
+@property(nonatomic, weak) id target; // if target is nil, first responder receives an action
 @property(nonatomic, assign) SEL action;
 
 + (id) pickerWithTarget:(id)target action:(SEL)action object:(id)representedObject;

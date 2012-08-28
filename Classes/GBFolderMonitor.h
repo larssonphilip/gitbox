@@ -9,7 +9,7 @@
 
 // Action signature: 
 // - (void) folderMonitorDidUpdate:(GBFolderMonitor*)monitor;
-@property(nonatomic, unsafe_unretained) id target;
+@property(nonatomic, weak) id target;
 @property(nonatomic, assign) SEL action;
 
 // These properties are available only during the action message to target.

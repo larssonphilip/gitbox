@@ -28,8 +28,8 @@
 @property(nonatomic, strong) GBSidebarItem* selectedSidebarItem;
 @property(nonatomic, strong) GBSidebarItem* clickedSidebarItem;
 @property(nonatomic, strong) NSArray* selectedItemIndexes;
-@property(unsafe_unretained, nonatomic, readonly) NSArray* clickedOrSelectedSidebarItems;
-@property(unsafe_unretained, nonatomic, readonly) NSArray* clickedOrSelectedObjects;
+@property(weak, nonatomic, readonly) NSArray* clickedOrSelectedSidebarItems;
+@property(weak, nonatomic, readonly) NSArray* clickedOrSelectedObjects;
 
 - (void) addObjectsToSelection:(NSArray*)objects;
 - (void) removeObjectsFromSelection:(NSArray*)objects;

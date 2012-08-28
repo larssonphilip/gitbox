@@ -19,8 +19,8 @@ NSString* const GBColorLabelGray   = @"GBColorLabelGray";
 #define buttonsCount  8 // should be in sync with value declarations listed above
 
 @interface GBColorLabelPickerButton : NSImageView
-@property(nonatomic, unsafe_unretained) GBColorLabelPicker* picker;
-@property(nonatomic, unsafe_unretained) NSString* value;
+@property(nonatomic, weak) GBColorLabelPicker* picker;
+@property(nonatomic, weak) NSString* value;
 @property(nonatomic, assign) BOOL selected;
 + (id) buttonWithValue:(NSString*)value picker:(GBColorLabelPicker*)picker;
 @end

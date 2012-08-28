@@ -8,7 +8,7 @@
 
 @interface GBRepositoriesController : GBRepositoriesGroup
 
-@property(nonatomic, unsafe_unretained) GBRootController* rootController;
+@property(nonatomic, weak) GBRootController* rootController;
 @property(nonatomic, strong) GBRepositoryViewController* repositoryViewController;
 @property(nonatomic, strong) GBRepositoryToolbarController* repositoryToolbarController;
 

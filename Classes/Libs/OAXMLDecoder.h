@@ -61,8 +61,8 @@
 @property(nonatomic, copy)   NSString* currentElementName;
 @property(nonatomic, copy)   NSError* error;
 
-@property(unsafe_unretained, nonatomic, readonly) NSString* currentString;
-@property(unsafe_unretained, nonatomic, readonly) NSString* currentStringStripped;
+@property(weak, nonatomic, readonly) NSString* currentString;
+@property(weak, nonatomic, readonly) NSString* currentStringStripped;
 
 @property(nonatomic, assign) BOOL caseInsensitive;
 @property(nonatomic, assign) BOOL succeed;

@@ -13,7 +13,7 @@ extern NSString* const GBSubmoduleStatusNotUpToDate;
 @property(nonatomic, copy)   NSString* status;
 @property(nonatomic, copy)   NSString* commitId;
 
-@property(unsafe_unretained, nonatomic, readonly) NSURL* localURL;
+@property(weak, nonatomic, readonly) NSURL* localURL;
 
 @property(nonatomic, assign) dispatch_queue_t dispatchQueue;
 

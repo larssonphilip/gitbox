@@ -2,7 +2,7 @@
 
 @class GBRepository;
 @interface GBTask : OATask
-@property(nonatomic, unsafe_unretained) GBRepository* repository;
+@property(nonatomic, weak) GBRepository* repository;
 @property(nonatomic, assign) BOOL ignoreMissingRepository;
 + (BOOL) isSnowLeopard;
 + (id) taskWithRepository:(GBRepository*)repo;
