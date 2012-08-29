@@ -430,16 +430,19 @@
 	
 	[GBApp activateIgnoringOtherApps:YES];
 	
+	void* ctx = (__bridge_retained void*)completion; // will release in alertDidEnd:returnCode:contextInfo:
+	
 	[self sheetQueueAddBlock:^{
 		[alert beginSheetModalForWindow:[self window]
 						  modalDelegate:self 
 						 didEndSelector:@selector(alertDidEnd:returnCode:contextInfo:) 
-							contextInfo:(__bridge void *)(completion)];
+							contextInfo:ctx];
 	}];
 }
 
-- (void) alertDidEnd:(NSAlert*)alert returnCode:(NSInteger)returnCode contextInfo:(void(^)(BOOL))completion
+- (void) alertDidEnd:(NSAlert*)alert returnCode:(NSInteger)returnCode contextInfo:(void*)ctx
 {
+	void(^completion)(BOOL) = (__bridge_transfer void(^)(BOOL))ctx;
 	[self sheetQueueEndBlock];
 	if (completion) completion(returnCode == NSAlertFirstButtonReturn);
 }
