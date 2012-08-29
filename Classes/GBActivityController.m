@@ -259,7 +259,7 @@ static GBActivityController* sharedGBActivityController;
 	GBActivity* activity = [[GBActivity alloc] init];
 	
 	OATask* aTask = [notif object];
-	activity.task = aTask;
+//	activity.task = aTask;
 	activity.taskRef = (__bridge void*)aTask;
 	activity.isRunning = YES;
 	activity.path = aTask.currentDirectoryPath;

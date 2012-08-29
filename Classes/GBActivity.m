@@ -8,7 +8,6 @@
 
 @implementation GBActivity
 
-@synthesize task;
 @synthesize isRunning;
 
 @synthesize date;
@@ -31,6 +30,11 @@
     self.data = [NSMutableData dataWithLength:0];
   }
   return self;
+}
+
+- (OATask*) task
+{
+	return (__bridge OATask*)_taskRef;
 }
 
 - (void) appendData:(NSData*)chunk

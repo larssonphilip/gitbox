@@ -4,7 +4,7 @@
 @interface GBActivity : NSObject
 
 @property(nonatomic) void* taskRef;
-@property(nonatomic,weak) OATask* task;
+@property(nonatomic,readonly) OATask* task;
 @property(nonatomic,assign) BOOL isRunning;
 
 @property(nonatomic,strong) NSDate* date;
