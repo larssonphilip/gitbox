@@ -85,9 +85,11 @@ NSString* OATaskDidDeallocateNotification  = @"OATaskDidDeallocateNotification";
 	}
 	
 	// The notification can be posted from other thread
-//	NSValue* value = [NSValue valueWithNonretainedObject:self];
-//	[[NSNotificationCenter defaultCenter] postNotificationName:OATaskDidDeallocateNotification object:value];
-	
+	NSValue* value = [NSValue valueWithPointer:(__bridge void *)self];
+	[[NSNotificationCenter defaultCenter] postNotificationName:OATaskDidDeallocateNotification
+														object:value
+													  userInfo:@{@"terminationStatus":@(self.terminationStatus)}];
+
 	if (dispatchQueue) { dispatch_release(dispatchQueue); dispatchQueue = nil; }
 	 didTerminateBlock = nil;
 	 didReceiveDataBlock = nil;
@@ -685,13 +687,7 @@ NSString* OATaskDidDeallocateNotification  = @"OATaskDidDeallocateNotification";
 		[environment setObject:@"YES" forKey:@"NSUnbufferedIO"]; // this really affects only cocoa apps.
 	}
 	
-	[self.nstask setEnvironment:environment];    
-	
-	//  self.activity.isRunning = YES;
-	//  self.activity.status = NSLocalizedString(@"Running", @"Task");
-	//  self.activity.task = self;
-	//  self.activity.path = self.currentDirectoryPath;
-	//  self.activity.command = [self command];
+	[self.nstask setEnvironment:environment];
 }
 
 - (void) readStandardOutputAndStandardError

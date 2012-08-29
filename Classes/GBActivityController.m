@@ -206,9 +206,14 @@ static GBActivityController* sharedGBActivityController;
 
 - (GBActivity*) activityForTask:(OATask*)aTask
 {
+	return [self activityForTaskRef:(__bridge void *)aTask];
+}
+
+- (GBActivity*) activityForTaskRef:(void*)aTask
+{
 	for (GBActivity* activity in self.activities)
 	{
-		if (activity.task == aTask) return activity;
+		if (activity.taskRef == aTask) return activity;
 	}
 	return nil;
 }
@@ -255,6 +260,7 @@ static GBActivityController* sharedGBActivityController;
 	
 	OATask* aTask = [notif object];
 	activity.task = aTask;
+	activity.taskRef = (__bridge void*)aTask;
 	activity.isRunning = YES;
 	activity.path = aTask.currentDirectoryPath;
 	activity.command = [aTask command];
@@ -267,12 +273,13 @@ static GBActivityController* sharedGBActivityController;
 // Achtung: the notification can be posted from other thread
 - (void) taskDidDeallocate:(NSNotification*)notif
 {
-	__unsafe_unretained OATask* aTask = [[notif object] nonretainedObjectValue]; // __block prevents retaining
-	int status = [aTask terminationStatus];
+	void* aTaskRef = [[notif object] pointerValue];
+	int status = [[notif userInfo][@"terminationStatus"] intValue];
 	dispatch_async(dispatch_get_main_queue(), ^{
-		GBActivity* activity = [self activityForTask:aTask];
+		GBActivity* activity = [self activityForTaskRef:aTaskRef];
 		activity.isRunning = NO;
-		activity.task = nil;
+		//activity.task = nil;
+		activity.taskRef = NULL;
 		
 		if (status == 0)
 		{
