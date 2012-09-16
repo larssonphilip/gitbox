@@ -25,9 +25,10 @@
 {
 	void(^block)(BOOL) = self.completionHandler;
 	
+	__weak __typeof(self) weakSelf = self;
 	self.completionHandler = ^(BOOL cancelled){
 		if (block) block(cancelled);
-		[[GBMainWindowController instance] dismissSheet:self];
+		[[GBMainWindowController instance] dismissSheet:weakSelf];
 	};
 	[[GBMainWindowController instance] presentSheet:self silent:silent];
 }

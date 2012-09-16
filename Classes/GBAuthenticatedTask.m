@@ -325,10 +325,11 @@
 	GBAskPassBooleanPromptController* ctrl = [GBAskPassBooleanPromptController controller];
 	ctrl.address = self.remoteAddress;
 	ctrl.question = prompt;
+	__weak __typeof(ctrl) weakCtrl = ctrl;
 	ctrl.callback = ^(BOOL result) {
 		self.booleanResponse = [NSNumber numberWithBool:result];
 		displayingPrompt = NO;
-		[[GBMainWindowController instance] dismissSheet:ctrl];
+		[[GBMainWindowController instance] dismissSheet:weakCtrl];
 	};
 	[[GBMainWindowController instance] presentSheet:ctrl];
 	[NSApp requestUserAttention:NSCriticalRequest];
@@ -348,6 +349,7 @@
 	{
 		ctrl.username = [[NSUserDefaults standardUserDefaults] objectForKey:kGBAuthenticatedTaskLastUsername];
 	}
+	__weak __typeof(ctrl) weakCtrl = ctrl;
 	ctrl.callback = ^(BOOL promptCancelled) {
 		if (promptCancelled)
 		{
@@ -367,7 +369,7 @@
 			needsStoreCredentialsInKeychain = YES;
 		}
 		displayingPrompt = NO;
-		[[GBMainWindowController instance] dismissSheet:ctrl];
+		[[GBMainWindowController instance] dismissSheet:weakCtrl];
 	};
 	[[GBMainWindowController instance] presentSheet:ctrl];
 	[NSApp requestUserAttention:NSCriticalRequest];
@@ -381,6 +383,7 @@
 
 	GBAskPassCredentialsController* ctrl = [GBAskPassCredentialsController passwordOnlyController];
 	ctrl.address = self.remoteAddress;
+	__weak __typeof(ctrl) weakCtrl = ctrl;
 	ctrl.callback = ^(BOOL promptCancelled) {
 		if (promptCancelled)
 		{
@@ -393,7 +396,7 @@
 			needsStoreCredentialsInKeychain = YES;
 		}
 		displayingPrompt = NO;
-		[[GBMainWindowController instance] dismissSheet:ctrl];
+		[[GBMainWindowController instance] dismissSheet:weakCtrl];
 	};
 	[[GBMainWindowController instance] presentSheet:ctrl];
 	[NSApp requestUserAttention:NSCriticalRequest];

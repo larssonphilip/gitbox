@@ -1193,18 +1193,18 @@
 	aBlock = [aBlock copy];
 	
 	__block BOOL didChangeAnyRemote = NO;
-
+	__weak __typeof(self) weakSelf = self;
 	[self.blockTable addBlock:^{
-		
+		__strong __typeof(weakSelf) strongSelf = weakSelf; // Clang: "dereferencing a __weak pointer is not allowed due to possible null value caused by race condition, assign it to strong variable first"
 		if (didChangeAnyRemote)
 		{
-			remoteStateUpdateInterval = 10.0 + 5.0*drand48();
-			[self updateRemoteStateAfterDelay:remoteStateUpdateInterval];
+			strongSelf->remoteStateUpdateInterval = 10.0 + 5.0*drand48();
+			[strongSelf updateRemoteStateAfterDelay:strongSelf->remoteStateUpdateInterval];
 		}
 		else
 		{
-			remoteStateUpdateInterval = remoteStateUpdateInterval*(1.5+drand48());
-			[self updateRemoteStateAfterDelay:remoteStateUpdateInterval];
+			strongSelf->remoteStateUpdateInterval = strongSelf->remoteStateUpdateInterval*(1.5+drand48());
+			[strongSelf updateRemoteStateAfterDelay:strongSelf->remoteStateUpdateInterval];
 		}
 		
 		if (aBlock) aBlock();
@@ -1212,6 +1212,7 @@
 	} forName:@"updateRemoteRefs" proceedIfClear:^{
 		
 		//NSLog(@"==== updateRemotesIfNeededWithBlock START");
+		
 		[self.repository updateRemotesIfNeededWithBlock:^{
 			
 			//NSLog(@"==== updateRemotesIfNeededWithBlock END");
@@ -1220,7 +1221,7 @@
 				for (GBRemote* aRemote in self.repository.remotes)
 				{
 					[blockGroup enter];
-					[self updateBranchesForRemote:aRemote silently:silently withBlock:^(BOOL didChangeRemote){
+					[weakSelf updateBranchesForRemote:aRemote silently:silently withBlock:^(BOOL didChangeRemote){
 						if (didChangeRemote) didChangeAnyRemote = YES;
 						[blockGroup leave];
 					}];

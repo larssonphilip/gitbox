@@ -6,4 +6,6 @@
 	#endif
 	#import "NSObject+OAResponderChain.h"
 	#import "OAAreEqual.h"
+
+#import <objc/runtime.h>
 #endif

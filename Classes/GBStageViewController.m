@@ -902,13 +902,14 @@
 	
 	GBUserNameEmailController* ctrl = [[GBUserNameEmailController alloc] initWithWindowNibName:@"GBUserNameEmailController"];
 	[ctrl fillWithAddressBookData];
+	__weak __typeof(ctrl) weakCtrl = ctrl;
 	ctrl.completionHandler = ^(BOOL cancelled){
 		if (!cancelled)
 		{
 			self.alreadyValidatedUserNameAndEmail = YES;
-			[[GBGitConfig userConfig] setName:ctrl.userName email:ctrl.userEmail withBlock:block];
+			[[GBGitConfig userConfig] setName:weakCtrl.userName email:weakCtrl.userEmail withBlock:block];
 		}
-		[[GBMainWindowController instance] dismissSheet:ctrl];
+		[[GBMainWindowController instance] dismissSheet:weakCtrl];
 	};
 	[[GBMainWindowController instance] presentSheet:ctrl];
 }

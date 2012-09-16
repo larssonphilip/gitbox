@@ -5,7 +5,12 @@ Ways to organize long-running tasks:
 2. Async - caller gets a call back when task is finished.
 
 
-
+- Need a clear state machine for every object - controller etc.
+- Nested objects (submodules) should be coordinated with their parents and use the common queue with them.
+- There should not be principle difference between "read" and "update" operations - both should be queueable and both may have side effects.
+- For certain operations disable the UI until previous operations are finished. E.g. when updating stage, keep "pull" button enabled, but when it's pressed, queue "git pull" and disable pull/push ui.
+- acknowledge fsevents only if haven't done any activity in 10 seconds.
+- use fs events for only detecting unavailable repo.
 
 
 

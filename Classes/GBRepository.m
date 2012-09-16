@@ -987,13 +987,13 @@
 		if (block) block();
 		return;
 	}
-	
+	__weak __typeof(self) weakSelf = self;
 	[self.blockTable addBlock:block forName:@"updateSubmodules" proceedIfClear:^{
-		[self initSubmodulesWithBlock:^{
-			GBSubmodulesTask* task = [GBSubmodulesTask taskWithRepository:self];
-			[self launchTask:task withBlock:^{
-				self.submodules = task.submodules;
-				[self.blockTable callBlockForName:@"updateSubmodules"];
+		[weakSelf initSubmodulesWithBlock:^{
+			GBSubmodulesTask* task = [GBSubmodulesTask taskWithRepository:weakSelf];
+			[weakSelf launchTask:task withBlock:^{
+				weakSelf.submodules = task.submodules;
+				[weakSelf.blockTable callBlockForName:@"updateSubmodules"];
 			}];
 		}];
 	}];

@@ -76,10 +76,11 @@
 	
 	// Note: here we create a cyclic reference: download -> block -> download
 	// But it's okay since download object will always release the block when done.
+	__weak __typeof(self) weakSelf = self;
 	aDownload.completionBlock = ^{
 		//NSLog(@"%@ completed download %@", [self class], aDownload.url);
 		if (completionBlock) completionBlock();
-		[self removeDownload:aDownload];
+		[weakSelf removeDownload:(id)weakSelf];
 	};
 	
 	[self.queue addObject:aDownload];

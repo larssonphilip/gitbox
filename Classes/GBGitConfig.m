@@ -190,10 +190,11 @@
 		if (aBlock) aBlock();
 		return;
 	}
+	__weak __typeof(self) weakSelf = self;
 	[self.blockTable addBlock:aBlock forName:@"ensureDisabledPathQuoting" proceedIfClear:^{
-		[self setString:@"false" forKey:@"core.quotepath" withBlock:^{
-			self.disabledPathQuoting = YES;
-			[self.blockTable callBlockForName:@"ensureDisabledPathQuoting"];
+		[weakSelf setString:@"false" forKey:@"core.quotepath" withBlock:^{
+			weakSelf.disabledPathQuoting = YES;
+			[weakSelf.blockTable callBlockForName:@"ensureDisabledPathQuoting"];
 		}];
 	}];
 }
@@ -201,8 +202,9 @@
 - (void) setName:(NSString*)name email:(NSString*)email withBlock:(void(^)())aBlock
 {
 	aBlock = [aBlock copy];
+	__weak __typeof(self) weakSelf = self;
 	[self setString:name forKey:@"user.name" withBlock:^{
-		[self setString:email forKey:@"user.email" withBlock:^{
+		[weakSelf setString:email forKey:@"user.email" withBlock:^{
 			if (aBlock) aBlock();
 		}];
 	}];

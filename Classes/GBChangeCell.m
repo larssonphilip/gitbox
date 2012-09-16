@@ -104,6 +104,10 @@
 		srcIconRect.origin.y += srcIconRect.size.height;
 	}
 	
+//	[srcIcon drawAtPoint:srcIconRect.origin
+//				fromRect:NSMakeRect(0, 0, srcIcon.size.width, srcIcon.size.height)
+//			   operation:NSCompositeSourceOver
+//				fraction:1.0];
 	[srcIcon compositeToPoint:srcIconRect.origin operation:NSCompositeSourceOver];
 	
 	

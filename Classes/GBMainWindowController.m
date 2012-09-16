@@ -300,8 +300,9 @@
 	GBFileEditingController* fileEditor = [GBFileEditingController controller];
 	fileEditor.title = @"~/.gitconfig";
 	fileEditor.URL = [NSURL fileURLWithPath:[NSHomeDirectory() stringByAppendingPathComponent:@".gitconfig"]];
+	__weak __typeof(fileEditor) weakFileEditor = fileEditor;
 	fileEditor.completionHandler = ^(BOOL cancelled) {
-		[self dismissSheet:fileEditor];
+		[self dismissSheet:weakFileEditor];
 	};
 	[self presentSheet:fileEditor];
 }
@@ -315,8 +316,9 @@
 	{
 		self.welcomeController = [[GBWelcomeController alloc] initWithWindowNibName:@"GBWelcomeController"];
 	}
+	__weak __typeof(self) weakSelf = self;
 	self.welcomeController.completionHandler = ^(BOOL cancelled){
-		[self dismissSheet];
+		[weakSelf dismissSheet];
 	};
 	[self presentSheet:[self.welcomeController window]];
 }
@@ -348,6 +350,7 @@
 {
 	if (!aWindowOrWindowController) return;
 	
+	__weak __typeof(self) weakSelf = self;
 	[self.sheetQueue addBlock:^{
 		
 		NSWindow* aWindow = aWindowOrWindowController;
@@ -372,7 +375,7 @@
 		// skipping current cycle to avoid collision with previously opened sheet which is closing right now
 		dispatch_async(dispatch_get_main_queue(), ^{
 			[NSApp beginSheet:self.currentSheet
-			   modalForWindow:[self window]
+			   modalForWindow:[weakSelf window]
 				modalDelegate:nil
 			   didEndSelector:nil
 				  contextInfo:nil];

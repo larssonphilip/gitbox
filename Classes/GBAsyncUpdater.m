@@ -50,6 +50,7 @@
 			//NSLog(@"GBAsyncUpdater: setNeedsUpdate: scheduling update");
 			_needsUpdate = YES;
 			dispatch_async(dispatch_get_main_queue(), ^{
+				
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
 				if (self.action) [self.target performSelector:self.action withObject:self];

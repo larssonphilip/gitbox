@@ -126,10 +126,10 @@
 	void(^existingBlock)() = [self.currentStartMap objectForKey:elementName];
 	if (existingBlock)
 	{
-		block = [block copy];
+		__typeof(block) newBlock = [block copy];
 		block = ^{
 			existingBlock();
-			block();
+			newBlock();
 		};
 	}
 	[self.currentStartMap setObject:[block copy] forKey:elementName];
@@ -164,10 +164,10 @@
 	void(^existingBlock)() = [self.currentEndMap objectForKey:elementName];
 	if (existingBlock)
 	{
-		block = [block copy];
+		__typeof(block) block2 = [block copy];
 		block = ^{
 			existingBlock();
-			block();
+			block2();
 		};
 	}
 	[self.currentEndMap setObject:[block copy] forKey:elementName];
