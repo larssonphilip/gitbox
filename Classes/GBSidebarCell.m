@@ -228,15 +228,14 @@
 	imageFrame.origin.x += 3;
 	imageFrame.size = imageSize;
 	
-	if ([self.outlineView isFlipped])
-	{
-		imageFrame.origin.y += imageFrame.size.height + 2;
-	}
-	else
-	{
-		imageFrame.origin.y += 1;
-	}
-	[image compositeToPoint:imageFrame.origin operation:NSCompositeSourceOver];
+	imageFrame.origin.y += 1;
+
+	[image drawInRect:imageFrame
+			   fromRect:NSMakeRect(0, 0, image.size.width, image.size.height)
+			  operation:NSCompositeSourceOver
+			   fraction:1.0
+		 respectFlipped:YES
+				  hints:nil];
 	
 	rect2.origin.x += 2;
 	rect2.origin.y += 3;
@@ -313,14 +312,14 @@
 	{
 		NSRect imageRect = NSRectFromCGRect(CGRectInset(NSRectToCGRect(spinnerFrame), -1.0, -1.0));
 		
-		if ([self.outlineView isFlipped])
-		{
-			imageRect.origin.y += imageRect.size.height;
-		}
-		
 		NSImage* image = [NSImage imageNamed:@"GBSidebarCellSpinnerBackdrop.png"];
 		[image setSize:imageRect.size];
-		[image compositeToPoint:imageRect.origin operation:NSCompositeSourceOver];
+		[image drawInRect:imageRect
+				   fromRect:NSMakeRect(0, 0, image.size.width, image.size.height)
+				  operation:NSCompositeSourceOver
+				   fraction:1.0
+			 respectFlipped:YES
+					  hints:nil];
 	}
 	
 	return rect;

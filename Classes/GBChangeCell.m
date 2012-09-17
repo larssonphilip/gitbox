@@ -98,18 +98,13 @@
 	
 	NSRect srcIconRect = currentFrame;
 	srcIconRect.size = iconSize;
-	
-	if (isFlipped)
-	{
-		srcIconRect.origin.y += srcIconRect.size.height;
-	}
-	
-//	[srcIcon drawAtPoint:srcIconRect.origin
-//				fromRect:NSMakeRect(0, 0, srcIcon.size.width, srcIcon.size.height)
-//			   operation:NSCompositeSourceOver
-//				fraction:1.0];
-	[srcIcon compositeToPoint:srcIconRect.origin operation:NSCompositeSourceOver];
-	
+
+	[srcIcon drawInRect:srcIconRect
+			   fromRect:NSMakeRect(0, 0, srcIcon.size.width, srcIcon.size.height)
+			  operation:NSCompositeSourceOver
+			   fraction:1.0
+		 respectFlipped:YES
+				  hints:nil];
 	
 	
 	// Adjust the currentFrame for the text
@@ -266,7 +261,12 @@
 			NSRect dstIconRect = srcIconRect;
 			dstIconRect.origin.x = currentFrame.origin.x;
 			
-			[dstIcon compositeToPoint:dstIconRect.origin operation:NSCompositeSourceOver];
+			[dstIcon drawInRect:dstIconRect
+					   fromRect:NSMakeRect(0, 0, dstIcon.size.width, dstIcon.size.height)
+					  operation:NSCompositeSourceOver
+					   fraction:1.0
+				 respectFlipped:YES
+						  hints:nil];
 			
 			currentFrame.origin.x += offsetAfterIcon;
 			currentFrame.size.width -= offsetAfterIcon;
