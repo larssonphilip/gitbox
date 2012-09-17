@@ -134,9 +134,7 @@
 		20330C141365B72A006B2457 /* GBAskPassBooleanPromptController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20330C121365B72A006B2457 /* GBAskPassBooleanPromptController.m */; };
 		20330C161365B755006B2457 /* GBAskPassBooleanPromptController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 20330C151365B754006B2457 /* GBAskPassBooleanPromptController.xib */; };
 		20330C171365B755006B2457 /* GBAskPassBooleanPromptController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 20330C151365B754006B2457 /* GBAskPassBooleanPromptController.xib */; };
-		2035632F11D3B57800965765 /* GBLightScroller.m in Sources */ = {isa = PBXBuildFile; fileRef = 2035632E11D3B57800965765 /* GBLightScroller.m */; };
 		2035634E11D3BCB100965765 /* CGContext+OACGContextHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 2035634D11D3BCB100965765 /* CGContext+OACGContextHelpers.m */; };
-		2035639E11D3C14C00965765 /* GBLightScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2035639D11D3C14C00965765 /* GBLightScrollView.m */; };
 		20376A7914BAAF1100B181B7 /* OAAreEqual.m in Sources */ = {isa = PBXBuildFile; fileRef = 20376A7814BAAF1100B181B7 /* OAAreEqual.m */; };
 		20376A7A14BAAF1100B181B7 /* OAAreEqual.m in Sources */ = {isa = PBXBuildFile; fileRef = 20376A7814BAAF1100B181B7 /* OAAreEqual.m */; };
 		2038F1B3119366660087CE37 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C1660FE840EACC02AAC07 /* InfoPlist.strings */; };
@@ -350,9 +348,7 @@
 		20915F0A12874D2A005E0D82 /* GBLocalRefsTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B399F911B7F30600D6A3C4 /* GBLocalRefsTask.m */; };
 		20915F0B12874D2A005E0D82 /* GBFileEditingController.m in Sources */ = {isa = PBXBuildFile; fileRef = 209A935E11BA934C006B0B5C /* GBFileEditingController.m */; };
 		20915F0C12874D2A005E0D82 /* NSAttributedString+OAAttributedStringHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 2025D3B911BF1F2D004715FA /* NSAttributedString+OAAttributedStringHelpers.m */; };
-		20915F0F12874D2A005E0D82 /* GBLightScroller.m in Sources */ = {isa = PBXBuildFile; fileRef = 2035632E11D3B57800965765 /* GBLightScroller.m */; };
 		20915F1012874D2A005E0D82 /* CGContext+OACGContextHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 2035634D11D3BCB100965765 /* CGContext+OACGContextHelpers.m */; };
-		20915F1112874D2A005E0D82 /* GBLightScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2035639D11D3C14C00965765 /* GBLightScrollView.m */; };
 		20915F1212874D2A005E0D82 /* OAPropertyListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20265C0211D68D3400709F6B /* OAPropertyListController.m */; };
 		20915F1312874D2A005E0D82 /* OAFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 20265C1311D68F1300709F6B /* OAFile.m */; };
 		20915F1512874D2A005E0D82 /* GBCertificateUpdateController.m in Sources */ = {isa = PBXBuildFile; fileRef = 201E030511EE09D7007E4420 /* GBCertificateUpdateController.m */; };
@@ -707,12 +703,8 @@
 		20330C111365B729006B2457 /* GBAskPassBooleanPromptController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBAskPassBooleanPromptController.h; sourceTree = "<group>"; };
 		20330C121365B72A006B2457 /* GBAskPassBooleanPromptController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBAskPassBooleanPromptController.m; sourceTree = "<group>"; };
 		20330C151365B754006B2457 /* GBAskPassBooleanPromptController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GBAskPassBooleanPromptController.xib; sourceTree = "<group>"; };
-		2035632D11D3B57800965765 /* GBLightScroller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBLightScroller.h; sourceTree = "<group>"; };
-		2035632E11D3B57800965765 /* GBLightScroller.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBLightScroller.m; sourceTree = "<group>"; };
 		2035634C11D3BCB100965765 /* CGContext+OACGContextHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CGContext+OACGContextHelpers.h"; sourceTree = "<group>"; };
 		2035634D11D3BCB100965765 /* CGContext+OACGContextHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CGContext+OACGContextHelpers.m"; sourceTree = "<group>"; };
-		2035639C11D3C14C00965765 /* GBLightScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBLightScrollView.h; sourceTree = "<group>"; };
-		2035639D11D3C14C00965765 /* GBLightScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBLightScrollView.m; sourceTree = "<group>"; };
 		20376A7714BAAF1100B181B7 /* OAAreEqual.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAAreEqual.h; sourceTree = "<group>"; };
 		20376A7814BAAF1100B181B7 /* OAAreEqual.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAAreEqual.m; sourceTree = "<group>"; };
 		2038F1DD11936B060087CE37 /* GBAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBAppDelegate.h; sourceTree = "<group>"; };
@@ -1276,10 +1268,6 @@
 			children = (
 				203F729912A62E0200BE1A55 /* GBCell.h */,
 				203F729A12A62E0200BE1A55 /* GBCell.m */,
-				2035632D11D3B57800965765 /* GBLightScroller.h */,
-				2035632E11D3B57800965765 /* GBLightScroller.m */,
-				2035639C11D3C14C00965765 /* GBLightScrollView.h */,
-				2035639D11D3C14C00965765 /* GBLightScrollView.m */,
 				209C192212B802C900F56A54 /* GBCellWithView.h */,
 				209C192312B802C900F56A54 /* GBCellWithView.m */,
 				200433A012DA02CF00B045C0 /* GBGreyGradientView.h */,
@@ -2198,9 +2186,7 @@
 				20915F0A12874D2A005E0D82 /* GBLocalRefsTask.m in Sources */,
 				20915F0B12874D2A005E0D82 /* GBFileEditingController.m in Sources */,
 				20915F0C12874D2A005E0D82 /* NSAttributedString+OAAttributedStringHelpers.m in Sources */,
-				20915F0F12874D2A005E0D82 /* GBLightScroller.m in Sources */,
 				20915F1012874D2A005E0D82 /* CGContext+OACGContextHelpers.m in Sources */,
-				20915F1112874D2A005E0D82 /* GBLightScrollView.m in Sources */,
 				20915F1212874D2A005E0D82 /* OAPropertyListController.m in Sources */,
 				20915F1312874D2A005E0D82 /* OAFile.m in Sources */,
 				20915F1512874D2A005E0D82 /* GBCertificateUpdateController.m in Sources */,
@@ -2357,9 +2343,7 @@
 				20B399FA11B7F30600D6A3C4 /* GBLocalRefsTask.m in Sources */,
 				209A935F11BA934C006B0B5C /* GBFileEditingController.m in Sources */,
 				2025D3BA11BF1F2D004715FA /* NSAttributedString+OAAttributedStringHelpers.m in Sources */,
-				2035632F11D3B57800965765 /* GBLightScroller.m in Sources */,
 				2035634E11D3BCB100965765 /* CGContext+OACGContextHelpers.m in Sources */,
-				2035639E11D3C14C00965765 /* GBLightScrollView.m in Sources */,
 				20265C0311D68D3400709F6B /* OAPropertyListController.m in Sources */,
 				20265C1411D68F1300709F6B /* OAFile.m in Sources */,
 				201E030611EE09D7007E4420 /* GBCertificateUpdateController.m in Sources */,

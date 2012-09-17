@@ -1,7 +1,6 @@
 #import "GBSidebarCell.h"
 #import "GBSidebarItem.h"
 #import "GBSidebarOutlineView.h"
-#import "GBLightScroller.h"
 #import "YRKSpinningProgressIndicator.h"
 #import "CGContext+OACGContextHelpers.h"
 
@@ -240,8 +239,7 @@
 	rect2.origin.x += 2;
 	rect2.origin.y += 3;
 	rect2.size.height -= 3;
-		
-	rect2.size.width -= ([GBLightScroller isModernScroller] ? 5.0 : ([GBLightScroller width] + 1.0));
+	rect2.size.width -= 5;
 	
 	return rect2;
 }
