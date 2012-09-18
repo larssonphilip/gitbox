@@ -25,10 +25,10 @@
 {
 	void(^block)(BOOL) = self.completionHandler;
 	
-	__weak __typeof(self) weakSelf = self;
+	__typeof(self) strongSelf = self; // suppress "retain cycle" message
 	self.completionHandler = ^(BOOL cancelled){
 		if (block) block(cancelled);
-		[[GBMainWindowController instance] dismissSheet:weakSelf];
+		[[GBMainWindowController instance] dismissSheet:strongSelf];
 	};
 	[[GBMainWindowController instance] presentSheet:self silent:silent];
 }

@@ -54,6 +54,12 @@ NSString* const GBRepositorySettingsGitConfig       = @"GBRepositorySettingsGitC
 	return self;
 }
 
+- (void) dealloc
+{
+//	NSLog(@"GBRepoSettingsCtrl dealloc");
+	
+}
+
 - (void) presentSheetInMainWindow
 {
 	// Not the best place to init controllers, but at least we have the repository here.
@@ -237,11 +243,12 @@ NSString* const GBRepositorySettingsGitConfig       = @"GBRepositorySettingsGitC
 	[alert beginSheetModalForWindow:[self window]
 					  modalDelegate:self 
 					 didEndSelector:@selector(alertDidEnd:returnCode:contextInfo:) 
-						contextInfo:(__bridge void *)(completion)];
+						contextInfo:(__bridge_retained void *)(completion)];
 }
 
-- (void) alertDidEnd:(NSAlert*)alert returnCode:(NSInteger)returnCode contextInfo:(void(^)(BOOL))completion
+- (void) alertDidEnd:(NSAlert*)alert returnCode:(NSInteger)returnCode contextInfo:(void*)ctx
 {
+	void(^completion)(BOOL) = (__bridge_transfer void(^)(BOOL))ctx;
 	if (completion) completion(returnCode == NSAlertFirstButtonReturn);
 }
 
