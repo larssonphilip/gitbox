@@ -7,5 +7,7 @@
 	#import "NSObject+OAResponderChain.h"
 	#import "OAAreEqual.h"
 
-#import <objc/runtime.h>
+	#import <objc/runtime.h>
 #endif
+
+#define IRATE_AUTOLOAD_ENABLED 0
