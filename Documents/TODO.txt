@@ -35,7 +35,7 @@ Gitbox 2.0 Release Notes
 
 Done for next release:
 
-+
++ build and bundle static openssl to avoid deprecations with system-provided openssl.
 
 -------------------------------
 
@@ -52,8 +52,6 @@ Gitbox Next:
 - acknowledge fsevents only if haven't done any activity in 10 seconds.
 - use fsevents to mark repo needsUpdate to be updated when window is focused or the repo is selected.
 - memory overhead: by accumulated Activities, by recordered undos and by leaks due to strong self reference within a block.
-
-
 
 - setNeedsUpdate:
   - add timer for remote refs updates
