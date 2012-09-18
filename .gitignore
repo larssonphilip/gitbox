@@ -18,3 +18,7 @@ xcshareddata
 
 # JetBrains App Code
 .idea
+openssl/lib/pkgconfig
+openssl/ssl
+openssl/bin
+

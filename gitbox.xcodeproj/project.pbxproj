@@ -503,6 +503,10 @@
 		20C8972312B89BC2002F600F /* OATextFieldAndView.m in Sources */ = {isa = PBXBuildFile; fileRef = 20C8972112B89BC2002F600F /* OATextFieldAndView.m */; };
 		20C899B612B95DDF002F600F /* OANonScrollingScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 20C899B512B95DDF002F600F /* OANonScrollingScrollView.m */; };
 		20C899B712B95DDF002F600F /* OANonScrollingScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 20C899B512B95DDF002F600F /* OANonScrollingScrollView.m */; };
+		20C936071609242600B8E985 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 20C935FE160923CF00B8E985 /* libcrypto.a */; };
+		20C936081609242600B8E985 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 20C935FF160923CF00B8E985 /* libssl.a */; };
+		20C936091609242600B8E985 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 20C935FE160923CF00B8E985 /* libcrypto.a */; };
+		20C9360A1609242600B8E985 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 20C935FF160923CF00B8E985 /* libssl.a */; };
 		20CBF1CE13D61EB80071E79D /* libgit2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 20CBF1CD13D61EB80071E79D /* libgit2.a */; };
 		20CE6D65138824D2001D9707 /* GBHistoryTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 20CE6D64138824D2001D9707 /* GBHistoryTableView.m */; };
 		20CE6D66138824D2001D9707 /* GBHistoryTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 20CE6D64138824D2001D9707 /* GBHistoryTableView.m */; };
@@ -1000,6 +1004,9 @@
 		20C8972112B89BC2002F600F /* OATextFieldAndView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = OATextFieldAndView.m; path = ../OATextFieldAndView.m; sourceTree = "<group>"; };
 		20C899B412B95DDF002F600F /* OANonScrollingScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OANonScrollingScrollView.h; path = ../OANonScrollingScrollView.h; sourceTree = "<group>"; };
 		20C899B512B95DDF002F600F /* OANonScrollingScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = OANonScrollingScrollView.m; path = ../OANonScrollingScrollView.m; sourceTree = "<group>"; };
+		20C935FE160923CF00B8E985 /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = openssl/lib/libcrypto.a; sourceTree = SOURCE_ROOT; };
+		20C935FF160923CF00B8E985 /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = openssl/lib/libssl.a; sourceTree = SOURCE_ROOT; };
+		20C9365A1609278400B8E985 /* openssl */ = {isa = PBXFileReference; lastKnownFileType = folder; name = openssl; path = openssl/include/openssl; sourceTree = SOURCE_ROOT; };
 		20CBF1CD13D61EB80071E79D /* libgit2.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgit2.a; path = libgit2/build/libgit2.a; sourceTree = "<group>"; };
 		20CE6D63138824D2001D9707 /* GBHistoryTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBHistoryTableView.h; sourceTree = "<group>"; };
 		20CE6D64138824D2001D9707 /* GBHistoryTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBHistoryTableView.m; sourceTree = "<group>"; };
@@ -1051,6 +1058,8 @@
 				20EF8C4812E6605D00F3438A /* Quartz.framework in Frameworks */,
 				209CE44513D61FD0009E85A2 /* libz.dylib in Frameworks */,
 				209CE4C513D61FF2009E85A2 /* libgit2.a in Frameworks */,
+				20C936071609242600B8E985 /* libcrypto.a in Frameworks */,
+				20C936081609242600B8E985 /* libssl.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1068,6 +1077,8 @@
 				20EF88D912E34F9300F3438A /* QuickLook.framework in Frameworks */,
 				20CBF1CE13D61EB80071E79D /* libgit2.a in Frameworks */,
 				209CE44413D61FAC009E85A2 /* libz.dylib in Frameworks */,
+				20C936091609242600B8E985 /* libcrypto.a in Frameworks */,
+				20C9360A1609242600B8E985 /* libssl.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1732,6 +1743,16 @@
 			path = MASPreferences/Demo/Shared;
 			sourceTree = SOURCE_ROOT;
 		};
+		20C935B11609235D00B8E985 /* OpenSSL */ = {
+			isa = PBXGroup;
+			children = (
+				20C9365A1609278400B8E985 /* openssl */,
+				20C935FE160923CF00B8E985 /* libcrypto.a */,
+				20C935FF160923CF00B8E985 /* libssl.a */,
+			);
+			name = OpenSSL;
+			sourceTree = "<group>";
+		};
 		20E698D813635AB9000A3A6F /* Authentication */ = {
 			isa = PBXGroup;
 			children = (
@@ -1772,6 +1793,7 @@
 				201E02DA11EA1ED3007E4420 /* License */,
 				20E698D813635AB9000A3A6F /* Authentication */,
 				2038F6C611A030FF0087CE37 /* Tasks */,
+				20C935B11609235D00B8E985 /* OpenSSL */,
 				20106C5113D3760A0018A65F /* LibGit2 */,
 				2038F30811952FAE0087CE37 /* Models */,
 				206CAC72122EB619009284FE /* Model Controllers */,
@@ -2559,6 +2581,10 @@
 				GCC_PREFIX_HEADER = prefix_appstore.pch;
 				INFOPLIST_FILE = info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/openssl/lib\"",
+				);
 				PRODUCT_NAME = Gitbox;
 			};
 			name = Debug;
@@ -2578,6 +2604,10 @@
 				GCC_PREFIX_HEADER = prefix_appstore.pch;
 				INFOPLIST_FILE = info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/openssl/lib\"",
+				);
 				PRODUCT_NAME = Gitbox;
 				PROVISIONING_PROFILE = "B3B8F00F-28E7-47A0-B749-8073CDC9A70E";
 			};
@@ -2601,6 +2631,10 @@
 				GCC_PREFIX_HEADER = prefix.pch;
 				INFOPLIST_FILE = info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/openssl/lib\"",
+				);
 				PRODUCT_NAME = Gitbox;
 			};
 			name = Debug;
@@ -2621,6 +2655,10 @@
 				GCC_PREFIX_HEADER = prefix.pch;
 				INFOPLIST_FILE = info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/openssl/lib\"",
+				);
 				PRODUCT_NAME = Gitbox;
 			};
 			name = Release;
@@ -2636,7 +2674,10 @@
 				GCC_VERSION = "";
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = "$(SRCROOT)/libgit2/include";
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/libgit2/include",
+					"$(SRCROOT)/openssl/include",
+				);
 				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/libgit2/build";
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				ONLY_ACTIVE_ARCH = NO;
@@ -2659,7 +2700,10 @@
 				GCC_VERSION = "";
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = "$(SRCROOT)/libgit2/include";
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/libgit2/include",
+					"$(SRCROOT)/openssl/include",
+				);
 				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/libgit2/build";
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				ONLY_ACTIVE_ARCH = NO;
