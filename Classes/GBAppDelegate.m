@@ -36,15 +36,13 @@
 #warning Debugging iRate
 #endif
 
-#if GITBOX_APP_STORE || DEBUG_iRate
 #import "iRate.h"
-#endif
 
 #if !GITBOX_APP_STORE
 #import "Sparkle/Sparkle.h"
 #endif
 
-@interface GBAppDelegate () <NSOpenSavePanelDelegate>
+@interface GBAppDelegate () <NSOpenSavePanelDelegate, iRateDelegate>
 
 @property(nonatomic, strong) GBRootController* rootController;
 @property(nonatomic, strong) GBMainWindowController* windowController;
@@ -181,6 +179,7 @@
 
 - (void) applicationDidFinishLaunching:(NSNotification*) aNotification
 {
+	[iRate sharedInstance].delegate = self;
 	GBApp.didTerminateSafely = [[NSUserDefaults standardUserDefaults] boolForKey:@"GBDidTerminateSafely"];
 	[[NSUserDefaults standardUserDefaults] removeObjectForKey:@"GBDidTerminateSafely"];
 	[[NSUserDefaults standardUserDefaults] synchronize];
@@ -399,7 +398,7 @@
 
 
 
-#pragma mark Apple Events URL handling
+#pragma mark - Apple Events URL handling
 
 
 - (void)handleUrl:(NSAppleEventDescriptor *)event withReplyEvent:(NSAppleEventDescriptor *)replyEvent
@@ -420,6 +419,20 @@
 	}
 }
 
+
+- (BOOL)iRateShouldPromptForRating
+{
+#if GITBOX_APP_STORE || DEBUG_iRate
+	return YES;
+#else
+	return NO;
+#endif
+}
+
+
+
+
+#pragma mark - Tests
 
 
 

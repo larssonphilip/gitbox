@@ -9,5 +9,3 @@
 
 	#import <objc/runtime.h>
 #endif
-
-#define IRATE_AUTOLOAD_ENABLED 0
