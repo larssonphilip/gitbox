@@ -9,7 +9,7 @@ static const NSTimeInterval idleInterval = 4*3600.0;
 static const NSTimeInterval checkInterval = 60.0;
 static const double actionProbability = 0.05;
 #else
-#warning Debug: short intervals for optimize in background.
+#warning Debug: short intervals for optimizing in background.
 static const NSTimeInterval idleInterval = 10.0;
 static const NSTimeInterval checkInterval = 6.0;
 static const double actionProbability = 0.5;
@@ -21,8 +21,10 @@ static BOOL running = NO;
 static id monitor = nil;
 
 @interface GBOptimizeRepositoryController ()
-@property(nonatomic, strong) GBRepository* repository;
-@property(nonatomic, strong) GBTaskWithProgress* task;
+@property(nonatomic) GBRepository* repository;
+@property(nonatomic) GBTaskWithProgress* task;
+@property(nonatomic) IBOutlet NSProgressIndicator *progressIndicator;
+@property(nonatomic) IBOutlet NSTextField *pathLabel;
 + (void) scheduleCheck;
 + (void) resetTimeout;
 @end
@@ -30,10 +32,6 @@ static id monitor = nil;
 @implementation GBOptimizeRepositoryController {
 	BOOL started;
 }
-@synthesize progressIndicator;
-@synthesize pathLabel;
-@synthesize repository=_repository;
-@synthesize task=_task;
 
 
 + (GBOptimizeRepositoryController*) controllerWithRepository:(GBRepository*)repo

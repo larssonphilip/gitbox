@@ -56,8 +56,6 @@ NSString* const GBRepositorySettingsGitConfig       = @"GBRepositorySettingsGitC
 
 - (void) dealloc
 {
-//	NSLog(@"GBRepoSettingsCtrl dealloc");
-	
 }
 
 - (void) presentSheetInMainWindow

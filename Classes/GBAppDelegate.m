@@ -42,34 +42,24 @@
 #import "Sparkle/Sparkle.h"
 #endif
 
-@interface GBAppDelegate () <NSOpenSavePanelDelegate, iRateDelegate>
+@interface GBAppDelegate () <NSApplicationDelegate, NSOpenSavePanelDelegate, iRateDelegate>
 
-@property(nonatomic, strong) GBRootController* rootController;
-@property(nonatomic, strong) GBMainWindowController* windowController;
-@property(nonatomic, strong) MASPreferencesWindowController* preferencesController;
-@property(nonatomic, strong) NSMutableArray* URLsToOpenAfterLaunch;
+@property(nonatomic) GBRootController* rootController;
+@property(nonatomic) GBMainWindowController* windowController;
+@property(nonatomic) MASPreferencesWindowController* preferencesController;
+@property(nonatomic) NSMutableArray* URLsToOpenAfterLaunch;
 
-- (void) saveItems;
-- (void) testUTF8Healing;
+@property(nonatomic) IBOutlet NSTextView* licenseTextView;
+@property(nonatomic) IBOutlet NSMenuItem* checkForUpdatesMenuItem;
+@property(nonatomic) IBOutlet NSMenuItem* welcomeMenuItem;
+@property(nonatomic) IBOutlet NSMenuItem* rateInAppStoreMenuItem;
 
 @end
 
 @implementation GBAppDelegate {
-	NSUInteger diffToolsControllerIndex;
-	NSUInteger licenseControllerIndex;
+	NSUInteger _diffToolsControllerIndex;
+	NSUInteger _licenseControllerIndex;
 }
-
-@synthesize licenseTextView;
-
-@synthesize rootController;
-@synthesize windowController;
-@synthesize preferencesController;
-@synthesize URLsToOpenAfterLaunch;
-@synthesize licenseMenuItem;
-@synthesize checkForUpdatesMenuItem;
-@synthesize welcomeMenuItem;
-@synthesize rateInAppStoreMenuItem;
-
 
 + (void) initialize
 {
@@ -86,13 +76,28 @@
 }
 
 
-#pragma mark Actions
+
+
+
+
+
+
+
+
+#pragma mark - Actions
+
+
+
+
 
 
 - (IBAction) rateInAppStore:(id)sender
 {
 #if GITBOX_APP_STORE || DEBUG_iRate  
 	[[iRate sharedInstance] openRatingsPageInAppStore];
+#else
+	NSString* purchaseURLString = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"GBAppStoreURL"];
+	[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:purchaseURLString]];
 #endif
 }
 
@@ -123,13 +128,13 @@
 
 - (IBAction) showLicense:(id)sender
 {
-	[self.preferencesController selectControllerAtIndex:licenseControllerIndex];
+	[self.preferencesController selectControllerAtIndex:_licenseControllerIndex];
 	[self.preferencesController showWindow:nil];
 }
 
 - (IBAction) showDiffToolPreferences:(id)sender
 {
-	[self.preferencesController selectControllerAtIndex:diffToolsControllerIndex];
+	[self.preferencesController selectControllerAtIndex:_diffToolsControllerIndex];
 	[self.preferencesController showWindow:nil];
 }
 
@@ -172,7 +177,7 @@
 
 
 
-#pragma mark NSApplicationDelegate
+#pragma mark - Application Delegate
 
 
 
@@ -206,9 +211,7 @@
 			[[SUUpdater sharedUpdater] checkForUpdatesInBackground];
 		});
 	#endif
-	
 #endif
-	
 	
 #if DEBUG_iRate
 #warning DEBUG: launching iRate dialog on start
@@ -220,6 +223,7 @@
 #endif
 	
 	[self updateAppleEvents];
+	
 	[[GBActivityController sharedActivityController] loadWindow]; // force load the activity controller to begin monitoring the tasks
 	
 	self.rootController = [GBRootController new];
@@ -229,22 +233,13 @@
 	
 	self.windowController = [GBMainWindowController instance];
 	
+#if GITBOX_APP_STORE
 	void(^removeMenuItem)(NSMenuItem*) = ^(NSMenuItem* item) {
 		if (item) [[item menu] removeItem:item];
 	};
-	
-#if GITBOX_APP_STORE
 	removeMenuItem(self.licenseMenuItem);
 	removeMenuItem(self.checkForUpdatesMenuItem);
-#else
-	removeMenuItem(nil); // so that compiler does not warn about unused variable.
-	// TODO: change the action to open app homepage in appstore instead of ratings page
-	//removeMenuItem(self.rateInAppStoreMenuItem);
 #endif
-	
-//#if !DEBUG
-//	removeMenuItem(self.welcomeMenuItem);
-//#endif
 	
 	self.licenseTextView.string = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"GitboxLicense" ofType:@"txt"] encoding:NSUTF8StringEncoding error:NULL];
 	
@@ -261,10 +256,10 @@
 									   [GBPreferencesUpdatesViewController controller],
 									   [GBPreferencesLicenseViewController controller],
 									   nil];
-	licenseControllerIndex = 3;
+	_licenseControllerIndex = 3;
 #endif
 	
-	diffToolsControllerIndex = 0;
+	_diffToolsControllerIndex = 0;
 	
 	self.preferencesController = [[MASPreferencesWindowController alloc] initWithViewControllers:preferencesControllers];
 	
