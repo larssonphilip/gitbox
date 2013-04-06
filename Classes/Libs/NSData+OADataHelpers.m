@@ -1,3 +1,7 @@
+// Author: Oleg Andreev <oleganza@gmail.com> 
+// May 28, 2011
+// Do What The Fuck You Want Public License <http://www.wtfpl.net>
+
 #import "NSData+OADataHelpers.h"
 
 @implementation NSData (OADataHelpers)
