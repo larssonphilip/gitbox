@@ -6,7 +6,6 @@
 #import "NSFileManager+OAFileManagerHelpers.h"
 #import "NSArray+OAArrayHelpers.h"
 
-
 @interface GBRemote ()
 @property(nonatomic,strong) NSArray* transientBranches;
 @property(nonatomic,assign) BOOL isUpdatingRemoteBranches;
@@ -15,31 +14,21 @@
 
 @implementation GBRemote
 
-@synthesize alias;
-@synthesize URLString;
-@synthesize fetchRefspec;
-@synthesize branches;
-@synthesize transientBranches;
-
-@synthesize repository;
-@synthesize isUpdatingRemoteBranches;
-@synthesize needsFetch;
 
 
-
-#pragma mark Init
+#pragma mark - Init
 
 
 - (NSArray*) branches
 {
-	if (!branches) self.branches = [NSArray array];
-	return branches;
+	if (!_branches) self.branches = [NSArray array];
+	return _branches;
 }
 
 - (NSArray*) transientBranches
 {
-	if (!transientBranches) self.transientBranches = [NSArray array];
-	return transientBranches;
+	if (!_transientBranches) self.transientBranches = [NSArray array];
+	return _transientBranches;
 }
 
 - (NSString*)description
@@ -49,7 +38,7 @@
 
 
 
-#pragma mark Interrogation
+#pragma mark - Interrogation
 
 
 - (GBRef*) defaultBranch
@@ -114,7 +103,7 @@
 
 
 
-#pragma mark Actions
+#pragma mark - Actions
 
 
 - (BOOL) isTransientBranch:(GBRef*)branch

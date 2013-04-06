@@ -11,7 +11,7 @@
 @property(nonatomic,weak) GBRepository* repository;
 
 
-#pragma mark Interrogation
+// Interrogation
 
 - (GBRef*) defaultBranch;
 - (NSArray*) pushedAndNewBranches;
@@ -21,7 +21,7 @@
 - (void) updateBranches;
 
 
-#pragma mark Actions
+// Actions
 
 - (BOOL) isTransientBranch:(GBRef*)branch;
 - (void) addNewBranch:(GBRef*)branch;
