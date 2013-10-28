@@ -2,7 +2,7 @@
 
 The software is provided "as is", without warranty of any kind, express or implied, including but not limited to the warranties of merchantability, fitness for a particular purpose and noninfringement of third party rights. In no event shall the copyright holder or holders included in this notice be liable for any claim, or any special indirect or consequential damages, or any damages whatsoever resulting from loss of use, data or profits, whether in an action of contract, negligence or other tortious action, arising out of or in connection with the use or performance of this software.
 
-The application package contains a compiled official version 1.7.5.4 of the Git content tracker. Gitbox neither links (statically or dynamically) against Git nor uses custom interfaces to interact with it. Git binaries are provided for user convenience only. You can replace bundled binaries with any compatible build of the current version of Git or newer.
+The application package contains a compiled official version 1.8.4.1.3 of the Git content tracker. Gitbox neither links (statically or dynamically) against Git nor uses custom interfaces to interact with it. Git binaries are provided for user convenience only. You can replace bundled binaries with any compatible build of the current version of Git or newer.
 
 Git is provided under conditions of the GPLv2 license. You can obtain the source code for the Git on the following web sites: 
 

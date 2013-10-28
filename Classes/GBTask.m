@@ -35,12 +35,8 @@
 
 + (NSString*) bundledGitVersion
 {
-	if ([self isSnowLeopard])
-	{
-		 // because Git 1.7.7 requires newer version of libcurl which is not installed by default on Snow Leopard without dev tools or with older dev tools.
-		return @"1.7.5.4";
-	}
-	return @"1.7.7.2.3.g19dee";
+    return @"1.8.4.1.3.g7ce914e";
+	//return @"1.7.7.2.3.g19dee";
 }
 
 + (NSString*) pathToBundledBinary:(NSString*)name

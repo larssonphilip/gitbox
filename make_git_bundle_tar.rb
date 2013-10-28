@@ -18,7 +18,7 @@ end
 
 prefix = "#{`pwd`.strip}/git.bundle"
 FileUtils.mkdir_p(prefix)
-system("cd git && make clean && make prefix=#{prefix} all && make prefix=#{prefix} install")
+system("cd git && make clean && make configure && ./configure --prefix=#{prefix} && make prefix=#{prefix} all && make prefix=#{prefix} install")
 
 # Codesign git binaries
 
@@ -26,14 +26,16 @@ if ENV['CODESIGN_BUNDLED_BINARIES']
   each_git_binary do |path|
     result = `codesign -d #{path} 2>&1`
     if result["code object is not signed at all"]
-      system(%{codesign --verbose --force --sign "3rd Party Mac Developer Application: Oleg Andreev" --entitlements Helper.entitlements #{path}})
+      puts "CODESIGN sign: #{path}"
+      system(%{codesign --verbose --force --sign "Developer ID Application: Oleg Andreev" --entitlements Helper.entitlements #{path}})
     else
-      puts "Already signed: #{path}"
+      puts "CODESIGN skip: #{path}"
       # file is signed or invalid (a shell script or a folder)
     end
   end
 end
 
+system("rm -rf git.bundle.tar")
 system("tar -cf git.bundle.tar git.bundle")
 system("rm -rf git.bundle")
 

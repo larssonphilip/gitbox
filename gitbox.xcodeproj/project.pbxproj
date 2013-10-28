@@ -116,8 +116,6 @@
 		20265C0311D68D3400709F6B /* OAPropertyListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20265C0211D68D3400709F6B /* OAPropertyListController.m */; };
 		20265C1411D68F1300709F6B /* OAFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 20265C1311D68F1300709F6B /* OAFile.m */; };
 		20265E4B11E3EB9B00709F6B /* GBWelcomeController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 20265E4A11E3EB9B00709F6B /* GBWelcomeController.xib */; };
-		202A1FA8145B2CDF00953257 /* git.bundle-1.7.5.4.tar in Resources */ = {isa = PBXBuildFile; fileRef = 202A1FA7145B2CDF00953257 /* git.bundle-1.7.5.4.tar */; };
-		202A1FA9145B2CDF00953257 /* git.bundle-1.7.5.4.tar in Resources */ = {isa = PBXBuildFile; fileRef = 202A1FA7145B2CDF00953257 /* git.bundle-1.7.5.4.tar */; };
 		2030C44F128B5BA1005F751C /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2030C44E128B5BA1005F751C /* Security.framework */; };
 		2030C4DA128B60FA005F751C /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2030C44E128B5BA1005F751C /* Security.framework */; };
 		2030C608128B6107005F751C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2A37F4C5FDCFA73011CA2CEA /* Foundation.framework */; };
@@ -261,8 +259,6 @@
 		208B3288137505D600EB4A18 /* GBSearchBarController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 208B3284137505D600EB4A18 /* GBSearchBarController.xib */; };
 		208D086313981084002C8072 /* GBTaskWithProgress.m in Sources */ = {isa = PBXBuildFile; fileRef = 208D086213981084002C8072 /* GBTaskWithProgress.m */; };
 		208D086413981084002C8072 /* GBTaskWithProgress.m in Sources */ = {isa = PBXBuildFile; fileRef = 208D086213981084002C8072 /* GBTaskWithProgress.m */; };
-		208D0A3A13983C99002C8072 /* git.bundle-1.7.7.2.3.g19dee.tar in Resources */ = {isa = PBXBuildFile; fileRef = 208D0A3913983C99002C8072 /* git.bundle-1.7.7.2.3.g19dee.tar */; };
-		208D0A3B13983C99002C8072 /* git.bundle-1.7.7.2.3.g19dee.tar in Resources */ = {isa = PBXBuildFile; fileRef = 208D0A3913983C99002C8072 /* git.bundle-1.7.7.2.3.g19dee.tar */; };
 		208D0AB1139844FC002C8072 /* GBRepositorySettingsController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 208D0AB0139844FC002C8072 /* GBRepositorySettingsController.xib */; };
 		208D0AB2139844FC002C8072 /* GBRepositorySettingsController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 208D0AB0139844FC002C8072 /* GBRepositorySettingsController.xib */; };
 		208D0AB513984512002C8072 /* GBRepositorySettingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 208D0AB413984512002C8072 /* GBRepositorySettingsController.m */; };
@@ -535,6 +531,8 @@
 		20EF8C4812E6605D00F3438A /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20EF88D612E34F9300F3438A /* Quartz.framework */; };
 		20F2D1C114E469E3009F3609 /* GBApplication.m in Sources */ = {isa = PBXBuildFile; fileRef = 20F2D1C014E469E3009F3609 /* GBApplication.m */; };
 		20F2D1C214E469E3009F3609 /* GBApplication.m in Sources */ = {isa = PBXBuildFile; fileRef = 20F2D1C014E469E3009F3609 /* GBApplication.m */; };
+		20F2FF25181DC80600701116 /* git.bundle-1.8.4.1.3.g7ce914e.tar in Resources */ = {isa = PBXBuildFile; fileRef = 20F2FF24181DC80600701116 /* git.bundle-1.8.4.1.3.g7ce914e.tar */; };
+		20F2FF26181DC80600701116 /* git.bundle-1.8.4.1.3.g7ce914e.tar in Resources */ = {isa = PBXBuildFile; fileRef = 20F2FF24181DC80600701116 /* git.bundle-1.8.4.1.3.g7ce914e.tar */; };
 		20FE4AA01469961800817E2C /* GBSubmoduleController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20FE4A9F1469961800817E2C /* GBSubmoduleController.m */; };
 		20FE4AA11469961800817E2C /* GBSubmoduleController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20FE4A9F1469961800817E2C /* GBSubmoduleController.m */; };
 		70865D2B12D25F5F00033683 /* GBSubmodule.m in Sources */ = {isa = PBXBuildFile; fileRef = 70865D2A12D25F5F00033683 /* GBSubmodule.m */; };
@@ -688,7 +686,6 @@
 		20265C1211D68F1300709F6B /* OAFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAFile.h; sourceTree = "<group>"; };
 		20265C1311D68F1300709F6B /* OAFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAFile.m; sourceTree = "<group>"; };
 		20265E4A11E3EB9B00709F6B /* GBWelcomeController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GBWelcomeController.xib; sourceTree = "<group>"; };
-		202A1FA7145B2CDF00953257 /* git.bundle-1.7.5.4.tar */ = {isa = PBXFileReference; lastKnownFileType = archive.tar; path = "git.bundle-1.7.5.4.tar"; sourceTree = "<group>"; };
 		202F565D145D96EA006927F6 /* Gitbox.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Gitbox.entitlements; sourceTree = "<group>"; };
 		2030C445128B5B6E005F751C /* OAAppStoreReceipt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAAppStoreReceipt.h; sourceTree = "<group>"; };
 		2030C44E128B5BA1005F751C /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -1031,6 +1028,7 @@
 		20EF88D812E34F9300F3438A /* QuickLook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickLook.framework; path = System/Library/Frameworks/QuickLook.framework; sourceTree = SDKROOT; };
 		20F2D1BF14E469E3009F3609 /* GBApplication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBApplication.h; sourceTree = "<group>"; };
 		20F2D1C014E469E3009F3609 /* GBApplication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBApplication.m; sourceTree = "<group>"; };
+		20F2FF24181DC80600701116 /* git.bundle-1.8.4.1.3.g7ce914e.tar */ = {isa = PBXFileReference; lastKnownFileType = archive.tar; path = "git.bundle-1.8.4.1.3.g7ce914e.tar"; sourceTree = "<group>"; };
 		20FE4A9E1469961800817E2C /* GBSubmoduleController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBSubmoduleController.h; sourceTree = "<group>"; };
 		20FE4A9F1469961800817E2C /* GBSubmoduleController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBSubmoduleController.m; sourceTree = "<group>"; };
 		2564AD2C0F5327BB00F57823 /* prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = prefix.pch; sourceTree = "<group>"; };
@@ -1792,9 +1790,9 @@
 				207D02FA13706AD7003C9D5F /* AppStore */,
 				201E02DA11EA1ED3007E4420 /* License */,
 				20E698D813635AB9000A3A6F /* Authentication */,
-				2038F6C611A030FF0087CE37 /* Tasks */,
 				20C935B11609235D00B8E985 /* OpenSSL */,
 				20106C5113D3760A0018A65F /* LibGit2 */,
+				2038F6C611A030FF0087CE37 /* Tasks */,
 				2038F30811952FAE0087CE37 /* Models */,
 				206CAC72122EB619009284FE /* Model Controllers */,
 				20A9713612C6C6B900E2B7B9 /* Main Window */,
@@ -1827,7 +1825,7 @@
 			isa = PBXGroup;
 			children = (
 				2016439012CC0F2E005C69DA /* author.png */,
-				202A1FA7145B2CDF00953257 /* git.bundle-1.7.5.4.tar */,
+				20F2FF24181DC80600701116 /* git.bundle-1.8.4.1.3.g7ce914e.tar */,
 				208D0A3913983C99002C8072 /* git.bundle-1.7.7.2.3.g19dee.tar */,
 				203976631251A63700770D13 /* Credits.rtf */,
 				2010732E11A7E9C300EFDE56 /* app.icns */,
@@ -1983,6 +1981,7 @@
 				20566DE01394469A005186AF /* GBColorLabelBlueCorner.png in Resources */,
 				20566DE11394469A005186AF /* GBColorLabelGrayCorner.png in Resources */,
 				20566DE21394469A005186AF /* GBColorLabelGreenCorner.png in Resources */,
+				20F2FF26181DC80600701116 /* git.bundle-1.8.4.1.3.g7ce914e.tar in Resources */,
 				20566DE31394469A005186AF /* GBColorLabelOrangeCorner.png in Resources */,
 				20566DE41394469A005186AF /* GBColorLabelPurpleCorner.png in Resources */,
 				20566DE51394469A005186AF /* GBColorLabelRedCorner.png in Resources */,
@@ -1990,7 +1989,6 @@
 				2003F9AC139526C900471731 /* GBBadgeTagCenter.png in Resources */,
 				2003F9AE139526C900471731 /* GBBadgeTagLeft.png in Resources */,
 				2003F9B0139526C900471731 /* GBBadgeTagRight.png in Resources */,
-				208D0A3A13983C99002C8072 /* git.bundle-1.7.7.2.3.g19dee.tar in Resources */,
 				208D0AB1139844FC002C8072 /* GBRepositorySettingsController.xib in Resources */,
 				208D0B9D139A9E37002C8072 /* GBRepositorySummaryController.xib in Resources */,
 				208D0BAF139A9FF8002C8072 /* Icon512.png in Resources */,
@@ -1998,7 +1996,6 @@
 				2096FDC2139D36E800B79D46 /* GBRepositoryRemotesController.xib in Resources */,
 				20BD5DCE143E2623003B4F2F /* GBToolbarMinus.png in Resources */,
 				20BD5DD5143E48AD003B4F2F /* GBRepositoryConfigController.xib in Resources */,
-				202A1FA9145B2CDF00953257 /* git.bundle-1.7.5.4.tar in Resources */,
 				200C159A14670F9E000F4C78 /* GitboxLicense.txt in Resources */,
 				200C15A114672EB2000F4C78 /* GBSubmoduleCloningViewController.xib in Resources */,
 				20C50D2114D5EFF9009786D9 /* MASPreferencesWindow.xib in Resources */,
@@ -2075,6 +2072,7 @@
 				20566DE71394469A005186AF /* GBColorLabelBlueCorner.png in Resources */,
 				20566DE81394469A005186AF /* GBColorLabelGrayCorner.png in Resources */,
 				20566DE91394469A005186AF /* GBColorLabelGreenCorner.png in Resources */,
+				20F2FF25181DC80600701116 /* git.bundle-1.8.4.1.3.g7ce914e.tar in Resources */,
 				20566DEA1394469A005186AF /* GBColorLabelOrangeCorner.png in Resources */,
 				20566DEB1394469A005186AF /* GBColorLabelPurpleCorner.png in Resources */,
 				20566DEC1394469A005186AF /* GBColorLabelRedCorner.png in Resources */,
@@ -2082,7 +2080,6 @@
 				2003F9AB139526C900471731 /* GBBadgeTagCenter.png in Resources */,
 				2003F9AD139526C900471731 /* GBBadgeTagLeft.png in Resources */,
 				2003F9AF139526C900471731 /* GBBadgeTagRight.png in Resources */,
-				208D0A3B13983C99002C8072 /* git.bundle-1.7.7.2.3.g19dee.tar in Resources */,
 				208D0AB2139844FC002C8072 /* GBRepositorySettingsController.xib in Resources */,
 				208D0B9E139A9E37002C8072 /* GBRepositorySummaryController.xib in Resources */,
 				208D0BB0139A9FF8002C8072 /* Icon512.png in Resources */,
@@ -2090,7 +2087,6 @@
 				2096FDC3139D36E800B79D46 /* GBRepositoryRemotesController.xib in Resources */,
 				20BD5DCD143E2623003B4F2F /* GBToolbarMinus.png in Resources */,
 				20BD5DD4143E48AD003B4F2F /* GBRepositoryConfigController.xib in Resources */,
-				202A1FA8145B2CDF00953257 /* git.bundle-1.7.5.4.tar in Resources */,
 				200C159914670F9E000F4C78 /* GitboxLicense.txt in Resources */,
 				200C15A014672EB2000F4C78 /* GBSubmoduleCloningViewController.xib in Resources */,
 				20C50D2014D5EFF9009786D9 /* MASPreferencesWindow.xib in Resources */,
@@ -2666,7 +2662,7 @@
 		C05733CC08A9546B00998B17 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				APP_VERSION = "2012-04-05";
+				APP_VERSION = "2013-10-28";
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CODE_SIGN_IDENTITY = "iPhone Developer: Oleg Andreev (9F23AVDPMZ)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -2693,7 +2689,7 @@
 		C05733CD08A9546B00998B17 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				APP_VERSION = 1.6.2;
+				APP_VERSION = 1.6.4;
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CODE_SIGN_IDENTITY = "iPhone Developer: Oleg Andreev (9F23AVDPMZ)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;

@@ -336,7 +336,7 @@
 		return;
 	}
 	
-	[self launchTaskByChunksWithArguments:[NSArray arrayWithObjects:@"add", @"--force", @"--", nil]
+	[self launchTaskByChunksWithArguments:[NSArray arrayWithObjects:@"add", @"--ignore-removal", @"--force", @"--", nil]
 									paths:pathsToAdd
 									block:block
 							 taskCallback:^(GBTask *task) {
@@ -418,7 +418,7 @@
 	stageStateCounter++;
 	[self beginStageTransaction:^{
 		GBTask* task = [self.repository task];
-		task.arguments = [NSArray arrayWithObjects:@"add", @".", nil];
+		task.arguments = [NSArray arrayWithObjects:@"add", @"--ignore-removal" @".", nil];
 		[self.repository launchTask:task withBlock:^{
 			[task showErrorIfNeeded];
 			[self endStageTransaction];
