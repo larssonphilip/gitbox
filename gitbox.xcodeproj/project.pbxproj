@@ -1217,6 +1217,7 @@
 				205101B514F0F16C00F9507D /* GBAsyncUpdater.m */,
 				205AB01C15F0CC1100852630 /* GBURLBookmark.h */,
 				205AB01D15F0CC1200852630 /* GBURLBookmark.m */,
+				20F2D1BF14E469E3009F3609 /* GBApplication.h */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -1427,7 +1428,6 @@
 		20A9713612C6C6B900E2B7B9 /* Main Window */ = {
 			isa = PBXGroup;
 			children = (
-				20F2D1BF14E469E3009F3609 /* GBApplication.h */,
 				20F2D1C014E469E3009F3609 /* GBApplication.m */,
 				2038F1DD11936B060087CE37 /* GBAppDelegate.h */,
 				2038F1DE11936B060087CE37 /* GBAppDelegate.m */,
