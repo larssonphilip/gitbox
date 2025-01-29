@@ -105,16 +105,6 @@
 	
 	stage.repository = nil;
 	
-	
-	
-	 // smart setter
-	
-	
-	
-	if (dispatchQueue) dispatch_release(dispatchQueue);
-    if (remoteDispatchQueue) dispatch_release(remoteDispatchQueue);
-	
-	
 }
 
 
@@ -137,7 +127,6 @@
 		});
 		
 		dispatchQueue = queues[(queueId++) % GBRepoDispatchQueuesMax];
-		dispatch_retain(dispatchQueue);
 		remoteDispatchQueue = dispatch_queue_create("com.oleganza.gitbox.repo_remote_task_queue", NULL);
 		
 		self.blockTable = [OABlockTable new];
@@ -151,8 +140,6 @@
 {
 	if (aDispatchQueue)
 	{
-		if (dispatchQueue) dispatch_release(dispatchQueue);
-		dispatch_retain(aDispatchQueue);
 		dispatchQueue = aDispatchQueue;
 	}
 }
@@ -1027,15 +1014,11 @@
 	}
 	
 	//NSLog(@"escapedName = %@", escapedName);
-	[self.config setString:ref.remoteAlias
-					forKey:[NSString stringWithFormat:@"branch.%@.remote", escapedName] withBlock:^{
-						
-						[self.config setString:[NSString stringWithFormat:@"refs/heads/%@", ref.name]
-										forKey:[NSString stringWithFormat:@"branch.%@.merge", escapedName] withBlock:^{
-											if (block) block();
-										}];
-						
-					}];
+	[self.config setString:ref.remoteAlias forKey:[NSString stringWithFormat:@"branch.%@.remote", escapedName] withBlock:^{
+		[self.config setString:[NSString stringWithFormat:@"refs/heads/%@", ref.name] forKey:[NSString stringWithFormat:@"branch.%@.merge", escapedName] withBlock:^{
+			if (block) block();
+		}];
+	}];
 }
 
 

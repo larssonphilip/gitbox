@@ -21,7 +21,8 @@
 		// TODO: not tested, not used yet.
 		if (![[NSFileManager new] fileExistsAtPath:self.userConfigURL.path])
 		{
-			[[NSData data] writeToFile:self.userConfigURL.path atomically:YES encoding:NSUTF8StringEncoding error:NULL];
+			//[[NSData data] writeToFile:self.userConfigURL.path atomically:YES encoding:NSUTF8StringEncoding error:NULL];
+            [[NSData data] writeToFile:self.userConfigURL.path options:NSDataWritingAtomic error:nil];
 		}
 		
 		git_error error = git_config_open_global(&config);

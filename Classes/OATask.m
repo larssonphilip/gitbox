@@ -90,13 +90,8 @@ NSString* OATaskDidDeallocateNotification  = @"OATaskDidDeallocateNotification";
 														object:value
 													  userInfo:@{@"terminationStatus":@(self.terminationStatus)}];
 
-	if (dispatchQueue) { dispatch_release(dispatchQueue); dispatchQueue = nil; }
 	 didTerminateBlock = nil;
 	 didReceiveDataBlock = nil;
-	
-	if (originDispatchQueue) { dispatch_release(originDispatchQueue); originDispatchQueue = nil; };
-	
-	
 }
 
 - (id)init
@@ -237,19 +232,13 @@ NSString* OATaskDidDeallocateNotification  = @"OATaskDidDeallocateNotification";
 - (void) setDispatchQueue:(dispatch_queue_t)aDispatchQueue
 {
 	if (aDispatchQueue == dispatchQueue) return;
-	
-	if (dispatchQueue) dispatch_release(dispatchQueue);
 	dispatchQueue = aDispatchQueue;
-	if (dispatchQueue) dispatch_retain(dispatchQueue);
 }
 
 - (void) setOriginDispatchQueue:(dispatch_queue_t)anOriginDispatchQueue
 {
 	if (anOriginDispatchQueue == originDispatchQueue) return;
-	
-	if (originDispatchQueue) dispatch_release(originDispatchQueue);
 	originDispatchQueue = anOriginDispatchQueue;
-	if (originDispatchQueue) dispatch_retain(originDispatchQueue);
 }
 
 // Add/modify environment variables 
@@ -550,7 +539,6 @@ NSString* OATaskDidDeallocateNotification  = @"OATaskDidDeallocateNotification";
 		aBlock = [aBlock copy];
 		NSString* exec = self.executableName;
 		dispatch_queue_t originQueue = dispatch_get_current_queue();
-		dispatch_retain(originQueue);
 		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 			NSString* aPath = [[self class] systemPathForExecutable:exec];
 			dispatch_async(originQueue, ^{
@@ -563,7 +551,6 @@ NSString* OATaskDidDeallocateNotification  = @"OATaskDidDeallocateNotification";
 					NSLog(@"OATask: launchPath is not found for executable %@", self.executableName);
 				}
 				if (aBlock) aBlock();
-				dispatch_release(originQueue);
 			});
 		});
 	}
@@ -793,9 +780,6 @@ NSString* OATaskDidDeallocateNotification  = @"OATaskDidDeallocateNotification";
 		});
 	}
 	dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
-	dispatch_release(group);
-	dispatch_release(stdoutQueue);
-	dispatch_release(stderrQueue);
 }
 
 

@@ -3,7 +3,7 @@
 	url = https://github.com/nicklockwood/iRate.git
 [submodule "libgit2"]
 	path = libgit2
-	url = git@github.com:oleganza/libgit2.git
+	url = git@github.com:larssonphilip/libgit2.git
 [submodule "git"]
 	path = git
 	url = git@github.com:oleganza/git.git

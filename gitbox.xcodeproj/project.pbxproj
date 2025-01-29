@@ -2631,6 +2631,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/openssl/lib\"",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 11.5;
 				PRODUCT_NAME = Gitbox;
 			};
 			name = Debug;
@@ -2655,6 +2656,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/openssl/lib\"",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 11.5;
 				PRODUCT_NAME = Gitbox;
 			};
 			name = Release;

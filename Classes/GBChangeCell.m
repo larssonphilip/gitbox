@@ -80,7 +80,7 @@
 	
 	
 	GBChange* aChange = [self change];
-	
+    NSLog(@"Change: %@", self.change);
 	NSURL* srcURL = aChange.srcURL;
 	if (!srcURL) srcURL = aChange.dstURL;
 	
@@ -201,8 +201,8 @@
 			static CGFloat iconRightPadding = 6.0;
 			CGFloat arrowWidth = [@"→" sizeWithAttributes:attributes].width;
 				
-			NSString* srcPath = [srcURL relativePath];
-			NSString* dstPath = [[dstURL relativePath] relativePathToDirectoryPath:[srcPath stringByDeletingLastPathComponent]];
+            NSString* srcPath = [[srcURL relativePath] stringByRemovingPercentEncoding];
+            NSString* dstPath = [[[dstURL relativePath] relativePathToDirectoryPath:[srcPath stringByDeletingLastPathComponent]] stringByRemovingPercentEncoding];
 			
 			NSSize srcSize = [srcPath sizeWithAttributes:attributes];
 			NSSize dstSize = [dstPath sizeWithAttributes:attributes];
@@ -284,7 +284,7 @@
 			{
 				url = dstURL;
 			}
-			[self drawPath:[url relativePath] inRect:currentFrame withAttributes:attributes];
+            [self drawPath:[[url relativePath] stringByRemovingPercentEncoding] inRect:currentFrame withAttributes:attributes];
 		}
         
 	}
